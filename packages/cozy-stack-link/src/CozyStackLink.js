@@ -38,7 +38,12 @@ export default class CozyStackLink {
     }
 
     const resp = await fetch(this.fullpath(path), options)
-    console.log(resp)
+    if (resp.ok) {
+      const contentType = resp.headers.get('content-type')
+      const isJson = contentType && contentType.indexOf('json') >= 0
+      const data = await (isJson ? resp.json() : resp.text())
+      return data
+    }
     return resp
   }
 

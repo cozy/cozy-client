@@ -1,5 +1,11 @@
 import CozyStackLink from '..'
 
+const FAKE_RESPONSE = {
+  offset: 0,
+  rows: [{ id: '12345', label: 'Buy bread', done: false }],
+  total_rows: 1
+}
+
 describe('CozyStackLink', () => {
   describe('fetch', () => {
     const link = new CozyStackLink({
@@ -8,7 +14,10 @@ describe('CozyStackLink', () => {
     })
 
     beforeAll(() => {
-      global.fetch = jest.fn(() => Promise.resolve())
+      global.fetch = require('jest-fetch-mock')
+      fetch.mockResponse(JSON.stringify(FAKE_RESPONSE), {
+        headers: { 'Content-Type': 'application/json' }
+      })
     })
 
     it('should ask for JSON by default', async () => {
@@ -24,6 +33,11 @@ describe('CozyStackLink', () => {
           }
         }
       )
+    })
+
+    it('should return JSON', async () => {
+      const resp = await link.fetch('GET', '/data/io.cozy.todos')
+      expect(resp).toEqual(FAKE_RESPONSE)
     })
   })
 })

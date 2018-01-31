@@ -1,5 +1,6 @@
 {
   "name": "cozy-stack-link",
   "version": "1.0.0",
-  "license": "MIT"
+  "license": "MIT",
+  "main": "dist/cozy-stack-link.js"
 }
