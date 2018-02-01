@@ -20,7 +20,8 @@
 	],
 	"scripts": {
 		"test": "jest",
-		"build": "node scripts/build.js"
+		"build": "node scripts/build.js",
+		"watch": "node scripts/watch.js"
 	},
 	"prettier": {
 		"semi": false,
