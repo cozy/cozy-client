@@ -1,12 +1,16 @@
 {
 	"devDependencies": {
 		"babel-core": "^6.26.0",
+		"babel-eslint": "^8.2.1",
 		"babel-jest": "^22.1.0",
 		"babel-plugin-external-helpers": "^6.22.0",
 		"babel-plugin-transform-class-properties": "^6.24.1",
 		"babel-plugin-transform-object-rest-spread": "^6.26.0",
 		"babel-preset-env": "^1.6.1",
 		"chalk": "^2.3.0",
+		"eslint": "^4.16.0",
+		"eslint-config-prettier": "^2.9.0",
+		"eslint-plugin-prettier": "^2.5.0",
 		"jest": "^22.1.4",
 		"jest-fetch-mock": "^1.4.1",
 		"lerna": "^2.8.0",
@@ -19,7 +23,10 @@
 		"packages/*"
 	],
 	"scripts": {
+		"lint": "eslint 'packages/*/src/**/*.js'",
+		"pretest": "npm run lint",
 		"test": "jest",
+		"prebuild": "npm run lint",
 		"build": "node scripts/build.js",
 		"watch": "node scripts/watch.js"
 	},
