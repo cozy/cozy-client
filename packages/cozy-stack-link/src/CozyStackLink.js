@@ -1,4 +1,5 @@
 import AppToken from './AppToken'
+import DocumentCollection from './DocumentCollection'
 
 const normalizeUri = uri => {
   while (uri[uri.length - 1] === '/') {
@@ -7,14 +8,37 @@ const normalizeUri = uri => {
   return uri
 }
 
+/**
+ * Cozy stack HTTP client.
+ */
 export default class CozyStackLink {
   constructor(options) {
-    const { token, uri } = options
+    const { token, uri = '' } = options
     this.uri = normalizeUri(uri)
     this.token = new AppToken(token)
   }
 
-  fetch = async (method, path, body, options = {}) => {
+  /**
+   * Creates a {@link DocumentCollection} instance.
+   *
+   * @param  {String} doctype The collection doctype.
+   * @return {DocumentCollection}
+   */
+  collection(doctype) {
+    return new DocumentCollection(doctype, this)
+  }
+
+  /**
+   * Fetches JSON in an authorized way.
+   *
+   * @param  {String} method The HTTP method.
+   * @param  {String} path The URI.
+   * @param  {Object} body The payload.
+   * @param  {Object} options
+   * @return {Object}
+   * @throws {FetchError}
+   */
+  async fetch(method, path, body, options = {}) {
     options.method = method
     const headers = (options.headers = options.headers || {})
 
@@ -38,13 +62,13 @@ export default class CozyStackLink {
     }
 
     const resp = await fetch(this.fullpath(path), options)
+    const contentType = resp.headers.get('content-type')
+    const isJson = contentType && contentType.indexOf('json') >= 0
+    const data = await (isJson ? resp.json() : resp.text())
     if (resp.ok) {
-      const contentType = resp.headers.get('content-type')
-      const isJson = contentType && contentType.indexOf('json') >= 0
-      const data = await (isJson ? resp.json() : resp.text())
       return data
     }
-    return resp
+    throw new FetchError(resp, data)
   }
 
   fullpath(path) {
@@ -54,5 +78,26 @@ export default class CozyStackLink {
   getCredentials() {
     if (!this.token) return null
     return { client: null, token: this.token }
+  }
+}
+
+class FetchError extends Error {
+  constructor(res, reason) {
+    super()
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, this.constructor)
+    }
+    // WARN We have to hardcode this because babel doesn't play nice when extending Error
+    this.name = 'FetchError'
+    this.response = res
+    this.url = res.url
+    this.status = res.status
+    this.reason = reason
+
+    Object.defineProperty(this, 'message', {
+      value:
+        reason.message ||
+        (typeof reason === 'string' ? reason : JSON.stringify(reason))
+    })
   }
 }

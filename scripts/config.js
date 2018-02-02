@@ -40,10 +40,13 @@ const bundles = [
 
 function getInputOptions(bundleDesc) {
   return Object.assign({}, defaultInputOptions, {
-    input: path.resolve(__dirname, `../packages/${bundleDesc.name}/src/index.js`)
+    input: path.resolve(
+      __dirname,
+      `../packages/${bundleDesc.name}/src/index.js`
+    )
   })
 }
-  
+
 function getOutputOptions(bundleDesc) {
   return Object.assign({}, defaultOutputOptions, {
     file: path.resolve(
