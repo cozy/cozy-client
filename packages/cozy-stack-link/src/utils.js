@@ -23,13 +23,11 @@ export const uri = (strings, ...values) => {
  *
  * @example
  * ```
- * let err, data
- * [err, data] = await attempt(collection.all())
- * if (data) return data
+ * if (await attempt(collection.all()) return
  * await sleep(1000)
- * [err, data] = await attempt(collection.all())
- * if (err) return []
- * return data
+ * if (await attempt(collection.all()) return
+ * await sleep(1000)
+ * return
  * ```
  */
 export const attempt = promise => promise.then(resp => true).catch(err => false)

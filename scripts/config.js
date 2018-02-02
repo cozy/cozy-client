@@ -35,6 +35,10 @@ const bundles = [
   {
     name: 'cozy-stack-link',
     global: 'CozyStackLink'
+  },
+  {
+    name: 'cozy-client',
+    global: 'CozyClient'
   }
 ]
 
