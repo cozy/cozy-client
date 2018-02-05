@@ -26,11 +26,18 @@ console.log(allTodos.data)
 ```
 
 #### Pagination
-By default, the link limits query results to 50 documents. If the limit causes some documents to not be returned, the response will have a `next: true` property.
-You can also use the `meta.count` property to know the total count of documents.
+By default, the link limits query results to 50 documents. If the limit causes some documents not to be returned, the response will have a `next: true` property.
 By using the `skip` and `limit` options you can build your own pagination:
 ```js
-const allTodos = await todos.all({ skip: 100, limit: 100 })
+const firstPage = await todos.all({ limit: 100 })
+if (firstPage.next) {
+  const secondPage = await todos.all({ skip: 100, limit: 100 })
+}
+```
+You can also use the `meta.count` property to know the total count of documents.
+```js
+const allTodos = await todos.all()
+console.log(`There are ${allTodos.meta.count} todos.`)
 ```
 
 ## Finding documents

@@ -146,14 +146,7 @@ export default class DocumentCollection {
    * @param  {Object} options - Mango query options
    * @return {Array} - Fields to index
    */
-  getIndexFields(options) {
-    const { selector, sort } = options
-    if (sort) {
-      // We filter possible duplicated fields
-      return [...Object.keys(selector), ...Object.keys(sort)].filter(
-        (f, i, arr) => arr.indexOf(f) === i
-      )
-    }
-    return Object.keys(selector)
+  getIndexFields({ selector, sort = {} }) {
+    return Array.from(new Set([...Object.keys(selector), ...Object.keys(sort)]))
   }
 }

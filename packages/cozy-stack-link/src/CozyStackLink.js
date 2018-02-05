@@ -12,8 +12,7 @@ const normalizeUri = uri => {
  * Cozy stack HTTP client.
  */
 export default class CozyStackLink {
-  constructor(options) {
-    const { token, uri = '' } = options
+  constructor({ token, uri = '' }) {
     this.uri = normalizeUri(uri)
     this.token = new AppToken(token)
   }
@@ -82,16 +81,16 @@ export default class CozyStackLink {
 }
 
 class FetchError extends Error {
-  constructor(res, reason) {
+  constructor(response, reason) {
     super()
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, this.constructor)
     }
     // WARN We have to hardcode this because babel doesn't play nice when extending Error
     this.name = 'FetchError'
-    this.response = res
-    this.url = res.url
-    this.status = res.status
+    this.response = response
+    this.url = response.url
+    this.status = response.status
     this.reason = reason
 
     Object.defineProperty(this, 'message', {
