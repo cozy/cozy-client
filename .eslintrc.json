@@ -1,4 +1,8 @@
 {
   "parser": "babel-eslint",
-  "extends": ["plugin:prettier/recommended"]
+  "plugins": ["react"],
+  "extends": ["plugin:prettier/recommended", "plugin:react/recommended"],
+  "rules": {
+    "react/prop-types": [0]
+  }
 }
