@@ -5,7 +5,8 @@ import reducer, {
   getQueryFromStore,
   initQuery,
   receiveQueryResult,
-  receiveQueryError
+  receiveQueryError,
+  receiveMutationResult
 } from '../store'
 
 import { TODO_1, TODO_2, TODO_3 } from './fixtures'
@@ -23,7 +24,7 @@ describe('Store', () => {
       ).toBe(null)
     })
 
-    it('should return the document if in store', async () => {
+    it('should return the document if in store', () => {
       store.dispatch(
         receiveQueryResult('allTodos', {
           data: [TODO_1, TODO_2],
@@ -38,6 +39,34 @@ describe('Store', () => {
       expect(
         getDocumentFromStore(store.getState(), 'io.cozy.todos', 'WXYZ')
       ).toBe(null)
+    })
+
+    it('should return a newly created doc received in a mutation result', () => {
+      store.dispatch(
+        receiveMutationResult('foo', {
+          data: [TODO_1]
+        })
+      )
+      expect(
+        getDocumentFromStore(store.getState(), 'io.cozy.todos', TODO_1._id)
+      ).toEqual(TODO_1)
+    })
+
+    it('should return an updated rev of a doc received in a mutation result', () => {
+      store.dispatch(
+        receiveMutationResult('foo', {
+          data: [TODO_1]
+        })
+      )
+      store.dispatch(
+        receiveMutationResult('bar', {
+          data: [{ ...TODO_1, label: 'Buy croissants' }]
+        })
+      )
+      expect(
+        getDocumentFromStore(store.getState(), 'io.cozy.todos', TODO_1._id)
+          .label
+      ).toBe('Buy croissants')
     })
   })
 
@@ -80,7 +109,7 @@ describe('Store', () => {
         await store.dispatch(
           receiveQueryResult('allTodos', {
             data: [TODO_1, TODO_2],
-            meta: { count: 3 },
+            meta: { count: 2 },
             skip: 0,
             next: true
           })
@@ -94,7 +123,7 @@ describe('Store', () => {
 
       it('should have a `count` that reflect the `meta.count` in the response', () => {
         const query = getQueryFromStore(store.getState(), 'allTodos')
-        expect(query.count).toBe(3)
+        expect(query.count).toBe(2)
       })
 
       it('should have a `hasMore` that reflect the `next` in the response', () => {
@@ -128,6 +157,64 @@ describe('Store', () => {
           const query = getQueryFromStore(store.getState(), 'allTodos')
           expect(query.data).toEqual([TODO_1, TODO_2, TODO_3])
         })
+      })
+    })
+  })
+
+  describe('Mutations', () => {
+    describe('updateQueries', () => {
+      beforeEach(async () => {
+        await store.dispatch(
+          initQuery('allTodos', {
+            doctype: 'io.cozy.todos'
+          })
+        )
+        await store.dispatch(
+          receiveQueryResult('allTodos', {
+            data: [TODO_1, TODO_2],
+            meta: { count: 2 },
+            skip: 0,
+            next: true
+          })
+        )
+      })
+
+      const NEW_TODO = {
+        _id: 'azerty',
+        _type: 'io.cozy.todos',
+        label: 'Jettison boosters',
+        done: false
+      }
+
+      it('should apply the updater function to the query existing data and the mutation result', async () => {
+        const updater = jest.fn(() => [])
+        const result = { data: [NEW_TODO] }
+        await store.dispatch(
+          receiveMutationResult('foo', result, {
+            updateQueries: {
+              allTodos: updater
+            }
+          })
+        )
+        expect(updater).toHaveBeenCalledWith([TODO_1, TODO_2], result)
+      })
+
+      it('should apply the update to the query data', async () => {
+        const updater = (previousData, result) => [
+          ...previousData.slice(0, 1),
+          result.data[0],
+          ...previousData.slice(1)
+        ]
+        const result = { data: [NEW_TODO] }
+        await store.dispatch(
+          receiveMutationResult('foo', result, {
+            updateQueries: {
+              allTodos: updater
+            }
+          })
+        )
+        const query = getQueryFromStore(store.getState(), 'allTodos')
+        expect(query.data).toEqual([TODO_1, NEW_TODO, TODO_2])
       })
     })
   })

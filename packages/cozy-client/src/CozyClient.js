@@ -1,8 +1,12 @@
 import {
   default as reducer,
+  createStore,
   initQuery,
   receiveQueryResult,
-  receiveQueryError
+  receiveQueryError,
+  initMutation,
+  receiveMutationResult,
+  receiveMutationError
 } from './store'
 
 export default class CozyClient {
@@ -12,7 +16,7 @@ export default class CozyClient {
   }
 
   async query(queryDefinition, options = {}) {
-    this.initStore()
+    this.getOrCreateStore()
     const queryId = options.as || this.generateId()
     this.dispatch(initQuery(queryId, queryDefinition))
     try {
@@ -20,6 +24,22 @@ export default class CozyClient {
       return this.dispatch(receiveQueryResult(queryId, response))
     } catch (error) {
       return this.dispatch(receiveQueryError(queryId, error))
+    }
+  }
+
+  async mutate(mutationFn, { updateQueries, ...options }) {
+    this.getOrCreateStore()
+    const mutationId = options.as || this.generateId()
+    this.dispatch(initMutation(mutationId))
+    try {
+      const response = await this.executeMutation(mutationFn)
+      return this.dispatch(
+        receiveMutationResult(mutationId, response, {
+          updateQueries
+        })
+      )
+    } catch (error) {
+      return this.dispatch(receiveMutationError(mutationId, error))
     }
   }
 
@@ -33,14 +53,19 @@ export default class CozyClient {
       : collection.find(selector, options)
   }
 
+  async executeMutation(mutationFn) {
+    return mutationFn(this.link)
+  }
+
   setStore(store) {
     this.store = store
   }
 
-  initStore() {
+  getOrCreateStore() {
     if (!this.store) {
-      throw new Error('No store provided to the client')
+      this.setStore(createStore())
     }
+    return this.store
   }
 
   reducer() {

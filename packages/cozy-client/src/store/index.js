@@ -1,17 +1,33 @@
-import { combineReducers } from 'redux'
+import { createStore as createReduxStore } from 'redux'
 
-import documents from './documents'
-import queries from './queries'
+import documents, { getDocumentFromSlice } from './documents'
+import queries, { getQueryFromSlice, isQueryAction } from './queries'
+import { isMutationAction } from './mutations'
 
-export default combineReducers({
-  documents,
-  queries
-})
+const combinedReducer = (state = { documents: {}, queries: {} }, action) => {
+  if (!isQueryAction(action) && !isMutationAction(action)) {
+    return state
+  }
+  return {
+    documents: documents(state.documents, action),
+    queries: queries(state.queries, action, state.documents)
+  }
+}
+export default combinedReducer
 
-export { getDocumentFromStore } from './documents'
+export const createStore = () =>
+  createReduxStore(combineReducers({ cozy: combinedReducer }))
+
+export const getDocumentFromStore = (state, doctype, id) =>
+  getDocumentFromSlice(state.cozy.documents, doctype, id)
+
+export const getQueryFromStore = (state, queryId) =>
+  getQueryFromSlice(state.cozy.queries, queryId, state.cozy.documents)
+
+export { initQuery, receiveQueryResult, receiveQueryError } from './queries'
+
 export {
-  getQueryFromStore,
-  initQuery,
-  receiveQueryResult,
-  receiveQueryError
-} from './queries'
+  initMutation,
+  receiveMutationResult,
+  receiveMutationError
+} from './mutations'
