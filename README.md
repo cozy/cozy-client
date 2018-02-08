@@ -30,25 +30,23 @@ To get started using `cozy-client` with (p)React, you need to create a `CozyClie
 import CozyClient from 'cozy-client'
 import CozyStackLink from 'cozy-stack-link'
 
-// We need to retrieve the domain name of the cozy instance and a token from the HTML
-// See https://cozy.github.io/cozy-docs-v3/en/dev/app/#behind-the-magic
-const root = document.querySelector('[role=application]')
-const data = root.dataset
-
 const client = new CozyClient({
   link: new CozyStackLink({
-    uri: `${window.location.protocol}//${data.cozyDomain}`,
-    token: data.cozyToken
+    uri: 'http://cozy.tools:8080',
+    token: '...'
   })
 })
 ```
+If you need guidance to get the URI of your instance and/or the token, see (https://cozy.github.io/cozy-docs-v3/en/dev/app/#behind-the-magic).
 
 #### Creating a provider
 
-To connect the client to your component tree, use a `CozyProvider` somewhere high in your app:
+All components that we want to connect to data need access to the client. We could pass it as a prop from component to component, but it'll quickly get tedious.
+We recommend that you use a `CozyProvider` somewhere high in your app. It will make the client available to all your components using the context:
 
 ```js
 import CozyClient, { CozyProvider } from 'cozy-client'
+import CozyStackLink from 'cozy-stack-link'
 
 const client = new CozyClient({
   /*...*/
@@ -61,6 +59,7 @@ ReactDOM.render(
   document.getElementById('main')
 )
 ```
+
 
 #### Integrating with an existing redux store
 
@@ -79,6 +78,13 @@ const client = new CozyClient({
 const store = createStore(
   combineReducers({ ...myReducers, cozy: client.reducer() }),
   applyMiddleware(myMiddleware)
+)
+
+ReactDOM.render(
+  <CozyProvider client={client} store={store}>
+    <MyApp />
+  </CozyProvider>,
+  document.getElementById('main')
 )
 ```
 
@@ -119,7 +125,7 @@ As seen above, `connect` will pass the result of the query fetch to the wrapped 
  - `lastFetch`: when the last fetch occured
  - `hasMore`: the fetches being paginated, this property indicates if there are more documents to load
 
-#### The query Domain-Specific Language (DSL)
+#### Making queries
 
 `cozy-client` provides you with a very easy to use DSL to define document queries:
 
