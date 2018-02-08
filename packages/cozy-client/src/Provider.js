@@ -21,9 +21,22 @@ export default class CozyProvider extends Component {
     store: PropTypes.object
   }
 
+  constructor(props, context) {
+    super(props, context)
+    if (!props.client) {
+      throw new Error('CozyProvider was not passed a client instance.')
+    }
+    if (props.store) {
+      props.client.setStore(props.store)
+    }
+  }
+
   getChildContext() {
     return {
-      store: this.props.store || this.context.store,
+      store:
+        this.props.store ||
+        this.context.store ||
+        this.props.client.getOrCreateStore(),
       client: this.props.client
     }
   }
