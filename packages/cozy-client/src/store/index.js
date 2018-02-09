@@ -1,4 +1,4 @@
-import { createStore as createReduxStore } from 'redux'
+import { createStore as createReduxStore, combineReducers } from 'redux'
 
 import documents, { getDocumentFromSlice } from './documents'
 import queries, { getQueryFromSlice, isQueryAction } from './queries'
