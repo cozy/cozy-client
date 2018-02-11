@@ -27,6 +27,54 @@ const FIND_RESPONSE_FIXTURE = {
   next: false
 }
 
+const NEW_TODO = {
+  label: 'Jettison boosters',
+  done: false
+}
+const CREATE_RESPONSE_FIXTURE = {
+  id: '12345',
+  ok: true,
+  type: 'io.cozy.todos',
+  rev: '1-67890',
+  data: {
+    _id: '12345',
+    _type: 'io.cozy.todos',
+    _rev: '1-67890',
+    ...NEW_TODO
+  }
+}
+
+const TODO_TO_UPDATE = {
+  _id: '12345',
+  _type: 'io.cozy.todos',
+  _rev: '1-67890',
+  label: 'Jettison boosters',
+  done: false
+}
+const UPDATE_RESPONSE_FIXTURE = {
+  id: '12345',
+  ok: true,
+  type: 'io.cozy.todos',
+  rev: '2-67890',
+  data: {
+    _rev: '2-67890',
+    ...TODO_TO_UPDATE
+  }
+}
+
+const TODO_TO_DESTROY = {
+  _id: '12345',
+  _type: 'io.cozy.todos',
+  _rev: '1-67890'
+}
+const DESTROY_RESPONSE_FIXTURE = {
+  id: '12345',
+  type: 'io.cozy.todos',
+  ok: true,
+  rev: '2-12345',
+  _deleted: true
+}
+
 const fail = msg => ({ message: () => msg, pass: false })
 
 expect.extend({
@@ -182,6 +230,65 @@ describe('DocumentCollection', () => {
     it('should return normalized documents', async () => {
       const resp = await collection.find({ done: false })
       expect(resp.data[0]).toHaveDocumentIdentity()
+    })
+  })
+
+  describe('create', () => {
+    beforeAll(() => {
+      link.fetch.mockReturnValue(Promise.resolve(CREATE_RESPONSE_FIXTURE))
+    })
+
+    it('should call the right route with the right payload', async () => {
+      const resp = await collection.create(NEW_TODO)
+      expect(link.fetch).toHaveBeenLastCalledWith(
+        'POST',
+        '/data/io.cozy.todos/',
+        NEW_TODO
+      )
+    })
+
+    it('should return normalized documents', async () => {
+      const resp = await collection.create(NEW_TODO)
+      expect(resp.data[0]).toHaveDocumentIdentity()
+    })
+  })
+
+  describe('update', () => {
+    beforeAll(() => {
+      link.fetch.mockReturnValue(Promise.resolve(UPDATE_RESPONSE_FIXTURE))
+    })
+
+    it('should call the right route with the right payload', async () => {
+      const resp = await collection.update(TODO_TO_UPDATE)
+      expect(link.fetch).toHaveBeenLastCalledWith(
+        'PUT',
+        `/data/io.cozy.todos/${TODO_TO_UPDATE._id}`,
+        TODO_TO_UPDATE
+      )
+    })
+
+    it('should return normalized documents', async () => {
+      const resp = await collection.update(TODO_TO_UPDATE)
+      expect(resp.data[0]).toHaveDocumentIdentity()
+    })
+  })
+
+  describe('destroy', () => {
+    beforeAll(() => {
+      link.fetch.mockReturnValue(Promise.resolve(DESTROY_RESPONSE_FIXTURE))
+    })
+
+    it('should call the right route with the right payload', async () => {
+      const resp = await collection.destroy(TODO_TO_DESTROY)
+      expect(link.fetch).toHaveBeenLastCalledWith(
+        'DELETE',
+        `/data/io.cozy.todos/${TODO_TO_DESTROY._id}?rev=${TODO_TO_DESTROY._rev}`
+      )
+    })
+
+    it('should return nothing', async () => {
+      const resp = await collection.destroy(TODO_TO_DESTROY)
+      expect(resp).toBeUndefined()
     })
   })
 })

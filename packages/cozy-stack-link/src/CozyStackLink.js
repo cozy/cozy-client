@@ -24,6 +24,9 @@ export default class CozyStackLink {
    * @return {DocumentCollection}
    */
   collection(doctype) {
+    if (!doctype) {
+      throw new Error('CozyStackLink.collection() called without a doctype')
+    }
     return new DocumentCollection(doctype, this)
   }
 

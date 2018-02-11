@@ -16,6 +16,10 @@ describe('withMutate', () => {
       done: false
     }
 
+    link
+      .collection()
+      .create.mockReturnValue(Promise.resolve({ data: [NEW_TODO] }))
+
     const mutationCreator = newTodo => link =>
       link.collection('io.cozy.todos').create(newTodo)
 

@@ -102,6 +102,36 @@ export default class DocumentCollection {
     }
   }
 
+  async create({ _id, _type, ...document }) {
+    const resp = await this.link.fetch(
+      'POST',
+      uri`/data/${this.doctype}/`,
+      document
+    )
+    return {
+      data: [normalizeDoc(resp.data, this.doctype)]
+    }
+  }
+
+  async update(document) {
+    const resp = await this.link.fetch(
+      'PUT',
+      uri`/data/${this.doctype}/${document._id}`,
+      document
+    )
+    return {
+      data: [normalizeDoc(resp.data, this.doctype)]
+    }
+  }
+
+  async destroy({ _id, _rev, ...document }) {
+    await this.link.fetch(
+      'DELETE',
+      uri`/data/${this.doctype}/${_id}?rev=${_rev}`
+    )
+    return
+  }
+
   async getIndexId(fields) {
     const indexName = this.getIndexNameFromFields(fields)
     if (!this.indexes[indexName]) {
