@@ -110,9 +110,10 @@ expect.extend({
 
 describe('DocumentCollection', () => {
   const link = new CozyStackLink()
-  const collection = new DocumentCollection('io.cozy.todos', link)
 
   describe('all', () => {
+    const collection = new DocumentCollection('io.cozy.todos', link)
+
     beforeAll(() => {
       link.fetch.mockReturnValue(Promise.resolve(ALL_RESPONSE_FIXTURE))
     })
@@ -151,9 +152,21 @@ describe('DocumentCollection', () => {
       expect(resp).toConformToJSONAPI()
       expect(resp.data).toHaveLength(0)
     })
+
+    it('should throw for other error types', async () => {
+      link.fetch.mockReturnValueOnce(Promise.reject(new Error('Bad request')))
+      expect.assertions(1)
+      try {
+        const resp = await collection.all()
+      } catch (e) {
+        expect(e).toBeInstanceOf(Error)
+      }
+    })
   })
 
   describe('createIndex', () => {
+    const collection = new DocumentCollection('io.cozy.todos', link)
+
     beforeAll(() => {
       link.fetch.mockReturnValue(
         Promise.resolve({
@@ -180,7 +193,7 @@ describe('DocumentCollection', () => {
   })
 
   describe('find', () => {
-    beforeAll(() => {
+    beforeEach(() => {
       link.fetch.mockReturnValueOnce(
         Promise.resolve({
           id: '_design/123456',
@@ -192,6 +205,7 @@ describe('DocumentCollection', () => {
     })
 
     it('should call the right route with the right payload', async () => {
+      const collection = new DocumentCollection('io.cozy.todos', link)
       const resp = await collection.find({ done: false })
       expect(link.fetch).toHaveBeenLastCalledWith(
         'POST',
@@ -206,6 +220,7 @@ describe('DocumentCollection', () => {
     })
 
     it('should accept skip and limit options', async () => {
+      const collection = new DocumentCollection('io.cozy.todos', link)
       const resp = await collection.find(
         { done: false },
         { skip: 50, limit: 200 }
@@ -222,18 +237,41 @@ describe('DocumentCollection', () => {
       )
     })
 
+    it('should accept a sort option', async () => {
+      const collection = new DocumentCollection('io.cozy.todos', link)
+      const resp = await collection.find(
+        { done: false },
+        { sort: { label: 'desc' } }
+      )
+      expect(link.fetch).toHaveBeenLastCalledWith(
+        'POST',
+        '/data/io.cozy.todos/_find',
+        {
+          limit: 50,
+          skip: 0,
+          selector: { done: false },
+          sort: [{ done: 'desc' }, { label: 'desc' }],
+          use_index: '_design/123456'
+        }
+      )
+    })
+
     it('should return a correct JSON API response', async () => {
+      const collection = new DocumentCollection('io.cozy.todos', link)
       const resp = await collection.find({ done: false })
       expect(resp).toConformToJSONAPI()
     })
 
     it('should return normalized documents', async () => {
+      const collection = new DocumentCollection('io.cozy.todos', link)
       const resp = await collection.find({ done: false })
       expect(resp.data[0]).toHaveDocumentIdentity()
     })
   })
 
   describe('create', () => {
+    const collection = new DocumentCollection('io.cozy.todos', link)
+
     beforeAll(() => {
       link.fetch.mockReturnValue(Promise.resolve(CREATE_RESPONSE_FIXTURE))
     })
@@ -254,6 +292,8 @@ describe('DocumentCollection', () => {
   })
 
   describe('update', () => {
+    const collection = new DocumentCollection('io.cozy.todos', link)
+
     beforeAll(() => {
       link.fetch.mockReturnValue(Promise.resolve(UPDATE_RESPONSE_FIXTURE))
     })
@@ -274,6 +314,8 @@ describe('DocumentCollection', () => {
   })
 
   describe('destroy', () => {
+    const collection = new DocumentCollection('io.cozy.todos', link)
+
     beforeAll(() => {
       link.fetch.mockReturnValue(Promise.resolve(DESTROY_RESPONSE_FIXTURE))
     })

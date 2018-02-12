@@ -66,13 +66,12 @@ export default class DocumentCollection {
    * @throws {FetchError}
    */
   async find(selector, options = {}) {
-    const indexId =
-      options.indexId ||
-      (await this.getIndexId(this.getIndexFields({ ...options, selector })))
+    const indexFields = this.getIndexFields({ ...options, selector })
+    const indexId = options.indexId || (await this.getIndexId(indexFields))
     const { fields, skip = 0, limit = FETCH_LIMIT } = options
     // Mango wants an array of single-property-objects...
     const sort = options.sort
-      ? index.fields.map(f => ({ [f]: options.sort[f] || 'desc' }))
+      ? indexFields.map(f => ({ [f]: options.sort[f] || 'desc' }))
       : undefined
 
     const mangoOptions = {

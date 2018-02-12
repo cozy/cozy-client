@@ -83,7 +83,7 @@ export default class CozyStackLink {
   }
 }
 
-class FetchError extends Error {
+export class FetchError extends Error {
   constructor(response, reason) {
     super()
     if (Error.captureStackTrace) {
