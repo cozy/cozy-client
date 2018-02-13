@@ -23,12 +23,18 @@ function watchBundle(desc) {
         console.log(`${chalk.bgGreen.black(' COMPLETE ')}`)
         return
       case 'ERROR':
-        console.log(`${chalk.bgRed.black(' ERROR! ')}\n`)
-        console.log(event)
+        console.log(
+          `${chalk.bgRed.black(' ERROR! ')} ${chalk.white.bold(
+            event.error.message
+          )}\n${event.error.stack}`
+        )
         return
       case 'FATAL':
-        console.log(`${chalk.bgRed.black(' FATAL ERROR! ')}\n`)
-        console.log(event)
+        console.log(
+          `${chalk.bgRed.black(' FATAL! ')} ${chalk.white.bold(
+            event.error.message
+          )}\n${event.error.stack}`
+        )
         stopWatch()
         return
     }
@@ -50,5 +56,3 @@ function watch() {
 }
 
 watch()
-
-

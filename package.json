@@ -7,16 +7,26 @@
 		"babel-plugin-transform-class-properties": "^6.24.1",
 		"babel-plugin-transform-object-rest-spread": "^6.26.0",
 		"babel-preset-env": "^1.6.1",
+		"babel-preset-react": "^6.24.1",
 		"chalk": "^2.3.0",
+		"enzyme": "^3.3.0",
+		"enzyme-adapter-react-16": "^1.1.1",
 		"eslint": "^4.16.0",
 		"eslint-config-prettier": "^2.9.0",
 		"eslint-plugin-prettier": "^2.5.0",
+		"eslint-plugin-react": "^7.6.1",
 		"jest": "^22.1.4",
 		"jest-fetch-mock": "^1.4.1",
 		"lerna": "^2.8.0",
 		"prettier": "1.10.2",
+		"react": "^16.2.0",
+		"react-dom": "^16.2.0",
+		"redux-mock-store": "^1.5.1",
 		"rollup": "^0.55.1",
-		"rollup-plugin-babel": "^3.0.3"
+		"rollup-plugin-babel": "^3.0.3",
+		"rollup-plugin-commonjs": "^8.3.0",
+		"rollup-plugin-local-resolve": "^1.0.7",
+		"rollup-plugin-node-resolve": "^3.0.2"
 	},
 	"private": true,
 	"workspaces": [
@@ -33,5 +43,13 @@
 	"prettier": {
 		"semi": false,
 		"singleQuote": true
+	},
+	"jest": {
+		"setupFiles": [
+			"<rootDir>/packages/cozy-client/src/__tests__/setup.js"
+		],
+		"testMatch": [
+			"**/__tests__/**/(*.)(spec|test).js?(x)"
+		]
 	}
 }

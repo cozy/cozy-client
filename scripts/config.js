@@ -1,13 +1,18 @@
 const babel = require('rollup-plugin-babel')
+// Rollup by default doesn't handle resolving ./folder to ./folder/index.js internally
+const resolve = require('rollup-plugin-node-resolve')
+const commonjs = require('rollup-plugin-commonjs')
 const path = require('path')
 
 const defaultInputOptions = {
+  external: ['react'],
   plugins: [
     babel({
       sourceMap: true,
       exclude: 'node_modules/**',
       babelrc: false,
       presets: [
+        'react',
         [
           'env',
           {
@@ -23,27 +28,53 @@ const defaultInputOptions = {
         'transform-object-rest-spread',
         'transform-class-properties'
       ]
+    }),
+    resolve({
+      extensions: ['.js', '.json', '.jsx']
+    }),
+    // So that rollup can handle `import React, { Component }`...
+    commonjs({
+      include: ['node_modules/**'],
+      namedExports: {
+        'node_modules/react/index.js': [
+          'Children',
+          'Component',
+          'PropTypes',
+          'createElement'
+        ],
+        'node_modules/react-dom/index.js': ['render']
+      }
     })
   ]
 }
 
 const defaultOutputOptions = {
-  sourcemap: true
+  sourcemap: true,
+  globals: {
+    react: 'React'
+  }
 }
 
 const bundles = [
   {
     name: 'cozy-stack-link',
     global: 'CozyStackLink'
+  },
+  {
+    name: 'cozy-client',
+    global: 'CozyClient'
   }
 ]
 
 function getInputOptions(bundleDesc) {
   return Object.assign({}, defaultInputOptions, {
-    input: path.resolve(__dirname, `../packages/${bundleDesc.name}/src/index.js`)
+    input: path.resolve(
+      __dirname,
+      `../packages/${bundleDesc.name}/src/index.js`
+    )
   })
 }
-  
+
 function getOutputOptions(bundleDesc) {
   return Object.assign({}, defaultOutputOptions, {
     file: path.resolve(
