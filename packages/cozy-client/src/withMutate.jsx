@@ -7,7 +7,10 @@ const withMutate = (mutation, options = {}) => WrappedComponent => {
     }
 
     render() {
-      return <WrappedComponent mutate={this.mutate} {...this.props} />
+      const mutationProps = {
+        [options.name || 'mutate']: this.mutate
+      }
+      return <WrappedComponent {...mutationProps} {...this.props} />
     }
   }
 }
