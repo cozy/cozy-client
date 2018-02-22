@@ -29,6 +29,7 @@ describe('CozyClient', () => {
 
   describe('query', () => {
     const query = all('io.cozy.todos')
+    const fakeResponse = { data: 'FAKE!!!' }
 
     it('should first dispatch a INIT_QUERY action', async () => {
       await client.query(query, { as: 'allTodos' })
@@ -38,7 +39,6 @@ describe('CozyClient', () => {
     })
 
     it('should then dispatch a RECEIVE_QUERY_RESULT action', async () => {
-      const fakeResponse = { data: 'FAKE!!!' }
       link.collection().all.mockReturnValueOnce(Promise.resolve(fakeResponse))
       await client.query(query, { as: 'allTodos' })
       expect(store.getActions()[1]).toEqual(
@@ -53,6 +53,12 @@ describe('CozyClient', () => {
       expect(store.getActions()[1]).toEqual(
         receiveQueryError('allTodos', error)
       )
+    })
+
+    it('should resolve to the query response', async () => {
+      link.collection().all.mockReturnValueOnce(Promise.resolve(fakeResponse))
+      const resp = await client.query(query)
+      expect(resp).toEqual(fakeResponse)
     })
 
     it('should call `document(<doctype>).all() on the link for `all()` queries', async () => {
@@ -72,6 +78,9 @@ describe('CozyClient', () => {
 
   describe('mutate', () => {
     const mutation = update({ ...TODO_1, label: 'Buy croissants' })
+    const fakeResponse = {
+      data: [{ ...TODO_1, label: 'Buy croissants', rev: 2 }]
+    }
 
     it('should first dispatch a INIT_MUTATION action', async () => {
       await client.mutate(mutation, { as: 'updateTodo' })
@@ -85,14 +94,21 @@ describe('CozyClient', () => {
     })
 
     it('should then dispatch a RECEIVE_MUTATION_RESULT action', async () => {
-      const resp = {
-        data: [{ ...TODO_1, label: 'Buy croissants', rev: 2 }]
-      }
-      link.collection().update.mockReturnValueOnce(Promise.resolve(resp))
+      link
+        .collection()
+        .update.mockReturnValueOnce(Promise.resolve(fakeResponse))
       await client.mutate(mutation, { as: 'updateTodo' })
       expect(store.getActions()[1]).toEqual(
-        receiveMutationResult('updateTodo', resp)
+        receiveMutationResult('updateTodo', fakeResponse)
       )
+    })
+
+    it('should resolve to the mutation response', async () => {
+      link
+        .collection()
+        .update.mockReturnValueOnce(Promise.resolve(fakeResponse))
+      const resp = await client.mutate(mutation)
+      expect(resp).toEqual(fakeResponse)
     })
 
     it('should dispatch a RECEIVE_MUTATION_ERROR action if an error occurs', async () => {

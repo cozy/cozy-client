@@ -21,23 +21,25 @@ export default class CozyClient {
     this.dispatch(initQuery(queryId, queryDefinition))
     try {
       const response = await this.executeQuery(queryDefinition)
-      return this.dispatch(receiveQueryResult(queryId, response))
+      this.dispatch(receiveQueryResult(queryId, response))
+      return response
     } catch (error) {
       return this.dispatch(receiveQueryError(queryId, error))
     }
   }
 
-  async mutate(mutationFn, { updateQueries, ...options }) {
+  async mutate(mutationFn, { updateQueries, ...options } = {}) {
     this.getOrCreateStore()
     const mutationId = options.as || this.generateId()
     this.dispatch(initMutation(mutationId))
     try {
       const response = await this.executeMutation(mutationFn)
-      return this.dispatch(
+      this.dispatch(
         receiveMutationResult(mutationId, response, {
           updateQueries
         })
       )
+      return response
     } catch (error) {
       return this.dispatch(receiveMutationError(mutationId, error))
     }
