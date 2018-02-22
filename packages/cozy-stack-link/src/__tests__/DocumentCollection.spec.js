@@ -328,9 +328,9 @@ describe('DocumentCollection', () => {
       )
     })
 
-    it('should return nothing', async () => {
+    it('should return a normalized document', async () => {
       const resp = await collection.destroy(TODO_TO_DESTROY)
-      expect(resp).toBeUndefined()
+      expect(resp.data[0]).toHaveDocumentIdentity()
     })
   })
 })

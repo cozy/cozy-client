@@ -124,11 +124,18 @@ export default class DocumentCollection {
   }
 
   async destroy({ _id, _rev, ...document }) {
-    await this.link.fetch(
+    const resp = await this.link.fetch(
       'DELETE',
       uri`/data/${this.doctype}/${_id}?rev=${_rev}`
     )
-    return
+    return {
+      data: [
+        normalizeDoc(
+          { ...document, _id, _rev: resp.rev, _deleted: true },
+          this.doctype
+        )
+      ]
+    }
   }
 
   async getIndexId(fields) {
