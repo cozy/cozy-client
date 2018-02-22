@@ -151,10 +151,10 @@ Because most mutations will require arguments, we'll in fact use __mutation crea
 const mutationCreator = label => link => link.collection('io.cozy.todos').create({ label })
 ```
 
-Using `withMutate` higher-order component with mutation creators makes it easy to bind actions to your components. `withMutate` provides only a simple function to the wrapper component, in a prop called `mutate`:
+Using `withMutation` higher-order component with mutation creators makes it easy to bind actions to your components. `withMutation` provides only a simple function to the wrapper component, in a prop called `mutate`:
 
 ```jsx
-import { withMutate } from 'cozy-client'
+import { withMutation } from 'cozy-client'
 
 const AddTodo = ({ mutate }) => {
   let input
@@ -171,9 +171,24 @@ const AddTodo = ({ mutate }) => {
   )
 }
 
-export default withMutate(
+export default withMutation(
   label => link => link.collection('io.cozy.todos').create({ label })
 )(AddTodo)
+```
+
+### Multiple mutations
+
+If you need more than once mutation on a component, you can do something like this:
+
+```jsx
+import { default as compose } from 'lodash/flow'
+import { withMutation, create, update, destroy } from 'cozy-client'
+
+export default compose(
+  withMutation(create, { name: 'createTodo' }),
+  withMutation(update, { name: 'updateTodo' }),
+  withMutation(destroy, { name: 'destroyTodo' })
+)(TodoList)
 ```
 
 ### Updating queries
@@ -191,16 +206,16 @@ const TodoList = ...
 export default connect(query, { as: 'allTodos' })(TodoList)
 ```
 
-Now we can define how the query's data must be updated using the `updateQueries` option of `withMutate`:
+Now we can define how the query's data must be updated using the `updateQueries` option of `withMutation`:
 
 ```jsx
-import { withMutate } from 'cozy-client'
+import { withMutation } from 'cozy-client'
 
 const AddTodo = ({ mutate }) => {
   ...
 }
 
-export default withMutate(
+export default withMutation(
   label => link => link.collection('io.cozy.todos').create({ label }),
   {
     updateQueries: {
