@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-const withMutate = (mutation, options = {}) => WrappedComponent => {
+const withMutation = (mutation, options = {}) => WrappedComponent => {
   return class Wrapper extends Component {
     mutate = (...args) => {
       return this.context.client.mutate(mutation.apply(null, args), options)
@@ -15,4 +15,4 @@ const withMutate = (mutation, options = {}) => WrappedComponent => {
   }
 }
 
-export default withMutate
+export default withMutation

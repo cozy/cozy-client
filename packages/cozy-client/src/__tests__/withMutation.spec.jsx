@@ -4,9 +4,9 @@ import { shallow } from 'enzyme'
 import CozyStackLink from 'cozy-stack-link'
 
 import CozyClient from '../CozyClient'
-import withMutate from '../withMutate'
+import withMutation from '../withMutation'
 
-describe('withMutate', () => {
+describe('withMutation', () => {
   const link = new CozyStackLink()
   const client = new CozyClient({ link })
 
@@ -26,7 +26,7 @@ describe('withMutate', () => {
     const AddButton = ({ mutate }) => (
       <button onClick={() => mutate(NEW_TODO)}>Add</button>
     )
-    const ConnectedAddButton = withMutate(mutationCreator)(AddButton)
+    const ConnectedAddButton = withMutation(mutationCreator)(AddButton)
 
     const wrapper = shallow(<ConnectedAddButton />, {
       context: { client }
@@ -43,9 +43,9 @@ describe('withMutate', () => {
     const AddButton = ({ addTodo }) => (
       <button onClick={() => addTodo(NEW_TODO)}>Add</button>
     )
-    const ConnectedAddButton = withMutate(mutationCreator, { name: 'addTodo' })(
-      AddButton
-    )
+    const ConnectedAddButton = withMutation(mutationCreator, {
+      name: 'addTodo'
+    })(AddButton)
 
     const wrapper = shallow(<ConnectedAddButton />, {
       context: { client }
