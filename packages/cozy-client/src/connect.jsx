@@ -12,7 +12,7 @@ const connect = (query, options = {}) => WrappedComponent => {
     WrappedComponent
   )
 
-  return class Wrapper extends Component {
+  class Wrapper extends Component {
     componentWillMount() {
       const { client } = this.context
       this.queryId = options.as || client.generateId()
@@ -25,6 +25,11 @@ const connect = (query, options = {}) => WrappedComponent => {
       )
     }
   }
+
+  Wrapper.displayName = `CozyConnect(${WrappedComponent.displayName ||
+    WrappedComponent.name ||
+    'Component'})`
+  return Wrapper
 }
 
 export default connect
