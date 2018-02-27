@@ -55,7 +55,7 @@ export default class CozyClient {
       : collection.find(selector, options)
   }
 
-  async executeMutation(mutationFn) {
+  executeMutation(mutationFn) {
     return mutationFn(this.link)
   }
 
