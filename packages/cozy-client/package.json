@@ -3,6 +3,10 @@
   "version": "1.0.0-beta.1",
   "license": "MIT",
   "main": "dist/cozy-client.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cozy/cozy-client.git"
+  },
   "dependencies": {
     "prop-types": "^15.6.0",
     "react": "^16.2.0",

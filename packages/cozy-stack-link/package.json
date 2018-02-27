@@ -2,5 +2,9 @@
   "name": "cozy-stack-link",
   "version": "1.0.0-beta.1",
   "license": "MIT",
-  "main": "dist/cozy-stack-link.js"
+  "main": "dist/cozy-stack-link.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cozy/cozy-client.git"
+  }
 }
