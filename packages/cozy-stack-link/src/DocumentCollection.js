@@ -66,13 +66,12 @@ export default class DocumentCollection {
    * @throws {FetchError}
    */
   async find(selector, options = {}) {
-    const indexId =
-      options.indexId ||
-      (await this.getIndexId(this.getIndexFields({ ...options, selector })))
+    const indexFields = this.getIndexFields({ ...options, selector })
+    const indexId = options.indexId || (await this.getIndexId(indexFields))
     const { fields, skip = 0, limit = FETCH_LIMIT } = options
     // Mango wants an array of single-property-objects...
     const sort = options.sort
-      ? index.fields.map(f => ({ [f]: options.sort[f] || 'desc' }))
+      ? indexFields.map(f => ({ [f]: options.sort[f] || 'desc' }))
       : undefined
 
     const mangoOptions = {
@@ -99,6 +98,43 @@ export default class DocumentCollection {
       },
       next: resp.next,
       skip
+    }
+  }
+
+  async create({ _id, _type, ...document }) {
+    const resp = await this.link.fetch(
+      'POST',
+      uri`/data/${this.doctype}/`,
+      document
+    )
+    return {
+      data: [normalizeDoc(resp.data, this.doctype)]
+    }
+  }
+
+  async update(document) {
+    const resp = await this.link.fetch(
+      'PUT',
+      uri`/data/${this.doctype}/${document._id}`,
+      document
+    )
+    return {
+      data: [normalizeDoc(resp.data, this.doctype)]
+    }
+  }
+
+  async destroy({ _id, _rev, ...document }) {
+    const resp = await this.link.fetch(
+      'DELETE',
+      uri`/data/${this.doctype}/${_id}?rev=${_rev}`
+    )
+    return {
+      data: [
+        normalizeDoc(
+          { ...document, _id, _rev: resp.rev, _deleted: true },
+          this.doctype
+        )
+      ]
     }
   }
 

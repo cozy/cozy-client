@@ -24,6 +24,9 @@ export default class CozyStackLink {
    * @return {DocumentCollection}
    */
   collection(doctype) {
+    if (!doctype) {
+      throw new Error('CozyStackLink.collection() called without a doctype')
+    }
     return new DocumentCollection(doctype, this)
   }
 
@@ -80,7 +83,7 @@ export default class CozyStackLink {
   }
 }
 
-class FetchError extends Error {
+export class FetchError extends Error {
   constructor(response, reason) {
     super()
     if (Error.captureStackTrace) {

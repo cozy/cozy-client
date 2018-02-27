@@ -24,7 +24,7 @@ To get started using `cozy-client` with (p)React, you need to create a `CozyClie
 * `CozyStackLink` is the HTTP interface to the stack instance ;
 * `CozyProvider` injects the client into components' context.
 
-#### Creating a client
+### Creating a client
 
 ```js
 import CozyClient from 'cozy-client'
@@ -39,7 +39,7 @@ const client = new CozyClient({
 ```
 If you need guidance to get the URI of your instance and/or the token, see (https://cozy.github.io/cozy-docs-v3/en/dev/app/#behind-the-magic).
 
-#### Creating a provider
+### Creating a provider
 
 All components that we want to connect to data need access to the client. We could pass it as a prop from component to component, but it'll quickly get tedious.
 We recommend that you use a `CozyProvider` somewhere high in your app. It will make the client available to all your components using the context:
@@ -61,7 +61,7 @@ ReactDOM.render(
 ```
 
 
-#### Integrating with an existing redux store
+### Integrating with an existing redux store
 
 `cozy-client` uses redux internally to centralize the statuses of the various fetches and replications triggered by the library, and to store locally the data in a normalized way. If you already have a redux store in your app, you can configure `cozy-client` to use this existing store:
 
@@ -88,7 +88,7 @@ ReactDOM.render(
 )
 ```
 
-### Requesting data
+## Requesting data
 
 To make it easy to fetch data and make it available to your component, we provide a higher-order component called `connect`. Basic example of usage:
 
@@ -117,7 +117,7 @@ TodoList.propTypes = {
 }
 ```
 
-#### The injected props
+### The injected props
 
 As seen above, `connect` will pass the result of the query fetch to the wrapped component as a set of props. For list fetches, the injected props are the following:
  - `data`: an array of documents
@@ -125,7 +125,7 @@ As seen above, `connect` will pass the result of the query fetch to the wrapped 
  - `lastFetch`: when the last fetch occured
  - `hasMore`: the fetches being paginated, this property indicates if there are more documents to load
 
-#### Making queries
+### Making queries
 
 `cozy-client` provides you with a very easy to use DSL to define document queries:
 
@@ -134,3 +134,101 @@ import { find } from 'cozy-client'
 
 const query = find('io.cozy.todos').where({ checked: false })
 ```
+
+## Mutating data
+
+In addition to fetching data using queries, `cozy-client` also helps you mutate (update) data.
+
+In its simplest form, what we call a __mutation__ is a function that calls a mutating method on a link:
+
+```js
+const mutation = link => link.collection('io.cozy.todos').create({ label: 'Jettison boosters' })
+```
+
+Because most mutations will require arguments, we'll in fact use __mutation creators__ ; they are higher-order functions that return a mutation:
+
+```js
+const mutationCreator = label => link => link.collection('io.cozy.todos').create({ label })
+```
+
+Using `withMutation` higher-order component with mutation creators makes it easy to bind actions to your components. `withMutation` provides only a simple function to the wrapper component, in a prop called `mutate`:
+
+```jsx
+import { withMutation } from 'cozy-client'
+
+const AddTodo = ({ mutate }) => {
+  let input
+
+  return (
+    <form onSubmit={e => {
+      e.preventDefault()
+      mutate(input.value)
+      input.value = ''
+    }}>
+      <input ref={node => { input = node }} />
+      <button type="submit">Add Todo</button>
+    </form>
+  )
+}
+
+export default withMutation(
+  label => link => link.collection('io.cozy.todos').create({ label })
+)(AddTodo)
+```
+
+### Multiple mutations
+
+If you need more than once mutation on a component, you can do something like this:
+
+```jsx
+import { default as compose } from 'lodash/flow'
+import { withMutation, create, update, destroy } from 'cozy-client'
+
+export default compose(
+  withMutation(create, { name: 'createTodo' }),
+  withMutation(update, { name: 'updateTodo' }),
+  withMutation(destroy, { name: 'destroyTodo' })
+)(TodoList)
+```
+
+### Updating queries
+
+Because we cache data locally in a [normalized way](https://redux.js.org/docs/recipes/reducers/NormalizingStateShape.html) (that is, queries data are stored as arrays of documents IDs), a mutation that updates a document already stored in the cache will see its result automatically integrated into the cache, which in turn will update the UI automatically. But if we create a new document (a todo for instance) and we want to see it appear in the UI (a todo list displayed using a query), we'll need to manually update the query's data. In order to do that, we need to give a name to the query using the `as` option:
+
+```jsx
+import React from 'react'
+import { connect, find } from 'cozy-client'
+
+const query = find('io.cozy.todos').where({ checked: false })
+
+const TodoList = ...
+
+export default connect(query, { as: 'allTodos' })(TodoList)
+```
+
+Now we can define how the query's data must be updated using the `updateQueries` option of `withMutation`:
+
+```jsx
+import { withMutation } from 'cozy-client'
+
+const AddTodo = ({ mutate }) => {
+  ...
+}
+
+export default withMutation(
+  label => link => link.collection('io.cozy.todos').create({ label }),
+  {
+    updateQueries: {
+      allTodos: (previousData, result) => [
+        result.data[0],
+        ...previousData
+      ]
+    }
+  }
+)(AddTodo)
+```
+
+`options.updateQueries` takes an object where query names are the keys and reducer functions are the values. If you are familiar with Redux, defining your `updateQueries` reducers is very similar to defining Redux reducers. The first argument to the reducer function will be the last data fetched (that is displayed in the UI), and the second argument is the result of the mutation: if data has been created or updated, it will have a `data` property containing the mutated data.
+
+
+

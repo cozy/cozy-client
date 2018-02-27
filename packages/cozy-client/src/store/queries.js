@@ -1,10 +1,11 @@
-import { getDocumentFromStore } from './documents'
+import { getDocumentFromSlice } from './documents'
+import { isReceivingMutationResult } from './mutations'
 
 const INIT_QUERY = 'INIT_QUERY'
 const RECEIVE_QUERY_RESULT = 'RECEIVE_QUERY_RESULT'
 const RECEIVE_QUERY_ERROR = 'RECEIVE_QUERY_ERROR'
 
-const isQueryAction = action =>
+export const isQueryAction = action =>
   [INIT_QUERY, RECEIVE_QUERY_RESULT, RECEIVE_QUERY_ERROR].indexOf(
     action.type
   ) !== -1
@@ -35,6 +36,7 @@ const query = (state = queryInitialState, action) => {
       const response = action.response
       return {
         ...state,
+        id: action.queryId,
         fetchStatus: 'loaded',
         lastFetch: Date.now(),
         hasMore: response.next !== undefined ? response.next : state.hasMore,
@@ -50,6 +52,7 @@ const query = (state = queryInitialState, action) => {
     case RECEIVE_QUERY_ERROR:
       return {
         ...state,
+        id: action.queryId,
         fetchStatus: 'failed'
       }
     default:
@@ -57,11 +60,38 @@ const query = (state = queryInitialState, action) => {
   }
 }
 
-const queries = (state = {}, action) => {
+const queries = (state = {}, action, documents = {}) => {
   if (isQueryAction(action)) {
     return {
       ...state,
       [action.queryId]: query(state[action.queryId], action)
+    }
+  }
+  if (isReceivingMutationResult(action) && action.updateQueries) {
+    const updated = Object.keys(action.updateQueries)
+      .filter(queryId => !!state[queryId])
+      .map(queryId => {
+        const query = getQueryFromSlice(state, queryId, documents)
+        const updater = action.updateQueries[queryId]
+        return {
+          queryId: query.id,
+          newData: updater(query.data, action.response)
+        }
+      })
+      .reduce(
+        (acc, update) => ({
+          ...acc,
+          [update.queryId]: {
+            ...state[update.queryId],
+            ids: update.newData.map(doc => doc._id),
+            count: update.newData.length // TODO: sure ?
+          }
+        }),
+        {}
+      )
+    return {
+      ...state,
+      ...updated
     }
   }
   return state
@@ -88,16 +118,16 @@ export const receiveQueryError = (queryId, error) => ({
 })
 
 // selectors
-const mapDocumentsToIds = (state, doctype, ids) =>
-  ids.map(id => getDocumentFromStore(state, doctype, id))
+const mapDocumentsToIds = (documents, doctype, ids) =>
+  ids.map(id => getDocumentFromSlice(documents, doctype, id))
 
-export const getQueryFromStore = (state, queryId) => {
-  const query = state.cozy.queries[queryId]
+export const getQueryFromSlice = (state, queryId, documents) => {
+  const query = state[queryId]
   if (!query) {
     return { ...queryInitialState, data: null }
   }
   return {
     ...query,
-    data: mapDocumentsToIds(state, query.definition.doctype, query.ids)
+    data: mapDocumentsToIds(documents, query.definition.doctype, query.ids)
   }
 }

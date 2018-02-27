@@ -27,6 +27,54 @@ const FIND_RESPONSE_FIXTURE = {
   next: false
 }
 
+const NEW_TODO = {
+  label: 'Jettison boosters',
+  done: false
+}
+const CREATE_RESPONSE_FIXTURE = {
+  id: '12345',
+  ok: true,
+  type: 'io.cozy.todos',
+  rev: '1-67890',
+  data: {
+    _id: '12345',
+    _type: 'io.cozy.todos',
+    _rev: '1-67890',
+    ...NEW_TODO
+  }
+}
+
+const TODO_TO_UPDATE = {
+  _id: '12345',
+  _type: 'io.cozy.todos',
+  _rev: '1-67890',
+  label: 'Jettison boosters',
+  done: false
+}
+const UPDATE_RESPONSE_FIXTURE = {
+  id: '12345',
+  ok: true,
+  type: 'io.cozy.todos',
+  rev: '2-67890',
+  data: {
+    _rev: '2-67890',
+    ...TODO_TO_UPDATE
+  }
+}
+
+const TODO_TO_DESTROY = {
+  _id: '12345',
+  _type: 'io.cozy.todos',
+  _rev: '1-67890'
+}
+const DESTROY_RESPONSE_FIXTURE = {
+  id: '12345',
+  type: 'io.cozy.todos',
+  ok: true,
+  rev: '2-12345',
+  _deleted: true
+}
+
 const fail = msg => ({ message: () => msg, pass: false })
 
 expect.extend({
@@ -62,9 +110,10 @@ expect.extend({
 
 describe('DocumentCollection', () => {
   const link = new CozyStackLink()
-  const collection = new DocumentCollection('io.cozy.todos', link)
 
   describe('all', () => {
+    const collection = new DocumentCollection('io.cozy.todos', link)
+
     beforeAll(() => {
       link.fetch.mockReturnValue(Promise.resolve(ALL_RESPONSE_FIXTURE))
     })
@@ -103,9 +152,21 @@ describe('DocumentCollection', () => {
       expect(resp).toConformToJSONAPI()
       expect(resp.data).toHaveLength(0)
     })
+
+    it('should throw for other error types', async () => {
+      link.fetch.mockReturnValueOnce(Promise.reject(new Error('Bad request')))
+      expect.assertions(1)
+      try {
+        const resp = await collection.all()
+      } catch (e) {
+        expect(e).toBeInstanceOf(Error)
+      }
+    })
   })
 
   describe('createIndex', () => {
+    const collection = new DocumentCollection('io.cozy.todos', link)
+
     beforeAll(() => {
       link.fetch.mockReturnValue(
         Promise.resolve({
@@ -132,7 +193,7 @@ describe('DocumentCollection', () => {
   })
 
   describe('find', () => {
-    beforeAll(() => {
+    beforeEach(() => {
       link.fetch.mockReturnValueOnce(
         Promise.resolve({
           id: '_design/123456',
@@ -144,6 +205,7 @@ describe('DocumentCollection', () => {
     })
 
     it('should call the right route with the right payload', async () => {
+      const collection = new DocumentCollection('io.cozy.todos', link)
       const resp = await collection.find({ done: false })
       expect(link.fetch).toHaveBeenLastCalledWith(
         'POST',
@@ -158,6 +220,7 @@ describe('DocumentCollection', () => {
     })
 
     it('should accept skip and limit options', async () => {
+      const collection = new DocumentCollection('io.cozy.todos', link)
       const resp = await collection.find(
         { done: false },
         { skip: 50, limit: 200 }
@@ -174,13 +237,99 @@ describe('DocumentCollection', () => {
       )
     })
 
+    it('should accept a sort option', async () => {
+      const collection = new DocumentCollection('io.cozy.todos', link)
+      const resp = await collection.find(
+        { done: false },
+        { sort: { label: 'desc' } }
+      )
+      expect(link.fetch).toHaveBeenLastCalledWith(
+        'POST',
+        '/data/io.cozy.todos/_find',
+        {
+          limit: 50,
+          skip: 0,
+          selector: { done: false },
+          sort: [{ done: 'desc' }, { label: 'desc' }],
+          use_index: '_design/123456'
+        }
+      )
+    })
+
     it('should return a correct JSON API response', async () => {
+      const collection = new DocumentCollection('io.cozy.todos', link)
       const resp = await collection.find({ done: false })
       expect(resp).toConformToJSONAPI()
     })
 
     it('should return normalized documents', async () => {
+      const collection = new DocumentCollection('io.cozy.todos', link)
       const resp = await collection.find({ done: false })
+      expect(resp.data[0]).toHaveDocumentIdentity()
+    })
+  })
+
+  describe('create', () => {
+    const collection = new DocumentCollection('io.cozy.todos', link)
+
+    beforeAll(() => {
+      link.fetch.mockReturnValue(Promise.resolve(CREATE_RESPONSE_FIXTURE))
+    })
+
+    it('should call the right route with the right payload', async () => {
+      const resp = await collection.create(NEW_TODO)
+      expect(link.fetch).toHaveBeenLastCalledWith(
+        'POST',
+        '/data/io.cozy.todos/',
+        NEW_TODO
+      )
+    })
+
+    it('should return normalized documents', async () => {
+      const resp = await collection.create(NEW_TODO)
+      expect(resp.data[0]).toHaveDocumentIdentity()
+    })
+  })
+
+  describe('update', () => {
+    const collection = new DocumentCollection('io.cozy.todos', link)
+
+    beforeAll(() => {
+      link.fetch.mockReturnValue(Promise.resolve(UPDATE_RESPONSE_FIXTURE))
+    })
+
+    it('should call the right route with the right payload', async () => {
+      const resp = await collection.update(TODO_TO_UPDATE)
+      expect(link.fetch).toHaveBeenLastCalledWith(
+        'PUT',
+        `/data/io.cozy.todos/${TODO_TO_UPDATE._id}`,
+        TODO_TO_UPDATE
+      )
+    })
+
+    it('should return normalized documents', async () => {
+      const resp = await collection.update(TODO_TO_UPDATE)
+      expect(resp.data[0]).toHaveDocumentIdentity()
+    })
+  })
+
+  describe('destroy', () => {
+    const collection = new DocumentCollection('io.cozy.todos', link)
+
+    beforeAll(() => {
+      link.fetch.mockReturnValue(Promise.resolve(DESTROY_RESPONSE_FIXTURE))
+    })
+
+    it('should call the right route with the right payload', async () => {
+      const resp = await collection.destroy(TODO_TO_DESTROY)
+      expect(link.fetch).toHaveBeenLastCalledWith(
+        'DELETE',
+        `/data/io.cozy.todos/${TODO_TO_DESTROY._id}?rev=${TODO_TO_DESTROY._rev}`
+      )
+    })
+
+    it('should return a normalized document', async () => {
+      const resp = await collection.destroy(TODO_TO_DESTROY)
       expect(resp.data[0]).toHaveDocumentIdentity()
     })
   })

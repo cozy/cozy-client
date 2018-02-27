@@ -1,10 +1,14 @@
 import { isReceivingData } from './queries'
+import { isReceivingMutationResult } from './mutations'
 
+// reducer
 const documents = (state = {}, action) => {
-  if (!isReceivingData(action)) return state
+  if (!isReceivingData(action) && !isReceivingMutationResult(action)) {
+    return state
+  }
 
   const { data } = action.response
-  if (data.length === 0) return state
+  if (!data || data.length === 0) return state
   const doctype = data[0]._type
 
   return {
@@ -18,7 +22,6 @@ const documents = (state = {}, action) => {
 
 export default documents
 
-export const getDocumentFromStore = (state, doctype, id) =>
-  state.cozy.documents[doctype]
-    ? state.cozy.documents[doctype][id] || null
-    : null
+// selector
+export const getDocumentFromSlice = (state = {}, doctype, id) =>
+  state[doctype] ? state[doctype][id] || null : null
