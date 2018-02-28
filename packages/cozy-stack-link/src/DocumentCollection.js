@@ -1,8 +1,8 @@
 import { uri, attempt } from './utils'
 
-const FETCH_LIMIT = 50
+export const FETCH_LIMIT = 50
 
-const normalizeDoc = (doc, doctype) => {
+export const normalizeDoc = (doc, doctype) => {
   const id = doc._id || doc.id
   return { id, _id: id, _type: doctype, ...doc }
 }
@@ -66,27 +66,11 @@ export default class DocumentCollection {
    * @throws {FetchError}
    */
   async find(selector, options = {}) {
-    const indexFields = this.getIndexFields({ ...options, selector })
-    const indexId = options.indexId || (await this.getIndexId(indexFields))
-    const { fields, skip = 0, limit = FETCH_LIMIT } = options
-    // Mango wants an array of single-property-objects...
-    const sort = options.sort
-      ? indexFields.map(f => ({ [f]: options.sort[f] || 'desc' }))
-      : undefined
-
-    const mangoOptions = {
-      selector,
-      use_index: indexId,
-      // TODO: type and class should not be necessary, it's just a temp fix for a stack bug
-      fields: fields ? [...fields, '_id', '_type', 'class'] : undefined,
-      limit,
-      skip,
-      sort
-    }
+    const { skip = 0 } = options
     const resp = await this.link.fetch(
       'POST',
       uri`/data/${this.doctype}/_find`,
-      mangoOptions
+      await this.toMangoOptions(selector, options)
     )
     return {
       data: resp.docs.map(doc => normalizeDoc(doc, this.doctype)),
@@ -135,6 +119,26 @@ export default class DocumentCollection {
           this.doctype
         )
       ]
+    }
+  }
+
+  async toMangoOptions(selector, options = {}) {
+    const indexFields = this.getIndexFields({ ...options, selector })
+    const indexId = options.indexId || (await this.getIndexId(indexFields))
+    const { fields, skip = 0, limit = FETCH_LIMIT } = options
+    // Mango wants an array of single-property-objects...
+    const sort = options.sort
+      ? indexFields.map(f => ({ [f]: options.sort[f] || 'desc' }))
+      : undefined
+
+    return {
+      selector,
+      use_index: indexId,
+      // TODO: type and class should not be necessary, it's just a temp fix for a stack bug
+      fields: fields ? [...fields, '_id', '_type', 'class'] : undefined,
+      limit,
+      skip,
+      sort
     }
   }
 
