@@ -19,7 +19,8 @@ export default class CozyClient {
   }
 
   /**
-   * Forwards to a stack client  a {@link DocumentCollection} instance.
+   * Forwards to a stack client instance and returns
+   * a {@link DocumentCollection} instance.
    *
    * @param  {String} doctype The collection doctype.
    * @return {DocumentCollection}
