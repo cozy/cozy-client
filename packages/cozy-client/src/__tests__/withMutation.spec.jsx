@@ -1,26 +1,21 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 
-import CozyStackLink from 'cozy-stack-link'
-
 import CozyClient from '../CozyClient'
+import CozyLink from '../CozyClient'
 import withMutation from '../withMutation'
 
 describe('withMutation', () => {
-  const link = new CozyStackLink()
-  const client = new CozyClient({ link })
-
   const NEW_TODO = {
     label: 'Jettison fairings',
     done: false
   }
+  const link = new CozyLink(
+    jest.fn(() => Promise.resolve({ data: [NEW_TODO] }))
+  )
+  const client = new CozyClient({ link })
 
-  link
-    .collection()
-    .create.mockReturnValue(Promise.resolve({ data: [NEW_TODO] }))
-
-  const mutationCreator = newTodo => link =>
-    link.collection('io.cozy.todos').create(newTodo)
+  const mutationCreator = jest.fn()
 
   it('should inject a `mutate` prop into the wrapped component', async () => {
     const AddButton = ({ mutate }) => (
@@ -36,7 +31,7 @@ describe('withMutation', () => {
       .find('button')
       .simulate('click')
 
-    expect(link.collection().create).toHaveBeenCalledWith(NEW_TODO)
+    expect(mutationCreator).toHaveBeenCalledWith(NEW_TODO)
   })
 
   it('should inject a prop whose name match the `name` option', async () => {
@@ -55,6 +50,6 @@ describe('withMutation', () => {
       .find('button')
       .simulate('click')
 
-    expect(link.collection().create).toHaveBeenCalledWith(NEW_TODO)
+    expect(mutationCreator).toHaveBeenCalledWith(NEW_TODO)
   })
 })

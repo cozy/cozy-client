@@ -1,11 +1,10 @@
 import configureStore from 'redux-mock-store'
 
-import CozyStackLink from 'cozy-stack-link'
-
 import TODO_1 from './fixtures'
 
 import CozyClient from '../CozyClient'
-import { all, find } from '../Query'
+import CozyLink from '../CozyLink'
+import { all } from '../Query'
 import { update } from '../Mutation'
 import reducer, {
   initQuery,
@@ -18,8 +17,9 @@ import reducer, {
 import { getQueryFromStore } from '../store/queries'
 
 describe('CozyClient', () => {
+  const requestHandler = jest.fn()
   const store = configureStore()({})
-  const link = new CozyStackLink()
+  const link = new CozyLink(requestHandler)
   const client = new CozyClient({ link })
   client.setStore(store)
 
@@ -39,7 +39,7 @@ describe('CozyClient', () => {
     })
 
     it('should then dispatch a RECEIVE_QUERY_RESULT action', async () => {
-      link.collection().all.mockReturnValueOnce(Promise.resolve(fakeResponse))
+      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
       await client.query(query, { as: 'allTodos' })
       expect(store.getActions()[1]).toEqual(
         receiveQueryResult('allTodos', fakeResponse)
@@ -48,7 +48,7 @@ describe('CozyClient', () => {
 
     it('should dispatch a RECEIVE_QUERY_ERROR action if an error occurs', async () => {
       const error = new Error('Fake error')
-      link.collection().all.mockReturnValueOnce(Promise.reject(error))
+      requestHandler.mockReturnValueOnce(Promise.reject(error))
       await client.query(query, { as: 'allTodos' })
       expect(store.getActions()[1]).toEqual(
         receiveQueryError('allTodos', error)
@@ -56,23 +56,16 @@ describe('CozyClient', () => {
     })
 
     it('should resolve to the query response', async () => {
-      link.collection().all.mockReturnValueOnce(Promise.resolve(fakeResponse))
+      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
       const resp = await client.query(query)
       expect(resp).toEqual(fakeResponse)
     })
 
-    it('should call `document(<doctype>).all() on the link for `all()` queries', async () => {
-      link.collection().all.mockReset()
+    it('should call the link with the query', async () => {
+      requestHandler.mockReset()
       await client.query(query)
-      expect(link.collection().all).toHaveBeenCalledTimes(1)
-      expect(link.collection).toHaveBeenCalledWith('io.cozy.todos')
-    })
-
-    it('should call `document(<doctype>).find() on the link for `find()` queries', async () => {
-      const findQuery = find('io.cozy.todos').where({ checked: true })
-      link.collection().find.mockReset()
-      await client.query(findQuery)
-      expect(link.collection().find).toHaveBeenCalledWith({ checked: true }, {})
+      expect(requestHandler).toHaveBeenCalledTimes(1)
+      expect(requestHandler).toHaveBeenCalledWith(query)
     })
   })
 
@@ -88,15 +81,13 @@ describe('CozyClient', () => {
     })
 
     it('should execute the mutation', async () => {
-      link.collection().update.mockReset()
+      requestHandler.mockReset()
       await client.mutate(mutation, { as: 'updateTodo' })
-      expect(link.collection().update).toHaveBeenCalled()
+      expect(requestHandler).toHaveBeenCalled()
     })
 
     it('should then dispatch a RECEIVE_MUTATION_RESULT action', async () => {
-      link
-        .collection()
-        .update.mockReturnValueOnce(Promise.resolve(fakeResponse))
+      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
       await client.mutate(mutation, { as: 'updateTodo' })
       expect(store.getActions()[1]).toEqual(
         receiveMutationResult('updateTodo', fakeResponse)
@@ -104,16 +95,14 @@ describe('CozyClient', () => {
     })
 
     it('should resolve to the mutation response', async () => {
-      link
-        .collection()
-        .update.mockReturnValueOnce(Promise.resolve(fakeResponse))
+      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
       const resp = await client.mutate(mutation)
       expect(resp).toEqual(fakeResponse)
     })
 
     it('should dispatch a RECEIVE_MUTATION_ERROR action if an error occurs', async () => {
       const error = new Error('Fake error')
-      link.collection().update.mockReturnValueOnce(Promise.reject(error))
+      requestHandler.mockReturnValueOnce(Promise.reject(error))
       await client.mutate(mutation, { as: 'updateTodo' })
       expect(store.getActions()[1]).toEqual(
         receiveMutationError('updateTodo', error)

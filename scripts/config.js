@@ -57,8 +57,8 @@ const defaultOutputOptions = {
 
 const bundles = [
   {
-    name: 'cozy-stack-link',
-    global: 'CozyStackLink'
+    name: 'cozy-stack-client',
+    global: 'CozyStackClient'
   },
   {
     name: 'cozy-client',

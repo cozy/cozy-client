@@ -12,9 +12,9 @@ export const normalizeDoc = (doc, doctype) => {
  * CRUD methods and other helpers.
  */
 export default class DocumentCollection {
-  constructor(doctype, link) {
+  constructor(doctype, client) {
     this.doctype = doctype
-    this.link = link
+    this.client = client
     this.indexes = {}
   }
 
@@ -32,7 +32,7 @@ export default class DocumentCollection {
     // If no document of this doctype exist, this route will return a 404,
     // so we need to try/catch and return an empty response object in case of a 404
     try {
-      const resp = await this.link.fetch(
+      const resp = await this.client.fetch(
         'GET',
         uri`/data/${
           this.doctype
@@ -67,7 +67,7 @@ export default class DocumentCollection {
    */
   async find(selector, options = {}) {
     const { skip = 0 } = options
-    const resp = await this.link.fetch(
+    const resp = await this.client.fetch(
       'POST',
       uri`/data/${this.doctype}/_find`,
       await this.toMangoOptions(selector, options)
@@ -86,7 +86,7 @@ export default class DocumentCollection {
   }
 
   async create({ _id, _type, ...document }) {
-    const resp = await this.link.fetch(
+    const resp = await this.client.fetch(
       'POST',
       uri`/data/${this.doctype}/`,
       document
@@ -97,7 +97,7 @@ export default class DocumentCollection {
   }
 
   async update(document) {
-    const resp = await this.link.fetch(
+    const resp = await this.client.fetch(
       'PUT',
       uri`/data/${this.doctype}/${document._id}`,
       document
@@ -108,7 +108,7 @@ export default class DocumentCollection {
   }
 
   async destroy({ _id, _rev, ...document }) {
-    const resp = await this.link.fetch(
+    const resp = await this.client.fetch(
       'DELETE',
       uri`/data/${this.doctype}/${_id}?rev=${_rev}`
     )
@@ -152,7 +152,7 @@ export default class DocumentCollection {
 
   async createIndex(fields) {
     const indexDef = { index: { fields } }
-    const resp = await this.link.fetch(
+    const resp = await this.client.fetch(
       'POST',
       uri`/data/${this.doctype}/_index`,
       indexDef

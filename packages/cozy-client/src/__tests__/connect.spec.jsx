@@ -3,9 +3,8 @@ import { createStore, combineReducers } from 'redux'
 import { default as configureMockStore } from 'redux-mock-store'
 import { shallow } from 'enzyme'
 
-import CozyStackLink from 'cozy-stack-link'
-
 import CozyClient from '../CozyClient'
+import CozyLink from '../CozyLink'
 import connect from '../connect'
 import { all } from '../Query'
 import { getQueryFromStore, initQuery } from '../store'
@@ -13,7 +12,8 @@ import { getQueryFromStore, initQuery } from '../store'
 import { TODO_1, TODO_2, TODO_3 } from './fixtures'
 
 describe('connect', () => {
-  const link = new CozyStackLink()
+  const requestHandler = jest.fn()
+  const link = new CozyLink(requestHandler)
   const client = new CozyClient({ link })
 
   it('should dispatch the query on componentWillMount', () => {
@@ -29,7 +29,7 @@ describe('connect', () => {
   it('should inject data props into the wrapped component', async () => {
     const store = createStore(combineReducers({ cozy: client.reducer() }))
     client.setStore(store)
-    link.collection().all.mockReturnValueOnce(
+    requestHandler.mockReturnValueOnce(
       Promise.resolve({
         data: [TODO_1, TODO_2, TODO_3],
         meta: { count: 3 },

@@ -28,7 +28,7 @@ export default class FileCollection extends DocumentCollection {
    */
   async find(selector, options = {}) {
     const { skip = 0 } = options
-    const resp = await this.link.fetch(
+    const resp = await this.client.fetch(
       'POST',
       '/files/_find',
       await this.toMangoOptions(selector, options)

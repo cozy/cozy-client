@@ -12,7 +12,7 @@ const normalizeUri = uri => {
 /**
  * Cozy stack HTTP client.
  */
-export default class CozyStackLink {
+export default class CozyStackClient {
   constructor({ token, uri = '' }) {
     this.uri = normalizeUri(uri)
     this.token = new AppToken(token)
@@ -26,7 +26,7 @@ export default class CozyStackLink {
    */
   collection(doctype) {
     if (!doctype) {
-      throw new Error('CozyStackLink.collection() called without a doctype')
+      throw new Error('CozyStackClient.collection() called without a doctype')
     }
     switch (doctype) {
       case 'io.cozy.files':
