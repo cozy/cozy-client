@@ -1,3 +1,5 @@
+import { StackLink } from './CozyLink'
+import CozyStackClient from 'cozy-stack-client'
 import {
   default as reducer,
   createStore,
@@ -10,9 +12,20 @@ import {
 } from './store'
 
 export default class CozyClient {
-  constructor({ link }) {
-    this.link = link
+  constructor({ link, ...options }) {
+    this.options = options
     this.idCounter = 1
+    this.link = link || new StackLink({ client: this.getOrCreateStackClient() })
+  }
+
+  /**
+   * Forwards to a stack client  a {@link DocumentCollection} instance.
+   *
+   * @param  {String} doctype The collection doctype.
+   * @return {DocumentCollection}
+   */
+  collection(doctype) {
+    return this.getOrCreateStackClient().collection(doctype)
   }
 
   async query(queryDefinition, options = {}) {
@@ -58,6 +71,13 @@ export default class CozyClient {
       this.setStore(createStore())
     }
     return this.store
+  }
+
+  getOrCreateStackClient() {
+    if (!this.client) {
+      this.client = new CozyStackClient(this.options)
+    }
+    return this.client
   }
 
   reducer() {

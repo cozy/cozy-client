@@ -15,10 +15,9 @@ export class StackLink {
 
   execute(request) {
     if (typeof request === 'function') {
-      this.executeMutation(request)
-    } else {
-      this.executeQuery(request)
+      return this.executeMutation(request)
     }
+    return this.executeQuery(request)
   }
 
   executeQuery({ doctype, selector, ...options }) {
