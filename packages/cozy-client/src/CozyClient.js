@@ -1,4 +1,5 @@
 import { StackLink } from './CozyLink'
+import DSL from './dsl'
 import CozyStackClient from 'cozy-stack-client'
 import {
   default as reducer,
@@ -8,14 +9,16 @@ import {
   receiveQueryError,
   initMutation,
   receiveMutationResult,
-  receiveMutationError
+  receiveMutationError,
+  getQueryFromStore
 } from './store'
 
 export default class CozyClient {
-  constructor({ link, ...options }) {
+  constructor({ link, schema = {}, ...options }) {
     this.options = options
     this.idCounter = 1
-    this.link = link || new StackLink({ client: this.getOrCreateStackClient() })
+    this.link =
+      link || new StackLink({ client: this.getOrCreateStackClient(), schema })
   }
 
   /**
@@ -32,7 +35,10 @@ export default class CozyClient {
   async query(queryDefinition, options = {}) {
     this.getOrCreateStore()
     const queryId = options.as || this.generateId()
-    this.dispatch(initQuery(queryId, queryDefinition))
+    const existingQuery = getQueryFromStore(this.store.getState(), queryId)
+    if (existingQuery.fetchStatus === 'pending') {
+      this.dispatch(initQuery(queryId, queryDefinition))
+    }
     try {
       const response = await this.executeRequest(queryDefinition)
       this.dispatch(receiveQueryResult(queryId, response))
@@ -60,7 +66,10 @@ export default class CozyClient {
   }
 
   executeRequest(request) {
-    return this.link.execute(request)
+    const requestDefinition =
+      typeof request === 'function' ? request(DSL) : request
+
+    return this.link.execute(requestDefinition)
   }
 
   setStore(store) {

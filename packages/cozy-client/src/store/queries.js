@@ -34,6 +34,17 @@ const query = (state = queryInitialState, action) => {
       }
     case RECEIVE_QUERY_RESULT:
       const response = action.response
+      if (!Array.isArray(response.data)) {
+        return {
+          ...state,
+          id: action.queryId,
+          fetchStatus: 'loaded',
+          lastFetch: Date.now(),
+          hasMore: false,
+          count: 1,
+          ids: [response.data._id]
+        }
+      }
       return {
         ...state,
         id: action.queryId,
@@ -122,10 +133,10 @@ const mapDocumentsToIds = (documents, doctype, ids) =>
   ids.map(id => getDocumentFromSlice(documents, doctype, id))
 
 export const getQueryFromSlice = (state, queryId, documents) => {
-  const query = state[queryId]
-  if (!query) {
+  if (!state || !state[queryId]) {
     return { ...queryInitialState, data: null }
   }
+  const query = state[queryId]
   return {
     ...query,
     data: mapDocumentsToIds(documents, query.definition.doctype, query.ids)

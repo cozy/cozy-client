@@ -1,11 +1,10 @@
 import configureStore from 'redux-mock-store'
 
-import TODO_1 from './fixtures'
+import { TODO_1 } from './fixtures'
 
 import CozyClient from '../CozyClient'
 import CozyLink from '../CozyLink'
-import { all } from '../Query'
-import { update } from '../Mutation'
+import { all, update } from '../dsl'
 import reducer, {
   initQuery,
   receiveQueryResult,
@@ -70,7 +69,8 @@ describe('CozyClient', () => {
   })
 
   describe('mutate', () => {
-    const mutation = update({ ...TODO_1, label: 'Buy croissants' })
+    const mutation = client =>
+      client.update({ ...TODO_1, label: 'Buy croissants' })
     const fakeResponse = {
       data: [{ ...TODO_1, label: 'Buy croissants', rev: 2 }]
     }

@@ -18,6 +18,7 @@
 		"jest": "^22.1.4",
 		"jest-fetch-mock": "^1.4.1",
 		"lerna": "^2.8.0",
+		"npm-run-all": "^4.1.2",
 		"prettier": "1.10.2",
 		"react": "^16.2.0",
 		"react-dom": "^16.2.0",
@@ -35,7 +36,9 @@
 		"test": "jest",
 		"prebuild": "npm run lint",
 		"build": "webpack --config webpack.config.js",
-		"watch": "webpack --config webpack.config.js --watch"
+		"watch": "npm-run-all --parallel watch:cozy-client watch:cozy-stack-client",
+		"watch:cozy-client": "webpack --config webpack.config.js --env.package=cozy-client --watch",
+		"watch:cozy-stack-client": "webpack --config webpack.config.js --env.package=cozy-stack-client --watch"
 	},
 	"prettier": {
 		"semi": false,
@@ -45,6 +48,7 @@
 		"setupFiles": [
 			"<rootDir>/packages/cozy-client/src/__tests__/setup.js"
 		],
+		"setupTestFrameworkScriptFile": "<rootDir>/packages/cozy-stack-client/src/__tests__/setup.js",
 		"testMatch": [
 			"**/__tests__/**/(*.)(spec|test).js?(x)"
 		]

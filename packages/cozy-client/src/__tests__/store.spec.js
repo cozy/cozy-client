@@ -153,9 +153,69 @@ describe('Store', () => {
           expect(query.hasMore).toBe(false)
         })
 
-        it('should have a `data` property containing all received documents', async () => {
+        it('should have a `data` property containing all received documents', () => {
           const query = getQueryFromStore(store.getState(), 'allTodos')
           expect(query.data).toEqual([TODO_1, TODO_2, TODO_3])
+        })
+      })
+
+      describe('when the query result have a `included` property', () => {
+        beforeEach(async () => {
+          await store.dispatch(
+            store.dispatch(
+              receiveQueryResult('allTodos', {
+                data: [
+                  {
+                    ...TODO_1,
+                    relationships: {
+                      attachments: {
+                        data: [
+                          { _id: 'abc', _type: 'io.cozy.files' },
+                          { _id: 'def', _type: 'io.cozy.files' }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    ...TODO_2,
+                    relationships: {
+                      attachments: {
+                        data: [{ _id: 'xyz', _type: 'io.cozy.files' }]
+                      }
+                    }
+                  }
+                ],
+                included: [
+                  { _id: 'abc', _type: 'io.cozy.files', name: 'abc.png' },
+                  { _id: 'def', _type: 'io.cozy.files', name: 'def.png' },
+                  { _id: 'xyz', _type: 'io.cozy.files', name: 'xyz.png' }
+                ],
+                meta: { count: 2 },
+                skip: 0,
+                next: false
+              })
+            )
+          )
+        })
+
+        it('should persist `included` docs into the store', () => {
+          expect(
+            getDocumentFromStore(store.getState(), 'io.cozy.files', 'abc')
+          ).toEqual({ _id: 'abc', _type: 'io.cozy.files', name: 'abc.png' })
+        })
+
+        it('should "hydrate" relationships when the doc is retrieved from the store', () => {
+          expect(
+            getDocumentFromStore(store.getState(), 'io.cozy.todos', TODO_1._id)
+          ).toEqual({
+            ...TODO_1,
+            attachments: {
+              data: [
+                { _id: 'abc', _type: 'io.cozy.files', name: 'abc.png' },
+                { _id: 'def', _type: 'io.cozy.files', name: 'def.png' }
+              ]
+            }
+          })
         })
       })
     })

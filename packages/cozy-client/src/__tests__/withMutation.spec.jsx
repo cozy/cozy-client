@@ -2,7 +2,7 @@ import React from 'react'
 import { shallow } from 'enzyme'
 
 import CozyClient from '../CozyClient'
-import CozyLink from '../CozyClient'
+import CozyLink from '../CozyLink'
 import withMutation from '../withMutation'
 
 describe('withMutation', () => {

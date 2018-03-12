@@ -1,13 +1,10 @@
 const path = require('path')
 
-module.exports = {
-  entry: {
-    'cozy-stack-client': './packages/cozy-stack-client/src/index.js',
-    'cozy-client': './packages/cozy-client/src/index.js'
-  },
+module.exports = env => ({
+  entry: `./packages/${env.package}/src/index.js`,
   output: {
     path: path.resolve(__dirname, './packages'),
-    filename: './[name]/dist/[name].js',
+    filename: `./${env.package}/dist/${env.package}.js`,
     libraryTarget: 'umd',
     umdNamedDefine: true
   },
@@ -27,4 +24,4 @@ module.exports = {
       }
     ]
   }
-}
+})

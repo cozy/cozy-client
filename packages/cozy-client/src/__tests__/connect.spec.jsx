@@ -6,7 +6,7 @@ import { shallow } from 'enzyme'
 import CozyClient from '../CozyClient'
 import CozyLink from '../CozyLink'
 import connect from '../connect'
-import { all } from '../Query'
+import { all } from '../dsl'
 import { getQueryFromStore, initQuery } from '../store'
 
 import { TODO_1, TODO_2, TODO_3 } from './fixtures'

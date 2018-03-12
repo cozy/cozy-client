@@ -75,39 +75,6 @@ const DESTROY_RESPONSE_FIXTURE = {
   _deleted: true
 }
 
-const fail = msg => ({ message: () => msg, pass: false })
-
-expect.extend({
-  toConformToJSONAPI(received) {
-    if (!Array.isArray(received.data))
-      return fail('expected response to have a `data` array property')
-    if (
-      typeof received.meta !== 'object' ||
-      !received.meta.hasOwnProperty('count')
-    )
-      return fail('expected response to have a `meta` property with a `count`')
-    if (typeof received.next !== 'boolean')
-      return fail('expected response to have a boolean `next` property')
-    if (typeof received.skip !== 'number')
-      return fail('expected response to have a `skip` property')
-    return {
-      message: () => 'expected response to conform to JSON API',
-      pass: true
-    }
-  },
-  toHaveDocumentIdentity(received) {
-    if (!received.id) return fail('expected document to have an `id` property')
-    if (!received._id)
-      return fail('expected document to have an `_id` property')
-    if (!received._type)
-      return fail('expected document to have a `_type` property')
-    return {
-      message: () => 'expected document to be normalized',
-      pass: true
-    }
-  }
-})
-
 describe('DocumentCollection', () => {
   const client = new CozyStackClient()
 
@@ -287,7 +254,7 @@ describe('DocumentCollection', () => {
 
     it('should return normalized documents', async () => {
       const resp = await collection.create(NEW_TODO)
-      expect(resp.data[0]).toHaveDocumentIdentity()
+      expect(resp.data).toHaveDocumentIdentity()
     })
   })
 
@@ -309,7 +276,7 @@ describe('DocumentCollection', () => {
 
     it('should return normalized documents', async () => {
       const resp = await collection.update(TODO_TO_UPDATE)
-      expect(resp.data[0]).toHaveDocumentIdentity()
+      expect(resp.data).toHaveDocumentIdentity()
     })
   })
 
@@ -330,7 +297,7 @@ describe('DocumentCollection', () => {
 
     it('should return a normalized document', async () => {
       const resp = await collection.destroy(TODO_TO_DESTROY)
-      expect(resp.data[0]).toHaveDocumentIdentity()
+      expect(resp.data).toHaveDocumentIdentity()
     })
   })
 })

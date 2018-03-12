@@ -85,6 +85,16 @@ export default class DocumentCollection {
     }
   }
 
+  async get(id) {
+    const resp = await this.client.fetch(
+      'GET',
+      uri`/data/${this.doctype}/${id}`
+    )
+    return {
+      data: normalizeDoc(resp, this.doctype)
+    }
+  }
+
   async create({ _id, _type, ...document }) {
     const resp = await this.client.fetch(
       'POST',
@@ -92,7 +102,7 @@ export default class DocumentCollection {
       document
     )
     return {
-      data: [normalizeDoc(resp.data, this.doctype)]
+      data: normalizeDoc(resp.data, this.doctype)
     }
   }
 
@@ -103,7 +113,7 @@ export default class DocumentCollection {
       document
     )
     return {
-      data: [normalizeDoc(resp.data, this.doctype)]
+      data: normalizeDoc(resp.data, this.doctype)
     }
   }
 
@@ -113,12 +123,10 @@ export default class DocumentCollection {
       uri`/data/${this.doctype}/${_id}?rev=${_rev}`
     )
     return {
-      data: [
-        normalizeDoc(
-          { ...document, _id, _rev: resp.rev, _deleted: true },
-          this.doctype
-        )
-      ]
+      data: normalizeDoc(
+        { ...document, _id, _rev: resp.rev, _deleted: true },
+        this.doctype
+      )
     }
   }
 
