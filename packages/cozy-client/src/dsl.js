@@ -1,12 +1,22 @@
 // Queries
 export class QueryDefinition {
-  constructor({ doctype, id, selector, fields, sort, includes, skip }) {
+  constructor({
+    doctype,
+    id,
+    selector,
+    fields,
+    sort,
+    includes,
+    referenced,
+    skip
+  }) {
     this.doctype = doctype
     this.id = id
     this.selector = selector
     this.fields = fields
     this.sort = sort
     this.includes = includes
+    this.referenced = referenced
     this.skip = skip
   }
 
@@ -30,6 +40,10 @@ export class QueryDefinition {
     return new QueryDefinition({ ...this.toDefinition(), skip })
   }
 
+  referencedBy(document) {
+    return new QueryDefinition({ ...this.toDefinition(), referenced: document })
+  }
+
   toDefinition() {
     return {
       doctype: this.doctype,
@@ -38,21 +52,17 @@ export class QueryDefinition {
       fields: this.fields,
       sort: this.sort,
       includes: this.includes,
+      referenced: this.referenced,
       skip: this.skip
     }
   }
 }
 
-const get = (doctype, id) => new QueryDefinition({ doctype, id })
-// Temporary exports
-export const all = doctype => new QueryDefinition({ doctype })
-export const find = (doctype, selector = undefined) =>
-  new QueryDefinition({ doctype, selector })
-
 // Mutations
 const CREATE_DOCUMENT = 'CREATE_DOCUMENT'
 const UPDATE_DOCUMENT = 'UPDATE_DOCUMENT'
 const DELETE_DOCUMENT = 'DELETE_DOCUMENT'
+const ADD_REFERENCES_TO = 'ADD_REFERENCES_TO'
 const UPLOAD_FILE = 'UPLOAD_FILE'
 
 export const createDocument = (doctype, attrs) => ({
@@ -70,29 +80,30 @@ export const deleteDocument = document => ({
   document
 })
 
+export const addReferencesTo = (document, referencedDocuments) => ({
+  mutationType: MutationTypes.ADD_REFERENCES_TO,
+  referencedDocuments,
+  document
+})
+
 export const uploadFile = (file, dirPath) => ({
   mutationType: MutationTypes.UPLOAD_FILE,
   file,
   dirPath
 })
 
-export default {
-  get,
-  all,
-  find,
-  create: createDocument,
-  update: updateDocument,
-  destroy: deleteDocument,
-  save: document =>
-    document._id
-      ? updateDocument(document)
-      : createDocument(document._type, document),
-  upload: uploadFile
+export const Mutations = {
+  createDocument,
+  updateDocument,
+  deleteDocument,
+  addReferencesTo,
+  uploadFile
 }
 
 export const MutationTypes = {
   CREATE_DOCUMENT,
   UPDATE_DOCUMENT,
   DELETE_DOCUMENT,
+  ADD_REFERENCES_TO,
   UPLOAD_FILE
 }

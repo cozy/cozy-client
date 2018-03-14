@@ -6,7 +6,6 @@ import { shallow } from 'enzyme'
 import CozyClient from '../CozyClient'
 import CozyLink from '../CozyLink'
 import connect from '../connect'
-import { all } from '../dsl'
 import { getQueryFromStore, initQuery } from '../store'
 
 import { TODO_1, TODO_2, TODO_3 } from './fixtures'
@@ -20,7 +19,7 @@ describe('connect', () => {
     const store = configureMockStore()({})
     client.setStore(store)
     const Foo = () => <div>Foo</div>
-    const query = all('io.cozy.todos')
+    const query = client.all('io.cozy.todos')
     const ConnectedFoo = connect(query, { as: 'allTodos' })(Foo)
     const wrapper = shallow(<ConnectedFoo />, { context: { client } })
     expect(store.getActions()[0]).toEqual(initQuery('allTodos', query))
@@ -37,21 +36,24 @@ describe('connect', () => {
         next: false
       })
     )
-    const waitForSuccess = () => {
-      store.subscribe(() => {
-        const query = getQueryFromStore(store.getState(), 'allTodos')
-        if (query.fetchStatus === 'loaded') {
-          return Promise.resolve()
-        }
+    const waitForSuccess = () =>
+      new Promise(resolve => {
+        store.subscribe(() => {
+          const query = getQueryFromStore(store.getState(), 'allTodos')
+          if (query.fetchStatus === 'loaded') {
+            resolve()
+          }
+        })
       })
-    }
+
     const TodoList = ({ data, fetchStatus }) =>
       fetchStatus === 'loading' ? (
         <div>Loading</div>
       ) : (
         <ul>{data.map(todo => <li key={todo._id}>{todo.label}</li>)}</ul>
       )
-    const query = all('io.cozy.todos')
+
+    const query = client.all('io.cozy.todos')
     const ConnectedTodoList = connect(query, { as: 'allTodos' })(TodoList)
     const wrapper = shallow(<ConnectedTodoList />, {
       context: { client, store }
