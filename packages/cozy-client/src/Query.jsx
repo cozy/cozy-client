@@ -39,7 +39,12 @@ export default class Query extends Component {
     const { client } = context
     this.queryId = props.as || client.generateId()
     this.selector = makeQuerySelector(this.queryId)
+    const { mutations, ...rest } = props
+    this.mutations = mutations(this.mutate, rest)
   }
+
+  mutate = (mutationCreator, options = {}) =>
+    this.context.client.mutate(mutationCreator(this.context.client), options)
 
   componentDidMount() {
     const { client, store } = this.context
@@ -70,7 +75,8 @@ export default class Query extends Component {
     const { children } = this.props
     const { client, store } = this.context
     return children(
-      enhanceProps(this.selector(store.getState()), client.query.bind(client))
+      enhanceProps(this.selector(store.getState()), client.query.bind(client)),
+      this.mutations
     )
   }
 }

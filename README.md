@@ -219,7 +219,7 @@ Links are designed to be composed together to form chains:
 ```js
 import CozyClient, { StackLink, chain } from 'cozy-client'
 import PouchDBLink from 'cozy-pouchdb-link'
-import LogLink from '../LogLink
+import LogLink from '../LogLink'
 
 const stackLink = new StackLink({
   uri: 'http://cozy.tools:8080',
