@@ -1,4 +1,4 @@
-import { StackLink } from './CozyLink'
+import StackLink from './StackLink'
 import { QueryDefinition, Mutations } from './dsl'
 import CozyStackClient from 'cozy-stack-client'
 import {
