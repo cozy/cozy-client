@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { getQueryFromStore } from './store'
-import DSL, { QueryDefinition } from './dsl'
+import { QueryDefinition } from './dsl'
 
 const observeStore = (store, select, onChange) => {
   let currentState
@@ -51,7 +51,7 @@ export default class Query extends Component {
 
     const query =
       typeof this.props.query === 'function'
-        ? this.props.query(DSL, this.props)
+        ? this.props.query(client, this.props)
         : this.props.query
 
     client.query(query, { as: this.queryId })
