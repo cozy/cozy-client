@@ -82,6 +82,14 @@ export default class CozyClient {
     ]
   }
 
+  destroy(document) {
+    return Mutations.deleteDocument(document)
+  }
+
+  upload(file, dirPath) {
+    return Mutations.uploadFile(file, dirPath)
+  }
+
   async query(queryDefinition, options = {}) {
     this.getOrCreateStore()
     const queryId = options.as || this.generateId()
