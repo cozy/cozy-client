@@ -44,6 +44,10 @@ export default class CozyClient {
     return new QueryDefinition({ doctype, id })
   }
 
+  create(doctype, document) {
+    return this.save({ _type: doctype, ...document })
+  }
+
   save(document) {
     const { relationships, attributes } = this.extractRelationshipsFrom(
       document
