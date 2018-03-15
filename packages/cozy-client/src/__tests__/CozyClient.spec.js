@@ -156,7 +156,12 @@ describe('CozyClient', () => {
                 data: [
                   { _id: 'abc', _type: 'io.cozy.files' },
                   { _id: 'def', _type: 'io.cozy.files' }
-                ]
+                ],
+                query: client.find('io.cozy.files').referencedBy(TODO_1),
+                relationship: client.getModelAssociation(
+                  'io.cozy.todos',
+                  'attachments'
+                )
               }
             }
           },
@@ -164,7 +169,12 @@ describe('CozyClient', () => {
             ...TODO_2,
             relationships: {
               attachments: {
-                data: []
+                data: [],
+                query: client.find('io.cozy.files').referencedBy(TODO_2),
+                relationship: client.getModelAssociation(
+                  'io.cozy.todos',
+                  'attachments'
+                )
               }
             }
           },
@@ -172,7 +182,12 @@ describe('CozyClient', () => {
             ...TODO_3,
             relationships: {
               attachments: {
-                data: []
+                data: [],
+                query: client.find('io.cozy.files').referencedBy(TODO_3),
+                relationship: client.getModelAssociation(
+                  'io.cozy.todos',
+                  'attachments'
+                )
               }
             }
           }

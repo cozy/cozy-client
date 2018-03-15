@@ -129,16 +129,74 @@ export const receiveQueryError = (queryId, error) => ({
 })
 
 // selectors
-const mapDocumentsToIds = (documents, doctype, ids) =>
-  ids.map(id => getDocumentFromSlice(documents, doctype, id))
+const mapDocumentsToIds = (documents, doctype, ids, client) =>
+  ids.map(id =>
+    hydrateRelationships(
+      documents,
+      getDocumentFromSlice(documents, doctype, id),
+      client
+    )
+  )
 
-export const getQueryFromSlice = (state, queryId, documents) => {
+export const getQueryFromSlice = (state, queryId, documents, client = null) => {
   if (!state || !state[queryId]) {
     return { ...queryInitialState, data: null }
   }
   const query = state[queryId]
   return {
     ...query,
-    data: mapDocumentsToIds(documents, query.definition.doctype, query.ids)
+    data: mapDocumentsToIds(
+      documents,
+      query.definition.doctype,
+      query.ids,
+      client
+    )
   }
+}
+
+const hydrateRelationships = (documents, document, client) => {
+  if (!document || !document.relationships) {
+    return document
+  }
+  return Object.keys(document).reduce((result, prop) => {
+    if (prop !== 'relationships') {
+      result[prop] = document[prop]
+    } else {
+      const relationships = document[prop]
+      Object.keys(relationships).forEach(relName => {
+        const relData = relationships[relName].data
+        if (!relData) return
+        result[relName] = {
+          ...relationships[relName],
+          data: Array.isArray(relData)
+            ? relData.map(d =>
+                getDocumentFromSlice(
+                  documents,
+                  d._type || d.type,
+                  d._id || d.id,
+                  false
+                )
+              )
+            : getDocumentFromSlice(
+                documents,
+                relData._type || relData.type,
+                relData._id || relData.id,
+                false
+              ),
+          ...enhanceRelationship(relationships[relName], client)
+        }
+      })
+    }
+    return result
+  }, {})
+}
+
+const enhanceRelationship = ({ relationship, data, query }, client) => {
+  if (!client || !relationship) return {}
+  if (relationship.relationType === 'has-many') {
+    return {
+      fetchMore: () => client.query(query.offset(data.length))
+    }
+  }
+  return {}
 }

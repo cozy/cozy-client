@@ -65,9 +65,9 @@ const DELETE_DOCUMENT = 'DELETE_DOCUMENT'
 const ADD_REFERENCES_TO = 'ADD_REFERENCES_TO'
 const UPLOAD_FILE = 'UPLOAD_FILE'
 
-export const createDocument = (doctype, attrs) => ({
+export const createDocument = document => ({
   mutationType: MutationTypes.CREATE_DOCUMENT,
-  document: { _type: doctype, ...attrs }
+  document
 })
 
 export const updateDocument = document => ({

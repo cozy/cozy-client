@@ -47,7 +47,7 @@ export default class StackLink extends CozyLink {
           .destroy(props.document)
       case MutationTypes.ADD_REFERENCES_TO:
         return this.client
-          .collection(props.document._type)
+          .collection(props.referencedDocuments[0]._type)
           .addReferencesTo(props.document, props.referencedDocuments)
       case MutationTypes.UPLOAD_FILE:
         return this.client

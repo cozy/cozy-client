@@ -39,47 +39,6 @@ const documents = (state = {}, action) => {
 export default documents
 
 // selector
-export const getDocumentFromSlice = (
-  state = {},
-  doctype,
-  id,
-  shouldHydrate = true
-) => {
-  const document = state[doctype] ? state[doctype][id] || null : null
-  if (document && shouldHydrate && document.relationships) {
-    return hydrateRelationships(state, document)
-  }
-  return document
+export const getDocumentFromSlice = (state = {}, doctype, id) => {
+  return state[doctype] ? state[doctype][id] || null : null
 }
-
-const hydrateRelationships = (state, document) =>
-  Object.keys(document).reduce((result, prop) => {
-    if (prop !== 'relationships') {
-      result[prop] = document[prop]
-    } else {
-      const relationships = document[prop]
-      Object.keys(relationships).forEach(relName => {
-        const relData = relationships[relName].data
-        if (!relData) return
-        result[relName] = {
-          ...relationships[relName],
-          data: Array.isArray(relData)
-            ? relData.map(d =>
-                getDocumentFromSlice(
-                  state,
-                  d._type || d.type,
-                  d._id || d.id,
-                  false
-                )
-              )
-            : getDocumentFromSlice(
-                state,
-                relData._type || relData.type,
-                relData._id || relData.id,
-                false
-              )
-        }
-      })
-    }
-    return result
-  }, {})

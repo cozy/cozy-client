@@ -18,7 +18,8 @@ const observeStore = (store, select, onChange) => {
   return unsubscribe
 }
 
-const makeQuerySelector = queryId => state => getQueryFromStore(state, queryId)
+const makeQuerySelector = (queryId, client) => state =>
+  getQueryFromStore(state, queryId, client)
 
 const enhanceProps = (queryResult, query) => {
   // the query hasn't hit the store yet
@@ -26,6 +27,10 @@ const enhanceProps = (queryResult, query) => {
     return queryResult
   }
   const queryDef = new QueryDefinition({ ...queryResult.definition })
+  if (queryResult.fetchStatus !== 'loaded') {
+    return queryResult
+  }
+  console.log(queryResult)
   return {
     ...queryResult,
     fetchMore: () =>
@@ -38,9 +43,10 @@ export default class Query extends Component {
     super(props, context)
     const { client } = context
     this.queryId = props.as || client.generateId()
-    this.selector = makeQuerySelector(this.queryId)
+    this.selector = makeQuerySelector(this.queryId, client)
     const { mutations, ...rest } = props
-    this.mutations = mutations(this.mutate, rest)
+    this.mutations =
+      typeof mutations === 'function' ? mutations(this.mutate, rest) : {}
   }
 
   mutate = (mutationCreator, options = {}) =>

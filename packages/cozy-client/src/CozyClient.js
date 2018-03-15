@@ -152,10 +152,11 @@ export default class CozyClient {
   }
 
   async fetchDocumentIncludes(document, includes) {
+    const queries = includes.map(include =>
+      this.fetchDocumentInclude(document, include)
+    )
     const responses = await Promise.all(
-      includes.map(include =>
-        this.link.request(this.fetchDocumentInclude(document, include))
-      )
+      queries.map(query => this.link.request(query))
     )
     const relationships = includes
       .map((include, i) => ({
@@ -163,7 +164,9 @@ export default class CozyClient {
           data: responses[i].data,
           meta: responses[i].meta,
           next: responses[i].next,
-          skip: responses[i].skip
+          skip: responses[i].skip,
+          query: queries[i],
+          relationship: includes[i]
         }
       }))
       .reduce((acc, rel) => ({ ...acc, ...rel }), {})
