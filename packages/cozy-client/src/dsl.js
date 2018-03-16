@@ -92,6 +92,28 @@ export const uploadFile = (file, dirPath) => ({
   dirPath
 })
 
+export const getDoctypeFromOperation = operation => {
+  if (operation.mutationType) {
+    const type = operation.mutationType
+    switch (type) {
+      case CREATE_DOCUMENT:
+        return operation.document._type
+      case UPDATE_DOCUMENT:
+        return operation.document._type
+      case DELETE_DOCUMENT:
+        return operation.document._type
+      case ADD_REFERENCES_TO:
+        throw new Error('Not implemented')
+      case UPLOAD_FILE:
+        throw new Error('Not implemented')
+      default:
+        throw new Error(`Unknown mutationType ${type}`)
+    }
+  } else {
+    return operation.doctype
+  }
+}
+
 export const Mutations = {
   createDocument,
   updateDocument,

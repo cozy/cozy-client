@@ -1,6 +1,7 @@
 import {
   MutationTypes,
-  CozyLink
+  CozyLink,
+  getDoctypeFromOperation
 } from 'cozy-client'
 import PouchDB from 'pouchdb'
 import PouchDBFind from 'pouchdb-find'
@@ -31,6 +32,7 @@ const createPouches = doctypes => {
 }
 
 
+const doNothing = () => {}
 
 /**
  * Link to be passed to cozy-client to support CouchDB.
@@ -101,16 +103,19 @@ export default class PouchLink extends CozyLink {
     return (client._url + '/data/' + doctype).replace('//', `//${basic}`)
   }
 
-  request(operation, result, forward) {
+  supportsOperation (operation) {
+    const impactedDoctype = getDoctypeFromOperation(operation)
+    return !!this.pouches[impactedDoctype]
+  }
+
+  request(operation, result=null, forward=doNothing) {
     if (!this.synced) {
       console.log('not synced: forwarding...')
       return forward()
     }
 
     // Forwards if doctype not supported
-    console.log(this.doctypes, operation.doctype)
-    if (!this.pouches[operation.doctype]) {
-      console.log('doctype not supported: forwarding...')
+    if (!this.supportsOperation(operation)) {
       return forward()
     }
 
