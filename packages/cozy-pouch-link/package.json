@@ -1,0 +1,17 @@
+{
+  "name": "cozy-pouch-link",
+  "version": "1.0.0-beta.1",
+  "license": "MIT",
+  "main": "dist/cozy-pouch-link.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cozy/cozy-client.git"
+  },
+  "dependencies": {
+    "pouchdb": "^6.4.3",
+    "pouchdb-find": "^6.4.3"
+  },
+  "devDependencies": {
+    "jest": "^23.0.0-alpha.0"
+  }
+}
