@@ -3,12 +3,12 @@
 		"babel-core": "^6.26.0",
 		"babel-eslint": "^8.2.1",
 		"babel-jest": "^22.1.0",
+		"babel-loader": "^7.1.3",
 		"babel-plugin-external-helpers": "^6.22.0",
 		"babel-plugin-transform-class-properties": "^6.24.1",
 		"babel-plugin-transform-object-rest-spread": "^6.26.0",
 		"babel-preset-env": "^1.6.1",
 		"babel-preset-react": "^6.24.1",
-		"chalk": "^2.3.0",
 		"enzyme": "^3.3.0",
 		"enzyme-adapter-react-16": "^1.1.1",
 		"eslint": "^4.16.0",
@@ -18,15 +18,13 @@
 		"jest": "^22.1.4",
 		"jest-fetch-mock": "^1.4.1",
 		"lerna": "^2.8.0",
+		"npm-run-all": "^4.1.2",
 		"prettier": "1.10.2",
 		"react": "^16.2.0",
 		"react-dom": "^16.2.0",
 		"redux-mock-store": "^1.5.1",
-		"rollup": "^0.55.1",
-		"rollup-plugin-babel": "^3.0.3",
-		"rollup-plugin-commonjs": "^8.3.0",
-		"rollup-plugin-local-resolve": "^1.0.7",
-		"rollup-plugin-node-resolve": "^3.0.2"
+		"webpack": "^4.0.1",
+		"webpack-cli": "^2.0.9"
 	},
 	"private": true,
 	"workspaces": [
@@ -37,8 +35,10 @@
 		"pretest": "npm run lint",
 		"test": "jest",
 		"prebuild": "npm run lint",
-		"build": "node scripts/build.js",
-		"watch": "node scripts/watch.js"
+		"build": "webpack --config webpack.config.js",
+		"watch": "npm-run-all --parallel watch:cozy-client watch:cozy-stack-client",
+		"watch:cozy-client": "webpack --config webpack.config.js --env.package=cozy-client --watch",
+		"watch:cozy-stack-client": "webpack --config webpack.config.js --env.package=cozy-stack-client --watch"
 	},
 	"prettier": {
 		"semi": false,
@@ -48,6 +48,7 @@
 		"setupFiles": [
 			"<rootDir>/packages/cozy-client/src/__tests__/setup.js"
 		],
+		"setupTestFrameworkScriptFile": "<rootDir>/packages/cozy-stack-client/src/__tests__/setup.js",
 		"testMatch": [
 			"**/__tests__/**/(*.)(spec|test).js?(x)"
 		]

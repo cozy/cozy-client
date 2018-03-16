@@ -1,8 +1,8 @@
 import { uri, attempt } from './utils'
 
-const FETCH_LIMIT = 50
+export const FETCH_LIMIT = 50
 
-const normalizeDoc = (doc, doctype) => {
+export const normalizeDoc = (doc, doctype) => {
   const id = doc._id || doc.id
   return { id, _id: id, _type: doctype, ...doc }
 }
@@ -12,9 +12,9 @@ const normalizeDoc = (doc, doctype) => {
  * CRUD methods and other helpers.
  */
 export default class DocumentCollection {
-  constructor(doctype, link) {
+  constructor(doctype, client) {
     this.doctype = doctype
-    this.link = link
+    this.client = client
     this.indexes = {}
   }
 
@@ -32,7 +32,7 @@ export default class DocumentCollection {
     // If no document of this doctype exist, this route will return a 404,
     // so we need to try/catch and return an empty response object in case of a 404
     try {
-      const resp = await this.link.fetch(
+      const resp = await this.client.fetch(
         'GET',
         uri`/data/${
           this.doctype
@@ -66,27 +66,11 @@ export default class DocumentCollection {
    * @throws {FetchError}
    */
   async find(selector, options = {}) {
-    const indexFields = this.getIndexFields({ ...options, selector })
-    const indexId = options.indexId || (await this.getIndexId(indexFields))
-    const { fields, skip = 0, limit = FETCH_LIMIT } = options
-    // Mango wants an array of single-property-objects...
-    const sort = options.sort
-      ? indexFields.map(f => ({ [f]: options.sort[f] || 'desc' }))
-      : undefined
-
-    const mangoOptions = {
-      selector,
-      use_index: indexId,
-      // TODO: type and class should not be necessary, it's just a temp fix for a stack bug
-      fields: fields ? [...fields, '_id', '_type', 'class'] : undefined,
-      limit,
-      skip,
-      sort
-    }
-    const resp = await this.link.fetch(
+    const { skip = 0 } = options
+    const resp = await this.client.fetch(
       'POST',
       uri`/data/${this.doctype}/_find`,
-      mangoOptions
+      await this.toMangoOptions(selector, options)
     )
     return {
       data: resp.docs.map(doc => normalizeDoc(doc, this.doctype)),
@@ -101,40 +85,68 @@ export default class DocumentCollection {
     }
   }
 
+  async get(id) {
+    const resp = await this.client.fetch(
+      'GET',
+      uri`/data/${this.doctype}/${id}`
+    )
+    return {
+      data: normalizeDoc(resp, this.doctype)
+    }
+  }
+
   async create({ _id, _type, ...document }) {
-    const resp = await this.link.fetch(
+    const resp = await this.client.fetch(
       'POST',
       uri`/data/${this.doctype}/`,
       document
     )
     return {
-      data: [normalizeDoc(resp.data, this.doctype)]
+      data: normalizeDoc(resp.data, this.doctype)
     }
   }
 
   async update(document) {
-    const resp = await this.link.fetch(
+    const resp = await this.client.fetch(
       'PUT',
       uri`/data/${this.doctype}/${document._id}`,
       document
     )
     return {
-      data: [normalizeDoc(resp.data, this.doctype)]
+      data: normalizeDoc(resp.data, this.doctype)
     }
   }
 
   async destroy({ _id, _rev, ...document }) {
-    const resp = await this.link.fetch(
+    const resp = await this.client.fetch(
       'DELETE',
       uri`/data/${this.doctype}/${_id}?rev=${_rev}`
     )
     return {
-      data: [
-        normalizeDoc(
-          { ...document, _id, _rev: resp.rev, _deleted: true },
-          this.doctype
-        )
-      ]
+      data: normalizeDoc(
+        { ...document, _id, _rev: resp.rev, _deleted: true },
+        this.doctype
+      )
+    }
+  }
+
+  async toMangoOptions(selector, options = {}) {
+    const indexFields = this.getIndexFields({ ...options, selector })
+    const indexId = options.indexId || (await this.getIndexId(indexFields))
+    const { fields, skip = 0, limit = FETCH_LIMIT } = options
+    // Mango wants an array of single-property-objects...
+    const sort = options.sort
+      ? indexFields.map(f => ({ [f]: options.sort[f] || 'desc' }))
+      : undefined
+
+    return {
+      selector,
+      use_index: indexId,
+      // TODO: type and class should not be necessary, it's just a temp fix for a stack bug
+      fields: fields ? [...fields, '_id', '_type', 'class'] : undefined,
+      limit,
+      skip,
+      sort
     }
   }
 
@@ -148,7 +160,7 @@ export default class DocumentCollection {
 
   async createIndex(fields) {
     const indexDef = { index: { fields } }
-    const resp = await this.link.fetch(
+    const resp = await this.client.fetch(
       'POST',
       uri`/data/${this.doctype}/_index`,
       indexDef

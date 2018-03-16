@@ -16,3 +16,15 @@ export const TODO_3 = {
   label: 'Build stuff',
   done: true
 }
+
+export const TODO_SCHEMA = {
+  todos: {
+    doctype: 'io.cozy.todos',
+    relationships: {
+      attachments: {
+        type: 'has-many',
+        doctype: 'io.cozy.files'
+      }
+    }
+  }
+}

@@ -3,4 +3,5 @@ packages/*/node_modules/*
 packages/*/dist
 packages/*/yarn-error.log
 lerna-debug.log
+npm-debug.log
 coverage/*

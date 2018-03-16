@@ -1,4 +1,4 @@
-import CozyStackLink, { FetchError } from '../CozyStackLink'
+import CozyStackClient, { FetchError } from '../CozyStackClient'
 import DocumentCollection from '../DocumentCollection'
 
 const FAKE_RESPONSE = {
@@ -12,31 +12,31 @@ const FAKE_INIT_OPTIONS = {
   token: 'aAbBcCdDeEfFgGhH'
 }
 
-describe('CozyStackLink', () => {
+describe('CozyStackClient', () => {
   it('should normalize the provided uri', () => {
-    const link = new CozyStackLink({
+    const client = new CozyStackClient({
       uri: 'http://cozy.tools:8080//',
       token: ''
     })
-    expect(link.fullpath('/foo')).toBe('http://cozy.tools:8080/foo')
+    expect(client.fullpath('/foo')).toBe('http://cozy.tools:8080/foo')
   })
 
   describe('collection', () => {
-    const link = new CozyStackLink(FAKE_INIT_OPTIONS)
+    const client = new CozyStackClient(FAKE_INIT_OPTIONS)
 
     it('should return a DocumentCollection by default', () => {
-      expect(link.collection('io.cozy.todos')).toBeInstanceOf(
+      expect(client.collection('io.cozy.todos')).toBeInstanceOf(
         DocumentCollection
       )
     })
 
     it('should throw if the doctype is undefined', () => {
-      expect(() => link.collection()).toThrow()
+      expect(() => client.collection()).toThrow()
     })
   })
 
   describe('fetch', () => {
-    const link = new CozyStackLink(FAKE_INIT_OPTIONS)
+    const client = new CozyStackClient(FAKE_INIT_OPTIONS)
 
     beforeAll(() => {
       global.fetch = require('jest-fetch-mock')
@@ -46,7 +46,7 @@ describe('CozyStackLink', () => {
     })
 
     it('should ask for JSON by default', async () => {
-      const resp = await link.fetch('GET', '/data/io.cozy.todos')
+      const resp = await client.fetch('GET', '/data/io.cozy.todos')
       expect(fetch).toHaveBeenCalledWith(
         'http://cozy.tools:8080/data/io.cozy.todos',
         {
@@ -61,7 +61,7 @@ describe('CozyStackLink', () => {
     })
 
     it('should stringify a JSON payload', async () => {
-      const resp = await link.fetch('POST', '/data/io.cozy.todos', {
+      const resp = await client.fetch('POST', '/data/io.cozy.todos', {
         label: 'Buy bread'
       })
       expect(fetch).toHaveBeenCalledWith(
@@ -83,7 +83,7 @@ describe('CozyStackLink', () => {
 
     it('should not transform the payload if a Content-Type header has been set', async () => {
       const body = 'foo=bar'
-      const resp = await link.fetch('POST', '/data/io.cozy.todos/foo', body, {
+      const resp = await client.fetch('POST', '/data/io.cozy.todos/foo', body, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         }
@@ -104,7 +104,7 @@ describe('CozyStackLink', () => {
     })
 
     it('should return JSON', async () => {
-      const resp = await link.fetch('GET', '/data/io.cozy.todos')
+      const resp = await client.fetch('GET', '/data/io.cozy.todos')
       expect(resp).toEqual(FAKE_RESPONSE)
     })
 
@@ -112,7 +112,7 @@ describe('CozyStackLink', () => {
       fetch.mockRejectOnce(new Error('404 (Not found)'))
       expect.assertions(2)
       try {
-        await link.fetch('GET', '/foo/bar')
+        await client.fetch('GET', '/foo/bar')
       } catch (e) {
         expect(e).toBeInstanceOf(Error)
         // expect(e.name).toBe('FetchError')

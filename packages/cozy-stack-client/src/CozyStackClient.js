@@ -1,5 +1,6 @@
 import AppToken from './AppToken'
 import DocumentCollection from './DocumentCollection'
+import FileCollection from './FileCollection'
 
 const normalizeUri = uri => {
   while (uri[uri.length - 1] === '/') {
@@ -11,7 +12,7 @@ const normalizeUri = uri => {
 /**
  * Cozy stack HTTP client.
  */
-export default class CozyStackLink {
+export default class CozyStackClient {
   constructor({ token, uri = '' }) {
     this.uri = normalizeUri(uri)
     this.token = new AppToken(token)
@@ -25,9 +26,14 @@ export default class CozyStackLink {
    */
   collection(doctype) {
     if (!doctype) {
-      throw new Error('CozyStackLink.collection() called without a doctype')
+      throw new Error('CozyStackClient.collection() called without a doctype')
     }
-    return new DocumentCollection(doctype, this)
+    switch (doctype) {
+      case 'io.cozy.files':
+        return new FileCollection(doctype, this)
+      default:
+        return new DocumentCollection(doctype, this)
+    }
   }
 
   /**

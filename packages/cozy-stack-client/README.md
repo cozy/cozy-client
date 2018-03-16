@@ -1,9 +1,9 @@
-# cozy-stack-link
+# cozy-stack-client
 
 ## The constructor
 
 ```js
-const link = new CozyStackLink(options)
+const client = new CozyStackClient(options)
 ```
 #### Options
 
@@ -16,7 +16,7 @@ A collection is the set of all documents of a same doctype.
 
 Selecting a collection is done by calling the `collection()` method, passing it the doctype:
 ```js
-const todos = link.collection('io.cozy.todos')
+const todos = client.collection('io.cozy.todos')
 ```
 
 ## Listing all documents
@@ -26,7 +26,7 @@ console.log(allTodos.data)
 ```
 
 #### Pagination
-By default, the link limits query results to 50 documents. If the limit causes some documents not to be returned, the response will have a `next: true` property.
+By default, the client limits query results to 50 documents. If the limit causes some documents not to be returned, the response will have a `next: true` property.
 By using the `skip` and `limit` options you can build your own pagination:
 ```js
 const firstPage = await todos.all({ limit: 100 })
