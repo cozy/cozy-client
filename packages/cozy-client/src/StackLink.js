@@ -24,7 +24,7 @@ export default class StackLink extends CozyLink {
       return collection.get(id)
     }
     if (referenced) {
-      return collection.findReferencedBy(referenced)
+      return collection.findReferencedBy(referenced, options)
     }
     return !selector
       ? collection.all(options)

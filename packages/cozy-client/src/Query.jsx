@@ -18,10 +18,9 @@ const observeStore = (store, select, onChange) => {
   return unsubscribe
 }
 
-const makeQuerySelector = (queryId, client) => state =>
-  getQueryFromStore(state, queryId, client)
+const makeQuerySelector = queryId => state => getQueryFromStore(state, queryId)
 
-const enhanceProps = (queryResult, query) => {
+const enhanceProps = (state, queryResult, client) => {
   // the query hasn't hit the store yet
   if (!queryResult.definition) {
     return queryResult
@@ -30,12 +29,20 @@ const enhanceProps = (queryResult, query) => {
   if (queryResult.fetchStatus !== 'loaded') {
     return queryResult
   }
-  console.log(queryResult)
-  return {
+  const result = {
     ...queryResult,
+    data: client.hydrateDocuments(
+      state,
+      queryResult.definition.doctype,
+      queryResult.data
+    ),
     fetchMore: () =>
-      query(queryDef.offset(queryResult.data.length), { as: queryResult.id })
+      client.query(queryDef.offset(queryResult.data.length), {
+        as: queryResult.id
+      })
   }
+  //console.log(result)
+  return result
 }
 
 export default class Query extends Component {
@@ -81,7 +88,7 @@ export default class Query extends Component {
     const { children } = this.props
     const { client, store } = this.context
     return children(
-      enhanceProps(this.selector(store.getState()), client.query.bind(client)),
+      enhanceProps(store.getState(), this.selector(store.getState()), client),
       this.mutations
     )
   }

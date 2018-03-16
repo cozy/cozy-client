@@ -10,7 +10,9 @@ import {
   initMutation,
   receiveMutationResult,
   receiveMutationError,
-  getQueryFromStore
+  receiveDocumentUpdate,
+  getQueryFromStore,
+  getDocumentFromStore
 } from './store'
 
 export default class CozyClient {
@@ -72,12 +74,9 @@ export default class CozyClient {
             ? response =>
                 Mutations.addReferencesTo(
                   response.data,
-                  relationships[assoc.propertyName]
+                  relationships[assoc.name]
                 )
-            : Mutations.addReferencesTo(
-                attributes,
-                relationships[assoc.propertyName]
-              )
+            : Mutations.addReferencesTo(attributes, relationships[assoc.name])
       )
     ]
   }
@@ -128,16 +127,19 @@ export default class CozyClient {
     if (!definition.includes) {
       return mainResponse
     }
-    return this.fetchIncludes(mainResponse, this.expandIncludes(definition))
+    return this.fetchIncludes(
+      mainResponse,
+      this.getIncludesAssociations(definition)
+    )
   }
 
-  async fetchIncludes(response, includes) {
+  async fetchIncludes(response, associations) {
     const isSingleDoc = !Array.isArray(response.data)
     const doctype = isSingleDoc ? response.data._type : response.data[0]._type
     const originalData = isSingleDoc ? [response.data] : response.data
 
     const responses = await Promise.all(
-      originalData.map(doc => this.fetchDocumentIncludes(doc, includes))
+      originalData.map(doc => this.fetchDocumentAssociations(doc, associations))
     )
     const data = responses.map(r => r.data)
     const included = responses
@@ -151,22 +153,20 @@ export default class CozyClient {
     }
   }
 
-  async fetchDocumentIncludes(document, includes) {
-    const queries = includes.map(include =>
-      this.fetchDocumentInclude(document, include)
+  async fetchDocumentAssociations(document, associations) {
+    const queries = associations.map(assoc =>
+      this.fetchDocumentAssociation(document, assoc)
     )
     const responses = await Promise.all(
       queries.map(query => this.link.request(query))
     )
-    const relationships = includes
-      .map((include, i) => ({
-        [include.propertyName]: {
-          data: responses[i].data,
+    const relationships = associations
+      .map((assoc, i) => ({
+        [assoc.name]: {
+          data: responses[i].data.map(d => ({ _id: d._id, _type: d._type })),
           meta: responses[i].meta,
           next: responses[i].next,
-          skip: responses[i].skip,
-          query: queries[i],
-          relationship: includes[i]
+          skip: responses[i].skip
         }
       }))
       .reduce((acc, rel) => ({ ...acc, ...rel }), {})
@@ -183,7 +183,7 @@ export default class CozyClient {
     }
   }
 
-  fetchDocumentInclude(document, { relationType, doctype }) {
+  fetchDocumentAssociation(document, { relationType, doctype }) {
     switch (relationType) {
       case 'has-many':
         return this.find(doctype).referencedBy(document)
@@ -209,7 +209,7 @@ export default class CozyClient {
     return this.link.request(definition)
   }
 
-  expandIncludes(queryDefinition) {
+  getIncludesAssociations(queryDefinition) {
     if (!queryDefinition.includes) return []
     return queryDefinition.includes.map(propName =>
       this.getModelAssociation(queryDefinition.doctype, propName)
@@ -236,38 +236,112 @@ export default class CozyClient {
     }
   }
 
+  async queryRelationship(queryDefinition, { document, update }) {
+    this.getOrCreateStore()
+    // try {
+    const response = await this.requestQuery(queryDefinition)
+    this.dispatch(receiveDocumentUpdate(document, update, response))
+    return response
+    // } catch (error) {}
+  }
+
+  hydrateDocuments(state, doctype, documents) {
+    try {
+      const model = this.getDoctypeModel(doctype)
+      const associations = model.associations
+      return documents.map(doc => ({
+        ...doc,
+        ...this.hydrateRelationships(state, doc, associations)
+      }))
+    } catch (err) {
+      return documents
+    }
+  }
+
+  hydrateRelationships(state, document, associations) {
+    return associations.reduce((acc, assoc) => {
+      const relationship = this.hydrateRelationship(state, document, assoc)
+      return relationship ? { ...acc, [assoc.name]: relationship } : acc
+    }, {})
+  }
+
+  hydrateRelationship(state, document, association) {
+    const name = association.name
+    if (!document.relationships[name]) {
+      return null
+    }
+    const relationship = document.relationships[name]
+    switch (association.relationType) {
+      case 'has-many':
+        return {
+          ...relationship,
+          data: relationship.data.map(({ _id, _type }) =>
+            getDocumentFromStore(state, _type, _id)
+          ),
+          fetchMore: () => {
+            const skip = relationship.data.length
+            return this.queryRelationship(
+              this.find(association.doctype)
+                .referencedBy(document)
+                .offset(skip),
+              {
+                document,
+                update: (doc, response) => ({
+                  ...doc,
+                  relationships: {
+                    ...doc.relationships,
+                    [name]: {
+                      ...doc.relationships[name],
+                      data: [...doc.relationships[name].data, ...response.data],
+                      next: response.next,
+                      skip
+                    }
+                  }
+                })
+              }
+            )
+          }
+        }
+      default:
+        throw new Error(`Can't handle ${association.relationType} associations`)
+    }
+  }
+
   getModelAssociation(doctype, associationName) {
     const model = this.getDoctypeModel(doctype)
-    if (!model) {
-      throw new Error(`No schema found for '${doctype}' doctype`)
-    }
-    if (!model.relationships || !model.relationships[associationName]) {
+    const association = model.associations.find(a => a.name === associationName)
+    if (!association) {
       throw new Error(
         `No association '${associationName}' found for '${doctype}' doctype`
       )
     }
-    return this.expandAssociation({
-      associationName,
-      ...model.relationships[associationName]
-    })
-  }
-
-  expandAssociation({ associationName, type, doctype }) {
-    switch (type) {
-      case 'has-many':
-        return { propertyName: associationName, doctype, relationType: type }
-      default:
-        throw new Error(`Can't handle '${type}' associations`)
-    }
+    return association
   }
 
   getDoctypeModel(doctype) {
     if (!this.schema) {
       throw new Error('No schema defined')
     }
-    return Object.keys(this.schema)
+    const model = Object.keys(this.schema)
       .map(k => this.schema[k])
       .find(m => m.doctype === doctype)
+    if (!model) {
+      throw new Error(`No schema found for '${doctype}' doctype`)
+    }
+    const associations = !model.relationships
+      ? []
+      : Object.keys(model.relationships).map(name => {
+          const { type, doctype } = model.relationships[name]
+          return {
+            name,
+            relationType: type,
+            doctype
+          }
+        })
+    return {
+      ...model,
+      associations
+    }
   }
 
   setStore(store) {
