@@ -8,6 +8,7 @@
     "url": "git+https://github.com/cozy/cozy-client.git"
   },
   "dependencies": {
+    "cozy-client": "^1.0.0-beta.1",
     "pouchdb": "^6.4.3",
     "pouchdb-find": "^6.4.3"
   },
