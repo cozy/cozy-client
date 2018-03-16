@@ -63,4 +63,14 @@ describe('CozyPouchLink', () => {
     const docs = await link.request(query)
     expect(docs.data.length).toBe(1)
   })
+
+  it('should be possible to execute a mutation', async () => {
+    const mutation = client.save(TODO_3)
+    link.synced = true
+    console.log(mutation)
+    const res= await link.request(mutation)
+    expect(res).toMatchObject({
+      data: {"id": "54321", label: 'Build stuff'}
+    })
+  })
 })

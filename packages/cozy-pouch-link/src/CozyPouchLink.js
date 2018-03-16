@@ -7,6 +7,7 @@ import PouchDB from 'pouchdb'
 import PouchDBFind from 'pouchdb-find'
 import mapValues from 'lodash/mapValues'
 import fromPairs from 'lodash/fromPairs'
+import omit from 'lodash/omit'
 
 PouchDB.plugin(PouchDBFind)
 
@@ -17,9 +18,15 @@ const pipe = fn => res => {
   return res
 }
 
-const pouchResToJSONAPI = res => {
-  return {
-    data: res.rows
+const pouchResToJSONAPI = (res, isArray) => {
+  if (isArray) {
+    return {
+      data: res.rows
+    }
+  } else {
+    return {
+      data: res
+    }
   }
 }
 
@@ -31,6 +38,7 @@ const createPouches = doctypes => {
   ))
 }
 
+const sanitized = doc => omit(doc, '_type')
 
 const doNothing = () => {}
 
@@ -110,7 +118,6 @@ export default class PouchLink extends CozyLink {
 
   request(operation, result=null, forward=doNothing) {
     if (!this.synced) {
-      console.log('not synced: forwarding...')
       return forward()
     }
 
@@ -137,14 +144,59 @@ export default class PouchLink extends CozyLink {
     const res = await db.allDocs({
       include_docs: true
     })
-    console.log('ouaich', res)
-    return pouchResToJSONAPI(res)
+    return pouchResToJSONAPI(res, true)
   }
 
-  executeMutation({
-    mutationType,
-    ...props
-  }) {
-    // TODO
+  async executeMutation(mutation, result, forward) {
+    let pouchRes
+    switch (mutation.mutationType) {
+      case MutationTypes.CREATE_DOCUMENT:
+        pouchRes = await this.createDocument(mutation)
+      break
+      case MutationTypes.UPDATE_DOCUMENT:
+        pouchRes = await this.updateDocument(mutation)
+      break
+      case MutationTypes.DELETE_DOCUMENT:
+        pouchRes = await this.deleteDocument(mutation)
+      break
+      case MutationTypes.ADD_REFERENCES_TO:
+        pouchRes = await this.addReferencesTo(mutation)
+      break
+      case MutationTypes.UPLOAD_FILE:
+        return forward()
+      default:
+        throw new Error(`Unknown mutation type: ${mutationType}`)
+    }
+    return pouchResToJSONAPI(pouchRes)
+  }
+
+  createDocument(mutation) {
+    const doctype = getDoctypeFromOperation(mutation)
+    const { document } = mutation
+    const db = this.getDB(doctype)
+    return db.post(sanitized(document))
+      .then(res => {
+        return {...document, ...omit(res, 'ok')}
+      })
+  }
+
+  updateDocument(mutation) {
+    const doctype = getDoctypeFromOperation(mutation)
+    const { document } = mutation
+    const db = this.getDB(doctype)
+    return db.put(sanitized(document))
+      .then(res => {
+        return {...document, ...omit(res, 'ok')}
+      })
+  }
+
+  deleteDocument(mutation) {
+    const doctype = getDoctypeFromOperation(mutation)
+    const { document } = mutation
+    const db = this.getDB(doctype)
+    return db.remove(sanitized(document))
+      .then(res => {
+        return {...document, ...omit(res, 'ok')}
+      })
   }
 }
