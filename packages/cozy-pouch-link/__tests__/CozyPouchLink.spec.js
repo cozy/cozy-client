@@ -1,6 +1,11 @@
 import CozyPouchLink from '../src'
 import CozyClient from 'cozy-client'
-import { TODO_SCHEMA, TODO_1, TODO_2, TODO_3 } from './fixtures'
+import {
+  TODO_SCHEMA,
+  TODO_1,
+  TODO_2,
+  TODO_3
+} from './fixtures'
 
 const mockClient = {
   _url: 'http://cozy.tools:8080',
@@ -17,7 +22,10 @@ const TODO_DOCTYPE = TODO_SCHEMA.todos.doctype
 
 describe('CozyPouchLink', () => {
   let link
-  const client = new CozyClient({ link, schema: TODO_SCHEMA })
+  const client = new CozyClient({
+    link,
+    schema: TODO_SCHEMA
+  })
 
   beforeEach(() => {
     link = new CozyPouchLink({
@@ -67,10 +75,12 @@ describe('CozyPouchLink', () => {
   it('should be possible to execute a mutation', async () => {
     const mutation = client.save(TODO_3)
     link.synced = true
-    console.log(mutation)
-    const res= await link.request(mutation)
+    const res = await link.request(mutation)
     expect(res).toMatchObject({
-      data: {"id": "54321", label: 'Build stuff'}
+      data: {
+        id: '54321',
+        label: 'Build stuff'
+      }
     })
   })
 })
