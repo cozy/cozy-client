@@ -85,8 +85,8 @@ describe('CozyPouchLink', () => {
     it('should be possible to select', async () => {
       const db = link.getDB(TODO_DOCTYPE)
       await db.bulkDocs(docs.map(x => omit(x, '_type')))
-      const query = client.all(TODO_DOCTYPE)
-        .where({ label: {$gt: null}, done: true })
+      const query = client
+        .find(TODO_DOCTYPE, { label: {$gt: null}, done: true })
         .sortBy([ { done: 'asc' }, { label: 'asc' }])
       const res = await link.request(query)
       // expect(link.hasIndex('io.cozy.todos/by_done_and_id')).toBe(true)
@@ -96,7 +96,12 @@ describe('CozyPouchLink', () => {
         },
         {
           label: 'Run a semi-marathon'
-        }]
+        }],
+        meta: {
+          count: 2
+        },
+        skip: 0,
+        next: false
       })
     })
   })

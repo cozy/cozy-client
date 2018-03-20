@@ -36,12 +36,16 @@ const ensureHasBothIds = obj => {
 const pouchResToJSONAPI = (res, isArray) => {
   if (isArray) {
     const docs = res.rows || res.docs
+    const offset = res.offset || 0
     return {
-      data: docs.map(ensureHasBothIds)
+      data: docs.map(ensureHasBothIds),
+      meta: { count: docs.length },
+      skip: offset,
+      next: offset + docs.length <= res.total_rows
     }
   } else {
     return {
-      data: ensureHasBothIds(res)
+      data: ensureHasBothIds(res),
     }
   }
 }
@@ -199,11 +203,7 @@ export default class PouchLink extends CozyLink {
         limit
       }
       const index = await this.ensureIndex(doctype, findOpts)
-      res = await db.find({
-        ...findOpts,
-        sort: pouchdbSort(sort)
-      })
-
+      res = await db.find(findOpts)
     }
     return pouchResToJSONAPI(res, true)
   }
@@ -248,6 +248,10 @@ export default class PouchLink extends CozyLink {
     const { document } = mutation
     const db = this.getDB(doctype)
     const res = await db[method](sanitized(document))
-    return parseMutationResult(document, res)
+    if (res.ok) {
+      return parseMutationResult(document, res)
+    } else {
+      throw new Error('Coud not apply mutation')
+    }
   }
 }
