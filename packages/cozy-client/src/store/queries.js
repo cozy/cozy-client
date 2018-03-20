@@ -20,7 +20,7 @@ const queryInitialState = {
   lastFetch: null,
   hasMore: false,
   count: 0,
-  ids: []
+  data: []
 }
 
 const query = (state = queryInitialState, action) => {
@@ -42,7 +42,7 @@ const query = (state = queryInitialState, action) => {
           lastFetch: Date.now(),
           hasMore: false,
           count: 1,
-          ids: [response.data._id]
+          data: [response.data._id]
         }
       }
       return {
@@ -55,10 +55,10 @@ const query = (state = queryInitialState, action) => {
           response.meta && response.meta.count
             ? response.meta.count
             : response.data.length,
-        ids:
+        data:
           response.skip === 0
             ? response.data.map(doc => doc._id)
-            : [...state.ids, ...response.data.map(doc => doc._id)]
+            : [...state.data, ...response.data.map(doc => doc._id)]
       }
     case RECEIVE_QUERY_ERROR:
       return {
@@ -94,7 +94,7 @@ const queries = (state = {}, action, documents = {}) => {
           ...acc,
           [update.queryId]: {
             ...state[update.queryId],
-            ids: update.newData.map(doc => doc._id),
+            data: update.newData.map(doc => doc._id),
             count: update.newData.length // TODO: sure ?
           }
         }),
@@ -116,10 +116,11 @@ export const initQuery = (queryId, queryDefinition) => ({
   queryDefinition
 })
 
-export const receiveQueryResult = (queryId, response) => ({
+export const receiveQueryResult = (queryId, response, options = {}) => ({
   type: RECEIVE_QUERY_RESULT,
   queryId,
-  response
+  response,
+  ...options
 })
 
 export const receiveQueryError = (queryId, error) => ({
@@ -139,6 +140,6 @@ export const getQueryFromSlice = (state, queryId, documents) => {
   const query = state[queryId]
   return {
     ...query,
-    data: mapDocumentsToIds(documents, query.definition.doctype, query.ids)
+    data: mapDocumentsToIds(documents, query.definition.doctype, query.data)
   }
 }

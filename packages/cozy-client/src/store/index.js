@@ -1,16 +1,62 @@
 import { createStore as createReduxStore, combineReducers } from 'redux'
 
-import documents, { getDocumentFromSlice, isDocumentAction } from './documents'
+import documents, { getDocumentFromSlice } from './documents'
 import queries, { getQueryFromSlice, isQueryAction } from './queries'
 import { isMutationAction } from './mutations'
 
+export class StoreProxy {
+  constructor(state) {
+    this.state = state
+  }
+
+  readDocument(doctype, id) {
+    return this.state.documents[doctype][id]
+  }
+
+  writeDocument(document) {
+    this.setState(state => ({
+      ...state,
+      documents: {
+        ...state.documents,
+        [document._type]: {
+          ...state.documents[document._type],
+          [document._id]: document
+        }
+      }
+    }))
+  }
+
+  readQuery(queryId) {
+    return this.state.queries[queryId]
+  }
+
+  writeQuery(queryId, newValue) {
+    this.setState(state => ({
+      ...state,
+      queries: {
+        ...state.queries,
+        [queryId]: newValue
+      }
+    }))
+  }
+
+  setState(updaterFn) {
+    this.state = updaterFn(this.state)
+  }
+
+  getState() {
+    return this.state
+  }
+}
+
 const combinedReducer = (state = { documents: {}, queries: {} }, action) => {
-  if (
-    !isQueryAction(action) &&
-    !isDocumentAction(action) &&
-    !isMutationAction(action)
-  ) {
+  if (!isQueryAction(action) && !isMutationAction(action)) {
     return state
+  }
+  if (action.update) {
+    const proxy = new StoreProxy(state)
+    action.update(proxy, action.response)
+    return proxy.getState()
   }
   return {
     documents: documents(state.documents, action),
