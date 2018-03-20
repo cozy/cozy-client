@@ -8,6 +8,11 @@ import PouchDBFind from 'pouchdb-find'
 import mapValues from 'lodash/mapValues'
 import fromPairs from 'lodash/fromPairs'
 import omit from 'lodash/omit'
+import toPairs from 'lodash/toPairs'
+import {
+  getIndexNameFromFields,
+  getIndexFields
+} from './mango'
 
 PouchDB.plugin(PouchDBFind)
 
@@ -18,14 +23,25 @@ const pipe = fn => res => {
   return res
 }
 
+const ensureHasBothIds = obj => {
+  if (!obj._id && obj.id) {
+    obj._id = obj.id
+  }
+  if (!obj._id && obj.id) {
+    obj.id = obj._id
+  }
+  return obj
+}
+
 const pouchResToJSONAPI = (res, isArray) => {
   if (isArray) {
+    const docs = res.rows || res.docs
     return {
-      data: res.rows
+      data: docs.map(ensureHasBothIds)
     }
   } else {
     return {
-      data: res
+      data: ensureHasBothIds(res)
     }
   }
 }
@@ -58,6 +74,7 @@ export default class PouchLink extends CozyLink {
     this.doctypes = doctypes
     this.client = client
     this.pouches = createPouches(this.doctypes)
+    this.indexes = {}
     if (initialSync) {
       this.syncAll()
     }
@@ -133,17 +150,57 @@ export default class PouchLink extends CozyLink {
     }
   }
 
+  hasIndex (name) {
+    return Boolean(this.indexes[name])
+  }
+
+  async ensureIndex(doctype, query) {
+    const fields = getIndexFields(query)
+    const name = getIndexNameFromFields(fields)
+    const absName = `${doctype}/${name}`
+    const db = this.getDB(doctype)
+    if (this.indexes[absName]) {
+      return this.indexes[absName]
+    } else {
+      const index = await db.createIndex({
+        index: {
+          fields: fields
+        }
+      })
+      this.indexes[absName] = index
+      return index
+    }
+  }
+
   async executeQuery({
     doctype,
     selector,
     id,
     referenced,
-    ...options
+    sort,
+    fields,
+    limit
   }) {
     const db = this.getDB(doctype)
-    const res = await db.allDocs({
-      include_docs: true
-    })
+    let res
+    if (!selector && !fields && !sort) {
+      res = await db.allDocs({
+        include_docs: true
+      })
+    } else {
+      const findOpts = {
+        sort,
+        selector,
+        fields,
+        limit
+      }
+      const index = await this.ensureIndex(doctype, findOpts)
+      res = await db.find({
+        ...findOpts,
+        sort: pouchdbSort(sort)
+      })
+
+    }
     return pouchResToJSONAPI(res, true)
   }
 

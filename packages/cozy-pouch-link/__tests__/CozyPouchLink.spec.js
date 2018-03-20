@@ -62,16 +62,39 @@ describe('CozyPouchLink', () => {
     })
   })
 
-  it('should be able to execute a query', async () => {
-    const db = link.getDB(TODO_DOCTYPE)
-    db.post({
-      label: 'Make PouchDB link work',
-      done: false
+  describe('queries', () => {
+    const docs = [ TODO_1, TODO_2, TODO_3, TODO_4 ]
+    beforeEach(() => {
+      link.synced = true
     })
-    const query = client.all(TODO_DOCTYPE)
-    link.synced = true
-    const docs = await link.request(query)
-    expect(docs.data.length).toBe(1)
+    it('should be able to execute a query', async () => {
+      const db = link.getDB(TODO_DOCTYPE)
+      db.post({
+        label: 'Make PouchDB link work',
+        done: false
+      })
+      const query = client.all(TODO_DOCTYPE)
+      const docs = await link.request(query)
+      expect(docs.data.length).toBe(1)
+    })
+
+    it('should be possible to select', async () => {
+      const db = link.getDB(TODO_DOCTYPE)
+      await db.bulkDocs(docs.map(x => omit(x, '_type')))
+      const query = client.all(TODO_DOCTYPE)
+        .where({ label: {$gt: null}, done: true })
+        .sortBy([ { done: 'asc' }, { label: 'asc' }])
+      const res = await link.request(query)
+      // expect(link.hasIndex('io.cozy.todos/by_done_and_id')).toBe(true)
+      expect(res).toMatchObject({
+        data: [{
+          label: 'Build stuff'
+        },
+        {
+          label: 'Run a semi-marathon'
+        }]
+      })
+    })
   })
 
   it('should be possible to execute a mutation', async () => {
