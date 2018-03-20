@@ -56,6 +56,10 @@ const createPouches = doctypes => {
 
 const sanitized = doc => omit(doc, '_type')
 
+const parseMutationResult = (original, res) => {
+  return {...original, ...omit(res, 'ok')}
+}
+
 const doNothing = () => {}
 
 /**
@@ -227,33 +231,23 @@ export default class PouchLink extends CozyLink {
     return pouchResToJSONAPI(pouchRes)
   }
 
-  createDocument(mutation) {
-    const doctype = getDoctypeFromOperation(mutation)
-    const { document } = mutation
-    const db = this.getDB(doctype)
-    return db.post(sanitized(document))
-      .then(res => {
-        return {...document, ...omit(res, 'ok')}
-      })
+  createDocument (mutation) {
+    return this.dbMethod('post', mutation)
   }
 
-  updateDocument(mutation) {
-    const doctype = getDoctypeFromOperation(mutation)
-    const { document } = mutation
-    const db = this.getDB(doctype)
-    return db.put(sanitized(document))
-      .then(res => {
-        return {...document, ...omit(res, 'ok')}
-      })
+  async updateDocument(mutation) {
+    return this.dbMethod('put', mutation)
   }
 
-  deleteDocument(mutation) {
+  async deleteDocument(mutation) {
+    return this.dbMethod('remove', mutation)
+  }
+
+  async dbMethod (method, mutation) {
     const doctype = getDoctypeFromOperation(mutation)
     const { document } = mutation
     const db = this.getDB(doctype)
-    return db.remove(sanitized(document))
-      .then(res => {
-        return {...document, ...omit(res, 'ok')}
-      })
+    const res = await db[method](sanitized(document))
+    return parseMutationResult(document, res)
   }
 }

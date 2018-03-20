@@ -4,8 +4,11 @@ import {
   TODO_SCHEMA,
   TODO_1,
   TODO_2,
-  TODO_3
+  TODO_3,
+  TODO_4
 } from './fixtures'
+import PouchDB from 'pouchdb'
+import omit from 'lodash/omit'
 
 const mockClient = {
   _url: 'http://cozy.tools:8080',
@@ -19,6 +22,7 @@ const mockClient = {
 }
 
 const TODO_DOCTYPE = TODO_SCHEMA.todos.doctype
+
 
 describe('CozyPouchLink', () => {
   let link
@@ -97,15 +101,35 @@ describe('CozyPouchLink', () => {
     })
   })
 
-  it('should be possible to execute a mutation', async () => {
-    const mutation = client.save(TODO_3)
-    link.synced = true
-    const res = await link.request(mutation)
-    expect(res).toMatchObject({
-      data: {
-        id: '54321',
-        label: 'Build stuff'
-      }
+  describe('mutations', async () => {
+    beforeEach(() => {
+      link.synced = true
+    })
+
+    it('should be possible to save a new document', async () => {
+      const {_id, ...NEW_TODO} = TODO_3
+      const mutation = client.save(NEW_TODO)
+      const res = await link.request(mutation)
+      expect(res).toMatchObject({
+        data: {
+          id: expect.any(String),
+          _id: expect.any(String),
+          rev: expect.any(String),
+          label: 'Build stuff',
+          _type: TODO_DOCTYPE
+        }
+      })
+    })
+
+    it('should be possible to update a document', async () => {
+      const mutation = client.save(TODO_3)
+      const res = await link.request(mutation)
+      expect(res).toMatchObject({
+        data: {
+          id: '3',
+          label: 'Build stuff'
+        }
+      })
     })
   })
 })
