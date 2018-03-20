@@ -1,3 +1,6 @@
+const isArray = require('lodash/isArray')
+const isString = require('lodash/isString')
+
 // Queries
 export class QueryDefinition {
   constructor({
@@ -29,6 +32,9 @@ export class QueryDefinition {
   }
 
   sortBy(sort) {
+    if (isString(sort)) {
+      throw new Error('Invalid sort, should be an object (`{ label: "desc"}`), you passed a string.')
+    }
     return new QueryDefinition({ ...this.toDefinition(), sort })
   }
 
