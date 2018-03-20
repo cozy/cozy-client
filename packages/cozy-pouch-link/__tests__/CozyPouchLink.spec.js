@@ -43,20 +43,22 @@ describe('CozyPouchLink', () => {
     expect(url).toBe('http://user:token@cozy.tools:8080/data/io.cozy.todos')
   })
 
-  it('should check if the doctype is supported and forward if not', async () => {
-    const query = client.all('io.cozy.rockets')
-    link.synced = true
-    await link.request(query, null, () => {
-      expect(true).toBe(true)
-      return Promise.resolve()
+  describe('request handling', () => {
+    it('should check if the doctype is supported and forward if not', async () => {
+      const query = client.all('io.cozy.rockets')
+      link.synced = true
+      await link.request(query, null, () => {
+        expect(true).toBe(true)
+        return Promise.resolve()
+      })
     })
-  })
 
-  it('should check if the pouch is synced and forward if not', async () => {
-    const query = client.all(TODO_DOCTYPE)
-    expect.assertions(1)
-    await link.request(query, null, () => {
-      expect(true).toBe(true)
+    it('should check if the pouch is synced and forward if not', async () => {
+      const query = client.all(TODO_DOCTYPE)
+      expect.assertions(1)
+      await link.request(query, null, () => {
+        expect(true).toBe(true)
+      })
     })
   })
 
