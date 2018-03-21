@@ -97,6 +97,7 @@ export default class CozyClient {
       )
       return response
     } catch (error) {
+      console.log(error)
       return this.dispatch(receiveQueryError(queryId, error))
     }
   }
@@ -115,7 +116,6 @@ export default class CozyClient {
       )
       return response
     } catch (error) {
-      console.log(error)
       return this.dispatch(receiveMutationError(mutationId, error))
     }
   }
@@ -133,6 +133,9 @@ export default class CozyClient {
 
   async fetchIncludes(response, associations) {
     const isSingleDoc = !Array.isArray(response.data)
+    if (!isSingleDoc && response.data.length === 0) {
+      return response
+    }
     const doctype = isSingleDoc ? response.data._type : response.data[0]._type
     const originalData = isSingleDoc ? [response.data] : response.data
 

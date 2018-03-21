@@ -41,7 +41,6 @@ const enhanceProps = (queryResult, client) => {
         as: queryResult.id
       })
   }
-  //console.log(result)
   return result
 }
 
