@@ -85,7 +85,7 @@ export default class CozyStackClient {
 
   getCredentials() {
     if (!this.token) return null
-    return { client: null, token: this.token }
+    return this.token
   }
 }
 
