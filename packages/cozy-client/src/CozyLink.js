@@ -13,11 +13,13 @@ export default class CozyLink {
 const toLink = handler =>
   typeof handler === 'function' ? new CozyLink(handler) : handler
 
-export const chain = links => links.map(toLink).reduce((a, b) => concat(a, b))
+export const chain = links => links.map(toLink).reduce(concat)
 
-const concat = (firstLink, nextLink) =>
-  new CozyLink((operation, result, forward) =>
-    firstLink.request(operation, result, (op, res) =>
-      nextLink.request(op, res, forward)
-    )
-  )
+const concat = (firstLink, nextLink) => {
+  return new CozyLink((operation, result, forward) => {
+    const nextForward = (op, res) => {
+      return nextLink.request(op, res, forward)
+    }
+    return firstLink.request(operation, result, nextForward) 
+  })
+}
