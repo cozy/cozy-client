@@ -248,7 +248,7 @@ export default class DocumentCollection {
   }
 
   getUniqueIndexId(property) {
-    return this.createIndex([property], `${this.doctype}/${property}`)
+    return this.getIndexId([property], `${this.doctype}/${property}`)
   }
 
   async getIndexId(fields, indexName = this.getIndexNameFromFields(fields)) {

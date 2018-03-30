@@ -79,13 +79,11 @@ export default class ObservableQuery {
     )
   }
 
-  create(attributes, relationships, mutationOptions = {}) {
-    return this.client.create(
-      this.definition.doctype,
-      attributes,
-      relationships,
-      { ...mutationOptions, contextQueryId: this.queryId }
-    )
+  create(type, { _type, ...attributes }, relationships, mutationOptions = {}) {
+    return this.client.create(type, attributes, relationships, {
+      ...mutationOptions,
+      contextQueryId: this.queryId
+    })
   }
 
   save(document, mutationOptions = {}) {
@@ -93,6 +91,10 @@ export default class ObservableQuery {
       ...mutationOptions,
       contextQueryId: this.queryId
     })
+  }
+
+  validate(document) {
+    return this.client.validate(document)
   }
 
   destroy(document, mutationOptions = {}) {

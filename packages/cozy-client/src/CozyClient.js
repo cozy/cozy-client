@@ -48,16 +48,43 @@ export default class CozyClient {
     return new QueryDefinition({ doctype, id })
   }
 
-  create(doctype, attributes, relationships, mutationOptions = {}) {
-    const document = { _type: doctype, ...attributes }
+  async create(type, { _type, ...attributes }, relationships, options = {}) {
+    const document = { _type: type, ...attributes }
+    const ret = await this.validate(document)
+    if (ret !== true) throw new Error('Validation failed')
     return this.mutate(
       this.getDocumentSavePlan(document, relationships),
-      mutationOptions
+      options
     )
   }
 
   async save(document, mutationOptions = {}) {
+    const ret = await this.validate(document)
+    if (ret !== true) throw new Error('Validation failed')
     return this.mutate(this.getDocumentSavePlan(document), mutationOptions)
+  }
+
+  async validate(document) {
+    let errors = {}
+    const model = this.getDoctypeModel(document._type)
+    if (!model.attributes) return true
+    for (const n in model.attributes) {
+      const ret = await this.validateAttribute(document, n, model.attributes[n])
+      if (ret !== true) errors[n] = ret
+    }
+    if (Object.keys(errors).length === 0) return true
+    return errors
+  }
+
+  async validateAttribute(document, attrName, attrProps) {
+    if (attrProps.unique) {
+      const ret = await this.collection(document._type).checkUniquenessOf(
+        attrName,
+        document[attrName]
+      )
+      if (ret !== true) return 'must be unique'
+    }
+    return true
   }
 
   getDocumentSavePlan(document, relationships) {
