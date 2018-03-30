@@ -32,7 +32,6 @@
 	],
 	"scripts": {
 		"lint": "eslint 'packages/*/src/**/*.js'",
-		"pretest": "npm run lint",
 		"test": "jest",
 		"watch": "npm-run-all --parallel watch:cozy-client watch:cozy-stack-client watch:cozy-pouch-link",
 		"watch:cozy-client": "webpack --config webpack.config.js --env.package=cozy-client --watch",
