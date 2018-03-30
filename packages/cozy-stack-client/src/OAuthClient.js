@@ -1,15 +1,15 @@
 import CozyStackClient from './CozyStackClient'
 import AccessToken from './AccessToken'
 
-const defaultOAuthOptions = {
+const defaultoAuthOptions = {
   clientID: '',
-  clientName: 'a',
+  clientName: '',
   clientKind: '',
   clientSecret: '',
   clientURI: '',
   registrationAccessToken: '',
-  redirectURI: 'http://localhost',
-  softwareID: 'a',
+  redirectURI: '',
+  softwareID: '',
   softwareVersion: '',
   logoURI: '',
   policyURI: '',
@@ -18,27 +18,27 @@ const defaultOAuthOptions = {
 }
 
 export default class OAuthClient extends CozyStackClient{
-  constructor({ oauthOptions, uri = '' }) {
+  constructor({ oauth, uri = '' }) {
     super({token: null, uri})
-    this.oauthOptions = {...defaultOAuthOptions, ...oauthOptions}  
+    this.oAuthOptions = {...defaultoAuthOptions, ...oauth}  
   }
   
   isRegistered () {
-    return this.oauthOptions.clientID !== ''
+    return this.oAuthOptions.clientID !== ''
   }
   
   getRegisterOptions () {
     return {
-      redirect_uris: [this.oauthOptions.redirectURI],
-      software_id: this.oauthOptions.softwareID,
-      software_version: this.oauthOptions.softwareVersion,
-      client_name: this.oauthOptions.clientName,
-      client_kind: this.oauthOptions.clientKind,
-      client_uri: this.oauthOptions.clientURI,
-      logo_uri: this.oauthOptions.logoURI,
-      policy_uri: this.oauthOptions.policyURI,
-      notification_platform: this.oauthOptions.notificationPlatform,
-      notification_device_token: this.oauthOptions.notificationDeviceToken
+      redirect_uris: [this.oAuthOptions.redirectURI],
+      software_id: this.oAuthOptions.softwareID,
+      software_version: this.oAuthOptions.softwareVersion,
+      client_name: this.oAuthOptions.clientName,
+      client_kind: this.oAuthOptions.clientKind,
+      client_uri: this.oAuthOptions.clientURI,
+      logo_uri: this.oAuthOptions.logoURI,
+      policy_uri: this.oAuthOptions.policyURI,
+      notification_platform: this.oAuthOptions.notificationPlatform,
+      notification_device_token: this.oAuthOptions.notificationDeviceToken
     }
   }
   
@@ -46,18 +46,12 @@ export default class OAuthClient extends CozyStackClient{
     if (this.isRegistered()) throw new Error('Already registered')
     
     const data = await this.fetch('POST', '/auth/register', this.getRegisterOptions())
-    const { 
-      client_id: clientID, 
-      client_name: clientName, 
-      client_secret: clientSecret, 
-      registration_access_token: registrationAccessToken, 
-      software_id: softwareID } = data
     
-    this.oauthOptions.clientID = clientID
-    this.oauthOptions.clientName = clientName
-    this.oauthOptions.clientSecret = clientSecret
-    this.oauthOptions.registrationAccessToken = registrationAccessToken
-    this.oauthOptions.softwareID = softwareID
+    this.oAuthOptions.clientID = data.client_id
+    this.oAuthOptions.clientName = data.client_name
+    this.oAuthOptions.clientSecret = data.client_secret
+    this.oAuthOptions.registrationAccessToken = data.registration_access_token
+    this.oAuthOptions.softwareID = data.software_id
     
     return this;
   }
@@ -90,8 +84,8 @@ export default class OAuthClient extends CozyStackClient{
     if (!this.isRegistered()) throw new Error('Not registered')
     
     const query = new URLSearchParams({
-      client_id: this.oauthOptions.clientID,
-      redirect_uri: this.oauthOptions.redirectURI,
+      client_id: this.oAuthOptions.clientID,
+      redirect_uri: this.oAuthOptions.redirectURI,
       state: stateCode,
       response_type: 'code',
       scope: scopes.join(' ')
@@ -112,14 +106,14 @@ export default class OAuthClient extends CozyStackClient{
     return urlAccessCode
   }
   
-  async getAccessToken(accessCode) {
+  async fetchAccessToken(accessCode) {
     if (!this.isRegistered()) throw new Error('Not registered')
     
     const data = new URLSearchParams({
       grant_type: 'authorization_code',
       code: accessCode,
-      client_id: this.oauthOptions.clientID,
-      client_secret: this.oauthOptions.clientSecret,
+      client_id: this.oAuthOptions.clientID,
+      client_secret: this.oAuthOptions.clientSecret,
     })
     
     const result = await this.fetch('POST', '/auth/access_token', data, {
@@ -129,7 +123,9 @@ export default class OAuthClient extends CozyStackClient{
     return new AccessToken(result)
   }
   
-  setAccessToken(token) {
-    this.token = token
+  setCredentials(token = null) {
+    if (token) {
+      this.token = (token instanceof AccessToken) ? token : new AccessToken(token)
+    }
   }
 }

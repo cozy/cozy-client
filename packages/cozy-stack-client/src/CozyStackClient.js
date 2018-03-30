@@ -15,7 +15,7 @@ const normalizeUri = uri => {
 export default class CozyStackClient {
   constructor({ token, uri = '' }) {
     this.uri = normalizeUri(uri)
-    this.token = new AppToken(token)
+    this.setCredentials(token)
   }
 
   /**
@@ -85,6 +85,10 @@ export default class CozyStackClient {
 
   getCredentials() {
     return this.token
+  }
+  
+  setCredentials(token) {
+    this.token = token ? new AppToken(token) : null
   }
 }
 
