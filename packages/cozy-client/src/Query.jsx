@@ -2,93 +2,54 @@ import React, { Component } from 'react'
 import { getQueryFromStore } from './store'
 import { QueryDefinition } from './dsl'
 
-const observeStore = (store, select, onChange) => {
-  let currentState
-
-  const handleChange = () => {
-    let nextState = select(store.getState())
-    if (nextState !== currentState) {
-      currentState = nextState
-      onChange(currentState)
-    }
-  }
-
-  let unsubscribe = store.subscribe(handleChange)
-  handleChange()
-  return unsubscribe
-}
-
-const makeQuerySelector = queryId => state => getQueryFromStore(state, queryId)
-
-const enhanceProps = (state, queryResult, client) => {
-  // the query hasn't hit the store yet
-  if (!queryResult.definition) {
-    return queryResult
-  }
-  const queryDef = new QueryDefinition({ ...queryResult.definition })
-  if (queryResult.fetchStatus !== 'loaded') {
-    return queryResult
-  }
-  const result = {
-    ...queryResult,
-    data: client.hydrateDocuments(
-      state,
-      queryResult.definition.doctype,
-      queryResult.data
-    ),
-    fetchMore: () =>
-      client.query(queryDef.offset(queryResult.data.length), {
-        as: queryResult.id
-      })
-  }
-  //console.log(result)
-  return result
-}
+const dummyState = {}
 
 export default class Query extends Component {
   constructor(props, context) {
     super(props, context)
     const { client } = context
-    this.queryId = props.as || client.generateId()
-    this.selector = makeQuerySelector(this.queryId, client)
+
+    const queryDef =
+      typeof props.query === 'function'
+        ? props.query(client, props)
+        : props.query
+
+    this.observableQuery = client.watchQuery(queryDef, props)
+
     const { mutations, ...rest } = props
     this.mutations =
       typeof mutations === 'function' ? mutations(this.mutate, rest) : {}
   }
 
   mutate = (mutationCreator, options = {}) =>
-    this.context.client.mutate(mutationCreator(this.context.client), options)
+    this.context.client.mutate(mutationCreator(this.context.client), {
+      ...options,
+      contextQueryId: this.observableQuery.queryId
+    })
 
   componentDidMount() {
-    const { client, store } = this.context
-    this.unsubscribeStore = observeStore(
-      store,
-      this.selector.bind(this),
-      this.onStoreChange
-    )
-
-    const query =
-      typeof this.props.query === 'function'
-        ? this.props.query(client, this.props)
-        : this.props.query
-
-    client.query(query, { as: this.queryId })
+    this.queryUnsubscribe = this.observableQuery.subscribe(this.onQueryChange)
   }
 
   componentWillUnmount() {
-    this.unsubscribeStore()
+    this.queryUnsubscribe()
   }
 
-  onStoreChange = () => {
-    console.log('store changed, forcing rerender')
-    this.forceUpdate()
+  onQueryChange = () => {
+    console.log(
+      `query ${this.observableQuery.queryId} changed, forcing rerender`
+    )
+    this.setState(dummyState)
   }
 
   render() {
     const { children } = this.props
     const { client, store } = this.context
     return children(
-      enhanceProps(store.getState(), this.selector(store.getState()), client),
+      {
+        fetchMore: this.observableQuery.fetchMore.bind(this.observableQuery),
+        ...this.observableQuery.currentResult()
+      },
       this.mutations
     )
   }

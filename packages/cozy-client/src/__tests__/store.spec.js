@@ -6,7 +6,8 @@ import reducer, {
   initQuery,
   receiveQueryResult,
   receiveQueryError,
-  receiveMutationResult
+  receiveMutationResult,
+  StoreProxy
 } from '../store'
 
 import { TODO_1, TODO_2, TODO_3 } from './fixtures'
@@ -77,9 +78,9 @@ describe('Store', () => {
         id: null,
         fetchStatus: 'pending',
         lastFetch: null,
+        lastUpdate: null,
         hasMore: false,
         count: 0,
-        ids: [],
         data: null
       })
     })
@@ -159,42 +160,57 @@ describe('Store', () => {
         })
       })
 
+      describe('when a `update` option is given', () => {
+        it('should be applied instead of the regular update', async () => {
+          await store.dispatch(
+            receiveQueryResult('allTodos', 'BAR!', {
+              update: (store, response) =>
+                store.writeQuery('allTodos', {
+                  ...store.readQuery('allTodos'),
+                  foo: response
+                })
+            })
+          )
+          expect(getQueryFromStore(store.getState(), 'allTodos').foo).toEqual(
+            'BAR!'
+          )
+        })
+      })
+
       describe('when the query result have a `included` property', () => {
         beforeEach(async () => {
           await store.dispatch(
-            store.dispatch(
-              receiveQueryResult('allTodos', {
-                data: [
-                  {
-                    ...TODO_1,
-                    relationships: {
-                      attachments: {
-                        data: [
-                          { _id: 'abc', _type: 'io.cozy.files' },
-                          { _id: 'def', _type: 'io.cozy.files' }
-                        ]
-                      }
-                    }
-                  },
-                  {
-                    ...TODO_2,
-                    relationships: {
-                      attachments: {
-                        data: [{ _id: 'xyz', _type: 'io.cozy.files' }]
-                      }
+            receiveQueryResult('allTodos', {
+              data: [
+                {
+                  ...TODO_1,
+                  relationships: {
+                    attachments: {
+                      data: [
+                        { _id: 'abc', _type: 'io.cozy.files' },
+                        { _id: 'def', _type: 'io.cozy.files' }
+                      ]
                     }
                   }
-                ],
-                included: [
-                  { _id: 'abc', _type: 'io.cozy.files', name: 'abc.png' },
-                  { _id: 'def', _type: 'io.cozy.files', name: 'def.png' },
-                  { _id: 'xyz', _type: 'io.cozy.files', name: 'xyz.png' }
-                ],
-                meta: { count: 2 },
-                skip: 0,
-                next: false
-              })
-            )
+                },
+                {
+                  ...TODO_2,
+                  relationships: {
+                    attachments: {
+                      data: [{ _id: 'xyz', _type: 'io.cozy.files' }]
+                    }
+                  }
+                }
+              ],
+              included: [
+                { _id: 'abc', _type: 'io.cozy.files', name: 'abc.png' },
+                { _id: 'def', _type: 'io.cozy.files', name: 'def.png' },
+                { _id: 'xyz', _type: 'io.cozy.files', name: 'xyz.png' }
+              ],
+              meta: { count: 2 },
+              skip: 0,
+              next: false
+            })
           )
         })
 
@@ -203,20 +219,6 @@ describe('Store', () => {
             getDocumentFromStore(store.getState(), 'io.cozy.files', 'abc')
           ).toEqual({ _id: 'abc', _type: 'io.cozy.files', name: 'abc.png' })
         })
-
-        // it('should "hydrate" relationships when the doc is retrieved from the store', () => {
-        //   expect(
-        //     getDocumentFromStore(store.getState(), 'io.cozy.todos', TODO_1._id)
-        //   ).toEqual({
-        //     ...TODO_1,
-        //     attachments: {
-        //       data: [
-        //         { _id: 'abc', _type: 'io.cozy.files', name: 'abc.png' },
-        //         { _id: 'def', _type: 'io.cozy.files', name: 'def.png' }
-        //       ]
-        //     }
-        //   })
-        // })
       })
     })
   })
@@ -276,6 +278,57 @@ describe('Store', () => {
         const query = getQueryFromStore(store.getState(), 'allTodos')
         expect(query.data).toEqual([TODO_1, NEW_TODO, TODO_2])
       })
+    })
+  })
+
+  describe('StoreProxy', () => {
+    let proxy
+    const QUERY = {
+      definition: {
+        doctype: 'io.cozy.todos'
+      },
+      data: [TODO_1._id, TODO_2._id],
+      fetchStatus: 'loaded',
+      hasMore: false,
+      count: 2
+    }
+
+    beforeEach(() => {
+      proxy = new StoreProxy({
+        documents: {
+          'io.cozy.todos': {
+            [TODO_1._id]: TODO_1,
+            [TODO_2._id]: TODO_2
+          },
+          'io.cozy.files': {
+            abc: { _id: 'abc', _type: 'io.cozy.files', name: 'abc.pdf' },
+            def: { _id: 'def', _type: 'io.cozy.files', name: 'def.png' }
+          }
+        },
+        queries: {
+          allTodos: QUERY
+        }
+      })
+    })
+
+    it('should read queries', () => {
+      expect(proxy.readQuery('allTodos')).toEqual(QUERY)
+    })
+
+    it('should write queries', () => {
+      proxy.writeQuery('allTodos', { ...proxy.readQuery('allTodos'), count: 3 })
+      expect(proxy.getState().queries.allTodos.count).toEqual(3)
+    })
+
+    it('should read documents', () => {
+      expect(proxy.readDocument('io.cozy.todos', TODO_1._id)).toEqual(TODO_1)
+    })
+
+    it('should write new documents', () => {
+      proxy.writeDocument(TODO_3)
+      expect(proxy.getState().documents['io.cozy.todos'][TODO_3._id]).toBe(
+        TODO_3
+      )
     })
   })
 })

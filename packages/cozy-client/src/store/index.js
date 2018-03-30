@@ -1,16 +1,72 @@
 import { createStore as createReduxStore, combineReducers } from 'redux'
 
-import documents, { getDocumentFromSlice, isDocumentAction } from './documents'
+import documents, { getDocumentFromSlice } from './documents'
 import queries, { getQueryFromSlice, isQueryAction } from './queries'
 import { isMutationAction } from './mutations'
 
+export class StoreProxy {
+  constructor(state) {
+    this.state = state
+  }
+
+  readDocument(doctype, id) {
+    return this.state.documents[doctype][id]
+  }
+
+  writeDocument(document) {
+    this.setState(state => ({
+      ...state,
+      documents: {
+        ...state.documents,
+        [document._type]: {
+          ...state.documents[document._type],
+          [document._id]: document
+        }
+      }
+    }))
+  }
+
+  readQuery(queryId) {
+    return this.state.queries[queryId]
+  }
+
+  writeQuery(queryId, newValue) {
+    this.setState(state => ({
+      ...state,
+      queries: {
+        ...state.queries,
+        [queryId]: newValue
+      }
+    }))
+  }
+
+  touchQuery(queryId) {
+    this.writeQuery(queryId, {
+      ...this.readQuery(queryId),
+      lastUpdate: Date.now()
+    })
+  }
+
+  setState(updaterFn) {
+    this.state = updaterFn(this.state)
+  }
+
+  getState() {
+    return this.state
+  }
+}
+
 const combinedReducer = (state = { documents: {}, queries: {} }, action) => {
-  if (
-    !isQueryAction(action) &&
-    !isDocumentAction(action) &&
-    !isMutationAction(action)
-  ) {
+  if (!isQueryAction(action) && !isMutationAction(action)) {
     return state
+  }
+  if (action.update) {
+    const proxy = new StoreProxy(state)
+    action.update(proxy, action.response)
+    if (action.contextQueryId) {
+      proxy.touchQuery(action.contextQueryId)
+    }
+    return proxy.getState()
   }
   return {
     documents: documents(state.documents, action),
@@ -33,6 +89,9 @@ export const getQueryFromStore = (state, queryId) =>
     queryId,
     getStateRoot(state).documents
   )
+
+export const getRawQueryFromStore = (state, queryId) =>
+  getQueryFromSlice(getStateRoot(state).queries, queryId)
 
 export { receiveDocumentUpdate } from './documents'
 

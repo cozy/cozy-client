@@ -83,7 +83,27 @@ export default class FileCollection extends DocumentCollection {
     )
   }
 
-  async destroy({ _id }, { ifMatch = '' } = {}) {
+  removeReferencesTo(document, documents) {
+    const refs = documents.map(d => ({ id: d._id, type: 'io.cozy.files' }))
+    return this.client.fetch(
+      'DELETE',
+      uri`/data/${document._type}/${document._id}/relationships/references`,
+      { data: refs }
+    )
+  }
+
+  async destroy({ _id, relationships }, { ifMatch = '' } = {}) {
+    if (
+      relationships &&
+      relationships.referenced_by &&
+      Array.isArray(relationships.referenced_by.data)
+    ) {
+      for (const ref of relationships.referenced_by.data) {
+        await this.removeReferencesTo({ _id: ref.id, _type: ref.type }, [
+          { _id }
+        ])
+      }
+    }
     const resp = await this.client.fetch(
       'DELETE',
       uri`/files/${_id}`,

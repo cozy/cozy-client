@@ -18,9 +18,10 @@ const queryInitialState = {
   definition: null,
   fetchStatus: 'pending',
   lastFetch: null,
+  lastUpdate: null,
   hasMore: false,
   count: 0,
-  ids: []
+  data: []
 }
 
 const query = (state = queryInitialState, action) => {
@@ -40,9 +41,10 @@ const query = (state = queryInitialState, action) => {
           id: action.queryId,
           fetchStatus: 'loaded',
           lastFetch: Date.now(),
+          lastUpdate: Date.now(),
           hasMore: false,
           count: 1,
-          ids: [response.data._id]
+          data: [response.data._id]
         }
       }
       return {
@@ -50,15 +52,16 @@ const query = (state = queryInitialState, action) => {
         id: action.queryId,
         fetchStatus: 'loaded',
         lastFetch: Date.now(),
+        lastUpdate: Date.now(),
         hasMore: response.next !== undefined ? response.next : state.hasMore,
         count:
           response.meta && response.meta.count
             ? response.meta.count
             : response.data.length,
-        ids:
+        data:
           response.skip === 0
             ? response.data.map(doc => doc._id)
-            : [...state.ids, ...response.data.map(doc => doc._id)]
+            : [...state.data, ...response.data.map(doc => doc._id)]
       }
     case RECEIVE_QUERY_ERROR:
       return {
@@ -78,31 +81,44 @@ const queries = (state = {}, action, documents = {}) => {
       [action.queryId]: query(state[action.queryId], action)
     }
   }
-  if (isReceivingMutationResult(action) && action.updateQueries) {
-    const updated = Object.keys(action.updateQueries)
-      .filter(queryId => !!state[queryId])
-      .map(queryId => {
-        const query = getQueryFromSlice(state, queryId, documents)
-        const updater = action.updateQueries[queryId]
-        return {
-          queryId: query.id,
-          newData: updater(query.data, action.response)
-        }
-      })
-      .reduce(
-        (acc, update) => ({
-          ...acc,
-          [update.queryId]: {
-            ...state[update.queryId],
-            ids: update.newData.map(doc => doc._id),
-            count: update.newData.length // TODO: sure ?
+  if (isReceivingMutationResult(action)) {
+    if (action.updateQueries) {
+      const updated = Object.keys(action.updateQueries)
+        .filter(queryId => !!state[queryId])
+        .map(queryId => {
+          const query = getQueryFromSlice(state, queryId, documents)
+          const updater = action.updateQueries[queryId]
+          return {
+            queryId: query.id,
+            newData: updater(query.data, action.response)
           }
-        }),
-        {}
-      )
-    return {
-      ...state,
-      ...updated
+        })
+        .reduce(
+          (acc, update) => ({
+            ...acc,
+            [update.queryId]: {
+              ...state[update.queryId],
+              lastUpdate: Date.now(),
+              data: update.newData.map(doc => doc._id),
+              count: update.newData.length // TODO: sure ?
+            }
+          }),
+          {}
+        )
+      return {
+        ...state,
+        ...updated
+      }
+    }
+    if (action.contextQueryId) {
+      console.log(action.contextQueryId)
+      return {
+        ...state,
+        [action.contextQueryId]: {
+          ...state[action.contextQueryId],
+          lastUpdate: Date.now()
+        }
+      }
     }
   }
   return state
@@ -116,10 +132,11 @@ export const initQuery = (queryId, queryDefinition) => ({
   queryDefinition
 })
 
-export const receiveQueryResult = (queryId, response) => ({
+export const receiveQueryResult = (queryId, response, options = {}) => ({
   type: RECEIVE_QUERY_RESULT,
   queryId,
-  response
+  response,
+  ...options
 })
 
 export const receiveQueryError = (queryId, error) => ({
@@ -137,8 +154,10 @@ export const getQueryFromSlice = (state, queryId, documents) => {
     return { ...queryInitialState, data: null }
   }
   const query = state[queryId]
-  return {
-    ...query,
-    data: mapDocumentsToIds(documents, query.definition.doctype, query.ids)
-  }
+  return documents
+    ? {
+        ...query,
+        data: mapDocumentsToIds(documents, query.definition.doctype, query.data)
+      }
+    : query
 }

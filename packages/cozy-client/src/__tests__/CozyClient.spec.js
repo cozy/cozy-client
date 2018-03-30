@@ -14,6 +14,7 @@ import reducer, {
   receiveMutationError
 } from '../store'
 import { getQueryFromStore } from '../store/queries'
+import HasManyFilesAssociation from '../associations/HasManyFilesAssociation'
 
 describe('CozyClient', () => {
   const requestHandler = jest.fn()
@@ -47,21 +48,9 @@ describe('CozyClient', () => {
         client.save({ ...TODO_1, label: 'Buy croissants' }).mutationType
       ).toBe('UPDATE_DOCUMENT')
     })
+  })
 
-    it('should handle associations by returning multiple mutations', () => {
-      const mutation = client.save({
-        ...TODO_1,
-        attachments: [{ _id: 12345, _type: 'io.cozy.files' }]
-      })
-      expect(Array.isArray(mutation)).toBe(true)
-      expect(mutation).toEqual([
-        Mutations.updateDocument(TODO_1),
-        Mutations.addReferencesTo(TODO_1, [
-          { _id: 12345, _type: 'io.cozy.files' }
-        ])
-      ])
-    })
-
+  describe('create', () => {
     it('should handle associations for a new document with mutation creators', () => {
       const NEW_TODO = {
         _type: 'io.cozy.todos',
@@ -69,14 +58,16 @@ describe('CozyClient', () => {
         attachments: [{ _id: 12345, _type: 'io.cozy.files' }]
       }
       const EXPECTED_CREATED_TODO = { _id: 67890, ...NEW_TODO }
-      const mutation = client.save(NEW_TODO)
+      const mutation = client.create('io.cozy.todos', NEW_TODO, {
+        attachments: [{ _id: 12345, _type: 'io.cozy.files' }]
+      })
       expect(Array.isArray(mutation)).toBe(true)
       expect(typeof mutation[1] === 'function').toBe(true)
-      expect(mutation[1]({ data: EXPECTED_CREATED_TODO })).toEqual(
+      expect(mutation[1]({ data: EXPECTED_CREATED_TODO })).toEqual([
         Mutations.addReferencesTo(EXPECTED_CREATED_TODO, [
           { _id: 12345, _type: 'io.cozy.files' }
         ])
-      )
+      ])
     })
   })
 
@@ -251,10 +242,49 @@ describe('CozyClient', () => {
           {
             doctype: 'io.cozy.files',
             name: 'attachments',
-            relationType: 'has-many'
+            type: 'has-many'
           }
         ]
       })
+    })
+
+    it('should hydrate relationships into associations with helper methods in the context of a query', async () => {
+      store.getState = () => ({
+        cozy: {
+          queries: {
+            allTodos: {
+              data: [TODO_1._id],
+              fetchStatus: 'loaded',
+              definition: {
+                doctype: 'io.cozy.todos'
+              }
+            }
+          }
+        }
+      })
+      const doc = client
+        .hydrateDocuments(
+          'io.cozy.todos',
+          [
+            {
+              ...TODO_1,
+              relationships: {
+                attachments: {
+                  data: [
+                    { _id: 'abc', _type: 'io.cozy.files' },
+                    { _id: 'def', _type: 'io.cozy.files' }
+                  ]
+                }
+              }
+            }
+          ],
+          'allTodos'
+        )
+        .shift()
+      expect(doc.attachments).toBeInstanceOf(HasManyFilesAssociation)
+      await doc.attachments.fetchMore()
+      const action = store.getActions()[0]
+      expect(action.queryId).toBe('allTodos')
     })
   })
 })

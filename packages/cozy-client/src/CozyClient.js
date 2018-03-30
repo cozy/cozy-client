@@ -1,4 +1,5 @@
 import StackLink from './StackLink'
+import Association from './associations'
 import { QueryDefinition, Mutations } from './dsl'
 import CozyStackClient from 'cozy-stack-client'
 import {
@@ -14,6 +15,7 @@ import {
   getQueryFromStore,
   getDocumentFromStore
 } from './store'
+import ObservableQuery from './ObservableQuery'
 
 export default class CozyClient {
   constructor({ link, schema = {}, ...options }) {
@@ -46,39 +48,30 @@ export default class CozyClient {
     return new QueryDefinition({ doctype, id })
   }
 
-  create(doctype, document) {
-    return this.save({ _type: doctype, ...document })
+  create(doctype, attributes, relationships) {
+    const saveMutation = this.save({ _type: doctype, ...attributes })
+    if (!relationships) {
+      return saveMutation
+    }
+    return [
+      saveMutation,
+      response => {
+        const document = this.hydrateDocument(response.data)
+        return Object.keys(relationships).map(name => {
+          const val = relationships[name]
+          return Array.isArray(val)
+            ? document[name].insertDocuments(val)
+            : document[name].setDocument(val)
+        })
+      }
+    ]
   }
 
   save(document) {
-    const { relationships, attributes } = this.extractRelationshipsFrom(
-      document
-    )
-    const newDocument = !attributes._id
-    const mainMutation = newDocument
-      ? Mutations.createDocument(attributes)
-      : Mutations.updateDocument(attributes)
-
-    if (Object.keys(relationships).length === 0) {
-      return mainMutation
-    }
-
-    const associations = Object.keys(relationships).map(rel =>
-      this.getModelAssociation(document._type, rel)
-    )
-    return [
-      mainMutation,
-      ...associations.map(
-        assoc =>
-          newDocument
-            ? response =>
-                Mutations.addReferencesTo(
-                  response.data,
-                  relationships[assoc.name]
-                )
-            : Mutations.addReferencesTo(attributes, relationships[assoc.name])
-      )
-    ]
+    const newDocument = !document._id
+    return newDocument
+      ? Mutations.createDocument(document)
+      : Mutations.updateDocument(document)
   }
 
   destroy(document) {
@@ -89,23 +82,37 @@ export default class CozyClient {
     return Mutations.uploadFile(file, dirPath)
   }
 
-  async query(queryDefinition, options = {}) {
+  async query(queryDefinition, { update, ...options } = {}) {
     this.getOrCreateStore()
     const queryId = options.as || this.generateId()
     const existingQuery = getQueryFromStore(this.store.getState(), queryId)
-    if (existingQuery.fetchStatus === 'pending') {
+    // Don't trigger the INIT_QUERY for fetchMore() calls
+    if (existingQuery.fetchStatus !== 'loaded' || !queryDefinition.skip) {
       this.dispatch(initQuery(queryId, queryDefinition))
     }
     try {
       const response = await this.requestQuery(queryDefinition)
-      this.dispatch(receiveQueryResult(queryId, response))
+      this.dispatch(
+        receiveQueryResult(queryId, response, {
+          update
+        })
+      )
       return response
     } catch (error) {
       return this.dispatch(receiveQueryError(queryId, error))
     }
   }
 
-  async mutate(mutationDefinition, { updateQueries, ...options } = {}) {
+  watchQuery(queryDefinition, options = {}) {
+    const queryId = options.as || this.generateId()
+    this.query(queryDefinition, { ...options, as: queryId })
+    return new ObservableQuery(queryId, queryDefinition, this)
+  }
+
+  async mutate(
+    mutationDefinition,
+    { update, updateQueries, contextQueryId, ...options } = {}
+  ) {
     this.getOrCreateStore()
     const mutationId = options.as || this.generateId()
     this.dispatch(initMutation(mutationId))
@@ -113,7 +120,9 @@ export default class CozyClient {
       const response = await this.requestMutation(mutationDefinition)
       this.dispatch(
         receiveMutationResult(mutationId, response, {
-          updateQueries
+          update,
+          updateQueries,
+          contextQueryId
         })
       )
       return response
@@ -135,6 +144,9 @@ export default class CozyClient {
 
   async fetchIncludes(response, associations) {
     const isSingleDoc = !Array.isArray(response.data)
+    if (!isSingleDoc && response.data.length === 0) {
+      return response
+    }
     const doctype = isSingleDoc ? response.data._type : response.data[0]._type
     const originalData = isSingleDoc ? [response.data] : response.data
 
@@ -183,12 +195,12 @@ export default class CozyClient {
     }
   }
 
-  fetchDocumentAssociation(document, { relationType, doctype }) {
-    switch (relationType) {
+  fetchDocumentAssociation(document, { type, doctype }) {
+    switch (type) {
       case 'has-many':
         return this.find(doctype).referencedBy(document)
       default:
-        throw new Error(`Can't handle '${relationType}' associations`)
+        throw new Error(`Can't handle '${type}' associations`)
     }
   }
 
@@ -216,95 +228,50 @@ export default class CozyClient {
     )
   }
 
-  // toJSONAPI() ?
-  extractRelationshipsFrom(document) {
-    const model = this.getDoctypeModel(document._type)
-    const assocNames = Object.keys(model.relationships)
-    return {
-      relationships: Object.keys(document).reduce((result, prop) => {
-        if (assocNames.indexOf(prop) !== -1) {
-          result[prop] = document[prop]
-        }
-        return result
-      }, {}),
-      attributes: Object.keys(document).reduce((result, prop) => {
-        if (assocNames.indexOf(prop) === -1) {
-          result[prop] = document[prop]
-        }
-        return result
-      }, {})
-    }
-  }
-
-  async queryRelationship(queryDefinition, { document, update }) {
-    this.getOrCreateStore()
-    // try {
-    const response = await this.requestQuery(queryDefinition)
-    this.dispatch(receiveDocumentUpdate(document, update, response))
-    return response
-    // } catch (error) {}
-  }
-
-  hydrateDocuments(state, doctype, documents) {
+  hydrateDocuments(doctype, documents, queryId) {
     try {
       const model = this.getDoctypeModel(doctype)
       const associations = model.associations
       return documents.map(doc => ({
         ...doc,
-        ...this.hydrateRelationships(state, doc, associations)
+        ...this.hydrateRelationships(doc, associations, queryId)
       }))
     } catch (err) {
       return documents
     }
   }
 
-  hydrateRelationships(state, document, associations) {
-    return associations.reduce((acc, assoc) => {
-      const relationship = this.hydrateRelationship(state, document, assoc)
-      return relationship ? { ...acc, [assoc.name]: relationship } : acc
-    }, {})
+  hydrateDocument(document) {
+    try {
+      const model = this.getDoctypeModel(document._type)
+      return {
+        ...document,
+        ...this.hydrateRelationships(document, model.associations)
+      }
+    } catch (err) {
+      return document
+    }
   }
 
-  hydrateRelationship(state, document, association) {
-    const name = association.name
-    if (!document.relationships[name]) {
-      return null
+  hydrateRelationships(document, associations, queryId) {
+    const methods = {
+      get: this.getDocumentFromStore.bind(this),
+      query: (def, opts) =>
+        this.query.call(this, def, queryId ? { as: queryId, ...opts } : opts),
+      mutate: (def, opts) =>
+        this.mutate.call(
+          this,
+          def,
+          queryId ? { contextQueryId: queryId, ...opts } : opts
+        )
     }
-    const relationship = document.relationships[name]
-    switch (association.relationType) {
-      case 'has-many':
-        return {
-          ...relationship,
-          data: relationship.data.map(({ _id, _type }) =>
-            getDocumentFromStore(state, _type, _id)
-          ),
-          fetchMore: () => {
-            const skip = relationship.data.length
-            return this.queryRelationship(
-              this.find(association.doctype)
-                .referencedBy(document)
-                .offset(skip),
-              {
-                document,
-                update: (doc, response) => ({
-                  ...doc,
-                  relationships: {
-                    ...doc.relationships,
-                    [name]: {
-                      ...doc.relationships[name],
-                      data: [...doc.relationships[name].data, ...response.data],
-                      next: response.next,
-                      skip
-                    }
-                  }
-                })
-              }
-            )
-          }
-        }
-      default:
-        throw new Error(`Can't handle ${association.relationType} associations`)
-    }
+    return associations.reduce(
+      (acc, assoc) => ({
+        ...acc,
+        [assoc.name]: Association.create(document, assoc, methods)
+      }),
+      {}
+    )
   }
 
   getModelAssociation(doctype, associationName) {
@@ -334,7 +301,7 @@ export default class CozyClient {
           const { type, doctype } = model.relationships[name]
           return {
             name,
-            relationType: type,
+            type,
             doctype
           }
         })
@@ -342,6 +309,10 @@ export default class CozyClient {
       ...model,
       associations
     }
+  }
+
+  getDocumentFromStore(type, id) {
+    return getDocumentFromStore(this.store.getState(), type, id)
   }
 
   setStore(store) {

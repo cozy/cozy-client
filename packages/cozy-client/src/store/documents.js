@@ -1,20 +1,6 @@
 import { isReceivingData } from './queries'
 import { isReceivingMutationResult } from './mutations'
 
-const RECEIVE_DOCUMENT_UPDATE = 'RECEIVE_DOCUMENT_UPDATE'
-
-export const isDocumentAction = action =>
-  [RECEIVE_DOCUMENT_UPDATE].indexOf(action.type) !== -1
-
-export const receiveDocumentUpdate = (document, update, response) => ({
-  type: RECEIVE_DOCUMENT_UPDATE,
-  document,
-  update,
-  response
-})
-
-const isReceivingUpdate = action => action.type === RECEIVE_DOCUMENT_UPDATE
-
 const storeDocument = (state, document) => ({
   ...state,
   [document._type]: {
@@ -33,11 +19,7 @@ const updateDocument = (state, { _id, _type }, response, updateFn) => ({
 
 // reducer
 const documents = (state = {}, action) => {
-  if (
-    !isReceivingData(action) &&
-    !isReceivingUpdate(action) &&
-    !isReceivingMutationResult(action)
-  ) {
+  if (!isReceivingData(action) && !isReceivingMutationResult(action)) {
     return state
   }
 
@@ -47,15 +29,6 @@ const documents = (state = {}, action) => {
   const updatedStateWithIncluded = included
     ? included.reduce(storeDocument, state)
     : state
-
-  if (isReceivingUpdate(action)) {
-    return updateDocument(
-      updatedStateWithIncluded,
-      action.document,
-      action.response,
-      action.update
-    )
-  }
 
   if (!Array.isArray(data)) {
     return storeDocument(updatedStateWithIncluded, data)
