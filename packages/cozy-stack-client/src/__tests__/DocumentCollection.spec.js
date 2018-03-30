@@ -283,8 +283,12 @@ describe('DocumentCollection', () => {
   describe('destroy', () => {
     const collection = new DocumentCollection('io.cozy.todos', client)
 
-    beforeAll(() => {
-      client.fetch.mockReturnValue(Promise.resolve(DESTROY_RESPONSE_FIXTURE))
+    beforeEach(() => {
+      // we first need to mock the return value of getAllSharingLinks()
+      client.fetch.mockReturnValueOnce(Promise.resolve({ data: [] }))
+      client.fetch.mockReturnValueOnce(
+        Promise.resolve(DESTROY_RESPONSE_FIXTURE)
+      )
     })
 
     it('should call the right route with the right payload', async () => {

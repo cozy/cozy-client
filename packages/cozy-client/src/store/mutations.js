@@ -11,9 +11,10 @@ export const isReceivingMutationResult = action =>
   action.type === RECEIVE_MUTATION_RESULT
 
 // actions
-export const initMutation = mutationId => ({
+export const initMutation = (mutationId, definition) => ({
   type: INIT_MUTATION,
-  mutationId
+  mutationId,
+  definition
 })
 
 export const receiveMutationResult = (mutationId, response, options = {}) => ({

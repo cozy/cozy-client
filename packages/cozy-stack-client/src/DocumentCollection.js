@@ -238,8 +238,20 @@ export default class DocumentCollection {
     }
   }
 
-  async getIndexId(fields) {
-    const indexName = this.getIndexNameFromFields(fields)
+  async checkUniquenessOf(property, value) {
+    const indexId = await this.getUniqueIndexId(property)
+    const existingDocs = await this.find(
+      { [property]: value },
+      { indexId, fields: ['_id'] }
+    )
+    return existingDocs.data.length === 0
+  }
+
+  getUniqueIndexId(property) {
+    return this.createIndex([property], `${this.doctype}/${property}`)
+  }
+
+  async getIndexId(fields, indexName = this.getIndexNameFromFields(fields)) {
     if (!this.indexes[indexName]) {
       this.indexes[indexName] = await this.createIndex(fields)
     }

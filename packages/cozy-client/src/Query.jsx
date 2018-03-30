@@ -18,14 +18,10 @@ export default class Query extends Component {
 
     const { mutations, ...rest } = props
     this.mutations =
-      typeof mutations === 'function' ? mutations(this.mutate, rest) : {}
+      typeof mutations === 'function'
+        ? mutations(this.observableQuery, rest)
+        : {}
   }
-
-  mutate = (mutationCreator, options = {}) =>
-    this.context.client.mutate(mutationCreator(this.context.client), {
-      ...options,
-      contextQueryId: this.observableQuery.queryId
-    })
 
   componentDidMount() {
     this.queryUnsubscribe = this.observableQuery.subscribe(this.onQueryChange)

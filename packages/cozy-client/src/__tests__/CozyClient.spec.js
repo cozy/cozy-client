@@ -43,14 +43,19 @@ describe('CozyClient', () => {
   })
 
   describe('save', () => {
-    it('should return a Mutation definition', () => {
-      expect(
-        client.save({ ...TODO_1, label: 'Buy croissants' }).mutationType
-      ).toBe('UPDATE_DOCUMENT')
+    it('should mutate the store', async () => {
+      const doc = { ...TODO_1, label: 'Buy croissants' }
+      await client.save(doc, { as: 'updateTodo' })
+      expect(store.getActions()[0]).toEqual(
+        initMutation('updateTodo', {
+          mutationType: 'UPDATE_DOCUMENT',
+          document: doc
+        })
+      )
     })
   })
 
-  describe('create', () => {
+  describe('getDocumentSavePlan', () => {
     it('should handle associations for a new document with mutation creators', () => {
       const NEW_TODO = {
         _type: 'io.cozy.todos',
@@ -58,7 +63,7 @@ describe('CozyClient', () => {
         attachments: [{ _id: 12345, _type: 'io.cozy.files' }]
       }
       const EXPECTED_CREATED_TODO = { _id: 67890, ...NEW_TODO }
-      const mutation = client.create('io.cozy.todos', NEW_TODO, {
+      const mutation = client.getDocumentSavePlan(NEW_TODO, {
         attachments: [{ _id: 12345, _type: 'io.cozy.files' }]
       })
       expect(Array.isArray(mutation)).toBe(true)
@@ -177,14 +182,16 @@ describe('CozyClient', () => {
   })
 
   describe('mutate', () => {
-    const mutation = client.save({ ...TODO_1, label: 'Buy croissants' })
+    const mutation = { mutationType: 'FAKE' }
     const fakeResponse = {
       data: [{ ...TODO_1, label: 'Buy croissants', rev: 2 }]
     }
 
     it('should first dispatch a INIT_MUTATION action', async () => {
       await client.mutate(mutation, { as: 'updateTodo' })
-      expect(store.getActions()[0]).toEqual(initMutation('updateTodo'))
+      expect(store.getActions()[0]).toEqual(
+        initMutation('updateTodo', mutation)
+      )
     })
 
     it('should call the link with the mutation', async () => {

@@ -48,10 +48,28 @@ export default class CozyClient {
     return new QueryDefinition({ doctype, id })
   }
 
-  create(doctype, attributes, relationships) {
-    const saveMutation = this.save({ _type: doctype, ...attributes })
+  create(doctype, attributes, relationships, mutationOptions = {}) {
+    const document = { _type: doctype, ...attributes }
+    return this.mutate(
+      this.getDocumentSavePlan(document, relationships),
+      mutationOptions
+    )
+  }
+
+  async save(document, mutationOptions = {}) {
+    return this.mutate(this.getDocumentSavePlan(document), mutationOptions)
+  }
+
+  getDocumentSavePlan(document, relationships) {
+    const newDocument = !document._id
+    const saveMutation = newDocument
+      ? Mutations.createDocument(document)
+      : Mutations.updateDocument(document)
     if (!relationships) {
       return saveMutation
+    }
+    if (relationships && !newDocument) {
+      throw new Error('Unable to save relationships on a not-new document')
     }
     return [
       saveMutation,
@@ -67,19 +85,12 @@ export default class CozyClient {
     ]
   }
 
-  save(document) {
-    const newDocument = !document._id
-    return newDocument
-      ? Mutations.createDocument(document)
-      : Mutations.updateDocument(document)
+  destroy(document, mutationOptions = {}) {
+    return this.mutate(Mutations.deleteDocument(document), mutationOptions)
   }
 
-  destroy(document) {
-    return Mutations.deleteDocument(document)
-  }
-
-  upload(file, dirPath) {
-    return Mutations.uploadFile(file, dirPath)
+  upload(file, dirPath, mutationOptions = {}) {
+    return this.mutate(Mutations.uploadFile(file, dirPath), mutationOptions)
   }
 
   async query(queryDefinition, { update, ...options } = {}) {
@@ -115,7 +126,7 @@ export default class CozyClient {
   ) {
     this.getOrCreateStore()
     const mutationId = options.as || this.generateId()
-    this.dispatch(initMutation(mutationId))
+    this.dispatch(initMutation(mutationId, mutationDefinition))
     try {
       const response = await this.requestMutation(mutationDefinition)
       this.dispatch(
