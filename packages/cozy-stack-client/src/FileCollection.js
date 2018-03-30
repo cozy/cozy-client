@@ -93,8 +93,11 @@ export default class FileCollection extends DocumentCollection {
   }
 
   async destroy({ _id, relationships }, { ifMatch = '' } = {}) {
-    if (relationships && relationships.referenced_by) {
-      relationships.referenced_by.data
+    if (
+      relationships &&
+      relationships.referenced_by &&
+      Array.isArray(relationships.referenced_by.data)
+    ) {
       for (const ref of relationships.referenced_by.data) {
         await this.removeReferencesTo({ _id: ref.id, _type: ref.type }, [
           { _id }
