@@ -40,6 +40,13 @@ export class StoreProxy {
     }))
   }
 
+  touchQuery(queryId) {
+    this.writeQuery(queryId, {
+      ...this.readQuery(queryId),
+      lastUpdate: Date.now()
+    })
+  }
+
   setState(updaterFn) {
     this.state = updaterFn(this.state)
   }
@@ -56,6 +63,9 @@ const combinedReducer = (state = { documents: {}, queries: {} }, action) => {
   if (action.update) {
     const proxy = new StoreProxy(state)
     action.update(proxy, action.response)
+    if (action.contextQueryId) {
+      proxy.touchQuery(action.contextQueryId)
+    }
     return proxy.getState()
   }
   return {
@@ -79,6 +89,9 @@ export const getQueryFromStore = (state, queryId) =>
     queryId,
     getStateRoot(state).documents
   )
+
+export const getRawQueryFromStore = (state, queryId) =>
+  getQueryFromSlice(getStateRoot(state).queries, queryId)
 
 export { receiveDocumentUpdate } from './documents'
 

@@ -15,6 +15,7 @@ import {
   getQueryFromStore,
   getDocumentFromStore
 } from './store'
+import ObservableQuery from './ObservableQuery'
 
 export default class CozyClient {
   constructor({ link, schema = {}, ...options }) {
@@ -85,7 +86,8 @@ export default class CozyClient {
     this.getOrCreateStore()
     const queryId = options.as || this.generateId()
     const existingQuery = getQueryFromStore(this.store.getState(), queryId)
-    if (existingQuery.fetchStatus === 'pending') {
+    // Don't trigger the INIT_QUERY for fetchMore() calls
+    if (existingQuery.fetchStatus !== 'loaded' || !queryDefinition.skip) {
       this.dispatch(initQuery(queryId, queryDefinition))
     }
     try {
@@ -97,12 +99,20 @@ export default class CozyClient {
       )
       return response
     } catch (error) {
-      console.log(error)
       return this.dispatch(receiveQueryError(queryId, error))
     }
   }
 
-  async mutate(mutationDefinition, { update, updateQueries, ...options } = {}) {
+  watchQuery(queryDefinition, options = {}) {
+    const queryId = options.as || this.generateId()
+    this.query(queryDefinition, { ...options, as: queryId })
+    return new ObservableQuery(queryId, queryDefinition, this)
+  }
+
+  async mutate(
+    mutationDefinition,
+    { update, updateQueries, contextQueryId, ...options } = {}
+  ) {
     this.getOrCreateStore()
     const mutationId = options.as || this.generateId()
     this.dispatch(initMutation(mutationId))
@@ -111,7 +121,8 @@ export default class CozyClient {
       this.dispatch(
         receiveMutationResult(mutationId, response, {
           update,
-          updateQueries
+          updateQueries,
+          contextQueryId
         })
       )
       return response
@@ -247,7 +258,12 @@ export default class CozyClient {
       get: this.getDocumentFromStore.bind(this),
       query: (def, opts) =>
         this.query.call(this, def, queryId ? { as: queryId, ...opts } : opts),
-      mutate: this.mutate.bind(this)
+      mutate: (def, opts) =>
+        this.mutate.call(
+          this,
+          def,
+          queryId ? { contextQueryId: queryId, ...opts } : opts
+        )
     }
     return associations.reduce(
       (acc, assoc) => ({

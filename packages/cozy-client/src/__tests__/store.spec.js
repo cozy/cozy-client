@@ -78,6 +78,7 @@ describe('Store', () => {
         id: null,
         fetchStatus: 'pending',
         lastFetch: null,
+        lastUpdate: null,
         hasMore: false,
         count: 0,
         data: null
