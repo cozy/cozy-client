@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
 import { connect as reduxConnect } from 'react-redux'
+import PropTypes from 'prop-types'
 
 import { getQueryFromStore } from './store'
 
 const connect = (query, options = {}) => WrappedComponent => {
+  const wrappedDisplayName =
+    WrappedComponent.displayName || WrappedComponent.name || 'Component'
+
   const mapStateToProps = (state, ownProps) => ({
     ...getQueryFromStore(state, ownProps.queryId)
   })
@@ -13,10 +17,23 @@ const connect = (query, options = {}) => WrappedComponent => {
   )
 
   class Wrapper extends Component {
-    componentWillMount() {
-      const { client } = this.context
-      this.queryId = options.as || client.generateId()
-      client.query(query, { as: this.queryId })
+    static contextTypes = {
+      client: PropTypes.object
+    }
+
+    constructor(props, context) {
+      super(props, context)
+      this.client = props.client || context.client
+      if (!this.client) {
+        throw new Error(
+          `Could not find "client" in either the context or props of ${wrappedDisplayName}`
+        )
+      }
+      this.queryId = options.as || this.client.generateId()
+    }
+
+    componentDidMount() {
+      this.client.query(query, { as: this.queryId })
     }
 
     render() {
@@ -26,9 +43,7 @@ const connect = (query, options = {}) => WrappedComponent => {
     }
   }
 
-  Wrapper.displayName = `CozyConnect(${WrappedComponent.displayName ||
-    WrappedComponent.name ||
-    'Component'})`
+  Wrapper.displayName = `CozyConnect(${wrappedDisplayName})`
   return Wrapper
 }
 
