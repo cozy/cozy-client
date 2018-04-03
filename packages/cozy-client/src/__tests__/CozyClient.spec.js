@@ -16,6 +16,25 @@ import reducer, {
 import { getQueryFromStore } from '../store/queries'
 import HasManyFilesAssociation from '../associations/HasManyFilesAssociation'
 
+describe('CozyClient initialization', () => {
+  const links = [
+    new CozyLink((operation, result = '', forward) => {
+      return forward(operation, result + 'foo')
+    }),
+    new CozyLink((operation, result, forward) => {
+      return forward(operation, result + 'bar')
+    }),
+    (operation, result) => {
+      return result + 'baz'
+    }
+  ]
+  const client = new CozyClient({ link: links })
+  it('should have chained links', async () => {
+    const res = await client.requestQuery({})
+    expect(res).toBe('foobarbaz')
+  })
+})
+
 describe('CozyClient', () => {
   const requestHandler = jest.fn()
   const store = configureStore()({})

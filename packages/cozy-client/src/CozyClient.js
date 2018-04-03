@@ -15,6 +15,7 @@ import {
   getQueryFromStore,
   getDocumentFromStore
 } from './store'
+import { chain } from './CozyLink'
 import ObservableQuery from './ObservableQuery'
 
 export default class CozyClient {
@@ -22,6 +23,9 @@ export default class CozyClient {
     this.options = options
     this.idCounter = 1
     this.link = link || new StackLink({ client: this.getOrCreateStackClient() })
+    if (Array.isArray(this.link)) {
+      this.link = chain(this.link)
+    }
     this.schema = schema
   }
 
