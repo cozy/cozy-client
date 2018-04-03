@@ -113,7 +113,7 @@ describe('CozyPouchLink', () => {
 
     it('should be possible to save a new document', async () => {
       const {_id, ...NEW_TODO} = TODO_3
-      const mutation = client.save(NEW_TODO)
+      const mutation = client.getDocumentSavePlan(NEW_TODO)
       const res = await link.request(mutation)
       expect(res).toMatchObject({
         data: {
@@ -127,7 +127,7 @@ describe('CozyPouchLink', () => {
     })
 
     it('should be possible to update a document', async () => {
-      const mutation = client.save(TODO_3)
+      const mutation = client.getDocumentSavePlan(TODO_3)
       const res = await link.request(mutation)
       expect(res).toMatchObject({
         data: {

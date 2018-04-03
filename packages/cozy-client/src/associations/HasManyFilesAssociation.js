@@ -22,19 +22,28 @@ export default class HasManyFilesAssociation extends HasManyAssociation {
     )
   }
 
-  add(referencedDocs) {
-    return this.mutate(this.insertDocuments(referencedDocs), {
+  async add(referencedDocs) {
+    // WARN : here we're trying to check if some files are already referenced,
+    // but we possibly haven't loaded all referenced files, so it should be handled by the stack.
+    const currentlyReferencedIds = this.getRelationship().data.map(
+      ({ _id }) => _id
+    )
+    const filteredDocs = referencedDocs.filter(
+      ({ _id }) => currentlyReferencedIds.indexOf(_id) === -1
+    )
+    await this.mutate(this.insertDocuments(filteredDocs), {
       update: (store, response) => {
-        referencedDocs.forEach(doc => store.writeDocument(doc))
+        filteredDocs.forEach(doc => store.writeDocument(doc))
         this.updateTargetRelationship(store, prevRelationship => ({
           data: [
             ...prevRelationship.data,
-            ...referencedDocs.map(({ _id, _type }) => ({ _id, _type }))
+            ...filteredDocs.map(({ _id, _type }) => ({ _id, _type }))
           ],
-          meta: { count: prevRelationship.meta.count + referencedDocs.length }
+          meta: { count: prevRelationship.meta.count + filteredDocs.length }
         }))
       }
     })
+    return filteredDocs
   }
 
   remove(referencedDocs) {

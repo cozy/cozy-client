@@ -79,6 +79,38 @@ export default class ObservableQuery {
     )
   }
 
+  create(type, { _type, ...attributes }, relationships, mutationOptions = {}) {
+    return this.client.create(type, attributes, relationships, {
+      ...mutationOptions,
+      contextQueryId: this.queryId
+    })
+  }
+
+  save(document, mutationOptions = {}) {
+    return this.client.save(document, {
+      ...mutationOptions,
+      contextQueryId: this.queryId
+    })
+  }
+
+  validate(document) {
+    return this.client.validate(document)
+  }
+
+  destroy(document, mutationOptions = {}) {
+    return this.client.destroy(document, {
+      ...mutationOptions,
+      contextQueryId: this.queryId
+    })
+  }
+
+  upload(file, dirPath, mutationOptions = {}) {
+    return this.client.upload(file, dirPath, {
+      ...mutationOptions,
+      contextQueryId: this.queryId
+    })
+  }
+
   currentRawResult() {
     return getRawQueryFromStore(this.getStore().getState(), this.queryId)
   }

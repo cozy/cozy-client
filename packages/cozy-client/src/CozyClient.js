@@ -48,10 +48,55 @@ export default class CozyClient {
     return new QueryDefinition({ doctype, id })
   }
 
-  create(doctype, attributes, relationships) {
-    const saveMutation = this.save({ _type: doctype, ...attributes })
+  async create(type, { _type, ...attributes }, relationships, options = {}) {
+    const document = { _type: type, ...attributes }
+    const ret = await this.validate(document)
+    if (ret !== true) throw new Error('Validation failed')
+    return this.mutate(
+      this.getDocumentSavePlan(document, relationships),
+      options
+    )
+  }
+
+  async save(document, mutationOptions = {}) {
+    const ret = await this.validate(document)
+    if (ret !== true) throw new Error('Validation failed')
+    return this.mutate(this.getDocumentSavePlan(document), mutationOptions)
+  }
+
+  async validate(document) {
+    let errors = {}
+    const model = this.getDoctypeModel(document._type)
+    if (!model.attributes) return true
+    for (const n in model.attributes) {
+      const ret = await this.validateAttribute(document, n, model.attributes[n])
+      if (ret !== true) errors[n] = ret
+    }
+    if (Object.keys(errors).length === 0) return true
+    return errors
+  }
+
+  async validateAttribute(document, attrName, attrProps) {
+    if (attrProps.unique) {
+      const ret = await this.collection(document._type).checkUniquenessOf(
+        attrName,
+        document[attrName]
+      )
+      if (ret !== true) return 'must be unique'
+    }
+    return true
+  }
+
+  getDocumentSavePlan(document, relationships) {
+    const newDocument = !document._id
+    const saveMutation = newDocument
+      ? Mutations.createDocument(document)
+      : Mutations.updateDocument(document)
     if (!relationships) {
       return saveMutation
+    }
+    if (relationships && !newDocument) {
+      throw new Error('Unable to save relationships on a not-new document')
     }
     return [
       saveMutation,
@@ -67,19 +112,12 @@ export default class CozyClient {
     ]
   }
 
-  save(document) {
-    const newDocument = !document._id
-    return newDocument
-      ? Mutations.createDocument(document)
-      : Mutations.updateDocument(document)
+  destroy(document, mutationOptions = {}) {
+    return this.mutate(Mutations.deleteDocument(document), mutationOptions)
   }
 
-  destroy(document) {
-    return Mutations.deleteDocument(document)
-  }
-
-  upload(file, dirPath) {
-    return Mutations.uploadFile(file, dirPath)
+  upload(file, dirPath, mutationOptions = {}) {
+    return this.mutate(Mutations.uploadFile(file, dirPath), mutationOptions)
   }
 
   async query(queryDefinition, { update, ...options } = {}) {
@@ -115,7 +153,7 @@ export default class CozyClient {
   ) {
     this.getOrCreateStore()
     const mutationId = options.as || this.generateId()
-    this.dispatch(initMutation(mutationId))
+    this.dispatch(initMutation(mutationId, mutationDefinition))
     try {
       const response = await this.requestMutation(mutationDefinition)
       this.dispatch(

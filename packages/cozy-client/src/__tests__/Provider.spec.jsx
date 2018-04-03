@@ -1,6 +1,7 @@
 jest.mock('../CozyClient')
 
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import configureStore from 'redux-mock-store'
 import { shallow } from 'enzyme'
 
@@ -22,6 +23,9 @@ describe('Provider', () => {
 
   it('should provide the client in the context', () => {
     class FakeComponent extends Component {
+      static contextTypes = {
+        client: PropTypes.object
+      }
       onClick = () => {
         this.context.client.query('foo')
       }
