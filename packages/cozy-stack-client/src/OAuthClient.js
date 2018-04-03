@@ -1,7 +1,7 @@
 import CozyStackClient from './CozyStackClient'
 import AccessToken from './AccessToken'
 
-const defaultoAuthOptions = {
+const defaultOAuthOptions = {
   clientID: '',
   clientName: '',
   clientKind: '',
@@ -18,9 +18,9 @@ const defaultoAuthOptions = {
 }
 
 export default class OAuthClient extends CozyStackClient{
-  constructor({ oauth, uri = '' }) {
-    super({token: null, uri})
-    this.oAuthOptions = {...defaultoAuthOptions, ...oauth}  
+  constructor({ oauth, ...options }) {
+    super(options)
+    this.oAuthOptions = {...defaultOAuthOptions, ...oauth}  
   }
   
   isRegistered () {
@@ -53,7 +53,15 @@ export default class OAuthClient extends CozyStackClient{
     this.oAuthOptions.registrationAccessToken = data.registration_access_token
     this.oAuthOptions.softwareID = data.software_id
     
-    return this;
+    return this.oAuthOptions;
+  }
+  
+  unregister() {
+    if (!this.isRegistered()) throw new Error('Client not registered')
+    
+    return this.fetch('DELETE', `/auth/register/${this.oAuthOptions.clientID}`, null, {
+      credentials: 'Bearer ' + this.oAuthOptions.registrationAccessToken
+    })
   }
   
   generateStateCode() {

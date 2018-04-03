@@ -61,9 +61,9 @@ export default class CozyStackClient {
       }
     }
 
-    const credentials = this.getCredentials()
+    const credentials = options.credentials || this.getCredentials()
     if (credentials) {
-      headers['Authorization'] = credentials.toAuthHeader()
+      headers['Authorization'] = credentials
       // the option credentials:include tells fetch to include the cookies in the
       // request even for cross-origin requests
       options.credentials = 'include'
@@ -84,7 +84,7 @@ export default class CozyStackClient {
   }
 
   getCredentials() {
-    return this.token
+    return this.token ? this.token.toAuthHeader() : null
   }
   
   setCredentials(token) {
