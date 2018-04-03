@@ -102,7 +102,7 @@ export default class OAuthClient extends CozyStackClient{
     })
   }
   
-  async updateInformations(informations) {
+  async updateInformations(informations, resetSecret = false) {
     const mandatoryFields = {
       clientID: this.oAuthOptions.clientID,
       clientName: this.oAuthOptions.clientName,
@@ -110,6 +110,8 @@ export default class OAuthClient extends CozyStackClient{
       softwareID: this.oAuthOptions.softwareID,
     }
     const data = this.oauthDataToJSON({...mandatoryFields, ...informations})
+    
+    if (resetSecret) data['cleint_secret'] = this.oAuthOptions.clientSecret
     
     const result = await this.fetch('PUT', `/auth/register/${this.oAuthOptions.clientID}`, data, {
       credentials: 'Bearer ' + this.oAuthOptions.registrationAccessToken
