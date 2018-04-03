@@ -1,7 +1,7 @@
 import CozyStackClient from './CozyStackClient'
 import AccessToken from './AccessToken'
 
-const defaultOAuthOptions = {
+const defaultoauthOptions = {
   clientID: '',
   clientName: '',
   clientKind: '',
@@ -20,14 +20,14 @@ const defaultOAuthOptions = {
 export default class OAuthClient extends CozyStackClient{
   constructor({ oauth, ...options }) {
     super(options)
-    this.oAuthOptions = {...defaultOAuthOptions, ...oauth}
+    this.oauthOptions = {...defaultoauthOptions, ...oauth}
   }
   
   isRegistered () {
-    return this.oAuthOptions.clientID !== ''
+    return this.oauthOptions.clientID !== ''
   }
   
-  oauthDataToJSON (data) {
+  snakeCaseOAuthData (data) {
     const mappedFields = {
       softwareID: 'software_id',
       softwareVersion: 'software_version',
@@ -42,21 +42,21 @@ export default class OAuthClient extends CozyStackClient{
       redirectURI: 'redirect_uris'
     }
     
-    const json = {}
+    const result = {}
     
     Object.keys(data).forEach(fieldName => {
       const key = mappedFields[fieldName] || fieldName
       const value = data[fieldName]
-      json[key] = value
+      result[key] = value
     })
     
     // special case: turn redirect_uris into an array
-    if (json['redirect_uris'] && json['redirect_uris'] instanceof Array === false) json['redirect_uris'] = [json['redirect_uris']]
+    if (result['redirect_uris'] && result['redirect_uris'] instanceof Array === false) result['redirect_uris'] = [result['redirect_uris']]
     
-    return json
+    return result
   }
   
-  serverDataToJSON(data) {
+  camelCaseOAuthData(data) {
     const mappedFields = {
       client_id: 'clientID',
       client_name: 'clientName',
@@ -65,61 +65,61 @@ export default class OAuthClient extends CozyStackClient{
       software_id: 'softwareID',
     }
     
-    const json = {}
+    const result = {}
     
     Object.keys(data).forEach(fieldName => {
       const key = mappedFields[fieldName] || fieldName
       const value = data[fieldName]
-      json[key] = value
+      result[key] = value
     })
     
-    return json
+    return result
   }
   
   async register() {
-    if (this.isRegistered()) throw new Error('Already registered')
+    if (this.isRegistered()) throw new Error('Client already registered')
     
-    const data = await this.fetch('POST', '/auth/register', this.oauthDataToJSON(this.oAuthOptions))
+    const data = await this.fetch('POST', '/auth/register', this.snakeCaseOAuthData(this.oauthOptions))
     
-    this.oAuthOptions = this.serverDataToJSON(data)
+    this.oauthOptions = this.camelCaseOAuthData(data)
     
-    return this.oAuthOptions;
+    return this.oauthOptions
   }
   
   unregister() {
-    if (!this.isRegistered()) throw new Error('Client not registered')
+    if (!this.isRegistered()) throw new NotRegisteredException()
     
-    return this.fetch('DELETE', `/auth/register/${this.oAuthOptions.clientID}`, null, {
-      credentials: 'Bearer ' + this.oAuthOptions.registrationAccessToken
+    return this.fetch('DELETE', `/auth/register/${this.oauthOptions.clientID}`, null, {
+      credentials: this.registrationAccessTokenToAuthHeader()
     })
   }
   
   fetchInformations(){
-    if (!this.isRegistered()) throw new Error('Client not registered')
+    if (!this.isRegistered()) throw new NotRegisteredException()
     
-    return this.fetch('GET', `/auth/register/${this.oAuthOptions.clientID}`, null, {
-      credentials: 'Bearer ' + this.oAuthOptions.registrationAccessToken
+    return this.fetch('GET', `/auth/register/${this.oauthOptions.clientID}`, null, {
+      credentials: this.registrationAccessTokenToAuthHeader()
     })
   }
   
   async updateInformations(informations, resetSecret = false) {
     const mandatoryFields = {
-      clientID: this.oAuthOptions.clientID,
-      clientName: this.oAuthOptions.clientName,
-      redirectURI: this.oAuthOptions.redirectURI,
-      softwareID: this.oAuthOptions.softwareID,
+      clientID: this.oauthOptions.clientID,
+      clientName: this.oauthOptions.clientName,
+      redirectURI: this.oauthOptions.redirectURI,
+      softwareID: this.oauthOptions.softwareID,
     }
-    const data = this.oauthDataToJSON({...mandatoryFields, ...informations})
+    const data = this.snakeCaseOAuthData({...mandatoryFields, ...informations})
     
-    if (resetSecret) data['cleint_secret'] = this.oAuthOptions.clientSecret
+    if (resetSecret) data['client_secret'] = this.oauthOptions.clientSecret
     
-    const result = await this.fetch('PUT', `/auth/register/${this.oAuthOptions.clientID}`, data, {
-      credentials: 'Bearer ' + this.oAuthOptions.registrationAccessToken
+    const result = await this.fetch('PUT', `/auth/register/${this.oauthOptions.clientID}`, data, {
+      credentials: this.registrationAccessTokenToAuthHeader()
     })
     
-    this.oAuthOptions = this.serverDataToJSON(result)
+    this.oauthOptions = this.camelCaseOAuthData(result)
     
-    return this.oAuthOptions
+    return this.oauthOptions
   }
   
   generateStateCode() {
@@ -147,11 +147,11 @@ export default class OAuthClient extends CozyStackClient{
   }
   
   getAuthCodeURL(stateCode, scopes = []) {
-    if (!this.isRegistered()) throw new Error('Not registered')
+    if (!this.isRegistered()) throw new NotRegisteredException()
     
     const query = new URLSearchParams({
-      client_id: this.oAuthOptions.clientID,
-      redirect_uri: this.oAuthOptions.redirectURI,
+      client_id: this.oauthOptions.clientID,
+      redirect_uri: this.oauthOptions.redirectURI,
       state: stateCode,
       response_type: 'code',
       scope: scopes.join(' ')
@@ -173,13 +173,13 @@ export default class OAuthClient extends CozyStackClient{
   }
   
   async fetchAccessToken(accessCode) {
-    if (!this.isRegistered()) throw new Error('Not registered')
+    if (!this.isRegistered()) throw new NotRegisteredException()
     
     const data = new URLSearchParams({
       grant_type: 'authorization_code',
       code: accessCode,
-      client_id: this.oAuthOptions.clientID,
-      client_secret: this.oAuthOptions.clientSecret,
+      client_id: this.oauthOptions.clientID,
+      client_secret: this.oauthOptions.clientSecret,
     })
     
     const result = await this.fetch('POST', '/auth/access_token', data, {
@@ -190,14 +190,14 @@ export default class OAuthClient extends CozyStackClient{
   }
   
   async refreshToken() {
-    if (!this.isRegistered()) throw new Error('Not registered')
-    if (!this.token) throw new Error('No token')
+    if (!this.isRegistered()) throw new NotRegisteredException()
+    if (!this.token) throw new Error('No token to refresh')
     
     const data = new URLSearchParams({
       grant_type: 'refresh_token',
       refresh_token: this.token.refreshToken,
-      client_id: this.oAuthOptions.clientID,
-      client_secret: this.oAuthOptions.clientSecret,
+      client_id: this.oauthOptions.clientID,
+      client_secret: this.oauthOptions.clientSecret,
     })
     
     const result = await this.fetch('POST', '/auth/access_token', data, {
@@ -211,5 +211,20 @@ export default class OAuthClient extends CozyStackClient{
     if (token) {
       this.token = (token instanceof AccessToken) ? token : new AccessToken(token)
     }
+    else {
+      this.token = null
+    }
   }
+  
+  registrationAccessTokenToAuthHeader() {
+    return 'Bearer ' + this.oauthOptions.registrationAccessToken
+  }
+}
+
+export class NotRegisteredException extends Error{
+	constructor(message = 'Client not registered or missing OAuth informations') {
+		super(message);
+		this.message = message;
+		this.name = 'NotRegisteredException';
+	}
 }
