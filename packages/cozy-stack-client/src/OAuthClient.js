@@ -189,6 +189,24 @@ export default class OAuthClient extends CozyStackClient{
     return new AccessToken(result)
   }
   
+  async refreshToken() {
+    if (!this.isRegistered()) throw new Error('Not registered')
+    if (!this.token) throw new Error('No token')
+    
+    const data = new URLSearchParams({
+      grant_type: 'refresh_token',
+      refresh_token: this.token.refreshToken,
+      client_id: this.oAuthOptions.clientID,
+      client_secret: this.oAuthOptions.clientSecret,
+    })
+    
+    const result = await this.fetch('POST', '/auth/access_token', data, {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    
+    return new AccessToken({refresh_token: this.token.refreshToken, ...result})
+  }
+  
   setCredentials(token = null) {
     if (token) {
       this.token = (token instanceof AccessToken) ? token : new AccessToken(token)
