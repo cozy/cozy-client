@@ -20,38 +20,68 @@ const defaultOAuthOptions = {
 export default class OAuthClient extends CozyStackClient{
   constructor({ oauth, ...options }) {
     super(options)
-    this.oAuthOptions = {...defaultOAuthOptions, ...oauth}  
+    this.oAuthOptions = {...defaultOAuthOptions, ...oauth}
   }
   
   isRegistered () {
     return this.oAuthOptions.clientID !== ''
   }
   
-  getRegisterOptions () {
-    return {
-      redirect_uris: [this.oAuthOptions.redirectURI],
-      software_id: this.oAuthOptions.softwareID,
-      software_version: this.oAuthOptions.softwareVersion,
-      client_name: this.oAuthOptions.clientName,
-      client_kind: this.oAuthOptions.clientKind,
-      client_uri: this.oAuthOptions.clientURI,
-      logo_uri: this.oAuthOptions.logoURI,
-      policy_uri: this.oAuthOptions.policyURI,
-      notification_platform: this.oAuthOptions.notificationPlatform,
-      notification_device_token: this.oAuthOptions.notificationDeviceToken
+  oauthDataToJSON (data) {
+    const mappedFields = {
+      softwareID: 'software_id',
+      softwareVersion: 'software_version',
+      clientID: 'client_id',
+      clientName: 'client_name',
+      clientKind: 'client_kind',
+      clientURI: 'client_uri',
+      logoURI: 'logo_uri',
+      policyURI: 'policy_uri',
+      notificationPlatform: 'notification_platform',
+      notificationDeviceToken: 'notification_device_token',
+      redirectURI: 'redirect_uris'
     }
+    
+    const json = {}
+    
+    Object.keys(data).forEach(fieldName => {
+      const key = mappedFields[fieldName] || fieldName
+      const value = data[fieldName]
+      json[key] = value
+    })
+    
+    // special case: turn redirect_uris into an array
+    if (json['redirect_uris'] && json['redirect_uris'] instanceof Array === false) json['redirect_uris'] = [json['redirect_uris']]
+    
+    return json
+  }
+  
+  serverDataToJSON(data) {
+    const mappedFields = {
+      client_id: 'clientID',
+      client_name: 'clientName',
+      client_secret: 'clientSecret',
+      registration_access_token: 'registrationAccessToken',
+      software_id: 'softwareID',
+    }
+    
+    const json = {}
+    
+    Object.keys(data).forEach(fieldName => {
+      const key = mappedFields[fieldName] || fieldName
+      const value = data[fieldName]
+      json[key] = value
+    })
+    
+    return json
   }
   
   async register() {
     if (this.isRegistered()) throw new Error('Already registered')
     
-    const data = await this.fetch('POST', '/auth/register', this.getRegisterOptions())
+    const data = await this.fetch('POST', '/auth/register', this.oauthDataToJSON(this.oAuthOptions))
     
-    this.oAuthOptions.clientID = data.client_id
-    this.oAuthOptions.clientName = data.client_name
-    this.oAuthOptions.clientSecret = data.client_secret
-    this.oAuthOptions.registrationAccessToken = data.registration_access_token
-    this.oAuthOptions.softwareID = data.software_id
+    this.oAuthOptions = this.serverDataToJSON(data)
     
     return this.oAuthOptions;
   }
@@ -62,6 +92,32 @@ export default class OAuthClient extends CozyStackClient{
     return this.fetch('DELETE', `/auth/register/${this.oAuthOptions.clientID}`, null, {
       credentials: 'Bearer ' + this.oAuthOptions.registrationAccessToken
     })
+  }
+  
+  fetchInformations(){
+    if (!this.isRegistered()) throw new Error('Client not registered')
+    
+    return this.fetch('GET', `/auth/register/${this.oAuthOptions.clientID}`, null, {
+      credentials: 'Bearer ' + this.oAuthOptions.registrationAccessToken
+    })
+  }
+  
+  async updateInformations(informations) {
+    const mandatoryFields = {
+      clientID: this.oAuthOptions.clientID,
+      clientName: this.oAuthOptions.clientName,
+      redirectURI: this.oAuthOptions.redirectURI,
+      softwareID: this.oAuthOptions.softwareID,
+    }
+    const data = this.oauthDataToJSON({...mandatoryFields, ...informations})
+    
+    const result = await this.fetch('PUT', `/auth/register/${this.oAuthOptions.clientID}`, data, {
+      credentials: 'Bearer ' + this.oAuthOptions.registrationAccessToken
+    })
+    
+    this.oAuthOptions = this.serverDataToJSON(result)
+    
+    return this.oAuthOptions
   }
   
   generateStateCode() {
