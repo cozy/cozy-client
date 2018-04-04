@@ -19,7 +19,9 @@ PouchDB.plugin(PouchDBFind)
 const pipe = fn => res => {
   try {
     fn(res)
-  } catch (e) {}
+  } catch (e) {
+    console.warn('Error during pipe', e)
+  }
   return res
 }
 
@@ -33,12 +35,15 @@ const ensureHasBothIds = obj => {
   return obj
 }
 
-const pouchResToJSONAPI = (res, isArray) => {
+const addDoctype = (arr, doctype) =>
+  arr.map(x => ({...x.doc, _type: doctype}) )
+
+const pouchResToJSONAPI = (res, isArray, doctype) => {
   if (isArray) {
     const docs = res.rows || res.docs
     const offset = res.offset || 0
     return {
-      data: docs.map(ensureHasBothIds),
+      data: addDoctype(docs, doctype).map(ensureHasBothIds),
       meta: { count: docs.length },
       skip: offset,
       next: offset + docs.length <= res.total_rows
@@ -77,7 +82,13 @@ export default class PouchLink extends CozyLink {
     doctypes,
     client,
     initialSync
-  }) {
+  } = {}) {
+    if (!doctypes) {
+      throw new Error('PouchLink must be instantiated with doctypes it manages. Ex: [\'io.cozy.bills\']')
+    }
+    if (!client) {
+      throw new Error('PouchLink must be instantiated with a client.')
+    }
     super()
     this.doctypes = doctypes
     this.client = client
@@ -99,7 +110,7 @@ export default class PouchLink extends CozyLink {
   getDBInfo (doctype) {
     const dbInfo = this.pouches[doctype]
     if (!dbInfo) {
-      throw new Error(`${doctype}" not supported by cozy-pouch-link instance`)
+      throw new Error(`${doctype} not supported by cozy-pouch-link instance`)
     }
     return dbInfo
   }
@@ -110,30 +121,38 @@ export default class PouchLink extends CozyLink {
 
   syncOne (doctype) {
     return new Promise(resolve => {
-      const info = this.getDBInfo()
+      const info = this.getDBInfo(doctype)
       if (info.syncing) {
         return resolve(info.syncing)
       } else {
-        const replication = db.replicate.from(this.getReplicationUrl(doctype))
-        info.syncing = replication
-          .on('complete', () => {
-            info.syncing = null
-          })
-        resolve(info.syncing)
+        const replication = info.db.replicate.from(this.getReplicationUrl(doctype), {
+          batch_size: 1000 // we have mostly small documents
+        })
+        replication.on('error', err => {
+          console.warn('Error while syncing', err)
+          reject('Error while syncing')
+        })
+        info.syncing = replication.on('complete', () => {
+          info.syncing = null
+          resolve()
+        })
       }
     })
   }
 
   syncAll () {
     return Promise.all(this.doctypes.map(doctype => this.syncOne(doctype)))
-      .then(pipe(_ => this.synced = true ))
+      .then(pipe(() => this.onSync()))
   }
 
-  async getReplicationUrl(doctype) {
+  onSync (res) {
+    this.synced = true
+  }
+
+  getReplicationUrl(doctype) {
     const client = this.client
-    const credentials = await client.authorize()
-    const basic = credentials.token.toBasicAuth()
-    return (client._url + '/data/' + doctype).replace('//', `//${basic}`)
+    const basicAuth = client.token.toBasicAuth()
+    return (client.uri + '/data/' + doctype).replace('//', `//${basicAuth}`)
   }
 
   supportsOperation (operation) {
@@ -143,12 +162,12 @@ export default class PouchLink extends CozyLink {
 
   request(operation, result=null, forward=doNothing) {
     if (!this.synced) {
-      return forward()
+      return forward(operation)
     }
 
     // Forwards if doctype not supported
     if (!this.supportsOperation(operation)) {
-      return forward()
+      return forward(operation)
     }
 
     if (operation.mutationType) {
@@ -205,7 +224,8 @@ export default class PouchLink extends CozyLink {
       const index = await this.ensureIndex(doctype, findOpts)
       res = await db.find(findOpts)
     }
-    return pouchResToJSONAPI(res, true)
+
+    return pouchResToJSONAPI(res, true, doctype)
   }
 
   async executeMutation(mutation, result, forward) {
@@ -224,11 +244,11 @@ export default class PouchLink extends CozyLink {
         pouchRes = await this.addReferencesTo(mutation)
       break
       case MutationTypes.UPLOAD_FILE:
-        return forward()
+        return forward(mutation, result)
       default:
         throw new Error(`Unknown mutation type: ${mutationType}`)
     }
-    return pouchResToJSONAPI(pouchRes)
+    return pouchResToJSONAPI(pouchRes, false, getDoctypeFromOperation(mutation))
   }
 
   createDocument (mutation) {
