@@ -14,7 +14,7 @@ const defaultoauthOptions = {
   logoURI: '',
   policyURI: '',
   notificationPlatform: '',
-  notificationDeviceToken: '',
+  notificationDeviceToken: ''
 }
 
 export default class OAuthClient extends CozyStackClient{
@@ -23,10 +23,21 @@ export default class OAuthClient extends CozyStackClient{
     this.oauthOptions = {...defaultoauthOptions, ...oauth}
   }
   
+  /**
+   * Checks if the client has his registration informations from the server
+   * @returns {boolean} 
+   * @private
+   */
   isRegistered () {
     return this.oauthOptions.clientID !== ''
   }
   
+  /**
+   * Converts a camel-cased data set to snake case, suitable for sending to the OAuth server 
+   * @param   {object} data Initial data
+   * @returns {object} Formatted data
+   * @private
+   */
   snakeCaseOAuthData (data) {
     const mappedFields = {
       softwareID: 'software_id',
@@ -56,6 +67,12 @@ export default class OAuthClient extends CozyStackClient{
     return result
   }
   
+  /**
+   * Converts a snake-cased data set to camel case, suitable for internal use
+   * @param   {object} data Initial data
+   * @returns {object} Formatted data
+   * @private
+   */
   camelCaseOAuthData(data) {
     const mappedFields = {
       client_id: 'clientID',
@@ -76,6 +93,11 @@ export default class OAuthClient extends CozyStackClient{
     return result
   }
   
+  /**
+   * Registers the currenly configured client with the OAuth server. THis function is async and returns a promise.
+   * @throws {Error} When the client is already registered
+   * @returns {promise} A promise that resolves with a complete list of client information, including client ID and client secret.
+   */
   async register() {
     if (this.isRegistered()) throw new Error('Client already registered')
     
@@ -86,6 +108,11 @@ export default class OAuthClient extends CozyStackClient{
     return this.oauthOptions
   }
   
+  /**
+   * Unregisters the currenly configured client with the OAuth server. THis function is async and returns a promise.
+   * @throws {NotRegisteredException} When the client doesn't have it's registration information
+   * @returns {promise}
+   */
   unregister() {
     if (!this.isRegistered()) throw new NotRegisteredException()
     
@@ -94,6 +121,11 @@ export default class OAuthClient extends CozyStackClient{
     })
   }
   
+  /**
+   * Fetches the complete set of client informations from the server after it has been registered.
+   * @throws {NotRegisteredException} When the client doesn't have it's registration information
+   * @returns {promise} 
+   */
   fetchInformations(){
     if (!this.isRegistered()) throw new NotRegisteredException()
     
@@ -102,7 +134,16 @@ export default class OAuthClient extends CozyStackClient{
     })
   }
   
+  /**
+   * Updates the client own information. This method will update both the local information and the remote information on the OAuth server.
+   * @throws {NotRegisteredException} When the client doesn't have it's registration information
+   * @param   {object} informations Set of informations to update. Note that some fields such as `clientID` can't be updated.       
+   * @param   {boolean} resetSecret = false Optionnal, whether to reset the client secret or not
+   * @returns {object} A complete, updated list of client informations
+   */
   async updateInformations(informations, resetSecret = false) {
+    if (!this.isRegistered()) throw new NotRegisteredException()
+    
     const mandatoryFields = {
       clientID: this.oauthOptions.clientID,
       clientName: this.oauthOptions.clientName,
@@ -122,6 +163,10 @@ export default class OAuthClient extends CozyStackClient{
     return this.oauthOptions
   }
   
+  /**
+   * Generates a random state code to be used during the OAuth process
+   * @returns {string}
+   */
   generateStateCode() {
     const STATE_SIZE = 16
     const hasCrypto = typeof window !== 'undefined' &&
@@ -146,6 +191,13 @@ export default class OAuthClient extends CozyStackClient{
       .replace(/\+/g, '-')
   }
   
+  /**
+   * Generates the URL that the user should be sent to in order to accept the app's permissions.
+   * @throws {NotRegisteredException} When the client doesn't have it's registration information
+   * @param   {string} stateCode   A random code to be included in the URl for security. Can be generated with `client.generateStateCode()`
+   * @param   {Array} scopes = [] An array of permission scopes for the token.
+   * @returns {string} The URL
+   */
   getAuthCodeURL(stateCode, scopes = []) {
     if (!this.isRegistered()) throw new NotRegisteredException()
     
@@ -160,6 +212,13 @@ export default class OAuthClient extends CozyStackClient{
     return `${this.uri}/auth/authorize?${query.toString()}`
   }
   
+  /**
+   * Retrieves the access code contained in the URL to which the user is redirected after accepting the app's permissions (the `redirectURI`).
+   * @throws {Error} The URL should contain the same state code as the one generated with `client.getAuthCodeURL()`. If not, it will throw an error
+   * @param   {string} pageURL The redirected page URL, containing the state code and the access code
+   * @param   {string} stateCode The state code that was contained in the original URL the user was sent to (see `client.getAuthCodeURL()`) 
+   * @returns {string} The access code
+   */
   getAccessCodeFromURL(pageURL, stateCode) {
     if (!stateCode) throw new Error('Missing state code')
     
@@ -172,7 +231,13 @@ export default class OAuthClient extends CozyStackClient{
     return urlAccessCode
   }
   
-  async fetchAccessToken(accessCode) {
+  /**
+   * Exchanges an access code for an access token. This function does **not** update the client's token.
+   * @throws {NotRegisteredException} When the client doesn't have it's registration information
+   * @param   {string} accessCode The access code contained in the redirection URL — sett `client.getAccessCodeFromURL()`
+   * @returns {Promise} A promise that resolves with an AccessToken object.
+   */
+  aysnc fetchAccessToken(accessCode) {
     if (!this.isRegistered()) throw new NotRegisteredException()
     
     const data = new URLSearchParams({
@@ -189,6 +254,12 @@ export default class OAuthClient extends CozyStackClient{
     return new AccessToken(result)
   }
   
+  /**
+   * Retrieves a new access token by refreshing the currently used token.
+   * @throws {NotRegisteredException} When the client doesn't have it's registration information
+   * @throws {Error} The client should already have an access token to use this function
+   * @returns {Promise} A promise that resolves with a new AccessToen object
+   */
   async refreshToken() {
     if (!this.isRegistered()) throw new NotRegisteredException()
     if (!this.token) throw new Error('No token to refresh')
@@ -207,6 +278,10 @@ export default class OAuthClient extends CozyStackClient{
     return new AccessToken({refresh_token: this.token.refreshToken, ...result})
   }
   
+  /**
+   * Updates the client's stored token
+   * @param {string} token = null The new token to use — can be a string, a json object or an AccessToken instance.
+   */
   setCredentials(token = null) {
     if (token) {
       this.token = (token instanceof AccessToken) ? token : new AccessToken(token)
@@ -216,12 +291,17 @@ export default class OAuthClient extends CozyStackClient{
     }
   }
   
+  /**
+   * Turns the client's registration access token into a header suitable for HTTP requests. Used in some queries to manipulate the client on the server side.
+   * @returns {string} 
+   * @private
+   */
   registrationAccessTokenToAuthHeader() {
     return 'Bearer ' + this.oauthOptions.registrationAccessToken
   }
 }
 
-export class NotRegisteredException extends Error{
+class NotRegisteredException extends Error{
 	constructor(message = 'Client not registered or missing OAuth informations') {
 		super(message);
 		this.message = message;
