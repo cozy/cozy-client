@@ -121,30 +121,38 @@ export default class PouchLink extends CozyLink {
 
   syncOne (doctype) {
     return new Promise(resolve => {
-      const info = this.getDBInfo()
+      const info = this.getDBInfo(doctype)
       if (info.syncing) {
         return resolve(info.syncing)
       } else {
-        const replication = db.replicate.from(this.getReplicationUrl(doctype))
-        info.syncing = replication
-          .on('complete', () => {
-            info.syncing = null
-          })
-        resolve(info.syncing)
+        const replication = info.db.replicate.from(this.getReplicationUrl(doctype), {
+          batch_size: 1000 // we have mostly small documents
+        })
+        replication.on('error', err => {
+          console.warn('Error while syncing', err)
+          reject('Error while syncing')
+        })
+        info.syncing = replication.on('complete', () => {
+          info.syncing = null
+          resolve()
+        })
       }
     })
   }
 
   syncAll () {
     return Promise.all(this.doctypes.map(doctype => this.syncOne(doctype)))
-      .then(pipe(_ => this.synced = true ))
+      .then(pipe(() => this.onSync()))
   }
 
-  async getReplicationUrl(doctype) {
+  onSync (res) {
+    this.synced = true
+  }
+
+  getReplicationUrl(doctype) {
     const client = this.client
-    const credentials = await client.authorize()
-    const basic = credentials.token.toBasicAuth()
-    return (client._url + '/data/' + doctype).replace('//', `//${basic}`)
+    const basicAuth = client.token.toBasicAuth()
+    return (client.uri + '/data/' + doctype).replace('//', `//${basicAuth}`)
   }
 
   supportsOperation (operation) {
