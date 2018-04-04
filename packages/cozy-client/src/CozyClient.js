@@ -70,6 +70,9 @@ export default class CozyClient {
 
   async validate(document) {
     let errors = {}
+    if (!this.doctypeModelExists(document._type)) {
+      return true
+    }
     const model = this.getDoctypeModel(document._type)
     if (!model.attributes) return true
     for (const n in model.attributes) {
@@ -141,7 +144,8 @@ export default class CozyClient {
       )
       return response
     } catch (error) {
-      return this.dispatch(receiveQueryError(queryId, error))
+      this.dispatch(receiveQueryError(queryId, error))
+      throw error
     }
   }
 
@@ -169,7 +173,8 @@ export default class CozyClient {
       )
       return response
     } catch (error) {
-      return this.dispatch(receiveMutationError(mutationId, error))
+      this.dispatch(receiveMutationError(mutationId, error))
+      throw error
     }
   }
 
@@ -351,6 +356,15 @@ export default class CozyClient {
       ...model,
       associations
     }
+  }
+
+  doctypeModelExists(doctype) {
+    if (!this.schema) return false
+    return (
+      Object.keys(this.schema)
+        .map(k => this.schema[k])
+        .find(m => m.doctype === doctype) !== undefined
+    )
   }
 
   getDocumentFromStore(type, id) {
