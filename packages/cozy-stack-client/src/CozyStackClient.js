@@ -86,7 +86,7 @@ export default class CozyStackClient {
   getCredentials() {
     return this.token ? this.token.toAuthHeader() : null
   }
-  
+
   setCredentials(token) {
     this.token = token ? new AppToken(token) : null
   }

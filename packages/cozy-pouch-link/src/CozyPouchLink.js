@@ -1,18 +1,11 @@
-import {
-  MutationTypes,
-  CozyLink,
-  getDoctypeFromOperation
-} from 'cozy-client'
+import { MutationTypes, CozyLink, getDoctypeFromOperation } from 'cozy-client'
 import PouchDB from 'pouchdb'
 import PouchDBFind from 'pouchdb-find'
 import mapValues from 'lodash/mapValues'
 import fromPairs from 'lodash/fromPairs'
 import omit from 'lodash/omit'
 import toPairs from 'lodash/toPairs'
-import {
-  getIndexNameFromFields,
-  getIndexFields
-} from './mango'
+import { getIndexNameFromFields, getIndexFields } from './mango'
 
 PouchDB.plugin(PouchDBFind)
 
@@ -50,23 +43,26 @@ const pouchResToJSONAPI = (res, isArray, doctype) => {
     }
   } else {
     return {
-      data: ensureHasBothIds(res),
+      data: ensureHasBothIds(res)
     }
   }
 }
 
 const createPouches = doctypes => {
-  return fromPairs(doctypes.map(
-    doctype => [doctype, {
-      db: new PouchDB(doctype)
-    }]
-  ))
+  return fromPairs(
+    doctypes.map(doctype => [
+      doctype,
+      {
+        db: new PouchDB(doctype)
+      }
+    ])
+  )
 }
 
 const sanitized = doc => omit(doc, '_type')
 
 const parseMutationResult = (original, res) => {
-  return {...original, ...omit(res, 'ok')}
+  return { ...original, ...omit(res, 'ok') }
 }
 
 const doNothing = () => {}
@@ -99,15 +95,15 @@ export default class PouchLink extends CozyLink {
     }
   }
 
-  getAllDBs () {
+  getAllDBs() {
     return Object.values(this.pouches).map(x => x.db)
   }
 
-  resetAllDBs () {
+  resetAllDBs() {
     return Promise.all(this.getAllDBs().map(db => db.destroy()))
   }
 
-  getDBInfo (doctype) {
+  getDBInfo(doctype) {
     const dbInfo = this.pouches[doctype]
     if (!dbInfo) {
       throw new Error(`${doctype} not supported by cozy-pouch-link instance`)
@@ -115,11 +111,11 @@ export default class PouchLink extends CozyLink {
     return dbInfo
   }
 
-  getDB (doctype) {
+  getDB(doctype) {
     return this.getDBInfo(doctype).db
   }
 
-  syncOne (doctype) {
+  syncOne(doctype) {
     return new Promise(resolve => {
       const info = this.getDBInfo(doctype)
       if (info.syncing) {
@@ -155,12 +151,12 @@ export default class PouchLink extends CozyLink {
     return (client.uri + '/data/' + doctype).replace('//', `//${basicAuth}`)
   }
 
-  supportsOperation (operation) {
+  supportsOperation(operation) {
     const impactedDoctype = getDoctypeFromOperation(operation)
     return !!this.pouches[impactedDoctype]
   }
 
-  request(operation, result=null, forward=doNothing) {
+  request(operation, result = null, forward = doNothing) {
     if (!this.synced) {
       return forward(operation)
     }
@@ -177,7 +173,7 @@ export default class PouchLink extends CozyLink {
     }
   }
 
-  hasIndex (name) {
+  hasIndex(name) {
     return Boolean(this.indexes[name])
   }
 
@@ -233,16 +229,16 @@ export default class PouchLink extends CozyLink {
     switch (mutation.mutationType) {
       case MutationTypes.CREATE_DOCUMENT:
         pouchRes = await this.createDocument(mutation)
-      break
+        break
       case MutationTypes.UPDATE_DOCUMENT:
         pouchRes = await this.updateDocument(mutation)
-      break
+        break
       case MutationTypes.DELETE_DOCUMENT:
         pouchRes = await this.deleteDocument(mutation)
-      break
+        break
       case MutationTypes.ADD_REFERENCES_TO:
         pouchRes = await this.addReferencesTo(mutation)
-      break
+        break
       case MutationTypes.UPLOAD_FILE:
         return forward(mutation, result)
       default:
@@ -251,7 +247,7 @@ export default class PouchLink extends CozyLink {
     return pouchResToJSONAPI(pouchRes, false, getDoctypeFromOperation(mutation))
   }
 
-  createDocument (mutation) {
+  createDocument(mutation) {
     return this.dbMethod('post', mutation)
   }
 
@@ -263,7 +259,7 @@ export default class PouchLink extends CozyLink {
     return this.dbMethod('remove', mutation)
   }
 
-  async dbMethod (method, mutation) {
+  async dbMethod(method, mutation) {
     const doctype = getDoctypeFromOperation(mutation)
     const { document } = mutation
     const db = this.getDB(doctype)

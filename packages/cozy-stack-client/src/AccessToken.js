@@ -1,30 +1,30 @@
 export default class AccessToken {
-  constructor (data) {
+  constructor(data) {
     if (typeof data === 'string') data = JSON.parse(data)
-    
+
     this.tokenType = data.token_type || data.tokenType
     this.accessToken = data.access_token || data.accessToken
     this.refreshToken = data.refresh_token || data.refreshToken
     this.scope = data.scope
   }
 
-  toAuthHeader () {
+  toAuthHeader() {
     return 'Bearer ' + this.accessToken
   }
 
-  toBasicAuth () {
+  toBasicAuth() {
     return `user:${this.accessToken}@`
   }
-  
-  toJSON () {
+
+  toJSON() {
     return {
       tokenType: this.tokenType,
       accessToken: this.accessToken,
       refreshToken: this.refreshToken,
-      scope: this.scope,
+      scope: this.scope
     }
   }
-  
+
   toString() {
     return JSON.stringify(this.toJSON())
   }

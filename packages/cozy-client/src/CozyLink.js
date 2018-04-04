@@ -20,6 +20,6 @@ const concat = (firstLink, nextLink) => {
     const nextForward = (op, res) => {
       return nextLink.request(op, res, forward)
     }
-    return firstLink.request(operation, result, nextForward) 
+    return firstLink.request(operation, result, nextForward)
   })
 }
