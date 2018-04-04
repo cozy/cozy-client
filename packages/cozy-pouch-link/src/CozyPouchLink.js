@@ -162,12 +162,12 @@ export default class PouchLink extends CozyLink {
 
   request(operation, result=null, forward=doNothing) {
     if (!this.synced) {
-      return forward()
+      return forward(operation)
     }
 
     // Forwards if doctype not supported
     if (!this.supportsOperation(operation)) {
-      return forward()
+      return forward(operation)
     }
 
     if (operation.mutationType) {
@@ -244,7 +244,7 @@ export default class PouchLink extends CozyLink {
         pouchRes = await this.addReferencesTo(mutation)
       break
       case MutationTypes.UPLOAD_FILE:
-        return forward()
+        return forward(mutation, result)
       default:
         throw new Error(`Unknown mutation type: ${mutationType}`)
     }
