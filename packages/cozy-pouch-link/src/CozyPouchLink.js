@@ -35,12 +35,15 @@ const ensureHasBothIds = obj => {
   return obj
 }
 
-const pouchResToJSONAPI = (res, isArray) => {
+const addDoctype = (arr, doctype) =>
+  arr.map(x => ({...x.doc, _type: doctype}) )
+
+const pouchResToJSONAPI = (res, isArray, doctype) => {
   if (isArray) {
     const docs = res.rows || res.docs
     const offset = res.offset || 0
     return {
-      data: docs.map(ensureHasBothIds),
+      data: addDoctype(docs, doctype).map(ensureHasBothIds),
       meta: { count: docs.length },
       skip: offset,
       next: offset + docs.length <= res.total_rows
@@ -107,7 +110,7 @@ export default class PouchLink extends CozyLink {
   getDBInfo (doctype) {
     const dbInfo = this.pouches[doctype]
     if (!dbInfo) {
-      throw new Error(`${doctype}" not supported by cozy-pouch-link instance`)
+      throw new Error(`${doctype} not supported by cozy-pouch-link instance`)
     }
     return dbInfo
   }
@@ -213,7 +216,8 @@ export default class PouchLink extends CozyLink {
       const index = await this.ensureIndex(doctype, findOpts)
       res = await db.find(findOpts)
     }
-    return pouchResToJSONAPI(res, true)
+
+    return pouchResToJSONAPI(res, true, doctype)
   }
 
   async executeMutation(mutation, result, forward) {
@@ -236,7 +240,7 @@ export default class PouchLink extends CozyLink {
       default:
         throw new Error(`Unknown mutation type: ${mutationType}`)
     }
-    return pouchResToJSONAPI(pouchRes)
+    return pouchResToJSONAPI(pouchRes, false, getDoctypeFromOperation(mutation))
   }
 
   createDocument (mutation) {
