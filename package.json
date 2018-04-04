@@ -34,11 +34,10 @@
 		"lint": "eslint 'packages/*/src/**/*.js'",
 		"pretest": "npm run lint",
 		"test": "jest",
-		"prebuild": "npm run lint",
-		"build": "webpack --config webpack.config.js",
-		"watch": "npm-run-all --parallel watch:cozy-client watch:cozy-stack-client",
+		"watch": "npm-run-all --parallel watch:cozy-client watch:cozy-stack-client watch:cozy-pouch-link",
 		"watch:cozy-client": "webpack --config webpack.config.js --env.package=cozy-client --watch",
-		"watch:cozy-stack-client": "webpack --config webpack.config.js --env.package=cozy-stack-client --watch"
+		"watch:cozy-stack-client": "webpack --config webpack.config.js --env.package=cozy-stack-client --watch",
+		"watch:cozy-pouch-link": "webpack --config webpack.config.js --env.package=cozy-pouch-link --watch"
 	},
 	"prettier": {
 		"semi": false,
