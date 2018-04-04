@@ -19,7 +19,9 @@ PouchDB.plugin(PouchDBFind)
 const pipe = fn => res => {
   try {
     fn(res)
-  } catch (e) {}
+  } catch (e) {
+    console.warn('Error during pipe', e)
+  }
   return res
 }
 
@@ -77,7 +79,13 @@ export default class PouchLink extends CozyLink {
     doctypes,
     client,
     initialSync
-  }) {
+  } = {}) {
+    if (!doctypes) {
+      throw new Error('PouchLink must be instantiated with doctypes it manages. Ex: [\'io.cozy.bills\']')
+    }
+    if (!client) {
+      throw new Error('PouchLink must be instantiated with a client.')
+    }
     super()
     this.doctypes = doctypes
     this.client = client
