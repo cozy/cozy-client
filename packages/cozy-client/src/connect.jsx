@@ -30,10 +30,12 @@ const connect = (query, options = {}) => WrappedComponent => {
         )
       }
       this.queryId = options.as || this.client.generateId()
+      this.queryDef =
+        typeof query === 'function' ? query(this.client, props) : query
     }
 
     componentDidMount() {
-      this.client.query(query, { as: this.queryId })
+      this.client.query(this.queryDef, { as: this.queryId })
     }
 
     render() {
