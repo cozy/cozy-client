@@ -18,9 +18,10 @@ const defaultoauthOptions = {
 }
 
 export default class OAuthClient extends CozyStackClient {
-  constructor({ oauth, ...options }) {
+  constructor({ oauth, scope, ...options }) {
     super(options)
     this.oauthOptions = { ...defaultoauthOptions, ...oauth }
+    this.scope = scope
   }
 
   /**
@@ -121,8 +122,15 @@ export default class OAuthClient extends CozyStackClient {
         notificationDeviceToken: this.oauthOptions.notificationDeviceToken
       })
     )
-
-    this.oauthOptions = this.camelCaseOAuthData(data)
+    
+    this.oauthOptions = this.camelCaseOAuthData({
+      ...this.oauthOptions,
+      client_id: data.client_id,
+      client_name: data.client_name,
+      client_secret: data.client_secret,
+      registration_access_token: data.registration_access_token,
+      software_id: data.software_id
+    })
 
     return this.oauthOptions
   }
@@ -338,6 +346,25 @@ export default class OAuthClient extends CozyStackClient {
    */
   registrationAccessTokenToAuthHeader() {
     return 'Bearer ' + this.oauthOptions.registrationAccessToken
+  }
+  
+  /**
+   * Performs a complete OAuth flow, including upating the internal token at the end.
+   * @param   {function} openURLCallback Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
+   * @returns {object} Contains the fetched token and the client informations. These should be stored and used to restore the client.
+   */
+  async oauthFlow(openURLCallback) {
+    await this.register();
+    const state = this.generateStateCode()
+    const url = this.getAuthCodeURL(state, this.scope)
+    
+    const redirectedURL = await openURLCallback(url)
+    const code = this.getAccessCodeFromURL(redirectedURL, state)
+    const token = await this.fetchAccessToken(code)
+    
+    this.setCredentials(token)
+    
+    return {token, infos: this.oauthOptions}
   }
 }
 
