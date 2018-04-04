@@ -101,7 +101,18 @@ export default class OAuthClient extends CozyStackClient{
   async register() {
     if (this.isRegistered()) throw new Error('Client already registered')
     
-    const data = await this.fetch('POST', '/auth/register', this.snakeCaseOAuthData(this.oauthOptions))
+    const data = await this.fetch('POST', '/auth/register', this.snakeCaseOAuthData({
+      redirectURI: this.oauthOptions.redirectURI,
+      clientName: this.oauthOptions.clientName,
+      softwareID: this.oauthOptions.softwareID,
+      clientKind: this.oauthOptions.clientKind,
+      clientURI: this.oauthOptions.clientURI,
+      logoURI: this.oauthOptions.logoURI,
+      policyURI: this.oauthOptions.policyURI,
+      softwareVersion: this.oauthOptions.softwareVersion,
+      notificationPlatform: this.oauthOptions.notificationPlatform,
+      notificationDeviceToken: this.oauthOptions.notificationDeviceToken,
+    }))
     
     this.oauthOptions = this.camelCaseOAuthData(data)
     
@@ -113,7 +124,7 @@ export default class OAuthClient extends CozyStackClient{
    * @throws {NotRegisteredException} When the client doesn't have it's registration information
    * @returns {promise}
    */
-  unregister() {
+  async unregister() {
     if (!this.isRegistered()) throw new NotRegisteredException()
     
     return this.fetch('DELETE', `/auth/register/${this.oauthOptions.clientID}`, null, {
@@ -126,7 +137,7 @@ export default class OAuthClient extends CozyStackClient{
    * @throws {NotRegisteredException} When the client doesn't have it's registration information
    * @returns {promise} 
    */
-  fetchInformations(){
+  async fetchInformations(){
     if (!this.isRegistered()) throw new NotRegisteredException()
     
     return this.fetch('GET', `/auth/register/${this.oauthOptions.clientID}`, null, {
@@ -237,7 +248,7 @@ export default class OAuthClient extends CozyStackClient{
    * @param   {string} accessCode The access code contained in the redirection URL — sett `client.getAccessCodeFromURL()`
    * @returns {Promise} A promise that resolves with an AccessToken object.
    */
-  aysnc fetchAccessToken(accessCode) {
+  async fetchAccessToken(accessCode) {
     if (!this.isRegistered()) throw new NotRegisteredException()
     
     const data = new URLSearchParams({
