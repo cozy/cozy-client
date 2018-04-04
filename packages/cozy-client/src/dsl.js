@@ -11,6 +11,7 @@ export class QueryDefinition {
     sort,
     includes,
     referenced,
+    limit,
     skip
   }) {
     this.doctype = doctype
@@ -20,6 +21,7 @@ export class QueryDefinition {
     this.sort = sort
     this.includes = includes
     this.referenced = referenced
+    this.limit = limit
     this.skip = skip
   }
 
@@ -33,13 +35,19 @@ export class QueryDefinition {
 
   sortBy(sort) {
     if (isString(sort)) {
-      throw new Error('Invalid sort, should be an object (`{ label: "desc"}`), you passed a string.')
+      throw new Error(
+        'Invalid sort, should be an object (`{ label: "desc"}`), you passed a string.'
+      )
     }
     return new QueryDefinition({ ...this.toDefinition(), sort })
   }
 
   include(includes) {
     return new QueryDefinition({ ...this.toDefinition(), includes })
+  }
+
+  UNSAFE_noLimit() {
+    return new QueryDefinition({ ...this.toDefinition(), limit: null })
   }
 
   offset(skip) {
@@ -59,6 +67,7 @@ export class QueryDefinition {
       sort: this.sort,
       includes: this.includes,
       referenced: this.referenced,
+      limit: this.limit,
       skip: this.skip
     }
   }

@@ -117,7 +117,9 @@ describe('CozyClient', () => {
     it('should dispatch a RECEIVE_QUERY_ERROR action if an error occurs', async () => {
       const error = new Error('Fake error')
       requestHandler.mockReturnValueOnce(Promise.reject(error))
-      await client.query(query, { as: 'allTodos' })
+      try {
+        await client.query(query, { as: 'allTodos' })
+      } catch (e) {}
       expect(store.getActions()[1]).toEqual(
         receiveQueryError('allTodos', error)
       )
@@ -235,7 +237,9 @@ describe('CozyClient', () => {
     it('should dispatch a RECEIVE_MUTATION_ERROR action if an error occurs', async () => {
       const error = new Error('Fake error')
       requestHandler.mockReturnValueOnce(Promise.reject(error))
-      await client.mutate(mutation, { as: 'updateTodo' })
+      try {
+        await client.mutate(mutation, { as: 'updateTodo' })
+      } catch (e) {}
       expect(store.getActions()[1]).toEqual(
         receiveMutationError('updateTodo', error)
       )
