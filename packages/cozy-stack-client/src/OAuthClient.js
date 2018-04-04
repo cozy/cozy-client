@@ -98,7 +98,7 @@ export default class OAuthClient extends CozyStackClient {
   }
 
   /**
-   * Registers the currenly configured client with the OAuth server. THis function is async and returns a promise.
+   * Registers the currenly configured client with the OAuth server. 
    * @throws {Error} When the client is already registered
    * @returns {promise} A promise that resolves with a complete list of client information, including client ID and client secret.
    */
@@ -128,7 +128,7 @@ export default class OAuthClient extends CozyStackClient {
   }
 
   /**
-   * Unregisters the currenly configured client with the OAuth server. THis function is async and returns a promise.
+   * Unregisters the currenly configured client with the OAuth server. 
    * @throws {NotRegisteredException} When the client doesn't have it's registration information
    * @returns {promise}
    */
@@ -168,7 +168,7 @@ export default class OAuthClient extends CozyStackClient {
    * @throws {NotRegisteredException} When the client doesn't have it's registration information
    * @param   {object} informations Set of informations to update. Note that some fields such as `clientID` can't be updated.
    * @param   {boolean} resetSecret = false Optionnal, whether to reset the client secret or not
-   * @returns {object} A complete, updated list of client informations
+   * @returns {promise} A promise that resolves to a complete, updated list of client informations
    */
   async updateInformations(informations, resetSecret = false) {
     if (!this.isRegistered()) throw new NotRegisteredException()
