@@ -347,25 +347,6 @@ export default class OAuthClient extends CozyStackClient {
   registrationAccessTokenToAuthHeader() {
     return 'Bearer ' + this.oauthOptions.registrationAccessToken
   }
-  
-  /**
-   * Performs a complete OAuth flow, including upating the internal token at the end.
-   * @param   {function} openURLCallback Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
-   * @returns {object} Contains the fetched token and the client informations. These should be stored and used to restore the client.
-   */
-  async oauthFlow(openURLCallback) {
-    await this.register();
-    const state = this.generateStateCode()
-    const url = this.getAuthCodeURL(state, this.scope)
-    
-    const redirectedURL = await openURLCallback(url)
-    const code = this.getAccessCodeFromURL(redirectedURL, state)
-    const token = await this.fetchAccessToken(code)
-    
-    this.setCredentials(token)
-    
-    return {token, infos: this.oauthOptions}
-  }
 }
 
 class NotRegisteredException extends Error {
