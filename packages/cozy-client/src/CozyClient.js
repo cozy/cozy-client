@@ -397,12 +397,12 @@ export default class CozyClient {
   async startOAuthFlow(openURLCallback) {
     const client = this.getOrCreateStackClient()
     
-    await client.register();
-    const state = client.generateStateCode()
-    const url = client.getAuthCodeURL(state, client.scope)
-    
+    await client.register()
+    const stateCode = client.generateStateCode()
+    const url = client.getAuthCodeURL(stateCode)
+
     const redirectedURL = await openURLCallback(url)
-    const code = client.getAccessCodeFromURL(redirectedURL, state)
+    const code = client.getAccessCodeFromURL(redirectedURL, stateCode)
     const token = await client.fetchAccessToken(code)
     
     client.setCredentials(token)
