@@ -1,7 +1,7 @@
 import StackLink from './StackLink'
 import Association from './associations'
 import { QueryDefinition, Mutations } from './dsl'
-import CozyStackClient from 'cozy-stack-client'
+import CozyStackClient, { OAuthClient } from 'cozy-stack-client'
 import {
   default as reducer,
   createStore,
@@ -375,7 +375,7 @@ export default class CozyClient {
       associations
     }
   }
-
+  
   doctypeModelExists(doctype) {
     if (!this.schema) return false
     return (
@@ -387,6 +387,27 @@ export default class CozyClient {
 
   getDocumentFromStore(type, id) {
     return getDocumentFromStore(this.store.getState(), type, id)
+  }
+  
+  /**
+   * Performs a complete OAuth flow, including upating the internal token at the end.
+   * @param   {function} openURLCallback Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
+   * @returns {object}   Contains the fetched token and the client information. These should be stored and used to restore the client.
+   */
+  async startOAuthFlow(openURLCallback) {
+    const client = this.getOrCreateStackClient()
+    
+    await client.register()
+    const stateCode = client.generateStateCode()
+    const url = client.getAuthCodeURL(stateCode)
+
+    const redirectedURL = await openURLCallback(url)
+    const code = client.getAccessCodeFromURL(redirectedURL, stateCode)
+    const token = await client.fetchAccessToken(code)
+    
+    client.setCredentials(token)
+    
+    return {token, infos: client.oauthOptions}
   }
 
   setStore(store) {
@@ -402,7 +423,7 @@ export default class CozyClient {
 
   getOrCreateStackClient() {
     if (!this.client) {
-      this.client = new CozyStackClient(this.options)
+      this.client = this.options.oauth ? new OAuthClient(this.options) : new CozyStackClient(this.options)
     }
     return this.client
   }
