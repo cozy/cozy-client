@@ -375,7 +375,7 @@ const client = new CozyClient({
 
 Before you can start making requests to the server, you will need to get a token. `cozy-client` will provide a URL to a page where the user is shown what data you want to access, and asking for his or her permission. After the user accepts these permissions, he or she is redirected to the `oauth.redirectURI` that you declared earlier. You will then have to give this redirected URL back to `cozy-client` as it contains a code, that will be exchanged for the token.
 
-Sounds, tricky, but most of it is taken care of for you. To get started, you call `client.oauthFlow` like this:
+Sounds, tricky, but most of it is taken care of for you. To get started, you call `client.startOAuthFlow` like this:
 
 ```js
 import CozyClient from 'cozy-client'
@@ -390,14 +390,14 @@ const client = new CozyClient({
   }
 })
 
-client.oauthFlow(openURL)
+client.startOAuthFlow(openURL)
 ```
 
 The `openURL` parameter is a callback. It will receive the URL to the page as a parameter, and it must return a Promise that resolves with the redirected URL. How exactly you do this depends on your environment — for a mobile app you may use a WebView, in a browser maybe a new tab… Here is an example that uses the browser's console and an experienced user:
 
 ```js
 const openURL = url => {
-  console.log('Please visit the following URL, accep the permissions and copy the URL you are redirected to, then come back here. you have 10 seconds.', url)
+  console.log('Please visit the following URL, accept the permissions and copy the URL you are redirected to, then come back here. you have 10 seconds.', url)
   return new Promise(resolve => {
     setTimeout(async () => {
       const returnUrl = prompt('Paste the new URL here.')
@@ -426,7 +426,7 @@ const client = new CozyClient({
   }
 })
 
-const {token, infos} = client.oauthFlow(openURL)
+const {token, infos} = client.startOAuthFlow(openURL)
 localStorage.setItem('token', token)
 localStorage.setItem('infos', JSON.stringify(infos))
 ```
@@ -449,7 +449,7 @@ const client = new CozyClient({
 });
 
 if (!storedToken) {
-  const {token, infos} = await client.oauthFlow(openURL)
+  const {token, infos} = await client.startOAuthFlow(openURL)
   localStorage.setItem('token', token)
   localStorage.setItem('infos', JSON.stringify(infos))
 }
