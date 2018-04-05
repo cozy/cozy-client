@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { getQueryFromStore } from './store'
 import { QueryDefinition } from './dsl'
+import PropTypes from 'prop-types'
 
 const dummyState = {}
 
@@ -49,4 +50,10 @@ export default class Query extends Component {
       this.mutations
     )
   }
+}
+
+Query.propTypes = {
+  query: PropTypes.func.isRequired,
+  as: PropTypes.string,
+  children: PropTypes.func.isRequired
 }
