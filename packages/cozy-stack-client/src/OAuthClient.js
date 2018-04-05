@@ -338,6 +338,22 @@ export default class OAuthClient extends CozyStackClient {
       this.token = null
     }
   }
+  
+  async fetch(method, path, body, options) {
+    try {
+      return super.fetch(method, path, body, options)
+    }
+    catch (e) {
+      if (/Expired token/.test(e.message)) {
+        const token = await this.refreshToken()
+        this.setCredentials(token)
+        return await super.fetch(method, path, body, options)
+      }
+      else {
+        throw e
+      }
+    }
+  }
 
   /**
    * Turns the client's registration access token into a header suitable for HTTP requests. Used in some queries to manipulate the client on the server side.
