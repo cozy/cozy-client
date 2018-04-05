@@ -323,8 +323,29 @@ export default class CozyClient {
   }
 
   hydrateRelationships(document, associations, queryId) {
-    const methods = {
+    const methods = this.getAssociationStoreAccessors(queryId)
+    return associations.reduce(
+      (acc, assoc) => ({
+        ...acc,
+        [assoc.name]: Association.create(document, assoc, methods)
+      }),
+      {}
+    )
+  }
+
+  getAssociation(document, associationName, queryId) {
+    return Association.create(
+      document,
+      this.getModelAssociation(document._type, associationName),
+      this.getAssociationStoreAccessors(queryId)
+    )
+  }
+
+  getAssociationStoreAccessors(queryId) {
+    return {
       get: this.getDocumentFromStore.bind(this),
+      save: (document, opts) =>
+        this.save.call(this, document, { contextQueryId: queryId, ...opts }),
       query: (def, opts) =>
         this.query.call(
           this,
@@ -338,13 +359,6 @@ export default class CozyClient {
           queryId ? { contextQueryId: queryId, ...opts } : opts
         )
     }
-    return associations.reduce(
-      (acc, assoc) => ({
-        ...acc,
-        [assoc.name]: Association.create(document, assoc, methods)
-      }),
-      {}
-    )
   }
 
   getModelAssociation(doctype, associationName) {

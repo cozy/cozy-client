@@ -1,13 +1,20 @@
 import React, { Component } from 'react'
 
-const withMutations = mutations => WrappedComponent => {
+const withMutations = (mutations = {}) => WrappedComponent => {
   class Wrapper extends Component {
     constructor(props, context) {
       super(props, context)
-      this.mutations =
-        typeof mutations === 'function'
-          ? mutations(context.client, props)
-          : mutations
+      const client = context.client
+      this.mutations = {
+        ...{
+          createDocument: client.create.bind(client),
+          saveDocument: client.save.bind(client),
+          deleteDocument: client.destroy.bind(client)
+        },
+        ...(typeof mutations === 'function'
+          ? mutations(client, props)
+          : mutations)
+      }
     }
 
     render() {

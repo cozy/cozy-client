@@ -57,17 +57,18 @@ export default class ObservableQuery {
 
   currentResult() {
     const result = getQueryFromStore(this.getStore().getState(), this.queryId)
-    if (result.fetchStatus !== 'loaded') {
-      return result
-    }
-    return {
-      ...result,
-      data: this.client.hydrateDocuments(
-        this.definition.doctype,
-        result.data,
-        this.queryId
-      )
-    }
+    return result
+    // if (result.fetchStatus !== 'loaded') {
+    //   return result
+    // }
+    // return {
+    //   ...result,
+    //   data: this.client.hydrateDocuments(
+    //     this.definition.doctype,
+    //     result.data,
+    //     this.queryId
+    //   )
+    // }
   }
 
   fetchMore() {
@@ -77,6 +78,10 @@ export default class ObservableQuery {
         as: this.queryId
       }
     )
+  }
+
+  getAssociation(document, associationName) {
+    return this.client.getAssociation(document, associationName, this.queryId)
   }
 
   create(type, { _type, ...attributes }, relationships, mutationOptions = {}) {

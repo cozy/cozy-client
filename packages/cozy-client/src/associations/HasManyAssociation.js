@@ -1,10 +1,12 @@
 export default class HasManyAssociation {
-  constructor(target, name, { get, query, mutate }) {
+  constructor(target, name, doctype, { get, query, mutate, save }) {
     this.target = target
     this.name = name
+    this.doctype = doctype
     this.get = get
     this.query = query
     this.mutate = mutate
+    this.save = save
   }
 
   get data() {
@@ -26,6 +28,13 @@ export default class HasManyAssociation {
 
   fetchMore() {
     throw 'Not implemented'
+  }
+
+  exists(document) {
+    return (
+      this.getRelationship().data.find(({ _id }) => document._id === _id) !==
+      undefined
+    )
   }
 
   getRelationship() {
