@@ -25,7 +25,7 @@ export default class OAuthClient extends CozyStackClient {
   }
 
   /**
-   * Checks if the client has his registration informations from the server
+   * Checks if the client has his registration information from the server
    * @returns {boolean}
    * @private
    */
@@ -154,11 +154,11 @@ export default class OAuthClient extends CozyStackClient {
   }
 
   /**
-   * Fetches the complete set of client informations from the server after it has been registered.
+   * Fetches the complete set of client information from the server after it has been registered.
    * @throws {NotRegisteredException} When the client doesn't have it's registration information
    * @returns {promise}
    */
-  async fetchInformations() {
+  async fetchInformation() {
     if (!this.isRegistered()) throw new NotRegisteredException()
 
     return this.fetch(
@@ -174,11 +174,11 @@ export default class OAuthClient extends CozyStackClient {
   /**
    * Updates the client own information. This method will update both the local information and the remote information on the OAuth server.
    * @throws {NotRegisteredException} When the client doesn't have it's registration information
-   * @param   {object} informations Set of informations to update. Note that some fields such as `clientID` can't be updated.
+   * @param   {object} information Set of information to update. Note that some fields such as `clientID` can't be updated.
    * @param   {boolean} resetSecret = false Optionnal, whether to reset the client secret or not
-   * @returns {promise} A promise that resolves to a complete, updated list of client informations
+   * @returns {promise} A promise that resolves to a complete, updated list of client information
    */
-  async updateInformations(informations, resetSecret = false) {
+  async updateInformation(information, resetSecret = false) {
     if (!this.isRegistered()) throw new NotRegisteredException()
 
     const mandatoryFields = {
@@ -189,7 +189,7 @@ export default class OAuthClient extends CozyStackClient {
     }
     const data = this.snakeCaseOAuthData({
       ...mandatoryFields,
-      ...informations
+      ...information
     })
 
     if (resetSecret) data['client_secret'] = this.oauthOptions.clientSecret
@@ -350,7 +350,7 @@ export default class OAuthClient extends CozyStackClient {
 }
 
 class NotRegisteredException extends Error {
-  constructor(message = 'Client not registered or missing OAuth informations') {
+  constructor(message = 'Client not registered or missing OAuth information') {
     super(message)
     this.message = message
     this.name = 'NotRegisteredException'

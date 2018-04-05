@@ -392,7 +392,7 @@ export default class CozyClient {
   /**
    * Performs a complete OAuth flow, including upating the internal token at the end.
    * @param   {function} openURLCallback Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
-   * @returns {object}   Contains the fetched token and the client informations. These should be stored and used to restore the client.
+   * @returns {object}   Contains the fetched token and the client information. These should be stored and used to restore the client.
    */
   async startOAuthFlow(openURLCallback) {
     const client = this.getOrCreateStackClient()
