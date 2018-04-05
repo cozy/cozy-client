@@ -1,21 +1,33 @@
 import { isReceivingData } from './queries'
 import { isReceivingMutationResult } from './mutations'
 
-const storeDocument = (state, document) => ({
-  ...state,
-  [document._type]: {
-    ...state[document._type],
-    [document._id]: document
+const storeDocument = (state, document) => {
+  const type = document._type
+  if (!type) {
+    throw new Error('Document without _type', document)
   }
-})
+  return {
+    ...state,
+    [type]: {
+      ...state[type],
+      [document._id]: document
+    }
+  }
+}
 
-const updateDocument = (state, { _id, _type }, response, updateFn) => ({
-  ...state,
-  [_type]: {
-    ...state[_type],
-    [_id]: updateFn(state[_type][_id], response)
+const updateDocument = (state, newDoc, response, updateFn) => {
+  const { _id, _type } = newDoc
+  if (!_type) {
+    throw new Error('Document without _type', newDoc)
   }
-})
+  return {
+    ...state,
+    [_type]: {
+      ...state[_type],
+      [_id]: updateFn(state[_type][_id], response)
+    }
+  }
+}
 
 // reducer
 const documents = (state = {}, action) => {
@@ -35,6 +47,11 @@ const documents = (state = {}, action) => {
   }
 
   const doctype = data[0]._type
+
+  if (!doctype) {
+    throw new Error('Document without _type', data[0])
+  }
+
   return {
     ...updatedStateWithIncluded,
     [doctype]: {
