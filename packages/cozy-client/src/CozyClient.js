@@ -116,8 +116,26 @@ export default class CozyClient {
     ]
   }
 
-  destroy(document, mutationOptions = {}) {
-    return this.mutate(Mutations.deleteDocument(document), mutationOptions)
+  static registerHook (doctype, name, fn) {
+    CozyClient.hooks = CozyClient.hooks || {}
+    const hooks = CozyClient.hooks[doctype] = CozyClient.hooks[doctype] || {}
+    hooks[name] = hooks[name] || []
+    hooks[name].push(fn)
+  }
+
+  triggerHook (name, document) {
+    const allHooks = CozyClient.hooks[document._type] || {} 
+    const hooks = allHooks[name] || []
+    for (let h of hooks) {
+      h(this, document)
+    }
+  }
+
+  async destroy(document, mutationOptions = {}) {
+    await this.triggerHook('before:destroy', document)
+    const res = await this.mutate(Mutations.deleteDocument(document), mutationOptions)
+    await this.triggerHook('after:destroy', document)
+    return res
   }
 
   upload(file, dirPath, mutationOptions = {}) {
