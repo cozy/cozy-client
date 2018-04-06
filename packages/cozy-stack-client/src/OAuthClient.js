@@ -18,7 +18,7 @@ const defaultoauthOptions = {
 }
 
 export default class OAuthClient extends CozyStackClient {
-  constructor({ oauth, scope, ...options }) {
+  constructor({ oauth, scope = [], ...options }) {
     super(options)
     this.oauthOptions = { ...defaultoauthOptions, ...oauth }
     this.scope = scope
@@ -99,7 +99,7 @@ export default class OAuthClient extends CozyStackClient {
   }
 
   /**
-   * Registers the currenly configured client with the OAuth server. 
+   * Registers the currenly configured client with the OAuth server.
    * @throws {Error} When the client is already registered
    * @returns {promise} A promise that resolves with a complete list of client information, including client ID and client secret.
    */
@@ -122,7 +122,7 @@ export default class OAuthClient extends CozyStackClient {
         notificationDeviceToken: this.oauthOptions.notificationDeviceToken
       })
     )
-    
+
     this.oauthOptions = this.camelCaseOAuthData({
       ...this.oauthOptions,
       client_id: data.client_id,
@@ -136,7 +136,7 @@ export default class OAuthClient extends CozyStackClient {
   }
 
   /**
-   * Unregisters the currenly configured client with the OAuth server. 
+   * Unregisters the currenly configured client with the OAuth server.
    * @throws {NotRegisteredException} When the client doesn't have it's registration information
    * @returns {promise}
    */
@@ -243,7 +243,7 @@ export default class OAuthClient extends CozyStackClient {
    * @param   {Array} scopes = [] An array of permission scopes for the token.
    * @returns {string} The URL
    */
-  getAuthCodeURL(stateCode, scopes = []) {
+  getAuthCodeURL(stateCode, scopes = this.scope) {
     if (!this.isRegistered()) throw new NotRegisteredException()
 
     const query = new URLSearchParams({

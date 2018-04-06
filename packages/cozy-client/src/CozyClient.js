@@ -2,6 +2,7 @@ import StackLink from './StackLink'
 import Association from './associations'
 import { QueryDefinition, Mutations } from './dsl'
 import CozyStackClient, { OAuthClient } from 'cozy-stack-client'
+import { authenticateWithCordova } from './authentication/mobile'
 import {
   default as reducer,
   createStore,
@@ -412,6 +413,18 @@ export default class CozyClient {
   }
 
   /**
+   * Performs a complete OAuth flow using a Cordova webview for auth.
+   * The `register` method's name has been chosen for compat reasons with the Authentication compo.
+   * @param   {string} cozyURL Receives the URL of the cozy instance.
+   * @returns {object}   Contains the fetched token and the client information.
+   */
+  register(cozyUrl) {
+    const client = this.getOrCreateStackClient()
+    client.setUri(cozyUrl)
+    return this.startOAuthFlow(authenticateWithCordova)
+  }
+
+  /**
    * Performs a complete OAuth flow, including upating the internal token at the end.
    * @param   {function} openURLCallback Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
    * @returns {object}   Contains the fetched token and the client information. These should be stored and used to restore the client.
@@ -429,7 +442,11 @@ export default class CozyClient {
 
     client.setCredentials(token)
 
-    return { token, infos: client.oauthOptions }
+    return {
+      token,
+      infos: client.oauthOptions,
+      client: client.oauthOptions // for compat with Authentication comp reasons
+    }
   }
 
   setStore(store) {
