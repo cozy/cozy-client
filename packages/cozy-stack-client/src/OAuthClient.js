@@ -321,10 +321,19 @@ export default class OAuthClient extends CozyStackClient {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
 
-    return new AccessToken({
+    const newToken = new AccessToken({
       refresh_token: this.token.refreshToken,
       ...result
     })
+
+    if (
+      this.oauthOptions.onTokenRefresh &&
+      typeof this.oauthOptions.onTokenRefresh === 'function'
+    ) {
+      this.oauthOptions.onTokenRefresh(newToken)
+    }
+
+    return newToken
   }
 
   /**
