@@ -338,18 +338,16 @@ export default class OAuthClient extends CozyStackClient {
       this.token = null
     }
   }
-  
+
   async fetch(method, path, body, options) {
     try {
       return super.fetch(method, path, body, options)
-    }
-    catch (e) {
+    } catch (e) {
       if (/Expired token/.test(e.message)) {
         const token = await this.refreshToken()
         this.setCredentials(token)
         return await super.fetch(method, path, body, options)
-      }
-      else {
+      } else {
         throw e
       }
     }
