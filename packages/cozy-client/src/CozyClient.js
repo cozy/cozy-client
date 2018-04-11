@@ -462,9 +462,13 @@ export default class CozyClient {
 
   getOrCreateStackClient() {
     if (!this.client) {
-      this.client = this.options.oauth
-        ? new OAuthClient(this.options)
-        : new CozyStackClient(this.options)
+      if (this.options.client) {
+        this.client = this.options.client
+      } else {
+        this.client = this.options.oauth
+          ? new OAuthClient(this.options)
+          : new CozyStackClient(this.options)
+      }
     }
     return this.client
   }
