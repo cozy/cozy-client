@@ -29,7 +29,7 @@ const ensureHasBothIds = obj => {
 }
 
 const addDoctype = (arr, doctype) =>
-  arr.map(x => ({...x.doc, _type: doctype}) )
+  arr.map(x => ({ ...x.doc, _type: doctype }))
 
 const pouchResToJSONAPI = (res, isArray, doctype) => {
   if (isArray) {
@@ -74,13 +74,11 @@ const doNothing = () => {}
  * and mutations.
  */
 export default class PouchLink extends CozyLink {
-  constructor({
-    doctypes,
-    client,
-    initialSync
-  } = {}) {
+  constructor({ doctypes, client, initialSync } = {}) {
     if (!doctypes) {
-      throw new Error('PouchLink must be instantiated with doctypes it manages. Ex: [\'io.cozy.bills\']')
+      throw new Error(
+        "PouchLink must be instantiated with doctypes it manages. Ex: ['io.cozy.bills']"
+      )
     }
     if (!client) {
       throw new Error('PouchLink must be instantiated with a client.')
@@ -116,14 +114,17 @@ export default class PouchLink extends CozyLink {
   }
 
   syncOne(doctype) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       const info = this.getDBInfo(doctype)
       if (info.syncing) {
         return resolve(info.syncing)
       } else {
-        const replication = info.db.replicate.from(this.getReplicationUrl(doctype), {
-          batch_size: 1000 // we have mostly small documents
-        })
+        const replication = info.db.replicate.from(
+          this.getReplicationUrl(doctype),
+          {
+            batch_size: 1000 // we have mostly small documents
+          }
+        )
         replication.on('error', err => {
           console.warn('Error while syncing', err)
           reject('Error while syncing')
@@ -136,12 +137,13 @@ export default class PouchLink extends CozyLink {
     })
   }
 
-  syncAll () {
-    return Promise.all(this.doctypes.map(doctype => this.syncOne(doctype)))
-      .then(pipe(() => this.onSync()))
+  syncAll() {
+    return Promise.all(
+      this.doctypes.map(doctype => this.syncOne(doctype))
+    ).then(pipe(() => this.onSync()))
   }
 
-  onSync (res) {
+  onSync(res) {
     this.synced = true
   }
 
