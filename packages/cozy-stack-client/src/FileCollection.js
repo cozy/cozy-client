@@ -52,7 +52,7 @@ export default class FileCollection extends DocumentCollection {
    */
   async find(selector, options = {}) {
     const { skip = 0 } = options
-    const resp = await this.client.fetch(
+    const resp = await this.client.fetchJSON(
       'POST',
       '/files/_find',
       await this.toMangoOptions(selector, options)
@@ -66,7 +66,7 @@ export default class FileCollection extends DocumentCollection {
   }
 
   async findReferencedBy(document, { skip = 0, limit = FETCH_LIMIT } = {}) {
-    const resp = await this.client.fetch(
+    const resp = await this.client.fetchJSON(
       'GET',
       uri`/data/${document._type}/${
         document._id
@@ -83,7 +83,7 @@ export default class FileCollection extends DocumentCollection {
 
   addReferencesTo(document, documents) {
     const refs = documents.map(d => ({ id: d._id, type: 'io.cozy.files' }))
-    return this.client.fetch(
+    return this.client.fetchJSON(
       'POST',
       uri`/data/${document._type}/${document._id}/relationships/references`,
       { data: refs }
@@ -92,7 +92,7 @@ export default class FileCollection extends DocumentCollection {
 
   removeReferencesTo(document, documents) {
     const refs = documents.map(d => ({ id: d._id, type: 'io.cozy.files' }))
-    return this.client.fetch(
+    return this.client.fetchJSON(
       'DELETE',
       uri`/data/${document._type}/${document._id}/relationships/references`,
       { data: refs }
@@ -111,7 +111,7 @@ export default class FileCollection extends DocumentCollection {
         ])
       }
     }
-    const resp = await this.client.fetch(
+    const resp = await this.client.fetchJSON(
       'DELETE',
       uri`/files/${_id}`,
       undefined,
@@ -149,13 +149,13 @@ export default class FileCollection extends DocumentCollection {
 
   getDownloadLinkById(id) {
     return this.client
-      .fetch('POST', uri`/files/downloads?Id=${id}`)
+      .fetchJSON('POST', uri`/files/downloads?Id=${id}`)
       .then(this.extractResponseLinkRelated)
   }
 
   getDownloadLinkByPath(path) {
     return this.client
-      .fetch('POST', uri`/files/downloads?Path=${path}`)
+      .fetchJSON('POST', uri`/files/downloads?Path=${path}`)
       .then(this.extractResponseLinkRelated)
   }
 
@@ -178,7 +178,7 @@ export default class FileCollection extends DocumentCollection {
   }
 
   async getArchiveLinkByIds(ids, name = 'files') {
-    const resp = await this.client.fetch('POST', '/files/archive', {
+    const resp = await this.client.fetchJSON('POST', '/files/archive', {
       data: {
         type: 'io.cozy.archives',
         attributes: {
@@ -192,7 +192,7 @@ export default class FileCollection extends DocumentCollection {
 
   async statById(id, options = {}) {
     const { limit = FETCH_LIMIT, skip = 0 } = options
-    const resp = await this.client.fetch(
+    const resp = await this.client.fetchJSON(
       'GET',
       uri`/files/${id}?limit=${limit}&skip=${skip}`
     )
@@ -203,7 +203,7 @@ export default class FileCollection extends DocumentCollection {
   }
 
   async statByPath(path) {
-    const resp = await this.client.fetch(
+    const resp = await this.client.fetchJSON(
       'GET',
       uri`/files/metadata?Path=${path}`
     )
@@ -225,7 +225,7 @@ export default class FileCollection extends DocumentCollection {
         ? new Date(lastModifiedDate)
         : lastModifiedDate)
 
-    const resp = await this.client.fetch(
+    const resp = await this.client.fetchJSON(
       'POST',
       uri`/files/${dirId}?Name=${safeName}&Type=directory`,
       undefined,
@@ -299,7 +299,6 @@ export default class FileCollection extends DocumentCollection {
     const isBlob = typeof Blob !== 'undefined' && data instanceof Blob
     const isStream = data.readable === true && typeof data.pipe === 'function'
     const isString = typeof data === 'string'
-    const contentTypeOctetStream = 'application/octet-stream'
 
     if (!isBuffer && !isFile && !isBlob && !isStream && !isString) {
       throw new Error('invalid data type')
@@ -339,7 +338,7 @@ export default class FileCollection extends DocumentCollection {
     if (lastModifiedDate) headers['Date'] = lastModifiedDate.toGMTString()
     if (ifMatch) headers['If-Match'] = ifMatch
 
-    const resp = await this.client.fetch('POST', path, data, { headers })
+    const resp = await this.client.fetchJSON('POST', path, data, { headers })
     return {
       data: normalizeFile(resp.data)
     }

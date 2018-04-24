@@ -6,7 +6,7 @@ const normalizeSharing = sharing => normalizeDoc(sharing, 'io.cozy.sharings')
 
 export default class SharingCollection extends DocumentCollection {
   async findByDoctype(doctype) {
-    const resp = await this.client.fetch(
+    const resp = await this.client.fetchJSON(
       'GET',
       uri`/sharings/doctype/${doctype}`
     )
@@ -17,7 +17,7 @@ export default class SharingCollection extends DocumentCollection {
   }
 
   async share(document, recipients, sharingType, description) {
-    const resp = await this.client.fetch('POST', '/sharings/', {
+    const resp = await this.client.fetchJSON('POST', '/sharings/', {
       data: {
         type: 'io.cozy.sharings',
         attributes: {
@@ -42,7 +42,7 @@ export default class SharingCollection extends DocumentCollection {
         type: _type
       }))
     }
-    const resp = await this.client.fetch(
+    const resp = await this.client.fetchJSON(
       'POST',
       uri`/sharings/${sharing._id}/recipients`,
       {
@@ -67,14 +67,14 @@ export default class SharingCollection extends DocumentCollection {
     const memberIndex = sharing.attributes.members.findIndex(
       m => m.email === recipientEmail
     )
-    return this.client.fetch(
+    return this.client.fetchJSON(
       'DELETE',
       uri`/sharings/${sharing._id}/recipients/${memberIndex}`
     )
   }
 
   revokeSelf(sharing) {
-    return this.client.fetch(
+    return this.client.fetchJSON(
       'DELETE',
       uri`/sharings/${sharing._id}/recipients/self`
     )

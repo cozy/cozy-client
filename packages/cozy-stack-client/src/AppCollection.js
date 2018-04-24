@@ -22,7 +22,7 @@ export default class AppCollection {
    */
   async all() {
     const path = uri`/apps/`
-    const resp = await this.client.fetch('GET', path)
+    const resp = await this.client.fetchJSON('GET', path)
     return {
       data: resp.data.map(row => normalizeDoc(row, APP_DOCTYPE)),
       meta: { count: resp.total_rows },

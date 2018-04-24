@@ -82,12 +82,12 @@ describe('DocumentCollection', () => {
     const collection = new DocumentCollection('io.cozy.todos', client)
 
     beforeAll(() => {
-      client.fetch.mockReturnValue(Promise.resolve(ALL_RESPONSE_FIXTURE))
+      client.fetchJSON.mockReturnValue(Promise.resolve(ALL_RESPONSE_FIXTURE))
     })
 
     it('should call the right route', async () => {
       await collection.all()
-      expect(client.fetch).toHaveBeenCalledWith(
+      expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
         '/data/io.cozy.todos/_all_docs?include_docs=true&limit=50&skip=0'
       )
@@ -95,7 +95,7 @@ describe('DocumentCollection', () => {
 
     it('should accept skip and limit options', async () => {
       await collection.all({ skip: 50, limit: 200 })
-      expect(client.fetch).toHaveBeenCalledWith(
+      expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
         '/data/io.cozy.todos/_all_docs?include_docs=true&limit=200&skip=50'
       )
@@ -112,7 +112,7 @@ describe('DocumentCollection', () => {
     })
 
     it('should not fail if there is no doc of this type yet', async () => {
-      client.fetch.mockReturnValueOnce(
+      client.fetchJSON.mockReturnValueOnce(
         Promise.reject(new Error('404: not_found'))
       )
       const resp = await collection.all()
@@ -121,7 +121,9 @@ describe('DocumentCollection', () => {
     })
 
     it('should throw for other error types', async () => {
-      client.fetch.mockReturnValueOnce(Promise.reject(new Error('Bad request')))
+      client.fetchJSON.mockReturnValueOnce(
+        Promise.reject(new Error('Bad request'))
+      )
       expect.assertions(1)
       try {
         await collection.all()
@@ -135,7 +137,7 @@ describe('DocumentCollection', () => {
     const collection = new DocumentCollection('io.cozy.todos', client)
 
     beforeAll(() => {
-      client.fetch.mockReturnValue(
+      client.fetchJSON.mockReturnValue(
         Promise.resolve({
           id: '_design/123456',
           name: '123456',
@@ -146,7 +148,7 @@ describe('DocumentCollection', () => {
 
     it('should call the right route with the right payload', async () => {
       await collection.createIndex(['label', 'done'])
-      expect(client.fetch).toHaveBeenCalledWith(
+      expect(client.fetchJSON).toHaveBeenCalledWith(
         'POST',
         '/data/io.cozy.todos/_index',
         { index: { fields: ['label', 'done'] } }
@@ -161,20 +163,20 @@ describe('DocumentCollection', () => {
 
   describe('find', () => {
     beforeEach(() => {
-      client.fetch.mockReturnValueOnce(
+      client.fetchJSON.mockReturnValueOnce(
         Promise.resolve({
           id: '_design/123456',
           name: '123456',
           result: 'exists'
         })
       )
-      client.fetch.mockReturnValue(Promise.resolve(FIND_RESPONSE_FIXTURE))
+      client.fetchJSON.mockReturnValue(Promise.resolve(FIND_RESPONSE_FIXTURE))
     })
 
     it('should call the right route with the right payload', async () => {
       const collection = new DocumentCollection('io.cozy.todos', client)
       await collection.find({ done: false })
-      expect(client.fetch).toHaveBeenLastCalledWith(
+      expect(client.fetchJSON).toHaveBeenLastCalledWith(
         'POST',
         '/data/io.cozy.todos/_find',
         {
@@ -189,7 +191,7 @@ describe('DocumentCollection', () => {
     it('should accept skip and limit options', async () => {
       const collection = new DocumentCollection('io.cozy.todos', client)
       await collection.find({ done: false }, { skip: 50, limit: 200 })
-      expect(client.fetch).toHaveBeenLastCalledWith(
+      expect(client.fetchJSON).toHaveBeenLastCalledWith(
         'POST',
         '/data/io.cozy.todos/_find',
         {
@@ -204,7 +206,7 @@ describe('DocumentCollection', () => {
     it('should accept a sort option', async () => {
       const collection = new DocumentCollection('io.cozy.todos', client)
       await collection.find({ done: false }, { sort: { label: 'desc' } })
-      expect(client.fetch).toHaveBeenLastCalledWith(
+      expect(client.fetchJSON).toHaveBeenLastCalledWith(
         'POST',
         '/data/io.cozy.todos/_find',
         {
@@ -234,12 +236,12 @@ describe('DocumentCollection', () => {
     const collection = new DocumentCollection('io.cozy.todos', client)
 
     beforeAll(() => {
-      client.fetch.mockReturnValue(Promise.resolve(CREATE_RESPONSE_FIXTURE))
+      client.fetchJSON.mockReturnValue(Promise.resolve(CREATE_RESPONSE_FIXTURE))
     })
 
     it('should call the right route with the right payload', async () => {
       await collection.create(NEW_TODO)
-      expect(client.fetch).toHaveBeenLastCalledWith(
+      expect(client.fetchJSON).toHaveBeenLastCalledWith(
         'POST',
         '/data/io.cozy.todos/',
         NEW_TODO
@@ -256,12 +258,12 @@ describe('DocumentCollection', () => {
     const collection = new DocumentCollection('io.cozy.todos', client)
 
     beforeAll(() => {
-      client.fetch.mockReturnValue(Promise.resolve(UPDATE_RESPONSE_FIXTURE))
+      client.fetchJSON.mockReturnValue(Promise.resolve(UPDATE_RESPONSE_FIXTURE))
     })
 
     it('should call the right route with the right payload', async () => {
       await collection.update(TODO_TO_UPDATE)
-      expect(client.fetch).toHaveBeenLastCalledWith(
+      expect(client.fetchJSON).toHaveBeenLastCalledWith(
         'PUT',
         `/data/io.cozy.todos/${TODO_TO_UPDATE._id}`,
         TODO_TO_UPDATE
@@ -279,15 +281,15 @@ describe('DocumentCollection', () => {
 
     beforeEach(() => {
       // we first need to mock the return value of getAllSharingLinks()
-      client.fetch.mockReturnValueOnce(Promise.resolve({ data: [] }))
-      client.fetch.mockReturnValueOnce(
+      client.fetchJSON.mockReturnValueOnce(Promise.resolve({ data: [] }))
+      client.fetchJSON.mockReturnValueOnce(
         Promise.resolve(DESTROY_RESPONSE_FIXTURE)
       )
     })
 
     it('should call the right route with the right payload', async () => {
       await collection.destroy(TODO_TO_DESTROY)
-      expect(client.fetch).toHaveBeenLastCalledWith(
+      expect(client.fetchJSON).toHaveBeenLastCalledWith(
         'DELETE',
         `/data/io.cozy.todos/${TODO_TO_DESTROY._id}?rev=${TODO_TO_DESTROY._rev}`
       )
