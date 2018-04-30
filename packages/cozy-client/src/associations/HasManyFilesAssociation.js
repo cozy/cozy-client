@@ -1,25 +1,19 @@
 import HasManyAssociation from './HasManyAssociation'
-import { Mutations } from '../dsl'
+import { QueryDefinition, Mutations } from '../dsl'
 
 export default class HasManyFilesAssociation extends HasManyAssociation {
   fetchMore() {
     const skip = this.getRelationship().data.length
-    return this.query(
-      client =>
-        client
-          .find(this.doctype)
-          .referencedBy(this.target)
-          .offset(skip),
-      {
-        update: (store, response) => {
-          response.included.forEach(doc => store.writeDocument(doc))
-          this.updateTargetRelationship(store, prevRelationship => ({
-            data: [...prevRelationship.data, ...response.data],
-            next: response.next
-          }))
-        }
+    const queryDef = new QueryDefinition({ doctype: 'io.cozy.files' })
+    return this.query(queryDef.referencedBy(this.target).offset(skip), {
+      update: (store, response) => {
+        response.included.forEach(doc => store.writeDocument(doc))
+        this.updateTargetRelationship(store, prevRelationship => ({
+          data: [...prevRelationship.data, ...response.data],
+          next: response.next
+        }))
       }
-    )
+    })
   }
 
   async add(referencedDocs) {
