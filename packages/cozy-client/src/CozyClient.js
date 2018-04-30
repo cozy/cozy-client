@@ -119,15 +119,15 @@ export default class CozyClient {
     ]
   }
 
-  static registerHook (doctype, name, fn) {
+  static registerHook(doctype, name, fn) {
     CozyClient.hooks = CozyClient.hooks || {}
-    const hooks = CozyClient.hooks[doctype] = CozyClient.hooks[doctype] || {}
+    const hooks = (CozyClient.hooks[doctype] = CozyClient.hooks[doctype] || {})
     hooks[name] = hooks[name] || []
     hooks[name].push(fn)
   }
 
-  triggerHook (name, document) {
-    const allHooks = CozyClient.hooks[document._type] || {} 
+  triggerHook(name, document) {
+    const allHooks = CozyClient.hooks[document._type] || {}
     const hooks = allHooks[name] || []
     for (let h of hooks) {
       h(this, document)
@@ -136,7 +136,10 @@ export default class CozyClient {
 
   async destroy(document, mutationOptions = {}) {
     await this.triggerHook('before:destroy', document)
-    const res = await this.mutate(Mutations.deleteDocument(document), mutationOptions)
+    const res = await this.mutate(
+      Mutations.deleteDocument(document),
+      mutationOptions
+    )
     await this.triggerHook('after:destroy', document)
     return res
   }
@@ -145,7 +148,7 @@ export default class CozyClient {
     return this.mutate(Mutations.uploadFile(file, dirPath), mutationOptions)
   }
 
-  async query(queryDefinition, { update, ...options } = {}) {
+  async query(queryDefinition, { update, contextQueryId, ...options } = {}) {
     this.getOrCreateStore()
     const queryId = options.as || this.generateId()
     const existingQuery = getQueryFromStore(this.store.getState(), queryId)
@@ -157,7 +160,8 @@ export default class CozyClient {
       const response = await this.requestQuery(queryDefinition)
       this.dispatch(
         receiveQueryResult(queryId, response, {
-          update
+          update,
+          contextQueryId
         })
       )
       return response
@@ -322,7 +326,11 @@ export default class CozyClient {
     const methods = {
       get: this.getDocumentFromStore.bind(this),
       query: (def, opts) =>
-        this.query.call(this, def, queryId ? { as: queryId, ...opts } : opts),
+        this.query.call(
+          this,
+          def,
+          queryId ? { contextQueryId: queryId, ...opts } : opts
+        ),
       mutate: (def, opts) =>
         this.mutate.call(
           this,
@@ -375,7 +383,7 @@ export default class CozyClient {
       associations
     }
   }
-  
+
   doctypeModelExists(doctype) {
     if (!this.schema) return false
     return (
@@ -388,7 +396,7 @@ export default class CozyClient {
   getDocumentFromStore(type, id) {
     return getDocumentFromStore(this.store.getState(), type, id)
   }
-  
+
   /**
    * Performs a complete OAuth flow, including upating the internal token at the end.
    * @param   {function} openURLCallback Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
@@ -396,7 +404,7 @@ export default class CozyClient {
    */
   async startOAuthFlow(openURLCallback) {
     const client = this.getOrCreateStackClient()
-    
+
     await client.register()
     const stateCode = client.generateStateCode()
     const url = client.getAuthCodeURL(stateCode)
@@ -404,10 +412,10 @@ export default class CozyClient {
     const redirectedURL = await openURLCallback(url)
     const code = client.getAccessCodeFromURL(redirectedURL, stateCode)
     const token = await client.fetchAccessToken(code)
-    
+
     client.setCredentials(token)
-    
-    return {token, infos: client.oauthOptions}
+
+    return { token, infos: client.oauthOptions }
   }
 
   setStore(store) {
@@ -423,7 +431,9 @@ export default class CozyClient {
 
   getOrCreateStackClient() {
     if (!this.client) {
-      this.client = this.options.oauth ? new OAuthClient(this.options) : new CozyStackClient(this.options)
+      this.client = this.options.oauth
+        ? new OAuthClient(this.options)
+        : new CozyStackClient(this.options)
     }
     return this.client
   }
