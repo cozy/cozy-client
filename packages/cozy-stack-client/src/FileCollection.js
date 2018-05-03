@@ -19,6 +19,11 @@ const getFileTypeFromName = name => {
   else return null
 }
 
+export const isFile = ({ _type, type }) =>
+  _type === 'io.cozy.files' || type === 'directory' || type === 'file'
+
+export const isDirectory = ({ type }) => type === 'directory'
+
 /**
  * Abstracts a collection of files
  *
@@ -30,6 +35,10 @@ export default class FileCollection extends DocumentCollection {
   constructor(doctype, client) {
     super(doctype, client)
     this.specialDirectories = {}
+  }
+
+  get(id) {
+    return this.statById(id)
   }
 
   /**

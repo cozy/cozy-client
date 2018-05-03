@@ -120,7 +120,6 @@ export default class DocumentCollection {
   }
 
   async destroy({ _id, _rev, ...document }) {
-    await this.revokeSharingLink({ _id, ...document })
     const resp = await this.client.fetch(
       'DELETE',
       uri`/data/${this.doctype}/${_id}?rev=${_rev}`
@@ -131,91 +130,6 @@ export default class DocumentCollection {
         this.doctype
       )
     }
-  }
-
-  async getSharingLink(document) {
-    // This shouldn't have happened, but unfortunately some duplicate sharing links have been created in the past
-    const perms = await this.getSharingLinks(document)
-    if (perms.length === 0) return null
-    const perm = perms[0]
-    if (
-      perm &&
-      perm.attributes &&
-      perm.attributes.codes &&
-      perm.attributes.codes.email
-    ) {
-      return await this.buildSharingLink(document, perm.attributes.codes.email)
-    }
-    return null
-  }
-
-  async buildSharingLink(document, sharecode) {
-    const appUrl = await this.getAppUrlForDoctype()
-    return `${appUrl}public?sharecode=${sharecode}&id=${document._id}`
-  }
-
-  async getAppUrlForDoctype() {
-    const apps = await this.getApps()
-    switch (this.doctype) {
-      case 'io.cozy.files':
-        return getAppUrl(apps, 'drive')
-      case 'io.cozy.photos.albums':
-        return getAppUrl(apps, 'photos')
-      default:
-        throw new Error(
-          `Sharing link: don't know which app to use for doctype ${
-            this.doctype
-          }`
-        )
-    }
-  }
-
-  async getApps() {
-    const resp = await this.client.fetch('GET', '/apps/')
-    return resp.data.map(a => ({ _id: a.id, ...a }))
-  }
-
-  async getSharingLinks(document) {
-    const byDoctype = await this.getAllSharingLinks()
-    const type = isFile(document) ? 'files' : 'collection'
-    return byDoctype.data.filter(
-      p =>
-        p.attributes &&
-        p.attributes.permissions &&
-        p.attributes.permissions[type] &&
-        p.attributes.permissions[type].values.indexOf(document._id) !== -1
-    )
-  }
-
-  getAllSharingLinks() {
-    return this.client.fetch(
-      'GET',
-      uri`/permissions/doctype/${this.doctype}/sharedByLink`
-    )
-  }
-
-  async createSharingLink(document) {
-    const resp = await this.client.fetch('POST', `/permissions?codes=email`, {
-      data: {
-        type: 'io.cozy.permissions',
-        attributes: {
-          permissions: getPermissionsFor(document, true)
-        }
-      }
-    })
-    return await this.buildSharingLink(
-      document,
-      resp.data.attributes.codes.email
-    )
-  }
-
-  async revokeSharingLink(document) {
-    // Because some duplicate links have been created in the past, we must ensure
-    // we revoke all of them
-    const perms = await this.getSharingLinks(document)
-    return Promise.all(
-      perms.map(p => this.client.fetch('DELETE', uri`/permissions/${p.id}`))
-    )
   }
 
   async toMangoOptions(selector, options = {}) {
@@ -297,45 +211,4 @@ export default class DocumentCollection {
   getIndexFields({ selector, sort = {} }) {
     return Array.from(new Set([...Object.keys(selector), ...Object.keys(sort)]))
   }
-}
-
-const isFile = ({ _type, type }) =>
-  _type === 'io.cozy.files' || type === 'directory' || type === 'file'
-
-const getPermissionsFor = (document, publicLink = false) => {
-  const { _id, _type } = document
-  const verbs = publicLink ? ['GET'] : ['ALL']
-  // TODO: this works for albums, but it needs to be generalized and integrated
-  // with cozy-client ; some sort of doctype "schema" will be needed here
-  return isFile(document)
-    ? {
-        files: {
-          type: 'io.cozy.files',
-          verbs,
-          values: [_id]
-        }
-      }
-    : {
-        collection: {
-          type: _type,
-          verbs,
-          values: [_id]
-        },
-        files: {
-          type: 'io.cozy.files',
-          verbs,
-          values: [`${_type}/${_id}`],
-          selector: 'referenced_by'
-        }
-      }
-}
-
-const getAppUrl = (apps, appName) => {
-  const app = apps.find(
-    a => a.attributes.slug === appName && a.attributes.state === 'ready'
-  )
-  if (!app) {
-    throw new Error(`Sharing link: app ${appName} not installed`)
-  }
-  return app.links.related
 }

@@ -1,6 +1,8 @@
 import AppToken from './AppToken'
 import DocumentCollection from './DocumentCollection'
 import FileCollection from './FileCollection'
+import SharingCollection from './SharingCollection'
+import PermissionCollection from './PermissionCollection'
 
 const normalizeUri = uri => {
   while (uri[uri.length - 1] === '/') {
@@ -31,6 +33,10 @@ export default class CozyStackClient {
     switch (doctype) {
       case 'io.cozy.files':
         return new FileCollection(doctype, this)
+      case 'io.cozy.sharings':
+        return new SharingCollection(doctype, this)
+      case 'io.cozy.permissions':
+        return new PermissionCollection(doctype, this)
       default:
         return new DocumentCollection(doctype, this)
     }
