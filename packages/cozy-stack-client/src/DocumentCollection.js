@@ -218,6 +218,8 @@ export default class DocumentCollection {
     )
   }
 
+  async share(document, recipients, sharingType, description) {}
+
   async toMangoOptions(selector, options = {}) {
     const indexFields = this.getIndexFields({ ...options, selector })
     const indexId = options.indexId || (await this.getIndexId(indexFields))
@@ -301,6 +303,49 @@ export default class DocumentCollection {
 
 const isFile = ({ _type, type }) =>
   _type === 'io.cozy.files' || type === 'directory' || type === 'file'
+
+const isDirectory = ({ type }) => type === 'directory'
+
+const getBehaviorsFor = (document, sharingType) => {
+  if (isFile(document) && isDirectory(document)) {
+    return sharingType === 'two-way'
+      ? { add: 'sync', update: 'sync', remove: 'sync' }
+      : { add: 'none', update: 'none', remove: 'revoke' }
+  }
+  return sharingType === 'two-way'
+    ? { update: 'sync', remove: 'sync' }
+    : { update: 'none', remove: 'revoke' }
+}
+
+const getRulesFor = (document, sharingType) => {
+  const { _id, _type } = document
+  return isFile(document)
+    ? [
+        {
+          title: isDirectory(document) ? 'directory' : 'file',
+          doctype: 'io.cozy.files',
+          values: [_id],
+          ...getBehaviorsFor(document, sharingType)
+        }
+      ]
+    : [
+        {
+          title: 'collection',
+          doctype: _type,
+          values: [_id],
+          ...getBehaviorsFor(document, sharingType)
+        },
+        {
+          title: 'items',
+          doctype: 'io.cozy.files',
+          values: [`${_type}/${_id}`],
+          selector: 'referenced_by',
+          ...(sharingType === 'two-way'
+            ? { add: 'sync', update: 'sync', remove: 'sync' }
+            : { add: 'push', update: 'none', remove: 'push' })
+        }
+      ]
+}
 
 const getPermissionsFor = (document, publicLink = false) => {
   const { _id, _type } = document
