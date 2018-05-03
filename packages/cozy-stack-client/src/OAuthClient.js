@@ -18,7 +18,7 @@ const defaultoauthOptions = {
 }
 
 export default class OAuthClient extends CozyStackClient {
-  constructor({ oauth, scope, ...options }) {
+  constructor({ oauth, scope = [], ...options }) {
     super(options)
     this.oauthOptions = { ...defaultoauthOptions, ...oauth }
     this.scope = scope
@@ -99,7 +99,7 @@ export default class OAuthClient extends CozyStackClient {
   }
 
   /**
-   * Registers the currenly configured client with the OAuth server. 
+   * Registers the currenly configured client with the OAuth server.
    * @throws {Error} When the client is already registered
    * @returns {promise} A promise that resolves with a complete list of client information, including client ID and client secret.
    */
@@ -122,7 +122,7 @@ export default class OAuthClient extends CozyStackClient {
         notificationDeviceToken: this.oauthOptions.notificationDeviceToken
       })
     )
-    
+
     this.oauthOptions = this.camelCaseOAuthData({
       ...this.oauthOptions,
       client_id: data.client_id,
@@ -136,7 +136,7 @@ export default class OAuthClient extends CozyStackClient {
   }
 
   /**
-   * Unregisters the currenly configured client with the OAuth server. 
+   * Unregisters the currenly configured client with the OAuth server.
    * @throws {NotRegisteredException} When the client doesn't have it's registration information
    * @returns {promise}
    */
@@ -243,7 +243,7 @@ export default class OAuthClient extends CozyStackClient {
    * @param   {Array} scopes = [] An array of permission scopes for the token.
    * @returns {string} The URL
    */
-  getAuthCodeURL(stateCode, scopes = []) {
+  getAuthCodeURL(stateCode, scopes = this.scope) {
     if (!this.isRegistered()) throw new NotRegisteredException()
 
     const query = new URLSearchParams({
@@ -321,10 +321,19 @@ export default class OAuthClient extends CozyStackClient {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
 
-    return new AccessToken({
+    const newToken = new AccessToken({
       refresh_token: this.token.refreshToken,
       ...result
     })
+
+    if (
+      this.oauthOptions.onTokenRefresh &&
+      typeof this.oauthOptions.onTokenRefresh === 'function'
+    ) {
+      this.oauthOptions.onTokenRefresh(newToken)
+    }
+
+    return newToken
   }
 
   /**
@@ -338,18 +347,16 @@ export default class OAuthClient extends CozyStackClient {
       this.token = null
     }
   }
-  
+
   async fetch(method, path, body, options) {
     try {
       return super.fetch(method, path, body, options)
-    }
-    catch (e) {
+    } catch (e) {
       if (/Expired token/.test(e.message)) {
         const token = await this.refreshToken()
         this.setCredentials(token)
         return await super.fetch(method, path, body, options)
-      }
-      else {
+      } else {
         throw e
       }
     }

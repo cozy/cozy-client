@@ -2,6 +2,7 @@ import StackLink from './StackLink'
 import Association from './associations'
 import { QueryDefinition, Mutations } from './dsl'
 import CozyStackClient, { OAuthClient } from 'cozy-stack-client'
+import { authenticateWithCordova } from './authentication/mobile'
 import {
   default as reducer,
   createStore,
@@ -298,6 +299,9 @@ export default class CozyClient {
   }
 
   hydrateDocuments(doctype, documents, queryId) {
+    if (this.options.autoHydrate === false) {
+      return documents
+    }
     try {
       const model = this.getDoctypeModel(doctype)
       const associations = model.associations
@@ -323,8 +327,29 @@ export default class CozyClient {
   }
 
   hydrateRelationships(document, associations, queryId) {
-    const methods = {
+    const methods = this.getAssociationStoreAccessors(queryId)
+    return associations.reduce(
+      (acc, assoc) => ({
+        ...acc,
+        [assoc.name]: Association.create(document, assoc, methods)
+      }),
+      {}
+    )
+  }
+
+  getAssociation(document, associationName, queryId) {
+    return Association.create(
+      document,
+      this.getModelAssociation(document._type, associationName),
+      this.getAssociationStoreAccessors(queryId)
+    )
+  }
+
+  getAssociationStoreAccessors(queryId) {
+    return {
       get: this.getDocumentFromStore.bind(this),
+      save: (document, opts) =>
+        this.save.call(this, document, { contextQueryId: queryId, ...opts }),
       query: (def, opts) =>
         this.query.call(
           this,
@@ -338,13 +363,6 @@ export default class CozyClient {
           queryId ? { contextQueryId: queryId, ...opts } : opts
         )
     }
-    return associations.reduce(
-      (acc, assoc) => ({
-        ...acc,
-        [assoc.name]: Association.create(document, assoc, methods)
-      }),
-      {}
-    )
   }
 
   getModelAssociation(doctype, associationName) {
@@ -398,6 +416,18 @@ export default class CozyClient {
   }
 
   /**
+   * Performs a complete OAuth flow using a Cordova webview for auth.
+   * The `register` method's name has been chosen for compat reasons with the Authentication compo.
+   * @param   {string} cozyURL Receives the URL of the cozy instance.
+   * @returns {object}   Contains the fetched token and the client information.
+   */
+  register(cozyUrl) {
+    const client = this.getOrCreateStackClient()
+    client.setUri(cozyUrl)
+    return this.startOAuthFlow(authenticateWithCordova)
+  }
+
+  /**
    * Performs a complete OAuth flow, including upating the internal token at the end.
    * @param   {function} openURLCallback Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
    * @returns {object}   Contains the fetched token and the client information. These should be stored and used to restore the client.
@@ -415,7 +445,11 @@ export default class CozyClient {
 
     client.setCredentials(token)
 
-    return { token, infos: client.oauthOptions }
+    return {
+      token,
+      infos: client.oauthOptions,
+      client: client.oauthOptions // for compat with Authentication comp reasons
+    }
   }
 
   setStore(store) {
@@ -431,9 +465,13 @@ export default class CozyClient {
 
   getOrCreateStackClient() {
     if (!this.client) {
-      this.client = this.options.oauth
-        ? new OAuthClient(this.options)
-        : new CozyStackClient(this.options)
+      if (this.options.client) {
+        this.client = this.options.client
+      } else {
+        this.client = this.options.oauth
+          ? new OAuthClient(this.options)
+          : new CozyStackClient(this.options)
+      }
     }
     return this.client
   }

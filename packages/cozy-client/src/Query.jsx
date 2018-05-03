@@ -42,12 +42,19 @@ export default class Query extends Component {
   render() {
     const { children } = this.props
     const { client, store } = this.context
+    const query = this.observableQuery
     return children(
       {
-        fetchMore: this.observableQuery.fetchMore.bind(this.observableQuery),
-        ...this.observableQuery.currentResult()
+        fetchMore: query.fetchMore.bind(query),
+        ...query.currentResult()
       },
-      this.mutations
+      {
+        createDocument: query.create.bind(query),
+        saveDocument: query.save.bind(query),
+        deleteDocument: query.destroy.bind(query),
+        getAssociation: query.getAssociation.bind(query),
+        ...this.mutations
+      }
     )
   }
 }

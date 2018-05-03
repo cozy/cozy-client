@@ -79,6 +79,10 @@ export default class ObservableQuery {
     )
   }
 
+  getAssociation(document, associationName) {
+    return this.client.getAssociation(document, associationName, this.queryId)
+  }
+
   create(type, { _type, ...attributes }, relationships, mutationOptions = {}) {
     return this.client.create(type, attributes, relationships, {
       ...mutationOptions,
