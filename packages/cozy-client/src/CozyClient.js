@@ -299,6 +299,9 @@ export default class CozyClient {
   }
 
   hydrateDocuments(doctype, documents, queryId) {
+    if (this.options.autoHydrate === false) {
+      return documents
+    }
     try {
       const model = this.getDoctypeModel(doctype)
       const associations = model.associations

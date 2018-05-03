@@ -57,18 +57,17 @@ export default class ObservableQuery {
 
   currentResult() {
     const result = getQueryFromStore(this.getStore().getState(), this.queryId)
-    return result
-    // if (result.fetchStatus !== 'loaded') {
-    //   return result
-    // }
-    // return {
-    //   ...result,
-    //   data: this.client.hydrateDocuments(
-    //     this.definition.doctype,
-    //     result.data,
-    //     this.queryId
-    //   )
-    // }
+    if (result.fetchStatus !== 'loaded') {
+      return result
+    }
+    return {
+      ...result,
+      data: this.client.hydrateDocuments(
+        this.definition.doctype,
+        result.data,
+        this.queryId
+      )
+    }
   }
 
   fetchMore() {
