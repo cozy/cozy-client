@@ -218,7 +218,23 @@ export default class DocumentCollection {
     )
   }
 
-  async share(document, recipients, sharingType, description) {}
+  async share(document, recipients, sharingType, description) {
+    const resp = await this.client.fetch('POST', '/sharings/', {
+      data: {
+        type: 'io.cozy.sharings',
+        attributes: {
+          description,
+          rules: getRulesFor(document, sharingType)
+        },
+        relationships: {
+          recipients: {
+            data: recipients.map(({ id, _type }) => ({ id, type: _type }))
+          }
+        }
+      }
+    })
+    return resp
+  }
 
   async toMangoOptions(selector, options = {}) {
     const indexFields = this.getIndexFields({ ...options, selector })
