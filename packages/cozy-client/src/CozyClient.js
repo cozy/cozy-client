@@ -128,6 +128,7 @@ export default class CozyClient {
   }
 
   triggerHook(name, document) {
+    if (!CozyClient.hooks) return
     const allHooks = CozyClient.hooks[document._type] || {}
     const hooks = allHooks[name] || []
     for (let h of hooks) {
