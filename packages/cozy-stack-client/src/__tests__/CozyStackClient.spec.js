@@ -46,7 +46,7 @@ describe('CozyStackClient', () => {
     })
 
     it('should ask for JSON by default', async () => {
-      const resp = await client.fetch('GET', '/data/io.cozy.todos')
+      await client.fetch('GET', '/data/io.cozy.todos')
       expect(fetch).toHaveBeenCalledWith(
         'http://cozy.tools:8080/data/io.cozy.todos',
         {
@@ -61,7 +61,7 @@ describe('CozyStackClient', () => {
     })
 
     it('should stringify a JSON payload', async () => {
-      const resp = await client.fetch('POST', '/data/io.cozy.todos', {
+      await client.fetch('POST', '/data/io.cozy.todos', {
         label: 'Buy bread'
       })
       expect(fetch).toHaveBeenCalledWith(
@@ -83,7 +83,7 @@ describe('CozyStackClient', () => {
 
     it('should not transform the payload if a Content-Type header has been set', async () => {
       const body = 'foo=bar'
-      const resp = await client.fetch('POST', '/data/io.cozy.todos/foo', body, {
+      await client.fetch('POST', '/data/io.cozy.todos/foo', body, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         }

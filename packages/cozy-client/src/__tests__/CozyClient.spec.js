@@ -5,7 +5,7 @@ import { TODO_SCHEMA, TODO_1, TODO_2, TODO_3 } from './fixtures'
 import CozyClient from '../CozyClient'
 import CozyLink from '../CozyLink'
 import { Mutations } from '../dsl'
-import reducer, {
+import {
   initQuery,
   receiveQueryResult,
   receiveQueryError,
@@ -13,7 +13,6 @@ import reducer, {
   receiveMutationResult,
   receiveMutationError
 } from '../store'
-import { getQueryFromStore } from '../store/queries'
 import HasManyFilesAssociation from '../associations/HasManyFilesAssociation'
 
 describe('CozyClient initialization', () => {
@@ -119,7 +118,7 @@ describe('CozyClient', () => {
       requestHandler.mockReturnValueOnce(Promise.reject(error))
       try {
         await client.query(query, { as: 'allTodos' })
-      } catch (e) {}
+      } catch (e) {} // eslint-disable-line no-empty
       expect(store.getActions()[1]).toEqual(
         receiveQueryError('allTodos', error)
       )
@@ -239,7 +238,7 @@ describe('CozyClient', () => {
       requestHandler.mockReturnValueOnce(Promise.reject(error))
       try {
         await client.mutate(mutation, { as: 'updateTodo' })
-      } catch (e) {}
+      } catch (e) {} // eslint-disable-line no-empty
       expect(store.getActions()[1]).toEqual(
         receiveMutationError('updateTodo', error)
       )
@@ -249,7 +248,7 @@ describe('CozyClient', () => {
       const FAKE_MUTATION_1 = { mutationType: 'FAKE_1' }
       const FAKE_MUTATION_2 = resp => ({ mutationType: 'FAKE_2', resp })
       requestHandler.mockReturnValue(Promise.resolve(fakeResponse))
-      const resp = await client.mutate([
+      await client.mutate([
         mutation,
         FAKE_MUTATION_1,
         FAKE_MUTATION_2

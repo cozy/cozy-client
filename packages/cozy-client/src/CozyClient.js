@@ -12,7 +12,6 @@ import {
   initMutation,
   receiveMutationResult,
   receiveMutationError,
-  receiveDocumentUpdate,
   getQueryFromStore,
   getDocumentFromStore
 } from './store'
@@ -53,6 +52,7 @@ export default class CozyClient {
     return new QueryDefinition({ doctype, id })
   }
 
+  // eslint-disable-next-line no-unused-vars
   async create(type, { _type, ...attributes }, relationships, options = {}) {
     const document = { _type: type, ...attributes }
     const ret = await this.validate(document)
@@ -218,7 +218,6 @@ export default class CozyClient {
     if (!isSingleDoc && response.data.length === 0) {
       return response
     }
-    const doctype = isSingleDoc ? response.data._type : response.data[0]._type
     const originalData = isSingleDoc ? [response.data] : response.data
 
     const responses = await Promise.all(

@@ -1,9 +1,8 @@
 import { createStore, combineReducers } from 'redux'
 import CozyClient from '../CozyClient'
 import CozyLink from '../CozyLink'
-import Association from '../associations'
 
-import { TODO_SCHEMA, TODO_1, TODO_2, TODO_3 } from './fixtures'
+import { TODO_SCHEMA, TODO_1, TODO_2 } from './fixtures'
 import { receiveQueryResult, initQuery } from '../store/queries'
 
 describe('Associations', () => {

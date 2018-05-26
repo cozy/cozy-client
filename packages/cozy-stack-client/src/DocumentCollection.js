@@ -1,3 +1,5 @@
+/* global sleep */
+
 import { uri, attempt } from './utils'
 
 export const FETCH_LIMIT = 50
@@ -97,6 +99,7 @@ export default class DocumentCollection {
     }
   }
 
+  // eslint-disable-next-line no-unused-vars
   async create({ _id, _type, ...document }) {
     const resp = await this.client.fetch(
       'POST',

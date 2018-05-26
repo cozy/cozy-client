@@ -1,5 +1,6 @@
 import flatten from 'lodash/flatten'
 import isArray from 'lodash/isArray'
+import isObject from 'lodash/isObject'
 
 const fieldsComparator = (a, b) => a.localeCompare(b)
 
