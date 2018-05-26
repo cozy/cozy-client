@@ -188,10 +188,7 @@ describe('DocumentCollection', () => {
 
     it('should accept skip and limit options', async () => {
       const collection = new DocumentCollection('io.cozy.todos', client)
-      await collection.find(
-        { done: false },
-        { skip: 50, limit: 200 }
-      )
+      await collection.find({ done: false }, { skip: 50, limit: 200 })
       expect(client.fetch).toHaveBeenLastCalledWith(
         'POST',
         '/data/io.cozy.todos/_find',
@@ -206,10 +203,7 @@ describe('DocumentCollection', () => {
 
     it('should accept a sort option', async () => {
       const collection = new DocumentCollection('io.cozy.todos', client)
-      await collection.find(
-        { done: false },
-        { sort: { label: 'desc' } }
-      )
+      await collection.find({ done: false }, { sort: { label: 'desc' } })
       expect(client.fetch).toHaveBeenLastCalledWith(
         'POST',
         '/data/io.cozy.todos/_find',

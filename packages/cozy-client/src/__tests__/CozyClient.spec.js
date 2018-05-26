@@ -248,11 +248,7 @@ describe('CozyClient', () => {
       const FAKE_MUTATION_1 = { mutationType: 'FAKE_1' }
       const FAKE_MUTATION_2 = resp => ({ mutationType: 'FAKE_2', resp })
       requestHandler.mockReturnValue(Promise.resolve(fakeResponse))
-      await client.mutate([
-        mutation,
-        FAKE_MUTATION_1,
-        FAKE_MUTATION_2
-      ])
+      await client.mutate([mutation, FAKE_MUTATION_1, FAKE_MUTATION_2])
       expect(requestHandler).toHaveBeenCalledTimes(3)
       expect(requestHandler.mock.calls[0][0]).toBe(mutation)
       expect(requestHandler.mock.calls[1][0]).toBe(FAKE_MUTATION_1)

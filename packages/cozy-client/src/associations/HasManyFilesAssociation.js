@@ -26,7 +26,7 @@ export default class HasManyFilesAssociation extends HasManyAssociation {
       ({ _id }) => currentlyReferencedIds.indexOf(_id) === -1
     )
     await this.mutate(this.insertDocuments(filteredDocs), {
-      update: (store) => {
+      update: store => {
         filteredDocs.forEach(doc => store.writeDocument(doc))
         this.updateTargetRelationship(store, prevRelationship => ({
           data: [
@@ -42,7 +42,7 @@ export default class HasManyFilesAssociation extends HasManyAssociation {
 
   remove(referencedDocs) {
     return this.mutate(this.removeDocuments(referencedDocs), {
-      update: (store) => {
+      update: store => {
         const removedIds = referencedDocs.map(({ _id }) => _id)
         this.updateTargetRelationship(store, prevRelationship => ({
           data: prevRelationship.data.filter(

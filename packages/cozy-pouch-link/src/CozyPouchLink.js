@@ -196,13 +196,7 @@ export default class PouchLink extends CozyLink {
     }
   }
 
-  async executeQuery({
-    doctype,
-    selector,
-    sort,
-    fields,
-    limit
-  }) {
+  async executeQuery({ doctype, selector, sort, fields, limit }) {
     const db = this.getDB(doctype)
     let res
     if (!selector && !fields && !sort) {
