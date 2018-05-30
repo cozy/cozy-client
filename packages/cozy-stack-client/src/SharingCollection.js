@@ -1,10 +1,7 @@
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 import { uri } from './utils'
 
-const normalizeSharing = sharing => ({
-  ...normalizeDoc(sharing, 'io.cozy.sharings'),
-  ...sharing.attributes
-})
+const normalizeSharing = sharing => normalizeDoc(sharing, 'io.cozy.sharings')
 
 export default class SharingCollection extends DocumentCollection {
   async findByDoctype(doctype) {
@@ -36,10 +33,20 @@ export default class SharingCollection extends DocumentCollection {
     return { data: normalizeSharing(resp.data) }
   }
 
-  revokeRecipient(sharingId, recipientIndex) {
+  revokeRecipient(sharing, recipientEmail) {
+    const memberIndex = sharing.attributes.members.findIndex(
+      m => m.email === recipientEmail
+    )
     return this.client.fetch(
       'DELETE',
-      uri`/sharings/${sharingId}/recipients/${recipientIndex}`
+      uri`/sharings/${sharing._id}/recipients/${memberIndex}`
+    )
+  }
+
+  revokeSelf(sharing) {
+    return this.client.fetch(
+      'DELETE',
+      uri`/sharings/${sharing._id}/recipients/self`
     )
   }
 }
