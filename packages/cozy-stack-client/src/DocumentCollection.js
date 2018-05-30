@@ -302,6 +302,8 @@ export default class DocumentCollection {
 const isFile = ({ _type, type }) =>
   _type === 'io.cozy.files' || type === 'directory' || type === 'file'
 
+const isDirectory = ({ type }) => type === 'directory'
+
 const getPermissionsFor = (document, publicLink = false) => {
   const { _id, _type } = document
   const verbs = publicLink ? ['GET'] : ['ALL']

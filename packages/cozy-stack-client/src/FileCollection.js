@@ -32,6 +32,10 @@ export default class FileCollection extends DocumentCollection {
     this.specialDirectories = {}
   }
 
+  get(id) {
+    return this.statById(id)
+  }
+
   /**
    * Returns a filtered list of documents using a Mango selector.
    *
