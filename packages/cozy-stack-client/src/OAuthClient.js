@@ -20,7 +20,7 @@ const defaultoauthOptions = {
 export default class OAuthClient extends CozyStackClient {
   constructor({ oauth, scope = [], ...options }) {
     super(options)
-    this.oauthOptions = { ...defaultoauthOptions, ...oauth }
+    this.setOAuthOptions({ ...defaultoauthOptions, ...oauth })
     this.scope = scope
   }
 
@@ -123,7 +123,7 @@ export default class OAuthClient extends CozyStackClient {
       })
     )
 
-    this.oauthOptions = this.camelCaseOAuthData({
+    this.setOAuthOptions({
       ...this.oauthOptions,
       client_id: data.client_id,
       client_name: data.client_name,
@@ -203,7 +203,7 @@ export default class OAuthClient extends CozyStackClient {
       }
     )
 
-    this.oauthOptions = this.camelCaseOAuthData(result)
+    this.setOAuthOptions(result)
 
     return this.oauthOptions
   }
@@ -346,6 +346,18 @@ export default class OAuthClient extends CozyStackClient {
     } else {
       this.token = null
     }
+  }
+  
+  /**
+   * Updates the OAuth informations
+   * @param {object} options Map of OAuth options
+   */
+  setOAuthOptions(options) {
+    this.oauthOptions = this.camelCaseOAuthData(options)
+  }
+  
+  resetClientId() {
+    this.oauthOptions.clientID = ''
   }
 
   async fetch(method, path, body, options) {
