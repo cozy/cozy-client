@@ -347,7 +347,7 @@ export default class OAuthClient extends CozyStackClient {
       this.token = null
     }
   }
-  
+
   /**
    * Updates the OAuth informations
    * @param {object} options Map of OAuth options
@@ -355,7 +355,7 @@ export default class OAuthClient extends CozyStackClient {
   setOAuthOptions(options) {
     this.oauthOptions = this.camelCaseOAuthData(options)
   }
-  
+
   resetClientId() {
     this.oauthOptions.clientID = ''
   }
