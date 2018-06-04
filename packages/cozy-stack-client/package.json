@@ -9,5 +9,9 @@
   },
   "dependencies": {
     "mimetype": "^0.0.8"
-  }
+  },
+  "scripts": {
+		"watch": "webpack --config ../../webpack.config.js --env.package=cozy-stack-client --watch",
+		"build": "webpack --config ../../webpack.config.js --env.package=cozy-stack-client"
+	}
 }

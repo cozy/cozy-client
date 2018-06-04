@@ -14,5 +14,9 @@
     "react": "^16.2.0",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2"
-  }
+  },
+  "scripts": {
+		"watch": "webpack --config ../../webpack.config.js --env.package=cozy-client --watch",
+		"build": "webpack --config ../../webpack.config.js --env.package=cozy-client"
+	}
 }

@@ -32,7 +32,7 @@ describe('ObservableQuery', () => {
     await store.dispatch(initQuery('allTodos', {}))
     await store.dispatch(
       receiveQueryResult('allTodos', {
-        data: 'foo'
+        data: [TODO_1]
       })
     )
     expect(observer).toHaveBeenCalledTimes(2)

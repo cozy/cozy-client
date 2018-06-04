@@ -1,28 +1,17 @@
 import CozyPouchLink from '../src'
 import CozyClient from 'cozy-client'
-import {
-  TODO_SCHEMA,
-  TODO_1,
-  TODO_2,
-  TODO_3,
-  TODO_4
-} from './fixtures'
+import { TODO_SCHEMA, TODO_1, TODO_2, TODO_3, TODO_4 } from './fixtures'
 import PouchDB from 'pouchdb'
 import omit from 'lodash/omit'
 
 const mockClient = {
-  _url: 'http://cozy.tools:8080',
-  authorize: async () => {
-    return Promise.resolve({
-      token: {
-        toBasicAuth: () => 'user:token@'
-      }
-    })
+  uri: 'http://cozy.tools:8080',
+  token: {
+    toBasicAuth: () => 'user:token@'
   }
 }
 
 const TODO_DOCTYPE = TODO_SCHEMA.todos.doctype
-
 
 describe('CozyPouchLink', () => {
   let link
@@ -67,7 +56,7 @@ describe('CozyPouchLink', () => {
   })
 
   describe('queries', () => {
-    const docs = [ TODO_1, TODO_2, TODO_3, TODO_4 ]
+    const docs = [TODO_1, TODO_2, TODO_3, TODO_4]
     beforeEach(() => {
       link.synced = true
     })
@@ -86,17 +75,21 @@ describe('CozyPouchLink', () => {
       const db = link.getDB(TODO_DOCTYPE)
       await db.bulkDocs(docs.map(x => omit(x, '_type')))
       const query = client
-        .find(TODO_DOCTYPE, { label: {$gt: null}, done: true })
-        .sortBy([ { done: 'asc' }, { label: 'asc' }])
+        .find(TODO_DOCTYPE, { label: { $gt: null }, done: true })
+        .sortBy([{ done: 'asc' }, { label: 'asc' }])
       const res = await link.request(query)
       // expect(link.hasIndex('io.cozy.todos/by_done_and_id')).toBe(true)
       expect(res).toMatchObject({
-        data: [{
-          label: 'Build stuff'
-        },
-        {
-          label: 'Run a semi-marathon'
-        }],
+        data: [
+          {
+            label: 'Build stuff',
+            _type: TODO_DOCTYPE
+          },
+          {
+            label: 'Run a semi-marathon',
+            _type: TODO_DOCTYPE
+          }
+        ],
         meta: {
           count: 2
         },
@@ -112,7 +105,7 @@ describe('CozyPouchLink', () => {
     })
 
     it('should be possible to save a new document', async () => {
-      const {_id, ...NEW_TODO} = TODO_3
+      const { _id, ...NEW_TODO } = TODO_3
       const mutation = client.getDocumentSavePlan(NEW_TODO)
       const res = await link.request(mutation)
       expect(res).toMatchObject({

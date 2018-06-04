@@ -8,6 +8,7 @@ import withMutation from '../withMutation'
 describe('withMutation', () => {
   const NEW_TODO = {
     label: 'Jettison fairings',
+    _type: 'io.cozy.todos',
     done: false
   }
   const link = new CozyLink(
