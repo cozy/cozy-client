@@ -1,9 +1,11 @@
 const path = require('path')
 
+const packagesPath = path.resolve(__dirname, './packages')
+
 module.exports = env => ({
-  entry: `./packages/${env.package}/src/index.js`,
+  entry: `${packagesPath}/${env.package}/src/index.js`,
   output: {
-    path: path.resolve(__dirname, './packages'),
+    path: packagesPath,
     filename: `./${env.package}/dist/${env.package}.js`,
     libraryTarget: 'umd',
     umdNamedDefine: true

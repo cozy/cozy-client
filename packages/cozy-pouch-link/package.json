@@ -14,5 +14,9 @@
   },
   "devDependencies": {
     "jest": "^23.0.0-alpha.0"
-  }
+  },
+  "scripts": {
+		"watch": "webpack --config ../../webpack.config.js --env.package=cozy-pouch-link --watch",
+		"build": "webpack --config ../../webpack.config.js --env.package=cozy-pouch-link"
+	}
 }

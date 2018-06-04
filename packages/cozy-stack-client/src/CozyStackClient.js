@@ -76,7 +76,7 @@ export default class CozyStackClient {
     }
 
     const resp = await fetch(this.fullpath(path), options)
-    const contentType = resp.headers.get('content-type')
+    const contentType = resp.headers && resp.headers.get('content-type')
     const isJson = contentType && contentType.indexOf('json') >= 0
     const data = await (isJson ? resp.json() : resp.text())
     if (resp.ok) {

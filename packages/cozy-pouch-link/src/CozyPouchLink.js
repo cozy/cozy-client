@@ -28,8 +28,7 @@ const ensureHasBothIds = obj => {
   return obj
 }
 
-const addDoctype = (arr, doctype) =>
-  arr.map(x => ({ ...x.doc, _type: doctype }))
+const addDoctype = (arr, doctype) => arr.map(x => ({ ...x, _type: doctype }))
 
 const pouchResToJSONAPI = (res, isArray, doctype) => {
   if (isArray) {
@@ -222,7 +221,6 @@ export default class PouchLink extends CozyLink {
       const index = await this.ensureIndex(doctype, findOpts)
       res = await db.find(findOpts)
     }
-
     return pouchResToJSONAPI(res, true, doctype)
   }
 

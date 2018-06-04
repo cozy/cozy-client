@@ -132,7 +132,7 @@ Array [
 ]
 `;
 
-exports[`OAuthClient without registration should not generate a auth code URL 1`] = `"Client not registered or missing OAuth informations"`;
+exports[`OAuthClient without registration should not generate a auth code URL 1`] = `"Client not registered or missing OAuth information"`;
 
 exports[`OAuthClient without registration should register a client 1`] = `
 Array [
@@ -148,12 +148,12 @@ Array [
 ]
 `;
 
-exports[`OAuthClient without registration should throw on other server interactions 1`] = `"Client not registered or missing OAuth informations"`;
+exports[`OAuthClient without registration should throw on other server interactions 1`] = `"Client not registered or missing OAuth information"`;
 
-exports[`OAuthClient without registration should throw on other server interactions 2`] = `"Client not registered or missing OAuth informations"`;
+exports[`OAuthClient without registration should throw on other server interactions 2`] = `"Client not registered or missing OAuth information"`;
 
-exports[`OAuthClient without registration should throw on other server interactions 3`] = `"Client not registered or missing OAuth informations"`;
+exports[`OAuthClient without registration should throw on other server interactions 3`] = `"Client not registered or missing OAuth information"`;
 
-exports[`OAuthClient without registration should throw on other server interactions 4`] = `"Client not registered or missing OAuth informations"`;
+exports[`OAuthClient without registration should throw on other server interactions 4`] = `"Client not registered or missing OAuth information"`;
 
-exports[`OAuthClient without registration should throw on other server interactions 5`] = `"Client not registered or missing OAuth informations"`;
+exports[`OAuthClient without registration should throw on other server interactions 5`] = `"Client not registered or missing OAuth information"`;
