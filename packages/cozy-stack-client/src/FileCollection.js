@@ -1,3 +1,4 @@
+import mimetype from 'mimetype'
 import DocumentCollection, {
   normalizeDoc,
   FETCH_LIMIT
@@ -16,7 +17,7 @@ const sanitizeFileName = name => name && name.trim()
 const getFileTypeFromName = name => {
   if (/\.heic$/i.test(name)) return 'image/heic'
   else if (/\.heif$/i.test(name)) return 'image/heif'
-  else return null
+  else return mimetype.lookup(name)
 }
 
 export const isFile = ({ _type, type }) =>

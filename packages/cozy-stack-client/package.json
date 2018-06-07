@@ -6,5 +6,8 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cozy/cozy-client.git"
+  },
+  "dependencies": {
+    "mimetype": "^0.0.8"
   }
 }
