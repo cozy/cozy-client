@@ -88,9 +88,9 @@ const getSharingPolicy = (document, sharingType) => {
   if (isFile(document) && isDirectory(document)) {
     return sharingType === 'two-way'
       ? { add: 'sync', update: 'sync', remove: 'sync' }
-      : { add: 'none', update: 'none', remove: 'revoke' }
+      : { add: 'push', update: 'push', remove: 'push' }
   }
   return sharingType === 'two-way'
-    ? { update: 'sync', remove: 'sync' }
-    : { update: 'none', remove: 'revoke' }
+    ? { update: 'sync', remove: 'revoke' }
+    : { update: 'push', remove: 'revoke' }
 }
