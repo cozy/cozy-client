@@ -52,8 +52,9 @@ describe('SharingCollection', () => {
               {
                 doctype: 'io.cozy.files',
                 title: 'bills',
-                update: 'none',
-                remove: 'revoke',
+                add: 'push',
+                update: 'push',
+                remove: 'push',
                 values: ['folder_1']
               }
             ]
