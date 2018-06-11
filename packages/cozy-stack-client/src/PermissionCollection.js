@@ -55,6 +55,16 @@ export default class PermissionCollection extends DocumentCollection {
     })
     return { data: normalizePermission(resp.data) }
   }
+
+  async revokeSharingLink(document) {
+    const allLinks = await this.findLinksByDoctype(document._type)
+    const links = allLinks.data.filter(perm =>
+      isPermissionRelatedTo(perm, document)
+    )
+    for (let perm of links) {
+      await this.destroy(perm)
+    }
+  }
 }
 
 const getPermissionsFor = (document, publicLink = false) => {
@@ -83,4 +93,11 @@ const getPermissionsFor = (document, publicLink = false) => {
           selector: 'referenced_by'
         }
       }
+}
+
+const isPermissionRelatedTo = (perm, document) => {
+  const { _id, _type } = document
+  return isFile(document)
+    ? perm.attributes.permissions.files.values.indexOf(_id) !== -1
+    : perm.attributes.permissions.collection.values.indexOf(_id) !== -1
 }
