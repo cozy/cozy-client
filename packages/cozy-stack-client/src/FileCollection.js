@@ -25,6 +25,8 @@ export const isFile = ({ _type, type }) =>
 
 export const isDirectory = ({ type }) => type === 'directory'
 
+const CONTENT_TYPE_OCTET_STREAM = 'application/octet-stream'
+
 /**
  * Abstracts a collection of files
  *
@@ -306,19 +308,19 @@ export default class FileCollection extends DocumentCollection {
       options || {}
     if (!contentType) {
       if (isBuffer) {
-        contentType = contentTypeOctetStream
+        contentType = CONTENT_TYPE_OCTET_STREAM
       } else if (isFile) {
         contentType =
           data.type ||
           getFileTypeFromName(data.name.toLowerCase()) ||
-          contentTypeOctetStream
+          CONTENT_TYPE_OCTET_STREAM
         if (!lastModifiedDate) {
           lastModifiedDate = data.lastModifiedDate
         }
       } else if (isBlob) {
-        contentType = data.type || contentTypeOctetStream
+        contentType = data.type || CONTENT_TYPE_OCTET_STREAM
       } else if (isStream) {
-        contentType = contentTypeOctetStream
+        contentType = CONTENT_TYPE_OCTET_STREAM
       } else if (typeof data === 'string') {
         contentType = 'text/plain'
       }
