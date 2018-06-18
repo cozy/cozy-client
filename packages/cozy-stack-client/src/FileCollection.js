@@ -170,6 +170,11 @@ export default class FileCollection extends DocumentCollection {
     return this.client.fullpath(href)
   }
 
+  async download(file) {
+    const href = await this.getDownloadLinkById(file._id)
+    forceFileDownload(href, file.name)
+  }
+
   async downloadArchive(fileIds, notSecureFilename = 'files') {
     const filename = slugify(notSecureFilename)
     const href = await this.getArchiveLinkByIds(fileIds, filename)
