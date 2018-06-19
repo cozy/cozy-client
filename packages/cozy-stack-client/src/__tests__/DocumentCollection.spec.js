@@ -86,7 +86,7 @@ describe('DocumentCollection', () => {
     })
 
     it('should call the right route', async () => {
-      const resp = await collection.all()
+      await collection.all()
       expect(client.fetch).toHaveBeenCalledWith(
         'GET',
         '/data/io.cozy.todos/_all_docs?include_docs=true&limit=50&skip=0'
@@ -94,7 +94,7 @@ describe('DocumentCollection', () => {
     })
 
     it('should accept skip and limit options', async () => {
-      const resp = await collection.all({ skip: 50, limit: 200 })
+      await collection.all({ skip: 50, limit: 200 })
       expect(client.fetch).toHaveBeenCalledWith(
         'GET',
         '/data/io.cozy.todos/_all_docs?include_docs=true&limit=200&skip=50'
@@ -124,7 +124,7 @@ describe('DocumentCollection', () => {
       client.fetch.mockReturnValueOnce(Promise.reject(new Error('Bad request')))
       expect.assertions(1)
       try {
-        const resp = await collection.all()
+        await collection.all()
       } catch (e) {
         expect(e).toBeInstanceOf(Error)
       }
@@ -145,7 +145,7 @@ describe('DocumentCollection', () => {
     })
 
     it('should call the right route with the right payload', async () => {
-      const resp = await collection.createIndex(['label', 'done'])
+      await collection.createIndex(['label', 'done'])
       expect(client.fetch).toHaveBeenCalledWith(
         'POST',
         '/data/io.cozy.todos/_index',
@@ -173,7 +173,7 @@ describe('DocumentCollection', () => {
 
     it('should call the right route with the right payload', async () => {
       const collection = new DocumentCollection('io.cozy.todos', client)
-      const resp = await collection.find({ done: false })
+      await collection.find({ done: false })
       expect(client.fetch).toHaveBeenLastCalledWith(
         'POST',
         '/data/io.cozy.todos/_find',
@@ -188,10 +188,7 @@ describe('DocumentCollection', () => {
 
     it('should accept skip and limit options', async () => {
       const collection = new DocumentCollection('io.cozy.todos', client)
-      const resp = await collection.find(
-        { done: false },
-        { skip: 50, limit: 200 }
-      )
+      await collection.find({ done: false }, { skip: 50, limit: 200 })
       expect(client.fetch).toHaveBeenLastCalledWith(
         'POST',
         '/data/io.cozy.todos/_find',
@@ -206,10 +203,7 @@ describe('DocumentCollection', () => {
 
     it('should accept a sort option', async () => {
       const collection = new DocumentCollection('io.cozy.todos', client)
-      const resp = await collection.find(
-        { done: false },
-        { sort: { label: 'desc' } }
-      )
+      await collection.find({ done: false }, { sort: { label: 'desc' } })
       expect(client.fetch).toHaveBeenLastCalledWith(
         'POST',
         '/data/io.cozy.todos/_find',
@@ -244,7 +238,7 @@ describe('DocumentCollection', () => {
     })
 
     it('should call the right route with the right payload', async () => {
-      const resp = await collection.create(NEW_TODO)
+      await collection.create(NEW_TODO)
       expect(client.fetch).toHaveBeenLastCalledWith(
         'POST',
         '/data/io.cozy.todos/',
@@ -266,7 +260,7 @@ describe('DocumentCollection', () => {
     })
 
     it('should call the right route with the right payload', async () => {
-      const resp = await collection.update(TODO_TO_UPDATE)
+      await collection.update(TODO_TO_UPDATE)
       expect(client.fetch).toHaveBeenLastCalledWith(
         'PUT',
         `/data/io.cozy.todos/${TODO_TO_UPDATE._id}`,
@@ -292,7 +286,7 @@ describe('DocumentCollection', () => {
     })
 
     it('should call the right route with the right payload', async () => {
-      const resp = await collection.destroy(TODO_TO_DESTROY)
+      await collection.destroy(TODO_TO_DESTROY)
       expect(client.fetch).toHaveBeenLastCalledWith(
         'DELETE',
         `/data/io.cozy.todos/${TODO_TO_DESTROY._id}?rev=${TODO_TO_DESTROY._rev}`

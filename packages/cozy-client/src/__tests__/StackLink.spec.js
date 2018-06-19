@@ -2,7 +2,7 @@ import CozyStackClient from 'cozy-stack-client'
 import CozyClient from '../CozyClient'
 import StackLink from '../StackLink'
 
-import { TODO_SCHEMA, TODO_1, TODO_2, TODO_3 } from './fixtures'
+import { TODO_SCHEMA } from './fixtures'
 
 describe('StackLink', () => {
   const stackClient = new CozyStackClient()

@@ -20,6 +20,26 @@ module.exports = env => ({
   module: {
     rules: [
       {
+        enforce: 'pre',
+        test: /\.js$/,
+        loader: 'eslint-loader',
+        exclude: /node_modules/,
+        options: {
+          extends: ['cozy-app'],
+          emitWarning: false
+        }
+      },
+      {
+        enforce: 'pre',
+        test: /\.jsx$/,
+        loader: 'eslint-loader',
+        exclude: /node_modules/,
+        options: {
+          extends: ['cozy-app/react'],
+          emitWarning: false
+        }
+      },
+      {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         loader: 'babel-loader'

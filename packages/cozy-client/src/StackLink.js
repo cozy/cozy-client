@@ -8,7 +8,7 @@ export default class StackLink extends CozyLink {
     this.schema = schema
   }
 
-  request(operation, result) {
+  request(operation) {
     if (operation.mutationType) {
       return this.executeMutation(operation)
     }

@@ -1,7 +1,6 @@
 import CozyPouchLink from '../src'
 import CozyClient from 'cozy-client'
 import { TODO_SCHEMA, TODO_1, TODO_2, TODO_3, TODO_4 } from './fixtures'
-import PouchDB from 'pouchdb'
 import omit from 'lodash/omit'
 
 const mockClient = {

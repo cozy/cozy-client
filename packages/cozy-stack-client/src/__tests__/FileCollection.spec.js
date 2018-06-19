@@ -50,7 +50,7 @@ describe('FileCollection', () => {
     })
 
     it('should call the right route', async () => {
-      const resp = await collection.statById(42)
+      await collection.statById(42)
       expect(client.fetch).toHaveBeenCalledWith(
         'GET',
         '/files/42?limit=50&skip=0'
@@ -58,7 +58,7 @@ describe('FileCollection', () => {
     })
 
     it('should accept skip and limit options', async () => {
-      const resp = await collection.statById(42, { skip: 50, limit: 200 })
+      await collection.statById(42, { skip: 50, limit: 200 })
       expect(client.fetch).toHaveBeenCalledWith(
         'GET',
         '/files/42?limit=200&skip=50'
@@ -89,7 +89,7 @@ describe('FileCollection', () => {
     })
 
     it('should call the right route', async () => {
-      const resp = await collection.createDirectory(NEW_DIR)
+      await collection.createDirectory(NEW_DIR)
       expect(client.fetch).toHaveBeenCalledWith(
         'POST',
         '/files/12345?Name=notes&Type=directory',

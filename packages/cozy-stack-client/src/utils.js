@@ -30,7 +30,7 @@ export const uri = (strings, ...values) => {
  * return
  * ```
  */
-export const attempt = promise => promise.then(resp => true).catch(err => false)
+export const attempt = promise => promise.then(() => true).catch(() => false)
 
 export const sleep = (time, args) =>
   new Promise(resolve => {

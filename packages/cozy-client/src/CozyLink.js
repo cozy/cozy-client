@@ -5,6 +5,7 @@ export default class CozyLink {
     }
   }
 
+  // eslint-disable-next-line no-unused-vars
   request(operation, result, forward) {
     throw new Error('request is not implemented')
   }

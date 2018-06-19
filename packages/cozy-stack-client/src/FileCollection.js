@@ -83,7 +83,6 @@ export default class FileCollection extends DocumentCollection {
       meta: resp.meta,
       skip
     }
-    return resp
   }
 
   addReferencesTo(document, documents) {
@@ -304,6 +303,7 @@ export default class FileCollection extends DocumentCollection {
     const isBlob = typeof Blob !== 'undefined' && data instanceof Blob
     const isStream = data.readable === true && typeof data.pipe === 'function'
     const isString = typeof data === 'string'
+    const contentTypeOctetStream = 'application/octet-stream'
 
     if (!isBuffer && !isFile && !isBlob && !isStream && !isString) {
       throw new Error('invalid data type')
