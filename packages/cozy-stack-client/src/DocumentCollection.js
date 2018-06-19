@@ -99,7 +99,6 @@ export default class DocumentCollection {
     }
   }
 
-  // eslint-disable-next-line no-unused-vars
   async create({ _id, _type, ...document }) {
     const resp = await this.client.fetch(
       'POST',

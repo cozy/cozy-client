@@ -15,20 +15,6 @@ const storeDocument = (state, document) => {
   }
 }
 
-const updateDocument = (state, newDoc, response, updateFn) => {
-  const { _id, _type } = newDoc
-  if (!_type) {
-    throw new Error('Document without _type', newDoc)
-  }
-  return {
-    ...state,
-    [_type]: {
-      ...state[_type],
-      [_id]: updateFn(state[_type][_id], response)
-    }
-  }
-}
-
 // reducer
 const documents = (state = {}, action) => {
   if (!isReceivingData(action) && !isReceivingMutationResult(action)) {

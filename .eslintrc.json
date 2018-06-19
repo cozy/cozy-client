@@ -1,6 +1,13 @@
 {
   "extends": ["cozy-app/react"],
   "rules": {
-    "no-console":0
+    "no-console": 0,
+    "no-unused-vars": [
+      "warn",
+      {
+        "args": "none",
+        "ignoreRestSiblings": true
+      }
+    ]
   }
 }

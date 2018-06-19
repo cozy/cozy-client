@@ -83,7 +83,6 @@ export default class ObservableQuery {
     return this.client.getAssociation(document, associationName, this.queryId)
   }
 
-  // eslint-disable-next-line no-unused-vars
   create(type, { _type, ...attributes }, relationships, mutationOptions = {}) {
     return this.client.create(type, attributes, relationships, {
       ...mutationOptions,

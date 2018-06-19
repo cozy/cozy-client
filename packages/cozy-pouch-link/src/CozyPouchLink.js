@@ -155,7 +155,6 @@ export default class PouchLink extends CozyLink {
     return !!this.pouches[impactedDoctype]
   }
 
-  // eslint-disable-next-line no-unused-vars
   request(operation, result = null, forward = doNothing) {
     if (!this.synced) {
       return forward(operation)

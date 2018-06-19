@@ -1,5 +1,5 @@
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
-import { isFile, isDirectory } from './FileCollection'
+import { isFile } from './FileCollection'
 import { uri } from './utils'
 
 const normalizePermission = perm => normalizeDoc(perm, 'io.cozy.permissions')
@@ -96,7 +96,7 @@ const getPermissionsFor = (document, publicLink = false) => {
 }
 
 const isPermissionRelatedTo = (perm, document) => {
-  const { _id, _type } = document
+  const { _id } = document
   return isFile(document)
     ? perm.attributes.permissions.files.values.indexOf(_id) !== -1
     : perm.attributes.permissions.collection.values.indexOf(_id) !== -1

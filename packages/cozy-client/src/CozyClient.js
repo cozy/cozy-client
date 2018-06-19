@@ -52,7 +52,6 @@ export default class CozyClient {
     return new QueryDefinition({ doctype, id })
   }
 
-  // eslint-disable-next-line no-unused-vars
   async create(type, { _type, ...attributes }, relationships, options = {}) {
     const document = { _type: type, ...attributes }
     const ret = await this.validate(document)
