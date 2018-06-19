@@ -33,7 +33,7 @@ const query = (state = queryInitialState, action) => {
         definition: action.queryDefinition,
         fetchStatus: 'loading'
       }
-    case RECEIVE_QUERY_RESULT:
+    case RECEIVE_QUERY_RESULT: {
       const response = action.response
       if (!Array.isArray(response.data)) {
         return {
@@ -63,6 +63,7 @@ const query = (state = queryInitialState, action) => {
             ? response.data.map(doc => doc._id)
             : [...state.data, ...response.data.map(doc => doc._id)]
       }
+    }
     case RECEIVE_QUERY_ERROR:
       return {
         ...state,

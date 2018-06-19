@@ -1,3 +1,5 @@
+/* global sleep */
+
 import { uri, attempt } from './utils'
 
 export const FETCH_LIMIT = 50

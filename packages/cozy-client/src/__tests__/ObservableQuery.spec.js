@@ -2,14 +2,9 @@ import { createStore, combineReducers } from 'redux'
 import CozyClient from '../CozyClient'
 import CozyLink from '../CozyLink'
 import ObservableQuery from '../ObservableQuery'
-import reducer, {
-  initQuery,
-  receiveQueryResult,
-  receiveQueryError,
-  receiveMutationResult
-} from '../store'
+import { initQuery, receiveQueryResult } from '../store'
 
-import { TODO_1, TODO_2, TODO_3 } from './fixtures'
+import { TODO_1, TODO_2 } from './fixtures'
 
 describe('ObservableQuery', () => {
   let store

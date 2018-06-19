@@ -1,10 +1,8 @@
 import { MutationTypes, CozyLink, getDoctypeFromOperation } from 'cozy-client'
 import PouchDB from 'pouchdb'
 import PouchDBFind from 'pouchdb-find'
-import mapValues from 'lodash/mapValues'
 import fromPairs from 'lodash/fromPairs'
 import omit from 'lodash/omit'
-import toPairs from 'lodash/toPairs'
 import { getIndexNameFromFields, getIndexFields } from './mango'
 
 PouchDB.plugin(PouchDBFind)
@@ -142,7 +140,7 @@ export default class PouchLink extends CozyLink {
     ).then(pipe(() => this.onSync()))
   }
 
-  onSync(res) {
+  onSync() {
     this.synced = true
   }
 
@@ -196,15 +194,7 @@ export default class PouchLink extends CozyLink {
     }
   }
 
-  async executeQuery({
-    doctype,
-    selector,
-    id,
-    referenced,
-    sort,
-    fields,
-    limit
-  }) {
+  async executeQuery({ doctype, selector, sort, fields, limit }) {
     const db = this.getDB(doctype)
     let res
     if (!selector && !fields && !sort) {
@@ -218,7 +208,7 @@ export default class PouchLink extends CozyLink {
         fields,
         limit
       }
-      const index = await this.ensureIndex(doctype, findOpts)
+      await this.ensureIndex(doctype, findOpts)
       res = await db.find(findOpts)
     }
     return pouchResToJSONAPI(res, true, doctype)
@@ -242,7 +232,7 @@ export default class PouchLink extends CozyLink {
       case MutationTypes.UPLOAD_FILE:
         return forward(mutation, result)
       default:
-        throw new Error(`Unknown mutation type: ${mutationType}`)
+        throw new Error(`Unknown mutation type: ${mutation.mutationType}`)
     }
     return pouchResToJSONAPI(pouchRes, false, getDoctypeFromOperation(mutation))
   }

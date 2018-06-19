@@ -1,8 +1,13 @@
 {
-  "parser": "babel-eslint",
-  "plugins": ["react"],
-  "extends": ["plugin:prettier/recommended", "plugin:react/recommended"],
+  "extends": ["cozy-app/react"],
   "rules": {
-    "react/prop-types": [0]
+    "no-console": 0,
+    "no-unused-vars": [
+      "warn",
+      {
+        "args": "none",
+        "ignoreRestSiblings": true
+      }
+    ]
   }
 }

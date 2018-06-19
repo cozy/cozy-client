@@ -1,4 +1,3 @@
-const isArray = require('lodash/isArray')
 const isString = require('lodash/isString')
 
 // Queries

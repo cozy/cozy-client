@@ -12,7 +12,6 @@ import {
   initMutation,
   receiveMutationResult,
   receiveMutationError,
-  receiveDocumentUpdate,
   getQueryFromStore,
   getDocumentFromStore
 } from './store'
@@ -218,7 +217,6 @@ export default class CozyClient {
     if (!isSingleDoc && response.data.length === 0) {
       return response
     }
-    const doctype = isSingleDoc ? response.data._type : response.data[0]._type
     const originalData = isSingleDoc ? [response.data] : response.data
 
     const responses = await Promise.all(
