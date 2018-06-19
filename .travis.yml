@@ -14,4 +14,4 @@ before_script:
   - lerna run build
 script:
 - yarn lint
-- yarn test
+- yarn test --runInBand
