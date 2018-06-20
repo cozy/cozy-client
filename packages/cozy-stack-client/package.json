@@ -8,10 +8,10 @@
     "url": "git+https://github.com/cozy/cozy-client.git"
   },
   "dependencies": {
-    "mimetype": "^0.0.8"
+    "mime-types": "^2.1.18"
   },
   "scripts": {
-		"watch": "webpack --config ../../webpack.config.js --env.package=cozy-stack-client --watch",
-		"build": "webpack --config ../../webpack.config.js --env.package=cozy-stack-client"
-	}
+    "watch": "webpack --config ../../webpack.config.js --env.package=cozy-stack-client --watch",
+    "build": "webpack --config ../../webpack.config.js --env.package=cozy-stack-client"
+  }
 }
