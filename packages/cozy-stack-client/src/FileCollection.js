@@ -1,4 +1,4 @@
-import mimetype from 'mimetype'
+import mime from 'mime-types'
 import DocumentCollection, {
   normalizeDoc,
   FETCH_LIMIT
@@ -6,6 +6,7 @@ import DocumentCollection, {
 import { uri, slugify, forceFileDownload } from './utils'
 
 const ROOT_DIR_ID = 'io.cozy.files.root-dir'
+const CONTENT_TYPE_OCTET_STREAM = 'application/octet-stream'
 
 const normalizeFile = file => ({
   ...normalizeDoc(file, 'io.cozy.files'),
@@ -14,18 +15,13 @@ const normalizeFile = file => ({
 
 const sanitizeFileName = name => name && name.trim()
 
-const getFileTypeFromName = name => {
-  if (/\.heic$/i.test(name)) return 'image/heic'
-  else if (/\.heif$/i.test(name)) return 'image/heif'
-  else return mimetype.lookup(name)
-}
+const getFileTypeFromName = name =>
+  mime.lookup(name) || CONTENT_TYPE_OCTET_STREAM
 
 export const isFile = ({ _type, type }) =>
   _type === 'io.cozy.files' || type === 'directory' || type === 'file'
 
 export const isDirectory = ({ type }) => type === 'directory'
-
-const CONTENT_TYPE_OCTET_STREAM = 'application/octet-stream'
 
 /**
  * Abstracts a collection of files
