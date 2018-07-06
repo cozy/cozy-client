@@ -246,15 +246,17 @@ export default class OAuthClient extends CozyStackClient {
   getAuthCodeURL(stateCode, scopes = this.scope) {
     if (!this.isRegistered()) throw new NotRegisteredException()
 
-    const query = new URLSearchParams({
+    const query = {
       client_id: this.oauthOptions.clientID,
       redirect_uri: this.oauthOptions.redirectURI,
       state: stateCode,
       response_type: 'code',
       scope: scopes.join(' ')
-    })
+    }
 
-    return `${this.uri}/auth/authorize?${query.toString()}`
+    return `${this.uri}/auth/authorize?${Object.keys(query)
+      .map(param => `${param}=${encodeURIComponent(query[param])}`)
+      .join('&')}`
   }
 
   /**
