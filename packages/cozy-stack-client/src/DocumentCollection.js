@@ -25,19 +25,25 @@ export default class DocumentCollection {
    *
    * The returned documents are paginated by the stack.
    *
-   * @param  {{limit, skip}} options The pagination options.
+   * @param  {{limit, skip, keys}} options The fetch options: pagination & fetch of specific docs.
    * @return {{data, meta, skip, next}} The JSON API conformant response.
    * @throws {FetchError}
    */
   async all(options = {}) {
-    const { limit = FETCH_LIMIT, skip = 0 } = options
+    const { limit = FETCH_LIMIT, skip = 0, keys = undefined } = options
     const path =
       // limit: null is a (temporary ?) bypass of the limit for the search that needs all docs
       limit === null
         ? uri`/data/${this.doctype}/_all_docs?include_docs=true`
-        : uri`/data/${
-            this.doctype
-          }/_all_docs?include_docs=true&limit=${limit}&skip=${skip}`
+        : keys
+          ? uri`/data/${
+              this.doctype
+            }/_all_docs?include_docs=true&keys=[${keys
+              .map(k => `"${k}"`)
+              .join(',')}]`
+          : uri`/data/${
+              this.doctype
+            }/_all_docs?include_docs=true&limit=${limit}&skip=${skip}`
     // If no document of this doctype exist, this route will return a 404,
     // so we need to try/catch and return an empty response object in case of a 404
     try {
@@ -48,7 +54,7 @@ export default class DocumentCollection {
       return {
         data: rows.map(row => normalizeDoc(row.doc, this.doctype)),
         meta: { count: resp.total_rows },
-        skip: resp.offset,
+        skip: resp.offset || 0,
         next: resp.offset + rows.length <= resp.total_rows
       }
     } catch (error) {
