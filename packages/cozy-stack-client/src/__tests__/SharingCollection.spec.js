@@ -48,6 +48,7 @@ describe('SharingCollection', () => {
         data: {
           attributes: {
             description: 'foo',
+            open_sharing: false,
             rules: [
               {
                 doctype: 'io.cozy.files',

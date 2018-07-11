@@ -35,7 +35,13 @@ export default class SharingCollection extends DocumentCollection {
     return { data: normalizeSharing(resp.data) }
   }
 
-  async addRecipients(sharing, recipients) {
+  async addRecipients(sharing, recipients, sharingType) {
+    const recipientsPayload = {
+      data: recipients.map(({ _id, _type }) => ({
+        id: _id,
+        type: _type
+      }))
+    }
     const resp = await this.client.fetch(
       'POST',
       uri`/sharings/${sharing._id}/recipients`,
@@ -43,14 +49,14 @@ export default class SharingCollection extends DocumentCollection {
         data: {
           type: 'io.cozy.sharings',
           id: sharing._id,
-          relationships: {
-            recipients: {
-              data: recipients.map(({ _id, _type }) => ({
-                id: _id,
-                type: _type
-              }))
-            }
-          }
+          relationships:
+            sharingType === 'two-way'
+              ? {
+                  recipients: recipientsPayload
+                }
+              : {
+                  read_only_recipients: recipientsPayload
+                }
         }
       }
     )
