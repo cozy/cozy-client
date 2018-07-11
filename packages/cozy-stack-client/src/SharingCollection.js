@@ -22,6 +22,7 @@ export default class SharingCollection extends DocumentCollection {
         type: 'io.cozy.sharings',
         attributes: {
           description,
+          open_sharing: sharingType === 'two-way',
           rules: getSharingRules(document, sharingType)
         },
         relationships: {
@@ -31,6 +32,28 @@ export default class SharingCollection extends DocumentCollection {
         }
       }
     })
+    return { data: normalizeSharing(resp.data) }
+  }
+
+  async addRecipients(sharing, recipients) {
+    const resp = await this.client.fetch(
+      'POST',
+      uri`/sharings/${sharing._id}/recipients`,
+      {
+        data: {
+          type: 'io.cozy.sharings',
+          id: sharing._id,
+          relationships: {
+            recipients: {
+              data: recipients.map(({ _id, _type }) => ({
+                id: _id,
+                type: _type
+              }))
+            }
+          }
+        }
+      }
+    )
     return { data: normalizeSharing(resp.data) }
   }
 
