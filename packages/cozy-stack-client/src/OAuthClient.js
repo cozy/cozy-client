@@ -317,7 +317,7 @@ export default class OAuthClient extends CozyStackClient {
       client_secret: this.oauthOptions.clientSecret
     })
 
-    const result = await this.fetch('POST', '/auth/access_token', data, {
+    const result = await super.fetch('POST', '/auth/access_token', data, {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
 
@@ -362,7 +362,7 @@ export default class OAuthClient extends CozyStackClient {
 
   async fetch(method, path, body, options) {
     try {
-      return super.fetch(method, path, body, options)
+      return await super.fetch(method, path, body, options)
     } catch (e) {
       if (/Expired token/.test(e.message)) {
         const token = await this.refreshToken()

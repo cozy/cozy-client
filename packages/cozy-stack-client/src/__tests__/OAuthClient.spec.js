@@ -138,6 +138,13 @@ describe('OAuthClient', () => {
       expect(fetch.mock.calls[0]).toMatchSnapshot()
     })
 
+    it('should automatically refresh the token after a failed fetch', async () => {
+      fetch.mockRejectOnce(new Error('Expired token'))
+      const spy = jest.spyOn(client, 'refreshToken')
+      await client.fetch('GET', '/foo')
+      expect(spy).toHaveBeenCalled()
+    })
+
     it('should throw when refreshing the access token without token', () => {
       client = new OAuthClient(REGISTERED_CLIENT_INIT_OPTIONS)
       expect(client.refreshToken()).rejects.toThrowErrorMatchingSnapshot()
