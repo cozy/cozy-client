@@ -49,7 +49,9 @@ export default class DocumentCollection {
     try {
       const resp = await this.client.fetch('GET', path)
       // WARN: looks like this route returns something looking like a couchDB design doc, we need to filter it:
-      const rows = resp.rows.filter(row => !row.doc.hasOwnProperty('views'))
+      const rows = resp.rows.filter(
+        row => row.doc && !row.doc.hasOwnProperty('views')
+      )
       // WARN: the JSON response from the stack is not homogenous with other routes (offset? rows? total_rows?)
       return {
         data: rows.map(row => normalizeDoc(row.doc, this.doctype)),
