@@ -4,30 +4,7 @@ exports[`OAuthClient with registration should fetch an access token 1`] = `
 Array [
   "http://cozy.tools:8080/auth/access_token",
   Object {
-    "body": URLSearchParams {
-      Symbol(impl): URLSearchParamsImpl {
-        "_list": Array [
-          Array [
-            "grant_type",
-            "authorization_code",
-          ],
-          Array [
-            "code",
-            "myaccesstoken",
-          ],
-          Array [
-            "client_id",
-            "1",
-          ],
-          Array [
-            "client_secret",
-            "",
-          ],
-        ],
-        "_url": null,
-        Symbol(wrapper): [Circular],
-      },
-    },
+    "body": "grant_type=authorization_code&code=myaccesstoken&client_id=1&client_secret=",
     "credentials": "include",
     "headers": Object {
       "Accept": "application/json",
@@ -57,30 +34,7 @@ exports[`OAuthClient with registration should refresh the access token 1`] = `
 Array [
   "http://cozy.tools:8080/auth/access_token",
   Object {
-    "body": URLSearchParams {
-      Symbol(impl): URLSearchParamsImpl {
-        "_list": Array [
-          Array [
-            "grant_type",
-            "refresh_token",
-          ],
-          Array [
-            "refresh_token",
-            "refresh-789",
-          ],
-          Array [
-            "client_id",
-            "1",
-          ],
-          Array [
-            "client_secret",
-            "",
-          ],
-        ],
-        "_url": null,
-        Symbol(wrapper): [Circular],
-      },
-    },
+    "body": "grant_type=refresh_token&refresh_token=refresh-789&client_id=1&client_secret=",
     "credentials": "include",
     "headers": Object {
       "Accept": "application/json",
