@@ -254,9 +254,13 @@ export default class OAuthClient extends CozyStackClient {
       scope: scopes.join(' ')
     }
 
-    return `${this.uri}/auth/authorize?${Object.keys(query)
-      .map(param => `${param}=${encodeURIComponent(query[param])}`)
-      .join('&')}`
+    return `${this.uri}/auth/authorize?${this.dataToQueryString(query)}`
+  }
+
+  dataToQueryString(data) {
+    return Object.keys(data)
+      .map(param => `${param}=${encodeURIComponent(data[param])}`)
+      .join('&')
   }
 
   /**
@@ -288,16 +292,21 @@ export default class OAuthClient extends CozyStackClient {
   async fetchAccessToken(accessCode) {
     if (!this.isRegistered()) throw new NotRegisteredException()
 
-    const data = new URLSearchParams({
+    const data = {
       grant_type: 'authorization_code',
       code: accessCode,
       client_id: this.oauthOptions.clientID,
       client_secret: this.oauthOptions.clientSecret
-    })
+    }
 
-    const result = await this.fetch('POST', '/auth/access_token', data, {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
+    const result = await this.fetch(
+      'POST',
+      '/auth/access_token',
+      this.dataToQueryString(data),
+      {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      }
+    )
 
     return new AccessToken(result)
   }
@@ -312,16 +321,21 @@ export default class OAuthClient extends CozyStackClient {
     if (!this.isRegistered()) throw new NotRegisteredException()
     if (!this.token) throw new Error('No token to refresh')
 
-    const data = new URLSearchParams({
+    const data = {
       grant_type: 'refresh_token',
       refresh_token: this.token.refreshToken,
       client_id: this.oauthOptions.clientID,
       client_secret: this.oauthOptions.clientSecret
-    })
+    }
 
-    const result = await super.fetch('POST', '/auth/access_token', data, {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
+    const result = await super.fetch(
+      'POST',
+      '/auth/access_token',
+      this.dataToQueryString(data),
+      {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      }
+    )
 
     const newToken = new AccessToken({
       refresh_token: this.token.refreshToken,
