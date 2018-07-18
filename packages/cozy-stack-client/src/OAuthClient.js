@@ -18,10 +18,11 @@ const defaultoauthOptions = {
 }
 
 export default class OAuthClient extends CozyStackClient {
-  constructor({ oauth, scope = [], ...options }) {
+  constructor({ oauth, scope = [], onTokenRefresh, ...options }) {
     super(options)
     this.setOAuthOptions({ ...defaultoauthOptions, ...oauth })
     this.scope = scope
+    this.onTokenRefresh = onTokenRefresh
   }
 
   /**
@@ -342,11 +343,8 @@ export default class OAuthClient extends CozyStackClient {
       ...result
     })
 
-    if (
-      this.oauthOptions.onTokenRefresh &&
-      typeof this.oauthOptions.onTokenRefresh === 'function'
-    ) {
-      this.oauthOptions.onTokenRefresh(newToken)
+    if (this.onTokenRefresh && typeof this.onTokenRefresh === 'function') {
+      this.onTokenRefresh(newToken)
     }
 
     return newToken
