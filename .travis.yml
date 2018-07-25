@@ -4,19 +4,19 @@ node_js:
 matrix:
   fast_finish: true
 cache:
+  yarn: true
   directories:
   - node_modules
 before_install:
-- curl -o- -L https://yarnpkg.com/install.sh | bash -s
-- export PATH=$HOME/.yarn/bin:$PATH
 - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
 before_script:
-- lerna run build
+- yarn install
+- yarn build
 script:
 - yarn lint
 - yarn test --runInBand
 after_success:
-- test $TRAVIS_BRANCH = "master" && test $TRAVIS_REPO_SLUG = "cozy/cozy-client" && $TRAVIS_TAG && lerna run publish --repo-version $TRAVIS_TAG --skip-git --yes
+- test $TRAVIS_BRANCH = "master" && test $TRAVIS_REPO_SLUG = "cozy/cozy-client" && $TRAVIS_TAG && lerna publish --repo-version $TRAVIS_TAG --skip-git --yes
 env:
   global:
     secure: pJsHFx7r9866G+XYDwr8+5lPmHG15hV3D9ltdG5gP0Xdwg707fwc/G50PwQk3eBTEXw44y5QAnWiMJnyLpKki8gi3xjmXmWVY8x+ceHdN17uHte69YyK7r9hE2z6BRwLb2HABK+MzKX1zCHrz7HSOo7Ft1TwUid7onTqHhVzbYsAE9WurkAR2ytk1SO/9fwM9lalyDbYnEUdrkDDPU5NfZkK4HEofzu9FYwF05e0tjloEAOa/oyWrgr1q+18fgYPB5LlL/hsb5yBDs6JmnJVp/nMxE8aSdeSWC4x/ENbvrV0qVBRrl+oUJMpRMIefDoUICpfq3fHN3O5ds91ImVLL22XFRBRhISCHF0k8YP6Lzkn8XFxc9vGigYxBtbrtL72WAQJX5g0mP2UgJIRmMPfQGM2bOlU/dI98Yw8SmI1BtLfJ4McnMLAHIke3IS0o4Gj9QLXDLjOXte4yjAc1iX3v2TZxzUwo9oIF6QFb3gGIJ7uXRhTVDZ016NEq95vAMKuOrM7mBc79CeBNVsYAMqP+8LsVjFQ1snQWWaGpkxVx/CJMVq/U+569pA6JDvn9GXt81aVvgQ2j7FnyaGXnVnsnO6ic3SU7fLihYUTd7RHWVDGDwiJkzHxvVuw83BPDgIPydcr+Kz7tWOfjJYPjHrgBCevUxxYs7PgJ+Zn6rlqhMQ= # NPM_TOKEN
