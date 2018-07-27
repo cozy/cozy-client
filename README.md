@@ -140,7 +140,7 @@ const createMutations = (mutate, ownProps) => ({
 
 const App = () => (
   <Query query={query} mutations={createMutations}>
-    {(result, addTodo) =>
+    {(result, { addTodo }) =>
       <TodoList data={result.data} onAddTodo={addTodo} />
     }
   </Query>
