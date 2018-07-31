@@ -1,5 +1,7 @@
 import { getDocumentFromSlice } from './documents'
 import { isReceivingMutationResult } from './mutations'
+import mapValues from 'lodash/mapValues'
+import fromPairs from 'lodash/fromPairs'
 
 const INIT_QUERY = 'INIT_QUERY'
 const RECEIVE_QUERY_RESULT = 'RECEIVE_QUERY_RESULT'
@@ -75,6 +77,25 @@ const query = (state = queryInitialState, action) => {
   }
 }
 
+const queryContains = (query, id) => {
+  return query.data.indexOf(id) > -1
+}
+
+const findQueriesContaining = (queries, id) => {
+  return fromPairs(
+    Object.entries(queries).filter(([queryId, query]) =>
+      queryContains(query, id)
+    )
+  )
+}
+
+const touchQuery = query => ({
+  ...query,
+  lastUpdate: Date.now()
+})
+
+const touchQueries = queries => mapValues(queries, touchQuery)
+
 const queries = (state = {}, action, documents = {}) => {
   if (isQueryAction(action)) {
     return {
@@ -110,9 +131,18 @@ const queries = (state = {}, action, documents = {}) => {
         ...state,
         ...updated
       }
+    } else {
+      const data = action.response.data
+      if (!Array.isArray(data)) {
+        const toUpdate = findQueriesContaining(state, action.response.data.id)
+        const newQueries = touchQueries(toUpdate)
+        return {
+          ...state,
+          ...newQueries
+        }
+      }
     }
     if (action.contextQueryId) {
-      console.log(action.contextQueryId)
       return {
         ...state,
         [action.contextQueryId]: {
