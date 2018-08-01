@@ -17,6 +17,7 @@
   },
   "scripts": {
     "watch": "webpack --config ../../webpack.config.js --env.package=cozy-client --watch",
+    "prepublish": "yarn build",
     "build": "webpack --config ../../webpack.config.js --env.package=cozy-client"
   }
 }
