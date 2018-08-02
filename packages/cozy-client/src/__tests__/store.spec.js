@@ -79,6 +79,7 @@ describe('Store', () => {
         fetchStatus: 'pending',
         lastFetch: null,
         lastUpdate: null,
+        lastError: null,
         hasMore: false,
         count: 0,
         data: null
