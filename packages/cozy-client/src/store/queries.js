@@ -21,6 +21,7 @@ const queryInitialState = {
   fetchStatus: 'pending',
   lastFetch: null,
   lastUpdate: null,
+  lastError: null,
   hasMore: false,
   count: 0,
   data: []
@@ -70,7 +71,8 @@ const query = (state = queryInitialState, action) => {
       return {
         ...state,
         id: action.queryId,
-        fetchStatus: 'failed'
+        fetchStatus: 'failed',
+        lastError: action.error
       }
     default:
       return state
