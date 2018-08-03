@@ -433,8 +433,12 @@ export default class CozyClient {
    */
   async startOAuthFlow(openURLCallback) {
     const client = this.getOrCreateStackClient()
-
     await client.register()
+    return this.authorize(openURLCallback)
+  }
+
+  async authorize(openURLCallback) {
+    const client = this.getOrCreateStackClient()
     const stateCode = client.generateStateCode()
     const url = client.getAuthCodeURL(stateCode)
 
@@ -449,6 +453,14 @@ export default class CozyClient {
       infos: client.oauthOptions,
       client: client.oauthOptions // for compat with Authentication comp reasons
     }
+  }
+
+  /**
+   * Renews the token if, for instance, new permissions are required.
+   * @returns {object}   Contains the fetched token and the client information.
+   */
+  renewAuthorization() {
+    return this.authorize(authenticateWithCordova)
   }
 
   setStore(store) {
