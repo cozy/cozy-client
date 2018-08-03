@@ -40,6 +40,10 @@ export default class CozyClient {
     return this.getOrCreateStackClient().collection(doctype)
   }
 
+  fetch(method, path, body, options = {}) {
+    return this.getOrCreateStackClient().fetch(method, path, body, options)
+  }
+
   all(doctype) {
     return new QueryDefinition({ doctype })
   }
