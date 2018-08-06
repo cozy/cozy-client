@@ -28,7 +28,7 @@
 	"scripts": {
 		"lint": "eslint 'packages/*/src/**/*.js'",
 		"test": "jest",
-		"watch": "lerna run watch",
+		"watch": "lerna run watch --parallel",
 		"build": "lerna run build"
 	},
 	"prettier": {
