@@ -59,14 +59,9 @@ export default class CozyStackClient {
     options.method = method
     const headers = (options.headers = options.headers || {})
 
-    headers['Accept'] = 'application/json'
-
     if (method !== 'GET' && method !== 'HEAD' && body !== undefined) {
       if (headers['Content-Type']) {
         options.body = body
-      } else {
-        headers['Content-Type'] = 'application/json'
-        options.body = JSON.stringify(body)
       }
     }
 
@@ -78,8 +73,23 @@ export default class CozyStackClient {
       options.credentials = 'include'
     }
 
-    const resp = await fetch(this.fullpath(path), options)
-    const contentType = resp.headers && resp.headers.get('content-type')
+    return fetch(this.fullpath(path), options)
+  }
+
+  async fetchJSON(method, path, body, options = {}) {
+    const headers = (options.headers = options.headers || {})
+
+    headers['Accept'] = 'application/json'
+
+    if (method !== 'GET' && method !== 'HEAD' && body !== undefined) {
+      if (!headers['Content-Type']) {
+        headers['Content-Type'] = 'application/json'
+        body = JSON.stringify(body)
+      }
+    }
+
+    const resp = await this.fetch(method, path, body, options)
+    const contentType = resp.headers.get('content-type')
     const isJson = contentType && contentType.indexOf('json') >= 0
     const data = await (isJson ? resp.json() : resp.text())
     if (resp.ok) {

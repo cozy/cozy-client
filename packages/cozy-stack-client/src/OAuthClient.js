@@ -107,7 +107,7 @@ export default class OAuthClient extends CozyStackClient {
   async register() {
     if (this.isRegistered()) throw new Error('Client already registered')
 
-    const data = await this.fetch(
+    const data = await this.fetchJSON(
       'POST',
       '/auth/register',
       this.snakeCaseOAuthData({
@@ -144,7 +144,7 @@ export default class OAuthClient extends CozyStackClient {
   async unregister() {
     if (!this.isRegistered()) throw new NotRegisteredException()
 
-    return this.fetch(
+    return this.fetchJSON(
       'DELETE',
       `/auth/register/${this.oauthOptions.clientID}`,
       null,
@@ -162,7 +162,7 @@ export default class OAuthClient extends CozyStackClient {
   async fetchInformation() {
     if (!this.isRegistered()) throw new NotRegisteredException()
 
-    return this.fetch(
+    return this.fetchJSON(
       'GET',
       `/auth/register/${this.oauthOptions.clientID}`,
       null,
@@ -195,7 +195,7 @@ export default class OAuthClient extends CozyStackClient {
 
     if (resetSecret) data['client_secret'] = this.oauthOptions.clientSecret
 
-    const result = await this.fetch(
+    const result = await this.fetchJSON(
       'PUT',
       `/auth/register/${this.oauthOptions.clientID}`,
       data,
@@ -300,7 +300,7 @@ export default class OAuthClient extends CozyStackClient {
       client_secret: this.oauthOptions.clientSecret
     }
 
-    const result = await this.fetch(
+    const result = await this.fetchJSON(
       'POST',
       '/auth/access_token',
       this.dataToQueryString(data),
@@ -329,7 +329,7 @@ export default class OAuthClient extends CozyStackClient {
       client_secret: this.oauthOptions.clientSecret
     }
 
-    const result = await super.fetch(
+    const result = await super.fetchJSON(
       'POST',
       '/auth/access_token',
       this.dataToQueryString(data),
@@ -374,14 +374,14 @@ export default class OAuthClient extends CozyStackClient {
     this.oauthOptions.clientID = ''
   }
 
-  async fetch(method, path, body, options) {
+  async fetchJSON(method, path, body, options) {
     try {
-      return await super.fetch(method, path, body, options)
+      return await super.fetchJSON(method, path, body, options)
     } catch (e) {
       if (/Expired token/.test(e.message)) {
         const token = await this.refreshToken()
         this.setCredentials(token)
-        return await super.fetch(method, path, body, options)
+        return await super.fetchJSON(method, path, body, options)
       } else {
         throw e
       }

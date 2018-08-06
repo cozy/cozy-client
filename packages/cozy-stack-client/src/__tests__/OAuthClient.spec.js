@@ -141,7 +141,7 @@ describe('OAuthClient', () => {
     it('should automatically refresh the token after a failed fetch', async () => {
       fetch.mockRejectOnce(new Error('Expired token'))
       const spy = jest.spyOn(client, 'refreshToken')
-      await client.fetch('GET', '/foo')
+      await client.fetchJSON('GET', '/foo')
       expect(spy).toHaveBeenCalled()
     })
 
@@ -180,7 +180,7 @@ describe('OAuthClient', () => {
 
     it('should call getCredentials for usual requests', () => {
       const spy = jest.spyOn(client, 'getCredentials')
-      client.fetch('GET', 'http://example.com')
+      client.fetchJSON('GET', 'http://example.com')
       expect(spy).toHaveBeenCalled()
     })
   })

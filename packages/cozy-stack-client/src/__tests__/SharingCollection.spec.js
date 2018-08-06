@@ -24,12 +24,12 @@ describe('SharingCollection', () => {
 
   describe('findByDoctype', () => {
     beforeAll(() => {
-      client.fetch.mockReturnValue(Promise.resolve({ data: [] }))
+      client.fetchJSON.mockReturnValue(Promise.resolve({ data: [] }))
     })
 
     it('should call the right route', async () => {
       await collection.findByDoctype('io.cozy.files')
-      expect(client.fetch).toHaveBeenCalledWith(
+      expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
         '/sharings/doctype/io.cozy.files'
       )
@@ -39,12 +39,12 @@ describe('SharingCollection', () => {
   describe('share', () => {
     beforeAll(() => {
       client.fetch.mockReset()
-      client.fetch.mockReturnValue(Promise.resolve({ data: [] }))
+      client.fetchJSON.mockReturnValue(Promise.resolve({ data: [] }))
     })
 
     it('should call the right route with the right payload', async () => {
       await collection.share(FOLDER, [RECIPIENT], 'one-way', 'foo')
-      expect(client.fetch).toHaveBeenCalledWith('POST', '/sharings/', {
+      expect(client.fetchJSON).toHaveBeenCalledWith('POST', '/sharings/', {
         data: {
           attributes: {
             description: 'foo',

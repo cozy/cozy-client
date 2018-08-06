@@ -47,7 +47,7 @@ export default class DocumentCollection {
     // If no document of this doctype exist, this route will return a 404,
     // so we need to try/catch and return an empty response object in case of a 404
     try {
-      const resp = await this.client.fetch('GET', path)
+      const resp = await this.client.fetchJSON('GET', path)
       // WARN: looks like this route returns something looking like a couchDB design doc, we need to filter it:
       const rows = resp.rows.filter(
         row => row.doc && !row.doc.hasOwnProperty('views')
@@ -79,7 +79,7 @@ export default class DocumentCollection {
    */
   async find(selector, options = {}) {
     const { skip = 0 } = options
-    const resp = await this.client.fetch(
+    const resp = await this.client.fetchJSON(
       'POST',
       uri`/data/${this.doctype}/_find`,
       await this.toMangoOptions(selector, options)
@@ -98,7 +98,7 @@ export default class DocumentCollection {
   }
 
   async get(id) {
-    const resp = await this.client.fetch(
+    const resp = await this.client.fetchJSON(
       'GET',
       uri`/data/${this.doctype}/${id}`
     )
@@ -108,7 +108,7 @@ export default class DocumentCollection {
   }
 
   async create({ _id, _type, ...document }) {
-    const resp = await this.client.fetch(
+    const resp = await this.client.fetchJSON(
       'POST',
       uri`/data/${this.doctype}/`,
       document
@@ -119,7 +119,7 @@ export default class DocumentCollection {
   }
 
   async update(document) {
-    const resp = await this.client.fetch(
+    const resp = await this.client.fetchJSON(
       'PUT',
       uri`/data/${this.doctype}/${document._id}`,
       document
@@ -130,7 +130,7 @@ export default class DocumentCollection {
   }
 
   async destroy({ _id, _rev, ...document }) {
-    const resp = await this.client.fetch(
+    const resp = await this.client.fetchJSON(
       'DELETE',
       uri`/data/${this.doctype}/${_id}?rev=${_rev}`
     )
@@ -184,7 +184,7 @@ export default class DocumentCollection {
 
   async createIndex(fields) {
     const indexDef = { index: { fields } }
-    const resp = await this.client.fetch(
+    const resp = await this.client.fetchJSON(
       'POST',
       uri`/data/${this.doctype}/_index`,
       indexDef

@@ -6,14 +6,14 @@ const normalizePermission = perm => normalizeDoc(perm, 'io.cozy.permissions')
 
 export default class PermissionCollection extends DocumentCollection {
   async get(id) {
-    const resp = await this.client.fetch('GET', uri`/permissions/${id}`)
+    const resp = await this.client.fetchJSON('GET', uri`/permissions/${id}`)
     return {
       data: normalizePermission(resp.data)
     }
   }
 
   async create({ _id, _type, ...attributes }) {
-    const resp = await this.client.fetch('POST', uri`/permissions/`, {
+    const resp = await this.client.fetchJSON('POST', uri`/permissions/`, {
       data: {
         type: 'io.cozy.permissions',
         attributes
@@ -25,11 +25,11 @@ export default class PermissionCollection extends DocumentCollection {
   }
 
   destroy(permission) {
-    return this.client.fetch('DELETE', uri`/permissions/${permission.id}`)
+    return this.client.fetchJSON('DELETE', uri`/permissions/${permission.id}`)
   }
 
   async findLinksByDoctype(doctype) {
-    const resp = await this.client.fetch(
+    const resp = await this.client.fetchJSON(
       'GET',
       uri`/permissions/doctype/${doctype}/shared-by-link`
     )
@@ -40,19 +40,23 @@ export default class PermissionCollection extends DocumentCollection {
   }
 
   async findApps() {
-    const resp = await this.client.fetch('GET', '/apps/')
+    const resp = await this.client.fetchJSON('GET', '/apps/')
     return { ...resp, data: resp.data.map(a => ({ _id: a.id, ...a })) }
   }
 
   async createSharingLink(document) {
-    const resp = await this.client.fetch('POST', `/permissions?codes=email`, {
-      data: {
-        type: 'io.cozy.permissions',
-        attributes: {
-          permissions: getPermissionsFor(document, true)
+    const resp = await this.client.fetchJSON(
+      'POST',
+      `/permissions?codes=email`,
+      {
+        data: {
+          type: 'io.cozy.permissions',
+          attributes: {
+            permissions: getPermissionsFor(document, true)
+          }
         }
       }
-    })
+    )
     return { data: normalizePermission(resp.data) }
   }
 
