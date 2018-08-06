@@ -13,7 +13,7 @@
 		"eslint-plugin-prettier": "^2.6.0",
 		"jest": "^22.1.4",
 		"jest-fetch-mock": "^1.4.1",
-		"lerna": "^2.8.0",
+		"lerna": "2.11.0",
 		"prettier": "1.10.2",
 		"react": "^16.2.0",
 		"react-dom": "^16.2.0",
