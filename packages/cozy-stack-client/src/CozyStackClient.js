@@ -1,4 +1,4 @@
-import AppCollection, { APP_DOCTYPE } from './AppCollection'
+import AppCollection, { APPS_DOCTYPE } from './AppCollection'
 import AppToken from './AppToken'
 import DocumentCollection from './DocumentCollection'
 import FileCollection from './FileCollection'
@@ -32,7 +32,7 @@ export default class CozyStackClient {
       throw new Error('CozyStackClient.collection() called without a doctype')
     }
     switch (doctype) {
-      case APP_DOCTYPE:
+      case APPS_DOCTYPE:
         return new AppCollection(this)
       case 'io.cozy.files':
         return new FileCollection(doctype, this)
