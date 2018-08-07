@@ -32,4 +32,24 @@ export default class AppCollection {
       next: false
     }
   }
+
+  async find() {
+    throw new Error('find() method is not yet implemented')
+  }
+
+  async get() {
+    throw new Error('get() method is not yet implemented')
+  }
+
+  async create() {
+    throw new Error('create() method is not available for applications')
+  }
+
+  async update() {
+    throw new Error('update() method is not available for applications')
+  }
+
+  async destroy() {
+    throw new Error('destroy() method is not available for applications')
+  }
 }
