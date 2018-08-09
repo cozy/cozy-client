@@ -2,14 +2,14 @@ import React, { Component } from 'react'
 import { connect as reduxConnect } from 'react-redux'
 import PropTypes from 'prop-types'
 
-import { getQueryFromStore } from './store'
+import { getQueryFromState } from './store'
 
 const connect = (query, options = {}) => WrappedComponent => {
   const wrappedDisplayName =
     WrappedComponent.displayName || WrappedComponent.name || 'Component'
 
   const mapStateToProps = (state, ownProps) => ({
-    ...getQueryFromStore(state, ownProps.queryId)
+    ...getQueryFromState(state, ownProps.queryId)
   })
 
   const ConnectedWrappedComponent = reduxConnect(mapStateToProps)(

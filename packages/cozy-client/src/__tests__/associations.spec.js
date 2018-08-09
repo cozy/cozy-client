@@ -14,7 +14,7 @@ describe('Associations', () => {
     client
       .hydrateDocuments(
         'io.cozy.todos',
-        [client.getDocumentFromStore('io.cozy.todos', id)],
+        [client.getDocumentFromState('io.cozy.todos', id)],
         'allTodos'
       )
       .shift()

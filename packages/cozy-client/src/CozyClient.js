@@ -12,8 +12,8 @@ import {
   initMutation,
   receiveMutationResult,
   receiveMutationError,
-  getQueryFromStore,
-  getDocumentFromStore
+  getQueryFromState,
+  getDocumentFromState
 } from './store'
 import { chain } from './CozyLink'
 import ObservableQuery from './ObservableQuery'
@@ -152,7 +152,7 @@ export default class CozyClient {
   async query(queryDefinition, { update, contextQueryId, ...options } = {}) {
     this.getOrCreateStore()
     const queryId = options.as || this.generateId()
-    const existingQuery = getQueryFromStore(this.store.getState(), queryId)
+    const existingQuery = getQueryFromState(this.store.getState(), queryId)
     // Don't trigger the INIT_QUERY for fetchMore() calls
     if (existingQuery.fetchStatus !== 'loaded' || !queryDefinition.skip) {
       this.dispatch(initQuery(queryId, queryDefinition))
@@ -346,7 +346,7 @@ export default class CozyClient {
 
   getAssociationStoreAccessors(queryId) {
     return {
-      get: this.getDocumentFromStore.bind(this),
+      get: this.getDocumentFromState.bind(this),
       save: (document, opts) =>
         this.save.call(this, document, { contextQueryId: queryId, ...opts }),
       query: (def, opts) =>
@@ -410,8 +410,8 @@ export default class CozyClient {
     )
   }
 
-  getDocumentFromStore(type, id) {
-    return getDocumentFromStore(this.store.getState(), type, id)
+  getDocumentFromState(type, id) {
+    return getDocumentFromState(this.store.getState(), type, id)
   }
 
   /**

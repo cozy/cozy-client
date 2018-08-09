@@ -80,17 +80,17 @@ export const createStore = () =>
 
 export const getStateRoot = state => state.cozy || {}
 
-export const getDocumentFromStore = (state, doctype, id) =>
+export const getDocumentFromState = (state, doctype, id) =>
   getDocumentFromSlice(getStateRoot(state).documents, doctype, id)
 
-export const getQueryFromStore = (state, queryId) =>
+export const getQueryFromState = (state, queryId) =>
   getQueryFromSlice(
     getStateRoot(state).queries,
     queryId,
     getStateRoot(state).documents
   )
 
-export const getRawQueryFromStore = (state, queryId) =>
+export const getRawQueryFromState = (state, queryId) =>
   getQueryFromSlice(getStateRoot(state).queries, queryId)
 
 export { receiveDocumentUpdate } from './documents'

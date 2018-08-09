@@ -1,4 +1,4 @@
-import { getQueryFromStore, getRawQueryFromStore } from './store'
+import { getQueryFromState, getRawQueryFromState } from './store'
 
 const hasOwn = Object.prototype.hasOwnProperty
 
@@ -56,7 +56,7 @@ export default class ObservableQuery {
   }
 
   currentResult() {
-    const result = getQueryFromStore(this.getStore().getState(), this.queryId)
+    const result = getQueryFromState(this.getStore().getState(), this.queryId)
     if (result.fetchStatus !== 'loaded') {
       return result
     }
@@ -116,7 +116,7 @@ export default class ObservableQuery {
   }
 
   currentRawResult() {
-    return getRawQueryFromStore(this.getStore().getState(), this.queryId)
+    return getRawQueryFromState(this.getStore().getState(), this.queryId)
   }
 
   notifyObservers() {

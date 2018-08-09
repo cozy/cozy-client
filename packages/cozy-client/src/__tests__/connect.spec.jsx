@@ -6,7 +6,7 @@ import { shallow } from 'enzyme'
 import CozyClient from '../CozyClient'
 import CozyLink from '../CozyLink'
 import connect from '../connect'
-import { getQueryFromStore, initQuery } from '../store'
+import { getQueryFromState, initQuery } from '../store'
 
 import { TODO_1, TODO_2, TODO_3 } from './fixtures'
 
@@ -39,7 +39,7 @@ describe('connect', () => {
     const waitForSuccess = () =>
       new Promise(resolve => {
         store.subscribe(() => {
-          const query = getQueryFromStore(store.getState(), 'allTodos')
+          const query = getQueryFromState(store.getState(), 'allTodos')
           if (query.fetchStatus === 'loaded') {
             resolve()
           }
