@@ -38,13 +38,16 @@ const query = (state = queryInitialState, action) => {
       }
     case RECEIVE_QUERY_RESULT: {
       const response = action.response
+      const common = {
+        fetchStatus: 'loaded',
+        lastFetch: Date.now(),
+        lastUpdate: Date.now(),
+        id: action.queryId
+      }
       if (!Array.isArray(response.data)) {
         return {
           ...state,
-          id: action.queryId,
-          fetchStatus: 'loaded',
-          lastFetch: Date.now(),
-          lastUpdate: Date.now(),
+          ...common,
           hasMore: false,
           count: 1,
           data: [response.data._id]
@@ -52,10 +55,7 @@ const query = (state = queryInitialState, action) => {
       }
       return {
         ...state,
-        id: action.queryId,
-        fetchStatus: 'loaded',
-        lastFetch: Date.now(),
-        lastUpdate: Date.now(),
+        ...common,
         hasMore: response.next !== undefined ? response.next : state.hasMore,
         count:
           response.meta && response.meta.count

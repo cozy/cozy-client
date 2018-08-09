@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { getQueryFromStore } from './store'
+import { getQueryFromState } from './store'
 import { QueryDefinition } from './dsl'
 import PropTypes from 'prop-types'
 

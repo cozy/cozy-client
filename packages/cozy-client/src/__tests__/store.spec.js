@@ -1,8 +1,8 @@
 import { createStore, combineReducers } from 'redux'
 
 import reducer, {
-  getDocumentFromStore,
-  getQueryFromStore,
+  getDocumentFromState,
+  getQueryFromState,
   initQuery,
   receiveQueryResult,
   receiveQueryError,
@@ -18,10 +18,10 @@ describe('Store', () => {
     store = createStore(combineReducers({ cozy: reducer }))
   })
 
-  describe('getDocumentFromStore', () => {
+  describe('getDocumentFromState', () => {
     it('should return null when the store is empty', () => {
       expect(
-        getDocumentFromStore(store.getState(), 'io.cozy.todos', TODO_1._id)
+        getDocumentFromState(store.getState(), 'io.cozy.todos', TODO_1._id)
       ).toBe(null)
     })
 
@@ -35,10 +35,10 @@ describe('Store', () => {
         })
       )
       expect(
-        getDocumentFromStore(store.getState(), 'io.cozy.todos', TODO_1._id)
+        getDocumentFromState(store.getState(), 'io.cozy.todos', TODO_1._id)
       ).toEqual(TODO_1)
       expect(
-        getDocumentFromStore(store.getState(), 'io.cozy.todos', 'WXYZ')
+        getDocumentFromState(store.getState(), 'io.cozy.todos', 'WXYZ')
       ).toBe(null)
     })
 
@@ -49,7 +49,7 @@ describe('Store', () => {
         })
       )
       expect(
-        getDocumentFromStore(store.getState(), 'io.cozy.todos', TODO_1._id)
+        getDocumentFromState(store.getState(), 'io.cozy.todos', TODO_1._id)
       ).toEqual(TODO_1)
     })
 
@@ -65,15 +65,15 @@ describe('Store', () => {
         })
       )
       expect(
-        getDocumentFromStore(store.getState(), 'io.cozy.todos', TODO_1._id)
+        getDocumentFromState(store.getState(), 'io.cozy.todos', TODO_1._id)
           .label
       ).toBe('Buy croissants')
     })
   })
 
-  describe('getQueryFromStore', () => {
+  describe('getQueryFromState', () => {
     it('should return a default state when the store is empty', () => {
-      expect(getQueryFromStore(store.getState(), 'allTodos')).toEqual({
+      expect(getQueryFromState(store.getState(), 'allTodos')).toEqual({
         definition: null,
         id: null,
         fetchStatus: 'pending',
@@ -88,7 +88,7 @@ describe('Store', () => {
 
     it('should have a `loading` status when the query has been initiated', async () => {
       await store.dispatch(initQuery('allTodos', {}))
-      const query = getQueryFromStore(store.getState(), 'allTodos')
+      const query = getQueryFromState(store.getState(), 'allTodos')
       expect(query.fetchStatus).toBe('loading')
     })
 
@@ -97,7 +97,7 @@ describe('Store', () => {
       await store.dispatch(
         receiveQueryError('allTodos', new Error('fake error'))
       )
-      const query = getQueryFromStore(store.getState(), 'allTodos')
+      const query = getQueryFromState(store.getState(), 'allTodos')
       expect(query.fetchStatus).toBe('failed')
     })
 
@@ -119,22 +119,22 @@ describe('Store', () => {
       })
 
       it('should have a `loaded` status', () => {
-        const query = getQueryFromStore(store.getState(), 'allTodos')
+        const query = getQueryFromState(store.getState(), 'allTodos')
         expect(query.fetchStatus).toBe('loaded')
       })
 
       it('should have a `count` that reflect the `meta.count` in the response', () => {
-        const query = getQueryFromStore(store.getState(), 'allTodos')
+        const query = getQueryFromState(store.getState(), 'allTodos')
         expect(query.count).toBe(2)
       })
 
       it('should have a `hasMore` that reflect the `next` in the response', () => {
-        const query = getQueryFromStore(store.getState(), 'allTodos')
+        const query = getQueryFromState(store.getState(), 'allTodos')
         expect(query.hasMore).toBe(true)
       })
 
       it('should have a `data` property containing the actual documents', () => {
-        const query = getQueryFromStore(store.getState(), 'allTodos')
+        const query = getQueryFromState(store.getState(), 'allTodos')
         expect(query.data).toEqual([TODO_1, TODO_2])
       })
 
@@ -151,12 +151,12 @@ describe('Store', () => {
         })
 
         it('should have a `hasMore` that reflect the `next` in the response', () => {
-          const query = getQueryFromStore(store.getState(), 'allTodos')
+          const query = getQueryFromState(store.getState(), 'allTodos')
           expect(query.hasMore).toBe(false)
         })
 
         it('should have a `data` property containing all received documents', () => {
-          const query = getQueryFromStore(store.getState(), 'allTodos')
+          const query = getQueryFromState(store.getState(), 'allTodos')
           expect(query.data).toEqual([TODO_1, TODO_2, TODO_3])
         })
       })
@@ -172,7 +172,7 @@ describe('Store', () => {
                 })
             })
           )
-          expect(getQueryFromStore(store.getState(), 'allTodos').foo).toEqual(
+          expect(getQueryFromState(store.getState(), 'allTodos').foo).toEqual(
             'BAR!'
           )
         })
@@ -217,7 +217,7 @@ describe('Store', () => {
 
         it('should persist `included` docs into the store', () => {
           expect(
-            getDocumentFromStore(store.getState(), 'io.cozy.files', 'abc')
+            getDocumentFromState(store.getState(), 'io.cozy.files', 'abc')
           ).toEqual({ _id: 'abc', _type: 'io.cozy.files', name: 'abc.png' })
         })
       })
@@ -225,23 +225,66 @@ describe('Store', () => {
   })
 
   describe('Mutations', () => {
-    describe('updateQueries', () => {
-      beforeEach(async () => {
-        await store.dispatch(
-          initQuery('allTodos', {
-            doctype: 'io.cozy.todos'
-          })
-        )
-        await store.dispatch(
-          receiveQueryResult('allTodos', {
-            data: [TODO_1, TODO_2],
-            meta: { count: 2 },
-            skip: 0,
-            next: true
-          })
-        )
+    beforeEach(async () => {
+      await store.dispatch(
+        initQuery('allTodos', {
+          doctype: 'io.cozy.todos'
+        })
+      )
+      await store.dispatch(
+        initQuery('allTodos2', {
+          doctype: 'io.cozy.todos'
+        })
+      )
+      await store.dispatch(
+        receiveQueryResult('allTodos', {
+          data: [TODO_1, TODO_2],
+          meta: { count: 2 },
+          skip: 0,
+          next: true
+        })
+      )
+      await store.dispatch(
+        receiveQueryResult('allTodos2', {
+          data: [TODO_1],
+          meta: { count: 2 },
+          skip: 0,
+          next: true
+        })
+      )
+    })
+
+    const MOCKED_DATE = -14159040000 // a small step for man...
+
+    beforeEach(() => {
+      jest.spyOn(Date, 'now').mockReturnValue(MOCKED_DATE)
+    })
+
+    afterEach(() => {
+      Date.now.mockRestore()
+    })
+
+    describe('after update result', () => {
+      it('should update all queries containing the documents (doc in all queries)', async () => {
+        const result = { data: { ...TODO_1, done: true, id: TODO_1._id } }
+        await store.dispatch(receiveMutationResult('foo', result))
+        const query1 = getQueryFromState(store.getState(), 'allTodos')
+        const query2 = getQueryFromState(store.getState(), 'allTodos2')
+        expect(query1.lastUpdate).toBe(MOCKED_DATE)
+        expect(query2.lastUpdate).toBe(MOCKED_DATE)
       })
 
+      it('should update all queries containing the documents (doc in one query)', async () => {
+        const result = { data: { ...TODO_2, done: true, id: TODO_2._id } }
+        await store.dispatch(receiveMutationResult('foo', result))
+        const query1 = getQueryFromState(store.getState(), 'allTodos')
+        const query2 = getQueryFromState(store.getState(), 'allTodos2')
+        expect(query1.lastUpdate).toBe(MOCKED_DATE)
+        expect(query2.lastUpdate).not.toBe(MOCKED_DATE)
+      })
+    })
+
+    describe('updateQueries', () => {
       const NEW_TODO = {
         _id: 'azerty',
         _type: 'io.cozy.todos',
@@ -276,7 +319,7 @@ describe('Store', () => {
             }
           })
         )
-        const query = getQueryFromStore(store.getState(), 'allTodos')
+        const query = getQueryFromState(store.getState(), 'allTodos')
         expect(query.data).toEqual([TODO_1, NEW_TODO, TODO_2])
       })
     })
