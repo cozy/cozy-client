@@ -9,6 +9,11 @@ export default class Query extends Component {
   constructor(props, context) {
     super(props, context)
     const { client } = context
+    if (!context.client) {
+      throw new Error(
+        'Query should be used with client in context (use CozyProvider to set context)'
+      )
+    }
 
     const queryDef =
       typeof props.query === 'function'
@@ -61,6 +66,11 @@ export default class Query extends Component {
       }
     )
   }
+}
+
+Query.contextTypes = {
+  client: PropTypes.object,
+  store: PropTypes.object
 }
 
 Query.propTypes = {
