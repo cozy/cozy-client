@@ -1,3 +1,9 @@
+/**
+ * ObservableQueries are the glue between the store and observers
+ * of the store. They know about the QueryDefinition, the client and
+ * know how to hydrate documents.
+ */
+
 import { getQueryFromState, getRawQueryFromState } from './store'
 
 const hasOwn = Object.prototype.hasOwnProperty
