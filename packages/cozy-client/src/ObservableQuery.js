@@ -38,6 +38,9 @@ function shallowEqual(objA, objB) {
 
 export default class ObservableQuery {
   constructor(queryId, definition, client) {
+    if (!queryId || !definition || !client) {
+      throw new Error('ObservableQuery takes 3 arguments: queryId, definition and client')
+    }
     this.queryId = queryId
     this.definition = definition
     this.client = client
