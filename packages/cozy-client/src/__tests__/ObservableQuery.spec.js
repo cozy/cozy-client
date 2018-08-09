@@ -6,55 +6,66 @@ import { initQuery, receiveQueryResult } from '../store'
 
 import { TODO_1, TODO_2 } from './fixtures'
 
+const queryResultFromData = (data, opts = {}) => ({
+  data: data,
+  meta: { count: data.length },
+  skip: 0,
+  next: false,
+  ...opts
+})
+
+const AUTHORS = [
+  {
+    _id: 1234,
+    _type: 'io.cozy.todos.authors',
+    name: 'John Doe'
+  }
+]
+
 describe('ObservableQuery', () => {
   let store
   const requestHandler = jest.fn()
   const link = new CozyLink(requestHandler)
   const client = new CozyClient({ link })
-  const def = client.all('io.cozy.todos')
-  const observer = jest.fn()
 
   beforeEach(() => {
     store = createStore(combineReducers({ cozy: client.reducer() }))
     client.setStore(store)
-    observer.mockReset()
   })
 
-  it('should notify observers when the fetchStatus change', async () => {
-    const query = new ObservableQuery('allTodos', def, client)
-    query.subscribe(observer)
-    //requestHandler.mockReturnValueOnce(Promise.resolve({ data: 'foo' }))
-    await store.dispatch(initQuery('allTodos', {}))
-    await store.dispatch(
-      receiveQueryResult('allTodos', {
-        data: [TODO_1]
-      })
-    )
-    expect(observer).toHaveBeenCalledTimes(2)
+  describe('notifications', () => {
+    let query
+    const def = client.all('io.cozy.todos')
+    const observer = jest.fn()
+
+    beforeEach(async () => {
+      observer.mockReset()
+      query = new ObservableQuery('allTodos', def, client)
+      query.subscribe(observer)
+      await store.dispatch(initQuery('allTodos', {}))
+    })
+
+    it('should notify observers when the fetchStatus change', async () => {
+      await store.dispatch(
+        receiveQueryResult('allTodos', queryResultFromData([TODO_1]))
+      )
+      expect(observer).toHaveBeenCalledTimes(2)
+    })
+
+    it('should not notify observers when other queries changed', async () => {
+      await store.dispatch(
+        receiveQueryResult('allTodos', queryResultFromData([TODO_1, TODO_2]))
+      )
+
+      await store.dispatch(
+        receiveQueryResult('allAuthors', queryResultFromData(AUTHORS))
+      )
+      expect(observer).toHaveBeenCalledTimes(2)
+      query.currentResult()
+    })
   })
 
-  it('should not notify observers when other queries changed', async () => {
-    const query = new ObservableQuery('allTodos', def, client)
-    query.subscribe(observer)
-    await store.dispatch(initQuery('allTodos', def))
-    await store.dispatch(
-      receiveQueryResult('allTodos', {
-        data: [TODO_1, TODO_2],
-        meta: { count: 2 },
-        skip: 0,
-        next: false
-      })
-    )
 
-    await store.dispatch(
-      receiveQueryResult('allAuthors', {
-        data: [{ _id: 1234, _type: 'io.cozy.todos.authors', name: 'John Doe' }],
-        meta: { count: 1 },
-        skip: 0,
-        next: false
-      })
-    )
-    expect(observer).toHaveBeenCalledTimes(2)
   })
 
   it('should return an unsubscribe function', () => {})
