@@ -37,13 +37,14 @@ export default class ObservableQuery {
     if (result.fetchStatus !== 'loaded') {
       return result
     }
+    const data = this.client.hydrateDocuments(
+      this.definition.doctype,
+      result.data,
+      this.queryId
+    )
     return {
       ...result,
-      data: this.client.hydrateDocuments(
-        this.definition.doctype,
-        result.data,
-        this.queryId
-      )
+      data: this.definition.id ? data[0] : data
     }
   }
 

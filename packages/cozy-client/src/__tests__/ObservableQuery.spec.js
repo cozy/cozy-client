@@ -65,7 +65,28 @@ describe('ObservableQuery', () => {
     })
   })
 
+  describe('current result', () => {
+    let query
 
+    it('should be able to return its results', async () => {
+      const def = client.all('io.cozy.todos')
+      await store.dispatch(initQuery('allTodos', def))
+      query = new ObservableQuery('allTodos', def, client)
+      await store.dispatch(
+        receiveQueryResult('allTodos', queryResultFromData([TODO_1, TODO_2]))
+      )
+      expect(query.currentResult().data).toEqual([TODO_1, TODO_2])
+    })
+
+    it('should be able to return its results', async () => {
+      const def = client.get('io.cozy.todos', TODO_1._id)
+      await store.dispatch(initQuery('oneTodo', def))
+      query = new ObservableQuery('oneTodo', def, client)
+      await store.dispatch(
+        receiveQueryResult('oneTodo', queryResultFromData([TODO_1]))
+      )
+      expect(query.currentResult().data).toBe(TODO_1)
+    })
   })
 
   it('should return an unsubscribe function', () => {})
