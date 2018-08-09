@@ -42,7 +42,7 @@ describe('ObservableQuery', () => {
       observer.mockReset()
       query = new ObservableQuery('allTodos', def, client)
       query.subscribe(observer)
-      await store.dispatch(initQuery('allTodos', {}))
+      await store.dispatch(initQuery('allTodos', def))
     })
 
     it('should notify observers when the fetchStatus change', async () => {

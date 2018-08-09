@@ -159,11 +159,16 @@ const queries = (state = {}, action, documents = {}) => {
 export default queries
 
 // actions
-export const initQuery = (queryId, queryDefinition) => ({
-  type: INIT_QUERY,
-  queryId,
-  queryDefinition
-})
+export const initQuery = (queryId, queryDefinition) => {
+  if (!queryDefinition.doctype) {
+    throw new Error('Cannot init query with no doctype')
+  }
+  return {
+    type: INIT_QUERY,
+    queryId,
+    queryDefinition
+  }
+}
 
 export const receiveQueryResult = (queryId, response, options = {}) => ({
   type: RECEIVE_QUERY_RESULT,

@@ -87,13 +87,15 @@ describe('Store', () => {
     })
 
     it('should have a `loading` status when the query has been initiated', async () => {
-      await store.dispatch(initQuery('allTodos', {}))
+      const queryDef = { doctype: 'io.cozy.todos' }
+      await store.dispatch(initQuery('allTodos', queryDef))
       const query = getQueryFromState(store.getState(), 'allTodos')
       expect(query.fetchStatus).toBe('loading')
     })
 
     it('should have a `failed` status when an error occur', async () => {
-      await store.dispatch(initQuery('allTodos', {}))
+      const queryDef = { doctype: 'io.cozy.todos' }
+      await store.dispatch(initQuery('allTodos', queryDef))
       await store.dispatch(
         receiveQueryError('allTodos', new Error('fake error'))
       )
