@@ -225,23 +225,66 @@ describe('Store', () => {
   })
 
   describe('Mutations', () => {
-    describe('updateQueries', () => {
-      beforeEach(async () => {
-        await store.dispatch(
-          initQuery('allTodos', {
-            doctype: 'io.cozy.todos'
-          })
-        )
-        await store.dispatch(
-          receiveQueryResult('allTodos', {
-            data: [TODO_1, TODO_2],
-            meta: { count: 2 },
-            skip: 0,
-            next: true
-          })
-        )
+    beforeEach(async () => {
+      await store.dispatch(
+        initQuery('allTodos', {
+          doctype: 'io.cozy.todos'
+        })
+      )
+      await store.dispatch(
+        initQuery('allTodos2', {
+          doctype: 'io.cozy.todos'
+        })
+      )
+      await store.dispatch(
+        receiveQueryResult('allTodos', {
+          data: [TODO_1, TODO_2],
+          meta: { count: 2 },
+          skip: 0,
+          next: true
+        })
+      )
+      await store.dispatch(
+        receiveQueryResult('allTodos2', {
+          data: [TODO_1],
+          meta: { count: 2 },
+          skip: 0,
+          next: true
+        })
+      )
+    })
+
+    const MOCKED_DATE = -14159040000 // a small step for man...
+
+    beforeEach(() => {
+      jest.spyOn(Date, 'now').mockReturnValue(MOCKED_DATE)
+    })
+
+    afterEach(() => {
+      Date.now.mockRestore()
+    })
+
+    describe('after update result', () => {
+      it('should update all queries containing the documents (doc in all queries)', async () => {
+        const result = { data: { ...TODO_1, done: true, id: TODO_1._id } }
+        await store.dispatch(receiveMutationResult('foo', result))
+        const query1 = getQueryFromState(store.getState(), 'allTodos')
+        const query2 = getQueryFromState(store.getState(), 'allTodos2')
+        expect(query1.lastUpdate).toBe(MOCKED_DATE)
+        expect(query2.lastUpdate).toBe(MOCKED_DATE)
       })
 
+      it('should update all queries containing the documents (doc in one query)', async () => {
+        const result = { data: { ...TODO_2, done: true, id: TODO_2._id } }
+        await store.dispatch(receiveMutationResult('foo', result))
+        const query1 = getQueryFromState(store.getState(), 'allTodos')
+        const query2 = getQueryFromState(store.getState(), 'allTodos2')
+        expect(query1.lastUpdate).toBe(MOCKED_DATE)
+        expect(query2.lastUpdate).not.toBe(MOCKED_DATE)
+      })
+    })
+
+    describe('updateQueries', () => {
       const NEW_TODO = {
         _id: 'azerty',
         _type: 'io.cozy.todos',
