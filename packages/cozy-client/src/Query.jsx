@@ -22,10 +22,13 @@ export default class Query extends Component {
       typeof mutations === 'function'
         ? mutations(this.observableQuery, rest)
         : {}
-    this.createDocument = this.observableQuery.create.bind(this.observableQuery)
-    this.saveDocument = this.observableQuery.save.bind(this.observableQuery)
-    this.deleteDocument = this.observableQuery.destroy.bind(this.observableQuery)
-    this.getAssociation = this.observableQuery.getAssociation.bind(this.observableQuery)
+
+    const query = this.observableQuery
+    this.createDocument = query.create.bind(query)
+    this.saveDocument = query.save.bind(query)
+    this.deleteDocument = query.destroy.bind(query)
+    this.getAssociation = query.getAssociation.bind(this.observableQuery)
+    this.fetchMore = query.fetchMore.bind(query)
   }
 
   componentDidMount() {
@@ -49,7 +52,7 @@ export default class Query extends Component {
     const query = this.observableQuery
     return children(
       {
-        fetchMore: query.fetchMore.bind(query),
+        fetchMore: this.fetchMore,
         ...query.currentResult()
       },
       {
