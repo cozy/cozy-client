@@ -41,7 +41,7 @@
         ],
         "setupTestFrameworkScriptFile": "<rootDir>/packages/cozy-stack-client/src/__tests__/setup.js",
         "testMatch": [
-            "**/__tests__/**/(*.)(spec|test).js?(x)"
+            "**/(*.)(spec|test).js?(x)"
         ]
     }
 }
