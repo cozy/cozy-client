@@ -29,3 +29,7 @@ $ npm install cozy-client@beta
 lerna publish --scope cozy-client --force-publish cozy-client
 ```
 
+Linking
+-------
+
+Use `yarn watch` to watch on cozy-client side and `yarn link` on the app side.

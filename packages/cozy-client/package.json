@@ -19,5 +19,8 @@
     "watch": "webpack --config ../../webpack.config.js --env.package=cozy-client --watch",
     "prepublish": "yarn build",
     "build": "webpack --config ../../webpack.config.js --env.package=cozy-client"
+  },
+  "devDependencies": {
+    "redux": "^4.0.0"
   }
 }
