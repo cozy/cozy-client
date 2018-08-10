@@ -20,7 +20,7 @@ deploy:
     script: yarn lerna publish --yes
     on:
       branch: master
-      repo: cozy/cozy-libs
+      repo: cozy/cozy-client
 env:
   global:
     #  travis encrypt NPM_TOKEN=<token>
