@@ -7,16 +7,22 @@ cache:
   yarn: true
   directories:
   - node_modules
-before_install:
-- echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-before_script:
-- yarn install
-- yarn build
 script:
 - yarn lint
 - yarn test --runInBand
-after_success:
-- test $TRAVIS_BRANCH = "master" && test $TRAVIS_REPO_SLUG = "cozy/cozy-client" && $TRAVIS_TAG && lerna publish --repo-version $TRAVIS_TAG --skip-git --yes
+before_deploy:
+- echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc # for lerna to be able to publish on npm
+- git remote set-url origin https://cozy-bot:$GITHUB_TOKEN@github.com/cozy/cozy-libs.git # for lerna to be able to push commits
+deploy:
+  - provider: script
+    skip-cleanup: true
+    script: yarn lerna publish --yes
+    on:
+      branch: master
+      repo: cozy/cozy-libs
 env:
   global:
-    secure: pJsHFx7r9866G+XYDwr8+5lPmHG15hV3D9ltdG5gP0Xdwg707fwc/G50PwQk3eBTEXw44y5QAnWiMJnyLpKki8gi3xjmXmWVY8x+ceHdN17uHte69YyK7r9hE2z6BRwLb2HABK+MzKX1zCHrz7HSOo7Ft1TwUid7onTqHhVzbYsAE9WurkAR2ytk1SO/9fwM9lalyDbYnEUdrkDDPU5NfZkK4HEofzu9FYwF05e0tjloEAOa/oyWrgr1q+18fgYPB5LlL/hsb5yBDs6JmnJVp/nMxE8aSdeSWC4x/ENbvrV0qVBRrl+oUJMpRMIefDoUICpfq3fHN3O5ds91ImVLL22XFRBRhISCHF0k8YP6Lzkn8XFxc9vGigYxBtbrtL72WAQJX5g0mP2UgJIRmMPfQGM2bOlU/dI98Yw8SmI1BtLfJ4McnMLAHIke3IS0o4Gj9QLXDLjOXte4yjAc1iX3v2TZxzUwo9oIF6QFb3gGIJ7uXRhTVDZ016NEq95vAMKuOrM7mBc79CeBNVsYAMqP+8LsVjFQ1snQWWaGpkxVx/CJMVq/U+569pA6JDvn9GXt81aVvgQ2j7FnyaGXnVnsnO6ic3SU7fLihYUTd7RHWVDGDwiJkzHxvVuw83BPDgIPydcr+Kz7tWOfjJYPjHrgBCevUxxYs7PgJ+Zn6rlqhMQ= # NPM_TOKEN
+    #  travis encrypt NPM_TOKEN=<token>
+    - secure: pJsHFx7r9866G+XYDwr8+5lPmHG15hV3D9ltdG5gP0Xdwg707fwc/G50PwQk3eBTEXw44y5QAnWiMJnyLpKki8gi3xjmXmWVY8x+ceHdN17uHte69YyK7r9hE2z6BRwLb2HABK+MzKX1zCHrz7HSOo7Ft1TwUid7onTqHhVzbYsAE9WurkAR2ytk1SO/9fwM9lalyDbYnEUdrkDDPU5NfZkK4HEofzu9FYwF05e0tjloEAOa/oyWrgr1q+18fgYPB5LlL/hsb5yBDs6JmnJVp/nMxE8aSdeSWC4x/ENbvrV0qVBRrl+oUJMpRMIefDoUICpfq3fHN3O5ds91ImVLL22XFRBRhISCHF0k8YP6Lzkn8XFxc9vGigYxBtbrtL72WAQJX5g0mP2UgJIRmMPfQGM2bOlU/dI98Yw8SmI1BtLfJ4McnMLAHIke3IS0o4Gj9QLXDLjOXte4yjAc1iX3v2TZxzUwo9oIF6QFb3gGIJ7uXRhTVDZ016NEq95vAMKuOrM7mBc79CeBNVsYAMqP+8LsVjFQ1snQWWaGpkxVx/CJMVq/U+569pA6JDvn9GXt81aVvgQ2j7FnyaGXnVnsnO6ic3SU7fLihYUTd7RHWVDGDwiJkzHxvVuw83BPDgIPydcr+Kz7tWOfjJYPjHrgBCevUxxYs7PgJ+Zn6rlqhMQ= # NPM_TOKEN
+    #  travis encrypt GITHUB_TOKEN=<token>
+    - secure: "rNDmjPoBeBHTgOoZ4DZn64g4KbGxjqNjNEfjGD22Ogjqhoo9HD1JSIrOQZvo0LSY0vA8JoCs+w7Ic8o9FPlb2JFUR4my/ZMUJBhAC3mG5azN5GiMntjhK1yy8+XEum4WLUalT5RBDNfZ5gOpY9w9mqAMh+8CZ6/m4yQPgPmuy76YvFXxreH0bt6AjC20lleY30jwTpfb3U7aAY7VhRLKjOjzXLuEpmVBT9vbdkEycQfZwnA0dkHSjVEkfu1wuUUYb6/AJXXIm24AfjeZyG/duV6JcXk6G3SlIipQeJcfc826NMYcC+V/r1TaiXcIHWZCLi2sHsoGjWs37Hqd0cVuqWhKkCl0prhQExO5B8D+VplcPXKjWbU+U7Zru/8HZHV0uhubw2FjMAjRKWP4Hd1AmxQ4LQi3yASn026cyofYzdgwzd4Bws3dx+CxP8mk6fQdFlFCkF/TFux5zpPRP54Tesy93nTR0VoTZD2l20XwPy4KSoGYJeSkKAsApjm8Lfi27LS+71cvnccQ1I5O/TVB67l0GEeR1kyqOI+czQwT0Ft2xcRY4/ZB18QNYm2iEly8h1r1wdEjxwO8ZLnI+es9Nta+MsFuTwgnV24ScC45ZUuLanHeX9gkl4uK6IOq1S+tkhcRXNIgNDB9idqt3SwmbUCueX1uOtGizQHS+b3wbhY="
