@@ -217,7 +217,7 @@ const client = new CozyClient({
 Links are designed to be composed together to form chains:
 
 ```js
-import CozyClient, { StackLink, chain } from 'cozy-client'
+import CozyClient, { StackLink } from 'cozy-client'
 import PouchDBLink from 'cozy-pouch-link'
 import LogLink from '../LogLink'
 
@@ -233,11 +233,11 @@ const pouchLink = new PouchDBLink({
 const logLink = new LogLink()
 
 const client = new CozyClient({
-  link: chain([
+  link: [
     logLink,
     pouchLink,
     stackLink
-  ])
+  ]
 })
 ```
 
