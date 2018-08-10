@@ -51,5 +51,21 @@ export default documents
 
 // selector
 export const getDocumentFromSlice = (state = {}, doctype, id) => {
-  return state[doctype] ? state[doctype][id] || null : null
+  if (!doctype) {
+    throw new Error(
+      'getDocumentFromSlice: Cannot retrieve document with undefined doctype'
+    )
+  }
+  if (!state[doctype]) {
+    console.warn(
+      `getDocumentFromSlice: ${doctype} is absent from the store documents`
+    )
+    return null
+  } else if (!state[doctype][id]) {
+    console.warn(
+      `getDocumentFromSlice: ${doctype}:${id} is absent from the store documents`
+    )
+    return null
+  }
+  return state[doctype][id]
 }
