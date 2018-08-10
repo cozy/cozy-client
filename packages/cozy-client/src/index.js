@@ -1,6 +1,6 @@
 export { default } from './CozyClient'
 export { default as CozyProvider } from './Provider'
-export { default as CozyLink } from './CozyLink'
+export { default as CozyLink, chain } from './CozyLink'
 export { default as StackLink } from './StackLink'
 export { default as connect } from './connect'
 export { default as withMutation } from './withMutation'
