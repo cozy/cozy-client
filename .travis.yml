@@ -9,6 +9,7 @@ cache:
   - node_modules
 script:
 - yarn lint
+- yarn build # before tests since packages rely on dist/ files to be available
 - yarn test --runInBand
 before_deploy:
 - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc # for lerna to be able to publish on npm
