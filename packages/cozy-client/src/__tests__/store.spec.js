@@ -9,7 +9,7 @@ import reducer, {
   receiveMutationResult,
   StoreProxy
 } from '../store'
-
+import { QueryDefinition as Q } from '../dsl'
 import { TODO_1, TODO_2, TODO_3 } from './fixtures'
 
 describe('Store', () => {
@@ -229,14 +229,10 @@ describe('Store', () => {
   describe('Mutations', () => {
     beforeEach(async () => {
       await store.dispatch(
-        initQuery('allTodos', {
-          doctype: 'io.cozy.todos'
-        })
+        initQuery('allTodos', new Q({ doctype: 'io.cozy.todos' }))
       )
       await store.dispatch(
-        initQuery('allTodos2', {
-          doctype: 'io.cozy.todos'
-        })
+        initQuery('allTodos2', new Q({ doctype: 'io.cozy.todos2' }))
       )
       await store.dispatch(
         receiveQueryResult('allTodos', {
