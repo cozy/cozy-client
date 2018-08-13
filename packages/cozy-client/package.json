@@ -2,7 +2,10 @@
   "name": "cozy-client",
   "version": "1.0.0-beta.30",
   "license": "MIT",
-  "main": "dist/cozy-client.js",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cozy/cozy-client.git"
@@ -16,11 +19,11 @@
     "redux": "^3.7.2"
   },
   "scripts": {
-    "watch": "webpack --config ../../webpack.config.js --env.package=cozy-client --watch",
-    "prepublish": "yarn build",
-    "build": "webpack --config ../../webpack.config.js --env.package=cozy-client"
+    "build": "../../bin/build",
+    "watch": "yarn run build --watch",
+    "prepublishOnly": "yarn run build"
   },
   "devDependencies": {
-    "redux": "^4.0.0"
+    "babel-cli": "^6.26.0"
   }
 }

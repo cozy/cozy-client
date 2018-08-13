@@ -2,7 +2,10 @@
   "name": "cozy-stack-client",
   "version": "1.0.0-beta.30",
   "license": "MIT",
-  "main": "dist/cozy-stack-client.js",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cozy/cozy-client.git"
@@ -11,7 +14,11 @@
     "mime-types": "^2.1.18"
   },
   "scripts": {
-    "watch": "webpack --config ../../webpack.config.js --env.package=cozy-stack-client --watch",
-    "build": "webpack --config ../../webpack.config.js --env.package=cozy-stack-client"
+    "build": "../../bin/build",
+    "watch": "yarn run build --watch",
+    "prepublishOnly": "yarn run build"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0"
   }
 }

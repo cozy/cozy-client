@@ -33,7 +33,8 @@
         "test": "jest",
         "watch": "lerna run watch --parallel",
         "build": "lerna run build",
-        "commitmsg": "commitlint -e $GIT_PARAMS"
+        "commitmsg": "commitlint -e $GIT_PARAMS",
+        "clean": "rm -rf packages/*/dist"
     },
     "prettier": {
         "semi": false,
