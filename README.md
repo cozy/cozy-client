@@ -133,9 +133,8 @@ import { Query } from 'cozy-client'
 
 const query = client => client.find('io.cozy.todos').where({ checked: false })
 
-const createMutations = (mutate, ownProps) => ({
-  addTodo: label =>
-    mutate(client => client.create('io.cozy.todos', { label }))
+const createMutations = (client, ownProps) => ({
+  addTodo: label => client.create('io.cozy.todos', { label })
 }) 
 
 const App = () => (
