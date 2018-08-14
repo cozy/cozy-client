@@ -12,12 +12,10 @@
         "eslint": "^4.16.0",
         "eslint-config-cozy-app": "^0.8.0",
         "eslint-loader": "^2.0.0",
-        "eslint-plugin-prettier": "^2.6.0",
         "husky": "^0.14.3",
         "jest": "^22.1.4",
         "jest-fetch-mock": "^1.4.1",
         "lerna": "^3.0.1",
-        "prettier": "1.10.2",
         "react": "^16.2.0",
         "react-dom": "^16.2.0",
         "redux-mock-store": "^1.5.1",
@@ -35,10 +33,6 @@
         "build": "lerna run build",
         "commitmsg": "commitlint -e $GIT_PARAMS",
         "clean": "rm -rf packages/*/dist"
-    },
-    "prettier": {
-        "semi": false,
-        "singleQuote": true
     },
     "jest": {
         "testURL": "http://localhost",
