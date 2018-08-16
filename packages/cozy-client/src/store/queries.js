@@ -1,7 +1,11 @@
-import { getDocumentFromSlice } from './documents'
-import { isReceivingMutationResult } from './mutations'
 import mapValues from 'lodash/mapValues'
 import fromPairs from 'lodash/fromPairs'
+import pickBy from 'lodash/pickBy'
+import compose from 'lodash/flowRight'
+
+import { getDocumentFromSlice } from './documents'
+import { isReceivingMutationResult } from './mutations'
+import { selectorFilter } from './mango'
 
 const INIT_QUERY = 'INIT_QUERY'
 const RECEIVE_QUERY_RESULT = 'RECEIVE_QUERY_RESULT'
@@ -41,8 +45,7 @@ const query = (state = queryInitialState, action) => {
       const common = {
         fetchStatus: 'loaded',
         lastFetch: Date.now(),
-        lastUpdate: Date.now(),
-        id: action.queryId
+        lastUpdate: Date.now()
       }
       if (!Array.isArray(response.data)) {
         return {
@@ -79,16 +82,21 @@ const query = (state = queryInitialState, action) => {
   }
 }
 
-const queryContains = (query, id) => {
-  return query.data.indexOf(id) > -1
-}
-
-const findQueriesContaining = (queries, id) => {
-  return fromPairs(
-    Object.entries(queries).filter(([queryId, query]) =>
-      queryContains(query, id)
-    )
-  )
+const filterForQuery = query => {
+  const qdoctype = query.definition.doctype
+  const selectorFilterFn = query.definition.selector
+    ? selectorFilter(query.definition.selector)
+    : null
+  return datum => {
+    const ddoctype = datum._type
+    if (ddoctype != qdoctype) {
+      return false
+    }
+    if (selectorFilterFn && !selectorFilterFn(datum)) {
+      return false
+    }
+    return true
+  }
 }
 
 const touchQuery = query => ({
@@ -96,63 +104,85 @@ const touchQuery = query => ({
   lastUpdate: Date.now()
 })
 
-const touchQueries = queries => mapValues(queries, touchQuery)
+const mergeSets = (set1, set2) => {
+  const res = {}
+  for (let item of set1) {
+    res[item] = true
+  }
+  for (let item of set2) {
+    res[item] = true
+  }
+  return Object.keys(res)
+}
+
+const addIdsToQuery = ids => query => {
+  return {
+    ...query,
+    data: mergeSets(query.data, ids)
+  }
+}
+
+const autoQueryUpdater = action => query => {
+  let data = action.response.data
+  if (!Array.isArray(data)) {
+    data = [data]
+  }
+  const queryFilter = filterForQuery(query)
+  const goodData = data.filter(queryFilter)
+  if (!goodData.length) {
+    return query
+  } else {
+    const update = compose(
+      addIdsToQuery(goodData.map(x => x._id)),
+      touchQuery
+    )
+    return update(query, action)
+    
+  }
+}
+
+const manualQueryUpdater = (action, documents) => query => {
+  const updateQueries = action.updateQueries
+  const response = action.response
+  const updater = updateQueries[query.id]
+  if (!updater) {
+    return query
+  }
+
+  const doctype = query.definition.doctype
+  const oldData = query.data
+  const oldDocs = mapIdsToDocuments(documents, doctype, oldData)
+  const newData = updater(oldDocs, response)
+  const newDataIds = newData.map(doc => doc._id)
+  return {
+    ...query,
+    data: newDataIds,
+    count: newDataIds.length,
+    lastUpdate: Date.now(),
+  }
+}
 
 const queries = (state = {}, action, documents = {}) => {
-  if (isQueryAction(action)) {
+  if (action.type == INIT_QUERY) {
     return {
       ...state,
       [action.queryId]: query(state[action.queryId], action)
     }
   }
-  if (isReceivingMutationResult(action)) {
-    if (action.updateQueries) {
-      const updated = Object.keys(action.updateQueries)
-        .filter(queryId => !!state[queryId])
-        .map(queryId => {
-          const query = getQueryFromSlice(state, queryId, documents)
-          const updater = action.updateQueries[queryId]
-          return {
-            queryId: query.id,
-            newData: updater(query.data, action.response)
-          }
-        })
-        .reduce(
-          (acc, update) => ({
-            ...acc,
-            [update.queryId]: {
-              ...state[update.queryId],
-              lastUpdate: Date.now(),
-              data: update.newData.map(doc => doc._id),
-              count: update.newData.length // TODO: sure ?
-            }
-          }),
-          {}
-        )
-      return {
-        ...state,
-        ...updated
+  if (isQueryAction(action)) {
+    const updater = autoQueryUpdater(action)
+    return mapValues(state, queryState => {
+      if (queryState.id == action.queryId) {
+        return query(queryState, action)
+      } else {
+        return updater(queryState)
       }
-    } else {
-      const data = action.response.data
-      if (!Array.isArray(data)) {
-        const toUpdate = findQueriesContaining(state, action.response.data.id)
-        const newQueries = touchQueries(toUpdate)
-        return {
-          ...state,
-          ...newQueries
-        }
-      }
-    }
-    if (action.contextQueryId) {
-      return {
-        ...state,
-        [action.contextQueryId]: {
-          ...state[action.contextQueryId],
-          lastUpdate: Date.now()
-        }
-      }
-    }
+    })
+  } else if (isReceivingMutationResult(action) || isReceivingData(action)) {
+    const updater = action.updateQueries ?
+      manualQueryUpdater(action, documents) :
+      autoQueryUpdater(action)
+    return mapValues(state, updater)
   }
   return state
 }

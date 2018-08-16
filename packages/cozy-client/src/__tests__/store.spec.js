@@ -1,4 +1,5 @@
 import { createStore, combineReducers } from 'redux'
+import sortBy from 'lodash/sortBy'
 
 import reducer, {
   initQuery,
@@ -10,7 +11,12 @@ import reducer, {
   StoreProxy
 } from '../store'
 import { QueryDefinition as Q } from '../dsl'
-import { TODO_1, TODO_2, TODO_3 } from './fixtures'
+import {
+  TODO_1,
+  TODO_2,
+  TODO_3,
+  TODO_4
+} from './fixtures'
 
 describe('Store', () => {
   let store
@@ -244,7 +250,7 @@ describe('Store', () => {
       )
       await store.dispatch(
         receiveQueryResult('allTodos2', {
-          data: [TODO_1],
+          data: [{...TODO_1, _type: 'io.cozy.todos2'}],
           meta: { count: 2 },
           skip: 0,
           next: true
@@ -262,23 +268,50 @@ describe('Store', () => {
       Date.now.mockRestore()
     })
 
-    describe('after update result', () => {
-      it('should update all queries containing the documents (doc in all queries)', async () => {
+    describe('auto update', () => {
+      it('should update all the queries that can contain the document (creation)', async () => {
+        const result = { data: { ...TODO_1, done: true, _id: '1337', id: '1337' } }
+        await store.dispatch(receiveMutationResult('foo', result))
+        const query1 = getQueryFromStore(store, 'allTodos')
+        const query2 = getQueryFromStore(store, 'allTodos2')
+        expect(query1.data.find(doc => doc._id == '1337')).not.toBeUndefined()
+        expect(query1.lastUpdate).toBe(MOCKED_DATE)
+        expect(query2.lastUpdate).not.toBe(MOCKED_DATE)
+      })
+
+      it('should update all queries containing the documents (update)', async () => {
         const result = { data: { ...TODO_1, done: true, id: TODO_1._id } }
         await store.dispatch(receiveMutationResult('foo', result))
         const query1 = getQueryFromStore(store, 'allTodos')
         const query2 = getQueryFromStore(store, 'allTodos2')
         expect(query1.lastUpdate).toBe(MOCKED_DATE)
-        expect(query2.lastUpdate).toBe(MOCKED_DATE)
+        expect(query2.lastUpdate).not.toBe(MOCKED_DATE)
       })
 
-      it('should update all queries containing the documents (doc in one query)', async () => {
-        const result = { data: { ...TODO_2, done: true, id: TODO_2._id } }
-        await store.dispatch(receiveMutationResult('foo', result))
-        const query1 = getQueryFromStore(store, 'allTodos')
-        const query2 = getQueryFromStore(store, 'allTodos2')
+      it('should only update relevant queries (where)', async () => {
+        const baseQuery = new Q({ doctype: 'io.cozy.todos' })
+        await store.dispatch(
+          initQuery('doneTodos', baseQuery.where({ done: true }))
+        )
+        await store.dispatch(
+          initQuery('undoneTodos', baseQuery.where({ done: false }))
+        )
+        const data = [TODO_1, TODO_2, TODO_3, TODO_4]
+        await store.dispatch(
+          receiveQueryResult('allTodos', {
+            data: data,
+            meta: { count: 4 },
+            skip: 0,
+            next: true
+          })
+        )
+        const query1 = getQueryFromStore(store, 'doneTodos')
+        const query2 = getQueryFromStore(store, 'undoneTodos')
+        const sortById = arr => sortBy(arr, '_id')
+        expect(sortById(query1.data)).toEqual(sortById([TODO_3, TODO_4]))
         expect(query1.lastUpdate).toBe(MOCKED_DATE)
-        expect(query2.lastUpdate).not.toBe(MOCKED_DATE)
+        expect(sortById(query2.data)).toEqual(sortById([TODO_1, TODO_2]))
+        expect(query2.lastUpdate).toBe(MOCKED_DATE)
       })
     })
 
