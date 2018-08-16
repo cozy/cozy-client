@@ -184,7 +184,7 @@ export const receiveQueryError = (queryId, error) => ({
 })
 
 // selectors
-const mapDocumentsToIds = (documents, doctype, ids) =>
+const mapIdsToDocuments = (documents, doctype, ids) =>
   ids.map(id => getDocumentFromSlice(documents, doctype, id))
 
 export const getQueryFromSlice = (state, queryId, documents) => {
@@ -195,7 +195,7 @@ export const getQueryFromSlice = (state, queryId, documents) => {
   return documents
     ? {
         ...query,
-        data: mapDocumentsToIds(documents, query.definition.doctype, query.data)
+        data: mapIdsToDocuments(documents, query.definition.doctype, query.data)
       }
     : query
 }
