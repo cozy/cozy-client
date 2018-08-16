@@ -309,7 +309,6 @@ describe('CozyClient', () => {
       expect(doc.attachments).toBeInstanceOf(HasManyFilesAssociation)
       await doc.attachments.fetchMore()
       const action = store.getActions()[1]
-      expect(action.contextQueryId).toBe('allTodos')
     })
   })
 })

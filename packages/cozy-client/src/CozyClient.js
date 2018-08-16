@@ -153,7 +153,7 @@ export default class CozyClient {
     return this.mutate(Mutations.uploadFile(file, dirPath), mutationOptions)
   }
 
-  async query(queryDefinition, { update, contextQueryId, ...options } = {}) {
+  async query(queryDefinition, { update, ...options } = {}) {
     this.getOrCreateStore()
     const queryId = options.as || this.generateId()
     const existingQuery = getQueryFromState(this.store.getState(), queryId)
@@ -165,8 +165,7 @@ export default class CozyClient {
       const response = await this.requestQuery(queryDefinition)
       this.dispatch(
         receiveQueryResult(queryId, response, {
-          update,
-          contextQueryId
+          update
         })
       )
       return response
@@ -184,7 +183,7 @@ export default class CozyClient {
 
   async mutate(
     mutationDefinition,
-    { update, updateQueries, contextQueryId, ...options } = {}
+    { update, updateQueries, ...options } = {}
   ) {
     this.getOrCreateStore()
     const mutationId = options.as || this.generateId()
@@ -194,8 +193,7 @@ export default class CozyClient {
       this.dispatch(
         receiveMutationResult(mutationId, response, {
           update,
-          updateQueries,
-          contextQueryId
+          updateQueries
         })
       )
       return response
@@ -352,18 +350,18 @@ export default class CozyClient {
     return {
       get: this.getDocumentFromState.bind(this),
       save: (document, opts) =>
-        this.save.call(this, document, { contextQueryId: queryId, ...opts }),
+        this.save.call(this, document, opts),
       query: (def, opts) =>
         this.query.call(
           this,
           def,
-          queryId ? { contextQueryId: queryId, ...opts } : opts
+          opts
         ),
       mutate: (def, opts) =>
         this.mutate.call(
           this,
           def,
-          queryId ? { contextQueryId: queryId, ...opts } : opts
+          opts
         )
     }
   }
