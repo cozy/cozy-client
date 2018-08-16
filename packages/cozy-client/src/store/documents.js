@@ -1,10 +1,14 @@
 import { isReceivingData } from './queries'
 import { isReceivingMutationResult } from './mutations'
+import keyBy from 'lodash/keyBy'
 
 const storeDocument = (state, document) => {
   const type = document._type
   if (!type) {
     throw new Error('Document without _type', document)
+  }
+  if (!document._id) {
+    throw new Error('Document without _id', document)
   }
   return {
     ...state,
@@ -13,6 +17,13 @@ const storeDocument = (state, document) => {
       [document._id]: document
     }
   }
+}
+
+const properId = doc => {
+  if (!doc._id) {
+    throw new Error('Cannot index document as it has no id')
+  }
+  return doc.id || doc._id
 }
 
 // reducer
@@ -42,7 +53,7 @@ const documents = (state = {}, action) => {
     ...updatedStateWithIncluded,
     [doctype]: {
       ...updatedStateWithIncluded[doctype],
-      ...data.reduce((obj, doc) => ({ ...obj, [doc._id]: doc }), {})
+      ...keyBy(data, properId)
     }
   }
 }
@@ -54,6 +65,11 @@ export const getDocumentFromSlice = (state = {}, doctype, id) => {
   if (!doctype) {
     throw new Error(
       'getDocumentFromSlice: Cannot retrieve document with undefined doctype'
+    )
+  }
+  if (!id) {
+    throw new Error(
+      'getDocumentFromSlice: Cannot retrieve document with undefined id'
     )
   }
   if (!state[doctype]) {
