@@ -83,6 +83,9 @@ export const getStateRoot = state => state.cozy || {}
 export const getDocumentFromState = (state, doctype, id) =>
   getDocumentFromSlice(getStateRoot(state).documents, doctype, id)
 
+export const getQueryFromStore = (store, queryId) => 
+  getQueryFromState(store.getState(), queryId)
+
 export const getQueryFromState = (state, queryId) =>
   getQueryFromSlice(
     getStateRoot(state).queries,
