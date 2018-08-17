@@ -12,7 +12,7 @@ export class QueryDefinition {
     referenced,
     limit,
     skip
-  }) {
+  } = {}) {
     this.doctype = doctype
     this.id = id
     this.selector = selector

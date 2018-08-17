@@ -16,6 +16,12 @@ export const TODO_3 = {
   label: 'Build stuff',
   done: true
 }
+export const TODO_4 = {
+  _id: '4',
+  _type: 'io.cozy.todos',
+  label: 'Run a semi-marathon',
+  done: true
+}
 
 export const TODO_SCHEMA = {
   todos: {

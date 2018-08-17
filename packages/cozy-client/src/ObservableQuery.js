@@ -62,17 +62,11 @@ export default class ObservableQuery {
   }
 
   create(type, { _type, ...attributes }, relationships, mutationOptions = {}) {
-    return this.client.create(type, attributes, relationships, {
-      ...mutationOptions,
-      contextQueryId: this.queryId
-    })
+    return this.client.create(type, attributes, relationships, mutationOptions)
   }
 
   save(document, mutationOptions = {}) {
-    return this.client.save(document, {
-      ...mutationOptions,
-      contextQueryId: this.queryId
-    })
+    return this.client.save(document, mutationOptions)
   }
 
   validate(document) {
@@ -80,17 +74,11 @@ export default class ObservableQuery {
   }
 
   destroy(document, mutationOptions = {}) {
-    return this.client.destroy(document, {
-      ...mutationOptions,
-      contextQueryId: this.queryId
-    })
+    return this.client.destroy(document, mutationOptions)
   }
 
   upload(file, dirPath, mutationOptions = {}) {
-    return this.client.upload(file, dirPath, {
-      ...mutationOptions,
-      contextQueryId: this.queryId
-    })
+    return this.client.upload(file, dirPath)
   }
 
   currentRawResult() {
