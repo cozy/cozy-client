@@ -1,10 +1,12 @@
 import mapValues from 'lodash/mapValues'
 import groupBy from 'lodash/groupBy'
+import union from 'lodash/union'
+import difference from 'lodash/difference'
+import intersection from 'lodash/intersection'
 
 import { getDocumentFromSlice } from './documents'
 import { isReceivingMutationResult } from './mutations'
 import { selectorFilter } from './mango'
-import { union, difference, intersection } from './setUtils'
 
 const INIT_QUERY = 'INIT_QUERY'
 const RECEIVE_QUERY_RESULT = 'RECEIVE_QUERY_RESULT'
@@ -106,19 +108,17 @@ const updateData = (query, newData) => {
   good = good ? good : []
   bad = bad ? bad : []
 
-  const goodIds = new Set([...good.map(_id)])
-  const badIds = new Set([...bad.map(_id)])
+  const goodIds = good.map(_id)
+  const badIds = bad.map(_id)
 
-  const originalIds = new Set([...query.data])
+  const originalIds = query.data
   const toRemove = intersection(originalIds, badIds)
   const toAdd = difference(goodIds, originalIds)
   const toUpdate = intersection(originalIds, goodIds)
 
-  const changed = toRemove.size || toAdd.size || toUpdate.size
+  const changed = toRemove.length || toAdd.length || toUpdate.length
 
-  const updatedData = Array.from(
-    difference(union(originalIds, toAdd), toRemove)
-  )
+  const updatedData = difference(union(originalIds, toAdd), toRemove)
 
   return {
     ...query,
