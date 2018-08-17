@@ -1,6 +1,4 @@
 import mapValues from 'lodash/mapValues'
-import fromPairs from 'lodash/fromPairs'
-import pickBy from 'lodash/pickBy'
 import compose from 'lodash/flowRight'
 
 import { getDocumentFromSlice } from './documents'
@@ -132,12 +130,8 @@ const autoQueryUpdater = action => query => {
   if (!goodData.length) {
     return query
   } else {
-    const update = compose(
-      addIdsToQuery(goodData.map(x => x._id)),
-      touchQuery
-    )
+    const update = compose(addIdsToQuery(goodData.map(x => x._id)), touchQuery)
     return update(query, action)
-    
   }
 }
 
@@ -158,7 +152,7 @@ const manualQueryUpdater = (action, documents) => query => {
     ...query,
     data: newDataIds,
     count: newDataIds.length,
-    lastUpdate: Date.now(),
+    lastUpdate: Date.now()
   }
 }
 
@@ -179,9 +173,9 @@ const queries = (state = {}, action, documents = {}) => {
       }
     })
   } else if (isReceivingMutationResult(action) || isReceivingData(action)) {
-    const updater = action.updateQueries ?
-      manualQueryUpdater(action, documents) :
-      autoQueryUpdater(action)
+    const updater = action.updateQueries
+      ? manualQueryUpdater(action, documents)
+      : autoQueryUpdater(action)
     return mapValues(state, updater)
   }
   return state

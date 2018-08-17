@@ -1,17 +1,9 @@
-import queries, {
-  initQuery,
-  receiveQueryResult
-} from './queries'
+import queries, { initQuery, receiveQueryResult } from './queries'
 import { QueryDefinition as Q } from '../dsl'
-import {
-  TODO_1,
-  TODO_2,
-  TODO_3,
-  TODO_4
-} from '../__tests__/fixtures'
+import { TODO_1, TODO_2 } from '../__tests__/fixtures'
 
 describe('queries reducer', () => {
-  let state 
+  let state
 
   const applyAction = action => {
     state = queries(state, action)
@@ -25,37 +17,50 @@ describe('queries reducer', () => {
   })
 
   it('should init correctly', () => {
-    applyAction(initQuery('a', new Q({
-      doctype: 'io.cozy.todos'
-    })))
+    applyAction(
+      initQuery(
+        'a',
+        new Q({
+          doctype: 'io.cozy.todos'
+        })
+      )
+    )
     expect(state).toMatchSnapshot()
   })
 
   describe('updates', () => {
     beforeEach(() => {
-      applyAction(initQuery('a', new Q({
-        doctype: 'io.cozy.todos'
-      })))
+      applyAction(
+        initQuery(
+          'a',
+          new Q({
+            doctype: 'io.cozy.todos'
+          })
+        )
+      )
     })
     it('should update correctly', () => {
-      applyAction(receiveQueryResult('a', {
-        data: [
-          TODO_1,
-          TODO_2
-        ]
-      }))
+      applyAction(
+        receiveQueryResult('a', {
+          data: [TODO_1, TODO_2]
+        })
+      )
       expect(state).toMatchSnapshot()
     })
     it('should update correctly two queries', () => {
-      applyAction(initQuery('b', new Q({
-        doctype: 'io.cozy.todos'
-      })))
-      applyAction(receiveQueryResult('a', {
-        data: [
-          TODO_1,
-          TODO_2
-        ]
-      }))
+      applyAction(
+        initQuery(
+          'b',
+          new Q({
+            doctype: 'io.cozy.todos'
+          })
+        )
+      )
+      applyAction(
+        receiveQueryResult('a', {
+          data: [TODO_1, TODO_2]
+        })
+      )
       expect(state).toMatchSnapshot()
     })
   })

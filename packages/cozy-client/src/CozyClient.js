@@ -181,10 +181,7 @@ export default class CozyClient {
     return new ObservableQuery(queryId, queryDefinition, this)
   }
 
-  async mutate(
-    mutationDefinition,
-    { update, updateQueries, ...options } = {}
-  ) {
+  async mutate(mutationDefinition, { update, updateQueries, ...options } = {}) {
     this.getOrCreateStore()
     const mutationId = options.as || this.generateId()
     this.dispatch(initMutation(mutationId, mutationDefinition))
@@ -349,20 +346,9 @@ export default class CozyClient {
   getAssociationStoreAccessors(queryId) {
     return {
       get: this.getDocumentFromState.bind(this),
-      save: (document, opts) =>
-        this.save.call(this, document, opts),
-      query: (def, opts) =>
-        this.query.call(
-          this,
-          def,
-          opts
-        ),
-      mutate: (def, opts) =>
-        this.mutate.call(
-          this,
-          def,
-          opts
-        )
+      save: (document, opts) => this.save.call(this, document, opts),
+      query: (def, opts) => this.query.call(this, def, opts),
+      mutate: (def, opts) => this.mutate.call(this, def, opts)
     }
   }
 

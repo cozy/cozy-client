@@ -11,12 +11,7 @@ import reducer, {
   StoreProxy
 } from '../store'
 import { QueryDefinition as Q } from '../dsl'
-import {
-  TODO_1,
-  TODO_2,
-  TODO_3,
-  TODO_4
-} from './fixtures'
+import { TODO_1, TODO_2, TODO_3, TODO_4 } from './fixtures'
 
 describe('Store', () => {
   let store
@@ -180,9 +175,7 @@ describe('Store', () => {
                 })
             })
           )
-          expect(getQueryFromStore(store, 'allTodos').foo).toEqual(
-            'BAR!'
-          )
+          expect(getQueryFromStore(store, 'allTodos').foo).toEqual('BAR!')
         })
       })
 
@@ -270,7 +263,9 @@ describe('Store', () => {
 
     describe('auto update', () => {
       it('should update all the queries that can contain the document (creation)', async () => {
-        const result = { data: { ...TODO_1, done: true, _id: '1337', id: '1337' } }
+        const result = {
+          data: { ...TODO_1, done: true, _id: '1337', id: '1337' }
+        }
         await store.dispatch(receiveMutationResult('foo', result))
         const query1 = getQueryFromStore(store, 'allTodos')
         const query2 = getQueryFromStore(store, 'allTodos2')

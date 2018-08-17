@@ -29,4 +29,3 @@ export const selectorFilter = selector => {
   })
   return and(filters)
 }
-
