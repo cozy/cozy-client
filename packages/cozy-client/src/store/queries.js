@@ -1,9 +1,10 @@
 import mapValues from 'lodash/mapValues'
-import compose from 'lodash/flowRight'
+import groupBy from 'lodash/groupBy'
 
 import { getDocumentFromSlice } from './documents'
 import { isReceivingMutationResult } from './mutations'
 import { selectorFilter } from './mango'
+import { union, difference, intersection } from './setUtils'
 
 const INIT_QUERY = 'INIT_QUERY'
 const RECEIVE_QUERY_RESULT = 'RECEIVE_QUERY_RESULT'
@@ -97,26 +98,33 @@ const filterForQuery = query => {
   }
 }
 
-const touchQuery = query => ({
-  ...query,
-  lastUpdate: Date.now()
-})
+const _id = x => x._id
 
-const mergeSets = (set1, set2) => {
-  const res = {}
-  for (let item of set1) {
-    res[item] = true
-  }
-  for (let item of set2) {
-    res[item] = true
-  }
-  return Object.keys(res)
-}
+const updateData = (query, newData) => {
+  const filter = filterForQuery(query)
+  let { good, bad } = groupBy(newData, doc => (filter(doc) ? 'good' : 'bad'))
+  good = good ? good : []
+  bad = bad ? bad : []
 
-const addIdsToQuery = ids => query => {
+  const goodIds = new Set([...good.map(_id)])
+  const badIds = new Set([...bad.map(_id)])
+
+  const originalIds = new Set([...query.data])
+  const toRemove = intersection(originalIds, badIds)
+  const toAdd = difference(goodIds, originalIds)
+  const toUpdate = intersection(originalIds, goodIds)
+
+  const changed = toRemove.size || toAdd.size || toUpdate.size
+
+  const updatedData = Array.from(
+    difference(union(originalIds, toAdd), toRemove)
+  )
+
   return {
     ...query,
-    data: mergeSets(query.data, ids)
+    data: updatedData,
+    count: updatedData.length,
+    lastUpdate: changed ? Date.now() : query.lastUpdate
   }
 }
 
@@ -125,14 +133,13 @@ const autoQueryUpdater = action => query => {
   if (!Array.isArray(data)) {
     data = [data]
   }
-  const queryFilter = filterForQuery(query)
-  const goodData = data.filter(queryFilter)
-  if (!goodData.length) {
+  if (!data.length) {
     return query
-  } else {
-    const update = compose(addIdsToQuery(goodData.map(x => x._id)), touchQuery)
-    return update(query, action)
   }
+  if (query.definition.doctype !== data[0]._type) {
+    return query
+  }
+  return updateData(query, data)
 }
 
 const manualQueryUpdater = (action, documents) => query => {

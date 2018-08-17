@@ -82,7 +82,7 @@ Object {
     "lastUpdate": 1337,
   },
   "b": Object {
-    "count": 0,
+    "count": 2,
     "data": Array [
       "12345",
       "67890",
