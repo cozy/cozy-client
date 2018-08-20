@@ -20,17 +20,19 @@ import ObservableQuery from './ObservableQuery'
 import mapValues from 'lodash/mapValues'
 import flatMap from 'lodash/flatMap'
 import keyBy from 'lodash/keyBy'
+import pickBy from 'lodash/pickBy'
 
 const associationsFromModel = model => {
   const relationships = model.relationships
   return !relationships
     ? []
     : Object.keys(relationships).map(name => {
-        const { type, doctype } = relationships[name]
+        const { type, doctype, query } = relationships[name]
         return {
           name,
           type,
-          doctype
+          doctype,
+          query
         }
       })
 }
@@ -275,8 +277,11 @@ export default class CozyClient {
 
   async fetchDocumentAssociations(document, associations) {
     const assocByName = keyBy(associations, x => x.name)
-    const definitions = mapValues(assocByName, assoc =>
-      this.queryDocumentAssociation(document, assoc)
+    const definitions = pickBy(
+      mapValues(assocByName, assoc =>
+        this.queryDocumentAssociation(document, assoc)
+      ),
+      x => x
     )
 
     const requests = mapValues(definitions, definition =>
@@ -284,7 +289,9 @@ export default class CozyClient {
     )
     const responses = await allValues(requests)
     const relationships = mapValues(responses, responseToRelationship)
-    const included = flatMap(Object.values(responses), r => r.included || [])
+    const included = flatMap(Object.values(responses), r => [
+      ...(r.included || r.data || [])
+    ])
 
     return {
       data: {
@@ -299,7 +306,12 @@ export default class CozyClient {
     const { type, doctype, query } = association
     switch (type) {
       case 'has-many':
-        return this.find(doctype).referencedBy(document)
+        if (query) {
+          return query(this, association)(document)
+        } else {
+          const queryAll = this.find(doctype)
+          return queryAll.referencedBy(document)
+        }
       default:
         throw new Error(`Can't handle '${type}' associations`)
     }
