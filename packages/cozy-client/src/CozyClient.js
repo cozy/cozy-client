@@ -18,6 +18,11 @@ import {
 import { chain } from './CozyLink'
 import ObservableQuery from './ObservableQuery'
 
+
+const findModelByDoctype = (schema, doctype) => {
+  return Object.values(schema).find(m => m.doctype === doctype)
+}
+
 export default class CozyClient {
   constructor({ link, schema = {}, ...options }) {
     this.options = options
@@ -367,9 +372,7 @@ export default class CozyClient {
     if (!this.schema) {
       throw new Error('No schema defined')
     }
-    const model = Object.keys(this.schema)
-      .map(k => this.schema[k])
-      .find(m => m.doctype === doctype)
+    const model = findModelByDoctype(this.schema, doctype)
     if (!model) {
       throw new Error(`No schema found for '${doctype}' doctype`)
     }
@@ -391,11 +394,7 @@ export default class CozyClient {
 
   doctypeModelExists(doctype) {
     if (!this.schema) return false
-    return (
-      Object.keys(this.schema)
-        .map(k => this.schema[k])
-        .find(m => m.doctype === doctype) !== undefined
-    )
+    return findModelByDoctype(this.schema, doctype) !== undefined
   }
 
   getDocumentFromState(type, id) {
