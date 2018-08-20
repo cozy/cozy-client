@@ -253,7 +253,7 @@ export default class CozyClient {
 
   async fetchDocumentAssociations(document, associations) {
     const queries = associations.map(assoc =>
-      this.fetchDocumentAssociation(document, assoc)
+      this.queryDocumentAssociation(document, assoc)
     )
     const responses = await Promise.all(
       queries.map(query => this.link.request(query))
@@ -281,7 +281,8 @@ export default class CozyClient {
     }
   }
 
-  fetchDocumentAssociation(document, { type, doctype }) {
+  queryDocumentAssociation(document, association) {
+    const { type, doctype, query } = association
     switch (type) {
       case 'has-many':
         return this.find(doctype).referencedBy(document)
