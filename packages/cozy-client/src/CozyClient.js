@@ -36,6 +36,13 @@ const findModelByDoctype = (schema, doctype) => {
   return Object.values(schema).find(m => m.doctype === doctype)
 }
 
+const responseToRelationship = response => ({
+  data: response.data.map(d => ({ _id: d._id, _type: d._type })),
+  meta: response.meta,
+  next: response.next,
+  skip: response.skip
+})
+
 export default class CozyClient {
   constructor({ link, schema = {}, ...options }) {
     this.options = options
@@ -260,12 +267,7 @@ export default class CozyClient {
     )
     const relationships = associations
       .map((assoc, i) => ({
-        [assoc.name]: {
-          data: responses[i].data.map(d => ({ _id: d._id, _type: d._type })),
-          meta: responses[i].meta,
-          next: responses[i].next,
-          skip: responses[i].skip
-        }
+        [assoc.name]: responseToRelationship(responses[i])
       }))
       .reduce((acc, rel) => ({ ...acc, ...rel }), {})
     const included = responses
