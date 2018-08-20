@@ -24,7 +24,7 @@ export default class CozyClient {
     this.idCounter = 1
     this.link = link || links || new StackLink()
 
-    this.getOrCreateStackClient()
+    this.createClient()
     this.registerClientOnLinks(this.link)
     if (Array.isArray(this.link)) {
       this.link = chain(this.link)
@@ -49,11 +49,11 @@ export default class CozyClient {
    * @return {DocumentCollection}
    */
   collection(doctype) {
-    return this.getOrCreateStackClient().collection(doctype)
+    return this.getClient().collection(doctype)
   }
 
   fetch(method, path, body, options = {}) {
-    return this.getOrCreateStackClient().fetch(method, path, body, options)
+    return this.getClient().fetch(method, path, body, options)
   }
 
   all(doctype) {
@@ -421,7 +421,7 @@ export default class CozyClient {
    * @returns {object}   Contains the fetched token and the client information.
    */
   register(cozyUrl) {
-    const client = this.getOrCreateStackClient()
+    const client = this.getClient()
     client.setUri(cozyUrl)
     return this.startOAuthFlow(authenticateWithCordova)
   }
@@ -432,13 +432,13 @@ export default class CozyClient {
    * @returns {object}   Contains the fetched token and the client information. These should be stored and used to restore the client.
    */
   async startOAuthFlow(openURLCallback) {
-    const client = this.getOrCreateStackClient()
+    const client = this.getClient()
     await client.register()
     return this.authorize(openURLCallback)
   }
 
   async authorize(openURLCallback) {
-    const client = this.getOrCreateStackClient()
+    const client = this.getClient()
     const stateCode = client.generateStateCode()
     const url = client.getAuthCodeURL(stateCode)
 
@@ -474,15 +474,19 @@ export default class CozyClient {
     return this.store
   }
 
-  getOrCreateStackClient() {
+  createClient() {
+    if (this.options.client) {
+      this.client = this.options.client
+    } else {
+      this.client = this.options.oauth
+        ? new OAuthClient(this.options)
+        : new CozyStackClient(this.options)
+    }
+  }
+
+  getClient() {
     if (!this.client) {
-      if (this.options.client) {
-        this.client = this.options.client
-      } else {
-        this.client = this.options.oauth
-          ? new OAuthClient(this.options)
-          : new CozyStackClient(this.options)
-      }
+      this.createClient()
     }
     return this.client
   }

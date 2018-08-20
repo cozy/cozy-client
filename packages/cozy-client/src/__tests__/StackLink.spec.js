@@ -9,7 +9,7 @@ describe('StackLink', () => {
   beforeEach(() => {
     link = new StackLink()
     client = new CozyClient({ link, schema: TODO_SCHEMA })
-    stackClient = client.getStackClient()
+    stackClient = client.getClient()
   })
 
   describe('query execution', () => {
