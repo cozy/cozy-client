@@ -44,6 +44,9 @@ export class QueryDefinition {
   }
 
   include(includes) {
+    if (!Array.isArray(includes)) {
+      throw new Error('include() takes an array of relationship names')
+    }
     return new QueryDefinition({ ...this.toDefinition(), includes })
   }
 
