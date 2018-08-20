@@ -71,21 +71,23 @@ const doNothing = () => {}
  * and mutations.
  */
 export default class PouchLink extends CozyLink {
-  constructor({ doctypes, client, initialSync } = {}) {
+  constructor(options = {}) {
+    super(options)
+    const { doctypes } = options
+    this.options = options
     if (!doctypes) {
       throw new Error(
         "PouchLink must be instantiated with doctypes it manages. Ex: ['io.cozy.bills']"
       )
     }
-    if (!client) {
-      throw new Error('PouchLink must be instantiated with a client.')
-    }
-    super()
     this.doctypes = doctypes
-    this.client = client
     this.pouches = createPouches(this.doctypes)
     this.indexes = {}
-    if (initialSync) {
+  }
+
+  registerClient(client) {
+    this.client = client
+    if (this.options.initialSync) {
       this.syncAll()
     }
   }

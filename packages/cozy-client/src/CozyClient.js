@@ -19,14 +19,26 @@ import { chain } from './CozyLink'
 import ObservableQuery from './ObservableQuery'
 
 export default class CozyClient {
-  constructor({ link, schema = {}, ...options }) {
+  constructor({ link, links, schema = {}, ...options }) {
     this.options = options
     this.idCounter = 1
-    this.link = link || new StackLink({ client: this.getOrCreateStackClient() })
+    this.link = link || links || new StackLink()
+
+    this.getOrCreateStackClient()
+    this.registerClientOnLinks(this.link)
     if (Array.isArray(this.link)) {
       this.link = chain(this.link)
     }
     this.schema = schema
+  }
+
+  registerClientOnLinks(links) {
+    links = Array.isArray(links) ? links : [links]
+    for (let link of links) {
+      if (!link.client && link.registerClient) {
+        link.registerClient(this.client)
+      }
+    }
   }
 
   /**

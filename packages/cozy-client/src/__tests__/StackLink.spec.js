@@ -1,13 +1,16 @@
-import CozyStackClient from 'cozy-stack-client'
 import CozyClient from '../CozyClient'
 import StackLink from '../StackLink'
 
 import { TODO_SCHEMA } from './fixtures'
 
 describe('StackLink', () => {
-  const stackClient = new CozyStackClient()
-  const link = new StackLink({ client: stackClient })
-  const client = new CozyClient({ link, schema: TODO_SCHEMA })
+  let stackClient, link, client
+
+  beforeEach(() => {
+    link = new StackLink()
+    client = new CozyClient({ link, schema: TODO_SCHEMA })
+    stackClient = client.getStackClient()
+  })
 
   describe('query execution', () => {
     it('should execute queries without a selector', async () => {

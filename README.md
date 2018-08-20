@@ -135,7 +135,7 @@ const query = client => client.find('io.cozy.todos').where({ checked: false })
 
 const createMutations = (client, ownProps) => ({
   addTodo: label => client.create('io.cozy.todos', { label })
-}) 
+})
 
 const App = () => (
   <Query query={query} mutations={createMutations}>
@@ -190,7 +190,7 @@ export default withMutation(
 
 Cozy Link is a simple yet powerful way to describe how you want to get the result of a query. Think of it as a sort of "middleware".
 
-Links are units that you can chain together to define how each query should be handled: this allows us to use different sources of data, or to control the request lifecycle in a way that makes sense for your app. The first link operates on an operation object and each subsequent link operates on the result of the previous link: 
+Links are units that you can chain together to define how each query should be handled: this allows us to use different sources of data, or to control the request lifecycle in a way that makes sense for your app. The first link operates on an operation object and each subsequent link operates on the result of the previous link:
 
 ![links chain](docs/cozy-client-links.png)
 
@@ -203,12 +203,11 @@ To create a link to use with Cozy Client, you can import one from `cozy-client` 
 ```js
 import CozyClient, { StackLink } from 'cozy-client'
 
-const link = new StackLink({
-  uri: 'http://cozy.tools:8080',
-  token: '...'
-})
+const link = new StackLink()
 
 const client = new CozyClient({
+  uri: 'http://cozy.tools:8080',
+  token: '...',
   link
 })
 ```
@@ -220,10 +219,7 @@ import CozyClient, { StackLink } from 'cozy-client'
 import PouchDBLink from 'cozy-pouch-link'
 import LogLink from '../LogLink'
 
-const stackLink = new StackLink({
-  uri: 'http://cozy.tools:8080',
-  token: '...'
-})
+const stackLink = new StackLink()
 
 const pouchLink = new PouchDBLink({
   doctypes: [...]
@@ -232,7 +228,9 @@ const pouchLink = new PouchDBLink({
 const logLink = new LogLink()
 
 const client = new CozyClient({
-  link: [
+  uri: 'http://cozy.tools:8080',
+  token: '...',
+  links: [
     logLink,
     pouchLink,
     stackLink

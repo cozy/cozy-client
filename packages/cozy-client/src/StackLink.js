@@ -2,8 +2,12 @@ import { MutationTypes } from './dsl'
 import CozyLink from './CozyLink'
 
 export default class StackLink extends CozyLink {
-  constructor({ client }) {
+  constructor({ client } = {}) {
     super()
+    this.client = client
+  }
+
+  registerClient(client) {
     this.client = client
   }
 

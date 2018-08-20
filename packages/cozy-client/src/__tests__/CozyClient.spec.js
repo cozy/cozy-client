@@ -16,21 +16,35 @@ import {
 import HasManyFilesAssociation from '../associations/HasManyFilesAssociation'
 
 describe('CozyClient initialization', () => {
-  const links = [
-    new CozyLink((operation, result = '', forward) => {
-      return forward(operation, result + 'foo')
-    }),
-    new CozyLink((operation, result, forward) => {
-      return forward(operation, result + 'bar')
-    }),
-    (operation, result) => {
-      return result + 'baz'
-    }
-  ]
-  const client = new CozyClient({ link: links })
+  let client, links
+
+  beforeEach(() => {
+    links = [
+      new CozyLink((operation, result = '', forward) => {
+        return forward(operation, result + 'foo')
+      }),
+      new CozyLink((operation, result, forward) => {
+        return forward(operation, result + 'bar')
+      }),
+      (operation, result) => {
+        return result + 'baz'
+      }
+    ]
+    links.forEach(link => {
+      link.registerClient = jest.fn()
+    })
+    client = new CozyClient({ link: links })
+  })
+
   it('should have chained links', async () => {
     const res = await client.requestQuery({})
     expect(res).toBe('foobarbaz')
+  })
+
+  it('should have registered the client on all links ', () => {
+    for (const link of links) {
+      expect(link.registerClient).toHaveBeenCalledWith(client.client)
+    }
   })
 })
 
