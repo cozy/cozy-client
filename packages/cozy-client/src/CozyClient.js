@@ -17,6 +17,9 @@ import {
 } from './store'
 import { chain } from './CozyLink'
 import ObservableQuery from './ObservableQuery'
+import mapValues from 'lodash/mapValues'
+import flatMap from 'lodash/flatMap'
+import keyBy from 'lodash/keyBy'
 
 const associationsFromModel = model => {
   const relationships = model.relationships
@@ -42,6 +45,18 @@ const responseToRelationship = response => ({
   next: response.next,
   skip: response.skip
 })
+
+const allValues = async x => {
+  const res = {}
+  await Promise.all(
+    Object.entries(x).map(([k, prom]) =>
+      prom.then(value => {
+        res[k] = value
+      })
+    )
+  )
+  return res
+}
 
 export default class CozyClient {
   constructor({ link, schema = {}, ...options }) {
@@ -259,20 +274,17 @@ export default class CozyClient {
   }
 
   async fetchDocumentAssociations(document, associations) {
-    const queries = associations.map(assoc =>
+    const assocByName = keyBy(associations, x => x.name)
+    const definitions = mapValues(assocByName, assoc =>
       this.queryDocumentAssociation(document, assoc)
     )
-    const responses = await Promise.all(
-      queries.map(query => this.link.request(query))
+
+    const requests = mapValues(definitions, definition =>
+      this.link.request(definition)
     )
-    const relationships = associations
-      .map((assoc, i) => ({
-        [assoc.name]: responseToRelationship(responses[i])
-      }))
-      .reduce((acc, rel) => ({ ...acc, ...rel }), {})
-    const included = responses
-      .map(r => r.included)
-      .reduce((acc, inc) => [...acc, ...inc], [])
+    const responses = await allValues(requests)
+    const relationships = mapValues(responses, responseToRelationship)
+    const included = flatMap(Object.values(responses), r => r.included || [])
 
     return {
       data: {
