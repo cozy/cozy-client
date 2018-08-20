@@ -18,6 +18,19 @@ import {
 import { chain } from './CozyLink'
 import ObservableQuery from './ObservableQuery'
 
+const associationsFromModel = model => {
+  const relationships = model.relationships
+  return !relationships
+    ? []
+    : Object.keys(relationships).map(name => {
+        const { type, doctype } = relationships[name]
+        return {
+          name,
+          type,
+          doctype
+        }
+      })
+}
 
 const findModelByDoctype = (schema, doctype) => {
   return Object.values(schema).find(m => m.doctype === doctype)
@@ -376,16 +389,7 @@ export default class CozyClient {
     if (!model) {
       throw new Error(`No schema found for '${doctype}' doctype`)
     }
-    const associations = !model.relationships
-      ? []
-      : Object.keys(model.relationships).map(name => {
-          const { type, doctype } = model.relationships[name]
-          return {
-            name,
-            type,
-            doctype
-          }
-        })
+    const associations = associationsFromModel(model)
     return {
       ...model,
       associations
