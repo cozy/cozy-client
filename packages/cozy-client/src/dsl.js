@@ -5,6 +5,7 @@ export class QueryDefinition {
   constructor({
     doctype,
     id,
+    ids,
     selector,
     fields,
     sort,
@@ -15,6 +16,7 @@ export class QueryDefinition {
   } = {}) {
     this.doctype = doctype
     this.id = id
+    this.ids = ids
     this.selector = selector
     this.fields = fields
     this.sort = sort

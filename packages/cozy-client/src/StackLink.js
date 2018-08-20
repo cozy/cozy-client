@@ -14,13 +14,16 @@ export default class StackLink extends CozyLink {
     return this.executeQuery(operation)
   }
 
-  executeQuery({ doctype, selector, id, referenced, ...options }) {
+  executeQuery({ doctype, selector, id, ids, referenced, ...options }) {
     if (!doctype) {
       throw new Error('No doctype found in a query definition')
     }
     const collection = this.client.collection(doctype)
     if (id) {
       return collection.get(id)
+    }
+    if (ids) {
+      return collection.getAll(ids)
     }
     if (referenced) {
       return collection.findReferencedBy(referenced, options)
