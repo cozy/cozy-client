@@ -23,18 +23,16 @@ import keyBy from 'lodash/keyBy'
 import pickBy from 'lodash/pickBy'
 
 const associationsFromModel = model => {
-  const relationships = model.relationships
-  return !relationships
-    ? []
-    : Object.keys(relationships).map(name => {
-        const { type, doctype, query } = relationships[name]
-        return {
-          name,
-          type,
-          doctype,
-          query
-        }
-      })
+  const relationships = model.relationships || {}
+  return Object.entries(relationships).map(([name, relationship]) => {
+    const { type, doctype, query } = relationship
+    return {
+      name,
+      type,
+      doctype,
+      query
+    }
+  })
 }
 
 const findModelByDoctype = (schema, doctype) => {
