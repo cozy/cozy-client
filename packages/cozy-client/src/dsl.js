@@ -5,6 +5,7 @@ export class QueryDefinition {
   constructor({
     doctype,
     id,
+    ids,
     selector,
     fields,
     sort,
@@ -15,6 +16,7 @@ export class QueryDefinition {
   } = {}) {
     this.doctype = doctype
     this.id = id
+    this.ids = ids
     this.selector = selector
     this.fields = fields
     this.sort = sort
@@ -42,6 +44,9 @@ export class QueryDefinition {
   }
 
   include(includes) {
+    if (!Array.isArray(includes)) {
+      throw new Error('include() takes an array of relationship names')
+    }
     return new QueryDefinition({ ...this.toDefinition(), includes })
   }
 

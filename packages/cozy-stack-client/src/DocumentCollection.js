@@ -107,6 +107,23 @@ export default class DocumentCollection {
     }
   }
 
+  async getAll(ids) {
+    const resp = await this.client.fetchJSON(
+      'POST',
+      uri`/data/${this.doctype}/_all_docs?include_docs=true`,
+      {
+        keys: ids
+      }
+    )
+    const rows = resp.rows.filter(row => row.doc)
+    return {
+      data: rows.map(row => normalizeDoc(row.doc, this.doctype)),
+      meta: {
+        count: rows.length
+      }
+    }
+  }
+
   async create({ _id, _type, ...document }) {
     const resp = await this.client.fetchJSON(
       'POST',

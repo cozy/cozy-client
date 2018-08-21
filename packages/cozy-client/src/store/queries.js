@@ -129,6 +129,9 @@ const updateData = (query, newData) => {
 }
 
 const autoQueryUpdater = action => query => {
+  if (!action.response || !action.response.data) {
+    return query
+  }
   let data = action.response.data
   if (!Array.isArray(data)) {
     data = [data]

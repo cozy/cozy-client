@@ -17,6 +17,46 @@ import {
 } from './store'
 import { chain } from './CozyLink'
 import ObservableQuery from './ObservableQuery'
+import mapValues from 'lodash/mapValues'
+import flatMap from 'lodash/flatMap'
+import keyBy from 'lodash/keyBy'
+import pickBy from 'lodash/pickBy'
+
+const associationsFromModel = model => {
+  const relationships = model.relationships || {}
+  return Object.entries(relationships).map(([name, relationship]) => {
+    const { type, doctype, query } = relationship
+    return {
+      name,
+      type,
+      doctype,
+      query
+    }
+  })
+}
+
+const findModelByDoctype = (schema, doctype) => {
+  return Object.values(schema).find(m => m.doctype === doctype)
+}
+
+const responseToRelationship = response => ({
+  data: response.data.map(d => ({ _id: d._id, _type: d._type })),
+  meta: response.meta,
+  next: response.next,
+  skip: response.skip
+})
+
+const allValues = async x => {
+  const res = {}
+  await Promise.all(
+    Object.entries(x).map(([k, prom]) =>
+      prom.then(value => {
+        res[k] = value
+      })
+    )
+  )
+  return res
+}
 
 /**
  * @module CozyClient
@@ -253,25 +293,21 @@ export default class CozyClient {
   }
 
   async fetchDocumentAssociations(document, associations) {
-    const queries = associations.map(assoc =>
-      this.fetchDocumentAssociation(document, assoc)
+    const assocByName = keyBy(associations, x => x.name)
+    const definitions = pickBy(
+      mapValues(assocByName, assoc =>
+        this.queryDocumentAssociation(document, assoc)
+      )
     )
-    const responses = await Promise.all(
-      queries.map(query => this.link.request(query))
+
+    const requests = mapValues(definitions, definition =>
+      this.link.request(definition)
     )
-    const relationships = associations
-      .map((assoc, i) => ({
-        [assoc.name]: {
-          data: responses[i].data.map(d => ({ _id: d._id, _type: d._type })),
-          meta: responses[i].meta,
-          next: responses[i].next,
-          skip: responses[i].skip
-        }
-      }))
-      .reduce((acc, rel) => ({ ...acc, ...rel }), {})
-    const included = responses
-      .map(r => r.included)
-      .reduce((acc, inc) => [...acc, ...inc], [])
+    const responses = await allValues(requests)
+    const relationships = mapValues(responses, responseToRelationship)
+    const included = flatMap(Object.values(responses), r => [
+      ...(r.included || r.data || [])
+    ])
 
     return {
       data: {
@@ -282,10 +318,16 @@ export default class CozyClient {
     }
   }
 
-  fetchDocumentAssociation(document, { type, doctype }) {
+  queryDocumentAssociation(document, association) {
+    const { type, doctype, query } = association
     switch (type) {
       case 'has-many':
-        return this.find(doctype).referencedBy(document)
+        if (query) {
+          return query(this, association)(document)
+        } else {
+          const queryAll = this.find(doctype)
+          return queryAll.referencedBy(document)
+        }
       default:
         throw new Error(`Can't handle '${type}' associations`)
     }
@@ -386,22 +428,11 @@ export default class CozyClient {
     if (!this.schema) {
       throw new Error('No schema defined')
     }
-    const model = Object.keys(this.schema)
-      .map(k => this.schema[k])
-      .find(m => m.doctype === doctype)
+    const model = findModelByDoctype(this.schema, doctype)
     if (!model) {
       throw new Error(`No schema found for '${doctype}' doctype`)
     }
-    const associations = !model.relationships
-      ? []
-      : Object.keys(model.relationships).map(name => {
-          const { type, doctype } = model.relationships[name]
-          return {
-            name,
-            type,
-            doctype
-          }
-        })
+    const associations = associationsFromModel(model)
     return {
       ...model,
       associations
@@ -410,11 +441,7 @@ export default class CozyClient {
 
   doctypeModelExists(doctype) {
     if (!this.schema) return false
-    return (
-      Object.keys(this.schema)
-        .map(k => this.schema[k])
-        .find(m => m.doctype === doctype) !== undefined
-    )
+    return findModelByDoctype(this.schema, doctype) !== undefined
   }
 
   getDocumentFromState(type, id) {

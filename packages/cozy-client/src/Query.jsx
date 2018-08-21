@@ -46,7 +46,9 @@ export default class Query extends Component {
   }
 
   componentWillUnmount() {
-    this.queryUnsubscribe()
+    if (this.queryUnsubscribe) {
+      this.queryUnsubscribe()
+    }
   }
 
   onQueryChange = () => {
