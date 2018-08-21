@@ -278,8 +278,7 @@ export default class CozyClient {
     const definitions = pickBy(
       mapValues(assocByName, assoc =>
         this.queryDocumentAssociation(document, assoc)
-      ),
-      x => x
+      )
     )
 
     const requests = mapValues(definitions, definition =>
