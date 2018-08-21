@@ -15,6 +15,7 @@
     "husky": "^0.14.3",
     "jest": "^22.1.4",
     "jest-fetch-mock": "^1.4.1",
+    "jsdoc-to-markdown": "^4.0.1",
     "lerna": "^3.0.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
@@ -32,7 +33,8 @@
     "watch": "lerna run watch --parallel",
     "build": "lerna run build",
     "commitmsg": "commitlint -e $GIT_PARAMS",
-    "clean": "rm -rf packages/*/dist"
+    "clean": "rm -rf packages/*/dist",
+    "doc": "jsdoc2md packages/*/src/**.js > docs/api.md"
   },
   "jest": {
     "testURL": "http://localhost",
