@@ -4,15 +4,8 @@ import CozyLink from '../CozyLink'
 import ObservableQuery from '../ObservableQuery'
 import { initQuery, receiveQueryResult } from '../store'
 
+import { queryResultFromData } from './utils'
 import { TODO_1, TODO_2 } from './fixtures'
-
-const queryResultFromData = (data, opts = {}) => ({
-  data: data,
-  meta: { count: data.length },
-  skip: 0,
-  next: false,
-  ...opts
-})
 
 const AUTHORS = [
   {
