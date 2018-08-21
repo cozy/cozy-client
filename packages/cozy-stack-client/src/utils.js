@@ -1,5 +1,6 @@
 /**
- * Template tag function for URIs encoding
+ * @function
+ * @description Template tag function for URIs encoding
  *
  * Will automatically apply `encodeURIComponent` to template literal placeholders
  *
@@ -17,7 +18,8 @@ export const uri = (strings, ...values) => {
 }
 
 /**
- * Helps to avoid nested try/catch when using async/await
+ * @function
+ * @description Helps to avoid nested try/catch when using async/await
  *
  * Inspired by a Go pattern: http://blog.grossman.io/how-to-write-async-await-without-try-catch-blocks-in-javascript/
  *

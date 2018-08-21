@@ -10,8 +10,8 @@ export const normalizeDoc = (doc, doctype) => {
 }
 
 /**
- * Abstracts a collection of documents of the same doctype, providing
- * CRUD methods and other helpers.
+ * Abstracts a collection of documents of the same doctype, providing CRUD methods and other helpers.
+ * @module DocumentCollection
  */
 export default class DocumentCollection {
   constructor(doctype, client) {

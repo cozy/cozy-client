@@ -17,6 +17,9 @@ const defaultoauthOptions = {
   notificationDeviceToken: ''
 }
 
+/**
+ * @module OAuthClient
+ */
 export default class OAuthClient extends CozyStackClient {
   constructor({ oauth, scope = [], onTokenRefresh, ...options }) {
     super(options)

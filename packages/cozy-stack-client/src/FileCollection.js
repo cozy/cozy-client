@@ -29,6 +29,7 @@ export const isDirectory = ({ type }) => type === 'directory'
  * Files are a special type of documents and are handled differently by the stack:
  * special routes are to be used, and there is a notion of referenced files, aka
  * files associated to a specific document
+ * @module FileCollection
  */
 export default class FileCollection extends DocumentCollection {
   constructor(doctype, client) {

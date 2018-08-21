@@ -4,7 +4,8 @@ import compose from 'lodash/flowRight'
 import Query from './Query'
 
 /**
- * HOC to provide client from context as prop
+ * @function
+ * @description HOC to provide client from context as prop
  *
  * @param  {Component} Component - wrapped component
  * @return {function} - Component that will receive client as prop
@@ -52,7 +53,8 @@ const withQuery = (dest, queryOpts, Original) => {
 }
 
 /**
- * HOC creator to connect component to several queries in a declarative manner
+ * @function
+ * @description HOC creator to connect component to several queries in a declarative manner
  *
  * @param  {object} querySpecs - Definition of the queries
  * @return {function} - HOC to apply to a component

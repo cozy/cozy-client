@@ -7,6 +7,9 @@ export const normalizeApp = app => {
   return { ...app, ...normalizeDoc(app, APPS_DOCTYPE), ...app.attributes }
 }
 
+/**
+ * @module AppCollection
+ */
 export default class AppCollection {
   constructor(client) {
     this.client = client
