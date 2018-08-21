@@ -18,6 +18,9 @@ import {
 import { chain } from './CozyLink'
 import ObservableQuery from './ObservableQuery'
 
+/**
+ * @module CozyClient
+ */
 export default class CozyClient {
   constructor({ link, links, schema = {}, ...options }) {
     this.options = options
