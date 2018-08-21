@@ -10,3 +10,15 @@ export const queryResultFromData = (data, opts = {}) => ({
   ...opts
 })
 
+export const createTestAssets = () => {
+  const requestHandler = jest.fn()
+  const link = new CozyLink(requestHandler)
+  const client = new CozyClient({ link })
+  const store = createStore(combineReducers({ cozy: client.reducer() }))
+  client.setStore(store)
+  return {
+    client,
+    store,
+    link
+  }
+}

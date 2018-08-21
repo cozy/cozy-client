@@ -1,7 +1,16 @@
 import React from 'react'
 import { mount } from 'enzyme'
+import CozyLink from './CozyLink'
+import CozyProvider from './Provider'
 
-import Query from './Query' 
+import Query from './Query'
+import { createTestAssets, queryResultFromData} from './__tests__/utils'
+import {
+  initQuery,
+  receiveQueryResult,
+  receiveQueryError
+} from './store'
+import { TODOS } from './__tests__/fixtures'
 
 describe('Query', () => {
   const fakeQuery = () => ({
@@ -13,7 +22,7 @@ describe('Query', () => {
     currentResult: jest.fn(),
     subscribe: jest.fn().mockReturnValue(() => {})
   })
-  const queryDef = client => ({ doctype: 'io.cozy.unused' })
+  const queryDef = client => ({ doctype: 'io.cozy.todos' })
   const client = {
     watchQuery: queryDef => fakeQuery(),
     query: jest.fn()
@@ -24,17 +33,43 @@ describe('Query', () => {
     client.query.mockClear()
   })
 
-  it('should fire a query fetch when mounted', () => {
-    const uut = mount(<Query query={queryDef} children={() => null}/>, { context })
-    expect(client.query).toHaveBeenCalled()
+  describe('lifecycle', () => {
+    it('should fire a query fetch when mounted', () => {
+      const uut = mount(<Query query={queryDef} children={() => null}/>, { context })
+      expect(client.query).toHaveBeenCalled()
+    })
+
+    it('should not fire a query fetch when mounted with initialFetch=false', () => {
+      const uut = mount(<Query query={queryDef} as='allTodos' children={() => null} fetchPolicy='cache-only' />, { context })
+      expect(client.query).not.toHaveBeenCalled()
+    })
   })
 
-  it('should not fire a query fetch when mounted with initialFetch=false', () => {
-    const uut = mount(<Query query={queryDef} children={() => null} fetchPolicy='cache-only' />, { context })
-    expect(client.query).not.toHaveBeenCalled()
+  describe('data reactions', () => {
+    let store, client, uut
+    beforeEach(async () => {
+      const assets = createTestAssets()
+      store = assets.store
+      client = assets.client
+      await store.dispatch(initQuery('allTodos', queryDef(client)))
+      uut = mount(
+        <CozyProvider client={client}>
+          <Query fetchPolicy='cache-only' query={queryDef}>{({data}) => (
+            <ul>
+            { data.map(x => <li key={x._id}>{ x.label }</li>) }
+            </ul>
+          )}</Query>
+        </CozyProvider>
+      )
+    })
+
+    it('should be refreshed when relevant results are updated', async () => {
+      expect(uut.html()).not.toContain('Build stuff')
+      const response = queryResultFromData(TODOS)
+      const action = receiveQueryResult('allTodos', response)
+      await store.dispatch(action)
+      expect(uut.html()).toContain('Build stuff')
+    })
   })
 
-  it('should be refreshed when relevant results are updated', () => {
-
-  })
 })
