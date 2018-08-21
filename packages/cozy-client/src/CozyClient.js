@@ -19,14 +19,26 @@ import { chain } from './CozyLink'
 import ObservableQuery from './ObservableQuery'
 
 export default class CozyClient {
-  constructor({ link, schema = {}, ...options }) {
+  constructor({ link, links, schema = {}, ...options }) {
     this.options = options
     this.idCounter = 1
-    this.link = link || new StackLink({ client: this.getOrCreateStackClient() })
+    this.link = link || links || new StackLink()
+
+    this.createClient()
+    this.registerClientOnLinks(this.link)
     if (Array.isArray(this.link)) {
       this.link = chain(this.link)
     }
     this.schema = schema
+  }
+
+  registerClientOnLinks(links) {
+    links = Array.isArray(links) ? links : [links]
+    for (let link of links) {
+      if (!link.client && link.registerClient) {
+        link.registerClient(this.client)
+      }
+    }
   }
 
   /**
@@ -37,11 +49,11 @@ export default class CozyClient {
    * @return {DocumentCollection}
    */
   collection(doctype) {
-    return this.getOrCreateStackClient().collection(doctype)
+    return this.getClient().collection(doctype)
   }
 
   fetch(method, path, body, options = {}) {
-    return this.getOrCreateStackClient().fetch(method, path, body, options)
+    return this.getClient().fetch(method, path, body, options)
   }
 
   all(doctype) {
@@ -409,7 +421,7 @@ export default class CozyClient {
    * @returns {object}   Contains the fetched token and the client information.
    */
   register(cozyUrl) {
-    const client = this.getOrCreateStackClient()
+    const client = this.getClient()
     client.setUri(cozyUrl)
     return this.startOAuthFlow(authenticateWithCordova)
   }
@@ -420,13 +432,13 @@ export default class CozyClient {
    * @returns {object}   Contains the fetched token and the client information. These should be stored and used to restore the client.
    */
   async startOAuthFlow(openURLCallback) {
-    const client = this.getOrCreateStackClient()
+    const client = this.getClient()
     await client.register()
     return this.authorize(openURLCallback)
   }
 
   async authorize(openURLCallback) {
-    const client = this.getOrCreateStackClient()
+    const client = this.getClient()
     const stateCode = client.generateStateCode()
     const url = client.getAuthCodeURL(stateCode)
 
@@ -462,15 +474,26 @@ export default class CozyClient {
     return this.store
   }
 
+  createClient() {
+    if (this.options.client) {
+      this.client = this.options.client
+    } else {
+      this.client = this.options.oauth
+        ? new OAuthClient(this.options)
+        : new CozyStackClient(this.options)
+    }
+  }
+
   getOrCreateStackClient() {
+    console.warn(
+      `getOrCreateStackClient is deprecated, you can used getClient function.`
+    )
+    return this.getClient()
+  }
+
+  getClient() {
     if (!this.client) {
-      if (this.options.client) {
-        this.client = this.options.client
-      } else {
-        this.client = this.options.oauth
-          ? new OAuthClient(this.options)
-          : new CozyStackClient(this.options)
-      }
+      this.createClient()
     }
     return this.client
   }

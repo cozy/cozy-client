@@ -4,25 +4,25 @@ import { TODO_SCHEMA, TODO_1, TODO_2, TODO_3, TODO_4 } from './fixtures'
 import omit from 'lodash/omit'
 
 const mockClient = {
-  uri: 'http://cozy.tools:8080',
-  token: {
-    toBasicAuth: () => 'user:token@'
+  client: {
+    uri: 'http://cozy.tools:8080',
+    token: {
+      toBasicAuth: () => 'user:token@'
+    }
   }
 }
 
 const TODO_DOCTYPE = TODO_SCHEMA.todos.doctype
 
 describe('CozyPouchLink', () => {
-  let link
-  const client = new CozyClient({
-    link,
-    schema: TODO_SCHEMA
-  })
+  let client, link
 
   beforeEach(() => {
-    link = new CozyPouchLink({
-      doctypes: [TODO_DOCTYPE],
-      client: mockClient
+    link = new CozyPouchLink({ doctypes: [TODO_DOCTYPE] })
+    client = new CozyClient({
+      ...mockClient,
+      link,
+      schema: TODO_SCHEMA
     })
   })
 
