@@ -484,6 +484,13 @@ export default class CozyClient {
     }
   }
 
+  getOrCreateStackClient() {
+    console.warn(
+      `getOrCreateStackClient is deprecated, you can used getClient function.`
+    )
+    return this.getClient()
+  }
+
   getClient() {
     if (!this.client) {
       this.createClient()
