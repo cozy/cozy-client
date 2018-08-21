@@ -35,6 +35,7 @@ describe('queryConnect', () => {
     })
     const context = {
       client: {
+        query: () => {},
         all: doctype => queryDefinitionFromDoctype(doctype),
         watchQuery: queryDef => observableQueryFromDefinition(queryDef)
       }

@@ -20,6 +20,8 @@ export default class Query extends Component {
         ? props.query(client, props)
         : props.query
 
+    this.client = client
+    this.queryDefinition = queryDef
     this.observableQuery = client.watchQuery(queryDef, props)
 
     const { mutations, ...rest } = props
@@ -38,6 +40,9 @@ export default class Query extends Component {
 
   componentDidMount() {
     this.queryUnsubscribe = this.observableQuery.subscribe(this.onQueryChange)
+    if (this.props.fetchPolicy !== 'cache-only') {
+      this.client.query(this.queryDefinition, { queryId: this.observableQuery.queryId })
+    }
   }
 
   componentWillUnmount() {
@@ -77,7 +82,12 @@ Query.contextTypes = {
 }
 
 Query.propTypes = {
+  /** Query definition that will be executed and observed */
   query: PropTypes.func.isRequired,
+  /** Name of the query */
   as: PropTypes.string,
-  children: PropTypes.func.isRequired
+  /** Function called with the data from the query */
+  children: PropTypes.func.isRequired,
+  /** How data is fetched */
+  fetchPolicy: PropTypes.oneOf(['cache-only'])
 }

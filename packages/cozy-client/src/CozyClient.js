@@ -168,14 +168,18 @@ export default class CozyClient {
     return this.mutate(Mutations.uploadFile(file, dirPath), mutationOptions)
   }
 
-  async query(queryDefinition, { update, ...options } = {}) {
-    this.getOrCreateStore()
-    const queryId = options.as || this.generateId()
+  ensureQueryExists(queryId, queryDefinition) {
     const existingQuery = getQueryFromState(this.store.getState(), queryId)
     // Don't trigger the INIT_QUERY for fetchMore() calls
     if (existingQuery.fetchStatus !== 'loaded' || !queryDefinition.skip) {
       this.dispatch(initQuery(queryId, queryDefinition))
     }
+  }
+
+  async query(queryDefinition, { update, ...options } = {}) {
+    this.getOrCreateStore()
+    const queryId = options.as || this.generateId()
+    this.ensureQueryExists(queryId, queryDefinition)
     try {
       const response = await this.requestQuery(queryDefinition)
       this.dispatch(
@@ -192,7 +196,7 @@ export default class CozyClient {
 
   watchQuery(queryDefinition, options = {}) {
     const queryId = options.as || this.generateId()
-    this.query(queryDefinition, { ...options, as: queryId })
+    this.ensureQueryExists(queryId, queryDefinition)
     return new ObservableQuery(queryId, queryDefinition, this)
   }
 
