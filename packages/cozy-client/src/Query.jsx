@@ -82,8 +82,11 @@ Query.contextTypes = {
 }
 
 Query.propTypes = {
+  /** Query definition that will be executed and observed */
   query: PropTypes.func.isRequired,
+  /** Name of the query */
   as: PropTypes.string,
+  /** Function called with the data from the query */
   children: PropTypes.func.isRequired,
   /** How data is fetched */
   fetchPolicy: PropTypes.oneOf(['cache-only'])
