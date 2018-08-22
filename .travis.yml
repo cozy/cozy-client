@@ -14,7 +14,7 @@ script:
 before_deploy:
 - git checkout master # otherwise git is in detached state
 - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc # for lerna to be able to publish on npm
-- git remote set-url origin https://cozy-bot:$GITHUB_TOKEN@github.com/cozy/cozy-libs.git # for lerna to be able to push commits
+- git remote set-url origin https://cozy-bot:$GITHUB_TOKEN@github.com/cozy/cozy-client.git # for lerna to be able to push commits
 deploy:
   - provider: script
     skip-cleanup: true
