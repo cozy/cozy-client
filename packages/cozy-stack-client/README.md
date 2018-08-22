@@ -1,5 +1,6 @@
 # cozy-stack-client
 
+
 ## The constructor
 
 ```js
