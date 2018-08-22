@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.3"></a>
+## [2.1.3](https://github.com/cozy/cozy-client/compare/v2.1.2...v2.1.3) (2018-08-22)
+
+
+### Bug Fixes
+
+* Test lerna publish 🔭 ([a95703e](https://github.com/cozy/cozy-client/commit/a95703e))
+
+
+
+
+
 <a name="2.1.2"></a>
 ## [2.1.2](https://github.com/cozy/cozy-client/compare/v2.1.1...v2.1.2) (2018-08-22)
 
