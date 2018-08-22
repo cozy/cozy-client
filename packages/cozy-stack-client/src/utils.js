@@ -34,6 +34,10 @@ export const uri = (strings, ...values) => {
  */
 export const attempt = promise => promise.then(() => true).catch(() => false)
 
+/**
+ * @function
+ * @description Helps to avoid nested try/catch when using async/await — see documentation for attemp
+ */
 export const sleep = (time, args) =>
   new Promise(resolve => {
     setTimeout(resolve, time, args)
