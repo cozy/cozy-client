@@ -16,7 +16,7 @@
     "jest": "^22.1.4",
     "jest-fetch-mock": "^1.4.1",
     "jsdoc-to-markdown": "^4.0.1",
-    "lerna": "^3.1.4",
+    "lerna": "^2.11.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "redux-mock-store": "^1.5.1",
