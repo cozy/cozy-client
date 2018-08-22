@@ -136,28 +136,52 @@ describe('DocumentCollection', () => {
   describe('createIndex', () => {
     const collection = new DocumentCollection('io.cozy.todos', client)
 
-    beforeAll(() => {
-      client.fetchJSON.mockReturnValue(
-        Promise.resolve({
-          id: '_design/123456',
-          name: '123456',
-          result: 'exists'
-        })
-      )
+    describe('existing index', () => {
+      beforeAll(() => {
+        client.fetchJSON.mockReturnValue(
+          Promise.resolve({
+            id: '_design/123456',
+            name: '123456',
+            result: 'exists'
+          })
+        )
+      })
+
+      it('should call the right route with the right payload', async () => {
+        await collection.createIndex(['label', 'done'])
+        expect(client.fetchJSON).toHaveBeenCalledWith(
+          'POST',
+          '/data/io.cozy.todos/_index',
+          { index: { fields: ['label', 'done'] } }
+        )
+      })
+
+      it('should return the index ID', async () => {
+        const resp = await collection.createIndex(['label', 'done'])
+        expect(resp).toHaveProperty('id', '_design/123456')
+      })
     })
 
-    it('should call the right route with the right payload', async () => {
-      await collection.createIndex(['label', 'done'])
-      expect(client.fetchJSON).toHaveBeenCalledWith(
-        'POST',
-        '/data/io.cozy.todos/_index',
-        { index: { fields: ['label', 'done'] } }
-      )
-    })
-
-    it('should return the index ID', async () => {
-      const resp = await collection.createIndex(['label', 'done'])
-      expect(resp).toHaveProperty('id', '_design/123456')
+    describe('new index', () => {
+      it('should return the index ID', async () => {
+        client.fetchJSON
+          .mockReturnValueOnce(
+            Promise.resolve({
+              id: '_design/123456',
+              name: '123456',
+              result: 'created'
+            })
+          )
+          .mockReturnValueOnce(
+            Promise.resolve({
+              id: '_design/123456',
+              name: '123456',
+              result: 'exists'
+            })
+          )
+        const resp = await collection.createIndex(['label', 'done'])
+        expect(resp).toHaveProperty('id', '_design/123456')
+      })
     })
   })
 

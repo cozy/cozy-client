@@ -41,6 +41,9 @@ query to work</p>
 <dd><p>Helps to avoid nested try/catch when using async/await</p>
 <p>Inspired by a Go pattern: <a href="http://blog.grossman.io/how-to-write-async-await-without-try-catch-blocks-in-javascript/">http://blog.grossman.io/how-to-write-async-await-without-try-catch-blocks-in-javascript/</a></p>
 </dd>
+<dt><a href="#sleep">sleep()</a></dt>
+<dd><p>Helps to avoid nested try/catch when using async/await — see documentation for attemp</p>
+</dd>
 </dl>
 
 <a name="module_CozyClient"></a>
@@ -459,3 +462,9 @@ if (await attempt(collection.all()) return
 await sleep(1000)
 return
 ```
+<a name="sleep"></a>
+
+## sleep()
+Helps to avoid nested try/catch when using async/await — see documentation for attemp
+
+**Kind**: global function  
