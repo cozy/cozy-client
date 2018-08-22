@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.2"></a>
+## [2.1.2](https://github.com/cozy/cozy-client/compare/v2.1.1...v2.1.2) (2018-08-22)
+
+
+### Bug Fixes
+
+* Add new line at end of README.md file ([af62dea](https://github.com/cozy/cozy-client/commit/af62dea))
+* Test auto release ([ec00760](https://github.com/cozy/cozy-client/commit/ec00760))
+
+
+
+
+
 <a name="2.1.1"></a>
 ## [2.1.1](https://github.com/cozy/cozy-client/compare/v2.1.0...v2.1.1) (2018-08-22)
 
