@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.7"></a>
+## [2.1.7](https://github.com/cozy/cozy-client/compare/v2.1.6...v2.1.7) (2018-08-23)
+
+
+### Bug Fixes
+
+* Use only one sorting order ([d81a159](https://github.com/cozy/cozy-client/commit/d81a159))
+
+
+
+
 <a name="2.1.6"></a>
 ## [2.1.6](https://github.com/cozy/cozy-client/compare/v2.1.5...v2.1.6) (2018-08-22)
 

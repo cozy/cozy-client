@@ -3,7 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-       <a name="2.1.6"></a>
+      <a name="2.1.7"></a>
+## [2.1.7](https://github.com/cozy/cozy-client/compare/v2.1.6...v2.1.7) (2018-08-23)
+
+
+### Bug Fixes
+
+* Prevent double query init ([e5b0498](https://github.com/cozy/cozy-client/commit/e5b0498))
+* Use only one sorting order ([d81a159](https://github.com/cozy/cozy-client/commit/d81a159))
+
+
+
+
+      <a name="2.1.6"></a>
 ## [2.1.6](https://github.com/cozy/cozy-client/compare/v2.1.5...v2.1.6) (2018-08-22)
 
 
@@ -14,7 +26,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-       <a name="2.1.5"></a>
+     <a name="2.1.5"></a>
 ## [2.1.5](https://github.com/cozy/cozy-client/compare/v2.1.4...v2.1.5) (2018-08-22)
 
 
@@ -151,7 +163,7 @@ done in the library
 -  { ({ data: documents }) => {
 -     const myDoc = documents[0]
 +  { ({ data: myDoc }) => {
-  ...
+...
 }}
 />
 ```
@@ -159,7 +171,7 @@ done in the library
 
 
 
-     <a name="1.0.0"></a>
+   <a name="1.0.0"></a>
 # [1.0.0](https://github.com/cozy/cozy-client/compare/v1.0.0-beta.30...v1.0.0) (2018-08-17)
 
 
