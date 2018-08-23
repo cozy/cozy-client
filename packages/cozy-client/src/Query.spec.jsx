@@ -43,6 +43,22 @@ describe('Query', () => {
       const uut = mount(<Query query={queryDef} as='allTodos' children={() => null} fetchPolicy='cache-only' />, { context })
       expect(client.query).not.toHaveBeenCalled()
     })
+
+    it('should create a single query', () => {
+      const assets = createTestAssets()
+      const store = assets.store
+      const client = assets.client
+      const spy = jest.spyOn(store, 'dispatch')
+      const uut = mount(
+        <CozyProvider client={client}>
+          <Query query={queryDef} children={() => null}/>
+        </CozyProvider>
+      )
+      const initQueryDispatch = {"queryDefinition": {"doctype": "io.cozy.todos"}, "queryId": 1, "type": "INIT_QUERY"};
+      expect(spy).toHaveBeenNthCalledWith(1, initQueryDispatch)
+      expect(spy).toHaveBeenNthCalledWith(2, initQueryDispatch)
+      expect(spy).toHaveBeenCalledTimes(2)
+    })
   })
 
   describe('data reactions', () => {
