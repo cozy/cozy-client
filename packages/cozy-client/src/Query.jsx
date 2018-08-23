@@ -41,7 +41,7 @@ export default class Query extends Component {
   componentDidMount() {
     this.queryUnsubscribe = this.observableQuery.subscribe(this.onQueryChange)
     if (this.props.fetchPolicy !== 'cache-only') {
-      this.client.query(this.queryDefinition, { queryId: this.observableQuery.queryId })
+      this.client.query(this.queryDefinition, { as: this.observableQuery.queryId })
     }
   }
 
