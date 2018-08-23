@@ -235,6 +235,7 @@ export default class CozyClient {
   }
 
   watchQuery(queryDefinition, options = {}) {
+    this.getOrCreateStore()
     const queryId = options.as || this.generateId()
     this.ensureQueryExists(queryId, queryDefinition)
     return new ObservableQuery(queryId, queryDefinition, this)
