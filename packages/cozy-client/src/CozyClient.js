@@ -209,6 +209,7 @@ export default class CozyClient {
   }
 
   ensureQueryExists(queryId, queryDefinition) {
+    this.getOrCreateStore()
     const existingQuery = getQueryFromState(this.store.getState(), queryId)
     // Don't trigger the INIT_QUERY for fetchMore() calls
     if (existingQuery.fetchStatus !== 'loaded' || !queryDefinition.skip) {
