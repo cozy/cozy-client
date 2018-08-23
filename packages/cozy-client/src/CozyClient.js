@@ -1,5 +1,5 @@
 import StackLink from './StackLink'
-import Association from './associations'
+import { create as createAssociation } from './associations'
 import { QueryDefinition, Mutations } from './dsl'
 import CozyStackClient, { OAuthClient } from 'cozy-stack-client'
 import { authenticateWithCordova } from './authentication/mobile'
@@ -390,14 +390,14 @@ export default class CozyClient {
     return associations.reduce(
       (acc, assoc) => ({
         ...acc,
-        [assoc.name]: Association.create(document, assoc, methods)
+        [assoc.name]: createAssociation(document, assoc, methods)
       }),
       {}
     )
   }
 
   getAssociation(document, associationName, queryId) {
-    return Association.create(
+    return createAssociation(
       document,
       this.getModelAssociation(document._type, associationName),
       this.getAssociationStoreAccessors(queryId)
