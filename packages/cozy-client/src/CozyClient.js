@@ -370,6 +370,7 @@ export default class CozyClient {
         ...this.hydrateRelationships(doc, associations, queryId)
       }))
     } catch (err) {
+      console.error(err)
       return documents
     }
   }
