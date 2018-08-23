@@ -4,7 +4,7 @@ import { TODO_SCHEMA, TODO_1, TODO_2, TODO_3 } from './fixtures'
 
 import CozyClient from '../CozyClient'
 import CozyLink from '../CozyLink'
-import { Mutations } from '../dsl'
+import { Mutations, QueryDefinition } from '../dsl'
 import {
   initQuery,
   receiveQueryResult,
@@ -45,6 +45,11 @@ describe('CozyClient initialization', () => {
     for (const link of links) {
       expect(link.registerClient).toHaveBeenCalledWith(client.client)
     }
+  })
+
+  it('should create a store when calling watch query', () => {
+    client.watchQuery(new QueryDefinition({ doctype: 'io.cozy.todos' }))
+    expect(client.store).not.toBe(undefined)
   })
 })
 
