@@ -33,10 +33,7 @@ export default class CozyProvider extends Component {
 
   getChildContext() {
     return {
-      store:
-        this.props.store ||
-        this.context.store ||
-        this.props.client.getOrCreateStore(),
+      store: this.props.store || this.context.store || this.props.client.store,
       client: this.props.client
     }
   }
