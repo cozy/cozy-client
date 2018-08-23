@@ -500,6 +500,10 @@ export default class CozyClient {
   }
 
   setStore(store) {
+    if (store === undefined) {
+      throw new Error('Store is undefined')
+    }
+
     this.store = store
   }
 
