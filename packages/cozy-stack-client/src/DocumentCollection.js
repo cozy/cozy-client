@@ -1,4 +1,5 @@
 import { uri, attempt, sleep } from './utils'
+import uniq from 'lodash/uniq'
 
 export const FETCH_LIMIT = 50
 
@@ -161,9 +162,15 @@ export default class DocumentCollection {
     const indexFields = this.getIndexFields({ ...options, selector })
     const indexId = options.indexId || (await this.getIndexId(indexFields))
     const { fields, skip = 0, limit = FETCH_LIMIT } = options
-    // Mango wants an array of single-property-objects...
+    // Mango wants an array of single-property-objects..
+    const sortOrders = options.sort
+      ? uniq(Object.values(options.sort))
+      : ['asc']
+    if (sortOrders.length > 1)
+      throw new Error('Mango sort can only use a single order (asc or desc).')
+    const sortOrder = sortOrders[0]
     const sort = options.sort
-      ? indexFields.map(f => ({ [f]: options.sort[f] || 'desc' }))
+      ? indexFields.map(f => ({ [f]: sortOrder }))
       : undefined
 
     return {
