@@ -1,6 +1,4 @@
-import React, { Component } from 'react'
-import { getQueryFromState } from './store'
-import { QueryDefinition } from './dsl'
+import { Component } from 'react'
 import PropTypes from 'prop-types'
 
 const dummyState = {}
@@ -60,7 +58,6 @@ export default class Query extends Component {
 
   render() {
     const { children } = this.props
-    const { client, store } = this.context
     const query = this.observableQuery
     return children(
       {
