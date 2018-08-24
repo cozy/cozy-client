@@ -33,3 +33,14 @@ Linking
 -------
 
 Use `yarn watch` to watch on cozy-client side and `yarn link` on the app side.
+
+If you have a problem like "React is not found" from cozy-client files, it may be because webpack is resolving the dependencies in cozy-client's `node_modules`, you may want to `ln -s` your app node_modules inside cozy-client's.
+
+```
+$ ls code
+cozy-banks
+cozy-client
+
+$ cd cozy-client/packages/cozy-client
+$ ln -s ~/code/cozy-banks/node_modules node_modules
+```

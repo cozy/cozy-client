@@ -28,7 +28,7 @@
     "packages/*"
   ],
   "scripts": {
-    "lint": "eslint 'packages/*/src/**/*.js'",
+    "lint": "eslint 'packages/*/src/**/*.{js,jsx}'",
     "test": "jest",
     "watch": "lerna run watch --parallel",
     "build": "lerna run build",
