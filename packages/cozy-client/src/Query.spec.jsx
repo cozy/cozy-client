@@ -1,15 +1,10 @@
 import React from 'react'
 import { mount } from 'enzyme'
-import CozyLink from './CozyLink'
 import CozyProvider from './Provider'
 
 import Query from './Query'
-import { createTestAssets, queryResultFromData} from './__tests__/utils'
-import {
-  initQuery,
-  receiveQueryResult,
-  receiveQueryError
-} from './store'
+import { createTestAssets, queryResultFromData } from './__tests__/utils'
+import { initQuery, receiveQueryResult } from './store'
 import { TODOS } from './__tests__/fixtures'
 
 describe('Query', () => {
@@ -35,12 +30,19 @@ describe('Query', () => {
 
   describe('lifecycle', () => {
     it('should fire a query fetch when mounted', () => {
-      const uut = mount(<Query query={queryDef} children={() => null}/>, { context })
+      mount(<Query query={queryDef}>{() => null}</Query>, {
+        context
+      })
       expect(client.query).toHaveBeenCalled()
     })
 
     it('should not fire a query fetch when mounted with initialFetch=false', () => {
-      const uut = mount(<Query query={queryDef} as='allTodos' children={() => null} fetchPolicy='cache-only' />, { context })
+      mount(
+        <Query query={queryDef} as="allTodos" fetchPolicy="cache-only">
+          {() => null}
+        </Query>,
+        { context }
+      )
       expect(client.query).not.toHaveBeenCalled()
     })
 
@@ -49,12 +51,16 @@ describe('Query', () => {
       const store = assets.store
       const client = assets.client
       const spy = jest.spyOn(store, 'dispatch')
-      const uut = mount(
+      mount(
         <CozyProvider client={client}>
-          <Query query={queryDef} children={() => null}/>
+          <Query query={queryDef}>{() => null}</Query>
         </CozyProvider>
       )
-      const initQueryDispatch = {"queryDefinition": {"doctype": "io.cozy.todos"}, "queryId": 1, "type": "INIT_QUERY"};
+      const initQueryDispatch = {
+        queryDefinition: { doctype: 'io.cozy.todos' },
+        queryId: 1,
+        type: 'INIT_QUERY'
+      }
       expect(spy).toHaveBeenNthCalledWith(1, initQueryDispatch)
       expect(spy).toHaveBeenNthCalledWith(2, initQueryDispatch)
       expect(spy).toHaveBeenCalledTimes(2)
@@ -70,11 +76,15 @@ describe('Query', () => {
       await store.dispatch(initQuery('allTodos', queryDef(client)))
       uut = mount(
         <CozyProvider client={client}>
-          <Query fetchPolicy='cache-only' query={queryDef}>{({data}) => (
-            <ul>
-            { data.map(x => <li key={x._id}>{ x.label }</li>) }
-            </ul>
-          )}</Query>
+          <Query fetchPolicy="cache-only" query={queryDef}>
+            {({ data }) => (
+              <ul>
+                {data.map(x => (
+                  <li key={x._id}>{x.label}</li>
+                ))}
+              </ul>
+            )}
+          </Query>
         </CozyProvider>
       )
     })
@@ -87,5 +97,4 @@ describe('Query', () => {
       expect(uut.html()).toContain('Build stuff')
     })
   })
-
 })

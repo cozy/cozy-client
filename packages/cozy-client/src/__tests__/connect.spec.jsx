@@ -20,8 +20,11 @@ describe('connect', () => {
     client.setStore(store)
     const Foo = () => <div>Foo</div>
     const query = client.all('io.cozy.todos')
-    const ConnectedFoo = connect(query, { as: 'allTodos' })(Foo)
-    const wrapper = shallow(<ConnectedFoo />, { context: { client } })
+    const ConnectedFoo = connect(
+      query,
+      { as: 'allTodos' }
+    )(Foo)
+    shallow(<ConnectedFoo />, { context: { client } })
     expect(store.getActions()[0]).toEqual(initQuery('allTodos', query))
   })
 
@@ -50,11 +53,18 @@ describe('connect', () => {
       fetchStatus === 'loading' ? (
         <div>Loading</div>
       ) : (
-        <ul>{data.map(todo => <li key={todo._id}>{todo.label}</li>)}</ul>
+        <ul>
+          {data.map(todo => (
+            <li key={todo._id}>{todo.label}</li>
+          ))}
+        </ul>
       )
 
     const query = client.all('io.cozy.todos')
-    const ConnectedTodoList = connect(query, { as: 'allTodos' })(TodoList)
+    const ConnectedTodoList = connect(
+      query,
+      { as: 'allTodos' }
+    )(TodoList)
     const wrapper = shallow(<ConnectedTodoList />, {
       context: { client, store }
     })
