@@ -218,7 +218,7 @@ export default class CozyClient {
   }
 
   async query(queryDefinition, { update, ...options } = {}) {
-    this.getOrCreateStore()
+    this.ensureStore()
     const queryId = options.as || this.generateId()
     this.ensureQueryExists(queryId, queryDefinition)
     try {
@@ -236,14 +236,14 @@ export default class CozyClient {
   }
 
   watchQuery(queryDefinition, options = {}) {
-    this.getOrCreateStore()
+    this.ensureStore()
     const queryId = options.as || this.generateId()
     this.ensureQueryExists(queryId, queryDefinition)
     return new ObservableQuery(queryId, queryDefinition, this)
   }
 
   async mutate(mutationDefinition, { update, updateQueries, ...options } = {}) {
-    this.getOrCreateStore()
+    this.ensureStore()
     const mutationId = options.as || this.generateId()
     this.dispatch(initMutation(mutationId, mutationDefinition))
     try {
@@ -508,11 +508,10 @@ export default class CozyClient {
     this.store = store
   }
 
-  getOrCreateStore() {
+  ensureStore() {
     if (!this.store) {
       this.setStore(createStore())
     }
-    return this.store
   }
 
   createClient() {

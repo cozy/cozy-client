@@ -101,7 +101,7 @@ export default class ObservableQuery {
   }
 
   getStore() {
-    return this.client.getOrCreateStore()
+    return this.client.store
   }
 }
 
