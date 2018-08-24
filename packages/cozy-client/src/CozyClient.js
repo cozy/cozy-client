@@ -1,5 +1,5 @@
 import StackLink from './StackLink'
-import Association from './associations'
+import { create as createAssociation } from './associations'
 import { QueryDefinition, Mutations } from './dsl'
 import CozyStackClient, { OAuthClient } from 'cozy-stack-client'
 import { authenticateWithCordova } from './authentication/mobile'
@@ -209,6 +209,7 @@ export default class CozyClient {
   }
 
   ensureQueryExists(queryId, queryDefinition) {
+    this.getOrCreateStore()
     const existingQuery = getQueryFromState(this.store.getState(), queryId)
     // Don't trigger the INIT_QUERY for fetchMore() calls
     if (existingQuery.fetchStatus !== 'loaded' || !queryDefinition.skip) {
@@ -370,6 +371,7 @@ export default class CozyClient {
         ...this.hydrateRelationships(doc, associations, queryId)
       }))
     } catch (err) {
+      console.error(err)
       return documents
     }
   }
@@ -391,14 +393,14 @@ export default class CozyClient {
     return associations.reduce(
       (acc, assoc) => ({
         ...acc,
-        [assoc.name]: Association.create(document, assoc, methods)
+        [assoc.name]: createAssociation(document, assoc, methods)
       }),
       {}
     )
   }
 
   getAssociation(document, associationName, queryId) {
-    return Association.create(
+    return createAssociation(
       document,
       this.getModelAssociation(document._type, associationName),
       this.getAssociationStoreAccessors(queryId)
@@ -499,6 +501,10 @@ export default class CozyClient {
   }
 
   setStore(store) {
+    if (store === undefined) {
+      throw new Error('Store is undefined')
+    }
+
     this.store = store
   }
 

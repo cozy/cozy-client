@@ -1,5 +1,9 @@
-export default class HasManyAssociation {
+import Association from './Association'
+
+export default class HasManyAssociation extends Association {
   constructor(target, name, doctype, { get, query, mutate, save }) {
+    super()
+
     this.target = target
     this.name = name
     this.doctype = doctype
