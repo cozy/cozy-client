@@ -16,8 +16,7 @@
     "pouchdb-find": "^7.0.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "jest": "^23.0.0-alpha.0"
+    "babel-cli": "^6.26.0"
   },
   "scripts": {
     "build": "../../bin/build",

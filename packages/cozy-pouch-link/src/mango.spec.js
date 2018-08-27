@@ -1,6 +1,7 @@
-import { getIndexFields } from '../src/mango'
 import CozyClient from 'cozy-client'
-import { TODO_SCHEMA } from './fixtures'
+
+import { getIndexFields } from './mango'
+import { TODO_SCHEMA } from './__tests__/fixtures'
 
 describe('mango utils', () => {
   const client = new CozyClient({

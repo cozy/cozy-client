@@ -1,7 +1,7 @@
 Publishing
 ----------
 
-We use lerna for publishing. 
+We use lerna for publishing.
 
 ```
 lerna publish
@@ -42,5 +42,6 @@ cozy-banks
 cozy-client
 
 $ cd cozy-client/packages/cozy-client
-$ ln -s ~/code/cozy-banks/node_modules node_modules
+$ rm -rf node_modules
+$ ln -s ~/code/cozy-banks/node_modules .
 ```

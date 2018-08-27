@@ -184,13 +184,13 @@ Cozy Link is a simple yet powerful way to describe how you want to get the resul
 
 Links are units that you can chain together to define how each query should be handled: this allows us to use different sources of data, or to control the request lifecycle in a way that makes sense for your app. The first link operates on an operation object and each subsequent link operates on the result of the previous link:
 
-![links chain](docs/cozy-client-links.png)
+![links chain](./cozy-client-links.png)
 
 In the chain example pictured above, the Dedup link would avoid re-fetching the same query, the PouchDB link would try to get the data from a local Pouch instance, and fallback to the Stack link, assisted by the Retry link that will try to fetch again the query in case of a network error.
 
 #### Using links
 
-To create a link to use with Cozy Client, you can import one from `cozy-client` or create your own. A `StackLink` will be setup by default, but you can instantiate if yourself:
+To create a link to use with Cozy Client, you can import one from `cozy-client` or create your own. A `StackLink` will be setup by default, but you can instantiate it yourself:
 
 ```js
 import CozyClient, { StackLink } from 'cozy-client'
@@ -212,11 +212,7 @@ import PouchDBLink from 'cozy-pouch-link'
 import LogLink from '../LogLink'
 
 const stackLink = new StackLink()
-
-const pouchLink = new PouchDBLink({
-  doctypes: [...]
-})
-
+const pouchLink = new PouchDBLink({ doctypes: [...] })
 const logLink = new LogLink()
 
 const client = new CozyClient({

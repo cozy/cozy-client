@@ -1,8 +1,8 @@
-node_modules/*
-packages/*/node_modules/*
+node_modules
+packages/*/node_modules
 packages/*/dist
 packages/*/yarn-error.log
 lerna-debug.log
 npm-debug.log
 yarn-error.log
-coverage/*
+coverage
