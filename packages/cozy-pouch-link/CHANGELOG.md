@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.3.0"></a>
+# [2.3.0](https://github.com/cozy/cozy-client/compare/v2.2.3...v2.3.0) (2018-08-27)
+
+
+### Features
+
+* Add logout function 👋 ([b2764ad](https://github.com/cozy/cozy-client/commit/b2764ad))
+
+
+
+
 <a name="2.2.3"></a>
 ## [2.2.3](https://github.com/cozy/cozy-client/compare/v2.2.2...v2.2.3) (2018-08-27)
 
