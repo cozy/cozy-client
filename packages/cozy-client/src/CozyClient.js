@@ -76,10 +76,35 @@ export default class CozyClient {
   }
 
   registerClientOnLinks(links) {
-    links = Array.isArray(links) ? links : [links]
-    for (let link of links) {
+    this.links = Array.isArray(links) ? links : [links]
+    for (const link of this.links) {
       if (!link.client && link.registerClient) {
-        link.registerClient(this.client)
+        try {
+          link.registerClient(this.client)
+        } catch (e) {
+          console.warn(e)
+        }
+      }
+    }
+  }
+
+  async logout() {
+    // unregister client on stack
+    if (
+      this.client.unregister &&
+      (!this.client.isRegistered || this.client.isRegistered())
+    ) {
+      await this.client.unregister()
+    }
+
+    // clean information on links
+    for (const link of this.links) {
+      if (link.reset) {
+        try {
+          await link.reset()
+        } catch (e) {
+          console.warn(e)
+        }
       }
     }
   }

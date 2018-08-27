@@ -439,3 +439,8 @@ if (!storedToken) {
   localStorage.setItem('infos', JSON.stringify(infos))
 }
 ```
+
+### Logout a client
+
+When a user logout, we would like remove all references on this instance and
+remove all user data. You can just use `cozyClient.logout()`.

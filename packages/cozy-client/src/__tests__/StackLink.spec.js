@@ -31,4 +31,12 @@ describe('StackLink', () => {
       )
     })
   })
+
+  describe('reset', () => {
+    it('should delete client', async () => {
+      expect(link.client).not.toBeUndefined()
+      await link.reset()
+      expect(link.client).toBeUndefined()
+    })
+  })
 })

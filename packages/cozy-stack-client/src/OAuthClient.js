@@ -147,14 +147,12 @@ export default class OAuthClient extends CozyStackClient {
   async unregister() {
     if (!this.isRegistered()) throw new NotRegisteredException()
 
-    return this.fetchJSON(
-      'DELETE',
-      `/auth/register/${this.oauthOptions.clientID}`,
-      null,
-      {
-        credentials: this.registrationAccessTokenToAuthHeader()
-      }
-    )
+    const clientID = this.oauthOptions.clientID
+    this.oauthOptions.clientID = ''
+
+    return this.fetchJSON('DELETE', `/auth/register/${clientID}`, null, {
+      credentials: this.registrationAccessTokenToAuthHeader()
+    })
   }
 
   /**
