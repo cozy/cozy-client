@@ -73,8 +73,10 @@ describe('OAuthClient', () => {
     })
 
     it('should unregister a client', () => {
+      expect(client.isRegistered()).toBeTruthy()
       client.unregister()
       expect(fetch.mock.calls[0]).toMatchSnapshot()
+      expect(client.isRegistered()).toBeFalsy()
     })
 
     it('should fetch client informations', () => {
