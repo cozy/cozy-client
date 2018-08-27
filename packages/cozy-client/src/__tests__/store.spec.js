@@ -21,9 +21,11 @@ describe('Store', () => {
 
   describe('getDocumentFromState', () => {
     it('should return null when the store is empty', () => {
+      const spy = jest.spyOn(global.console, 'warn').mockReturnValue(jest.fn())
       expect(
         getDocumentFromState(store.getState(), 'io.cozy.todos', TODO_1._id)
       ).toBe(null)
+      spy.mockRestore()
     })
 
     it('should return the document if in store', () => {
@@ -38,9 +40,11 @@ describe('Store', () => {
       expect(
         getDocumentFromState(store.getState(), 'io.cozy.todos', TODO_1._id)
       ).toEqual(TODO_1)
+      const spy = jest.spyOn(global.console, 'warn').mockReturnValue(jest.fn())
       expect(
         getDocumentFromState(store.getState(), 'io.cozy.todos', 'WXYZ')
       ).toBe(null)
+      spy.mockRestore()
     })
 
     it('should return a newly created doc received in a mutation result', () => {
