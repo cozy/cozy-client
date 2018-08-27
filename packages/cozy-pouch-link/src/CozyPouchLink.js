@@ -87,9 +87,14 @@ export default class PouchLink extends CozyLink {
 
   registerClient(client) {
     this.client = client
-    if (this.options.initialSync) {
+    if (client && this.options.initialSync) {
       this.syncAll()
     }
+  }
+
+  async reset() {
+    await this.resetAllDBs()
+    this.client = undefined
   }
 
   getAllDBs() {

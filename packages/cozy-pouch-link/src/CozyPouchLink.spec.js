@@ -136,4 +136,28 @@ describe('CozyPouchLink', () => {
       })
     })
   })
+
+  describe('reset', async () => {
+    let spy
+
+    beforeEach(() => {
+      spy = jest.spyOn(link, 'resetAllDBs').mockReturnValue(jest.fn())
+    })
+
+    afterEach(async () => {
+      spy.mockRestore()
+    })
+
+    it('should delete all databases', async () => {
+      await link.reset()
+      expect(link.resetAllDBs).toHaveBeenCalledTimes(1)
+    })
+
+    it('should delete client', async () => {
+      link.registerClient(jest.fn())
+      expect(link.client).not.toBeUndefined()
+      await link.reset()
+      expect(link.client).toBeUndefined()
+    })
+  })
 })

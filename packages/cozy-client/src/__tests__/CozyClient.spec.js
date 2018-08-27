@@ -53,6 +53,46 @@ describe('CozyClient initialization', () => {
   })
 })
 
+describe('CozyClient logout', () => {
+  let client, links
+
+  beforeEach(() => {
+    links = [
+      new CozyLink((operation, result = '', forward) => {
+        return forward(operation, result + 'foo')
+      }),
+      new CozyLink((operation, result, forward) => {
+        return forward(operation, result + 'bar')
+      }),
+      (operation, result) => {
+        return result + 'baz'
+      }
+    ]
+    links.forEach(link => {
+      link.registerClient = jest.fn()
+    })
+    client = new CozyClient({ link: links })
+  })
+
+  it('should call reset on each link that can be reset', async () => {
+    links[0].reset = jest.fn()
+    links[2].reset = jest.fn()
+    await client.logout()
+    expect(links[0].reset).toHaveBeenCalledTimes(1)
+    expect(links[2].reset).toHaveBeenCalledTimes(1)
+  })
+
+  it('should call all reset even if a reset throws an error', async () => {
+    const spy = jest.spyOn(global.console, 'error').mockReturnValue(jest.fn())
+    links[0].reset = jest.fn().mockRejectedValue(new Error('Async error'))
+    links[2].reset = jest.fn()
+    await client.logout()
+    expect(links[0].reset).toHaveBeenCalledTimes(1)
+    expect(links[2].reset).toHaveBeenCalledTimes(1)
+    spy.mockRestore()
+  })
+})
+
 describe('CozyClient', () => {
   const requestHandler = jest.fn()
   const store = configureStore()({})

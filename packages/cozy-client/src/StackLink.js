@@ -11,6 +11,10 @@ export default class StackLink extends CozyLink {
     this.client = client
   }
 
+  reset() {
+    this.client = undefined
+  }
+
   request(operation) {
     if (operation.mutationType) {
       return this.executeMutation(operation)
