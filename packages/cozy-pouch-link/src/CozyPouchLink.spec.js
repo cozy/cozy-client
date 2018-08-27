@@ -1,7 +1,14 @@
-import CozyPouchLink from '../src'
 import CozyClient from 'cozy-client'
-import { TODO_SCHEMA, TODO_1, TODO_2, TODO_3, TODO_4 } from './fixtures'
 import omit from 'lodash/omit'
+
+import CozyPouchLink from '.'
+import {
+  TODO_SCHEMA,
+  TODO_1,
+  TODO_2,
+  TODO_3,
+  TODO_4
+} from './__tests__/fixtures'
 
 const mockClient = {
   client: {
