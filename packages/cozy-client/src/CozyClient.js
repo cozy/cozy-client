@@ -179,7 +179,7 @@ export default class CozyClient {
   }
 
   /**
-   * getDocumentSavePlan - Creates a list of mutations to execute to create a document and it's relationships.
+   * getDocumentSavePlan - Creates a list of mutations to execute to create a document and its relationships.
    *
    * @param  {object} document      The base document to create
    * @param  {object} relationships The list of relationships to add, as a dictionnary. Keys should be relationship names and values the documents to link.
