@@ -3,6 +3,8 @@ import PouchDB from 'pouchdb'
 import PouchDBFind from 'pouchdb-find'
 import fromPairs from 'lodash/fromPairs'
 import omit from 'lodash/omit'
+
+import { withoutDesignDocuments } from './helpers'
 import { getIndexNameFromFields, getIndexFields } from './mango'
 
 PouchDB.plugin(PouchDBFind)
@@ -208,6 +210,7 @@ export default class PouchLink extends CozyLink {
       res = await db.allDocs({
         include_docs: true
       })
+      res = withoutDesignDocuments(res)
     } else {
       const findOpts = {
         sort,
