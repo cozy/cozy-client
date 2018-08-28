@@ -187,14 +187,31 @@ export default class CozyClient {
     return true
   }
 
+  /**
+   * getDocumentSavePlan - Creates a list of mutations to execute to create a document and it's relationships.
+   *
+   * @param  {object} document      The base document to create
+   * @param  {object} relationships The list of relationships to add, as a dictionnary. Keys should be relationship names and values the documents to link.
+   * @returns {object[]}  One or more mutation to execute
+   * @example
+   * const baseDoc = { _type: 'io.cozy.todo', label: 'Go hiking' }
+   * // relations can be arrays or single objects
+   * const relationships = {
+   *   attachments: [{ _id: 12345, _type: 'io.cozy.files' }, { _id: 6789, _type: 'io.cozy.files' }],
+   *   bills: { _id: 9999, _type: 'io.cozy.bills' }
+   * }
+   * client.getDocumentSavePlan(baseDoc, relationships)
+   */
   getDocumentSavePlan(document, relationships) {
     const newDocument = !document._id
     const saveMutation = newDocument
       ? Mutations.createDocument(document)
       : Mutations.updateDocument(document)
-    const hasRelationships = relationships && Object.values(relationships).filter(relations => {
-      return Array.isArray(relations) ? relations.length > 0 : relations
-    }).length > 0
+    const hasRelationships =
+      relationships &&
+      Object.values(relationships).filter(relations => {
+        return Array.isArray(relations) ? relations.length > 0 : relations
+      }).length > 0
     if (!hasRelationships) {
       return saveMutation
     }
