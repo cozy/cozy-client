@@ -1,10 +1,10 @@
 import configureStore from 'redux-mock-store'
 
-import { TODO_SCHEMA, TODO_1, TODO_2, TODO_3 } from './fixtures'
+import { TODO_SCHEMA, TODO_1, TODO_2, TODO_3 } from './__tests__/fixtures'
 
-import CozyClient from '../CozyClient'
-import CozyLink from '../CozyLink'
-import { Mutations, QueryDefinition } from '../dsl'
+import CozyClient from './CozyClient'
+import CozyLink from './CozyLink'
+import { Mutations, QueryDefinition } from './dsl'
 import {
   initQuery,
   receiveQueryResult,
@@ -12,8 +12,8 @@ import {
   initMutation,
   receiveMutationResult,
   receiveMutationError
-} from '../store'
-import HasManyFilesAssociation from '../associations/HasManyFilesAssociation'
+} from './store'
+import HasManyFilesAssociation from './associations/HasManyFilesAssociation'
 
 describe('CozyClient initialization', () => {
   let client, links
