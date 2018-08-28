@@ -151,6 +151,22 @@ describe('CozyClient', () => {
         ])
       ])
     })
+
+    it('should handle empty associations', () => {
+      const NEW_TODO = {
+        _type: 'io.cozy.todos',
+        label: 'Buy RAM',
+        attachments: [{ _id: 12345, _type: 'io.cozy.files' }]
+      }
+      const mutation = client.getDocumentSavePlan(NEW_TODO, {
+        attachments: []
+      })
+      expect(Array.isArray(mutation)).toBe(false)
+      expect(mutation).toEqual({
+        mutationType: 'CREATE_DOCUMENT',
+        document: NEW_TODO
+      })
+    })
   })
 
   describe('query', () => {

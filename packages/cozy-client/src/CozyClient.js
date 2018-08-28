@@ -192,7 +192,10 @@ export default class CozyClient {
     const saveMutation = newDocument
       ? Mutations.createDocument(document)
       : Mutations.updateDocument(document)
-    if (!relationships) {
+    const hasRelationships = relationships && Object.values(relationships).filter(relations => {
+      return Array.isArray(relations) ? relations.length > 0 : relations
+    }).length > 0
+    if (!hasRelationships) {
       return saveMutation
     }
     if (relationships && !newDocument) {
