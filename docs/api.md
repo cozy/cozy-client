@@ -52,6 +52,7 @@ query to work</p>
 
 * [CozyClient](#module_CozyClient)
     * [.collection(doctype)](#module_CozyClient+collection) ⇒ <code>DocumentCollection</code>
+    * [.getDocumentSavePlan(document, relationships)](#module_CozyClient+getDocumentSavePlan) ⇒ <code>Array.&lt;object&gt;</code>
     * [.register(cozyURL)](#module_CozyClient+register) ⇒ <code>object</code>
     * [.startOAuthFlow(openURLCallback)](#module_CozyClient+startOAuthFlow) ⇒ <code>object</code>
     * [.renewAuthorization()](#module_CozyClient+renewAuthorization) ⇒ <code>object</code>
@@ -68,6 +69,29 @@ a [DocumentCollection](DocumentCollection) instance.
 | --- | --- | --- |
 | doctype | <code>String</code> | The collection doctype. |
 
+<a name="module_CozyClient+getDocumentSavePlan"></a>
+
+### cozyClient.getDocumentSavePlan(document, relationships) ⇒ <code>Array.&lt;object&gt;</code>
+getDocumentSavePlan - Creates a list of mutations to execute to create a document and it's relationships.
+
+**Kind**: instance method of [<code>CozyClient</code>](#module_CozyClient)  
+**Returns**: <code>Array.&lt;object&gt;</code> - One or more mutation to execute  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | <code>object</code> | The base document to create |
+| relationships | <code>object</code> | The list of relationships to add, as a dictionnary. Keys should be relationship names and values the documents to link. |
+
+**Example**  
+```js
+const baseDoc = { _type: 'io.cozy.todo', label: 'Go hiking' }
+// relations can be arrays or single objects
+const relationships = {
+  attachments: [{ _id: 12345, _type: 'io.cozy.files' }, { _id: 6789, _type: 'io.cozy.files' }],
+  bills: { _id: 9999, _type: 'io.cozy.bills' }
+}
+client.getDocumentSavePlan(baseDoc, relationships)
+```
 <a name="module_CozyClient+register"></a>
 
 ### cozyClient.register(cozyURL) ⇒ <code>object</code>
