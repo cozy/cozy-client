@@ -1,13 +1,13 @@
 import { uri, attempt, sleep } from './utils'
 import uniq from 'lodash/uniq'
-
-export const FETCH_LIMIT = 50
+import * as querystring from './querystring'
 
 export const normalizeDoc = (doc, doctype) => {
   const id = doc._id || doc.id
   return { id, _id: id, _type: doctype, ...doc }
 }
 
+const isDesignDoc = doc => doc.hasOwnProperty('views')
 /**
  * Abstracts a collection of documents of the same doctype, providing CRUD methods and other helpers.
  * @module DocumentCollection
@@ -29,28 +29,22 @@ export default class DocumentCollection {
    * @throws {FetchError}
    */
   async all(options = {}) {
-    const { limit = FETCH_LIMIT, skip = 0, keys = undefined } = options
-    const path =
-      // limit: null is a (temporary ?) bypass of the limit for the search that needs all docs
-      limit === null
-        ? uri`/data/${this.doctype}/_all_docs?include_docs=true`
-        : keys
-          ? uri`/data/${
-              this.doctype
-            }/_all_docs?include_docs=true&keys=[${keys
-              .map(k => `"${k}"`)
-              .join(',')}]`
-          : uri`/data/${
-              this.doctype
-            }/_all_docs?include_docs=true&limit=${limit}&skip=${skip}`
+    const { limit, skip = 0 } = options
+
+    const url = uri`/data/${this.doctype}/_all_docs`
+    const params = {
+      include_docs: true,
+      limit,
+      skip
+    }
+    const path = querystring.buildURL(url, params)
+
     // If no document of this doctype exist, this route will return a 404,
     // so we need to try/catch and return an empty response object in case of a 404
     try {
       const resp = await this.client.fetchJSON('GET', path)
       // WARN: looks like this route returns something looking like a couchDB design doc, we need to filter it:
-      const rows = resp.rows.filter(
-        row => row.doc && !row.doc.hasOwnProperty('views')
-      )
+      const rows = resp.rows.filter(row => row.doc && !isDesignDoc(row.doc))
       // WARN: the JSON response from the stack is not homogenous with other routes (offset? rows? total_rows?)
       return {
         data: rows.map(row => normalizeDoc(row.doc, this.doctype)),
@@ -161,7 +155,7 @@ export default class DocumentCollection {
   async toMangoOptions(selector, options = {}) {
     const indexFields = this.getIndexFields({ ...options, selector })
     const indexId = options.indexId || (await this.getIndexId(indexFields))
-    const { fields, skip = 0, limit = FETCH_LIMIT } = options
+    const { fields, skip = 0, limit } = options
     // Mango wants an array of single-property-objects..
     const sortOrders = options.sort
       ? uniq(Object.values(options.sort))

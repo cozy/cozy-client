@@ -23,7 +23,7 @@ const FIND_RESPONSE_FIXTURE = {
     { _id: '12345', label: 'Buy bread', done: false },
     { _id: '67890', label: 'Check email', done: false }
   ],
-  limit: 50,
+  limit: 100,
   next: false
 }
 
@@ -89,7 +89,7 @@ describe('DocumentCollection', () => {
       await collection.all()
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
-        '/data/io.cozy.todos/_all_docs?include_docs=true&limit=50&skip=0'
+        '/data/io.cozy.todos/_all_docs?include_docs=true'
       )
     })
 
@@ -204,7 +204,6 @@ describe('DocumentCollection', () => {
         'POST',
         '/data/io.cozy.todos/_find',
         {
-          limit: 50,
           selector: { done: false },
           skip: 0,
           use_index: '_design/123456'
@@ -234,7 +233,6 @@ describe('DocumentCollection', () => {
         'POST',
         '/data/io.cozy.todos/_find',
         {
-          limit: 50,
           skip: 0,
           selector: { done: false },
           sort: [{ done: 'desc' }, { label: 'desc' }],
@@ -250,7 +248,6 @@ describe('DocumentCollection', () => {
         'POST',
         '/data/io.cozy.todos/_find',
         {
-          limit: 50,
           skip: 0,
           selector: { done: false },
           sort: [{ done: 'asc' }, { label: 'asc' }],
@@ -262,7 +259,6 @@ describe('DocumentCollection', () => {
         'POST',
         '/data/io.cozy.todos/_find',
         {
-          limit: 50,
           skip: 0,
           selector: { done: false },
           sort: [{ done: 'desc' }, { label: 'desc' }],
