@@ -8,6 +8,7 @@ export const normalizeDoc = (doc, doctype) => {
   return { id, _id: id, _type: doctype, ...doc }
 }
 
+const isDesignDoc = doc => doc.hasOwnProperty('views')
 /**
  * Abstracts a collection of documents of the same doctype, providing CRUD methods and other helpers.
  * @module DocumentCollection
@@ -48,9 +49,7 @@ export default class DocumentCollection {
     try {
       const resp = await this.client.fetchJSON('GET', path)
       // WARN: looks like this route returns something looking like a couchDB design doc, we need to filter it:
-      const rows = resp.rows.filter(
-        row => row.doc && !row.doc.hasOwnProperty('views')
-      )
+      const rows = resp.rows.filter(row => row.doc && !isDesignDoc(row.doc))
       // WARN: the JSON response from the stack is not homogenous with other routes (offset? rows? total_rows?)
       return {
         data: rows.map(row => normalizeDoc(row.doc, this.doctype)),
