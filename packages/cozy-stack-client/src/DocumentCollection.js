@@ -1,5 +1,6 @@
 import { uri, attempt, sleep } from './utils'
 import uniq from 'lodash/uniq'
+import * as querystring from './querystring'
 
 export const FETCH_LIMIT = 50
 
@@ -30,20 +31,16 @@ export default class DocumentCollection {
    * @throws {FetchError}
    */
   async all(options = {}) {
-    const { limit = FETCH_LIMIT, skip = 0, keys = undefined } = options
-    const path =
-      // limit: null is a (temporary ?) bypass of the limit for the search that needs all docs
-      limit === null
-        ? uri`/data/${this.doctype}/_all_docs?include_docs=true`
-        : keys
-          ? uri`/data/${
-              this.doctype
-            }/_all_docs?include_docs=true&keys=[${keys
-              .map(k => `"${k}"`)
-              .join(',')}]`
-          : uri`/data/${
-              this.doctype
-            }/_all_docs?include_docs=true&limit=${limit}&skip=${skip}`
+    const { limit = FETCH_LIMIT, skip = 0 } = options
+
+    const url = uri`/data/${this.doctype}/_all_docs`
+    const params = {
+      include_docs: true,
+      limit,
+      skip
+    }
+    const path = querystring.buildURL(url, params)
+
     // If no document of this doctype exist, this route will return a 404,
     // so we need to try/catch and return an empty response object in case of a 404
     try {

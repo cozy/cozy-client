@@ -4,7 +4,7 @@ import DocumentCollection, {
   FETCH_LIMIT
 } from './DocumentCollection'
 import { uri, slugify, forceFileDownload } from './utils'
-
+import * as querystring from './querystring'
 const ROOT_DIR_ID = 'io.cozy.files.root-dir'
 const CONTENT_TYPE_OCTET_STREAM = 'application/octet-stream'
 
@@ -67,12 +67,15 @@ export default class FileCollection extends DocumentCollection {
   }
 
   async findReferencedBy(document, { skip = 0, limit = FETCH_LIMIT } = {}) {
-    const resp = await this.client.fetchJSON(
-      'GET',
-      uri`/data/${document._type}/${
-        document._id
-      }/relationships/references?include=files&sort=datetime&page[limit]=${limit}&page[skip]=${skip}`
-    )
+    const params = {
+      include: 'files',
+      sort: 'date',
+      'page[limit]': limit,
+      'page[skip]': skip
+    }
+    const url = `/data/${document._type}/${document._id}/relationships/references`
+    const path = querystring.buildURL(url, params)
+    const resp = await this.client.fetchJSON('GET', path)
     return {
       data: resp.data.map(f => normalizeFile(f)),
       included: resp.included ? resp.included.map(f => normalizeFile(f)) : [],
@@ -193,10 +196,13 @@ export default class FileCollection extends DocumentCollection {
 
   async statById(id, options = {}) {
     const { limit = FETCH_LIMIT, skip = 0 } = options
-    const resp = await this.client.fetchJSON(
-      'GET',
-      uri`/files/${id}?limit=${limit}&skip=${skip}`
-    )
+    const params = {
+      limit,
+      skip
+    }
+    const url = `/files/${id}`
+    const path = querystring.buildURL(url, params)
+    const resp = await this.client.fetchJSON('GET', path)
     return {
       data: normalizeFile(resp.data),
       included: resp.included && resp.included.map(f => normalizeFile(f))
