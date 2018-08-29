@@ -51,18 +51,12 @@ describe('FileCollection', () => {
 
     it('should call the right route', async () => {
       await collection.statById(42)
-      expect(client.fetchJSON).toHaveBeenCalledWith(
-        'GET',
-        '/files/42?limit=50&skip=0'
-      )
+      expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/files/42')
     })
 
     it('should accept skip and limit options', async () => {
       await collection.statById(42, { skip: 50, limit: 200 })
-      expect(client.fetchJSON).toHaveBeenCalledWith(
-        'GET',
-        '/files/42?limit=200&skip=50'
-      )
+      expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/files/42')
     })
 
     it('should return a correct JSON API response', async () => {

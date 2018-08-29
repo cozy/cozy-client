@@ -2,8 +2,6 @@ import { uri, attempt, sleep } from './utils'
 import uniq from 'lodash/uniq'
 import * as querystring from './querystring'
 
-export const FETCH_LIMIT = 50
-
 export const normalizeDoc = (doc, doctype) => {
   const id = doc._id || doc.id
   return { id, _id: id, _type: doctype, ...doc }
@@ -31,7 +29,7 @@ export default class DocumentCollection {
    * @throws {FetchError}
    */
   async all(options = {}) {
-    const { limit = FETCH_LIMIT, skip = 0 } = options
+    const { limit, skip = 0 } = options
 
     const url = uri`/data/${this.doctype}/_all_docs`
     const params = {
@@ -157,7 +155,7 @@ export default class DocumentCollection {
   async toMangoOptions(selector, options = {}) {
     const indexFields = this.getIndexFields({ ...options, selector })
     const indexId = options.indexId || (await this.getIndexId(indexFields))
-    const { fields, skip = 0, limit = FETCH_LIMIT } = options
+    const { fields, skip = 0, limit } = options
     // Mango wants an array of single-property-objects..
     const sortOrders = options.sort
       ? uniq(Object.values(options.sort))
