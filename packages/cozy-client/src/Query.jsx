@@ -29,10 +29,10 @@ export default class Query extends Component {
         : {}
 
     const query = this.observableQuery
-    this.createDocument = query.create.bind(query)
-    this.saveDocument = query.save.bind(query)
-    this.deleteDocument = query.destroy.bind(query)
-    this.getAssociation = query.getAssociation.bind(this.observableQuery)
+    this.createDocument = client.create.bind(client)
+    this.saveDocument = client.save.bind(client)
+    this.deleteDocument = client.destroy.bind(client)
+    this.getAssociation = client.getAssociation.bind(client)
     this.fetchMore = query.fetchMore.bind(query)
   }
 

@@ -56,30 +56,6 @@ export default class ObservableQuery {
     )
   }
 
-  getAssociation(document, associationName) {
-    return this.client.getAssociation(document, associationName)
-  }
-
-  create(type, { _type, ...attributes }, relationships, mutationOptions = {}) {
-    return this.client.create(type, attributes, relationships, mutationOptions)
-  }
-
-  save(document, mutationOptions = {}) {
-    return this.client.save(document, mutationOptions)
-  }
-
-  validate(document) {
-    return this.client.validate(document)
-  }
-
-  destroy(document, mutationOptions = {}) {
-    return this.client.destroy(document, mutationOptions)
-  }
-
-  upload(file, dirPath, mutationOptions = {}) {
-    return this.client.upload(file, dirPath)
-  }
-
   currentRawResult() {
     return getRawQueryFromState(this.getStore().getState(), this.queryId)
   }
