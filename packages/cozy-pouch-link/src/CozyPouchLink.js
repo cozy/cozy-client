@@ -135,9 +135,9 @@ export default class PouchLink extends CozyLink {
           console.warn('Error while syncing', err)
           reject('Error while syncing')
         })
-        info.syncing = replication.on('complete', () => {
+        info.syncing = replication.on('complete', result => {
           info.syncing = null
-          resolve()
+          resolve(result)
         })
       }
     })
