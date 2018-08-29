@@ -39,8 +39,7 @@ export default class ObservableQuery {
     }
     const data = this.client.hydrateDocuments(
       this.definition.doctype,
-      result.data,
-      this.queryId
+      result.data
     )
     return {
       ...result,
@@ -58,7 +57,7 @@ export default class ObservableQuery {
   }
 
   getAssociation(document, associationName) {
-    return this.client.getAssociation(document, associationName, this.queryId)
+    return this.client.getAssociation(document, associationName)
   }
 
   create(type, { _type, ...attributes }, relationships, mutationOptions = {}) {
