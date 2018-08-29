@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.4.1"></a>
+## [2.4.1](https://github.com/cozy/cozy-client/compare/v2.4.0...v2.4.1) (2018-08-29)
+
+
+### Bug Fixes
+
+* **pouch:** Resolve with result after replication ([7c6b365](https://github.com/cozy/cozy-client/commit/7c6b365))
+
+
+
+
 <a name="2.4.0"></a>
 # [2.4.0](https://github.com/cozy/cozy-client/compare/v2.3.0...v2.4.0) (2018-08-28)
 
