@@ -1,3 +1,12 @@
+/**
+ * Responsible for
+ *
+ * - Creating observable queries
+ * - Hydration
+ * - Creating plan for saving documents
+ * - Associations
+ */
+
 import StackLink from './StackLink'
 import { create as createAssociation } from './associations'
 import { QueryDefinition, Mutations } from './dsl'

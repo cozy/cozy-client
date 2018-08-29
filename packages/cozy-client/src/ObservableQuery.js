@@ -1,7 +1,7 @@
 /**
  * ObservableQueries are the glue between the store and observers
- * of the store. They know about the QueryDefinition, the client and
- * know how to hydrate documents.
+ * of the store. They have the responsibility to hydrate the documents
+ * before passing them to the React component.
  */
 
 import { getQueryFromState, getRawQueryFromState } from './store'
