@@ -25,7 +25,7 @@ export const authenticateWithCordova = url => {
       }
 
       const onLoadStart = ({ url }) => {
-        const accessCode = /\?access_code=(.+)$/.test(url)
+        const accessCode = /\?code=(.+)$/.test(url)
         const state = /\?state=(.+)$/.test(url)
 
         if (accessCode || state) {

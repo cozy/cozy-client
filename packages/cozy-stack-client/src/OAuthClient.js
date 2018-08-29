@@ -277,7 +277,7 @@ export default class OAuthClient extends CozyStackClient {
 
     const params = new URL(pageURL).searchParams
     const urlStateCode = params.get('state')
-    const urlAccessCode = params.get('access_code')
+    const urlAccessCode = params.get('code')
 
     if (stateCode !== urlStateCode)
       throw new Error('Given state does not match url query state')
