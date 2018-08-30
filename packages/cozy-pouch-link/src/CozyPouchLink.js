@@ -7,6 +7,7 @@ import omit from 'lodash/omit'
 import { withoutDesignDocuments } from './helpers'
 import { getIndexNameFromFields, getIndexFields } from './mango'
 
+import * as jsonapi from './jsonapi'
 PouchDB.plugin(PouchDBFind)
 
 const pipe = fn => res => {
@@ -18,33 +19,9 @@ const pipe = fn => res => {
   return res
 }
 
-const ensureHasBothIds = obj => {
-  if (!obj._id && obj.id) {
-    obj._id = obj.id
-  }
-  if (!obj._id && obj.id) {
-    obj.id = obj._id
-  }
-  return obj
 }
 
-const addDoctype = (arr, doctype) => arr.map(x => ({ ...x, _type: doctype }))
 
-const pouchResToJSONAPI = (res, isArray, doctype) => {
-  if (isArray) {
-    const docs = res.rows || res.docs
-    const offset = res.offset || 0
-    return {
-      data: addDoctype(docs, doctype).map(ensureHasBothIds),
-      meta: { count: docs.length },
-      skip: offset,
-      next: offset + docs.length <= res.total_rows
-    }
-  } else {
-    return {
-      data: ensureHasBothIds(res)
-    }
-  }
 }
 
 const createPouches = doctypes => {
@@ -221,7 +198,7 @@ export default class PouchLink extends CozyLink {
       await this.ensureIndex(doctype, findOpts)
       res = await db.find(findOpts)
     }
-    return pouchResToJSONAPI(res, true, doctype)
+    return jsonapi.fromPouchResult(res, true, doctype)
   }
 
   async executeMutation(mutation, result, forward) {
@@ -244,7 +221,11 @@ export default class PouchLink extends CozyLink {
       default:
         throw new Error(`Unknown mutation type: ${mutation.mutationType}`)
     }
-    return pouchResToJSONAPI(pouchRes, false, getDoctypeFromOperation(mutation))
+    return jsonapi.fromPouchResult(
+      pouchRes,
+      false,
+      getDoctypeFromOperation(mutation)
+    )
   }
 
   createDocument(mutation) {
