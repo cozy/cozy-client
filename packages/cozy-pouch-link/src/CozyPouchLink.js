@@ -125,20 +125,24 @@ export default class PouchLink extends CozyLink {
       if (info.syncing) {
         return resolve(info.syncing)
       } else {
-        const replication = info.db.replicate.from(
-          this.getReplicationUrl(doctype),
-          {
-            batch_size: 1000 // we have mostly small documents
-          }
-        )
-        replication.on('error', err => {
-          console.warn('Error while syncing', err)
-          reject('Error while syncing')
-        })
-        info.syncing = replication.on('complete', result => {
-          info.syncing = null
-          resolve(result)
-        })
+        try {
+          const replication = info.db.replicate.from(
+            this.getReplicationUrl(doctype),
+            {
+              batch_size: 1000 // we have mostly small documents
+            }
+          )
+          replication.on('error', err => {
+            console.warn('Error while syncing', err)
+            reject('Error while syncing')
+          })
+          info.syncing = replication.on('complete', result => {
+            info.syncing = null
+            resolve(result)
+          })
+        } catch (e) {
+          console.warn('Error while replication', e)
+        }
       }
     })
   }
@@ -155,6 +159,13 @@ export default class PouchLink extends CozyLink {
 
   getReplicationUrl(doctype) {
     const client = this.client
+
+    if (!client.token) {
+      throw new Error(
+        "Can't get replication URL since the client doesn't have a token"
+      )
+    }
+
     const basicAuth = client.token.toBasicAuth()
     return (client.uri + '/data/' + doctype).replace('//', `//${basicAuth}`)
   }
