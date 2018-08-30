@@ -1,10 +1,11 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import { withClient, queryConnect } from './hoc'
+import * as mocks from './__tests__/mocks'
 
 describe('with client', () => {
   it('should pass the client to its children', () => {
-    const fakeClient = {}
+    const fakeClient = mocks.client()
     const context = { client: fakeClient }
     class Component extends React.Component {
       render() {
@@ -24,21 +25,21 @@ describe('queryConnect', () => {
       'io.cozy.tata': 'hello2'
     }
     const queryDefinitionFromDoctype = doctype => ({ doctype })
-    const observableQueryFromDefinition = definition => ({
-      create: jest.fn(),
-      save: jest.fn(),
-      destroy: jest.fn(),
-      getAssociation: jest.fn(),
-      fetchMore: jest.fn(),
-      currentResult: () => ({ data: fakeData[definition.doctype] }),
-      subscribe: () => jest.fn()
+    const observableQueryFromDefinition = definition => {
+      return mocks.observableQuery({
+        currentResult: () => ({
+          data: fakeData[definition.doctype]
+        })
+      })
+    }
+
+    const client = mocks.client({
+      all: doctype => queryDefinitionFromDoctype(doctype),
+      watchQuery: queryDef => observableQueryFromDefinition(queryDef)
     })
+
     const context = {
-      client: {
-        query: () => {},
-        all: doctype => queryDefinitionFromDoctype(doctype),
-        watchQuery: queryDef => observableQueryFromDefinition(queryDef)
-      }
+      client
     }
     class Component extends React.Component {
       render() {
