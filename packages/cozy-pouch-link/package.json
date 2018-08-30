@@ -22,5 +22,10 @@
     "build": "../../bin/build",
     "watch": "yarn run build --watch",
     "prepublishOnly": "yarn run build"
+  },
+  "jest": {
+    "testMatch": [
+      "**/(*.)(spec|test).js?(x)"
+    ]
   }
 }
