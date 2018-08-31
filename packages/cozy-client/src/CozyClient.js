@@ -1,3 +1,12 @@
+/**
+ * Responsible for
+ *
+ * - Creating observable queries
+ * - Hydration
+ * - Creating plan for saving documents
+ * - Associations
+ */
+
 import StackLink from './StackLink'
 import { create as createAssociation } from './associations'
 import { QueryDefinition, Mutations } from './dsl'
@@ -384,7 +393,7 @@ export default class CozyClient {
     )
   }
 
-  hydrateDocuments(doctype, documents, queryId) {
+  hydrateDocuments(doctype, documents) {
     if (this.options.autoHydrate === false) {
       return documents
     }
@@ -393,7 +402,7 @@ export default class CozyClient {
       const associations = model.associations
       return documents.map(doc => ({
         ...doc,
-        ...this.hydrateRelationships(doc, associations, queryId)
+        ...this.hydrateRelationships(doc, associations)
       }))
     } catch (err) {
       console.error(err)
@@ -413,8 +422,8 @@ export default class CozyClient {
     }
   }
 
-  hydrateRelationships(document, associations, queryId) {
-    const methods = this.getAssociationStoreAccessors(queryId)
+  hydrateRelationships(document, associations) {
+    const methods = this.getAssociationStoreAccessors()
     return associations.reduce(
       (acc, assoc) => ({
         ...acc,
@@ -424,15 +433,15 @@ export default class CozyClient {
     )
   }
 
-  getAssociation(document, associationName, queryId) {
+  getAssociation(document, associationName) {
     return createAssociation(
       document,
       this.getModelAssociation(document._type, associationName),
-      this.getAssociationStoreAccessors(queryId)
+      this.getAssociationStoreAccessors()
     )
   }
 
-  getAssociationStoreAccessors(queryId) {
+  getAssociationStoreAccessors() {
     return {
       get: this.getDocumentFromState.bind(this),
       save: (document, opts) => this.save.call(this, document, opts),

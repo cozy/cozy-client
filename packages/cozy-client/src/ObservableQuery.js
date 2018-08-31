@@ -1,7 +1,7 @@
 /**
  * ObservableQueries are the glue between the store and observers
- * of the store. They know about the QueryDefinition, the client and
- * know how to hydrate documents.
+ * of the store. They have the responsibility to hydrate the documents
+ * before passing them to the React component.
  */
 
 import { getQueryFromState, getRawQueryFromState } from './store'
@@ -39,8 +39,7 @@ export default class ObservableQuery {
     }
     const data = this.client.hydrateDocuments(
       this.definition.doctype,
-      result.data,
-      this.queryId
+      result.data
     )
     return {
       ...result,
@@ -55,30 +54,6 @@ export default class ObservableQuery {
         as: this.queryId
       }
     )
-  }
-
-  getAssociation(document, associationName) {
-    return this.client.getAssociation(document, associationName, this.queryId)
-  }
-
-  create(type, { _type, ...attributes }, relationships, mutationOptions = {}) {
-    return this.client.create(type, attributes, relationships, mutationOptions)
-  }
-
-  save(document, mutationOptions = {}) {
-    return this.client.save(document, mutationOptions)
-  }
-
-  validate(document) {
-    return this.client.validate(document)
-  }
-
-  destroy(document, mutationOptions = {}) {
-    return this.client.destroy(document, mutationOptions)
-  }
-
-  upload(file, dirPath, mutationOptions = {}) {
-    return this.client.upload(file, dirPath)
   }
 
   currentRawResult() {

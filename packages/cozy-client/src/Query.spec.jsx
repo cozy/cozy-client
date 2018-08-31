@@ -6,22 +6,14 @@ import Query from './Query'
 import { createTestAssets, queryResultFromData } from './__tests__/utils'
 import { initQuery, receiveQueryResult } from './store'
 import { TODOS } from './__tests__/fixtures'
+import * as mocks from './__tests__/mocks'
 
 describe('Query', () => {
-  const fakeQuery = () => ({
-    create: jest.fn(),
-    save: jest.fn(),
-    destroy: jest.fn(),
-    getAssociation: jest.fn(),
-    fetchMore: jest.fn(),
-    currentResult: jest.fn(),
-    subscribe: jest.fn().mockReturnValue(() => {})
-  })
   const queryDef = client => ({ doctype: 'io.cozy.todos' })
-  const client = {
-    watchQuery: queryDef => fakeQuery(),
-    query: jest.fn()
-  }
+  const client = mocks.client({
+    watchQuery: queryDef => mocks.observableQuery()
+  })
+
   const context = { client }
 
   beforeEach(() => {
