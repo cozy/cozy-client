@@ -55,4 +55,17 @@ describe('PouchManager', () => {
     }
     expect(manager.stopReplicationLoop).toHaveBeenCalled()
   })
+
+  it('should not start replication several times', async () => {
+    jest.spyOn(manager, 'replicateOnce')
+    manager.options.replicationDelay = 30 * 1000
+    expect(manager.replicateOnce).toHaveBeenCalledTimes(0)
+    manager.startReplicationLoop()
+    await sleep(1)
+    expect(manager.replicateOnce).toHaveBeenCalledTimes(1)
+    manager.startReplicationLoop()
+    await sleep(1)
+    expect(manager.replicateOnce).toHaveBeenCalledTimes(1)
+    manager.replicateOnce.mockRestore()
+  })
 })
