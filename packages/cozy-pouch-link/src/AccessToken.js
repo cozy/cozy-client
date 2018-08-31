@@ -13,4 +13,22 @@ export default class AccessToken {
   toBasicAuth() {
     return `user:${this.accessToken}@`
   }
+
+  static fromJSON(data) {
+    return new AccessToken({
+      tokenType: data.tokenType,
+      accessToken: data.accessToken,
+      refreshToken: data.refreshToken,
+      scope: data.scope
+    })
+  }
+
+  toJSON() {
+    return {
+      tokenType: this.tokenType,
+      accessToken: this.accessToken,
+      refreshToken: this.refreshToken,
+      scope: this.scope
+    }
+  }
 }
