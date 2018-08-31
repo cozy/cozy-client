@@ -3,7 +3,7 @@
 import PouchManager from './PouchManager'
 import * as mocks from './__tests__/mocks'
 
-jest.mock('PouchDB')
+jest.mock('pouchdb')
 
 const sleep = delay => {
   return new Promise(resolve => {
@@ -21,9 +21,9 @@ describe('PouchManager', () => {
       getReplicationURL: () => getReplicationURL()
     })
     const pouch = manager.getPouch('io.cozy.todos')
-    jest
-      .spyOn(pouch.replicate, 'from')
-      .mockImplementation(mocks.pouchReplication)
+    pouch.replicate = {
+      from: jest.fn().mockImplementation(mocks.pouchReplication)
+    }
   })
 
   afterEach(() => {
