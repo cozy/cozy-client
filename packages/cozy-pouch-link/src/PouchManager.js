@@ -50,6 +50,9 @@ export default class PouchManager {
 
   /** Starts periodic syncing of the pouches */
   async startReplicationLoop(delay) {
+    if (this._stopReplicationLoop) {
+      return this._stopReplicationLoop
+    }
     delay = delay || this.options.replicationDelay || DEFAULT_DELAY
     this._stopReplicationLoop = promises.setInterval(
       () => this.replicateOnce(),
@@ -63,6 +66,7 @@ export default class PouchManager {
     if (this._stopReplicationLoop) {
       this.cancelCurrentReplications()
       this._stopReplicationLoop()
+      this._stopReplicationLoop = null
     }
   }
 
