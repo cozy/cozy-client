@@ -82,17 +82,20 @@ export default class CozyClient {
     const lnk = link || links || new StackLink()
 
     this.createClient()
-    this.registerClientOnLinks(lnk)
+
+    this.links = Array.isArray(lnk) ? lnk : [lnk]
+    this.registerClientOnLinks()
+
     if (Array.isArray(lnk)) {
       this.chain = chain(lnk)
     } else {
       this.chain = lnk
     }
+
     this.schema = schema
   }
 
-  registerClientOnLinks(links) {
-    this.links = Array.isArray(links) ? links : [links]
+  registerClientOnLinks() {
     for (const link of this.links) {
       if (!link.client && link.registerClient) {
         try {
