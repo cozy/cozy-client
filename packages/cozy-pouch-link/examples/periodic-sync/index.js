@@ -213,5 +213,4 @@ class App extends React.Component {
 }
 
 const root = document.querySelector('#root')
-console.log(root)
 ReactDOM.render(<App />, root)
