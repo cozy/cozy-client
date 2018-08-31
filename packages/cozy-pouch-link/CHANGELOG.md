@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.6.0"></a>
+# [2.6.0](https://github.com/cozy/cozy-client/compare/v2.5.2...v2.6.0) (2018-08-31)
+
+
+### Bug Fixes
+
+* Not able to start several time ([56a7995](https://github.com/cozy/cozy-client/commit/56a7995))
+* Pouchdb is written in lowercase ([e009dbe](https://github.com/cozy/cozy-client/commit/e009dbe))
+* Remove console.log ([a3d81ab](https://github.com/cozy/cozy-client/commit/a3d81ab))
+
+
+### Features
+
+* Ability to serialize/deserialize the token ([05f6d9e](https://github.com/cozy/cozy-client/commit/05f6d9e))
+* add replication manager ([20511c7](https://github.com/cozy/cozy-client/commit/20511c7))
+* Polish the example ([17f85b3](https://github.com/cozy/cozy-client/commit/17f85b3))
+
+
+
+
 <a name="2.5.2"></a>
 ## [2.5.2](https://github.com/cozy/cozy-client/compare/v2.5.1...v2.5.2) (2018-08-31)
 
