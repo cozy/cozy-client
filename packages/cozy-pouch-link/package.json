@@ -16,11 +16,20 @@
     "pouchdb-find": "^7.0.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0"
+    "babel-cli": "^6.26.0",
+    "jest": "^23.5.0",
+    "parcel": "^1.9.7",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2"
   },
   "scripts": {
     "build": "../../bin/build",
     "watch": "yarn run build --watch",
     "prepublishOnly": "yarn run build"
+  },
+  "jest": {
+    "testMatch": [
+      "**/(*.)(spec|test).js?(x)"
+    ]
   }
 }

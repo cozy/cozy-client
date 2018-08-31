@@ -34,11 +34,11 @@ describe('CozyPouchLink', () => {
   })
 
   afterEach(async () => {
-    await link.resetAllDBs()
+    await link.reset()
   })
 
   it('should generate replication url', async () => {
-    const url = await link.getReplicationUrl(TODO_DOCTYPE)
+    const url = await link.getReplicationURL(TODO_DOCTYPE)
     expect(url).toBe('http://user:token@cozy.tools:8080/data/io.cozy.todos')
   })
 
@@ -67,7 +67,7 @@ describe('CozyPouchLink', () => {
       link.synced = true
     })
     it('should be able to execute a query', async () => {
-      const db = link.getDB(TODO_DOCTYPE)
+      const db = link.getPouch(TODO_DOCTYPE)
       db.post({
         label: 'Make PouchDB link work',
         done: false
@@ -78,7 +78,7 @@ describe('CozyPouchLink', () => {
     })
 
     it('should be possible to select', async () => {
-      const db = link.getDB(TODO_DOCTYPE)
+      const db = link.getPouch(TODO_DOCTYPE)
       await db.bulkDocs(docs.map(x => omit(x, '_type')))
       const query = client
         .find(TODO_DOCTYPE, { label: { $gt: null }, done: true })
@@ -141,7 +141,7 @@ describe('CozyPouchLink', () => {
     let spy
 
     beforeEach(() => {
-      spy = jest.spyOn(link, 'resetAllDBs').mockReturnValue(jest.fn())
+      spy = jest.spyOn(link.pouches, 'destroy').mockReturnValue(jest.fn())
     })
 
     afterEach(async () => {
@@ -150,7 +150,7 @@ describe('CozyPouchLink', () => {
 
     it('should delete all databases', async () => {
       await link.reset()
-      expect(link.resetAllDBs).toHaveBeenCalledTimes(1)
+      expect(link.pouches.destroy).toHaveBeenCalledTimes(1)
     })
 
     it('should delete client', async () => {

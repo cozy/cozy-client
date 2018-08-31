@@ -1,79 +1,47 @@
 import { MutationTypes, CozyLink, getDoctypeFromOperation } from 'cozy-client'
 import PouchDB from 'pouchdb'
 import PouchDBFind from 'pouchdb-find'
-import fromPairs from 'lodash/fromPairs'
 import omit from 'lodash/omit'
+import defaults from 'lodash/defaults'
 
 import { withoutDesignDocuments } from './helpers'
 import { getIndexNameFromFields, getIndexFields } from './mango'
-
+import * as jsonapi from './jsonapi'
+import PouchManager from './PouchManager'
 PouchDB.plugin(PouchDBFind)
-
-const pipe = fn => res => {
-  try {
-    fn(res)
-  } catch (e) {
-    console.warn('Error during pipe', e)
-  }
-  return res
-}
-
-const ensureHasBothIds = obj => {
-  if (!obj._id && obj.id) {
-    obj._id = obj.id
-  }
-  if (!obj._id && obj.id) {
-    obj.id = obj._id
-  }
-  return obj
-}
-
-const addDoctype = (arr, doctype) => arr.map(x => ({ ...x, _type: doctype }))
-
-const pouchResToJSONAPI = (res, isArray, doctype) => {
-  if (isArray) {
-    const docs = res.rows || res.docs
-    const offset = res.offset || 0
-    return {
-      data: addDoctype(docs, doctype).map(ensureHasBothIds),
-      meta: { count: docs.length },
-      skip: offset,
-      next: offset + docs.length <= res.total_rows
-    }
-  } else {
-    return {
-      data: ensureHasBothIds(res)
-    }
-  }
-}
-
-const createPouches = doctypes => {
-  return fromPairs(
-    doctypes.map(doctype => [
-      doctype,
-      {
-        db: new PouchDB(doctype)
-      }
-    ])
-  )
-}
-
-const sanitized = doc => omit(doc, '_type')
 
 const parseMutationResult = (original, res) => {
   return { ...original, ...omit(res, 'ok') }
 }
 
+const DEFAULT_OPTIONS = {
+  replicationInterval: 30 * 1000
+}
+
+const addBasicAuth = (url, basicAuth) => {
+  return url.replace('//', `//${basicAuth}`)
+}
+
+const sanitized = doc => omit(doc, '_type')
+export const getReplicationURL = (uri, token, doctype) => {
+  const basicAuth = token.toBasicAuth()
+  const authenticatedURL = addBasicAuth(uri, basicAuth)
+  return `${authenticatedURL}/data/${doctype}`
+}
+
 const doNothing = () => {}
+export const isExpiredTokenError = pouchError => {
+  return pouchError.error === 'code=400, message=Expired token'
+}
 
 /**
- * Link to be passed to cozy-client to support CouchDB.
- * It instantiates PouchDB collections for each doctype
- * that it supports and knows how to respond to queries
- * and mutations.
+ * Link to be passed to cozy-client to support CouchDB. It instantiates
+ * PouchDB collections for each doctype that it supports and knows how
+ * to respond to queries and mutations.
  */
 export default class PouchLink extends CozyLink {
-  constructor(options = {}) {
+  constructor(opts = {}) {
+    const options = defaults({}, opts, DEFAULT_OPTIONS)
     super(options)
     const { doctypes } = options
     this.options = options
@@ -83,85 +51,66 @@ export default class PouchLink extends CozyLink {
       )
     }
     this.doctypes = doctypes
-    this.pouches = createPouches(this.doctypes)
     this.indexes = {}
   }
 
-  registerClient(client) {
+  getReplicationURL(doctype) {
+    if (!this.client.token) {
+      throw new Error(
+        "Can't get replication URL since the client doesn't have a token"
+      )
+    }
+    if (!this.client.uri) {
+      throw new Error(
+        "Can't get replication URL since the client doesn't have a URI"
+      )
+    }
+    return getReplicationURL(this.client.uri, this.client.token, doctype)
+  }
+
+  async registerClient(client) {
     this.client = client
+    if (this.pouches) {
+      await this.pouches.destroy()
+    }
+    this.pouches = new PouchManager(this.doctypes, {
+      getReplicationURL: this.getReplicationURL.bind(this),
+      onError: err => this.onSyncError(err)
+    })
     if (client && this.options.initialSync) {
-      this.syncAll()
+      this.pouches.startReplications()
     }
   }
 
   async reset() {
-    await this.resetAllDBs()
+    await this.pouches.destroy()
     this.client = undefined
-  }
-
-  getAllDBs() {
-    return Object.values(this.pouches).map(x => x.db)
-  }
-
-  resetAllDBs() {
-    return Promise.all(this.getAllDBs().map(db => db.destroy()))
-  }
-
-  getDBInfo(doctype) {
-    const dbInfo = this.pouches[doctype]
-    if (!dbInfo) {
-      throw new Error(`${doctype} not supported by cozy-pouch-link instance`)
-    }
-    return dbInfo
-  }
-
-  getDB(doctype) {
-    return this.getDBInfo(doctype).db
-  }
-
-  syncOne(doctype) {
-    return new Promise((resolve, reject) => {
-      const info = this.getDBInfo(doctype)
-      if (info.syncing) {
-        return resolve(info.syncing)
-      } else {
-        const replication = info.db.replicate.from(
-          this.getReplicationUrl(doctype),
-          {
-            batch_size: 1000 // we have mostly small documents
-          }
-        )
-        replication.on('error', err => {
-          console.warn('Error while syncing', err)
-          reject('Error while syncing')
-        })
-        info.syncing = replication.on('complete', result => {
-          info.syncing = null
-          resolve(result)
-        })
-      }
-    })
-  }
-
-  syncAll() {
-    return Promise.all(
-      this.doctypes.map(doctype => this.syncOne(doctype))
-    ).then(pipe(() => this.onSync()))
   }
 
   onSync() {
     this.synced = true
   }
 
-  getReplicationUrl(doctype) {
-    const client = this.client
-    const basicAuth = client.token.toBasicAuth()
-    return (client.uri + '/data/' + doctype).replace('//', `//${basicAuth}`)
+  async onSyncError(error) {
+    if (isExpiredTokenError(error)) {
+      try {
+        await this.client.renewAuthorization()
+        this.pouches.startReplicationLoop()
+      } catch (err) {
+        console.warn('Could not refresh token, replication has stopped', err)
+      }
+    } else {
+      console.warn('CozyPouchLink: Synchronization error', error)
+    }
+  }
+
+  getPouch(doctype) {
+    return this.pouches.getPouch(doctype)
   }
 
   supportsOperation(operation) {
     const impactedDoctype = getDoctypeFromOperation(operation)
-    return !!this.pouches[impactedDoctype]
+    return !!this.getPouch(impactedDoctype)
   }
 
   request(operation, result = null, forward = doNothing) {
@@ -189,7 +138,7 @@ export default class PouchLink extends CozyLink {
     const fields = getIndexFields(query)
     const name = getIndexNameFromFields(fields)
     const absName = `${doctype}/${name}`
-    const db = this.getDB(doctype)
+    const db = this.pouches.getPouch(doctype)
     if (this.indexes[absName]) {
       return this.indexes[absName]
     } else {
@@ -204,7 +153,7 @@ export default class PouchLink extends CozyLink {
   }
 
   async executeQuery({ doctype, selector, sort, fields, limit }) {
-    const db = this.getDB(doctype)
+    const db = this.getPouch(doctype)
     let res
     if (!selector && !fields && !sort) {
       res = await db.allDocs({
@@ -221,7 +170,7 @@ export default class PouchLink extends CozyLink {
       await this.ensureIndex(doctype, findOpts)
       res = await db.find(findOpts)
     }
-    return pouchResToJSONAPI(res, true, doctype)
+    return jsonapi.fromPouchResult(res, true, doctype)
   }
 
   async executeMutation(mutation, result, forward) {
@@ -244,7 +193,11 @@ export default class PouchLink extends CozyLink {
       default:
         throw new Error(`Unknown mutation type: ${mutation.mutationType}`)
     }
-    return pouchResToJSONAPI(pouchRes, false, getDoctypeFromOperation(mutation))
+    return jsonapi.fromPouchResult(
+      pouchRes,
+      false,
+      getDoctypeFromOperation(mutation)
+    )
   }
 
   createDocument(mutation) {
@@ -262,7 +215,7 @@ export default class PouchLink extends CozyLink {
   async dbMethod(method, mutation) {
     const doctype = getDoctypeFromOperation(mutation)
     const { document } = mutation
-    const db = this.getDB(doctype)
+    const db = this.getPouch(doctype)
     const res = await db[method](sanitized(document))
     if (res.ok) {
       return parseMutationResult(document, res)
