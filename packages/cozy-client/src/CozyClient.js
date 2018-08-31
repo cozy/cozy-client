@@ -107,6 +107,10 @@ export default class CozyClient {
     }
   }
 
+  login() {
+    this.registerClientOnLinks()
+  }
+
   async logout() {
     // unregister client on stack
     if (
