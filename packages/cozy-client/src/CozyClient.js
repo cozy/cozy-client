@@ -71,7 +71,12 @@ const allValues = async x => {
  * @module CozyClient
  */
 export default class CozyClient {
+  // `link` exist for retrocompatibility
   constructor({ link, links, schema = {}, ...options }) {
+    if (link) {
+      console.warn('`link` is deprecated, use `links`')
+    }
+
     this.options = options
     this.idCounter = 1
     const lnk = link || links || new StackLink()
