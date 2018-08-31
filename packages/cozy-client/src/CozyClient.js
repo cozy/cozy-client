@@ -74,12 +74,14 @@ export default class CozyClient {
   constructor({ link, links, schema = {}, ...options }) {
     this.options = options
     this.idCounter = 1
-    this.link = link || links || new StackLink()
+    const lnk = link || links || new StackLink()
 
     this.createClient()
-    this.registerClientOnLinks(this.link)
-    if (Array.isArray(this.link)) {
-      this.link = chain(this.link)
+    this.registerClientOnLinks(lnk)
+    if (Array.isArray(lnk)) {
+      this.chain = chain(lnk)
+    } else {
+      this.chain = lnk
     }
     this.schema = schema
   }
@@ -296,7 +298,7 @@ export default class CozyClient {
   }
 
   async requestQuery(definition) {
-    const mainResponse = await this.link.request(definition)
+    const mainResponse = await this.chain.request(definition)
     if (!definition.includes) {
       return mainResponse
     }
@@ -337,7 +339,7 @@ export default class CozyClient {
     )
 
     const requests = mapValues(definitions, definition =>
-      this.link.request(definition)
+      this.chain.request(definition)
     )
     const responses = await allValues(requests)
     const relationships = mapValues(responses, responseToRelationship)
@@ -383,7 +385,7 @@ export default class CozyClient {
       )
       return firstResponse
     }
-    return this.link.request(definition)
+    return this.chain.request(definition)
   }
 
   getIncludesAssociations(queryDefinition) {
