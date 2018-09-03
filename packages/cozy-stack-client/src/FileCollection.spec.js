@@ -185,4 +185,24 @@ describe('FileCollection', () => {
       })
     })
   })
+
+  describe('findReferencedBy', () => {
+    const client = new CozyStackClient()
+    const collection = new FileCollection('io.cozy.files', client)
+
+    const spy = jest.spyOn(client, 'fetchJSON').mockReturnValue({
+      data: [],
+      meta: {}
+    })
+
+    const doc = {
+      _type: 'io.cozy.files',
+      _id: '123'
+    }
+
+    it('should pass all the filters', () => {
+      collection.findReferencedBy(doc)
+      expect(spy).toMatchSnapshot()
+    })
+  })
 })

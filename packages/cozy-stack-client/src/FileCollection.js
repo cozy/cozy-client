@@ -66,7 +66,7 @@ export default class FileCollection extends DocumentCollection {
   async findReferencedBy(document, { skip = 0, limit } = {}) {
     const params = {
       include: 'files',
-      sort: 'date',
+      sort: 'datetime',
       'page[limit]': limit,
       'page[skip]': skip
     }
