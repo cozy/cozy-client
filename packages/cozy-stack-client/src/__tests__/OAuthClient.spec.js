@@ -110,7 +110,7 @@ describe('OAuthClient', () => {
     it('should get the access code from an URL', () => {
       const stateCode = 'myrandomcode'
       const accessCode = 'myaccesscode'
-      const url = `http://example.com?state=${stateCode}&code=${accessCode}`
+      const url = `http://example.com?state=${stateCode}&access_code=${accessCode}`
       expect(client.getAccessCodeFromURL(url, stateCode)).toEqual(accessCode)
     })
 
