@@ -1,7 +1,7 @@
-jest.mock('../CozyStackClient')
+jest.mock('./CozyStackClient')
 
-import CozyStackClient from '../CozyStackClient'
-import FileCollection from '../FileCollection'
+import CozyStackClient from './CozyStackClient'
+import FileCollection from './FileCollection'
 
 const STAT_BY_ID_RESPONSE = {
   data: {
