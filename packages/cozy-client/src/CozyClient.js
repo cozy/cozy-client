@@ -67,25 +67,32 @@ const allValues = async x => {
   return res
 }
 
+const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
+
 /**
  * @module CozyClient
  */
 export default class CozyClient {
+  // `link` exist for retrocompatibility
   constructor({ link, links, schema = {}, ...options }) {
+    if (link) {
+      console.warn('`link` is deprecated, use `links`')
+    }
+
     this.options = options
     this.idCounter = 1
-    this.link = link || links || new StackLink()
 
     this.createClient()
-    this.registerClientOnLinks(this.link)
-    if (Array.isArray(this.link)) {
-      this.link = chain(this.link)
-    }
+
+    this.links = ensureArray(link || links || new StackLink())
+    this.registerClientOnLinks()
+
+    this.chain = chain(this.links)
+
     this.schema = schema
   }
 
-  registerClientOnLinks(links) {
-    this.links = Array.isArray(links) ? links : [links]
+  registerClientOnLinks() {
     for (const link of this.links) {
       if (!link.client && link.registerClient) {
         try {
@@ -95,6 +102,10 @@ export default class CozyClient {
         }
       }
     }
+  }
+
+  login() {
+    this.registerClientOnLinks()
   }
 
   async logout() {
@@ -316,7 +327,7 @@ export default class CozyClient {
   }
 
   async requestQuery(definition) {
-    const mainResponse = await this.link.request(definition)
+    const mainResponse = await this.chain.request(definition)
     if (!definition.includes) {
       return mainResponse
     }
@@ -357,7 +368,7 @@ export default class CozyClient {
     )
 
     const requests = mapValues(definitions, definition =>
-      this.link.request(definition)
+      this.chain.request(definition)
     )
     const responses = await allValues(requests)
     const relationships = mapValues(responses, responseToRelationship)
@@ -403,7 +414,7 @@ export default class CozyClient {
       )
       return firstResponse
     }
-    return this.link.request(definition)
+    return this.chain.request(definition)
   }
 
   getIncludesAssociations(queryDefinition) {
