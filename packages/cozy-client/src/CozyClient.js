@@ -67,6 +67,8 @@ const allValues = async x => {
   return res
 }
 
+const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
+
 /**
  * @module CozyClient
  */
@@ -79,11 +81,10 @@ export default class CozyClient {
 
     this.options = options
     this.idCounter = 1
-    const lnk = link || links || new StackLink()
 
     this.createClient()
 
-    this.links = Array.isArray(lnk) ? lnk : [lnk]
+    this.links = ensureArray(link || links || new StackLink())
     this.registerClientOnLinks()
 
     this.chain = chain(this.links)
