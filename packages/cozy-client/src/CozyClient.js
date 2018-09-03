@@ -86,11 +86,7 @@ export default class CozyClient {
     this.links = Array.isArray(lnk) ? lnk : [lnk]
     this.registerClientOnLinks()
 
-    if (Array.isArray(lnk)) {
-      this.chain = chain(lnk)
-    } else {
-      this.chain = lnk
-    }
+    this.chain = chain(this.links)
 
     this.schema = schema
   }
