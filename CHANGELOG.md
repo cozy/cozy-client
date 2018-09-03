@@ -3,7 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="2.6.1"></a>
+       <a name="2.7.0"></a>
+# [2.7.0](https://github.com/cozy/cozy-client/compare/v2.6.1...v2.7.0) (2018-09-03)
+
+
+### Features
+
+* **client:** Add deprecation warning for link ([895d697](https://github.com/cozy/cozy-client/commit/895d697))
+* **client:** Add login method ([9758f45](https://github.com/cozy/cozy-client/commit/9758f45))
+* **client:** Always chain links ([856e559](https://github.com/cozy/cozy-client/commit/856e559))
+* **client:** Save links in array in constructor ([c600986](https://github.com/cozy/cozy-client/commit/c600986))
+
+
+
+
+       <a name="2.6.1"></a>
 ## [2.6.1](https://github.com/cozy/cozy-client/compare/v2.6.0...v2.6.1) (2018-09-03)
 
 
@@ -14,7 +28,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-      <a name="2.6.0"></a>
+     <a name="2.6.0"></a>
 # [2.6.0](https://github.com/cozy/cozy-client/compare/v2.5.2...v2.6.0) (2018-08-31)
 
 
@@ -34,7 +48,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-   <a name="2.5.2"></a>
+  <a name="2.5.2"></a>
 ## [2.5.2](https://github.com/cozy/cozy-client/compare/v2.5.1...v2.5.2) (2018-08-31)
 
 
@@ -42,7 +56,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package undefined
 
- <a name="2.5.1"></a>
+<a name="2.5.1"></a>
 ## [2.5.1](https://github.com/cozy/cozy-client/compare/v2.5.0...v2.5.1) (2018-08-29)
 
 
