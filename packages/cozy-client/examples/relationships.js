@@ -1,3 +1,4 @@
+const minimist = require('minimist')
 const { QueryDefinition, default: CozyClient } = require('../dist')
 
 const batchGetQuery = (client, assoc) => doc => {
@@ -29,14 +30,17 @@ const schema = {
   }
 }
 
-global.fetch = require('node-fetch')
+global.fetch = require('node-fetch') // in the browser we have native fetch
 
-const main = async () => {
+const main = async _args => {
   const uri = process.env.COZY_URL || 'http://cozy.tools:8080'
   const token = process.env.COZY_TOKEN
   if (!token) {
     throw new Error('You should provide COZY_TOKEN as an environement variable')
   }
+  const args = minimist(_args.slice(2), {
+    string: ['selector']
+  })
   const client = new CozyClient({ uri, token, schema })
   const query = new QueryDefinition({
     doctype: 'io.cozy.bank.operations',
@@ -47,8 +51,19 @@ const main = async () => {
       }
     }
   }).include(['bills'])
-  const resp = await client.requestQuery(query)
-  const billsDocs = resp.data.filter(doc => doc.relationships.bills)
+  if (args.selector) {
+    query.selector = args.selector ? JSON.parse(args.selector) : null
+  }
+  const resp = await client.query(query)
+  const transactions = client.hydrateDocuments(TRANSACTION_DOCTYPE, resp.data)
+  transactions.forEach(transaction => {
+    const bill = transaction.bills.data[0]
+    console.log(
+      `${transaction.label} ${new Date(transaction.date).toLocaleDateString(
+        'en-GB'
+      )} -> ${transaction.bills.data[0].filename}`
+    )
+  })
 }
 
-main().catch(e => console.error(e))
+main(process.argv).catch(e => console.error(e))
