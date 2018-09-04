@@ -30,6 +30,7 @@ import mapValues from 'lodash/mapValues'
 import flatMap from 'lodash/flatMap'
 import keyBy from 'lodash/keyBy'
 import pickBy from 'lodash/pickBy'
+import fromPairs from 'lodash/fromPairs'
 
 const associationsFromModel = model => {
   const relationships = model.relationships || {}
@@ -400,6 +401,7 @@ export default class CozyClient {
     switch (type) {
       case 'has-many':
         if (query) {
+          console.log('query for ', document)
           return query(this, association)(document)
         } else {
           const queryAll = this.find(doctype)
@@ -441,19 +443,20 @@ export default class CozyClient {
     try {
       const model = this.getDoctypeModel(doctype)
       const associations = model.associations
-      return documents.map(doc => ({
-        ...doc,
-        ...this.hydrateRelationships(doc, associations)
-      }))
+      if (associations.length) {
+        return documents.map(doc => this.hydrateDocument(doc, model))
+      } else {
+        return documents
+      }
     } catch (err) {
       console.error(err)
       return documents
     }
   }
 
-  hydrateDocument(document) {
+  hydrateDocument(document, model) {
     try {
-      const model = this.getDoctypeModel(document._type)
+      model = model || this.getDoctypeModel(document._type)
       return {
         ...document,
         ...this.hydrateRelationships(document, model.associations)
@@ -465,13 +468,14 @@ export default class CozyClient {
 
   hydrateRelationships(document, associations) {
     const methods = this.getAssociationStoreAccessors()
-    return associations.reduce(
-      (acc, assoc) => ({
-        ...acc,
-        [assoc.name]: createAssociation(document, assoc, methods)
-      }),
-      {}
+    const res = fromPairs(
+      associations.map(assoc => [
+        assoc.name,
+        createAssociation(document, assoc, methods)
+      ])
     )
+    console.log('assocs', res)
+    return res
   }
 
   getAssociation(document, associationName) {
