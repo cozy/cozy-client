@@ -401,7 +401,6 @@ export default class CozyClient {
     switch (type) {
       case 'has-many':
         if (query) {
-          console.log('query for ', document)
           return query(this, association)(document)
         } else {
           const queryAll = this.find(doctype)
