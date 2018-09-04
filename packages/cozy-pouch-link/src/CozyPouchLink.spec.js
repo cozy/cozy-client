@@ -160,4 +160,32 @@ describe('CozyPouchLink', () => {
       expect(link.client).toBeUndefined()
     })
   })
+
+  describe('onLogin', () => {
+    let spy
+
+    beforeEach(() => {
+      spy = jest
+        .spyOn(link.pouches, 'startReplicationLoop')
+        .mockReturnValue(jest.fn())
+    })
+
+    afterEach(() => {
+      spy.mockRestore()
+    })
+
+    it('should start the replication loop if `options.initialSync` is true', () => {
+      link.options.initialSync = true
+      link.onLogin()
+
+      expect(link.pouches.startReplicationLoop).toHaveBeenCalledTimes(1)
+    })
+
+    it('should not start the replication loop if `options.initialSync` is false', () => {
+      link.options.initialSync = false
+      link.onLogin()
+
+      expect(link.pouches.startReplicationLoop).not.toHaveBeenCalled()
+    })
+  })
 })

@@ -81,7 +81,10 @@ export default class PouchLink extends CozyLink {
       getReplicationURL: this.getReplicationURL.bind(this),
       onError: err => this.onSyncError(err)
     })
-    if (client && this.options.initialSync) {
+  }
+
+  onLogin() {
+    if (this.client && this.options.initialSync) {
       this.pouches.startReplicationLoop()
     }
   }
