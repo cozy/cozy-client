@@ -106,6 +106,16 @@ export default class CozyClient {
 
   login() {
     this.registerClientOnLinks()
+
+    for (const link of this.links) {
+      if (link.onLogin) {
+        try {
+          link.onLogin()
+        } catch (e) {
+          console.warn(e)
+        }
+      }
+    }
   }
 
   async logout() {

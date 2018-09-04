@@ -93,6 +93,45 @@ describe('CozyClient logout', () => {
   })
 })
 
+describe('CozyClient login', () => {
+  let client, links
+
+  beforeEach(() => {
+    links = [
+      new CozyLink((operation, result = '', forward) => {
+        return forward(operation, result + 'foo')
+      }),
+      new CozyLink((operation, result, forward) => {
+        return forward(operation, result + 'bar')
+      }),
+      (operation, result) => {
+        return result + 'baz'
+      }
+    ]
+    links.forEach(link => {
+      link.registerClient = jest.fn()
+    })
+    client = new CozyClient({ link: links })
+  })
+
+  it('Should call `registerClientOnLinks`', () => {
+    client.registerClientOnLinks = jest.fn()
+    client.login()
+
+    expect(client.registerClientOnLinks).toHaveBeenCalled()
+  })
+
+  it('Should call `onLogin` on every link that implements it', () => {
+    links[0].onLogin = jest.fn()
+    links[2].onLogin = jest.fn()
+
+    client.login()
+
+    expect(links[0].onLogin).toHaveBeenCalledTimes(1)
+    expect(links[2].onLogin).toHaveBeenCalledTimes(1)
+  })
+})
+
 describe('CozyClient', () => {
   const requestHandler = jest.fn()
   const store = configureStore()({})
