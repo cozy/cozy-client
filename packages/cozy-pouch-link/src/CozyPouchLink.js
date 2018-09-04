@@ -71,7 +71,11 @@ export default class PouchLink extends CozyLink {
   async registerClient(client) {
     this.client = client
     if (this.pouches) {
-      await this.pouches.destroy()
+      try {
+        await this.pouches.destroy()
+      } catch (e) {
+        console.warn('Error while destroying pouch DBs', e)
+      }
     }
     this.pouches = new PouchManager(this.doctypes, {
       getReplicationURL: this.getReplicationURL.bind(this),
