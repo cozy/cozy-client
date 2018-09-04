@@ -1,7 +1,7 @@
-jest.mock('../CozyStackClient')
+jest.mock('./CozyStackClient')
 
-import CozyStackClient from '../CozyStackClient'
-import FileCollection from '../FileCollection'
+import CozyStackClient from './CozyStackClient'
+import FileCollection from './FileCollection'
 
 const STAT_BY_ID_RESPONSE = {
   data: {
@@ -183,6 +183,26 @@ describe('FileCollection', () => {
         dirID: '9c217f9bf5e7118a34627f1ab800243b',
         name: 'baz'
       })
+    })
+  })
+
+  describe('findReferencedBy', () => {
+    const client = new CozyStackClient()
+    const collection = new FileCollection('io.cozy.files', client)
+
+    const spy = jest.spyOn(client, 'fetchJSON').mockReturnValue({
+      data: [],
+      meta: {}
+    })
+
+    const doc = {
+      _type: 'io.cozy.files',
+      _id: '123'
+    }
+
+    it('should pass all the filters', () => {
+      collection.findReferencedBy(doc)
+      expect(spy).toMatchSnapshot()
     })
   })
 })

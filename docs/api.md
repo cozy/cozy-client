@@ -20,6 +20,19 @@ files associated to a specific document</p>
 <dd></dd>
 </dl>
 
+## Constants
+
+<dl>
+<dt><a href="#encode">encode</a></dt>
+<dd><p>Encode an object as querystring, values are encoded as
+URI components, keys are not.</p>
+</dd>
+<dt><a href="#buildURL">buildURL</a></dt>
+<dd><p>Returns a URL from base url and a query parameter object.
+Any undefined parameter is removed.</p>
+</dd>
+</dl>
+
 ## Functions
 
 <dl>
@@ -29,9 +42,25 @@ files associated to a specific document</p>
 <dt><a href="#queryConnect">queryConnect(querySpecs)</a> ⇒ <code>function</code></dt>
 <dd><p>HOC creator to connect component to several queries in a declarative manner</p>
 </dd>
+<dt><a href="#startReplicationLoop">startReplicationLoop()</a></dt>
+<dd><p>Starts periodic syncing of the pouches</p>
+</dd>
+<dt><a href="#stopReplicationLoop">stopReplicationLoop()</a></dt>
+<dd><p>Stop periodic syncing of the pouches</p>
+</dd>
+<dt><a href="#replicateOnce">replicateOnce()</a></dt>
+<dd><p>Starts replication</p>
+</dd>
 <dt><a href="#defaultSelector">defaultSelector(options)</a> ⇒ <code>Array</code></dt>
 <dd><p>Compute fields that should be indexed for a mango
 query to work</p>
+</dd>
+<dt><a href="#setIntervalPromise">setIntervalPromise()</a></dt>
+<dd><p>Will periodically run a function so that when the promise
+is resolved, the next function is called after <delay>ms.</p>
+<p>Returns a function which cancels the periodic calling.
+When canceled, if there is an ongoing promise, it will
+continue.</p>
 </dd>
 <dt><a href="#uri">uri()</a></dt>
 <dd><p>Template tag function for URIs encoding</p>
@@ -72,7 +101,7 @@ a [DocumentCollection](DocumentCollection) instance.
 <a name="module_CozyClient+getDocumentSavePlan"></a>
 
 ### cozyClient.getDocumentSavePlan(document, relationships) ⇒ <code>Array.&lt;object&gt;</code>
-getDocumentSavePlan - Creates a list of mutations to execute to create a document and it's relationships.
+getDocumentSavePlan - Creates a list of mutations to execute to create a document and its relationships.
 
 **Kind**: instance method of [<code>CozyClient</code>](#module_CozyClient)  
 **Returns**: <code>Array.&lt;object&gt;</code> - One or more mutation to execute  
@@ -247,6 +276,11 @@ Files are a special type of documents and are handled differently by the stack:
 special routes are to be used, and there is a notion of referenced files, aka
 files associated to a specific document
 
+
+* [FileCollection](#module_FileCollection)
+    * [.find(selector, options)](#module_FileCollection+find) ⇒ <code>Object</code>
+    * [.findReferencedBy(document, {, limit)](#module_FileCollection+findReferencedBy) ⇒ <code>object</code>
+
 <a name="module_FileCollection+find"></a>
 
 ### fileCollection.find(selector, options) ⇒ <code>Object</code>
@@ -265,6 +299,20 @@ The returned documents are paginated by the stack.
 | --- | --- | --- |
 | selector | <code>Object</code> | The Mango selector. |
 | options | <code>Object</code> | The query options. |
+
+<a name="module_FileCollection+findReferencedBy"></a>
+
+### fileCollection.findReferencedBy(document, {, limit) ⇒ <code>object</code>
+async findReferencedBy - Returns the list of files referenced by a document — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/
+
+**Kind**: instance method of [<code>FileCollection</code>](#module_FileCollection)  
+**Returns**: <code>object</code> - The JSON API conformant response.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | <code>object</code> | A JSON representing a document, with at least a `_type` and `_id` field. |
+| { | <code>number</code> | skip = 0   For pagination, the number of referenced files to skip |
+| limit | <code>number</code> | } For pagination, the number of results to return. |
 
 <a name="module_OAuthClient"></a>
 
@@ -421,6 +469,20 @@ Updates the OAuth informations
 | --- | --- | --- |
 | options | <code>object</code> | Map of OAuth options |
 
+<a name="encode"></a>
+
+## encode
+Encode an object as querystring, values are encoded as
+URI components, keys are not.
+
+**Kind**: global constant  
+<a name="buildURL"></a>
+
+## buildURL
+Returns a URL from base url and a query parameter object.
+Any undefined parameter is removed.
+
+**Kind**: global constant  
 <a name="withClient"></a>
 
 ## withClient(Component) ⇒ <code>function</code>
@@ -445,6 +507,24 @@ HOC creator to connect component to several queries in a declarative manner
 | --- | --- | --- |
 | querySpecs | <code>object</code> | Definition of the queries |
 
+<a name="startReplicationLoop"></a>
+
+## startReplicationLoop()
+Starts periodic syncing of the pouches
+
+**Kind**: global function  
+<a name="stopReplicationLoop"></a>
+
+## stopReplicationLoop()
+Stop periodic syncing of the pouches
+
+**Kind**: global function  
+<a name="replicateOnce"></a>
+
+## replicateOnce()
+Starts replication
+
+**Kind**: global function  
 <a name="defaultSelector"></a>
 
 ## defaultSelector(options) ⇒ <code>Array</code>
@@ -458,6 +538,17 @@ query to work
 | --- | --- | --- |
 | options | <code>Object</code> | Mango query options |
 
+<a name="setIntervalPromise"></a>
+
+## setIntervalPromise()
+Will periodically run a function so that when the promise
+is resolved, the next function is called after <delay>ms.
+
+Returns a function which cancels the periodic calling.
+When canceled, if there is an ongoing promise, it will
+continue.
+
+**Kind**: global function  
 <a name="uri"></a>
 
 ## uri()
