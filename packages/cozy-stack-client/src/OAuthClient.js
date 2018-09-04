@@ -174,7 +174,7 @@ export default class OAuthClient extends CozyStackClient {
   }
 
   /**
-   * Updates the client own information. This method will update both the local information and the remote information on the OAuth server.
+   * Overwrites the client own information. This method will update both the local information and the remote information on the OAuth server.
    * @throws {NotRegisteredException} When the client doesn't have it's registration information
    * @param   {object} information Set of information to update. Note that some fields such as `clientID` can't be updated.
    * @param   {boolean} resetSecret = false Optionnal, whether to reset the client secret or not
@@ -205,7 +205,7 @@ export default class OAuthClient extends CozyStackClient {
       }
     )
 
-    this.setOAuthOptions(result)
+    this.setOAuthOptions({ ...data, ...result })
 
     return this.oauthOptions
   }
