@@ -1,5 +1,11 @@
 import Association from './Association'
 
+const empty = () => ({
+  data: [],
+  next: true,
+  meta: { count: 0 }
+})
+
 export default class HasManyAssociation extends Association {
   constructor(target, name, doctype, { get, query, mutate, save }) {
     super()
@@ -46,17 +52,18 @@ export default class HasManyAssociation extends Association {
   }
 
   getRelationship() {
-    if (!this.target.relationships || !this.target.relationships[this.name]) {
-      console.warn(
-        "You're trying to access data on a relationship that appear to not be loaded yet. You may want to use 'include()' on your query"
-      )
-      return {
-        data: [],
-        next: true,
-        meta: { count: 0 }
+    const rawData = this.target[this.name]
+    const data =
+      this.target.relationships && this.target.relationships[this.name]
+    if (!data) {
+      if (rawData) {
+        console.warn(
+          "You're trying to access data on a relationship that appear to not be loaded yet. You may want to use 'include()' on your query"
+        )
       }
+      return empty()
     }
-    return this.target.relationships[this.name]
+    return data
   }
 
   updateTargetRelationship(store, updateFn) {
