@@ -1,11 +1,11 @@
 import CozyClient from 'cozy-client'
 
 import { getIndexFields } from './mango'
-import { TODO_SCHEMA } from './__tests__/fixtures'
+import { SCHEMA } from './__tests__/fixtures'
 
 describe('mango utils', () => {
   const client = new CozyClient({
-    schema: TODO_SCHEMA
+    schema: SCHEMA
   })
 
   it('should be able to get the fields from the selector', () => {

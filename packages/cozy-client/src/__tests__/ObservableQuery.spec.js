@@ -5,7 +5,8 @@ import ObservableQuery from '../ObservableQuery'
 import { initQuery, receiveQueryResult } from '../store'
 
 import { queryResultFromData } from './utils'
-import { TODO_1, TODO_2 } from './fixtures'
+import { SCHEMA, TODO_1, TODO_2 } from './fixtures'
+import omit from 'lodash/omit'
 
 const AUTHORS = [
   {
@@ -19,7 +20,12 @@ describe('ObservableQuery', () => {
   let store
   const requestHandler = jest.fn()
   const link = new CozyLink(requestHandler)
-  const client = new CozyClient({ link })
+  const client = new CozyClient({
+    links: [link],
+    schema: {
+      todos: omit(SCHEMA.todos, 'relationships')
+    }
+  })
 
   beforeEach(() => {
     store = createStore(combineReducers({ cozy: client.reducer() }))

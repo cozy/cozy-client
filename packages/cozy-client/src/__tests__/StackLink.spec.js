@@ -1,14 +1,14 @@
 import CozyClient from '../CozyClient'
 import StackLink from '../StackLink'
 
-import { TODO_SCHEMA } from './fixtures'
+import { SCHEMA } from './fixtures'
 
 describe('StackLink', () => {
   let stackClient, link, client
 
   beforeEach(() => {
     link = new StackLink()
-    client = new CozyClient({ link, schema: TODO_SCHEMA })
+    client = new CozyClient({ links: [link], schema: SCHEMA })
     stackClient = client.getClient()
   })
 

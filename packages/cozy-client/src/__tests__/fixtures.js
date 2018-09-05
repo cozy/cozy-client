@@ -27,7 +27,7 @@ export const TODO_4 = {
 
 export const TODOS = [TODO_1, TODO_2, TODO_3]
 
-export const TODO_SCHEMA = {
+export const SCHEMA = {
   todos: {
     doctype: 'io.cozy.todos',
     relationships: {

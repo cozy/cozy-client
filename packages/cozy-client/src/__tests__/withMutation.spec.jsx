@@ -15,7 +15,7 @@ describe('withMutation', () => {
   const link = new CozyLink(
     jest.fn(() => Promise.resolve({ data: [NEW_TODO] }))
   )
-  const client = new CozyClient({ link })
+  const client = new CozyClient({ links: [link] })
 
   const mutationCreator = jest.fn()
 
