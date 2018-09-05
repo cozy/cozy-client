@@ -29,13 +29,14 @@ export default class DocumentCollection {
    * @throws {FetchError}
    */
   async all(options = {}) {
-    const { limit, skip = 0 } = options
+    const { limit, skip = 0, keys } = options
 
     const url = uri`/data/${this.doctype}/_all_docs`
     const params = {
       include_docs: true,
       limit,
-      skip
+      skip,
+      keys
     }
     const path = querystring.buildURL(url, params)
 
