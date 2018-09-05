@@ -79,7 +79,8 @@ export default class PouchLink extends CozyLink {
     }
     this.pouches = new PouchManager(this.doctypes, {
       getReplicationURL: this.getReplicationURL.bind(this),
-      onError: err => this.onSyncError(err)
+      onError: err => this.onSyncError(err),
+      onSync: this.onSync.bind(this)
     })
   }
 
