@@ -13,7 +13,7 @@ import {
   receiveMutationResult,
   receiveMutationError
 } from './store'
-import HasManyFilesAssociation from './associations/HasManyFilesAssociation'
+import { HasManyFilesAssociation, Association } from './associations'
 
 describe('CozyClient initialization', () => {
   let client, links
@@ -167,6 +167,34 @@ describe('CozyClient', () => {
         initMutation('updateTodo', {
           mutationType: 'UPDATE_DOCUMENT',
           document: doc
+        })
+      )
+    })
+
+    it('should dehydrate relationships', async () => {
+      class FakeHasMany extends Association {
+        constructor(data) {
+          super()
+          this.data = data
+        }
+
+        get raw() {
+          return this.data
+        }
+      }
+      const doc = {
+        ...TODO_1,
+        label: 'Buy croissants',
+        authors: new FakeHasMany(['bill'])
+      }
+      await client.save(doc, { as: 'updateTodo' })
+      expect(store.getActions()[0]).toEqual(
+        initMutation('updateTodo', {
+          mutationType: 'UPDATE_DOCUMENT',
+          document: {
+            ...doc,
+            authors: ['bill']
+          }
         })
       )
     })

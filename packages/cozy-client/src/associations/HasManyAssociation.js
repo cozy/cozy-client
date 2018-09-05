@@ -13,6 +13,10 @@ export default class HasManyAssociation extends Association {
     this.save = save
   }
 
+  get raw() {
+    return this.getRelationship().data
+  }
+
   get data() {
     return this.getRelationship().data.map(({ _id, _type }) =>
       this.get(_type, _id)

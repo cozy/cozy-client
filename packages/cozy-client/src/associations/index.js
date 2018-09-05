@@ -3,6 +3,13 @@ import HasManyAssociation from './HasManyAssociation'
 import HasManyUNSAFEAssociation from './HasManyUNSAFEAssociation'
 import Association from './Association'
 
+export {
+  HasManyUNSAFEAssociation,
+  Association,
+  HasManyFilesAssociation,
+  HasManyAssociation
+}
+
 export const create = (
   target,
   { name, type, doctype },

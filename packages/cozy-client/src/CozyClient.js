@@ -8,7 +8,7 @@
  */
 
 import StackLink from './StackLink'
-import { create as createAssociation } from './associations'
+import { create as createAssociation, Association } from './associations'
 import { QueryDefinition, Mutations } from './dsl'
 import CozyStackClient, { OAuthClient } from 'cozy-stack-client'
 import { authenticateWithCordova } from './authentication/mobile'
@@ -31,6 +31,18 @@ import flatMap from 'lodash/flatMap'
 import keyBy from 'lodash/keyBy'
 import pickBy from 'lodash/pickBy'
 import fromPairs from 'lodash/fromPairs'
+
+const dehydrateDoc = document => {
+  const dehydrated = {}
+  Object.entries(document).forEach(([key, value]) => {
+    if (!(value instanceof Association)) {
+      dehydrated[key] = value
+    } else if (value.raw) {
+      dehydrated[key] = value.raw
+    }
+  })
+  return dehydrated
+}
 
 const associationsFromModel = model => {
   const relationships = model.relationships || {}
@@ -226,9 +238,10 @@ export default class CozyClient {
    */
   getDocumentSavePlan(document, relationships) {
     const newDocument = !document._id
+    const dehydratedDoc = dehydrateDoc(document)
     const saveMutation = newDocument
-      ? Mutations.createDocument(document)
-      : Mutations.updateDocument(document)
+      ? Mutations.createDocument(dehydratedDoc)
+      : Mutations.updateDocument(dehydratedDoc)
     const hasRelationships =
       relationships &&
       Object.values(relationships).filter(relations => {
@@ -288,7 +301,7 @@ export default class CozyClient {
     this.ensureStore()
     const existingQuery = getQueryFromState(this.store.getState(), queryId)
     // Don't trigger the INIT_QUERY for fetchMore() calls
-    if (existingQuery.fetchStatus !== 'loaded' || !queryDefinition.skip) {
+    if (existingQuery.fetchStatus !== 'loaded') {
       this.dispatch(initQuery(queryId, queryDefinition))
     }
   }
