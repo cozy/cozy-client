@@ -13,7 +13,7 @@ import { TODO_1, TODO_2, TODO_3 } from './fixtures'
 describe('connect', () => {
   const requestHandler = jest.fn()
   const link = new CozyLink(requestHandler)
-  const client = new CozyClient({ link })
+  const client = new CozyClient({ links: [link] })
 
   it('should dispatch the query on componentWillMount', () => {
     const store = configureMockStore()({})

@@ -1,6 +1,6 @@
 import configureStore from 'redux-mock-store'
 
-import { TODO_SCHEMA, TODO_1, TODO_2, TODO_3 } from './__tests__/fixtures'
+import { SCHEMA, TODO_1, TODO_2, TODO_3 } from './__tests__/fixtures'
 
 import CozyClient from './CozyClient'
 import CozyLink from './CozyLink'
@@ -33,7 +33,8 @@ describe('CozyClient initialization', () => {
     links.forEach(link => {
       link.registerClient = jest.fn()
     })
-    client = new CozyClient({ link: links })
+
+    client = new CozyClient({ links, schema: SCHEMA })
   })
 
   it('should have chained links', async () => {
@@ -71,7 +72,7 @@ describe('CozyClient logout', () => {
     links.forEach(link => {
       link.registerClient = jest.fn()
     })
-    client = new CozyClient({ link: links })
+    client = new CozyClient({ links, schema: SCHEMA })
   })
 
   it('should call reset on each link that can be reset', async () => {
@@ -111,7 +112,7 @@ describe('CozyClient login', () => {
     links.forEach(link => {
       link.registerClient = jest.fn()
     })
-    client = new CozyClient({ link: links })
+    client = new CozyClient({ links, schema: SCHEMA })
   })
 
   it('Should call `registerClientOnLinks`', () => {
@@ -136,7 +137,7 @@ describe('CozyClient', () => {
   const requestHandler = jest.fn()
   const store = configureStore()({})
   const link = new CozyLink(requestHandler)
-  const client = new CozyClient({ link, schema: TODO_SCHEMA })
+  const client = new CozyClient({ links: [link], schema: SCHEMA })
   client.setStore(store)
 
   afterEach(() => {
@@ -376,7 +377,7 @@ describe('CozyClient', () => {
   describe('schema handling', () => {
     it("should be possible to get a doctype's model", () => {
       expect(client.getDoctypeModel('io.cozy.todos')).toEqual({
-        ...TODO_SCHEMA.todos,
+        ...SCHEMA.todos,
         associations: [
           {
             doctype: 'io.cozy.files',

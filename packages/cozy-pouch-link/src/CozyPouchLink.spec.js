@@ -2,13 +2,7 @@ import CozyClient from 'cozy-client'
 import omit from 'lodash/omit'
 
 import CozyPouchLink from '.'
-import {
-  TODO_SCHEMA,
-  TODO_1,
-  TODO_2,
-  TODO_3,
-  TODO_4
-} from './__tests__/fixtures'
+import { SCHEMA, TODO_1, TODO_2, TODO_3, TODO_4 } from './__tests__/fixtures'
 
 const mockClient = {
   client: {
@@ -19,7 +13,7 @@ const mockClient = {
   }
 }
 
-const TODO_DOCTYPE = TODO_SCHEMA.todos.doctype
+const TODO_DOCTYPE = SCHEMA.todos.doctype
 
 describe('CozyPouchLink', () => {
   let client, link
@@ -28,8 +22,10 @@ describe('CozyPouchLink', () => {
     link = new CozyPouchLink({ doctypes: [TODO_DOCTYPE] })
     client = new CozyClient({
       ...mockClient,
-      link,
-      schema: TODO_SCHEMA
+      links: [link],
+      schema: {
+        todos: omit(TODO_DOCTYPE, 'relationships')
+      }
     })
   })
 

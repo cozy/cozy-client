@@ -2,13 +2,13 @@ import { createStore, combineReducers } from 'redux'
 import CozyClient from '../CozyClient'
 import CozyLink from '../CozyLink'
 
-import { TODO_SCHEMA, TODO_1, TODO_2 } from './fixtures'
+import { SCHEMA, TODO_1, TODO_2 } from './fixtures'
 import { receiveQueryResult, initQuery } from '../store/queries'
 
 describe('Associations', () => {
   const requestHandler = jest.fn()
   const link = new CozyLink(requestHandler)
-  const client = new CozyClient({ link, schema: TODO_SCHEMA })
+  const client = new CozyClient({ links: [link], schema: SCHEMA })
 
   const getTodo = id =>
     client

@@ -5,7 +5,7 @@ export const normalizeDoc = (doc, doctype) => {
 
 export const fromPouchResult = (res, isArray, doctype) => {
   if (isArray) {
-    const docs = res.rows || res.docs
+    const docs = res.rows ? res.rows.map(row => row.doc) : res.docs
     const offset = res.offset || 0
     return {
       data: docs.map(doc => normalizeDoc(doc, doctype)),

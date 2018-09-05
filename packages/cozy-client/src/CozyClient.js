@@ -359,10 +359,7 @@ export default class CozyClient {
       originalData.map(doc => this.fetchDocumentAssociations(doc, associations))
     )
     const data = responses.map(r => r.data)
-    const included = responses
-      .map(r => r.included)
-      .reduce((acc, inc) => [...acc, ...inc], [])
-
+    const included = flatMap(responses, resp => resp.included)
     return {
       ...response,
       data: isSingleDoc ? data[0] : data,
