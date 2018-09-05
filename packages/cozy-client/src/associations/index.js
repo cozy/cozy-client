@@ -4,6 +4,12 @@ import HasManyUNSAFEAssociation from './HasManyUNSAFEAssociation'
 import Association from './Association'
 
 export {
+  dehydrateDoc,
+  associationsFromModel,
+  responseToRelationship
+} from './helpers'
+
+export {
   HasManyUNSAFEAssociation,
   Association,
   HasManyFilesAssociation,

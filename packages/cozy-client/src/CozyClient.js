@@ -8,7 +8,12 @@
  */
 
 import StackLink from './StackLink'
-import { create as createAssociation, Association } from './associations'
+import {
+  create as createAssociation,
+  dehydrateDoc,
+  associationsFromModel,
+  responseToRelationship
+} from './associations'
 import { QueryDefinition, Mutations } from './dsl'
 import CozyStackClient, { OAuthClient } from 'cozy-stack-client'
 import { authenticateWithCordova } from './authentication/mobile'
@@ -32,41 +37,9 @@ import keyBy from 'lodash/keyBy'
 import pickBy from 'lodash/pickBy'
 import fromPairs from 'lodash/fromPairs'
 
-const dehydrateDoc = document => {
-  const dehydrated = {}
-  Object.entries(document).forEach(([key, value]) => {
-    if (!(value instanceof Association)) {
-      dehydrated[key] = value
-    } else if (value.raw) {
-      dehydrated[key] = value.raw
-    }
-  })
-  return dehydrated
-}
-
-const associationsFromModel = model => {
-  const relationships = model.relationships || {}
-  return Object.entries(relationships).map(([name, relationship]) => {
-    const { type, doctype, query } = relationship
-    return {
-      name,
-      type,
-      doctype,
-      query
-    }
-  })
-}
-
 const findModelByDoctype = (schema, doctype) => {
   return Object.values(schema).find(m => m.doctype === doctype)
 }
-
-const responseToRelationship = response => ({
-  data: response.data.map(d => ({ _id: d._id, _type: d._type })),
-  meta: response.meta,
-  next: response.next,
-  skip: response.skip
-})
 
 const allValues = async x => {
   const res = {}
