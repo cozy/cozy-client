@@ -7,7 +7,11 @@ import pickBy from 'lodash/pickBy'
 export const encode = data => {
   return Object.entries(data)
     .map(([k, v]) => {
-      const encodedValue = encodeURIComponent(v)
+      const encodedValue = Array.isArray(v)
+        ? '[' +
+          encodeURIComponent(v.map(arrayVal => `"${arrayVal}"`).join(',')) +
+          ']'
+        : encodeURIComponent(v)
       return `${k}=${encodedValue}`
     })
     .join('&')
