@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.10.3"></a>
+## [2.10.3](https://github.com/cozy/cozy-client/compare/v2.10.2...v2.10.3) (2018-09-05)
+
+
+### Bug Fixes
+
+* Extract doc from pouch result + spec ([3d51fac](https://github.com/cozy/cozy-client/commit/3d51fac))
+
+
+
+
 <a name="2.10.2"></a>
 ## [2.10.2](https://github.com/cozy/cozy-client/compare/v2.10.1...v2.10.2) (2018-09-05)
 
