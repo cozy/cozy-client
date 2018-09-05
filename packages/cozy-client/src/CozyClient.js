@@ -288,7 +288,7 @@ export default class CozyClient {
     this.ensureStore()
     const existingQuery = getQueryFromState(this.store.getState(), queryId)
     // Don't trigger the INIT_QUERY for fetchMore() calls
-    if (existingQuery.fetchStatus !== 'loaded' || !queryDefinition.skip) {
+    if (existingQuery.fetchStatus !== 'loaded') {
       this.dispatch(initQuery(queryId, queryDefinition))
     }
   }
