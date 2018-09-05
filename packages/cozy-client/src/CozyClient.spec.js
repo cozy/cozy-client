@@ -84,7 +84,7 @@ describe('CozyClient logout', () => {
   })
 
   it('should call all reset even if a reset throws an error', async () => {
-    const spy = jest.spyOn(global.console, 'error').mockReturnValue(jest.fn())
+    const spy = jest.spyOn(global.console, 'warn').mockReturnValue(jest.fn())
     links[0].reset = jest.fn().mockRejectedValue(new Error('Async error'))
     links[2].reset = jest.fn()
     await client.logout()
