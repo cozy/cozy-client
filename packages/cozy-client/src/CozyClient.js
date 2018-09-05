@@ -473,7 +473,6 @@ export default class CozyClient {
         createAssociation(document, assoc, methods)
       ])
     )
-    console.log('assocs', res)
     return res
   }
 
