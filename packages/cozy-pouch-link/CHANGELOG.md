@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.10.1"></a>
+## [2.10.1](https://github.com/cozy/cozy-client/compare/v2.10.0...v2.10.1) (2018-09-05)
+
+
+### Bug Fixes
+
+* **pouch:** Call onSync when sync is done ([256e264](https://github.com/cozy/cozy-client/commit/256e264))
+
+
+
+
 <a name="2.10.0"></a>
 # [2.10.0](https://github.com/cozy/cozy-client/compare/v2.9.1...v2.10.0) (2018-09-04)
 
