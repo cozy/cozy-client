@@ -3,6 +3,19 @@ import HasManyAssociation from './HasManyAssociation'
 import HasManyUNSAFEAssociation from './HasManyUNSAFEAssociation'
 import Association from './Association'
 
+export {
+  dehydrateDoc,
+  associationsFromModel,
+  responseToRelationship
+} from './helpers'
+
+export {
+  HasManyUNSAFEAssociation,
+  Association,
+  HasManyFilesAssociation,
+  HasManyAssociation
+}
+
 export const create = (
   target,
   { name, type, doctype },

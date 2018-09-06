@@ -26,6 +26,10 @@ export default class HasManyUNSAFEAssociation extends HasManyAssociation {
     return Array.isArray(this.target[this.name]) ? this.target[this.name] : []
   }
 
+  raw() {
+    return this.getProperty()
+  }
+
   setProperty(value) {
     this.target[this.name] = value
     return this.save(this.target)
