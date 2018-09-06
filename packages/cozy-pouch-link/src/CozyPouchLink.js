@@ -93,6 +93,7 @@ export default class PouchLink extends CozyLink {
   async reset() {
     await this.pouches.destroy()
     this.client = undefined
+    this.synced = false
   }
 
   onSync() {

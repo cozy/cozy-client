@@ -155,6 +155,11 @@ describe('CozyPouchLink', () => {
       await link.reset()
       expect(link.client).toBeUndefined()
     })
+
+    it('should set the `synced` property to false', async () => {
+      await link.reset()
+      expect(link.synced).toBe(false)
+    })
   })
 
   describe('onLogin', () => {
