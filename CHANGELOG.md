@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="2.10.4"></a>
+       <a name="2.10.5"></a>
+## [2.10.5](https://github.com/cozy/cozy-client/compare/v2.10.4...v2.10.5) (2018-09-06)
+
+
+### Bug Fixes
+
+* **pouch:** Set sync to false on reset ([19a36d4](https://github.com/cozy/cozy-client/commit/19a36d4))
+
+
+
+
+       <a name="2.10.4"></a>
 ## [2.10.4](https://github.com/cozy/cozy-client/compare/v2.10.3...v2.10.4) (2018-09-05)
 
 
@@ -14,7 +25,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-      <a name="2.10.3"></a>
+     <a name="2.10.3"></a>
 ## [2.10.3](https://github.com/cozy/cozy-client/compare/v2.10.2...v2.10.3) (2018-09-05)
 
 
@@ -25,7 +36,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-   <a name="2.10.2"></a>
+  <a name="2.10.2"></a>
 ## [2.10.2](https://github.com/cozy/cozy-client/compare/v2.10.1...v2.10.2) (2018-09-05)
 
 
@@ -33,7 +44,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package undefined
 
- <a name="2.10.1"></a>
+<a name="2.10.1"></a>
 ## [2.10.1](https://github.com/cozy/cozy-client/compare/v2.10.0...v2.10.1) (2018-09-05)
 
 
