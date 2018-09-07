@@ -12,17 +12,28 @@ const sleep = delay => {
 }
 
 describe('PouchManager', () => {
-  let manager, getReplicationURL
+  let manager,
+    getReplicationURL,
+    onSync = jest.fn()
 
   beforeEach(() => {
     getReplicationURL = () => 'replicationURL'
     manager = new PouchManager(['io.cozy.todos'], {
       replicationDelay: 16,
-      getReplicationURL: () => getReplicationURL()
+      getReplicationURL: () => getReplicationURL(),
+      onSync
     })
     const pouch = manager.getPouch('io.cozy.todos')
+    const replication = mocks.pouchReplication({
+      changes: {
+        docs: [
+          { _id: '1', name: 'Make replication work' },
+          { _id: '2', name: 'Profit!' }
+        ]
+      }
+    })
     pouch.replicate = {
-      from: jest.fn().mockImplementation(mocks.pouchReplication)
+      from: jest.fn().mockImplementation(replication)
     }
   })
 
@@ -67,5 +78,23 @@ describe('PouchManager', () => {
     await sleep(1)
     expect(manager.replicateOnce).toHaveBeenCalledTimes(1)
     manager.replicateOnce.mockRestore()
+  })
+
+  it('should call on sync with doctype updates', async () => {
+    jest.spyOn(manager, 'replicateOnce')
+    onSync.mockReset()
+    await manager.replicateOnce()
+    expect(onSync).toHaveBeenCalledWith({
+      'io.cozy.todos': [
+        {
+          _id: '1',
+          name: 'Make replication work'
+        },
+        {
+          _id: '2',
+          name: 'Profit!'
+        }
+      ]
+    })
   })
 })

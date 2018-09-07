@@ -3,6 +3,7 @@
 import PouchDB from 'pouchdb'
 import fromPairs from 'lodash/fromPairs'
 import map from 'lodash/map'
+import zip from 'lodash/zip'
 import * as promises from './promises'
 
 const DEFAULT_DELAY = 30 * 1000
@@ -15,7 +16,17 @@ const startReplication = (pouch, getReplicationURL) => {
     replication = pouch.replicate.from(url, {
       batch_size: 1000 // we have mostly small documents
     })
-    replication.on('error', reject).on('complete', resolve)
+    const docs = {}
+    replication.on('change', change => {
+      if (change.docs) {
+        change.docs.forEach(doc => {
+          docs[doc._id] = doc
+        })
+      }
+    })
+    replication.on('error', reject).on('complete', () => {
+      resolve(Object.values(docs))
+    })
   })
 
   const cancel = () => {
@@ -76,11 +87,13 @@ export default class PouchManager {
       const getReplicationURL = () => this.getReplicationURL(doctype)
       return startReplication(pouch, getReplicationURL)
     })
+    const doctypes = Object.keys(this.pouches)
     const promises = Object.values(this.replications)
     try {
       const res = await Promise.all(promises)
       if (this.options.onSync) {
-        this.options.onSync(res)
+        const doctypeUpdates = fromPairs(zip(doctypes, res))
+        this.options.onSync(doctypeUpdates)
       }
       return res
     } catch (err) {
