@@ -26,7 +26,7 @@ export default class HasManyUNSAFEAssociation extends HasManyAssociation {
     return Array.isArray(this.target[this.name]) ? this.target[this.name] : []
   }
 
-  raw() {
+  get raw() {
     return this.getProperty()
   }
 
