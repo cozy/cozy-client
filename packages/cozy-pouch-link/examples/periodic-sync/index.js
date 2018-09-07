@@ -23,7 +23,8 @@ const LabeledInput = ({ label, onChange, value }) => (
       type="text"
       className="form-control"
       aria-label={label}
-      aria-describedby="inputGroup-sizing-default" />
+      aria-describedby="inputGroup-sizing-default"
+    />
   </div>
 )
 
@@ -49,6 +50,7 @@ class App extends React.Component {
 
     this.handleStart = this.handleStart.bind(this)
     this.handleStop = this.handleStop.bind(this)
+    this.handleReset = this.handleReset.bind(this)
     this.handleChangeToken = this.handleChangeToken.bind(this)
     this.handleChangeURL = this.handleChangeURL.bind(this)
     this.getReplicationURL = this.getReplicationURL.bind(this)
@@ -130,6 +132,11 @@ class App extends React.Component {
     }
   }
 
+  reset() {
+    this.manager.destroy()
+    this.manager = null
+  }
+
   handleStart(ev) {
     ev.preventDefault()
     this.start()
@@ -138,6 +145,11 @@ class App extends React.Component {
   handleStop(ev) {
     ev.preventDefault()
     this.stop()
+  }
+
+  handleReset(ev) {
+    ev.preventDefault()
+    this.reset()
   }
 
   handleChangeToken({ target: { value } }) {
@@ -176,8 +188,11 @@ class App extends React.Component {
           <button className="btn btn-primary" onClick={this.handleStart}>
             start
           </button>
-          <button className="btn btn-danger" onClick={this.handleStop}>
+          <button className="btn btn-secondary" onClick={this.handleStop}>
             stop
+          </button>
+          <button className="btn btn-danger" onClick={this.handleReset}>
+            reset
           </button>
         </form>
         <div>Replicating: {this.state.replicating + ''}</div>
