@@ -3,6 +3,7 @@ import PouchDB from 'pouchdb'
 import PouchDBFind from 'pouchdb-find'
 import omit from 'lodash/omit'
 import defaults from 'lodash/defaults'
+import mapValues from 'lodash/mapValues'
 
 import { withoutDesignDocuments } from './helpers'
 import { getIndexNameFromFields, getIndexFields } from './mango'
@@ -80,7 +81,7 @@ export default class PouchLink extends CozyLink {
     this.pouches = new PouchManager(this.doctypes, {
       getReplicationURL: this.getReplicationURL.bind(this),
       onError: err => this.onSyncError(err),
-      onSync: this.onSync.bind(this)
+      onSync: this.handleOnSync.bind(this)
     })
   }
 
@@ -96,8 +97,20 @@ export default class PouchLink extends CozyLink {
     this.synced = false
   }
 
-  onSync() {
+  handleOnSync(doctypeUpdates) {
+    const normalizedData = mapValues(doctypeUpdates, (docs, doctype) => {
+      const normalizer = doc => jsonapi.normalizeDoc(doc, doctype)
+      return docs.map(normalizer)
+    })
+    this.onSync(normalizedData)
+    return normalizedData
+  }
+
+  onSync(normalizedData) {
     this.synced = true
+    if (this.options.onSync) {
+      this.options.onSync.call(this, normalizedData)
+    }
   }
 
   async onSyncError(error) {
