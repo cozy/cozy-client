@@ -151,6 +151,20 @@ describe('CozyClient', () => {
     })
   })
 
+  describe('setData', () => {
+    it('should dispatch RECEIVE_QUERY_RESULT actions', () => {
+      const data = {
+        'io.cozy.todos': [{ id: 1, done: true }, { id: 2, done: false }],
+        'io.cozy.people': [{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]
+      }
+
+      client.setData(data)
+
+      expect(store.getActions().length).toBe(Object.keys(data).length)
+      expect(store.getActions()[0].type).toBe('RECEIVE_QUERY_RESULT')
+    })
+  })
+
   describe('find', () => {
     it('should return a QueryDefinition', () => {
       expect(

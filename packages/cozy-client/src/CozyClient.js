@@ -612,4 +612,17 @@ export default class CozyClient {
     this.idCounter++
     return id
   }
+
+  /**
+   * Directly set the data in the store, without using a query
+   * This is useful for cases like Pouch replication, which wants to
+   * set some data in the store.
+   *
+   * @param data {Object} { doctype: [data] }
+   */
+  setData(data) {
+    Object.entries(data).forEach(([doctype, data]) => {
+      this.dispatch(receiveQueryResult(null, { data }))
+    })
+  }
 }
