@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="2.11.0"></a>
+       <a name="2.12.0"></a>
+# [2.12.0](https://github.com/cozy/cozy-client/compare/v2.11.0...v2.12.0) (2018-09-07)
+
+
+### Features
+
+* **client:** Add setData method ([24d52c6](https://github.com/cozy/cozy-client/commit/24d52c6))
+
+
+
+
+       <a name="2.11.0"></a>
 # [2.11.0](https://github.com/cozy/cozy-client/compare/v2.10.5...v2.11.0) (2018-09-06)
 
 
@@ -19,7 +30,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-      <a name="2.10.4"></a>
+     <a name="2.10.4"></a>
 ## [2.10.4](https://github.com/cozy/cozy-client/compare/v2.10.3...v2.10.4) (2018-09-05)
 
 
@@ -27,7 +38,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package cozy-client
 
-   <a name="2.10.3"></a>
+  <a name="2.10.3"></a>
 ## [2.10.3](https://github.com/cozy/cozy-client/compare/v2.10.2...v2.10.3) (2018-09-05)
 
 
@@ -35,7 +46,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package cozy-client
 
- <a name="2.10.2"></a>
+<a name="2.10.2"></a>
 ## [2.10.2](https://github.com/cozy/cozy-client/compare/v2.10.1...v2.10.2) (2018-09-05)
 
 
