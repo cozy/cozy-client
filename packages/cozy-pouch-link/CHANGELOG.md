@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.13.0"></a>
+# [2.13.0](https://github.com/cozy/cozy-client/compare/v2.12.0...v2.13.0) (2018-09-07)
+
+
+### Features
+
+* Add _type/id to documents in onSync ([cf97ad6](https://github.com/cozy/cozy-client/commit/cf97ad6))
+* Pouch onSync called with updated documents ([c67261b](https://github.com/cozy/cozy-client/commit/c67261b))
+
+
+
+
 <a name="2.12.0"></a>
 # [2.12.0](https://github.com/cozy/cozy-client/compare/v2.11.0...v2.12.0) (2018-09-07)
 
