@@ -1,7 +1,7 @@
-jest.mock('../CozyStackClient')
+jest.mock('./CozyStackClient')
 
-import CozyStackClient from '../CozyStackClient'
-import SharingCollection from '../SharingCollection'
+import CozyStackClient from './CozyStackClient'
+import SharingCollection from './SharingCollection'
 
 const FOLDER = {
   _type: 'io.cozy.files',
