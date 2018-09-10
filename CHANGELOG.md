@@ -3,7 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="2.14.0"></a>
+     <a name="2.15.0"></a>
+# [2.15.0](https://github.com/cozy/cozy-client/compare/v2.14.0...v2.15.0) (2018-09-10)
+
+
+### Features
+
+* add hooks ([6c38acc](https://github.com/cozy/cozy-client/commit/6c38acc))
+* add public methods to start/stop replication ([760ee44](https://github.com/cozy/cozy-client/commit/760ee44))
+
+
+
+
+     <a name="2.14.0"></a>
 # [2.14.0](https://github.com/cozy/cozy-client/compare/v2.13.1...v2.14.0) (2018-09-10)
 
 
@@ -14,7 +26,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-      <a name="2.13.1"></a>
+   <a name="2.13.1"></a>
 ## [2.13.1](https://github.com/cozy/cozy-client/compare/v2.13.0...v2.13.1) (2018-09-07)
 
 
@@ -25,7 +37,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="2.13.0"></a>
+  <a name="2.13.0"></a>
 # [2.13.0](https://github.com/cozy/cozy-client/compare/v2.12.0...v2.13.0) (2018-09-07)
 
 
@@ -37,7 +49,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-   <a name="2.12.0"></a>
+<a name="2.12.0"></a>
 # [2.12.0](https://github.com/cozy/cozy-client/compare/v2.11.0...v2.12.0) (2018-09-07)
 
 
