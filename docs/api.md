@@ -18,6 +18,12 @@ files associated to a specific document</p>
 </dd>
 <dt><a href="#module_OAuthClient">OAuthClient</a></dt>
 <dd></dd>
+<dt><a href="#module_PermissionCollection">PermissionCollection</a></dt>
+<dd><p>Interact with permissions</p>
+</dd>
+<dt><a href="#module_SharingCollection">SharingCollection</a></dt>
+<dd><p>Interact with sharing doctypes</p>
+</dd>
 </dl>
 
 ## Constants
@@ -85,6 +91,7 @@ continue.</p>
     * [.register(cozyURL)](#module_CozyClient+register) ⇒ <code>object</code>
     * [.startOAuthFlow(openURLCallback)](#module_CozyClient+startOAuthFlow) ⇒ <code>object</code>
     * [.renewAuthorization()](#module_CozyClient+renewAuthorization) ⇒ <code>object</code>
+    * [.setData(data)](#module_CozyClient+setData)
 
 <a name="module_CozyClient+collection"></a>
 
@@ -153,6 +160,19 @@ Renews the token if, for instance, new permissions are required.
 
 **Kind**: instance method of [<code>CozyClient</code>](#module_CozyClient)  
 **Returns**: <code>object</code> - Contains the fetched token and the client information.  
+<a name="module_CozyClient+setData"></a>
+
+### cozyClient.setData(data)
+Directly set the data in the store, without using a query
+This is useful for cases like Pouch replication, which wants to
+set some data in the store.
+
+**Kind**: instance method of [<code>CozyClient</code>](#module_CozyClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| data | <code>Object</code> | { doctype: [data] } |
+
 <a name="module_AppCollection"></a>
 
 ## AppCollection
@@ -365,7 +385,7 @@ Fetches the complete set of client information from the server after it has been
 <a name="module_OAuthClient+updateInformation"></a>
 
 ### oAuthClient.updateInformation(information, resetSecret) ⇒ <code>promise</code>
-Updates the client own information. This method will update both the local information and the remote information on the OAuth server.
+Overwrites the client own information. This method will update both the local information and the remote information on the OAuth server.
 
 **Kind**: instance method of [<code>OAuthClient</code>](#module_OAuthClient)  
 **Returns**: <code>promise</code> - A promise that resolves to a complete, updated list of client information  
@@ -468,6 +488,54 @@ Updates the OAuth informations
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>object</code> | Map of OAuth options |
+
+<a name="module_PermissionCollection"></a>
+
+## PermissionCollection
+Interact with permissions
+
+<a name="module_PermissionCollection+getOwnPermissions"></a>
+
+### permissionCollection.getOwnPermissions() ⇒ <code>object</code>
+async getOwnPermissions - Gets the permission for the current token
+
+**Kind**: instance method of [<code>PermissionCollection</code>](#module_PermissionCollection)  
+<a name="module_SharingCollection"></a>
+
+## SharingCollection
+Interact with sharing doctypes
+
+
+* [SharingCollection](#module_SharingCollection)
+    * [.share(document, recipients, sharingType, description, [previewPath])](#module_SharingCollection+share)
+    * [.getDiscoveryLink(sharingId, sharecode)](#module_SharingCollection+getDiscoveryLink) ⇒ <code>string</code>
+
+<a name="module_SharingCollection+share"></a>
+
+### sharingCollection.share(document, recipients, sharingType, description, [previewPath])
+share - Creates a new sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#post-sharings
+
+**Kind**: instance method of [<code>SharingCollection</code>](#module_SharingCollection)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| document | <code>object</code> |  | The document to share. Should have and _id and a name. |
+| recipients | <code>array</code> |  | A list of io.cozy.contacts |
+| sharingType | <code>string</code> |  |  |
+| description | <code>string</code> |  |  |
+| [previewPath] | <code>string</code> | <code>null</code> | Relative URL of the sharings preview page |
+
+<a name="module_SharingCollection+getDiscoveryLink"></a>
+
+### sharingCollection.getDiscoveryLink(sharingId, sharecode) ⇒ <code>string</code>
+getDiscoveryLink - Returns the URL of the page that can be used to accept a sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#get-sharingssharing-iddiscovery
+
+**Kind**: instance method of [<code>SharingCollection</code>](#module_SharingCollection)  
+
+| Param | Type |
+| --- | --- |
+| sharingId | <code>string</code> | 
+| sharecode | <code>string</code> | 
 
 <a name="encode"></a>
 
