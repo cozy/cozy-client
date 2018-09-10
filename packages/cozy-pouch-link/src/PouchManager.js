@@ -13,7 +13,7 @@ const startReplication = (pouch, getReplicationURL) => {
   let replication
   const promise = new Promise((resolve, reject) => {
     const url = getReplicationURL()
-    replication = pouch.replicate.from(url, {
+    replication = pouch.sync(url, {
       batch_size: 1000 // we have mostly small documents
     })
     const docs = {}

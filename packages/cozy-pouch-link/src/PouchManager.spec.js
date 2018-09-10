@@ -32,9 +32,7 @@ describe('PouchManager', () => {
         ]
       }
     })
-    pouch.replicate = {
-      from: jest.fn().mockImplementation(replication)
-    }
+    pouch.sync = jest.fn().mockImplementation(replication)
   })
 
   afterEach(() => {
@@ -49,7 +47,7 @@ describe('PouchManager', () => {
     manager.startReplicationLoop()
     await sleep(1000)
     const pouch = manager.getPouch('io.cozy.todos')
-    expect(pouch.replicate.from.mock.calls.length).toBeGreaterThan(5)
+    expect(pouch.sync.mock.calls.length).toBeGreaterThan(5)
   })
 
   it('should stop in case of error', async () => {
