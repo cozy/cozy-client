@@ -15,6 +15,7 @@ exports[`SharingCollection share should call the right route with the right payl
           "attributes": Object {
             "description": "foo",
             "open_sharing": false,
+            "preview_path": null,
             "rules": Array [
               Object {
                 "add": "push",
