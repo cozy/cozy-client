@@ -87,7 +87,7 @@ export default class PouchLink extends CozyLink {
 
   onLogin() {
     if (this.client && this.options.initialSync) {
-      this.pouches.startReplicationLoop()
+      this.startReplication()
     }
   }
 
@@ -113,11 +113,34 @@ export default class PouchLink extends CozyLink {
     }
   }
 
+  /**
+   * User of the link can call this to start ongoing replications.
+   * Typically, it can be used when the application regains focus.
+   *
+   * @public
+   * @return {void}
+   */
+  startReplication() {
+    this.pouches.startReplicationLoop()
+  }
+
+  /**
+   * User of the link can call this to stop ongoing replications.
+   * Typically, it can be used when the applications loses focus.
+   *
+   * @public
+   * @return {void}
+   */
+  stopReplication() {
+    this.pouches.stopReplicationLoop()
+  }
+
   async onSyncError(error) {
     if (isExpiredTokenError(error)) {
       try {
         await this.client.renewAuthorization()
-        this.pouches.startReplicationLoop()
+        this.startReplication()
+        return
       } catch (err) {
         console.warn('Could not refresh token, replication has stopped', err)
       }
