@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="2.15.1"></a>
+       <a name="2.15.2"></a>
+## [2.15.2](https://github.com/cozy/cozy-client/compare/v2.15.1...v2.15.2) (2018-09-10)
+
+
+### Bug Fixes
+
+* Filter design and deleted docs in replication ([47c3107](https://github.com/cozy/cozy-client/commit/47c3107))
+
+
+
+
+       <a name="2.15.1"></a>
 ## [2.15.1](https://github.com/cozy/cozy-client/compare/v2.15.0...v2.15.1) (2018-09-10)
 
 
@@ -14,7 +25,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-      <a name="2.15.0"></a>
+     <a name="2.15.0"></a>
 # [2.15.0](https://github.com/cozy/cozy-client/compare/v2.14.0...v2.15.0) (2018-09-10)
 
 
@@ -26,7 +37,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-   <a name="2.14.0"></a>
+  <a name="2.14.0"></a>
 # [2.14.0](https://github.com/cozy/cozy-client/compare/v2.13.1...v2.14.0) (2018-09-10)
 
 
@@ -37,7 +48,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
- <a name="2.13.1"></a>
+<a name="2.13.1"></a>
 ## [2.13.1](https://github.com/cozy/cozy-client/compare/v2.13.0...v2.13.1) (2018-09-07)
 
 
