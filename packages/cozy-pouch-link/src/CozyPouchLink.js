@@ -122,6 +122,9 @@ export default class PouchLink extends CozyLink {
    */
   startReplication() {
     this.pouches.startReplicationLoop()
+    if (this.options.onStartReplication) {
+      this.options.onStartReplication.apply(this)
+    }
   }
 
   /**
@@ -133,6 +136,9 @@ export default class PouchLink extends CozyLink {
    */
   stopReplication() {
     this.pouches.stopReplicationLoop()
+    if (this.options.onStopReplication) {
+      this.options.onStopReplication.apply(this)
+    }
   }
 
   async onSyncError(error) {
@@ -143,9 +149,15 @@ export default class PouchLink extends CozyLink {
         return
       } catch (err) {
         console.warn('Could not refresh token, replication has stopped', err)
+        if (this.options.onSyncError) {
+          this.options.onSyncError.call(this, err)
+        }
       }
     } else {
       console.warn('CozyPouchLink: Synchronization error', error)
+      if (this.options.onSyncError) {
+        this.options.onSyncError.call(this, error)
+      }
     }
   }
 
