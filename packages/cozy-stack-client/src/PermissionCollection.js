@@ -4,6 +4,11 @@ import { uri } from './utils'
 
 const normalizePermission = perm => normalizeDoc(perm, 'io.cozy.permissions')
 
+/**
+ * Interact with permissions
+ *
+ * @module PermissionCollection
+ */
 export default class PermissionCollection extends DocumentCollection {
   async get(id) {
     const resp = await this.client.fetchJSON('GET', uri`/permissions/${id}`)
@@ -67,6 +72,18 @@ export default class PermissionCollection extends DocumentCollection {
     )
     for (let perm of links) {
       await this.destroy(perm)
+    }
+  }
+
+  /**
+   * async getOwnPermissions - Gets the permission for the current token
+   *
+   * @returns {object}
+   */
+  async getOwnPermissions() {
+    const resp = await this.client.fetchJSON('GET', '/permissions/self')
+    return {
+      data: normalizePermission(resp.data)
     }
   }
 }
