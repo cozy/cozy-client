@@ -44,30 +44,7 @@ describe('SharingCollection', () => {
 
     it('should call the right route with the right payload', async () => {
       await collection.share(FOLDER, [RECIPIENT], 'one-way', 'foo')
-      expect(client.fetchJSON).toHaveBeenCalledWith('POST', '/sharings/', {
-        data: {
-          attributes: {
-            description: 'foo',
-            open_sharing: false,
-            rules: [
-              {
-                doctype: 'io.cozy.files',
-                title: 'bills',
-                add: 'push',
-                update: 'push',
-                remove: 'push',
-                values: ['folder_1']
-              }
-            ]
-          },
-          relationships: {
-            recipients: {
-              data: [{ id: 'contact_1', type: 'io.cozy.contacts' }]
-            }
-          },
-          type: 'io.cozy.sharings'
-        }
-      })
+      expect(client.fetchJSON).toMatchSnapshot()
     })
   })
 })

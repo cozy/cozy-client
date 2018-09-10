@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SharingCollection share should call the right route with the right payload 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "GET",
+      "/sharings/doctype/io.cozy.files",
+    ],
+    Array [
+      "POST",
+      "/sharings/",
+      Object {
+        "data": Object {
+          "attributes": Object {
+            "description": "foo",
+            "open_sharing": false,
+            "rules": Array [
+              Object {
+                "add": "push",
+                "doctype": "io.cozy.files",
+                "remove": "push",
+                "title": "bills",
+                "update": "push",
+                "values": Array [
+                  "folder_1",
+                ],
+              },
+            ],
+          },
+          "relationships": Object {
+            "recipients": Object {
+              "data": Array [
+                Object {
+                  "id": "contact_1",
+                  "type": "io.cozy.contacts",
+                },
+              ],
+            },
+          },
+          "type": "io.cozy.sharings",
+        },
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "isThrow": false,
+      "value": Promise {},
+    },
+    Object {
+      "isThrow": false,
+      "value": Promise {},
+    },
+  ],
+}
+`;
