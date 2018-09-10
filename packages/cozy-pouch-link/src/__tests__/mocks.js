@@ -5,7 +5,7 @@ export const pouchReplication = mockOptions => (url, options) => {
         setTimeout(fn, 5)
       }
       if (event == 'change') {
-        setTimeout(() => fn(mockOptions.changes), 2)
+        setTimeout(() => fn(mockOptions), 2)
       }
       return replication
     },
