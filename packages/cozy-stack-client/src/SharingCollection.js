@@ -4,6 +4,11 @@ import { uri } from './utils'
 
 const normalizeSharing = sharing => normalizeDoc(sharing, 'io.cozy.sharings')
 
+/**
+ * Interact with sharing doctypes
+ *
+ * @module SharingCollection
+ */
 export default class SharingCollection extends DocumentCollection {
   async findByDoctype(doctype) {
     const resp = await this.client.fetchJSON(
@@ -16,12 +21,28 @@ export default class SharingCollection extends DocumentCollection {
     }
   }
 
-  async share(document, recipients, sharingType, description) {
+  /**
+   * share - Creates a new sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#post-sharings
+   *
+   * @param  {object} document The document to share. Should have and _id and a name.
+   * @param  {array} recipients A list of io.cozy.contacts
+   * @param  {string} sharingType
+   * @param  {string} description
+   * @param  {string=} previewPath Relative URL of the sharings preview page
+   */
+  async share(
+    document,
+    recipients,
+    sharingType,
+    description,
+    previewPath = null
+  ) {
     const resp = await this.client.fetchJSON('POST', '/sharings/', {
       data: {
         type: 'io.cozy.sharings',
         attributes: {
           description,
+          preview_path: previewPath,
           open_sharing: sharingType === 'two-way',
           rules: getSharingRules(document, sharingType)
         },
@@ -33,6 +54,19 @@ export default class SharingCollection extends DocumentCollection {
       }
     })
     return { data: normalizeSharing(resp.data) }
+  }
+
+  /**
+   * getDiscoveryLink - Returns the URL of the page that can be used to accept a sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#get-sharingssharing-iddiscovery
+   *
+   * @param  {string} sharingId
+   * @param  {string} sharecode
+   * @returns {string}
+   */
+  getDiscoveryLink(sharingId, sharecode) {
+    return this.client.fullpath(
+      `/sharings/${sharingId}/discovery?sharecode=${sharecode}`
+    )
   }
 
   async addRecipients(sharing, recipients, sharingType) {
