@@ -5,6 +5,7 @@ import fromPairs from 'lodash/fromPairs'
 import map from 'lodash/map'
 import zip from 'lodash/zip'
 import * as promises from './promises'
+import { isDesignDocument, isDeletedDocument } from './helpers'
 
 const DEFAULT_DELAY = 30 * 1000
 
@@ -19,9 +20,11 @@ const startReplication = (pouch, getReplicationURL) => {
     const docs = {}
     replication.on('change', ({ change }) => {
       if (change.docs) {
-        change.docs.forEach(doc => {
-          docs[doc._id] = doc
-        })
+        change.docs
+          .filter(doc => !isDesignDocument(doc) && !isDeletedDocument(doc))
+          .forEach(doc => {
+            docs[doc._id] = doc
+          })
       }
     })
     replication.on('error', reject).on('complete', () => {

@@ -1,4 +1,8 @@
-import { withoutDesignDocuments } from './helpers.js'
+import {
+  withoutDesignDocuments,
+  isDesignDocument,
+  isDeletedDocument
+} from './helpers.js'
 
 describe('Helpers', () => {
   describe('withoutDesignDocuments', () => {
@@ -23,6 +27,26 @@ describe('Helpers', () => {
       const responseCopy = { ...response }
       withoutDesignDocuments(response)
       expect(response).toEqual(responseCopy)
+    })
+  })
+
+  describe('isDesignDocument', () => {
+    it('should return true when given a design document', () => {
+      expect(isDesignDocument({ _id: '_design/something' })).toBe(true)
+    })
+
+    it('should return false when given a non design document', () => {
+      expect(isDesignDocument({ _id: 'something' })).toBe(false)
+    })
+  })
+
+  describe('isDeletedDocument', () => {
+    it('should return true when given a deleted document', () => {
+      expect(isDeletedDocument({ _deleted: true })).toBe(true)
+    })
+
+    it('should return false when given a non deleted document', () => {
+      expect(isDeletedDocument({ _id: 'notdeleted' })).toBeFalsy()
     })
   })
 })

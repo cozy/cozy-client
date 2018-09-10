@@ -9,3 +9,7 @@ export const withoutDesignDocuments = res => {
     total_rows: rows.length
   }
 }
+
+export const isDesignDocument = doc => startsWith(doc._id, '_design')
+
+export const isDeletedDocument = doc => doc._deleted
