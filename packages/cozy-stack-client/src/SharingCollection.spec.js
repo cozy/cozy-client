@@ -46,5 +46,10 @@ describe('SharingCollection', () => {
       await collection.share(FOLDER, [RECIPIENT], 'one-way', 'foo')
       expect(client.fetchJSON).toMatchSnapshot()
     })
+
+    it('should call the right route with the right payload', async () => {
+      await collection.share(FOLDER, [RECIPIENT], 'one-way', 'foo', '/preview')
+      expect(client.fetchJSON).toMatchSnapshot()
+    })
   })
 })
