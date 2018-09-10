@@ -25,7 +25,8 @@ describe('PouchManager', () => {
     })
     const pouch = manager.getPouch('io.cozy.todos')
     const replication = mocks.pouchReplication({
-      changes: {
+      direction: 'pull',
+      change: {
         docs: [
           { _id: '1', name: 'Make replication work' },
           { _id: '2', name: 'Profit!' }

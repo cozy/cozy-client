@@ -17,7 +17,7 @@ const startReplication = (pouch, getReplicationURL) => {
       batch_size: 1000 // we have mostly small documents
     })
     const docs = {}
-    replication.on('change', change => {
+    replication.on('change', ({ change }) => {
       if (change.docs) {
         change.docs.forEach(doc => {
           docs[doc._id] = doc
