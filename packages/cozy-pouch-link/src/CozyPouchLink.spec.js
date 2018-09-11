@@ -145,8 +145,9 @@ describe('CozyPouchLink', () => {
     })
 
     it('should delete all databases', async () => {
+      const pouches = link.pouches
       await link.reset()
-      expect(link.pouches.destroy).toHaveBeenCalledTimes(1)
+      expect(pouches.destroy).toHaveBeenCalledTimes(1)
     })
 
     it('should delete client', async () => {
@@ -159,6 +160,11 @@ describe('CozyPouchLink', () => {
     it('should set the `synced` property to false', async () => {
       await link.reset()
       expect(link.synced).toBe(false)
+    })
+
+    it('should forget the PouchManager instance', async () => {
+      await link.reset()
+      expect(link.pouches).toBeNull()
     })
   })
 
