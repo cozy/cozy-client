@@ -73,6 +73,18 @@ describe('CozyPouchLink', () => {
       expect(docs.data.length).toBe(1)
     })
 
+    it('should be possible to query only one doc', async () => {
+      const db = link.getPouch(TODO_DOCTYPE)
+      db.post({
+        _id: 'deadbeef',
+        label: 'Make PouchDB link work',
+        done: false
+      })
+      const query = client.get(TODO_DOCTYPE, 'deadbeef')
+      const resp = await link.request(query)
+      expect(resp.data.label).toBe('Make PouchDB link work')
+    })
+
     it('should be possible to select', async () => {
       const db = link.getPouch(TODO_DOCTYPE)
       await db.bulkDocs(docs.map(x => omit(x, '_type')))
