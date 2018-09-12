@@ -26,7 +26,11 @@ console.log(allTodos.data)
 ```
 
 #### Pagination
-By default, the client limits query results to 50 documents. If the limit causes some documents not to be returned, the response will have a `next: true` property.
+
+By default, the stack limits the number of query results to 100 documents. If
+the limit causes some documents not to be returned, the response will have a
+`next: true` property.
+
 By using the `skip` and `limit` options you can build your own pagination:
 ```js
 const firstPage = await todos.all({ limit: 100 })
