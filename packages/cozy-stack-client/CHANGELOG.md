@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.17.0"></a>
+# [2.17.0](https://github.com/cozy/cozy-client/compare/v2.16.0...v2.17.0) (2018-09-12)
+
+
+### Features
+
+* Add route to get own permissions ([0255600](https://github.com/cozy/cozy-client/commit/0255600))
+* Preview path for sharings ([dfd14e7](https://github.com/cozy/cozy-client/commit/dfd14e7))
+
+
+
+
 <a name="2.10.4"></a>
 ## [2.10.4](https://github.com/cozy/cozy-client/compare/v2.10.3...v2.10.4) (2018-09-05)
 
