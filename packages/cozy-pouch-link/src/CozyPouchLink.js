@@ -213,14 +213,18 @@ export default class PouchLink extends CozyLink {
     }
   }
 
-  async executeQuery({ doctype, selector, sort, fields, limit }) {
+  async executeQuery({ doctype, selector, sort, fields, limit, id }) {
     const db = this.getPouch(doctype)
-    let res
-    if (!selector && !fields && !sort) {
+    let res, withRows
+    if (!selector && !fields && !sort && !id) {
       res = await db.allDocs({
         include_docs: true
       })
       res = withoutDesignDocuments(res)
+      withRows = true
+    } else if (id) {
+      res = await db.get(id)
+      withRows = false
     } else {
       const findOpts = {
         sort,
@@ -230,8 +234,9 @@ export default class PouchLink extends CozyLink {
       }
       await this.ensureIndex(doctype, findOpts)
       res = await db.find(findOpts)
+      withRows = true
     }
-    return jsonapi.fromPouchResult(res, true, doctype)
+    return jsonapi.fromPouchResult(res, withRows, doctype)
   }
 
   async executeMutation(mutation, result, forward) {

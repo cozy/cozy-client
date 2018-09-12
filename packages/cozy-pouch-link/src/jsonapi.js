@@ -3,8 +3,8 @@ export const normalizeDoc = (doc, doctype) => {
   return { id, _id: id, _type: doctype, ...doc }
 }
 
-export const fromPouchResult = (res, isArray, doctype) => {
-  if (isArray) {
+export const fromPouchResult = (res, withRows, doctype) => {
+  if (withRows) {
     const docs = res.rows ? res.rows.map(row => row.doc) : res.docs
     const offset = res.offset || 0
     return {
