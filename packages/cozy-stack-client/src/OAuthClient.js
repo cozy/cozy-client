@@ -88,7 +88,8 @@ export default class OAuthClient extends CozyStackClient {
       client_name: 'clientName',
       client_secret: 'clientSecret',
       registration_access_token: 'registrationAccessToken',
-      software_id: 'softwareID'
+      software_id: 'softwareID',
+      redirect_uris: 'redirectURI'
     }
 
     const result = {}
