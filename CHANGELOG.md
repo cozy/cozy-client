@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="2.15.3"></a>
+     <a name="2.16.0"></a>
+# [2.16.0](https://github.com/cozy/cozy-client/compare/v2.15.3...v2.16.0) (2018-09-12)
+
+
+### Features
+
+* Export Association ([7347883](https://github.com/cozy/cozy-client/commit/7347883))
+
+
+
+
+     <a name="2.15.3"></a>
 ## [2.15.3](https://github.com/cozy/cozy-client/compare/v2.15.2...v2.15.3) (2018-09-11)
 
 
@@ -14,7 +25,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-      <a name="2.15.2"></a>
+   <a name="2.15.2"></a>
 ## [2.15.2](https://github.com/cozy/cozy-client/compare/v2.15.1...v2.15.2) (2018-09-10)
 
 
@@ -25,7 +36,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="2.15.1"></a>
+  <a name="2.15.1"></a>
 ## [2.15.1](https://github.com/cozy/cozy-client/compare/v2.15.0...v2.15.1) (2018-09-10)
 
 
@@ -36,7 +47,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-   <a name="2.15.0"></a>
+<a name="2.15.0"></a>
 # [2.15.0](https://github.com/cozy/cozy-client/compare/v2.14.0...v2.15.0) (2018-09-10)
 
 
