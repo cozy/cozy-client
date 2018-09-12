@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.18.0"></a>
+# [2.18.0](https://github.com/cozy/cozy-client/compare/v2.17.0...v2.18.0) (2018-09-12)
+
+
+### Features
+
+* Add ability to fetch only one document ([ea28fdd](https://github.com/cozy/cozy-client/commit/ea28fdd))
+
+
+
+
 <a name="2.17.0"></a>
 # [2.17.0](https://github.com/cozy/cozy-client/compare/v2.16.0...v2.17.0) (2018-09-12)
 
