@@ -120,12 +120,27 @@ describe('DocumentCollection', () => {
     })
 
     it('should not fail if there is no doc of this type yet', async () => {
-      client.fetchJSON.mockReturnValueOnce(
+      client.fetchJSON.mockReturnValue(
         Promise.reject(new Error('404: not_found'))
       )
-      const resp = await collection.all()
-      expect(resp).toConformToJSONAPI()
-      expect(resp.data).toHaveLength(0)
+
+      const respAll = await collection.all()
+      expect(respAll).toConformToJSONAPI()
+      expect(respAll.data).toHaveLength(0)
+
+      const respFind = await collection.find({ name: 'Bart' })
+      expect(respFind).toConformToJSONAPI()
+      expect(respFind.data).toHaveLength(0)
+
+      const respGet = await collection.get('fakeId')
+      expect(respGet).toConformToJSONAPI()
+      expect(respGet.data).toBe(null)
+
+      const respGetAll = await collection.getAll(['fakeId', 'fakeId2'])
+      expect(respGetAll).toConformToJSONAPI()
+      expect(respGetAll.data.length).toBe(0)
+
+      client.fetchJSON.mockRestore()
     })
 
     it('should throw for other error types', async () => {
