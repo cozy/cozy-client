@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-     <a name="2.19.0"></a>
+      <a name="2.19.1"></a>
+## [2.19.1](https://github.com/cozy/cozy-client/compare/v2.19.0...v2.19.1) (2018-09-13)
+
+
+### Bug Fixes
+
+* Return sensible data when database not found ([7141deb](https://github.com/cozy/cozy-client/commit/7141deb))
+
+
+
+
+      <a name="2.19.0"></a>
 # [2.19.0](https://github.com/cozy/cozy-client/compare/v2.18.1...v2.19.0) (2018-09-13)
 
 
@@ -19,7 +30,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="2.18.1"></a>
+   <a name="2.18.1"></a>
 ## [2.18.1](https://github.com/cozy/cozy-client/compare/v2.18.0...v2.18.1) (2018-09-12)
 
 
@@ -27,7 +38,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package undefined
 
-   <a name="2.18.0"></a>
+ <a name="2.18.0"></a>
 # [2.18.0](https://github.com/cozy/cozy-client/compare/v2.17.0...v2.18.0) (2018-09-12)
 
 
@@ -38,7 +49,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-  <a name="2.17.0"></a>
+<a name="2.17.0"></a>
 # [2.17.0](https://github.com/cozy/cozy-client/compare/v2.16.0...v2.17.0) (2018-09-12)
 
 
