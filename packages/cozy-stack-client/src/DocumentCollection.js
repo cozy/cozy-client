@@ -42,22 +42,23 @@ export default class DocumentCollection {
 
     // If no document of this doctype exist, this route will return a 404,
     // so we need to try/catch and return an empty response object in case of a 404
+    let resp
     try {
-      const resp = await this.client.fetchJSON('GET', path)
-      // WARN: looks like this route returns something looking like a couchDB design doc, we need to filter it:
-      const rows = resp.rows.filter(row => row.doc && !isDesignDoc(row.doc))
-      // WARN: the JSON response from the stack is not homogenous with other routes (offset? rows? total_rows?)
-      return {
-        data: rows.map(row => normalizeDoc(row.doc, this.doctype)),
-        meta: { count: resp.total_rows },
-        skip: resp.offset || 0,
-        next: resp.offset + rows.length <= resp.total_rows
-      }
+      resp = await this.client.fetchJSON('GET', path)
     } catch (error) {
       if (error.message.match(/not_found/)) {
         return { data: [], meta: { count: 0 }, skip: 0, next: false }
       }
       throw error
+    }
+    // WARN: looks like this route returns something looking like a couchDB design doc, we need to filter it:
+    const rows = resp.rows.filter(row => row.doc && !isDesignDoc(row.doc))
+    // WARN: the JSON response from the stack is not homogenous with other routes (offset? rows? total_rows?)
+    return {
+      data: rows.map(row => normalizeDoc(row.doc, this.doctype)),
+      meta: { count: resp.total_rows },
+      skip: resp.offset || 0,
+      next: resp.offset + rows.length <= resp.total_rows
     }
   }
 
@@ -73,11 +74,19 @@ export default class DocumentCollection {
    */
   async find(selector, options = {}) {
     const { skip = 0 } = options
-    const resp = await this.client.fetchJSON(
-      'POST',
-      uri`/data/${this.doctype}/_find`,
-      await this.toMangoOptions(selector, options)
-    )
+    let resp
+    try {
+      resp = await this.client.fetchJSON(
+        'POST',
+        uri`/data/${this.doctype}/_find`,
+        await this.toMangoOptions(selector, options)
+      )
+    } catch (error) {
+      if (error.message.match(/not_found/)) {
+        return { data: [], meta: { count: 0 }, skip: 0, next: false }
+      }
+      throw error
+    }
     return {
       data: resp.docs.map(doc => normalizeDoc(doc, this.doctype)),
       // Mango queries don't return the total count of rows, so if next = true,
@@ -92,23 +101,38 @@ export default class DocumentCollection {
   }
 
   async get(id) {
-    const resp = await this.client.fetchJSON(
-      'GET',
-      uri`/data/${this.doctype}/${id}`
-    )
+    let resp
+    try {
+      resp = await this.client.fetchJSON(
+        'GET',
+        uri`/data/${this.doctype}/${id}`
+      )
+    } catch (error) {
+      if (error.message.match(/not_found/)) {
+        return { data: null }
+      }
+    }
     return {
       data: normalizeDoc(resp, this.doctype)
     }
   }
 
   async getAll(ids) {
-    const resp = await this.client.fetchJSON(
-      'POST',
-      uri`/data/${this.doctype}/_all_docs?include_docs=true`,
-      {
-        keys: ids
+    let resp
+    try {
+      resp = await this.client.fetchJSON(
+        'POST',
+        uri`/data/${this.doctype}/_all_docs?include_docs=true`,
+        {
+          keys: ids
+        }
+      )
+    } catch (error) {
+      if (error.message.match(/not_found/)) {
+        return { data: [], meta: { count: 0 }, skip: 0, next: false }
       }
-    )
+      throw error
+    }
     const rows = resp.rows.filter(row => row.doc)
     return {
       data: rows.map(row => normalizeDoc(row.doc, this.doctype)),
