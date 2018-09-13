@@ -111,6 +111,18 @@ export default class OAuthClient extends CozyStackClient {
   async register() {
     if (this.isRegistered()) throw new Error('Client already registered')
 
+    const mandatoryFields = ['redirectURI']
+    const fields = Object.keys(this.oauthOptions)
+    const missingMandatoryFields = mandatoryFields.filter(
+      fieldName => fields[fieldName]
+    )
+
+    if (missingMandatoryFields.length > 0) {
+      throw new Error(
+        `Can't register client : missing ${missingMandatoryFields} fields`
+      )
+    }
+
     const data = await this.fetchJSON(
       'POST',
       '/auth/register',
