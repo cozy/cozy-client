@@ -45,7 +45,7 @@ export default class HasManyAssociation extends Association {
     const data =
       this.target.relationships && this.target.relationships[this.name]
     if (!data) {
-      if (rawData) {
+      if (rawData && rawData.length) {
         console.warn(
           "You're trying to access data on a relationship that appear to not be loaded yet. You may want to use 'include()' on your query"
         )
