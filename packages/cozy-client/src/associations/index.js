@@ -16,6 +16,22 @@ export {
   HasManyAssociation
 }
 
+export const getClass = (doctype, type) => {
+  if (typeof type !== 'string') {
+    return type
+  } else {
+    switch (type) {
+      case 'has-many':
+        return doctype === 'io.cozy.files'
+          ? HasManyFilesAssociation
+          : HasManyAssociation
+      case 'has-many-UNSAFE':
+        return HasManyUNSAFEAssociation
+    }
+  }
+  throw new Error(`Can't handle '${doctype}:${type}' associations`)
+}
+
 export const create = (
   target,
   { name, type, doctype },
@@ -27,14 +43,9 @@ export const create = (
     throw new Error(`Association ${name} already exists`)
   }
 
-  switch (type) {
-    case 'has-many':
-      return doctype === 'io.cozy.files'
-        ? new HasManyFilesAssociation(target, name, doctype, accessors)
-        : new HasManyAssociation(target, name, doctype, accessors)
-    case 'has-many-UNSAFE':
-      return new HasManyUNSAFEAssociation(target, name, doctype, accessors)
-    default:
-      throw new Error(`Can't handle ${type} associations`)
+  const cls = getClass(doctype, type)
+  if (!cls) {
+    throw new Error(`Can't handle ${type} associations`)
   }
+  return new cls(target, name, doctype, accessors)
 }
