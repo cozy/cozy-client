@@ -187,28 +187,23 @@ describe('CozyClient', () => {
 
     it('should dehydrate relationships', async () => {
       class FakeHasMany extends Association {
-        constructor(data) {
-          super()
-          this.data = data
-        }
-
         get raw() {
-          return this.data
+          return this.target[this.name]
         }
       }
-      const doc = {
+      const rawDoc = {
         ...TODO_1,
-        label: 'Buy croissants',
-        authors: new FakeHasMany(['bill'])
+        authors: ['author1', 'author2']
       }
-      await client.save(doc, { as: 'updateTodo' })
+      const hydratedDoc = {
+        ...TODO_1,
+        authors: new FakeHasMany(rawDoc, 'authors', 'io.cozy.authors', {})
+      }
+      await client.save(hydratedDoc, { as: 'updateTodo' })
       expect(store.getActions()[0]).toEqual(
         initMutation('updateTodo', {
           mutationType: 'UPDATE_DOCUMENT',
-          document: {
-            ...doc,
-            authors: ['bill']
-          }
+          document: rawDoc
         })
       )
     })
@@ -416,20 +411,7 @@ describe('CozyClient', () => {
     })
   })
 
-  describe('schema handling', () => {
-    it("should be possible to get a doctype's model", () => {
-      expect(client.getDoctypeModel('io.cozy.todos')).toEqual({
-        ...SCHEMA.todos,
-        associations: [
-          {
-            doctype: 'io.cozy.files',
-            name: 'attachments',
-            type: 'has-many'
-          }
-        ]
-      })
-    })
-
+  describe('hydratation', () => {
     it('should hydrate relationships into associations with helper methods in the context of a query', async () => {
       store.getState = () => ({
         cozy: {

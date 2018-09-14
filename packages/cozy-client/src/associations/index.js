@@ -3,11 +3,7 @@ import HasManyAssociation from './HasManyAssociation'
 import HasManyUNSAFEAssociation from './HasManyUNSAFEAssociation'
 import Association from './Association'
 
-export {
-  dehydrateDoc,
-  associationsFromModel,
-  responseToRelationship
-} from './helpers'
+export { dehydrateDoc, responseToRelationship } from './helpers'
 
 export {
   HasManyUNSAFEAssociation,
@@ -29,7 +25,7 @@ export const getClass = (doctype, type) => {
         return HasManyUNSAFEAssociation
     }
   }
-  throw new Error(`Can't handle '${doctype}:${type}' associations`)
+  throw new Error(`Unknown association '${type}'`)
 }
 
 export const create = (
@@ -44,8 +40,5 @@ export const create = (
   }
 
   const cls = getClass(doctype, type)
-  if (!cls) {
-    throw new Error(`Can't handle ${type} associations`)
-  }
   return new cls(target, name, doctype, accessors)
 }

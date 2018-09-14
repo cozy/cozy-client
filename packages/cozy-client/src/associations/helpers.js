@@ -14,19 +14,6 @@ export const dehydrateDoc = document => {
   return dehydrated
 }
 
-export const associationsFromModel = model => {
-  const relationships = model.relationships || {}
-  return Object.entries(relationships).map(([name, relationship]) => {
-    const { type, doctype, query } = relationship
-    return {
-      name,
-      type,
-      doctype,
-      query
-    }
-  })
-}
-
 export const pickTypeAndId = x => pick(x, '_type', '_id')
 const applyHelper = (fn, objOrArr) =>
   Array.isArray(objOrArr) ? objOrArr.map(fn) : fn(objOrArr)

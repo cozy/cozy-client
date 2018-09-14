@@ -12,7 +12,6 @@ import {
   create as createAssociation,
   getClass as getAssociationClass,
   dehydrateDoc,
-  associationsFromModel,
   responseToRelationship
 } from './associations'
 import { QueryDefinition, Mutations } from './dsl'
@@ -30,17 +29,13 @@ import {
   getQueryFromState,
   getDocumentFromState
 } from './store'
+import Schema from './Schema'
 import { chain } from './CozyLink'
 import ObservableQuery from './ObservableQuery'
 import mapValues from 'lodash/mapValues'
 import flatMap from 'lodash/flatMap'
-import keyBy from 'lodash/keyBy'
 import pickBy from 'lodash/pickBy'
 import fromPairs from 'lodash/fromPairs'
-
-const findModelByDoctype = (schema, doctype) => {
-  return Object.values(schema).find(m => m.doctype === doctype)
-}
 
 const allValues = async x => {
   const res = {}
@@ -76,7 +71,7 @@ export default class CozyClient {
 
     this.chain = chain(this.links)
 
-    this.schema = schema
+    this.schema = new Schema(schema)
   }
 
   registerClientOnLinks() {
@@ -155,7 +150,7 @@ export default class CozyClient {
 
   async create(type, { _type, ...attributes }, relationships, options = {}) {
     const document = { _type: type, ...attributes }
-    const ret = await this.validate(document)
+    const ret = await this.schema.validate(document)
     if (ret !== true) throw new Error('Validation failed')
     return this.mutate(
       this.getDocumentSavePlan(document, relationships),
@@ -164,35 +159,9 @@ export default class CozyClient {
   }
 
   async save(document, mutationOptions = {}) {
-    const ret = await this.validate(document)
+    const ret = await this.schema.validate(document)
     if (ret !== true) throw new Error('Validation failed')
     return this.mutate(this.getDocumentSavePlan(document), mutationOptions)
-  }
-
-  async validate(document) {
-    let errors = {}
-    if (!this.doctypeModelExists(document._type)) {
-      return true
-    }
-    const model = this.getDoctypeModel(document._type)
-    if (!model.attributes) return true
-    for (const n in model.attributes) {
-      const ret = await this.validateAttribute(document, n, model.attributes[n])
-      if (ret !== true) errors[n] = ret
-    }
-    if (Object.keys(errors).length === 0) return true
-    return errors
-  }
-
-  async validateAttribute(document, attrName, attrProps) {
-    if (attrProps.unique) {
-      const ret = await this.collection(document._type).checkUniquenessOf(
-        attrName,
-        document[attrName]
-      )
-      if (ret !== true) return 'must be unique'
-    }
-    return true
   }
 
   /**
@@ -355,9 +324,8 @@ export default class CozyClient {
   }
 
   async fetchDocumentAssociations(document, associations) {
-    const assocByName = keyBy(associations, x => x.name)
     const definitions = pickBy(
-      mapValues(assocByName, assoc =>
+      mapValues(associations, assoc =>
         this.queryDocumentAssociation(document, assoc)
       )
     )
@@ -384,12 +352,6 @@ export default class CozyClient {
     }
   }
 
-  queryDocumentAssociation(document, schemaAssociation) {
-    const { type, doctype } = schemaAssociation
-    const associationCls = getAssociationClass(doctype, type)
-    return associationCls.query(document, this, schemaAssociation)
-  }
-
   async requestMutation(definition) {
     if (Array.isArray(definition)) {
       const [first, ...rest] = definition
@@ -407,10 +369,20 @@ export default class CozyClient {
     return this.chain.request(definition)
   }
 
+  queryDocumentAssociation(document, schemaAssociation) {
+    const { type, doctype } = schemaAssociation
+    const associationCls = getAssociationClass(doctype, type)
+    return associationCls.query(document, this, schemaAssociation)
+  }
+
   getIncludesAssociations(queryDefinition) {
-    if (!queryDefinition.includes) return []
-    return queryDefinition.includes.map(propName =>
-      this.getModelAssociation(queryDefinition.doctype, propName)
+    const { includes, doctype } = queryDefinition
+    if (!includes) return {}
+    return fromPairs(
+      includes.map(relName => [
+        relName,
+        this.schema.getRelationship(doctype, relName)
+      ])
     )
   }
 
@@ -418,80 +390,54 @@ export default class CozyClient {
     if (this.options.autoHydrate === false) {
       return documents
     }
-    const model = this.getDoctypeModel(doctype)
-    const associations = model.associations
-    if (associations.length) {
-      return documents.map(doc => this.hydrateDocument(doc, model))
+    const schema = this.schema.getDoctypeSchema(doctype)
+    const relationships = schema.relationships
+    if (relationships) {
+      return documents.map(doc => this.hydrateDocument(doc, schema))
     } else {
       return documents
     }
   }
 
-  hydrateDocument(document, model) {
-    model = model || this.getDoctypeModel(document._type)
+  /**
+   * Instantiate relationships on a document
+   *
+   * The original document is kept in the target attribute of
+   * the relationship
+   */
+  hydrateDocument(document, schema) {
+    schema = schema || this.schema.getDoctypeSchema(document._type)
     return {
       ...document,
-      ...this.hydrateRelationships(document, model.associations)
+      ...this.hydrateRelationships(document, schema.relationships)
     }
   }
 
-  hydrateRelationships(document, associations) {
-    const methods = this.getAssociationStoreAccessors()
-    const res = fromPairs(
-      associations.map(assoc => [
-        assoc.name,
-        createAssociation(document, assoc, methods)
-      ])
+  hydrateRelationships(document, relationships) {
+    const methods = this.getRelationshipStoreAccessors()
+    return mapValues(relationships, (assoc, name) =>
+      createAssociation(document, assoc, methods)
     )
-    return res
   }
 
   getAssociation(document, associationName) {
     return createAssociation(
       document,
-      this.getModelAssociation(document._type, associationName),
-      this.getAssociationStoreAccessors()
+      this.schema.getAssociation(document._type, associationName),
+      this.getRelationshipStoreAccessors()
     )
   }
 
-  getAssociationStoreAccessors() {
-    return {
-      get: this.getDocumentFromState.bind(this),
-      save: (document, opts) => this.save.call(this, document, opts),
-      query: (def, opts) => this.query.call(this, def, opts),
-      mutate: (def, opts) => this.mutate.call(this, def, opts)
+  getRelationshipStoreAccessors() {
+    if (!this.storeAccesors) {
+      this.storeAccessors = {
+        get: this.getDocumentFromState.bind(this),
+        save: (document, opts) => this.save.call(this, document, opts),
+        query: (def, opts) => this.query.call(this, def, opts),
+        mutate: (def, opts) => this.mutate.call(this, def, opts)
+      }
     }
-  }
-
-  getModelAssociation(doctype, associationName) {
-    const model = this.getDoctypeModel(doctype)
-    const association = model.associations.find(a => a.name === associationName)
-    if (!association) {
-      throw new Error(
-        `No association '${associationName}' found for '${doctype}' doctype`
-      )
-    }
-    return association
-  }
-
-  getDoctypeModel(doctype) {
-    if (!this.schema) {
-      throw new Error('No schema defined')
-    }
-    const model = findModelByDoctype(this.schema, doctype)
-    if (!model) {
-      throw new Error(`No schema found for '${doctype}' doctype`)
-    }
-    const associations = associationsFromModel(model)
-    return {
-      ...model,
-      associations
-    }
-  }
-
-  doctypeModelExists(doctype) {
-    if (!this.schema) return false
-    return findModelByDoctype(this.schema, doctype) !== undefined
+    return this.storeAccessors
   }
 
   getDocumentFromState(type, id) {
