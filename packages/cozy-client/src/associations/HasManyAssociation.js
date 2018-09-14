@@ -42,9 +42,9 @@ export default class HasManyAssociation extends Association {
 
   getRelationship() {
     const rawData = this.target[this.name]
-    const data =
+    const relationship =
       this.target.relationships && this.target.relationships[this.name]
-    if (!data) {
+    if (!relationship) {
       if (rawData && rawData.length) {
         console.warn(
           "You're trying to access data on a relationship that appear to not be loaded yet. You may want to use 'include()' on your query"
@@ -52,7 +52,7 @@ export default class HasManyAssociation extends Association {
       }
       return empty()
     }
-    return data
+    return relationship
   }
 
   updateTargetRelationship(store, updateFn) {
