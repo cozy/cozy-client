@@ -362,8 +362,12 @@ export default class CozyClient {
       )
     )
 
-    const requests = mapValues(definitions, definition =>
-      this.chain.request(definition)
+    const requests = mapValues(
+      definitions,
+      definitionOrData =>
+        definitionOrData instanceof QueryDefinition
+          ? this.chain.request(definitionOrData)
+          : Promise.resolve({ data: definitionOrData })
     )
     const responses = await allValues(requests)
     const relationships = mapValues(responses, responseToRelationship)
