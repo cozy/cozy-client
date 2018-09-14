@@ -8,18 +8,6 @@ const empty = () => ({
 })
 
 export default class HasManyAssociation extends Association {
-  constructor(target, name, doctype, { get, query, mutate, save }) {
-    super()
-
-    this.target = target
-    this.name = name
-    this.doctype = doctype
-    this.get = get
-    this.query = query
-    this.mutate = mutate
-    this.save = save
-  }
-
   get raw() {
     return this.getRelationship().data
   }
