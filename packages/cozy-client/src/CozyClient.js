@@ -10,6 +10,7 @@
 import StackLink from './StackLink'
 import {
   create as createAssociation,
+  getClass as getAssociationClass,
   dehydrateDoc,
   associationsFromModel,
   responseToRelationship
@@ -379,19 +380,10 @@ export default class CozyClient {
     }
   }
 
-  queryDocumentAssociation(document, association) {
-    const { type, doctype, query } = association
-    switch (type) {
-      case 'has-many':
-        if (query) {
-          return query(this, association)(document)
-        } else {
-          const queryAll = this.find(doctype)
-          return queryAll.referencedBy(document)
-        }
-      default:
-        throw new Error(`Can't handle '${type}' associations`)
-    }
+  queryDocumentAssociation(document, schemaAssociation) {
+    const { type, doctype } = schemaAssociation
+    const associationCls = getAssociationClass(doctype, type)
+    return associationCls.query(document, this, schemaAssociation)
   }
 
   async requestMutation(definition) {

@@ -61,4 +61,9 @@ export default class HasManyFilesAssociation extends HasManyAssociation {
   removeDocuments(referencedDocs) {
     return Mutations.removeReferencesTo(this.target, referencedDocs)
   }
+
+  static query(document, client, assoc) {
+    const queryAll = client.find(assoc.doctype)
+    return queryAll.referencedBy(document)
+  }
 }

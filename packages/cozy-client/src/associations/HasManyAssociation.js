@@ -1,4 +1,5 @@
 import Association from './Association'
+import { QueryDefinition } from '../dsl'
 
 const empty = () => ({
   data: [],
@@ -82,5 +83,10 @@ export default class HasManyAssociation extends Association {
         }
       }
     }
+  }
+
+  static query(document, client, assoc) {
+    const ids = document[assoc.name]
+    return new QueryDefinition({ doctype: assoc.doctype, ids })
   }
 }
