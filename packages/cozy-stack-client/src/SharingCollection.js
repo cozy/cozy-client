@@ -97,13 +97,10 @@ export default class SharingCollection extends DocumentCollection {
     return { data: normalizeSharing(resp.data) }
   }
 
-  revokeRecipient(sharing, recipientEmail) {
-    const memberIndex = sharing.attributes.members.findIndex(
-      m => m.email === recipientEmail
-    )
+  revokeRecipient(sharing, recipientIndex) {
     return this.client.fetchJSON(
       'DELETE',
-      uri`/sharings/${sharing._id}/recipients/${memberIndex}`
+      uri`/sharings/${sharing._id}/recipients/${recipientIndex}`
     )
   }
 
