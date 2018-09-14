@@ -414,29 +414,20 @@ export default class CozyClient {
     if (this.options.autoHydrate === false) {
       return documents
     }
-    try {
-      const model = this.getDoctypeModel(doctype)
-      const associations = model.associations
-      if (associations.length) {
-        return documents.map(doc => this.hydrateDocument(doc, model))
-      } else {
-        return documents
-      }
-    } catch (err) {
-      console.error(err)
+    const model = this.getDoctypeModel(doctype)
+    const associations = model.associations
+    if (associations.length) {
+      return documents.map(doc => this.hydrateDocument(doc, model))
+    } else {
       return documents
     }
   }
 
   hydrateDocument(document, model) {
-    try {
-      model = model || this.getDoctypeModel(document._type)
-      return {
-        ...document,
-        ...this.hydrateRelationships(document, model.associations)
-      }
-    } catch (err) {
-      return document
+    model = model || this.getDoctypeModel(document._type)
+    return {
+      ...document,
+      ...this.hydrateRelationships(document, model.associations)
     }
   }
 
