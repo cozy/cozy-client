@@ -1,4 +1,5 @@
 import Schema from './Schema'
+import HasOneInPlace from './associations/HasOneInPlace'
 
 describe('Schema', () => {
   const schemaDef = {
@@ -7,7 +8,7 @@ describe('Schema', () => {
       relationships: {
         account: {
           doctype: 'io.cozy.bank.accounts',
-          type: 'has-one'
+          type: 'belongs-to-in-place'
         }
       }
     },
@@ -31,7 +32,7 @@ describe('Schema', () => {
         account: {
           doctype: 'io.cozy.bank.accounts',
           name: 'account',
-          type: 'has-one'
+          type: HasOneInPlace
         }
       }
     })
@@ -49,7 +50,7 @@ describe('Schema', () => {
     ).toEqual({
       doctype: 'io.cozy.bank.accounts',
       name: 'account',
-      type: 'has-one'
+      type: HasOneInPlace
     })
   })
 })

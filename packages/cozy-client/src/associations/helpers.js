@@ -1,6 +1,7 @@
 import pick from 'lodash/pick'
 import pickBy from 'lodash/pickBy'
 import Association from './Association'
+import HasOneInPlace from './HasOneInPlace'
 import HasMany from './HasManyAssociation'
 import HasManyFiles from './HasManyFilesAssociation'
 
@@ -19,6 +20,8 @@ export const responseToRelationship = response =>
 const aliases = {
   'io.cozy.files:has-many': HasManyFilesAssociation,
   'has-many': HasManyAssociation,
+  'belongs-to-in-place': HasOneInPlace,
+  'has-one-in-place': HasOneInPlace
 }
 
 export const getClass = (doctype, type) => {
