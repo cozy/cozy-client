@@ -11,9 +11,9 @@ import StackLink from './StackLink'
 import {
   create as createAssociation,
   getClass as getAssociationClass,
-  dehydrateDoc,
   responseToRelationship
 } from './associations'
+import { dehydrate } from './helpers'
 import { QueryDefinition, Mutations } from './dsl'
 import CozyStackClient, { OAuthClient } from 'cozy-stack-client'
 import { authenticateWithCordova } from './authentication/mobile'
@@ -181,7 +181,7 @@ export default class CozyClient {
    */
   getDocumentSavePlan(document, relationships) {
     const newDocument = !document._id
-    const dehydratedDoc = dehydrateDoc(document)
+    const dehydratedDoc = dehydrate(document)
     const saveMutation = newDocument
       ? Mutations.createDocument(dehydratedDoc)
       : Mutations.updateDocument(dehydratedDoc)
