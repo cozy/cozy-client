@@ -24,8 +24,19 @@ const aliases = {
   'has-one-in-place': HasOneInPlace
 }
 
-
-export const getClass = (doctype, type) => {
+/**
+ * Returns the relationship class for a given doctype/type.
+ *
+ * In the schema definition, some classes have string aliases
+ * so you do not have to import directly the association.
+ *
+ * Some doctypes can have built-in overriden relationships.
+ *
+ */
+export const resolveClass = (doctype, type) => {
+  if (type === undefined) {
+    throw new Error('Undefined type for ' + doctype)
+  }
   if (typeof type !== 'string') {
     return type
   } else {
@@ -39,16 +50,9 @@ export const getClass = (doctype, type) => {
   }
 }
 
-export const create = (
-  target,
-  { name, type, doctype },
-  { get, query, mutate, save }
-) => {
-  const accessors = { get, query, mutate, save }
-
+export const create = (target, { name, type, doctype }, accessors) => {
   if (target[name] instanceof Association) {
     throw new Error(`Association ${name} already exists`)
   }
-
   return new type(target, name, doctype, accessors)
 }
