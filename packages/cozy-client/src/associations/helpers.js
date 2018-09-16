@@ -16,18 +16,23 @@ export const responseToRelationship = response =>
     skip: response.skip
   })
 
+const aliases = {
+  'io.cozy.files:has-many': HasManyFilesAssociation,
+  'has-many': HasManyAssociation,
+}
+
 export const getClass = (doctype, type) => {
   if (typeof type !== 'string') {
     return type
   } else {
-    switch (type) {
-      case 'has-many':
-        return doctype === 'io.cozy.files'
-          ? HasManyFilesAssociation
-          : HasManyAssociation
+    const qualified = `${doctype}:${type}`
+    const cls = aliases[qualified] || aliases[type]
+    if (!cls) {
+      throw new Error(`Unknown association '${type}'`)
+    } else {
+      return cls
     }
   }
-  throw new Error(`Unknown association '${type}'`)
 }
 
 export const create = (

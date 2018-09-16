@@ -1,13 +1,23 @@
 import keyBy from 'lodash/keyBy'
 import mapValues from 'lodash/mapValues'
 import size from 'lodash/size'
+import { getClass as getAssociationClass } from './associations'
 
-const prepareDoctypeSchema = doctypeSchema => {
+/**
+ * Returns a normalized schema object from the schema definition.
+ *
+ * - Relationships are resolved to classes if needed
+ * - The name of the relationship (its key in the schema definition)
+ *   is included in the relationship
+ * - Empty relationships are nulled
+ */
+const normalizeDoctypeSchema = doctypeSchema => {
   const relationships = mapValues(
     doctypeSchema.relationships || {},
     (v, k) => ({
+      ...v,
       name: k,
-      ...v
+      type: getAssociationClass(v.doctype, v.type)
     })
   )
 
@@ -27,7 +37,7 @@ export default class Schema {
   constructor(schema = {}) {
     const values = mapValues(schema, (obj, name) => ({
       name,
-      ...prepareDoctypeSchema(obj)
+      ...normalizeDoctypeSchema(obj)
     }))
     this.byName = keyBy(values, x => x.name)
     this.byDoctype = keyBy(values, x => x.doctype)

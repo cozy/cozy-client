@@ -10,7 +10,6 @@
 import StackLink from './StackLink'
 import {
   create as createAssociation,
-  getClass as getAssociationClass,
   responseToRelationship
 } from './associations'
 import { dehydrate } from './helpers'
@@ -371,8 +370,7 @@ export default class CozyClient {
 
   queryDocumentAssociation(document, schemaAssociation) {
     const { type, doctype } = schemaAssociation
-    const associationCls = getAssociationClass(doctype, type)
-    return associationCls.query(document, this, schemaAssociation)
+    return type.query(document, this, schemaAssociation)
   }
 
   getIncludesAssociations(queryDefinition) {
