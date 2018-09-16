@@ -24,7 +24,7 @@ describe('Schema', () => {
     schema = new Schema(schemaDef)
   })
 
-  it('should keep the data in good shape', () => {
+  it('keeps the data in good shape', () => {
     expect(schema.getDoctypeSchema('io.cozy.bank.transactions')).toEqual({
       doctype: 'io.cozy.bank.transactions',
       name: 'transactions',
@@ -38,13 +38,13 @@ describe('Schema', () => {
     })
   })
 
-  it('should remove empty relationships', () => {
+  it('removes empty relationships', () => {
     expect(schema.getDoctypeSchema('io.cozy.bank.accounts').relationships).toBe(
       null
     )
   })
 
-  it('should be possible to get a relationship', () => {
+  it('gives access to relationships', () => {
     expect(
       schema.getRelationship('io.cozy.bank.transactions', 'account')
     ).toEqual({
