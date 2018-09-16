@@ -418,6 +418,13 @@ export default class CozyClient {
     )
   }
 
+  makeNewDocument(doctype) {
+    const obj = {
+      _type: doctype
+    }
+    return this.hydrateDocument(obj)
+  }
+
   getAssociation(document, associationName) {
     return createAssociation(
       document,

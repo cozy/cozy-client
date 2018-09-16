@@ -448,5 +448,12 @@ describe('CozyClient', () => {
       expect(doc.attachments).toBeInstanceOf(HasManyFiles)
       await doc.attachments.fetchMore()
     })
+
+    it('makes new documents', () => {
+      const newTodo = client.makeNewDocument('io.cozy.todos')
+      expect(newTodo._type).toBe('io.cozy.todos')
+      expect(newTodo.attachments).not.toBe(undefined)
+      expect(newTodo.attachments instanceof HasManyFiles).toBe(true)
+    })
   })
 })
