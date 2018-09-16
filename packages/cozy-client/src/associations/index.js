@@ -1,12 +1,10 @@
 import HasManyFilesAssociation from './HasManyFilesAssociation'
 import HasManyAssociation from './HasManyAssociation'
-import HasManyUNSAFEAssociation from './HasManyUNSAFEAssociation'
 import Association from './Association'
 
 export { dehydrateDoc, responseToRelationship } from './helpers'
 
 export {
-  HasManyUNSAFEAssociation,
   Association,
   HasManyFilesAssociation,
   HasManyAssociation
@@ -21,8 +19,6 @@ export const getClass = (doctype, type) => {
         return doctype === 'io.cozy.files'
           ? HasManyFilesAssociation
           : HasManyAssociation
-      case 'has-many-UNSAFE':
-        return HasManyUNSAFEAssociation
     }
   }
   throw new Error(`Unknown association '${type}'`)
