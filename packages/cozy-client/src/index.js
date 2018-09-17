@@ -9,5 +9,10 @@ export { default as Query } from './Query'
 export { default as compose } from 'lodash/flow'
 export { QueryDefinition, MutationTypes, getDoctypeFromOperation } from './dsl'
 export { queryConnect, withClient } from './hoc'
-export { Association, HasMany, HasOneInPlace, HasManyInPlace } from './associations'
+export {
+  Association,
+  HasMany,
+  HasOneInPlace,
+  HasManyInPlace
+} from './associations'
 export { dehydrate } from './helpers'

@@ -1,5 +1,3 @@
-import configureStore from 'redux-mock-store'
-
 import { SCHEMA, TODO_1, TODO_2, TODO_3 } from './__tests__/fixtures'
 
 import CozyClient from './CozyClient'
@@ -16,14 +14,15 @@ import {
 import { HasManyFiles, Association } from './associations'
 import mapValues from 'lodash/mapValues'
 
-const normalizeData = data => mapValues(data, (docs, doctype) => {
-  return docs.map(doc => ({
-    ...doc,
-    _id: doc.id || doc._id,
-    id: doc.id || doc._id,
-    _type: doctype
-  }))
-})
+const normalizeData = data =>
+  mapValues(data, (docs, doctype) => {
+    return docs.map(doc => ({
+      ...doc,
+      _id: doc.id || doc._id,
+      id: doc.id || doc._id,
+      _type: doctype
+    }))
+  })
 
 describe('CozyClient initialization', () => {
   let client, links
@@ -168,10 +167,12 @@ describe('CozyClient', () => {
     it('should fill the store with data', () => {
       client.store.dispatch.mockRestore()
       jest.spyOn(client.store, 'dispatch')
-      client.setData(normalizeData({
-        'io.cozy.todos': [{ id: 1, done: true }, { id: 2, done: false }],
-        'io.cozy.people': [{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]
-      }))
+      client.setData(
+        normalizeData({
+          'io.cozy.todos': [{ id: 1, done: true }, { id: 2, done: false }],
+          'io.cozy.people': [{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]
+        })
+      )
       expect(client.getDocumentFromState('io.cozy.todos', 1)).toMatchObject({
         id: 1,
         done: true
@@ -193,9 +194,11 @@ describe('CozyClient', () => {
 
   describe('save', () => {
     it('should mutate the document', async () => {
-      client.setData(normalizeData({
-        'io.cozy.todos': [TODO_1]
-      }))
+      client.setData(
+        normalizeData({
+          'io.cozy.todos': [TODO_1]
+        })
+      )
       const doc = { ...TODO_1, label: 'Buy croissants' }
       client.store.dispatch.mockReset()
       await client.save(doc)
@@ -469,9 +472,7 @@ describe('CozyClient', () => {
         )
         .shift()
       expect(doc.attachments).toBeInstanceOf(HasManyFiles)
-      try {
-        await doc.attachments.fetchMore()
-      } catch (e) {}
+      await doc.attachments.fetchMore()
     })
 
     it('makes new documents', () => {
