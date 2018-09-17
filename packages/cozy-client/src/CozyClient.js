@@ -369,7 +369,7 @@ export default class CozyClient {
   }
 
   queryDocumentAssociation(document, schemaAssociation) {
-    const { type, doctype } = schemaAssociation
+    const { type } = schemaAssociation
     return type.query(document, this, schemaAssociation)
   }
 
