@@ -7,6 +7,37 @@ const empty = () => ({
   meta: { count: 0 }
 })
 
+/**
+ * Related documents are stored in the relationships attribute of the object,
+ * following the JSON API spec.
+ *
+ * @example
+ * ```
+ * const schema = {
+ *   todos: {
+ *      doctype: 'io.cozy.todos',
+ *      relationships: {
+ *        tasks: {
+ *          doctype: 'io.cozy.tasks',
+ *          type: 'has-many'
+ *        }
+ *      }
+ *    }
+ * }
+ *
+ * const todo = {
+ *   label: "Get rich",
+ *   relationships: {
+ *     tasks: {
+ *       data: [
+ *         {_id: 1, _type: 'io.cozy.tasks'},
+ *         {_id: 2, _type: 'io.cozy.tasks'}
+ *       ]
+ *     }
+ *   }
+ * }
+ * ```
+ */
 export default class HasMany extends Association {
   get raw() {
     return this.getRelationship().data
