@@ -559,6 +559,7 @@ export default class CozyClient {
    * @param data {Object} { doctype: [data] }
    */
   setData(data) {
+    this.ensureStore()
     Object.entries(data).forEach(([doctype, data]) => {
       this.dispatch(receiveQueryResult(null, { data }))
     })
