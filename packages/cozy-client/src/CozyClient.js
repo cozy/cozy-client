@@ -157,6 +157,10 @@ export default class CozyClient {
     )
   }
 
+  validate(document) {
+    return this.schema(document)
+  }
+
   async save(document, mutationOptions = {}) {
     const ret = await this.schema.validate(document)
     if (ret !== true) throw new Error('Validation failed')
