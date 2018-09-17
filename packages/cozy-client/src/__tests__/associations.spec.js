@@ -49,7 +49,7 @@ describe('Associations', () => {
     )
   })
 
-  describe('HasManyAssociation', () => {
+  describe('HasMany', () => {
     it('should return data', () => {
       expect(getTodo(TODO_1._id).attachments.data).toEqual([
         { _id: 'abc', _type: 'io.cozy.files', name: 'abc.pdf' },

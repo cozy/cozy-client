@@ -13,7 +13,7 @@ import {
   receiveMutationResult,
   receiveMutationError
 } from './store'
-import { HasManyFilesAssociation, Association } from './associations'
+import { HasManyFiles, Association } from './associations'
 
 describe('CozyClient initialization', () => {
   let client, links
@@ -445,7 +445,7 @@ describe('CozyClient', () => {
           'allTodos'
         )
         .shift()
-      expect(doc.attachments).toBeInstanceOf(HasManyFilesAssociation)
+      expect(doc.attachments).toBeInstanceOf(HasManyFiles)
       await doc.attachments.fetchMore()
     })
   })

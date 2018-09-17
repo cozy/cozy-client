@@ -7,7 +7,7 @@ const empty = () => ({
   meta: { count: 0 }
 })
 
-export default class HasManyAssociation extends Association {
+export default class HasMany extends Association {
   get raw() {
     return this.getRelationship().data
   }
