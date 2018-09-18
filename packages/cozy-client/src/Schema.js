@@ -32,6 +32,22 @@ const normalizeDoctypeSchema = doctypeSchema => {
  *
  * - Attribute validation
  * - Relationship access
+ *
+ * @example
+ * ```
+ * const schema = new Schema({
+ *   todos: {
+ *     attributes: {
+ *       label: {
+ *         unique: true
+ *       }
+ *     },
+ *     relationships: {
+ *       author: 'has-one-in-place'
+ *     }
+ *   }
+ * })
+ * ```
  */
 export default class Schema {
   constructor(schemaDefinition = {}) {
@@ -54,11 +70,17 @@ export default class Schema {
     return schema
   }
 
-  getRelationship(doctype, associationName) {
+  /**
+   * Returns the relationship for a given doctype/name
+   */
+  getRelationship(doctype, relationshipName) {
     const schema = this.getDoctypeSchema(doctype)
-    return schema.relationships[associationName]
+    return schema.relationships[relationshipName]
   }
 
+  /**
+   * Validates a document considering the descriptions in schema.attributes.
+   */
   async validate(document) {
     let errors = {}
     const schema = this.byDoctype[document._type]
