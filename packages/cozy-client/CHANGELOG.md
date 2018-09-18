@@ -3,7 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="2.19.2"></a>
+       <a name="2.20.0"></a>
+# [2.20.0](https://github.com/cozy/cozy-client/compare/v2.19.2...v2.20.0) (2018-09-18)
+
+
+### Bug Fixes
+
+* Make new documents ([694c850](https://github.com/cozy/cozy-client/commit/694c850))
+* Unused variable ([ffea569](https://github.com/cozy/cozy-client/commit/ffea569))
+* Validate on client proxies to schema ([9c9d061](https://github.com/cozy/cozy-client/commit/9c9d061))
+
+
+### Features
+
+* Ability for a Query to return docs ([cee8694](https://github.com/cozy/cozy-client/commit/cee8694))
+* Add addById/removeById/existsById ([52b169d](https://github.com/cozy/cozy-client/commit/52b169d))
+* add HasManyInPlace ([274c6fa](https://github.com/cozy/cozy-client/commit/274c6fa))
+* Association is in charge of defining query ([e5ff308](https://github.com/cozy/cozy-client/commit/e5ff308))
+* Client exports dehydrate ([6ad4ab5](https://github.com/cozy/cozy-client/commit/6ad4ab5))
+* Custom relationship in schema ([61d28f2](https://github.com/cozy/cozy-client/commit/61d28f2))
+* Defining a schema is required ([d600671](https://github.com/cozy/cozy-client/commit/d600671))
+* HasOneInPlace ([d81964d](https://github.com/cozy/cozy-client/commit/d81964d))
+* Relationships are resolved in schema ([45d2dc9](https://github.com/cozy/cozy-client/commit/45d2dc9))
+* Remove HasManyUNSAFE ([a6b904b](https://github.com/cozy/cozy-client/commit/a6b904b))
+* Remove useless warnings ([0f35115](https://github.com/cozy/cozy-client/commit/0f35115))
+* Warning before error to help dev ([40c2ade](https://github.com/cozy/cozy-client/commit/40c2ade))
+
+
+
+
+       <a name="2.19.2"></a>
 ## [2.19.2](https://github.com/cozy/cozy-client/compare/v2.19.1...v2.19.2) (2018-09-14)
 
 
@@ -11,7 +40,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package cozy-client
 
-      <a name="2.19.1"></a>
+     <a name="2.19.1"></a>
 ## [2.19.1](https://github.com/cozy/cozy-client/compare/v2.19.0...v2.19.1) (2018-09-13)
 
 
@@ -19,7 +48,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package cozy-client
 
-   <a name="2.19.0"></a>
+  <a name="2.19.0"></a>
 # [2.19.0](https://github.com/cozy/cozy-client/compare/v2.18.1...v2.19.0) (2018-09-13)
 
 
@@ -27,7 +56,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package cozy-client
 
- <a name="2.18.1"></a>
+<a name="2.18.1"></a>
 ## [2.18.1](https://github.com/cozy/cozy-client/compare/v2.18.0...v2.18.1) (2018-09-12)
 
 
