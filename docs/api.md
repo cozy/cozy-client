@@ -42,11 +42,37 @@ Any undefined parameter is removed.</p>
 ## Functions
 
 <dl>
+<dt><a href="#normalizeDoctypeSchema">normalizeDoctypeSchema()</a></dt>
+<dd><p>Returns a normalized schema object from the schema definition.</p>
+<ul>
+<li>Relationships are resolved to classes if needed</li>
+<li>The name of the relationship (its key in the schema definition)
+is included in the relationship</li>
+<li>Empty relationships are nulled</li>
+</ul>
+</dd>
+<dt><a href="#getDoctypeSchema">getDoctypeSchema()</a></dt>
+<dd><p>Returns the schema for a doctype</p>
+</dd>
+<dt><a href="#getRelationship">getRelationship()</a></dt>
+<dd><p>Returns the relationship for a given doctype/name</p>
+</dd>
+<dt><a href="#validate">validate()</a></dt>
+<dd><p>Validates a document considering the descriptions in schema.attributes.</p>
+</dd>
 <dt><a href="#withClient">withClient(Component)</a> ⇒ <code>function</code></dt>
 <dd><p>HOC to provide client from context as prop</p>
 </dd>
 <dt><a href="#queryConnect">queryConnect(querySpecs)</a> ⇒ <code>function</code></dt>
 <dd><p>HOC creator to connect component to several queries in a declarative manner</p>
+</dd>
+<dt><a href="#startReplication">startReplication()</a> ⇒ <code>void</code></dt>
+<dd><p>User of the link can call this to start ongoing replications.
+Typically, it can be used when the application regains focus.</p>
+</dd>
+<dt><a href="#stopReplication">stopReplication()</a> ⇒ <code>void</code></dt>
+<dd><p>User of the link can call this to stop ongoing replications.
+Typically, it can be used when the applications loses focus.</p>
 </dd>
 <dt><a href="#startReplicationLoop">startReplicationLoop()</a></dt>
 <dd><p>Starts periodic syncing of the pouches</p>
@@ -88,6 +114,7 @@ continue.</p>
 * [CozyClient](#module_CozyClient)
     * [.collection(doctype)](#module_CozyClient+collection) ⇒ <code>DocumentCollection</code>
     * [.getDocumentSavePlan(document, relationships)](#module_CozyClient+getDocumentSavePlan) ⇒ <code>Array.&lt;object&gt;</code>
+    * [.hydrateDocument()](#module_CozyClient+hydrateDocument)
     * [.register(cozyURL)](#module_CozyClient+register) ⇒ <code>object</code>
     * [.startOAuthFlow(openURLCallback)](#module_CozyClient+startOAuthFlow) ⇒ <code>object</code>
     * [.renewAuthorization()](#module_CozyClient+renewAuthorization) ⇒ <code>object</code>
@@ -128,6 +155,15 @@ const relationships = {
 }
 client.getDocumentSavePlan(baseDoc, relationships)
 ```
+<a name="module_CozyClient+hydrateDocument"></a>
+
+### cozyClient.hydrateDocument()
+Instantiate relationships on a document
+
+The original document is kept in the target attribute of
+the relationship
+
+**Kind**: instance method of [<code>CozyClient</code>](#module_CozyClient)  
 <a name="module_CozyClient+register"></a>
 
 ### cozyClient.register(cozyURL) ⇒ <code>object</code>
@@ -551,6 +587,35 @@ Returns a URL from base url and a query parameter object.
 Any undefined parameter is removed.
 
 **Kind**: global constant  
+<a name="normalizeDoctypeSchema"></a>
+
+## normalizeDoctypeSchema()
+Returns a normalized schema object from the schema definition.
+
+- Relationships are resolved to classes if needed
+- The name of the relationship (its key in the schema definition)
+  is included in the relationship
+- Empty relationships are nulled
+
+**Kind**: global function  
+<a name="getDoctypeSchema"></a>
+
+## getDoctypeSchema()
+Returns the schema for a doctype
+
+**Kind**: global function  
+<a name="getRelationship"></a>
+
+## getRelationship()
+Returns the relationship for a given doctype/name
+
+**Kind**: global function  
+<a name="validate"></a>
+
+## validate()
+Validates a document considering the descriptions in schema.attributes.
+
+**Kind**: global function  
 <a name="withClient"></a>
 
 ## withClient(Component) ⇒ <code>function</code>
@@ -575,6 +640,22 @@ HOC creator to connect component to several queries in a declarative manner
 | --- | --- | --- |
 | querySpecs | <code>object</code> | Definition of the queries |
 
+<a name="startReplication"></a>
+
+## startReplication() ⇒ <code>void</code>
+User of the link can call this to start ongoing replications.
+Typically, it can be used when the application regains focus.
+
+**Kind**: global function  
+**Access**: public  
+<a name="stopReplication"></a>
+
+## stopReplication() ⇒ <code>void</code>
+User of the link can call this to stop ongoing replications.
+Typically, it can be used when the applications loses focus.
+
+**Kind**: global function  
+**Access**: public  
 <a name="startReplicationLoop"></a>
 
 ## startReplicationLoop()
