@@ -1,4 +1,5 @@
 import Association from './Association'
+import { QueryDefinition } from '../dsl'
 
 const empty = () => ({
   data: [],
@@ -6,19 +7,38 @@ const empty = () => ({
   meta: { count: 0 }
 })
 
-export default class HasManyAssociation extends Association {
-  constructor(target, name, doctype, { get, query, mutate, save }) {
-    super()
-
-    this.target = target
-    this.name = name
-    this.doctype = doctype
-    this.get = get
-    this.query = query
-    this.mutate = mutate
-    this.save = save
-  }
-
+/**
+ * Related documents are stored in the relationships attribute of the object,
+ * following the JSON API spec.
+ *
+ * @example
+ * ```
+ * const schema = {
+ *   todos: {
+ *      doctype: 'io.cozy.todos',
+ *      relationships: {
+ *        tasks: {
+ *          doctype: 'io.cozy.tasks',
+ *          type: 'has-many'
+ *        }
+ *      }
+ *    }
+ * }
+ *
+ * const todo = {
+ *   label: "Get rich",
+ *   relationships: {
+ *     tasks: {
+ *       data: [
+ *         {_id: 1, _type: 'io.cozy.tasks'},
+ *         {_id: 2, _type: 'io.cozy.tasks'}
+ *       ]
+ *     }
+ *   }
+ * }
+ * ```
+ */
+export default class HasMany extends Association {
   get raw() {
     return this.getRelationship().data
   }
@@ -53,17 +73,17 @@ export default class HasManyAssociation extends Association {
 
   getRelationship() {
     const rawData = this.target[this.name]
-    const data =
+    const relationship =
       this.target.relationships && this.target.relationships[this.name]
-    if (!data) {
-      if (rawData) {
+    if (!relationship) {
+      if (rawData && rawData.length) {
         console.warn(
           "You're trying to access data on a relationship that appear to not be loaded yet. You may want to use 'include()' on your query"
         )
       }
       return empty()
     }
-    return data
+    return relationship
   }
 
   updateTargetRelationship(store, updateFn) {
@@ -82,5 +102,10 @@ export default class HasManyAssociation extends Association {
         }
       }
     }
+  }
+
+  static query(document, client, assoc) {
+    const ids = document[assoc.name]
+    return new QueryDefinition({ doctype: assoc.doctype, ids })
   }
 }

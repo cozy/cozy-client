@@ -1,7 +1,7 @@
-import HasManyAssociation from './HasManyAssociation'
+import HasMany from './HasMany'
 import { QueryDefinition, Mutations } from '../dsl'
 
-export default class HasManyFilesAssociation extends HasManyAssociation {
+export default class HasManyFiles extends HasMany {
   fetchMore() {
     const skip = this.getRelationship().data.length
     const queryDef = new QueryDefinition({ doctype: 'io.cozy.files' })
@@ -60,5 +60,10 @@ export default class HasManyFilesAssociation extends HasManyAssociation {
 
   removeDocuments(referencedDocs) {
     return Mutations.removeReferencesTo(this.target, referencedDocs)
+  }
+
+  static query(document, client, assoc) {
+    const queryAll = client.find(assoc.doctype)
+    return queryAll.referencedBy(document)
   }
 }

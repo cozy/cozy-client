@@ -22,8 +22,10 @@ export default class StackLink extends CozyLink {
     return this.executeQuery(operation)
   }
 
-  executeQuery({ doctype, selector, id, ids, referenced, ...options }) {
+  executeQuery(query) {
+    const { doctype, selector, id, ids, referenced, ...options } = query
     if (!doctype) {
+      console.warn('Bad query', query)
       throw new Error('No doctype found in a query definition')
     }
     const collection = this.client.collection(doctype)

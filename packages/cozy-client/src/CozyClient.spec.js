@@ -1,5 +1,3 @@
-import configureStore from 'redux-mock-store'
-
 import { SCHEMA, TODO_1, TODO_2, TODO_3 } from './__tests__/fixtures'
 
 import CozyClient from './CozyClient'
@@ -13,7 +11,18 @@ import {
   receiveMutationResult,
   receiveMutationError
 } from './store'
-import { HasManyFilesAssociation, Association } from './associations'
+import { HasManyFiles, Association } from './associations'
+import mapValues from 'lodash/mapValues'
+
+const normalizeData = data =>
+  mapValues(data, (docs, doctype) => {
+    return docs.map(doc => ({
+      ...doc,
+      _id: doc.id || doc._id,
+      id: doc.id || doc._id,
+      _type: doctype
+    }))
+  })
 
 describe('CozyClient initialization', () => {
   let client, links
@@ -135,13 +144,16 @@ describe('CozyClient login', () => {
 
 describe('CozyClient', () => {
   const requestHandler = jest.fn()
-  const store = configureStore()({})
   const link = new CozyLink(requestHandler)
-  const client = new CozyClient({ links: [link], schema: SCHEMA })
-  client.setStore(store)
+
+  let client
+  beforeEach(() => {
+    client = new CozyClient({ links: [link], schema: SCHEMA })
+    client.ensureStore()
+    jest.spyOn(client.store, 'dispatch').mockImplementation(() => {})
+  })
 
   afterEach(() => {
-    store.clearActions()
     requestHandler.mockReset()
   })
 
@@ -152,16 +164,23 @@ describe('CozyClient', () => {
   })
 
   describe('setData', () => {
-    it('should dispatch RECEIVE_QUERY_RESULT actions', () => {
-      const data = {
-        'io.cozy.todos': [{ id: 1, done: true }, { id: 2, done: false }],
-        'io.cozy.people': [{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]
-      }
-
-      client.setData(data)
-
-      expect(store.getActions().length).toBe(Object.keys(data).length)
-      expect(store.getActions()[0].type).toBe('RECEIVE_QUERY_RESULT')
+    it('should fill the store with data', () => {
+      client.store.dispatch.mockRestore()
+      jest.spyOn(client.store, 'dispatch')
+      client.setData(
+        normalizeData({
+          'io.cozy.todos': [{ id: 1, done: true }, { id: 2, done: false }],
+          'io.cozy.people': [{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]
+        })
+      )
+      expect(client.getDocumentFromState('io.cozy.todos', 1)).toMatchObject({
+        id: 1,
+        done: true
+      })
+      expect(client.getDocumentFromState('io.cozy.people', 1)).toMatchObject({
+        id: 1,
+        name: 'Alice'
+      })
     })
   })
 
@@ -174,41 +193,40 @@ describe('CozyClient', () => {
   })
 
   describe('save', () => {
-    it('should mutate the store', async () => {
-      const doc = { ...TODO_1, label: 'Buy croissants' }
-      await client.save(doc, { as: 'updateTodo' })
-      expect(store.getActions()[0]).toEqual(
-        initMutation('updateTodo', {
-          mutationType: 'UPDATE_DOCUMENT',
-          document: doc
+    it('should mutate the document', async () => {
+      client.setData(
+        normalizeData({
+          'io.cozy.todos': [TODO_1]
         })
       )
+      const doc = { ...TODO_1, label: 'Buy croissants' }
+      client.store.dispatch.mockReset()
+      await client.save(doc)
+      const dispatchCalls = client.store.dispatch.mock.calls
+      expect(dispatchCalls.slice(-2)[0][0].definition.document).toMatchObject({
+        label: 'Buy croissants'
+      })
     })
 
     it('should dehydrate relationships', async () => {
       class FakeHasMany extends Association {
-        constructor(data) {
-          super()
-          this.data = data
-        }
-
         get raw() {
-          return this.data
+          return this.target[this.name]
         }
       }
-      const doc = {
+      const rawDoc = {
         ...TODO_1,
-        label: 'Buy croissants',
-        authors: new FakeHasMany(['bill'])
+        authors: ['author1', 'author2']
       }
-      await client.save(doc, { as: 'updateTodo' })
-      expect(store.getActions()[0]).toEqual(
+      const hydratedDoc = {
+        ...TODO_1,
+        authors: new FakeHasMany(rawDoc, 'authors', 'io.cozy.authors', {})
+      }
+      await client.save(hydratedDoc, { as: 'updateTodo' })
+      expect(client.store.dispatch.mock.calls[0][0]).toEqual(
         initMutation('updateTodo', {
           mutationType: 'UPDATE_DOCUMENT',
-          document: {
-            ...doc,
-            authors: ['bill']
-          }
+          document: rawDoc
         })
       )
     })
@@ -252,12 +270,15 @@ describe('CozyClient', () => {
   })
 
   describe('query', () => {
-    const query = client.all('io.cozy.todos')
-    const fakeResponse = { data: 'FAKE!!!' }
+    let query, fakeResponse
+    beforeEach(() => {
+      query = client.all('io.cozy.todos')
+      fakeResponse = { data: 'FAKE!!!' }
+    })
 
     it('should first dispatch a INIT_QUERY action', async () => {
       await client.query(query, { as: 'allTodos' })
-      expect(store.getActions()[0]).toEqual(
+      expect(client.store.dispatch.mock.calls[0][0]).toEqual(
         initQuery('allTodos', { doctype: 'io.cozy.todos' })
       )
     })
@@ -265,7 +286,7 @@ describe('CozyClient', () => {
     it('should then dispatch a RECEIVE_QUERY_RESULT action', async () => {
       requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
       await client.query(query, { as: 'allTodos' })
-      expect(store.getActions()[1]).toEqual(
+      expect(client.store.dispatch.mock.calls[1][0]).toEqual(
         receiveQueryResult('allTodos', fakeResponse)
       )
     })
@@ -276,7 +297,7 @@ describe('CozyClient', () => {
       try {
         await client.query(query, { as: 'allTodos' })
       } catch (e) {} // eslint-disable-line no-empty
-      expect(store.getActions()[1]).toEqual(
+      expect(client.store.dispatch.mock.calls[1][0]).toEqual(
         receiveQueryError('allTodos', error)
       )
     })
@@ -366,7 +387,7 @@ describe('CozyClient', () => {
 
     it('should first dispatch a INIT_MUTATION action', async () => {
       await client.mutate(mutation, { as: 'updateTodo' })
-      expect(store.getActions()[0]).toEqual(
+      expect(client.store.dispatch.mock.calls[0][0]).toEqual(
         initMutation('updateTodo', mutation)
       )
     })
@@ -379,7 +400,7 @@ describe('CozyClient', () => {
     it('should then dispatch a RECEIVE_MUTATION_RESULT action', async () => {
       requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
       await client.mutate(mutation, { as: 'updateTodo' })
-      expect(store.getActions()[1]).toEqual(
+      expect(client.store.dispatch.mock.calls[1][0]).toEqual(
         receiveMutationResult('updateTodo', fakeResponse)
       )
     })
@@ -396,7 +417,7 @@ describe('CozyClient', () => {
       try {
         await client.mutate(mutation, { as: 'updateTodo' })
       } catch (e) {} // eslint-disable-line no-empty
-      expect(store.getActions()[1]).toEqual(
+      expect(client.store.dispatch.mock.calls[1][0]).toEqual(
         receiveMutationError('updateTodo', error)
       )
     })
@@ -416,22 +437,9 @@ describe('CozyClient', () => {
     })
   })
 
-  describe('schema handling', () => {
-    it("should be possible to get a doctype's model", () => {
-      expect(client.getDoctypeModel('io.cozy.todos')).toEqual({
-        ...SCHEMA.todos,
-        associations: [
-          {
-            doctype: 'io.cozy.files',
-            name: 'attachments',
-            type: 'has-many'
-          }
-        ]
-      })
-    })
-
+  describe('hydratation', () => {
     it('should hydrate relationships into associations with helper methods in the context of a query', async () => {
-      store.getState = () => ({
+      client.store.getState = () => ({
         cozy: {
           queries: {
             allTodos: {
@@ -463,8 +471,15 @@ describe('CozyClient', () => {
           'allTodos'
         )
         .shift()
-      expect(doc.attachments).toBeInstanceOf(HasManyFilesAssociation)
+      expect(doc.attachments).toBeInstanceOf(HasManyFiles)
       await doc.attachments.fetchMore()
+    })
+
+    it('makes new documents', () => {
+      const newTodo = client.makeNewDocument('io.cozy.todos')
+      expect(newTodo._type).toBe('io.cozy.todos')
+      expect(newTodo.attachments).not.toBe(undefined)
+      expect(newTodo.attachments instanceof HasManyFiles).toBe(true)
     })
   })
 })
