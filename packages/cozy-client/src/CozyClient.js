@@ -495,7 +495,8 @@ export default class CozyClient {
   }
 
   /**
-   * Renews the token if, for instance, new permissions are required.
+   * Renews the token if, for instance, new permissions are required or token
+   * has expired.
    *
    * @returns {object}   Contains the fetched token and the client information.
    */
