@@ -1,4 +1,4 @@
-⚠️ This is not the documentation for the old version of cozy-client. [Go to the old version](http://github.com/cozy/cozy-client-js).
+⚠️ This is the documentation for the **new** version of cozy-client. [Go to the old version](http://github.com/cozy/cozy-client-js).
 
 
 # cozy-client
