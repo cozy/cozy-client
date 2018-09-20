@@ -23,7 +23,7 @@ const client = new CozyClient({
   token: '...'
 })
 ```
-If you need guidance to get the URI of your instance and/or the token, see (https://cozy.github.io/cozy-docs-v3/en/dev/app/#behind-the-magic).
+If you need guidance to get the URI of your instance and/or the token, see (https://docs.cozy.io/en/dev/app/#behind-the-magic).
 
 ### Creating a provider
 
