@@ -148,7 +148,7 @@ export default class PouchLink extends CozyLink {
   async onSyncError(error) {
     if (isExpiredTokenError(error)) {
       try {
-        await this.client.renewAuthorization()
+        await this.client.refreshToken()
         this.startReplication()
         return
       } catch (err) {
