@@ -1,159 +1,4 @@
-If you don't use React, you can still benefit of it, see below.
-
-## Setup
-
-### Install
-
-`npm install --save cozy-client`
-or
-`yarn add cozy-client`
-
-To get started using `cozy-client` with (p)React, you need to create a `CozyClient`, and a `CozyProvider`:
-
-* `CozyClient` is the master of your data: it manages data queries and their status ;
-* `CozyProvider` injects the client into components' context.
-
-### Creating a client
-
-```js
-import CozyClient from 'cozy-client'
-
-const client = new CozyClient({
-  uri: 'http://cozy.tools:8080',
-  token: '...'
-})
-```
-If you need guidance to get the URI of your instance and/or the token, see (https://docs.cozy.io/en/dev/app/#behind-the-magic).
-
-### Creating a provider
-
-All components that we want to connect to data need access to the client. We could pass it as a prop from component to component, but it'll quickly get tedious.
-We recommend that you use a `CozyProvider` somewhere high in your app. It will make the client available to all your components using the context:
-
-```jsx
-import CozyClient, { CozyProvider } from 'cozy-client'
-
-const client = new CozyClient({
-  /*...*/
-})
-
-ReactDOM.render(
-  <CozyProvider client={client}>
-    <MyApp />
-  </CozyProvider>,
-  document.getElementById('main')
-)
-```
-
-### Using the client
-
-An instance of `CozyClient` allows you to query and mutate (update) data, here's how it looks:
-
-```jsx
-import CozyClient from 'cozy-client'
-
-const client = new CozyClient({
-  /*...*/
-})
-
-client.query(
-  client.find('io.cozy.todos').where({ checked: false })
-).then(
-  ({ data }) => console.log(data)
-)
-
-client.mutate(
-  client.create('io.cozy.todos', { label: 'Buy bread' })
-).then(
-  ({ data }) => console.log(data.id)
-)
-```
-
-## Requesting data
-
-To make it easy to fetch data and make it available to your component, we provide a Render Props component called `Query`. Basic example of usage:
-
-```jsx
-import React from 'react'
-import { Query } from 'cozy-client'
-
-const query = client => client.find('io.cozy.todos').where({ checked: false })
-
-const TodoList = () => (
-  <Query query={query}>
-    {({ data, fetchStatus }) =>
-      fetchStatus !== 'loaded'
-        ? <h1>Loading...</h1>
-        : <ul>{data.map(todo => <li>{todo.label}</li>)}</ul>
-    }
-  </Query>
-```
-
-When we use `Query` to "wrap" a component, three things happen:
- - The query passed as a prop will be executed when `Query` mounts, resulting in the loading of data from the client-side store, or the server if the data is not in the store ;
- - `Query` subscribes to the store, so that it is updated if the data changes ;
- - `Query` pass the result of the query as props to the children function.
-
-### The available props
-
- - `data`: an array of documents
- - `fetchStatus`: the status of the fetch (`pending`, `loading`, `loaded` or `error`)
- - `lastFetch`: when the last fetch occured
- - `hasMore`: the fetches being paginated, this property indicates if there are more documents to load
-
-### Making queries
-
-`cozy-client` provides you with a very easy to use DSL to define document queries:
-
-```jsx
-import CozyClient from 'cozy-client'
-
-const client = new CozyClient({
-  /*...*/
-})
-
-const query = client.find('io.cozy.todos').where({ checked: false }).sortBy({ label: 'desc' })
-```
-
-## Mutating data
-
-In addition to fetching data using queries, `cozy-client` also helps you mutate (update) data.
-
-```jsx
-import React from 'react'
-import { Query } from 'cozy-client'
-
-const query = client => client.find('io.cozy.todos').where({ checked: false })
-
-const createMutations = (client, ownProps) => ({
-  addTodo: label => client.create('io.cozy.todos', { label })
-})
-
-const App = () => (
-  <Query query={query} mutations={createMutations}>
-    {(result, addTodo) =>
-      <TodoList data={result.data} onAddTodo={addTodo} />
-    }
-  </Query>
-```
-
-### Updating queries
-
-TODO
-
-```jsx
-import React from 'react'
-import { connect, find } from 'cozy-client'
-
-const query = find('io.cozy.todos').where({ checked: false })
-
-const TodoList = ...
-
-export default connect(query, { as: 'allTodos' })(TodoList)
-```
-
-
-### Higher-Order Component (HOC)
+### How to use a higher order component
 
 If you prefer HOCs to render-prop components, we provide a higher-order component called `connect`. Basic example of usage:
 
@@ -207,7 +52,7 @@ export default withMutation(
 )(AddTodo)
 ```
 
-### Integrating with an existing redux store
+### How-to integrate with an existing store
 
 `cozy-client` uses redux internally to centralize the statuses of the various fetches and replications triggered by the library, and to store locally the data in a normalized way. If you already have a redux store in your app, you can configure `cozy-client` to use this existing store:
 
@@ -234,27 +79,7 @@ ReactDOM.render(
 )
 ```
 
-## Using the OAuth client
-
-`CozyClient` can also be used as an OAuth client. To get started, configure the OAuth informations when creating the client:
-
-```js
-import CozyClient from 'cozy-client'
-
-const client = new CozyClient({
-  uri: 'http://cozy.tools:8080',
-  scope: ['io.cozy.mydoctype'],
-  oauth: {
-    clientName: 'MyClient',
-    softwareID: 'MyAppId',
-    redirectURI: 'http://localhost'
-  }
-})
-```
-
-`scope` is an array of [permissions](https://github.com/cozy/cozy-stack/blob/master/docs/permissions.md) you require for your client, and `oauth` is a list of fields that identify your client for the user and the server. The complete list of field can be found [here](https://github.com/cozy/cozy-stack/blob/master/docs/permissions.md), although they should be camel-cased instead of snake-cased.
-
-### Obtaining a token
+### How to obtain a token
 
 Before you can start making requests to the server, you will need to get a token. `cozy-client` will provide a URL to a page where the user is shown what data you want to access, and asking for his or her permission. After the user accepts these permissions, he or she is redirected to the `oauth.redirectURI` that you declared earlier. You will then have to give this redirected URL back to `cozy-client` as it contains a code, that will be exchanged for the token.
 
@@ -292,9 +117,9 @@ const openURL = url => {
 
 And that's it! After the promise is resolved, `cozy-client` finishes the OAuth flow and you can start using it.
 
-### Restoring a client
+### How to restore a previous token
 
-Of course you don't want to go through this whole process every time your app starts. In order to restore the client from a previous version, you need to give it a token and some extra information about itself. Both of these are returned by the `openURL` function, so you can store them wherever you see fit — in this example we'll use the `localStorag` API.
+Of course you don't want to go through this whole process every time your app starts. In order to restore the client from a previous version, you need to give it a token and some extra information about itself. Both of these are returned by the `openURL` function, so you can store them wherever you see fit — in this example we'll use the `localStorage` API.
 
 ```js
 import CozyClient from 'cozy-client'
@@ -338,7 +163,27 @@ if (!storedToken) {
 }
 ```
 
-### Logout a client
+### How to logout a client
 
 When a user logout, we would like remove all references on this instance and
 remove all user data. You can just use `cozyClient.logout()`.
+
+## How to use CozyClient on mobile
+
+`CozyClient` can also be used as an OAuth client. To get started, configure the OAuth informations when creating the client:
+
+```js
+import CozyClient from 'cozy-client'
+
+const client = new CozyClient({
+  uri: 'http://cozy.tools:8080',
+  scope: ['io.cozy.mydoctype'],
+  oauth: {
+    clientName: 'MyClient',
+    softwareID: 'MyAppId',
+    redirectURI: 'http://localhost'
+  }
+})
+```
+
+`scope` is an array of [permissions](https://github.com/cozy/cozy-stack/blob/master/docs/permissions.md) you require for your client, and `oauth` is a list of fields that identify your client for the user and the server. The complete list of field can be found [here](https://github.com/cozy/cozy-stack/blob/master/docs/permissions.md), although they should be camel-cased instead of snake-cased.
