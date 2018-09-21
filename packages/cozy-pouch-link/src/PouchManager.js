@@ -6,6 +6,7 @@ import map from 'lodash/map'
 import zip from 'lodash/zip'
 import * as promises from './promises'
 import { isDesignDocument, isDeletedDocument } from './helpers'
+import { isMobileApp } from 'cozy-device-helper'
 
 const DEFAULT_DELAY = 30 * 1000
 
@@ -53,10 +54,54 @@ export default class PouchManager {
     )
     this.options = options
     this.getReplicationURL = options.getReplicationURL
+    this.listenerLaunched = false
+  }
+
+  addListener() {
+    if (isMobileApp() && !this.listenerLaunched) {
+      document.addEventListener(
+        'pause',
+        () => this.stopReplicationLoop(),
+        false
+      )
+      document.addEventListener(
+        'resign',
+        () => this.stopReplicationLoop(),
+        false
+      )
+      document.addEventListener(
+        'resume',
+        () => this.startReplicationLoop(),
+        false
+      )
+      this.listenerLaunched = true
+    }
+  }
+
+  removeListener() {
+    if (this.listenerLaunched) {
+      document.removeEventListener(
+        'pause',
+        () => this.stopReplicationLoop(),
+        false
+      )
+      document.removeEventListener(
+        'resign',
+        () => this.stopReplicationLoop(),
+        false
+      )
+      document.removeEventListener(
+        'resume',
+        () => this.startReplicationLoop(),
+        false
+      )
+      this.listenerLaunched = false
+    }
   }
 
   destroy() {
     this.stopReplicationLoop()
+    this.removeListener()
     return Promise.all(
       Object.values(this.pouches).map(pouch => pouch.destroy())
     )
@@ -67,17 +112,20 @@ export default class PouchManager {
     if (this._stopReplicationLoop) {
       return this._stopReplicationLoop
     }
+    console.info('Start replication loop')
     delay = delay || this.options.replicationDelay || DEFAULT_DELAY
     this._stopReplicationLoop = promises.setInterval(
       () => this.replicateOnce(),
       delay
     )
+    this.addListener()
     return this._stopReplicationLoop
   }
 
   /** Stop periodic syncing of the pouches */
   stopReplicationLoop() {
     if (this._stopReplicationLoop) {
+      console.info('Stop replication loop')
       this.cancelCurrentReplications()
       this._stopReplicationLoop()
       this._stopReplicationLoop = null

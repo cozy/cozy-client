@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "cozy-client": "^2.20.2",
+    "cozy-device-helper": "1.4.8",
     "pouchdb": "^7.0.0",
     "pouchdb-find": "^7.0.0"
   },
