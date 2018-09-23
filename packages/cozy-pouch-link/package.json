@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "babel-cli": "6.26.0",
-    "jest": "23.5.0",
+    "jest": "23.6.0",
     "parcel": "1.9.7",
     "react": "16.4.2",
     "react-dom": "16.4.2"
