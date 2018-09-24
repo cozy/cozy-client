@@ -61,7 +61,7 @@ const main = async _args => {
     console.log(
       `${transaction.label} ${new Date(transaction.date).toLocaleDateString(
         'en-GB'
-      )} -> ${transaction.bills.data[0].filename}`
+      )} -> ${bill.filename}`
     )
   })
 }
