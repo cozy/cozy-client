@@ -20,7 +20,7 @@
     "react": "16.4.2",
     "react-dom": "16.4.2",
     "redux-mock-store": "1.5.3",
-    "webpack": "4.17.1",
+    "webpack": "4.19.1",
     "webpack-cli": "2.1.5"
   },
   "private": true,
