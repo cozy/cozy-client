@@ -249,10 +249,6 @@
   dependencies:
     commander "*"
 
-"@types/jest@^23.0.0":
-  version "23.3.1"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-23.3.1.tgz#a4319aedb071d478e6f407d1c4578ec8156829cf"
-
 "@types/node@*":
   version "10.7.1"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.7.1.tgz#b704d7c259aa40ee052eec678758a68d07132a2e"
@@ -5287,11 +5283,10 @@ jest-environment-node@^23.4.0:
     jest-mock "^23.2.0"
     jest-util "^23.4.0"
 
-jest-fetch-mock@1.6.5:
-  version "1.6.5"
-  resolved "https://registry.yarnpkg.com/jest-fetch-mock/-/jest-fetch-mock-1.6.5.tgz#178fa1a937ef6f61fb8e8483b6d4602b17e0d96d"
+jest-fetch-mock@1.6.6:
+  version "1.6.6"
+  resolved "https://registry.yarnpkg.com/jest-fetch-mock/-/jest-fetch-mock-1.6.6.tgz#f07d80912689c21fb01199f313abd121beff5558"
   dependencies:
-    "@types/jest" "^23.0.0"
     isomorphic-fetch "^2.2.1"
     promise-polyfill "^7.1.1"
 
