@@ -178,7 +178,7 @@ export default class FileCollection extends DocumentCollection {
 
   async download(file) {
     const href = await this.getDownloadLinkById(file._id)
-    forceFileDownload(href, file.name)
+    forceFileDownload(`${href}?Dl=1`, file.name)
   }
 
   async downloadArchive(fileIds, notSecureFilename = 'files') {
