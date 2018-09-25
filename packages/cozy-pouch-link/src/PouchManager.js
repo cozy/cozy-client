@@ -117,6 +117,8 @@ export default class PouchManager {
     this._stopReplicationLoop = promises.setInterval(() => {
       if (window.navigator.onLine) {
         this.replicateOnce()
+      } else {
+        console.info('The device is offline replication is abort')
       }
     }, delay)
     this.addListener()

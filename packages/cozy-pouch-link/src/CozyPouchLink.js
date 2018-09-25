@@ -180,11 +180,15 @@ export default class PouchLink extends CozyLink {
 
   request(operation, result = null, forward = doNothing) {
     if (!this.synced) {
+      console.info('Cozy Pouch is not synced.')
       return forward(operation)
     }
 
     // Forwards if doctype not supported
     if (!this.supportsOperation(operation)) {
+      console.info(
+        `The doctype '${getDoctypeFromOperation(operation)}' is not supported`
+      )
       return forward(operation)
     }
 
