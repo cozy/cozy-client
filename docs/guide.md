@@ -171,11 +171,3 @@ const TodoList = ...
 
 export default connect(query, { as: 'allTodos' })(TodoList)
 ```
-
-
-
-
-
-
-
-
