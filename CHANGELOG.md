@@ -3,7 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-     <a name="2.21.2"></a>
+      <a name="2.21.3"></a>
+## [2.21.3](https://github.com/cozy/cozy-client/compare/v2.21.2...v2.21.3) (2018-09-25)
+
+
+
+
+**Note:** Version bump only for package undefined
+
+      <a name="2.21.2"></a>
 ## [2.21.2](https://github.com/cozy/cozy-client/compare/v2.21.1...v2.21.2) (2018-09-24)
 
 
@@ -11,7 +19,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package undefined
 
-     <a name="2.21.1"></a>
+   <a name="2.21.1"></a>
 ## [2.21.1](https://github.com/cozy/cozy-client/compare/v2.21.0...v2.21.1) (2018-09-21)
 
 
@@ -19,7 +27,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package undefined
 
-   <a name="2.21.0"></a>
+ <a name="2.21.0"></a>
 # [2.21.0](https://github.com/cozy/cozy-client/compare/v2.20.2...v2.21.0) (2018-09-21)
 
 
@@ -30,7 +38,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-  <a name="2.20.2"></a>
+<a name="2.20.2"></a>
 ## [2.20.2](https://github.com/cozy/cozy-client/compare/v2.20.1...v2.20.2) (2018-09-20)
 
 
