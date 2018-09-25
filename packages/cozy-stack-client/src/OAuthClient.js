@@ -330,7 +330,7 @@ export default class OAuthClient extends CozyStackClient {
    * Retrieves a new access token by refreshing the currently used token.
    * @throws {NotRegisteredException} When the client doesn't have it's registration information
    * @throws {Error} The client should already have an access token to use this function
-   * @returns {Promise} A promise that resolves with a new AccessToen object
+   * @returns {Promise} A promise that resolves with a new AccessToken object
    */
   async refreshToken() {
     if (!this.isRegistered()) throw new NotRegisteredException()
