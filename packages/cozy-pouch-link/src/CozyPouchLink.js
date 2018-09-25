@@ -15,6 +15,7 @@ const parseMutationResult = (original, res) => {
   return { ...original, ...omit(res, 'ok') }
 }
 
+const LOCALSTORAGE_SYNCED_KEY = 'cozy-client-pouch-link-synced'
 const DEFAULT_OPTIONS = {
   replicationInterval: 30 * 1000
 }
@@ -53,6 +54,7 @@ export default class PouchLink extends CozyLink {
     }
     this.doctypes = doctypes
     this.indexes = {}
+    this.synced = window.localStorage.getItem(LOCALSTORAGE_SYNCED_KEY) || false
   }
 
   getReplicationURL(doctype) {
@@ -98,6 +100,7 @@ export default class PouchLink extends CozyLink {
 
     this.pouches = null
     this.client = undefined
+    window.localStorage.removeItem(LOCALSTORAGE_SYNCED_KEY)
     this.synced = false
   }
 
@@ -112,6 +115,7 @@ export default class PouchLink extends CozyLink {
 
   onSync(normalizedData) {
     this.synced = true
+    window.localStorage.setItem(LOCALSTORAGE_SYNCED_KEY, true)
     if (this.options.onSync) {
       this.options.onSync.call(this, normalizedData)
     }
@@ -176,11 +180,15 @@ export default class PouchLink extends CozyLink {
 
   request(operation, result = null, forward = doNothing) {
     if (!this.synced) {
+      console.info('Cozy Pouch is not synced.')
       return forward(operation)
     }
 
     // Forwards if doctype not supported
     if (!this.supportsOperation(operation)) {
+      console.info(
+        `The doctype '${getDoctypeFromOperation(operation)}' is not supported`
+      )
       return forward(operation)
     }
 
