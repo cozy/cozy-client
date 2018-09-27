@@ -19,3 +19,19 @@ exports[`FileCollection findReferencedBy should pass all the filters 1`] = `
   ],
 }
 `;
+
+exports[`FileCollection updateFileMetadata should call the right route 1`] = `
+Array [
+  "PATCH",
+  "/files/42",
+  Object {
+    "data": Object {
+      "attributes": Object {
+        "dir_id": "123",
+      },
+      "id": "42",
+      "type": "io.cozy.files",
+    },
+  },
+]
+`;

@@ -287,6 +287,12 @@ export default class FileCollection extends DocumentCollection {
     }
   }
 
+  /**
+   * async createDirectoryByPath - Creates one or more folders until the given path exists
+   *
+   * @param  {string} path
+   * @returns {object} The document corresponding to the last segment of the path
+   */
   async createDirectoryByPath(path) {
     const parts = path.split('/').filter(part => part !== '')
     const root = await this.statById(ROOT_DIR_ID)
@@ -296,6 +302,26 @@ export default class FileCollection extends DocumentCollection {
       parentDir = await this.getDirectoryOrCreate(part, parentDir.data)
     }
     return parentDir
+  }
+
+  /**
+   * async updateFileMetadata - Updates a file's metadata
+   *
+   * @param  {string} id         File id
+   * @param  {object} attributes New file meta data
+   * @returns {object}            Updated document
+   */
+  async updateFileMetadata(id, attributes) {
+    const resp = await this.client.fetchJSON('PATCH', uri`/files/${id}`, {
+      data: {
+        type: 'io.cozy.files',
+        id,
+        attributes
+      }
+    })
+    return {
+      data: normalizeFile(resp.data)
+    }
   }
 
   async doUpload(data, path, options) {
