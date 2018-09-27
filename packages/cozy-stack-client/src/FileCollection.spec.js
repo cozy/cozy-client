@@ -205,4 +205,16 @@ describe('FileCollection', () => {
       expect(spy).toMatchSnapshot()
     })
   })
+
+  describe('updateFileMetadata', () => {
+    it('should call the right route', async () => {
+      await collection.updateFileMetadata('42', {
+        dir_id: '123'
+      })
+      expect(client.fetchJSON.mock.calls.length).toBeGreaterThan(0)
+      expect(
+        client.fetchJSON.mock.calls[client.fetchJSON.mock.calls.length - 1]
+      ).toMatchSnapshot()
+    })
+  })
 })
