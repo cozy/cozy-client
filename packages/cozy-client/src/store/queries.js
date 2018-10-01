@@ -96,6 +96,7 @@ const filterForQuery = query => {
     if (selectorFilterFn && !selectorFilterFn(datum)) {
       return false
     }
+    if (datum._deleted) return false
     return true
   }
 }
