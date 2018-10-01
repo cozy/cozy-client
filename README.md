@@ -1,6 +1,3 @@
-⚠️ This is the documentation for the **new** version of cozy-client. [Go to the old version](http://github.com/cozy/cozy-client-js) 👵👴.
-
-
 # cozy-client
 
 A simple and declarative way of managing [cozy-stack](https://github.com/cozy/cozy-stack) API calls and resulting data.
@@ -9,3 +6,7 @@ A simple and declarative way of managing [cozy-stack](https://github.com/cozy/co
 
 - [User guide](docs/guide.md)
 - [API docs](docs/api.md)
+
+
+
+This is the documentation of the current version of cozy-client. If you want to check the old version, [go to the old version](http://github.com/cozy/cozy-client-js) 👵👴.
