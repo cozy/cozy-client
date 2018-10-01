@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 const withMutations = (mutations = {}) => WrappedComponent => {
   class Wrapper extends Component {
+    static contextTypes = {
+      client: PropTypes.object
+    }
+
     constructor(props, context) {
       super(props, context)
       const client = context.client
