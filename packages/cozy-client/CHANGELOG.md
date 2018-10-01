@@ -3,7 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-     <a name="2.22.1"></a>
+      <a name="2.22.2"></a>
+## [2.22.2](https://github.com/cozy/cozy-client/compare/v2.22.1...v2.22.2) (2018-10-01)
+
+
+### Bug Fixes
+
+* :art: client error handling in withMutations ([8d05662](https://github.com/cozy/cozy-client/commit/8d05662))
+* :bug: Fix withMutations context issue ([08be90d](https://github.com/cozy/cozy-client/commit/08be90d))
+
+
+
+
+      <a name="2.22.1"></a>
 ## [2.22.1](https://github.com/cozy/cozy-client/compare/v2.22.0...v2.22.1) (2018-09-25)
 
 
@@ -11,7 +23,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package cozy-client
 
-     <a name="2.21.3"></a>
+   <a name="2.21.3"></a>
 ## [2.21.3](https://github.com/cozy/cozy-client/compare/v2.21.2...v2.21.3) (2018-09-25)
 
 
@@ -19,7 +31,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package cozy-client
 
-   <a name="2.21.2"></a>
+ <a name="2.21.2"></a>
 ## [2.21.2](https://github.com/cozy/cozy-client/compare/v2.21.1...v2.21.2) (2018-09-24)
 
 
@@ -27,7 +39,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package cozy-client
 
-  <a name="2.21.1"></a>
+<a name="2.21.1"></a>
 ## [2.21.1](https://github.com/cozy/cozy-client/compare/v2.21.0...v2.21.1) (2018-09-21)
 
 
