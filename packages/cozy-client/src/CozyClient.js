@@ -6,6 +6,7 @@
  * - Creating plan for saving documents
  * - Associations
  */
+import { REGISTRATION_ABORT } from './const'
 
 import StackLink from './StackLink'
 import {
@@ -477,20 +478,27 @@ export default class CozyClient {
   }
 
   async authorize(openURLCallback) {
-    const client = this.getClient()
-    const stateCode = client.generateStateCode()
-    const url = client.getAuthCodeURL(stateCode)
+    try {
+      const client = this.getClient()
+      const stateCode = client.generateStateCode()
+      const url = client.getAuthCodeURL(stateCode)
+      const redirectedURL = await openURLCallback(url)
+      const code = client.getAccessCodeFromURL(redirectedURL, stateCode)
+      const token = await client.fetchAccessToken(code)
 
-    const redirectedURL = await openURLCallback(url)
-    const code = client.getAccessCodeFromURL(redirectedURL, stateCode)
-    const token = await client.fetchAccessToken(code)
-
-    client.setCredentials(token)
-
-    return {
-      token,
-      infos: client.oauthOptions,
-      client: client.oauthOptions // for compat with Authentication comp reasons
+      client.setCredentials(token)
+      return {
+        token,
+        infos: client.oauthOptions,
+        client: client.oauthOptions // for compat with Authentication comp reasons
+      }
+    } catch (error) {
+      /* if REGISTRATION_ABORT is emited, we have to unregister the client. */
+      if (error.message === REGISTRATION_ABORT) {
+        const client = this.getClient()
+        client.unregister()
+      }
+      throw error
     }
   }
 
