@@ -158,7 +158,7 @@ export default class CozyClient {
   }
 
   validate(document) {
-    return this.schema(document)
+    return this.schema.validate(document)
   }
 
   async save(document, mutationOptions = {}) {
