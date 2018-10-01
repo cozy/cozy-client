@@ -70,7 +70,7 @@ export default class CozyClient {
 
     this.chain = chain(this.links)
 
-    this.schema = new Schema(schema)
+    this.schema = new Schema(schema, this.getClient())
   }
 
   registerClientOnLinks() {
