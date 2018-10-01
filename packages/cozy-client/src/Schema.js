@@ -46,15 +46,16 @@ const normalizeDoctypeSchema = doctypeSchema => {
  *       author: 'has-one-in-place'
  *     }
  *   }
- * })
+ * }, cozyStackClient)
  * ```
  */
 export default class Schema {
-  constructor(schemaDefinition = {}) {
+  constructor(schemaDefinition = {}, client = null) {
     const values = mapValues(schemaDefinition, (obj, name) => ({
       name,
       ...normalizeDoctypeSchema(obj)
     }))
+    this.client = client
     this.byName = keyBy(values, x => x.name)
     this.byDoctype = keyBy(values, x => x.doctype)
   }
@@ -101,11 +102,10 @@ export default class Schema {
   }
 
   async validateAttribute(document, attrName, attrProps) {
-    if (attrProps.unique) {
-      const ret = await this.collection(document._type).checkUniquenessOf(
-        attrName,
-        document[attrName]
-      )
+    if (attrProps.unique && this.client) {
+      const ret = await this.client
+        .collection(document._type)
+        .checkUniquenessOf(attrName, document[attrName])
       if (ret !== true) return 'must be unique'
     }
     return true
