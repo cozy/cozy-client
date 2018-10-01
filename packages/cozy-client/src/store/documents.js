@@ -1,6 +1,7 @@
 import { isReceivingData } from './queries'
 import { isReceivingMutationResult } from './mutations'
 import keyBy from 'lodash/keyBy'
+import get from 'lodash/get'
 
 const storeDocument = (state, document) => {
   const type = document._type
@@ -10,6 +11,12 @@ const storeDocument = (state, document) => {
   if (!document._id) {
     throw new Error('Document without _id', document)
   }
+
+  const existingDoc = get(state, [type, document._id])
+  const existingRev = get(existingDoc, 'meta.rev')
+  const newRev = get(document, 'meta.rev')
+  if (newRev && existingRev === newRev) return state
+
   return {
     ...state,
     [type]: {
