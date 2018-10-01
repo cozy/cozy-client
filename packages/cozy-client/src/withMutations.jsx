@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 const withMutations = (mutations = {}) => WrappedComponent => {
+  const wrappedDisplayName =
+    WrappedComponent.displayName || WrappedComponent.name || 'Component'
+
   class Wrapper extends Component {
     static contextTypes = {
       client: PropTypes.object
@@ -9,7 +12,12 @@ const withMutations = (mutations = {}) => WrappedComponent => {
 
     constructor(props, context) {
       super(props, context)
-      const client = context.client
+      const client = props.client || context.client
+      if (!client) {
+        throw new Error(
+          `Could not find "client" in either the context or props of ${wrappedDisplayName}`
+        )
+      }
       this.mutations = {
         ...{
           createDocument: client.create.bind(client),
@@ -27,9 +35,7 @@ const withMutations = (mutations = {}) => WrappedComponent => {
     }
   }
 
-  Wrapper.displayName = `WithMutations(${WrappedComponent.displayName ||
-    WrappedComponent.name ||
-    'Component'})`
+  Wrapper.displayName = `WithMutations(${wrappedDisplayName})`
   return Wrapper
 }
 
