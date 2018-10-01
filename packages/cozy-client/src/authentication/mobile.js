@@ -1,12 +1,11 @@
 /* global prompt */
+import { REGISTRATION_ABORT } from '../const'
 
 const hasCordovaPlugin = () => {
   return (
     window.cordova !== undefined && window.cordova.InAppBrowser !== undefined
   )
 }
-
-const REGISTRATION_ABORT = 'REGISTRATION_ABORT'
 
 export const authenticateWithCordova = url => {
   if (hasCordovaPlugin()) {
