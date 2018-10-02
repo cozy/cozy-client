@@ -3,7 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-     <a name="2.22.2"></a>
+      <a name="2.22.3"></a>
+## [2.22.3](https://github.com/cozy/cozy-client/compare/v2.22.2...v2.22.3) (2018-10-02)
+
+
+### Bug Fixes
+
+* Have a client instance in Schema class ([76f6253](https://github.com/cozy/cozy-client/commit/76f6253))
+* Transmit call to Schema.validate ([95c88c1](https://github.com/cozy/cozy-client/commit/95c88c1))
+
+
+
+
+      <a name="2.22.2"></a>
 ## [2.22.2](https://github.com/cozy/cozy-client/compare/v2.22.1...v2.22.2) (2018-10-01)
 
 
@@ -15,7 +27,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="2.22.1"></a>
+   <a name="2.22.1"></a>
 ## [2.22.1](https://github.com/cozy/cozy-client/compare/v2.22.0...v2.22.1) (2018-09-25)
 
 
@@ -26,7 +38,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-   <a name="2.22.0"></a>
+ <a name="2.22.0"></a>
 # [2.22.0](https://github.com/cozy/cozy-client/compare/v2.21.3...v2.22.0) (2018-09-25)
 
 
@@ -43,7 +55,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-  <a name="2.21.3"></a>
+<a name="2.21.3"></a>
 ## [2.21.3](https://github.com/cozy/cozy-client/compare/v2.21.2...v2.21.3) (2018-09-25)
 
 
