@@ -175,7 +175,8 @@ const queries = (state = {}, action, documents = {}) => {
         return updater(queryState)
       }
     })
-  } else if (isReceivingMutationResult(action) || isReceivingData(action)) {
+  }
+  if (isReceivingMutationResult(action)) {
     const updater = action.updateQueries
       ? manualQueryUpdater(action, documents)
       : autoQueryUpdater(action)
