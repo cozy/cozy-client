@@ -1,5 +1,4 @@
 import mapValues from 'lodash/mapValues'
-import groupBy from 'lodash/groupBy'
 import union from 'lodash/union'
 import difference from 'lodash/difference'
 import intersection from 'lodash/intersection'
@@ -83,19 +82,18 @@ const query = (state = queryInitialState, action) => {
   }
 }
 
-const filterForQuery = query => {
+const getQueryDocumentsChecker = query => {
   const qdoctype = query.definition.doctype
   const selectorFilterFn = query.definition.selector
     ? selectorFilter(query.definition.selector)
     : null
   return datum => {
     const ddoctype = datum._type
-    if (ddoctype != qdoctype) {
-      return false
-    }
+    if (ddoctype !== qdoctype) return false
     if (selectorFilterFn && !selectorFilterFn(datum)) {
       return false
     }
+    if (datum._deleted) return false
     return true
   }
 }
@@ -103,18 +101,14 @@ const filterForQuery = query => {
 const _id = x => x._id
 
 const updateData = (query, newData) => {
-  const filter = filterForQuery(query)
-  let { good, bad } = groupBy(newData, doc => (filter(doc) ? 'good' : 'bad'))
-  good = good ? good : []
-  bad = bad ? bad : []
-
-  const goodIds = good.map(_id)
-  const badIds = bad.map(_id)
+  const isFulfilled = getQueryDocumentsChecker(query)
+  const matchedIds = newData.filter(doc => isFulfilled(doc)).map(_id)
+  const unmatchedIds = newData.filter(doc => !isFulfilled(doc)).map(_id)
 
   const originalIds = query.data
-  const toRemove = intersection(originalIds, badIds)
-  const toAdd = difference(goodIds, originalIds)
-  const toUpdate = intersection(originalIds, goodIds)
+  const toRemove = intersection(originalIds, unmatchedIds)
+  const toAdd = difference(matchedIds, originalIds)
+  const toUpdate = intersection(originalIds, matchedIds)
 
   const changed = toRemove.length || toAdd.length || toUpdate.length
 
