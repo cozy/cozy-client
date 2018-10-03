@@ -170,16 +170,22 @@ describe('Store', () => {
 
       describe('when a `update` option is given', () => {
         it('should be applied instead of the regular update', async () => {
+          const spy = jest.fn()
           await store.dispatch(
-            receiveQueryResult('allTodos', 'BAR!', {
-              update: (store, response) =>
-                store.writeQuery('allTodos', {
-                  ...store.readQuery('allTodos'),
-                  foo: response
-                })
-            })
+            receiveQueryResult(
+              'allTodos',
+              {
+                data: [TODO_3],
+                meta: { count: 3 },
+                skip: 2,
+                next: false
+              },
+              {
+                update: spy
+              }
+            )
           )
-          expect(getQueryFromStore(store, 'allTodos').foo).toEqual('BAR!')
+          expect(spy).toHaveBeenCalled()
         })
       })
 

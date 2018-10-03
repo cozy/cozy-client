@@ -401,7 +401,7 @@ describe('CozyClient', () => {
       requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
       await client.mutate(mutation, { as: 'updateTodo' })
       expect(client.store.dispatch.mock.calls[1][0]).toEqual(
-        receiveMutationResult('updateTodo', fakeResponse)
+        receiveMutationResult('updateTodo', fakeResponse, {}, mutation)
       )
     })
 
@@ -418,7 +418,7 @@ describe('CozyClient', () => {
         await client.mutate(mutation, { as: 'updateTodo' })
       } catch (e) {} // eslint-disable-line no-empty
       expect(client.store.dispatch.mock.calls[1][0]).toEqual(
-        receiveMutationError('updateTodo', error)
+        receiveMutationError('updateTodo', error, mutation)
       )
     })
 
