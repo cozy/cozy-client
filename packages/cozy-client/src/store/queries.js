@@ -6,7 +6,7 @@ import intersection from 'lodash/intersection'
 import { getDocumentFromSlice } from './documents'
 import { isReceivingMutationResult } from './mutations'
 import { selectorFilter } from './mango'
-
+import get from 'lodash/get'
 const INIT_QUERY = 'INIT_QUERY'
 const RECEIVE_QUERY_RESULT = 'RECEIVE_QUERY_RESULT'
 const RECEIVE_QUERY_ERROR = 'RECEIVE_QUERY_ERROR'
@@ -104,7 +104,6 @@ const updateData = (query, newData) => {
   const isFulfilled = getQueryDocumentsChecker(query)
   const matchedIds = newData.filter(doc => isFulfilled(doc)).map(_id)
   const unmatchedIds = newData.filter(doc => !isFulfilled(doc)).map(_id)
-
   const originalIds = query.data
   const toRemove = intersection(originalIds, unmatchedIds)
   const toAdd = difference(matchedIds, originalIds)
@@ -123,10 +122,10 @@ const updateData = (query, newData) => {
 }
 
 const autoQueryUpdater = action => query => {
-  if (!action.response || !action.response.data) {
-    return query
-  }
-  let data = action.response.data
+  let data = get(action, 'response.data') || get(action, 'definition.document')
+
+  if (!data) return query
+
   if (!Array.isArray(data)) {
     data = [data]
   }

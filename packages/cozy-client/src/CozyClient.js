@@ -285,14 +285,19 @@ export default class CozyClient {
     try {
       const response = await this.requestMutation(mutationDefinition)
       this.dispatch(
-        receiveMutationResult(mutationId, response, {
-          update,
-          updateQueries
-        })
+        receiveMutationResult(
+          mutationId,
+          response,
+          {
+            update,
+            updateQueries
+          },
+          mutationDefinition
+        )
       )
       return response
     } catch (error) {
-      this.dispatch(receiveMutationError(mutationId, error))
+      this.dispatch(receiveMutationError(mutationId, error, mutationDefinition))
       throw error
     }
   }

@@ -17,15 +17,22 @@ export const initMutation = (mutationId, definition) => ({
   definition
 })
 
-export const receiveMutationResult = (mutationId, response, options = {}) => ({
+export const receiveMutationResult = (
+  mutationId,
+  response,
+  options = {},
+  definition = {}
+) => ({
   type: RECEIVE_MUTATION_RESULT,
   mutationId,
   response,
-  ...options
+  ...options,
+  definition
 })
 
-export const receiveMutationError = (mutationId, error) => ({
+export const receiveMutationError = (mutationId, error, definition = {}) => ({
   type: RECEIVE_MUTATION_ERROR,
   mutationId,
-  error
+  error,
+  definition
 })
