@@ -63,10 +63,14 @@ const combinedReducer = (state = { documents: {}, queries: {} }, action) => {
   if (action.update) {
     const proxy = new StoreProxy(state)
     action.update(proxy, action.response)
-    if (action.contextQueryId) {
-      proxy.touchQuery(action.contextQueryId)
+    return {
+      documents: proxy.getState().documents,
+      queries: queries(
+        proxy.getState().queries,
+        action,
+        proxy.getState().documents
+      )
     }
-    return proxy.getState()
   }
   return {
     documents: documents(state.documents, action),
