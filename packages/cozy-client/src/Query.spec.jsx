@@ -4,10 +4,14 @@ import CozyProvider from './Provider'
 
 import Query from './Query'
 import { createTestAssets, queryResultFromData } from './__tests__/utils'
-import { initQuery, receiveQueryResult } from './store'
-import { TODOS } from './__tests__/fixtures'
+import {
+  initQuery,
+  receiveQueryResult,
+  receiveMutationResult,
+  getQueryFromState
+} from './store'
+import { TODOS, TODO_WITH_RELATION, FILE_1 } from './__tests__/fixtures'
 import * as mocks from './__tests__/mocks'
-
 describe('Query', () => {
   const queryDef = client => ({ doctype: 'io.cozy.todos' })
   const client = mocks.client({
@@ -87,6 +91,32 @@ describe('Query', () => {
       const action = receiveQueryResult('allTodos', response)
       await store.dispatch(action)
       expect(uut.html()).toContain('Build stuff')
+    })
+
+    it('should refresh queries concerned by a REMOVE_REFERENCE_TO mutation', async () => {
+      const response = { data: TODO_WITH_RELATION }
+
+      const action1 = receiveQueryResult('allTodos', response)
+      await store.dispatch(action1)
+
+      const definition = {
+        document: TODO_WITH_RELATION,
+        mutationType: 'REMOVE_REFERENCES_TO',
+        referencedDocuments: [
+          {
+            ...FILE_1
+          }
+        ]
+      }
+      const UPDATED_AT = 2000
+      jest.spyOn(Date, 'now').mockReturnValue(UPDATED_AT)
+      const action = receiveMutationResult('allTodos', '', {}, definition)
+      await store.dispatch(action)
+      const state = store.getState()
+
+      expect(getQueryFromState(state, 'allTodos').lastUpdate).toEqual(
+        UPDATED_AT
+      )
     })
   })
 })

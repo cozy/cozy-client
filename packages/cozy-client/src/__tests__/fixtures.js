@@ -27,6 +27,37 @@ export const TODO_4 = {
 
 export const TODOS = [TODO_1, TODO_2, TODO_3]
 
+export const TODO_WITH_RELATION = {
+  _id: 5,
+  _type: 'io.cozy.todos',
+  label: 'tototot',
+  relationships: {
+    attachments: {
+      doctype: 'io.cozy.files',
+      files: [
+        {
+          type: 'io.cozy.files',
+          _id: 1
+        },
+        {
+          type: 'io.cozy.files',
+          _id: 2
+        }
+      ]
+    }
+  }
+}
+
+export const FILE_1 = {
+  _id: 1,
+  _type: 'io.cozy.files',
+  label: 'File 1'
+}
+export const FILE_2 = {
+  _id: 2,
+  _type: 'io.cozy.files',
+  label: 'File 2'
+}
 export const SCHEMA = {
   todos: {
     doctype: 'io.cozy.todos',
