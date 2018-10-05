@@ -3,7 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="2.23.0"></a>
+     <a name="2.23.1"></a>
+## [2.23.1](https://github.com/cozy/cozy-client/compare/v2.23.0...v2.23.1) (2018-10-05)
+
+
+### Bug Fixes
+
+* tests all green ([980b625](https://github.com/cozy/cozy-client/commit/980b625))
+* Update queries when references are mutated ([4272cbc](https://github.com/cozy/cozy-client/commit/4272cbc))
+
+
+
+
+     <a name="2.23.0"></a>
 # [2.23.0](https://github.com/cozy/cozy-client/compare/v2.22.4...v2.23.0) (2018-10-03)
 
 
@@ -14,7 +26,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-      <a name="2.22.4"></a>
+   <a name="2.22.4"></a>
 ## [2.22.4](https://github.com/cozy/cozy-client/compare/v2.22.3...v2.22.4) (2018-10-02)
 
 
@@ -26,7 +38,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="2.22.3"></a>
+  <a name="2.22.3"></a>
 ## [2.22.3](https://github.com/cozy/cozy-client/compare/v2.22.2...v2.22.3) (2018-10-02)
 
 
@@ -38,7 +50,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-   <a name="2.22.2"></a>
+<a name="2.22.2"></a>
 ## [2.22.2](https://github.com/cozy/cozy-client/compare/v2.22.1...v2.22.2) (2018-10-01)
 
 
