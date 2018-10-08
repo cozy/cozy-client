@@ -159,7 +159,17 @@ const manualQueryUpdater = (action, documents) => query => {
   }
 }
 
-const queries = (state = {}, action, documents = {}) => {
+const queries = (
+  state = {},
+  action,
+<<<<<<< Updated upstream
+  documents = {},
+  documentsChanged = true
+=======
+  nextDocuments = {},
+  haveDocumentsChanged = true
+>>>>>>> Stashed changes
+) => {
   if (action.type == INIT_QUERY) {
     return {
       ...state,
@@ -171,8 +181,10 @@ const queries = (state = {}, action, documents = {}) => {
     return mapValues(state, queryState => {
       if (queryState.id == action.queryId) {
         return query(queryState, action)
-      } else {
+      } else if (haveDocumentsChanged) {
         return updater(queryState)
+      } else {
+        return queryState
       }
     })
   }
