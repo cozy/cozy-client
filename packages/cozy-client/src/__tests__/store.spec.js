@@ -65,7 +65,9 @@ describe('Store', () => {
       )
       const stateAfter = store.getState().cozy.documents
       expect(stateBefore).not.toBe(stateAfter)
-      expect(getDocumentFromState(store.getState(), 'io.cozy.todos', TODO_1._id)).toEqual(TODO_WITH_REV_2)
+      expect(
+        getDocumentFromState(store.getState(), 'io.cozy.todos', TODO_1._id)
+      ).toEqual(TODO_WITH_REV_2)
     })
 
     it('should update the state when receiving a doc without a rev', () => {
@@ -89,7 +91,9 @@ describe('Store', () => {
       )
       const stateAfter = store.getState().cozy.documents
       expect(stateBefore).not.toBe(stateAfter)
-      expect(getDocumentFromState(store.getState(), 'io.cozy.todos', TODO_1._id)).toEqual(TODO_1)
+      expect(
+        getDocumentFromState(store.getState(), 'io.cozy.todos', TODO_1._id)
+      ).toEqual(TODO_1)
     })
   })
 
@@ -305,6 +309,30 @@ describe('Store', () => {
             getDocumentFromState(store.getState(), 'io.cozy.files', 'abc')
           ).toEqual({ _id: 'abc', _type: 'io.cozy.files', name: 'abc.png' })
         })
+      })
+
+      it('should not update queries when the documents have not changed', async () => {
+        const TODO_WITH_REV = { ...TODO_1, meta: { rev: 1 } }
+
+        await store.dispatch(
+          receiveQueryResult('allTodos', {
+            data: TODO_WITH_REV,
+            meta: { count: 1 },
+            skip: 0
+          })
+        )
+        const queryBefore = getQueryFromStore(store, 'allTodos')
+
+        await store.dispatch(
+          receiveQueryResult('allTodos', {
+            data: TODO_WITH_REV,
+            meta: { count: 1 },
+            skip: 0
+          })
+        )
+        const queryAfter = getQueryFromStore(store, 'allTodos')
+
+        expect(queryBefore).toEqual(queryAfter)
       })
     })
   })

@@ -72,9 +72,21 @@ const combinedReducer = (state = { documents: {}, queries: {} }, action) => {
       )
     }
   }
+<<<<<<< Updated upstream
+  const updatedDocuments = documents(state.documents, action)
+  const documentsChanged = updatedDocuments !== state.documents
+
   return {
-    documents: documents(state.documents, action),
-    queries: queries(state.queries, action, state.documents)
+    documents: updatedDocuments,
+    queries: queries(state.queries, action, state.documents, documentsChanged)
+=======
+  const nextDocuments = documents(state.documents, action)
+  const haveDocumentsChanged = nextDocuments !== state.documents
+
+  return {
+    documents: nextDocuments,
+    queries: queries(state.queries, action, nextDocuments, haveDocumentsChanged)
+>>>>>>> Stashed changes
   }
 }
 export default combinedReducer
