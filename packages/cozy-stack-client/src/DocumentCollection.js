@@ -1,5 +1,7 @@
 import { uri, attempt, sleep } from './utils'
 import uniq from 'lodash/uniq'
+import transform from 'lodash/transform'
+import head from 'lodash/head'
 import * as querystring from './querystring'
 
 export const normalizeDoc = (doc, doctype) => {
@@ -178,19 +180,36 @@ export default class DocumentCollection {
   }
 
   async toMangoOptions(selector, options = {}) {
-    const indexFields = this.getIndexFields({ ...options, selector })
-    const indexId = options.indexId || (await this.getIndexId(indexFields))
+    let { sort } = options
     const { fields, skip = 0, limit } = options
-    // Mango wants an array of single-property-objects..
-    const sortOrders = options.sort
-      ? uniq(Object.values(options.sort))
-      : ['asc']
-    if (sortOrders.length > 1)
-      throw new Error('Mango sort can only use a single order (asc or desc).')
-    const sortOrder = sortOrders[0]
-    const sort = options.sort
-      ? indexFields.map(f => ({ [f]: sortOrder }))
-      : undefined
+
+    if (sort && !Array.isArray(sort)) {
+      console.warn(
+        'Passing an object to the "sort" is deprecated, please use an array instead.'
+      )
+      sort = transform(
+        sort,
+        (acc, order, field) => acc.push({ [field]: order }),
+        []
+      )
+    }
+
+    const indexedFields = this.getIndexFields({ sort, selector })
+    const indexId = options.indexId || (await this.getIndexId(indexedFields))
+
+    if (sort) {
+      const sortOrders = uniq(
+        sort.map(sortOption => head(Object.values(sortOption)))
+      )
+      if (sortOrders.length > 1)
+        throw new Error('Mango sort can only use a single order (asc or desc).')
+      const sortOrder = sortOrders.length > 0 ? head(sortOrders) : 'asc'
+
+      for (const field of indexedFields) {
+        if (!sort.find(sortOption => head(Object.keys(sortOption)) === field))
+          sort.unshift({ [field]: sortOrder })
+      }
+    }
 
     return {
       selector,
@@ -249,7 +268,7 @@ export default class DocumentCollection {
   }
 
   getIndexNameFromFields(fields) {
-    return `by_${fields.sort((a, b) => a.localeCompare(b)).join('_and_')}`
+    return `by_${fields.join('_and_')}`
   }
 
   /**
@@ -259,7 +278,12 @@ export default class DocumentCollection {
    * @param  {Object} options - Mango query options
    * @return {Array} - Fields to index
    */
-  getIndexFields({ selector, sort = {} }) {
-    return Array.from(new Set([...Object.keys(selector), ...Object.keys(sort)]))
+  getIndexFields({ selector, sort = [] }) {
+    return Array.from(
+      new Set([
+        ...sort.map(sortOption => head(Object.keys(sortOption))),
+        ...Object.keys(selector)
+      ])
+    )
   }
 }
