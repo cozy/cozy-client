@@ -21,6 +21,8 @@ export const selectorFilter = selector => {
         return val > selValue
       } else if ($operator == '$lt') {
         return val < selValue
+      } else if ($operator == '$ne') {
+        return val !== selValue
       } else {
         throw new Error(`Unknown operator ${$operator}`)
       }
