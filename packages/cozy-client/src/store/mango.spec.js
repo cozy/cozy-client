@@ -35,4 +35,14 @@ describe('mango selector', () => {
     expect(filter({ a: 20, b: 30 })).toBe(false)
     expect(filter({ a: 5, b: 15 })).toBe(false)
   })
+
+  it('should build filter function from mango ($ne)', () => {
+    const filter = selectorFilter({
+      a: {
+        $ne: 10
+      }
+    })
+    expect(filter({ a: 20 })).toBe(true)
+    expect(filter({ a: 10 })).toBe(false)
+  })
 })
