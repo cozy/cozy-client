@@ -12,11 +12,11 @@
   },
   "dependencies": {
     "cozy-stack-client": "^2.23.0",
-    "lodash": "^4.17.5",
-    "prop-types": "^15.6.0",
-    "react": "^16.2.0",
-    "react-redux": "^5.0.6",
-    "redux": "^3.7.2"
+    "lodash": "4.17.10",
+    "prop-types": "15.6.2",
+    "react": "16.4.2",
+    "react-redux": "5.0.7",
+    "redux": "3.7.2"
   },
   "scripts": {
     "build": "../../bin/build",

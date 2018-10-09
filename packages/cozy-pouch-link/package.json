@@ -13,8 +13,8 @@
   "dependencies": {
     "cozy-client": "^2.24.0",
     "cozy-device-helper": "1.4.8",
-    "pouchdb": "^7.0.0",
-    "pouchdb-find": "^7.0.0"
+    "pouchdb": "7.0.0",
+    "pouchdb-find": "7.0.0"
   },
   "devDependencies": {
     "babel-cli": "6.26.0",
