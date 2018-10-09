@@ -251,7 +251,7 @@ describe('DocumentCollection', () => {
 
     it('should accept a sort option', async () => {
       const collection = new DocumentCollection('io.cozy.todos', client)
-      await collection.find({ done: false }, { sort: { label: 'desc' } })
+      await collection.find({ done: false }, { sort: [{ label: 'desc' }] })
       expect(client.fetchJSON).toHaveBeenLastCalledWith(
         'POST',
         '/data/io.cozy.todos/_find',
@@ -266,7 +266,7 @@ describe('DocumentCollection', () => {
 
     it('should use a valid default sorting option', async () => {
       const collection = new DocumentCollection('io.cozy.todos', client)
-      await collection.find({ done: false }, { sort: { label: 'asc' } })
+      await collection.find({ done: false }, { sort: [{ label: 'asc' }] })
       expect(client.fetchJSON).toHaveBeenLastCalledWith(
         'POST',
         '/data/io.cozy.todos/_find',
@@ -277,7 +277,7 @@ describe('DocumentCollection', () => {
           use_index: '_design/123456'
         }
       )
-      await collection.find({ done: false }, { sort: { label: 'desc' } })
+      await collection.find({ done: false }, { sort: [{ label: 'desc' }] })
       expect(client.fetchJSON).toHaveBeenLastCalledWith(
         'POST',
         '/data/io.cozy.todos/_find',
@@ -298,6 +298,24 @@ describe('DocumentCollection', () => {
           { sort: { label: 'asc', _id: 'desc' } }
         )
       ).rejects.toThrow()
+    })
+
+    it('should respect the sorting order', async () => {
+      const collection = new DocumentCollection('io.cozy.todos', client)
+      await collection.find(
+        { done: false },
+        { sort: [{ label: 'desc' }, { _id: 'desc' }] }
+      )
+      expect(client.fetchJSON).toHaveBeenLastCalledWith(
+        'POST',
+        '/data/io.cozy.todos/_find',
+        {
+          skip: 0,
+          selector: { done: false },
+          sort: [{ done: 'desc' }, { label: 'desc' }, { _id: 'desc' }],
+          use_index: '_design/123456'
+        }
+      )
     })
 
     it('should return a correct JSON API response', async () => {
