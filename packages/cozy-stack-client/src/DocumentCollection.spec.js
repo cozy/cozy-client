@@ -1,7 +1,7 @@
-jest.mock('../CozyStackClient')
+jest.mock('./CozyStackClient')
 
-import CozyStackClient from '../CozyStackClient'
-import DocumentCollection from '../DocumentCollection'
+import CozyStackClient from './CozyStackClient'
+import DocumentCollection from './DocumentCollection'
 
 const ALL_RESPONSE_FIXTURE = {
   offset: 0,
