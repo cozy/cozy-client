@@ -258,7 +258,7 @@ describe('DocumentCollection', () => {
         {
           skip: 0,
           selector: { done: false },
-          sort: [{ done: 'desc' }, { label: 'desc' }],
+          sort: [{ label: 'desc' }, { done: 'desc' }],
           use_index: '_design/123456'
         }
       )
@@ -273,7 +273,7 @@ describe('DocumentCollection', () => {
         {
           skip: 0,
           selector: { done: false },
-          sort: [{ done: 'asc' }, { label: 'asc' }],
+          sort: [{ label: 'asc' }, { done: 'asc' }],
           use_index: '_design/123456'
         }
       )
@@ -284,7 +284,7 @@ describe('DocumentCollection', () => {
         {
           skip: 0,
           selector: { done: false },
-          sort: [{ done: 'desc' }, { label: 'desc' }],
+          sort: [{ label: 'desc' }, { done: 'desc' }],
           use_index: '_design/123456'
         }
       )
@@ -295,7 +295,7 @@ describe('DocumentCollection', () => {
       await expect(
         collection.find(
           { done: false },
-          { sort: { label: 'asc', _id: 'desc' } }
+          { sort: [{ label: 'asc' }, { _id: 'desc' }] }
         )
       ).rejects.toThrow()
     })
@@ -312,7 +312,7 @@ describe('DocumentCollection', () => {
         {
           skip: 0,
           selector: { done: false },
-          sort: [{ done: 'desc' }, { label: 'desc' }, { _id: 'desc' }],
+          sort: [{ label: 'desc' }, { _id: 'desc' }, { done: 'desc' }],
           use_index: '_design/123456'
         }
       )
