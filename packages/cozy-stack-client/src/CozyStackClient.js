@@ -46,7 +46,7 @@ export default class CozyStackClient {
   }
 
   /**
-   * Fetches JSON in an authorized way.
+   * Fetches an endpoint in an authorized way.
    *
    * @param  {String} method The HTTP method.
    * @param  {String} path The URI.
@@ -76,6 +76,16 @@ export default class CozyStackClient {
     return fetch(this.fullpath(path), options)
   }
 
+  /**
+   * Fetches JSON in an authorized way.
+   *
+   * @param  {String} method The HTTP method.
+   * @param  {String} path The URI.
+   * @param  {Object} body The payload.
+   * @param  {Object} options
+   * @return {Object}
+   * @throws {FetchError}
+   */
   async fetchJSON(method, path, body, options = {}) {
     const headers = (options.headers = options.headers || {})
 
