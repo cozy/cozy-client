@@ -207,7 +207,7 @@ export default class DocumentCollection {
 
       for (const field of indexedFields) {
         if (!sort.find(sortOption => head(Object.keys(sortOption)) === field))
-          sort.unshift({ [field]: sortOrder })
+          sort.push({ [field]: sortOrder })
       }
     }
 
