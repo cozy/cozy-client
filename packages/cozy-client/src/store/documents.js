@@ -2,6 +2,7 @@ import { isReceivingData } from './queries'
 import { isReceivingMutationResult } from './mutations'
 import keyBy from 'lodash/keyBy'
 import get from 'lodash/get'
+import isEqual from 'lodash/isEqual'
 
 const storeDocument = (state, document) => {
   const type = document._type
@@ -13,15 +14,19 @@ const storeDocument = (state, document) => {
   }
 
   const existingDoc = get(state, [type, document._id])
-  const existingRev = get(existingDoc, 'meta.rev')
-  const newRev = get(document, 'meta.rev')
-  if (newRev && existingRev === newRev) return state
 
-  return {
-    ...state,
-    [type]: {
-      ...state[type],
-      [document._id]: document
+  if (isEqual(existingDoc, document)) {
+    return state
+  } else {
+    return {
+      ...state,
+      [type]: {
+        ...state[type],
+        [document._id]: {
+          ...existingDoc,
+          ...document
+        }
+      }
     }
   }
 }

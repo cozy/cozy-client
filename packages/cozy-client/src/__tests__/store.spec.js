@@ -20,11 +20,10 @@ describe('Store', () => {
   })
 
   describe('documents state', () => {
-    it('should not update the state when receiving a doc with an identical rev', () => {
-      const TODO_WITH_REV = { ...TODO_1, meta: { rev: 1 } }
+    it('should not update the state when receiving an identical doc', () => {
       store.dispatch(
         receiveQueryResult('allTodos', {
-          data: TODO_WITH_REV,
+          data: TODO_1,
           meta: { count: 1 },
           skip: 0,
           next: false
@@ -33,7 +32,7 @@ describe('Store', () => {
       const stateBefore = store.getState().cozy.documents
       store.dispatch(
         receiveQueryResult('allTodos', {
-          data: TODO_WITH_REV,
+          data: TODO_1,
           meta: { count: 1 },
           skip: 0,
           next: false
@@ -43,7 +42,7 @@ describe('Store', () => {
       expect(stateBefore).toBe(stateAfter)
     })
 
-    it('should update the state when receiving a doc with a different rev', () => {
+    it('should update the state when receiving an updated document', () => {
       const TODO_WITH_REV_1 = { ...TODO_1, meta: { rev: 1 } }
       const TODO_WITH_REV_2 = { ...TODO_1, meta: { rev: 2 } }
       store.dispatch(
@@ -70,17 +69,8 @@ describe('Store', () => {
       ).toEqual(TODO_WITH_REV_2)
     })
 
-    it('should update the state when receiving a doc without a rev', () => {
-      const TODO_WITH_REV = { ...TODO_1, meta: { rev: 1 } }
-      store.dispatch(
-        receiveQueryResult('allTodos', {
-          data: TODO_WITH_REV,
-          meta: { count: 1 },
-          skip: 0,
-          next: false
-        })
-      )
-      const stateBefore = store.getState().cozy.documents
+    it('should update the state when receiving a doc with more fields', () => {
+      const UPDATED_TODO = { ...TODO_1, assigned: false }
       store.dispatch(
         receiveQueryResult('allTodos', {
           data: TODO_1,
@@ -89,11 +79,24 @@ describe('Store', () => {
           next: false
         })
       )
+      const stateBefore = store.getState().cozy.documents
+      store.dispatch(
+        receiveQueryResult('allTodos', {
+          data: UPDATED_TODO,
+          meta: { count: 1 },
+          skip: 0,
+          next: false
+        })
+      )
       const stateAfter = store.getState().cozy.documents
       expect(stateBefore).not.toBe(stateAfter)
       expect(
-        getDocumentFromState(store.getState(), 'io.cozy.todos', TODO_1._id)
-      ).toEqual(TODO_1)
+        getDocumentFromState(
+          store.getState(),
+          'io.cozy.todos',
+          UPDATED_TODO._id
+        )
+      ).toEqual(UPDATED_TODO)
     })
   })
 
