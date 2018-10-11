@@ -3,7 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-       <a name="2.24.1"></a>
+      <a name="2.24.2"></a>
+## [2.24.2](https://github.com/cozy/cozy-client/compare/v2.24.1...v2.24.2) (2018-10-11)
+
+
+### Bug Fixes
+
+* Avoid rerenders when no doc changed ([290770b](https://github.com/cozy/cozy-client/commit/290770b))
+* Pass next documents to query reducer ([6af8518](https://github.com/cozy/cozy-client/commit/6af8518))
+* Prevent state updates with identical doc ([8828f70](https://github.com/cozy/cozy-client/commit/8828f70))
+
+
+
+
+      <a name="2.24.1"></a>
 ## [2.24.1](https://github.com/cozy/cozy-client/compare/v2.24.0...v2.24.1) (2018-10-09)
 
 
@@ -14,7 +27,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-       <a name="2.24.0"></a>
+     <a name="2.24.0"></a>
 # [2.24.0](https://github.com/cozy/cozy-client/compare/v2.23.1...v2.24.0) (2018-10-09)
 
 
@@ -25,7 +38,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="2.23.1"></a>
+   <a name="2.23.1"></a>
 ## [2.23.1](https://github.com/cozy/cozy-client/compare/v2.23.0...v2.23.1) (2018-10-05)
 
 
@@ -37,7 +50,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-  <a name="2.23.0"></a>
+<a name="2.23.0"></a>
 # [2.23.0](https://github.com/cozy/cozy-client/compare/v2.22.4...v2.23.0) (2018-10-03)
 
 
