@@ -162,13 +162,8 @@ const manualQueryUpdater = (action, documents) => query => {
 const queries = (
   state = {},
   action,
-<<<<<<< Updated upstream
-  documents = {},
-  documentsChanged = true
-=======
   nextDocuments = {},
   haveDocumentsChanged = true
->>>>>>> Stashed changes
 ) => {
   if (action.type == INIT_QUERY) {
     return {
@@ -190,7 +185,7 @@ const queries = (
   }
   if (isReceivingMutationResult(action)) {
     const updater = action.updateQueries
-      ? manualQueryUpdater(action, documents)
+      ? manualQueryUpdater(action, nextDocuments)
       : autoQueryUpdater(action)
     return mapValues(state, updater)
   }
