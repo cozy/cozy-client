@@ -1,6 +1,8 @@
 import { isReceivingData } from './queries'
 import { isReceivingMutationResult } from './mutations'
 import keyBy from 'lodash/keyBy'
+import get from 'lodash/get'
+import isEqual from 'lodash/isEqual'
 
 const storeDocument = (state, document) => {
   const type = document._type
@@ -10,11 +12,21 @@ const storeDocument = (state, document) => {
   if (!document._id) {
     throw new Error('Document without _id', document)
   }
-  return {
-    ...state,
-    [type]: {
-      ...state[type],
-      [document._id]: document
+
+  const existingDoc = get(state, [type, document._id])
+
+  if (isEqual(existingDoc, document)) {
+    return state
+  } else {
+    return {
+      ...state,
+      [type]: {
+        ...state[type],
+        [document._id]: {
+          ...existingDoc,
+          ...document
+        }
+      }
     }
   }
 }

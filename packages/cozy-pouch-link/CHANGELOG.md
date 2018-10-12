@@ -3,6 +3,46 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="3.0.3"></a>
+## [3.0.3](https://github.com/cozy/cozy-client/compare/v3.0.2...v3.0.3) (2018-10-12)
+
+
+
+
+**Note:** Version bump only for package cozy-pouch-link
+
+<a name="3.0.2"></a>
+## [3.0.2](https://github.com/cozy/cozy-client/compare/v3.0.1...v3.0.2) (2018-10-12)
+
+
+
+
+**Note:** Version bump only for package cozy-pouch-link
+
+<a name="3.0.1"></a>
+## [3.0.1](https://github.com/cozy/cozy-client/compare/v3.0.0...v3.0.1) (2018-10-11)
+
+
+
+
+**Note:** Version bump only for package cozy-pouch-link
+
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/cozy/cozy-client/compare/v2.24.2...v3.0.0) (2018-10-11)
+
+
+
+
+**Note:** Version bump only for package cozy-pouch-link
+
+<a name="2.24.2"></a>
+## [2.24.2](https://github.com/cozy/cozy-client/compare/v2.24.1...v2.24.2) (2018-10-11)
+
+
+
+
+**Note:** Version bump only for package cozy-pouch-link
+
 <a name="2.24.1"></a>
 ## [2.24.1](https://github.com/cozy/cozy-client/compare/v2.24.0...v2.24.1) (2018-10-09)
 

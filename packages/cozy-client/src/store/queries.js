@@ -159,7 +159,12 @@ const manualQueryUpdater = (action, documents) => query => {
   }
 }
 
-const queries = (state = {}, action, documents = {}) => {
+const queries = (
+  state = {},
+  action,
+  nextDocuments = {},
+  haveDocumentsChanged = true
+) => {
   if (action.type == INIT_QUERY) {
     return {
       ...state,
@@ -171,13 +176,16 @@ const queries = (state = {}, action, documents = {}) => {
     return mapValues(state, queryState => {
       if (queryState.id == action.queryId) {
         return query(queryState, action)
-      } else {
+      } else if (haveDocumentsChanged) {
         return updater(queryState)
+      } else {
+        return queryState
       }
     })
-  } else if (isReceivingMutationResult(action) || isReceivingData(action)) {
+  }
+  if (isReceivingMutationResult(action)) {
     const updater = action.updateQueries
-      ? manualQueryUpdater(action, documents)
+      ? manualQueryUpdater(action, nextDocuments)
       : autoQueryUpdater(action)
     return mapValues(state, updater)
   }

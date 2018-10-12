@@ -72,9 +72,12 @@ const combinedReducer = (state = { documents: {}, queries: {} }, action) => {
       )
     }
   }
+  const nextDocuments = documents(state.documents, action)
+  const haveDocumentsChanged = nextDocuments !== state.documents
+
   return {
-    documents: documents(state.documents, action),
-    queries: queries(state.queries, action, state.documents)
+    documents: nextDocuments,
+    queries: queries(state.queries, action, nextDocuments, haveDocumentsChanged)
   }
 }
 export default combinedReducer

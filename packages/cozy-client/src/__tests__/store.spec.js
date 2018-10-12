@@ -19,6 +19,87 @@ describe('Store', () => {
     store = createStore(combineReducers({ cozy: reducer }))
   })
 
+  describe('documents state', () => {
+    it('should not update the state when receiving an identical doc', () => {
+      store.dispatch(
+        receiveQueryResult('allTodos', {
+          data: TODO_1,
+          meta: { count: 1 },
+          skip: 0,
+          next: false
+        })
+      )
+      const stateBefore = store.getState().cozy.documents
+      store.dispatch(
+        receiveQueryResult('allTodos', {
+          data: TODO_1,
+          meta: { count: 1 },
+          skip: 0,
+          next: false
+        })
+      )
+      const stateAfter = store.getState().cozy.documents
+      expect(stateBefore).toBe(stateAfter)
+    })
+
+    it('should update the state when receiving an updated document', () => {
+      const TODO_WITH_REV_1 = { ...TODO_1, meta: { rev: 1 } }
+      const TODO_WITH_REV_2 = { ...TODO_1, meta: { rev: 2 } }
+      store.dispatch(
+        receiveQueryResult('allTodos', {
+          data: TODO_WITH_REV_1,
+          meta: { count: 1 },
+          skip: 0,
+          next: false
+        })
+      )
+      const stateBefore = store.getState().cozy.documents
+      store.dispatch(
+        receiveQueryResult('allTodos', {
+          data: TODO_WITH_REV_2,
+          meta: { count: 1 },
+          skip: 0,
+          next: false
+        })
+      )
+      const stateAfter = store.getState().cozy.documents
+      expect(stateBefore).not.toBe(stateAfter)
+      expect(
+        getDocumentFromState(store.getState(), 'io.cozy.todos', TODO_1._id)
+      ).toEqual(TODO_WITH_REV_2)
+    })
+
+    it('should update the state when receiving a doc with more fields', () => {
+      const UPDATED_TODO = { ...TODO_1, assigned: false }
+      store.dispatch(
+        receiveQueryResult('allTodos', {
+          data: TODO_1,
+          meta: { count: 1 },
+          skip: 0,
+          next: false
+        })
+      )
+      const stateBefore = store.getState().cozy.documents
+      store.dispatch(
+        receiveQueryResult('allTodos', {
+          data: UPDATED_TODO,
+          meta: { count: 1 },
+          skip: 0,
+          next: false
+        })
+      )
+      const stateAfter = store.getState().cozy.documents
+      expect(stateBefore).not.toBe(stateAfter)
+      expect(
+        getDocumentFromState(
+          store.getState(),
+          'io.cozy.todos',
+          UPDATED_TODO._id
+        )
+      ).toEqual(UPDATED_TODO)
+    })
+  })
+
   describe('getDocumentFromState', () => {
     it('should return null when the store is empty', () => {
       const spy = jest.spyOn(global.console, 'warn').mockReturnValue(jest.fn())
@@ -231,6 +312,30 @@ describe('Store', () => {
             getDocumentFromState(store.getState(), 'io.cozy.files', 'abc')
           ).toEqual({ _id: 'abc', _type: 'io.cozy.files', name: 'abc.png' })
         })
+      })
+
+      it('should not update queries when the documents have not changed', async () => {
+        const TODO_WITH_REV = { ...TODO_1, meta: { rev: 1 } }
+
+        await store.dispatch(
+          receiveQueryResult('allTodos', {
+            data: TODO_WITH_REV,
+            meta: { count: 1 },
+            skip: 0
+          })
+        )
+        const queryBefore = getQueryFromStore(store, 'allTodos')
+
+        await store.dispatch(
+          receiveQueryResult('allTodos', {
+            data: TODO_WITH_REV,
+            meta: { count: 1 },
+            skip: 0
+          })
+        )
+        const queryAfter = getQueryFromStore(store, 'allTodos')
+
+        expect(queryBefore).toEqual(queryAfter)
       })
     })
   })
