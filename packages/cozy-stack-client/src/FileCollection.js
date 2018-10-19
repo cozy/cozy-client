@@ -1,4 +1,5 @@
 import mime from 'mime-types'
+import has from 'lodash/has'
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 import { uri, slugify, forceFileDownload } from './utils'
 import * as querystring from './querystring'
@@ -86,7 +87,7 @@ export default class FileCollection extends DocumentCollection {
     return {
       data: resp.data.map(f => normalizeFile(f)),
       included: resp.included ? resp.included.map(f => normalizeFile(f)) : [],
-      next: resp.meta.count > skip + resp.data.rows,
+      next: has(resp, 'links.next'),
       meta: resp.meta,
       skip
     }
