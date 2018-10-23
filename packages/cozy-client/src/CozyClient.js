@@ -9,14 +9,12 @@
 import { REGISTRATION_ABORT } from './const'
 
 import StackLink from './StackLink'
-import {
-  create as createAssociation,
-  responseToRelationship
-} from './associations'
+import { create as createAssociation } from './associations'
 import { dehydrate } from './helpers'
 import { QueryDefinition, Mutations } from './queries/dsl'
 import CozyStackClient, { OAuthClient } from 'cozy-stack-client'
 import { authenticateWithCordova } from './authentication/mobile'
+import optimizeQueries from './queries/optimize'
 import {
   default as reducer,
   createStore,
@@ -33,21 +31,9 @@ import Schema from './Schema'
 import { chain } from './CozyLink'
 import ObservableQuery from './ObservableQuery'
 import mapValues from 'lodash/mapValues'
-import flatMap from 'lodash/flatMap'
-import pickBy from 'lodash/pickBy'
 import fromPairs from 'lodash/fromPairs'
-
-const allValues = async x => {
-  const res = {}
-  await Promise.all(
-    Object.entries(x).map(([k, prom]) =>
-      prom.then(value => {
-        res[k] = value
-      })
-    )
-  )
-  return res
-}
+import groupBy from 'lodash/groupBy'
+import flatten from 'lodash/flatten'
 
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
 
@@ -311,56 +297,44 @@ export default class CozyClient {
     if (!definition.includes) {
       return mainResponse
     }
-    return this.fetchIncludes(
+    const withIncluded = await this.fetchRelationships(
       mainResponse,
-      this.getIncludesAssociations(definition)
+      this.getIncludesRelationships(definition)
     )
+    return withIncluded
   }
 
-  async fetchIncludes(response, associations) {
+  async fetchRelationships(response, associations) {
     const isSingleDoc = !Array.isArray(response.data)
     if (!isSingleDoc && response.data.length === 0) {
       return response
     }
     const originalData = isSingleDoc ? [response.data] : response.data
 
-    const responses = await Promise.all(
-      originalData.map(doc => this.fetchDocumentAssociations(doc, associations))
-    )
-    const data = responses.map(r => r.data)
-    const included = flatMap(responses, resp => resp.included)
-    return {
-      ...response,
-      data: isSingleDoc ? data[0] : data,
-      included
-    }
-  }
-
-  async fetchDocumentAssociations(document, associations) {
-    const definitions = pickBy(
-      mapValues(associations, assoc =>
-        this.queryDocumentAssociation(document, assoc)
+    const queries = flatten(
+      originalData.map(doc =>
+        Object.values(
+          mapValues(associations, assoc =>
+            this.queryDocumentAssociation(doc, assoc)
+          )
+        )
       )
     )
 
-    const requests = mapValues(
-      definitions,
-      definitionOrData =>
-        definitionOrData instanceof QueryDefinition
-          ? this.chain.request(definitionOrData)
-          : Promise.resolve({ data: definitionOrData })
+    const { documents = [], definitions = [] } = groupBy(
+      queries,
+      d => (d instanceof QueryDefinition ? 'definitions' : 'documents')
     )
-    const responses = await allValues(requests)
-    const relationships = mapValues(responses, responseToRelationship)
-    const included = flatMap(Object.values(responses), r => [
-      ...(r.included || r.data || [])
-    ])
 
+    const optimizedQueries = optimizeQueries(definitions)
+    const responses = await Promise.all(
+      optimizedQueries.map(req => this.chain.request(req))
+    )
+    const included = flatten(responses.map(r => r.included || r.data)).concat(
+      documents
+    )
     return {
-      data: {
-        ...document,
-        relationships
-      },
+      ...response,
       included
     }
   }
@@ -387,7 +361,7 @@ export default class CozyClient {
     return type.query(document, this, schemaAssociation)
   }
 
-  getIncludesAssociations(queryDefinition) {
+  getIncludesRelationships(queryDefinition) {
     const { includes, doctype } = queryDefinition
     if (!includes) return {}
     return fromPairs(
