@@ -55,7 +55,11 @@ const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
  * @module CozyClient
  */
 export default class CozyClient {
-  // `link` exist for retrocompatibility
+  /**
+   * @param  {Link}    options.link   - Backward compatibility
+   * @param  {[Link]}    options.links  - List of links
+   * @param  {Object}    options.schema - Schema description for each doctypes
+   */
   constructor({ link, links, schema = {}, ...options }) {
     if (link) {
       console.warn('`link` is deprecated, use `links`')
