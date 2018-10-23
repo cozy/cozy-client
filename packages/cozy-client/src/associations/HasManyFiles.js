@@ -1,5 +1,5 @@
 import HasMany from './HasMany'
-import { QueryDefinition, Mutations } from '../dsl'
+import { QueryDefinition, Mutations } from '../queries/dsl'
 
 export default class HasManyFiles extends HasMany {
   fetchMore() {

@@ -2,7 +2,7 @@ import { SCHEMA, TODO_1, TODO_2, TODO_3 } from './__tests__/fixtures'
 
 import CozyClient from './CozyClient'
 import CozyLink from './CozyLink'
-import { Mutations, QueryDefinition } from './dsl'
+import { Mutations, QueryDefinition } from './queries/dsl'
 import {
   initQuery,
   receiveQueryResult,

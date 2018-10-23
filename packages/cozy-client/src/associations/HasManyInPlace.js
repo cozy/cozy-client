@@ -1,5 +1,5 @@
 import Association from './Association'
-import Query from '../dsl'
+import Query from '../queries/dsl'
 /**
  * Related documents are stored directly under the attribute with
  * only the ids.

@@ -7,7 +7,11 @@ export { default as withMutation } from './withMutation'
 export { default as withMutations } from './withMutations'
 export { default as Query } from './Query'
 export { default as compose } from 'lodash/flow'
-export { QueryDefinition, MutationTypes, getDoctypeFromOperation } from './dsl'
+export {
+  QueryDefinition,
+  MutationTypes,
+  getDoctypeFromOperation
+} from './queries/dsl'
 export { queryConnect, withClient } from './hoc'
 export {
   Association,

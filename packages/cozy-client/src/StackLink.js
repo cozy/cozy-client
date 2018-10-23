@@ -1,4 +1,4 @@
-import { MutationTypes } from './dsl'
+import { MutationTypes } from './queries/dsl'
 import CozyLink from './CozyLink'
 
 export default class StackLink extends CozyLink {

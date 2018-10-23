@@ -14,7 +14,7 @@ import {
   responseToRelationship
 } from './associations'
 import { dehydrate } from './helpers'
-import { QueryDefinition, Mutations } from './dsl'
+import { QueryDefinition, Mutations } from './queries/dsl'
 import CozyStackClient, { OAuthClient } from 'cozy-stack-client'
 import { authenticateWithCordova } from './authentication/mobile'
 import {
