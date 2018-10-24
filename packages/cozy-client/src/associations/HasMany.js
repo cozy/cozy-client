@@ -65,10 +65,30 @@ export default class HasMany extends Association {
   }
 
   exists(document) {
+    return this.existsById(document._id)
+  }
+
+  existsById(id) {
     return (
-      this.getRelationship().data.find(({ _id }) => document._id === _id) !==
-      undefined
+      this.getRelationship().data.find(({ _id }) => id === _id) !== undefined
     )
+  }
+
+  addById(id) {
+    if (!this.existsById(id)) {
+      this.target.relationships[this.name].data.push({
+        _type: this.doctype,
+        _id: id
+      })
+    }
+  }
+
+  removeById(id) {
+    if (this.existsById(id)) {
+      this.target.relationships[this.name].data = this.target.relationships[
+        this.name
+      ].data.filter(({ _id }) => id !== _id)
+    }
   }
 
   getRelationship() {

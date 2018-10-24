@@ -20,3 +20,4 @@ export {
   HasManyInPlace
 } from './associations'
 export { dehydrate } from './helpers'
+export { getQueryFromState } from './store'

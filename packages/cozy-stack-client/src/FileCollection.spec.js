@@ -204,6 +204,28 @@ describe('FileCollection', () => {
       collection.findReferencedBy(doc)
       expect(spy).toMatchSnapshot()
     })
+
+    it('should detect a next page', async () => {
+      spy.mockReturnValue({
+        data: [],
+        links: {
+          next: 'http://example.com/next'
+        },
+        meta: {}
+      })
+      const result = await collection.findReferencedBy(doc)
+      expect(result.next).toBe(true)
+    })
+
+    it('should detect the abscence of a next page', async () => {
+      spy.mockReturnValue({
+        data: [],
+        links: {},
+        meta: {}
+      })
+      const result = await collection.findReferencedBy(doc)
+      expect(result.next).toBe(false)
+    })
   })
 
   describe('updateFileMetadata', () => {
