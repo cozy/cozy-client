@@ -411,6 +411,11 @@ export default class CozyClient {
     )
   }
 
+  /**
+   * Creates (locally) a new document for the given doctype.
+   * This document is hydrated : its relationships are there
+   * and working.
+   */
   makeNewDocument(doctype) {
     const obj = {
       _type: doctype
@@ -418,6 +423,9 @@ export default class CozyClient {
     return this.hydrateDocument(obj)
   }
 
+  /**
+   * Creates an association that is linked to the store.
+   */
   getAssociation(document, associationName) {
     return createAssociation(
       document,
@@ -426,6 +434,14 @@ export default class CozyClient {
     )
   }
 
+  /**
+   * Returns the accessors that are given to the relationships for them
+   * to deal with the stores.
+   *
+   * Relationships need to have access to the store to ping it when
+   * a modification (addById/removeById etc...) has been done. This wakes
+   * the store up, which in turn will update the <Query>s and re-render the data.
+   */
   getRelationshipStoreAccessors() {
     if (!this.storeAccesors) {
       this.storeAccessors = {
