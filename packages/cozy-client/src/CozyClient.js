@@ -14,7 +14,7 @@ import { dehydrate } from './helpers'
 import { QueryDefinition, Mutations } from './queries/dsl'
 import CozyStackClient, { OAuthClient } from 'cozy-stack-client'
 import { authenticateWithCordova } from './authentication/mobile'
-import optimizeQueries from './queries/optimize'
+import optimizeQueryDefinitions from './queries/optimize'
 import {
   default as reducer,
   createStore,
@@ -305,31 +305,31 @@ export default class CozyClient {
     return withIncluded
   }
 
-  async fetchRelationships(response, associations) {
+  async fetchRelationships(response, schemaRelsByName) {
     const isSingleDoc = !Array.isArray(response.data)
     if (!isSingleDoc && response.data.length === 0) {
       return response
     }
-    const originalData = isSingleDoc ? [response.data] : response.data
+    const responseDocs = isSingleDoc ? [response.data] : response.data
 
-    const queries = flatten(
-      originalData.map(doc =>
-        Object.values(
-          mapValues(associations, assoc =>
-            this.queryDocumentAssociation(doc, assoc)
-          )
-        )
+    const schemaRels = Object.values(schemaRelsByName)
+    const definitionOrDocuments = flatten(
+      responseDocs.map(doc =>
+        this.prepareQueryDefsFromRelationships(doc, schemaRels)
       )
     )
 
+    // Relationships can yield documents, ready for use, or definitions needing
+    // to be executed
     const { documents = [], definitions = [] } = groupBy(
-      queries,
+      definitionOrDocuments,
       d => (d instanceof QueryDefinition ? 'definitions' : 'documents')
     )
 
-    const optimizedQueries = optimizeQueries(definitions)
+    // Definitions can be in several cases optimized/regrouped
+    const optimizedDefinitions = optimizeQueryDefinitions(definitions)
     const responses = await Promise.all(
-      optimizedQueries.map(req => this.chain.request(req))
+      optimizedDefinitions.map(req => this.chain.request(req))
     )
     const uniqueDocuments = uniqBy(documents, '_id')
     const included = flatten(responses.map(r => r.included || r.data))
@@ -358,9 +358,11 @@ export default class CozyClient {
     return this.chain.request(definition)
   }
 
-  queryDocumentAssociation(document, schemaAssociation) {
-    const { type } = schemaAssociation
-    return type.query(document, this, schemaAssociation)
+  prepareQueryDefsFromRelationships(document, schemaRels) {
+    return schemaRels.map(assoc => {
+      const { type } = assoc
+      return type.query(document, this, assoc)
+    })
   }
 
   getIncludesRelationships(queryDefinition) {
