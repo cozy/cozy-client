@@ -1,7 +1,7 @@
 import HasMany from './HasMany'
 
 describe('HasMany', () => {
-  let original, hydrated
+  let original, hydrated, originalWithNorelation, hydratedWithNoRelation
   beforeEach(() => {
     original = {
       _type: 'io.cozy.todos',
@@ -16,6 +16,11 @@ describe('HasMany', () => {
       }
     }
 
+    originalWithNorelation = {
+      _type: 'io.cozy.todos',
+      label: 'Get rich'
+    }
+
     const get = (doctype, id) => ({
       doctype,
       id
@@ -24,6 +29,13 @@ describe('HasMany', () => {
     hydrated = {
       ...original,
       tasks: new HasMany(original, 'tasks', 'io.cozy.tasks', { get })
+    }
+
+    hydratedWithNoRelation = {
+      ...originalWithNorelation,
+      tasks: new HasMany(originalWithNorelation, 'tasks', 'io.cozy.tasks', {
+        get
+      })
     }
   })
 
@@ -67,5 +79,12 @@ describe('HasMany', () => {
 
   it('checks existence from document', () => {
     expect(hydrated.tasks.exists({ _id: 2 })).toBe(true)
+  })
+
+  it('adds a relation even if the relationships doesnt exist yet', () => {
+    hydratedWithNoRelation.tasks.addById(1)
+    expect(
+      hydratedWithNoRelation.tasks.target.relationships['tasks'].data.length
+    ).toEqual(1)
   })
 })
