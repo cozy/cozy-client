@@ -421,9 +421,9 @@ export default class CozyClient {
     }
   }
 
-  hydrateRelationships(document, relationships) {
+  hydrateRelationships(document, schemaRelationships) {
     const methods = this.getRelationshipStoreAccessors()
-    return mapValues(relationships, (assoc, name) =>
+    return mapValues(schemaRelationships, (assoc, name) =>
       createAssociation(document, assoc, methods)
     )
   }

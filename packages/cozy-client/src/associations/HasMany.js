@@ -11,6 +11,11 @@ const empty = () => ({
  * Related documents are stored in the relationships attribute of the object,
  * following the JSON API spec.
  *
+ * Responsible for
+ *
+ * - creating relationship
+ * - adding / removing relationship
+ *
  * @example
  * ```
  * const schema = {
@@ -73,14 +78,26 @@ export default class HasMany extends Association {
       this.getRelationship().data.find(({ _id }) => id === _id) !== undefined
     )
   }
+  /**
+   * Add a referenced document by id. You need to call save()
+   * in order to synchronize your document with the store
+   *
+   * @todo We shouldn't create the array of relationship manually since
+   * it'll not be present in the store as well.
+   * We certainly should use something like `updateRelationship`
+   *
+   */
 
   addById(id) {
-    if (!this.existsById(id)) {
-      this.target.relationships[this.name].data.push({
-        _type: this.doctype,
-        _id: id
-      })
+    if (this.existsById(id)) return
+    if (!this.target.relationships) this.target.relationships = {}
+    if (!this.target.relationships[this.name]) {
+      this.target.relationships[this.name] = { data: [] }
     }
+    this.target.relationships[this.name].data.push({
+      _id: id,
+      _type: this.doctype
+    })
   }
 
   removeById(id) {
