@@ -11,7 +11,7 @@
     "url": "git+https://github.com/cozy/cozy-client.git"
   },
   "dependencies": {
-    "mime-types": "2.1.20"
+    "mime-types": "2.1.21"
   },
   "scripts": {
     "build": "../../bin/build",
