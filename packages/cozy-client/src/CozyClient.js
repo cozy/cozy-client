@@ -332,9 +332,9 @@ export default class CozyClient {
       optimizedQueries.map(req => this.chain.request(req))
     )
     const uniqueDocuments = uniqBy(documents, '_id')
-    const included = flatten(responses.map(r => r.included || r.data)).concat(
-      uniqueDocuments
-    ).filter(Boolean)
+    const included = flatten(responses.map(r => r.included || r.data))
+      .concat(uniqueDocuments)
+      .filter(Boolean)
     return {
       ...response,
       included

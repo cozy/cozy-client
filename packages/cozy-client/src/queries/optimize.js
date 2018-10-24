@@ -29,10 +29,10 @@ const optimizeDoctypeQueries = queries => {
 
 /**
  * Reduce the number of queries used to fetch documents.
- * 
+ *
  * - Deduplication of queries
  * - Groups id queries
- * 
+ *
  * @param  {[QueryDefinition]} queries - Queries to optimized
  * @return {[QueryDefinition]} Optimized queries
  */

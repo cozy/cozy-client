@@ -8,13 +8,13 @@ const storeDocument = (state, document) => {
   const type = document._type
   if (!type) {
     if (process.env.NODE_ENV !== 'production') {
-      console.warn("Document without _type", document)
+      console.warn('Document without _type', document)
     }
     throw new Error('Document without _type')
   }
   if (!document._id) {
     if (process.env.NODE_ENV !== 'production') {
-      console.warn("Document without _id", document)
+      console.warn('Document without _id', document)
     }
     throw new Error('Document without _id')
   }
