@@ -50,6 +50,10 @@ export class QueryDefinition {
     return new QueryDefinition({ ...this.toDefinition(), includes })
   }
 
+  limitBy(limit) {
+    return new QueryDefinition({ ...this.toDefinition(), limit })
+  }
+
   UNSAFE_noLimit() {
     return new QueryDefinition({ ...this.toDefinition(), limit: null })
   }
