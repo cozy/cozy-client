@@ -7,10 +7,16 @@ import isEqual from 'lodash/isEqual'
 const storeDocument = (state, document) => {
   const type = document._type
   if (!type) {
-    throw new Error('Document without _type', document)
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn("Document without _type", document)
+    }
+    throw new Error('Document without _type')
   }
   if (!document._id) {
-    throw new Error('Document without _id', document)
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn("Document without _id", document)
+    }
+    throw new Error('Document without _id')
   }
 
   const existingDoc = get(state, [type, document._id])
@@ -84,12 +90,12 @@ export const getDocumentFromSlice = (state = {}, doctype, id) => {
       'getDocumentFromSlice: Cannot retrieve document with undefined id'
     )
   }
-  if (!state[doctype]) {
+  if (!state[doctype] && process.env.NODE_ENV !== 'production') {
     console.warn(
       `getDocumentFromSlice: ${doctype} is absent from the store documents`
     )
     return null
-  } else if (!state[doctype][id]) {
+  } else if (!state[doctype][id] && process.env.NODE_ENV !== 'production') {
     console.warn(
       `getDocumentFromSlice: ${doctype}:${id} is absent from the store documents`
     )
