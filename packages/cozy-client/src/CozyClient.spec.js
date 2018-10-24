@@ -11,7 +11,7 @@ import {
   receiveMutationResult,
   receiveMutationError
 } from './store'
-import { HasManyFiles, Association } from './associations'
+import { HasManyFiles, Association, HasMany } from './associations'
 import mapValues from 'lodash/mapValues'
 
 const normalizeData = data =>
@@ -410,20 +410,7 @@ describe('CozyClient', () => {
   })
 
   describe('hydratation', () => {
-    it('should hydrate relationships into associations with helper methods in the context of a query', async () => {
-      client.store.getState = () => ({
-        cozy: {
-          queries: {
-            allTodos: {
-              data: [TODO_1._id],
-              fetchStatus: 'loaded',
-              definition: {
-                doctype: 'io.cozy.todos'
-              }
-            }
-          }
-        }
-      })
+    it('should hydrate relationships into associations with helper methods in the context of a query', () => {
       const doc = client
         .hydrateDocuments(
           'io.cozy.todos',
@@ -444,7 +431,7 @@ describe('CozyClient', () => {
         )
         .shift()
       expect(doc.attachments).toBeInstanceOf(HasManyFiles)
-      await doc.attachments.fetchMore()
+      expect(doc.authors).toBeInstanceOf(HasMany)
     })
 
     it('makes new documents', () => {
