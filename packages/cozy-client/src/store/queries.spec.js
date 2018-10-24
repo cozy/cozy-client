@@ -1,5 +1,5 @@
 import queries, { initQuery, receiveQueryResult } from './queries'
-import { QueryDefinition as Q } from '../dsl'
+import { QueryDefinition as Q } from '../queries/dsl'
 import { TODO_1, TODO_2 } from '../__tests__/fixtures'
 
 describe('queries reducer', () => {

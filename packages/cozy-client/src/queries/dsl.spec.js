@@ -1,4 +1,4 @@
-import { QueryDefinition as Q } from './dsl'
+import { QueryDefinition as Q } from '../queries/dsl'
 
 describe('QueryDefinition', () => {
   it('should build query defs', () => {

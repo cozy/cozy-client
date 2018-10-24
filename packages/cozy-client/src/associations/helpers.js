@@ -1,5 +1,4 @@
 import pick from 'lodash/pick'
-import pickBy from 'lodash/pickBy'
 import Association from './Association'
 import HasOneInPlace from './HasOneInPlace'
 import HasMany from './HasMany'
@@ -7,17 +6,6 @@ import HasManyInPlace from './HasManyInPlace'
 import HasManyFiles from './HasManyFiles'
 
 export const pickTypeAndId = x => pick(x, '_type', '_id')
-const applyHelper = (fn, objOrArr) =>
-  Array.isArray(objOrArr) ? objOrArr.map(fn) : fn(objOrArr)
-
-export const responseToRelationship = response =>
-  pickBy({
-    data: applyHelper(pickTypeAndId, response.data),
-    meta: response.meta,
-    next: response.next,
-    skip: response.skip
-  })
-
 const aliases = {
   'io.cozy.files:has-many': HasManyFiles,
   'has-many': HasMany,

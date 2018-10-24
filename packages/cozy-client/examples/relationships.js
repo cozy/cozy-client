@@ -1,18 +1,32 @@
 const minimist = require('minimist')
-const { QueryDefinition, default: CozyClient } = require('../dist')
+const {
+  QueryDefinition,
+  HasManyInPlace,
+  default: CozyClient
+} = require('../dist')
 
-const batchGetQuery = (client, assoc) => doc => {
-  if (!doc[assoc.name]) {
-    return null
+class HasManyBills extends HasManyInPlace {
+  get data() {
+    return this.raw
+      ? this.raw.map(doctypeId => {
+          const [doctype, id] = doctypeId.split(':')
+          return this.get(doctype, id)
+        })
+      : []
   }
-  const included = doc[assoc.name]
-  const ids = included.indexOf(':')
-    ? included.map(x => x.split(':')[1])
-    : included
 
-  return new QueryDefinition({ doctype: assoc.doctype, ids })
+  static query(doc, client, assoc) {
+    if (!doc[assoc.name]) {
+      return null
+    }
+    const included = doc[assoc.name]
+    const ids = included.indexOf(':')
+      ? included.map(x => x.split(':')[1])
+      : included
+
+    return new QueryDefinition({ doctype: assoc.doctype, ids })
+  }
 }
-
 const TRANSACTION_DOCTYPE = 'io.cozy.bank.operations'
 const BILLS_DOCTYPE = 'io.cozy.bills'
 
@@ -22,9 +36,8 @@ const schema = {
     attributes: {},
     relationships: {
       bills: {
-        type: 'has-many',
-        doctype: BILLS_DOCTYPE,
-        query: batchGetQuery
+        type: HasManyBills,
+        doctype: BILLS_DOCTYPE
       }
     }
   }
@@ -44,7 +57,7 @@ const main = async _args => {
   const client = new CozyClient({ uri, token, schema })
   const query = new QueryDefinition({
     doctype: 'io.cozy.bank.operations',
-    limit: 1,
+    limit: 500,
     selector: {
       bills: {
         $exists: true
@@ -55,13 +68,18 @@ const main = async _args => {
     query.selector = args.selector ? JSON.parse(args.selector) : null
   }
   const resp = await client.query(query)
-  const transactions = client.hydrateDocuments(TRANSACTION_DOCTYPE, resp.data)
+  const transactions = client
+    .hydrateDocuments(TRANSACTION_DOCTYPE, resp.data)
+    .filter(tr => tr.bills && tr.bills.data.length > 0)
   transactions.forEach(transaction => {
     const bill = transaction.bills.data[0]
+    if (!bill) {
+      return
+    }
     console.log(
       `${transaction.label} ${new Date(transaction.date).toLocaleDateString(
         'en-GB'
-      )} -> ${bill.filename}`
+      )} -> ${bill.filename || bill.invoice}`
     )
   })
 }

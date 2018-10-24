@@ -1,5 +1,5 @@
 import Association from './Association'
-import { QueryDefinition } from '../dsl'
+import { QueryDefinition } from '../queries/dsl'
 
 const empty = () => ({
   data: [],

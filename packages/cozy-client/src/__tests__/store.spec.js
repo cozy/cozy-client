@@ -10,7 +10,7 @@ import reducer, {
   receiveMutationResult,
   StoreProxy
 } from '../store'
-import { QueryDefinition as Q } from '../dsl'
+import { QueryDefinition as Q } from '../queries/dsl'
 import { TODO_1, TODO_2, TODO_3, TODO_4 } from './fixtures'
 
 describe('Store', () => {
