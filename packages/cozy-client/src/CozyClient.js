@@ -34,6 +34,7 @@ import mapValues from 'lodash/mapValues'
 import fromPairs from 'lodash/fromPairs'
 import groupBy from 'lodash/groupBy'
 import flatten from 'lodash/flatten'
+import uniqBy from 'lodash/uniqBy'
 
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
 
@@ -330,9 +331,10 @@ export default class CozyClient {
     const responses = await Promise.all(
       optimizedQueries.map(req => this.chain.request(req))
     )
+    const uniqueDocuments = uniqBy(documents, '_id')
     const included = flatten(responses.map(r => r.included || r.data)).concat(
-      documents
-    )
+      uniqueDocuments
+    ).filter(Boolean)
     return {
       ...response,
       included
