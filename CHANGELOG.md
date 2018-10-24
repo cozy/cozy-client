@@ -3,7 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="3.2.0"></a>
+       <a name="3.3.0"></a>
+# [3.3.0](https://github.com/cozy/cozy-client/compare/v3.2.0...v3.3.0) (2018-10-24)
+
+
+### Bug Fixes
+
+* Example used old relationship schema ([246849b](https://github.com/cozy/cozy-client/commit/246849b))
+
+
+### Features
+
+* Deduplicate documents ([84e7cf0](https://github.com/cozy/cozy-client/commit/84e7cf0))
+* Do not show warnings in production ([b144534](https://github.com/cozy/cozy-client/commit/b144534))
+* Optimize id queries ([a9fa010](https://github.com/cozy/cozy-client/commit/a9fa010))
+
+
+
+
+       <a name="3.2.0"></a>
 # [3.2.0](https://github.com/cozy/cozy-client/compare/v3.1.1...v3.2.0) (2018-10-24)
 
 
@@ -14,7 +32,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-      <a name="3.1.1"></a>
+     <a name="3.1.1"></a>
 ## [3.1.1](https://github.com/cozy/cozy-client/compare/v3.1.0...v3.1.1) (2018-10-23)
 
 
@@ -25,7 +43,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-   <a name="3.1.0"></a>
+  <a name="3.1.0"></a>
 # [3.1.0](https://github.com/cozy/cozy-client/compare/v3.0.6...v3.1.0) (2018-10-23)
 
 
@@ -36,7 +54,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
- <a name="3.0.6"></a>
+<a name="3.0.6"></a>
 ## [3.0.6](https://github.com/cozy/cozy-client/compare/v3.0.5...v3.0.6) (2018-10-16)
 
 
