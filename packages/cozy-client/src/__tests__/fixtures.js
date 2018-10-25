@@ -65,6 +65,10 @@ export const SCHEMA = {
       attachments: {
         type: 'has-many',
         doctype: 'io.cozy.files'
+      },
+      authors: {
+        type: 'has-many',
+        doctype: 'io.cozy.persons'
       }
     }
   }
