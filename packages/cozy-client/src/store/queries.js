@@ -5,7 +5,7 @@ import intersection from 'lodash/intersection'
 
 import { getDocumentFromSlice } from './documents'
 import { isReceivingMutationResult } from './mutations'
-import { selectorFilter } from './mango'
+import sift from 'sift'
 import get from 'lodash/get'
 const INIT_QUERY = 'INIT_QUERY'
 const RECEIVE_QUERY_RESULT = 'RECEIVE_QUERY_RESULT'
@@ -85,7 +85,7 @@ const query = (state = queryInitialState, action) => {
 const getQueryDocumentsChecker = query => {
   const qdoctype = query.definition.doctype
   const selectorFilterFn = query.definition.selector
-    ? selectorFilter(query.definition.selector)
+    ? sift(query.definition.selector)
     : null
   return datum => {
     const ddoctype = datum._type
