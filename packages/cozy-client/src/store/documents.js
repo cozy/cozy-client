@@ -90,15 +90,19 @@ export const getDocumentFromSlice = (state = {}, doctype, id) => {
       'getDocumentFromSlice: Cannot retrieve document with undefined id'
     )
   }
-  if (!state[doctype] && process.env.NODE_ENV !== 'production') {
-    console.warn(
-      `getDocumentFromSlice: ${doctype} is absent from the store documents`
-    )
+  if (!state[doctype]) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn(
+        `getDocumentFromSlice: ${doctype} is absent from the store documents`
+      )
+    }
     return null
-  } else if (!state[doctype][id] && process.env.NODE_ENV !== 'production') {
-    console.warn(
-      `getDocumentFromSlice: ${doctype}:${id} is absent from the store documents`
-    )
+  } else if (!state[doctype][id]) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn(
+        `getDocumentFromSlice: ${doctype}:${id} is absent from the store documents`
+      )
+    }
     return null
   }
   return state[doctype][id]
