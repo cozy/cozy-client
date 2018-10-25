@@ -318,7 +318,7 @@ export default class CozyClient {
       responseDocs.map(doc =>
         this.prepareQueryDefsFromRelationships(doc, schemaRels)
       )
-    )
+    ).filter(Boolean)
 
     // Relationships can yield documents, ready for use, or definitions needing
     // to be executed
@@ -333,9 +333,9 @@ export default class CozyClient {
       optimizedDefinitions.map(req => this.chain.request(req))
     )
     const uniqueDocuments = uniqBy(documents, '_id')
-    const included = flatten(responses.map(r => r.included || r.data))
-      .concat(uniqueDocuments)
-      .filter(Boolean)
+    const included = flatten(responses.map(r => r.included || r.data)).concat(
+      uniqueDocuments
+    )
     return {
       ...response,
       included
