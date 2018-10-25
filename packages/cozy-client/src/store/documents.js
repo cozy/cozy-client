@@ -1,40 +1,14 @@
 import { isReceivingData } from './queries'
 import { isReceivingMutationResult } from './mutations'
 import keyBy from 'lodash/keyBy'
-import get from 'lodash/get'
 import isEqual from 'lodash/isEqual'
+import mapValues from 'lodash/mapValues'
+import groupBy from 'lodash/groupBy'
 
-const storeDocument = (state, document) => {
-  const type = document._type
-  if (!type) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.warn('Document without _type', document)
-    }
-    throw new Error('Document without _type')
-  }
-  if (!document._id) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.warn('Document without _id', document)
-    }
-    throw new Error('Document without _id')
-  }
-
-  const existingDoc = get(state, [type, document._id])
-
-  if (isEqual(existingDoc, document)) {
-    return state
-  } else {
-    return {
-      ...state,
-      [type]: {
-        ...state[type],
-        [document._id]: {
-          ...existingDoc,
-          ...document
-        }
-      }
-    }
-  }
+const hasChanged = state => doc => {
+  const type = doc._type
+  const existingDoc = state[type] && state[type][doc._id]
+  return !existingDoc || !isEqual(doc, existingDoc)
 }
 
 const properId = doc => {
@@ -44,36 +18,48 @@ const properId = doc => {
   return doc.id || doc._id
 }
 
-// reducer
+const byDoctype = x => x._type
+
+const batchInsertDocuments = (state, docsByDoctypeById) => {
+  const update = mapValues(docsByDoctypeById, (docsById, doctype) => {
+    return state[doctype]
+      ? {
+          ...state[doctype],
+          ...docsById
+        }
+      : docsById
+  })
+  return {
+    ...state,
+    ...update
+  }
+}
+
 const documents = (state = {}, action) => {
   if (!isReceivingData(action) && !isReceivingMutationResult(action)) {
     return state
   }
 
   const { data, included } = action.response
-  if (!data || (Array.isArray(data) && data.length === 0)) return state
-
-  const updatedStateWithIncluded = included
-    ? included.reduce(storeDocument, state)
-    : state
-
-  if (!Array.isArray(data)) {
-    return storeDocument(updatedStateWithIncluded, data)
+  if (!data || (Array.isArray(data) && data.length === 0)) {
+    return state
   }
 
-  const doctype = data[0]._type
+  const docs = Array.isArray(data) ? data : [data]
 
-  if (!doctype) {
-    throw new Error('Document without _type', data[0])
+  const docsWithIncluded = included ? docs.concat(included) : docs
+  const docsWithChanges = docsWithIncluded.filter(hasChanged(state))
+
+  if (docsWithChanges.length === 0) {
+    return state
   }
 
-  return {
-    ...updatedStateWithIncluded,
-    [doctype]: {
-      ...updatedStateWithIncluded[doctype],
-      ...keyBy(data, properId)
-    }
-  }
+  const docsByDoctype = groupBy(docsWithChanges, byDoctype)
+  const docsByDoctypeById = mapValues(docsByDoctype, docs =>
+    keyBy(docs, properId)
+  )
+
+  return batchInsertDocuments(state, docsByDoctypeById)
 }
 
 export default documents
