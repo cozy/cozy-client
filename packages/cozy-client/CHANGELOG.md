@@ -3,7 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="3.3.2"></a>
+       <a name="3.4.0"></a>
+# [3.4.0](https://github.com/cozy/cozy-client/compare/v3.3.2...v3.4.0) (2018-10-26)
+
+
+### Bug Fixes
+
+* Do not throw if the document is not available ([6f5e692](https://github.com/cozy/cozy-client/commit/6f5e692))
+
+
+### Features
+
+* Filter early ([6b7b713](https://github.com/cozy/cozy-client/commit/6b7b713))
+* Reduce the number of allocation ([366ccbb](https://github.com/cozy/cozy-client/commit/366ccbb))
+* Side effects free in package.json ([d558c69](https://github.com/cozy/cozy-client/commit/d558c69))
+
+
+
+
+       <a name="3.3.2"></a>
 ## [3.3.2](https://github.com/cozy/cozy-client/compare/v3.3.1...v3.3.2) (2018-10-26)
 
 
@@ -14,7 +32,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-      <a name="3.3.1"></a>
+     <a name="3.3.1"></a>
 ## [3.3.1](https://github.com/cozy/cozy-client/compare/v3.3.0...v3.3.1) (2018-10-25)
 
 
@@ -22,7 +40,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package cozy-client
 
-   <a name="3.3.0"></a>
+  <a name="3.3.0"></a>
 # [3.3.0](https://github.com/cozy/cozy-client/compare/v3.2.0...v3.3.0) (2018-10-24)
 
 
@@ -40,7 +58,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
- <a name="3.2.0"></a>
+<a name="3.2.0"></a>
 # [3.2.0](https://github.com/cozy/cozy-client/compare/v3.1.1...v3.2.0) (2018-10-24)
 
 
