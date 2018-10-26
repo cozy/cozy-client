@@ -332,7 +332,7 @@ export default class CozyClient {
     const responses = await Promise.all(
       optimizedDefinitions.map(req => this.chain.request(req))
     )
-    const uniqueDocuments = uniqBy(documents, '_id')
+    const uniqueDocuments = uniqBy(flatten(documents), '_id')
     const included = flatten(responses.map(r => r.included || r.data)).concat(
       uniqueDocuments
     )
