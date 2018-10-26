@@ -20,6 +20,12 @@ const properId = doc => {
 
 const byDoctype = x => x._type
 
+/**
+ * Inserts the documents into a document store
+ *
+ * @param  {Object} state - (documents keyed by id) keyed by doctype
+ * @param  {Object} docsByDoctypeById - (documents keyed by id) keyed by doctype
+ */
 const batchInsertDocuments = (state, docsByDoctypeById) => {
   const update = mapValues(docsByDoctypeById, (docsById, doctype) => {
     return state[doctype]
