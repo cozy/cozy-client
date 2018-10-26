@@ -1,6 +1,6 @@
 import queries, { initQuery, receiveQueryResult } from './queries'
 import { QueryDefinition as Q } from '../queries/dsl'
-import { TODO_1, TODO_2 } from '../__tests__/fixtures'
+import { TODO_1, TODO_2, TODO_3 } from '../__tests__/fixtures'
 
 describe('queries reducer', () => {
   let state
@@ -59,6 +59,32 @@ describe('queries reducer', () => {
       applyAction(
         receiveQueryResult('a', {
           data: [TODO_1, TODO_2]
+        })
+      )
+      expect(state).toMatchSnapshot()
+    })
+
+    it('should update correctly a query with a selector', () => {
+      const query = new Q({
+        doctype: 'io.cozy.todos'
+      })
+      applyAction(initQuery('b', query.where({ done: true })))
+      applyAction(
+        receiveQueryResult('a', {
+          data: [TODO_3]
+        })
+      )
+      expect(state).toMatchSnapshot()
+    })
+
+    it('should not update a query not concerned even with a selector', () => {
+      const query = new Q({
+        doctype: 'io.cozy.todos'
+      })
+      applyAction(initQuery('b', query.where({ done: false })))
+      applyAction(
+        receiveQueryResult('a', {
+          data: [TODO_3]
         })
       )
       expect(state).toMatchSnapshot()
