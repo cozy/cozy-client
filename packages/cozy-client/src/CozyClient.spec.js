@@ -342,7 +342,35 @@ describe('CozyClient', () => {
 
       expect(requestHandler).toHaveBeenCalledTimes(4)
       expect(resp).toEqual({
-        data: [TODO_1, TODO_2, TODO_3],
+        data: [
+          {
+            ...TODO_1,
+            relationships: {
+              attachments: {
+                data: [
+                  { _id: 'abc', _type: 'io.cozy.files' },
+                  { _id: 'def', _type: 'io.cozy.files' }
+                ]
+              }
+            }
+          },
+          {
+            ...TODO_2,
+            relationships: {
+              attachments: {
+                data: []
+              }
+            }
+          },
+          {
+            ...TODO_3,
+            relationships: {
+              attachments: {
+                data: []
+              }
+            }
+          }
+        ],
         included: [
           { _id: 'abc', _type: 'io.cozy.files', name: 'abc.png' },
           { _id: 'def', _type: 'io.cozy.files', name: 'def.png' }
