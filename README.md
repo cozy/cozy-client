@@ -6,6 +6,7 @@ A simple and declarative way of managing [cozy-stack](https://github.com/cozy/co
 
 - [User guide](docs/guide.md)
 - [API docs](docs/api.md)
+- [How tos](docs/how-tos.md) and [How to folder](docs/how-to)
 
 
 
