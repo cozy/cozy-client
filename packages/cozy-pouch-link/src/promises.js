@@ -7,7 +7,7 @@
  * continue.
  *
  */
-const setIntervalPromise = (fn, delay) => {
+const setIntervalPromise = (fn, delay, roundCallback) => {
   let timeout, canceled
 
   const round = async () => {
@@ -15,6 +15,7 @@ const setIntervalPromise = (fn, delay) => {
     if (!canceled) {
       timeout = setTimeout(round, delay)
     }
+    roundCallback && roundCallback()
   }
 
   round()
