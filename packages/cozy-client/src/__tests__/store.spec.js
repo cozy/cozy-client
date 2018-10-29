@@ -190,12 +190,17 @@ describe('Store', () => {
     })
 
     describe('when query results are received', () => {
+      const INIT_DATE = 1000
+      const FETCH_DATE = 2000
+
       beforeEach(async () => {
+        jest.spyOn(Date, 'now').mockReturnValue(INIT_DATE)
         await store.dispatch(
           initQuery('allTodos', {
             doctype: 'io.cozy.todos'
           })
         )
+        jest.spyOn(Date, 'now').mockReturnValue(FETCH_DATE)
         await store.dispatch(
           receiveQueryResult('allTodos', {
             data: [TODO_1, TODO_2],
@@ -204,6 +209,10 @@ describe('Store', () => {
             next: true
           })
         )
+      })
+
+      afterEach(() => {
+        Date.now.mockRestore()
       })
 
       it('should have a `loaded` status', () => {
