@@ -119,6 +119,10 @@ export default class PouchLink extends CozyLink {
     if (this.options.onSync) {
       this.options.onSync.call(this, normalizedData)
     }
+
+    if (process.env.NODE_ENV !== 'production') {
+      console.info('Pouch synced')
+    }
   }
 
   /**
@@ -179,16 +183,24 @@ export default class PouchLink extends CozyLink {
   }
 
   request(operation, result = null, forward = doNothing) {
+    const doctype = getDoctypeFromOperation(operation)
+
     if (!this.synced) {
-      console.info('Cozy Pouch is not synced.')
+      if (process.env.NODE_ENV !== 'production') {
+        console.info(
+          `Tried to access local ${doctype} but Cozy Pouch is not synced yet. Forwarding the operation to next link`
+        )
+      }
       return forward(operation)
     }
 
     // Forwards if doctype not supported
     if (!this.supportsOperation(operation)) {
-      console.info(
-        `The doctype '${getDoctypeFromOperation(operation)}' is not supported`
-      )
+      if (process.env.NODE_ENV !== 'production') {
+        console.info(
+          `The doctype '${doctype}' is not supported. Forwarding the operation to next link`
+        )
+      }
       return forward(operation)
     }
 
