@@ -11,7 +11,16 @@ const setIntervalPromise = (fn, delay) => {
   let timeout, canceled
 
   const round = async () => {
-    await fn()
+    const res = fn()
+
+    if (res && res.then) {
+      await res
+    } else {
+      throw new Error(
+        'The function passed to setIntervalPromise should return a thenable'
+      )
+    }
+
     if (!canceled) {
       timeout = setTimeout(round, delay)
     }
