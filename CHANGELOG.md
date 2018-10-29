@@ -3,7 +3,52 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-     <a name="3.5.1"></a>
+      <a name="3.6.0"></a>
+# [3.6.0](https://github.com/cozy/cozy-client/compare/v2.23.1...v3.6.0) (2018-10-29)
+
+
+### Bug Fixes
+
+* Avoid rerenders when no doc changed ([290770b](https://github.com/cozy/cozy-client/commit/290770b))
+* Deep compare documents updates ([7ae21c5](https://github.com/cozy/cozy-client/commit/7ae21c5))
+* Do not throw if the document is not available ([6f5e692](https://github.com/cozy/cozy-client/commit/6f5e692))
+* Documents can be arrays ([7f1d845](https://github.com/cozy/cozy-client/commit/7f1d845))
+* Example used old relationship schema ([246849b](https://github.com/cozy/cozy-client/commit/246849b))
+* Hydrating relation when querying even if empty ([7a92103](https://github.com/cozy/cozy-client/commit/7a92103))
+* Pass next documents to query reducer ([6af8518](https://github.com/cozy/cozy-client/commit/6af8518))
+* Revert alloc ([28c8e54](https://github.com/cozy/cozy-client/commit/28c8e54))
+* **deps:** update dependency mime-types to v2.1.20 ([5755856](https://github.com/cozy/cozy-client/commit/5755856))
+* **ReferencedFiles:** Properly detect next pages ([c3a27bc](https://github.com/cozy/cozy-client/commit/c3a27bc))
+* Link was broken ([7c673d0](https://github.com/cozy/cozy-client/commit/7c673d0))
+* Prevent state updates with identical doc ([8828f70](https://github.com/cozy/cozy-client/commit/8828f70))
+* Selector fields are not sorted first ([63e5163](https://github.com/cozy/cozy-client/commit/63e5163))
+* **deps:** pin dependencies to 4.17.10 ([3c3a83a](https://github.com/cozy/cozy-client/commit/3c3a83a))
+* **deps:** update dependency lodash to v4.17.11 ([54e3880](https://github.com/cozy/cozy-client/commit/54e3880))
+
+
+### Features
+
+* $ne operator support ([7389dac](https://github.com/cozy/cozy-client/commit/7389dac))
+* Add addById / removeById to HasMany ([1e107ef](https://github.com/cozy/cozy-client/commit/1e107ef))
+* Add Sift for mango selectors ([7206bd5](https://github.com/cozy/cozy-client/commit/7206bd5))
+* Deduplicate documents ([84e7cf0](https://github.com/cozy/cozy-client/commit/84e7cf0))
+* Do not show warnings in production ([b144534](https://github.com/cozy/cozy-client/commit/b144534))
+* Export getQueryFromState ([ffc75ef](https://github.com/cozy/cozy-client/commit/ffc75ef))
+* Filter early ([6b7b713](https://github.com/cozy/cozy-client/commit/6b7b713))
+* Optimize id queries ([a9fa010](https://github.com/cozy/cozy-client/commit/a9fa010))
+* Reduce the number of allocation ([366ccbb](https://github.com/cozy/cozy-client/commit/366ccbb))
+* Respect sort order ([a2ca980](https://github.com/cozy/cozy-client/commit/a2ca980))
+* Side effects free in package.json ([d558c69](https://github.com/cozy/cozy-client/commit/d558c69))
+
+
+### BREAKING CHANGES
+
+* Sorting order of previous queries might change
+
+
+
+
+      <a name="3.5.1"></a>
 ## [3.5.1](https://github.com/cozy/cozy-client/compare/v3.5.0...v3.5.1) (2018-10-26)
 
 
@@ -11,7 +56,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package undefined
 
-     <a name="3.5.0"></a>
+   <a name="3.5.0"></a>
 # [3.5.0](https://github.com/cozy/cozy-client/compare/v3.4.1...v3.5.0) (2018-10-26)
 
 
@@ -22,7 +67,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-   <a name="3.4.1"></a>
+ <a name="3.4.1"></a>
 ## [3.4.1](https://github.com/cozy/cozy-client/compare/v3.4.0...v3.4.1) (2018-10-26)
 
 
@@ -33,7 +78,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-  <a name="3.4.0"></a>
+<a name="3.4.0"></a>
 # [3.4.0](https://github.com/cozy/cozy-client/compare/v3.3.2...v3.4.0) (2018-10-26)
 
 
