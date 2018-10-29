@@ -1,3 +1,15 @@
+<!-- MarkdownTOC autolink=true -->
+
+- [How to use a higher order component](#how-to-use-a-higher-order-component)
+- [How-to integrate with an existing store](#how-to-integrate-with-an-existing-store)
+- [How to obtain a token](#how-to-obtain-a-token)
+- [How to restore a previous token](#how-to-restore-a-previous-token)
+- [How to logout a client](#how-to-logout-a-client)
+- [How to use CozyClient on mobile](#how-to-use-cozyclient-on-mobile)
+
+<!-- /MarkdownTOC -->
+
+
 ### How to use a higher order component
 
 If you prefer HOCs to render-prop components, we provide a higher-order component called `connect`. Basic example of usage:
