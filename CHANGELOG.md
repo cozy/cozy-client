@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="3.6.1"></a>
+     <a name="3.6.2"></a>
+## [3.6.2](https://github.com/cozy/cozy-client/compare/v3.6.1...v3.6.2) (2018-10-29)
+
+
+### Bug Fixes
+
+* **pouch:** Wait end of replication before triggering another one ([e5657b2](https://github.com/cozy/cozy-client/commit/e5657b2))
+
+
+
+
+     <a name="3.6.1"></a>
 ## [3.6.1](https://github.com/cozy/cozy-client/compare/v3.6.0...v3.6.1) (2018-10-29)
 
 
@@ -14,7 +25,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-      <a name="3.6.0"></a>
+   <a name="3.6.0"></a>
 # [3.6.0](https://github.com/cozy/cozy-client/compare/v3.5.2...v3.6.0) (2018-10-29)
 
 
@@ -25,7 +36,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="3.5.2"></a>
+  <a name="3.5.2"></a>
 ## [3.5.2](https://github.com/cozy/cozy-client/compare/v3.5.1...v3.5.2) (2018-10-29)
 
 
@@ -33,7 +44,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package undefined
 
-   <a name="3.5.1"></a>
+<a name="3.5.1"></a>
 ## [3.5.1](https://github.com/cozy/cozy-client/compare/v3.5.0...v3.5.1) (2018-10-26)
 
 
