@@ -105,6 +105,7 @@ class App extends React.Component {
 
   async displayDocs() {
     const docsByDoctype = {}
+    const start = new Date()
     await Promise.all(
       map(this.manager.pouches, async (pouch, doctype) => {
         const resp = await pouch.allDocs({ include_docs: true })
@@ -112,8 +113,10 @@ class App extends React.Component {
         docsByDoctype[doctype] = docs
       })
     )
+    const end = new Date()
     this.setState({
-      docs: docsByDoctype
+      docs: docsByDoctype,
+      elapsed: end - start
     })
   }
 
@@ -198,6 +201,12 @@ class App extends React.Component {
         <div>Replicating: {this.state.replicating + ''}</div>
         {this.state.lastSync && (
           <div>Last synced: {this.state.lastSync.toString()}</div>
+        )}
+        {this.state.elapsed && (
+          <div>
+            Time for allDocs: {this.state.elapsed}
+            ms
+          </div>
         )}
         {map(this.state.docs, (docs, doctype) => (
           <div key={doctype}>
