@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="3.6.3"></a>
+       <a name="3.6.4"></a>
+## [3.6.4](https://github.com/cozy/cozy-client/compare/v3.6.3...v3.6.4) (2018-10-30)
+
+
+### Bug Fixes
+
+* **deps:** pin dependency sift to 7.0.1 ([7de2c6a](https://github.com/cozy/cozy-client/commit/7de2c6a))
+
+
+
+
+       <a name="3.6.3"></a>
 ## [3.6.3](https://github.com/cozy/cozy-client/compare/v3.6.1...v3.6.3) (2018-10-29)
 
 
@@ -14,7 +25,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-      <a name="3.6.2"></a>
+     <a name="3.6.2"></a>
 ## [3.6.2](https://github.com/cozy/cozy-client/compare/v3.6.1...v3.6.2) (2018-10-29)
 
 
@@ -25,7 +36,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-   <a name="3.6.1"></a>
+  <a name="3.6.1"></a>
 ## [3.6.1](https://github.com/cozy/cozy-client/compare/v3.6.0...v3.6.1) (2018-10-29)
 
 
@@ -36,7 +47,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
- <a name="3.6.0"></a>
+<a name="3.6.0"></a>
 # [3.6.0](https://github.com/cozy/cozy-client/compare/v3.5.2...v3.6.0) (2018-10-29)
 
 
