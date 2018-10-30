@@ -3,21 +3,26 @@ const { QueryDefinition, HasMany, default: CozyClient } = require('../dist')
 global.fetch = require('node-fetch') // in the browser we have native fetch
 
 class HasManyReferenced extends HasMany {
-
   get data() {
     const refs = this.target.relationships.referenced_by.data
     const albums = refs
-      .map(ref => this.get(ref.type, ref.id))
-      .filter(Boolean)
+      ? refs.map(ref => this.get(ref.type, ref.id)).filter(Boolean)
+      : []
     return albums
   }
 
   static query(doc, client, assoc) {
-    if (!doc['relationships'] || !doc['relationships']['referenced_by']) {
+    if (
+      !doc['relationships'] ||
+      !doc['relationships']['referenced_by'] ||
+      !doc['relationships']['referenced_by']['data']
+    ) {
       return null
     }
     const included = doc['relationships']['referenced_by']['data']
-    const ids = included.map(inc => inc.type === assoc.doctype ? inc.id : null)
+    const ids = included
+      .filter(inc => inc.type === assoc.doctype)
+      .map(inc => inc.id)
 
     return new QueryDefinition({ doctype: assoc.doctype, ids })
   }
