@@ -112,13 +112,22 @@ export default class PouchManager {
     if (this._stopReplicationLoop) {
       return this._stopReplicationLoop
     }
-    console.info('Start replication loop')
+
+    if (process.env.NODE_ENV !== 'production') {
+      console.info('Start replication loop')
+    }
+
     delay = delay || this.options.replicationDelay || DEFAULT_DELAY
     this._stopReplicationLoop = promises.setInterval(() => {
       if (window.navigator.onLine) {
         return this.replicateOnce()
       } else {
-        console.info('The device is offline replication is abort')
+        if (process.env.NODE_ENV !== 'production') {
+          console.info(
+            'The device is offline so the replication has been skipped'
+          )
+        }
+
         return Promise.resolve()
       }
     }, delay)
@@ -129,7 +138,10 @@ export default class PouchManager {
   /** Stop periodic syncing of the pouches */
   stopReplicationLoop() {
     if (this._stopReplicationLoop) {
-      console.info('Stop replication loop')
+      if (process.env.NODE_ENV !== 'production') {
+        console.info('Stop replication loop')
+      }
+
       this.cancelCurrentReplications()
       this._stopReplicationLoop()
       this._stopReplicationLoop = null
@@ -138,14 +150,33 @@ export default class PouchManager {
 
   /** Starts replication */
   async replicateOnce() {
+    if (process.env.NODE_ENV !== 'production') {
+      console.info('Starting replication iteration')
+    }
+
     this.replications = map(this.pouches, (pouch, doctype) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.info('Starting replication for ' + doctype)
+      }
+
       const getReplicationURL = () => this.getReplicationURL(doctype)
-      return startReplication(pouch, getReplicationURL)
+      return startReplication(pouch, getReplicationURL).then(res => {
+        if (process.env.NODE_ENV !== 'production') {
+          console.log('Replication for ' + doctype + ' ended', res)
+        }
+
+        return res
+      })
     })
     const doctypes = Object.keys(this.pouches)
     const promises = Object.values(this.replications)
     try {
       const res = await Promise.all(promises)
+
+      if (process.env.NODE_ENV !== 'production') {
+        console.info('Replication ended')
+      }
+
       if (this.options.onSync) {
         const doctypeUpdates = fromPairs(zip(doctypes, res))
         this.options.onSync(doctypeUpdates)
