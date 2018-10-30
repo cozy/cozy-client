@@ -21,7 +21,7 @@ const schema = {
 }
 
 const main = async _args => {
-  const uri = 'https://' + process.env.COZY_URL || 'http://cozy.tools:8080'
+  const uri = process.env.COZY_URL || 'http://cozy.tools:8080'
   const token = process.env.COZY_TOKEN
   if (!token) {
     throw new Error('You should provide COZY_TOKEN as an environement variable')
