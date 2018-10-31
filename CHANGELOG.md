@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="3.7.4"></a>
+     <a name="3.7.5"></a>
+## [3.7.5](https://github.com/cozy/cozy-client/compare/v3.7.3...v3.7.5) (2018-10-31)
+
+
+### Bug Fixes
+
+* Repair HasMany files relationships ([cba9552](https://github.com/cozy/cozy-client/commit/cba9552))
+
+
+
+
+     <a name="3.7.4"></a>
 ## [3.7.4](https://github.com/cozy/cozy-client/compare/v3.7.3...v3.7.4) (2018-10-31)
 
 
@@ -14,7 +25,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-      <a name="3.7.3"></a>
+   <a name="3.7.3"></a>
 ## [3.7.3](https://github.com/cozy/cozy-client/compare/v3.7.1...v3.7.3) (2018-10-31)
 
 
@@ -26,7 +37,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="3.7.2"></a>
+  <a name="3.7.2"></a>
 ## [3.7.2](https://github.com/cozy/cozy-client/compare/v3.7.1...v3.7.2) (2018-10-31)
 
 
@@ -38,7 +49,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-   <a name="3.7.1"></a>
+<a name="3.7.1"></a>
 ## [3.7.1](https://github.com/cozy/cozy-client/compare/v3.7.0...v3.7.1) (2018-10-30)
 
 
