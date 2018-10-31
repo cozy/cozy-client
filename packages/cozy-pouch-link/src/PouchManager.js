@@ -55,6 +55,10 @@ export default class PouchManager {
     this.options = options
     this.getReplicationURL = options.getReplicationURL
     this.listenerLaunched = false
+
+    // We must ensure databases exist on the remote before
+    // starting replications
+    this.ensureDatabasesExistDone = false
   }
 
   addListener() {
@@ -107,14 +111,35 @@ export default class PouchManager {
     )
   }
 
+  /**
+   * Via a call to info() we ensure the database exist on the
+   * remote side. This is done only once since after the first
+   * call, we are sure that the databases have been created.
+   */
+  async ensureDatabasesExist() {
+    if (this.ensureDatabasesExistDone) {
+      return Promise.resolve()
+    }
+    return Promise.all(
+      Object.values(this.pouches).map(pouch => pouch.info())
+    ).then(() => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.info('PouchManager: ensure databases exist done')
+      }
+      this.ensureDatabasesExistDone = true
+    })
+  }
+
   /** Starts periodic syncing of the pouches */
   async startReplicationLoop(delay) {
+    await this.ensureDatabasesExist()
+
     if (this._stopReplicationLoop) {
       return this._stopReplicationLoop
     }
 
     if (process.env.NODE_ENV !== 'production') {
-      console.info('Start replication loop')
+      console.info('PouchManager: Start replication loop')
     }
 
     delay = delay || this.options.replicationDelay || DEFAULT_DELAY
@@ -124,7 +149,7 @@ export default class PouchManager {
       } else {
         if (process.env.NODE_ENV !== 'production') {
           console.info(
-            'The device is offline so the replication has been skipped'
+            'PouchManager: The device is offline so the replication has been skipped'
           )
         }
 
@@ -139,7 +164,7 @@ export default class PouchManager {
   stopReplicationLoop() {
     if (this._stopReplicationLoop) {
       if (process.env.NODE_ENV !== 'production') {
-        console.info('Stop replication loop')
+        console.info('PouchManager: Stop replication loop')
       }
 
       this.cancelCurrentReplications()
@@ -151,18 +176,21 @@ export default class PouchManager {
   /** Starts replication */
   async replicateOnce() {
     if (process.env.NODE_ENV !== 'production') {
-      console.info('Starting replication iteration')
+      console.info('PouchManager: Starting replication iteration')
     }
 
     this.replications = map(this.pouches, (pouch, doctype) => {
       if (process.env.NODE_ENV !== 'production') {
-        console.info('Starting replication for ' + doctype)
+        console.info('PouchManager: Starting replication for ' + doctype)
       }
 
       const getReplicationURL = () => this.getReplicationURL(doctype)
       return startReplication(pouch, getReplicationURL).then(res => {
         if (process.env.NODE_ENV !== 'production') {
-          console.log('Replication for ' + doctype + ' ended', res)
+          console.log(
+            'PouchManager: Replication for ' + doctype + ' ended',
+            res
+          )
         }
 
         return res
@@ -174,7 +202,7 @@ export default class PouchManager {
       const res = await Promise.all(promises)
 
       if (process.env.NODE_ENV !== 'production') {
-        console.info('Replication ended')
+        console.info('PouchManager: Replication ended')
       }
 
       if (this.options.onSync) {
@@ -186,7 +214,7 @@ export default class PouchManager {
       // On error, replication stops, it needs to be started
       // again manually by the owner of PouchManager
       this.stopReplicationLoop()
-      console.warn('Error during replication', err)
+      console.warn('PouchManager: Error during replication', err)
       if (this.options.onError) {
         this.options.onError(err)
       }
@@ -195,7 +223,7 @@ export default class PouchManager {
 
   cancelCurrentReplications() {
     if (!this.replications) {
-      console.warn('No current replications')
+      console.warn('PouchManager: No current replications')
       return
     }
     Object.values(this.replications).forEach(replication => {
