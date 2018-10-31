@@ -213,7 +213,7 @@ export default class PouchLink extends CozyLink {
     }
 
     if (operation.mutationType) {
-      return this.executeMutation(operation)
+      return this.executeMutation(operation, result, forward)
     } else {
       return this.executeQuery(operation)
     }
@@ -282,10 +282,8 @@ export default class PouchLink extends CozyLink {
       case MutationTypes.ADD_REFERENCES_TO:
         pouchRes = await this.addReferencesTo(mutation)
         break
-      case MutationTypes.UPLOAD_FILE:
-        return forward(mutation, result)
       default:
-        throw new Error(`Unknown mutation type: ${mutation.mutationType}`)
+        return forward(mutation, result)
     }
     return jsonapi.fromPouchResult(
       pouchRes,

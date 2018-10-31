@@ -20,9 +20,9 @@ export default class StackLink extends CozyLink {
     this.stackClient = null
   }
 
-  request(operation) {
+  request(operation, result, forward) {
     if (operation.mutationType) {
-      return this.executeMutation(operation)
+      return this.executeMutation(operation, result, forward)
     }
     return this.executeQuery(operation)
   }
@@ -48,7 +48,8 @@ export default class StackLink extends CozyLink {
       : collection.find(selector, options)
   }
 
-  executeMutation({ mutationType, ...props }) {
+  executeMutation(mutation, result, forward) {
+    const { mutationType, ...props } = mutation
     switch (mutationType) {
       case MutationTypes.CREATE_DOCUMENT:
         return this.stackClient
@@ -75,7 +76,7 @@ export default class StackLink extends CozyLink {
           .collection('io.cozy.files')
           .upload(props.file, props.dirPath)
       default:
-        throw new Error(`Unknown mutation type: ${mutationType}`)
+        return forward(mutation, result)
     }
   }
 }
