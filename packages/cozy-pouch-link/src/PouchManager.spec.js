@@ -1,5 +1,9 @@
 /* global jest */
 
+// TODO use jest.useFakeTimers() to speed up the tests
+// See https://github.com/cozy/cozy-client/pull/239 for example
+// on how to use fake timers with setTimeout created in promises.
+
 import PouchManager from './PouchManager'
 import * as mocks from './__tests__/mocks'
 
@@ -34,6 +38,7 @@ describe('PouchManager', () => {
       }
     })
     pouch.sync = jest.fn().mockImplementation(replication)
+    pouch.info = jest.fn().mockImplementation(() => Promise.resolve())
   })
 
   afterEach(() => {
@@ -42,6 +47,18 @@ describe('PouchManager', () => {
 
   it('should create pouches', () => {
     expect(Object.values(manager.pouches).length).toBe(1)
+  })
+
+  it('should call info() on all pouches before starting replication', async () => {
+    manager.startReplicationLoop()
+    await sleep(1)
+    expect(manager.getPouch('io.cozy.todos').info).toHaveBeenCalled()
+    manager.stopReplicationLoop()
+    manager.startReplicationLoop()
+    await sleep(1)
+
+    // Database existence check should only occur once
+    expect(manager.getPouch('io.cozy.todos').info).toHaveBeenCalledTimes(1)
   })
 
   it('should periodically call replicate', async () => {
@@ -58,6 +75,8 @@ describe('PouchManager', () => {
     jest.spyOn(console, 'warn').mockReturnValue()
     jest.spyOn(manager, 'stopReplicationLoop')
     manager.startReplicationLoop()
+    await sleep(1)
+
     try {
       await manager.waitForCurrentReplications()
     } catch (e) {
