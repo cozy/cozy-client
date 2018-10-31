@@ -10,6 +10,10 @@ import { REGISTRATION_ABORT } from './const'
 
 import StackLink from './StackLink'
 import { create as createAssociation } from './associations'
+import {
+  responseToRelationship,
+  attachRelationships
+} from './associations/helpers'
 import { dehydrate } from './helpers'
 import { QueryDefinition, Mutations } from './queries/dsl'
 import CozyStackClient, { OAuthClient } from 'cozy-stack-client'
@@ -32,9 +36,10 @@ import { chain } from './CozyLink'
 import ObservableQuery from './ObservableQuery'
 import mapValues from 'lodash/mapValues'
 import fromPairs from 'lodash/fromPairs'
-import groupBy from 'lodash/groupBy'
 import flatten from 'lodash/flatten'
 import uniqBy from 'lodash/uniqBy'
+import zip from 'lodash/zip'
+import forEach from 'lodash/forEach'
 
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
 
@@ -306,38 +311,73 @@ export default class CozyClient {
     return withIncluded
   }
 
-  async fetchRelationships(response, schemaRelsByName) {
+  /**
+   * Fetch relationships for a response (can be several docs).
+   * Fills the `relationships` attribute of each documents.
+   *
+   * Can potentially result in several fetch requests.
+   * Queries are optimized before being sent.
+   */
+  async fetchRelationships(response, relationshipsByName) {
     const isSingleDoc = !Array.isArray(response.data)
     if (!isSingleDoc && response.data.length === 0) {
       return response
     }
     const responseDocs = isSingleDoc ? [response.data] : response.data
 
-    const schemaRels = Object.values(schemaRelsByName)
-    const definitionOrDocuments = flatten(
-      responseDocs.map(doc =>
-        this.prepareQueryDefsFromRelationships(doc, schemaRels)
-      )
-    ).filter(Boolean)
+    const queryDefToDocIdAndRel = new Map()
+    const documents = []
+    const definitions = []
 
-    // Relationships can yield documents, ready for use, or definitions needing
-    // to be executed
-    const { documents = [], definitions = [] } = groupBy(
-      definitionOrDocuments,
-      d => (d instanceof QueryDefinition ? 'definitions' : 'documents')
-    )
+    responseDocs.forEach(doc => {
+      return forEach(relationshipsByName, (relationship, relName) => {
+        const queryDef = relationship.type.query(doc, this, relationship)
+        const docId = doc._id
 
-    // Definitions can be in several cases optimized/regrouped
+        // Used to reattach responses into the relationships attribute of
+        // each document
+        queryDefToDocIdAndRel.set(queryDef, [docId, relName])
+
+        // Relationships can yield "queries" that are already resolved documents.
+        // These do not need to go through the usual link request mechanism.
+        if (queryDef instanceof QueryDefinition) {
+          definitions.push(queryDef)
+        } else {
+          documents.push(queryDef)
+        }
+      })
+    })
+
+    // Definitions can be in optimized/regrouped in case of HasMany relationships.
     const optimizedDefinitions = optimizeQueryDefinitions(definitions)
     const responses = await Promise.all(
       optimizedDefinitions.map(req => this.chain.request(req))
     )
+
+    // "Included" documents will be stored in the `documents` store
     const uniqueDocuments = uniqBy(flatten(documents), '_id')
-    const included = flatten(responses.map(r => r.included || r.data)).concat(
-      uniqueDocuments
-    )
+    const included = flatten(responses.map(r => r.included || r.data))
+      .concat(uniqueDocuments)
+      .filter(Boolean)
+
+    // Some relationships have the relationship data on the other side of the
+    // relationship (ex: io.cozy.photos.albums do not have photo inclusion information,
+    // it is on the io.cozy.files side).
+    // Here we take the data received from the relationship queries, and group
+    // it so that we can fill the `relationships` attribute of each doc before
+    // storing the document. This makes the data easier to manipulate for the front-end.
+    const relationshipsByDocId = {}
+    for (const [def, resp] of zip(optimizedDefinitions, responses)) {
+      const docIdAndRel = queryDefToDocIdAndRel.get(def)
+      if (docIdAndRel) {
+        const [docId, relName] = docIdAndRel
+        relationshipsByDocId[docId] = relationshipsByDocId[docId] || {}
+        relationshipsByDocId[docId][relName] = responseToRelationship(resp)
+      }
+    }
+
     return {
-      ...response,
+      ...attachRelationships(response, relationshipsByDocId),
       included
     }
   }
@@ -357,13 +397,6 @@ export default class CozyClient {
       return firstResponse
     }
     return this.chain.request(definition)
-  }
-
-  prepareQueryDefsFromRelationships(document, schemaRels) {
-    return schemaRels.map(assoc => {
-      const { type } = assoc
-      return type.query(document, this, assoc)
-    })
   }
 
   getIncludesRelationships(queryDefinition) {
