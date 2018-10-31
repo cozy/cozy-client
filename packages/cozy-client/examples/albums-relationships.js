@@ -13,9 +13,9 @@ class HasManyReferenced extends HasMany {
 
   static query(doc, client, assoc) {
     if (
-      !doc['relationships'] ||
-      !doc['relationships']['referenced_by'] ||
-      !doc['relationships']['referenced_by']['data']
+      !doc.relationships ||
+      !doc.relationships.referenced_by ||
+      !doc.relationships.referenced_by.data
     ) {
       return null
     }
