@@ -1,3 +1,20 @@
+<!-- MarkdownTOC autolink=true -->
+
+- [What's cozy-client?](#whats-cozy-client)
+- [Setup](#setup)
+  - [Install](#install)
+  - [Creating a client](#creating-a-client)
+  - [Creating a provider](#creating-a-provider)
+  - [Using the client](#using-the-client)
+- [Requesting data](#requesting-data)
+  - [The available props](#the-available-props)
+  - [Making queries](#making-queries)
+- [Mutating data](#mutating-data)
+  - [Updating queries](#updating-queries)
+
+<!-- /MarkdownTOC -->
+
+
 ## What's cozy-client?
 
 `cozy-client` is a javascript library. It facilitates the communication between an applications and the cozy stack.
