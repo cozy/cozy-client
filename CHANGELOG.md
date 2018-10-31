@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-     <a name="3.7.5"></a>
+      <a name="3.7.6"></a>
+## [3.7.6](https://github.com/cozy/cozy-client/compare/v3.7.5...v3.7.6) (2018-10-31)
+
+
+### Bug Fixes
+
+* Ensure database is created on the remote side ([ff71b37](https://github.com/cozy/cozy-client/commit/ff71b37))
+
+
+
+
+      <a name="3.7.5"></a>
 ## [3.7.5](https://github.com/cozy/cozy-client/compare/v3.7.3...v3.7.5) (2018-10-31)
 
 
@@ -14,7 +25,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="3.7.4"></a>
+   <a name="3.7.4"></a>
 ## [3.7.4](https://github.com/cozy/cozy-client/compare/v3.7.3...v3.7.4) (2018-10-31)
 
 
@@ -25,7 +36,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-   <a name="3.7.3"></a>
+ <a name="3.7.3"></a>
 ## [3.7.3](https://github.com/cozy/cozy-client/compare/v3.7.1...v3.7.3) (2018-10-31)
 
 
@@ -37,7 +48,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-  <a name="3.7.2"></a>
+<a name="3.7.2"></a>
 ## [3.7.2](https://github.com/cozy/cozy-client/compare/v3.7.1...v3.7.2) (2018-10-31)
 
 
