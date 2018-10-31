@@ -23,6 +23,10 @@ $ lerna publish --scope cozy-client --npm-tag beta
 $ npm install cozy-client@beta
 ```
 
+⚠️ Even if you use an NPM tag, this creates a real version on NPM. If you want to create
+a beta version, change the version in the package.json of the package you are publishing
+and add for example `beta.0`. This way, you do not take the space of the next version.
+
 * `--force-publish` to force publication even if there were no changes
 
 ```
