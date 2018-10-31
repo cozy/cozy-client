@@ -13,7 +13,16 @@ export default class CozyLink {
 const toLink = handler =>
   typeof handler === 'function' ? new CozyLink(handler) : handler
 
-export const chain = links => links.map(toLink).reduce(concat)
+const defaultLinkHandler = (operation, result) => {
+  if (result) return result
+  else
+    throw new Error(
+      `No link could handle operation ${JSON.stringify(operation)}`
+    )
+}
+
+export const chain = links =>
+  [...links, defaultLinkHandler].map(toLink).reduce(concat)
 
 const concat = (firstLink, nextLink) => {
   return new CozyLink((operation, result, forward) => {
