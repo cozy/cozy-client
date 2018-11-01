@@ -10,9 +10,28 @@ import { isMobileApp } from 'cozy-device-helper'
 
 const DEFAULT_DELAY = 30 * 1000
 
+const TIME_UNITS = [['ms', 1000], ['s', 60], ['m', 60], ['h', 24]]
+const humanTimeDelta = (timeMs) => {
+  let cur = timeMs
+  let unitIndex = 0
+  let str = ''
+  while (cur >= TIME_UNITS[unitIndex][1]) {
+    let unit = TIME_UNITS[unitIndex]
+    const int = Math.round(cur / unit[1])
+    const rest = cur % unit[1]
+    str = `${rest}${unit[0]}` + str
+    cur = int
+    unitIndex++
+  }
+  const lastUnit = TIME_UNITS[unitIndex]
+  str = `${cur}${lastUnit[0]}` + str
+  return str
+}
+
 /* Create a cancellable promise for replication with default options */
 const startReplication = (pouch, getReplicationURL) => {
   let replication
+  const start = new Date()
   const promise = new Promise((resolve, reject) => {
     const url = getReplicationURL()
     replication = pouch.sync(url, {
@@ -29,6 +48,10 @@ const startReplication = (pouch, getReplicationURL) => {
       }
     })
     replication.on('error', reject).on('complete', () => {
+      const end = new Date()
+      if (process.env.NODE_ENV !== 'production') {
+        console.info(`PouchManager: replication for ${url} took ${humanTimeDelta(end - start)}`)
+      }
       resolve(Object.values(docs))
     })
   })
