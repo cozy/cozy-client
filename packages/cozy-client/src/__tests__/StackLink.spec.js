@@ -9,7 +9,7 @@ describe('StackLink', () => {
   beforeEach(() => {
     link = new StackLink()
     client = new CozyClient({ links: [link], schema: SCHEMA })
-    stackClient = client.getClient()
+    stackClient = client.getStackClient()
   })
 
   describe('query execution', () => {
@@ -34,9 +34,9 @@ describe('StackLink', () => {
 
   describe('reset', () => {
     it('should delete client', async () => {
-      expect(link.client).not.toBeUndefined()
+      expect(link.stackClient).not.toBeNull()
       await link.reset()
-      expect(link.client).toBeUndefined()
+      expect(link.stackClient).toBeNull()
     })
   })
 })
