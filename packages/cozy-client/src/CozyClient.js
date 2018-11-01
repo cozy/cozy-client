@@ -43,6 +43,14 @@ import forEach from 'lodash/forEach'
 
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
 
+const deprecatedHandler = msg => ({
+  get(target, prop) {
+    console.warn(msg);
+    return target[prop];
+  },
+});
+
+
 /**
  * @module CozyClient
  */
@@ -68,14 +76,14 @@ export default class CozyClient {
 
     this.chain = chain(this.links)
 
-    this.schema = new Schema(schema, this.getClient())
+    this.schema = new Schema(schema, this.getStackClient())
   }
 
   registerClientOnLinks() {
     for (const link of this.links) {
       if (!link.client && link.registerClient) {
         try {
-          link.registerClient(this.client)
+          link.registerClient(this)
         } catch (e) {
           console.warn(e)
         }
@@ -100,10 +108,10 @@ export default class CozyClient {
   async logout() {
     // unregister client on stack
     if (
-      this.client.unregister &&
-      (!this.client.isRegistered || this.client.isRegistered())
+      this.stackClient.unregister &&
+      (!this.stackClient.isRegistered || this.stackClient.isRegistered())
     ) {
-      await this.client.unregister()
+      await this.stackClient.unregister()
     }
 
     // clean information on links
@@ -126,11 +134,11 @@ export default class CozyClient {
    * @return {DocumentCollection}
    */
   collection(doctype) {
-    return this.getClient().collection(doctype)
+    return this.getStackClient().collection(doctype)
   }
 
   fetch(method, path, body, options = {}) {
-    return this.getClient().fetch(method, path, body, options)
+    return this.getStackClient().fetch(method, path, body, options)
   }
 
   all(doctype) {
@@ -498,8 +506,8 @@ export default class CozyClient {
    * @returns {object}   Contains the fetched token and the client information.
    */
   register(cozyUrl) {
-    const client = this.getClient()
-    client.setUri(cozyUrl)
+    const stackClient = this.getStackClient()
+    stackClient.setUri(cozyUrl)
     return this.startOAuthFlow(authenticateWithCordova)
   }
 
@@ -509,31 +517,31 @@ export default class CozyClient {
    * @returns {object}   Contains the fetched token and the client information. These should be stored and used to restore the client.
    */
   async startOAuthFlow(openURLCallback) {
-    const client = this.getClient()
-    await client.register()
+    const stackClient = this.getStackClient()
+    await stackClient.register()
     return this.authorize(openURLCallback)
   }
 
   async authorize(openURLCallback) {
     try {
-      const client = this.getClient()
-      const stateCode = client.generateStateCode()
-      const url = client.getAuthCodeURL(stateCode)
+      const stackClient = this.getStackClient()
+      const stateCode = stackClient.generateStateCode()
+      const url = stackClient.getAuthCodeURL(stateCode)
       const redirectedURL = await openURLCallback(url)
-      const code = client.getAccessCodeFromURL(redirectedURL, stateCode)
-      const token = await client.fetchAccessToken(code)
+      const code = stackClient.getAccessCodeFromURL(redirectedURL, stateCode)
+      const token = await stackClient.fetchAccessToken(code)
 
-      client.setCredentials(token)
+      stackClient.setCredentials(token)
       return {
         token,
-        infos: client.oauthOptions,
-        client: client.oauthOptions // for compat with Authentication comp reasons
+        infos: stackClient.oauthOptions,
+        client: stackClient.oauthOptions // for compat with Authentication comp reasons
       }
     } catch (error) {
       /* if REGISTRATION_ABORT is emited, we have to unregister the client. */
       if (error.message === REGISTRATION_ABORT) {
-        const client = this.getClient()
-        client.unregister()
+        const stackClient = this.getStackClient()
+        stackClient.unregister()
       }
       throw error
     }
@@ -565,26 +573,30 @@ export default class CozyClient {
 
   createClient() {
     if (this.options.client) {
-      this.client = this.options.client
+      console.warn('CozyClient: Using options.client is deprecated, please use options.stackClient.')
+    }
+    const stackClient = this.options.client || this.options.stackClient
+    if (stackClient) {
+      this.stackClient = stackClient
     } else {
-      this.client = this.options.oauth
+      this.stackClient = this.options.oauth
         ? new OAuthClient(this.options)
         : new CozyStackClient(this.options)
     }
-  }
 
-  getOrCreateStackClient() {
-    console.warn(
-      `getOrCreateStackClient is deprecated, you can used getClient function.`
-    )
-    return this.getClient()
+    this.client = new Proxy(this.stackClient, deprecatedHandler('Using cozyClient.client is deprecated, please use cozyClient.stackClient.'))
   }
 
   getClient() {
-    if (!this.client) {
+    console.warn('CozyClient: getClient() is deprecated, please use getStackClient().')
+    return this.getStackClient()
+  }
+
+  getStackClient() {
+    if (!this.stackClient) {
       this.createClient()
     }
-    return this.client
+    return this.stackClient
   }
 
   reducer() {
