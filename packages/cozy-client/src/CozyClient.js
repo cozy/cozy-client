@@ -45,11 +45,10 @@ const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
 
 const deprecatedHandler = msg => ({
   get(target, prop) {
-    console.warn(msg);
-    return target[prop];
-  },
-});
-
+    console.warn(msg)
+    return target[prop]
+  }
+})
 
 /**
  * @module CozyClient
