@@ -1,6 +1,21 @@
 export const normalizeDoc = (doc, doctype) => {
   const id = doc._id || doc.id
-  return { id, _id: id, _type: doctype, ...doc }
+
+  // PouchDB sends back .rev attribute but we do not want to
+  // keep it on the server. It is potentially higher than the
+  // _rev.
+  const _rev = doc.rev || doc._rev
+  const normalizedDoc = {
+    ...doc,
+    id,
+    _id: id,
+    _rev,
+    _type: doctype
+  }
+  if (normalizedDoc.rev) {
+    delete normalizedDoc.rev
+  }
+  return normalizedDoc
 }
 
 export const fromPouchResult = (res, withRows, doctype) => {

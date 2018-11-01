@@ -1,4 +1,24 @@
-import { fromPouchResult } from './jsonapi'
+import { fromPouchResult, normalizeDoc } from './jsonapi'
+
+describe('doc normalization', () => {
+  it('keeps the highest between rev and _rev and removes the rev attribute', () => {
+    const normalized = normalizeDoc({
+      _id: 1234,
+      _rev: '3-deadbeef',
+      rev: '4-cffee',
+      firstName: 'Bobba',
+      lastName: 'Fett'
+    })
+    expect(normalized).toEqual({
+      _id: 1234,
+      id: 1234,
+      _rev: '4-cffee',
+      firstName: 'Bobba',
+      lastName: 'Fett'
+    })
+  })
+})
+
 describe('jsonapi', () => {
   it('should return a response understandable by cozy-client', () => {
     const res = {
