@@ -45,7 +45,6 @@ afterEach(() => {
   global.console.info.mockRestore && global.console.info.mockRestore()
 })
 
-
 // In Node v7 unhandled promise rejections will terminate the process
 if (!process.env.LISTENING_TO_UNHANDLED_REJECTION) {
   process.on('unhandledRejection', reason => {

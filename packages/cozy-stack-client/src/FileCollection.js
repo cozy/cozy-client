@@ -379,7 +379,9 @@ export default class FileCollection extends DocumentCollection {
     if (lastModifiedDate) headers['Date'] = lastModifiedDate.toGMTString()
     if (ifMatch) headers['If-Match'] = ifMatch
 
-    const resp = await this.stackClient.fetchJSON('POST', path, data, { headers })
+    const resp = await this.stackClient.fetchJSON('POST', path, data, {
+      headers
+    })
     return {
       data: normalizeFile(resp.data)
     }

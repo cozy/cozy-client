@@ -5,7 +5,9 @@ export default class StackLink extends CozyLink {
   constructor({ client, stackClient } = {}) {
     super()
     if (client) {
-      console.info('Using options.client is deprecated, prefer options.stackClient')
+      console.info(
+        'Using options.client is deprecated, prefer options.stackClient'
+      )
     }
     this.stackClient = stackClient || client
   }

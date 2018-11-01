@@ -11,7 +11,10 @@ const normalizePermission = perm => normalizeDoc(perm, 'io.cozy.permissions')
  */
 export default class PermissionCollection extends DocumentCollection {
   async get(id) {
-    const resp = await this.stackClient.fetchJSON('GET', uri`/permissions/${id}`)
+    const resp = await this.stackClient.fetchJSON(
+      'GET',
+      uri`/permissions/${id}`
+    )
     return {
       data: normalizePermission(resp.data)
     }
@@ -30,7 +33,10 @@ export default class PermissionCollection extends DocumentCollection {
   }
 
   destroy(permission) {
-    return this.stackClient.fetchJSON('DELETE', uri`/permissions/${permission.id}`)
+    return this.stackClient.fetchJSON(
+      'DELETE',
+      uri`/permissions/${permission.id}`
+    )
   }
 
   async findLinksByDoctype(doctype) {

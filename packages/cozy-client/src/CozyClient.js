@@ -572,7 +572,9 @@ export default class CozyClient {
 
   createClient() {
     if (this.options.client) {
-      console.warn('CozyClient: Using options.client is deprecated, please use options.stackClient.')
+      console.warn(
+        'CozyClient: Using options.client is deprecated, please use options.stackClient.'
+      )
     }
     const stackClient = this.options.client || this.options.stackClient
     if (stackClient) {
@@ -583,11 +585,18 @@ export default class CozyClient {
         : new CozyStackClient(this.options)
     }
 
-    this.client = new Proxy(this.stackClient, deprecatedHandler('Using cozyClient.client is deprecated, please use cozyClient.stackClient.'))
+    this.client = new Proxy(
+      this.stackClient,
+      deprecatedHandler(
+        'Using cozyClient.client is deprecated, please use cozyClient.stackClient.'
+      )
+    )
   }
 
   getClient() {
-    console.warn('CozyClient: getClient() is deprecated, please use getStackClient().')
+    console.warn(
+      'CozyClient: getClient() is deprecated, please use getStackClient().'
+    )
     return this.getStackClient()
   }
 
