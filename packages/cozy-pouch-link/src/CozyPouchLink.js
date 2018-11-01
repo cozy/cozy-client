@@ -71,8 +71,9 @@ export default class PouchLink extends CozyLink {
     return getReplicationURL(this.stackClient.uri, this.stackClient.token, doctype)
   }
 
-  async registerClient(stackClient) {
+  async registerClient(stackClient, cozyClient) {
     this.stackClient = stackClient
+    this.cozyClient = cozyClient
     if (this.pouches) {
       try {
         await this.pouches.destroy()
@@ -100,6 +101,7 @@ export default class PouchLink extends CozyLink {
 
     this.pouches = null
     this.stackClient = undefined
+    this.cozyClient = undefined
     window.localStorage.removeItem(LOCALSTORAGE_SYNCED_KEY)
     this.synced = false
   }
@@ -116,6 +118,8 @@ export default class PouchLink extends CozyLink {
   onSync(normalizedData) {
     this.synced = true
     window.localStorage.setItem(LOCALSTORAGE_SYNCED_KEY, true)
+    this.cozyClient.setData(normalizedData)
+
     if (this.options.onSync) {
       this.options.onSync.call(this, normalizedData)
     }

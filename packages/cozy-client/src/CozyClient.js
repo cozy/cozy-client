@@ -75,7 +75,7 @@ export default class CozyClient {
     for (const link of this.links) {
       if (!link.client && link.registerClient) {
         try {
-          link.registerClient(this.client)
+          link.registerClient(this.client, this)
         } catch (e) {
           console.warn(e)
         }
