@@ -58,21 +58,21 @@ export default class PouchLink extends CozyLink {
   }
 
   getReplicationURL(doctype) {
-    if (!this.client.token) {
+    if (!this.stackClient.token) {
       throw new Error(
         "Can't get replication URL since the client doesn't have a token"
       )
     }
-    if (!this.client.uri) {
+    if (!this.stackClient.uri) {
       throw new Error(
         "Can't get replication URL since the client doesn't have a URI"
       )
     }
-    return getReplicationURL(this.client.uri, this.client.token, doctype)
+    return getReplicationURL(this.stackClient.uri, this.stackClient.token, doctype)
   }
 
-  async registerClient(client) {
-    this.client = client
+  async registerClient(stackClient) {
+    this.stackClient = stackClient
     if (this.pouches) {
       try {
         await this.pouches.destroy()
@@ -88,7 +88,7 @@ export default class PouchLink extends CozyLink {
   }
 
   onLogin() {
-    if (this.client && this.options.initialSync) {
+    if (this.stackClient && this.options.initialSync) {
       this.startReplication()
     }
   }
@@ -99,7 +99,7 @@ export default class PouchLink extends CozyLink {
     }
 
     this.pouches = null
-    this.client = undefined
+    this.stackClient = undefined
     window.localStorage.removeItem(LOCALSTORAGE_SYNCED_KEY)
     this.synced = false
   }
@@ -156,7 +156,7 @@ export default class PouchLink extends CozyLink {
   async onSyncError(error) {
     if (isExpiredTokenError(error)) {
       try {
-        await this.client.refreshToken()
+        await this.stackClient.refreshToken()
         this.startReplication()
         return
       } catch (err) {
