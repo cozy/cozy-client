@@ -15,9 +15,9 @@ const isDesignDoc = doc => doc.hasOwnProperty('views')
  * @module DocumentCollection
  */
 export default class DocumentCollection {
-  constructor(doctype, client) {
+  constructor(doctype, stackClient) {
     this.doctype = doctype
-    this.client = client
+    this.stackClient = stackClient
     this.indexes = {}
   }
 
@@ -46,7 +46,7 @@ export default class DocumentCollection {
     // so we need to try/catch and return an empty response object in case of a 404
     let resp
     try {
-      resp = await this.client.fetchJSON('GET', path)
+      resp = await this.stackClient.fetchJSON('GET', path)
     } catch (error) {
       if (error.message.match(/not_found/)) {
         return { data: [], meta: { count: 0 }, skip: 0, next: false }
@@ -78,7 +78,7 @@ export default class DocumentCollection {
     const { skip = 0 } = options
     let resp
     try {
-      resp = await this.client.fetchJSON(
+      resp = await this.stackClient.fetchJSON(
         'POST',
         uri`/data/${this.doctype}/_find`,
         await this.toMangoOptions(selector, options)
@@ -105,7 +105,7 @@ export default class DocumentCollection {
   async get(id) {
     let resp
     try {
-      resp = await this.client.fetchJSON(
+      resp = await this.stackClient.fetchJSON(
         'GET',
         uri`/data/${this.doctype}/${id}`
       )
@@ -122,7 +122,7 @@ export default class DocumentCollection {
   async getAll(ids) {
     let resp
     try {
-      resp = await this.client.fetchJSON(
+      resp = await this.stackClient.fetchJSON(
         'POST',
         uri`/data/${this.doctype}/_all_docs?include_docs=true`,
         {
@@ -145,7 +145,7 @@ export default class DocumentCollection {
   }
 
   async create({ _id, _type, ...document }) {
-    const resp = await this.client.fetchJSON(
+    const resp = await this.stackClient.fetchJSON(
       'POST',
       uri`/data/${this.doctype}/`,
       document
@@ -156,7 +156,7 @@ export default class DocumentCollection {
   }
 
   async update(document) {
-    const resp = await this.client.fetchJSON(
+    const resp = await this.stackClient.fetchJSON(
       'PUT',
       uri`/data/${this.doctype}/${document._id}`,
       document
@@ -167,7 +167,7 @@ export default class DocumentCollection {
   }
 
   async destroy({ _id, _rev, ...document }) {
-    const resp = await this.client.fetchJSON(
+    const resp = await this.stackClient.fetchJSON(
       'DELETE',
       uri`/data/${this.doctype}/${_id}?rev=${_rev}`
     )
@@ -244,7 +244,7 @@ export default class DocumentCollection {
 
   async createIndex(fields) {
     const indexDef = { index: { fields } }
-    const resp = await this.client.fetchJSON(
+    const resp = await this.stackClient.fetchJSON(
       'POST',
       uri`/data/${this.doctype}/_index`,
       indexDef
