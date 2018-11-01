@@ -188,21 +188,20 @@ describe('CozyPouchLink', () => {
   describe('onSync', () => {
     it('should call setData with normalized data', () => {
       link.handleOnSync({
-        'io.cozy.todos': [
-          {...TODO_1, rev: '1-deadbeef' }
-        ]
+        'io.cozy.todos': [{ ...TODO_1, rev: '1-deadbeef' }]
       })
       expect(client.setData).toHaveBeenCalledTimes(1)
       expect(client.setData).toHaveBeenCalledWith({
-        "io.cozy.todos": [{
-          "_id": "1",
-          "_rev": "1-deadbeef",
-          "_type": "io.cozy.todos",
-          "done": false,
-          "id": "1",
-          "label": "Buy bread",
-          "rev": "1-deadbeef"
-        }]
+        'io.cozy.todos': [
+          {
+            _id: '1',
+            _rev: '1-deadbeef',
+            _type: 'io.cozy.todos',
+            done: false,
+            id: '1',
+            label: 'Buy bread'
+          }
+        ]
       })
     })
   })
