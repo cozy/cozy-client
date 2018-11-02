@@ -8,6 +8,7 @@ cache:
   directories:
   - node_modules
 script:
+- set -e
 - yarn lint
 - yarn build # before tests since packages rely on dist/ files to be available
 - yarn test --runInBand
