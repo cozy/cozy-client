@@ -33,6 +33,10 @@ describe('CozyPouchLink', () => {
     await link.reset()
   })
 
+  afterEach(async () => {
+    await link.reset()
+  })
+
   it('should generate replication url', async () => {
     const url = await link.getReplicationURL(TODO_DOCTYPE)
     expect(url).toBe('http://user:token@cozy.tools:8080/data/io.cozy.todos')
@@ -126,7 +130,7 @@ describe('CozyPouchLink', () => {
         data: {
           id: expect.any(String),
           _id: expect.any(String),
-          rev: expect.any(String),
+          _rev: expect.any(String),
           label: 'Build stuff',
           _type: TODO_DOCTYPE
         }
@@ -134,13 +138,17 @@ describe('CozyPouchLink', () => {
     })
 
     it('should be possible to update a document', async () => {
-      const mutation = client.getDocumentSavePlan(TODO_3)
-      const res = await link.request(mutation)
-      expect(res).toMatchObject({
-        data: {
-          id: '3',
-          label: 'Build stuff'
-        }
+      const { _id, ...NEW_TODO } = TODO_3
+      const saveMutation = client.getDocumentSavePlan(NEW_TODO)
+      const saved = (await link.request(saveMutation)).data
+      const updateMutation = client.getDocumentSavePlan({
+        ...saved,
+        done: false
+      })
+      const updated = (await link.request(updateMutation)).data
+      expect(updated).toMatchObject({
+        label: 'Build stuff',
+        done: false
       })
     })
   })
