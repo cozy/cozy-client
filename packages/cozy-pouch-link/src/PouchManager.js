@@ -11,7 +11,7 @@ import { isMobileApp } from 'cozy-device-helper'
 const DEFAULT_DELAY = 30 * 1000
 
 const TIME_UNITS = [['ms', 1000], ['s', 60], ['m', 60], ['h', 24]]
-const humanTimeDelta = (timeMs) => {
+const humanTimeDelta = timeMs => {
   let cur = timeMs
   let unitIndex = 0
   let str = ''
@@ -50,7 +50,11 @@ const startReplication = (pouch, getReplicationURL) => {
     replication.on('error', reject).on('complete', () => {
       const end = new Date()
       if (process.env.NODE_ENV !== 'production') {
-        console.info(`PouchManager: replication for ${url} took ${humanTimeDelta(end - start)}`)
+        console.info(
+          `PouchManager: replication for ${url} took ${humanTimeDelta(
+            end - start
+          )}`
+        )
       }
       resolve(Object.values(docs))
     })
