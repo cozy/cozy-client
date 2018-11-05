@@ -30,8 +30,8 @@ export const isDirectory = ({ type }) => type === 'directory'
  * @module FileCollection
  */
 export default class FileCollection extends DocumentCollection {
-  constructor(doctype, client) {
-    super(doctype, client)
+  constructor(doctype, stackClient) {
+    super(doctype, stackClient)
     this.specialDirectories = {}
   }
 
@@ -51,7 +51,7 @@ export default class FileCollection extends DocumentCollection {
    */
   async find(selector, options = {}) {
     const { skip = 0 } = options
-    const resp = await this.client.fetchJSON(
+    const resp = await this.stackClient.fetchJSON(
       'POST',
       '/files/_find',
       await this.toMangoOptions(selector, options)
@@ -83,7 +83,7 @@ export default class FileCollection extends DocumentCollection {
       document._id
     }/relationships/references`
     const path = querystring.buildURL(url, params)
-    const resp = await this.client.fetchJSON('GET', path)
+    const resp = await this.stackClient.fetchJSON('GET', path)
     return {
       data: resp.data.map(f => normalizeFile(f)),
       included: resp.included ? resp.included.map(f => normalizeFile(f)) : [],
@@ -95,7 +95,7 @@ export default class FileCollection extends DocumentCollection {
 
   addReferencesTo(document, documents) {
     const refs = documents.map(d => ({ id: d._id, type: 'io.cozy.files' }))
-    return this.client.fetchJSON(
+    return this.stackClient.fetchJSON(
       'POST',
       uri`/data/${document._type}/${document._id}/relationships/references`,
       { data: refs }
@@ -104,7 +104,7 @@ export default class FileCollection extends DocumentCollection {
 
   removeReferencesTo(document, documents) {
     const refs = documents.map(d => ({ id: d._id, type: 'io.cozy.files' }))
-    return this.client.fetchJSON(
+    return this.stackClient.fetchJSON(
       'DELETE',
       uri`/data/${document._type}/${document._id}/relationships/references`,
       { data: refs }
@@ -123,7 +123,7 @@ export default class FileCollection extends DocumentCollection {
         ])
       }
     }
-    const resp = await this.client.fetchJSON(
+    const resp = await this.stackClient.fetchJSON(
       'DELETE',
       uri`/files/${_id}`,
       undefined,
@@ -160,13 +160,13 @@ export default class FileCollection extends DocumentCollection {
   }
 
   getDownloadLinkById(id) {
-    return this.client
+    return this.stackClient
       .fetchJSON('POST', uri`/files/downloads?Id=${id}`)
       .then(this.extractResponseLinkRelated)
   }
 
   getDownloadLinkByPath(path) {
-    return this.client
+    return this.stackClient
       .fetchJSON('POST', uri`/files/downloads?Path=${path}`)
       .then(this.extractResponseLinkRelated)
   }
@@ -174,7 +174,7 @@ export default class FileCollection extends DocumentCollection {
   extractResponseLinkRelated = res => {
     let href = res.links && res.links.related
     if (!href) throw new Error('No related link in server response')
-    return this.client.fullpath(href)
+    return this.stackClient.fullpath(href)
   }
 
   async download(file) {
@@ -185,12 +185,12 @@ export default class FileCollection extends DocumentCollection {
   async downloadArchive(fileIds, notSecureFilename = 'files') {
     const filename = slugify(notSecureFilename)
     const href = await this.getArchiveLinkByIds(fileIds, filename)
-    const fullpath = this.client.fullpath(href)
+    const fullpath = this.stackClient.fullpath(href)
     forceFileDownload(fullpath, filename + '.zip')
   }
 
   async getArchiveLinkByIds(ids, name = 'files') {
-    const resp = await this.client.fetchJSON('POST', '/files/archive', {
+    const resp = await this.stackClient.fetchJSON('POST', '/files/archive', {
       data: {
         type: 'io.cozy.archives',
         attributes: {
@@ -210,7 +210,7 @@ export default class FileCollection extends DocumentCollection {
     }
     const url = `/files/${id}`
     const path = querystring.buildURL(url, params)
-    const resp = await this.client.fetchJSON('GET', path)
+    const resp = await this.stackClient.fetchJSON('GET', path)
     return {
       data: normalizeFile(resp.data),
       included: resp.included && resp.included.map(f => normalizeFile(f))
@@ -218,7 +218,7 @@ export default class FileCollection extends DocumentCollection {
   }
 
   async statByPath(path) {
-    const resp = await this.client.fetchJSON(
+    const resp = await this.stackClient.fetchJSON(
       'GET',
       uri`/files/metadata?Path=${path}`
     )
@@ -240,7 +240,7 @@ export default class FileCollection extends DocumentCollection {
         ? new Date(lastModifiedDate)
         : lastModifiedDate)
 
-    const resp = await this.client.fetchJSON(
+    const resp = await this.stackClient.fetchJSON(
       'POST',
       uri`/files/${dirId}?Name=${safeName}&Type=directory`,
       undefined,
@@ -313,7 +313,7 @@ export default class FileCollection extends DocumentCollection {
    * @returns {object}            Updated document
    */
   async updateFileMetadata(id, attributes) {
-    const resp = await this.client.fetchJSON('PATCH', uri`/files/${id}`, {
+    const resp = await this.stackClient.fetchJSON('PATCH', uri`/files/${id}`, {
       data: {
         type: 'io.cozy.files',
         id,
@@ -379,7 +379,9 @@ export default class FileCollection extends DocumentCollection {
     if (lastModifiedDate) headers['Date'] = lastModifiedDate.toGMTString()
     if (ifMatch) headers['If-Match'] = ifMatch
 
-    const resp = await this.client.fetchJSON('POST', path, data, { headers })
+    const resp = await this.stackClient.fetchJSON('POST', path, data, {
+      headers
+    })
     return {
       data: normalizeFile(resp.data)
     }

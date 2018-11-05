@@ -1,11 +1,11 @@
-import CozyClient from 'cozy-client'
+import CozyClient from '../../cozy-client/src'
 import omit from 'lodash/omit'
 
 import CozyPouchLink from '.'
 import { SCHEMA, TODO_1, TODO_2, TODO_3, TODO_4 } from './__tests__/fixtures'
 
 const mockClient = {
-  client: {
+  stackClient: {
     uri: 'http://cozy.tools:8080',
     token: {
       toBasicAuth: () => 'user:token@'
@@ -27,10 +27,7 @@ describe('CozyPouchLink', () => {
         todos: omit(TODO_DOCTYPE, 'relationships')
       }
     })
-  })
-
-  afterEach(async () => {
-    await link.reset()
+    client.setData = jest.fn()
   })
 
   afterEach(async () => {
@@ -172,9 +169,9 @@ describe('CozyPouchLink', () => {
 
     it('should delete client', async () => {
       link.registerClient(jest.fn())
-      expect(link.client).not.toBeUndefined()
+      expect(link.client).not.toBeNull()
       await link.reset()
-      expect(link.client).toBeUndefined()
+      expect(link.client).toBeNull()
     })
 
     it('should set the `synced` property to false', async () => {
@@ -185,6 +182,27 @@ describe('CozyPouchLink', () => {
     it('should forget the PouchManager instance', async () => {
       await link.reset()
       expect(link.pouches).toBeNull()
+    })
+  })
+
+  describe('onSync', () => {
+    it('should call setData with normalized data', () => {
+      link.handleOnSync({
+        'io.cozy.todos': [{ ...TODO_1, rev: '1-deadbeef' }]
+      })
+      expect(client.setData).toHaveBeenCalledTimes(1)
+      expect(client.setData).toHaveBeenCalledWith({
+        'io.cozy.todos': [
+          {
+            _id: '1',
+            _rev: '1-deadbeef',
+            _type: 'io.cozy.todos',
+            done: false,
+            id: '1',
+            label: 'Buy bread'
+          }
+        ]
+      })
     })
   })
 

@@ -35,6 +35,16 @@ expect.extend({
   }
 })
 
+beforeEach(() => {
+  jest.spyOn(global.console, 'log').mockImplementation(() => {})
+  jest.spyOn(global.console, 'info').mockImplementation(() => {})
+})
+
+afterEach(() => {
+  global.console.log.mockRestore && global.console.log.mockRestore()
+  global.console.info.mockRestore && global.console.info.mockRestore()
+})
+
 // In Node v7 unhandled promise rejections will terminate the process
 if (!process.env.LISTENING_TO_UNHANDLED_REJECTION) {
   process.on('unhandledRejection', reason => {

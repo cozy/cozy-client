@@ -11,8 +11,8 @@ export const normalizeApp = app => {
  * @module AppCollection
  */
 export default class AppCollection {
-  constructor(client) {
-    this.client = client
+  constructor(stackClient) {
+    this.stackClient = stackClient
   }
 
   /**
@@ -25,7 +25,7 @@ export default class AppCollection {
    */
   async all() {
     const path = uri`/apps/`
-    const resp = await this.client.fetchJSON('GET', path)
+    const resp = await this.stackClient.fetchJSON('GET', path)
     return {
       data: resp.data.map(app => normalizeApp(app)),
       meta: {

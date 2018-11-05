@@ -53,7 +53,7 @@ describe('CozyClient initialization', () => {
 
   it('should have registered the client on all links ', () => {
     for (const link of links) {
-      expect(link.registerClient).toHaveBeenCalledWith(client.client)
+      expect(link.registerClient).toHaveBeenCalledWith(client)
     }
   })
 

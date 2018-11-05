@@ -11,7 +11,7 @@ const normalizeSharing = sharing => normalizeDoc(sharing, 'io.cozy.sharings')
  */
 export default class SharingCollection extends DocumentCollection {
   async findByDoctype(doctype) {
-    const resp = await this.client.fetchJSON(
+    const resp = await this.stackClient.fetchJSON(
       'GET',
       uri`/sharings/doctype/${doctype}`
     )
@@ -37,7 +37,7 @@ export default class SharingCollection extends DocumentCollection {
     description,
     previewPath = null
   ) {
-    const resp = await this.client.fetchJSON('POST', '/sharings/', {
+    const resp = await this.stackClient.fetchJSON('POST', '/sharings/', {
       data: {
         type: 'io.cozy.sharings',
         attributes: {
@@ -64,7 +64,7 @@ export default class SharingCollection extends DocumentCollection {
    * @returns {string}
    */
   getDiscoveryLink(sharingId, sharecode) {
-    return this.client.fullpath(
+    return this.stackClient.fullpath(
       `/sharings/${sharingId}/discovery?sharecode=${sharecode}`
     )
   }
@@ -76,7 +76,7 @@ export default class SharingCollection extends DocumentCollection {
         type: _type
       }))
     }
-    const resp = await this.client.fetchJSON(
+    const resp = await this.stackClient.fetchJSON(
       'POST',
       uri`/sharings/${sharing._id}/recipients`,
       {
@@ -98,14 +98,14 @@ export default class SharingCollection extends DocumentCollection {
   }
 
   revokeRecipient(sharing, recipientIndex) {
-    return this.client.fetchJSON(
+    return this.stackClient.fetchJSON(
       'DELETE',
       uri`/sharings/${sharing._id}/recipients/${recipientIndex}`
     )
   }
 
   revokeSelf(sharing) {
-    return this.client.fetchJSON(
+    return this.stackClient.fetchJSON(
       'DELETE',
       uri`/sharings/${sharing._id}/recipients/self`
     )
