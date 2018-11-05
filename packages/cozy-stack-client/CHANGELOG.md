@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0"></a>
+# [4.0.0](https://github.com/cozy/cozy-client/compare/v3.8.0...v4.0.0) (2018-11-05)
+
+
+### Features
+
+* Disable console via mock in all tests ([8e67741](https://github.com/cozy/cozy-client/commit/8e67741))
+
+
+
+
 <a name="3.4.0"></a>
 # [3.4.0](https://github.com/cozy/cozy-client/compare/v3.3.2...v3.4.0) (2018-10-26)
 

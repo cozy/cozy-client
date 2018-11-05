@@ -3,7 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="3.8.0"></a>
+     <a name="4.0.0"></a>
+# [4.0.0](https://github.com/cozy/cozy-client/compare/v3.8.0...v4.0.0) (2018-11-05)
+
+
+### Code Refactoring
+
+* Client uses stackClient ([42428f7](https://github.com/cozy/cozy-client/commit/42428f7))
+
+
+### Features
+
+* Disable console via mock in all tests ([8e67741](https://github.com/cozy/cozy-client/commit/8e67741))
+* Pouch link calls setData on the client ([989b432](https://github.com/cozy/cozy-client/commit/989b432))
+
+
+### BREAKING CHANGES
+
+* registerOnLinks is no longer called with a CozyStackClient
+but with a CozyClient
+
+
+
+
+     <a name="3.8.0"></a>
 # [3.8.0](https://github.com/cozy/cozy-client/compare/v3.7.7...v3.8.0) (2018-11-02)
 
 
@@ -14,7 +37,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-      <a name="3.7.7"></a>
+   <a name="3.7.7"></a>
 ## [3.7.7](https://github.com/cozy/cozy-client/compare/v3.7.6...v3.7.7) (2018-11-02)
 
 
@@ -25,7 +48,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="3.7.6"></a>
+  <a name="3.7.6"></a>
 ## [3.7.6](https://github.com/cozy/cozy-client/compare/v3.7.5...v3.7.6) (2018-10-31)
 
 
@@ -36,7 +59,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-   <a name="3.7.5"></a>
+<a name="3.7.5"></a>
 ## [3.7.5](https://github.com/cozy/cozy-client/compare/v3.7.3...v3.7.5) (2018-10-31)
 
 
