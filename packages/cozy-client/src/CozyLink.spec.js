@@ -1,4 +1,4 @@
-import CozyLink, { chain } from '../CozyLink'
+import CozyLink, { chain } from './CozyLink'
 
 describe('CozyLink', () => {
   it('should be chainable', () => {
