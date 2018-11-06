@@ -311,7 +311,7 @@ describe('CozyClient', () => {
     it('should call the link with the query', async () => {
       await client.query(query)
       expect(requestHandler).toHaveBeenCalledTimes(1)
-      expect(requestHandler).toHaveBeenCalledWith(query)
+      expect(requestHandler.mock.calls[0][0]).toBe(query)
     })
 
     it('should handle queries with includes', async () => {
@@ -394,7 +394,7 @@ describe('CozyClient', () => {
 
     it('should call the link with the mutation', async () => {
       await client.mutate(mutation)
-      expect(requestHandler).toHaveBeenCalledWith(mutation)
+      expect(requestHandler.mock.calls[0][0]).toBe(mutation)
     })
 
     it('should then dispatch a RECEIVE_MUTATION_RESULT action', async () => {
