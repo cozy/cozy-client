@@ -15,6 +15,7 @@ const toLink = handler =>
 
 const defaultLinkHandler = (operation, result) => {
   if (result) return result
+  else if (operation.execute) return operation.execute()
   else
     throw new Error(
       `No link could handle operation ${JSON.stringify(operation)}`
