@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-     <a name="4.0.0"></a>
+      <a name="4.1.0"></a>
+# [4.1.0](https://github.com/cozy/cozy-client/compare/v4.0.0...v4.1.0) (2018-11-07)
+
+
+### Features
+
+* Add pouch parameters ([f783916](https://github.com/cozy/cozy-client/commit/f783916))
+
+
+
+
+      <a name="4.0.0"></a>
 # [4.0.0](https://github.com/cozy/cozy-client/compare/v3.8.0...v4.0.0) (2018-11-05)
 
 
@@ -26,7 +37,7 @@ but with a CozyClient
 
 
 
-     <a name="3.8.0"></a>
+   <a name="3.8.0"></a>
 # [3.8.0](https://github.com/cozy/cozy-client/compare/v3.7.7...v3.8.0) (2018-11-02)
 
 
@@ -37,7 +48,7 @@ but with a CozyClient
 
 
 
-   <a name="3.7.7"></a>
+ <a name="3.7.7"></a>
 ## [3.7.7](https://github.com/cozy/cozy-client/compare/v3.7.6...v3.7.7) (2018-11-02)
 
 
@@ -48,7 +59,7 @@ but with a CozyClient
 
 
 
-  <a name="3.7.6"></a>
+<a name="3.7.6"></a>
 ## [3.7.6](https://github.com/cozy/cozy-client/compare/v3.7.5...v3.7.6) (2018-10-31)
 
 
