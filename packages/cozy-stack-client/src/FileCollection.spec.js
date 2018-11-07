@@ -49,6 +49,10 @@ describe('FileCollection', () => {
       client.fetchJSON.mockReturnValue(Promise.resolve(STAT_BY_ID_RESPONSE))
     })
 
+    afterAll(() => {
+      client.fetchJSON.mockReset()
+    })
+
     it('should call the right route', async () => {
       await collection.statById(42)
       expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/files/42')
@@ -78,10 +82,13 @@ describe('FileCollection', () => {
     }
 
     beforeAll(() => {
-      client.fetch.mockReset()
       client.fetchJSON.mockReturnValue(
         Promise.resolve(CREATE_DIRECTORY_RESPONSE)
       )
+    })
+
+    afterAll(() => {
+      client.fetchJSON.mockReset()
     })
 
     it('should call the right route', async () => {
@@ -107,7 +114,7 @@ describe('FileCollection', () => {
 
   describe('createDirectoryByPath', () => {
     beforeEach(() => {
-      collection.statById = jest.fn(() =>
+      jest.spyOn(collection, 'statById').mockImplementation(() =>
         Promise.resolve({
           data: {
             _id: 'io.cozy.files.root-dir',
@@ -117,7 +124,7 @@ describe('FileCollection', () => {
           }
         })
       )
-      collection.statByPath = jest.fn(
+      jest.spyOn(collection, 'statByPath').mockImplementation(
         path =>
           path === '/foo'
             ? Promise.resolve({
@@ -142,7 +149,7 @@ describe('FileCollection', () => {
                 )
               )
       )
-      collection.createDirectory = jest.fn(({ name }) =>
+      jest.spyOn(collection, 'createDirectory').mockImplementation(({ name }) =>
         Promise.resolve(
           name === 'bar'
             ? {
@@ -169,12 +176,18 @@ describe('FileCollection', () => {
       )
     })
 
+    afterEach(() => {
+      collection.statById.mockRestore()
+      collection.statByPath.mockRestore()
+      collection.createDirectory.mockRestore()
+    })
+
     it('should return the root dir when given an empty path', async () => {
       const resp = await collection.createDirectoryByPath('/')
       expect(resp.data._id).toBe('io.cozy.files.root-dir')
     })
 
-    it('should work...(naming fatigue)', async () => {
+    it('should create the whole path', async () => {
       const resp = await collection.createDirectoryByPath('/foo/bar/baz')
       expect(resp.data._id).toBe('7c217f9bf5e7118a34627f1ab800243b')
       expect(collection.statByPath).toHaveBeenCalledTimes(3)
@@ -190,9 +203,10 @@ describe('FileCollection', () => {
     const client = new CozyStackClient()
     const collection = new FileCollection('io.cozy.files', client)
 
-    const spy = jest.spyOn(client, 'fetchJSON').mockReturnValue({
-      data: [],
-      meta: {}
+    const spy = jest.spyOn(client, 'fetchJSON')
+
+    beforeEach(() => {
+      spy.mockClear()
     })
 
     const doc = {
@@ -201,6 +215,10 @@ describe('FileCollection', () => {
     }
 
     it('should pass all the filters', () => {
+      spy.mockReturnValue({
+        data: [],
+        meta: {}
+      })
       collection.findReferencedBy(doc)
       expect(spy).toMatchSnapshot()
     })
@@ -229,6 +247,14 @@ describe('FileCollection', () => {
   })
 
   describe('updateFileMetadata', () => {
+    beforeEach(() => {
+      client.fetchJSON.mockReturnValue({ data: [] })
+    })
+
+    afterEach(() => {
+      client.fetchJSON.mockClear()
+    })
+
     it('should call the right route', async () => {
       await collection.updateFileMetadata('42', {
         dir_id: '123'
