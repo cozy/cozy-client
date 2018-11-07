@@ -4,7 +4,7 @@
 // See https://github.com/cozy/cozy-client/pull/239 for example
 // on how to use fake timers with setTimeout created in promises.
 
-import PouchManager from './PouchManager'
+import PouchManager, { LOCALSTORAGE_SYNCED_KEY } from './PouchManager'
 import * as mocks from './__tests__/mocks'
 
 jest.mock('pouchdb')
@@ -132,5 +132,89 @@ describe('PouchManager', () => {
     const options = { ...managerOptions, pouch: { options: pouchOptions } }
     new PouchManager(['io.cozy.todos'], options)
     expect(PouchDB).toHaveBeenCalledWith('io.cozy.todos', pouchOptions)
+  })
+
+  describe('getPersistedSyncedDoctypes', () => {
+    it('Should return an empty array if local storage is empty', () => {
+      const manager = new PouchManager(['io.cozy.todos'], managerOptions)
+
+      expect(manager.getPersistedSyncedDoctypes()).toEqual([])
+    })
+
+    it('Should return an empty array if local storage contains something that is not an array', () => {
+      localStorage.__STORE__[LOCALSTORAGE_SYNCED_KEY] = 'true'
+      const manager = new PouchManager(['io.cozy.todos'], managerOptions)
+
+      expect(manager.getPersistedSyncedDoctypes()).toEqual([])
+    })
+
+    it('Should return the list of doctypes if local storage contains one', () => {
+      const persistedSyncedDoctypes = ['io.cozy.todos']
+      localStorage.__STORE__[LOCALSTORAGE_SYNCED_KEY] = JSON.stringify(
+        persistedSyncedDoctypes
+      )
+      const manager = new PouchManager(['io.cozy.todos'], managerOptions)
+
+      expect(manager.getPersistedSyncedDoctypes()).toEqual(
+        persistedSyncedDoctypes
+      )
+    })
+  })
+
+  describe('persistSyncedDoctypes', () => {
+    it('Should put the list of synced doctypes in localStorage', () => {
+      const manager = new PouchManager(['io.cozy.todos'], managerOptions)
+      manager.syncedDoctypes = ['io.cozy.todos']
+      manager.persistSyncedDoctypes()
+
+      expect(localStorage.__STORE__[LOCALSTORAGE_SYNCED_KEY]).toEqual(
+        JSON.stringify(manager.syncedDoctypes)
+      )
+    })
+  })
+
+  describe('addSyncedDoctype', () => {
+    it('Should add the doctype to synced doctypes', () => {
+      const manager = new PouchManager(['io.cozy.todos'], managerOptions)
+      manager.addSyncedDoctype('io.cozy.todos')
+
+      expect(manager.syncedDoctypes).toEqual(['io.cozy.todos'])
+    })
+
+    it('Should persist the new synced doctypes list', () => {
+      const manager = new PouchManager(['io.cozy.todos'], managerOptions)
+      manager.persistSyncedDoctypes = jest.fn()
+      manager.addSyncedDoctype('io.cozy.todos')
+
+      expect(manager.persistSyncedDoctypes).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('isSynced', () => {
+    let manager
+
+    beforeEach(() => {
+      manager = new PouchManager(['io.cozy.todos'], managerOptions)
+    })
+
+    it('Should return true if the doctype is synced', () => {
+      manager.addSyncedDoctype('io.cozy.todos')
+
+      expect(manager.isSynced('io.cozy.todos')).toBe(true)
+    })
+
+    it('Should return false if the doctype is not synced', () => {
+      expect(manager.isSynced('io.cozy.todos')).toBe(false)
+    })
+  })
+
+  describe('destroyPersistedSyncedDoctypes', () => {
+    it('Should destroy the local storage item', () => {
+      manager.destroyPersistedSyncedDoctypes()
+
+      expect(localStorage.removeItem).toHaveBeenLastCalledWith(
+        LOCALSTORAGE_SYNCED_KEY
+      )
+    })
   })
 })

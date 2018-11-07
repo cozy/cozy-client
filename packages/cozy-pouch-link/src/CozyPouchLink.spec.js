@@ -42,7 +42,6 @@ describe('CozyPouchLink', () => {
   describe('request handling', () => {
     it('should check if the doctype is supported and forward if not', async () => {
       const query = client.all('io.cozy.rockets')
-      link.synced = true
       await link.request(query, null, () => {
         expect(true).toBe(true)
         return Promise.resolve()
@@ -61,7 +60,7 @@ describe('CozyPouchLink', () => {
   describe('queries', () => {
     const docs = [TODO_1, TODO_2, TODO_3, TODO_4]
     beforeEach(() => {
-      link.synced = true
+      link.pouches.isSynced = jest.fn().mockReturnValue(true)
     })
     it('should be able to execute a query', async () => {
       const db = link.getPouch(TODO_DOCTYPE)
@@ -116,7 +115,7 @@ describe('CozyPouchLink', () => {
 
   describe('mutations', async () => {
     beforeEach(() => {
-      link.synced = true
+      link.pouches.isSynced = jest.fn().mockReturnValue(true)
     })
 
     it('should be possible to save a new document', async () => {
@@ -172,11 +171,6 @@ describe('CozyPouchLink', () => {
       expect(link.client).not.toBeNull()
       await link.reset()
       expect(link.client).toBeNull()
-    })
-
-    it('should set the `synced` property to false', async () => {
-      await link.reset()
-      expect(link.synced).toBe(false)
     })
 
     it('should forget the PouchManager instance', async () => {

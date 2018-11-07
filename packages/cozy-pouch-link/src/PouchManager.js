@@ -72,6 +72,8 @@ const startReplication = (pouch, getReplicationURL) => {
   return promise
 }
 
+export const LOCALSTORAGE_SYNCED_KEY = 'cozy-client-pouch-link-synced'
+
 /**
  * - Creates/Destroys the pouches
  * - Replicates periodically
@@ -84,6 +86,7 @@ export default class PouchManager {
     this.pouches = fromPairs(
       doctypes.map(doctype => [doctype, new PouchDB(doctype, pouchOptions)])
     )
+    this.syncedDoctypes = this.getPersistedSyncedDoctypes()
     this.options = options
     this.getReplicationURL = options.getReplicationURL
     this.listenerLaunched = false
@@ -138,6 +141,7 @@ export default class PouchManager {
   destroy() {
     this.stopReplicationLoop()
     this.removeListener()
+    this.destroyPersistedSyncedDoctypes()
     return Promise.all(
       Object.values(this.pouches).map(pouch => pouch.destroy())
     )
@@ -218,6 +222,8 @@ export default class PouchManager {
 
       const getReplicationURL = () => this.getReplicationURL(doctype)
       return startReplication(pouch, getReplicationURL).then(res => {
+        this.addSyncedDoctype(doctype)
+
         if (process.env.NODE_ENV !== 'production') {
           console.log(
             'PouchManager: Replication for ' + doctype + ' ended',
@@ -272,5 +278,38 @@ export default class PouchManager {
 
   getPouch(doctype) {
     return this.pouches[doctype]
+  }
+
+  getPersistedSyncedDoctypes() {
+    const item = window.localStorage.getItem(LOCALSTORAGE_SYNCED_KEY)
+
+    // We check if the item in local storage is an array because we previously stored a boolean
+    if (!item || !Array.isArray(JSON.parse(item))) {
+      return []
+    }
+
+    return JSON.parse(item)
+  }
+
+  persistSyncedDoctypes() {
+    window.localStorage.setItem(
+      LOCALSTORAGE_SYNCED_KEY,
+      JSON.stringify(this.syncedDoctypes)
+    )
+  }
+
+  addSyncedDoctype(doctype) {
+    if (!this.isSynced(doctype)) {
+      this.syncedDoctypes.push(doctype)
+      this.persistSyncedDoctypes()
+    }
+  }
+
+  isSynced(doctype) {
+    return this.syncedDoctypes.includes(doctype)
+  }
+
+  destroyPersistedSyncedDoctypes() {
+    window.localStorage.removeItem(LOCALSTORAGE_SYNCED_KEY)
   }
 }
