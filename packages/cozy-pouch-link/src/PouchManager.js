@@ -2,6 +2,8 @@
 
 import PouchDB from 'pouchdb'
 import fromPairs from 'lodash/fromPairs'
+import forEach from 'lodash/forEach'
+import get from 'lodash/get'
 import map from 'lodash/map'
 import zip from 'lodash/zip'
 import * as promises from './promises'
@@ -76,8 +78,11 @@ const startReplication = (pouch, getReplicationURL) => {
  */
 export default class PouchManager {
   constructor(doctypes, options) {
+    const pouchPlugins = get(options, 'pouch.plugins', [])
+    const pouchOptions = get(options, 'pouch.options', {})
+    forEach(pouchPlugins, plugin => PouchDB.plugin(plugin))
     this.pouches = fromPairs(
-      doctypes.map(doctype => [doctype, new PouchDB(doctype)])
+      doctypes.map(doctype => [doctype, new PouchDB(doctype, pouchOptions)])
     )
     this.options = options
     this.getReplicationURL = options.getReplicationURL
