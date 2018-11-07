@@ -281,7 +281,7 @@ export default class FileCollection extends DocumentCollection {
       if (errors && errors.length && errors[0].status === '404') {
         return this.createDirectory({
           name: safeName,
-          dirID: parentDirectory && parentDirectory._id
+          dirId: parentDirectory && parentDirectory._id
         })
       }
       throw errors

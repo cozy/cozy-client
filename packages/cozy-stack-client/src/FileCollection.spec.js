@@ -180,7 +180,7 @@ describe('FileCollection', () => {
       expect(collection.statByPath).toHaveBeenCalledTimes(3)
       expect(collection.createDirectory).toHaveBeenCalledTimes(2)
       expect(collection.createDirectory).toHaveBeenLastCalledWith({
-        dirID: '9c217f9bf5e7118a34627f1ab800243b',
+        dirId: '9c217f9bf5e7118a34627f1ab800243b',
         name: 'baz'
       })
     })
