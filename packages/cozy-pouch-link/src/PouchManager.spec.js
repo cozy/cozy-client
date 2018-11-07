@@ -8,6 +8,7 @@ import PouchManager from './PouchManager'
 import * as mocks from './__tests__/mocks'
 
 jest.mock('pouchdb')
+import PouchDB from 'pouchdb'
 
 const sleep = delay => {
   return new Promise(resolve => {
@@ -17,16 +18,18 @@ const sleep = delay => {
 
 describe('PouchManager', () => {
   let manager,
+    managerOptions,
     getReplicationURL,
     onSync = jest.fn()
 
   beforeEach(() => {
     getReplicationURL = () => 'replicationURL'
-    manager = new PouchManager(['io.cozy.todos'], {
+    managerOptions = {
       replicationDelay: 16,
       getReplicationURL: () => getReplicationURL(),
       onSync
-    })
+    }
+    manager = new PouchManager(['io.cozy.todos'], managerOptions)
     const pouch = manager.getPouch('io.cozy.todos')
     const replication = mocks.pouchReplication({
       direction: 'pull',
@@ -39,6 +42,8 @@ describe('PouchManager', () => {
     })
     pouch.sync = jest.fn().mockImplementation(replication)
     pouch.info = jest.fn().mockImplementation(() => Promise.resolve())
+    PouchDB.mockReset()
+    PouchDB.plugin.mockReset()
   })
 
   afterEach(() => {
@@ -114,5 +119,18 @@ describe('PouchManager', () => {
         }
       ]
     })
+  })
+
+  it('should add pouch plugin', async () => {
+    const options = { ...managerOptions, pouch: { plugins: ['myPlugin'] } }
+    new PouchManager(['io.cozy.todos'], options)
+    expect(PouchDB.plugin).toHaveBeenCalledTimes(1)
+  })
+
+  it('should instanciate pouch with options', async () => {
+    const pouchOptions = { adapter: 'cordova-sqlite', location: 'default' }
+    const options = { ...managerOptions, pouch: { options: pouchOptions } }
+    new PouchManager(['io.cozy.todos'], options)
+    expect(PouchDB).toHaveBeenCalledWith('io.cozy.todos', pouchOptions)
   })
 })
