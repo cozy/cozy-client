@@ -15,7 +15,6 @@ const parseMutationResult = (original, res) => {
   return { ...original, ...omit(res, 'ok') }
 }
 
-const LOCALSTORAGE_SYNCED_KEY = 'cozy-client-pouch-link-synced'
 const DEFAULT_OPTIONS = {
   replicationInterval: 30 * 1000
 }
@@ -58,7 +57,6 @@ export default class PouchLink extends CozyLink {
     }
     this.doctypes = doctypes
     this.indexes = {}
-    this.synced = window.localStorage.getItem(LOCALSTORAGE_SYNCED_KEY) || false
   }
 
   getReplicationURL(doctype) {
@@ -110,8 +108,6 @@ export default class PouchLink extends CozyLink {
 
     this.pouches = null
     this.client = null
-    window.localStorage.removeItem(LOCALSTORAGE_SYNCED_KEY)
-    this.synced = false
   }
 
   /**
@@ -121,8 +117,6 @@ export default class PouchLink extends CozyLink {
    */
   handleOnSync(doctypeUpdates) {
     const normalizedData = mapValues(doctypeUpdates, normalizeAll)
-    this.synced = true
-    window.localStorage.setItem(LOCALSTORAGE_SYNCED_KEY, true)
     if (this.client) {
       this.client.setData(normalizedData)
     }
@@ -194,7 +188,7 @@ export default class PouchLink extends CozyLink {
   request(operation, result = null, forward = doNothing) {
     const doctype = getDoctypeFromOperation(operation)
 
-    if (!this.synced) {
+    if (!this.pouches.isSynced(doctype)) {
       if (process.env.NODE_ENV !== 'production') {
         console.info(
           `Tried to access local ${doctype} but Cozy Pouch is not synced yet. Forwarding the operation to next link`
