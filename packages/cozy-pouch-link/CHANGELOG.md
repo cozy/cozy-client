@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.2.0"></a>
+# [4.2.0](https://github.com/cozy/cozy-client/compare/v4.1.0...v4.2.0) (2018-11-08)
+
+
+### Features
+
+* **pouch:** Manage sync status by doctype ([a2d4923](https://github.com/cozy/cozy-client/commit/a2d4923))
+
+
+
+
 <a name="4.1.0"></a>
 # [4.1.0](https://github.com/cozy/cozy-client/compare/v4.0.0...v4.1.0) (2018-11-07)
 
