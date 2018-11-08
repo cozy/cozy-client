@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-       <a name="4.2.0"></a>
+      <a name="4.2.1"></a>
+## [4.2.1](https://github.com/cozy/cozy-client/compare/v4.2.0...v4.2.1) (2018-11-08)
+
+
+### Bug Fixes
+
+* Case typo ([8b6acc2](https://github.com/cozy/cozy-client/commit/8b6acc2))
+
+
+
+
+      <a name="4.2.0"></a>
 # [4.2.0](https://github.com/cozy/cozy-client/compare/v4.1.0...v4.2.0) (2018-11-08)
 
 
@@ -14,7 +25,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-       <a name="4.1.0"></a>
+     <a name="4.1.0"></a>
 # [4.1.0](https://github.com/cozy/cozy-client/compare/v4.0.0...v4.1.0) (2018-11-07)
 
 
@@ -25,7 +36,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="4.0.0"></a>
+   <a name="4.0.0"></a>
 # [4.0.0](https://github.com/cozy/cozy-client/compare/v3.8.0...v4.0.0) (2018-11-05)
 
 
@@ -48,7 +59,7 @@ but with a CozyClient
 
 
 
-  <a name="3.8.0"></a>
+<a name="3.8.0"></a>
 # [3.8.0](https://github.com/cozy/cozy-client/compare/v3.7.7...v3.8.0) (2018-11-02)
 
 
