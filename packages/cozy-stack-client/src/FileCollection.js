@@ -79,7 +79,7 @@ export default class FileCollection extends DocumentCollection {
       'page[limit]': limit,
       'page[skip]': skip
     }
-    const url = `/data/${document._type}/${
+    const url = uri`/data/${document._type}/${
       document._id
     }/relationships/references`
     const path = querystring.buildURL(url, params)
@@ -208,7 +208,7 @@ export default class FileCollection extends DocumentCollection {
       limit,
       skip
     }
-    const url = `/files/${id}`
+    const url = uri`/files/${id}`
     const path = querystring.buildURL(url, params)
     const resp = await this.stackClient.fetchJSON('GET', path)
     return {
