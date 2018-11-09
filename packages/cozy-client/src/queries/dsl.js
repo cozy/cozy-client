@@ -8,6 +8,7 @@ export class QueryDefinition {
     ids,
     selector,
     fields,
+    indexedFields,
     sort,
     includes,
     referenced,
@@ -19,6 +20,7 @@ export class QueryDefinition {
     this.ids = ids
     this.selector = selector
     this.fields = fields
+    this.indexedFields = indexedFields
     this.sort = sort
     this.includes = includes
     this.referenced = referenced
@@ -32,6 +34,10 @@ export class QueryDefinition {
 
   select(fields) {
     return new QueryDefinition({ ...this.toDefinition(), fields })
+  }
+
+  index(indexedFields) {
+    return new QueryDefinition({ ...this.toDefinition(), indexedFields })
   }
 
   sortBy(sort) {
@@ -72,6 +78,7 @@ export class QueryDefinition {
       id: this.id,
       selector: this.selector,
       fields: this.fields,
+      indexedFields: this.indexedFields,
       sort: this.sort,
       includes: this.includes,
       referenced: this.referenced,
