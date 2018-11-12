@@ -48,7 +48,7 @@ export class QueryDefinition {
 
   /**
    * Query documents with a [mango selector](http://docs.couchdb.org/en/latest/api/database/find.html#find-selectors).
-   * Each field passed in the selector will be indexed, except if the indexField is used.
+   * Each field passed in the selector will be indexed, except if the indexField option is used.
    *
    * @param {Object} selector   The Mango selector.
    * @return {QueryDefinition}  The QueryDefinition object.

@@ -61,10 +61,10 @@ in order to synchronize your document with the store</p>
 <dt><a href="#queryConnect">queryConnect(querySpecs)</a> ⇒ <code>function</code></dt>
 <dd><p>HOC creator to connect component to several queries in a declarative manner</p>
 </dd>
-<dt><a href="#optimizeDoctypeQueries">optimizeDoctypeQueries(queries)</a> ⇒ <code>Array.QueryDefinition</code></dt>
+<dt><a href="#optimizeDoctypeQueries">optimizeDoctypeQueries(queries)</a> ⇒ <code>Array.&lt;QueryDefinition&gt;</code></dt>
 <dd><p>Optimize queries on a single doctype</p>
 </dd>
-<dt><a href="#optimizeQueries">optimizeQueries(queries)</a> ⇒ <code>Array.QueryDefinition</code></dt>
+<dt><a href="#optimizeQueries">optimizeQueries(queries)</a> ⇒ <code>Array.&lt;QueryDefinition&gt;</code></dt>
 <dd><p>Reduce the number of queries used to fetch documents.</p>
 <ul>
 <li>Deduplication of queries</li>
@@ -357,7 +357,7 @@ Represents a QueryDefinition.
 
 #### queryDefinition.where(selector) ⇒ <code>QueryDefinition</code>
 Query documents with a [mango selector](http://docs.couchdb.org/en/latest/api/database/find.html#find-selectors).
-Each field passed in the selector will be indexed, except if the indexField is used.
+Each field passed in the selector will be indexed, except if the indexField option is used.
 
 **Kind**: instance method of [<code>QueryDefinition</code>](#module_QueryDefinition.QueryDefinition)  
 **Returns**: <code>QueryDefinition</code> - The QueryDefinition object.  
@@ -925,30 +925,30 @@ HOC creator to connect component to several queries in a declarative manner
 
 <a name="optimizeDoctypeQueries"></a>
 
-## optimizeDoctypeQueries(queries) ⇒ <code>Array.QueryDefinition</code>
+## optimizeDoctypeQueries(queries) ⇒ <code>Array.&lt;QueryDefinition&gt;</code>
 Optimize queries on a single doctype
 
 **Kind**: global function  
-**Returns**: <code>Array.QueryDefinition</code> - Optimized queries  
+**Returns**: <code>Array.&lt;QueryDefinition&gt;</code> - Optimized queries  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| queries | <code>Array.QueryDefinition</code> | Queries of a same doctype |
+| queries | <code>Array.&lt;QueryDefinition&gt;</code> | Queries of a same doctype |
 
 <a name="optimizeQueries"></a>
 
-## optimizeQueries(queries) ⇒ <code>Array.QueryDefinition</code>
+## optimizeQueries(queries) ⇒ <code>Array.&lt;QueryDefinition&gt;</code>
 Reduce the number of queries used to fetch documents.
 
 - Deduplication of queries
 - Groups id queries
 
 **Kind**: global function  
-**Returns**: <code>Array.QueryDefinition</code> - Optimized queries  
+**Returns**: <code>Array.&lt;QueryDefinition&gt;</code> - Optimized queries  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| queries | <code>Array.QueryDefinition</code> | Queries to optimized |
+| queries | <code>Array.&lt;QueryDefinition&gt;</code> | Queries to optimized |
 
 <a name="normalizeDoctypeSchema"></a>
 
