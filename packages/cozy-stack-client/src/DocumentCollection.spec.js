@@ -332,9 +332,9 @@ describe('DocumentCollection', () => {
 
     it('should index the specified fields', async () => {
       const collection = new DocumentCollection('io.cozy.todos', client)
-      const resp = await collection.find(
+      await collection.find(
         { done: { $exists: true } },
-        { indexedFields: ['label'], sort: [{ label: 'desc' }]}
+        { indexedFields: ['label'], sort: [{ label: 'desc' }] }
       )
       expect(client.fetchJSON).toHaveBeenLastCalledWith(
         'POST',
