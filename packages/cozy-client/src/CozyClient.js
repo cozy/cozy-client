@@ -55,10 +55,10 @@ const deprecatedHandler = msg => ({
  */
 export default class CozyClient {
   /**
-   * @param  {Object}    options
-   * @param  {Link}    options.link   - Backward compatibility
-   * @param  {[Link]}    options.links  - List of links
-   * @param  {Object}    options.schema - Schema description for each doctypes
+   * @param  {Object}       options
+   * @param  {Link}         options.link   - Backward compatibility
+   * @param  {Array.Link}   options.links  - List of links
+   * @param  {Object}       options.schema - Schema description for each doctypes
    */
   constructor({ link, links, schema = {}, ...options }) {
     if (link) {
