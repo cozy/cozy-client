@@ -336,6 +336,11 @@ describe('DocumentCollection', () => {
         { done: { $exists: true } },
         { indexedFields: ['label'], sort: [{ label: 'desc' }] }
       )
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/data/io.cozy.todos/_index',
+        { index: { fields: ['label'] } }
+      )
       expect(client.fetchJSON).toHaveBeenLastCalledWith(
         'POST',
         '/data/io.cozy.todos/_find',
