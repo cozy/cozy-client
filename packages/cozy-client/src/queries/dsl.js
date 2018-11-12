@@ -1,6 +1,9 @@
 const isString = require('lodash/isString')
 
-// Queries
+/**
+ * API to query documents
+ * @module QueryDefinition
+ */
 export class QueryDefinition {
   constructor({
     doctype,
@@ -28,18 +31,39 @@ export class QueryDefinition {
     this.skip = skip
   }
 
+  /**
+   * Query documents with a [mango selector](http://docs.couchdb.org/en/latest/api/database/find.html#find-selectors).
+   * Each field passed in the selector will be indexed, except if the indexField is used.
+   *
+   * @param {Object} selector The Mango selector.
+   */
   where(selector) {
     return new QueryDefinition({ ...this.toDefinition(), selector })
   }
 
+  /**
+   * Specify which fields of each object should be returned. If it is omitted, the entire object is returned.
+   *
+   * @param {Array} fields The fields to return.
+   */
   select(fields) {
     return new QueryDefinition({ ...this.toDefinition(), fields })
   }
 
-  index(indexedFields) {
+  /**
+   * Specify which fields should be indexed. This prevent the automatic indexing of the mango fields.
+   *
+   * @param {Array} fields The fields to index.
+   */
+  indexFields(indexedFields) {
     return new QueryDefinition({ ...this.toDefinition(), indexedFields })
   }
 
+  /**
+   * Specify how to sort documents, following the [sort syntax](http://docs.couchdb.org/en/latest/api/database/find.html#find-sort)
+   *
+   * @param {Array} sort The list of field name and direction pairs.
+   */
   sortBy(sort) {
     if (isString(sort)) {
       throw new Error(
@@ -49,6 +73,12 @@ export class QueryDefinition {
     return new QueryDefinition({ ...this.toDefinition(), sort })
   }
 
+  /**
+   * Includes documents having a relationships with the ones queried.
+   * For example, query albums including the photos.
+   *
+   * @param {Array} includes The documents to include.
+   */
   include(includes) {
     if (!Array.isArray(includes)) {
       throw new Error('include() takes an array of relationship names')
@@ -56,6 +86,11 @@ export class QueryDefinition {
     return new QueryDefinition({ ...this.toDefinition(), includes })
   }
 
+  /**
+   * Maximum number of documents returned, useful for pagination. Default is 100.
+   *
+   * @param {number} limit The document's limit.
+   */
   limitBy(limit) {
     return new QueryDefinition({ ...this.toDefinition(), limit })
   }
@@ -64,10 +99,20 @@ export class QueryDefinition {
     return new QueryDefinition({ ...this.toDefinition(), limit: null })
   }
 
+  /**
+   * Skip the first ‘n’ documents, where ‘n’ is the value specified.
+   *
+   * @param {number} skip The number of documents to skip.
+   */
   offset(skip) {
     return new QueryDefinition({ ...this.toDefinition(), skip })
   }
 
+  /**
+   * Use the [file reference system](https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/)
+   *
+   * @param {Object} document The reference document
+   */
   referencedBy(document) {
     return new QueryDefinition({ ...this.toDefinition(), referenced: document })
   }

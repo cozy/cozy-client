@@ -329,6 +329,24 @@ describe('DocumentCollection', () => {
       const resp = await collection.find({ done: false })
       expect(resp.data[0]).toHaveDocumentIdentity()
     })
+
+    it('should index the specified fields', async () => {
+      const collection = new DocumentCollection('io.cozy.todos', client)
+      const resp = await collection.find(
+        { done: { $exists: true } },
+        { indexedFields: ['label'], sort: [{ label: 'desc' }]}
+      )
+      expect(client.fetchJSON).toHaveBeenLastCalledWith(
+        'POST',
+        '/data/io.cozy.todos/_find',
+        {
+          skip: 0,
+          selector: { done: { $exists: true } },
+          sort: [{ label: 'desc' }],
+          use_index: '_design/123456'
+        }
+      )
+    })
   })
 
   describe('create', () => {
