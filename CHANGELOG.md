@@ -3,7 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="4.4.0"></a>
+       <a name="4.5.0"></a>
+# [4.5.0](https://github.com/cozy/cozy-client/compare/v4.4.0...v4.5.0) (2018-11-13)
+
+
+### Bug Fixes
+
+* Lint ([c7bc4b1](https://github.com/cozy/cozy-client/commit/c7bc4b1))
+
+
+### Features
+
+* Add index method to QueryDefinition ([70de235](https://github.com/cozy/cozy-client/commit/70de235))
+
+
+
+
+       <a name="4.4.0"></a>
 # [4.4.0](https://github.com/cozy/cozy-client/compare/v4.3.0...v4.4.0) (2018-11-09)
 
 
@@ -14,7 +30,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-      <a name="4.3.0"></a>
+     <a name="4.3.0"></a>
 # [4.3.0](https://github.com/cozy/cozy-client/compare/v4.2.1...v4.3.0) (2018-11-09)
 
 
@@ -25,7 +41,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-   <a name="4.2.1"></a>
+  <a name="4.2.1"></a>
 ## [4.2.1](https://github.com/cozy/cozy-client/compare/v4.2.0...v4.2.1) (2018-11-08)
 
 
@@ -36,7 +52,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
- <a name="4.2.0"></a>
+<a name="4.2.0"></a>
 # [4.2.0](https://github.com/cozy/cozy-client/compare/v4.1.0...v4.2.0) (2018-11-08)
 
 
