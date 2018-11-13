@@ -3,6 +3,9 @@
 <dl>
 <dt><a href="#module_CozyClient">CozyClient</a></dt>
 <dd></dd>
+<dt><a href="#module_QueryDefinition">QueryDefinition</a></dt>
+<dd><p>API to query documents</p>
+</dd>
 <dt><a href="#module_AppCollection">AppCollection</a></dt>
 <dd></dd>
 <dt><a href="#module_CozyStackClient">CozyStackClient</a></dt>
@@ -29,6 +32,12 @@ files associated to a specific document</p>
 ## Constants
 
 <dl>
+<dt><a href="#resolveClass">resolveClass</a></dt>
+<dd><p>Returns the relationship class for a given doctype/type.</p>
+<p>In the schema definition, some classes have string aliases
+so you do not have to import directly the association.</p>
+<p>Some doctypes can have built-in overriden relationships.</p>
+</dd>
 <dt><a href="#encode">encode</a></dt>
 <dd><p>Encode an object as querystring, values are encoded as
 URI components, keys are not.</p>
@@ -42,6 +51,26 @@ Any undefined parameter is removed.</p>
 ## Functions
 
 <dl>
+<dt><a href="#addById">addById()</a></dt>
+<dd><p>Add a referenced document by id. You need to call save()
+in order to synchronize your document with the store</p>
+</dd>
+<dt><a href="#withClient">withClient(Component)</a> ⇒ <code>function</code></dt>
+<dd><p>HOC to provide client from context as prop</p>
+</dd>
+<dt><a href="#queryConnect">queryConnect(querySpecs)</a> ⇒ <code>function</code></dt>
+<dd><p>HOC creator to connect component to several queries in a declarative manner</p>
+</dd>
+<dt><a href="#optimizeDoctypeQueries">optimizeDoctypeQueries(queries)</a> ⇒ <code>Array.&lt;QueryDefinition&gt;</code></dt>
+<dd><p>Optimize queries on a single doctype</p>
+</dd>
+<dt><a href="#optimizeQueries">optimizeQueries(queries)</a> ⇒ <code>Array.&lt;QueryDefinition&gt;</code></dt>
+<dd><p>Reduce the number of queries used to fetch documents.</p>
+<ul>
+<li>Deduplication of queries</li>
+<li>Groups id queries</li>
+</ul>
+</dd>
 <dt><a href="#normalizeDoctypeSchema">normalizeDoctypeSchema()</a></dt>
 <dd><p>Returns a normalized schema object from the schema definition.</p>
 <ul>
@@ -60,11 +89,10 @@ is included in the relationship</li>
 <dt><a href="#validate">validate()</a></dt>
 <dd><p>Validates a document considering the descriptions in schema.attributes.</p>
 </dd>
-<dt><a href="#withClient">withClient(Component)</a> ⇒ <code>function</code></dt>
-<dd><p>HOC to provide client from context as prop</p>
-</dd>
-<dt><a href="#queryConnect">queryConnect(querySpecs)</a> ⇒ <code>function</code></dt>
-<dd><p>HOC creator to connect component to several queries in a declarative manner</p>
+<dt><a href="#handleOnSync">handleOnSync()</a></dt>
+<dd><p>Receives PouchDB updates (documents grouped by doctype).
+Normalizes the data (.id -&gt; ._id, .rev -&gt; _rev).
+Passes the data to the client and to the onSync handler.</p>
 </dd>
 <dt><a href="#startReplication">startReplication()</a> ⇒ <code>void</code></dt>
 <dd><p>User of the link can call this to start ongoing replications.
@@ -74,6 +102,15 @@ Typically, it can be used when the application regains focus.</p>
 <dd><p>User of the link can call this to stop ongoing replications.
 Typically, it can be used when the applications loses focus.</p>
 </dd>
+<dt><a href="#defaultSelector">defaultSelector(options)</a> ⇒ <code>Array</code></dt>
+<dd><p>Compute fields that should be indexed for a mango
+query to work</p>
+</dd>
+<dt><a href="#ensureDatabasesExist">ensureDatabasesExist()</a></dt>
+<dd><p>Via a call to info() we ensure the database exist on the
+remote side. This is done only once since after the first
+call, we are sure that the databases have been created.</p>
+</dd>
 <dt><a href="#startReplicationLoop">startReplicationLoop()</a></dt>
 <dd><p>Starts periodic syncing of the pouches</p>
 </dd>
@@ -82,10 +119,6 @@ Typically, it can be used when the applications loses focus.</p>
 </dd>
 <dt><a href="#replicateOnce">replicateOnce()</a></dt>
 <dd><p>Starts replication</p>
-</dd>
-<dt><a href="#defaultSelector">defaultSelector(options)</a> ⇒ <code>Array</code></dt>
-<dd><p>Compute fields that should be indexed for a mango
-query to work</p>
 </dd>
 <dt><a href="#setIntervalPromise">setIntervalPromise()</a></dt>
 <dd><p>Will periodically run a function so that when the promise
@@ -112,32 +145,53 @@ continue.</p>
 ## CozyClient
 
 * [CozyClient](#module_CozyClient)
-    * [.collection(doctype)](#module_CozyClient+collection) ⇒ <code>DocumentCollection</code>
-    * [.getDocumentSavePlan(document, relationships)](#module_CozyClient+getDocumentSavePlan) ⇒ <code>Array.&lt;object&gt;</code>
-    * [.hydrateDocument()](#module_CozyClient+hydrateDocument)
-    * [.register(cozyURL)](#module_CozyClient+register) ⇒ <code>object</code>
-    * [.startOAuthFlow(openURLCallback)](#module_CozyClient+startOAuthFlow) ⇒ <code>object</code>
-    * [.renewAuthorization()](#module_CozyClient+renewAuthorization) ⇒ <code>object</code>
-    * [.setData(data)](#module_CozyClient+setData)
+    * [module.exports](#exp_module_CozyClient--module.exports) ⏏
+        * [new module.exports(options)](#new_module_CozyClient--module.exports_new)
+        * [.collection(doctype)](#module_CozyClient--module.exports+collection) ⇒ <code>DocumentCollection</code>
+        * [.getDocumentSavePlan(document, relationships)](#module_CozyClient--module.exports+getDocumentSavePlan) ⇒ <code>Array.&lt;object&gt;</code>
+        * [.fetchRelationships()](#module_CozyClient--module.exports+fetchRelationships)
+        * [.hydrateDocument()](#module_CozyClient--module.exports+hydrateDocument)
+        * [.makeNewDocument()](#module_CozyClient--module.exports+makeNewDocument)
+        * [.getAssociation()](#module_CozyClient--module.exports+getAssociation)
+        * [.getRelationshipStoreAccessors()](#module_CozyClient--module.exports+getRelationshipStoreAccessors)
+        * [.register(cozyURL)](#module_CozyClient--module.exports+register) ⇒ <code>object</code>
+        * [.startOAuthFlow(openURLCallback)](#module_CozyClient--module.exports+startOAuthFlow) ⇒ <code>object</code>
+        * [.renewAuthorization()](#module_CozyClient--module.exports+renewAuthorization) ⇒ <code>object</code>
+        * [.setData(data)](#module_CozyClient--module.exports+setData)
 
-<a name="module_CozyClient+collection"></a>
+<a name="exp_module_CozyClient--module.exports"></a>
 
-### cozyClient.collection(doctype) ⇒ <code>DocumentCollection</code>
+### module.exports ⏏
+**Kind**: Exported class  
+<a name="new_module_CozyClient--module.exports_new"></a>
+
+#### new module.exports(options)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> |  |
+| options.link | <code>Link</code> | Backward compatibility |
+| options.links | <code>Array.Link</code> | List of links |
+| options.schema | <code>Object</code> | Schema description for each doctypes |
+
+<a name="module_CozyClient--module.exports+collection"></a>
+
+#### module.exports.collection(doctype) ⇒ <code>DocumentCollection</code>
 Forwards to a stack client instance and returns
 a [DocumentCollection](DocumentCollection) instance.
 
-**Kind**: instance method of [<code>CozyClient</code>](#module_CozyClient)  
+**Kind**: instance method of [<code>module.exports</code>](#exp_module_CozyClient--module.exports)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | doctype | <code>String</code> | The collection doctype. |
 
-<a name="module_CozyClient+getDocumentSavePlan"></a>
+<a name="module_CozyClient--module.exports+getDocumentSavePlan"></a>
 
-### cozyClient.getDocumentSavePlan(document, relationships) ⇒ <code>Array.&lt;object&gt;</code>
+#### module.exports.getDocumentSavePlan(document, relationships) ⇒ <code>Array.&lt;object&gt;</code>
 getDocumentSavePlan - Creates a list of mutations to execute to create a document and its relationships.
 
-**Kind**: instance method of [<code>CozyClient</code>](#module_CozyClient)  
+**Kind**: instance method of [<code>module.exports</code>](#exp_module_CozyClient--module.exports)  
 **Returns**: <code>Array.&lt;object&gt;</code> - One or more mutation to execute  
 
 | Param | Type | Description |
@@ -155,59 +209,247 @@ const relationships = {
 }
 client.getDocumentSavePlan(baseDoc, relationships)
 ```
-<a name="module_CozyClient+hydrateDocument"></a>
+<a name="module_CozyClient--module.exports+fetchRelationships"></a>
 
-### cozyClient.hydrateDocument()
+#### module.exports.fetchRelationships()
+Fetch relationships for a response (can be several docs).
+Fills the `relationships` attribute of each documents.
+
+Can potentially result in several fetch requests.
+Queries are optimized before being sent.
+
+**Kind**: instance method of [<code>module.exports</code>](#exp_module_CozyClient--module.exports)  
+<a name="module_CozyClient--module.exports+hydrateDocument"></a>
+
+#### module.exports.hydrateDocument()
 Instantiate relationships on a document
 
 The original document is kept in the target attribute of
 the relationship
 
-**Kind**: instance method of [<code>CozyClient</code>](#module_CozyClient)  
-<a name="module_CozyClient+register"></a>
+**Kind**: instance method of [<code>module.exports</code>](#exp_module_CozyClient--module.exports)  
+<a name="module_CozyClient--module.exports+makeNewDocument"></a>
 
-### cozyClient.register(cozyURL) ⇒ <code>object</code>
+#### module.exports.makeNewDocument()
+Creates (locally) a new document for the given doctype.
+This document is hydrated : its relationships are there
+and working.
+
+**Kind**: instance method of [<code>module.exports</code>](#exp_module_CozyClient--module.exports)  
+<a name="module_CozyClient--module.exports+getAssociation"></a>
+
+#### module.exports.getAssociation()
+Creates an association that is linked to the store.
+
+**Kind**: instance method of [<code>module.exports</code>](#exp_module_CozyClient--module.exports)  
+<a name="module_CozyClient--module.exports+getRelationshipStoreAccessors"></a>
+
+#### module.exports.getRelationshipStoreAccessors()
+Returns the accessors that are given to the relationships for them
+to deal with the stores.
+
+Relationships need to have access to the store to ping it when
+a modification (addById/removeById etc...) has been done. This wakes
+the store up, which in turn will update the <Query>s and re-render the data.
+
+**Kind**: instance method of [<code>module.exports</code>](#exp_module_CozyClient--module.exports)  
+<a name="module_CozyClient--module.exports+register"></a>
+
+#### module.exports.register(cozyURL) ⇒ <code>object</code>
 Performs a complete OAuth flow using a Cordova webview for auth.
 The `register` method's name has been chosen for compat reasons with the Authentication compo.
 
-**Kind**: instance method of [<code>CozyClient</code>](#module_CozyClient)  
+**Kind**: instance method of [<code>module.exports</code>](#exp_module_CozyClient--module.exports)  
 **Returns**: <code>object</code> - Contains the fetched token and the client information.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | cozyURL | <code>string</code> | Receives the URL of the cozy instance. |
 
-<a name="module_CozyClient+startOAuthFlow"></a>
+<a name="module_CozyClient--module.exports+startOAuthFlow"></a>
 
-### cozyClient.startOAuthFlow(openURLCallback) ⇒ <code>object</code>
+#### module.exports.startOAuthFlow(openURLCallback) ⇒ <code>object</code>
 Performs a complete OAuth flow, including upating the internal token at the end.
 
-**Kind**: instance method of [<code>CozyClient</code>](#module_CozyClient)  
+**Kind**: instance method of [<code>module.exports</code>](#exp_module_CozyClient--module.exports)  
 **Returns**: <code>object</code> - Contains the fetched token and the client information. These should be stored and used to restore the client.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | openURLCallback | <code>function</code> | Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions. |
 
-<a name="module_CozyClient+renewAuthorization"></a>
+<a name="module_CozyClient--module.exports+renewAuthorization"></a>
 
-### cozyClient.renewAuthorization() ⇒ <code>object</code>
-Renews the token if, for instance, new permissions are required.
+#### module.exports.renewAuthorization() ⇒ <code>object</code>
+Renews the token if, for instance, new permissions are required or token
+has expired.
 
-**Kind**: instance method of [<code>CozyClient</code>](#module_CozyClient)  
+**Kind**: instance method of [<code>module.exports</code>](#exp_module_CozyClient--module.exports)  
 **Returns**: <code>object</code> - Contains the fetched token and the client information.  
-<a name="module_CozyClient+setData"></a>
+<a name="module_CozyClient--module.exports+setData"></a>
 
-### cozyClient.setData(data)
+#### module.exports.setData(data)
 Directly set the data in the store, without using a query
 This is useful for cases like Pouch replication, which wants to
 set some data in the store.
 
-**Kind**: instance method of [<code>CozyClient</code>](#module_CozyClient)  
+**Kind**: instance method of [<code>module.exports</code>](#exp_module_CozyClient--module.exports)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | data | <code>Object</code> | { doctype: [data] } |
+
+<a name="module_QueryDefinition"></a>
+
+## QueryDefinition
+API to query documents
+
+
+* [QueryDefinition](#module_QueryDefinition)
+    * [.QueryDefinition](#module_QueryDefinition.QueryDefinition)
+        * [new exports.QueryDefinition(doctype, id, ids, selector, fields, indexedFields, sort, includes, referenced, limit, skip)](#new_module_QueryDefinition.QueryDefinition_new)
+        * [.where(selector)](#module_QueryDefinition.QueryDefinition+where) ⇒ <code>QueryDefinition</code>
+        * [.select(fields)](#module_QueryDefinition.QueryDefinition+select) ⇒ <code>QueryDefinition</code>
+        * [.indexFields(fields)](#module_QueryDefinition.QueryDefinition+indexFields) ⇒ <code>QueryDefinition</code>
+        * [.sortBy(sort)](#module_QueryDefinition.QueryDefinition+sortBy) ⇒ <code>QueryDefinition</code>
+        * [.include(includes)](#module_QueryDefinition.QueryDefinition+include) ⇒ <code>QueryDefinition</code>
+        * [.limitBy(limit)](#module_QueryDefinition.QueryDefinition+limitBy) ⇒ <code>QueryDefinition</code>
+        * [.offset(skip)](#module_QueryDefinition.QueryDefinition+offset) ⇒ <code>QueryDefinition</code>
+        * [.referencedBy(document)](#module_QueryDefinition.QueryDefinition+referencedBy) ⇒ <code>QueryDefinition</code>
+
+<a name="module_QueryDefinition.QueryDefinition"></a>
+
+### QueryDefinition.QueryDefinition
+**Kind**: static class of [<code>QueryDefinition</code>](#module_QueryDefinition)  
+
+* [.QueryDefinition](#module_QueryDefinition.QueryDefinition)
+    * [new exports.QueryDefinition(doctype, id, ids, selector, fields, indexedFields, sort, includes, referenced, limit, skip)](#new_module_QueryDefinition.QueryDefinition_new)
+    * [.where(selector)](#module_QueryDefinition.QueryDefinition+where) ⇒ <code>QueryDefinition</code>
+    * [.select(fields)](#module_QueryDefinition.QueryDefinition+select) ⇒ <code>QueryDefinition</code>
+    * [.indexFields(fields)](#module_QueryDefinition.QueryDefinition+indexFields) ⇒ <code>QueryDefinition</code>
+    * [.sortBy(sort)](#module_QueryDefinition.QueryDefinition+sortBy) ⇒ <code>QueryDefinition</code>
+    * [.include(includes)](#module_QueryDefinition.QueryDefinition+include) ⇒ <code>QueryDefinition</code>
+    * [.limitBy(limit)](#module_QueryDefinition.QueryDefinition+limitBy) ⇒ <code>QueryDefinition</code>
+    * [.offset(skip)](#module_QueryDefinition.QueryDefinition+offset) ⇒ <code>QueryDefinition</code>
+    * [.referencedBy(document)](#module_QueryDefinition.QueryDefinition+referencedBy) ⇒ <code>QueryDefinition</code>
+
+<a name="new_module_QueryDefinition.QueryDefinition_new"></a>
+
+#### new exports.QueryDefinition(doctype, id, ids, selector, fields, indexedFields, sort, includes, referenced, limit, skip)
+Represents a QueryDefinition.
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doctype | <code>string</code> | The doctype of the doc. |
+| id | <code>string</code> | The id of the doc. |
+| ids | <code>Array</code> | The ids of the docs. |
+| selector | <code>Object</code> | The selector to query the docs. |
+| fields | <code>Array</code> | The fields to return. |
+| indexedFields | <code>Array</code> | The fields to index. |
+| sort | <code>Array</code> | The sorting params. |
+| includes | <code>string</code> | The docs to include. |
+| referenced | <code>string</code> | The referenced document. |
+| limit | <code>number</code> | The document's limit to return. |
+| skip | <code>number</code> | The number of docs to skip. |
+
+<a name="module_QueryDefinition.QueryDefinition+where"></a>
+
+#### queryDefinition.where(selector) ⇒ <code>QueryDefinition</code>
+Query documents with a [mango selector](http://docs.couchdb.org/en/latest/api/database/find.html#find-selectors).
+Each field passed in the selector will be indexed, except if the indexField option is used.
+
+**Kind**: instance method of [<code>QueryDefinition</code>](#module_QueryDefinition.QueryDefinition)  
+**Returns**: <code>QueryDefinition</code> - The QueryDefinition object.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| selector | <code>Object</code> | The Mango selector. |
+
+<a name="module_QueryDefinition.QueryDefinition+select"></a>
+
+#### queryDefinition.select(fields) ⇒ <code>QueryDefinition</code>
+Specify which fields of each object should be returned. If it is omitted, the entire object is returned.
+
+**Kind**: instance method of [<code>QueryDefinition</code>](#module_QueryDefinition.QueryDefinition)  
+**Returns**: <code>QueryDefinition</code> - The QueryDefinition object.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| fields | <code>Array</code> | The fields to return. |
+
+<a name="module_QueryDefinition.QueryDefinition+indexFields"></a>
+
+#### queryDefinition.indexFields(fields) ⇒ <code>QueryDefinition</code>
+Specify which fields should be indexed. This prevent the automatic indexing of the mango fields.
+
+**Kind**: instance method of [<code>QueryDefinition</code>](#module_QueryDefinition.QueryDefinition)  
+**Returns**: <code>QueryDefinition</code> - The QueryDefinition object.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| fields | <code>Array</code> | The fields to index. |
+
+<a name="module_QueryDefinition.QueryDefinition+sortBy"></a>
+
+#### queryDefinition.sortBy(sort) ⇒ <code>QueryDefinition</code>
+Specify how to sort documents, following the [sort syntax](http://docs.couchdb.org/en/latest/api/database/find.html#find-sort)
+
+**Kind**: instance method of [<code>QueryDefinition</code>](#module_QueryDefinition.QueryDefinition)  
+**Returns**: <code>QueryDefinition</code> - The QueryDefinition object.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| sort | <code>Array</code> | The list of field name and direction pairs. |
+
+<a name="module_QueryDefinition.QueryDefinition+include"></a>
+
+#### queryDefinition.include(includes) ⇒ <code>QueryDefinition</code>
+Includes documents having a relationships with the ones queried.
+For example, query albums including the photos.
+
+**Kind**: instance method of [<code>QueryDefinition</code>](#module_QueryDefinition.QueryDefinition)  
+**Returns**: <code>QueryDefinition</code> - The QueryDefinition object.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| includes | <code>Array</code> | The documents to include. |
+
+<a name="module_QueryDefinition.QueryDefinition+limitBy"></a>
+
+#### queryDefinition.limitBy(limit) ⇒ <code>QueryDefinition</code>
+Maximum number of documents returned, useful for pagination. Default is 100.
+
+**Kind**: instance method of [<code>QueryDefinition</code>](#module_QueryDefinition.QueryDefinition)  
+**Returns**: <code>QueryDefinition</code> - The QueryDefinition object.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| limit | <code>number</code> | The document's limit. |
+
+<a name="module_QueryDefinition.QueryDefinition+offset"></a>
+
+#### queryDefinition.offset(skip) ⇒ <code>QueryDefinition</code>
+Skip the first ‘n’ documents, where ‘n’ is the value specified.
+
+**Kind**: instance method of [<code>QueryDefinition</code>](#module_QueryDefinition.QueryDefinition)  
+**Returns**: <code>QueryDefinition</code> - The QueryDefinition object.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| skip | <code>number</code> | The number of documents to skip. |
+
+<a name="module_QueryDefinition.QueryDefinition+referencedBy"></a>
+
+#### queryDefinition.referencedBy(document) ⇒ <code>QueryDefinition</code>
+Use the [file reference system](https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/)
+
+**Kind**: instance method of [<code>QueryDefinition</code>](#module_QueryDefinition.QueryDefinition)  
+**Returns**: <code>QueryDefinition</code> - The QueryDefinition object.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | <code>Object</code> | The reference document |
 
 <a name="module_AppCollection"></a>
 
@@ -232,6 +474,7 @@ The returned documents are not paginated by the stack.
 * [CozyStackClient](#module_CozyStackClient)
     * [.collection(doctype)](#module_CozyStackClient+collection) ⇒ <code>DocumentCollection</code>
     * [.fetch(method, path, body, options)](#module_CozyStackClient+fetch) ⇒ <code>Object</code>
+    * [.fetchJSON(method, path, body, options)](#module_CozyStackClient+fetchJSON) ⇒ <code>Object</code>
 
 <a name="module_CozyStackClient+collection"></a>
 
@@ -247,6 +490,24 @@ Creates a [DocumentCollection](DocumentCollection) instance.
 <a name="module_CozyStackClient+fetch"></a>
 
 ### cozyStackClient.fetch(method, path, body, options) ⇒ <code>Object</code>
+Fetches an endpoint in an authorized way.
+
+**Kind**: instance method of [<code>CozyStackClient</code>](#module_CozyStackClient)  
+**Throws**:
+
+- <code>FetchError</code> 
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| method | <code>String</code> | The HTTP method. |
+| path | <code>String</code> | The URI. |
+| body | <code>Object</code> | The payload. |
+| options | <code>Object</code> |  |
+
+<a name="module_CozyStackClient+fetchJSON"></a>
+
+### cozyStackClient.fetchJSON(method, path, body, options) ⇒ <code>Object</code>
 Fetches JSON in an authorized way.
 
 **Kind**: instance method of [<code>CozyStackClient</code>](#module_CozyStackClient)  
@@ -336,6 +597,8 @@ files associated to a specific document
 * [FileCollection](#module_FileCollection)
     * [.find(selector, options)](#module_FileCollection+find) ⇒ <code>Object</code>
     * [.findReferencedBy(document, {, limit)](#module_FileCollection+findReferencedBy) ⇒ <code>object</code>
+    * [.createDirectoryByPath(path)](#module_FileCollection+createDirectoryByPath) ⇒ <code>object</code>
+    * [.updateFileMetadata(id, attributes)](#module_FileCollection+updateFileMetadata) ⇒ <code>object</code>
 
 <a name="module_FileCollection+find"></a>
 
@@ -369,6 +632,31 @@ async findReferencedBy - Returns the list of files referenced by a document — 
 | document | <code>object</code> | A JSON representing a document, with at least a `_type` and `_id` field. |
 | { | <code>number</code> | skip = 0   For pagination, the number of referenced files to skip |
 | limit | <code>number</code> | } For pagination, the number of results to return. |
+
+<a name="module_FileCollection+createDirectoryByPath"></a>
+
+### fileCollection.createDirectoryByPath(path) ⇒ <code>object</code>
+async createDirectoryByPath - Creates one or more folders until the given path exists
+
+**Kind**: instance method of [<code>FileCollection</code>](#module_FileCollection)  
+**Returns**: <code>object</code> - The document corresponding to the last segment of the path  
+
+| Param | Type |
+| --- | --- |
+| path | <code>string</code> | 
+
+<a name="module_FileCollection+updateFileMetadata"></a>
+
+### fileCollection.updateFileMetadata(id, attributes) ⇒ <code>object</code>
+async updateFileMetadata - Updates a file's metadata
+
+**Kind**: instance method of [<code>FileCollection</code>](#module_FileCollection)  
+**Returns**: <code>object</code> - Updated document  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | File id |
+| attributes | <code>object</code> | New file meta data |
 
 <a name="module_OAuthClient"></a>
 
@@ -497,7 +785,7 @@ Exchanges an access code for an access token. This function does **not** update 
 Retrieves a new access token by refreshing the currently used token.
 
 **Kind**: instance method of [<code>OAuthClient</code>](#module_OAuthClient)  
-**Returns**: <code>Promise</code> - A promise that resolves with a new AccessToen object  
+**Returns**: <code>Promise</code> - A promise that resolves with a new AccessToken object  
 **Throws**:
 
 - <code>NotRegisteredException</code> When the client doesn't have it's registration information
@@ -573,6 +861,17 @@ getDiscoveryLink - Returns the URL of the page that can be used to accept a shar
 | sharingId | <code>string</code> | 
 | sharecode | <code>string</code> | 
 
+<a name="resolveClass"></a>
+
+## resolveClass
+Returns the relationship class for a given doctype/type.
+
+In the schema definition, some classes have string aliases
+so you do not have to import directly the association.
+
+Some doctypes can have built-in overriden relationships.
+
+**Kind**: global constant  
 <a name="encode"></a>
 
 ## encode
@@ -587,6 +886,70 @@ Returns a URL from base url and a query parameter object.
 Any undefined parameter is removed.
 
 **Kind**: global constant  
+<a name="addById"></a>
+
+## addById()
+Add a referenced document by id. You need to call save()
+in order to synchronize your document with the store
+
+**Kind**: global function  
+**Todo**
+
+- [ ] We shouldn't create the array of relationship manually since
+it'll not be present in the store as well.
+We certainly should use something like `updateRelationship`
+
+<a name="withClient"></a>
+
+## withClient(Component) ⇒ <code>function</code>
+HOC to provide client from context as prop
+
+**Kind**: global function  
+**Returns**: <code>function</code> - - Component that will receive client as prop  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| Component | <code>Component</code> | wrapped component |
+
+<a name="queryConnect"></a>
+
+## queryConnect(querySpecs) ⇒ <code>function</code>
+HOC creator to connect component to several queries in a declarative manner
+
+**Kind**: global function  
+**Returns**: <code>function</code> - - HOC to apply to a component  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| querySpecs | <code>object</code> | Definition of the queries |
+
+<a name="optimizeDoctypeQueries"></a>
+
+## optimizeDoctypeQueries(queries) ⇒ <code>Array.&lt;QueryDefinition&gt;</code>
+Optimize queries on a single doctype
+
+**Kind**: global function  
+**Returns**: <code>Array.&lt;QueryDefinition&gt;</code> - Optimized queries  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| queries | <code>Array.&lt;QueryDefinition&gt;</code> | Queries of a same doctype |
+
+<a name="optimizeQueries"></a>
+
+## optimizeQueries(queries) ⇒ <code>Array.&lt;QueryDefinition&gt;</code>
+Reduce the number of queries used to fetch documents.
+
+- Deduplication of queries
+- Groups id queries
+
+**Kind**: global function  
+**Returns**: <code>Array.&lt;QueryDefinition&gt;</code> - Optimized queries  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| queries | <code>Array.&lt;QueryDefinition&gt;</code> | Queries to optimized |
+
 <a name="normalizeDoctypeSchema"></a>
 
 ## normalizeDoctypeSchema()
@@ -616,30 +979,14 @@ Returns the relationship for a given doctype/name
 Validates a document considering the descriptions in schema.attributes.
 
 **Kind**: global function  
-<a name="withClient"></a>
+<a name="handleOnSync"></a>
 
-## withClient(Component) ⇒ <code>function</code>
-HOC to provide client from context as prop
-
-**Kind**: global function  
-**Returns**: <code>function</code> - - Component that will receive client as prop  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| Component | <code>Component</code> | wrapped component |
-
-<a name="queryConnect"></a>
-
-## queryConnect(querySpecs) ⇒ <code>function</code>
-HOC creator to connect component to several queries in a declarative manner
+## handleOnSync()
+Receives PouchDB updates (documents grouped by doctype).
+Normalizes the data (.id -> ._id, .rev -> _rev).
+Passes the data to the client and to the onSync handler.
 
 **Kind**: global function  
-**Returns**: <code>function</code> - - HOC to apply to a component  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| querySpecs | <code>object</code> | Definition of the queries |
-
 <a name="startReplication"></a>
 
 ## startReplication() ⇒ <code>void</code>
@@ -656,6 +1003,27 @@ Typically, it can be used when the applications loses focus.
 
 **Kind**: global function  
 **Access**: public  
+<a name="defaultSelector"></a>
+
+## defaultSelector(options) ⇒ <code>Array</code>
+Compute fields that should be indexed for a mango
+query to work
+
+**Kind**: global function  
+**Returns**: <code>Array</code> - - Fields to index  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | Mango query options |
+
+<a name="ensureDatabasesExist"></a>
+
+## ensureDatabasesExist()
+Via a call to info() we ensure the database exist on the
+remote side. This is done only once since after the first
+call, we are sure that the databases have been created.
+
+**Kind**: global function  
 <a name="startReplicationLoop"></a>
 
 ## startReplicationLoop()
@@ -674,19 +1042,6 @@ Stop periodic syncing of the pouches
 Starts replication
 
 **Kind**: global function  
-<a name="defaultSelector"></a>
-
-## defaultSelector(options) ⇒ <code>Array</code>
-Compute fields that should be indexed for a mango
-query to work
-
-**Kind**: global function  
-**Returns**: <code>Array</code> - - Fields to index  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| options | <code>Object</code> | Mango query options |
-
 <a name="setIntervalPromise"></a>
 
 ## setIntervalPromise()

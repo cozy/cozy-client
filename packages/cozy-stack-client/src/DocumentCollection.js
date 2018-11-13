@@ -180,7 +180,7 @@ export default class DocumentCollection {
   }
 
   async toMangoOptions(selector, options = {}) {
-    let { sort } = options
+    let { sort, indexedFields } = options
     const { fields, skip = 0, limit } = options
 
     if (sort && !Array.isArray(sort)) {
@@ -194,7 +194,10 @@ export default class DocumentCollection {
       )
     }
 
-    const indexedFields = this.getIndexFields({ sort, selector })
+    indexedFields = indexedFields
+      ? indexedFields
+      : this.getIndexFields({ sort, selector })
+
     const indexId = options.indexId || (await this.getIndexId(indexedFields))
 
     if (sort) {

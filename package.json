@@ -34,7 +34,7 @@
     "build": "lerna run build",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "clean": "rm -rf packages/*/dist",
-    "doc": "jsdoc2md packages/*/src/**.js > docs/api.md"
+    "doc": "jsdoc2md \"packages/*/src/**/*.js\" > docs/api.md"
   },
   "jest": {
     "testURL": "http://localhost",
