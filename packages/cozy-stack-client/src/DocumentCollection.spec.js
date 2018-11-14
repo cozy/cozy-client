@@ -18,6 +18,22 @@ const ALL_RESPONSE_FIXTURE = {
   total_rows: 2
 }
 
+const NORMAL_RESPONSE_FIXTURE = {
+  rows: [
+    {
+      id: '12345',
+      label: 'Buy bread',
+      done: false
+    },
+    {
+      id: '67890',
+      label: 'Check email',
+      done: false
+    }
+  ],
+  total_rows: 2
+}
+
 const FIND_RESPONSE_FIXTURE = {
   docs: [
     { _id: '12345', label: 'Buy bread', done: false },
@@ -82,14 +98,14 @@ describe('DocumentCollection', () => {
     const collection = new DocumentCollection('io.cozy.todos', client)
 
     beforeAll(() => {
-      client.fetchJSON.mockReturnValue(Promise.resolve(ALL_RESPONSE_FIXTURE))
+      client.fetchJSON.mockReturnValue(Promise.resolve(NORMAL_RESPONSE_FIXTURE))
     })
 
     it('should call the right route', async () => {
       await collection.all()
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
-        '/data/io.cozy.todos/_all_docs?include_docs=true'
+        '/data/io.cozy.todos/_normal_docs?include_docs=true'
       )
     })
 
@@ -97,11 +113,12 @@ describe('DocumentCollection', () => {
       await collection.all({ skip: 50, limit: 200 })
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
-        '/data/io.cozy.todos/_all_docs?include_docs=true&limit=200&skip=50'
+        '/data/io.cozy.todos/_normal_docs?include_docs=true&limit=200&skip=50'
       )
     })
 
     it('should accept keys option', async () => {
+      client.fetchJSON.mockReturnValue(Promise.resolve(ALL_RESPONSE_FIXTURE))
       await collection.all({ keys: ['abc', 'def'] })
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
@@ -117,6 +134,13 @@ describe('DocumentCollection', () => {
     it('should return normalized documents', async () => {
       const resp = await collection.all()
       expect(resp.data[0]).toHaveDocumentIdentity()
+    })
+
+    it('should normalize documents regardless of the route being used', async () => {
+      client.fetchJSON.mockReturnValue(Promise.resolve(ALL_RESPONSE_FIXTURE))
+      const resp = await collection.all({ keys: ['abc', 'def'] })
+      expect(resp.data[0]).toHaveDocumentIdentity()
+      expect(resp.data[0].label).toBe('Buy bread')
     })
 
     it('should not fail if there is no doc of this type yet', async () => {
