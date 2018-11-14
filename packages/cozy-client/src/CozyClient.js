@@ -80,7 +80,7 @@ export default class CozyClient {
 
   registerClientOnLinks() {
     for (const link of this.links) {
-      if (!link.client && link.registerClient) {
+      if (link.registerClient) {
         try {
           link.registerClient(this)
         } catch (e) {
@@ -90,13 +90,13 @@ export default class CozyClient {
     }
   }
 
-  login() {
+  async login() {
     this.registerClientOnLinks()
 
     for (const link of this.links) {
       if (link.onLogin) {
         try {
-          link.onLogin()
+          await link.onLogin()
         } catch (e) {
           console.warn(e)
         }
