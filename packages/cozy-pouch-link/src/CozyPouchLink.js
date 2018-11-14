@@ -80,22 +80,43 @@ export default class PouchLink extends CozyLink {
 
   async registerClient(client) {
     this.client = client
-    if (this.pouches) {
+  }
+
+  async onLogin() {
+    if (!this.client) {
+      console.warn("PouchLink: no client registered, can't login")
+      return
+    }
+
+    const prefix = this.client.stackClient.uri.replace(/^https?:\/\//, '')
+
+    const shouldDestroyDatabases =
+      this.pouches &&
+      this.pouches.options &&
+      this.pouches.options.prefix !== prefix
+
+    if (shouldDestroyDatabases) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.info('PouchLink: URI changed, destroy pouches')
+      }
       try {
         await this.pouches.destroy()
       } catch (e) {
         console.warn('Error while destroying pouch DBs', e)
       }
     }
+
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('Create pouches with ' + prefix + ' prefix')
+    }
     this.pouches = new PouchManager(this.doctypes, {
       pouch: this.options.pouch,
       getReplicationURL: this.getReplicationURL.bind(this),
       onError: err => this.onSyncError(err),
-      onSync: this.handleOnSync.bind(this)
+      onSync: this.handleOnSync.bind(this),
+      prefix
     })
-  }
 
-  onLogin() {
     if (this.client && this.options.initialSync) {
       this.startReplication()
     }
@@ -187,6 +208,16 @@ export default class PouchLink extends CozyLink {
 
   request(operation, result = null, forward = doNothing) {
     const doctype = getDoctypeFromOperation(operation)
+
+    if (!this.pouches) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.info(
+          `Tried to access local ${doctype} but Cozy Pouch is not initialized yet. Forwarding the operation to next link`
+        )
+      }
+
+      return forward(operation)
+    }
 
     if (!this.pouches.isSynced(doctype)) {
       if (process.env.NODE_ENV !== 'production') {

@@ -80,14 +80,17 @@ export const LOCALSTORAGE_SYNCED_KEY = 'cozy-client-pouch-link-synced'
  */
 export default class PouchManager {
   constructor(doctypes, options) {
+    this.options = options
     const pouchPlugins = get(options, 'pouch.plugins', [])
     const pouchOptions = get(options, 'pouch.options', {})
     forEach(pouchPlugins, plugin => PouchDB.plugin(plugin))
     this.pouches = fromPairs(
-      doctypes.map(doctype => [doctype, new PouchDB(doctype, pouchOptions)])
+      doctypes.map(doctype => [
+        doctype,
+        new PouchDB(this.getDatabaseName(doctype, options.prefix), pouchOptions)
+      ])
     )
     this.syncedDoctypes = this.getPersistedSyncedDoctypes()
-    this.options = options
     this.getReplicationURL = options.getReplicationURL
     this.listenerLaunched = false
 
@@ -311,5 +314,13 @@ export default class PouchManager {
 
   destroyPersistedSyncedDoctypes() {
     window.localStorage.removeItem(LOCALSTORAGE_SYNCED_KEY)
+  }
+
+  getDatabaseName(doctype, prefix) {
+    if (!prefix) {
+      return doctype
+    }
+
+    return `${prefix}_${doctype}`
   }
 }

@@ -124,18 +124,18 @@ describe('CozyClient login', () => {
     client = new CozyClient({ links, schema: SCHEMA })
   })
 
-  it('Should call `registerClientOnLinks`', () => {
+  it('Should call `registerClientOnLinks`', async () => {
     client.registerClientOnLinks = jest.fn()
-    client.login()
+    await client.login()
 
     expect(client.registerClientOnLinks).toHaveBeenCalled()
   })
 
-  it('Should call `onLogin` on every link that implements it', () => {
+  it('Should call `onLogin` on every link that implements it', async () => {
     links[0].onLogin = jest.fn()
     links[2].onLogin = jest.fn()
 
-    client.login()
+    await client.login()
 
     expect(links[0].onLogin).toHaveBeenCalledTimes(1)
     expect(links[2].onLogin).toHaveBeenCalledTimes(1)

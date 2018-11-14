@@ -15,32 +15,38 @@ const mockClient = {
 
 const TODO_DOCTYPE = SCHEMA.todos.doctype
 
-describe('CozyPouchLink', () => {
-  let client, link
+let client, link
 
-  beforeEach(() => {
-    link = new CozyPouchLink({ doctypes: [TODO_DOCTYPE] })
-    client = new CozyClient({
-      ...mockClient,
-      links: [link],
-      schema: {
-        todos: omit(TODO_DOCTYPE, 'relationships')
-      }
-    })
-    client.setData = jest.fn()
+async function setup(linkOpts = {}) {
+  link = new CozyPouchLink({ doctypes: [TODO_DOCTYPE], ...linkOpts })
+  client = new CozyClient({
+    ...mockClient,
+    links: [link],
+    schema: {
+      todos: omit(TODO_DOCTYPE, 'relationships')
+    }
   })
 
-  afterEach(async () => {
-    await link.reset()
-  })
+  await link.onLogin()
+  client.setData = jest.fn()
+}
+
+async function clean() {
+  await link.reset()
+}
+
+fdescribe('CozyPouchLink', () => {
+  afterEach(clean)
 
   it('should generate replication url', async () => {
+    await setup()
     const url = await link.getReplicationURL(TODO_DOCTYPE)
     expect(url).toBe('http://user:token@cozy.tools:8080/data/io.cozy.todos')
   })
 
   describe('request handling', () => {
     it('should check if the doctype is supported and forward if not', async () => {
+      await setup()
       const query = client.all('io.cozy.rockets')
       await link.request(query, null, () => {
         expect(true).toBe(true)
@@ -49,6 +55,7 @@ describe('CozyPouchLink', () => {
     })
 
     it('should check if the pouch is synced and forward if not', async () => {
+      await setup()
       const query = client.all(TODO_DOCTYPE)
       expect.assertions(1)
       await link.request(query, null, () => {
@@ -59,10 +66,9 @@ describe('CozyPouchLink', () => {
 
   describe('queries', () => {
     const docs = [TODO_1, TODO_2, TODO_3, TODO_4]
-    beforeEach(() => {
-      link.pouches.isSynced = jest.fn().mockReturnValue(true)
-    })
     it('should be able to execute a query', async () => {
+      await setup()
+      link.pouches.isSynced = jest.fn().mockReturnValue(true)
       const db = link.getPouch(TODO_DOCTYPE)
       db.post({
         label: 'Make PouchDB link work',
@@ -74,6 +80,8 @@ describe('CozyPouchLink', () => {
     })
 
     it('should be possible to query only one doc', async () => {
+      await setup()
+      link.pouches.isSynced = jest.fn().mockReturnValue(true)
       const db = link.getPouch(TODO_DOCTYPE)
       db.post({
         _id: 'deadbeef',
@@ -86,6 +94,8 @@ describe('CozyPouchLink', () => {
     })
 
     it('should be possible to select', async () => {
+      await setup()
+      link.pouches.isSynced = jest.fn().mockReturnValue(true)
       const db = link.getPouch(TODO_DOCTYPE)
       await db.bulkDocs(docs.map(x => omit(x, '_type')))
       const query = client
@@ -114,11 +124,9 @@ describe('CozyPouchLink', () => {
   })
 
   describe('mutations', async () => {
-    beforeEach(() => {
-      link.pouches.isSynced = jest.fn().mockReturnValue(true)
-    })
-
     it('should be possible to save a new document', async () => {
+      await setup()
+      link.pouches.isSynced = jest.fn().mockReturnValue(true)
       const { _id, ...NEW_TODO } = TODO_3
       const mutation = client.getDocumentSavePlan(NEW_TODO)
       const res = await link.request(mutation)
@@ -134,6 +142,8 @@ describe('CozyPouchLink', () => {
     })
 
     it('should be possible to update a document', async () => {
+      await setup()
+      link.pouches.isSynced = jest.fn().mockReturnValue(true)
       const { _id, ...NEW_TODO } = TODO_3
       const saveMutation = client.getDocumentSavePlan(NEW_TODO)
       const saved = (await link.request(saveMutation)).data
@@ -152,21 +162,21 @@ describe('CozyPouchLink', () => {
   describe('reset', async () => {
     let spy
 
-    beforeEach(() => {
-      spy = jest.spyOn(link.pouches, 'destroy').mockReturnValue(jest.fn())
-    })
-
     afterEach(async () => {
       spy.mockRestore()
     })
 
     it('should delete all databases', async () => {
+      await setup()
+      spy = jest.spyOn(link.pouches, 'destroy').mockReturnValue(jest.fn())
       const pouches = link.pouches
       await link.reset()
       expect(pouches.destroy).toHaveBeenCalledTimes(1)
     })
 
     it('should delete client', async () => {
+      await setup()
+      spy = jest.spyOn(link.pouches, 'destroy').mockReturnValue(jest.fn())
       link.registerClient(jest.fn())
       expect(link.client).not.toBeNull()
       await link.reset()
@@ -174,13 +184,15 @@ describe('CozyPouchLink', () => {
     })
 
     it('should forget the PouchManager instance', async () => {
+      await setup()
       await link.reset()
       expect(link.pouches).toBeNull()
     })
   })
 
   describe('onSync', () => {
-    it('should call setData with normalized data', () => {
+    it('should call setData with normalized data', async () => {
+      await setup()
       link.handleOnSync({
         'io.cozy.todos': [{ ...TODO_1, rev: '1-deadbeef' }]
       })
@@ -203,28 +215,28 @@ describe('CozyPouchLink', () => {
   describe('onLogin', () => {
     let spy
 
-    beforeEach(() => {
-      spy = jest
-        .spyOn(link.pouches, 'startReplicationLoop')
-        .mockReturnValue(jest.fn())
-    })
-
     afterEach(() => {
       spy.mockRestore()
     })
 
-    it('should start the replication loop if `options.initialSync` is true', () => {
-      link.options.initialSync = true
-      link.onLogin()
+    it('should start the replication loop if `options.initialSync` is true', async () => {
+      spy = jest
+        .spyOn(CozyPouchLink.prototype, 'startReplication')
+        .mockReturnValue(jest.fn())
 
-      expect(link.pouches.startReplicationLoop).toHaveBeenCalledTimes(1)
+      await setup({ initialSync: true })
+
+      expect(link.startReplication).toHaveBeenCalledTimes(1)
     })
 
-    it('should not start the replication loop if `options.initialSync` is false', () => {
-      link.options.initialSync = false
-      link.onLogin()
+    it('should not start the replication loop if `options.initialSync` is false', async () => {
+      spy = jest
+        .spyOn(CozyPouchLink.prototype, 'startReplication')
+        .mockReturnValue(jest.fn())
 
-      expect(link.pouches.startReplicationLoop).not.toHaveBeenCalled()
+      await setup({ initialSync: false })
+
+      expect(link.startReplication).not.toHaveBeenCalled()
     })
   })
 })
