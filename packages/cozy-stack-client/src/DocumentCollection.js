@@ -9,7 +9,6 @@ export const normalizeDoc = (doc, doctype) => {
   return { id, _id: id, _type: doctype, ...doc }
 }
 
-const isDesignDoc = doc => doc.hasOwnProperty('views')
 /**
  * Abstracts a collection of documents of the same doctype, providing CRUD methods and other helpers.
  * @module DocumentCollection
@@ -33,7 +32,9 @@ export default class DocumentCollection {
   async all(options = {}) {
     const { limit, skip = 0, keys } = options
 
-    const url = uri`/data/${this.doctype}/_all_docs`
+    const isUsingAllDocsRoute = !!keys
+    const route = isUsingAllDocsRoute ? '_all_docs' : '_normal_docs'
+    const url = uri`/data/${this.doctype}/${route}`
     const params = {
       include_docs: true,
       limit,
@@ -53,14 +54,13 @@ export default class DocumentCollection {
       }
       throw error
     }
-    // WARN: looks like this route returns something looking like a couchDB design doc, we need to filter it:
-    const rows = resp.rows.filter(row => row.doc && !isDesignDoc(row.doc))
-    // WARN: the JSON response from the stack is not homogenous with other routes (offset? rows? total_rows?)
     return {
-      data: rows.map(row => normalizeDoc(row.doc, this.doctype)),
+      data: resp.rows.map(row =>
+        normalizeDoc(isUsingAllDocsRoute ? row.doc : row, this.doctype)
+      ),
       meta: { count: resp.total_rows },
-      skip: resp.offset || 0,
-      next: resp.offset + rows.length <= resp.total_rows
+      skip: skip,
+      next: skip + resp.rows.length <= resp.total_rows
     }
   }
 
