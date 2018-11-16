@@ -60,7 +60,7 @@ export default class DocumentCollection {
       ),
       meta: { count: resp.total_rows },
       skip: skip,
-      next: skip + resp.rows.length <= resp.total_rows
+      next: skip + resp.rows.length < resp.total_rows
     }
   }
 
