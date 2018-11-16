@@ -117,6 +117,22 @@ describe('DocumentCollection', () => {
       )
     })
 
+    it('should paginate results', async () => {
+      client.fetchJSON.mockReturnValue({
+        rows: [{}, {}],
+        total_rows: 3
+      })
+      const respWithNext = await collection.all({ skip: 0, limit: 2 })
+      expect(respWithNext.next).toBe(true)
+
+      client.fetchJSON.mockReturnValue({
+        rows: [{}],
+        total_rows: 3
+      })
+      const respWithoutNext = await collection.all({ skip: 2, limit: 2 })
+      expect(respWithoutNext.next).toBe(false)
+    })
+
     it('should accept keys option', async () => {
       client.fetchJSON.mockReturnValue(Promise.resolve(ALL_RESPONSE_FIXTURE))
       await collection.all({ keys: ['abc', 'def'] })
