@@ -116,12 +116,22 @@ export default class PouchManager {
         () => this.startReplicationLoop(),
         false
       )
+      document.addEventListener(
+        'offline',
+        () => this.stopReplicationLoop(),
+        false
+      )
+      document.addEventListener(
+        'online',
+        () => this.startReplicationLoop(),
+        false
+      )
       this.listenerLaunched = true
     }
   }
 
   removeListener() {
-    if (this.listenerLaunched) {
+    if (isMobileApp() && this.listenerLaunched) {
       document.removeEventListener(
         'pause',
         () => this.stopReplicationLoop(),
@@ -134,6 +144,16 @@ export default class PouchManager {
       )
       document.removeEventListener(
         'resume',
+        () => this.startReplicationLoop(),
+        false
+      )
+      document.removeEventListener(
+        'offline',
+        () => this.stopReplicationLoop(),
+        false
+      )
+      document.removeEventListener(
+        'online',
         () => this.startReplicationLoop(),
         false
       )
