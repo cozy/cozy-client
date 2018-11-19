@@ -4,7 +4,7 @@
 - [Setup](#setup)
   - [Install](#install)
   - [Creating a client](#creating-a-client)
-  - [Creating a provider](#creating-a-provider)
+  - [Wrapping the App in a `CozyProvider`](#wrapping-the-app-in-a-cozyprovider)
   - [Using the client](#using-the-client)
 - [Requesting data](#requesting-data)
   - [The available props](#the-available-props)
