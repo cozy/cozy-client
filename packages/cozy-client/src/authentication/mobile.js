@@ -1,6 +1,10 @@
 /* global prompt */
 import { REGISTRATION_ABORT } from '../const'
-import { hasInAppBrowserPlugin, hasSafariPlugin } from 'cozy-device-helper'
+import {
+  hasInAppBrowserPlugin,
+  hasSafariPlugin,
+  isIOSApp
+} from 'cozy-device-helper'
 
 const authenticateWithSafari = url => {
   return new Promise((resolve, reject) => {
@@ -70,7 +74,7 @@ const authenticateWithInAppBrowser = url => {
 }
 
 export const authenticateWithCordova = async url => {
-  if (await hasSafariPlugin()) {
+  if (isIOSApp() && (await hasSafariPlugin())) {
     return authenticateWithSafari(url)
   } else if (hasInAppBrowserPlugin()) {
     return authenticateWithInAppBrowser(url)
