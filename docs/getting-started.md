@@ -55,17 +55,28 @@ To get started using `cozy-client` with (p)React, you need to create a `CozyClie
 ```js
 import CozyClient from 'cozy-client'
 
+const schema = {
+  todos: {
+    doctype: 'io.cozy.todos',
+    attributes: {...},
+    relationships: {...}
+  }
+}
+
 const client = new CozyClient({
   uri: 'http://cozy.tools:8080',
+  schema,
   token: '...'
 })
 ```
+
 If you need guidance to get the URI of your instance and/or the token, see (https://docs.cozy.io/en/dev/app/#behind-the-magic).
 
-### Creating a provider
+Every doctype accessed in `cozy-client` needs to be declared in the schema section of the options. See the specific [how-to](./how-tos.md#how-to-specifiy-a-schema-) on how to use the schema features.
 
-All components that we want to connect to data need access to the client. We could pass it as a prop from component to component, but it'll quickly get tedious.
-We recommend that you use a `CozyProvider` somewhere high in your app. It will make the client available to all your components using the context:
+### Wrapping the App in a `CozyProvider`
+
+All components connected to data need access to the client. We recommend that you use a `CozyProvider` to wrap your app. It will make the client available to all your components using the context:
 
 ```jsx
 import CozyClient, { CozyProvider } from 'cozy-client'
