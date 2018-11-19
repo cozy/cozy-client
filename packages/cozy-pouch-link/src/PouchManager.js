@@ -97,53 +97,40 @@ export default class PouchManager {
     // We must ensure databases exist on the remote before
     // starting replications
     this.ensureDatabasesExistDone = false
+
+    this.startReplicationLoop = this.startReplicationLoop.bind(this)
+    this.stopReplicationLoop = this.stopReplicationLoop.bind(this)
   }
 
-  addListener() {
-    if (isMobileApp() && !this.listenerLaunched) {
-      document.addEventListener(
-        'pause',
-        () => this.stopReplicationLoop(),
-        false
-      )
-      document.addEventListener(
-        'resign',
-        () => this.stopReplicationLoop(),
-        false
-      )
-      document.addEventListener(
-        'resume',
-        () => this.startReplicationLoop(),
-        false
-      )
+  addListeners() {
+    if (!this.listenerLaunched) {
+      if (isMobileApp()) {
+        document.addEventListener('pause', this.stopReplicationLoop)
+        document.addEventListener('resign', this.stopReplicationLoop)
+        document.addEventListener('resume', this.startReplicationLoop)
+      }
+      document.addEventListener('online', this.startReplicationLoop)
+      document.addEventListener('offline', this.stopReplicationLoop)
       this.listenerLaunched = true
     }
   }
 
-  removeListener() {
+  removeListeners() {
     if (this.listenerLaunched) {
-      document.removeEventListener(
-        'pause',
-        () => this.stopReplicationLoop(),
-        false
-      )
-      document.removeEventListener(
-        'resign',
-        () => this.stopReplicationLoop(),
-        false
-      )
-      document.removeEventListener(
-        'resume',
-        () => this.startReplicationLoop(),
-        false
-      )
+      if (isMobileApp()) {
+        document.removeEventListener('pause', this.stopReplicationLoop)
+        document.removeEventListener('resign', this.stopReplicationLoop)
+        document.removeEventListener('resume', this.startReplicationLoop)
+      }
+      document.removeEventListener('online', this.startReplicationLoop)
+      document.removeEventListener('offline', this.stopReplicationLoop)
       this.listenerLaunched = false
     }
   }
 
   destroy() {
     this.stopReplicationLoop()
-    this.removeListener()
+    this.removeListeners()
     this.destroyPersistedSyncedDoctypes()
     return Promise.all(
       Object.values(this.pouches).map(pouch => pouch.destroy())
@@ -195,7 +182,7 @@ export default class PouchManager {
         return Promise.resolve()
       }
     }, delay)
-    this.addListener()
+    this.addListeners()
     return this._stopReplicationLoop
   }
 
