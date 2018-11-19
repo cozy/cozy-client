@@ -6,8 +6,10 @@
 
 import PouchManager, { LOCALSTORAGE_SYNCED_KEY } from './PouchManager'
 import * as mocks from './__tests__/mocks'
+import { isMobileApp } from 'cozy-device-helper'
 
 jest.mock('pouchdb')
+jest.mock('cozy-device-helper')
 import PouchDB from 'pouchdb'
 
 const sleep = delay => {
@@ -215,6 +217,75 @@ describe('PouchManager', () => {
       expect(localStorage.removeItem).toHaveBeenLastCalledWith(
         LOCALSTORAGE_SYNCED_KEY
       )
+    })
+  })
+
+  describe('Events Listeners', () => {
+    describe('Add/Remove Listeners', () => {
+      beforeEach(() => {
+        isMobileApp.mockResolvedValue(true)
+        // eslint-disable-next-line no-global-assign
+        addEventListener = jest.spyOn(document, 'addEventListener')
+        // eslint-disable-next-line no-global-assign
+        removeEventListener = jest.spyOn(document, 'removeEventListener')
+        jest.resetModules()
+      })
+
+      it('starts without listener', () => {
+        expect(addEventListener).not.toHaveBeenCalled()
+        expect(removeEventListener).not.toHaveBeenCalled()
+      })
+
+      it('adds listeners only one time', () => {
+        expect(addEventListener).not.toHaveBeenCalled()
+        manager.addListener()
+        expect(addEventListener).toHaveBeenCalled()
+        const calls = addEventListener.mock.calls
+        manager.addListener()
+        expect(addEventListener).toHaveBeenCalledTimes(calls.length)
+      })
+
+      it('removes listeners only one time', () => {
+        expect(removeEventListener).not.toHaveBeenCalled()
+        manager.addListener()
+        manager.removeListener()
+        expect(removeEventListener).toHaveBeenCalled()
+        const calls = addEventListener.mock.calls
+        manager.removeListener()
+        expect(removeEventListener).toHaveBeenCalledTimes(calls.length)
+      })
+    })
+
+    describe('Each Events', () => {
+      let startReplicationLoop, stopReplicationLoop
+
+      beforeEach(() => {
+        isMobileApp.mockResolvedValue(true)
+        startReplicationLoop = jest.spyOn(manager, 'startReplicationLoop')
+        stopReplicationLoop = jest.spyOn(manager, 'stopReplicationLoop')
+        manager.addListener()
+      })
+
+      afterEach(() => {
+        startReplicationLoop.mockRestore()
+        stopReplicationLoop.mockRestore()
+      })
+
+      for (const eventName of ['resume', 'online']) {
+        it(`check ${eventName} listener to start replication`, () => {
+          document.dispatchEvent(new Event(eventName))
+          expect(startReplicationLoop).toHaveBeenCalled()
+          expect(stopReplicationLoop).not.toHaveBeenCalled()
+        })
+      }
+
+      for (const eventName of ['resign', 'pause', 'offline']) {
+        it(`check ${eventName} listener to start replication`, () => {
+          document.dispatchEvent(new Event(eventName))
+          expect(startReplicationLoop).not.toHaveBeenCalled()
+          expect(stopReplicationLoop).toHaveBeenCalled()
+        })
+      }
     })
   })
 })

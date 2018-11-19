@@ -97,66 +97,33 @@ export default class PouchManager {
     // We must ensure databases exist on the remote before
     // starting replications
     this.ensureDatabasesExistDone = false
+
+    this.startReplicationLoop = this.startReplicationLoop.bind(this)
+    this.stopReplicationLoop = this.stopReplicationLoop.bind(this)
   }
 
   addListener() {
-    if (isMobileApp() && !this.listenerLaunched) {
-      document.addEventListener(
-        'pause',
-        () => this.stopReplicationLoop(),
-        false
-      )
-      document.addEventListener(
-        'resign',
-        () => this.stopReplicationLoop(),
-        false
-      )
-      document.addEventListener(
-        'resume',
-        () => this.startReplicationLoop(),
-        false
-      )
-      document.addEventListener(
-        'offline',
-        () => this.stopReplicationLoop(),
-        false
-      )
-      document.addEventListener(
-        'online',
-        () => this.startReplicationLoop(),
-        false
-      )
+    if (!this.listenerLaunched) {
+      if (isMobileApp()) {
+        document.addEventListener('pause', this.stopReplicationLoop, false)
+        document.addEventListener('resign', this.stopReplicationLoop, false)
+        document.addEventListener('resume', this.startReplicationLoop, false)
+      }
+      document.addEventListener('online', this.startReplicationLoop, false)
+      document.addEventListener('offline', this.stopReplicationLoop, false)
       this.listenerLaunched = true
     }
   }
 
   removeListener() {
-    if (isMobileApp() && this.listenerLaunched) {
-      document.removeEventListener(
-        'pause',
-        () => this.stopReplicationLoop(),
-        false
-      )
-      document.removeEventListener(
-        'resign',
-        () => this.stopReplicationLoop(),
-        false
-      )
-      document.removeEventListener(
-        'resume',
-        () => this.startReplicationLoop(),
-        false
-      )
-      document.removeEventListener(
-        'offline',
-        () => this.stopReplicationLoop(),
-        false
-      )
-      document.removeEventListener(
-        'online',
-        () => this.startReplicationLoop(),
-        false
-      )
+    if (this.listenerLaunched) {
+      if (isMobileApp()) {
+        document.removeEventListener('pause', this.stopReplicationLoop, false)
+        document.removeEventListener('resign', this.stopReplicationLoop, false)
+        document.removeEventListener('resume', this.startReplicationLoop, false)
+      }
+      document.removeEventListener('online', this.startReplicationLoop, false)
+      document.removeEventListener('offline', this.stopReplicationLoop, false)
       this.listenerLaunched = false
     }
   }
