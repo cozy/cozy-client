@@ -3,7 +3,7 @@
 - [How-to integrate with an existing store ?](#how-to-integrate-with-an-existing-store-)
 - [How to connect to the documents store declaratively ?](#how-to-connect-to-the-documents-store-declaratively-)
 - [How to provide a mutation to a component ?](#how-to-provide-a-mutation-to-a-component-)
-- [How to specify a schema ?](#how-to-write-a-schema-)
+- [How to specify a schema ?](#how-to-specify-a-schema-)
 
 <!-- /MarkdownTOC -->
 
