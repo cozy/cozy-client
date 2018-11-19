@@ -3,6 +3,7 @@
 - [How-to integrate with an existing store ?](#how-to-integrate-with-an-existing-store-)
 - [How to connect to the documents store declaratively ?](#how-to-connect-to-the-documents-store-declaratively-)
 - [How to provide a mutation to a component ?](#how-to-provide-a-mutation-to-a-component-)
+- [How to specify a schema ?](#how-to-write-a-schema-)
 
 <!-- /MarkdownTOC -->
 
@@ -90,5 +91,61 @@ export default withMutation(
 )(AddTodo)
 ```
 
+## How to specify a schema ?
+
+Each doctypes accessed via cozy-client needs to have a schema declared. It is useful for 
+
+* Validation
+* Relationships
+
+Here is a sample of a schema used in the Banks application.
+
+```
+const { HasMany } = require('cozy-client')
+
+class HasManyBills extends HasMany {
+  ...
+}
+
+class HasManyReimbursements extends HasMany {
+  ...
+}
 
 
+const schema = {
+  transactions: {
+    doctype: 'io.cozy.bank.operations',
+    attributes: {},
+    relationships: {
+      account: {
+        type: 'belongs-to-in-place',
+        doctype: 'io.cozy.bank.accounts'
+      },
+      bills: {
+        type: HasManyBills,
+        doctype: 'io.cozy.bills'
+      },
+      reimbursements: {
+        type: HasManyReimbursements,
+        doctype: 'io.cozy.bills'
+      }
+    }
+  }
+}
+
+const client = new CozyClient({
+  ...
+  schema
+  ...
+})
+```
+
+Here we can see that banking transactions are linked to
+
+- their *account* via a "belongs to" relationship
+- *bills* via a custom "has many" relationship
+- *reimbursements* via a custom "has many" relationship
+
+Custom relationships are useful if the relationship data is not stored in a built-in way.
+
+Validation is not yet implemented in cozy-client.
