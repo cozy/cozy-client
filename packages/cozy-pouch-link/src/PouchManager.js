@@ -102,7 +102,7 @@ export default class PouchManager {
     this.stopReplicationLoop = this.stopReplicationLoop.bind(this)
   }
 
-  addListener() {
+  addListeners() {
     if (!this.listenerLaunched) {
       if (isMobileApp()) {
         document.addEventListener('pause', this.stopReplicationLoop, false)
@@ -115,7 +115,7 @@ export default class PouchManager {
     }
   }
 
-  removeListener() {
+  removeListeners() {
     if (this.listenerLaunched) {
       if (isMobileApp()) {
         document.removeEventListener('pause', this.stopReplicationLoop, false)
@@ -130,7 +130,7 @@ export default class PouchManager {
 
   destroy() {
     this.stopReplicationLoop()
-    this.removeListener()
+    this.removeListeners()
     this.destroyPersistedSyncedDoctypes()
     return Promise.all(
       Object.values(this.pouches).map(pouch => pouch.destroy())
@@ -182,7 +182,7 @@ export default class PouchManager {
         return Promise.resolve()
       }
     }, delay)
-    this.addListener()
+    this.addListeners()
     return this._stopReplicationLoop
   }
 

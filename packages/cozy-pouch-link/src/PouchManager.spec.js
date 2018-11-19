@@ -238,20 +238,20 @@ describe('PouchManager', () => {
 
       it('adds listeners only one time', () => {
         expect(addEventListener).not.toHaveBeenCalled()
-        manager.addListener()
+        manager.addListeners()
         expect(addEventListener).toHaveBeenCalled()
         const calls = addEventListener.mock.calls
-        manager.addListener()
+        manager.addListeners()
         expect(addEventListener).toHaveBeenCalledTimes(calls.length)
       })
 
       it('removes listeners only one time', () => {
         expect(removeEventListener).not.toHaveBeenCalled()
-        manager.addListener()
-        manager.removeListener()
+        manager.addListeners()
+        manager.removeListeners()
         expect(removeEventListener).toHaveBeenCalled()
         const calls = addEventListener.mock.calls
-        manager.removeListener()
+        manager.removeListeners()
         expect(removeEventListener).toHaveBeenCalledTimes(calls.length)
       })
     })
@@ -263,7 +263,7 @@ describe('PouchManager', () => {
         isMobileApp.mockResolvedValue(true)
         startReplicationLoop = jest.spyOn(manager, 'startReplicationLoop')
         stopReplicationLoop = jest.spyOn(manager, 'stopReplicationLoop')
-        manager.addListener()
+        manager.addListeners()
       })
 
       afterEach(() => {
