@@ -105,12 +105,12 @@ export default class PouchManager {
   addListeners() {
     if (!this.listenerLaunched) {
       if (isMobileApp()) {
-        document.addEventListener('pause', this.stopReplicationLoop, false)
-        document.addEventListener('resign', this.stopReplicationLoop, false)
-        document.addEventListener('resume', this.startReplicationLoop, false)
+        document.addEventListener('pause', this.stopReplicationLoop)
+        document.addEventListener('resign', this.stopReplicationLoop)
+        document.addEventListener('resume', this.startReplicationLoop)
       }
-      document.addEventListener('online', this.startReplicationLoop, false)
-      document.addEventListener('offline', this.stopReplicationLoop, false)
+      document.addEventListener('online', this.startReplicationLoop)
+      document.addEventListener('offline', this.stopReplicationLoop)
       this.listenerLaunched = true
     }
   }
@@ -118,12 +118,12 @@ export default class PouchManager {
   removeListeners() {
     if (this.listenerLaunched) {
       if (isMobileApp()) {
-        document.removeEventListener('pause', this.stopReplicationLoop, false)
-        document.removeEventListener('resign', this.stopReplicationLoop, false)
-        document.removeEventListener('resume', this.startReplicationLoop, false)
+        document.removeEventListener('pause', this.stopReplicationLoop)
+        document.removeEventListener('resign', this.stopReplicationLoop)
+        document.removeEventListener('resume', this.startReplicationLoop)
       }
-      document.removeEventListener('online', this.startReplicationLoop, false)
-      document.removeEventListener('offline', this.stopReplicationLoop, false)
+      document.removeEventListener('online', this.startReplicationLoop)
+      document.removeEventListener('offline', this.stopReplicationLoop)
       this.listenerLaunched = false
     }
   }
