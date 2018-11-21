@@ -67,6 +67,7 @@ export default class CozyClient {
 
     this.options = options
     this.idCounter = 1
+    this.isLogged = false
 
     this.createClient()
 
@@ -91,6 +92,12 @@ export default class CozyClient {
   }
 
   async login() {
+    if (this.isLogged) {
+      console.warn(`CozyClient is already logged.`)
+      return
+    }
+
+    this.isLogged = true
     this.registerClientOnLinks()
 
     for (const link of this.links) {
@@ -105,6 +112,12 @@ export default class CozyClient {
   }
 
   async logout() {
+    if (!this.isLogged) {
+      console.warn(`CozyClient isn't logged.`)
+      return
+    }
+
+    this.isLogged = false
     // unregister client on stack
     if (
       this.stackClient.unregister &&
