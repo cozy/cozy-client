@@ -87,7 +87,14 @@ describe('CozyClient logout', () => {
   it('should call reset on each link that can be reset', async () => {
     links[0].reset = jest.fn()
     links[2].reset = jest.fn()
+    await client.login()
     await client.logout()
+    expect(links[0].reset).toHaveBeenCalledTimes(1)
+    expect(links[2].reset).toHaveBeenCalledTimes(1)
+
+    // test if we launch twice logout, it doesn't launch twice reset.
+    await client.logout()
+
     expect(links[0].reset).toHaveBeenCalledTimes(1)
     expect(links[2].reset).toHaveBeenCalledTimes(1)
   })
@@ -96,6 +103,7 @@ describe('CozyClient logout', () => {
     const spy = jest.spyOn(global.console, 'warn').mockReturnValue(jest.fn())
     links[0].reset = jest.fn().mockRejectedValue(new Error('Async error'))
     links[2].reset = jest.fn()
+    await client.login()
     await client.logout()
     expect(links[0].reset).toHaveBeenCalledTimes(1)
     expect(links[2].reset).toHaveBeenCalledTimes(1)
@@ -135,6 +143,12 @@ describe('CozyClient login', () => {
     links[0].onLogin = jest.fn()
     links[2].onLogin = jest.fn()
 
+    await client.login()
+
+    expect(links[0].onLogin).toHaveBeenCalledTimes(1)
+    expect(links[2].onLogin).toHaveBeenCalledTimes(1)
+
+    // test if we launch twice login, it doesn't launch twice onLogin.
     await client.login()
 
     expect(links[0].onLogin).toHaveBeenCalledTimes(1)
