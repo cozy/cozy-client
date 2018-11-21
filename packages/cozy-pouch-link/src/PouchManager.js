@@ -106,7 +106,6 @@ export default class PouchManager {
     if (!this.listenerLaunched) {
       if (isMobileApp()) {
         document.addEventListener('pause', this.stopReplicationLoop)
-        document.addEventListener('resign', this.stopReplicationLoop)
         document.addEventListener('resume', this.startReplicationLoop)
       }
       document.addEventListener('online', this.startReplicationLoop)
@@ -119,7 +118,6 @@ export default class PouchManager {
     if (this.listenerLaunched) {
       if (isMobileApp()) {
         document.removeEventListener('pause', this.stopReplicationLoop)
-        document.removeEventListener('resign', this.stopReplicationLoop)
         document.removeEventListener('resume', this.startReplicationLoop)
       }
       document.removeEventListener('online', this.startReplicationLoop)
