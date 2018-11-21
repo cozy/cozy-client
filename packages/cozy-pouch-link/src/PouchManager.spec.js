@@ -279,7 +279,7 @@ describe('PouchManager', () => {
         })
       }
 
-      for (const eventName of ['resign', 'pause', 'offline']) {
+      for (const eventName of ['pause', 'offline']) {
         it(`check ${eventName} listener to start replication`, () => {
           document.dispatchEvent(new Event(eventName))
           expect(startReplicationLoop).not.toHaveBeenCalled()
