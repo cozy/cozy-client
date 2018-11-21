@@ -155,7 +155,7 @@ export default class PouchManager {
   }
 
   /** Starts periodic syncing of the pouches */
-  async startReplicationLoop(delay) {
+  async startReplicationLoop() {
     await this.ensureDatabasesExist()
 
     if (this._stopReplicationLoop) {
@@ -166,7 +166,7 @@ export default class PouchManager {
       console.info('PouchManager: Start replication loop')
     }
 
-    delay = delay || this.options.replicationDelay || DEFAULT_DELAY
+    const delay = this.options.replicationDelay || DEFAULT_DELAY
     this._stopReplicationLoop = promises.setInterval(() => {
       if (window.navigator.onLine) {
         return this.replicateOnce()
