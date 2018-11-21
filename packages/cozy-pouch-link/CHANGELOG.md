@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.12.1"></a>
+## [4.12.1](https://github.com/cozy/cozy-client/compare/v4.12.0...v4.12.1) (2018-11-21)
+
+
+### Bug Fixes
+
+* Loop replication witout delay ([5d08a87](https://github.com/cozy/cozy-client/commit/5d08a87))
+
+
+
+
 <a name="4.12.0"></a>
 # [4.12.0](https://github.com/cozy/cozy-client/compare/v4.11.0...v4.12.0) (2018-11-21)
 
