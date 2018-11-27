@@ -32,9 +32,7 @@ export default class DocumentCollection {
   async all(options = {}) {
     const { limit, skip = 0, keys } = options
 
-    const isUsingAllDocsRoute = !!keys
-    const route = isUsingAllDocsRoute ? '_all_docs' : '_normal_docs'
-    const url = uri`/data/${this.doctype}/${route}`
+    const url = uri`/data/${this.doctype}/_all_docs`
     const params = {
       include_docs: true,
       limit,
@@ -54,10 +52,11 @@ export default class DocumentCollection {
       }
       throw error
     }
+
     return {
-      data: resp.rows.map(row =>
-        normalizeDoc(isUsingAllDocsRoute ? row.doc : row, this.doctype)
-      ),
+      data: resp.rows
+        .filter(row => row.doc._id.indexOf('_design') !== 0)
+        .map(row => normalizeDoc(row.doc, this.doctype)),
       meta: { count: resp.total_rows },
       skip: skip,
       next: skip + resp.rows.length < resp.total_rows
