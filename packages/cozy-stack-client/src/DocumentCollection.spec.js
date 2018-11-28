@@ -13,9 +13,13 @@ const ALL_RESPONSE_FIXTURE = {
     {
       id: '67890',
       doc: { _id: '67890', label: 'Check email', done: false }
+    },
+    {
+      id: '_design/todo',
+      doc: { _id: '_design/todo' }
     }
   ],
-  total_rows: 2
+  total_rows: 3
 }
 
 const NORMAL_RESPONSE_FIXTURE = {
@@ -103,9 +107,16 @@ describe('DocumentCollection', () => {
 
     it('should call the right route', async () => {
       await collection.all()
-      expect(client.fetchJSON).toHaveBeenCalledWith(
+      expect(client.fetchJSON).toHaveBeenLastCalledWith(
         'GET',
         '/data/io.cozy.todos/_normal_docs?include_docs=true'
+      )
+
+      client.fetchJSON.mockReturnValue(Promise.resolve(ALL_RESPONSE_FIXTURE))
+      await collection.all({ limit: null })
+      expect(client.fetchJSON).toHaveBeenLastCalledWith(
+        'GET',
+        '/data/io.cozy.todos/_all_docs?include_docs=true'
       )
     })
 
@@ -193,6 +204,13 @@ describe('DocumentCollection', () => {
       } catch (e) {
         expect(e).toBeInstanceOf(Error)
       }
+    })
+
+    it('should not return design documents', async () => {
+      client.fetchJSON.mockResolvedValueOnce(ALL_RESPONSE_FIXTURE)
+      const docs = await collection.all()
+
+      expect(docs.data.length).toBe(2)
     })
   })
 
