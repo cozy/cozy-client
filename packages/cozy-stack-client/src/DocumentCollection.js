@@ -2,6 +2,7 @@ import { uri, attempt, sleep } from './utils'
 import uniq from 'lodash/uniq'
 import transform from 'lodash/transform'
 import head from 'lodash/head'
+import startsWith from 'lodash/startsWith'
 import * as querystring from './querystring'
 
 export const normalizeDoc = (doc, doctype) => {
@@ -32,7 +33,8 @@ export default class DocumentCollection {
   async all(options = {}) {
     const { limit, skip = 0, keys } = options
 
-    const isUsingAllDocsRoute = !!keys
+    // If the limit is intentionnally null, we need to use _all_docs, since _normal_docs uses _find and have a hard limit of 100
+    const isUsingAllDocsRoute = !!keys || limit === null
     const route = isUsingAllDocsRoute ? '_all_docs' : '_normal_docs'
     const url = uri`/data/${this.doctype}/${route}`
     const params = {
@@ -54,11 +56,16 @@ export default class DocumentCollection {
       }
       throw error
     }
-    return {
-      data: resp.rows.map(row =>
+
+    const data = resp.rows
+      .map(row =>
         normalizeDoc(isUsingAllDocsRoute ? row.doc : row, this.doctype)
-      ),
-      meta: { count: resp.total_rows },
+      )
+      .filter(doc => !startsWith(doc.id, '_design'))
+
+    return {
+      data,
+      meta: { count: isUsingAllDocsRoute ? data.length : resp.total_rows },
       skip: skip,
       next: skip + resp.rows.length < resp.total_rows
     }
