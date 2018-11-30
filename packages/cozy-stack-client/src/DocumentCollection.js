@@ -296,4 +296,30 @@ export default class DocumentCollection {
       ])
     )
   }
+
+  /**
+   * Use Couch _changes API
+   *
+   * @param  {string} since     Starting sequence for changes
+   * @param  {[type]} options   { includeDesign: false, includeDeleted: false }
+   */
+  async fetchChanges(since, options = {}) {
+    const result = await this.stackClient.fetchJSON(
+      'GET',
+      `/data/${this.doctype}/_changes?include_docs=true&since=${since}`
+    )
+
+    const newLastSeq = result.last_seq
+    let docs = result.results.map(x => x.doc).filter(Boolean)
+
+    if (!options.includeDesign) {
+      docs = docs.filter(doc => doc._id.indexOf('_design') !== 0)
+    }
+
+    if (!options.includeDeleted) {
+      docs = docs.filter(doc => !doc._deleted)
+    }
+
+    return { newLastSeq, documents: docs }
+  }
 }

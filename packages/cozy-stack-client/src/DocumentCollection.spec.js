@@ -467,6 +467,10 @@ describe('DocumentCollection', () => {
       )
     })
 
+    afterEach(() => {
+      client.fetchJSON.mockRestore()
+    })
+
     it('should call the right route with the right payload', async () => {
       await collection.destroy(TODO_TO_DESTROY)
       expect(client.fetchJSON).toHaveBeenLastCalledWith(
@@ -478,6 +482,61 @@ describe('DocumentCollection', () => {
     it('should return a normalized document', async () => {
       const resp = await collection.destroy(TODO_TO_DESTROY)
       expect(resp.data).toHaveDocumentIdentity()
+    })
+  })
+
+  describe('changes', () => {
+    const collection = new DocumentCollection('io.cozy.todos', client)
+    beforeEach(() => {
+      client.fetchJSON.mockReturnValueOnce(
+        Promise.resolve({
+          last_seq: 'new-seq',
+          results: [
+            { doc: { _id: '1', done: false, label: 'Fetch changes' } },
+            { doc: null },
+            { doc: { _id: '_design/view' } },
+            { doc: { _id: '2', _deleted: true, label: 'Refactor code' } }
+          ]
+        })
+      )
+    })
+
+    it('should call the right route', async () => {
+      const changes = await collection.fetchChanges('my-seq')
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/data/io.cozy.todos/_changes?include_docs=true&since=my-seq'
+      )
+      expect(changes).toEqual({
+        newLastSeq: 'new-seq',
+        documents: [{ _id: '1', done: false, label: 'Fetch changes' }]
+      })
+    })
+
+    it('should call support includeDeleted', async () => {
+      const changes = await collection.fetchChanges('my-seq', {
+        includeDeleted: true
+      })
+      expect(changes).toEqual({
+        newLastSeq: 'new-seq',
+        documents: [
+          { _id: '1', done: false, label: 'Fetch changes' },
+          { _id: '2', _deleted: true, label: 'Refactor code' }
+        ]
+      })
+    })
+
+    it('should call support includeDesign', async () => {
+      const changes = await collection.fetchChanges('my-seq', {
+        includeDesign: true
+      })
+      expect(changes).toEqual({
+        newLastSeq: 'new-seq',
+        documents: [
+          { _id: '1', done: false, label: 'Fetch changes' },
+          { _id: '_design/view' }
+        ]
+      })
     })
   })
 })
