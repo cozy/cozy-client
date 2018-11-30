@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-     <a name="4.12.2"></a>
+      <a name="4.13.0"></a>
+# [4.13.0](https://github.com/cozy/cozy-client/compare/v4.12.2...v4.13.0) (2018-11-30)
+
+
+### Features
+
+* Add fetch changes ([7193f00](https://github.com/cozy/cozy-client/commit/7193f00))
+
+
+
+
+      <a name="4.12.2"></a>
 ## [4.12.2](https://github.com/cozy/cozy-client/compare/v4.12.1...v4.12.2) (2018-11-28)
 
 
@@ -14,7 +25,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="4.12.1"></a>
+   <a name="4.12.1"></a>
 ## [4.12.1](https://github.com/cozy/cozy-client/compare/v4.12.0...v4.12.1) (2018-11-21)
 
 
@@ -25,7 +36,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-   <a name="4.12.0"></a>
+ <a name="4.12.0"></a>
 # [4.12.0](https://github.com/cozy/cozy-client/compare/v4.11.0...v4.12.0) (2018-11-21)
 
 
@@ -36,7 +47,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-  <a name="4.11.0"></a>
+<a name="4.11.0"></a>
 # [4.11.0](https://github.com/cozy/cozy-client/compare/v4.10.0...v4.11.0) (2018-11-21)
 
 
