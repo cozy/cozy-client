@@ -9,7 +9,6 @@ export const normalizeDoc = (doc, doctype) => {
   const id = doc._id || doc.id
   return { id, _id: id, _type: doctype, ...doc }
 }
-
 /**
  * Abstracts a collection of documents of the same doctype, providing CRUD methods and other helpers.
  * @module DocumentCollection
@@ -58,10 +57,16 @@ export default class DocumentCollection {
     }
 
     const data = resp.rows
-      .map(row =>
-        normalizeDoc(isUsingAllDocsRoute ? row.doc : row, this.doctype)
-      )
-      .filter(doc => !startsWith(doc.id, '_design'))
+      .filter(doc => {
+        if (isUsingAllDocsRoute) {
+          return doc && doc.doc !== null && !startsWith(doc.id, '_design')
+        } else {
+          return doc && doc.id && !startsWith(doc.id, '_design')
+        }
+      })
+      .map(row => {
+        return normalizeDoc(isUsingAllDocsRoute ? row.doc : row, this.doctype)
+      })
 
     return {
       data,
