@@ -111,8 +111,7 @@ export default class HasMany extends Association {
 
   getRelationship() {
     const rawData = this.target[this.name]
-    const relationship =
-      this.target.relationships && this.target.relationships[this.name]
+    const relationship = get(this.target, `relationships.${this.name}`)
     if (!relationship) {
       if (rawData && rawData.length) {
         console.warn(
