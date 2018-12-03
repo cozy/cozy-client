@@ -206,9 +206,11 @@ describe('DocumentCollection', () => {
       }
     })
 
-    it('should not return design documents', async () => {
-      client.fetchJSON.mockResolvedValueOnce(ALL_RESPONSE_FIXTURE)
-      const docs = await collection.all()
+    it('should not return design documents if we intentionnally define limit=null', async () => {
+      client.fetchJSON.mockResolvedValueOnce(
+        Promise.resolve(ALL_RESPONSE_FIXTURE)
+      )
+      const docs = await collection.all({ limit: null })
 
       expect(docs.data.length).toBe(2)
     })

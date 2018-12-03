@@ -55,18 +55,23 @@ export default class DocumentCollection {
       }
       throw error
     }
-
-    const data = resp.rows
-      .filter(doc => {
-        if (isUsingAllDocsRoute) {
+    let data
+    /* If using `all_docs` we need to filter our design documents and check if 
+    the document is not null. If we use `normal_doc` we can't have any design doc
+     */
+    if (isUsingAllDocsRoute) {
+      data = resp.rows
+        .filter(doc => {
           return doc && doc.doc !== null && !startsWith(doc.id, '_design')
-        } else {
-          return doc && doc.id && !startsWith(doc.id, '_design')
-        }
+        })
+        .map(row => {
+          return normalizeDoc(row.doc, this.doctype)
+        })
+    } else {
+      data = resp.rows.map(row => {
+        return normalizeDoc(row, this.doctype)
       })
-      .map(row => {
-        return normalizeDoc(isUsingAllDocsRoute ? row.doc : row, this.doctype)
-      })
+    }
 
     return {
       data,
