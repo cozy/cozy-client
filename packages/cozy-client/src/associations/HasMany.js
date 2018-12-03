@@ -1,3 +1,4 @@
+import get from 'lodash/get'
 import Association from './Association'
 import { QueryDefinition } from '../queries/dsl'
 
@@ -142,7 +143,8 @@ export default class HasMany extends Association {
   }
 
   static query(document, client, assoc) {
-    const ids = document[assoc.name]
+    const relationships = get(document, `relationships.${assoc.name}.data`, [])
+    const ids = relationships.map(assoc => assoc._id)
     return new QueryDefinition({ doctype: assoc.doctype, ids })
   }
 }

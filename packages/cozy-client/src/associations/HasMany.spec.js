@@ -87,4 +87,15 @@ describe('HasMany', () => {
       hydratedWithNoRelation.tasks.target.relationships['tasks'].data.length
     ).toEqual(1)
   })
+
+  it('transform the relationship into  query', () => {
+    const queryDef = HasMany.query(original, null, {
+      name: 'tasks',
+      doctype: 'io.cozy.tasks'
+    })
+    expect(queryDef.doctype).toEqual('io.cozy.tasks')
+    expect(queryDef.ids).toEqual(
+      original.relationships.tasks.data.map(task => task._id)
+    )
+  })
 })
