@@ -212,6 +212,22 @@ describe('DocumentCollection', () => {
 
       expect(docs.data.length).toBe(2)
     })
+
+    it('should works even if the key references an empty doc', async () => {
+      const responsesWithEmptyDoc = {
+        ...ALL_RESPONSE_FIXTURE,
+        rows: [
+          ...ALL_RESPONSE_FIXTURE.rows,
+          {
+            id: '11111',
+            doc: null
+          }
+        ]
+      }
+      client.fetchJSON.mockReturnValue(Promise.resolve(responsesWithEmptyDoc))
+      const docs = await collection.all({ keys: ['12345', '67890', '11111'] })
+      expect(docs.data.length).toBe(2)
+    })
   })
 
   describe('createIndex', () => {
