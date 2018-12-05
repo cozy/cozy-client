@@ -22,7 +22,7 @@
 Main features :
 
 - Authentification with your Cozy
-- Declarative integration between React components and server data (data is auatomatically refreshed)
+- Declarative integration between React components and server data (data is automatically refreshed)
 - Offline : any data can be stored in a local cache without impacting your code that can continue to read and write.
 
 Additional features with plugins :
