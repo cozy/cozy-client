@@ -162,11 +162,13 @@ export default class DocumentCollection {
   }
 
   async create({ _id, _type, ...document }) {
-    const resp = await this.stackClient.fetchJSON(
-      'POST',
-      uri`/data/${this.doctype}/`,
-      document
-    )
+    // In case of a fixed id, let's use the dedicated creation endpoint
+    // https://github.com/cozy/cozy-stack/blob/master/docs/data-system.md#create-a-document-with-a-fixed-id
+    const hasFixedId = !!_id
+    const method = hasFixedId ? 'PUT' : 'POST'
+    const endpoint = uri`/data/${this.doctype}/${hasFixedId ? _id : ''}`
+    const resp = await this.stackClient.fetchJSON(method, endpoint, document)
+
     return {
       data: normalizeDoc(resp.data, this.doctype)
     }

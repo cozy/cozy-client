@@ -247,6 +247,36 @@ describe('CozyClient', () => {
   })
 
   describe('getDocumentSavePlan', () => {
+    it('should handle missing _rev and _id', () => {
+      const NEW_FOO = {
+        attributes: {
+          bar: 'Zap'
+        }
+      }
+      const mutation = client.getDocumentSavePlan(NEW_FOO)
+      expect(mutation.mutationType).toBe('CREATE_DOCUMENT')
+    })
+
+    it('should handle fixed _id', () => {
+      const NEW_FOO = {
+        _id: '29328139a6ed4320bdd75d28141e8fb2',
+        attributes: {
+          bar: 'Zap'
+        }
+      }
+      const mutation = client.getDocumentSavePlan(NEW_FOO)
+      expect(mutation.mutationType).toBe('CREATE_DOCUMENT')
+    })
+
+    it('should handle _rev for update', () => {
+      const OLD_FOO = {
+        _id: '29328139a6ed4320bdd75d28141e8fb2',
+        _rev: '1-5e3e3c68250747589266c23ce507b1a4'
+      }
+      const mutation = client.getDocumentSavePlan(OLD_FOO)
+      expect(mutation.mutationType).toBe('UPDATE_DOCUMENT')
+    })
+
     it('should handle associations for a new document with mutation creators', () => {
       const NEW_TODO = {
         _type: 'io.cozy.todos',
