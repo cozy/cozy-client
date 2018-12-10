@@ -38,6 +38,48 @@ describe('CozyStackClient', () => {
     })
   })
 
+  describe('create', () => {
+    const client = new CozyStackClient(FAKE_INIT_OPTIONS)
+    beforeAll(() => {
+      jest.spyOn(client, 'fetchJSON')
+      client.fetchJSON.mockResolvedValue({ data: {} })
+    })
+
+    afterEach(() => {
+      client.fetchJSON.mockClear()
+    })
+
+    afterAll(() => {
+      client.fetchJSON.mockRestore()
+    })
+
+    it('should send POST resquest', async () => {
+      await client
+        .collection('io.cozy.foos')
+        .create({ attributes: { name: 'Foo' } })
+
+      expect(client.fetchJSON).toHaveBeenCalledTimes(1)
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/data/io.cozy.foos/',
+        { attributes: { name: 'Foo' } }
+      )
+    })
+
+    it('should send PUT resquest on fixed _id', async () => {
+      await client
+        .collection('io.cozy.foos')
+        .create({ _id: 'bar', attributes: { name: 'Foo' } })
+
+      expect(client.fetchJSON).toHaveBeenCalledTimes(1)
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'PUT',
+        '/data/io.cozy.foos/bar',
+        { attributes: { name: 'Foo' } }
+      )
+    })
+  })
+
   describe('fetch', () => {
     const client = new CozyStackClient(FAKE_INIT_OPTIONS)
 

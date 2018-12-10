@@ -206,7 +206,7 @@ export default class CozyClient {
    * client.getDocumentSavePlan(baseDoc, relationships)
    */
   getDocumentSavePlan(document, relationships) {
-    const newDocument = !document._id
+    const newDocument = !document._rev
     const dehydratedDoc = dehydrate(document)
     const saveMutation = newDocument
       ? Mutations.createDocument(dehydratedDoc)
