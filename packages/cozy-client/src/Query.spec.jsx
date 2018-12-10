@@ -119,4 +119,70 @@ describe('Query', () => {
       )
     })
   })
+
+  describe('mutations', () => {
+    let store, client, mutations, mutationsArgument, query
+    beforeEach(async () => {
+      const assets = createTestAssets()
+      store = assets.store
+      client = assets.client
+      query = queryDef(client)
+      await store.dispatch(initQuery('allTodos', query))
+
+      mutations = jest.fn().mockReturnValue({
+        create: jest.fn(),
+        update: jest.fn()
+      })
+
+      mount(
+        <CozyProvider client={client}>
+          <Query
+            fetchPolicy="cache-only"
+            query={queryDef}
+            mutations={mutations}
+          >
+            {(result, mutations) => {
+              mutationsArgument = mutations
+              return null
+            }}
+          </Query>
+        </CozyProvider>
+      )
+    })
+
+    it('should call mutation function with client', () => {
+      expect(mutations.mock.calls.length).toBe(1)
+      expect(mutations.mock.calls[0][0]).toBe(client)
+    })
+
+    it('should pass mutations', () => {
+      expect(typeof mutationsArgument.create).toBe('function')
+      expect(typeof mutationsArgument.update).toBe('function')
+    })
+
+    it('should pass mutations as object', () => {
+      const mutations = {
+        create: jest.fn(),
+        update: jest.fn()
+      }
+
+      mount(
+        <CozyProvider client={client}>
+          <Query
+            fetchPolicy="cache-only"
+            query={queryDef}
+            mutations={mutations}
+          >
+            {(result, mutations) => {
+              mutationsArgument = mutations
+              return null
+            }}
+          </Query>
+        </CozyProvider>
+      )
+
+      expect(typeof mutationsArgument.create).toBe('function')
+      expect(typeof mutationsArgument.update).toBe('function')
+    })
+  })
 })

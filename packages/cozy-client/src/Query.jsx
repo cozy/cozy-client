@@ -25,8 +25,8 @@ export default class Query extends Component {
     const { mutations, ...rest } = props
     this.mutations =
       typeof mutations === 'function'
-        ? mutations(this.observableQuery, rest)
-        : {}
+        ? mutations(this.client, this.observableQuery, rest)
+        : mutations
 
     const query = this.observableQuery
     this.createDocument = client.create.bind(client)
