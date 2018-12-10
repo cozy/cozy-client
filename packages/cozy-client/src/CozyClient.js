@@ -118,12 +118,17 @@ export default class CozyClient {
     }
 
     this.isLogged = false
-    // unregister client on stack
-    if (
-      this.stackClient.unregister &&
-      (!this.stackClient.isRegistered || this.stackClient.isRegistered())
-    ) {
-      await this.stackClient.unregister()
+
+    try {
+      // unregister client on stack
+      if (
+        this.stackClient.unregister &&
+        (!this.stackClient.isRegistered || this.stackClient.isRegistered())
+      ) {
+        await this.stackClient.unregister()
+      }
+    } catch (err) {
+      console.warn(`Impossible to unregister client on stack: ${err}`)
     }
 
     // clean information on links
