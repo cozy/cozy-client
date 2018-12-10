@@ -11,7 +11,15 @@ import reducer, {
   StoreProxy
 } from '../store'
 import { QueryDefinition as Q } from '../queries/dsl'
-import { TODO_1, TODO_2, TODO_3, TODO_4 } from './fixtures'
+import {
+  TODO_1,
+  TODO_2,
+  TODO_3,
+  TODO_4,
+  TODO_WITH_RELATION,
+  FILE_1,
+  FILE_2
+} from './fixtures'
 
 describe('Store', () => {
   let store
@@ -154,6 +162,19 @@ describe('Store', () => {
         getDocumentFromState(store.getState(), 'io.cozy.todos', TODO_1._id)
           .label
       ).toBe('Buy croissants')
+    })
+    it('it should store documents with included from a mutation result', () => {
+      store.dispatch(
+        receiveMutationResult('foo', {
+          data: [...TODO_WITH_RELATION.relationships.attachments.files],
+          included: [FILE_1, FILE_2]
+        })
+      )
+
+      expect(
+        getDocumentFromState(store.getState(), 'io.cozy.files', FILE_1._id)
+          .label
+      ).toBe(FILE_1.label)
     })
   })
 

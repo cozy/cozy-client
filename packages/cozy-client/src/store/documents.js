@@ -52,28 +52,13 @@ const documents = (state = {}, action) => {
 
   const { data, included } = action.response
   if (!data || (Array.isArray(data) && data.length === 0)) return state
-
   const updatedStateWithIncluded = included
     ? included.reduce(storeDocument, state)
     : state
-
   if (!Array.isArray(data)) {
     return storeDocument(updatedStateWithIncluded, data)
   }
-
-  const doctype = data[0]._type
-
-  if (!doctype) {
-    throw new Error('Document without _type', data[0])
-  }
-
-  return {
-    ...updatedStateWithIncluded,
-    [doctype]: {
-      ...updatedStateWithIncluded[doctype],
-      ...keyBy(data, properId)
-    }
-  }
+  return extractAndMergeDocument(data, updatedStateWithIncluded)
 }
 
 export default documents
@@ -106,4 +91,60 @@ export const getDocumentFromSlice = (state = {}, doctype, id) => {
     return null
   }
   return state[doctype][id]
+}
+
+/*
+  This method has been created in order to get a returned object 
+  in `data` with the full set on information coming potentielly from 
+  ìncluded`
+
+  This method should be somewhere else. The `document` shall not be 
+  deal with included / data and so on. 
+
+  This method takes data and included and merge both sources 
+  together. It should be always up to date. The returned object 
+  will be as full of informations as it can be.
+*/
+export const extractAndMergeDocument = (data, updatedStateWithIncluded) => {
+  const doctype = data[0]._type
+
+  if (!doctype) {
+    throw new Error('Document without _type', data[0])
+  }
+  const sortedData = keyBy(data, properId)
+
+  let mergedData = {}
+  if (updatedStateWithIncluded && updatedStateWithIncluded[doctype]) {
+    Object.values(updatedStateWithIncluded[doctype]).map(dataState => {
+      if (!mergedData[doctype]) mergedData[doctype] = {}
+      if (sortedData[dataState._id]) {
+        mergedData[doctype][dataState._id] = {
+          ...dataState,
+          ...sortedData[dataState._id],
+          ...mergedData[doctype][dataState._id]
+        }
+      } else {
+        mergedData[doctype][dataState._id] = {
+          ...dataState,
+          ...mergedData[doctype][dataState._id]
+        }
+      }
+    })
+  }
+  Object.values(sortedData).map(data => {
+    if (!mergedData[doctype]) mergedData[doctype] = {}
+    if (mergedData[doctype][data._id]) {
+      mergedData[doctype][data._id] = {
+        ...mergedData[doctype][data._id],
+        ...data
+      }
+    } else {
+      mergedData[doctype][data._id] = data
+    }
+  })
+
+  return {
+    ...updatedStateWithIncluded,
+    ...mergedData
+  }
 }

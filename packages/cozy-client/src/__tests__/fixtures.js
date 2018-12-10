@@ -41,11 +41,11 @@ export const TODO_WITH_RELATION = {
       doctype: 'io.cozy.files',
       files: [
         {
-          type: 'io.cozy.files',
+          _type: 'io.cozy.files',
           _id: 1
         },
         {
-          type: 'io.cozy.files',
+          _type: 'io.cozy.files',
           _id: 2
         }
       ]
