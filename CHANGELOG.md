@@ -3,7 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="4.13.2"></a>
+     <a name="4.14.0"></a>
+# [4.14.0](https://github.com/cozy/cozy-client/compare/v4.13.2...v4.14.0) (2018-12-10)
+
+
+### Features
+
+* Verbose jest and coverage 🔊 ([3bd50fb](https://github.com/cozy/cozy-client/commit/3bd50fb))
+* **client:** Handle stack client unregister error ([c39d816](https://github.com/cozy/cozy-client/commit/c39d816))
+
+
+
+
+     <a name="4.13.2"></a>
 ## [4.13.2](https://github.com/cozy/cozy-client/compare/v4.13.1...v4.13.2) (2018-12-04)
 
 
@@ -14,7 +26,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-      <a name="4.13.1"></a>
+   <a name="4.13.1"></a>
 ## [4.13.1](https://github.com/cozy/cozy-client/compare/v4.13.0...v4.13.1) (2018-12-03)
 
 
@@ -26,7 +38,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="4.13.0"></a>
+  <a name="4.13.0"></a>
 # [4.13.0](https://github.com/cozy/cozy-client/compare/v4.12.2...v4.13.0) (2018-11-30)
 
 
@@ -37,7 +49,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-   <a name="4.12.2"></a>
+<a name="4.12.2"></a>
 ## [4.12.2](https://github.com/cozy/cozy-client/compare/v4.12.1...v4.12.2) (2018-11-28)
 
 
