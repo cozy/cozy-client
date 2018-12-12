@@ -21,7 +21,7 @@ export default class PermissionCollection extends DocumentCollection {
   }
 
   async create({ _id, _type, ...attributes }) {
-    const resp = await this.stackClient.fetchJSON('POST', uri`/permissions/`, {
+    const resp = await this.stackClient.fetchJSON('POST', uri`/permissions`, {
       data: {
         type: 'io.cozy.permissions',
         attributes
