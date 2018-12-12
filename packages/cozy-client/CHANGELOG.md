@@ -3,7 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="5.0.1"></a>
+     <a name="5.0.2"></a>
+## [5.0.2](https://github.com/cozy/cozy-client/compare/v5.0.1...v5.0.2) (2018-12-12)
+
+
+
+
+**Note:** Version bump only for package cozy-client
+
+     <a name="5.0.1"></a>
 ## [5.0.1](https://github.com/cozy/cozy-client/compare/v5.0.0...v5.0.1) (2018-12-12)
 
 
@@ -14,7 +22,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-      <a name="5.0.0"></a>
+   <a name="5.0.0"></a>
 # [5.0.0](https://github.com/cozy/cozy-client/compare/v4.14.0...v5.0.0) (2018-12-10)
 
 
@@ -36,7 +44,7 @@ attribute existence  and not _id's one anymore
 
 
 
-     <a name="4.14.0"></a>
+  <a name="4.14.0"></a>
 # [4.14.0](https://github.com/cozy/cozy-client/compare/v4.13.2...v4.14.0) (2018-12-10)
 
 
@@ -47,7 +55,7 @@ attribute existence  and not _id's one anymore
 
 
 
-   <a name="4.13.2"></a>
+<a name="4.13.2"></a>
 ## [4.13.2](https://github.com/cozy/cozy-client/compare/v4.13.1...v4.13.2) (2018-12-04)
 
 
