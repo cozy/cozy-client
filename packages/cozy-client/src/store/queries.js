@@ -47,6 +47,9 @@ const query = (state = queryInitialState, action) => {
         lastFetch: Date.now(),
         lastUpdate: Date.now()
       }
+      if (!response.data) {
+        return state
+      }
       if (!Array.isArray(response.data)) {
         return {
           ...state,

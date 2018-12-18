@@ -89,5 +89,19 @@ describe('queries reducer', () => {
       )
       expect(state).toMatchSnapshot()
     })
+
+    it('should not crash if data is null', () => {
+      const query = new Q({
+        doctype: 'io.cozy.todos',
+        id: 'not-existing-doc'
+      })
+      applyAction(initQuery('b', query))
+      applyAction(
+        receiveQueryResult('b', {
+          data: null
+        })
+      )
+      expect(state).toMatchSnapshot()
+    })
   })
 })
