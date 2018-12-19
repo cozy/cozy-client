@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-     <a name="5.0.7"></a>
+      <a name="5.1.0"></a>
+# [5.1.0](https://github.com/cozy/cozy-client/compare/v5.0.7...v5.1.0) (2018-12-19)
+
+
+### Features
+
+* HasOne association ✨ ([64221d7](https://github.com/cozy/cozy-client/commit/64221d7))
+
+
+
+
+      <a name="5.0.7"></a>
 ## [5.0.7](https://github.com/cozy/cozy-client/compare/v5.0.6...v5.0.7) (2018-12-19)
 
 
@@ -14,7 +25,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="5.0.6"></a>
+   <a name="5.0.6"></a>
 ## [5.0.6](https://github.com/cozy/cozy-client/compare/v5.0.5...v5.0.6) (2018-12-19)
 
 
@@ -22,7 +33,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package undefined
 
-   <a name="5.0.5"></a>
+ <a name="5.0.5"></a>
 ## [5.0.5](https://github.com/cozy/cozy-client/compare/v5.0.4...v5.0.5) (2018-12-19)
 
 
@@ -33,7 +44,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-  <a name="5.0.4"></a>
+<a name="5.0.4"></a>
 ## [5.0.4](https://github.com/cozy/cozy-client/compare/v5.0.3...v5.0.4) (2018-12-19)
 
 
