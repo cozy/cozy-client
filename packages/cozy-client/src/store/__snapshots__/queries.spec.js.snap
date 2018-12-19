@@ -28,6 +28,57 @@ Object {
 }
 `;
 
+exports[`queries reducer updates should not crash if data is null 1`] = `
+Object {
+  "a": Object {
+    "count": 0,
+    "data": Array [],
+    "definition": QueryDefinition {
+      "doctype": "io.cozy.todos",
+      "fields": undefined,
+      "id": undefined,
+      "ids": undefined,
+      "includes": undefined,
+      "indexedFields": undefined,
+      "limit": undefined,
+      "referenced": undefined,
+      "selector": undefined,
+      "skip": undefined,
+      "sort": undefined,
+    },
+    "fetchStatus": "loading",
+    "hasMore": false,
+    "id": "a",
+    "lastError": null,
+    "lastFetch": null,
+    "lastUpdate": null,
+  },
+  "b": Object {
+    "count": 0,
+    "data": Array [],
+    "definition": QueryDefinition {
+      "doctype": "io.cozy.todos",
+      "fields": undefined,
+      "id": "not-existing-doc",
+      "ids": undefined,
+      "includes": undefined,
+      "indexedFields": undefined,
+      "limit": undefined,
+      "referenced": undefined,
+      "selector": undefined,
+      "skip": undefined,
+      "sort": undefined,
+    },
+    "fetchStatus": "loading",
+    "hasMore": false,
+    "id": "b",
+    "lastError": null,
+    "lastFetch": null,
+    "lastUpdate": null,
+  },
+}
+`;
+
 exports[`queries reducer updates should not update a query not concerned even with a selector 1`] = `
 Object {
   "a": Object {
