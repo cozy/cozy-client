@@ -65,6 +65,8 @@
  * the hydrated document (.data method). View components will access
  * `hydratedDoc[relationshipName].data`.
  * - `get query`: how to build the query to fetch related documents
+ *
+ * @module Association
  */
 export default class Association {
   constructor(target, name, doctype, { get, query, mutate, save }) {

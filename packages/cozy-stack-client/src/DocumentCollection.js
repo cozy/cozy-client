@@ -312,8 +312,8 @@ export default class DocumentCollection {
   /**
    * Use Couch _changes API
    *
-   * @param  {string} since     Starting sequence for changes
-   * @param  {[type]} options   { includeDesign: false, includeDeleted: false }
+   * @param  {String} since     Starting sequence for changes
+   * @param  {Object} options   { includeDesign: false, includeDeleted: false }
    */
   async fetchChanges(since, options = {}) {
     const result = await this.stackClient.fetchJSON(
