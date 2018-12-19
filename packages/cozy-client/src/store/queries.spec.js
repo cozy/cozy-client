@@ -39,7 +39,7 @@ describe('queries reducer', () => {
         )
       )
     })
-    it('should update correctly', () => {
+    it('should correctly update', () => {
       applyAction(
         receiveQueryResult('a', {
           data: [TODO_1, TODO_2]
@@ -47,7 +47,7 @@ describe('queries reducer', () => {
       )
       expect(state).toMatchSnapshot()
     })
-    it('should update correctly two queries', () => {
+    it('should correctly update two queries', () => {
       applyAction(
         initQuery(
           'b',
@@ -64,7 +64,7 @@ describe('queries reducer', () => {
       expect(state).toMatchSnapshot()
     })
 
-    it('should update correctly a query with a selector', () => {
+    it('should correctly update a query with a selector', () => {
       const query = new Q({
         doctype: 'io.cozy.todos'
       })
