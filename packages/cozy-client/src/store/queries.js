@@ -85,11 +85,19 @@ const query = (state = queryInitialState, action) => {
   }
 }
 
+const getSelectorFilterFn = queryDefinition => {
+  if (queryDefinition.selector) {
+    return sift(queryDefinition.selector)
+  } else if (queryDefinition.id) {
+    return sift({ _id: queryDefinition.id })
+  } else {
+    return null
+  }
+}
+
 const getQueryDocumentsChecker = query => {
   const qdoctype = query.definition.doctype
-  const selectorFilterFn = query.definition.selector
-    ? sift(query.definition.selector)
-    : null
+  const selectorFilterFn = getSelectorFilterFn(query.definition)
   return datum => {
     const ddoctype = datum._type
     if (ddoctype !== qdoctype) return false
