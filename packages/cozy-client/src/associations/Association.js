@@ -7,7 +7,7 @@
  *
  * Example: The schema defines an `author` relationship :
  *
- * ```
+ * ```js
  * const BOOK_SCHEMA = {
  *   relationships: {
  *      author: 'has-one'
@@ -18,7 +18,7 @@
  * Hydrated `books` will have the `author` association instance under the `author` key.
  * Accessing `hydratedBook.author.data` gives you the author from the store, for example :
  *
- * ```
+ * ```js
  * {
  *   name: 'St-Exupery',
  *   firstName: 'Antoine',
@@ -31,7 +31,7 @@
  * is stored in the `relationships` attribute of the original document (in our case here, our book
  * would be
  *
- * ```
+ * ```js
  * {
  *   title: 'Le petit prince',
  *   relationships: {
@@ -48,7 +48,7 @@
  * In the case of an "in-place" relationship, the relationship data is stored directly under the attribute named
  * by the relationship (in our case `author`). Our book would be
  *
- * ```
+ * ```js
  * {
  *     title: 'Le petit prince',
  *     author: 'antoine'
