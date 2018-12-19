@@ -103,5 +103,25 @@ describe('queries reducer', () => {
       )
       expect(state).toMatchSnapshot()
     })
+
+    it('should only update queries with the right id selector', () => {
+      const query = new Q({
+        doctype: 'io.cozy.todos',
+        id: TODO_3._id
+      })
+      applyAction(initQuery('b', query))
+      applyAction(
+        receiveQueryResult('a', {
+          data: [TODO_2]
+        })
+      )
+      expect(state.b.lastUpdate).toBe(null)
+      applyAction(
+        receiveQueryResult('a', {
+          data: [TODO_3]
+        })
+      )
+      expect(state.b.lastUpdate).not.toBe(null)
+    })
   })
 })
