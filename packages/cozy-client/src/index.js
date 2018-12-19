@@ -16,6 +16,7 @@ export { queryConnect, withClient } from './hoc'
 export {
   Association,
   HasMany,
+  HasOne,
   HasOneInPlace,
   HasManyInPlace
 } from './associations'

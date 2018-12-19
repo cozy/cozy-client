@@ -1,6 +1,7 @@
 import pick from 'lodash/pick'
 import pickBy from 'lodash/pickBy'
 import Association from './Association'
+import HasOne from './HasOne'
 import HasOneInPlace from './HasOneInPlace'
 import HasMany from './HasMany'
 import HasManyInPlace from './HasManyInPlace'
@@ -50,6 +51,7 @@ const aliases = {
   'io.cozy.files:has-many': HasManyFiles,
   'has-many': HasMany,
   'belongs-to-in-place': HasOneInPlace,
+  'has-one': HasOne,
   'has-one-in-place': HasOneInPlace,
   'has-many-in-place': HasManyInPlace
 }
