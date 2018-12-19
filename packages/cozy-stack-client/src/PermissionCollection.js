@@ -32,6 +32,57 @@ export default class PermissionCollection extends DocumentCollection {
     }
   }
 
+  /**
+   * Adds a permission to the given document. Document type must be
+   * `io.cozy.apps`, `io.cozy.konnectors` or `io.cozy.permissions`
+   *
+   * @param  {object}  document
+   * @param  {object}  permission
+   * @return {Promise}
+   *
+   * @example
+   * ```
+   * const permissions = await client
+   *   .collection('io.cozy.permissions')
+   *   .add(konnector, {
+   *     folder: {
+   *       type: 'io.cozy.files',
+   *       verbs: ['GET', 'PUT'],
+   *       values: [`io.cozy.files.bc57b60eb2954537b0dcdc6ebd8e9d23`]
+   *     }
+   *  })
+   * ```
+   */
+  async add(document, permission) {
+    let endpoint
+    switch (document._type) {
+      case 'io.cozy.apps':
+        endpoint = `/permissions/apps/${document.slug}`
+        break
+      case 'io.cozy.konnectors':
+        endpoint = `/permissions/konnectors/${document.slug}`
+        break
+      case 'io.cozy.permissions':
+        endpoint = `/permissions/${document._id}`
+        break
+      default:
+        throw new Error(
+          'Permissions can only be added on existing permissions, apps and konnectors.'
+        )
+    }
+
+    const resp = await this.stackClient.fetchJSON('PATCH', endpoint, {
+      data: {
+        type: 'io.cozy.permissions',
+        attributes: {
+          permissions: permission
+        }
+      }
+    })
+
+    return resp.data
+  }
+
   destroy(permission) {
     return this.stackClient.fetchJSON(
       'DELETE',
