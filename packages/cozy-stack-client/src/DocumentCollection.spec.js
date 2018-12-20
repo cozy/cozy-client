@@ -230,6 +230,22 @@ describe('DocumentCollection', () => {
       const docs = await collection.all({ keys: ['12345', '67890', '11111'] })
       expect(docs.data.length).toBe(2)
     })
+
+    it('should ignore rows with errors', async () => {
+      const responsesWithEmptyDoc = {
+        ...ALL_RESPONSE_FIXTURE,
+        rows: [
+          ...ALL_RESPONSE_FIXTURE.rows,
+          {
+            key: '11111',
+            error: 'not_found'
+          }
+        ]
+      }
+      client.fetchJSON.mockReturnValue(Promise.resolve(responsesWithEmptyDoc))
+      const docs = await collection.all({ keys: ['12345', '67890', '11111'] })
+      expect(docs.data.length).toBe(2)
+    })
   })
 
   describe('createIndex', () => {
