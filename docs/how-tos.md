@@ -2,6 +2,7 @@
 
 - [How-to integrate with an existing store ?](#how-to-integrate-with-an-existing-store-)
 - [How to connect to the documents store declaratively ?](#how-to-connect-to-the-documents-store-declaratively-)
+- [How to connect to multiple queries at once ?](#how-to-connect-to-multiple-queries-at-once-)
 - [How to provide a mutation to a component ?](#how-to-provide-a-mutation-to-a-component-)
 - [How to specify a schema ?](#how-to-specify-a-schema-)
 
@@ -62,6 +63,40 @@ TodoList.propTypes = {
   fetchStatus: PropTypes.string.isRequired,
   data: PropTypes.array
 }
+```
+
+## How to connect to multiple queries at once ?
+
+The `queryConnect` HOC enables you to connect multiple queries to a component. In the following example, the `App` component needs todos and contacts. We use `queryConnect` to retrieve them all:
+
+```jsx
+import { queryConnect } from 'cozy-client'
+import React from 'react'
+import TodoList from './TodoList'
+import Contacts from './Contacts'
+
+const App = ({ todos, contacts }) => (
+  <div>
+    {todos.fetchStatus !== 'loaded' ? <p>Loading...</p> : <TodoList items={todos.data} />}
+    {contacts.fetchStatus !== 'loaded' ? <p>Loading...</p> : <Contacts items={contact.data} />}
+  </div>
+)
+
+export default queryConnect({
+  todos: { query: client => client.all('io.cozy.todos'), as: 'todos' },
+  contacts: { query: client => client.all('io.cozy.contacts'), as: 'contact' }
+})(App)
+```
+
+`queryConnect` also allows us to make queries based on props by passing a function instead of a plain object. For example, if we want to fetch todos based on a selected contact:
+
+```js
+queryConnect({
+  todos: props => ({
+    query: client => client.all('io.cozy.todos').where({ author: props.selectedContact }),
+    as: 'todos'
+  })
+})
 ```
 
 ## How to provide a mutation to a component ?
