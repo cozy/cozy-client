@@ -20,8 +20,8 @@
     "babel-cli": "6.26.0",
     "jest-localstorage-mock": "2.3.0",
     "parcel": "1.10.3",
-    "react": "16.4.2",
-    "react-dom": "16.4.2"
+    "react": "16.7.0",
+    "react-dom": "16.7.0"
   },
   "scripts": {
     "build": "../../bin/build",
