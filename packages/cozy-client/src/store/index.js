@@ -1,4 +1,5 @@
-import { createStore as createReduxStore, combineReducers } from 'redux'
+import { createStore as createReduxStore, combineReducers, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
 
 import documents, { getDocumentFromSlice } from './documents'
 import queries, { getQueryFromSlice, isQueryAction } from './queries'
@@ -83,7 +84,7 @@ const combinedReducer = (state = { documents: {}, queries: {} }, action) => {
 export default combinedReducer
 
 export const createStore = () =>
-  createReduxStore(combineReducers({ cozy: combinedReducer }))
+  createReduxStore(combineReducers({ cozy: combinedReducer }), applyMiddleware(thunk))
 
 export const getStateRoot = state => state.cozy || {}
 
