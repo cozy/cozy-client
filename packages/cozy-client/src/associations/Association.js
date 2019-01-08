@@ -69,7 +69,7 @@
  * @module Association
  */
 export default class Association {
-  constructor(target, name, doctype, { get, query, mutate, save }) {
+  constructor(target, name, doctype, { dispatch, get, query, mutate, save }) {
     /**
      * The original document declaring the relationship
      * @type {object}
@@ -108,6 +108,7 @@ export default class Association {
      * @type {[type]}
      */
     this.save = save
+    this.dispatch = dispatch
   }
 
   /**
