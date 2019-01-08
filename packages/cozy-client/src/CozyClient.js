@@ -505,6 +505,7 @@ export default class CozyClient {
       this.storeAccessors = {
         get: this.getDocumentFromState.bind(this),
         save: (document, opts) => this.save.call(this, document, opts),
+        dispatch: this.dispatch.bind(this),
         query: (def, opts) => this.query.call(this, def, opts),
         mutate: (def, opts) => this.mutate.call(this, def, opts)
       }
