@@ -2,7 +2,6 @@
 
 - [How-to integrate with an existing store ?](#how-to-integrate-with-an-existing-store-)
 - [How to connect to the documents store declaratively ?](#how-to-connect-to-the-documents-store-declaratively-)
-- [How to connect to multiple queries at once ?](#how-to-connect-to-multiple-queries-at-once-)
 - [How to provide a mutation to a component ?](#how-to-provide-a-mutation-to-a-component-)
 - [How to specify a schema ?](#how-to-specify-a-schema-)
 
@@ -38,36 +37,41 @@ ReactDOM.render(
 
 ### How to connect to the documents store declaratively ?
 
-Sometimes, HOCs are better suited than render-prop components, especially if you have multiple data-sources and you do not want to have multiple indent levelves. We provide a higher-order component called `connect`. Basic example of usage:
+Sometimes, HOCs are better suited than render-prop components, especially if you have multiple data-sources and you do not want to have multiple indent levelves. We provide a higher-order component called `queryConnect`. Basic example of usage:
 
 ```jsx
 import React from 'react'
-import { connect } from 'cozy-client'
+import { queryConnect } from 'cozy-client'
 
 const query = client => client.find('io.cozy.todos').where({ checked: false })
 
-const TodoList = ({ data, fetchStatus }) =>
-  fetchStatus !== 'loaded'
+const TodoList = ({ todos }) =>
+  todos.fetchStatus !== 'loaded'
     ? <h1>Loading...</h1>
-    : <ul>{data.map(todo => <li>{todo.label}</li>)}</ul>
+    : <ul>{todos.data.map(todo => <li>{todo.label}</li>)}</ul>
 
-export default connect(query)(TodoList)
+export default queryConnect({
+  todos: {
+    query: query,
+    as: 'todos'
+  }
+})(TodoList)
 ```
 
-When we use `connect` to bind a query to a component, three things happen:
- - The query passed as an argument will be executed when the component mounts, resulting in the loading of data from the client-side store, or the server if the data is not in the store ;
+When we use `queryConnect` to bind a query to a component, three things happen:
+ - The queries passed as an argument will be executed when the component mounts, resulting in the loading of data from the client-side store, or the server if the data is not in the store ;
  - Our component subscribes to the store, so that it is updated if the data changes ;
  - props are injected into the component: if we were to declare `propTypes` they would look like this:
 ```jsx
 TodoList.propTypes = {
-  fetchStatus: PropTypes.string.isRequired,
-  data: PropTypes.array
+  todos: PropTypes.shape({
+    fetchStatus: PropTypes.string.isRequired,
+    data: PropTypes.array
+  })
 }
 ```
 
-## How to connect to multiple queries at once ?
-
-The `queryConnect` HOC enables you to connect multiple queries to a component. In the following example, the `App` component needs todos and contacts. We use `queryConnect` to retrieve them all:
+You can also connect multiples queries by adding other properties to the object passed to `queryConnect`:
 
 ```jsx
 import { queryConnect } from 'cozy-client'
@@ -88,7 +92,7 @@ export default queryConnect({
 })(App)
 ```
 
-`queryConnect` also allows us to make queries based on props by passing a function instead of a plain object. For example, if we want to fetch todos based on a selected contact:
+Finally, `queryConnect` also allows us to make queries based on props by passing a function instead of a plain object. For example, if we want to fetch todos based on a selected contact:
 
 ```js
 queryConnect({
