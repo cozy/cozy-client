@@ -108,6 +108,10 @@ export default class Association {
      * @type {[type]}
      */
     this.save = save
+    /**
+     * Dispatch an action on the store.
+     * @type {[type]}
+     */
     this.dispatch = dispatch
   }
 

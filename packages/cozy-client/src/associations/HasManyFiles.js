@@ -2,18 +2,19 @@ import HasMany from './HasMany'
 import { QueryDefinition, Mutations } from '../queries/dsl'
 
 export default class HasManyFiles extends HasMany {
-  fetchMore() {
+  async fetchMore() {
     const skip = this.getRelationship().data.length
     const queryDef = new QueryDefinition({ doctype: 'io.cozy.files' })
-    return this.query(queryDef.referencedBy(this.target).offset(skip), {
-      update: (store, response) => {
-        response.included.forEach(doc => store.writeDocument(doc))
-        this.updateTargetRelationship(store, prevRelationship => ({
-          data: [...prevRelationship.data, ...response.data],
-          next: response.next
-        }))
-      }
-    })
+    const response = await this.query(
+      queryDef.referencedBy(this.target).offset(skip)
+    )
+    await this.dispatch(
+      this.updateRelationshipData(previousRelationshipData => ({
+        ...previousRelationshipData,
+        data: [...previousRelationshipData.data, ...response.data],
+        next: response.next
+      }))
+    )
   }
 
   async add(referencedDocs) {
