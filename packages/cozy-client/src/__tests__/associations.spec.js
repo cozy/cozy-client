@@ -1,7 +1,7 @@
-import { createStore, combineReducers } from 'redux'
 import CozyClient from '../CozyClient'
 import CozyLink from '../CozyLink'
 
+import { createStore, getQueryFromStore } from '../store'
 import { SCHEMA, TODO_1, TODO_2 } from './fixtures'
 import { receiveQueryResult, initQuery } from '../store/queries'
 
@@ -20,7 +20,7 @@ describe('Associations', () => {
       .shift()
 
   beforeEach(async () => {
-    const store = createStore(combineReducers({ cozy: client.reducer() }))
+    const store = createStore()
     client.setStore(store)
     await store.dispatch(initQuery('allTodos', { doctype: 'io.cozy.todos' }))
     await store.dispatch(
@@ -74,6 +74,8 @@ describe('Associations', () => {
         next: false
       }
       requestHandler.mockReturnValueOnce(Promise.resolve(FAKE_RESPONSE))
+
+      const queryBefore = getQueryFromStore(client.store, 'allTodos')
       await getTodo(TODO_1._id).attachments.fetchMore()
       expect(getTodo(TODO_1._id).attachments.data).toEqual([
         { _id: 'abc', _type: 'io.cozy.files', name: 'abc.pdf' },
@@ -81,6 +83,8 @@ describe('Associations', () => {
         { _id: 'ghi', _type: 'io.cozy.files', name: 'ghi.pdf' },
         { _id: 'jkl', _type: 'io.cozy.files', name: 'jkl.png' }
       ])
+      const queryAfter = getQueryFromStore(client.store, 'allTodos')
+      expect(queryBefore.lastUpdate).toBeLessThan(queryAfter.lastUpdate)
     })
 
     it('should be able to associate more docs', async () => {

@@ -1,6 +1,7 @@
 import get from 'lodash/get'
 import Association from './Association'
 import { QueryDefinition } from '../queries/dsl'
+import { receiveQueryResult, getDocumentFromState } from '../store'
 
 const empty = () => ({
   data: [],
@@ -139,6 +140,30 @@ export default class HasMany extends Association {
         }
       }
     }
+  }
+
+  updateRelationshipData = getUpdatedRelationshipData => (
+    dispatch,
+    getState
+  ) => {
+    const previousRelationship = getDocumentFromState(
+      getState(),
+      this.target._type,
+      this.target._id
+    )
+    dispatch(
+      receiveQueryResult(null, {
+        data: {
+          ...previousRelationship,
+          relationships: {
+            ...previousRelationship.relationships,
+            [this.name]: getUpdatedRelationshipData(
+              previousRelationship.relationships[this.name]
+            )
+          }
+        }
+      })
+    )
   }
 
   static query(document, client, assoc) {
