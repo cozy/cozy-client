@@ -1,4 +1,3 @@
-const minimist = require('minimist')
 const { QueryDefinition, default: CozyClient } = require('../dist')
 global.fetch = require('node-fetch') // in the browser we have native fetch
 
@@ -26,9 +25,6 @@ const main = async _args => {
   if (!token) {
     throw new Error('You should provide COZY_TOKEN as an environement variable')
   }
-  const args = minimist(_args.slice(2), {
-    string: ['selector']
-  })
   const client = new CozyClient({ uri, token, schema })
   const query = new QueryDefinition({
     doctype: 'io.cozy.photos.albums',
