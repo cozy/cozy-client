@@ -7,9 +7,10 @@ import get from 'lodash/get'
 import map from 'lodash/map'
 import zip from 'lodash/zip'
 import * as promises from './promises'
-import { isDesignDocument, isDeletedDocument } from './helpers'
+import { default as helpers } from './helpers'
 import { isMobileApp } from 'cozy-device-helper'
 
+const { isDesignDocument, isDeletedDocument } = helpers
 const DEFAULT_DELAY = 30 * 1000
 
 const TIME_UNITS = [['ms', 1000], ['s', 60], ['m', 60], ['h', 24]]

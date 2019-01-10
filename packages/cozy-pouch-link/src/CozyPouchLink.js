@@ -5,11 +5,13 @@ import omit from 'lodash/omit'
 import defaults from 'lodash/defaults'
 import mapValues from 'lodash/mapValues'
 
-import { find } from './helpers'
+import { default as helpers } from './helpers'
 import { getIndexNameFromFields, getIndexFields } from './mango'
 import * as jsonapi from './jsonapi'
 import PouchManager from './PouchManager'
 PouchDB.plugin(PouchDBFind)
+
+const { find } = helpers
 
 const parseMutationResult = (original, res) => {
   return { ...original, ...omit(res, 'ok') }

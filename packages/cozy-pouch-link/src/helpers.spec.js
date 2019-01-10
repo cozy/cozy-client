@@ -1,4 +1,6 @@
-import { find, isDesignDocument, isDeletedDocument } from './helpers.js'
+import helpers from './helpers'
+const { find, isDeletedDocument, isDesignDocument } = helpers
+
 import PouchDB from 'pouchdb'
 import PouchDBFind from 'pouchdb-find'
 import adapter from 'pouchdb-adapter-memory'
@@ -38,17 +40,19 @@ describe('Helpers', () => {
     })
 
     it('should find 2000 docs', async () => {
+      jest.spyOn(helpers, 'isTheCurrentAdapterIsBugged').mockReturnValue(true)
       jest.spyOn(db, 'find')
       await insertData(db, 2000)
-      const data = await find(db, { sqlite: true })
+      const data = await find(db)
       expect(data.docs).toHaveLength(2000)
       expect(db.find).toHaveBeenCalledTimes(3)
     })
 
     it('should find 1000 docs', async () => {
+      jest.spyOn(helpers, 'isTheCurrentAdapterIsBugged').mockReturnValue(true)
       jest.spyOn(db, 'find')
       await insertData(db, 2000)
-      const data = await find(db, { limit: 1000, sqlite: true })
+      const data = await helpers.find(db, { limit: 1000 })
       expect(data.docs).toHaveLength(1000)
       expect(db.find).toHaveBeenCalledTimes(2)
     })

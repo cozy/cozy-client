@@ -1,16 +1,22 @@
 import startsWith from 'lodash/startsWith'
 
+const helpers = {}
+
 // https://github.com/pouchdb/pouchdb/issues/7011
 const LIMIT_BUG = 999
 const ADAPTERS_WITH_LIMIT_BUG = ['cordova-sqlite', 'websql']
 
-export const find = async (db, options = {}) => {
+helpers.isTheCurrentAdapterIsBugged = adapterName => {
+  return ADAPTERS_WITH_LIMIT_BUG.includes(adapterName)
+}
+
+helpers.find = async (db, options = {}) => {
   if (options.selector === undefined) {
     options.selector = { _id: { $exists: true } }
   }
   const limit = options.limit
 
-  if (ADAPTERS_WITH_LIMIT_BUG.includes(db.adapter) || options.sqlite) {
+  if (helpers.isTheCurrentAdapterIsBugged(db.adapter)) {
     if (limit === undefined || limit > LIMIT_BUG) {
       options.limit = LIMIT_BUG
     }
@@ -22,7 +28,7 @@ export const find = async (db, options = {}) => {
     options.skip = (options.skip ? options.skip : 0) + options.limit
     options.limit = limit ? limit - options.limit : undefined
     if (options.limit > 0 || options.limit === undefined) {
-      const next = await find(db, options)
+      const next = await helpers.find(db, options)
 
       return { docs: [...data.docs, ...next.docs] }
     }
@@ -31,6 +37,8 @@ export const find = async (db, options = {}) => {
   return data
 }
 
-export const isDesignDocument = doc => startsWith(doc._id, '_design')
+helpers.isDesignDocument = doc => startsWith(doc._id, '_design')
 
-export const isDeletedDocument = doc => doc._deleted
+helpers.isDeletedDocument = doc => doc._deleted
+
+export default helpers
