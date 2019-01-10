@@ -17,7 +17,32 @@ export default class HasManyFiles extends HasMany {
     )
   }
 
+  async addById(ids) {
+    ids = Array.isArray(ids) ? ids : [ids]
+    const relations = ids.map(id => ({
+      _id: id,
+      _type: this.doctype
+    }))
+    await this.mutate(this.insertDocuments(relations))
+
+    await super.addById(ids, { save: true })
+  }
+
+  async removeById(ids) {
+    ids = Array.isArray(ids) ? ids : [ids]
+    const relations = ids.map(id => ({
+      _id: id,
+      _type: this.doctype
+    }))
+    await this.mutate(this.removeDocuments(relations))
+
+    await super.removeById(ids, { save: true })
+  }
+
   async add(referencedDocs) {
+    console.warn(
+      'HasManyFiles.add is deprecated — please use HasManyFiles.addById instead'
+    )
     // WARN : here we're trying to check if some files are already referenced,
     // but we possibly haven't loaded all referenced files, so it should be handled by the stack.
     const currentlyReferencedIds = this.getRelationship().data.map(
@@ -42,6 +67,9 @@ export default class HasManyFiles extends HasMany {
   }
 
   remove(referencedDocs) {
+    console.warn(
+      'HasManyFiles.remove is deprecated — please use HasManyFiles.removeById instead'
+    )
     return this.mutate(this.removeDocuments(referencedDocs), {
       update: store => {
         const removedIds = referencedDocs.map(({ _id }) => _id)
