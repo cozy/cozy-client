@@ -52,6 +52,11 @@ export default class HasManyInPlace extends Association {
     return this.target[this.name]
   }
 
+  dehydrate(doc) {
+    doc[this.name] = this.raw || []
+    return doc
+  }
+
   get data() {
     const doctype = this.doctype
     return (this.raw || []).map(_id => this.get(doctype, _id))
