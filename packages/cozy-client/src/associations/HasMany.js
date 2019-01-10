@@ -182,6 +182,18 @@ export default class HasMany extends Association {
     )
   }
 
+  dehydrate(doc) {
+    return {
+      ...doc,
+      relationships: {
+        ...doc.relationships,
+        [this.name]: {
+          data: this.raw
+        }
+      }
+    }
+  }
+
   static query(document, client, assoc) {
     const relationships = get(document, `relationships.${assoc.name}.data`, [])
     const ids = relationships.map(assoc => assoc._id)

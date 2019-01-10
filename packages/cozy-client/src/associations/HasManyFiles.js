@@ -1,3 +1,4 @@
+import omit from 'lodash/omit'
 import HasMany from './HasMany'
 import { QueryDefinition, Mutations } from '../queries/dsl'
 
@@ -89,6 +90,11 @@ export default class HasManyFiles extends HasMany {
 
   removeDocuments(referencedDocs) {
     return Mutations.removeReferencesTo(this.target, referencedDocs)
+  }
+
+  dehydrate(doc) {
+    // HasManyFiles relationships are stored on the file doctype, not the document the files are related to
+    return omit(doc, [this.name, `relationships.${this.name}`])
   }
 
   static query(document, client, assoc) {
