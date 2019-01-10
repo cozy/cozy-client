@@ -3,7 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="5.2.2"></a>
+       <a name="5.3.0"></a>
+# [5.3.0](https://github.com/cozy/cozy-client/compare/v5.2.2...v5.3.0) (2019-01-10)
+
+
+### Bug Fixes
+
+* Fixup thunk ([cf48914](https://github.com/cozy/cozy-client/commit/cf48914))
+* Update queries after association fetch more ([9fcf6b7](https://github.com/cozy/cozy-client/commit/9fcf6b7))
+
+
+### Features
+
+* Added dispatch access to Associations ([c4886cc](https://github.com/cozy/cozy-client/commit/c4886cc))
+* Added redux-thunk ([2c0bbd1](https://github.com/cozy/cozy-client/commit/2c0bbd1))
+
+
+
+
+       <a name="5.2.2"></a>
 ## [5.2.2](https://github.com/cozy/cozy-client/compare/v5.2.1...v5.2.2) (2019-01-03)
 
 
@@ -11,7 +29,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package cozy-client
 
-      <a name="5.2.1"></a>
+     <a name="5.2.1"></a>
 ## [5.2.1](https://github.com/cozy/cozy-client/compare/v5.2.0...v5.2.1) (2018-12-21)
 
 
@@ -19,7 +37,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package cozy-client
 
-   <a name="5.2.0"></a>
+  <a name="5.2.0"></a>
 # [5.2.0](https://github.com/cozy/cozy-client/compare/v5.1.0...v5.2.0) (2018-12-20)
 
 
@@ -27,7 +45,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package cozy-client
 
- <a name="5.1.0"></a>
+<a name="5.1.0"></a>
 # [5.1.0](https://github.com/cozy/cozy-client/compare/v5.0.7...v5.1.0) (2018-12-19)
 
 
