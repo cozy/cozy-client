@@ -5,7 +5,7 @@ import omit from 'lodash/omit'
 import defaults from 'lodash/defaults'
 import mapValues from 'lodash/mapValues'
 
-import { withoutDesignDocuments } from './helpers'
+import { find } from './helpers'
 import { getIndexNameFromFields, getIndexFields } from './mango'
 import * as jsonapi from './jsonapi'
 import PouchManager from './PouchManager'
@@ -270,13 +270,7 @@ export default class PouchLink extends CozyLink {
   async executeQuery({ doctype, selector, sort, fields, limit, id }) {
     const db = this.getPouch(doctype)
     let res, withRows
-    if (!selector && !fields && !sort && !id) {
-      res = await db.allDocs({
-        include_docs: true
-      })
-      res = withoutDesignDocuments(res)
-      withRows = true
-    } else if (id) {
+    if (id) {
       res = await db.get(id)
       withRows = false
     } else {
@@ -287,7 +281,7 @@ export default class PouchLink extends CozyLink {
         limit
       }
       await this.ensureIndex(doctype, findOpts)
-      res = await db.find(findOpts)
+      res = await find(db, findOpts)
       withRows = true
     }
     return jsonapi.fromPouchResult(res, withRows, doctype)
