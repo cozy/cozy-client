@@ -1,7 +1,7 @@
 import HasMany from './HasMany'
 
 describe('HasMany', () => {
-  let original, hydrated, originalWithNorelation, hydratedWithNoRelation
+  let original, hydrated, originalWithNorelation, hydratedWithNoRelation, save
   beforeEach(() => {
     original = {
       _type: 'io.cozy.todos',
@@ -26,9 +26,11 @@ describe('HasMany', () => {
       id
     })
 
+    save = jest.fn()
+
     hydrated = {
       ...original,
-      tasks: new HasMany(original, 'tasks', 'io.cozy.tasks', { get })
+      tasks: new HasMany(original, 'tasks', 'io.cozy.tasks', { get, save })
     }
 
     hydratedWithNoRelation = {
@@ -56,6 +58,23 @@ describe('HasMany', () => {
     ])
   })
 
+  it('adds multiple ids', () => {
+    hydrated.tasks.addById([4, 5])
+    expect(hydrated.tasks.data).toEqual([
+      { doctype: 'io.cozy.tasks', id: 1 },
+      { doctype: 'io.cozy.tasks', id: 2 },
+      { doctype: 'io.cozy.tasks', id: 4 },
+      { doctype: 'io.cozy.tasks', id: 5 }
+    ])
+  })
+
+  it('optionally saves after adding', () => {
+    hydrated.tasks.addById(4)
+    expect(save).not.toHaveBeenCalled()
+    hydrated.tasks.addById(5, { save: true })
+    expect(save).toHaveBeenCalled()
+  })
+
   it('removes', () => {
     hydrated.tasks.removeById(2)
     expect(hydrated.tasks.data).toEqual([{ doctype: 'io.cozy.tasks', id: 1 }])
@@ -67,6 +86,18 @@ describe('HasMany', () => {
       { doctype: 'io.cozy.tasks', id: 1 },
       { doctype: 'io.cozy.tasks', id: 2 }
     ])
+  })
+
+  it('optionally saves after removing', () => {
+    hydrated.tasks.removeById(2)
+    expect(save).not.toHaveBeenCalled()
+    hydrated.tasks.removeById(1, { save: true })
+    expect(save).toHaveBeenCalled()
+  })
+
+  it('removes multipe', () => {
+    hydrated.tasks.removeById([1, 2])
+    expect(hydrated.tasks.data).toEqual([])
   })
 
   it('checks non existence', () => {

@@ -90,24 +90,40 @@ export default class HasMany extends Association {
    *
    */
 
-  addById(id) {
-    if (this.existsById(id)) return
+  addById(ids, { save = false } = {}) {
     if (!this.target.relationships) this.target.relationships = {}
     if (!this.target.relationships[this.name]) {
       this.target.relationships[this.name] = { data: [] }
     }
-    this.target.relationships[this.name].data.push({
+
+    ids = Array.isArray(ids) ? ids : [ids]
+
+    const newRelations = ids.filter(id => !this.existsById(id)).map(id => ({
       _id: id,
       _type: this.doctype
-    })
+    }))
+
+    this.target.relationships[this.name].data.push(...newRelations)
+
+    if (save) return this.save(this.target)
+    else
+      console.warn(
+        'HasMany.addById will automatically perform a save operation in the next version.'
+      )
   }
 
-  removeById(id) {
-    if (this.existsById(id)) {
-      this.target.relationships[this.name].data = this.target.relationships[
-        this.name
-      ].data.filter(({ _id }) => id !== _id)
-    }
+  removeById(ids, { save = false } = {}) {
+    ids = Array.isArray(ids) ? ids : [ids]
+
+    this.target.relationships[this.name].data = this.target.relationships[
+      this.name
+    ].data.filter(({ _id }) => !ids.includes(_id))
+
+    if (save) return this.save(this.target)
+    else
+      console.warn(
+        'HasMany.removeById will automatically perform a save operation in the next version.'
+      )
   }
 
   getRelationship() {
