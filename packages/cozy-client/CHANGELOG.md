@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="5.4.0"></a>
+     <a name="5.4.1"></a>
+## [5.4.1](https://github.com/cozy/cozy-client/compare/v5.4.0...v5.4.1) (2019-01-10)
+
+
+### Bug Fixes
+
+* **deps:** pin dependency redux-thunk to 2.3.0 ([6868e9b](https://github.com/cozy/cozy-client/commit/6868e9b))
+
+
+
+
+     <a name="5.4.0"></a>
 # [5.4.0](https://github.com/cozy/cozy-client/compare/v5.3.0...v5.4.0) (2019-01-10)
 
 
@@ -14,7 +25,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-      <a name="5.3.0"></a>
+   <a name="5.3.0"></a>
 # [5.3.0](https://github.com/cozy/cozy-client/compare/v5.2.2...v5.3.0) (2019-01-10)
 
 
@@ -32,7 +43,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="5.2.2"></a>
+  <a name="5.2.2"></a>
 ## [5.2.2](https://github.com/cozy/cozy-client/compare/v5.2.1...v5.2.2) (2019-01-03)
 
 
@@ -40,7 +51,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package cozy-client
 
-   <a name="5.2.1"></a>
+<a name="5.2.1"></a>
 ## [5.2.1](https://github.com/cozy/cozy-client/compare/v5.2.0...v5.2.1) (2018-12-21)
 
 
