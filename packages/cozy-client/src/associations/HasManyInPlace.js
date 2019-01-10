@@ -53,8 +53,10 @@ export default class HasManyInPlace extends Association {
   }
 
   dehydrate(doc) {
-    doc[this.name] = this.raw || []
-    return doc
+    return {
+      ...doc,
+      [this.name]: this.raw || []
+    }
   }
 
   get data() {
