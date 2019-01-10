@@ -224,8 +224,11 @@ describe('CozyClient', () => {
 
     it('should dehydrate relationships', async () => {
       class FakeHasMany extends Association {
-        get raw() {
-          return this.target[this.name]
+        dehydrate(doc) {
+          return {
+            ...doc,
+            [this.name]: this.target[this.name]
+          }
         }
       }
       const rawDoc = {
