@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="5.4.3"></a>
+## [5.4.3](https://github.com/cozy/cozy-client/compare/v5.4.2...v5.4.3) (2019-01-11)
+
+
+### Bug Fixes
+
+* Adapter limit bug ([f4fe400](https://github.com/cozy/cozy-client/commit/f4fe400))
+
+
+
+
 <a name="5.4.2"></a>
 ## [5.4.2](https://github.com/cozy/cozy-client/compare/v5.4.1...v5.4.2) (2019-01-10)
 
