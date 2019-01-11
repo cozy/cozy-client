@@ -40,7 +40,7 @@ describe('Helpers', () => {
     })
 
     it('should find 2000 docs', async () => {
-      jest.spyOn(helpers, 'isTheCurrentAdapterIsBugged').mockReturnValue(true)
+      jest.spyOn(helpers, 'isAdapterBugged').mockReturnValue(true)
       jest.spyOn(db, 'find')
       await insertData(db, 2000)
       const data = await find(db)
@@ -49,7 +49,7 @@ describe('Helpers', () => {
     })
 
     it('should find 1000 docs', async () => {
-      jest.spyOn(helpers, 'isTheCurrentAdapterIsBugged').mockReturnValue(true)
+      jest.spyOn(helpers, 'isAdapterBugged').mockReturnValue(true)
       jest.spyOn(db, 'find')
       await insertData(db, 2000)
       const data = await helpers.find(db, { limit: 1000 })

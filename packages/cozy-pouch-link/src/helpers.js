@@ -6,7 +6,7 @@ const helpers = {}
 const LIMIT_BUG = 999
 const ADAPTERS_WITH_LIMIT_BUG = ['cordova-sqlite', 'websql']
 
-helpers.isTheCurrentAdapterIsBugged = adapterName => {
+helpers.isAdapterBugged = adapterName => {
   return ADAPTERS_WITH_LIMIT_BUG.includes(adapterName)
 }
 
@@ -16,7 +16,7 @@ helpers.find = async (db, options = {}) => {
   }
   const limit = options.limit
 
-  if (helpers.isTheCurrentAdapterIsBugged(db.adapter)) {
+  if (helpers.isAdapterBugged(db.adapter)) {
     if (limit === undefined || limit > LIMIT_BUG) {
       options.limit = LIMIT_BUG
     }
