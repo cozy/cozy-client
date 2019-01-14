@@ -11,7 +11,7 @@ import * as jsonapi from './jsonapi'
 import PouchManager from './PouchManager'
 PouchDB.plugin(PouchDBFind)
 
-const { find } = helpers
+const { find, allDocs, withoutDesignDocuments } = helpers
 
 const parseMutationResult = (original, res) => {
   return { ...original, ...omit(res, 'ok') }
@@ -275,6 +275,10 @@ export default class PouchLink extends CozyLink {
     if (id) {
       res = await db.get(id)
       withRows = false
+    } else if (!selector && !fields && !sort) {
+      res = await allDocs(db, { include_docs: true, limit })
+      res = withoutDesignDocuments(res)
+      withRows = true
     } else {
       const findOpts = {
         sort,
