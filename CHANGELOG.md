@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="5.4.5"></a>
+     <a name="5.4.6"></a>
+## [5.4.6](https://github.com/cozy/cozy-client/compare/v5.4.5...v5.4.6) (2019-01-14)
+
+
+### Bug Fixes
+
+* **CozyPouchLink:** Re-add allDocs function ([e4e56c4](https://github.com/cozy/cozy-client/commit/e4e56c4))
+
+
+
+
+     <a name="5.4.5"></a>
 ## [5.4.5](https://github.com/cozy/cozy-client/compare/v5.4.3...v5.4.5) (2019-01-11)
 
 
@@ -11,7 +22,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package undefined
 
-      <a name="5.4.4"></a>
+   <a name="5.4.4"></a>
 ## [5.4.4](https://github.com/cozy/cozy-client/compare/v5.4.3...v5.4.4) (2019-01-11)
 
 
@@ -19,7 +30,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package undefined
 
-     <a name="5.4.3"></a>
+  <a name="5.4.3"></a>
 ## [5.4.3](https://github.com/cozy/cozy-client/compare/v5.4.2...v5.4.3) (2019-01-11)
 
 
@@ -30,7 +41,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-   <a name="5.4.2"></a>
+<a name="5.4.2"></a>
 ## [5.4.2](https://github.com/cozy/cozy-client/compare/v5.4.1...v5.4.2) (2019-01-10)
 
 

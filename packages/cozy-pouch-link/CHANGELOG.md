@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="5.4.6"></a>
+## [5.4.6](https://github.com/cozy/cozy-client/compare/v5.4.5...v5.4.6) (2019-01-14)
+
+
+### Bug Fixes
+
+* **CozyPouchLink:** Re-add allDocs function ([e4e56c4](https://github.com/cozy/cozy-client/commit/e4e56c4))
+
+
+
+
 <a name="5.4.5"></a>
 ## [5.4.5](https://github.com/cozy/cozy-client/compare/v5.4.3...v5.4.5) (2019-01-11)
 
