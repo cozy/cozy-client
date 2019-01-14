@@ -1,5 +1,5 @@
 import helpers from './helpers'
-const { find, isDeletedDocument, isDesignDocument } = helpers
+const { withoutDesignDocuments, isDeletedDocument, isDesignDocument } = helpers
 
 import PouchDB from 'pouchdb'
 import PouchDBFind from 'pouchdb-find'
@@ -10,53 +10,88 @@ PouchDB.plugin(adapter)
 const insertData = async (db, number) => {
   const docs = []
   for (let i = 0; i < number; i++) {
-    docs.push({ _id: `doc${i}` })
+    docs.push({ _id: `doc${i}`, status: true })
   }
   await db.bulkDocs(docs)
 }
 
 describe('Helpers', () => {
-  describe('find', () => {
-    let db
-
-    beforeEach(async () => {
-      db = new PouchDB('test', { adapter: 'memory' })
+  describe('withoutDesignDocuments', () => {
+    let response
+    beforeEach(() => {
+      response = {
+        offset: 0,
+        rows: [{ id: 'goodId' }, { id: '_design/wrongId' }],
+        total_rows: 2
+      }
     })
-
-    afterEach(async () => {
-      await db.destroy()
+    it('should remove design document', () => {
+      const filteredResponse = withoutDesignDocuments(response)
+      expect(filteredResponse.rows.length).toEqual(1)
+      expect(filteredResponse.rows[0].id).toEqual('goodId')
     })
-
-    it('should find 200 docs', async () => {
-      await insertData(db, 200)
-      const data = await find(db)
-      expect(data.docs).toHaveLength(200)
+    it('should update total rows number', () => {
+      const filteredResponse = withoutDesignDocuments(response)
+      expect(filteredResponse.total_rows).toEqual(1)
     })
-
-    it('should find 20 docs with limit', async () => {
-      await insertData(db, 200)
-      const data = await find(db, { limit: 20 })
-      expect(data.docs).toHaveLength(20)
-    })
-
-    it('should find 2000 docs', async () => {
-      jest.spyOn(helpers, 'isAdapterBugged').mockReturnValue(true)
-      jest.spyOn(db, 'find')
-      await insertData(db, 2000)
-      const data = await find(db)
-      expect(data.docs).toHaveLength(2000)
-      expect(db.find).toHaveBeenCalledTimes(3)
-    })
-
-    it('should find 1000 docs', async () => {
-      jest.spyOn(helpers, 'isAdapterBugged').mockReturnValue(true)
-      jest.spyOn(db, 'find')
-      await insertData(db, 2000)
-      const data = await helpers.find(db, { limit: 1000 })
-      expect(data.docs).toHaveLength(1000)
-      expect(db.find).toHaveBeenCalledTimes(2)
+    it('should not mutate response', () => {
+      const responseCopy = { ...response }
+      withoutDesignDocuments(response)
+      expect(response).toEqual(responseCopy)
     })
   })
+
+  for (const getDocs of ['find', 'allDocs']) {
+    describe(getDocs, () => {
+      let db, options, field
+
+      beforeEach(async () => {
+        db = new PouchDB('test', { adapter: 'memory' })
+        if (getDocs === 'find') {
+          options = { selector: { status: { $eq: true } } }
+          await db.createIndex({ index: { fields: ['status'] } })
+          field = 'docs'
+        } else {
+          options = {}
+          field = 'rows'
+        }
+      })
+
+      afterEach(async () => {
+        await db.destroy()
+      })
+
+      it('should find 200 docs', async () => {
+        await insertData(db, 200)
+        const data = await helpers[getDocs](db, options)
+        expect(data[field]).toHaveLength(200)
+      })
+
+      it('should find 20 docs with limit', async () => {
+        await insertData(db, 200)
+        const data = await helpers[getDocs](db, { ...options, limit: 20 })
+        expect(data[field]).toHaveLength(20)
+      })
+
+      it('should find 2000 docs', async () => {
+        jest.spyOn(helpers, 'isAdapterBugged').mockReturnValue(true)
+        jest.spyOn(db, getDocs)
+        await insertData(db, 2000)
+        const data = await helpers[getDocs](db, options)
+        expect(data[field]).toHaveLength(2000)
+        expect(db[getDocs]).toHaveBeenCalledTimes(3)
+      })
+
+      it('should find 1000 docs', async () => {
+        jest.spyOn(helpers, 'isAdapterBugged').mockReturnValue(true)
+        jest.spyOn(db, getDocs)
+        await insertData(db, 2000)
+        const data = await helpers[getDocs](db, { ...options, limit: 1000 })
+        expect(data[field]).toHaveLength(1000)
+        expect(db[getDocs]).toHaveBeenCalledTimes(2)
+      })
+    })
+  }
 
   describe('isDesignDocument', () => {
     it('should return true when given a design document', () => {
