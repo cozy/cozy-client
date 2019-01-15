@@ -11,6 +11,7 @@
     "url": "git+https://github.com/cozy/cozy-client.git"
   },
   "dependencies": {
+    "detect-node": "2.0.4",
     "mime-types": "2.1.20"
   },
   "scripts": {
