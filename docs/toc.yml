@@ -1,3 +1,5 @@
 - Getting started: "./getting-started.md"
 - How tos: "./how-tos.md"
-- API reference: "./api.md"
+- Cozy Client API: "./cozy-client.md"
+- Cozy Pouch Link API: "./cozy-pouch-link.md"
+- Cozy Stack Client API: "./cozy-stack-client.md"
