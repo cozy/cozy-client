@@ -105,12 +105,12 @@ export default class Association {
     this.mutate = mutate
     /**
      * Saves the relationship in store.
-     * @type {[type]}
+     * @type {function}
      */
     this.save = save
     /**
      * Dispatch an action on the store.
-     * @type {[type]}
+     * @type {function}
      */
     this.dispatch = dispatch
   }
