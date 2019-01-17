@@ -80,6 +80,7 @@ class HasMany extends Association {
       this.getRelationship().data.find(({ _id }) => id === _id) !== undefined
     )
   }
+
   /**
    * Add a referenced document by id. You need to call save()
    * in order to synchronize your document with the store.
@@ -89,7 +90,6 @@ class HasMany extends Association {
    * We certainly should use something like `updateRelationship`
    *
    */
-
   addById(id) {
     if (this.existsById(id)) return
     if (!this.target.relationships) this.target.relationships = {}
