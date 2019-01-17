@@ -21,9 +21,9 @@
  *
  * ```json
  * {
- *   name: "St-Exupery",
- *   firstName: "Antoine",
- *   _id: "antoine"
+ *   "name": "St-Exupery",
+ *   "firstName": "Antoine",
+ *   "_id": "antoine"
  * }
  * ```
  *
@@ -34,12 +34,12 @@
  *
  * ```json
  * {
- *   title: "Le petit prince",
- *   relationships: {
- *     author: {
- *       data: {
- *         doctype: "io.cozy.authors",
- *         _id: "antoine"
+ *   "title": "Le petit prince",
+ *   "relationships": {
+ *     "author": {
+ *       "data": {
+ *         "doctype": "io.cozy.authors",
+ *         "_id": "antoine"
  *       }
  *     }
  *   }
@@ -51,8 +51,8 @@
  *
  * ```json
  * {
- *     title: "Le petit prince",
- *     author: "antoine"
+ *     "title": "Le petit prince",
+ *     "author": "antoine"
  * }
  * ```
  *
@@ -152,8 +152,8 @@ class Association {
    *
    * ```json
    * {
-   *   doctype: "io.cozy.authors",
-   *   id: "herman"
+   *   "doctype": "io.cozy.authors",
+   *   "id": "herman"
    * }
    * ```
    *
@@ -186,10 +186,10 @@ class Association {
    *
    * ```json
    * {
-   *   _id: 'herman'
-   *   _type: 'io.cozy.authors',
-   *   firstName: 'herman',
-   *   name: 'Melville'
+   *   "_id": 'herman'
+   *   "_type": 'io.cozy.authors',
+   *   "firstName": 'herman',
+   *   "name": 'Melville'
    * }
    * ```
    *
