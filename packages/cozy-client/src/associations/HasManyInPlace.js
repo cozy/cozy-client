@@ -40,6 +40,7 @@ import Query from '../queries/dsl'
  *   tasks: [1, 2]
  * }
  * ```
+ *
  */
 class HasManyInPlace extends Association {
   get raw() {

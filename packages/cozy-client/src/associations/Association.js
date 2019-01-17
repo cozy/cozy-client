@@ -118,9 +118,9 @@ class Association {
   /**
    * Returns the raw relationship data as stored in the original document
    *
-   * @example
-   * For a document with relationships stored as JSON API spec
-   * ```
+   * For a document with relationships stored as JSON API spec:
+   *
+   * ```js
    * const book = {
    *   title: 'Moby Dick',
    *   relationships: {
@@ -151,9 +151,9 @@ class Association {
   /**
    * Returns the document(s) from the store
    *
-   * @example
-   * For document with relationships store as JSON API spec
-   * ```
+   * For document with relationships stored as JSON API spec :
+   *
+   * ```js
    * const book = {
    *   title: 'Moby Dick',
    *   relationships: {

@@ -18,7 +18,8 @@ const empty = () => ({
  * - Creating relationships
  * - Removing relationships
  *
- * @example
+ * @description
+ * 
  * ```
  * const schema = {
  *   todos: {
