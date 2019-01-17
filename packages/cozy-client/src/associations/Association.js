@@ -1,6 +1,6 @@
 /**
  * Associations are used by components to access related store documents that are
- * linked in a document. They are also responsible for building the query that is
+ * linked in a document. They are also responsible for building the `QueryDefinition` that is
  * used by the client to automatically fetch relationship data.
  *
  * Hydrated documents used by components come with Association instances.

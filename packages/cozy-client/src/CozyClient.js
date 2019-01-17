@@ -498,7 +498,7 @@ class CozyClient {
    *
    * Relationships need to have access to the store to ping it when
    * a modification (addById/removeById etc...) has been done. This wakes
-   * the store up, which in turn will update the <Query>s and re-render the data.
+   * the store up, which in turn will update the `<Query>`s and re-render the data.
    */
   getRelationshipStoreAccessors() {
     if (!this.storeAccesors) {

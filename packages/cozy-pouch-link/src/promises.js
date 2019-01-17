@@ -1,6 +1,6 @@
 /**
  * Will periodically run a function so that when the promise
- * is resolved, the next function is called after <delay>ms.
+ * is resolved, the next function is called after `delay`ms.
  *
  * Returns a function which cancels the periodic calling.
  * When canceled, if there is an ongoing promise, it will
