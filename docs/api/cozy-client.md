@@ -108,11 +108,11 @@ const BOOK_SCHEMA = {
 Hydrated `books` will have the `author` association instance under the `author` key.
 Accessing `hydratedBook.author.data` gives you the author from the store, for example :
 
-```js
+```json
 {
-  name: 'St-Exupery',
-  firstName: 'Antoine',
-  _id: 'antoine'
+  name: "St-Exupery",
+  firstName: "Antoine",
+  _id: "antoine"
 }
 ```
 
@@ -123,12 +123,12 @@ would be
 
 ```json
 {
-  title: 'Le petit prince',
+  title: "Le petit prince",
   relationships: {
     author: {
       data: {
-        doctype: 'io.cozy.authors',
-        _id: 'antoine'
+        doctype: "io.cozy.authors",
+        _id: "antoine"
       }
     }
   }
@@ -140,8 +140,8 @@ by the relationship (in our case `author`). Our book would be
 
 ```json
 {
-    title: 'Le petit prince',
-    author: 'antoine'
+    title: "Le petit prince",
+    author: "antoine"
 }
 ```
 
@@ -232,10 +232,10 @@ const book = {
 
 Raw value will be
 
-```
+```json
 {
-  doctype: 'io.cozy.authors',
-  id: 'herman'
+  doctype: "io.cozy.authors",
+  id: "herman"
 }
 ```
 
