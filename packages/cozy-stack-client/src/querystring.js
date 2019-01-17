@@ -4,6 +4,7 @@ import pickBy from 'lodash/pickBy'
  * Encode an object as querystring, values are encoded as
  * URI components, keys are not.
  *
+ * @function
  * @private
  */
 export const encode = data => {
@@ -23,6 +24,7 @@ export const encode = data => {
  * Returns a URL from base url and a query parameter object.
  * Any undefined parameter is removed.
  *
+ * @function
  * @private
  */
 export const buildURL = (url, params) => {
