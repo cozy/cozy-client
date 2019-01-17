@@ -210,13 +210,18 @@ describe('PouchManager', () => {
     })
   })
 
-  describe('destroyPersistedSyncedDoctypes', () => {
+  describe('destroySyncedDoctypes', () => {
     it('Should destroy the local storage item', () => {
-      manager.destroyPersistedSyncedDoctypes()
+      manager.destroySyncedDoctypes()
 
       expect(localStorage.removeItem).toHaveBeenLastCalledWith(
         LOCALSTORAGE_SYNCED_KEY
       )
+    })
+    it('Should reset syncedDoctypes', () => {
+      manager.syncedDoctypes = ['io.cozy.todos']
+      manager.destroySyncedDoctypes()
+      expect(manager.syncedDoctypes).toEqual([])
     })
   })
 
