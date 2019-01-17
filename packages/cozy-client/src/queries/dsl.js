@@ -2,9 +2,8 @@ const isString = require('lodash/isString')
 
 /**
  * API to query documents
- * @module QueryDefinition
  */
-export class QueryDefinition {
+class QueryDefinition {
   /**
    * Represents a QueryDefinition.
    * @constructor
@@ -236,3 +235,5 @@ export const MutationTypes = {
   REMOVE_REFERENCES_TO,
   UPLOAD_FILE
 }
+
+export { QueryDefinition }

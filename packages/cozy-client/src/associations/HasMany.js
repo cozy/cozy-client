@@ -45,7 +45,7 @@ const empty = () => ({
  * }
  * ```
  */
-export default class HasMany extends Association {
+class HasMany extends Association {
   get raw() {
     return this.getRelationship().data
   }
@@ -172,3 +172,5 @@ export default class HasMany extends Association {
     return new QueryDefinition({ doctype: assoc.doctype, ids })
   }
 }
+
+export default HasMany

@@ -1,11 +1,3 @@
-/**
- * Responsible for
- *
- * - Creating observable queries
- * - Hydration
- * - Creating plan for saving documents
- * - Associations
- */
 import { REGISTRATION_ABORT } from './const'
 
 import StackLink from './StackLink'
@@ -50,10 +42,16 @@ const deprecatedHandler = msg => ({
   }
 })
 
+
 /**
- * @module CozyClient
+ * Responsible for
+ *
+ * - Creating observable queries
+ * - Hydration
+ * - Creating plan for saving documents
+ * - Associations
  */
-export default class CozyClient {
+class CozyClient {
   /**
    * @param  {Object}       options
    * @param  {Link}         options.link   - Backward compatibility
@@ -654,3 +652,5 @@ export default class CozyClient {
     })
   }
 }
+
+export default CozyClient

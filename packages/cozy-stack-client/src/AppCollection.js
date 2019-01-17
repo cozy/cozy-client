@@ -8,9 +8,8 @@ export const normalizeApp = app => {
 }
 
 /**
- * @module AppCollection
  */
-export default class AppCollection {
+class AppCollection {
   constructor(stackClient) {
     this.stackClient = stackClient
   }
@@ -56,3 +55,5 @@ export default class AppCollection {
     throw new Error('destroy() method is not available for applications')
   }
 }
+
+export default AppCollection

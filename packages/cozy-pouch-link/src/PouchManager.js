@@ -1,5 +1,3 @@
-/** Handles the lifecycle of several pouches */
-
 import PouchDB from 'pouchdb'
 import fromPairs from 'lodash/fromPairs'
 import forEach from 'lodash/forEach'
@@ -76,10 +74,12 @@ const startReplication = (pouch, getReplicationURL) => {
 export const LOCALSTORAGE_SYNCED_KEY = 'cozy-client-pouch-link-synced'
 
 /**
+ * Handles the lifecycle of several pouches
+ *
  * - Creates/Destroys the pouches
  * - Replicates periodically
  */
-export default class PouchManager {
+class PouchManager {
   constructor(doctypes, options) {
     this.options = options
     const pouchPlugins = get(options, 'pouch.plugins', [])
@@ -310,3 +310,5 @@ export default class PouchManager {
     return `${prefix}_${doctype}`
   }
 }
+
+export default PouchManager

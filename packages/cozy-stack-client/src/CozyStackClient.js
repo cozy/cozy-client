@@ -13,9 +13,8 @@ const normalizeUri = uri => {
 }
 
 /**
- * @module CozyStackClient
  */
-export default class CozyStackClient {
+class CozyStackClient {
   constructor({ token, uri = '' }) {
     this.setUri(uri)
     this.setCredentials(token)
@@ -145,3 +144,5 @@ export class FetchError extends Error {
     })
   }
 }
+
+export default CozyStackClient

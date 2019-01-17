@@ -46,7 +46,7 @@ const normalizeAll = (docs, doctype) => {
  * PouchDB collections for each doctype that it supports and knows how
  * to respond to queries and mutations.
  */
-export default class PouchLink extends CozyLink {
+class PouchLink extends CozyLink {
   constructor(opts = {}) {
     const options = defaults({}, opts, DEFAULT_OPTIONS)
     super(options)
@@ -342,3 +342,5 @@ export default class PouchLink extends CozyLink {
     }
   }
 }
+
+export default PouchLink

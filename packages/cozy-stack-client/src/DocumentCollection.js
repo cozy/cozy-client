@@ -11,9 +11,8 @@ export const normalizeDoc = (doc, doctype) => {
 }
 /**
  * Abstracts a collection of documents of the same doctype, providing CRUD methods and other helpers.
- * @module DocumentCollection
  */
-export default class DocumentCollection {
+class DocumentCollection {
   constructor(doctype, stackClient) {
     this.doctype = doctype
     this.stackClient = stackClient
@@ -340,3 +339,5 @@ export default class DocumentCollection {
     return { newLastSeq, documents: docs }
   }
 }
+
+export default DocumentCollection

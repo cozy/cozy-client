@@ -66,10 +66,9 @@
  * `hydratedDoc[relationshipName].data`.
  * - `get query`: how to build the query to fetch related documents
  *
- * @module Association
  */
-export default class Association {
   constructor(target, name, doctype, { dispatch, get, query, mutate, save }) {
+class Association {
     /**
      * The original document declaring the relationship
      * @type {object}
@@ -188,3 +187,5 @@ export default class Association {
     throw new Error('A custom relationship must define its query() function')
   }
 }
+
+export default Association

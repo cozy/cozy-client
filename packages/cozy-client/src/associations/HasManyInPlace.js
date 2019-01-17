@@ -24,7 +24,7 @@ import Query from '../queries/dsl'
  * }
  * ```
  */
-export default class HasManyInPlace extends Association {
+class HasManyInPlace extends Association {
   get raw() {
     return this.target[this.name]
   }
@@ -65,3 +65,5 @@ export default class HasManyInPlace extends Association {
     }
   }
 }
+
+export default HasManyInPlace

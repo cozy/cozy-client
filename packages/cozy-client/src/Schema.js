@@ -49,7 +49,7 @@ const normalizeDoctypeSchema = doctypeSchema => {
  * }, cozyStackClient)
  * ```
  */
-export default class Schema {
+class Schema {
   constructor(schemaDefinition = {}, client = null) {
     const values = mapValues(schemaDefinition, (obj, name) => ({
       name,
@@ -111,3 +111,5 @@ export default class Schema {
     return true
   }
 }
+
+export default Schema
