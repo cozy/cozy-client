@@ -149,7 +149,7 @@ class Association {
    * ```
    *
    * Raw value will be
-   * 
+   *
    * ```
    * {
    *   doctype: 'io.cozy.authors',

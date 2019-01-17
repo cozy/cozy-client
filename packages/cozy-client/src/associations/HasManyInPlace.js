@@ -2,7 +2,7 @@ import Association from './Association'
 import Query from '../queries/dsl'
 
 /**
- * 
+ *
  * Used when related documents are stored directly under the attribute with
  * only the ids.
  *
@@ -21,7 +21,7 @@ import Query from '../queries/dsl'
  * Here is the `Schema` that would represent this kind of document.
  * Components receiving todos via `Query`s would have an instance of `HasManyInPlace`
  * as their `tasks` attribute.
- * 
+ *
  * ```js
  * const schema = {
  *   todos: {

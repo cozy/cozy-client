@@ -1,6 +1,5 @@
 const isString = require('lodash/isString')
 
-
 /**
  * Chainable API to create query definitions to retrieve documents
  * from a Cozy. `QueryDefinition`s are sent to links.

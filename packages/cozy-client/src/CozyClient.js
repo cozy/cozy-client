@@ -42,7 +42,6 @@ const deprecatedHandler = msg => ({
   }
 })
 
-
 /**
  * Responsible for
  *
@@ -200,7 +199,7 @@ class CozyClient {
    * }
    * client.getDocumentSavePlan(baseDoc, relationships)
    * ```
-   * 
+   *
    * @param  {object} document      The base document to create
    * @param  {object} relationships The list of relationships to add, as a dictionnary. Keys should be relationship names and values the documents to link.
    * @returns {Mutation[]}  One or more mutation to execute
@@ -531,7 +530,7 @@ class CozyClient {
 
   /**
    * Performs a complete OAuth flow, including updating the internal token at the end.
-   * 
+   *
    * @param   {function} openURLCallback Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
    * @returns {object}   Contains the fetched token and the client information. These should be stored and used to restore the client.
    */
