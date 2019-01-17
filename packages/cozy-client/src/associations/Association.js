@@ -5,6 +5,7 @@
  *
  * Hydrated documents used by components come with Association instances.
  *
+ * @description
  * Example: The schema defines an `author` relationship :
  *
  * ```js
@@ -31,7 +32,7 @@
  * is stored in the `relationships` attribute of the original document (in our case here, our book
  * would be
  *
- * ```js
+ * ```json
  * {
  *   title: 'Le petit prince',
  *   relationships: {
@@ -48,7 +49,7 @@
  * In the case of an "in-place" relationship, the relationship data is stored directly under the attribute named
  * by the relationship (in our case `author`). Our book would be
  *
- * ```js
+ * ```json
  * {
  *     title: 'Le petit prince',
  *     author: 'antoine'
