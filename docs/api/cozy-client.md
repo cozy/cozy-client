@@ -268,10 +268,10 @@ const book = {
 
 ```json
 {
-  "_id": 'herman'
-  "_type": 'io.cozy.authors',
-  "firstName": 'herman',
-  "name": 'Melville'
+  "_id": "herman"
+  "_type": "io.cozy.authors",
+  "firstName": "herman",
+  "name": "Melville"
 }
 ```
 
