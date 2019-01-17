@@ -68,8 +68,16 @@
  * - `get query`: how to build the query to fetch related documents
  *
  */
-  constructor(target, name, doctype, { dispatch, get, query, mutate, save }) {
 class Association {
+  /**
+   * @param  {object} target - Original object containing raw data
+   * @param  {string} name - Attribute under which the association is stored
+   * @param  {string} doctype - Doctype of the documents managed by the association
+   * @param  {function} options.dispatch - Store's dispatch, comes from the client
+   * @param {string} options
+   */
+  constructor(target, name, doctype, options) {
+    const { dispatch, get, query, mutate, save } = options
     /**
      * The original document declaring the relationship
      * @type {object}
@@ -81,28 +89,33 @@ class Association {
      * @example 'author'
      */
     this.name = name
+
     /**
      * Doctype of the relationship
      * @type {string}
      * @example 'io.cozy.authors'
      */
     this.doctype = doctype
+
     /**
      * Returns the document from the store
      * @type {function}
      */
     this.get = get
+
     /**
      * Performs a query to retrieve relationship documents.
-     * Expects a QueryDefinition object as parameter.
-     * @type {function}
+     * @param {QueryDefinition} queryDefinition
+     * @method
      */
     this.query = query
+
     /**
      * Performs a mutation on the relationship.
-     * @type {function}
+     * @method
      */
     this.mutate = mutate
+
     /**
      * Saves the relationship in store.
      * @type {function}
@@ -116,6 +129,7 @@ class Association {
   }
 
   /**
+   *
    * Returns the raw relationship data as stored in the original document
    *
    * For a document with relationships stored as JSON API spec:
@@ -133,8 +147,9 @@ class Association {
    *   }
    *  }
    * ```
-
+   *
    * Raw value will be
+   * 
    * ```
    * {
    *   doctype: 'io.cozy.authors',
@@ -166,8 +181,10 @@ class Association {
    *   }
    *  }
    * ```
-   * data will be
-   * ```
+   *
+   * `data` will be
+   *
+   * ```json
    * {
    *   _id: 'herman'
    *   _type: 'io.cozy.authors',
