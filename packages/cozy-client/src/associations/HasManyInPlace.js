@@ -70,6 +70,13 @@ class HasManyInPlace extends Association {
     return this.target[this.name]
   }
 
+  dehydrate(doc) {
+    return {
+      ...doc,
+      [this.name]: this.raw || []
+    }
+  }
+
   get data() {
     const doctype = this.doctype
     return (this.raw || []).map(_id => this.get(doctype, _id))
