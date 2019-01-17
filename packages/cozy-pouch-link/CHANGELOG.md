@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="5.6.2"></a>
+## [5.6.2](https://github.com/cozy/cozy-client/compare/v5.6.1...v5.6.2) (2019-01-17)
+
+
+### Bug Fixes
+
+* Clean syncedDoctypes on property and localstorage ([25282dd](https://github.com/cozy/cozy-client/commit/25282dd))
+
+
+
+
 <a name="5.6.1"></a>
 ## [5.6.1](https://github.com/cozy/cozy-client/compare/v5.6.0...v5.6.1) (2019-01-17)
 
