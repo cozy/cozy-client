@@ -1,11 +1,28 @@
 import Association from './Association'
 import Query from '../queries/dsl'
+
 /**
- * Related documents are stored directly under the attribute with
+ * 
+ * Used when related documents are stored directly under the attribute with
  * only the ids.
  *
- * @example
+ * @description
+ *
+ * An example document representing a TODO. See as the related
+ * tasks are represented via ids.
+ *
+ * ```js
+ * const todo = {
+ *   label: "Protect people's privacy",
+ *   tasks: [1, 2]
+ * }
  * ```
+ *
+ * Here is the `Schema` that would represent this kind of document.
+ * Components receiving todos via `Query`s would have an instance of `HasManyInPlace`
+ * as their `tasks` attribute.
+ * 
+ * ```js
  * const schema = {
  *   todos: {
  *      doctype: 'io.cozy.todos',

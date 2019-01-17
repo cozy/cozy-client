@@ -15,8 +15,8 @@ const empty = () => ({
  *
  * Responsible for
  *
- * - creating relationship
- * - adding / removing relationship
+ * - Creating relationships
+ * - Removing relationships
  *
  * @example
  * ```
@@ -33,7 +33,7 @@ const empty = () => ({
  * }
  *
  * const todo = {
- *   label: "Get rich",
+ *   label: "Protect people's privacy",
  *   relationships: {
  *     tasks: {
  *       data: [
@@ -82,7 +82,7 @@ class HasMany extends Association {
   }
   /**
    * Add a referenced document by id. You need to call save()
-   * in order to synchronize your document with the store
+   * in order to synchronize your document with the store.
    *
    * @todo We shouldn't create the array of relationship manually since
    * it'll not be present in the store as well.

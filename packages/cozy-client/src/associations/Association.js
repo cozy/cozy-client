@@ -140,7 +140,8 @@ class Association {
    *   id: 'herman'
    * }
    * ```
-   * It's the child Association responsability to implement this method.
+   *
+   * Derived `Association`s need to implement this method.
    */
   get raw() {
     throw new Error('A relationship must define its raw getter')
@@ -173,15 +174,16 @@ class Association {
    *   name: 'Melville'
    * }
    * ```
-   * It's the child Association responsability to implement this method.
+   *
+   * Derived `Association`s need to implement this method.
    */
   get data() {
     throw new Error('A relationship must define its data getter')
   }
 
   /**
-   * Returns a QueryDefinition object, used by the client to retrieve the
-   * relationship(s).
+   * Derived `Association`s need to implement this method.
+   * @return {QueryDefinition}
    */
   static query() {
     throw new Error('A custom relationship must define its query() function')

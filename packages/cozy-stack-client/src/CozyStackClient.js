@@ -13,6 +13,7 @@ const normalizeUri = uri => {
 }
 
 /**
+ * Main API against the `cozy-stack` server.
  */
 class CozyStackClient {
   constructor({ token, uri = '' }) {

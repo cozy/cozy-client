@@ -22,7 +22,8 @@ export const isFile = ({ _type, type }) =>
 export const isDirectory = ({ type }) => type === 'directory'
 
 /**
- * Abstracts a collection of files
+ * Implements `DocumentCollection` API along with specific methods for
+ * `io.cozy.files`.
  *
  * Files are a special type of documents and are handled differently by the stack:
  * special routes are to be used, and there is a notion of referenced files, aka

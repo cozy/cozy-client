@@ -42,7 +42,7 @@ const normalizeAll = (docs, doctype) => {
 }
 
 /**
- * Link to be passed to cozy-client to support CouchDB. It instantiates
+ * Link to be passed to a `CozyClient` instance to support CouchDB. It instantiates
  * PouchDB collections for each doctype that it supports and knows how
  * to respond to queries and mutations.
  */

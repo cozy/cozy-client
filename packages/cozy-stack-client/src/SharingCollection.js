@@ -5,7 +5,8 @@ import { uri } from './utils'
 const normalizeSharing = sharing => normalizeDoc(sharing, 'io.cozy.sharings')
 
 /**
- * Interact with sharing doctypes
+ * Implements the `DocumentCollection` API along with specific methods for
+ * `io.cozy.sharings`.
  */
 class SharingCollection extends DocumentCollection {
   async findByDoctype(doctype) {

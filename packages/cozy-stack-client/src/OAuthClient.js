@@ -18,6 +18,8 @@ const defaultoauthOptions = {
 }
 
 /**
+ * Specialized `CozyStackClient` for mobile, implementing stack registration
+ * through OAuth.
  */
 class OAuthClient extends CozyStackClient {
   constructor({ oauth, scope = [], onTokenRefresh, ...options }) {

@@ -8,6 +8,7 @@ export const normalizeApp = app => {
 }
 
 /**
+ * Implements `DocumentCollection` API along with specific methods for `io.cozy.apps`.
  */
 class AppCollection {
   constructor(stackClient) {

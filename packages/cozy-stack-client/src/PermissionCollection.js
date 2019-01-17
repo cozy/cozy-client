@@ -5,7 +5,7 @@ import { uri } from './utils'
 const normalizePermission = perm => normalizeDoc(perm, 'io.cozy.permissions')
 
 /**
- * Interact with permissions
+ * Implements `DocumentCollection` API along with specific methods for `io.cozy.permissions`.
  */
 class PermissionCollection extends DocumentCollection {
   async get(id) {
