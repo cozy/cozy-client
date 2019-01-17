@@ -1,11 +1,3 @@
-/**
- * Responsible for
- *
- * - Creating observable queries
- * - Hydration
- * - Creating plan for saving documents
- * - Associations
- */
 import { REGISTRATION_ABORT } from './const'
 
 import StackLink from './StackLink'
@@ -51,9 +43,14 @@ const deprecatedHandler = msg => ({
 })
 
 /**
- * @module CozyClient
+ * Responsible for
+ *
+ * - Creating observable queries
+ * - Hydration
+ * - Creating plan for saving documents
+ * - Associations
  */
-export default class CozyClient {
+class CozyClient {
   /**
    * @param  {Object}       options
    * @param  {Link}         options.link   - Backward compatibility
@@ -191,12 +188,9 @@ export default class CozyClient {
   }
 
   /**
-   * getDocumentSavePlan - Creates a list of mutations to execute to create a document and its relationships.
+   * Creates a list of mutations to execute to create a document and its relationships.
    *
-   * @param  {object} document      The base document to create
-   * @param  {object} relationships The list of relationships to add, as a dictionnary. Keys should be relationship names and values the documents to link.
-   * @returns {object[]}  One or more mutation to execute
-   * @example
+   * ```js
    * const baseDoc = { _type: 'io.cozy.todo', label: 'Go hiking' }
    * // relations can be arrays or single objects
    * const relationships = {
@@ -204,6 +198,11 @@ export default class CozyClient {
    *   bills: { _id: 9999, _type: 'io.cozy.bills' }
    * }
    * client.getDocumentSavePlan(baseDoc, relationships)
+   * ```
+   *
+   * @param  {object} document      The base document to create
+   * @param  {object} relationships The list of relationships to add, as a dictionnary. Keys should be relationship names and values the documents to link.
+   * @returns {Mutation[]}  One or more mutation to execute
    */
   getDocumentSavePlan(document, relationships) {
     const newDocument = !document._rev
@@ -498,7 +497,7 @@ export default class CozyClient {
    *
    * Relationships need to have access to the store to ping it when
    * a modification (addById/removeById etc...) has been done. This wakes
-   * the store up, which in turn will update the <Query>s and re-render the data.
+   * the store up, which in turn will update the `<Query>`s and re-render the data.
    */
   getRelationshipStoreAccessors() {
     if (!this.storeAccesors) {
@@ -530,7 +529,8 @@ export default class CozyClient {
   }
 
   /**
-   * Performs a complete OAuth flow, including upating the internal token at the end.
+   * Performs a complete OAuth flow, including updating the internal token at the end.
+   *
    * @param   {function} openURLCallback Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
    * @returns {object}   Contains the fetched token and the client information. These should be stored and used to restore the client.
    */
@@ -654,3 +654,5 @@ export default class CozyClient {
     })
   }
 }
+
+export default CozyClient

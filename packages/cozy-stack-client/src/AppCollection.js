@@ -8,9 +8,9 @@ export const normalizeApp = app => {
 }
 
 /**
- * @module AppCollection
+ * Implements `DocumentCollection` API along with specific methods for `io.cozy.apps`.
  */
-export default class AppCollection {
+class AppCollection {
   constructor(stackClient) {
     this.stackClient = stackClient
   }
@@ -56,3 +56,5 @@ export default class AppCollection {
     throw new Error('destroy() method is not available for applications')
   }
 }
+
+export default AppCollection

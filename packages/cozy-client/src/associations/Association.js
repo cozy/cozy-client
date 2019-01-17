@@ -1,10 +1,11 @@
 /**
  * Associations are used by components to access related store documents that are
- * linked in a document. They are also responsible for building the query that is
+ * linked in a document. They are also responsible for building the `QueryDefinition` that is
  * used by the client to automatically fetch relationship data.
  *
  * Hydrated documents used by components come with Association instances.
  *
+ * @description
  * Example: The schema defines an `author` relationship :
  *
  * ```js
@@ -31,7 +32,7 @@
  * is stored in the `relationships` attribute of the original document (in our case here, our book
  * would be
  *
- * ```js
+ * ```json
  * {
  *   title: 'Le petit prince',
  *   relationships: {
@@ -48,7 +49,7 @@
  * In the case of an "in-place" relationship, the relationship data is stored directly under the attribute named
  * by the relationship (in our case `author`). Our book would be
  *
- * ```js
+ * ```json
  * {
  *     title: 'Le petit prince',
  *     author: 'antoine'
@@ -66,10 +67,17 @@
  * `hydratedDoc[relationshipName].data`.
  * - `get query`: how to build the query to fetch related documents
  *
- * @module Association
  */
-export default class Association {
-  constructor(target, name, doctype, { dispatch, get, query, mutate, save }) {
+class Association {
+  /**
+   * @param  {object} target - Original object containing raw data
+   * @param  {string} name - Attribute under which the association is stored
+   * @param  {string} doctype - Doctype of the documents managed by the association
+   * @param  {function} options.dispatch - Store's dispatch, comes from the client
+   * @param {string} options
+   */
+  constructor(target, name, doctype, options) {
+    const { dispatch, get, query, mutate, save } = options
     /**
      * The original document declaring the relationship
      * @type {object}
@@ -81,46 +89,52 @@ export default class Association {
      * @example 'author'
      */
     this.name = name
+
     /**
      * Doctype of the relationship
      * @type {string}
      * @example 'io.cozy.authors'
      */
     this.doctype = doctype
+
     /**
      * Returns the document from the store
      * @type {function}
      */
     this.get = get
+
     /**
      * Performs a query to retrieve relationship documents.
-     * Expects a QueryDefinition object as parameter.
-     * @type {function}
+     * @param {QueryDefinition} queryDefinition
+     * @method
      */
     this.query = query
+
     /**
      * Performs a mutation on the relationship.
-     * @type {function}
+     * @method
      */
     this.mutate = mutate
+
     /**
      * Saves the relationship in store.
-     * @type {[type]}
+     * @type {function}
      */
     this.save = save
     /**
      * Dispatch an action on the store.
-     * @type {[type]}
+     * @type {function}
      */
     this.dispatch = dispatch
   }
 
   /**
+   *
    * Returns the raw relationship data as stored in the original document
    *
-   * @example
-   * For a document with relationships stored as JSON API spec
-   * ```
+   * For a document with relationships stored as JSON API spec:
+   *
+   * ```js
    * const book = {
    *   title: 'Moby Dick',
    *   relationships: {
@@ -133,15 +147,17 @@ export default class Association {
    *   }
    *  }
    * ```
-
+   *
    * Raw value will be
+   *
    * ```
    * {
    *   doctype: 'io.cozy.authors',
    *   id: 'herman'
    * }
    * ```
-   * It's the child Association responsability to implement this method.
+   *
+   * Derived `Association`s need to implement this method.
    */
   get raw() {
     throw new Error('A relationship must define its raw getter')
@@ -150,9 +166,9 @@ export default class Association {
   /**
    * Returns the document(s) from the store
    *
-   * @example
-   * For document with relationships store as JSON API spec
-   * ```
+   * For document with relationships stored as JSON API spec :
+   *
+   * ```js
    * const book = {
    *   title: 'Moby Dick',
    *   relationships: {
@@ -165,8 +181,10 @@ export default class Association {
    *   }
    *  }
    * ```
-   * data will be
-   * ```
+   *
+   * `data` will be
+   *
+   * ```json
    * {
    *   _id: 'herman'
    *   _type: 'io.cozy.authors',
@@ -174,17 +192,20 @@ export default class Association {
    *   name: 'Melville'
    * }
    * ```
-   * It's the child Association responsability to implement this method.
+   *
+   * Derived `Association`s need to implement this method.
    */
   get data() {
     throw new Error('A relationship must define its data getter')
   }
 
   /**
-   * Returns a QueryDefinition object, used by the client to retrieve the
-   * relationship(s).
+   * Derived `Association`s need to implement this method.
+   * @return {QueryDefinition}
    */
   static query() {
     throw new Error('A custom relationship must define its query() function')
   }
 }
+
+export default Association

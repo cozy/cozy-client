@@ -15,10 +15,11 @@ const empty = () => ({
  *
  * Responsible for
  *
- * - creating relationship
- * - adding / removing relationship
+ * - Creating relationships
+ * - Removing relationships
  *
- * @example
+ * @description
+ *
  * ```
  * const schema = {
  *   todos: {
@@ -33,7 +34,7 @@ const empty = () => ({
  * }
  *
  * const todo = {
- *   label: "Get rich",
+ *   label: "Protect people's privacy",
  *   relationships: {
  *     tasks: {
  *       data: [
@@ -45,7 +46,7 @@ const empty = () => ({
  * }
  * ```
  */
-export default class HasMany extends Association {
+class HasMany extends Association {
   get raw() {
     return this.getRelationship().data
   }
@@ -80,16 +81,16 @@ export default class HasMany extends Association {
       this.getRelationship().data.find(({ _id }) => id === _id) !== undefined
     )
   }
+
   /**
    * Add a referenced document by id. You need to call save()
-   * in order to synchronize your document with the store
+   * in order to synchronize your document with the store.
    *
    * @todo We shouldn't create the array of relationship manually since
    * it'll not be present in the store as well.
    * We certainly should use something like `updateRelationship`
    *
    */
-
   addById(ids, { save = false } = {}) {
     if (!this.target.relationships) this.target.relationships = {}
     if (!this.target.relationships[this.name]) {
@@ -200,3 +201,5 @@ export default class HasMany extends Association {
     return new QueryDefinition({ doctype: assoc.doctype, ids })
   }
 }
+
+export default HasMany

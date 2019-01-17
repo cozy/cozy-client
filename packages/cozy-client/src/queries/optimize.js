@@ -11,6 +11,7 @@ const isIdQuery = query => query.id || query.ids
  *
  * @param  {QueryDefinition[]} queries - Queries of a same doctype
  * @return {QueryDefinition[]} Optimized queries
+ * @private
  */
 const optimizeDoctypeQueries = queries => {
   const { idQueries = [], others = [] } = groupBy(
@@ -35,6 +36,7 @@ const optimizeDoctypeQueries = queries => {
  *
  * @param  {QueryDefinition[]} queries - Queries to optimized
  * @return {QueryDefinition[]} Optimized queries
+ * @private
  */
 const optimizeQueries = queries => {
   const byDoctype = groupBy(queries, q => q.doctype)

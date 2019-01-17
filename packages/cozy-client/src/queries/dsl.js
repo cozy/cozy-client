@@ -1,12 +1,11 @@
 const isString = require('lodash/isString')
 
 /**
- * API to query documents
- * @module QueryDefinition
+ * Chainable API to create query definitions to retrieve documents
+ * from a Cozy. `QueryDefinition`s are sent to links.
  */
-export class QueryDefinition {
+class QueryDefinition {
   /**
-   * Represents a QueryDefinition.
    * @constructor
    * @param {string} doctype - The doctype of the doc.
    * @param {string} id - The id of the doc.
@@ -236,3 +235,5 @@ export const MutationTypes = {
   REMOVE_REFERENCES_TO,
   UPLOAD_FILE
 }
+
+export { QueryDefinition }

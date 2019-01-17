@@ -10,6 +10,8 @@ import { resolveClass as resolveAssociationClass } from './associations'
  * - The name of the relationship (its key in the schema definition)
  *   is included in the relationship
  * - Empty relationships are nulled
+ *
+ * @private
  */
 const normalizeDoctypeSchema = doctypeSchema => {
   const relationships = mapValues(
@@ -33,7 +35,6 @@ const normalizeDoctypeSchema = doctypeSchema => {
  * - Attribute validation
  * - Relationship access
  *
- * @example
  * ```
  * const schema = new Schema({
  *   todos: {
@@ -49,7 +50,7 @@ const normalizeDoctypeSchema = doctypeSchema => {
  * }, cozyStackClient)
  * ```
  */
-export default class Schema {
+class Schema {
   constructor(schemaDefinition = {}, client = null) {
     const values = mapValues(schemaDefinition, (obj, name) => ({
       name,
@@ -111,3 +112,5 @@ export default class Schema {
     return true
   }
 }
+
+export default Schema

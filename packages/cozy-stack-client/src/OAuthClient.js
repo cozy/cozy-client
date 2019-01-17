@@ -18,9 +18,10 @@ const defaultoauthOptions = {
 }
 
 /**
- * @module OAuthClient
+ * Specialized `CozyStackClient` for mobile, implementing stack registration
+ * through OAuth.
  */
-export default class OAuthClient extends CozyStackClient {
+class OAuthClient extends CozyStackClient {
   constructor({ oauth, scope = [], onTokenRefresh, ...options }) {
     super(options)
     this.setOAuthOptions({ ...defaultoauthOptions, ...oauth })
@@ -419,3 +420,5 @@ class NotRegisteredException extends Error {
     this.name = 'NotRegisteredException'
   }
 }
+
+export default OAuthClient

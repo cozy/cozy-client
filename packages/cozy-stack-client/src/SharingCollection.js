@@ -5,11 +5,10 @@ import { uri } from './utils'
 const normalizeSharing = sharing => normalizeDoc(sharing, 'io.cozy.sharings')
 
 /**
- * Interact with sharing doctypes
- *
- * @module SharingCollection
+ * Implements the `DocumentCollection` API along with specific methods for
+ * `io.cozy.sharings`.
  */
-export default class SharingCollection extends DocumentCollection {
+class SharingCollection extends DocumentCollection {
   async findByDoctype(doctype) {
     const resp = await this.stackClient.fetchJSON(
       'GET',
@@ -154,3 +153,5 @@ const getSharingPolicy = (document, sharingType) => {
     ? { update: 'sync', remove: 'revoke' }
     : { update: 'push', remove: 'revoke' }
 }
+
+export default SharingCollection

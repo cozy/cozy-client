@@ -5,11 +5,9 @@ import { uri } from './utils'
 const normalizePermission = perm => normalizeDoc(perm, 'io.cozy.permissions')
 
 /**
- * Interact with permissions
- *
- * @module PermissionCollection
+ * Implements `DocumentCollection` API along with specific methods for `io.cozy.permissions`.
  */
-export default class PermissionCollection extends DocumentCollection {
+class PermissionCollection extends DocumentCollection {
   async get(id) {
     const resp = await this.stackClient.fetchJSON(
       'GET',
@@ -179,3 +177,5 @@ const isPermissionRelatedTo = (perm, document) => {
     ? perm.attributes.permissions.files.values.indexOf(_id) !== -1
     : perm.attributes.permissions.collection.values.indexOf(_id) !== -1
 }
+
+export default PermissionCollection
