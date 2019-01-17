@@ -21,6 +21,7 @@ const getSortKeys = sort => {
  * @description Compute fields that should be indexed for a mango
  * query to work
  *
+ * @private
  * @param  {Object} options - Mango query options
  * @return {Array} - Fields to index
  */

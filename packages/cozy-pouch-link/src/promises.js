@@ -6,6 +6,7 @@
  * When canceled, if there is an ongoing promise, it will
  * continue.
  *
+ * @private
  */
 const setIntervalPromise = (fn, delay, roundCallback) => {
   let timeout, canceled

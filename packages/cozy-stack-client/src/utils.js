@@ -8,6 +8,8 @@
  * ```
  * const safe = uri`/data/${doctype}/_all_docs?limit=${limit}`
  * ```
+ *
+ * @private
  */
 export const uri = (strings, ...values) => {
   const parts = [strings[0]]
@@ -31,12 +33,15 @@ export const uri = (strings, ...values) => {
  * await sleep(1000)
  * return
  * ```
+ *
+ * @private
  */
 export const attempt = promise => promise.then(() => true).catch(() => false)
 
 /**
  * @function
- * @description Helps to avoid nested try/catch when using async/await — see documentation for attemp
+ * @description Helps to avoid nested try/catch when using async/await — see documentation for attempt
+ * @private
  */
 export const sleep = (time, args) =>
   new Promise(resolve => {

@@ -64,6 +64,7 @@ const aliases = {
  *
  * Some doctypes can have built-in overriden relationships.
  *
+ * @private
  */
 export const resolveClass = (doctype, type) => {
   if (type === undefined) {

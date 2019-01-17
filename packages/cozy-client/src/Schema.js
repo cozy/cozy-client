@@ -10,6 +10,8 @@ import { resolveClass as resolveAssociationClass } from './associations'
  * - The name of the relationship (its key in the schema definition)
  *   is included in the relationship
  * - Empty relationships are nulled
+ *
+ * @private
  */
 const normalizeDoctypeSchema = doctypeSchema => {
   const relationships = mapValues(
