@@ -39,7 +39,7 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 <li>Attribute validation</li>
 <li>Relationship access</li>
 </ul>
-<pre><code>const schema = new Schema({
+<pre><code class="language-javascript">const schema = new Schema({
   todos: {
     attributes: {
       label: {
@@ -51,7 +51,8 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
     }
   }
 }, cozyStackClient)
-</code></pre></dd>
+</code></pre>
+</dd>
 </dl>
 
 ## Functions
@@ -707,7 +708,7 @@ Stores information on a particular doctype.
 - Attribute validation
 - Relationship access
 
-```
+```js
 const schema = new Schema({
   todos: {
     attributes: {

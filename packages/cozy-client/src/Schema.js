@@ -35,7 +35,7 @@ const normalizeDoctypeSchema = doctypeSchema => {
  * - Attribute validation
  * - Relationship access
  *
- * ```
+ * ```js
  * const schema = new Schema({
  *   todos: {
  *     attributes: {
