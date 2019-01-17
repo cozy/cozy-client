@@ -130,7 +130,7 @@ class PouchManager {
   destroy() {
     this.stopReplicationLoop()
     this.removeListeners()
-    this.destroyPersistedSyncedDoctypes()
+    this.destroySyncedDoctypes()
     return Promise.all(
       Object.values(this.pouches).map(pouch => pouch.destroy())
     )
@@ -298,7 +298,8 @@ class PouchManager {
     return this.syncedDoctypes.includes(doctype)
   }
 
-  destroyPersistedSyncedDoctypes() {
+  destroySyncedDoctypes() {
+    this.syncedDoctypes = []
     window.localStorage.removeItem(LOCALSTORAGE_SYNCED_KEY)
   }
 
