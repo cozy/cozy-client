@@ -100,6 +100,17 @@ describe('HasMany', () => {
     expect(hydrated.tasks.data).toEqual([])
   })
 
+  it('updates the count metadata', () => {
+    const initialCount = hydrated.tasks.data.length
+    hydrated.tasks.target.relationships.tasks.meta = {
+      count: initialCount
+    }
+    hydrated.tasks.addById(4)
+    expect(hydrated.tasks.count).toBe(initialCount + 1)
+    hydrated.tasks.removeById(1)
+    expect(hydrated.tasks.count).toBe(initialCount)
+  })
+
   it('checks non existence', () => {
     expect(hydrated.tasks.existsById(3)).toBe(false)
   })

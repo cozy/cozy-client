@@ -105,6 +105,7 @@ class HasMany extends Association {
     }))
 
     this.target.relationships[this.name].data.push(...newRelations)
+    this.updateMetaCount()
 
     if (save) return this.save(this.target)
     else
@@ -119,12 +120,22 @@ class HasMany extends Association {
     this.target.relationships[this.name].data = this.target.relationships[
       this.name
     ].data.filter(({ _id }) => !ids.includes(_id))
+    this.updateMetaCount()
 
     if (save) return this.save(this.target)
     else
       console.warn(
         'HasMany.removeById will automatically perform a save operation in the next version.'
       )
+  }
+
+  updateMetaCount() {
+    if (get(this.target.relationships[this.name], 'meta.count') !== undefined) {
+      this.target.relationships[this.name].meta = {
+        ...this.target.relationships[this.name].meta,
+        count: this.target.relationships[this.name].data.length
+      }
+    }
   }
 
   getRelationship() {
