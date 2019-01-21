@@ -93,8 +93,9 @@ export default class HasManyFiles extends HasMany {
   }
 
   dehydrate(doc) {
-    // HasManyFiles relationships are stored on the file doctype, not the document the files are related to
-    return omit(doc, [this.name, `relationships.${this.name}`])
+    // HasManyFiles relationships are stored on the io.cozy.files doctype, so we shouldnt have to save the relationship on the parent document.
+    // But we are still doing it because cozy-client needs this information in the store to be abble to hydrate the parent document.
+    return super.dehydrate(doc)
   }
 
   static query(document, client, assoc) {

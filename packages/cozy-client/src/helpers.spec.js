@@ -72,7 +72,9 @@ describe('dehydrate', () => {
 
   it('should dehydrate HasManyFiles relationships', () => {
     const dehydrated = dehydrate(document)
-    expect(dehydrated.relationships.hasManyFiles).toBeUndefined()
+    expect(dehydrated.relationships.hasManyFiles).toEqual(
+      intialDocument.relationships.hasManyFiles
+    )
     expect(dehydrated.hasManyFiles).toBeUndefined()
   })
 })
