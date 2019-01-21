@@ -20,8 +20,8 @@ export const responseToRelationship = response =>
     skip: response.skip
   })
 
-const attachRelationship = (doc, relationships) => {
-  if (doc.relationships) {
+export const attachRelationship = (doc, relationships) => {
+  if (doc.relationships && Object.keys(doc.relationships).length) {
     return doc
   }
   return {
