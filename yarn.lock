@@ -3406,19 +3406,19 @@ cosmiconfig@^5.0.0:
     js-yaml "^3.9.0"
     parse-json "^4.0.0"
 
-cozy-device-helper@1.4.14:
-  version "1.4.14"
-  resolved "https://registry.yarnpkg.com/cozy-device-helper/-/cozy-device-helper-1.4.14.tgz#3471b344a1692579edc2456758945e455032ea6d"
-  integrity sha512-oupdeeARN5kYWoxEpbnfPfndPy0wOtcSHGC86YUkmmsHyZBBCpDFAe5sYNTF4P/HvRIUyxzqwY20nTW35eDdpg==
-  dependencies:
-    lodash "4.17.11"
-
 cozy-device-helper@1.4.8:
   version "1.4.8"
   resolved "https://registry.yarnpkg.com/cozy-device-helper/-/cozy-device-helper-1.4.8.tgz#d807d5d34efa897691e0b143025c960d6bebf9dc"
   integrity sha512-BmGhDm+XD/qsYDenLV0eaB+cJAXANoSFNmy9tSVhbo1O6l4qup3eZ8crWEnVRfmF1WQWG6NP9faxn+iUn0uivA==
   dependencies:
     lodash "4.17.10"
+
+cozy-device-helper@1.6.3:
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/cozy-device-helper/-/cozy-device-helper-1.6.3.tgz#186cf0682921fa3ec7c2343d94fb84f317c992ba"
+  integrity sha512-fJIvGirPxF82B0kZVIrp4H6be9pidpnOSOljQZbp9HZfFT+nGQMcuwj6lUfZ8JS0EixsVPfAimIqS8qkMV+7rg==
+  dependencies:
+    lodash "4.17.11"
 
 create-ecdh@^4.0.0:
   version "4.0.3"
