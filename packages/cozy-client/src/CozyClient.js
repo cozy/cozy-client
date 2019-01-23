@@ -142,7 +142,7 @@ class CozyClient {
 
   /**
    * Forwards to a stack client instance and returns
-   * a {@link DocumentCollection} instance.
+   * a [DocumentCollection]{@link https://docs.cozy.io/en/cozy-client/api/cozy-stack-client/#DocumentCollection} instance.
    *
    * @param  {String} doctype The collection doctype.
    * @return {DocumentCollection}
