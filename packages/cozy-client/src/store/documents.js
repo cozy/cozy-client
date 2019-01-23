@@ -28,13 +28,28 @@ const storeDocument = (state, document) => {
       ...state,
       [type]: {
         ...state[type],
-        [document._id]: {
-          ...existingDoc,
-          ...document
-        }
+        [document._id]: mergeDocumentsWithRelationships(existingDoc, document)
       }
     }
   }
+}
+
+export const mergeDocumentsWithRelationships = (
+  prevDocument = {},
+  nextDocument = {}
+) => {
+  const merged = {
+    ...prevDocument,
+    ...nextDocument
+  }
+
+  if (prevDocument.relationships || nextDocument.relationships)
+    merged.relationships = {
+      ...prevDocument.relationships,
+      ...nextDocument.relationships
+    }
+
+  return merged
 }
 
 const properId = doc => {
