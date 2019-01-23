@@ -1,5 +1,8 @@
-import { extractAndMergeDocument } from './documents'
-describe('documents', () => {
+import {
+  extractAndMergeDocument,
+  mergeDocumentsWithRelationships
+} from './documents'
+describe('extractAndMerge', () => {
   it('should return the right data', () => {
     const data = {
       0: {
@@ -111,5 +114,62 @@ describe('documents', () => {
       }
     }
     expect(returnedDatas).toEqual(manuallyMergedData)
+  })
+})
+
+describe('mergeDocumentsWithRelationships', () => {
+  it('should merge 2 documents', () => {
+    const prev = {
+      a: 1
+    }
+    const next = {
+      a: 2,
+      b: 3
+    }
+    const merged = mergeDocumentsWithRelationships(prev, next)
+    expect(merged).toEqual({
+      a: 2,
+      b: 3
+    })
+    expect(merged.relationships).toBeUndefined()
+  })
+
+  it('should update relationships', () => {
+    const prev = {
+      relationships: {
+        a: [1]
+      }
+    }
+    const next = {
+      relationships: {
+        a: [2],
+        b: [3]
+      }
+    }
+    const merged = mergeDocumentsWithRelationships(prev, next)
+    expect(merged).toEqual({
+      relationships: {
+        a: [2],
+        b: [3]
+      }
+    })
+  })
+
+  it('should keep previously existing relationships', () => {
+    // this is especially important for HasManyFiles relationships, where documents coming from the stack don't have the `relationships` property, because the relationship info is stored on the other side (on the io.cozy.files documents)
+    const prev = {
+      relationships: {
+        a: [1]
+      }
+    }
+    const next = {
+      relationships: {}
+    }
+    const merged = mergeDocumentsWithRelationships(prev, next)
+    expect(merged).toEqual({
+      relationships: {
+        a: [1]
+      }
+    })
   })
 })
