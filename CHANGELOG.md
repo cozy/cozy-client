@@ -3,7 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="5.7.0"></a>
+       <a name="5.7.1"></a>
+## [5.7.1](https://github.com/cozy/cozy-client/compare/v5.7.0...v5.7.1) (2019-01-23)
+
+
+### Bug Fixes
+
+* Avoid deleting relationships in stored documents ([372fccf](https://github.com/cozy/cozy-client/commit/372fccf))
+* Broken link ([89e97a8](https://github.com/cozy/cozy-client/commit/89e97a8))
+* Smarter detection of relationship attachments ([bde18dc](https://github.com/cozy/cozy-client/commit/bde18dc))
+
+
+
+
+       <a name="5.7.0"></a>
 # [5.7.0](https://github.com/cozy/cozy-client/compare/v5.6.6...v5.7.0) (2019-01-23)
 
 
@@ -14,7 +27,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-      <a name="5.6.6"></a>
+     <a name="5.6.6"></a>
 ## [5.6.6](https://github.com/cozy/cozy-client/compare/v5.6.5...v5.6.6) (2019-01-22)
 
 
@@ -22,7 +35,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package undefined
 
-   <a name="5.6.5"></a>
+  <a name="5.6.5"></a>
 ## [5.6.5](https://github.com/cozy/cozy-client/compare/v5.6.4...v5.6.5) (2019-01-22)
 
 
@@ -33,7 +46,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
- <a name="5.6.4"></a>
+<a name="5.6.4"></a>
 ## [5.6.4](https://github.com/cozy/cozy-client/compare/v5.6.3...v5.6.4) (2019-01-18)
 
 
