@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-     <a name="5.6.6"></a>
+      <a name="5.7.0"></a>
+# [5.7.0](https://github.com/cozy/cozy-client/compare/v5.6.6...v5.7.0) (2019-01-23)
+
+
+### Features
+
+* **StackLink:** Use find instead of all if a sort option is given ([d7d7b8e](https://github.com/cozy/cozy-client/commit/d7d7b8e))
+
+
+
+
+      <a name="5.6.6"></a>
 ## [5.6.6](https://github.com/cozy/cozy-client/compare/v5.6.5...v5.6.6) (2019-01-22)
 
 
@@ -11,7 +22,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package cozy-client
 
-     <a name="5.6.5"></a>
+   <a name="5.6.5"></a>
 ## [5.6.5](https://github.com/cozy/cozy-client/compare/v5.6.4...v5.6.5) (2019-01-22)
 
 
@@ -22,7 +33,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-   <a name="5.6.4"></a>
+ <a name="5.6.4"></a>
 ## [5.6.4](https://github.com/cozy/cozy-client/compare/v5.6.3...v5.6.4) (2019-01-18)
 
 
@@ -33,7 +44,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-  <a name="5.6.3"></a>
+<a name="5.6.3"></a>
 ## [5.6.3](https://github.com/cozy/cozy-client/compare/v5.6.2...v5.6.3) (2019-01-17)
 
 
