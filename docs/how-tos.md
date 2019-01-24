@@ -132,7 +132,7 @@ export default withMutation(
 
 ## How to specify a schema ?
 
-Each doctypes accessed via cozy-client needs to have a schema declared. It is useful for 
+Each doctypes accessed via cozy-client needs to have a schema declared. It is useful for
 
 * Validation
 * Relationships

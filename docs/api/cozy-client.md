@@ -75,7 +75,7 @@ used by the client to automatically fetch relationship data.
 
 Hydrated documents used by components come with Association instances.
 
-**Kind**: global class  
+**Kind**: global class
 
 * [Association](#Association)
     * [new Association(target, name, doctype, options)](#new_Association_new)
@@ -171,14 +171,14 @@ the hydrated document (.data method). View components will access
 ### association.target : <code>object</code>
 The original document declaring the relationship
 
-**Kind**: instance property of [<code>Association</code>](#Association)  
+**Kind**: instance property of [<code>Association</code>](#Association)
 <a name="Association+name"></a>
 
 ### association.name : <code>string</code>
 The name of the relationship.
 
-**Kind**: instance property of [<code>Association</code>](#Association)  
-**Example**  
+**Kind**: instance property of [<code>Association</code>](#Association)
+**Example**
 ```js
 'author'
 ```
@@ -187,8 +187,8 @@ The name of the relationship.
 ### association.doctype : <code>string</code>
 Doctype of the relationship
 
-**Kind**: instance property of [<code>Association</code>](#Association)  
-**Example**  
+**Kind**: instance property of [<code>Association</code>](#Association)
+**Example**
 ```js
 'io.cozy.authors'
 ```
@@ -197,19 +197,19 @@ Doctype of the relationship
 ### association.get : <code>function</code>
 Returns the document from the store
 
-**Kind**: instance property of [<code>Association</code>](#Association)  
+**Kind**: instance property of [<code>Association</code>](#Association)
 <a name="Association+save"></a>
 
 ### association.save : <code>function</code>
 Saves the relationship in store.
 
-**Kind**: instance property of [<code>Association</code>](#Association)  
+**Kind**: instance property of [<code>Association</code>](#Association)
 <a name="Association+dispatch"></a>
 
 ### association.dispatch : <code>function</code>
 Dispatch an action on the store.
 
-**Kind**: instance property of [<code>Association</code>](#Association)  
+**Kind**: instance property of [<code>Association</code>](#Association)
 <a name="Association+raw"></a>
 
 ### association.raw
@@ -242,7 +242,7 @@ Raw value will be
 
 Derived `Association`s need to implement this method.
 
-**Kind**: instance property of [<code>Association</code>](#Association)  
+**Kind**: instance property of [<code>Association</code>](#Association)
 <a name="Association+data"></a>
 
 ### association.data
@@ -277,30 +277,30 @@ const book = {
 
 Derived `Association`s need to implement this method.
 
-**Kind**: instance property of [<code>Association</code>](#Association)  
+**Kind**: instance property of [<code>Association</code>](#Association)
 <a name="Association+query"></a>
 
 ### association.query(queryDefinition)
 Performs a query to retrieve relationship documents.
 
-**Kind**: instance method of [<code>Association</code>](#Association)  
+**Kind**: instance method of [<code>Association</code>](#Association)
 
 | Param | Type |
 | --- | --- |
-| queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) | 
+| queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) |
 
 <a name="Association+mutate"></a>
 
 ### association.mutate()
 Performs a mutation on the relationship.
 
-**Kind**: instance method of [<code>Association</code>](#Association)  
+**Kind**: instance method of [<code>Association</code>](#Association)
 <a name="Association.query"></a>
 
 ### Association.query() ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
 Derived `Association`s need to implement this method.
 
-**Kind**: static method of [<code>Association</code>](#Association)  
+**Kind**: static method of [<code>Association</code>](#Association)
 <a name="HasMany"></a>
 
 ## HasMany
@@ -312,7 +312,7 @@ Responsible for
 - Creating relationships
 - Removing relationships
 
-**Kind**: global class  
+**Kind**: global class
 
 * [HasMany](#HasMany)
     * [new HasMany()](#new_HasMany_new)
@@ -353,7 +353,7 @@ const todo = {
 Add a referenced document by id. You need to call save()
 in order to synchronize your document with the store.
 
-**Kind**: instance method of [<code>HasMany</code>](#HasMany)  
+**Kind**: instance method of [<code>HasMany</code>](#HasMany)
 **Todo**
 
 - [ ] We shouldn't create the array of relationship manually since
@@ -366,7 +366,7 @@ We certainly should use something like `updateRelationship`
 Used when related documents are stored directly under the attribute with
 only the ids.
 
-**Kind**: global class  
+**Kind**: global class
 <a name="new_HasManyInPlace_new"></a>
 
 ### new HasManyInPlace()
@@ -413,7 +413,7 @@ Responsible for
 - Creating plan for saving documents
 - Associations
 
-**Kind**: global class  
+**Kind**: global class
 
 * [CozyClient](#CozyClient)
     * [new CozyClient(options)](#new_CozyClient_new)
@@ -446,7 +446,7 @@ Responsible for
 Forwards to a stack client instance and returns
 a [DocumentCollection](DocumentCollection) instance.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -467,8 +467,8 @@ const relationships = {
 client.getDocumentSavePlan(baseDoc, relationships)
 ```
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
-**Returns**: <code>Array.&lt;Mutation&gt;</code> - One or more mutation to execute  
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
+**Returns**: <code>Array.&lt;Mutation&gt;</code> - One or more mutation to execute
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -484,7 +484,7 @@ Fills the `relationships` attribute of each documents.
 Can potentially result in several fetch requests.
 Queries are optimized before being sent.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
 <a name="CozyClient+hydrateDocument"></a>
 
 ### cozyClient.hydrateDocument()
@@ -493,7 +493,7 @@ Instantiate relationships on a document
 The original document is kept in the target attribute of
 the relationship
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
 <a name="CozyClient+makeNewDocument"></a>
 
 ### cozyClient.makeNewDocument()
@@ -501,13 +501,13 @@ Creates (locally) a new document for the given doctype.
 This document is hydrated : its relationships are there
 and working.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
 <a name="CozyClient+getAssociation"></a>
 
 ### cozyClient.getAssociation()
 Creates an association that is linked to the store.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
 <a name="CozyClient+getRelationshipStoreAccessors"></a>
 
 ### cozyClient.getRelationshipStoreAccessors()
@@ -518,15 +518,15 @@ Relationships need to have access to the store to ping it when
 a modification (addById/removeById etc...) has been done. This wakes
 the store up, which in turn will update the `<Query>`s and re-render the data.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
 <a name="CozyClient+register"></a>
 
 ### cozyClient.register(cozyURL) ⇒ <code>object</code>
 Performs a complete OAuth flow using a Cordova webview for auth.
 The `register` method's name has been chosen for compat reasons with the Authentication compo.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
-**Returns**: <code>object</code> - Contains the fetched token and the client information.  
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
+**Returns**: <code>object</code> - Contains the fetched token and the client information.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -537,8 +537,8 @@ The `register` method's name has been chosen for compat reasons with the Authent
 ### cozyClient.startOAuthFlow(openURLCallback) ⇒ <code>object</code>
 Performs a complete OAuth flow, including updating the internal token at the end.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
-**Returns**: <code>object</code> - Contains the fetched token and the client information. These should be stored and used to restore the client.  
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
+**Returns**: <code>object</code> - Contains the fetched token and the client information. These should be stored and used to restore the client.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -550,8 +550,8 @@ Performs a complete OAuth flow, including updating the internal token at the end
 Renews the token if, for instance, new permissions are required or token
 has expired.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
-**Returns**: <code>object</code> - Contains the fetched token and the client information.  
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
+**Returns**: <code>object</code> - Contains the fetched token and the client information.
 <a name="CozyClient+setData"></a>
 
 ### cozyClient.setData(data)
@@ -559,7 +559,7 @@ Directly set the data in the store, without using a query
 This is useful for cases like Pouch replication, which wants to
 set some data in the store.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -571,7 +571,7 @@ set some data in the store.
 Chainable API to create query definitions to retrieve documents
 from a Cozy. `QueryDefinition`s are sent to links.
 
-**Kind**: global class  
+**Kind**: global class
 
 * [QueryDefinition](#QueryDefinition)
     * [new QueryDefinition(doctype, id, ids, selector, fields, indexedFields, sort, includes, referenced, limit, skip)](#new_QueryDefinition_new)
@@ -608,8 +608,8 @@ from a Cozy. `QueryDefinition`s are sent to links.
 Query documents with a [mango selector](http://docs.couchdb.org/en/latest/api/database/find.html#find-selectors).
 Each field passed in the selector will be indexed, except if the indexField option is used.
 
-**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
-**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.  
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)
+**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -620,8 +620,8 @@ Each field passed in the selector will be indexed, except if the indexField opti
 ### queryDefinition.select(fields) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
 Specify which fields of each object should be returned. If it is omitted, the entire object is returned.
 
-**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
-**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.  
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)
+**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -632,8 +632,8 @@ Specify which fields of each object should be returned. If it is omitted, the en
 ### queryDefinition.indexFields(fields) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
 Specify which fields should be indexed. This prevent the automatic indexing of the mango fields.
 
-**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
-**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.  
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)
+**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -644,8 +644,8 @@ Specify which fields should be indexed. This prevent the automatic indexing of t
 ### queryDefinition.sortBy(sort) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
 Specify how to sort documents, following the [sort syntax](http://docs.couchdb.org/en/latest/api/database/find.html#find-sort)
 
-**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
-**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.  
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)
+**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -657,8 +657,8 @@ Specify how to sort documents, following the [sort syntax](http://docs.couchdb.o
 Includes documents having a relationships with the ones queried.
 For example, query albums including the photos.
 
-**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
-**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.  
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)
+**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -669,8 +669,8 @@ For example, query albums including the photos.
 ### queryDefinition.limitBy(limit) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
 Maximum number of documents returned, useful for pagination. Default is 100.
 
-**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
-**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.  
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)
+**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -681,8 +681,8 @@ Maximum number of documents returned, useful for pagination. Default is 100.
 ### queryDefinition.offset(skip) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
 Skip the first ‘n’ documents, where ‘n’ is the value specified.
 
-**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
-**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.  
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)
+**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -693,8 +693,8 @@ Skip the first ‘n’ documents, where ‘n’ is the value specified.
 ### queryDefinition.referencedBy(document) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
 Use the [file reference system](https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/)
 
-**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
-**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.  
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)
+**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -723,7 +723,7 @@ const schema = new Schema({
 }, cozyStackClient)
 ```
 
-**Kind**: global class  
+**Kind**: global class
 
 * [Schema](#Schema)
     * [.getDoctypeSchema()](#Schema+getDoctypeSchema)
@@ -735,26 +735,26 @@ const schema = new Schema({
 ### schema.getDoctypeSchema()
 Returns the schema for a doctype
 
-**Kind**: instance method of [<code>Schema</code>](#Schema)  
+**Kind**: instance method of [<code>Schema</code>](#Schema)
 <a name="Schema+getRelationship"></a>
 
 ### schema.getRelationship()
 Returns the relationship for a given doctype/name
 
-**Kind**: instance method of [<code>Schema</code>](#Schema)  
+**Kind**: instance method of [<code>Schema</code>](#Schema)
 <a name="Schema+validate"></a>
 
 ### schema.validate()
 Validates a document considering the descriptions in schema.attributes.
 
-**Kind**: instance method of [<code>Schema</code>](#Schema)  
+**Kind**: instance method of [<code>Schema</code>](#Schema)
 <a name="withClient"></a>
 
 ## withClient(Component) ⇒ <code>function</code>
 HOC to provide client from context as prop
 
-**Kind**: global function  
-**Returns**: <code>function</code> - - Component that will receive client as prop  
+**Kind**: global function
+**Returns**: <code>function</code> - - Component that will receive client as prop
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -765,8 +765,8 @@ HOC to provide client from context as prop
 ## queryConnect(querySpecs) ⇒ <code>function</code>
 HOC creator to connect component to several queries in a declarative manner
 
-**Kind**: global function  
-**Returns**: <code>function</code> - - HOC to apply to a component  
+**Kind**: global function
+**Returns**: <code>function</code> - - HOC to apply to a component
 
 | Param | Type | Description |
 | --- | --- | --- |
