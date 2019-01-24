@@ -28,6 +28,9 @@ through OAuth.</p>
 <dd><p>Implements the <code>DocumentCollection</code> API along with specific methods for
 <code>io.cozy.sharings</code>.</p>
 </dd>
+<dt><a href="#TriggerCollection">TriggerCollection</a></dt>
+<dd><p>Implements <code>DocumentCollection</code> API along with specific methods for <code>io.cozy.triggers</code>.</p>
+</dd>
 </dl>
 
 ## Functions
@@ -506,6 +509,43 @@ getDiscoveryLink - Returns the URL of the page that can be used to accept a shar
 | --- | --- |
 | sharingId | <code>string</code> | 
 | sharecode | <code>string</code> | 
+
+<a name="TriggerCollection"></a>
+
+## TriggerCollection
+Implements `DocumentCollection` API along with specific methods for `io.cozy.triggers`.
+
+**Kind**: global class  
+
+* [TriggerCollection](#TriggerCollection)
+    * [.create(attributes)](#TriggerCollection+create) ⇒ <code>object</code>
+    * [.launch(Trigger)](#TriggerCollection+launch) ⇒ <code>object</code>
+
+<a name="TriggerCollection+create"></a>
+
+### triggerCollection.create(attributes) ⇒ <code>object</code>
+Creates a Trigger document
+
+**Kind**: instance method of [<code>TriggerCollection</code>](#TriggerCollection)  
+**Returns**: <code>object</code> - Stack response, containing trigger document under `data` attribute.  
+**See**: https://github.com/cozy/cozy-stack/blob/master/docs/jobs.md#post-jobstriggers  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| attributes | <code>object</code> | Trigger's attributes |
+
+<a name="TriggerCollection+launch"></a>
+
+### triggerCollection.launch(Trigger) ⇒ <code>object</code>
+Force given trigger execution.
+
+**Kind**: instance method of [<code>TriggerCollection</code>](#TriggerCollection)  
+**Returns**: <code>object</code> - Stack response, containing job launched by trigger, under `data` attribute.  
+**See**: https://github.com/cozy/cozy-stack/blob/master/docs/jobs.md#post-jobstriggerstrigger-idlaunch  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| Trigger | <code>object</code> | to launch |
 
 <a name="getCozyURL"></a>
 

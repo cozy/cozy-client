@@ -4,6 +4,7 @@ import DocumentCollection from './DocumentCollection'
 import FileCollection from './FileCollection'
 import SharingCollection from './SharingCollection'
 import PermissionCollection from './PermissionCollection'
+import TriggerCollection, { TRIGGERS_DOCTYPE } from './TriggerCollection'
 
 const normalizeUri = uri => {
   while (uri[uri.length - 1] === '/') {
@@ -40,6 +41,8 @@ class CozyStackClient {
         return new SharingCollection(doctype, this)
       case 'io.cozy.permissions':
         return new PermissionCollection(doctype, this)
+      case TRIGGERS_DOCTYPE:
+        return new TriggerCollection(this)
       default:
         return new DocumentCollection(doctype, this)
     }
