@@ -321,6 +321,7 @@ class DocumentCollection {
    * @param  {Object} options      { includeDesign: false, includeDeleted: false }
    */
   async fetchChanges(couchOptions = {}, options = {}) {
+    const haveDocsIds = couchOptions.doc_ids && couchOptions.doc_ids.length > 0
     let urlParams = ''
     if (typeof couchOptions !== 'object') {
       urlParams = `?include_docs=true&since=${couchOptions}`
@@ -328,14 +329,32 @@ class DocumentCollection {
         'fetchChanges use couchOptions as Object not a string, since is deprecated, please use fetchChanges({include_docs: true, since: 0}).'
       )
     } else if (Object.keys(couchOptions).length > 0) {
-      urlParams = `?${map(couchOptions, (value, key) => `${key}=${value}`).join(
-        '&'
-      )}`
+      urlParams = `?${map(couchOptions, (value, key) => {
+        if (haveDocsIds && key === 'doc_ids') {
+          if (couchOptions.filter === undefined) {
+            return 'filter=_doc_ids'
+          }
+          return false
+        }
+        return `${key}=${value}`
+      })
+        .filter(Boolean)
+        .join('&')}`
     }
-    const result = await this.stackClient.fetchJSON(
-      'GET',
-      `/data/${this.doctype}/_changes${urlParams}`
-    )
+
+    let result
+    if (haveDocsIds) {
+      result = await this.stackClient.fetchJSON(
+        'POST',
+        `/data/${this.doctype}/_changes${urlParams}`,
+        { doc_ids: couchOptions.doc_ids }
+      )
+    } else {
+      result = await this.stackClient.fetchJSON(
+        'GET',
+        `/data/${this.doctype}/_changes${urlParams}`
+      )
+    }
 
     const newLastSeq = result.last_seq
     let docs = result.results.map(x => x.doc).filter(Boolean)

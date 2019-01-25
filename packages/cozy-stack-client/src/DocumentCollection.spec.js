@@ -560,6 +560,15 @@ describe('DocumentCollection', () => {
       )
     })
 
+    it('should call changes with doc_ids parameters', async () => {
+      await collection.fetchChanges({ doc_ids: [1, 2, 3] })
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/data/io.cozy.todos/_changes?filter=_doc_ids',
+        { doc_ids: [1, 2, 3] }
+      )
+    })
+
     it('should call the right route', async () => {
       const changes = await collection.fetchChanges(defaultCouchOptions)
       expect(client.fetchJSON).toHaveBeenCalledWith(
