@@ -1,6 +1,7 @@
 import { uri, attempt, sleep } from './utils'
 import uniq from 'lodash/uniq'
 import transform from 'lodash/transform'
+import map from 'lodash/map'
 import head from 'lodash/head'
 import startsWith from 'lodash/startsWith'
 import * as querystring from './querystring'
@@ -316,13 +317,24 @@ class DocumentCollection {
   /**
    * Use Couch _changes API
    *
-   * @param  {String} since     Starting sequence for changes
-   * @param  {Object} options   { includeDesign: false, includeDeleted: false }
+   * @param  {Object} couchOptions Couch options for changes https://kutt.it/5r7MNQ
+   * @param  {Object} options      { includeDesign: false, includeDeleted: false }
    */
-  async fetchChanges(since, options = {}) {
+  async fetchChanges(couchOptions = {}, options = {}) {
+    let urlParams = ''
+    if (typeof couchOptions !== 'object') {
+      urlParams = `?include_docs=true&since=${couchOptions}`
+      console.warn(
+        'fetchChanges use couchOptions as Object not a string, since is deprecated, please use fetchChanges({include_docs: true, since: 0}).'
+      )
+    } else if (Object.keys(couchOptions).length > 0) {
+      urlParams = `?${map(couchOptions, (value, key) => `${key}=${value}`).join(
+        '&'
+      )}`
+    }
     const result = await this.stackClient.fetchJSON(
       'GET',
-      `/data/${this.doctype}/_changes?include_docs=true&since=${since}`
+      `/data/${this.doctype}/_changes${urlParams}`
     )
 
     const newLastSeq = result.last_seq

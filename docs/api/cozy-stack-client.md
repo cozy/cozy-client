@@ -127,7 +127,7 @@ Abstracts a collection of documents of the same doctype, providing CRUD methods 
     * [.all(options)](#DocumentCollection+all) ⇒ <code>Object</code>
     * [.find(selector, options)](#DocumentCollection+find) ⇒ <code>Object</code>
     * [.getIndexFields(options)](#DocumentCollection+getIndexFields) ⇒ <code>Array</code>
-    * [.fetchChanges(since, options)](#DocumentCollection+fetchChanges)
+    * [.fetchChanges(couchOptions, options)](#DocumentCollection+fetchChanges)
 
 <a name="DocumentCollection+all"></a>
 
@@ -181,14 +181,14 @@ query to work
 
 <a name="DocumentCollection+fetchChanges"></a>
 
-### documentCollection.fetchChanges(since, options)
+### documentCollection.fetchChanges(couchOptions, options)
 Use Couch _changes API
 
 **Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| since | <code>String</code> | Starting sequence for changes |
+| couchOptions | <code>Object</code> | Couch options for changes https://kutt.it/5r7MNQ |
 | options | <code>Object</code> | { includeDesign: false, includeDeleted: false } |
 
 <a name="FileCollection"></a>
