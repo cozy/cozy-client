@@ -139,7 +139,7 @@ Each doctypes accessed via cozy-client needs to have a schema declared. It is us
 
 Here is a sample of a schema used in the Banks application.
 
-```
+```js
 const { HasMany } = require('cozy-client')
 
 class HasManyBills extends HasMany {
