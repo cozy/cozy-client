@@ -24,6 +24,7 @@ export const responseToRelationship = response =>
 const attachRelationship = (doc, relationships) => {
   if (
     doc.relationships &&
+    relationships &&
     isEqual(Object.keys(doc.relationships), Object.keys(relationships))
   ) {
     return doc
