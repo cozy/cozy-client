@@ -22,16 +22,12 @@ export const responseToRelationship = response =>
   })
 
 const attachRelationship = (doc, relationships) => {
-  if (
-    doc.relationships &&
-    relationships &&
-    isEqual(Object.keys(doc.relationships), Object.keys(relationships))
-  ) {
-    return doc
-  }
   return {
     ...doc,
-    relationships: relationships || {}
+    relationships: {
+      ...doc.relationships,
+      ...relationships
+    }
   }
 }
 
