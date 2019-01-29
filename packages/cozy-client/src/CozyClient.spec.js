@@ -515,5 +515,12 @@ describe('CozyClient', () => {
       expect(newTodo.attachments).not.toBe(undefined)
       expect(newTodo.attachments instanceof HasManyFiles).toBe(true)
     })
+
+    it('should not fail on null (when getting absent documents from the store)', () => {
+      const doc = client
+        .hydrateDocuments('io.cozy.todos', [null], 'allTodos')
+        .shift()
+      expect(doc).toBe(null)
+    })
   })
 })
