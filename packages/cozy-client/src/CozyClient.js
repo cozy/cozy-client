@@ -454,6 +454,9 @@ class CozyClient {
    * the relationship
    */
   hydrateDocument(document, schema) {
+    if (!document) {
+      return document
+    }
     schema = schema || this.schema.getDoctypeSchema(document._type)
     return {
       ...document,
