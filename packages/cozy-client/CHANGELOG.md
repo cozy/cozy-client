@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-     <a name="5.7.3"></a>
+      <a name="5.7.4"></a>
+## [5.7.4](https://github.com/cozy/cozy-client/compare/v5.7.3...v5.7.4) (2019-01-29)
+
+
+### Bug Fixes
+
+* Hydrating null documents failed ([c66c3c9](https://github.com/cozy/cozy-client/commit/c66c3c9))
+
+
+
+
+      <a name="5.7.3"></a>
 ## [5.7.3](https://github.com/cozy/cozy-client/compare/v5.7.2...v5.7.3) (2019-01-28)
 
 
@@ -14,7 +25,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="5.7.2"></a>
+   <a name="5.7.2"></a>
 ## [5.7.2](https://github.com/cozy/cozy-client/compare/v5.7.1...v5.7.2) (2019-01-28)
 
 
@@ -25,7 +36,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-   <a name="5.7.1"></a>
+ <a name="5.7.1"></a>
 ## [5.7.1](https://github.com/cozy/cozy-client/compare/v5.7.0...v5.7.1) (2019-01-23)
 
 
@@ -37,7 +48,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-  <a name="5.7.0"></a>
+<a name="5.7.0"></a>
 # [5.7.0](https://github.com/cozy/cozy-client/compare/v5.6.6...v5.7.0) (2019-01-23)
 
 
