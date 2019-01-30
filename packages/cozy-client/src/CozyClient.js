@@ -516,7 +516,12 @@ class CozyClient {
   }
 
   getDocumentFromState(type, id) {
-    return getDocumentFromState(this.store.getState(), type, id)
+    try {
+      return getDocumentFromState(this.store.getState(), type, id)
+    } catch (e) {
+      console.warn('Could not getDocumentFromState', type, id, e.message)
+      return null
+    }
   }
 
   /**

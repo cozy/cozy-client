@@ -198,6 +198,15 @@ describe('CozyClient', () => {
     })
   })
 
+  describe('getDocumentFromState', () => {
+    it('should return null in case of error', () => {
+      jest.spyOn(client.store, 'getState').mockImplementation(() => {
+        throw new Error('Problem with store')
+      })
+      expect(client.getDocumentFromState('io.cozy.people', 1)).toBe(null)
+    })
+  })
+
   describe('find', () => {
     it('should return a QueryDefinition', () => {
       expect(
