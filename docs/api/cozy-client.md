@@ -444,7 +444,7 @@ Responsible for
 
 ### cozyClient.collection(doctype) ⇒ <code>DocumentCollection</code>
 Forwards to a stack client instance and returns
-a [DocumentCollection](DocumentCollection) instance.
+a [DocumentCollection](https://docs.cozy.io/en/cozy-client/api/cozy-stack-client/#DocumentCollection) instance.
 
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 
