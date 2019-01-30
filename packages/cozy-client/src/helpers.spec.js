@@ -4,6 +4,7 @@ import {
   HasManyInPlace,
   HasMany,
   HasManyFiles,
+  HasOneInPlace,
   create as createAssociation
 } from './associations'
 
@@ -13,6 +14,7 @@ describe('dehydrate', () => {
   const intialDocument = {
     regularKey: 'foo',
     manyInPlace: [1, 2],
+    oneInPlace: '1',
     relationships: {
       hasMany: {
         data: [{ _id: 1, _type: 'has.many' }, { _id: 2, _type: 'has.many' }]
@@ -31,6 +33,11 @@ describe('dehydrate', () => {
       name: 'manyInPlace',
       type: HasManyInPlace,
       doctype: 'many.in.place'
+    },
+    {
+      name: 'oneInPlace',
+      type: HasOneInPlace,
+      doctype: 'one.in.place'
     },
     {
       name: 'hasMany',
@@ -60,6 +67,12 @@ describe('dehydrate', () => {
 
   it('should dehydrate HasManyInPlace relationships', () => {
     expect(dehydrate(document).manyInPlace).toEqual(intialDocument.manyInPlace)
+  })
+
+  it('should dehydrate HasOneInPlace relationships', () => {
+    const dehydrated = dehydrate(document)
+    expect(dehydrated.oneInPlace).toEqual(intialDocument.oneInPlace)
+    expect(dehydrated.oneInPlace).not.toBeUndefined()
   })
 
   it('should dehydrate HasMany relationships', () => {

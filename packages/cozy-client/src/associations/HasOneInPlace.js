@@ -20,6 +20,13 @@ export default class HasOneInPlace extends Association {
       client.get(assoc.doctype, id)
     )
   }
+
+  dehydrate(doc) {
+    return {
+      ...doc,
+      [this.name]: this.raw || undefined
+    }
+  }
 }
 
 export const BelongsToInPlace = HasOneInPlace
