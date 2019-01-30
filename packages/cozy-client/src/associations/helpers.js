@@ -1,6 +1,5 @@
 import pick from 'lodash/pick'
 import pickBy from 'lodash/pickBy'
-import isEqual from 'lodash/isEqual'
 import Association from './Association'
 import HasOne from './HasOne'
 import HasOneInPlace from './HasOneInPlace'

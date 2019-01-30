@@ -7,6 +7,10 @@ export const dehydrate = document => {
         document[key] = value
       } else if (value.dehydrate) {
         document = value.dehydrate(document)
+      } else {
+        throw new Error(
+          `Association on key ${key} should have a dehydrate method`
+        )
       }
       return document
     },

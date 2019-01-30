@@ -4,7 +4,9 @@ import {
   HasManyInPlace,
   HasMany,
   HasManyFiles,
-  create as createAssociation
+  HasOneInPlace,
+  create as createAssociation,
+  Association
 } from './associations'
 
 describe('dehydrate', () => {
@@ -13,6 +15,7 @@ describe('dehydrate', () => {
   const intialDocument = {
     regularKey: 'foo',
     manyInPlace: [1, 2],
+    oneInPlace: '1',
     relationships: {
       hasMany: {
         data: [{ _id: 1, _type: 'has.many' }, { _id: 2, _type: 'has.many' }]
@@ -26,11 +29,18 @@ describe('dehydrate', () => {
     }
   }
 
+  class BadAssociation extends Association {}
+
   const relationships = [
     {
       name: 'manyInPlace',
       type: HasManyInPlace,
       doctype: 'many.in.place'
+    },
+    {
+      name: 'oneInPlace',
+      type: HasOneInPlace,
+      doctype: 'one.in.place'
     },
     {
       name: 'hasMany',
@@ -62,6 +72,12 @@ describe('dehydrate', () => {
     expect(dehydrate(document).manyInPlace).toEqual(intialDocument.manyInPlace)
   })
 
+  it('should dehydrate HasOneInPlace relationships', () => {
+    const dehydrated = dehydrate(document)
+    expect(dehydrated.oneInPlace).toEqual(intialDocument.oneInPlace)
+    expect(dehydrated.oneInPlace).not.toBeUndefined()
+  })
+
   it('should dehydrate HasMany relationships', () => {
     const dehydrated = dehydrate(document)
     expect(dehydrated.relationships.hasMany).toEqual(
@@ -74,5 +90,22 @@ describe('dehydrate', () => {
     const dehydrated = dehydrate(document)
     expect(dehydrated.relationships.hasManyFiles).toBeUndefined()
     expect(dehydrated.hasManyFiles).toBeUndefined()
+  })
+
+  it('should throw if a relationship is not dehydratable', () => {
+    document.badAssociation = createAssociation(
+      document,
+      {
+        name: 'BadAssociation',
+        type: BadAssociation,
+        doctype: 'bad.association'
+      },
+      {}
+    )
+    expect(() => {
+      dehydrate(document)
+    }).toThrowError(
+      `Association on key badAssociation should have a dehydrate method`
+    )
   })
 })
