@@ -3,7 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-       <a name="5.7.5"></a>
+      <a name="5.7.6"></a>
+## [5.7.6](https://github.com/cozy/cozy-client/compare/v5.7.5...v5.7.6) (2019-01-30)
+
+
+### Bug Fixes
+
+* Add dehydrate method on HasOneInPlace ([d53ab4c](https://github.com/cozy/cozy-client/commit/d53ab4c))
+* Return null when getDocumentFromState errors ([51da9f5](https://github.com/cozy/cozy-client/commit/51da9f5))
+* Throw if a relation is not dehydratable ([e24d187](https://github.com/cozy/cozy-client/commit/e24d187))
+
+
+
+
+      <a name="5.7.5"></a>
 ## [5.7.5](https://github.com/cozy/cozy-client/compare/v5.7.4...v5.7.5) (2019-01-30)
 
 
@@ -14,7 +27,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-       <a name="5.7.4"></a>
+     <a name="5.7.4"></a>
 ## [5.7.4](https://github.com/cozy/cozy-client/compare/v5.7.3...v5.7.4) (2019-01-29)
 
 
@@ -25,7 +38,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="5.7.3"></a>
+   <a name="5.7.3"></a>
 ## [5.7.3](https://github.com/cozy/cozy-client/compare/v5.7.2...v5.7.3) (2019-01-28)
 
 
@@ -36,7 +49,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-  <a name="5.7.2"></a>
+<a name="5.7.2"></a>
 ## [5.7.2](https://github.com/cozy/cozy-client/compare/v5.7.1...v5.7.2) (2019-01-28)
 
 
