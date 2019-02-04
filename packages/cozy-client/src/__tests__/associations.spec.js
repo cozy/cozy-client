@@ -86,29 +86,5 @@ describe('Associations', () => {
       const queryAfter = getQueryFromStore(client.store, 'allTodos')
       expect(queryBefore.lastUpdate).toBeLessThan(queryAfter.lastUpdate)
     })
-
-    it('should be able to associate more docs', async () => {
-      requestHandler.mockReturnValueOnce(Promise.resolve(undefined))
-      await getTodo(TODO_1._id).attachments.add([
-        { _id: 'xyz', _type: 'io.cozy.files', name: 'xyz.png' }
-      ])
-      expect(getTodo(TODO_1._id).attachments.data).toEqual([
-        { _id: 'abc', _type: 'io.cozy.files', name: 'abc.pdf' },
-        { _id: 'def', _type: 'io.cozy.files', name: 'def.png' },
-        { _id: 'xyz', _type: 'io.cozy.files', name: 'xyz.png' }
-      ])
-      expect(getTodo(TODO_1._id).attachments.count).toBe(5)
-    })
-
-    it('should be able to dereference docs', async () => {
-      requestHandler.mockReturnValueOnce(Promise.resolve(undefined))
-      await getTodo(TODO_1._id).attachments.remove([
-        { _id: 'abc', _type: 'io.cozy.files', name: 'abc.pdf' }
-      ])
-      expect(getTodo(TODO_1._id).attachments.data).toEqual([
-        { _id: 'def', _type: 'io.cozy.files', name: 'def.png' }
-      ])
-      expect(getTodo(TODO_1._id).attachments.count).toBe(3)
-    })
   })
 })

@@ -91,7 +91,7 @@ class HasMany extends Association {
    * We certainly should use something like `updateRelationship`
    *
    */
-  addById(ids, { save = false } = {}) {
+  addById(ids) {
     if (!this.target.relationships) this.target.relationships = {}
     if (!this.target.relationships[this.name]) {
       this.target.relationships[this.name] = { data: [] }
@@ -107,14 +107,10 @@ class HasMany extends Association {
     this.target.relationships[this.name].data.push(...newRelations)
     this.updateMetaCount()
 
-    if (save) return this.save(this.target)
-    else
-      console.warn(
-        'HasMany.addById will automatically perform a save operation in the next version.'
-      )
+    return this.save(this.target)
   }
 
-  removeById(ids, { save = false } = {}) {
+  removeById(ids) {
     ids = Array.isArray(ids) ? ids : [ids]
 
     this.target.relationships[this.name].data = this.target.relationships[
@@ -122,11 +118,7 @@ class HasMany extends Association {
     ].data.filter(({ _id }) => !ids.includes(_id))
     this.updateMetaCount()
 
-    if (save) return this.save(this.target)
-    else
-      console.warn(
-        'HasMany.removeById will automatically perform a save operation in the next version.'
-      )
+    return this.save(this.target)
   }
 
   updateMetaCount() {

@@ -36,7 +36,8 @@ describe('HasMany', () => {
     hydratedWithNoRelation = {
       ...originalWithNorelation,
       tasks: new HasMany(originalWithNorelation, 'tasks', 'io.cozy.tasks', {
-        get
+        get,
+        save
       })
     }
   })
@@ -48,6 +49,7 @@ describe('HasMany', () => {
       { doctype: 'io.cozy.tasks', id: 2 },
       { doctype: 'io.cozy.tasks', id: 4 }
     ])
+    expect(save).toHaveBeenCalled()
   })
 
   it('doesnt add if already there', () => {
@@ -68,16 +70,10 @@ describe('HasMany', () => {
     ])
   })
 
-  it('optionally saves after adding', () => {
-    hydrated.tasks.addById(4)
-    expect(save).not.toHaveBeenCalled()
-    hydrated.tasks.addById(5, { save: true })
-    expect(save).toHaveBeenCalled()
-  })
-
   it('removes', () => {
     hydrated.tasks.removeById(2)
     expect(hydrated.tasks.data).toEqual([{ doctype: 'io.cozy.tasks', id: 1 }])
+    expect(save).toHaveBeenCalled()
   })
 
   it('doesnt remove if not there', () => {
@@ -86,13 +82,6 @@ describe('HasMany', () => {
       { doctype: 'io.cozy.tasks', id: 1 },
       { doctype: 'io.cozy.tasks', id: 2 }
     ])
-  })
-
-  it('optionally saves after removing', () => {
-    hydrated.tasks.removeById(2)
-    expect(save).not.toHaveBeenCalled()
-    hydrated.tasks.removeById(1, { save: true })
-    expect(save).toHaveBeenCalled()
   })
 
   it('removes multipe', () => {
