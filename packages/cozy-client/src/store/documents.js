@@ -3,6 +3,7 @@ import { isReceivingMutationResult } from './mutations'
 import keyBy from 'lodash/keyBy'
 import get from 'lodash/get'
 import isEqual from 'lodash/isEqual'
+import { properId } from './helpers'
 
 const storeDocument = (state, document) => {
   const type = document._type
@@ -12,14 +13,14 @@ const storeDocument = (state, document) => {
     }
     throw new Error('Document without _type')
   }
-  if (!document._id) {
+  if (!properId(document)) {
     if (process.env.NODE_ENV !== 'production') {
-      console.warn('Document without _id', document)
+      console.warn('Document without id', document)
     }
-    throw new Error('Document without _id')
+    throw new Error('Document without id')
   }
 
-  const existingDoc = get(state, [type, document._id])
+  const existingDoc = get(state, [type, properId(document)])
 
   if (isEqual(existingDoc, document)) {
     return state
@@ -28,7 +29,10 @@ const storeDocument = (state, document) => {
       ...state,
       [type]: {
         ...state[type],
-        [document._id]: mergeDocumentsWithRelationships(existingDoc, document)
+        [properId(document)]: mergeDocumentsWithRelationships(
+          existingDoc,
+          document
+        )
       }
     }
   }
@@ -50,13 +54,6 @@ export const mergeDocumentsWithRelationships = (
     }
 
   return merged
-}
-
-const properId = doc => {
-  if (!doc._id) {
-    throw new Error('Cannot index document as it has no id')
-  }
-  return doc.id || doc._id
 }
 
 // reducer
@@ -132,29 +129,31 @@ export const extractAndMergeDocument = (data, updatedStateWithIncluded) => {
   if (updatedStateWithIncluded && updatedStateWithIncluded[doctype]) {
     Object.values(updatedStateWithIncluded[doctype]).map(dataState => {
       if (!mergedData[doctype]) mergedData[doctype] = {}
-      if (sortedData[dataState._id]) {
-        mergedData[doctype][dataState._id] = {
+      const id = properId(dataState)
+      if (sortedData[id]) {
+        mergedData[doctype][id] = {
           ...dataState,
-          ...sortedData[dataState._id],
-          ...mergedData[doctype][dataState._id]
+          ...sortedData[id],
+          ...mergedData[doctype][id]
         }
       } else {
-        mergedData[doctype][dataState._id] = {
+        mergedData[doctype][id] = {
           ...dataState,
-          ...mergedData[doctype][dataState._id]
+          ...mergedData[doctype][id]
         }
       }
     })
   }
   Object.values(sortedData).map(data => {
     if (!mergedData[doctype]) mergedData[doctype] = {}
-    if (mergedData[doctype][data._id]) {
-      mergedData[doctype][data._id] = {
-        ...mergedData[doctype][data._id],
+    const id = properId(data)
+    if (mergedData[doctype][id]) {
+      mergedData[doctype][id] = {
+        ...mergedData[doctype][id],
         ...data
       }
     } else {
-      mergedData[doctype][data._id] = data
+      mergedData[doctype][id] = data
     }
   })
 
