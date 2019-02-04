@@ -5,6 +5,7 @@ import intersection from 'lodash/intersection'
 
 import { getDocumentFromSlice } from './documents'
 import { isReceivingMutationResult } from './mutations'
+import { properId } from './helpers'
 import sift from 'sift'
 import get from 'lodash/get'
 const INIT_QUERY = 'INIT_QUERY'
@@ -56,7 +57,7 @@ const query = (state = queryInitialState, action) => {
           ...common,
           hasMore: false,
           count: 1,
-          data: [response.data._id]
+          data: [properId(response.data)]
         }
       }
       return {
@@ -69,8 +70,8 @@ const query = (state = queryInitialState, action) => {
             : response.data.length,
         data:
           response.skip === 0
-            ? response.data.map(doc => doc._id)
-            : [...state.data, ...response.data.map(doc => doc._id)]
+            ? response.data.map(properId)
+            : [...state.data, ...response.data.map(properId)]
       }
     }
     case RECEIVE_QUERY_ERROR:
@@ -109,12 +110,10 @@ const getQueryDocumentsChecker = query => {
   }
 }
 
-const _id = x => x._id
-
 const updateData = (query, newData) => {
   const isFulfilled = getQueryDocumentsChecker(query)
-  const matchedIds = newData.filter(doc => isFulfilled(doc)).map(_id)
-  const unmatchedIds = newData.filter(doc => !isFulfilled(doc)).map(_id)
+  const matchedIds = newData.filter(doc => isFulfilled(doc)).map(properId)
+  const unmatchedIds = newData.filter(doc => !isFulfilled(doc)).map(properId)
   const originalIds = query.data
   const toRemove = intersection(originalIds, unmatchedIds)
   const toAdd = difference(matchedIds, originalIds)
@@ -161,7 +160,7 @@ const manualQueryUpdater = (action, documents) => query => {
   const oldData = query.data
   const oldDocs = mapIdsToDocuments(documents, doctype, oldData)
   const newData = updater(oldDocs, response)
-  const newDataIds = newData.map(doc => doc._id)
+  const newDataIds = newData.map(properId)
   return {
     ...query,
     data: newDataIds,
