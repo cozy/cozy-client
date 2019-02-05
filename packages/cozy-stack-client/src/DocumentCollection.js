@@ -342,19 +342,10 @@ class DocumentCollection {
         .join('&')}`
     }
 
-    let result
-    if (haveDocsIds) {
-      result = await this.stackClient.fetchJSON(
-        'POST',
-        `/data/${this.doctype}/_changes${urlParams}`,
-        { doc_ids: couchOptions.doc_ids }
-      )
-    } else {
-      result = await this.stackClient.fetchJSON(
-        'GET',
-        `/data/${this.doctype}/_changes${urlParams}`
-      )
-    }
+    const method = haveDocsIds ? 'POST' : 'GET'
+    const endpoint = `/data/${this.doctype}/_changes${urlParams}`
+    const params = haveDocsIds ? { doc_ids: couchOptions.doc_ids } : undefined
+    const result = await this.stackClient.fetchJSON(method, endpoint, params)
 
     const newLastSeq = result.last_seq
     let docs = result.results.map(x => x.doc).filter(Boolean)

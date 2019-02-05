@@ -540,7 +540,8 @@ describe('DocumentCollection', () => {
       await collection.fetchChanges()
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
-        '/data/io.cozy.todos/_changes'
+        '/data/io.cozy.todos/_changes',
+        undefined
       )
     })
 
@@ -548,7 +549,8 @@ describe('DocumentCollection', () => {
       await collection.fetchChanges('my-seq')
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
-        '/data/io.cozy.todos/_changes?include_docs=true&since=my-seq'
+        '/data/io.cozy.todos/_changes?include_docs=true&since=my-seq',
+        undefined
       )
     })
 
@@ -556,7 +558,8 @@ describe('DocumentCollection', () => {
       await collection.fetchChanges({ limit: 100 })
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
-        '/data/io.cozy.todos/_changes?limit=100'
+        '/data/io.cozy.todos/_changes?limit=100',
+        undefined
       )
     })
 
@@ -573,7 +576,8 @@ describe('DocumentCollection', () => {
       const changes = await collection.fetchChanges(defaultCouchOptions)
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
-        '/data/io.cozy.todos/_changes?include_docs=true&since=my-seq'
+        '/data/io.cozy.todos/_changes?include_docs=true&since=my-seq',
+        undefined
       )
       expect(changes).toEqual({
         newLastSeq: 'new-seq',
