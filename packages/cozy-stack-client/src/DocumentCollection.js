@@ -1,9 +1,10 @@
 import { uri, attempt, sleep } from './utils'
 import uniq from 'lodash/uniq'
 import transform from 'lodash/transform'
-import map from 'lodash/map'
 import head from 'lodash/head'
+import omit from 'lodash/omit'
 import startsWith from 'lodash/startsWith'
+import qs from 'qs'
 import * as querystring from './querystring'
 
 export const normalizeDoc = (doc, doctype) => {
@@ -329,15 +330,12 @@ class DocumentCollection {
         'fetchChanges use couchOptions as Object not a string, since is deprecated, please use fetchChanges({include_docs: true, since: 0}).'
       )
     } else if (Object.keys(couchOptions).length > 0) {
-      urlParams = `?${map(couchOptions, (value, key) => {
-        if (haveDocsIds && key === 'doc_ids') {
-          if (couchOptions.filter === undefined) {
-            return 'filter=_doc_ids'
-          }
-          return false
-        }
-        return `${key}=${value}`
-      })
+      urlParams = `?${[
+        qs.stringify(omit(couchOptions, 'doc_ids')),
+        haveDocsIds && couchOptions.filter === undefined
+          ? 'filter=_doc_ids'
+          : undefined
+      ]
         .filter(Boolean)
         .join('&')}`
     }

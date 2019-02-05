@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "detect-node": "2.0.4",
-    "mime-types": "2.1.20"
+    "mime-types": "2.1.20",
+    "qs": "6.6.0"
   },
   "scripts": {
     "build": "../../bin/build",
