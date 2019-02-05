@@ -1,7 +1,17 @@
+import merge from 'lodash/merge'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-const withMutations = (mutations = {}) => WrappedComponent => {
+/**
+ * @function
+ * @description HOC to provide mutations to components. Needs client in context
+ * or as prop.
+ * @param  {function} mutations One ore more mutations, which are function
+ * taking CozyClient as parameter and returning an object containing one or
+ * more mutations as attributes.
+ * @return {function} - Component that will receive mutations as props
+ */
+const withMutations = (...mutations) => WrappedComponent => {
   const wrappedDisplayName =
     WrappedComponent.displayName || WrappedComponent.name || 'Component'
 
@@ -24,9 +34,14 @@ const withMutations = (mutations = {}) => WrappedComponent => {
           saveDocument: client.save.bind(client),
           deleteDocument: client.destroy.bind(client)
         },
-        ...(typeof mutations === 'function'
-          ? mutations(client, props)
-          : mutations)
+        ...merge(
+          ...mutations.map(
+            mutations =>
+              typeof mutations === 'function'
+                ? mutations(client, props)
+                : mutations
+          )
+        )
       }
     }
 

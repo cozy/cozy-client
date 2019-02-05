@@ -1,16 +1,15 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 
-import CozyClient from '../CozyClient'
-import CozyLink from '../CozyLink'
-import withMutations from '../withMutations'
+import withMutations from './withMutations'
 
 describe('withMutations', () => {
   const clientMock = {
     create: jest.fn(),
     destroy: jest.fn(),
     save: jest.fn(),
-    mutate: jest.fn()
+    mutate: jest.fn(),
+    mutateAsWell: jest.fn()
   }
 
   afterEach(() => {
@@ -21,13 +20,11 @@ describe('withMutations', () => {
     const Foo = () => <div />
     const ConnectedFoo = withMutations()(Foo)
 
-    const wrapper = shallow(<ConnectedFoo />, { context: { client: clientMock } })
+    const wrapper = shallow(<ConnectedFoo />, {
+      context: { client: clientMock }
+    })
 
-    const {
-      createDocument,
-      saveDocument,
-      deleteDocument
-    } = wrapper.props()
+    const { createDocument, saveDocument, deleteDocument } = wrapper.props()
 
     expect(typeof createDocument).toBe('function')
     expect(typeof saveDocument).toBe('function')
@@ -41,14 +38,43 @@ describe('withMutations', () => {
       mutate: client => client.mutate()
     }))(Foo)
 
-    const wrapper = shallow(<ConnectedFoo />, { context: { client: clientMock } })
+    const wrapper = shallow(<ConnectedFoo />, {
+      context: { client: clientMock }
+    })
 
-    const {
-      mutate
-    } = wrapper.props()
+    const { mutate } = wrapper.props()
     expect(typeof mutate).toBe('function')
 
     mutate(clientMock)
     expect(clientMock.mutate).toHaveBeenCalled()
+  })
+
+  it('should inject mutations props from several sources into wrapped component', async () => {
+    const Foo = () => <div />
+
+    const mutations = client => ({
+      mutate: client => client.mutate()
+    })
+
+    const anotherMutations = client => ({
+      mutateAsWell: client => client.mutateAsWell()
+    })
+
+    const ConnectedFoo = withMutations(mutations, anotherMutations)(Foo)
+
+    const wrapper = shallow(<ConnectedFoo />, {
+      context: { client: clientMock }
+    })
+
+    const { mutate, mutateAsWell } = wrapper.props()
+
+    expect(typeof mutate).toBe('function')
+    expect(typeof mutateAsWell).toBe('function')
+
+    mutate(clientMock)
+    expect(clientMock.mutate).toHaveBeenCalled()
+
+    mutateAsWell(clientMock)
+    expect(clientMock.mutateAsWell).toHaveBeenCalled()
   })
 })
