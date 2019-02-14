@@ -156,7 +156,7 @@ describe('TriggerCollection', () => {
 
     it('should throw error', async () => {
       expect(collection.update()).rejects.toThrowError(
-        'update() method is not available for applications'
+        'update() method is not available for triggers'
       )
     })
   })
@@ -166,7 +166,7 @@ describe('TriggerCollection', () => {
 
     it('should throw error', async () => {
       expect(collection.destroy()).rejects.toThrowError(
-        'destroy() method is not available for applications'
+        'destroy() method is not available for triggers'
       )
     })
   })
