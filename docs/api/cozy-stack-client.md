@@ -528,7 +528,7 @@ Creates a Trigger document
 
 **Kind**: instance method of [<code>TriggerCollection</code>](#TriggerCollection)  
 **Returns**: <code>object</code> - Stack response, containing trigger document under `data` attribute.  
-**See**: https://github.com/cozy/cozy-stack/blob/master/docs/jobs.md#post-jobstriggers  
+**See**: https://docs.cozy.io/en/cozy-stack/jobs/#post-jobstriggers  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -541,7 +541,7 @@ Force given trigger execution.
 
 **Kind**: instance method of [<code>TriggerCollection</code>](#TriggerCollection)  
 **Returns**: <code>object</code> - Stack response, containing job launched by trigger, under `data` attribute.  
-**See**: https://github.com/cozy/cozy-stack/blob/master/docs/jobs.md#post-jobstriggerstrigger-idlaunch  
+**See**: https://docs.cozy.io/en/cozy-stack/jobs/#post-jobstriggerstrigger-idlaunch  
 
 | Param | Type | Description |
 | --- | --- | --- |
