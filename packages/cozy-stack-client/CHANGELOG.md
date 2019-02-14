@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="6.1.0"></a>
+# [6.1.0](https://github.com/cozy/cozy-client/compare/v6.0.0...v6.1.0) (2019-02-14)
+
+
+### Bug Fixes
+
+* **harvest:** Tests ☔️ ([739449b](https://github.com/cozy/cozy-client/commit/739449b))
+
+
+### Features
+
+* **stack-client:** Base for TriggersCollection ✨ ([d4be9c2](https://github.com/cozy/cozy-client/commit/d4be9c2))
+
+
+
+
 <a name="5.6.1"></a>
 ## [5.6.1](https://github.com/cozy/cozy-client/compare/v5.6.0...v5.6.1) (2019-01-17)
 
