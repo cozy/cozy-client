@@ -36,6 +36,12 @@ through OAuth.</p>
 ## Functions
 
 <dl>
+<dt><a href="#garbageCollect">garbageCollect()</a></dt>
+<dd><p>Delete outdated results from cache</p>
+</dd>
+<dt><a href="#memoize">memoize()</a></dt>
+<dd><p>Memoize with maxDuration and custom key</p>
+</dd>
 <dt><a href="#getCozyURL">getCozyURL()</a></dt>
 <dd><p>Get a uniform formatted URL and SSL information according to a provided URL</p>
 </dd>
@@ -547,6 +553,18 @@ Force given trigger execution.
 | --- | --- | --- |
 | Trigger | <code>object</code> | to launch |
 
+<a name="garbageCollect"></a>
+
+## garbageCollect()
+Delete outdated results from cache
+
+**Kind**: global function  
+<a name="memoize"></a>
+
+## memoize()
+Memoize with maxDuration and custom key
+
+**Kind**: global function  
 <a name="getCozyURL"></a>
 
 ## getCozyURL()
