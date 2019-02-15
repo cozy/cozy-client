@@ -4,7 +4,11 @@ import DocumentCollection from './DocumentCollection'
 import FileCollection from './FileCollection'
 import SharingCollection from './SharingCollection'
 import PermissionCollection from './PermissionCollection'
+<<<<<<< HEAD
 import TriggerCollection, { TRIGGERS_DOCTYPE } from './TriggerCollection'
+=======
+import getIconURL from './getIconURL'
+>>>>>>> feat: Get icon from stack or registry for apps and konnectors
 
 const normalizeUri = uri => {
   while (uri[uri.length - 1] === '/') {
@@ -125,6 +129,10 @@ class CozyStackClient {
 
   setUri(uri) {
     this.uri = normalizeUri(uri)
+  }
+
+  getIconURL(opts) {
+    return getIconURL(this, opts)
   }
 }
 
