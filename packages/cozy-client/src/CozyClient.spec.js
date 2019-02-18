@@ -1,4 +1,14 @@
-import { SCHEMA, TODO_1, TODO_2, TODO_3 } from './__tests__/fixtures'
+import {
+  SCHEMA,
+  TODO_1,
+  TODO_2,
+  TODO_3,
+  DOCTYPE_VERSION,
+  APP_NAME,
+  APP_VERSION,
+  SOURCE_ACCOUNT_ID
+} from './__tests__/fixtures'
+import { mockDate, restoreDate } from './__tests__/mockDate'
 
 import CozyClient from './CozyClient'
 import CozyLink from './CozyLink'
@@ -160,6 +170,16 @@ describe('CozyClient', () => {
   const requestHandler = jest.fn()
   const link = new CozyLink(requestHandler)
 
+  const MOCKED_DATE = '2018-05-05T09:09:00.115Z'
+
+  beforeAll(() => {
+    mockDate(MOCKED_DATE)
+  })
+
+  afterAll(() => {
+    restoreDate()
+  })
+
   let client
   beforeEach(() => {
     client = new CozyClient({ links: [link], schema: SCHEMA })
@@ -252,7 +272,13 @@ describe('CozyClient', () => {
       expect(client.store.dispatch.mock.calls[0][0]).toEqual(
         initMutation('updateTodo', {
           mutationType: 'UPDATE_DOCUMENT',
-          document: rawDoc
+          document: {
+            ...rawDoc,
+            cozyMetadata: {
+              updatedAt: '2018-05-05T09:09:00.115Z',
+              updatedByApps: ['cozy-client-test']
+            }
+          }
         })
       )
     })
@@ -289,6 +315,37 @@ describe('CozyClient', () => {
       expect(mutation.mutationType).toBe('UPDATE_DOCUMENT')
     })
 
+    it('should add cozy metadata when creating a document', () => {
+      const doc = {
+        _type: 'io.cozy.todos',
+        cozyMetadata: {
+          customField: 'foo'
+        }
+      }
+      const {
+        document: { cozyMetadata }
+      } = client.getDocumentSavePlan(doc)
+      expect(cozyMetadata.createdByApp).toEqual(APP_NAME)
+      expect(cozyMetadata.customField).toEqual('foo')
+    })
+
+    it('should add cozy metadata when updating a document', () => {
+      const doc = {
+        _id: '29328139a6ed4320bdd75d28141e8fb2',
+        _rev: '1-5e3e3c68250747589266c23ce507b1a4',
+        _type: 'io.cozy.todos',
+        cozyMetadata: {
+          createdByApp: 'other-app',
+          updatedByApps: ['other-app']
+        }
+      }
+      const {
+        document: { cozyMetadata }
+      } = client.getDocumentSavePlan(doc)
+      expect(cozyMetadata.createdByApp).toEqual('other-app')
+      expect(cozyMetadata.updatedByApps).toEqual(['other-app', APP_NAME])
+    })
+
     it('should handle associations for a new document with mutation creators', () => {
       const NEW_TODO = {
         _type: 'io.cozy.todos',
@@ -320,8 +377,119 @@ describe('CozyClient', () => {
       expect(Array.isArray(mutation)).toBe(false)
       expect(mutation).toEqual({
         mutationType: 'CREATE_DOCUMENT',
-        document: NEW_TODO
+        document: {
+          ...NEW_TODO,
+          cozyMetadata: {
+            createdAt: MOCKED_DATE,
+            createdByApp: APP_NAME,
+            createdByAppVersion: APP_VERSION,
+            doctypeVersion: DOCTYPE_VERSION,
+            importedAt: MOCKED_DATE,
+            importedFrom: APP_NAME,
+            updatedAt: MOCKED_DATE,
+            updatedByApps: [APP_NAME],
+            sourceAccount: SOURCE_ACCOUNT_ID
+          }
+        }
       })
+    })
+  })
+
+  describe('cozy metadata', () => {
+    it('should create all metadata with a creation trigger', () => {
+      const doc = {
+        _type: 'io.cozy.todos'
+      }
+      const { cozyMetadata } = client.ensureCozyMetadata(doc, {
+        event: 'creation'
+      })
+      expect(cozyMetadata).toEqual({
+        doctypeVersion: DOCTYPE_VERSION,
+        createdByApp: APP_NAME,
+        sourceAccount: SOURCE_ACCOUNT_ID,
+        createdByAppVersion: APP_VERSION,
+        importedFrom: APP_NAME,
+        updatedByApps: [APP_NAME],
+        createdAt: MOCKED_DATE,
+        importedAt: MOCKED_DATE,
+        updatedAt: MOCKED_DATE
+      })
+    })
+
+    it('should update only some metadata with a update trigger', () => {
+      const doc = {
+        _type: 'io.cozy.todos',
+        cozyMetadata: {
+          doctypeVersion: 4,
+          createdByApp: 'previous-app',
+          importedFrom: 'previous-app',
+          updatedByApps: ['previous-app'],
+          updatedAt: '2017-03-08T09:14:00.185Z'
+        }
+      }
+      const { cozyMetadata } = client.ensureCozyMetadata(doc, {
+        event: 'update'
+      })
+      expect(cozyMetadata).toEqual({
+        doctypeVersion: 4,
+        createdByApp: 'previous-app',
+        importedFrom: 'previous-app',
+        updatedByApps: ['previous-app', APP_NAME],
+        updatedAt: MOCKED_DATE
+      })
+    })
+
+    it('keep existing metadata', () => {
+      const doc = {
+        _type: 'io.cozy.todos',
+        cozyMetadata: {
+          customField: 'foo',
+          doctypeVersion: 3
+        }
+      }
+      const { cozyMetadata } = client.ensureCozyMetadata(doc)
+      expect(cozyMetadata.customField).toEqual('foo')
+      expect(cozyMetadata.doctypeVersion).toEqual(3)
+      expect(cozyMetadata.createdByApp).toEqual(APP_NAME)
+    })
+
+    it('update a multiple-value metadata', () => {
+      const doc = {
+        _type: 'io.cozy.todos',
+        cozyMetadata: {
+          updatedByApps: ['previous-app']
+        }
+      }
+      const { cozyMetadata } = client.ensureCozyMetadata(doc, {
+        event: 'update'
+      })
+      expect(cozyMetadata.updatedByApps).toEqual(['previous-app', APP_NAME])
+    })
+
+    it('shoud not have duplicated multiple-value metadata', () => {
+      const doc = {
+        _type: 'io.cozy.todos',
+        cozyMetadata: {
+          updatedByApps: ['previous-app', APP_NAME]
+        }
+      }
+      const { cozyMetadata } = client.ensureCozyMetadata(doc)
+      expect(cozyMetadata.updatedByApps).toEqual(['previous-app', APP_NAME])
+    })
+
+    it('should do nothing if the schema has no cozyMetadata', () => {
+      const clientWithoutMetadata = new CozyClient({
+        schema: {
+          todos: {
+            doctype: 'io.cozy.todos'
+          }
+        }
+      })
+      const doc = {
+        _type: 'io.cozy.todos'
+      }
+      const result = clientWithoutMetadata.ensureCozyMetadata(doc)
+      expect(result).toEqual(doc)
     })
   })
 

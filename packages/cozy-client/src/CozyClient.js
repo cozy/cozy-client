@@ -32,6 +32,8 @@ import flatten from 'lodash/flatten'
 import uniqBy from 'lodash/uniqBy'
 import zip from 'lodash/zip'
 import forEach from 'lodash/forEach'
+import get from 'lodash/get'
+import set from 'lodash/set'
 
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
 
@@ -41,6 +43,9 @@ const deprecatedHandler = msg => ({
     return target[prop]
   }
 })
+
+const TRIGGER_CREATION = 'creation'
+const TRIGGER_UPDATE = 'update'
 
 /**
  * Responsible for
@@ -187,6 +192,50 @@ class CozyClient {
     return this.mutate(this.getDocumentSavePlan(document), mutationOptions)
   }
 
+  ensureCozyMetadata(
+    document,
+    options = {
+      event: TRIGGER_CREATION
+    }
+  ) {
+    if (!document._type) return document
+
+    const schema = this.schema.getDoctypeSchema(document._type)
+    if (!schema.cozyMetadata) return document
+
+    const enriched = {
+      ...document
+    }
+    const metadata = Object.entries(schema.cozyMetadata)
+
+    for (const [
+      metadataName,
+      { trigger, value, useCurrentDate = false }
+    ] of metadata) {
+      const shouldSetMetadata =
+        options.event === TRIGGER_CREATION ||
+        (options.event === TRIGGER_UPDATE && trigger === TRIGGER_UPDATE)
+      if (!shouldSetMetadata) continue
+
+      let newValue
+      const metadataPath = `cozyMetadata.${metadataName}`
+
+      const shouldAccumulateValues = Array.isArray(value)
+      if (shouldAccumulateValues) {
+        const prevValue = get(document, metadataPath, [])
+        newValue = uniqBy([...prevValue, ...value])
+      } else if (useCurrentDate) {
+        newValue = new Date().toISOString()
+      } else {
+        newValue = get(document, metadataPath, value)
+      }
+
+      set(enriched, metadataPath, newValue)
+    }
+
+    return enriched
+  }
+
   /**
    * Creates a list of mutations to execute to create a document and its relationships.
    *
@@ -206,7 +255,10 @@ class CozyClient {
    */
   getDocumentSavePlan(document, relationships) {
     const newDocument = !document._rev
-    const dehydratedDoc = dehydrate(document)
+    const dehydratedDoc = this.ensureCozyMetadata(dehydrate(document), {
+      event: newDocument ? TRIGGER_CREATION : TRIGGER_UPDATE
+    })
+
     const saveMutation = newDocument
       ? Mutations.createDocument(dehydratedDoc)
       : Mutations.updateDocument(dehydratedDoc)
