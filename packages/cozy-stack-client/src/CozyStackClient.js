@@ -5,6 +5,7 @@ import FileCollection from './FileCollection'
 import SharingCollection from './SharingCollection'
 import PermissionCollection from './PermissionCollection'
 import TriggerCollection, { TRIGGERS_DOCTYPE } from './TriggerCollection'
+import getIconURL from './getIconURL'
 
 const normalizeUri = uri => {
   while (uri[uri.length - 1] === '/') {
@@ -125,6 +126,10 @@ class CozyStackClient {
 
   setUri(uri) {
     this.uri = normalizeUri(uri)
+  }
+
+  getIconURL(opts) {
+    return getIconURL(this, opts)
   }
 }
 
