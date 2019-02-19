@@ -19,11 +19,12 @@ let client, link
 
 async function setup(linkOpts = {}) {
   link = new CozyPouchLink({ doctypes: [TODO_DOCTYPE], ...linkOpts })
+
   client = new CozyClient({
     ...mockClient,
     links: [link],
     schema: {
-      todos: omit(TODO_DOCTYPE, 'relationships')
+      todos: omit(SCHEMA.todos, ['relationships'])
     }
   })
 
