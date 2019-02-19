@@ -132,10 +132,11 @@ export default withMutation(
 
 ## How to specify a schema ?
 
-Each doctypes accessed via cozy-client needs to have a schema declared. It is useful for 
+Each doctype accessed via cozy-client needs to have a schema declared. It is useful for
 
 * Validation
 * Relationships
+* Automatic metadata maintenance
 
 Here is a sample of a schema used in the Banks application.
 
@@ -168,6 +169,24 @@ const schema = {
         type: HasManyReimbursements,
         doctype: 'io.cozy.bills'
       }
+    },
+    cozyMetadata: {
+      createdByApp: {
+        trigger: 'creation',
+        value: 'cozy-banks'
+      },
+      updatedByApps: {
+        trigger: 'update',
+        value: ['cozy-banks']
+      },
+      createdAt: {
+        trigger: 'creation',
+        useCurrentDate: true
+      },
+      updatedAt: {
+        trigger: 'update',
+        useCurrentDate: true
+      },
     }
   }
 }
@@ -179,6 +198,8 @@ const client = new CozyClient({
 })
 ```
 
+### Relationships
+
 Here we can see that banking transactions are linked to
 
 - their *account* via a "belongs to" relationship
@@ -186,5 +207,17 @@ Here we can see that banking transactions are linked to
 - *reimbursements* via a custom "has many" relationship
 
 Custom relationships are useful if the relationship data is not stored in a built-in way.
+
+### Metadata
+
+cozy-client will also automatically insert and update the standard document metadata if you provide a `cozyMetadata` object to the schema.
+
+Each metadata field can be configured with the following options:
+
+- `trigger`: Can be `creation` or `update`, and determines whether to update this value every time the document changes, or only on creation.
+- `value`: The value to use when setting the metadata field. If `value` is an array, the values will be appended to the array on each update.
+- `useCurrentDate`: Instead of a fixed value, use the current execution date for this field.
+
+### Validation
 
 Validation is not yet implemented in cozy-client.
