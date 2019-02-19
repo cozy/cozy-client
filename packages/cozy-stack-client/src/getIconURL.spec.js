@@ -112,7 +112,7 @@ describe('get icon', () => {
       blob: () =>
         new FakeBlob(['<svg id="2"></svg>'], { type: 'image/svg+xml' })
     }
-    const url = await getIconURL(stackClient, {
+    await getIconURL(stackClient, {
       ...defaultOpts,
       priority: 'registry'
     })

@@ -59,7 +59,8 @@ class CozyStackClient {
    * @return {Object}
    * @throws {FetchError}
    */
-  async fetch(method, path, body, options = {}) {
+  async fetch(method, path, body, opts = {}) {
+    const options = { ...opts }
     options.method = method
     const headers = (options.headers = options.headers || {})
 

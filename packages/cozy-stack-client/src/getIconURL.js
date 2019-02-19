@@ -9,15 +9,6 @@ const mimeTypes = {
   svg: 'image/svg+xml'
 }
 
-const fetchOptions = stackClient => {
-  return {
-    headers: {
-      Authorization: 'Bearer ' + stackClient.token
-    },
-    credentials: true
-  }
-}
-
 const getIconExtensionFromApp = app => {
   if (!app.icon) {
     throw new Error(
@@ -54,10 +45,9 @@ const fallbacks = async (tries, check) => {
 
 const _getIconURL = async (stackClient, opts) => {
   const { type, slug, appData, priority = 'stack' } = opts
-  const fetchOpts = fetchOptions(stackClient)
   const iconDataFetchers = [
-    () => stackClient.fetch('GET', `/${type}s/${slug}/icon`, null, fetchOpts),
-    () => stackClient.fetch('GET', `/registry/${slug}/icon`, null, fetchOpts)
+    () => stackClient.fetch('GET', `/${type}s/${slug}/icon`),
+    () => stackClient.fetch('GET', `/registry/${slug}/icon`)
   ]
   if (priority === 'registry') {
     iconDataFetchers.reverse()
@@ -80,8 +70,8 @@ const _getIconURL = async (stackClient, opts) => {
     // from app/manifest
     // See https://stackoverflow.com/questions/38318411/uiwebview-on-ios-10-beta-not-loading-any-svg-images
     const appDataFetchers = [
-      () => stackClient.fetchJSON('GET', `/${type}s/${slug}`, null, fetchOpts),
-      () => stackClient.fetchJSON('GET', `/registry/${slug}`, null, fetchOpts)
+      () => stackClient.fetchJSON('GET', `/${type}s/${slug}`),
+      () => stackClient.fetchJSON('GET', `/registry/${slug}`)
     ]
     if (priority === 'registry') {
       appDataFetchers.reverse()
