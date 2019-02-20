@@ -43,6 +43,22 @@ const fallbacks = async (tries, check) => {
   throw err
 }
 
+/**
+ * Fetch application/konnector that is installed
+ * @private
+ */
+const fetchAppOrKonnector = (stackClient, type, slug) =>
+  stackClient.fetchJSON('GET', `/${type}s/${slug}`).then(x => x.data.attributes)
+
+/**
+ * Fetch application/konnector from the registry
+ * @private
+ */
+const fetchAppOrKonnectorViaRegistry = (stackClient, type, slug) =>
+  stackClient
+    .fetchJSON('GET', `/registry/${slug}`)
+    .then(x => x.latest_version.manifest)
+
 const _getIconURL = async (stackClient, opts) => {
   const { type, slug, appData, priority = 'stack' } = opts
   const iconDataFetchers = [
@@ -70,13 +86,13 @@ const _getIconURL = async (stackClient, opts) => {
     // from app/manifest
     // See https://stackoverflow.com/questions/38318411/uiwebview-on-ios-10-beta-not-loading-any-svg-images
     const appDataFetchers = [
-      () => stackClient.fetchJSON('GET', `/${type}s/${slug}`),
-      () => stackClient.fetchJSON('GET', `/registry/${slug}`)
+      () => fetchAppOrKonnector(stackClient, type, slug),
+      () => fetchAppOrKonnectorViaRegistry(stackClient, type, slug)
     ]
     if (priority === 'registry') {
       appDataFetchers.reverse()
     }
-    app = appData || (await fallbacks(appDataFetchers)).data || {}
+    app = appData || (await fallbacks(appDataFetchers)) || {}
     const ext = getIconExtensionFromApp(app)
     if (!mimeTypes[ext]) {
       throw new Error(`Unknown image extension "${ext}" for app ${app.name}`)
