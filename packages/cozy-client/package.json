@@ -16,7 +16,7 @@
     "lodash": "4.17.11",
     "prop-types": "15.6.2",
     "react": "16.7.0",
-    "react-redux": "5.0.7",
+    "react-redux": "6.0.1",
     "redux": "3.7.2",
     "redux-thunk": "2.3.0",
     "sift": "7.0.1"
