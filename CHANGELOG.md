@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-       <a name="6.3.2"></a>
+      <a name="6.3.3"></a>
+## [6.3.3](https://github.com/cozy/cozy-client/compare/v6.3.2...v6.3.3) (2019-02-20)
+
+
+### Bug Fixes
+
+* Registry and app routes have different resp fmts ([5e35615](https://github.com/cozy/cozy-client/commit/5e35615))
+
+
+
+
+      <a name="6.3.2"></a>
 ## [6.3.2](https://github.com/cozy/cozy-client/compare/v6.3.1...v6.3.2) (2019-02-20)
 
 
@@ -11,7 +22,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package undefined
 
-       <a name="6.3.1"></a>
+     <a name="6.3.1"></a>
 ## [6.3.1](https://github.com/cozy/cozy-client/compare/v6.3.0...v6.3.1) (2019-02-19)
 
 
@@ -23,7 +34,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="6.3.0"></a>
+   <a name="6.3.0"></a>
 # [6.3.0](https://github.com/cozy/cozy-client/compare/v6.2.0...v6.3.0) (2019-02-18)
 
 
@@ -34,7 +45,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-  <a name="6.2.0"></a>
+<a name="6.2.0"></a>
 # [6.2.0](https://github.com/cozy/cozy-client/compare/v6.1.0...v6.2.0) (2019-02-14)
 
 
