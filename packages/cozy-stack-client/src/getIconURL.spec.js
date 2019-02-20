@@ -65,7 +65,9 @@ describe('get icon', () => {
       ok: true,
       blob: () => new FakeBlob([svgData], {})
     }
-    responses['/registry/caissedepargne1'] = { data: { icon: 'icon.svg' } }
+    responses['/registry/caissedepargne1'] = {
+      latest_version: { manifest: { icon: 'icon.svg' } }
+    }
     await getIconURL(stackClient, defaultOpts)
     expect(global.URL.createObjectURL).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -80,7 +82,7 @@ describe('get icon', () => {
       blob: () => new FakeBlob([svgData], {})
     }
     responses['/registry/caissedepargne1'] = {
-      data: { icon: 'icon.svg' }
+      latest_version: { manifest: { icon: 'icon.svg' } }
     }
     await getIconURL(stackClient, defaultOpts)
     expect(global.URL.createObjectURL).toHaveBeenCalledWith(
