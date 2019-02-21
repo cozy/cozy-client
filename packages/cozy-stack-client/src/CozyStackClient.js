@@ -15,9 +15,6 @@ const normalizeUri = uri => {
   return uri
 }
 
-const logDeprecate = (...args) => {
-  console.warn(...args)
-}
 
 /**
  * Main API against the `cozy-stack` server.
