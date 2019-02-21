@@ -1,5 +1,6 @@
 import CozyStackClient from './CozyStackClient'
 import AccessToken from './AccessToken'
+import logDeprecate from './logDeprecate'
 
 const defaultoauthOptions = {
   clientID: '',
@@ -369,12 +370,17 @@ class OAuthClient extends CozyStackClient {
    * Updates the client's stored token
    * @param {string} token = null The new token to use — can be a string, a json object or an AccessToken instance.
    */
-  setCredentials(token) {
+  setToken(token) {
     if (token) {
       this.token = token instanceof AccessToken ? token : new AccessToken(token)
     } else {
       this.token = null
     }
+  }
+
+  setCredentials(token) {
+    logDeprecate('setCredentials is deprecated, please replace by setToken')
+    return this.setToken(token)
   }
 
   /**
@@ -395,7 +401,7 @@ class OAuthClient extends CozyStackClient {
   resetClient() {
     this.resetClientId()
     this.setUri(null)
-    this.setCredentials(null)
+    this.setToken(null)
   }
 
   async fetchJSON(method, path, body, options) {
@@ -404,7 +410,7 @@ class OAuthClient extends CozyStackClient {
     } catch (e) {
       if (/Expired token/.test(e.message)) {
         const token = await this.refreshToken()
-        this.setCredentials(token)
+        this.setToken(token)
         return await super.fetchJSON(method, path, body, options)
       } else {
         throw e

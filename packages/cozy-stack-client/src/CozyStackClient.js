@@ -6,6 +6,7 @@ import SharingCollection from './SharingCollection'
 import PermissionCollection from './PermissionCollection'
 import TriggerCollection, { TRIGGERS_DOCTYPE } from './TriggerCollection'
 import getIconURL from './getIconURL'
+import logDeprecate from './logDeprecate'
 
 const normalizeUri = uri => {
   if (uri === null) return null
@@ -22,7 +23,7 @@ const normalizeUri = uri => {
 class CozyStackClient {
   constructor({ token, uri = '' }) {
     this.setUri(uri)
-    this.setCredentials(token)
+    this.setToken(token)
   }
 
   /**
@@ -124,6 +125,13 @@ class CozyStackClient {
     return this.token ? this.token.toAuthHeader() : null
   }
 
+  setCredentials(token) {
+    logDeprecate(
+      'CozyStackClient::setCredentials is deprecated, use CozyStackClient::setToken'
+    )
+    return this.setToken(token)
+  }
+
   getCredentials() {
     logDeprecate(
       'CozyStackClient::getCredentials is deprecated, use CozyStackClient::getAuthorizationHeader'
@@ -131,7 +139,7 @@ class CozyStackClient {
     return this.getAuthorizationHeader()
   }
 
-  setCredentials(token) {
+  setToken(token) {
     this.token = token ? new AppToken(token) : null
   }
 

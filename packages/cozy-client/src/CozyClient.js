@@ -609,7 +609,7 @@ class CozyClient {
       const code = stackClient.getAccessCodeFromURL(redirectedURL, stateCode)
       const token = await stackClient.fetchAccessToken(code)
 
-      stackClient.setCredentials(token)
+      stackClient.setToken(token)
       return {
         token,
         infos: stackClient.oauthOptions,
