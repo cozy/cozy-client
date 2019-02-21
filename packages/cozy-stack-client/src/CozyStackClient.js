@@ -78,10 +78,11 @@ class CozyStackClient {
     const credentials = options.credentials || this.getAuthorizationHeader()
     if (credentials) {
       headers['Authorization'] = credentials
-      // the option credentials:include tells fetch to include the cookies in the
-      // request even for cross-origin requests
-      options.credentials = 'include'
     }
+
+    // the option credentials:include tells fetch to include the cookies in the
+    // request even for cross-origin requests
+    options.credentials = 'include'
 
     return fetch(this.fullpath(path), options)
   }
