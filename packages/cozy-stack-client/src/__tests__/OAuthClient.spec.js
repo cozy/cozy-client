@@ -180,8 +180,8 @@ describe('OAuthClient', () => {
       expect(client.token.scope).toEqual(snakeCredentials.scope)
     })
 
-    it('should call getCredentials for usual requests', () => {
-      const spy = jest.spyOn(client, 'getCredentials')
+    it('should call getAuthorizationHeader for usual requests', () => {
+      const spy = jest.spyOn(client, 'getAuthorizationHeader')
       client.fetchJSON('GET', 'http://example.com')
       expect(spy).toHaveBeenCalled()
     })

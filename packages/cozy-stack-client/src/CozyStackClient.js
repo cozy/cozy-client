@@ -15,6 +15,10 @@ const normalizeUri = uri => {
   return uri
 }
 
+const logDeprecate = (...args) => {
+  console.warn(...args)
+}
+
 /**
  * Main API against the `cozy-stack` server.
  */
@@ -71,7 +75,7 @@ class CozyStackClient {
       }
     }
 
-    const credentials = options.credentials || this.getCredentials()
+    const credentials = options.credentials || this.getAuthorizationHeader()
     if (credentials) {
       headers['Authorization'] = credentials
       // the option credentials:include tells fetch to include the cookies in the
@@ -118,8 +122,15 @@ class CozyStackClient {
     return this.uri + path
   }
 
-  getCredentials() {
+  getAuthorizationHeader() {
     return this.token ? this.token.toAuthHeader() : null
+  }
+
+  getCredentials() {
+    logDeprecate(
+      'CozyStackClient::getCredentials is deprecated, use CozyStackClient::getAuthorizationHeader'
+    )
+    return this.getAuthorizationHeader()
   }
 
   setCredentials(token) {
