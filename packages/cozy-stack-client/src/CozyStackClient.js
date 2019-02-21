@@ -16,7 +16,6 @@ const normalizeUri = uri => {
   return uri
 }
 
-
 /**
  * Main API against the `cozy-stack` server.
  */
@@ -73,9 +72,8 @@ class CozyStackClient {
       }
     }
 
-    const credentials = options.credentials || this.getAuthorizationHeader()
-    if (credentials) {
-      headers['Authorization'] = credentials
+    if (!headers.Authorization) {
+      headers.Authorization = this.getAuthorizationHeader()
     }
 
     // the option credentials:include tells fetch to include the cookies in the

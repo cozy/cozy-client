@@ -23,7 +23,7 @@ Array [
     "credentials": "include",
     "headers": Object {
       "Accept": "application/json",
-      "Authorization": "Bearer 1234",
+      "Authorization": "Bearer abcd",
     },
     "method": "GET",
   },
@@ -62,7 +62,7 @@ Array [
     "credentials": "include",
     "headers": Object {
       "Accept": "application/json",
-      "Authorization": "Bearer 1234",
+      "Authorization": "Bearer abcd",
       "Content-Type": "application/json",
     },
     "method": "DELETE",
@@ -78,7 +78,7 @@ Array [
     "credentials": "include",
     "headers": Object {
       "Accept": "application/json",
-      "Authorization": "Bearer 1234",
+      "Authorization": "Bearer abcd",
       "Content-Type": "application/json",
     },
     "method": "PUT",
@@ -96,6 +96,7 @@ Array [
     "credentials": "include",
     "headers": Object {
       "Accept": "application/json",
+      "Authorization": null,
       "Content-Type": "application/json",
     },
     "method": "POST",
