@@ -2,6 +2,7 @@ import mapValues from 'lodash/mapValues'
 import union from 'lodash/union'
 import difference from 'lodash/difference'
 import intersection from 'lodash/intersection'
+import isPlainObject from 'lodash/isPlainObject'
 
 import { getDocumentFromSlice } from './documents'
 import { isReceivingMutationResult } from './mutations'
@@ -86,9 +87,29 @@ const query = (state = queryInitialState, action) => {
   }
 }
 
+export const convert$gtNullSelectors = selector => {
+  const result = {}
+  for (const [key, value] of Object.entries(selector)) {
+    const convertedValue = isPlainObject(value)
+      ? convert$gtNullSelectors(value)
+      : value
+    const convertedKey =
+      key === '$gt' && convertedValue === null ? '$gtnull' : key
+
+    result[convertedKey] = convertedValue
+  }
+  return result
+}
+
 const getSelectorFilterFn = queryDefinition => {
   if (queryDefinition.selector) {
-    return sift(queryDefinition.selector)
+    // sift does not work like couchdb when using { $gt: null } as a selector, so we use a custom operator
+    sift.use({
+      $gtnull: (selectorValue, actualValue) => {
+        return !!actualValue
+      }
+    })
+    return sift(convert$gtNullSelectors(queryDefinition.selector))
   } else if (queryDefinition.id) {
     return sift({ _id: queryDefinition.id })
   } else {
