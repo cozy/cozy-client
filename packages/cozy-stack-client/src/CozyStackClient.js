@@ -67,7 +67,7 @@ class CozyStackClient {
   async fetch(method, path, body, opts = {}) {
     const options = { ...opts }
     options.method = method
-    const headers = (options.headers = options.headers || {})
+    const headers = (options.headers = { ...opts.headers })
 
     if (method !== 'GET' && method !== 'HEAD' && body !== undefined) {
       if (headers['Content-Type']) {
