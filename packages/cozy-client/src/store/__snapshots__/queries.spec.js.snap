@@ -59,6 +59,66 @@ Object {
 }
 `;
 
+exports[`queries reducer updates should correctly update a query with a $gt: null selector 1`] = `
+Object {
+  "a": Object {
+    "count": 1,
+    "data": Array [
+      "54321",
+    ],
+    "definition": QueryDefinition {
+      "doctype": "io.cozy.todos",
+      "fields": undefined,
+      "id": undefined,
+      "ids": undefined,
+      "includes": undefined,
+      "indexedFields": undefined,
+      "limit": undefined,
+      "referenced": undefined,
+      "selector": undefined,
+      "skip": undefined,
+      "sort": undefined,
+    },
+    "fetchStatus": "loaded",
+    "hasMore": false,
+    "id": "a",
+    "lastError": null,
+    "lastFetch": 1337,
+    "lastUpdate": 1337,
+  },
+  "b": Object {
+    "count": 1,
+    "data": Array [
+      "54321",
+    ],
+    "definition": QueryDefinition {
+      "doctype": "io.cozy.todos",
+      "fields": undefined,
+      "id": undefined,
+      "ids": undefined,
+      "includes": undefined,
+      "indexedFields": undefined,
+      "limit": undefined,
+      "referenced": undefined,
+      "selector": Object {
+        "_id": Object {
+          "$gt": null,
+        },
+        "done": true,
+      },
+      "skip": undefined,
+      "sort": undefined,
+    },
+    "fetchStatus": "loading",
+    "hasMore": false,
+    "id": "b",
+    "lastError": null,
+    "lastFetch": null,
+    "lastUpdate": 1337,
+  },
+}
+`;
+
 exports[`queries reducer updates should correctly update a query with a selector 1`] = `
 Object {
   "a": Object {

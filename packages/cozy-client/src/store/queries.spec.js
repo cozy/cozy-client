@@ -1,4 +1,8 @@
-import queries, { initQuery, receiveQueryResult } from './queries'
+import queries, {
+  initQuery,
+  receiveQueryResult,
+  convert$gtNullSelectors
+} from './queries'
 import { QueryDefinition as Q } from '../queries/dsl'
 import { TODO_1, TODO_2, TODO_3 } from '../__tests__/fixtures'
 
@@ -77,6 +81,29 @@ describe('queries reducer', () => {
       expect(state).toMatchSnapshot()
     })
 
+    it('should correctly update a query with a $gt: null selector', () => {
+      const query = new Q({
+        doctype: 'io.cozy.todos'
+      })
+      applyAction(
+        initQuery(
+          'b',
+          query.where({
+            done: true,
+            _id: {
+              $gt: null
+            }
+          })
+        )
+      )
+      applyAction(
+        receiveQueryResult('a', {
+          data: [TODO_3]
+        })
+      )
+      expect(state).toMatchSnapshot()
+    })
+
     it('should not update a query not concerned even with a selector', () => {
       const query = new Q({
         doctype: 'io.cozy.todos'
@@ -122,6 +149,40 @@ describe('queries reducer', () => {
         })
       )
       expect(state.b.lastUpdate).not.toBe(null)
+    })
+  })
+})
+
+describe('selectors', () => {
+  it('should convert $gt selectors when their value is null', () => {
+    const selector = {
+      somefield: 'somevalue',
+      convertMe: {
+        $gt: null
+      },
+      nested: {
+        convertMeToo: {
+          $gt: null
+        }
+      },
+      notNull: {
+        $gt: 2
+      }
+    }
+    const converted = convert$gtNullSelectors(selector)
+    expect(converted).toEqual({
+      somefield: 'somevalue',
+      convertMe: {
+        $gtnull: null
+      },
+      nested: {
+        convertMeToo: {
+          $gtnull: null
+        }
+      },
+      notNull: {
+        $gt: 2
+      }
     })
   })
 })
