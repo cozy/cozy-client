@@ -302,18 +302,18 @@ describe('FileCollection', () => {
     })
 
     it('should update a file without metadata', async () => {
-      const data = new File([''], 'mydoc.odt')
+      const data = new File([''], 'mydoc.epub')
       const params = {
         fileId: '59140416-b95f',
         checksum: 'a6dabd99832b270468e254814df2ed20'
       }
       const result = await collection.updateFile(data, params)
       const expectedPath =
-        '/files/59140416-b95f?Name=mydoc.odt&Type=file&Executable=false'
+        '/files/59140416-b95f?Name=mydoc.epub&Type=file&Executable=false'
       const expectedOptions = {
         headers: {
           'Content-MD5': 'a6dabd99832b270468e254814df2ed20',
-          'Content-Type': 'application/vnd.oasis.opendocument.text'
+          'Content-Type': 'application/epub+zip'
         }
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(
@@ -339,18 +339,18 @@ describe('FileCollection', () => {
           id: metadataId
         }
       })
-      const data = new File([''], 'mydoc.odt')
+      const data = new File([''], 'mydoc.epub')
       const params = {
         fileId: '59140416-b95f',
         checksum: 'a6dabd99832b270468e254814df2ed20',
         metadata: { type: 'bill' }
       }
       const result = await collection.updateFile(data, params)
-      const expectedPath = `/files/59140416-b95f?Name=mydoc.odt&Type=file&Executable=false&MetadataID=${metadataId}`
+      const expectedPath = `/files/59140416-b95f?Name=mydoc.epub&Type=file&Executable=false&MetadataID=${metadataId}`
       const expectedOptions = {
         headers: {
           'Content-MD5': 'a6dabd99832b270468e254814df2ed20',
-          'Content-Type': 'application/vnd.oasis.opendocument.text'
+          'Content-Type': 'application/epub+zip'
         }
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(
@@ -426,7 +426,7 @@ describe('FileCollection', () => {
   })
 
   describe('createFile', () => {
-    const data = new File([''], 'mydoc.odt')
+    const data = new File([''], 'mydoc.epub')
     const id = '59140416-b95f'
     const dirId = '41686c35-9d8e'
 
@@ -449,10 +449,10 @@ describe('FileCollection', () => {
         dirId: '41686c35-9d8e'
       }
       const result = await collection.createFile(data, params)
-      const expectedPath = `/files/${dirId}?Name=mydoc.odt&Type=file&Executable=false&MetadataID=`
+      const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&MetadataID=`
       const expectedOptions = {
         headers: {
-          'Content-Type': 'application/vnd.oasis.opendocument.text'
+          'Content-Type': 'application/epub+zip'
         }
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(
@@ -483,10 +483,10 @@ describe('FileCollection', () => {
         metadata: { type: 'bill' }
       }
       const result = await collection.createFile(data, params)
-      const expectedPath = `/files/${dirId}?Name=mydoc.odt&Type=file&Executable=false&MetadataID=${metadataId}`
+      const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&MetadataID=${metadataId}`
       const expectedOptions = {
         headers: {
-          'Content-Type': 'application/vnd.oasis.opendocument.text'
+          'Content-Type': 'application/epub+zip'
         }
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(

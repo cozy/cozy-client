@@ -1,4 +1,4 @@
-import mime from 'mime-types'
+import mime from 'mime/lite'
 import has from 'lodash/has'
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 import { uri, slugify, forceFileDownload } from './utils'
@@ -14,7 +14,7 @@ const normalizeFile = file => ({
 const sanitizeFileName = name => name && name.trim()
 
 const getFileTypeFromName = name =>
-  mime.lookup(name) || CONTENT_TYPE_OCTET_STREAM
+  mime.getType(name) || CONTENT_TYPE_OCTET_STREAM
 
 export const isFile = ({ _type, type }) =>
   _type === 'io.cozy.files' || type === 'directory' || type === 'file'
