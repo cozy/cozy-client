@@ -384,8 +384,6 @@ describe('CozyClient', () => {
             createdByApp: APP_NAME,
             createdByAppVersion: APP_VERSION,
             doctypeVersion: DOCTYPE_VERSION,
-            importedAt: MOCKED_DATE,
-            importedFrom: APP_NAME,
             updatedAt: MOCKED_DATE,
             updatedByApps: [APP_NAME],
             sourceAccount: SOURCE_ACCOUNT_ID
@@ -408,10 +406,8 @@ describe('CozyClient', () => {
         createdByApp: APP_NAME,
         sourceAccount: SOURCE_ACCOUNT_ID,
         createdByAppVersion: APP_VERSION,
-        importedFrom: APP_NAME,
         updatedByApps: [APP_NAME],
         createdAt: MOCKED_DATE,
-        importedAt: MOCKED_DATE,
         updatedAt: MOCKED_DATE
       })
     })
