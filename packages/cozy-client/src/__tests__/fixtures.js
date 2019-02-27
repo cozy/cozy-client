@@ -95,19 +95,11 @@ export const SCHEMA = {
         trigger: 'creation',
         value: APP_VERSION
       },
-      importedFrom: {
-        trigger: 'creation',
-        value: APP_NAME
-      },
       updatedByApps: {
         trigger: 'update',
         value: [APP_NAME]
       },
       createdAt: {
-        trigger: 'creation',
-        useCurrentDate: true
-      },
-      importedAt: {
         trigger: 'creation',
         useCurrentDate: true
       },
