@@ -296,6 +296,7 @@ through OAuth.
     * [.refreshToken()](#OAuthClient+refreshToken) ⇒ <code>Promise</code>
     * [.setCredentials(token)](#OAuthClient+setCredentials)
     * [.setOAuthOptions(options)](#OAuthClient+setOAuthOptions)
+    * [.resetClient()](#OAuthClient+resetClient)
 
 <a name="OAuthClient+register"></a>
 
@@ -435,6 +436,12 @@ Updates the OAuth informations
 | --- | --- | --- |
 | options | <code>object</code> | Map of OAuth options |
 
+<a name="OAuthClient+resetClient"></a>
+
+### oAuthClient.resetClient()
+Reset the current OAuth client
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
 <a name="PermissionCollection"></a>
 
 ## PermissionCollection

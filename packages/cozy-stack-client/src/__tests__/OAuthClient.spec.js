@@ -185,5 +185,14 @@ describe('OAuthClient', () => {
       client.fetchJSON('GET', 'http://example.com')
       expect(spy).toHaveBeenCalled()
     })
+
+    it('should reset the client', () => {
+      client.setUri('test')
+      expect(client.uri).toEqual('test')
+      client.resetClient()
+      expect(client.uri).toBeNull()
+      expect(client.oauthOptions.clientID).toEqual('')
+      expect(client.token).toBeNull()
+    })
   })
 })
