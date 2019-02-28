@@ -8,6 +8,7 @@ import TriggerCollection, { TRIGGERS_DOCTYPE } from './TriggerCollection'
 import getIconURL from './getIconURL'
 
 const normalizeUri = uri => {
+  if (uri === null) return null
   while (uri[uri.length - 1] === '/') {
     uri = uri.slice(0, -1)
   }

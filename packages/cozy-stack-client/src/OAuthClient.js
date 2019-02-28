@@ -389,6 +389,15 @@ class OAuthClient extends CozyStackClient {
     this.oauthOptions.clientID = ''
   }
 
+  /**
+   * Reset the current OAuth client
+   */
+  resetClient() {
+    this.resetClientId()
+    this.setUri(null)
+    this.setCredentials(null)
+  }
+
   async fetchJSON(method, path, body, options) {
     try {
       return await super.fetchJSON(method, path, body, options)
