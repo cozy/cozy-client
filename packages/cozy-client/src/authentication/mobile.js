@@ -74,7 +74,7 @@ const authenticateWithInAppBrowser = url => {
 }
 
 export const authenticateWithCordova = async url => {
-  if (isIOSApp() && (await hasSafariPlugin())) {
+  if (await hasSafariPlugin()) {
     return authenticateWithSafari(url)
   } else if (hasInAppBrowserPlugin()) {
     return authenticateWithInAppBrowser(url)
