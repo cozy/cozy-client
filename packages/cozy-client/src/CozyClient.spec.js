@@ -1,3 +1,5 @@
+import MockDate from 'mockdate'
+
 import {
   SCHEMA,
   TODO_1,
@@ -8,7 +10,6 @@ import {
   APP_VERSION,
   SOURCE_ACCOUNT_ID
 } from './__tests__/fixtures'
-import { mockDate, restoreDate } from './__tests__/mockDate'
 
 import CozyClient from './CozyClient'
 import CozyLink from './CozyLink'
@@ -173,11 +174,12 @@ describe('CozyClient', () => {
   const MOCKED_DATE = '2018-05-05T09:09:00.115Z'
 
   beforeAll(() => {
-    mockDate(MOCKED_DATE)
+    MockDate.set(MOCKED_DATE)
   })
 
   afterAll(() => {
-    restoreDate()
+    jest.restoreAllMocks()
+    MockDate.reset()
   })
 
   let client
