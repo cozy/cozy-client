@@ -3,7 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="6.6.0"></a>
+       <a name="6.7.0"></a>
+# [6.7.0](https://github.com/cozy/cozy-client/compare/v6.6.0...v6.7.0) (2019-03-06)
+
+
+### Bug Fixes
+
+* Copy headers since they can be mutated ([b5ee211](https://github.com/cozy/cozy-client/commit/b5ee211))
+
+
+### Features
+
+* **Stack:** Add getAuthorizationHeader, deprecate getCredentials ([3c9f82e](https://github.com/cozy/cozy-client/commit/3c9f82e))
+* **stackClient:** Send cookies even without Authorization header ([b7c8983](https://github.com/cozy/cozy-client/commit/b7c8983))
+* Add setToken, deprecate setCredentials ([2578a22](https://github.com/cozy/cozy-client/commit/2578a22))
+* Pass custom Authorization through headers.Authorization ([e4c5acb](https://github.com/cozy/cozy-client/commit/e4c5acb))
+* Remove test testing the implementation ([b321f08](https://github.com/cozy/cozy-client/commit/b321f08))
+
+
+
+
+       <a name="6.6.0"></a>
 # [6.6.0](https://github.com/cozy/cozy-client/compare/v6.5.1...v6.6.0) (2019-03-06)
 
 
@@ -15,7 +35,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-      <a name="6.5.1"></a>
+     <a name="6.5.1"></a>
 ## [6.5.1](https://github.com/cozy/cozy-client/compare/v6.5.0...v6.5.1) (2019-03-06)
 
 
@@ -23,7 +43,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package undefined
 
-   <a name="6.5.0"></a>
+  <a name="6.5.0"></a>
 # [6.5.0](https://github.com/cozy/cozy-client/compare/v6.4.2...v6.5.0) (2019-03-01)
 
 
@@ -34,7 +54,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
- <a name="6.4.2"></a>
+<a name="6.4.2"></a>
 ## [6.4.2](https://github.com/cozy/cozy-client/compare/v6.4.1...v6.4.2) (2019-02-27)
 
 
