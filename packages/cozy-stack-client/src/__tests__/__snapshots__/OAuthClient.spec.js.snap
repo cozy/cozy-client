@@ -23,7 +23,7 @@ Array [
     "credentials": "include",
     "headers": Object {
       "Accept": "application/json",
-      "Authorization": "Bearer 1234",
+      "Authorization": "Bearer abcd",
     },
     "method": "GET",
   },
@@ -62,7 +62,7 @@ Array [
     "credentials": "include",
     "headers": Object {
       "Accept": "application/json",
-      "Authorization": "Bearer 1234",
+      "Authorization": "Bearer abcd",
       "Content-Type": "application/json",
     },
     "method": "DELETE",
@@ -78,7 +78,7 @@ Array [
     "credentials": "include",
     "headers": Object {
       "Accept": "application/json",
-      "Authorization": "Bearer 1234",
+      "Authorization": "Bearer abcd",
       "Content-Type": "application/json",
     },
     "method": "PUT",
@@ -93,8 +93,10 @@ Array [
   "http://cozy.tools:8080/auth/register",
   Object {
     "body": "{\\"redirect_uris\\":[\\"http://localhost\\"],\\"client_name\\":\\"TestClientName\\",\\"software_id\\":\\"TestSofwareID\\",\\"client_kind\\":\\"\\",\\"client_uri\\":\\"\\",\\"logo_uri\\":\\"\\",\\"policy_uri\\":\\"\\",\\"software_version\\":\\"\\",\\"notification_platform\\":\\"\\",\\"notification_device_token\\":\\"\\"}",
+    "credentials": "include",
     "headers": Object {
       "Accept": "application/json",
+      "Authorization": null,
       "Content-Type": "application/json",
     },
     "method": "POST",

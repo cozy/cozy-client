@@ -6,6 +6,7 @@ import SharingCollection from './SharingCollection'
 import PermissionCollection from './PermissionCollection'
 import TriggerCollection, { TRIGGERS_DOCTYPE } from './TriggerCollection'
 import getIconURL from './getIconURL'
+import logDeprecate from './logDeprecate'
 
 const normalizeUri = uri => {
   if (uri === null) return null
@@ -21,7 +22,7 @@ const normalizeUri = uri => {
 class CozyStackClient {
   constructor({ token, uri = '' }) {
     this.setUri(uri)
-    this.setCredentials(token)
+    this.setToken(token)
   }
 
   /**
@@ -63,7 +64,7 @@ class CozyStackClient {
   async fetch(method, path, body, opts = {}) {
     const options = { ...opts }
     options.method = method
-    const headers = (options.headers = options.headers || {})
+    const headers = (options.headers = { ...opts.headers })
 
     if (method !== 'GET' && method !== 'HEAD' && body !== undefined) {
       if (headers['Content-Type']) {
@@ -71,13 +72,13 @@ class CozyStackClient {
       }
     }
 
-    const credentials = options.credentials || this.getCredentials()
-    if (credentials) {
-      headers['Authorization'] = credentials
-      // the option credentials:include tells fetch to include the cookies in the
-      // request even for cross-origin requests
-      options.credentials = 'include'
+    if (!headers.Authorization) {
+      headers.Authorization = this.getAuthorizationHeader()
     }
+
+    // the option credentials:include tells fetch to include the cookies in the
+    // request even for cross-origin requests
+    options.credentials = 'include'
 
     return fetch(this.fullpath(path), options)
   }
@@ -118,11 +119,25 @@ class CozyStackClient {
     return this.uri + path
   }
 
-  getCredentials() {
+  getAuthorizationHeader() {
     return this.token ? this.token.toAuthHeader() : null
   }
 
   setCredentials(token) {
+    logDeprecate(
+      'CozyStackClient::setCredentials is deprecated, use CozyStackClient::setToken'
+    )
+    return this.setToken(token)
+  }
+
+  getCredentials() {
+    logDeprecate(
+      'CozyStackClient::getCredentials is deprecated, use CozyStackClient::getAuthorizationHeader'
+    )
+    return this.getAuthorizationHeader()
+  }
+
+  setToken(token) {
     this.token = token ? new AppToken(token) : null
   }
 

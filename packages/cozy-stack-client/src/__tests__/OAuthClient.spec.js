@@ -60,7 +60,7 @@ describe('OAuthClient', () => {
   describe('with registration', () => {
     beforeEach(() => {
       client = new OAuthClient(REGISTERED_CLIENT_INIT_OPTIONS)
-      client.setCredentials({
+      client.setToken({
         tokenType: 'type',
         accessToken: 'abcd',
         refreshToken: 'refresh-789',
@@ -165,25 +165,19 @@ describe('OAuthClient', () => {
         refresh_token: 'refresh-you',
         scope: 'io.cozy.todos'
       }
-      client.setCredentials(camelCredentials)
+      client.setToken(camelCredentials)
       expect(client.token).toBeInstanceOf(AccessToken)
       expect(client.token.tokenType).toEqual(camelCredentials.tokenType)
       expect(client.token.accessToken).toEqual(camelCredentials.accessToken)
       expect(client.token.refreshToken).toEqual(camelCredentials.refreshToken)
       expect(client.token.scope).toEqual(camelCredentials.scope)
 
-      client.setCredentials(JSON.stringify(snakeCredentials))
+      client.setToken(JSON.stringify(snakeCredentials))
       expect(client.token).toBeInstanceOf(AccessToken)
       expect(client.token.tokenType).toEqual(snakeCredentials.token_type)
       expect(client.token.accessToken).toEqual(snakeCredentials.access_token)
       expect(client.token.refreshToken).toEqual(snakeCredentials.refresh_token)
       expect(client.token.scope).toEqual(snakeCredentials.scope)
-    })
-
-    it('should call getCredentials for usual requests', () => {
-      const spy = jest.spyOn(client, 'getCredentials')
-      client.fetchJSON('GET', 'http://example.com')
-      expect(spy).toHaveBeenCalled()
     })
 
     it('should reset the client', () => {
