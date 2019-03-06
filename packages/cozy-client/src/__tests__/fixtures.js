@@ -69,9 +69,11 @@ export const APP_NAME = 'cozy-client-test'
 export const APP_VERSION = 2
 export const DOCTYPE_VERSION = 1
 export const SOURCE_ACCOUNT_ID = '123-456-abc'
+
 export const SCHEMA = {
   todos: {
     doctype: 'io.cozy.todos',
+    doctypeVersion: DOCTYPE_VERSION,
     relationships: {
       attachments: {
         type: 'has-many',
@@ -80,36 +82,6 @@ export const SCHEMA = {
       authors: {
         type: 'has-many',
         doctype: 'io.cozy.persons'
-      }
-    },
-    cozyMetadata: {
-      doctypeVersion: {
-        trigger: 'creation',
-        value: DOCTYPE_VERSION
-      },
-      createdByApp: {
-        trigger: 'creation',
-        value: APP_NAME
-      },
-      createdByAppVersion: {
-        trigger: 'creation',
-        value: APP_VERSION
-      },
-      updatedByApps: {
-        trigger: 'update',
-        value: [APP_NAME]
-      },
-      createdAt: {
-        trigger: 'creation',
-        useCurrentDate: true
-      },
-      updatedAt: {
-        trigger: 'update',
-        useCurrentDate: true
-      },
-      sourceAccount: {
-        trigger: 'creation',
-        value: SOURCE_ACCOUNT_ID
       }
     }
   }

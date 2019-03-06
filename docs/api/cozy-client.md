@@ -439,6 +439,7 @@ Responsible for
 | options.link | <code>Link</code> | Backward compatibility |
 | options.links | <code>Array.Link</code> | List of links |
 | options.schema | <code>Object</code> | Schema description for each doctypes |
+| options.appMetadata | <code>Object</code> | Metadata about the application that will be used in ensureCozyMetadata |
 
 <a name="CozyClient+collection"></a>
 

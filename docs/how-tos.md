@@ -210,13 +210,36 @@ Custom relationships are useful if the relationship data is not stored in a buil
 
 ### Metadata
 
-cozy-client will also automatically insert and update the standard document metadata if you provide a `cozyMetadata` object to the schema.
+cozy-client will also automatically insert and update the standard document metadata. You may provide some info when you initialize the client:
 
-Each metadata field can be configured with the following options:
+- in the `appMetadata` parameter:
+  - `slug`: the app's slug
+  - `sourceAccount`: in case of the app is a connector, the `io.cozy.accounts` (defaults to `null`)
+  - `version`: the app's version
+- in the `schema`, for each doctype:
+  - `doctypeVersion`: the version of the doctype
 
-- `trigger`: Can be `creation` or `update`, and determines whether to update this value every time the document changes, or only on creation.
-- `value`: The value to use when setting the metadata field. If `value` is an array, the values will be appended to the array on each update.
-- `useCurrentDate`: Instead of a fixed value, use the current execution date for this field.
+For example, to initialize the client for google connector that deals with `io.cozy.contacts` and `io.cozy.contacts.accounts`:
+
+```javascript
+const client = new CozyClient({
+  schema: {
+    contacts: {
+      doctype: 'io.cozy.contacts',
+      doctypeVersion: 2
+    },
+    contactsAccounts: {
+      doctype: 'io.cozy.contacts.accounts',
+      doctypeVersion: 1
+    }
+  },
+  appMetadata: {
+    slug: 'konnector-google',
+    sourceAccount: 'xxx', // id of the io.cozy.accounts object
+    version: 3
+  }
+})
+```
 
 ### Validation
 

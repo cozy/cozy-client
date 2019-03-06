@@ -33,7 +33,6 @@ import uniqBy from 'lodash/uniqBy'
 import zip from 'lodash/zip'
 import forEach from 'lodash/forEach'
 import get from 'lodash/get'
-import set from 'lodash/set'
 
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
 
@@ -61,12 +60,14 @@ class CozyClient {
    * @param  {Link}         options.link   - Backward compatibility
    * @param  {Array.Link}   options.links  - List of links
    * @param  {Object}       options.schema - Schema description for each doctypes
+   * @param  {Object}       options.appMetadata - Metadata about the application that will be used in ensureCozyMetadata
    */
-  constructor({ link, links, schema = {}, ...options }) {
+  constructor({ link, links, schema = {}, appMetadata = {}, ...options }) {
     if (link) {
       console.warn('`link` is deprecated, use `links`')
     }
 
+    this.appMetadata = appMetadata
     this.options = options
     this.idCounter = 1
     this.isLogged = false
@@ -198,42 +199,54 @@ class CozyClient {
       event: TRIGGER_CREATION
     }
   ) {
-    if (!document._type) return document
-
-    const schema = this.schema.getDoctypeSchema(document._type)
-    if (!schema.cozyMetadata) return document
-
-    const enriched = {
-      ...document
+    if (this.appMetadata === undefined) return document
+    let doctypeVersion
+    if (document._type) {
+      const schema = this.schema.getDoctypeSchema(document._type)
+      doctypeVersion = get(schema, 'doctypeVersion')
     }
-    const metadata = Object.entries(schema.cozyMetadata)
 
-    for (const [
-      metadataName,
-      { trigger, value, useCurrentDate = false }
-    ] of metadata) {
-      const shouldSetMetadata =
-        options.event === TRIGGER_CREATION ||
-        (options.event === TRIGGER_UPDATE && trigger === TRIGGER_UPDATE)
-      if (!shouldSetMetadata) continue
+    const { slug, sourceAccount, version } = this.appMetadata
 
-      let newValue
-      const metadataPath = `cozyMetadata.${metadataName}`
+    const now = new Date().toISOString()
 
-      const shouldAccumulateValues = Array.isArray(value)
-      if (shouldAccumulateValues) {
-        const prevValue = get(document, metadataPath, [])
-        newValue = uniqBy([...prevValue, ...value])
-      } else if (useCurrentDate) {
-        newValue = new Date().toISOString()
-      } else {
-        newValue = get(document, metadataPath, value)
+    let cozyMetadata = get(document, 'cozyMetadata', {})
+    if (options.event === TRIGGER_CREATION) {
+      cozyMetadata = {
+        doctypeVersion,
+        createdByApp: slug,
+        sourceAccount,
+        createdAt: now,
+        createdByAppVersion: version,
+        updatedAt: now,
+        updatedByApps: slug
+          ? [
+              {
+                date: now,
+                slug,
+                version
+              }
+            ]
+          : [],
+        ...cozyMetadata // custom metadata that are set by the app
       }
-
-      set(enriched, metadataPath, newValue)
+    } else if (options.event === TRIGGER_UPDATE) {
+      cozyMetadata = {
+        ...cozyMetadata,
+        updatedAt: now,
+        updatedByApps: [
+          { date: now, slug, version },
+          ...get(document, 'cozyMetadata.updatedByApps', []).filter(
+            info => info.slug !== slug
+          )
+        ]
+      }
     }
 
-    return enriched
+    return {
+      ...document,
+      cozyMetadata
+    }
   }
 
   /**
