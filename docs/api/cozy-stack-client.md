@@ -294,7 +294,7 @@ through OAuth.
     * [.getAccessCodeFromURL(pageURL, stateCode)](#OAuthClient+getAccessCodeFromURL) ⇒ <code>string</code>
     * [.fetchAccessToken(accessCode)](#OAuthClient+fetchAccessToken) ⇒ <code>Promise</code>
     * [.refreshToken()](#OAuthClient+refreshToken) ⇒ <code>Promise</code>
-    * [.setCredentials(token)](#OAuthClient+setCredentials)
+    * [.setToken(token)](#OAuthClient+setToken)
     * [.setOAuthOptions(options)](#OAuthClient+setOAuthOptions)
     * [.resetClient()](#OAuthClient+resetClient)
 
@@ -414,9 +414,9 @@ Retrieves a new access token by refreshing the currently used token.
 - <code>NotRegisteredException</code> When the client doesn't have it's registration information
 - <code>Error</code> The client should already have an access token to use this function
 
-<a name="OAuthClient+setCredentials"></a>
+<a name="OAuthClient+setToken"></a>
 
-### oAuthClient.setCredentials(token)
+### oAuthClient.setToken(token)
 Updates the client's stored token
 
 **Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
