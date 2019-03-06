@@ -2,7 +2,9 @@ import { uri, attempt, sleep } from './utils'
 import uniq from 'lodash/uniq'
 import transform from 'lodash/transform'
 import head from 'lodash/head'
+import omit from 'lodash/omit'
 import startsWith from 'lodash/startsWith'
+import qs from 'qs'
 import * as querystring from './querystring'
 
 export const normalizeDoc = (doc, doctype) => {
@@ -316,14 +318,32 @@ class DocumentCollection {
   /**
    * Use Couch _changes API
    *
-   * @param  {String} since     Starting sequence for changes
-   * @param  {Object} options   { includeDesign: false, includeDeleted: false }
+   * @param  {Object} couchOptions Couch options for changes https://kutt.it/5r7MNQ
+   * @param  {Object} options      { includeDesign: false, includeDeleted: false }
    */
-  async fetchChanges(since, options = {}) {
-    const result = await this.stackClient.fetchJSON(
-      'GET',
-      `/data/${this.doctype}/_changes?include_docs=true&since=${since}`
-    )
+  async fetchChanges(couchOptions = {}, options = {}) {
+    const haveDocsIds = couchOptions.doc_ids && couchOptions.doc_ids.length > 0
+    let urlParams = ''
+    if (typeof couchOptions !== 'object') {
+      urlParams = `?include_docs=true&since=${couchOptions}`
+      console.warn(
+        'fetchChanges use couchOptions as Object not a string, since is deprecated, please use fetchChanges({include_docs: true, since: 0}).'
+      )
+    } else if (Object.keys(couchOptions).length > 0) {
+      urlParams = `?${[
+        qs.stringify(omit(couchOptions, 'doc_ids')),
+        haveDocsIds && couchOptions.filter === undefined
+          ? 'filter=_doc_ids'
+          : undefined
+      ]
+        .filter(Boolean)
+        .join('&')}`
+    }
+
+    const method = haveDocsIds ? 'POST' : 'GET'
+    const endpoint = `/data/${this.doctype}/_changes${urlParams}`
+    const params = haveDocsIds ? { doc_ids: couchOptions.doc_ids } : undefined
+    const result = await this.stackClient.fetchJSON(method, endpoint, params)
 
     const newLastSeq = result.last_seq
     let docs = result.results.map(x => x.doc).filter(Boolean)

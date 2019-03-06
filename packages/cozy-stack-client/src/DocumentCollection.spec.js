@@ -521,6 +521,7 @@ describe('DocumentCollection', () => {
 
   describe('changes', () => {
     const collection = new DocumentCollection('io.cozy.todos', client)
+    const defaultCouchOptions = { include_docs: true, since: 'my-seq' }
     beforeEach(() => {
       client.fetchJSON.mockReturnValueOnce(
         Promise.resolve({
@@ -535,11 +536,48 @@ describe('DocumentCollection', () => {
       )
     })
 
-    it('should call the right route', async () => {
-      const changes = await collection.fetchChanges('my-seq')
+    it('should call the right route without parameter', async () => {
+      await collection.fetchChanges()
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
-        '/data/io.cozy.todos/_changes?include_docs=true&since=my-seq'
+        '/data/io.cozy.todos/_changes',
+        undefined
+      )
+    })
+
+    it('should call the right route with deprecated parameter', async () => {
+      await collection.fetchChanges('my-seq')
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/data/io.cozy.todos/_changes?include_docs=true&since=my-seq',
+        undefined
+      )
+    })
+
+    it('should call the right route with deprecated parameter', async () => {
+      await collection.fetchChanges({ limit: 100 })
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/data/io.cozy.todos/_changes?limit=100',
+        undefined
+      )
+    })
+
+    it('should call changes with doc_ids parameters', async () => {
+      await collection.fetchChanges({ doc_ids: [1, 2, 3] })
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/data/io.cozy.todos/_changes?filter=_doc_ids',
+        { doc_ids: [1, 2, 3] }
+      )
+    })
+
+    it('should call the right route', async () => {
+      const changes = await collection.fetchChanges(defaultCouchOptions)
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/data/io.cozy.todos/_changes?include_docs=true&since=my-seq',
+        undefined
       )
       expect(changes).toEqual({
         newLastSeq: 'new-seq',
@@ -548,7 +586,7 @@ describe('DocumentCollection', () => {
     })
 
     it('should call support includeDeleted', async () => {
-      const changes = await collection.fetchChanges('my-seq', {
+      const changes = await collection.fetchChanges(defaultCouchOptions, {
         includeDeleted: true
       })
       expect(changes).toEqual({
@@ -561,7 +599,7 @@ describe('DocumentCollection', () => {
     })
 
     it('should call support includeDesign', async () => {
-      const changes = await collection.fetchChanges('my-seq', {
+      const changes = await collection.fetchChanges(defaultCouchOptions, {
         includeDesign: true
       })
       expect(changes).toEqual({
