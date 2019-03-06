@@ -184,7 +184,15 @@ describe('CozyClient', () => {
 
   let client
   beforeEach(() => {
-    client = new CozyClient({ links: [link], schema: SCHEMA })
+    client = new CozyClient({
+      links: [link],
+      schema: SCHEMA,
+      appMetadata: {
+        slug: APP_NAME,
+        sourceAccount: SOURCE_ACCOUNT_ID,
+        version: APP_VERSION
+      }
+    })
     client.ensureStore()
     jest.spyOn(client.store, 'dispatch').mockImplementation(() => {})
   })
@@ -277,8 +285,14 @@ describe('CozyClient', () => {
           document: {
             ...rawDoc,
             cozyMetadata: {
-              updatedAt: '2018-05-05T09:09:00.115Z',
-              updatedByApps: ['cozy-client-test']
+              updatedAt: MOCKED_DATE,
+              updatedByApps: [
+                {
+                  date: MOCKED_DATE,
+                  slug: APP_NAME,
+                  version: APP_VERSION
+                }
+              ]
             }
           }
         })
@@ -338,14 +352,31 @@ describe('CozyClient', () => {
         _type: 'io.cozy.todos',
         cozyMetadata: {
           createdByApp: 'other-app',
-          updatedByApps: ['other-app']
+          updatedByApps: [
+            {
+              date: '2016-01-15T12:33:00.225Z',
+              slug: 'other-app',
+              version: 27
+            }
+          ]
         }
       }
       const {
         document: { cozyMetadata }
       } = client.getDocumentSavePlan(doc)
       expect(cozyMetadata.createdByApp).toEqual('other-app')
-      expect(cozyMetadata.updatedByApps).toEqual(['other-app', APP_NAME])
+      expect(cozyMetadata.updatedByApps).toEqual([
+        {
+          date: MOCKED_DATE,
+          slug: APP_NAME,
+          version: APP_VERSION
+        },
+        {
+          date: '2016-01-15T12:33:00.225Z',
+          slug: 'other-app',
+          version: 27
+        }
+      ])
     })
 
     it('should handle associations for a new document with mutation creators', () => {
@@ -387,7 +418,13 @@ describe('CozyClient', () => {
             createdByAppVersion: APP_VERSION,
             doctypeVersion: DOCTYPE_VERSION,
             updatedAt: MOCKED_DATE,
-            updatedByApps: [APP_NAME],
+            updatedByApps: [
+              {
+                date: MOCKED_DATE,
+                slug: APP_NAME,
+                version: APP_VERSION
+              }
+            ],
             sourceAccount: SOURCE_ACCOUNT_ID
           }
         }
@@ -396,7 +433,7 @@ describe('CozyClient', () => {
   })
 
   describe('cozy metadata', () => {
-    it('should create all metadata with a creation trigger', () => {
+    it('should create cozy metadata (creation trigger)', () => {
       const doc = {
         _type: 'io.cozy.todos'
       }
@@ -408,20 +445,59 @@ describe('CozyClient', () => {
         createdByApp: APP_NAME,
         sourceAccount: SOURCE_ACCOUNT_ID,
         createdByAppVersion: APP_VERSION,
-        updatedByApps: [APP_NAME],
+        updatedByApps: [
+          {
+            date: MOCKED_DATE,
+            slug: APP_NAME,
+            version: APP_VERSION
+          }
+        ],
         createdAt: MOCKED_DATE,
         updatedAt: MOCKED_DATE
       })
     })
 
-    it('should update only some metadata with a update trigger', () => {
+    it('should accept custom values for cozy metadata (creation trigger)', () => {
+      const doc = {
+        _type: 'io.cozy.todos',
+        cozyMetadata: {
+          createdByApp: 'My great app',
+          doctypeVersion: 42
+        }
+      }
+      const { cozyMetadata } = client.ensureCozyMetadata(doc, {
+        event: 'creation'
+      })
+      expect(cozyMetadata).toEqual({
+        doctypeVersion: 42,
+        createdByApp: 'My great app',
+        sourceAccount: SOURCE_ACCOUNT_ID,
+        createdByAppVersion: APP_VERSION,
+        updatedByApps: [
+          {
+            date: MOCKED_DATE,
+            slug: APP_NAME,
+            version: APP_VERSION
+          }
+        ],
+        createdAt: MOCKED_DATE,
+        updatedAt: MOCKED_DATE
+      })
+    })
+
+    it('should update existing cozy metadata (update trigger)', () => {
       const doc = {
         _type: 'io.cozy.todos',
         cozyMetadata: {
           doctypeVersion: 4,
           createdByApp: 'previous-app',
-          importedFrom: 'previous-app',
-          updatedByApps: ['previous-app'],
+          updatedByApps: [
+            {
+              date: '2017-03-08T09:14:00.185Z',
+              slug: 'previous-app',
+              version: 8
+            }
+          ],
           updatedAt: '2017-03-08T09:14:00.185Z'
         }
       }
@@ -431,63 +507,53 @@ describe('CozyClient', () => {
       expect(cozyMetadata).toEqual({
         doctypeVersion: 4,
         createdByApp: 'previous-app',
-        importedFrom: 'previous-app',
-        updatedByApps: ['previous-app', APP_NAME],
+        updatedByApps: [
+          {
+            date: MOCKED_DATE,
+            slug: APP_NAME,
+            version: APP_VERSION
+          },
+          {
+            date: '2017-03-08T09:14:00.185Z',
+            slug: 'previous-app',
+            version: 8
+          }
+        ],
         updatedAt: MOCKED_DATE
       })
     })
 
-    it('keep existing metadata', () => {
+    it('should not create duplicates in updatedByApps (update trigger)', () => {
       const doc = {
         _type: 'io.cozy.todos',
         cozyMetadata: {
-          customField: 'foo',
-          doctypeVersion: 3
-        }
-      }
-      const { cozyMetadata } = client.ensureCozyMetadata(doc)
-      expect(cozyMetadata.customField).toEqual('foo')
-      expect(cozyMetadata.doctypeVersion).toEqual(3)
-      expect(cozyMetadata.createdByApp).toEqual(APP_NAME)
-    })
-
-    it('update a multiple-value metadata', () => {
-      const doc = {
-        _type: 'io.cozy.todos',
-        cozyMetadata: {
-          updatedByApps: ['previous-app']
+          doctypeVersion: 4,
+          createdByApp: 'previous-app',
+          updatedByApps: [
+            {
+              date: '2017-03-08T09:14:00.185Z',
+              slug: APP_NAME,
+              version: 1
+            }
+          ],
+          updatedAt: '2017-03-08T09:14:00.185Z'
         }
       }
       const { cozyMetadata } = client.ensureCozyMetadata(doc, {
         event: 'update'
       })
-      expect(cozyMetadata.updatedByApps).toEqual(['previous-app', APP_NAME])
-    })
-
-    it('shoud not have duplicated multiple-value metadata', () => {
-      const doc = {
-        _type: 'io.cozy.todos',
-        cozyMetadata: {
-          updatedByApps: ['previous-app', APP_NAME]
-        }
-      }
-      const { cozyMetadata } = client.ensureCozyMetadata(doc)
-      expect(cozyMetadata.updatedByApps).toEqual(['previous-app', APP_NAME])
-    })
-
-    it('should do nothing if the schema has no cozyMetadata', () => {
-      const clientWithoutMetadata = new CozyClient({
-        schema: {
-          todos: {
-            doctype: 'io.cozy.todos'
+      expect(cozyMetadata).toEqual({
+        doctypeVersion: 4,
+        createdByApp: 'previous-app',
+        updatedByApps: [
+          {
+            date: MOCKED_DATE,
+            slug: APP_NAME,
+            version: APP_VERSION
           }
-        }
+        ],
+        updatedAt: MOCKED_DATE
       })
-      const doc = {
-        _type: 'io.cozy.todos'
-      }
-      const result = clientWithoutMetadata.ensureCozyMetadata(doc)
-      expect(result).toEqual(doc)
     })
   })
 
