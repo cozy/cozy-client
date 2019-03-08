@@ -199,6 +199,7 @@ class CozyClient {
       event: TRIGGER_CREATION
     }
   ) {
+    const METADATA_VERSION = 1
     if (this.appMetadata === undefined) return document
     let doctypeVersion
     if (document._type) {
@@ -213,6 +214,7 @@ class CozyClient {
     let cozyMetadata = get(document, 'cozyMetadata', {})
     if (options.event === TRIGGER_CREATION) {
       cozyMetadata = {
+        metadataVersion: METADATA_VERSION,
         doctypeVersion,
         createdByApp: slug,
         sourceAccount,
