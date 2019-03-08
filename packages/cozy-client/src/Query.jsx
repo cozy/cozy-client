@@ -52,9 +52,6 @@ export default class Query extends Component {
   }
 
   onQueryChange = () => {
-    console.log(
-      `query ${this.observableQuery.queryId} changed, forcing rerender`
-    )
     this.setState(dummyState)
   }
 
