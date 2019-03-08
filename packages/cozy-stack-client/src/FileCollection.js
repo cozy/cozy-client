@@ -1,8 +1,9 @@
-import mime from 'mime-types'
 import has from 'lodash/has'
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 import { uri, slugify, forceFileDownload } from './utils'
 import * as querystring from './querystring'
+import mime from './mime-types'
+
 const ROOT_DIR_ID = 'io.cozy.files.root-dir'
 const CONTENT_TYPE_OCTET_STREAM = 'application/octet-stream'
 
