@@ -35,6 +35,8 @@ const normalizeData = data =>
     }))
   })
 
+const METADATA_VERSION = 1
+
 describe('CozyClient initialization', () => {
   let client, links
 
@@ -413,6 +415,7 @@ describe('CozyClient', () => {
         document: {
           ...NEW_TODO,
           cozyMetadata: {
+            metadataVersion: METADATA_VERSION,
             createdAt: MOCKED_DATE,
             createdByApp: APP_NAME,
             createdByAppVersion: APP_VERSION,
@@ -441,6 +444,7 @@ describe('CozyClient', () => {
         event: 'creation'
       })
       expect(cozyMetadata).toEqual({
+        metadataVersion: METADATA_VERSION,
         doctypeVersion: DOCTYPE_VERSION,
         createdByApp: APP_NAME,
         sourceAccount: SOURCE_ACCOUNT_ID,
@@ -469,6 +473,7 @@ describe('CozyClient', () => {
         event: 'creation'
       })
       expect(cozyMetadata).toEqual({
+        metadataVersion: METADATA_VERSION,
         doctypeVersion: 42,
         createdByApp: 'My great app',
         sourceAccount: SOURCE_ACCOUNT_ID,
@@ -489,6 +494,7 @@ describe('CozyClient', () => {
       const doc = {
         _type: 'io.cozy.todos',
         cozyMetadata: {
+          metadataVersion: 2,
           doctypeVersion: 4,
           createdByApp: 'previous-app',
           updatedByApps: [
@@ -505,6 +511,7 @@ describe('CozyClient', () => {
         event: 'update'
       })
       expect(cozyMetadata).toEqual({
+        metadataVersion: 2,
         doctypeVersion: 4,
         createdByApp: 'previous-app',
         updatedByApps: [
