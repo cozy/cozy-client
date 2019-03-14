@@ -2,31 +2,16 @@ import { normalizeDoc } from './DocumentCollection'
 import { uri } from './utils'
 
 export const APPS_DOCTYPE = 'io.cozy.apps'
-export const KONNECTORS_DOCTYPE = 'io.cozy.konnectors'
 
-export const ENDPOINTS = {
-  [APPS_DOCTYPE]: 'apps',
-  [KONNECTORS_DOCTYPE]: 'konnectors'
-}
-
-export const normalizeApp = (app, doctype) => {
-  return {
-    ...app,
-    ...normalizeDoc(app, doctype),
-    ...app.attributes
-  }
+export const normalizeApp = app => {
+  return { ...app, ...normalizeDoc(app, APPS_DOCTYPE), ...app.attributes }
 }
 
 /**
- * Implements methods specific to applications: io.cozy.apps or io.cozy.konnectors
+ * Implements `DocumentCollection` API along with specific methods for `io.cozy.apps`.
  */
 class AppCollection {
-  /**
-   * @param  {string} doctype App doctype (io.cozy.apps or io.cozy.konnectors)
-   * @param  {CozyStackClient} stackClient The stackClient instance to use
-   */
-  constructor(doctype, stackClient) {
-    this.doctype = doctype
+  constructor(stackClient) {
     this.stackClient = stackClient
   }
 
@@ -39,10 +24,10 @@ class AppCollection {
    * @throws {FetchError}
    */
   async all() {
-    const path = uri`/${ENDPOINTS[this.doctype]}/`
+    const path = uri`/apps/`
     const resp = await this.stackClient.fetchJSON('GET', path)
     return {
-      data: resp.data.map(app => normalizeApp(app, this.doctype)),
+      data: resp.data.map(app => normalizeApp(app)),
       meta: {
         count: resp.meta.count
       },
