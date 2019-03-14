@@ -1,7 +1,4 @@
-import AppCollection, {
-  APPS_DOCTYPE,
-  KONNECTORS_DOCTYPE
-} from './AppCollection'
+import AppCollection, { APPS_DOCTYPE } from './AppCollection'
 import AppToken from './AppToken'
 import DocumentCollection from './DocumentCollection'
 import FileCollection from './FileCollection'
@@ -40,9 +37,7 @@ class CozyStackClient {
     }
     switch (doctype) {
       case APPS_DOCTYPE:
-        return new AppCollection(doctype, this)
-      case KONNECTORS_DOCTYPE:
-        return new AppCollection(doctype, this)
+        return new AppCollection(this)
       case 'io.cozy.files':
         return new FileCollection(doctype, this)
       case 'io.cozy.sharings':
