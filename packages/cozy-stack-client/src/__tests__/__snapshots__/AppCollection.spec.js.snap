@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AppCollection with io.cozy.apps all should call the right route 1`] = `
+Array [
+  "GET",
+  "/apps/",
+]
+`;
+
+exports[`AppCollection with io.cozy.konnectors all should call the right route 1`] = `
+Array [
+  "GET",
+  "/konnectors/",
+]
+`;
