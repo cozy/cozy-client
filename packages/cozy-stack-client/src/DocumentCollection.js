@@ -11,6 +11,15 @@ export const normalizeDoc = (doc, doctype) => {
   const id = doc._id || doc.id
   return { id, _id: id, _type: doctype, ...doc }
 }
+
+export const dontThrowNotFoundError = error => {
+  if (error.message.match(/not_found/)) {
+    return { data: [], meta: { count: 0 }, skip: 0, next: false }
+  }
+
+  throw error
+}
+
 /**
  * Abstracts a collection of documents of the same doctype, providing CRUD methods and other helpers.
  */
@@ -51,10 +60,7 @@ class DocumentCollection {
     try {
       resp = await this.stackClient.fetchJSON('GET', path)
     } catch (error) {
-      if (error.message.match(/not_found/)) {
-        return { data: [], meta: { count: 0 }, skip: 0, next: false }
-      }
-      throw error
+      return dontThrowNotFoundError(error)
     }
     let data
     /* If using `all_docs` we need to filter our design documents and check if
@@ -107,10 +113,7 @@ class DocumentCollection {
         await this.toMangoOptions(selector, options)
       )
     } catch (error) {
-      if (error.message.match(/not_found/)) {
-        return { data: [], meta: { count: 0 }, skip: 0, next: false }
-      }
-      throw error
+      return dontThrowNotFoundError(error)
     }
     return {
       data: resp.docs.map(doc => normalizeDoc(doc, this.doctype)),
@@ -153,10 +156,7 @@ class DocumentCollection {
         }
       )
     } catch (error) {
-      if (error.message.match(/not_found/)) {
-        return { data: [], meta: { count: 0 }, skip: 0, next: false }
-      }
-      throw error
+      return dontThrowNotFoundError(error)
     }
     const rows = resp.rows.filter(row => row.doc)
     return {

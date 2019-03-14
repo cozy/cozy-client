@@ -1,4 +1,4 @@
-import { normalizeDoc } from './DocumentCollection'
+import { normalizeDoc, dontThrowNotFoundError } from './DocumentCollection'
 import { uri } from './utils'
 import * as querystring from './querystring'
 
@@ -40,10 +40,6 @@ class TriggerCollection {
   async all(options = {}) {
     const url = uri`/jobs/triggers`
     const path = querystring.buildURL(url, options)
-    const defaultJSONAPI = {
-      next: false,
-      skip: 0
-    }
 
     try {
       const resp = await this.stackClient.fetchJSON('GET', path)
@@ -51,14 +47,11 @@ class TriggerCollection {
       return {
         data: resp.data.map(row => normalizeDoc(row, TRIGGERS_DOCTYPE)),
         meta: { count: resp.data.length },
-        ...defaultJSONAPI
+        next: false,
+        skip: 0
       }
     } catch (error) {
-      if (error.message.match(/not_found/)) {
-        return { data: [], meta: { count: 0 }, ...defaultJSONAPI }
-      }
-
-      throw error
+      return dontThrowNotFoundError(error)
     }
   }
 
