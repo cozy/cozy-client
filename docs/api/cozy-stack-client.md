@@ -545,8 +545,26 @@ Implements `DocumentCollection` API along with specific methods for `io.cozy.tri
 **Kind**: global class  
 
 * [TriggerCollection](#TriggerCollection)
+    * [.all(options)](#TriggerCollection+all) ⇒ <code>Object</code>
     * [.create(attributes)](#TriggerCollection+create) ⇒ <code>object</code>
     * [.launch(Trigger)](#TriggerCollection+launch) ⇒ <code>object</code>
+
+<a name="TriggerCollection+all"></a>
+
+### triggerCollection.all(options) ⇒ <code>Object</code>
+Get the list of triggers.
+
+**Kind**: instance method of [<code>TriggerCollection</code>](#TriggerCollection)  
+**Returns**: <code>Object</code> - The JSON API conformant response.  
+**Throws**:
+
+- <code>FetchError</code> 
+
+**See**: https://docs.cozy.io/en/cozy-stack/jobs/#get-jobstriggers  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | The fetch options: Worker allow to filter only triggers associated with a specific worker. |
 
 <a name="TriggerCollection+create"></a>
 
