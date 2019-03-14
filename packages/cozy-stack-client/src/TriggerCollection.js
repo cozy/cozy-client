@@ -1,5 +1,6 @@
-import { normalizeDoc } from './DocumentCollection'
+import { normalizeDoc, dontThrowNotFoundError } from './DocumentCollection'
 import { uri } from './utils'
+import * as querystring from './querystring'
 
 export const JOBS_DOCTYPE = 'io.cozy.jobs'
 export const TRIGGERS_DOCTYPE = 'io.cozy.triggers'
@@ -28,8 +29,30 @@ class TriggerCollection {
     this.stackClient = stackClient
   }
 
-  async all() {
-    throw new Error('all() method is not yet implemented')
+  /**
+   * Get the list of triggers.
+   *
+   * @see https://docs.cozy.io/en/cozy-stack/jobs/#get-jobstriggers
+   * @param  {{Worker}} options The fetch options: Worker allow to filter only triggers associated with a specific worker.
+   * @return {{data}} The JSON API conformant response.
+   * @throws {FetchError}
+   */
+  async all(options = {}) {
+    const url = uri`/jobs/triggers`
+    const path = querystring.buildURL(url, options)
+
+    try {
+      const resp = await this.stackClient.fetchJSON('GET', path)
+
+      return {
+        data: resp.data.map(row => normalizeDoc(row, TRIGGERS_DOCTYPE)),
+        meta: { count: resp.data.length },
+        next: false,
+        skip: 0
+      }
+    } catch (error) {
+      return dontThrowNotFoundError(error)
+    }
   }
 
   /**
