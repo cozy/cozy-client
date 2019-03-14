@@ -2,7 +2,7 @@
 
 <dl>
 <dt><a href="#AppCollection">AppCollection</a></dt>
-<dd><p>Implements <code>DocumentCollection</code> API along with specific methods for <code>io.cozy.apps</code>.</p>
+<dd><p>Implements methods specific to applications: io.cozy.apps or io.cozy.konnectors</p>
 </dd>
 <dt><a href="#CozyStackClient">CozyStackClient</a></dt>
 <dd><p>Main API against the <code>cozy-stack</code> server.</p>
@@ -50,9 +50,23 @@ through OAuth.</p>
 <a name="AppCollection"></a>
 
 ## AppCollection
-Implements `DocumentCollection` API along with specific methods for `io.cozy.apps`.
+Implements methods specific to applications: io.cozy.apps or io.cozy.konnectors
 
 **Kind**: global class  
+
+* [AppCollection](#AppCollection)
+    * [new AppCollection(doctype, stackClient)](#new_AppCollection_new)
+    * [.all()](#AppCollection+all) ⇒ <code>Object</code>
+
+<a name="new_AppCollection_new"></a>
+
+### new AppCollection(doctype, stackClient)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doctype | <code>string</code> | App doctype (io.cozy.apps or io.cozy.konnectors) |
+| stackClient | [<code>CozyStackClient</code>](#CozyStackClient) | The stackClient instance to use |
+
 <a name="AppCollection+all"></a>
 
 ### appCollection.all() ⇒ <code>Object</code>
