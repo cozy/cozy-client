@@ -2,12 +2,6 @@ import { normalizeDoc } from './DocumentCollection'
 import { uri } from './utils'
 
 export const APPS_DOCTYPE = 'io.cozy.apps'
-export const KONNECTORS_DOCTYPE = 'io.cozy.konnectors'
-
-export const ENDPOINTS = {
-  [APPS_DOCTYPE]: 'apps',
-  [KONNECTORS_DOCTYPE]: 'konnectors'
-}
 
 export const normalizeApp = (app, doctype) => {
   return {
@@ -21,6 +15,8 @@ export const normalizeApp = (app, doctype) => {
  * Implements methods specific to applications: io.cozy.apps or io.cozy.konnectors
  */
 class AppCollection {
+  endpoint = 'apps'
+
   /**
    * @param  {string} doctype App doctype (io.cozy.apps or io.cozy.konnectors)
    * @param  {CozyStackClient} stackClient The stackClient instance to use
@@ -39,7 +35,7 @@ class AppCollection {
    * @throws {FetchError}
    */
   async all() {
-    const path = uri`/${ENDPOINTS[this.doctype]}/`
+    const path = uri`/${this.endpoint}/`
     const resp = await this.stackClient.fetchJSON('GET', path)
     return {
       data: resp.data.map(app => normalizeApp(app, this.doctype)),

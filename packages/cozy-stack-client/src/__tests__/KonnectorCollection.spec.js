@@ -1,22 +1,22 @@
 jest.mock('../CozyStackClient')
 
 import CozyStackClient from '../CozyStackClient'
-import AppCollection, { APPS_DOCTYPE } from '../AppCollection'
-import ALL_APPS_RESPONSE from './fixtures/apps.json'
+import KonnectorCollection, { KONNECTORS_DOCTYPE } from '../KonnectorCollection'
+import ALL_KONNECTORS_RESPONSE from './fixtures/konnectors.json'
 
 const FIXTURES = {
-  ALL_APPS_RESPONSE
+  ALL_KONNECTORS_RESPONSE
 }
 
-describe(`AppCollection with ${APPS_DOCTYPE}`, () => {
+describe(`KonnectorCollection with ${KONNECTORS_DOCTYPE}`, () => {
   const client = new CozyStackClient()
 
   describe('all', () => {
-    const collection = new AppCollection(APPS_DOCTYPE, client)
+    const collection = new KonnectorCollection(KONNECTORS_DOCTYPE, client)
 
     beforeAll(() => {
       client.fetchJSON.mockReturnValue(
-        Promise.resolve(FIXTURES.ALL_APPS_RESPONSE)
+        Promise.resolve(FIXTURES.ALL_KONNECTORS_RESPONSE)
       )
     })
 
@@ -38,7 +38,7 @@ describe(`AppCollection with ${APPS_DOCTYPE}`, () => {
 
   describe('find', () => {
     it('throw error', async () => {
-      const collection = new AppCollection(client)
+      const collection = new KonnectorCollection(client)
       expect(collection.find()).rejects.toThrowError(
         'find() method is not yet implemented'
       )
@@ -47,7 +47,7 @@ describe(`AppCollection with ${APPS_DOCTYPE}`, () => {
 
   describe('get', () => {
     it('throw error', async () => {
-      const collection = new AppCollection(client)
+      const collection = new KonnectorCollection(client)
       expect(collection.get()).rejects.toThrowError(
         'get() method is not yet implemented'
       )
@@ -55,7 +55,7 @@ describe(`AppCollection with ${APPS_DOCTYPE}`, () => {
   })
 
   describe('create', () => {
-    const collection = new AppCollection(client)
+    const collection = new KonnectorCollection(client)
 
     it('should throw error', async () => {
       expect(collection.create()).rejects.toThrowError(
@@ -65,7 +65,7 @@ describe(`AppCollection with ${APPS_DOCTYPE}`, () => {
   })
 
   describe('update', () => {
-    const collection = new AppCollection(client)
+    const collection = new KonnectorCollection(client)
 
     it('should throw error', async () => {
       expect(collection.update()).rejects.toThrowError(
@@ -75,7 +75,7 @@ describe(`AppCollection with ${APPS_DOCTYPE}`, () => {
   })
 
   describe('destroy', () => {
-    const collection = new AppCollection(client)
+    const collection = new KonnectorCollection(client)
 
     it('should throw error', async () => {
       expect(collection.destroy()).rejects.toThrowError(
