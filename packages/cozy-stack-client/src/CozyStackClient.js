@@ -2,6 +2,7 @@ import AppCollection, { APPS_DOCTYPE } from './AppCollection'
 import AppToken from './AppToken'
 import DocumentCollection from './DocumentCollection'
 import FileCollection from './FileCollection'
+import KonnectorCollection from './KonnectorCollection'
 import SharingCollection from './SharingCollection'
 import PermissionCollection from './PermissionCollection'
 import TriggerCollection, { TRIGGERS_DOCTYPE } from './TriggerCollection'
@@ -23,6 +24,8 @@ class CozyStackClient {
   constructor({ token, uri = '' }) {
     this.setUri(uri)
     this.setToken(token)
+
+    this.konnectors = new KonnectorCollection(this)
   }
 
   /**
