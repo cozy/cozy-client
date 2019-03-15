@@ -11,6 +11,8 @@ export const normalizeApp = app => {
  * Implements `DocumentCollection` API along with specific methods for `io.cozy.apps`.
  */
 class AppCollection {
+  endpoint = '/apps/'
+
   constructor(stackClient) {
     this.stackClient = stackClient
   }
@@ -24,8 +26,7 @@ class AppCollection {
    * @throws {FetchError}
    */
   async all() {
-    const path = uri`/apps/`
-    const resp = await this.stackClient.fetchJSON('GET', path)
+    const resp = await this.stackClient.fetchJSON('GET', this.endpoint)
     return {
       data: resp.data.map(app => normalizeApp(app)),
       meta: {
