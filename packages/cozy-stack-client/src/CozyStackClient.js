@@ -2,7 +2,7 @@ import AppCollection, { APPS_DOCTYPE } from './AppCollection'
 import AppToken from './AppToken'
 import DocumentCollection from './DocumentCollection'
 import FileCollection from './FileCollection'
-import KonnectorCollection from './KonnectorCollection'
+import KonnectorCollection, { KONNECTORS_DOCTYPE } from './KonnectorCollection'
 import SharingCollection from './SharingCollection'
 import PermissionCollection from './PermissionCollection'
 import TriggerCollection, { TRIGGERS_DOCTYPE } from './TriggerCollection'
@@ -41,6 +41,19 @@ class CozyStackClient {
     switch (doctype) {
       case APPS_DOCTYPE:
         return new AppCollection(this)
+      case KONNECTORS_DOCTYPE:
+        // For now we are still returning a DocumentCollection because
+        // Cozy-Banks is the only app which access konnectors with
+        // CozyStackClient, and it's using a `where()` query which is not yet
+        // implemented in KonnectorCollection.
+        //
+        // So we do not want to introduce a BREAKING CHANGE here by returning
+        // new KonnectorCollection(this).
+        // Next step to get rid of this : implement the `where()` query for
+        // KonnectorCollection.
+        //
+        // Until then, stackClient.konnectors can be used instead.
+        return new DocumentCollection(doctype, this)
       case 'io.cozy.files':
         return new FileCollection(doctype, this)
       case 'io.cozy.sharings':
