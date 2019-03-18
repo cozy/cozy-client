@@ -3,6 +3,7 @@
 
 import CozyStackClient, { FetchError } from '../CozyStackClient'
 import DocumentCollection from '../DocumentCollection'
+import KonnectorCollection from '../KonnectorCollection'
 
 const FAKE_RESPONSE = {
   offset: 0,
@@ -22,6 +23,14 @@ describe('CozyStackClient', () => {
       token: ''
     })
     expect(client.fullpath('/foo')).toBe('http://cozy.tools:8080/foo')
+  })
+
+  it('should instanciate konnectors property', () => {
+    const stackClient = new CozyStackClient({
+      FAKE_INIT_OPTIONS
+    })
+
+    expect(stackClient.konnectors instanceof KonnectorCollection).toBe(true)
   })
 
   describe('collection', () => {

@@ -1,27 +1,27 @@
 jest.mock('../CozyStackClient')
 
 import CozyStackClient from '../CozyStackClient'
-import AppCollection from '../AppCollection'
-import ALL_APPS_RESPONSE from './fixtures/apps.json'
+import KonnectorCollection from '../KonnectorCollection'
+import ALL_KONNECTORS_RESPONSE from './fixtures/konnectors.json'
 
 const FIXTURES = {
-  ALL_APPS_RESPONSE
+  ALL_KONNECTORS_RESPONSE
 }
-describe(`AppCollection`, () => {
+describe(`KonnectorCollection`, () => {
   const client = new CozyStackClient()
 
   describe('all', () => {
-    const collection = new AppCollection(client)
+    const collection = new KonnectorCollection(client)
 
     beforeAll(() => {
       client.fetchJSON.mockReturnValue(
-        Promise.resolve(FIXTURES.ALL_APPS_RESPONSE)
+        Promise.resolve(FIXTURES.ALL_KONNECTORS_RESPONSE)
       )
     })
 
     it('should call the right route', async () => {
       await collection.all()
-      expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/apps/')
+      expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/konnectors/')
     })
 
     it('should return a correct JSON API response', async () => {
@@ -37,7 +37,7 @@ describe(`AppCollection`, () => {
 
   describe('find', () => {
     it('throw error', async () => {
-      const collection = new AppCollection(client)
+      const collection = new KonnectorCollection(client)
       expect(collection.find()).rejects.toThrowError(
         'find() method is not yet implemented'
       )
@@ -46,7 +46,7 @@ describe(`AppCollection`, () => {
 
   describe('get', () => {
     it('throw error', async () => {
-      const collection = new AppCollection(client)
+      const collection = new KonnectorCollection(client)
       expect(collection.get()).rejects.toThrowError(
         'get() method is not yet implemented'
       )
@@ -54,31 +54,31 @@ describe(`AppCollection`, () => {
   })
 
   describe('create', () => {
-    const collection = new AppCollection(client)
+    const collection = new KonnectorCollection(client)
 
     it('should throw error', async () => {
       expect(collection.create()).rejects.toThrowError(
-        'create() method is not available for applications'
+        'create() method is not available for konnectors'
       )
     })
   })
 
   describe('update', () => {
-    const collection = new AppCollection(client)
+    const collection = new KonnectorCollection(client)
 
     it('should throw error', async () => {
       expect(collection.update()).rejects.toThrowError(
-        'update() method is not available for applications'
+        'update() method is not available for konnectors'
       )
     })
   })
 
   describe('destroy', () => {
-    const collection = new AppCollection(client)
+    const collection = new KonnectorCollection(client)
 
     it('should throw error', async () => {
       expect(collection.destroy()).rejects.toThrowError(
-        'destroy() method is not available for applications'
+        'destroy() method is not available for konnectors'
       )
     })
   })
