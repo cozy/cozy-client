@@ -9,6 +9,8 @@ import { default as helpers } from './helpers'
 import { getIndexNameFromFields, getIndexFields } from './mango'
 import * as jsonapi from './jsonapi'
 import PouchManager from './PouchManager'
+import logger from './logger'
+
 PouchDB.plugin(PouchDBFind)
 
 const { find, allDocs, withoutDesignDocuments } = helpers
@@ -86,7 +88,7 @@ class PouchLink extends CozyLink {
 
   async onLogin() {
     if (!this.client) {
-      console.warn("PouchLink: no client registered, can't login")
+      logger.warn("PouchLink: no client registered, can't login")
       return
     }
 
@@ -99,17 +101,17 @@ class PouchLink extends CozyLink {
 
     if (shouldDestroyDatabases) {
       if (process.env.NODE_ENV !== 'production') {
-        console.info('PouchLink: URI changed, destroy pouches')
+        logger.info('PouchLink: URI changed, destroy pouches')
       }
       try {
         await this.pouches.destroy()
       } catch (e) {
-        console.warn('Error while destroying pouch DBs', e)
+        logger.warn('Error while destroying pouch DBs', e)
       }
     }
 
     if (process.env.NODE_ENV !== 'production') {
-      console.log('Create pouches with ' + prefix + ' prefix')
+      logger.log('Create pouches with ' + prefix + ' prefix')
     }
     this.pouches = new PouchManager(this.doctypes, {
       pouch: this.options.pouch,
@@ -147,7 +149,7 @@ class PouchLink extends CozyLink {
       this.options.onSync.call(this, normalizedData)
     }
     if (process.env.NODE_ENV !== 'production') {
-      console.info('Pouch synced')
+      logger.info('Pouch synced')
     }
   }
 
@@ -186,13 +188,13 @@ class PouchLink extends CozyLink {
         this.startReplication()
         return
       } catch (err) {
-        console.warn('Could not refresh token, replication has stopped', err)
+        logger.warn('Could not refresh token, replication has stopped', err)
         if (this.options.onSyncError) {
           this.options.onSyncError.call(this, err)
         }
       }
     } else {
-      console.warn('CozyPouchLink: Synchronization error', error)
+      logger.warn('CozyPouchLink: Synchronization error', error)
       if (this.options.onSyncError) {
         this.options.onSyncError.call(this, error)
       }
@@ -213,7 +215,7 @@ class PouchLink extends CozyLink {
 
     if (!this.pouches) {
       if (process.env.NODE_ENV !== 'production') {
-        console.info(
+        logger.info(
           `Tried to access local ${doctype} but Cozy Pouch is not initialized yet. Forwarding the operation to next link`
         )
       }
@@ -223,7 +225,7 @@ class PouchLink extends CozyLink {
 
     if (!this.pouches.isSynced(doctype)) {
       if (process.env.NODE_ENV !== 'production') {
-        console.info(
+        logger.info(
           `Tried to access local ${doctype} but Cozy Pouch is not synced yet. Forwarding the operation to next link`
         )
       }
@@ -233,7 +235,7 @@ class PouchLink extends CozyLink {
     // Forwards if doctype not supported
     if (!this.supportsOperation(operation)) {
       if (process.env.NODE_ENV !== 'production') {
-        console.info(
+        logger.info(
           `The doctype '${doctype}' is not supported. Forwarding the operation to next link`
         )
       }
