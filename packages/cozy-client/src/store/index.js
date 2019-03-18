@@ -95,6 +95,14 @@ export const createStore = () =>
 
 export const getStateRoot = state => state.cozy || {}
 
+export const selectFromState = (state, selectorFn) => {
+  if (typeof selectorFn !== 'function') {
+    throw new Error('Selector must be a function')
+  }
+
+  return selectorFn(getStateRoot(state))
+}
+
 export const getDocumentFromState = (state, doctype, id) =>
   getDocumentFromSlice(getStateRoot(state).documents, doctype, id)
 

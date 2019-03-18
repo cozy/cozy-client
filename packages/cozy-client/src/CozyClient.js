@@ -21,7 +21,8 @@ import {
   receiveMutationResult,
   receiveMutationError,
   getQueryFromState,
-  getDocumentFromState
+  getDocumentFromState,
+  selectFromState
 } from './store'
 import Schema from './Schema'
 import { chain } from './CozyLink'
@@ -587,6 +588,15 @@ class CozyClient {
       return getDocumentFromState(this.store.getState(), type, id)
     } catch (e) {
       console.warn('Could not getDocumentFromState', type, id, e.message)
+      return null
+    }
+  }
+
+  selectFromState(selectorFn) {
+    try {
+      return selectFromState(this.store.getState(), selectorFn)
+    } catch (e) {
+      console.warn('Could not selectFromState')
       return null
     }
   }
