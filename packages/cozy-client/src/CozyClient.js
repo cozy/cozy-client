@@ -466,6 +466,19 @@ class CozyClient {
     // storing the document. This makes the data easier to manipulate for the front-end.
     const relationshipsByDocId = {}
 
+    for (const def of documents) {
+      const docIdAndRels = queryDefToDocIdAndRel.get(def)
+      for (const docIdAndRel of docIdAndRels) {
+        if (docIdAndRel) {
+          const [docId, relName] = docIdAndRel
+          relationshipsByDocId[docId] = relationshipsByDocId[docId] || {}
+          relationshipsByDocId[docId][relName] = responseToRelationship({
+            data: def
+          })
+        }
+      }
+    }
+
     for (const [def, resp] of zip(definitions, responses)) {
       const docIdAndRels = queryDefToDocIdAndRel.get(def)
       for (const docIdAndRel of docIdAndRels) {
