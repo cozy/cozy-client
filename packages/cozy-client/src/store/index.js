@@ -5,7 +5,10 @@ import {
 } from 'redux'
 import thunk from 'redux-thunk'
 
-import documents, { getDocumentFromSlice } from './documents'
+import documents, {
+  getCollectionFromSlice,
+  getDocumentFromSlice
+} from './documents'
 import queries, { getQueryFromSlice, isQueryAction } from './queries'
 import { isMutationAction } from './mutations'
 
@@ -94,6 +97,9 @@ export const createStore = () =>
   )
 
 export const getStateRoot = state => state.cozy || {}
+
+export const getCollectionFromState = (state, doctype) =>
+  getCollectionFromSlice(getStateRoot(state).documents, doctype)
 
 export const getDocumentFromState = (state, doctype, id) =>
   getDocumentFromSlice(getStateRoot(state).documents, doctype, id)

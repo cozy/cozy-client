@@ -105,6 +105,24 @@ export const getDocumentFromSlice = (state = {}, doctype, id) => {
   return state[doctype][id]
 }
 
+export const getCollectionFromSlice = (state = {}, doctype) => {
+  if (!doctype) {
+    throw new Error(
+      'getDocumentFromSlice: Cannot retrieve document with undefined doctype'
+    )
+  }
+  if (!state[doctype]) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn(
+        `getDocumentFromSlice: ${doctype} is absent from the store documents`
+      )
+    }
+    return null
+  }
+
+  return Object.values(state[doctype])
+}
+
 /*
   This method has been created in order to get a returned object 
   in `data` with the full set on information coming potentielly from 
