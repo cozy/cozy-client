@@ -3,7 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="6.14.0"></a>
+     <a name="6.15.0"></a>
+# [6.15.0](https://github.com/cozy/cozy-client/compare/v6.14.0...v6.15.0) (2019-03-19)
+
+
+### Bug Fixes
+
+* **client:** Association query may return same QueryDefinition 📝 ([abee793](https://github.com/cozy/cozy-client/commit/abee793))
+* **client:** Make association query responses unique in included 📝 ([014d056](https://github.com/cozy/cozy-client/commit/014d056))
+* **client:** Make fetchRelationships handle document list 📝 ([bbf8094](https://github.com/cozy/cozy-client/commit/bbf8094))
+
+
+### Features
+
+* **client:** Allow async query method in Assocation ✨ ([529e7f0](https://github.com/cozy/cozy-client/commit/529e7f0))
+
+
+
+
+     <a name="6.14.0"></a>
 # [6.14.0](https://github.com/cozy/cozy-client/compare/v6.13.0...v6.14.0) (2019-03-19)
 
 
@@ -14,7 +32,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-      <a name="6.13.0"></a>
+   <a name="6.13.0"></a>
 # [6.13.0](https://github.com/cozy/cozy-client/compare/v6.12.0...v6.13.0) (2019-03-19)
 
 
@@ -25,7 +43,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="6.12.0"></a>
+  <a name="6.12.0"></a>
 # [6.12.0](https://github.com/cozy/cozy-client/compare/v6.11.1...v6.12.0) (2019-03-18)
 
 
@@ -37,7 +55,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-   <a name="6.11.1"></a>
+<a name="6.11.1"></a>
 ## [6.11.1](https://github.com/cozy/cozy-client/compare/v6.11.0...v6.11.1) (2019-03-14)
 
 
