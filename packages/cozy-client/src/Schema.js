@@ -2,6 +2,7 @@ import keyBy from 'lodash/keyBy'
 import mapValues from 'lodash/mapValues'
 import merge from 'lodash/merge'
 import size from 'lodash/size'
+import intersectionBy from 'lodash/intersectionBy'
 import { resolveClass as resolveAssociationClass } from './associations'
 
 /**
@@ -30,6 +31,28 @@ const normalizeDoctypeSchema = doctypeSchema => {
   }
 }
 
+const assert = (predicate, errorMessage) => {
+  if (!predicate) throw new Error(errorMessage)
+}
+
+const ensureCanBeAdded = (newSchemas, existingSchemas) => {
+  const sameNames = intersectionBy(newSchemas, existingSchemas, x => x.name)
+  assert(
+    sameNames.length === 0,
+    `Duplicated names in schemas being added: ${sameNames.join(', ')}`
+  )
+
+  const sameDoctypes = intersectionBy(
+    newSchemas,
+    existingSchemas,
+    x => x.doctype
+  )
+  assert(
+    sameDoctypes.length === 0,
+    `Duplicated doctypes in schemas being added: ${sameDoctypes.join(', ')}`
+  )
+}
+
 /**
  * Stores information on a particular doctype.
  *
@@ -53,17 +76,26 @@ const normalizeDoctypeSchema = doctypeSchema => {
  */
 class Schema {
   constructor(schemaDefinition = {}, client = null) {
+    this.byDoctype = {}
     this.add(schemaDefinition)
     this.client = client
   }
 
   add(schemaDefinition = {}) {
-    const values = mapValues(schemaDefinition, (obj, name) => ({
-      name,
-      ...normalizeDoctypeSchema(obj)
-    }))
+    const normalizedSchemaDefinition = mapValues(
+      schemaDefinition,
+      (obj, name) => ({
+        name,
+        ...normalizeDoctypeSchema(obj)
+      })
+    )
 
-    this.byDoctype = merge(this.byDoctype || {}, keyBy(values, x => x.doctype))
+    ensureCanBeAdded(
+      Object.values(normalizedSchemaDefinition),
+      Object.values(this.byDoctype)
+    )
+
+    merge(this.byDoctype, keyBy(normalizedSchemaDefinition, x => x.doctype))
   }
 
   /**
