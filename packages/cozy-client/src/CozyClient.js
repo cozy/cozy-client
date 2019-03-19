@@ -430,7 +430,9 @@ class CozyClient {
 
         // Used to reattach responses into the relationships attribute of
         // each document
-        queryDefToDocIdAndRel.set(queryDef, [docId, relName])
+        const docIdAndRels = queryDefToDocIdAndRel.get(queryDef) || []
+        docIdAndRels.push([docId, relName])
+        queryDefToDocIdAndRel.set(queryDef, docIdAndRels)
 
         // Relationships can yield "queries" that are already resolved documents.
         // These do not need to go through the usual link request mechanism.
@@ -463,12 +465,15 @@ class CozyClient {
     // it so that we can fill the `relationships` attribute of each doc before
     // storing the document. This makes the data easier to manipulate for the front-end.
     const relationshipsByDocId = {}
-    for (const [def, resp] of zip(optimizedDefinitions, responses)) {
-      const docIdAndRel = queryDefToDocIdAndRel.get(def)
-      if (docIdAndRel) {
-        const [docId, relName] = docIdAndRel
-        relationshipsByDocId[docId] = relationshipsByDocId[docId] || {}
-        relationshipsByDocId[docId][relName] = responseToRelationship(resp)
+
+    for (const [def, resp] of zip(definitions, responses)) {
+      const docIdAndRels = queryDefToDocIdAndRel.get(def)
+      for (const docIdAndRel of docIdAndRels) {
+        if (docIdAndRel) {
+          const [docId, relName] = docIdAndRel
+          relationshipsByDocId[docId] = relationshipsByDocId[docId] || {}
+          relationshipsByDocId[docId][relName] = responseToRelationship(resp)
+        }
       }
     }
 
