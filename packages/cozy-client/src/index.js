@@ -18,7 +18,8 @@ export {
   HasMany,
   HasOne,
   HasOneInPlace,
-  HasManyInPlace
+  HasManyInPlace,
+  HasManyTriggers
 } from './associations'
 export { dehydrate } from './helpers'
 export { getQueryFromState } from './store'
