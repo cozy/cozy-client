@@ -1,5 +1,6 @@
 import pick from 'lodash/pick'
 import pickBy from 'lodash/pickBy'
+import zip from 'lodash/zip'
 import Association from './Association'
 import HasOne from './HasOne'
 import HasOneInPlace from './HasOneInPlace'
@@ -45,6 +46,47 @@ export const attachRelationships = (response, relationshipsByDocId) => {
       data: attachRelationship(doc, relationshipsByDocId[doc._id])
     }
   }
+}
+
+export const reconstructRelationships = (
+  queryDefToDocIdAndRel,
+  documents,
+  definitions,
+  responses
+) => {
+  // Some relationships have the relationship data on the other side of the
+  // relationship (ex: io.cozy.photos.albums do not have photo inclusion information,
+  // it is on the io.cozy.files side).
+  // Here we take the data received from the relationship queries, and group
+  // it so that we can fill the `relationships` attribute of each doc before
+  // storing the document. This makes the data easier to manipulate for the front-end.
+  const relationshipsByDocId = {}
+
+  for (const def of documents) {
+    const docIdAndRels = queryDefToDocIdAndRel.get(def)
+    for (const docIdAndRel of docIdAndRels) {
+      if (docIdAndRel) {
+        const [docId, relName] = docIdAndRel
+        relationshipsByDocId[docId] = relationshipsByDocId[docId] || {}
+        relationshipsByDocId[docId][relName] = responseToRelationship({
+          data: def
+        })
+      }
+    }
+  }
+
+  for (const [def, resp] of zip(definitions, responses)) {
+    const docIdAndRels = queryDefToDocIdAndRel.get(def)
+    for (const docIdAndRel of docIdAndRels) {
+      if (docIdAndRel) {
+        const [docId, relName] = docIdAndRel
+        relationshipsByDocId[docId] = relationshipsByDocId[docId] || {}
+        relationshipsByDocId[docId][relName] = responseToRelationship(resp)
+      }
+    }
+  }
+
+  return relationshipsByDocId
 }
 
 const aliases = {

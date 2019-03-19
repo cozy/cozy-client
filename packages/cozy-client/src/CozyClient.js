@@ -3,8 +3,8 @@ import { REGISTRATION_ABORT } from './const'
 import StackLink from './StackLink'
 import { create as createAssociation } from './associations'
 import {
-  responseToRelationship,
-  attachRelationships
+  attachRelationships,
+  reconstructRelationships
 } from './associations/helpers'
 import { dehydrate } from './helpers'
 import { QueryDefinition, Mutations } from './queries/dsl'
@@ -30,7 +30,6 @@ import mapValues from 'lodash/mapValues'
 import fromPairs from 'lodash/fromPairs'
 import flatten from 'lodash/flatten'
 import uniqBy from 'lodash/uniqBy'
-import zip from 'lodash/zip'
 import get from 'lodash/get'
 
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
@@ -458,37 +457,12 @@ class CozyClient {
       .concat(uniqueDocuments)
       .filter(Boolean)
 
-    // Some relationships have the relationship data on the other side of the
-    // relationship (ex: io.cozy.photos.albums do not have photo inclusion information,
-    // it is on the io.cozy.files side).
-    // Here we take the data received from the relationship queries, and group
-    // it so that we can fill the `relationships` attribute of each doc before
-    // storing the document. This makes the data easier to manipulate for the front-end.
-    const relationshipsByDocId = {}
-
-    for (const def of documents) {
-      const docIdAndRels = queryDefToDocIdAndRel.get(def)
-      for (const docIdAndRel of docIdAndRels) {
-        if (docIdAndRel) {
-          const [docId, relName] = docIdAndRel
-          relationshipsByDocId[docId] = relationshipsByDocId[docId] || {}
-          relationshipsByDocId[docId][relName] = responseToRelationship({
-            data: def
-          })
-        }
-      }
-    }
-
-    for (const [def, resp] of zip(definitions, responses)) {
-      const docIdAndRels = queryDefToDocIdAndRel.get(def)
-      for (const docIdAndRel of docIdAndRels) {
-        if (docIdAndRel) {
-          const [docId, relName] = docIdAndRel
-          relationshipsByDocId[docId] = relationshipsByDocId[docId] || {}
-          relationshipsByDocId[docId][relName] = responseToRelationship(resp)
-        }
-      }
-    }
+    const relationshipsByDocId = reconstructRelationships(
+      queryDefToDocIdAndRel,
+      documents,
+      definitions,
+      responses
+    )
 
     return {
       ...attachRelationships(response, relationshipsByDocId),
