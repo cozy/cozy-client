@@ -771,4 +771,118 @@ describe('CozyClient', () => {
       expect(doc).toBe(null)
     })
   })
+
+  describe('fetchRelationships', () => {
+    const expectedRelationShipsData = {
+      data: [
+        {
+          ...TODO_1,
+          relationships: {
+            fake: {
+              data: {
+                _id: 'ab794478d016457e99bd6241ff6c0d32',
+                _type: 'io.cozy.fake'
+              }
+            }
+          }
+        },
+        {
+          ...TODO_2,
+          relationships: {
+            fake: {
+              data: {
+                _id: 'ab794478d016457e99bd6241ff6c0d32',
+                _type: 'io.cozy.fake'
+              }
+            }
+          }
+        }
+      ],
+      included: [
+        {
+          _id: 'ab794478d016457e99bd6241ff6c0d32',
+          _type: 'io.cozy.fake'
+        }
+      ]
+    }
+
+    it('should handle async queries in Associations', async () => {
+      jest.spyOn(client.chain, 'request').mockResolvedValue({
+        data: {
+          _id: 'ab794478d016457e99bd6241ff6c0d32',
+          _type: 'io.cozy.fake'
+        }
+      })
+
+      class FakeHasMany extends Association {
+        static async query() {
+          return Promise.resolve(new QueryDefinition())
+        }
+      }
+
+      const response = { data: [TODO_1, TODO_2] }
+
+      const relationshipsByName = {
+        fake: {
+          type: FakeHasMany
+        }
+      }
+
+      expect(
+        await client.fetchRelationships(response, relationshipsByName)
+      ).toEqual(expectedRelationShipsData)
+    })
+
+    it('should use same QueryDefinition from Associations', async () => {
+      jest.spyOn(client.chain, 'request').mockResolvedValue({
+        data: {
+          _id: 'ab794478d016457e99bd6241ff6c0d32',
+          _type: 'io.cozy.fake'
+        }
+      })
+
+      const sameQueryDefinitionForEveryone = new QueryDefinition()
+
+      class FakeHasMany extends Association {
+        static query() {
+          return sameQueryDefinitionForEveryone
+        }
+      }
+
+      const response = { data: [TODO_1, TODO_2] }
+
+      const relationshipsByName = {
+        fake: {
+          type: FakeHasMany
+        }
+      }
+
+      expect(
+        await client.fetchRelationships(response, relationshipsByName)
+      ).toEqual(expectedRelationShipsData)
+    })
+
+    it('should handle query returning documents', async () => {
+      class FakeHasMany extends Association {
+        static query() {
+          return {
+            _id: 'ab794478d016457e99bd6241ff6c0d32',
+            _type: 'io.cozy.fake'
+          }
+        }
+      }
+
+      const response = { data: [TODO_1, TODO_2] }
+
+      const relationshipsByName = {
+        fake: {
+          type: FakeHasMany
+        }
+      }
+
+      expect(
+        await client.fetchRelationships(response, relationshipsByName)
+      ).toEqual(expectedRelationShipsData)
+    })
+  })
 })
