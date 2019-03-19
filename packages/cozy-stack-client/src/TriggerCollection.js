@@ -38,11 +38,8 @@ class TriggerCollection {
    * @throws {FetchError}
    */
   async all(options = {}) {
-    const url = uri`/jobs/triggers`
-    const path = querystring.buildURL(url, options)
-
     try {
-      const resp = await this.stackClient.fetchJSON('GET', path)
+      const resp = await this.stackClient.fetchJSON('GET', `/jobs/triggers`)
 
       return {
         data: resp.data.map(row => normalizeTrigger(row, TRIGGERS_DOCTYPE)),
