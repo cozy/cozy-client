@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="6.12.0"></a>
+       <a name="6.13.0"></a>
+# [6.13.0](https://github.com/cozy/cozy-client/compare/v6.12.0...v6.13.0) (2019-03-19)
+
+
+### Features
+
+* **client:** Add getCollectionFromState() ✨ ([50ab811](https://github.com/cozy/cozy-client/commit/50ab811))
+
+
+
+
+       <a name="6.12.0"></a>
 # [6.12.0](https://github.com/cozy/cozy-client/compare/v6.11.1...v6.12.0) (2019-03-18)
 
 
@@ -15,7 +26,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-      <a name="6.11.1"></a>
+     <a name="6.11.1"></a>
 ## [6.11.1](https://github.com/cozy/cozy-client/compare/v6.11.0...v6.11.1) (2019-03-14)
 
 
@@ -23,7 +34,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package undefined
 
-   <a name="6.11.0"></a>
+  <a name="6.11.0"></a>
 # [6.11.0](https://github.com/cozy/cozy-client/compare/v6.10.0...v6.11.0) (2019-03-14)
 
 
@@ -34,7 +45,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
- <a name="6.10.0"></a>
+<a name="6.10.0"></a>
 # [6.10.0](https://github.com/cozy/cozy-client/compare/v6.9.0...v6.10.0) (2019-03-14)
 
 
