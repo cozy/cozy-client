@@ -21,6 +21,7 @@ import {
   receiveMutationResult,
   receiveMutationError,
   getQueryFromState,
+  getCollectionFromState,
   getDocumentFromState
 } from './store'
 import Schema from './Schema'
@@ -580,6 +581,15 @@ class CozyClient {
       }
     }
     return this.storeAccessors
+  }
+
+  getCollectionFromState(type) {
+    try {
+      return getCollectionFromState(this.store.getState(), type)
+    } catch (e) {
+      console.warn('Could not getCollectionFromState', type, e.message)
+      return null
+    }
   }
 
   getDocumentFromState(type, id) {

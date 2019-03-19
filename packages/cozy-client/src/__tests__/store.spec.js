@@ -3,6 +3,7 @@ import sortBy from 'lodash/sortBy'
 
 import reducer, {
   initQuery,
+  getCollectionFromState,
   getDocumentFromState,
   getQueryFromStore,
   receiveQueryResult,
@@ -175,6 +176,30 @@ describe('Store', () => {
         getDocumentFromState(store.getState(), 'io.cozy.files', FILE_1._id)
           .label
       ).toBe(FILE_1.label)
+    })
+  })
+
+  describe('getCollectionFromState', () => {
+    it('should return null when the store is empty', () => {
+      const spy = jest.spyOn(global.console, 'warn').mockReturnValue(jest.fn())
+      expect(getCollectionFromState(store.getState(), 'io.cozy.todos')).toBe(
+        null
+      )
+      spy.mockRestore()
+    })
+
+    it('should return all documents for the given doctype', () => {
+      store.dispatch(
+        receiveQueryResult('allTodos', {
+          data: [TODO_1, TODO_2],
+          meta: { count: 2 },
+          skip: 0,
+          next: false
+        })
+      )
+      expect(getCollectionFromState(store.getState(), 'io.cozy.todos')).toEqual(
+        [TODO_1, TODO_2]
+      )
     })
   })
 
