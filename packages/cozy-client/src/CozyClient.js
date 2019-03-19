@@ -31,7 +31,6 @@ import fromPairs from 'lodash/fromPairs'
 import flatten from 'lodash/flatten'
 import uniqBy from 'lodash/uniqBy'
 import zip from 'lodash/zip'
-import forEach from 'lodash/forEach'
 import get from 'lodash/get'
 
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
@@ -420,9 +419,13 @@ class CozyClient {
     const documents = []
     const definitions = []
 
-    responseDocs.forEach(doc => {
-      return forEach(relationshipsByName, (relationship, relName) => {
-        const queryDef = relationship.type.query(doc, this, relationship)
+    for (const doc of responseDocs) {
+      for (const relName in relationshipsByName) {
+        const relationship = relationshipsByName[relName]
+        const queryResponse = relationship.type.query(doc, this, relationship)
+        const queryDef =
+          queryResponse instanceof Promise ? await queryResponse : queryResponse
+
         const docId = doc._id
 
         // Used to reattach responses into the relationships attribute of
@@ -436,8 +439,8 @@ class CozyClient {
         } else {
           documents.push(queryDef)
         }
-      })
-    })
+      }
+    }
 
     // Definitions can be in optimized/regrouped in case of HasMany relationships.
     const optimizedDefinitions = optimizeQueryDefinitions(definitions)

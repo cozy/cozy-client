@@ -771,4 +771,75 @@ describe('CozyClient', () => {
       expect(doc).toBe(null)
     })
   })
+
+  describe('fetchRelationships', () => {
+    it('should handle async queries in Associations', async () => {
+      jest.spyOn(client.chain, 'request').mockResolvedValue({
+        data: {
+          _id: 'ab794478d016457e99bd6241ff6c0d32',
+          _type: 'io.cozy.fake'
+        },
+        meta: { count: 1 }
+      })
+
+      class FakeHasMany extends Association {
+        static async query() {
+          return Promise.resolve(new QueryDefinition())
+        }
+      }
+
+      const response = { data: [TODO_1, TODO_2] }
+
+      const relationshipsByName = {
+        fake: {
+          type: FakeHasMany
+        }
+      }
+
+      expect(
+        await client.fetchRelationships(response, relationshipsByName)
+      ).toEqual({
+        data: [
+          {
+            ...TODO_1,
+            relationships: {
+              fake: {
+                data: {
+                  _id: 'ab794478d016457e99bd6241ff6c0d32',
+                  _type: 'io.cozy.fake'
+                },
+                meta: {
+                  count: 1
+                }
+              }
+            }
+          },
+          {
+            ...TODO_2,
+            relationships: {
+              fake: {
+                data: {
+                  _id: 'ab794478d016457e99bd6241ff6c0d32',
+                  _type: 'io.cozy.fake'
+                },
+                meta: {
+                  count: 1
+                }
+              }
+            }
+          }
+        ],
+        included: [
+          {
+            _id: 'ab794478d016457e99bd6241ff6c0d32',
+            _type: 'io.cozy.fake'
+          },
+          {
+            _id: 'ab794478d016457e99bd6241ff6c0d32',
+            _type: 'io.cozy.fake'
+          }
+        ]
+      })
+    })
+  })
 })
