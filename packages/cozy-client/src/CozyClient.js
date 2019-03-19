@@ -450,7 +450,9 @@ class CozyClient {
 
     // "Included" documents will be stored in the `documents` store
     const uniqueDocuments = uniqBy(flatten(documents), '_id')
-    const included = flatten(responses.map(r => r.included || r.data))
+    const included = uniqBy(
+      flatten(responses.map(r => r.included || r.data), '_id')
+    )
       .concat(uniqueDocuments)
       .filter(Boolean)
 

@@ -833,10 +833,6 @@ describe('CozyClient', () => {
           {
             _id: 'ab794478d016457e99bd6241ff6c0d32',
             _type: 'io.cozy.fake'
-          },
-          {
-            _id: 'ab794478d016457e99bd6241ff6c0d32',
-            _type: 'io.cozy.fake'
           }
         ]
       })
