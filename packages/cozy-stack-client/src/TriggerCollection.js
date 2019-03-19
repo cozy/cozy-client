@@ -45,7 +45,7 @@ class TriggerCollection {
       const resp = await this.stackClient.fetchJSON('GET', path)
 
       return {
-        data: resp.data.map(row => normalizeDoc(row, TRIGGERS_DOCTYPE)),
+        data: resp.data.map(row => normalizeTrigger(row, TRIGGERS_DOCTYPE)),
         meta: { count: resp.data.length },
         next: false,
         skip: 0
