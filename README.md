@@ -17,6 +17,7 @@
 - [How-to integrate with an existing store ?](docs/how-tos.md#how-to-integrate-with-an-existing-store-)
 - [How to connect to the documents store declaratively ?](docs/how-tos.md#how-to-connect-to-the-documents-store-declaratively-)
 - [How to provide a mutation to a component ?](docs/how-tos.md#how-to-provide-a-mutation-to-a-component-)
+- [How to activate logging ?](docs/how-tos.md#how-to-activate-logging-)
 
 ### Advanced
 

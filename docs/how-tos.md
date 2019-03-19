@@ -4,6 +4,7 @@
 - [How to connect to the documents store declaratively ?](#how-to-connect-to-the-documents-store-declaratively-)
 - [How to provide a mutation to a component ?](#how-to-provide-a-mutation-to-a-component-)
 - [How to specify a schema ?](#how-to-specify-a-schema-)
+- [How to activate logging ?](#how-to-activate-logging-)
 
 <!-- /MarkdownTOC -->
 
@@ -244,3 +245,23 @@ const client = new CozyClient({
 ### Validation
 
 Validation is not yet implemented in cozy-client.
+
+## How to activate logging ?
+
+Cozy-client libs use [`minilog`](https://www.npmjs.com/package/minilog) for internal logging.
+If you need to see those logs, you need to tell minilog to show them, they are filtered by
+default. Each lib has a different namespace that can be enabled/disabled.
+
+For example if you want to allow `cozy-pouch-link` logs at `debug` level, you can do:
+
+```
+require('minilog').suggest.allow('cozy-pouch-link', 'debug')
+```
+
+If you want to see everything :
+
+```
+require('minilog').suggest.clear()
+```
+
+More info on [minilog docs](http://mixu.net/minilog/filter.html#filters).

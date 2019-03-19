@@ -7,6 +7,7 @@ import zip from 'lodash/zip'
 import * as promises from './promises'
 import { default as helpers } from './helpers'
 import { isMobileApp } from 'cozy-device-helper'
+import logger from './logger'
 
 const { isDesignDocument, isDeletedDocument } = helpers
 const DEFAULT_DELAY = 30 * 1000
@@ -51,7 +52,7 @@ const startReplication = (pouch, getReplicationURL) => {
     replication.on('error', reject).on('complete', () => {
       const end = new Date()
       if (process.env.NODE_ENV !== 'production') {
-        console.info(
+        logger.info(
           `PouchManager: replication for ${url} took ${humanTimeDelta(
             end - start
           )}`
@@ -149,7 +150,7 @@ class PouchManager {
       Object.values(this.pouches).map(pouch => pouch.info())
     ).then(() => {
       if (process.env.NODE_ENV !== 'production') {
-        console.info('PouchManager: ensure databases exist done')
+        logger.info('PouchManager: ensure databases exist done')
       }
       this.ensureDatabasesExistDone = true
     })
@@ -164,7 +165,7 @@ class PouchManager {
     }
 
     if (process.env.NODE_ENV !== 'production') {
-      console.info('PouchManager: Start replication loop')
+      logger.info('PouchManager: Start replication loop')
     }
 
     const delay = this.options.replicationDelay || DEFAULT_DELAY
@@ -173,7 +174,7 @@ class PouchManager {
         return this.replicateOnce()
       } else {
         if (process.env.NODE_ENV !== 'production') {
-          console.info(
+          logger.info(
             'PouchManager: The device is offline so the replication has been skipped'
           )
         }
@@ -189,7 +190,7 @@ class PouchManager {
   stopReplicationLoop() {
     if (this._stopReplicationLoop) {
       if (process.env.NODE_ENV !== 'production') {
-        console.info('PouchManager: Stop replication loop')
+        logger.info('PouchManager: Stop replication loop')
       }
 
       this.cancelCurrentReplications()
@@ -201,12 +202,12 @@ class PouchManager {
   /** Starts replication */
   async replicateOnce() {
     if (process.env.NODE_ENV !== 'production') {
-      console.info('PouchManager: Starting replication iteration')
+      logger.info('PouchManager: Starting replication iteration')
     }
 
     this.replications = map(this.pouches, (pouch, doctype) => {
       if (process.env.NODE_ENV !== 'production') {
-        console.info('PouchManager: Starting replication for ' + doctype)
+        logger.info('PouchManager: Starting replication for ' + doctype)
       }
 
       const getReplicationURL = () => this.getReplicationURL(doctype)
@@ -214,10 +215,7 @@ class PouchManager {
         this.addSyncedDoctype(doctype)
 
         if (process.env.NODE_ENV !== 'production') {
-          console.log(
-            'PouchManager: Replication for ' + doctype + ' ended',
-            res
-          )
+          logger.log('PouchManager: Replication for ' + doctype + ' ended', res)
         }
 
         return res
@@ -229,7 +227,7 @@ class PouchManager {
       const res = await Promise.all(promises)
 
       if (process.env.NODE_ENV !== 'production') {
-        console.info('PouchManager: Replication ended')
+        logger.info('PouchManager: Replication ended')
       }
 
       if (this.options.onSync) {
@@ -241,7 +239,7 @@ class PouchManager {
       // On error, replication stops, it needs to be started
       // again manually by the owner of PouchManager
       this.stopReplicationLoop()
-      console.warn('PouchManager: Error during replication', err)
+      logger.warn('PouchManager: Error during replication', err)
       if (this.options.onError) {
         this.options.onError(err)
       }
@@ -250,7 +248,7 @@ class PouchManager {
 
   cancelCurrentReplications() {
     if (!this.replications) {
-      console.warn('PouchManager: No current replications')
+      logger.warn('PouchManager: No current replications')
       return
     }
     Object.values(this.replications).forEach(replication => {
