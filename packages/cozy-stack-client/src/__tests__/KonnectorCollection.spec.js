@@ -1,7 +1,8 @@
 jest.mock('../CozyStackClient')
 
 import CozyStackClient from '../CozyStackClient'
-import KonnectorCollection from '../KonnectorCollection'
+import DocumentCollection from '../KonnectorCollection'
+import KonnectorCollection, { KONNECTORS_DOCTYPE } from '../KonnectorCollection'
 import ALL_KONNECTORS_RESPONSE from './fixtures/konnectors.json'
 
 const FIXTURES = {
@@ -17,6 +18,10 @@ describe(`KonnectorCollection`, () => {
       client.fetchJSON.mockReturnValue(
         Promise.resolve(FIXTURES.ALL_KONNECTORS_RESPONSE)
       )
+    })
+
+    afterEach(() => {
+      jest.restoreAllMocks()
     })
 
     it('should call the right route', async () => {
@@ -36,11 +41,17 @@ describe(`KonnectorCollection`, () => {
   })
 
   describe('find', () => {
-    it('throw error', async () => {
+    it('should rely internally on DocumentCollection.find()', async () => {
+      jest
+        .spyOn(DocumentCollection.prototype, 'find')
+        .mockImplementation(() => {})
+
       const collection = new KonnectorCollection(client)
-      expect(collection.find()).rejects.toThrowError(
-        'find() method is not yet implemented'
-      )
+      await collection.find({ slug: 'test' })
+
+      expect(DocumentCollection.prototype.find).toHaveBeenLastCalledWith({
+        slug: 'test'
+      })
     })
   })
 
