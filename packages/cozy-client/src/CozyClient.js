@@ -82,6 +82,10 @@ class CozyClient {
     this.schema = new Schema(schema, this.getStackClient())
   }
 
+  addSchema(schemaDefinition) {
+    this.schema.add(schemaDefinition)
+  }
+
   registerClientOnLinks() {
     for (const link of this.links) {
       if (link.registerClient) {

@@ -1,5 +1,6 @@
 import keyBy from 'lodash/keyBy'
 import mapValues from 'lodash/mapValues'
+import merge from 'lodash/merge'
 import size from 'lodash/size'
 import { resolveClass as resolveAssociationClass } from './associations'
 
@@ -52,13 +53,18 @@ const normalizeDoctypeSchema = doctypeSchema => {
  */
 class Schema {
   constructor(schemaDefinition = {}, client = null) {
+    this.add(schemaDefinition)
+    this.client = client
+  }
+
+  add(schemaDefinition = {}) {
     const values = mapValues(schemaDefinition, (obj, name) => ({
       name,
       ...normalizeDoctypeSchema(obj)
     }))
-    this.client = client
-    this.byName = keyBy(values, x => x.name)
-    this.byDoctype = keyBy(values, x => x.doctype)
+
+    this.byName = merge(this.byName || {}, keyBy(values, x => x.name))
+    this.byDoctype = merge(this.byDoctype || {}, keyBy(values, x => x.doctype))
   }
 
   /**
