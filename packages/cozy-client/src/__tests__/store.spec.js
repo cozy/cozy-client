@@ -3,6 +3,7 @@ import sortBy from 'lodash/sortBy'
 
 import reducer, {
   initQuery,
+  getCollectionFromState,
   getDocumentFromState,
   getQueryFromStore,
   receiveQueryResult,
@@ -175,6 +176,57 @@ describe('Store', () => {
         getDocumentFromState(store.getState(), 'io.cozy.files', FILE_1._id)
           .label
       ).toBe(FILE_1.label)
+    })
+  })
+
+  describe('getCollectionFromState', () => {
+    it('should return null when the store is empty', () => {
+      const spy = jest.spyOn(global.console, 'warn').mockReturnValue(jest.fn())
+      expect(getCollectionFromState(store.getState(), 'io.cozy.todos')).toBe(
+        null
+      )
+      spy.mockRestore()
+    })
+
+    it('should return document list for given doctype', () => {
+      store.dispatch(
+        receiveQueryResult('allTodos', {
+          data: [TODO_1, TODO_2],
+          meta: { count: 2 },
+          skip: 0,
+          next: false
+        })
+      )
+      expect(getCollectionFromState(store.getState(), 'io.cozy.todos')).toEqual(
+        [TODO_1, TODO_2]
+      )
+    })
+
+    it('should return a list containing a newly created doc received in a mutation result', () => {
+      store.dispatch(
+        receiveMutationResult('foo', {
+          data: [TODO_1]
+        })
+      )
+      expect(getCollectionFromState(store.getState(), 'io.cozy.todos')).toEqual(
+        [TODO_1]
+      )
+    })
+
+    it('should return an updated rev of a doc received in a mutation result', () => {
+      store.dispatch(
+        receiveMutationResult('foo', {
+          data: [TODO_1]
+        })
+      )
+      store.dispatch(
+        receiveMutationResult('bar', {
+          data: [{ ...TODO_1, label: 'Buy croissants' }]
+        })
+      )
+      expect(getCollectionFromState(store.getState(), 'io.cozy.todos')).toEqual(
+        [{ ...TODO_1, label: 'Buy croissants' }]
+      )
     })
   })
 
