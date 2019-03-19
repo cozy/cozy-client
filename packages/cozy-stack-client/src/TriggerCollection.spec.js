@@ -83,4 +83,18 @@ describe('TriggerCollection', () => {
       }
     })
   })
+
+  describe('find', () => {
+    it('should throw if no worker in selector', async () => {
+      await expect(collection.find()).rejects.toThrowError()
+    })
+
+    it('should call /jobs/triggers route', async () => {
+      await collection.find({ worker: 'thumbnail' })
+      expect(stackClient.fetchJSON).toHaveBeenLastCalledWith(
+        'GET',
+        '/jobs/triggers?Worker=thumbnail'
+      )
+    })
+  })
 })
