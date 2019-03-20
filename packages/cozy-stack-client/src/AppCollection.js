@@ -39,6 +39,11 @@ class AppCollection {
   }
 
   find(...args) {
+    console.warn(
+      `find() method for doctype '${
+        this.doctype
+      }' relies internally on DocumentCollection.find() and may not fetch all expected data.`
+    )
     return DocumentCollection.prototype.find.call(this, ...args)
   }
 
