@@ -1,10 +1,10 @@
-import { normalizeDoc } from './DocumentCollection'
+import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 import { uri } from './utils'
 
 export const APPS_DOCTYPE = 'io.cozy.apps'
 
-export const normalizeApp = app => {
-  return { ...app, ...normalizeDoc(app, APPS_DOCTYPE), ...app.attributes }
+export const normalizeApp = (app, doctype) => {
+  return { ...app, ...normalizeDoc(app, doctype), ...app.attributes }
 }
 
 /**
@@ -12,6 +12,7 @@ export const normalizeApp = app => {
  */
 class AppCollection {
   endpoint = '/apps/'
+  doctype = APPS_DOCTYPE
 
   constructor(stackClient) {
     this.stackClient = stackClient
@@ -28,7 +29,7 @@ class AppCollection {
   async all() {
     const resp = await this.stackClient.fetchJSON('GET', this.endpoint)
     return {
-      data: resp.data.map(app => normalizeApp(app)),
+      data: resp.data.map(app => normalizeApp(app, this.doctype)),
       meta: {
         count: resp.meta.count
       },
@@ -37,8 +38,13 @@ class AppCollection {
     }
   }
 
-  async find() {
-    throw new Error('find() method is not yet implemented')
+  find(...args) {
+    console.warn(
+      `find() method for doctype '${
+        this.doctype
+      }' relies internally on DocumentCollection.find() and may not fetch all expected data.`
+    )
+    return DocumentCollection.prototype.find.call(this, ...args)
   }
 
   async get() {
