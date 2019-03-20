@@ -63,7 +63,6 @@ class Schema {
       ...normalizeDoctypeSchema(obj)
     }))
 
-    this.byName = merge(this.byName || {}, keyBy(values, x => x.name))
     this.byDoctype = merge(this.byDoctype || {}, keyBy(values, x => x.doctype))
   }
 
