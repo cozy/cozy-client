@@ -77,11 +77,13 @@ export const reconstructRelationships = (
 
   for (const [def, resp] of zip(definitions, responses)) {
     const docIdAndRels = queryDefToDocIdAndRel.get(def)
-    for (const docIdAndRel of docIdAndRels) {
-      if (docIdAndRel) {
-        const [docId, relName] = docIdAndRel
-        relationshipsByDocId[docId] = relationshipsByDocId[docId] || {}
-        relationshipsByDocId[docId][relName] = responseToRelationship(resp)
+    if(docIdAndRels) {
+      for (const docIdAndRel of docIdAndRels) {
+        if (docIdAndRel) {
+          const [docId, relName] = docIdAndRel
+          relationshipsByDocId[docId] = relationshipsByDocId[docId] || {}
+          relationshipsByDocId[docId][relName] = responseToRelationship(resp)
+        }
       }
     }
   }

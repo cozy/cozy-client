@@ -465,7 +465,7 @@ class CozyClient {
     const relationshipsByDocId = reconstructRelationships(
       queryDefToDocIdAndRel,
       documents,
-      definitions,
+      optimizedDefinitions,
       responses
     )
 
