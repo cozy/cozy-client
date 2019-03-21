@@ -2,7 +2,7 @@
 
 <dl>
 <dt><a href="#AppCollection">AppCollection</a></dt>
-<dd><p>Implements <code>DocumentCollection</code> API along with specific methods for <code>io.cozy.apps</code>.</p>
+<dd><p>Extends <code>DocumentCollection</code> API along with specific methods for <code>io.cozy.apps</code>.</p>
 </dd>
 <dt><a href="#CozyStackClient">CozyStackClient</a></dt>
 <dd><p>Main API against the <code>cozy-stack</code> server.</p>
@@ -50,7 +50,7 @@ through OAuth.</p>
 <a name="AppCollection"></a>
 
 ## AppCollection
-Implements `DocumentCollection` API along with specific methods for `io.cozy.apps`.
+Extends `DocumentCollection` API along with specific methods for `io.cozy.apps`.
 
 **Kind**: global class  
 <a name="AppCollection+all"></a>
