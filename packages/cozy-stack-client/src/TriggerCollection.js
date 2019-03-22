@@ -38,14 +38,11 @@ class TriggerCollection {
    * @throws {FetchError}
    */
   async all(options = {}) {
-    const url = uri`/jobs/triggers`
-    const path = querystring.buildURL(url, options)
-
     try {
-      const resp = await this.stackClient.fetchJSON('GET', path)
+      const resp = await this.stackClient.fetchJSON('GET', `/jobs/triggers`)
 
       return {
-        data: resp.data.map(row => normalizeDoc(row, TRIGGERS_DOCTYPE)),
+        data: resp.data.map(row => normalizeTrigger(row, TRIGGERS_DOCTYPE)),
         meta: { count: resp.data.length },
         next: false,
         skip: 0
@@ -77,8 +74,26 @@ class TriggerCollection {
     throw new Error('destroy() method is not available for triggers')
   }
 
-  async find() {
-    throw new Error('find() method is not yet implemented')
+  async find(selector = {}) {
+    if (!selector.worker) {
+      throw new Error('TriggerCollection can only find triggers with worker')
+    }
+
+    // @see https://github.com/cozy/cozy-stack/blob/master/docs/jobs.md#get-jobstriggers
+    const url = `/jobs/triggers?Worker=${selector.worker}`
+
+    try {
+      const resp = await this.stackClient.fetchJSON('GET', url)
+
+      return {
+        data: resp.data.map(row => normalizeTrigger(row, TRIGGERS_DOCTYPE)),
+        meta: { count: resp.data.length },
+        next: false,
+        skip: 0
+      }
+    } catch (error) {
+      return dontThrowNotFoundError(error)
+    }
   }
 
   async get() {

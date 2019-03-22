@@ -20,6 +20,9 @@ following the JSON API spec.</p>
 <dd><p>Used when related documents are stored directly under the attribute with
 only the ids.</p>
 </dd>
+<dt><a href="#HasManyTriggers">HasManyTriggers</a> ⇐ <code><a href="#HasMany">HasMany</a></code></dt>
+<dd><p>Association used for konnectors to retrieve all their related triggers.</p>
+</dd>
 <dt><a href="#CozyClient">CozyClient</a></dt>
 <dd><p>Responsible for</p>
 <ul>
@@ -52,6 +55,15 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
   }
 }, cozyStackClient)
 </code></pre>
+</dd>
+</dl>
+
+## Constants
+
+<dl>
+<dt><a href="#fetchKonnectorTriggers">fetchKonnectorTriggers</a></dt>
+<dd><p>Memoize the fetch promise. For now we are only fetching it once but it will
+evolve in the future.</p>
 </dd>
 </dl>
 
@@ -403,6 +415,41 @@ const todo = {
 }
 ```
 
+<a name="HasManyTriggers"></a>
+
+## HasManyTriggers ⇐ [<code>HasMany</code>](#HasMany)
+Association used for konnectors to retrieve all their related triggers.
+
+**Kind**: global class  
+**Extends**: [<code>HasMany</code>](#HasMany)  
+
+* [HasManyTriggers](#HasManyTriggers) ⇐ [<code>HasMany</code>](#HasMany)
+    * _instance_
+        * [.addById()](#HasMany+addById)
+    * _static_
+        * [.query()](#HasManyTriggers.query)
+
+<a name="HasMany+addById"></a>
+
+### hasManyTriggers.addById()
+Add a referenced document by id. You need to call save()
+in order to synchronize your document with the store.
+
+**Kind**: instance method of [<code>HasManyTriggers</code>](#HasManyTriggers)  
+**Todo**
+
+- [ ] We shouldn't create the array of relationship manually since
+it'll not be present in the store as well.
+We certainly should use something like `updateRelationship`
+
+<a name="HasManyTriggers.query"></a>
+
+### HasManyTriggers.query()
+In this association the query is special, we need to fetch all the triggers
+having for the 'konnector' worker, and then filter them based on their
+`message.konnector` attribute
+
+**Kind**: static method of [<code>HasManyTriggers</code>](#HasManyTriggers)  
 <a name="CozyClient"></a>
 
 ## CozyClient
@@ -749,6 +796,13 @@ Returns the relationship for a given doctype/name
 Validates a document considering the descriptions in schema.attributes.
 
 **Kind**: instance method of [<code>Schema</code>](#Schema)  
+<a name="fetchKonnectorTriggers"></a>
+
+## fetchKonnectorTriggers
+Memoize the fetch promise. For now we are only fetching it once but it will
+evolve in the future.
+
+**Kind**: global constant  
 <a name="withClient"></a>
 
 ## withClient(Component) ⇒ <code>function</code>
