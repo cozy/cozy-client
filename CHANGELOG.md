@@ -3,7 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-       <a name="6.17.0"></a>
+      <a name="6.18.0"></a>
+# [6.18.0](https://github.com/cozy/cozy-client/compare/v6.17.0...v6.18.0) (2019-03-22)
+
+
+### Bug Fixes
+
+* **client:** Make TriggerCollection.all() return all 📝 ([ee904c4](https://github.com/cozy/cozy-client/commit/ee904c4))
+* **client:** Normalize trigger as expected 📝 ([2561588](https://github.com/cozy/cozy-client/commit/2561588))
+
+
+### Features
+
+* **client:** Add HasManyTriggers association ✨ ([0f39c37](https://github.com/cozy/cozy-client/commit/0f39c37))
+* **client:** Implement find() method in TriggerCollection ✨ ([8787a79](https://github.com/cozy/cozy-client/commit/8787a79))
+
+
+
+
+      <a name="6.17.0"></a>
 # [6.17.0](https://github.com/cozy/cozy-client/compare/v6.16.0...v6.17.0) (2019-03-21)
 
 
@@ -20,7 +38,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-       <a name="6.16.0"></a>
+     <a name="6.16.0"></a>
 # [6.16.0](https://github.com/cozy/cozy-client/compare/v6.15.0...v6.16.0) (2019-03-20)
 
 
@@ -32,7 +50,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="6.15.0"></a>
+   <a name="6.15.0"></a>
 # [6.15.0](https://github.com/cozy/cozy-client/compare/v6.14.0...v6.15.0) (2019-03-19)
 
 
@@ -50,7 +68,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-  <a name="6.14.0"></a>
+<a name="6.14.0"></a>
 # [6.14.0](https://github.com/cozy/cozy-client/compare/v6.13.0...v6.14.0) (2019-03-19)
 
 
