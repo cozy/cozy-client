@@ -7,28 +7,6 @@ import { QueryDefinition } from './dsl'
 const isIdQuery = query => query.id || query.ids
 
 /**
- * Optimize queries on a single doctype
- *
- * @param  {QueryDefinition[]} queries - Queries of a same doctype
- * @return {QueryDefinition[]} Optimized queries
- * @private
- */
-const optimizeDoctypeQueries = queries => {
-  const { idQueries = [], others = [] } = groupBy(
-    queries,
-    q => (isIdQuery(q) ? 'idQueries' : 'others')
-  )
-  const groupedIdQueries =
-    idQueries.length > 0
-      ? new QueryDefinition({
-          doctype: queries[0].doctype,
-          ids: uniq(flatten(idQueries.map(q => q.id || q.ids)))
-        })
-      : []
-  return others.concat(groupedIdQueries)
-}
-
-/**
  * Reduce the number of queries used to fetch documents.
  *
  * - Deduplication of queries
@@ -39,8 +17,32 @@ const optimizeDoctypeQueries = queries => {
  * @private
  */
 const optimizeQueries = queries => {
+  console.debug('optimizeQueries', { queries })
+  const optimizedQueryMap = new Map()
   const byDoctype = groupBy(queries, q => q.doctype)
-  return flatten(Object.values(mapValues(byDoctype, optimizeDoctypeQueries)))
+
+  for (const queries of Object.values(byDoctype)) {
+    const { idQueries = [], others = [] } = groupBy(
+      queries,
+      q => (isIdQuery(q) ? 'idQueries' : 'others')
+    )
+
+    const groupedIdQueries =
+      idQueries.length > 0
+        ? new QueryDefinition({
+            doctype: queries[0].doctype,
+            ids: uniq(flatten(idQueries.map(q => q.id || q.ids)))
+          })
+        : []
+
+    optimizedQueryMap.set(groupedIdQueries, idQueries)
+
+    for (const query in others) {
+      optimizedQueryMap.set(query, [query])
+    }
+  }
+
+  return optimizedQueryMap
 }
 
 export default optimizeQueries

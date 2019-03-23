@@ -24,6 +24,7 @@ import {
   getCollectionFromState,
   getDocumentFromState
 } from './store'
+import RelationshipsFetcher from './RelationshipsFetcher'
 import Schema from './Schema'
 import { chain } from './CozyLink'
 import ObservableQuery from './ObservableQuery'
@@ -413,6 +414,12 @@ class CozyClient {
    * Queries are optimized before being sent.
    */
   async fetchRelationships(response, relationshipsByName) {
+    const relationshipsFetcher = new RelationshipsFetcher(
+      this,
+      response,
+      relationshipsByName
+    )
+    return relationshipsFetcher.getHydratedResponse()
     const isSingleDoc = !Array.isArray(response.data)
     if (!isSingleDoc && response.data.length === 0) {
       return response

@@ -6,6 +6,7 @@ import isEqual from 'lodash/isEqual'
 import { properId } from './helpers'
 
 const storeDocument = (state, document) => {
+  console.debug('storeDocument', { document })
   const type = document._type
   if (!type) {
     if (process.env.NODE_ENV !== 'production') {
@@ -124,15 +125,15 @@ export const getCollectionFromSlice = (state = {}, doctype) => {
 }
 
 /*
-  This method has been created in order to get a returned object 
-  in `data` with the full set on information coming potentielly from 
+  This method has been created in order to get a returned object
+  in `data` with the full set on information coming potentielly from
   ìncluded`
 
-  This method should be somewhere else. The `document` shall not be 
-  deal with included / data and so on. 
+  This method should be somewhere else. The `document` shall not be
+  deal with included / data and so on.
 
-  This method takes data and included and merge both sources 
-  together. It should be always up to date. The returned object 
+  This method takes data and included and merge both sources
+  together. It should be always up to date. The returned object
   will be as full of informations as it can be.
 */
 export const extractAndMergeDocument = (data, updatedStateWithIncluded) => {
