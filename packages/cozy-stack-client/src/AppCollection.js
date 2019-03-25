@@ -10,10 +10,9 @@ export const normalizeApp = (app, doctype) => {
  * Extends `DocumentCollection` API along with specific methods for `io.cozy.apps`.
  */
 class AppCollection extends DocumentCollection {
-  endpoint = '/apps/'
-
   constructor(stackClient) {
     super(APPS_DOCTYPE, stackClient)
+    this.endpoint = '/apps/'
   }
 
   /**
@@ -34,6 +33,31 @@ class AppCollection extends DocumentCollection {
       skip: 0,
       next: false
     }
+  }
+
+  find(...args) {
+    console.warn(
+      `find() method for doctype '${
+        this.doctype
+      }' relies internally on DocumentCollection.find() and may not fetch all expected data.`
+    )
+    return super.find(...args)
+  }
+
+  async get() {
+    throw new Error('get() method is not yet implemented')
+  }
+
+  async create() {
+    throw new Error('create() method is not available for applications')
+  }
+
+  async update() {
+    throw new Error('update() method is not available for applications')
+  }
+
+  async destroy() {
+    throw new Error('destroy() method is not available for applications')
   }
 }
 

@@ -2,6 +2,7 @@ jest.mock('../CozyStackClient')
 
 import CozyStackClient from '../CozyStackClient'
 import AppCollection from '../AppCollection'
+import DocumentCollection from '../DocumentCollection'
 import ALL_APPS_RESPONSE from './fixtures/apps.json'
 
 const FIXTURES = {
@@ -32,6 +33,45 @@ describe(`AppCollection`, () => {
     it('should return normalized documents', async () => {
       const resp = await collection.all()
       expect(resp.data[0]).toHaveDocumentIdentity()
+    })
+  })
+
+  describe('get', () => {
+    it('should throw error', async () => {
+      const collection = new AppCollection(client)
+      expect(collection.get()).rejects.toThrowError(
+        'get() method is not yet implemented'
+      )
+    })
+  })
+
+  describe('create', () => {
+    const collection = new AppCollection(client)
+
+    it('should throw error', async () => {
+      expect(collection.create()).rejects.toThrowError(
+        'create() method is not available for applications'
+      )
+    })
+  })
+
+  describe('update', () => {
+    const collection = new AppCollection(client)
+
+    it('should throw error', async () => {
+      expect(collection.update()).rejects.toThrowError(
+        'update() method is not available for applications'
+      )
+    })
+  })
+
+  describe('destroy', () => {
+    const collection = new AppCollection(client)
+
+    it('should throw error', async () => {
+      expect(collection.destroy()).rejects.toThrowError(
+        'destroy() method is not available for applications'
+      )
     })
   })
 })
