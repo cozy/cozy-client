@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="6.18.0"></a>
+     <a name="6.18.1"></a>
+## [6.18.1](https://github.com/cozy/cozy-client/compare/v6.18.0...v6.18.1) (2019-03-25)
+
+
+### Bug Fixes
+
+* **stack:** Make KonnectorCollection inherit from DocumentCollection 🚑i ([1a56bad](https://github.com/cozy/cozy-client/commit/1a56bad))
+
+
+
+
+     <a name="6.18.0"></a>
 # [6.18.0](https://github.com/cozy/cozy-client/compare/v6.17.0...v6.18.0) (2019-03-22)
 
 
@@ -21,7 +32,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-      <a name="6.17.0"></a>
+   <a name="6.17.0"></a>
 # [6.17.0](https://github.com/cozy/cozy-client/compare/v6.16.0...v6.17.0) (2019-03-21)
 
 
@@ -38,7 +49,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="6.16.0"></a>
+  <a name="6.16.0"></a>
 # [6.16.0](https://github.com/cozy/cozy-client/compare/v6.15.0...v6.16.0) (2019-03-20)
 
 
@@ -50,7 +61,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-   <a name="6.15.0"></a>
+<a name="6.15.0"></a>
 # [6.15.0](https://github.com/cozy/cozy-client/compare/v6.14.0...v6.15.0) (2019-03-19)
 
 
