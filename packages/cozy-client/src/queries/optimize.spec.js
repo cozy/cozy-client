@@ -35,4 +35,24 @@ describe('query optimization', () => {
     const optimized = optimizeQueries(queries)
     expect(optimized.length).toBe(1)
   })
+
+  it('should deduplicate identical queries', () => {
+    const queries = []
+
+    for (let i = 0; i <= 5; i++)
+      queries.push(
+        new QueryDefinition({
+          doctype: 'io.cozy.foos',
+          selector: { far: 'buz' }
+        })
+      )
+
+    const optimized = optimizeQueries(queries)
+    expect(optimized).toEqual([
+      new QueryDefinition({
+        doctype: 'io.cozy.foos',
+        selector: { far: 'buz' }
+      })
+    ])
+  })
 })
