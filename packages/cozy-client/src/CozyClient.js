@@ -3,8 +3,8 @@ import { REGISTRATION_ABORT } from './const'
 import StackLink from './StackLink'
 import { create as createAssociation } from './associations'
 import {
-  attachRelationships,
-  reconstructRelationships
+  responseToRelationship,
+  attachRelationships
 } from './associations/helpers'
 import { dehydrate } from './helpers'
 import { QueryDefinition, Mutations } from './queries/dsl'
@@ -31,6 +31,8 @@ import mapValues from 'lodash/mapValues'
 import fromPairs from 'lodash/fromPairs'
 import flatten from 'lodash/flatten'
 import uniqBy from 'lodash/uniqBy'
+import zip from 'lodash/zip'
+import forEach from 'lodash/forEach'
 import get from 'lodash/get'
 
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
@@ -423,20 +425,14 @@ class CozyClient {
     const documents = []
     const definitions = []
 
-    for (const doc of responseDocs) {
-      for (const relName in relationshipsByName) {
-        const relationship = relationshipsByName[relName]
-        const queryResponse = relationship.type.query(doc, this, relationship)
-        const queryDef =
-          queryResponse instanceof Promise ? await queryResponse : queryResponse
-
+    responseDocs.forEach(doc => {
+      return forEach(relationshipsByName, (relationship, relName) => {
+        const queryDef = relationship.type.query(doc, this, relationship)
         const docId = doc._id
 
         // Used to reattach responses into the relationships attribute of
         // each document
-        const docIdAndRels = queryDefToDocIdAndRel.get(queryDef) || []
-        docIdAndRels.push([docId, relName])
-        queryDefToDocIdAndRel.set(queryDef, docIdAndRels)
+        queryDefToDocIdAndRel.set(queryDef, [docId, relName])
 
         // Relationships can yield "queries" that are already resolved documents.
         // These do not need to go through the usual link request mechanism.
@@ -445,8 +441,8 @@ class CozyClient {
         } else {
           documents.push(queryDef)
         }
-      }
-    }
+      })
+    })
 
     // Definitions can be in optimized/regrouped in case of HasMany relationships.
     const optimizedDefinitions = optimizeQueryDefinitions(definitions)
@@ -456,18 +452,25 @@ class CozyClient {
 
     // "Included" documents will be stored in the `documents` store
     const uniqueDocuments = uniqBy(flatten(documents), '_id')
-    const included = uniqBy(
-      flatten(responses.map(r => r.included || r.data), '_id')
-    )
+    const included = flatten(responses.map(r => r.included || r.data))
       .concat(uniqueDocuments)
       .filter(Boolean)
 
-    const relationshipsByDocId = reconstructRelationships(
-      queryDefToDocIdAndRel,
-      documents,
-      definitions,
-      responses
-    )
+    // Some relationships have the relationship data on the other side of the
+    // relationship (ex: io.cozy.photos.albums do not have photo inclusion information,
+    // it is on the io.cozy.files side).
+    // Here we take the data received from the relationship queries, and group
+    // it so that we can fill the `relationships` attribute of each doc before
+    // storing the document. This makes the data easier to manipulate for the front-end.
+    const relationshipsByDocId = {}
+    for (const [def, resp] of zip(optimizedDefinitions, responses)) {
+      const docIdAndRel = queryDefToDocIdAndRel.get(def)
+      if (docIdAndRel) {
+        const [docId, relName] = docIdAndRel
+        relationshipsByDocId[docId] = relationshipsByDocId[docId] || {}
+        relationshipsByDocId[docId][relName] = responseToRelationship(resp)
+      }
+    }
 
     return {
       ...attachRelationships(response, relationshipsByDocId),
