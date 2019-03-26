@@ -58,15 +58,6 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 </dd>
 </dl>
 
-## Constants
-
-<dl>
-<dt><a href="#fetchKonnectorTriggers">fetchKonnectorTriggers</a></dt>
-<dd><p>Memoize the fetch promise. For now we are only fetching it once but it will
-evolve in the future.</p>
-</dd>
-</dl>
-
 ## Functions
 
 <dl>
@@ -796,13 +787,6 @@ Returns the relationship for a given doctype/name
 Validates a document considering the descriptions in schema.attributes.
 
 **Kind**: instance method of [<code>Schema</code>](#Schema)  
-<a name="fetchKonnectorTriggers"></a>
-
-## fetchKonnectorTriggers
-Memoize the fetch promise. For now we are only fetching it once but it will
-evolve in the future.
-
-**Kind**: global constant  
 <a name="withClient"></a>
 
 ## withClient(Component) ⇒ <code>function</code>
