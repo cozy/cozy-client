@@ -1,7 +1,9 @@
 import mapValues from 'lodash/mapValues'
 import groupBy from 'lodash/groupBy'
 import flatten from 'lodash/flatten'
+import isEqual from 'lodash/isEqual'
 import uniq from 'lodash/uniq'
+import uniqWith from 'lodash/uniqWith'
 import { QueryDefinition } from './dsl'
 
 const isIdQuery = query => query.id || query.ids
@@ -25,7 +27,9 @@ const optimizeDoctypeQueries = queries => {
           ids: uniq(flatten(idQueries.map(q => q.id || q.ids)))
         })
       : []
-  return others.concat(groupedIdQueries)
+
+  // Deduplicate before concataining
+  return uniqWith(others, isEqual).concat(groupedIdQueries)
 }
 
 /**

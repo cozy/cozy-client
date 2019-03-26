@@ -1,57 +1,33 @@
+import CozyClient from '../CozyClient'
+import CozyLink from '../CozyLink'
 import HasManyTriggers from './HasManyTriggers'
-
-const ALL_TRIGGERS_FIXTURES = [
-  {
-    _id: '',
-    _type: 'io.cozy.triggers',
-    message: {
-      konnector: 'dummy'
-    }
-  },
-  {
-    _id: '',
-    _type: 'io.cozy.triggers',
-    message: {
-      konnector: 'dummy-test'
-    }
-  },
-  {
-    _id: '',
-    _type: 'io.cozy.triggers',
-    message: {
-      konnector: 'dummmy-fake'
-    }
-  }
-]
 
 describe('HasManyTriggers', () => {
   describe('query', () => {
-    it('should return triggers', async () => {
-      const client = {
-        all: jest.fn().mockReturnValue({
-          where: jest.fn()
-        }),
-        query: jest.fn().mockResolvedValue(ALL_TRIGGERS_FIXTURES),
-        getCollectionFromState: jest
-          .fn()
-          .mockReturnValue(ALL_TRIGGERS_FIXTURES),
-        stackClient: {
-          uri: 'cozy.tools:8080'
-        }
-      }
-
+    it('should return query definition', () => {
+      const requestHandler = jest.fn()
+      const link = new CozyLink(requestHandler)
+      const client = new CozyClient({ links: [link] })
       const konnector = {
         slug: 'dummy'
       }
 
-      const triggers = await HasManyTriggers.query(konnector, client)
-      expect(triggers).toEqual([
-        {
-          _id: '',
-          _type: 'io.cozy.triggers',
-          message: { konnector: 'dummy' }
-        }
-      ])
+      const queryDef = HasManyTriggers.query(konnector, client)
+      expect(queryDef).toEqual({
+        doctype: 'io.cozy.triggers',
+        fields: undefined,
+        id: undefined,
+        ids: undefined,
+        includes: undefined,
+        indexedFields: undefined,
+        limit: undefined,
+        referenced: undefined,
+        selector: {
+          worker: 'konnector'
+        },
+        skip: undefined,
+        sort: undefined
+      })
     })
   })
 })
