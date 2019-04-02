@@ -35,15 +35,6 @@ class AppCollection extends DocumentCollection {
     }
   }
 
-  find(...args) {
-    console.warn(
-      `find() method for doctype '${
-        this.doctype
-      }' relies internally on DocumentCollection.find() and may not fetch all expected data.`
-    )
-    return super.find(...args)
-  }
-
   async get() {
     throw new Error('get() method is not yet implemented')
   }
