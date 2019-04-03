@@ -36,6 +36,19 @@ ReactDOM.render(
 )
 ```
 
+### Use the client on Node environment (`ReferenceError: fetch is not defined`)
+
+Cozy-Client will rely on the [`fetch`](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) function included in browsers (or polyfilled), so we have to provide this same function for a Node script. An example is using [`node-fetch`](https://www.npmjs.com/package/node-fetch) like following:
+
+```js
+import fetch from 'node-fetch'
+import CozyClient from 'cozy-client'
+
+global.fetch = fetch
+```
+
+Then you will be able to use all the client methods and fetch data correctly.
+
 ### How to connect to the documents store declaratively ?
 
 Sometimes, HOCs are better suited than render-prop components, especially if you have multiple data-sources and you do not want to have multiple indent levelves. We provide a higher-order component called `queryConnect`. Basic example of usage:
