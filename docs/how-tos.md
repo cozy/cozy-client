@@ -1,6 +1,7 @@
 <!-- MarkdownTOC autolink=true -->
 
 - [How-to integrate with an existing store ?](#how-to-integrate-with-an-existing-store-)
+- [How to use the client on Node environment ?](#how-to-use-the-client-on-node-environment-referenceerror-fetch-is-not-defined)
 - [How to connect to the documents store declaratively ?](#how-to-connect-to-the-documents-store-declaratively-)
 - [How to provide a mutation to a component ?](#how-to-provide-a-mutation-to-a-component-)
 - [How to specify a schema ?](#how-to-specify-a-schema-)
@@ -36,9 +37,9 @@ ReactDOM.render(
 )
 ```
 
-### Use the client on Node environment (`ReferenceError: fetch is not defined`)
+### How to use the client on Node environment (`ReferenceError: fetch is not defined`) ?
 
-Cozy-Client will rely on the [`fetch`](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) function included in browsers (or polyfilled), so we have to provide this same function for a Node script. An example is using [`node-fetch`](https://www.npmjs.com/package/node-fetch) like following:
+Cozy-Client relies on the [`fetch`](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) function included in browsers (or polyfilled). This function does not exist on Node environments so we have to provide a polyfill. An example using [`node-fetch`](https://www.npmjs.com/package/node-fetch):
 
 ```js
 import fetch from 'node-fetch'
