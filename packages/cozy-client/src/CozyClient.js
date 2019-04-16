@@ -32,6 +32,7 @@ import fromPairs from 'lodash/fromPairs'
 import flatten from 'lodash/flatten'
 import uniqBy from 'lodash/uniqBy'
 import get from 'lodash/get'
+import MicroEE from 'microee'
 
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
 
@@ -115,6 +116,8 @@ class CozyClient {
         }
       }
     }
+
+    this.emit('login')
   }
 
   async logout() {
@@ -147,6 +150,8 @@ class CozyClient {
         }
       }
     }
+
+    this.emit('logout')
   }
 
   /**
@@ -740,5 +745,7 @@ class CozyClient {
     })
   }
 }
+
+MicroEE.mixin(CozyClient)
 
 export default CozyClient
