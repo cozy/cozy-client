@@ -292,7 +292,7 @@ through OAuth.
     * [.generateStateCode()](#OAuthClient+generateStateCode) ⇒ <code>string</code>
     * [.getAuthCodeURL(stateCode, scopes)](#OAuthClient+getAuthCodeURL) ⇒ <code>string</code>
     * [.getAccessCodeFromURL(pageURL, stateCode)](#OAuthClient+getAccessCodeFromURL) ⇒ <code>string</code>
-    * [.fetchAccessToken(accessCode)](#OAuthClient+fetchAccessToken) ⇒ <code>Promise</code>
+    * [.fetchAccessToken(accessCode, oauthOptions, uri)](#OAuthClient+fetchAccessToken) ⇒ <code>Promise</code>
     * [.refreshToken()](#OAuthClient+refreshToken) ⇒ <code>Promise</code>
     * [.setToken(token)](#OAuthClient+setToken)
     * [.setOAuthOptions(options)](#OAuthClient+setOAuthOptions)
@@ -388,7 +388,7 @@ Retrieves the access code contained in the URL to which the user is redirected a
 
 <a name="OAuthClient+fetchAccessToken"></a>
 
-### oAuthClient.fetchAccessToken(accessCode) ⇒ <code>Promise</code>
+### oAuthClient.fetchAccessToken(accessCode, oauthOptions, uri) ⇒ <code>Promise</code>
 Exchanges an access code for an access token. This function does **not** update the client's token.
 
 **Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
@@ -400,7 +400,9 @@ Exchanges an access code for an access token. This function does **not** update 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| accessCode | <code>string</code> | The access code contained in the redirection URL — sett `client.getAccessCodeFromURL()` |
+| accessCode | <code>string</code> | The access code contained in the redirection URL — see `client.getAccessCodeFromURL()` |
+| oauthOptions | <code>object</code> | — To use when OAuthClient is not yet registered (during login process) |
+| uri | <code>string</code> | — To use when OAuthClient is not yet registered (during login process) |
 
 <a name="OAuthClient+refreshToken"></a>
 

@@ -455,6 +455,7 @@ Responsible for
 
 * [CozyClient](#CozyClient)
     * [new CozyClient(options)](#new_CozyClient_new)
+    * [.login()](#CozyClient+login)
     * [.collection(doctype)](#CozyClient+collection) ⇒ <code>DocumentCollection</code>
     * [.getDocumentSavePlan(document, relationships)](#CozyClient+getDocumentSavePlan) ⇒ <code>Array.&lt;Mutation&gt;</code>
     * [.fetchRelationships()](#CozyClient+fetchRelationships)
@@ -478,6 +479,21 @@ Responsible for
 | options.links | <code>Array.Link</code> | List of links |
 | options.schema | <code>Object</code> | Schema description for each doctypes |
 | options.appMetadata | <code>Object</code> | Metadata about the application that will be used in ensureCozyMetadata |
+
+<a name="CozyClient+login"></a>
+
+### cozyClient.login()
+Notify the links that they can start and set isLoggedIn to true.
+
+On mobile, where url/token are set after instantiation, use this method
+to set the token and uri via options.
+
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options.token | <code>options.token</code> | If passed, the token is set on the client |
+| options.uri | <code>options.uri</code> | If passed, the uri is set on the client |
 
 <a name="CozyClient+collection"></a>
 
