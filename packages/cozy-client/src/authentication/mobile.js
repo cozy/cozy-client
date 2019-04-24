@@ -94,7 +94,7 @@ export const authenticateWithCordova = async url => {
       setTimeout(() => {
         const token = prompt('Paste the url here:')
         resolve(token)
-      }, 10000)
+      }, 5000)
     })
   }
 }
