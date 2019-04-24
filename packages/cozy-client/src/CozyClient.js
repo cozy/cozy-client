@@ -34,6 +34,7 @@ import uniqBy from 'lodash/uniqBy'
 import zip from 'lodash/zip'
 import forEach from 'lodash/forEach'
 import get from 'lodash/get'
+import MicroEE from 'microee'
 
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
 
@@ -117,6 +118,8 @@ class CozyClient {
         }
       }
     }
+
+    this.emit('login')
   }
 
   async logout() {
@@ -149,6 +152,8 @@ class CozyClient {
         }
       }
     }
+
+    this.emit('logout')
   }
 
   /**
@@ -688,9 +693,21 @@ class CozyClient {
     if (stackClient) {
       this.stackClient = stackClient
     } else {
+      const options = {
+        ...this.options,
+        onTokenRefresh: token => {
+          this.emit('tokenRefreshed')
+          if (this.options.onTokenRefresh) {
+            deprecatedHandler(
+              `Using onTokenRefresh is deprecated, please use events like this: cozyClient.on('tokenUpdated', token => console.log('Token is updated', token)). https://git.io/fj3M3`
+            )
+            this.options.onTokenRefresh(token)
+          }
+        }
+      }
       this.stackClient = this.options.oauth
-        ? new OAuthClient(this.options)
-        : new CozyStackClient(this.options)
+        ? new OAuthClient(options)
+        : new CozyStackClient(options)
     }
 
     this.client = new Proxy(
@@ -743,5 +760,7 @@ class CozyClient {
     })
   }
 }
+
+MicroEE.mixin(CozyClient)
 
 export default CozyClient
