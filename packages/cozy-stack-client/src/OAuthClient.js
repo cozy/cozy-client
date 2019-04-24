@@ -303,22 +303,25 @@ class OAuthClient extends CozyStackClient {
   /**
    * Exchanges an access code for an access token. This function does **not** update the client's token.
    * @throws {NotRegisteredException} When the client doesn't have it's registration information
-   * @param   {string} accessCode The access code contained in the redirection URL — sett `client.getAccessCodeFromURL()`
+   * @param   {string} accessCode - The access code contained in the redirection URL — see `client.getAccessCodeFromURL()`
+   * @param   {object} oauthOptions — To use when OAuthClient is not yet registered (during login process)
+   * @param   {string} uri — To use when OAuthClient is not yet registered (during login process)
    * @returns {Promise} A promise that resolves with an AccessToken object.
    */
-  async fetchAccessToken(accessCode) {
-    if (!this.isRegistered()) throw new NotRegisteredException()
+  async fetchAccessToken(accessCode, oauthOptions, uri) {
+    if (!this.isRegistered() && !oauthOptions) throw new NotRegisteredException()
 
+    oauthOptions = oauthOptions || this.oauthOptions
     const data = {
       grant_type: 'authorization_code',
       code: accessCode,
-      client_id: this.oauthOptions.clientID,
-      client_secret: this.oauthOptions.clientSecret
+      client_id: oauthOptions.clientID,
+      client_secret: oauthOptions.clientSecret
     }
 
     const result = await this.fetchJSON(
       'POST',
-      '/auth/access_token',
+      (uri || '') + '/auth/access_token',
       this.dataToQueryString(data),
       {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
@@ -364,6 +367,16 @@ class OAuthClient extends CozyStackClient {
     }
 
     return newToken
+  }
+
+  exchangeOAuthSecret(uri, secret) {
+    return this.fetchJSON(
+      'POST',
+      uri + '/auth/secret_exchange',
+      {
+        secret
+      }
+    )
   }
 
   /**

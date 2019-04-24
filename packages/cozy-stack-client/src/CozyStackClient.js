@@ -121,7 +121,11 @@ class CozyStackClient {
   }
 
   fullpath(path) {
-    return this.uri + path
+    if (path.startsWith('http')) {
+      return path
+    } else {
+      return this.uri + path
+    }
   }
 
   getAuthorizationHeader() {
