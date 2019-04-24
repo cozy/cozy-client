@@ -309,7 +309,8 @@ class OAuthClient extends CozyStackClient {
    * @returns {Promise} A promise that resolves with an AccessToken object.
    */
   async fetchAccessToken(accessCode, oauthOptions, uri) {
-    if (!this.isRegistered() && !oauthOptions) throw new NotRegisteredException()
+    if (!this.isRegistered() && !oauthOptions)
+      throw new NotRegisteredException()
 
     oauthOptions = oauthOptions || this.oauthOptions
     const data = {
@@ -370,13 +371,9 @@ class OAuthClient extends CozyStackClient {
   }
 
   exchangeOAuthSecret(uri, secret) {
-    return this.fetchJSON(
-      'POST',
-      uri + '/auth/secret_exchange',
-      {
-        secret
-      }
-    )
+    return this.fetchJSON('POST', uri + '/auth/secret_exchange', {
+      secret
+    })
   }
 
   /**
