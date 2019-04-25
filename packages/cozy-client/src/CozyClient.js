@@ -701,6 +701,16 @@ class CozyClient {
     }
   }
 
+  handleTokenRefresh(token) {
+    this.emit('tokenRefreshed')
+    if (this.options.onTokenRefresh) {
+      deprecatedHandler(
+        `Using onTokenRefresh is deprecated, please use events like this: cozyClient.on('tokenUpdated', token => console.log('Token is updated', token)). https://git.io/fj3M3`
+      )
+      this.options.onTokenRefresh(token)
+    }
+  }
+
   createClient() {
     if (this.options.client) {
       console.warn(
@@ -708,20 +718,17 @@ class CozyClient {
       )
     }
     const stackClient = this.options.client || this.options.stackClient
+
+    const handlers = {
+      onTokenRefresh: this.handleTokenRefresh.bind(this)
+    }
+
     if (stackClient) {
       this.stackClient = stackClient
     } else {
       const options = {
         ...this.options,
-        onTokenRefresh: token => {
-          this.emit('tokenRefreshed')
-          if (this.options.onTokenRefresh) {
-            deprecatedHandler(
-              `Using onTokenRefresh is deprecated, please use events like this: cozyClient.on('tokenUpdated', token => console.log('Token is updated', token)). https://git.io/fj3M3`
-            )
-            this.options.onTokenRefresh(token)
-          }
-        }
+        ...handlers
       }
       this.stackClient = this.options.oauth
         ? new OAuthClient(options)
