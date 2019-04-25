@@ -12,6 +12,7 @@ import {
 } from './__tests__/fixtures'
 
 import CozyClient from './CozyClient'
+import CozyStackClient from 'cozy-stack-client'
 import CozyLink from './CozyLink'
 import { Mutations, QueryDefinition } from './queries/dsl'
 import {
@@ -73,6 +74,55 @@ describe('CozyClient initialization', () => {
   it('should create a store when calling watch query', () => {
     client.watchQuery(new QueryDefinition({ doctype: 'io.cozy.todos' }))
     expect(client.store).not.toBe(undefined)
+  })
+})
+
+describe('Stack client initialization', () => {
+  it('should add default callbacks', () => {
+    const client = new CozyClient({})
+    expect(client.stackClient.options.onRevocationChange).toBe(
+      client.handleRevocationChange
+    )
+    expect(client.stackClient.options.onTokenRefresh).toBe(
+      client.handleTokenRefresh
+    )
+  })
+})
+
+describe('CozyClient handlers', () => {
+  let client
+
+  beforeEach(() => {
+    client = new CozyClient({})
+    client.emit = jest.fn()
+  })
+
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
+  it('should handle revocation change to true', () => {
+    client.handleRevocationChange(true)
+    expect(client.emit).toHaveBeenCalledWith('revoked')
+    expect(client.isRevoked).toBe(true)
+  })
+
+  it('should handle revocation change to false', () => {
+    client.handleRevocationChange(false)
+    expect(client.emit).toHaveBeenCalledWith('unrevoked')
+    expect(client.isRevoked).toBe(false)
+  })
+
+  it('should warn when overriding default handlers', () => {
+    jest.spyOn(console, 'warn').mockImplementation(() => {})
+    let client2 = new CozyClient({
+      stackClient: new CozyStackClient({
+        onRevocationChange: () => {}
+      })
+    })
+    expect(console.warn).toHaveBeenCalledWith(
+      'You passed a stackClient with its own onRevocationChange. It is not supported, unexpected things might happen.'
+    )
   })
 })
 

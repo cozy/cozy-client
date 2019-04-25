@@ -4,6 +4,7 @@
 import CozyStackClient, { FetchError } from '../CozyStackClient'
 import DocumentCollection from '../DocumentCollection'
 import KonnectorCollection from '../KonnectorCollection'
+import jestFetchMock from 'jest-fetch-mock'
 
 const FAKE_RESPONSE = {
   offset: 0,
@@ -93,10 +94,19 @@ describe('CozyStackClient', () => {
   })
 
   describe('fetch', () => {
-    const client = new CozyStackClient(FAKE_INIT_OPTIONS)
+    let onRevocationChange
+    let client
 
     beforeAll(() => {
-      global.fetch = require('jest-fetch-mock')
+      global.fetch = jestFetchMock
+    })
+
+    beforeEach(() => {
+      onRevocationChange = jest.fn()
+      client = new CozyStackClient({
+        ...FAKE_INIT_OPTIONS,
+        onRevocationChange
+      })
     })
 
     it('should include credentials automatically', async () => {
@@ -111,6 +121,16 @@ describe('CozyStackClient', () => {
           }
         }
       )
+    })
+
+    it('should call onRevocationChange with true if client is revoked', async () => {
+      fetch.mockRejectedValueOnce({ message: 'Client not found' })
+      await client.fetch('GET', '/data/anyroute').catch(() => {})
+      expect(onRevocationChange).toHaveBeenCalledWith(true)
+      onRevocationChange.mockReset()
+      fetch.mockRejectedValueOnce({ message: 'Could not find document' })
+      await client.fetch('GET', '/data/anyroute').catch(() => {})
+      expect(onRevocationChange).not.toHaveBeenCalledWith(true)
     })
 
     it('should send body if provided with Content-type header', async () => {

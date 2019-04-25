@@ -8,6 +8,7 @@ import PermissionCollection from './PermissionCollection'
 import TriggerCollection, { TRIGGERS_DOCTYPE } from './TriggerCollection'
 import getIconURL from './getIconURL'
 import logDeprecate from './logDeprecate'
+import errors from './errors'
 
 const normalizeUri = uri => {
   if (uri === null) return null
@@ -21,7 +22,10 @@ const normalizeUri = uri => {
  * Main API against the `cozy-stack` server.
  */
 class CozyStackClient {
-  constructor({ token, uri = '' }) {
+  constructor(options) {
+    const opts = { ...options }
+    const { token, uri = '' } = opts
+    this.options = opts
     this.setUri(uri)
     this.setToken(token)
 
@@ -85,7 +89,22 @@ class CozyStackClient {
     // request even for cross-origin requests
     options.credentials = 'include'
 
-    return fetch(this.fullpath(path), options)
+    return fetch(this.fullpath(path), options).catch(err => {
+      this.checkForRevocation(err)
+      throw err
+    })
+  }
+
+  checkForRevocation(err) {
+    if (err.message && errors.CLIENT_NOT_FOUND.test(err.message)) {
+      this.onRevocationChange(true)
+    }
+  }
+
+  onRevocationChange(state) {
+    if (this.options && this.options.onRevocationChange) {
+      this.options.onRevocationChange(state)
+    }
   }
 
   /**
@@ -148,6 +167,9 @@ class CozyStackClient {
 
   setToken(token) {
     this.token = token ? new AppToken(token) : null
+    if (token) {
+      this.onRevocationChange(false)
+    }
   }
 
   setUri(uri) {

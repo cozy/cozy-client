@@ -74,6 +74,10 @@ class CozyClient {
     this.idCounter = 1
     this.isLogged = false
 
+    // Bind handlers
+    this.handleRevocationChange = this.handleRevocationChange.bind(this)
+    this.handleTokenRefresh = this.handleTokenRefresh.bind(this)
+
     this.createClient()
 
     this.links = ensureArray(link || links || new StackLink())
@@ -701,6 +705,16 @@ class CozyClient {
     }
   }
 
+  handleRevocationChange(state) {
+    if (state) {
+      this.isRevoked = true
+      this.emit('revoked')
+    } else {
+      this.isRevoked = false
+      this.emit('unrevoked')
+    }
+  }
+
   handleTokenRefresh(token) {
     this.emit('tokenRefreshed')
     if (this.options.onTokenRefresh) {
@@ -720,7 +734,8 @@ class CozyClient {
     const stackClient = this.options.client || this.options.stackClient
 
     const handlers = {
-      onTokenRefresh: this.handleTokenRefresh.bind(this)
+      onRevocationChange: this.handleRevocationChange,
+      onTokenRefresh: this.handleTokenRefresh
     }
 
     if (stackClient) {
