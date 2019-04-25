@@ -13,10 +13,6 @@ class KonnectorCollection extends AppCollection {
     throw new Error('create() method is not available for konnectors')
   }
 
-  async find() {
-    throw new Error('find() method is not available for konnectors')
-  }
-
   async destroy() {
     throw new Error('destroy() method is not available for konnectors')
   }
