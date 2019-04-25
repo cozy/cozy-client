@@ -48,7 +48,7 @@ describe(`AppCollection`, () => {
     const collection = new AppCollection(client)
 
     it('should throw error', async () => {
-      expect(collection.create()).rejects.toThrowError(
+      await expect(collection.create()).rejects.toThrowError(
         'create() method is not available for applications'
       )
     })
@@ -58,7 +58,7 @@ describe(`AppCollection`, () => {
     const collection = new AppCollection(client)
 
     it('should throw error', async () => {
-      expect(collection.update()).rejects.toThrowError(
+      await expect(collection.update()).rejects.toThrowError(
         'update() method is not available for applications'
       )
     })
@@ -68,7 +68,7 @@ describe(`AppCollection`, () => {
     const collection = new AppCollection(client)
 
     it('should throw error', async () => {
-      expect(collection.destroy()).rejects.toThrowError(
+      await expect(collection.destroy()).rejects.toThrowError(
         'destroy() method is not available for applications'
       )
     })
