@@ -705,6 +705,7 @@ class CozyClient {
     }
   }
 
+  /** Sets public attribute and emits event related to revocation */
   handleRevocationChange(state) {
     if (state) {
       this.isRevoked = true
@@ -715,6 +716,7 @@ class CozyClient {
     }
   }
 
+  /** Emits event when token is refreshed */
   handleTokenRefresh(token) {
     this.emit('tokenRefreshed')
     if (this.options.onTokenRefresh) {
@@ -725,6 +727,14 @@ class CozyClient {
     }
   }
 
+  /**
+   * If no stack client has been passed in options, creates a default stack
+   * client and attaches handlers for revocation and token refresh.
+   * If a stackClient has been passed in options, ensure it has handlers for
+   * revocation and token refresh.
+   *
+   * If `oauth` options are passed, stackClient is an OAuthStackClient.
+   */
   createClient() {
     if (this.options.client) {
       console.warn(
