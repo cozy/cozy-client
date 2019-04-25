@@ -466,6 +466,9 @@ Responsible for
     * [.register(cozyURL)](#CozyClient+register) ⇒ <code>object</code>
     * [.startOAuthFlow(openURLCallback)](#CozyClient+startOAuthFlow) ⇒ <code>object</code>
     * [.renewAuthorization()](#CozyClient+renewAuthorization) ⇒ <code>object</code>
+    * [.handleRevocationChange()](#CozyClient+handleRevocationChange)
+    * [.handleTokenRefresh()](#CozyClient+handleTokenRefresh)
+    * [.createClient()](#CozyClient+createClient)
     * [.setData(data)](#CozyClient+setData)
 
 <a name="new_CozyClient_new"></a>
@@ -607,6 +610,29 @@ has expired.
 
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 **Returns**: <code>object</code> - Contains the fetched token and the client information.  
+<a name="CozyClient+handleRevocationChange"></a>
+
+### cozyClient.handleRevocationChange()
+Sets public attribute and emits event related to revocation
+
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+<a name="CozyClient+handleTokenRefresh"></a>
+
+### cozyClient.handleTokenRefresh()
+Emits event when token is refreshed
+
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+<a name="CozyClient+createClient"></a>
+
+### cozyClient.createClient()
+If no stack client has been passed in options, creates a default stack
+client and attaches handlers for revocation and token refresh.
+If a stackClient has been passed in options, ensure it has handlers for
+revocation and token refresh.
+
+If `oauth` options are passed, stackClient is an OAuthStackClient.
+
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 <a name="CozyClient+setData"></a>
 
 ### cozyClient.setData(data)
