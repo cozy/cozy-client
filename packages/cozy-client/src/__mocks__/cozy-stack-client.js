@@ -1,3 +1,5 @@
+const StackClient = jest.requireActual('cozy-stack-client').default
+
 const collectionMock = {
   all: jest.fn(() => Promise.resolve()),
   find: jest.fn(() => Promise.resolve()),
@@ -6,7 +8,12 @@ const collectionMock = {
   destroy: jest.fn(() => Promise.resolve()),
   findReferencedBy: jest.fn(() => Promise.resolve())
 }
-const linkMock = jest.fn().mockImplementation(() => {
-  return { collection: jest.fn(() => collectionMock) }
-})
-export default linkMock
+
+class MockedStackClient extends StackClient {
+  constructor(opts) {
+    super(opts)
+    this.collection = jest.fn(() => collectionMock)
+  }
+}
+
+export default MockedStackClient

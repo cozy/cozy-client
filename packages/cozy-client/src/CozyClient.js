@@ -74,6 +74,10 @@ class CozyClient {
     this.idCounter = 1
     this.isLogged = false
 
+    // Bind handlers
+    this.handleRevocationChange = this.handleRevocationChange.bind(this)
+    this.handleTokenRefresh = this.handleTokenRefresh.bind(this)
+
     this.createClient()
 
     this.links = ensureArray(link || links || new StackLink())
@@ -701,6 +705,36 @@ class CozyClient {
     }
   }
 
+  /** Sets public attribute and emits event related to revocation */
+  handleRevocationChange(state) {
+    if (state) {
+      this.isRevoked = true
+      this.emit('revoked')
+    } else {
+      this.isRevoked = false
+      this.emit('unrevoked')
+    }
+  }
+
+  /** Emits event when token is refreshed */
+  handleTokenRefresh(token) {
+    this.emit('tokenRefreshed')
+    if (this.options.onTokenRefresh) {
+      deprecatedHandler(
+        `Using onTokenRefresh is deprecated, please use events like this: cozyClient.on('tokenUpdated', token => console.log('Token is updated', token)). https://git.io/fj3M3`
+      )
+      this.options.onTokenRefresh(token)
+    }
+  }
+
+  /**
+   * If no stack client has been passed in options, creates a default stack
+   * client and attaches handlers for revocation and token refresh.
+   * If a stackClient has been passed in options, ensure it has handlers for
+   * revocation and token refresh.
+   *
+   * If `oauth` options are passed, stackClient is an OAuthStackClient.
+   */
   createClient() {
     if (this.options.client) {
       console.warn(
@@ -708,20 +742,30 @@ class CozyClient {
       )
     }
     const stackClient = this.options.client || this.options.stackClient
+
+    const handlers = {
+      onRevocationChange: this.handleRevocationChange,
+      onTokenRefresh: this.handleTokenRefresh
+    }
+
     if (stackClient) {
       this.stackClient = stackClient
+      if (!stackClient.options) {
+        stackClient.options = {}
+      }
+      for (let handlerName of Object.keys(handlers)) {
+        if (!stackClient.options[handlerName]) {
+          stackClient.options[handlerName] = handlers[handlerName]
+        } else {
+          console.warn(
+            `You passed a stackClient with its own ${handlerName}. It is not supported, unexpected things might happen.`
+          )
+        }
+      }
     } else {
       const options = {
         ...this.options,
-        onTokenRefresh: token => {
-          this.emit('tokenRefreshed')
-          if (this.options.onTokenRefresh) {
-            deprecatedHandler(
-              `Using onTokenRefresh is deprecated, please use events like this: cozyClient.on('tokenUpdated', token => console.log('Token is updated', token)). https://git.io/fj3M3`
-            )
-            this.options.onTokenRefresh(token)
-          }
-        }
+        ...handlers
       }
       this.stackClient = this.options.oauth
         ? new OAuthClient(options)
