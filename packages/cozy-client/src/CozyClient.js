@@ -725,6 +725,18 @@ class CozyClient {
 
     if (stackClient) {
       this.stackClient = stackClient
+      if (!stackClient.options) {
+        stackClient.options = {}
+      }
+      for (let handlerName of Object.keys(handlers)) {
+        if (!stackClient.options[handlerName]) {
+          stackClient.options[handlerName] = handlers[handlerName]
+        } else {
+          console.warn(
+            `You passed a stackClient with its own ${handlerName}. It is not supported, unexpected things might happen.`
+          )
+        }
+      }
     } else {
       const options = {
         ...this.options,
