@@ -58,7 +58,7 @@ describe(`KonnectorCollection`, () => {
   describe('get', () => {
     it('throw error', async () => {
       const collection = new KonnectorCollection(client)
-      expect(collection.get()).rejects.toThrowError(
+      await expect(collection.get()).rejects.toThrowError(
         'get() method is not yet implemented'
       )
     })
@@ -68,7 +68,7 @@ describe(`KonnectorCollection`, () => {
     const collection = new KonnectorCollection(client)
 
     it('should throw error', async () => {
-      expect(collection.create()).rejects.toThrowError(
+      await expect(collection.create()).rejects.toThrowError(
         'create() method is not available for konnectors'
       )
     })
@@ -78,7 +78,7 @@ describe(`KonnectorCollection`, () => {
     const collection = new KonnectorCollection(client)
 
     it('should throw error', async () => {
-      expect(collection.update()).rejects.toThrowError(
+      await expect(collection.update()).rejects.toThrowError(
         'update() method is not available for konnectors'
       )
     })
@@ -88,7 +88,7 @@ describe(`KonnectorCollection`, () => {
     const collection = new KonnectorCollection(client)
 
     it('should throw error', async () => {
-      expect(collection.destroy()).rejects.toThrowError(
+      await expect(collection.destroy()).rejects.toThrowError(
         'destroy() method is not available for konnectors'
       )
     })
