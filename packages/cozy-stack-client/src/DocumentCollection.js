@@ -180,12 +180,30 @@ class DocumentCollection {
     }
   }
 
-  async update(document) {
-    const resp = await this.stackClient.fetchJSON(
-      'PUT',
-      uri`/data/${this.doctype}/${document._id}`,
-      document
-    )
+  async update(document, options = {}) {
+    const { retriesOnConflict = 0 } = options
+    let resp
+    try {
+      resp = await this.stackClient.fetchJSON(
+        'PUT',
+        uri`/data/${this.doctype}/${document._id}`,
+        document
+      )
+    } catch (error) {
+      const { status } = error
+      if (status === 409 && retriesOnConflict) {
+        const upToDateResp = await this.get(document._id)
+        const updatedDocument = {
+          ...upToDateResp.data,
+          ...omit(document, ['_rev'])
+        }
+        return await this.update(updatedDocument, {
+          retriesOnConflict: retriesOnConflict - 1
+        })
+      }
+      throw error
+    }
+
     return {
       data: normalizeDoc(resp.data, this.doctype)
     }
