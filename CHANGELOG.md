@@ -3,7 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-     <a name="6.22.0"></a>
+      <a name="6.23.0"></a>
+# [6.23.0](https://github.com/cozy/cozy-client/compare/v6.22.0...v6.23.0) (2019-04-25)
+
+
+### Features
+
+* Allow to use stack client when not completely initialized ([0c16046](https://github.com/cozy/cozy-client/commit/0c16046))
+* Login can set uri and token ([9a4b6b4](https://github.com/cozy/cozy-client/commit/9a4b6b4))
+* Reduce timeout for prompt access_code ([84486bf](https://github.com/cozy/cozy-client/commit/84486bf))
+
+
+
+
+      <a name="6.22.0"></a>
 # [6.22.0](https://github.com/cozy/cozy-client/compare/v6.21.0...v6.22.0) (2019-04-24)
 
 
@@ -15,7 +28,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="6.21.0"></a>
+   <a name="6.21.0"></a>
 # [6.21.0](https://github.com/cozy/cozy-client/compare/v6.20.0...v6.21.0) (2019-04-03)
 
 
@@ -26,7 +39,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-   <a name="6.20.0"></a>
+ <a name="6.20.0"></a>
 # [6.20.0](https://github.com/cozy/cozy-client/compare/v6.19.0...v6.20.0) (2019-03-27)
 
 
@@ -37,7 +50,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-  <a name="6.19.0"></a>
+<a name="6.19.0"></a>
 # [6.19.0](https://github.com/cozy/cozy-client/compare/v6.18.1...v6.19.0) (2019-03-26)
 
 
