@@ -100,7 +100,16 @@ class CozyClient {
     }
   }
 
-  async login() {
+  /**
+   * Notify the links that they can start and set isLoggedIn to true.
+   *
+   * On mobile, where url/token are set after instantiation, use this method
+   * to set the token and uri via options.
+   *
+   * @param  {options.token}   options.token  - If passed, the token is set on the client
+   * @param  {options.uri}   options.uri  - If passed, the uri is set on the client
+   */
+  async login(options) {
     if (this.isLogged) {
       console.warn(`CozyClient is already logged.`)
       return
@@ -116,6 +125,15 @@ class CozyClient {
         } catch (e) {
           console.warn(e)
         }
+      }
+    }
+
+    if (options) {
+      if (options.uri) {
+        this.stackClient.setUri(options.uri)
+      }
+      if (options.token) {
+        this.stackClient.setToken(options.token)
       }
     }
 

@@ -1,6 +1,5 @@
 import { normalizeDoc, dontThrowNotFoundError } from './DocumentCollection'
 import { uri } from './utils'
-import * as querystring from './querystring'
 
 export const JOBS_DOCTYPE = 'io.cozy.jobs'
 export const TRIGGERS_DOCTYPE = 'io.cozy.triggers'

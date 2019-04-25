@@ -23,6 +23,9 @@ describe('CozyStackClient', () => {
       token: ''
     })
     expect(client.fullpath('/foo')).toBe('http://cozy.tools:8080/foo')
+    expect(client.fullpath('http://customcozy.mycozy.cloud/foo')).toBe(
+      'http://customcozy.mycozy.cloud/foo'
+    )
   })
 
   it('should instanciate konnectors property', () => {

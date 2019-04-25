@@ -2,7 +2,7 @@ jest.mock('../CozyStackClient')
 
 import CozyStackClient from '../CozyStackClient'
 import DocumentCollection from '../KonnectorCollection'
-import KonnectorCollection, { KONNECTORS_DOCTYPE } from '../KonnectorCollection'
+import KonnectorCollection from '../KonnectorCollection'
 import ALL_KONNECTORS_RESPONSE from './fixtures/konnectors.json'
 
 const FIXTURES = {
