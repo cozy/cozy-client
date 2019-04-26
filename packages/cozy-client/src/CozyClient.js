@@ -114,12 +114,13 @@ class CozyClient {
    * @param  {options.uri}   options.uri  - If passed, the uri is set on the client
    */
   async login(options) {
-    if (this.isLogged) {
+    if (this.isLogged && !this.isRevoked) {
       console.warn(`CozyClient is already logged.`)
       return
     }
 
     this.isLogged = true
+    this.isRevoked = false
     this.registerClientOnLinks()
 
     for (const link of this.links) {

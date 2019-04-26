@@ -217,6 +217,21 @@ describe('CozyClient login', () => {
     expect(links[0].onLogin).toHaveBeenCalledTimes(1)
     expect(links[2].onLogin).toHaveBeenCalledTimes(1)
   })
+
+  it('should emit login', async () => {
+    client.emit = jest.fn()
+    client.registerClientOnLinks = jest.fn()
+    await client.login()
+    expect(client.emit).toHaveBeenCalledWith('login')
+  })
+
+  it('should set isRevoked to false', async () => {
+    client.emit = jest.fn()
+    client.registerClientOnLinks = jest.fn()
+    client.isRevoked = true
+    await client.login()
+    expect(client.isRevoked).toBe(false)
+  })
 })
 
 describe('CozyClient', () => {
