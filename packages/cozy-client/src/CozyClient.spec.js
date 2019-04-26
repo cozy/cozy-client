@@ -115,7 +115,7 @@ describe('CozyClient handlers', () => {
 
   it('should warn when overriding default handlers', () => {
     jest.spyOn(console, 'warn').mockImplementation(() => {})
-    let client2 = new CozyClient({
+    new CozyClient({
       stackClient: new CozyStackClient({
         onRevocationChange: () => {}
       })
