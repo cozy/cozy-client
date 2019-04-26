@@ -435,6 +435,9 @@ class OAuthClient extends CozyStackClient {
    * @private
    */
   registrationAccessTokenToAuthHeader() {
+    if (!this.oauthOptions.registrationAccessToken) {
+      throw new Error('No registration access token')
+    }
     return 'Bearer ' + this.oauthOptions.registrationAccessToken
   }
 }
