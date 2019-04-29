@@ -16,7 +16,7 @@ const REGISTERED_CLIENT_INIT_OPTIONS = {
     ...CLIENT_INIT_OPTIONS.oauth,
     clientID: '1',
     clientsecret: '1',
-    registrationAccessToken: '1234'
+    registrationAccessToken: 'registrationAccessToken-1234'
   }
 }
 
@@ -62,7 +62,7 @@ describe('OAuthClient', () => {
       client = new OAuthClient(REGISTERED_CLIENT_INIT_OPTIONS)
       client.setToken({
         tokenType: 'type',
-        accessToken: 'abcd',
+        accessToken: 'accessToken-abcd',
         refreshToken: 'refresh-789',
         scope: 'io.cozy.todos'
       })

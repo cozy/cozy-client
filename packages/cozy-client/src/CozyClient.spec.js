@@ -115,7 +115,7 @@ describe('CozyClient handlers', () => {
 
   it('should warn when overriding default handlers', () => {
     jest.spyOn(console, 'warn').mockImplementation(() => {})
-    let client2 = new CozyClient({
+    new CozyClient({
       stackClient: new CozyStackClient({
         onRevocationChange: () => {}
       })
@@ -216,6 +216,21 @@ describe('CozyClient login', () => {
 
     expect(links[0].onLogin).toHaveBeenCalledTimes(1)
     expect(links[2].onLogin).toHaveBeenCalledTimes(1)
+  })
+
+  it('should emit login', async () => {
+    client.emit = jest.fn()
+    client.registerClientOnLinks = jest.fn()
+    await client.login()
+    expect(client.emit).toHaveBeenCalledWith('login')
+  })
+
+  it('should set isRevoked to false', async () => {
+    client.emit = jest.fn()
+    client.registerClientOnLinks = jest.fn()
+    client.isRevoked = true
+    await client.login()
+    expect(client.isRevoked).toBe(false)
   })
 })
 

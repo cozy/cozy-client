@@ -486,7 +486,7 @@ Responsible for
 <a name="CozyClient+login"></a>
 
 ### cozyClient.login()
-Notify the links that they can start and set isLoggedIn to true.
+Notify the links that they can start and set isLogged to true.
 
 On mobile, where url/token are set after instantiation, use this method
 to set the token and uri via options.

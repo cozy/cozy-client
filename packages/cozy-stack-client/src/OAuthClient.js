@@ -167,7 +167,9 @@ class OAuthClient extends CozyStackClient {
     this.oauthOptions.clientID = ''
 
     return this.fetchJSON('DELETE', `/auth/register/${clientID}`, null, {
-      credentials: this.registrationAccessTokenToAuthHeader()
+      headers: {
+        Authorization: this.registrationAccessTokenToAuthHeader()
+      }
     })
   }
 
@@ -184,7 +186,9 @@ class OAuthClient extends CozyStackClient {
       `/auth/register/${this.oauthOptions.clientID}`,
       null,
       {
-        credentials: this.registrationAccessTokenToAuthHeader()
+        headers: {
+          Authorization: this.registrationAccessTokenToAuthHeader()
+        }
       }
     )
   }
@@ -217,7 +221,9 @@ class OAuthClient extends CozyStackClient {
       `/auth/register/${this.oauthOptions.clientID}`,
       data,
       {
-        credentials: this.registrationAccessTokenToAuthHeader()
+        headers: {
+          Authorization: this.registrationAccessTokenToAuthHeader()
+        }
       }
     )
 
@@ -435,6 +441,9 @@ class OAuthClient extends CozyStackClient {
    * @private
    */
   registrationAccessTokenToAuthHeader() {
+    if (!this.oauthOptions.registrationAccessToken) {
+      throw new Error('No registration access token')
+    }
     return 'Bearer ' + this.oauthOptions.registrationAccessToken
   }
 }
