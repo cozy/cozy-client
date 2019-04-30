@@ -76,6 +76,7 @@ Main API against the `cozy-stack` server.
 * [CozyStackClient](#CozyStackClient)
     * [.collection(doctype)](#CozyStackClient+collection) ⇒ [<code>DocumentCollection</code>](#DocumentCollection)
     * [.fetch(method, path, body, options)](#CozyStackClient+fetch) ⇒ <code>Object</code>
+    * [.refreshToken()](#CozyStackClient+refreshToken) ⇒ <code>Promise</code>
     * [.fetchJSON(method, path, body, options)](#CozyStackClient+fetchJSON) ⇒ <code>Object</code>
 
 <a name="CozyStackClient+collection"></a>
@@ -106,6 +107,18 @@ Fetches an endpoint in an authorized way.
 | path | <code>String</code> | The URI. |
 | body | <code>Object</code> | The payload. |
 | options | <code>Object</code> |  |
+
+<a name="CozyStackClient+refreshToken"></a>
+
+### cozyStackClient.refreshToken() ⇒ <code>Promise</code>
+Retrieves a new app token by refreshing the currently used token.
+
+**Kind**: instance method of [<code>CozyStackClient</code>](#CozyStackClient)  
+**Returns**: <code>Promise</code> - A promise that resolves with a new AccessToken object  
+**Throws**:
+
+- <code>Error</code> The client should already have an access token to use this function
+- <code>Error</code> The client couldn't fetch a new token
 
 <a name="CozyStackClient+fetchJSON"></a>
 

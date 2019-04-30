@@ -108,6 +108,49 @@ class CozyStackClient {
   }
 
   /**
+   * Retrieves a new app token by refreshing the currently used token.
+   * @throws {Error} The client should already have an access token to use this function
+   * @throws {Error} The client couldn't fetch a new token
+   * @returns {Promise} A promise that resolves with a new AccessToken object
+   */
+  async refreshToken() {
+    if (!this.token) throw new Error('Cannot refresh an empty token')
+
+    const options = {
+      method: 'GET',
+      credentials: 'include'
+    }
+    const response = await fetch('/', options)
+
+    if (!response.ok) {
+      throw new Error(
+        "couldn't fetch a new token - response " + response.statusCode
+      )
+    }
+    const html = await response.text()
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(html, 'text/html')
+    if (!doc) {
+      throw Error("couldn't fetch a new token - doc is not html")
+    }
+    const appNode = doc.querySelector('div[role="application"]')
+    if (!appNode) {
+      throw Error("couldn't fetch a new token - no div[role=application]")
+    }
+    const cozyToken = appNode.dataset.cozyToken
+    if (!cozyToken) {
+      throw Error(
+        "couldn't fetch a new token -- missing data-cozy-token attribute"
+      )
+    }
+    const newToken = new AppToken(cozyToken)
+    if (this.onTokenRefresh && typeof this.onTokenRefresh === 'function') {
+      this.onTokenRefresh(newToken)
+    }
+    return newToken
+  }
+
+  /**
    * Fetches JSON in an authorized way.
    *
    * @param  {String} method The HTTP method.
@@ -118,6 +161,20 @@ class CozyStackClient {
    * @throws {FetchError}
    */
   async fetchJSON(method, path, body, options = {}) {
+    try {
+      return await this.fetchJSONWithCurrentToken(method, path, body, options)
+    } catch (e) {
+      if (errors.EXPIRED_TOKEN.test(e.message)) {
+        const token = await this.refreshToken()
+        this.setToken(token)
+        return await this.fetchJSONWithCurrentToken(method, path, body, options)
+      } else {
+        throw e
+      }
+    }
+  }
+
+  async fetchJSONWithCurrentToken(method, path, body, options = {}) {
     const headers = (options.headers = options.headers || {})
 
     headers['Accept'] = 'application/json'

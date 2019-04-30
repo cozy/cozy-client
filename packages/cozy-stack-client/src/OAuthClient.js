@@ -1,7 +1,6 @@
 import CozyStackClient from './CozyStackClient'
 import AccessToken from './AccessToken'
 import logDeprecate from './logDeprecate'
-import errors from './errors'
 
 const defaultoauthOptions = {
   clientID: '',
@@ -419,20 +418,6 @@ class OAuthClient extends CozyStackClient {
     this.resetClientId()
     this.setUri(null)
     this.setToken(null)
-  }
-
-  async fetchJSON(method, path, body, options) {
-    try {
-      return await super.fetchJSON(method, path, body, options)
-    } catch (e) {
-      if (errors.EXPIRED_TOKEN.test(e.message)) {
-        const token = await this.refreshToken()
-        this.setToken(token)
-        return await super.fetchJSON(method, path, body, options)
-      } else {
-        throw e
-      }
-    }
   }
 
   /**
