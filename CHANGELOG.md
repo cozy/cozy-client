@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-     <a name="6.25.0"></a>
+      <a name="6.26.0"></a>
+# [6.26.0](https://github.com/cozy/cozy-client/compare/v6.25.0...v6.26.0) (2019-05-02)
+
+
+### Features
+
+* Emit beforeLogout event before doing the logout logic ([75a68c6](https://github.com/cozy/cozy-client/commit/75a68c6))
+
+
+
+
+      <a name="6.25.0"></a>
 # [6.25.0](https://github.com/cozy/cozy-client/compare/v6.24.2...v6.25.0) (2019-04-30)
 
 
@@ -14,7 +25,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="6.24.2"></a>
+   <a name="6.24.2"></a>
 ## [6.24.2](https://github.com/cozy/cozy-client/compare/v6.24.1...v6.24.2) (2019-04-29)
 
 
@@ -28,7 +39,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-   <a name="6.24.1"></a>
+ <a name="6.24.1"></a>
 ## [6.24.1](https://github.com/cozy/cozy-client/compare/v6.24.0...v6.24.1) (2019-04-26)
 
 
@@ -36,7 +47,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package undefined
 
-  <a name="6.24.0"></a>
+<a name="6.24.0"></a>
 # [6.24.0](https://github.com/cozy/cozy-client/compare/v6.23.3...v6.24.0) (2019-04-25)
 
 
