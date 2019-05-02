@@ -151,6 +151,7 @@ class CozyClient {
       return
     }
 
+    this.emit('beforeLogout')
     this.isLogged = false
 
     try {
