@@ -178,13 +178,16 @@ describe('CozyClient logout', () => {
     links[0].reset = jest.fn()
     links[2].reset = jest.fn()
     jest.spyOn(client, 'logout').mockImplementation(async function() {
-      expect(client.emit).not.toHaveBeenCalled()
       await originalLogout.apply(this, arguments)
-      expect(client.emit).toHaveBeenCalledWith('beforeLogout')
-      expect(client.emit).toHaveBeenCalledWith('logout')
+      expect(client.emit.mock.calls.map(x => x[0])).toEqual([
+        'beforeLogin',
+        'login',
+        'beforeLogout',
+        'logout'
+      ])
     })
-    await client.login()
     jest.spyOn(client, 'emit')
+    await client.login()
     await client.logout()
   })
 })

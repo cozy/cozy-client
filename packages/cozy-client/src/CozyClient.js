@@ -110,14 +110,23 @@ class CozyClient {
    * On mobile, where url/token are set after instantiation, use this method
    * to set the token and uri via options.
    *
+   * Emits
+   *
+   * - "beforeLogin" at the beginning, before links have been set up
+   * - "login" when the client is fully logged in and links have been set up
+   *
    * @param  {options.token}   options.token  - If passed, the token is set on the client
    * @param  {options.uri}   options.uri  - If passed, the uri is set on the client
+   * @return {Promise} - Resolves when all links have been setup and client is fully logged in
+   *
    */
   async login(options) {
     if (this.isLogged && !this.isRevoked) {
       console.warn(`CozyClient is already logged.`)
       return
     }
+
+    this.emit('beforeLogin')
 
     this.isLogged = true
     this.isRevoked = false
@@ -145,6 +154,16 @@ class CozyClient {
     this.emit('login')
   }
 
+  /**
+   * Logs out the client and reset all the links
+   *
+   * Emits
+   *
+   * - "beforeLogout" at the beginning, before links have been reset
+   * - "login" when the client is fully logged out and links have been reset
+   *
+   * @return {Promise} - Resolves when all links have been reset and client is fully logged out
+   */
   async logout() {
     if (!this.isLogged) {
       console.warn(`CozyClient isn't logged.`)
