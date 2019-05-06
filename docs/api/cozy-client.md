@@ -455,7 +455,8 @@ Responsible for
 
 * [CozyClient](#CozyClient)
     * [new CozyClient(options)](#new_CozyClient_new)
-    * [.login()](#CozyClient+login)
+    * [.login()](#CozyClient+login) ⇒ <code>Promise</code>
+    * [.logout()](#CozyClient+logout) ⇒ <code>Promise</code>
     * [.collection(doctype)](#CozyClient+collection) ⇒ <code>DocumentCollection</code>
     * [.getDocumentSavePlan(document, relationships)](#CozyClient+getDocumentSavePlan) ⇒ <code>Array.&lt;Mutation&gt;</code>
     * [.fetchRelationships()](#CozyClient+fetchRelationships)
@@ -485,19 +486,37 @@ Responsible for
 
 <a name="CozyClient+login"></a>
 
-### cozyClient.login()
+### cozyClient.login() ⇒ <code>Promise</code>
 Notify the links that they can start and set isLogged to true.
 
 On mobile, where url/token are set after instantiation, use this method
 to set the token and uri via options.
 
+Emits
+
+- "beforeLogin" at the beginning, before links have been set up
+- "login" when the client is fully logged in and links have been set up
+
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: <code>Promise</code> - - Resolves when all links have been setup and client is fully logged in  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | options.token | <code>options.token</code> | If passed, the token is set on the client |
 | options.uri | <code>options.uri</code> | If passed, the uri is set on the client |
 
+<a name="CozyClient+logout"></a>
+
+### cozyClient.logout() ⇒ <code>Promise</code>
+Logs out the client and reset all the links
+
+Emits
+
+- "beforeLogout" at the beginning, before links have been reset
+- "login" when the client is fully logged out and links have been reset
+
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: <code>Promise</code> - - Resolves when all links have been reset and client is fully logged out  
 <a name="CozyClient+collection"></a>
 
 ### cozyClient.collection(doctype) ⇒ <code>DocumentCollection</code>
