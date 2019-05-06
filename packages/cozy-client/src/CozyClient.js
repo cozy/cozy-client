@@ -119,6 +119,8 @@ class CozyClient {
       return
     }
 
+    this.emit('beforeLogin')
+
     this.isLogged = true
     this.isRevoked = false
     this.registerClientOnLinks()
