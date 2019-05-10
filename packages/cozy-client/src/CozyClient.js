@@ -63,6 +63,8 @@ class CozyClient {
    * @param  {Array.Link}   options.links  - List of links
    * @param  {Object}       options.schema - Schema description for each doctypes
    * @param  {Object}       options.appMetadata - Metadata about the application that will be used in ensureCozyMetadata
+   *
+   * Cozy-Client will automatically call `this.login()` if provided with a token and an uri
    */
   constructor({ link, links, schema = {}, appMetadata = {}, ...options }) {
     if (link) {
@@ -86,6 +88,10 @@ class CozyClient {
     this.chain = chain(this.links)
 
     this.schema = new Schema(schema, this.getStackClient())
+
+    if (options.uri && options.token) {
+      this.login()
+    }
   }
 
   addSchema(schemaDefinition) {
@@ -120,12 +126,18 @@ class CozyClient {
    * @return {Promise} - Resolves when all links have been setup and client is fully logged in
    *
    */
-  async login(options) {
+  login(options) {
+    // Keep the promise to be able to return it in future calls.
+    // This allows us to autoLogin in constructor without breaking any compatibility
+    // with codes that uses an explicit login.
     if (this.isLogged && !this.isRevoked) {
       console.warn(`CozyClient is already logged.`)
-      return
+      return this.loginPromise
     }
+    return (this.loginPromise = this._login(options))
+  }
 
+  async _login(options) {
     this.emit('beforeLogin')
 
     this.isLogged = true
