@@ -168,15 +168,7 @@ class PouchManager {
 
     const delay = this.options.replicationDelay || DEFAULT_DELAY
     this._stopReplicationLoop = promises.setInterval(() => {
-      if (window.navigator.onLine) {
-        return this.replicateOnce()
-      } else {
-        logger.info(
-          'PouchManager: The device is offline so the replication has been skipped'
-        )
-
-        return Promise.resolve()
-      }
+      return this.replicateOnce()
     }, delay)
     this.addListeners()
     return this._stopReplicationLoop
@@ -195,6 +187,13 @@ class PouchManager {
 
   /** Starts replication */
   async replicateOnce() {
+    if (!window.navigator.onLine) {
+      logger.info(
+        'PouchManager: The device is offline so the replication has been skipped'
+      )
+      return Promise.resolve()
+    }
+
     logger.info('PouchManager: Starting replication iteration')
 
     this.replications = map(this.pouches, (pouch, doctype) => {
