@@ -196,6 +196,7 @@ class PouchManager {
 
     logger.info('PouchManager: Starting replication iteration')
 
+    // Creating each replication
     this.replications = map(this.pouches, (pouch, doctype) => {
       logger.info('PouchManager: Starting replication for ' + doctype)
 
@@ -208,6 +209,8 @@ class PouchManager {
         return res
       })
     })
+
+    // Waiting on each replication
     const doctypes = Object.keys(this.pouches)
     const promises = Object.values(this.replications)
     try {
