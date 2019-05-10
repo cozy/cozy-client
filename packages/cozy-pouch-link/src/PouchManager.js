@@ -149,9 +149,7 @@ class PouchManager {
     return Promise.all(
       Object.values(this.pouches).map(pouch => pouch.info())
     ).then(() => {
-      if (process.env.NODE_ENV !== 'production') {
-        logger.info('PouchManager: ensure databases exist done')
-      }
+      logger.info('PouchManager: ensure databases exist done')
       this.ensureDatabasesExistDone = true
     })
   }
@@ -173,11 +171,9 @@ class PouchManager {
       if (window.navigator.onLine) {
         return this.replicateOnce()
       } else {
-        if (process.env.NODE_ENV !== 'production') {
-          logger.info(
-            'PouchManager: The device is offline so the replication has been skipped'
-          )
-        }
+        logger.info(
+          'PouchManager: The device is offline so the replication has been skipped'
+        )
 
         return Promise.resolve()
       }
@@ -189,9 +185,7 @@ class PouchManager {
   /** Stop periodic syncing of the pouches */
   stopReplicationLoop() {
     if (this._stopReplicationLoop) {
-      if (process.env.NODE_ENV !== 'production') {
-        logger.info('PouchManager: Stop replication loop')
-      }
+      logger.info('PouchManager: Stop replication loop')
 
       this.cancelCurrentReplications()
       this._stopReplicationLoop()
@@ -201,22 +195,16 @@ class PouchManager {
 
   /** Starts replication */
   async replicateOnce() {
-    if (process.env.NODE_ENV !== 'production') {
-      logger.info('PouchManager: Starting replication iteration')
-    }
+    logger.info('PouchManager: Starting replication iteration')
 
     this.replications = map(this.pouches, (pouch, doctype) => {
-      if (process.env.NODE_ENV !== 'production') {
-        logger.info('PouchManager: Starting replication for ' + doctype)
-      }
+      logger.info('PouchManager: Starting replication for ' + doctype)
 
       const getReplicationURL = () => this.getReplicationURL(doctype)
       return startReplication(pouch, getReplicationURL).then(res => {
         this.addSyncedDoctype(doctype)
 
-        if (process.env.NODE_ENV !== 'production') {
-          logger.log('PouchManager: Replication for ' + doctype + ' ended', res)
-        }
+        logger.log('PouchManager: Replication for ' + doctype + ' ended', res)
 
         return res
       })
