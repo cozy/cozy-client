@@ -36,7 +36,7 @@ async function clean() {
   await link.reset()
 }
 
-fdescribe('CozyPouchLink', () => {
+describe('CozyPouchLink', () => {
   afterEach(clean)
 
   it('should generate replication url', async () => {
@@ -238,6 +238,23 @@ fdescribe('CozyPouchLink', () => {
       await setup({ initialSync: false })
 
       expect(link.startReplication).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('immediate sync', () => {
+    it('should start/stop replication loop', async () => {
+      await setup()
+      const order = []
+      link.pouches.startReplicationLoop = jest
+        .fn()
+        .mockImplementation(() => order.push('start'))
+      link.pouches.stopReplicationLoop = jest
+        .fn()
+        .mockImplementation(() => order.push('stop'))
+      await link.syncImmediately()
+      expect(link.pouches.stopReplicationLoop).toHaveBeenCalled()
+      expect(link.pouches.startReplicationLoop).toHaveBeenCalled()
+      expect(order).toEqual(['stop', 'start'])
     })
   })
 })

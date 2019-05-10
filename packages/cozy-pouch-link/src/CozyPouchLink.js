@@ -343,6 +343,15 @@ class PouchLink extends CozyLink {
       throw new Error('Coud not apply mutation')
     }
   }
+
+  async syncImmediately() {
+    if (!this.pouches) {
+      logger.warn('Cannot sync immediately, no PouchManager')
+      return
+    }
+    this.pouches.stopReplicationLoop()
+    await this.pouches.startReplicationLoop()
+  }
 }
 
 export default PouchLink
