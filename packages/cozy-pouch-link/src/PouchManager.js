@@ -223,13 +223,17 @@ class PouchManager {
       }
       return res
     } catch (err) {
-      // On error, replication stops, it needs to be started
-      // again manually by the owner of PouchManager
-      this.stopReplicationLoop()
-      logger.warn('PouchManager: Error during replication', err)
-      if (this.options.onError) {
-        this.options.onError(err)
-      }
+      this.handleReplicationError(err)
+    }
+  }
+
+  handleReplicationError(err) {
+    logger.warn('PouchManager: Error during replication', err)
+    // On error, replication stops, it needs to be started
+    // again manually by the owner of PouchManager
+    this.stopReplicationLoop()
+    if (this.options.onError) {
+      this.options.onError(err)
     }
   }
 
