@@ -47,6 +47,10 @@ export default class ObservableQuery {
     }
   }
 
+  fetch() {
+    return this.client.query(this.definition, { as: this.queryId })
+  }
+
   fetchMore() {
     return this.client.query(
       this.definition.offset(this.currentRawResult().data.length),

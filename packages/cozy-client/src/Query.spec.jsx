@@ -12,16 +12,19 @@ import {
 } from './store'
 import { TODOS, TODO_WITH_RELATION, FILE_1 } from './__tests__/fixtures'
 import * as mocks from './__tests__/mocks'
+
 describe('Query', () => {
   const queryDef = client => ({ doctype: 'io.cozy.todos' })
+  let observableQuery
   const client = mocks.client({
-    watchQuery: queryDef => mocks.observableQuery()
+    watchQuery: queryDef => observableQuery
   })
 
   const context = { client }
 
   beforeEach(() => {
     client.query.mockClear()
+    observableQuery = mocks.observableQuery()
   })
 
   describe('lifecycle', () => {
@@ -29,7 +32,7 @@ describe('Query', () => {
       mount(<Query query={queryDef}>{() => null}</Query>, {
         context
       })
-      expect(client.query).toHaveBeenCalled()
+      expect(observableQuery.fetch).toHaveBeenCalled()
     })
 
     it('should not fire a query fetch when mounted with initialFetch=false', () => {

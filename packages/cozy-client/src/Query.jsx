@@ -34,14 +34,13 @@ export default class Query extends Component {
     this.deleteDocument = client.destroy.bind(client)
     this.getAssociation = client.getAssociation.bind(client)
     this.fetchMore = query.fetchMore.bind(query)
+    this.fetch = query.fetch.bind(query)
   }
 
   componentDidMount() {
     this.queryUnsubscribe = this.observableQuery.subscribe(this.onQueryChange)
     if (this.props.fetchPolicy !== 'cache-only') {
-      this.client.query(this.queryDefinition, {
-        as: this.observableQuery.queryId
-      })
+      this.observableQuery.fetch()
     }
   }
 
@@ -61,6 +60,7 @@ export default class Query extends Component {
     return children(
       {
         fetchMore: this.fetchMore,
+        fetch: this.fetch,
         ...query.currentResult()
       },
       {

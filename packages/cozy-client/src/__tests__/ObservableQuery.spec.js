@@ -64,6 +64,32 @@ describe('ObservableQuery', () => {
     })
   })
 
+  describe('fetch', () => {
+    let query
+    const def = client.all('io.cozy.todos')
+    const observer = jest.fn()
+
+    beforeEach(async () => {
+      observer.mockReset()
+      query = new ObservableQuery('allTodos', def, client)
+      jest.spyOn(client, 'query').mockImplementation(() => {})
+    })
+
+    afterEach(() => {
+      jest.restoreAllMocks()
+    })
+
+    it('should be able to tell the client to fetch', () => {
+      query.fetch()
+      expect(client.query).toHaveBeenCalledWith(
+        expect.objectContaining({
+          doctype: 'io.cozy.todos'
+        }),
+        { as: 'allTodos' }
+      )
+    })
+  })
+
   describe('current result', () => {
     let query
 

@@ -25,7 +25,8 @@ export const observableQuery = implementations => {
   const base = {
     currentResult: jest.fn(),
     subscribe: jest.fn(),
-    fetchMore: jest.fn()
+    fetchMore: jest.fn(),
+    fetch: jest.fn()
   }
   mockImplementations(base, implementations)
   return base
