@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="6.28.0"></a>
+       <a name="6.29.0"></a>
+# [6.29.0](https://github.com/cozy/cozy-client/compare/v6.28.0...v6.29.0) (2019-05-10)
+
+
+### Features
+
+* Cozy-client will autologin if initialized with uri and token ([467a534](https://github.com/cozy/cozy-client/commit/467a534))
+
+
+
+
+       <a name="6.28.0"></a>
 # [6.28.0](https://github.com/cozy/cozy-client/compare/v6.27.0...v6.28.0) (2019-05-10)
 
 
@@ -14,7 +25,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-      <a name="6.27.0"></a>
+     <a name="6.27.0"></a>
 # [6.27.0](https://github.com/cozy/cozy-client/compare/v6.26.0...v6.27.0) (2019-05-06)
 
 
@@ -25,7 +36,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-   <a name="6.26.0"></a>
+  <a name="6.26.0"></a>
 # [6.26.0](https://github.com/cozy/cozy-client/compare/v6.25.0...v6.26.0) (2019-05-02)
 
 
@@ -36,7 +47,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
- <a name="6.25.0"></a>
+<a name="6.25.0"></a>
 # [6.25.0](https://github.com/cozy/cozy-client/compare/v6.24.2...v6.25.0) (2019-04-30)
 
 
