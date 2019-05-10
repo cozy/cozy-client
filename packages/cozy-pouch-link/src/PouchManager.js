@@ -4,7 +4,7 @@ import forEach from 'lodash/forEach'
 import get from 'lodash/get'
 import map from 'lodash/map'
 import zip from 'lodash/zip'
-import * as promises from './promises'
+import Loop from './loop'
 import { default as helpers } from './helpers'
 import { isMobileApp } from 'cozy-device-helper'
 import logger from './logger'
@@ -102,6 +102,7 @@ class PouchManager {
 
     this.startReplicationLoop = this.startReplicationLoop.bind(this)
     this.stopReplicationLoop = this.stopReplicationLoop.bind(this)
+    this.replicateOnce = this.replicateOnce.bind(this)
   }
 
   addListeners() {
@@ -158,8 +159,9 @@ class PouchManager {
   async startReplicationLoop() {
     await this.ensureDatabasesExist()
 
-    if (this._stopReplicationLoop) {
-      return this._stopReplicationLoop
+    if (this.replicationLoop) {
+      logger.warn('Replication loop already started')
+      return
     }
 
     if (process.env.NODE_ENV !== 'production') {
@@ -167,22 +169,32 @@ class PouchManager {
     }
 
     const delay = this.options.replicationDelay || DEFAULT_DELAY
-    this._stopReplicationLoop = promises.setInterval(() => {
-      return this.replicateOnce()
-    }, delay)
+    this.replicationLoop = new Loop(this.replicateOnce, delay)
+    this.replicationLoop.start()
     this.addListeners()
-    return this._stopReplicationLoop
+    return this.replicationLoop
   }
 
   /** Stop periodic syncing of the pouches */
   stopReplicationLoop() {
-    if (this._stopReplicationLoop) {
+    if (this.replicationLoop) {
       logger.info('PouchManager: Stop replication loop')
-
-      this.cancelCurrentReplications()
-      this._stopReplicationLoop()
-      this._stopReplicationLoop = null
+      this.replicationLoop.stop()
+      this.replicationLoop = null
     }
+  }
+
+  /**
+   * If a replication is currently ongoing, will start a replication
+   * just after it has finished. Otherwise it will start a replication
+   * immediately
+   */
+  syncImmediately() {
+    if (!this.replicationLoop) {
+      logger.warn('No replication loop, cannot syncImmediately')
+      return
+    }
+    this.replicationLoop.scheduleImmediateTask()
   }
 
   /** Starts replication */
@@ -224,6 +236,9 @@ class PouchManager {
         const doctypeUpdates = fromPairs(zip(doctypes, res))
         this.options.onSync(doctypeUpdates)
       }
+
+      res.cancel = this.cancelCurrentReplications
+
       return res
     } catch (err) {
       this.handleReplicationError(err)
