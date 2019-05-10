@@ -60,6 +60,20 @@ describe('CozyClient initialization', () => {
     client = new CozyClient({ links, schema: SCHEMA })
   })
 
+  it('should autologin when provided token and uri', () => {
+    const token = 'fake_token'
+    const uri = 'https://example.mycozy.cloud'
+    client = new CozyClient({ token, uri })
+    expect(client.isLogged).toBeTruthy()
+  })
+
+  it('should not break explicit login when provided token and uri', () => {
+    const token = 'fake_token'
+    const uri = 'https://example.mycozy.cloud'
+    client = new CozyClient({ token, uri })
+    expect(client.login()).toBeInstanceOf(Promise)
+  })
+
   it('should have chained links', async () => {
     const res = await client.requestQuery({})
     expect(res).toBe('foobarbaz')
