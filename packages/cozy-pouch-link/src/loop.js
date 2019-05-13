@@ -64,18 +64,21 @@ class Loop {
    */
   async runImmediateTasks() {
     while (this.immediateTasks.length > 0) {
-      const task = this.immediateTasks.splice(0, 1)[0]
+      const task = this.immediateTasks.shift()
       await this.runTask(task)
     }
   }
 
   /**
-   * If loop started, schedules tasks that will be run in priority without
-   * delay at next round.
+   * Schedules a task to be run immediately at next round.
+   * Ignored if loop is not started.
+   * If not task is passed, the default task from the loop is used.
+   *
+   * @param  {Function} task - Optional custom function to be run immediately
    */
-  async scheduleImmediateTask(task) {
+  async scheduleImmediateTask(task=null) {
     if (!this.started) {
-      console.warn('Cannot schedule immediate task, loop is not started')
+      logger.warn('Cannot schedule immediate task, loop is not started')
       return
     }
 
@@ -103,7 +106,7 @@ class Loop {
       await this.currentTask
     } catch (err) {
       this.stop()
-      console.warn('ERROR', err)
+      logger.warn('Could not runTask, stopped the loop', err)
       throw err
     } finally {
       this.currentTask = null
@@ -116,6 +119,8 @@ class Loop {
    * There is a delay between immediate tasks and normal periodic tasks.
    */
   async round() {
+    // Avoid multiple round() to be run in parallel, when scheduleImmediateTask is
+    // called while we are sleeping (see below).
     if (this._rounding) {
       return
     }
