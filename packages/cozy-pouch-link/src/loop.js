@@ -1,3 +1,5 @@
+import logger from './logger'
+
 const sleep = delay => new Promise(resolve => setTimeout(resolve, delay))
 
 /**
@@ -76,7 +78,7 @@ class Loop {
    *
    * @param  {Function} task - Optional custom function to be run immediately
    */
-  async scheduleImmediateTask(task=null) {
+  async scheduleImmediateTask(task = null) {
     if (!this.started) {
       logger.warn('Cannot schedule immediate task, loop is not started')
       return
