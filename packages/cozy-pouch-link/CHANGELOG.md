@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="6.30.0"></a>
+# [6.30.0](https://github.com/cozy/cozy-client/compare/v6.29.0...v6.30.0) (2019-05-13)
+
+
+### Features
+
+* Sync immediately ([343f394](https://github.com/cozy/cozy-client/commit/343f394))
+
+
+
+
 <a name="6.29.0"></a>
 # [6.29.0](https://github.com/cozy/cozy-client/compare/v6.28.0...v6.29.0) (2019-05-10)
 
