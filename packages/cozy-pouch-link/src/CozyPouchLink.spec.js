@@ -23,6 +23,7 @@ async function setup(linkOpts = {}) {
   client = new CozyClient({
     ...mockClient,
     links: [link],
+    warningForCustomHandlers: false,
     schema: {
       todos: omit(SCHEMA.todos, ['relationships'])
     }
