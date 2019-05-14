@@ -105,6 +105,18 @@ describe('PouchManager', () => {
     manager.replicateOnce.mockRestore()
   })
 
+  it('should sync immediately', async () => {
+    try {
+      await manager.startReplicationLoop()
+      expect(manager.replicationLoop).not.toBeUndefined()
+      jest.spyOn(manager.replicationLoop, 'scheduleImmediateTask')
+      manager.syncImmediately()
+      expect(manager.replicationLoop.scheduleImmediateTask).toHaveBeenCalled()
+    } finally {
+      manager.stopReplicationLoop()
+    }
+  })
+
   it('should call on sync with doctype updates', async () => {
     jest.spyOn(manager, 'replicateOnce')
     onSync.mockReset()

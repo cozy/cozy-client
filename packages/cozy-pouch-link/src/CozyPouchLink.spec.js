@@ -23,6 +23,7 @@ async function setup(linkOpts = {}) {
   client = new CozyClient({
     ...mockClient,
     links: [link],
+    warningForCustomHandlers: false,
     schema: {
       todos: omit(SCHEMA.todos, ['relationships'])
     }
@@ -242,19 +243,18 @@ describe('CozyPouchLink', () => {
   })
 
   describe('immediate sync', () => {
-    it('should start/stop replication loop', async () => {
+    it('should not throw if pouches not there', async () => {
       await setup()
-      const order = []
-      link.pouches.startReplicationLoop = jest
-        .fn()
-        .mockImplementation(() => order.push('start'))
-      link.pouches.stopReplicationLoop = jest
-        .fn()
-        .mockImplementation(() => order.push('stop'))
+      link.pouches = null
+      expect(() => {
+        link.syncImmediately()
+      }).not.toThrow()
+    })
+    it('should call syncImmediately on pouch manager', async () => {
+      await setup()
+      link.pouches.syncImmediately = jest.fn().mockImplementation(() => {})
       await link.syncImmediately()
-      expect(link.pouches.stopReplicationLoop).toHaveBeenCalled()
-      expect(link.pouches.startReplicationLoop).toHaveBeenCalled()
-      expect(order).toEqual(['stop', 'start'])
+      expect(link.pouches.syncImmediately).toHaveBeenCalled()
     })
   })
 })
