@@ -195,7 +195,8 @@ describe('CozyStackClient', () => {
 
     it('should return the simple response object if no options or no body', async () => {
       const resp = await client.fetch('GET', '/data/io.cozy.todos')
-      expect(resp).toMatchSnapshot()
+      // if it has a .text method, it should be a Response object
+      expect(resp.text).not.toBeUndefined()
     })
   })
 
