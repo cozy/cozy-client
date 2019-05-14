@@ -123,6 +123,69 @@ describe('Query', () => {
     })
   })
 
+  describe('props', () => {
+    let store, client, query
+    beforeEach(async () => {
+      const assets = createTestAssets()
+      store = assets.store
+      client = assets.client
+      query = queryDef(client)
+      await store.dispatch(initQuery('allTodos', query))
+    })
+
+    const setup = ({ children }) => {
+      mount(
+        <CozyProvider client={client}>
+          <Query fetchPolicy="cache-only" query={queryDef}>
+            {children}
+          </Query>
+        </CozyProvider>
+      )
+    }
+
+    it('should provide the render prop children with methods', () => {
+      const children = jest.fn().mockImplementation(() => null)
+      setup({
+        children
+      })
+      expect(children).toHaveBeenCalledWith(
+        {
+          count: 0,
+          data: [],
+          definition: { doctype: 'io.cozy.todos' },
+          fetch: expect.any(Function),
+          fetchMore: expect.any(Function),
+          fetchStatus: 'loading',
+          hasMore: false,
+          id: 1,
+          lastError: null,
+          lastFetch: null,
+          lastUpdate: null
+        },
+        expect.any(Object)
+      )
+    })
+
+    it('should work with a client not providing fetch', () => {
+      client.watchQuery = () => ({
+        subscribe: () => {},
+        fetchMore: () => {},
+        currentResult: () => {}
+      })
+      const children = jest.fn().mockImplementation(() => null)
+      setup({
+        children
+      })
+      expect(children).toHaveBeenCalledWith(
+        {
+          fetch: undefined,
+          fetchMore: expect.any(Function)
+        },
+        expect.any(Object)
+      )
+    })
+  })
+
   describe('mutations', () => {
     let store, client, mutations, mutationsArgument, query
     beforeEach(async () => {
