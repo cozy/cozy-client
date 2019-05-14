@@ -774,6 +774,12 @@ class CozyClient {
         'CozyClient: Using options.client is deprecated, please use options.stackClient.'
       )
     }
+
+    const warningForCustomHandlers =
+      this.options.warningForCustomHandlers !== undefined
+        ? this.options.warningForCustomHandlers
+        : true
+
     const stackClient = this.options.client || this.options.stackClient
 
     const handlers = {
@@ -790,9 +796,11 @@ class CozyClient {
         if (!stackClient.options[handlerName]) {
           stackClient.options[handlerName] = handlers[handlerName]
         } else {
-          console.warn(
-            `You passed a stackClient with its own ${handlerName}. It is not supported, unexpected things might happen.`
-          )
+          if (warningForCustomHandlers) {
+            console.warn(
+              `You passed a stackClient with its own ${handlerName}. It is not supported, unexpected things might happen.`
+            )
+          }
         }
       }
     } else {

@@ -349,8 +349,7 @@ class PouchLink extends CozyLink {
       logger.warn('Cannot sync immediately, no PouchManager')
       return
     }
-    this.pouches.stopReplicationLoop()
-    await this.pouches.startReplicationLoop()
+    this.pouches.syncImmediately()
   }
 }
 
