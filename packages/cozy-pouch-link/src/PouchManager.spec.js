@@ -8,9 +8,9 @@ import PouchManager, { LOCALSTORAGE_SYNCED_KEY } from './PouchManager'
 import * as mocks from './__tests__/mocks'
 import { isMobileApp } from 'cozy-device-helper'
 
-jest.mock('pouchdb')
+jest.mock('pouchdb-browser')
 jest.mock('cozy-device-helper')
-import PouchDB from 'pouchdb'
+import PouchDB from 'pouchdb-browser'
 
 const sleep = delay => {
   return new Promise(resolve => {

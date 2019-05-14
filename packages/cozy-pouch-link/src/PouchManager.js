@@ -1,4 +1,4 @@
-import PouchDB from 'pouchdb'
+import PouchDB from 'pouchdb-browser'
 import fromPairs from 'lodash/fromPairs'
 import forEach from 'lodash/forEach'
 import get from 'lodash/get'

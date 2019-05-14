@@ -1,5 +1,5 @@
 import { MutationTypes, CozyLink, getDoctypeFromOperation } from 'cozy-client'
-import PouchDB from 'pouchdb'
+import PouchDB from 'pouchdb-browser'
 import PouchDBFind from 'pouchdb-find'
 import omit from 'lodash/omit'
 import defaults from 'lodash/defaults'
