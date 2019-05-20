@@ -3,15 +3,16 @@ import { mount } from 'enzyme'
 import { withClient, queryConnect } from './hoc'
 import * as mocks from './__tests__/mocks'
 
+class Component extends React.Component {
+  render() {
+    return <div />
+  }
+}
+
 describe('with client', () => {
   it('should pass the client to its children', () => {
     const fakeClient = mocks.client()
     const context = { client: fakeClient }
-    class Component extends React.Component {
-      render() {
-        return <div />
-      }
-    }
     const WithClientComponent = withClient(Component)
     const uut = mount(<WithClientComponent />, { context })
     expect(uut.find(Component).prop('client')).toBe(fakeClient)
@@ -40,11 +41,6 @@ describe('queryConnect', () => {
 
     const context = {
       client
-    }
-    class Component extends React.Component {
-      render() {
-        return <div />
-      }
     }
     const WithQueries = queryConnect({
       toto: { query: client => client.all('io.cozy.toto') },
