@@ -14,6 +14,7 @@ export const withClient = Component => {
   const Wrapped = (props, context) => (
     <Component {...props} client={context.client} />
   )
+  Wrapped.displayName = `withClient(${Component.displayName || Component.name})`
   Wrapped.contextTypes = {
     client: PropTypes.object
   }
@@ -48,6 +49,8 @@ const withQuery = (dest, queryOpts, Original) => {
     Wrapped.contextTypes = {
       client: PropTypes.object
     }
+    Wrapped.displayName = `withQuery(${Component.displayName ||
+      Component.name})`
     return Wrapped
   }
 }
