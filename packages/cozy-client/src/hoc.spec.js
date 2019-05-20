@@ -20,32 +20,33 @@ describe('with client', () => {
 })
 
 describe('queryConnect', () => {
-  it('should pass result of query definitions as props', () => {
-    const fakeData = {
-      'io.cozy.toto': 'hello',
-      'io.cozy.tata': 'hello2'
-    }
-    const queryDefinitionFromDoctype = doctype => ({ doctype })
-    const observableQueryFromDefinition = definition => {
-      return mocks.observableQuery({
-        currentResult: () => ({
-          data: fakeData[definition.doctype]
-        })
+  const fakeData = {
+    'io.cozy.toto': 'hello',
+    'io.cozy.tata': 'hello2'
+  }
+  const queryDefinitionFromDoctype = doctype => ({ doctype })
+  const observableQueryFromDefinition = definition => {
+    return mocks.observableQuery({
+      currentResult: () => ({
+        data: fakeData[definition.doctype]
       })
-    }
-
-    const client = mocks.client({
-      all: doctype => queryDefinitionFromDoctype(doctype),
-      watchQuery: queryDef => observableQueryFromDefinition(queryDef)
     })
+  }
 
+  const client = mocks.client({
+    all: doctype => queryDefinitionFromDoctype(doctype),
+    watchQuery: queryDef => observableQueryFromDefinition(queryDef)
+  })
+
+  const WithQueries = queryConnect({
+    toto: { query: client => client.all('io.cozy.toto') },
+    tata: { query: client => client.all('io.cozy.tata') }
+  })(Component)
+
+  it('should pass result of query definitions as props', () => {
     const context = {
       client
     }
-    const WithQueries = queryConnect({
-      toto: { query: client => client.all('io.cozy.toto') },
-      tata: { query: client => client.all('io.cozy.tata') }
-    })(Component)
     const uut = mount(<WithQueries />, { context })
     expect(uut.find(Component).prop('toto').data).toBe('hello')
     expect(uut.find(Component).prop('tata').data).toBe('hello2')
