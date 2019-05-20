@@ -17,6 +17,11 @@ describe('with client', () => {
     const uut = mount(<WithClientComponent />, { context })
     expect(uut.find(Component).prop('client')).toBe(fakeClient)
   })
+
+  it('should give a display name', () => {
+    const WithClientComponent = withClient(Component)
+    expect(WithClientComponent.displayName).toBe('withClient(Component)')
+  })
 })
 
 describe('queryConnect', () => {
@@ -42,6 +47,10 @@ describe('queryConnect', () => {
     toto: { query: client => client.all('io.cozy.toto') },
     tata: { query: client => client.all('io.cozy.tata') }
   })(Component)
+
+  it('should give a display name', () => {
+    expect(WithQueries.displayName).toBe('withQuery(withQuery(Component))')
+  })
 
   it('should pass result of query definitions as props', () => {
     const context = {
