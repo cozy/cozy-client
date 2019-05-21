@@ -159,6 +159,35 @@ class FileCollection extends DocumentCollection {
     return this.doUpload(data, path, options)
   }
 
+  /**
+   * updateFile - Updates a file's data
+   *
+   * @param  {object}  data               Javascript File object
+   * @param  {object}  params             Additional parameters
+   * @param  {string}  params.fileId      The id of the file to update (required)
+   * @param  {boolean} params.executable  Whether the file is executable or not
+   * @param  {object}  params.options     Options to pass to doUpload method (additional headers)
+   * @return {object}                     Updated document
+   */
+  updateFile(data, { executable = false, fileId, ...options } = {}) {
+    if (!fileId || typeof fileId !== 'string') {
+      throw new Error('missing fileId argument')
+    }
+
+    // handle case where data is a file and contains the name
+    if (typeof data.name !== 'string') {
+      throw new Error('missing name in data argument')
+    }
+
+    const name = sanitizeFileName(data.name)
+    if (typeof name !== 'string' || name === '') {
+      throw new Error('missing name argument')
+    }
+
+    const path = uri`/files/${fileId}?Name=${name}&Type=file&Executable=${executable}`
+    return this.doUpload(data, path, options, 'PUT')
+  }
+
   getDownloadLinkById(id) {
     return this.stackClient
       .fetchJSON('POST', uri`/files/downloads?Id=${id}`)
@@ -325,7 +354,7 @@ class FileCollection extends DocumentCollection {
     }
   }
 
-  async doUpload(data, path, options) {
+  async doUpload(data, path, options, method = 'POST') {
     if (!data) {
       throw new Error('missing data argument')
     }
@@ -379,7 +408,7 @@ class FileCollection extends DocumentCollection {
     if (lastModifiedDate) headers['Date'] = lastModifiedDate.toGMTString()
     if (ifMatch) headers['If-Match'] = ifMatch
 
-    const resp = await this.stackClient.fetchJSON('POST', path, data, {
+    const resp = await this.stackClient.fetchJSON(method, path, data, {
       headers
     })
     return {
