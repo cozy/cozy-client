@@ -265,4 +265,51 @@ describe('FileCollection', () => {
       ).toMatchSnapshot()
     })
   })
+
+  describe('updateFile', () => {
+    beforeEach(() => {
+      client.fetchJSON.mockReturnValue({
+        data: {
+          id: '59140416-b95f',
+          _id: '59140416-b95f',
+          dir_id: '41686c35-9d8e'
+        }
+      })
+    })
+
+    afterEach(() => {
+      client.fetchJSON.mockClear()
+    })
+
+    it('should update a file', async () => {
+      const data = new File([''], 'mydoc.odt')
+      const params = {
+        fileId: '59140416-b95f',
+        checksum: 'a6dabd99832b270468e254814df2ed20'
+      }
+      const result = await collection.updateFile(data, params)
+      const expectedPath =
+        '/files/59140416-b95f?Name=mydoc.odt&Type=file&Executable=false'
+      const expectedOptions = {
+        headers: {
+          'Content-MD5': 'a6dabd99832b270468e254814df2ed20',
+          'Content-Type': 'application/vnd.oasis.opendocument.text'
+        }
+      }
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'PUT',
+        expectedPath,
+        data,
+        expectedOptions
+      )
+      expect(result).toEqual({
+        data: {
+          id: '59140416-b95f',
+          _id: '59140416-b95f',
+          _type: 'io.cozy.files',
+          dir_id: '41686c35-9d8e'
+        }
+      })
+    })
+  })
 })

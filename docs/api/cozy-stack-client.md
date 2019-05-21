@@ -228,6 +228,7 @@ files associated to a specific document
 * [FileCollection](#FileCollection)
     * [.find(selector, options)](#FileCollection+find) ⇒ <code>Object</code>
     * [.findReferencedBy(document, {, limit)](#FileCollection+findReferencedBy) ⇒ <code>object</code>
+    * [.updateFile(data, params)](#FileCollection+updateFile) ⇒ <code>object</code>
     * [.createDirectoryByPath(path)](#FileCollection+createDirectoryByPath) ⇒ <code>object</code>
     * [.updateFileMetadata(id, attributes)](#FileCollection+updateFileMetadata) ⇒ <code>object</code>
 
@@ -263,6 +264,22 @@ async findReferencedBy - Returns the list of files referenced by a document — 
 | document | <code>object</code> | A JSON representing a document, with at least a `_type` and `_id` field. |
 | { | <code>number</code> | skip = 0   For pagination, the number of referenced files to skip |
 | limit | <code>number</code> | } For pagination, the number of results to return. |
+
+<a name="FileCollection+updateFile"></a>
+
+### fileCollection.updateFile(data, params) ⇒ <code>object</code>
+updateFile - Updates a file's data
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+**Returns**: <code>object</code> - Updated document  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| data | <code>object</code> | Javascript File object |
+| params | <code>object</code> | Additional parameters |
+| params.fileId | <code>string</code> | The id of the file to update (required) |
+| params.executable | <code>boolean</code> | Whether the file is executable or not |
+| params.options | <code>object</code> | Options to pass to doUpload method (additional headers) |
 
 <a name="FileCollection+createDirectoryByPath"></a>
 
