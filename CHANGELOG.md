@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-     <a name="6.32.0"></a>
+      <a name="6.33.0"></a>
+# [6.33.0](https://github.com/cozy/cozy-client/compare/v6.32.0...v6.33.0) (2019-05-21)
+
+
+### Features
+
+* **cozy-stack-client:** Add updateFile method to FileCollection ([21006d1](https://github.com/cozy/cozy-client/commit/21006d1))
+
+
+
+
+      <a name="6.32.0"></a>
 # [6.32.0](https://github.com/cozy/cozy-client/compare/v6.31.1...v6.32.0) (2019-05-20)
 
 
@@ -14,7 +25,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="6.31.1"></a>
+   <a name="6.31.1"></a>
 ## [6.31.1](https://github.com/cozy/cozy-client/compare/v6.31.0...v6.31.1) (2019-05-14)
 
 
@@ -25,7 +36,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-   <a name="6.31.0"></a>
+ <a name="6.31.0"></a>
 # [6.31.0](https://github.com/cozy/cozy-client/compare/v6.30.0...v6.31.0) (2019-05-14)
 
 
@@ -41,7 +52,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-  <a name="6.30.0"></a>
+<a name="6.30.0"></a>
 # [6.30.0](https://github.com/cozy/cozy-client/compare/v6.29.0...v6.30.0) (2019-05-13)
 
 
