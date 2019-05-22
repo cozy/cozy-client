@@ -58,6 +58,34 @@ class Registry {
     const baseRoute = getBaseRoute(app)
     return this.client.stackClient.fetchJSON('DELETE', `${baseRoute}/${slug}`)
   }
+
+  /**
+   * Fetch at most 200 apps from the channel
+   *
+   * @param  {string} options.type - "webapp" or "konnector"
+   * @param  {string} options.channel - "dev"/"beta"/"stable"
+   *
+   * @return {Array<RegistryApp>}
+   */
+  async fetchApps(options) {
+    const { channel, type } = options
+    const params = {
+      limit: 200,
+      versionsChannel: channel,
+      latestChannelVersion: channel
+    }
+    let querypart = new URLSearchParams(params).toString()
+    if (type) {
+      // Unfortunately, URLSearchParams encodes brackets so we have to do
+      // the querypart handling manually
+      querypart = querypart + `&filter[type]=${type}`
+    }
+    const { data: apps } = await this.client.stackClient.fetchJSON(
+      'GET',
+      `/registry?${querypart}`
+    )
+    return apps
+  }
 }
 
 export default Registry
