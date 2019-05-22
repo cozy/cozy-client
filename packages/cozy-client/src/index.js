@@ -24,3 +24,6 @@ export {
 export { dehydrate } from './helpers'
 export { getQueryFromState } from './store'
 export { default as Registry } from './registry'
+
+import * as manifest from './manifest'
+export { manifest }
