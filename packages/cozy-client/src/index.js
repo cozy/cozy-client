@@ -23,3 +23,4 @@ export {
 } from './associations'
 export { dehydrate } from './helpers'
 export { getQueryFromState } from './store'
+export { default as Registry } from './registry'
