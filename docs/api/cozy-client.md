@@ -67,6 +67,10 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 <dt><a href="#queryConnect">queryConnect(querySpecs)</a> ⇒ <code>function</code></dt>
 <dd><p>HOC creator to connect component to several queries in a declarative manner</p>
 </dd>
+<dt><a href="#cancelable">cancelable(promise)</a> ⇒ <code>AugmentedPromise</code></dt>
+<dd><p>Wraps a promise so that it can be canceled</p>
+<p>Rejects with canceled: true as soon as cancel is called</p>
+</dd>
 </dl>
 
 <a name="Association"></a>
@@ -871,4 +875,18 @@ HOC creator to connect component to several queries in a declarative manner
 | Param | Type | Description |
 | --- | --- | --- |
 | querySpecs | <code>object</code> | Definition of the queries |
+
+<a name="cancelable"></a>
+
+## cancelable(promise) ⇒ <code>AugmentedPromise</code>
+Wraps a promise so that it can be canceled
+
+Rejects with canceled: true as soon as cancel is called
+
+**Kind**: global function  
+**Returns**: <code>AugmentedPromise</code> - - Promise with .cancel method  
+
+| Param | Type |
+| --- | --- |
+| promise | <code>Promise</code> | 
 
