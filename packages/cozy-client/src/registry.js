@@ -33,7 +33,7 @@ class Registry {
    * @return {Promise}
    */
   async installApp(app, source) {
-    const { slug, type, terms } = app
+    const { slug, terms } = app
     const searchParams = {}
     const isUpdate = app.installed
     if (isUpdate) searchParams.PermissionsAcked = isUpdate
