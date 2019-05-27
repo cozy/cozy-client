@@ -10,7 +10,9 @@ describe('registry api', () => {
   let fetchJSON, client, api
 
   beforeEach(() => {
-    fetchJSON = jest.fn()
+    fetchJSON = jest
+      .fn()
+      .mockImplementation(() => Promise.resolve({ apps: [] }))
     client = new CozyClient({
       stackClient: {
         fetchJSON
@@ -89,6 +91,24 @@ describe('registry api', () => {
     it('should call the correct routes (node)', async () => {
       await api.uninstallApp({ ...testKonn, type: 'node' })
       expect(fetchJSON).toHaveBeenCalledWith('DELETE', '/konnectors/test-konn')
+    })
+  })
+
+  describe('fetching', () => {
+    it('should call the correct route', async () => {
+      await api.fetchApps({ channel: 'beta' })
+      expect(fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/registry?limit=200&versionsChannel=beta&latestChannelVersion=beta'
+      )
+    })
+
+    it('should call the correct route (filtering)', async () => {
+      await api.fetchApps({ channel: 'beta', type: 'konnectors' })
+      expect(fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/registry?limit=200&versionsChannel=beta&latestChannelVersion=beta&filter[type]=konnectors'
+      )
     })
   })
 })

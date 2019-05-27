@@ -67,6 +67,12 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 <dt><a href="#queryConnect">queryConnect(querySpecs)</a> ⇒ <code>function</code></dt>
 <dd><p>HOC creator to connect component to several queries in a declarative manner</p>
 </dd>
+<dt><a href="#sanitizeCategories">sanitizeCategories()</a></dt>
+<dd><p>Filters unauthorized categories. Defaults to [&#39;others&#39;] if no suitable category.</p>
+</dd>
+<dt><a href="#sanitize">sanitize(manifest)</a> ⇒ <code>Manifest</code></dt>
+<dd><p>Normalize app manifest, retrocompatibility for old manifests</p>
+</dd>
 <dt><a href="#cancelable">cancelable(promise)</a> ⇒ <code>AugmentedPromise</code></dt>
 <dd><p>Wraps a promise so that it can be canceled</p>
 <p>Rejects with canceled: true as soon as cancel is called</p>
@@ -884,6 +890,23 @@ HOC creator to connect component to several queries in a declarative manner
 | Param | Type | Description |
 | --- | --- | --- |
 | querySpecs | <code>object</code> | Definition of the queries |
+
+<a name="sanitizeCategories"></a>
+
+## sanitizeCategories()
+Filters unauthorized categories. Defaults to ['others'] if no suitable category.
+
+**Kind**: global function  
+<a name="sanitize"></a>
+
+## sanitize(manifest) ⇒ <code>Manifest</code>
+Normalize app manifest, retrocompatibility for old manifests
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| manifest | <code>Manifest</code> | 
 
 <a name="cancelable"></a>
 
