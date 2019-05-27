@@ -1,4 +1,4 @@
-const AUTHORIZED_CATEGORIES = [
+const APP_CATEGORIES = [
   'banking',
   'cozy',
   'energy',
@@ -8,6 +8,7 @@ const AUTHORIZED_CATEGORIES = [
   'isp',
   'mes_infos',
   'online_services',
+  'others',
   'partners',
   'press',
   'productivity',
@@ -22,7 +23,7 @@ const AUTHORIZED_CATEGORIES = [
 /** Filters unauthorized categories. Defaults to ['others'] if no suitable category. */
 export function sanitizeCategories(categories) {
   if (!categories) return ['others']
-  const filteredList = categories.filter(c => AUTHORIZED_CATEGORIES.includes(c))
+  const filteredList = categories.filter(c => APP_CATEGORIES.includes(c))
   if (!filteredList.length) return ['others']
   return filteredList
 }
