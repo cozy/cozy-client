@@ -20,7 +20,7 @@ const APP_CATEGORIES = [
   'transport'
 ]
 
-/** Filters unauthorized categories. Defaults to ['other'] if no suitable category. */
+/** Filters unauthorized categories. Defaults to ['others'] if no suitable category. */
 export function sanitizeCategories(categories) {
   if (!categories) return ['others']
   const filteredList = categories.filter(c => APP_CATEGORIES.includes(c))
