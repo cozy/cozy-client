@@ -28,11 +28,11 @@ export function sanitizeCategories(categories) {
 }
 
 export function areTermsValid(terms) {
-  return !!terms && !!terms.id && !!terms.url && !!terms.version
+  return Bolean(terms && terms.id && terms.url && terms.version)
 }
 
-export function isParnershipValid(partnership) {
-  return !!partnership && !!partnership.description
+export function isPartnershipValid(partnership) {
+  return Boolean(partnership && partnership.description)
 }
 
 /**
@@ -77,7 +77,7 @@ export function sanitize(manifest) {
   }
 
   // Remove invalid partnership
-  if (sanitized.partnership && !isParnershipValid(sanitized.partnership)) {
+  if (sanitized.partnership && !isPartnershipValid(sanitized.partnership)) {
     delete sanitized.partnership
   }
 
