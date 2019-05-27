@@ -28,7 +28,7 @@ export function sanitizeCategories(categories) {
 }
 
 export function areTermsValid(terms) {
-  return Bolean(terms && terms.id && terms.url && terms.version)
+  return Boolean(terms && terms.id && terms.url && terms.version)
 }
 
 export function isPartnershipValid(partnership) {
