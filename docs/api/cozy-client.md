@@ -459,22 +459,25 @@ Responsible for
 
 * [CozyClient](#CozyClient)
     * [new CozyClient(options)](#new_CozyClient_new)
-    * [.login()](#CozyClient+login) ⇒ <code>Promise</code>
-    * [.logout()](#CozyClient+logout) ⇒ <code>Promise</code>
-    * [.collection(doctype)](#CozyClient+collection) ⇒ <code>DocumentCollection</code>
-    * [.getDocumentSavePlan(document, relationships)](#CozyClient+getDocumentSavePlan) ⇒ <code>Array.&lt;Mutation&gt;</code>
-    * [.fetchRelationships()](#CozyClient+fetchRelationships)
-    * [.hydrateDocument()](#CozyClient+hydrateDocument)
-    * [.makeNewDocument()](#CozyClient+makeNewDocument)
-    * [.getAssociation()](#CozyClient+getAssociation)
-    * [.getRelationshipStoreAccessors()](#CozyClient+getRelationshipStoreAccessors)
-    * [.register(cozyURL)](#CozyClient+register) ⇒ <code>object</code>
-    * [.startOAuthFlow(openURLCallback)](#CozyClient+startOAuthFlow) ⇒ <code>object</code>
-    * [.renewAuthorization()](#CozyClient+renewAuthorization) ⇒ <code>object</code>
-    * [.handleRevocationChange()](#CozyClient+handleRevocationChange)
-    * [.handleTokenRefresh()](#CozyClient+handleTokenRefresh)
-    * [.createClient()](#CozyClient+createClient)
-    * [.setData(data)](#CozyClient+setData)
+    * _instance_
+        * [.login()](#CozyClient+login) ⇒ <code>Promise</code>
+        * [.logout()](#CozyClient+logout) ⇒ <code>Promise</code>
+        * [.collection(doctype)](#CozyClient+collection) ⇒ <code>DocumentCollection</code>
+        * [.getDocumentSavePlan(document, relationships)](#CozyClient+getDocumentSavePlan) ⇒ <code>Array.&lt;Mutation&gt;</code>
+        * [.fetchRelationships()](#CozyClient+fetchRelationships)
+        * [.hydrateDocument()](#CozyClient+hydrateDocument)
+        * [.makeNewDocument()](#CozyClient+makeNewDocument)
+        * [.getAssociation()](#CozyClient+getAssociation)
+        * [.getRelationshipStoreAccessors()](#CozyClient+getRelationshipStoreAccessors)
+        * [.register(cozyURL)](#CozyClient+register) ⇒ <code>object</code>
+        * [.startOAuthFlow(openURLCallback)](#CozyClient+startOAuthFlow) ⇒ <code>object</code>
+        * [.renewAuthorization()](#CozyClient+renewAuthorization) ⇒ <code>object</code>
+        * [.handleRevocationChange()](#CozyClient+handleRevocationChange)
+        * [.handleTokenRefresh()](#CozyClient+handleTokenRefresh)
+        * [.createClient()](#CozyClient+createClient)
+        * [.setData(data)](#CozyClient+setData)
+    * _static_
+        * [.fromEnv()](#CozyClient.fromEnv)
 
 <a name="new_CozyClient_new"></a>
 
@@ -669,6 +672,12 @@ set some data in the store.
 | --- | --- | --- |
 | data | <code>Object</code> | { doctype: [data] } |
 
+<a name="CozyClient.fromEnv"></a>
+
+### CozyClient.fromEnv()
+In konnector/service context, CozyClient can be instantiated from environment variables
+
+**Kind**: static method of [<code>CozyClient</code>](#CozyClient)  
 <a name="QueryDefinition"></a>
 
 ## QueryDefinition

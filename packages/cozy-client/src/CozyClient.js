@@ -94,6 +94,22 @@ class CozyClient {
     }
   }
 
+  /** In konnector/service context, CozyClient can be instantiated from environment variables */
+  static fromEnv(env, options) {
+    env = env || (typeof process !== 'undefined' ? process.env : {})
+    const { COZY_URL, COZY_CREDENTIALS } = env
+    if (!COZY_URL || !COZY_CREDENTIALS) {
+      throw new Error(
+        'Env used to instantiate CozyClient must have COZY_URL and COZY_CREDENTIALS'
+      )
+    }
+    return new CozyClient({
+      uri: COZY_URL.trim(),
+      token: COZY_CREDENTIALS.trim(),
+      ...options
+    })
+  }
+
   addSchema(schemaDefinition) {
     this.schema.add(schemaDefinition)
   }
