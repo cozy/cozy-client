@@ -312,4 +312,29 @@ describe('FileCollection', () => {
       })
     })
   })
+
+  describe('restore', () => {
+    it('should restore a trashed file', async () => {
+      const FILE_ID = 'd04ab491-2fc6'
+      client.fetchJSON.mockReturnValue({
+        data: {
+          id: FILE_ID,
+          type: 'io.cozy.files',
+          trashed: false
+        }
+      })
+      const result = await collection.restore(FILE_ID)
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/files/trash/d04ab491-2fc6'
+      )
+      expect(result).toEqual({
+        data: {
+          id: FILE_ID,
+          type: 'io.cozy.files',
+          trashed: false
+        }
+      })
+    })
+  })
 })

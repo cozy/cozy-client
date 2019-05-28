@@ -228,6 +228,7 @@ files associated to a specific document
 * [FileCollection](#FileCollection)
     * [.find(selector, options)](#FileCollection+find) ⇒ <code>Object</code>
     * [.findReferencedBy(document, {, limit)](#FileCollection+findReferencedBy) ⇒ <code>object</code>
+    * [.restore(id)](#FileCollection+restore) ⇒ <code>Promise</code>
     * [.updateFile(data, params)](#FileCollection+updateFile) ⇒ <code>object</code>
     * [.createDirectoryByPath(path)](#FileCollection+createDirectoryByPath) ⇒ <code>object</code>
     * [.updateFileMetadata(id, attributes)](#FileCollection+updateFileMetadata) ⇒ <code>object</code>
@@ -264,6 +265,22 @@ async findReferencedBy - Returns the list of files referenced by a document — 
 | document | <code>object</code> | A JSON representing a document, with at least a `_type` and `_id` field. |
 | { | <code>number</code> | skip = 0   For pagination, the number of referenced files to skip |
 | limit | <code>number</code> | } For pagination, the number of results to return. |
+
+<a name="FileCollection+restore"></a>
+
+### fileCollection.restore(id) ⇒ <code>Promise</code>
+Restores a trashed file.
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+**Returns**: <code>Promise</code> - - A promise that returns the restored file if resolved.  
+**Throws**:
+
+- <code>FetchError</code> 
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | The file's id |
 
 <a name="FileCollection+updateFile"></a>
 
