@@ -103,9 +103,19 @@ class CozyClient {
         'Env used to instantiate CozyClient must have COZY_URL and COZY_CREDENTIALS'
       )
     }
+    let oauth
+    let token
+    try {
+      oauth = JSON.parse(COZY_CREDENTIALS)
+      token = JSON.parse(COZY_CREDENTIALS)
+    } catch (e) {
+      token = COZY_CREDENTIALS.trim()
+    }
+
     return new CozyClient({
+      oauth: oauth,
       uri: COZY_URL.trim(),
-      token: COZY_CREDENTIALS.trim(),
+      token: token,
       ...options
     })
   }
