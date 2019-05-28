@@ -138,6 +138,18 @@ class FileCollection extends DocumentCollection {
     }
   }
 
+  /**
+   * Restores a trashed file.
+   *
+   * @param {string} id   - The file's id
+   * @returns {Promise}   - A promise that returns the restored file if resolved.
+   * @throws {FetchError}
+   *
+   */
+  restore(id) {
+    return this.stackClient.fetchJSON('POST', uri`/files/trash/${id}`)
+  }
+
   async upload(data, dirPath) {
     const dirId = await this.ensureDirectoryExists(dirPath)
     return this.createFile(data, { dirId })
