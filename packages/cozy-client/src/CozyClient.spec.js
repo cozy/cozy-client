@@ -74,14 +74,32 @@ describe('CozyClient initialization', () => {
     expect(client.login()).toBeInstanceOf(Promise)
   })
 
-  it('can be instantiated from environment', () => {
+  it('can be instantiated from environment with string token', () => {
     const url = 'https://testcozy.mycozy.cloud'
     const token = 'test-token'
-    global.process.env.COZY_URL = url
-    global.process.env.COZY_CREDENTIALS = token
-    client = CozyClient.fromEnv()
+    client = CozyClient.fromEnv({
+      COZY_URL: url,
+      COZY_CREDENTIALS: token
+    })
     expect(client.stackClient.uri).toBe(url)
     expect(client.stackClient.token.token).toBe(token)
+  })
+
+  it('can be instantiated from environment with OAuth token', () => {
+    const url = 'https://testcozy.mycozy.cloud'
+    const token = 'test-token'
+    const creds = {
+      token: {
+        accessToken: token
+      }
+    }
+    client = CozyClient.fromEnv({
+      COZY_URL: url,
+      COZY_CREDENTIALS: JSON.stringify(creds),
+      NODE_ENV: 'development'
+    })
+    expect(client.stackClient.uri).toBe(url)
+    expect(client.stackClient.token.accessToken).toBe(token)
   })
 
   it('should have chained links', async () => {

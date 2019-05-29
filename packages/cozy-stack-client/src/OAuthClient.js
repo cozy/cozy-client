@@ -26,6 +26,9 @@ class OAuthClient extends CozyStackClient {
   constructor({ oauth, scope = [], onTokenRefresh, ...options }) {
     super(options)
     this.setOAuthOptions({ ...defaultoauthOptions, ...oauth })
+    if (oauth.token) {
+      this.setToken(oauth.token)
+    }
     this.scope = scope
     this.onTokenRefresh = onTokenRefresh
   }
