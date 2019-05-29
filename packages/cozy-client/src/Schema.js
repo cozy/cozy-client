@@ -100,11 +100,17 @@ class Schema {
 
   /**
    * Returns the schema for a doctype
+   *
+   * Creates an empty schema implicitly if it does not exist
    */
   getDoctypeSchema(doctype) {
-    const schema = this.byDoctype[doctype]
+    let schema = this.byDoctype[doctype]
     if (!schema) {
-      throw new Error(`No schema found for '${doctype}' doctype`)
+      schema = normalizeDoctypeSchema({
+        name: doctype,
+        doctype
+      })
+      this.byDoctype[doctype] = schema
     }
     return schema
   }

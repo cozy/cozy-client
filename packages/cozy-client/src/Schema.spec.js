@@ -115,6 +115,14 @@ describe('Schema', () => {
       })
     })
 
+    it('gets schema even they have not been explicitly added', () => {
+      expect(schema.getDoctypeSchema('io.cozy.terms')).toEqual({
+        doctype: 'io.cozy.terms',
+        name: 'io.cozy.terms',
+        relationships: null
+      })
+    })
+
     it('throws if schema with same name exists', () => {
       expect(() =>
         schema.add({
