@@ -3,6 +3,12 @@ import omit from 'lodash/omit'
 
 import CozyPouchLink from '.'
 import { SCHEMA, TODO_1, TODO_2, TODO_3, TODO_4 } from './__tests__/fixtures'
+import PouchDB from 'pouchdb-browser'
+import PouchDBMemoryAdapterPlugin from 'pouchdb-adapter-memory'
+
+// Necessary to have the memory adapter for the tests since neither
+// IndexedDB nor WebSQL adapter can be used in Jest
+PouchDB.plugin(PouchDBMemoryAdapterPlugin)
 
 const mockClient = {
   stackClient: {
