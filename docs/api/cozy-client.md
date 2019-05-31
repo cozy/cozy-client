@@ -688,6 +688,8 @@ from a Cozy. `QueryDefinition`s are sent to links.
 
 * [QueryDefinition](#QueryDefinition)
     * [new QueryDefinition(doctype, id, ids, selector, fields, indexedFields, sort, includes, referenced, limit, skip)](#new_QueryDefinition_new)
+    * [.getById(id)](#QueryDefinition+getById) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
+    * [.getByIds(ids)](#QueryDefinition+getByIds) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.where(selector)](#QueryDefinition+where) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.select(fields)](#QueryDefinition+select) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.indexFields(fields)](#QueryDefinition+indexFields) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
@@ -714,6 +716,30 @@ from a Cozy. `QueryDefinition`s are sent to links.
 | referenced | <code>string</code> | The referenced document. |
 | limit | <code>number</code> | The document's limit to return. |
 | skip | <code>number</code> | The number of docs to skip. |
+
+<a name="QueryDefinition+getById"></a>
+
+### queryDefinition.getById(id) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
+Query a single document on its id.
+
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
+**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | The document id. |
+
+<a name="QueryDefinition+getByIds"></a>
+
+### queryDefinition.getByIds(ids) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
+Query several documents on their ids.
+
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
+**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ids | <code>Array</code> | The documents ids. |
 
 <a name="QueryDefinition+where"></a>
 
