@@ -3,7 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-       <a name="6.38.2"></a>
+      <a name="6.39.0"></a>
+# [6.39.0](https://github.com/cozy/cozy-client/compare/v6.38.2...v6.39.0) (2019-05-31)
+
+
+
+
+**Note:** Version bump only for package cozy-client
+
+      <a name="6.38.2"></a>
 ## [6.38.2](https://github.com/cozy/cozy-client/compare/v6.38.1...v6.38.2) (2019-05-29)
 
 
@@ -14,7 +22,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-       <a name="6.38.1"></a>
+     <a name="6.38.1"></a>
 ## [6.38.1](https://github.com/cozy/cozy-client/compare/v6.38.0...v6.38.1) (2019-05-29)
 
 
@@ -26,7 +34,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="6.38.0"></a>
+   <a name="6.38.0"></a>
 # [6.38.0](https://github.com/cozy/cozy-client/compare/v6.37.1...v6.38.0) (2019-05-28)
 
 
@@ -34,7 +42,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package cozy-client
 
-  <a name="6.37.1"></a>
+<a name="6.37.1"></a>
 ## [6.37.1](https://github.com/cozy/cozy-client/compare/v6.37.0...v6.37.1) (2019-05-27)
 
 
