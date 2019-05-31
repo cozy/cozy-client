@@ -854,6 +854,8 @@ const schema = new Schema({
 ### schema.getDoctypeSchema()
 Returns the schema for a doctype
 
+Creates an empty schema implicitly if it does not exist
+
 **Kind**: instance method of [<code>Schema</code>](#Schema)  
 <a name="Schema+getRelationship"></a>
 
