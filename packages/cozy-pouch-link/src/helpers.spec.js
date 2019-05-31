@@ -1,7 +1,7 @@
 import helpers from './helpers'
 const { withoutDesignDocuments, isDeletedDocument, isDesignDocument } = helpers
 
-import PouchDB from 'pouchdb'
+import PouchDB from 'pouchdb-browser'
 import PouchDBFind from 'pouchdb-find'
 import adapter from 'pouchdb-adapter-memory'
 PouchDB.plugin(PouchDBFind)
