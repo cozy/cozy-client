@@ -40,7 +40,7 @@
   "jest": {
     "testURL": "http://localhost",
     "setupFiles": [
-      "<rootDir>/packages/cozy-client/src/__tests__/setup.js",
+      "./jest.setup.js",
       "jest-localstorage-mock"
     ],
     "setupTestFrameworkScriptFile": "<rootDir>/packages/cozy-stack-client/src/__tests__/setup.js",
