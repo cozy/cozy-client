@@ -582,6 +582,7 @@ Implements `DocumentCollection` API along with specific methods for `io.cozy.tri
 * [TriggerCollection](#TriggerCollection)
     * [.all(options)](#TriggerCollection+all) ⇒ <code>Object</code>
     * [.create(attributes)](#TriggerCollection+create) ⇒ <code>object</code>
+    * [.destroy(document)](#TriggerCollection+destroy) ⇒ <code>object</code>
     * [.launch(Trigger)](#TriggerCollection+launch) ⇒ <code>object</code>
 
 <a name="TriggerCollection+all"></a>
@@ -613,6 +614,19 @@ Creates a Trigger document
 | Param | Type | Description |
 | --- | --- | --- |
 | attributes | <code>object</code> | Trigger's attributes |
+
+<a name="TriggerCollection+destroy"></a>
+
+### triggerCollection.destroy(document) ⇒ <code>object</code>
+Deletes a trigger
+
+**Kind**: instance method of [<code>TriggerCollection</code>](#TriggerCollection)  
+**Returns**: <code>object</code> - The deleted document  
+**See**: https://docs.cozy.io/en/cozy-stack/jobs/#delete-jobstriggerstrigger-id  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | <code>object</code> | The trigger to delete — must have an _id field |
 
 <a name="TriggerCollection+launch"></a>
 
