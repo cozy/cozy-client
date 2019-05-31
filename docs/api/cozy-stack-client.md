@@ -36,6 +36,12 @@ through OAuth.</p>
 ## Functions
 
 <dl>
+<dt><a href="#getAccessToken">getAccessToken()</a> ⇒ <code>string</code></dt>
+<dd><p>Get the access token string</p>
+</dd>
+<dt><a href="#getAccessToken">getAccessToken()</a> ⇒ <code>string</code></dt>
+<dd><p>Get the app token string</p>
+</dd>
 <dt><a href="#garbageCollect">garbageCollect()</a></dt>
 <dd><p>Delete outdated results from cache</p>
 </dd>
@@ -78,6 +84,7 @@ Main API against the `cozy-stack` server.
     * [.fetch(method, path, body, options)](#CozyStackClient+fetch) ⇒ <code>Object</code>
     * [.refreshToken()](#CozyStackClient+refreshToken) ⇒ <code>Promise</code>
     * [.fetchJSON(method, path, body, options)](#CozyStackClient+fetchJSON) ⇒ <code>Object</code>
+    * [.getAccessToken()](#CozyStackClient+getAccessToken) ⇒ <code>string</code>
 
 <a name="CozyStackClient+collection"></a>
 
@@ -138,6 +145,13 @@ Fetches JSON in an authorized way.
 | body | <code>Object</code> | The payload. |
 | options | <code>Object</code> |  |
 
+<a name="CozyStackClient+getAccessToken"></a>
+
+### cozyStackClient.getAccessToken() ⇒ <code>string</code>
+Get the access token string, being an oauth token or an app token
+
+**Kind**: instance method of [<code>CozyStackClient</code>](#CozyStackClient)  
+**Returns**: <code>string</code> - token  
 <a name="DocumentCollection"></a>
 
 ## DocumentCollection
@@ -641,6 +655,22 @@ Force given trigger execution.
 | --- | --- | --- |
 | Trigger | <code>object</code> | to launch |
 
+<a name="getAccessToken"></a>
+
+## getAccessToken() ⇒ <code>string</code>
+Get the access token string
+
+**Kind**: global function  
+**Returns**: <code>string</code> - token  
+**See**: CozyStackClient.getAccessToken  
+<a name="getAccessToken"></a>
+
+## getAccessToken() ⇒ <code>string</code>
+Get the app token string
+
+**Kind**: global function  
+**Returns**: <code>string</code> - token  
+**See**: CozyStackClient.getAccessToken  
 <a name="garbageCollect"></a>
 
 ## garbageCollect()
