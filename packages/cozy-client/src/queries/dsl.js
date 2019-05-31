@@ -46,6 +46,26 @@ class QueryDefinition {
   }
 
   /**
+   * Query a single document on its id.
+   *
+   * @param {string} id   The document id.
+   * @return {QueryDefinition}  The QueryDefinition object.
+   */
+  getById(id) {
+    return new QueryDefinition({ ...this.toDefinition(), id })
+  }
+
+  /**
+   * Query several documents on their ids.
+   *
+   * @param {Array} ids   The documents ids.
+   * @return {QueryDefinition}  The QueryDefinition object.
+   */
+  getByIds(ids) {
+    return new QueryDefinition({ ...this.toDefinition(), ids })
+  }
+
+  /**
    * Query documents with a [mango selector](http://docs.couchdb.org/en/latest/api/database/find.html#find-selectors).
    * Each field passed in the selector will be indexed, except if the indexField option is used.
    *
@@ -143,6 +163,7 @@ class QueryDefinition {
     return {
       doctype: this.doctype,
       id: this.id,
+      ids: this.ids,
       selector: this.selector,
       fields: this.fields,
       indexedFields: this.indexedFields,
