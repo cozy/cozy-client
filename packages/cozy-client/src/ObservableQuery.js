@@ -32,6 +32,11 @@ export default class ObservableQuery {
     }
   }
 
+  /**
+   * Returns the query from the store with hydrated documents.
+   *
+   * @return {HydratedQueryState}
+   */
   currentResult() {
     const result = getQueryFromState(this.getStore().getState(), this.queryId)
     if (result.fetchStatus !== 'loaded') {
@@ -51,6 +56,10 @@ export default class ObservableQuery {
     return this.client.query(this.definition, { as: this.queryId })
   }
 
+  /**
+   * Generates and execute a query that is offsetted by the number of documents
+   * we have in the store.
+   */
   fetchMore() {
     return this.client.query(
       this.definition.offset(this.currentRawResult().data.length),
