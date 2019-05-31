@@ -73,6 +73,13 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 <dt><a href="#sanitize">sanitize(manifest)</a> ⇒ <code>Manifest</code></dt>
 <dd><p>Normalize app manifest, retrocompatibility for old manifests</p>
 </dd>
+<dt><a href="#currentResult">currentResult()</a> ⇒ <code>HydratedQueryState</code></dt>
+<dd><p>Returns the query from the store with hydrated documents.</p>
+</dd>
+<dt><a href="#fetchMore">fetchMore()</a></dt>
+<dd><p>Generates and execute a query that is offsetted by the number of documents
+we have in the store.</p>
+</dd>
 <dt><a href="#cancelable">cancelable(promise)</a> ⇒ <code>AugmentedPromise</code></dt>
 <dd><p>Wraps a promise so that it can be canceled</p>
 <p>Rejects with canceled: true as soon as cancel is called</p>
@@ -910,6 +917,19 @@ Normalize app manifest, retrocompatibility for old manifests
 | --- | --- |
 | manifest | <code>Manifest</code> | 
 
+<a name="currentResult"></a>
+
+## currentResult() ⇒ <code>HydratedQueryState</code>
+Returns the query from the store with hydrated documents.
+
+**Kind**: global function  
+<a name="fetchMore"></a>
+
+## fetchMore()
+Generates and execute a query that is offsetted by the number of documents
+we have in the store.
+
+**Kind**: global function  
 <a name="cancelable"></a>
 
 ## cancelable(promise) ⇒ <code>AugmentedPromise</code>
