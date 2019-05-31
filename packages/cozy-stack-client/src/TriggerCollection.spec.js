@@ -97,4 +97,21 @@ describe('TriggerCollection', () => {
       )
     })
   })
+
+  describe('destroy', () => {
+    it('should call the correct route', async () => {
+      const result = await collection.destroy({
+        _id: '123'
+      })
+      expect(stackClient.fetchJSON).toHaveBeenLastCalledWith(
+        'DELETE',
+        '/jobs/triggers/123'
+      )
+      expect(result.data._deleted).toBe(true)
+    })
+
+    it('should throw if the document has no _id', async () => {
+      await expect(collection.destroy({ _rev: 'yolo' })).rejects.toThrowError()
+    })
+  })
 })

@@ -69,8 +69,21 @@ class TriggerCollection {
     }
   }
 
-  async destroy() {
-    throw new Error('destroy() method is not available for triggers')
+  /**
+   * Deletes a trigger
+   * @see https://docs.cozy.io/en/cozy-stack/jobs/#delete-jobstriggerstrigger-id
+   * @param  {object} document The trigger to delete — must have an _id field
+   * @returns {object} The deleted document
+   */
+  async destroy(document) {
+    const { _id } = document
+    if (!_id) {
+      throw new Error('TriggerCollection.destroy needs a document with an _id')
+    }
+    await this.stackClient.fetchJSON('DELETE', uri`/jobs/triggers/${_id}`)
+    return {
+      data: normalizeTrigger({ ...document, _deleted: true })
+    }
   }
 
   async find(selector = {}) {
