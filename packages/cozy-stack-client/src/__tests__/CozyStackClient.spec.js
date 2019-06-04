@@ -339,6 +339,13 @@ describe('CozyStackClient', () => {
       await expect(newToken).rejects.toThrow()
     })
   })
+
+  describe('getAccessToken', () => {
+    it('should return the current app token', () => {
+      const client = new CozyStackClient(FAKE_INIT_OPTIONS)
+      expect(client.getAccessToken()).toBe(FAKE_INIT_OPTIONS.token)
+    })
+  })
 })
 
 describe('FetchError', () => {

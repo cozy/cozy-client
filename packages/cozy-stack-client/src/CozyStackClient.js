@@ -229,6 +229,14 @@ class CozyStackClient {
     }
   }
 
+  /**
+   * Get the access token string, being an oauth token or an app token
+   * @return {string} token
+   */
+  getAccessToken() {
+    return this.token && this.token.getAccessToken()
+  }
+
   setUri(uri) {
     this.uri = normalizeUri(uri)
   }

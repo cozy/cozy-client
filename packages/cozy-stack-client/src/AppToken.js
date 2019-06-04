@@ -10,4 +10,13 @@ export default class AppToken {
   toBasicAuth() {
     return `user:${this.token}@`
   }
+
+  /**
+   * Get the app token string
+   * @see CozyStackClient.getAccessToken
+   * @return {string} token
+   */
+  getAccessToken() {
+    return this.token
+  }
 }

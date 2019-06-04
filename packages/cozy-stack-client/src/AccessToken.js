@@ -28,4 +28,13 @@ export default class AccessToken {
   toString() {
     return JSON.stringify(this.toJSON())
   }
+
+  /**
+   * Get the access token string
+   * @see CozyStackClient.getAccessToken
+   * @return {string} token
+   */
+  getAccessToken() {
+    return this.accessToken
+  }
 }

@@ -189,4 +189,17 @@ describe('OAuthClient', () => {
       expect(client.token).toBeNull()
     })
   })
+
+  describe('getAccessToken', () => {
+    it('should return the current access token', () => {
+      client = new OAuthClient(REGISTERED_CLIENT_INIT_OPTIONS)
+      client.setToken({
+        tokenType: 'type',
+        accessToken: 'accessToken-abcd',
+        refreshToken: 'refresh-789',
+        scope: 'io.cozy.todos'
+      })
+      expect(client.getAccessToken()).toBe('accessToken-abcd')
+    })
+  })
 })
