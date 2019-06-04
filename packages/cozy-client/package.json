@@ -1,6 +1,6 @@
 {
   "name": "cozy-client",
-  "version": "6.41.1",
+  "version": "6.42.0",
   "license": "MIT",
   "main": "dist/index.js",
   "files": [
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "cozy-device-helper": "1.6.3",
-    "cozy-stack-client": "^6.40.0",
+    "cozy-stack-client": "^6.42.0",
     "lodash": "4.17.11",
     "microee": "0.0.6",
     "prop-types": "15.6.2",

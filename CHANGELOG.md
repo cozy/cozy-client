@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-       <a name="6.41.1"></a>
+      <a name="6.42.0"></a>
+# [6.42.0](https://github.com/cozy/cozy-client/compare/v6.41.1...v6.42.0) (2019-06-04)
+
+
+### Features
+
+* Add an unified way to get the access token ([4799688](https://github.com/cozy/cozy-client/commit/4799688))
+
+
+
+
+      <a name="6.41.1"></a>
 ## [6.41.1](https://github.com/cozy/cozy-client/compare/v6.41.0...v6.41.1) (2019-06-03)
 
 
@@ -14,7 +25,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-       <a name="6.41.0"></a>
+     <a name="6.41.0"></a>
 # [6.41.0](https://github.com/cozy/cozy-client/compare/v6.40.1...v6.41.0) (2019-06-03)
 
 
@@ -25,7 +36,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-     <a name="6.40.1"></a>
+   <a name="6.40.1"></a>
 ## [6.40.1](https://github.com/cozy/cozy-client/compare/v6.40.0...v6.40.1) (2019-05-31)
 
 
@@ -33,7 +44,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package undefined
 
-  <a name="6.40.0"></a>
+<a name="6.40.0"></a>
 # [6.40.0](https://github.com/cozy/cozy-client/compare/v6.39.0...v6.40.0) (2019-05-31)
 
 
