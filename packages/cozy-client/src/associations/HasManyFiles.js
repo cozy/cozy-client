@@ -3,12 +3,27 @@ import HasMany from './HasMany'
 import { QueryDefinition, Mutations } from '../queries/dsl'
 
 export default class HasManyFiles extends HasMany {
-  async fetchMore() {
-    const skip = this.getRelationship().data.length
+  async fetchMore(withCursor) {
     const queryDef = new QueryDefinition({ doctype: 'io.cozy.files' })
-    const response = await this.query(
-      queryDef.referencedBy(this.target).offset(skip)
-    )
+    const relationships = this.getRelationship().data
+    let response
+    if (withCursor) {
+      // cursor-based pagination
+      const cursorKey = [this.target._type, this.target._id]
+      const startDocId = relationships[relationships.length - 1]._id
+      const cursor = [cursorKey, startDocId]
+      response = await this.query(
+        queryDef.referencedBy(this.target).offsetCursor(cursor)
+      )
+      // Remove first returned element, used as starting point for the query
+      response.data.shift()
+    } else {
+      // skip-based pagination
+      const skip = relationships.length
+      response = await this.query(
+        queryDef.referencedBy(this.target).offset(skip)
+      )
+    }
     await this.dispatch(
       this.updateRelationshipData(previousRelationshipData => ({
         ...previousRelationshipData,
@@ -53,8 +68,10 @@ export default class HasManyFiles extends HasMany {
     return omit(doc, [this.name, `relationships.${this.name}`])
   }
 
-  static query(document, client, assoc) {
+  static query(document, client, assoc, cursor) {
     const queryAll = client.find(assoc.doctype)
-    return queryAll.referencedBy(document)
+    return cursor
+      ? queryAll.referencedBy(document).offsetCursor(cursor)
+      : queryAll.referencedBy(document)
   }
 }

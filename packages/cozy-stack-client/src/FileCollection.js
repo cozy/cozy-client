@@ -68,16 +68,22 @@ class FileCollection extends DocumentCollection {
    * async findReferencedBy - Returns the list of files referenced by a document — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/
    *
    * @param  {object} document     A JSON representing a document, with at least a `_type` and `_id` field.
-   * @param  {number} { skip = 0   For pagination, the number of referenced files to skip
-   * @param  {number} limit } For pagination, the number of results to return.
+   * @param  {number} skip    For skip-based pagination, the number of referenced files to skip.
+   * @param  {number} limit For pagination, the number of results to return.
+   * @param  {object} cursor   For cursor-based pagination, the index cursor.
    * @returns {object}         The JSON API conformant response.
    */
-  async findReferencedBy(document, { skip = 0, limit } = {}) {
+  async findReferencedBy(document, { skip = 0, limit, cursor } = {}) {
     const params = {
       include: 'files',
-      sort: 'datetime',
-      'page[limit]': limit,
-      'page[skip]': skip
+      'page[limit]': limit
+    }
+    if (cursor) {
+      params['page[cursor]'] = cursor
+      params['sort'] = 'id'
+    } else {
+      params['page[skip]'] = skip
+      params['sort'] = 'datetime'
     }
     const url = uri`/data/${document._type}/${
       document._id
