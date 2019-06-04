@@ -1,5 +1,21 @@
 import pickBy from 'lodash/pickBy'
 
+const encodeValues = values => {
+  const encoded =
+    '[' +
+    encodeURIComponent(
+      values
+        .map(value => {
+          return Array.isArray(value)
+            ? '[' + value.map(arrayVal => `"${arrayVal}"`).join(',') + ']'
+            : `"${value}"`
+        })
+        .join(',')
+    ) +
+    ']'
+  return encoded
+}
+
 /**
  * Encode an object as querystring, values are encoded as
  * URI components, keys are not.
@@ -11,9 +27,7 @@ export const encode = data => {
   return Object.entries(data)
     .map(([k, v]) => {
       const encodedValue = Array.isArray(v)
-        ? '[' +
-          encodeURIComponent(v.map(arrayVal => `"${arrayVal}"`).join(',')) +
-          ']'
+        ? encodeValues(v)
         : encodeURIComponent(v)
       return `${k}=${encodedValue}`
     })

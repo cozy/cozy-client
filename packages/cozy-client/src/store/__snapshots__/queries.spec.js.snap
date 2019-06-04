@@ -6,6 +6,7 @@ Object {
     "count": 0,
     "data": Array [],
     "definition": QueryDefinition {
+      "cursor": undefined,
       "doctype": "io.cozy.todos",
       "fields": undefined,
       "id": undefined,
@@ -37,6 +38,7 @@ Object {
       "67890",
     ],
     "definition": QueryDefinition {
+      "cursor": undefined,
       "doctype": "io.cozy.todos",
       "fields": undefined,
       "id": undefined,
@@ -67,6 +69,7 @@ Object {
       "54321",
     ],
     "definition": QueryDefinition {
+      "cursor": undefined,
       "doctype": "io.cozy.todos",
       "fields": undefined,
       "id": undefined,
@@ -92,6 +95,7 @@ Object {
       "54321",
     ],
     "definition": QueryDefinition {
+      "cursor": undefined,
       "doctype": "io.cozy.todos",
       "fields": undefined,
       "id": undefined,
@@ -127,6 +131,7 @@ Object {
       "54321",
     ],
     "definition": QueryDefinition {
+      "cursor": undefined,
       "doctype": "io.cozy.todos",
       "fields": undefined,
       "id": undefined,
@@ -152,6 +157,7 @@ Object {
       "54321",
     ],
     "definition": QueryDefinition {
+      "cursor": undefined,
       "doctype": "io.cozy.todos",
       "fields": undefined,
       "id": undefined,
@@ -185,6 +191,7 @@ Object {
       "67890",
     ],
     "definition": QueryDefinition {
+      "cursor": undefined,
       "doctype": "io.cozy.todos",
       "fields": undefined,
       "id": undefined,
@@ -211,6 +218,7 @@ Object {
       "67890",
     ],
     "definition": QueryDefinition {
+      "cursor": undefined,
       "doctype": "io.cozy.todos",
       "fields": undefined,
       "id": undefined,
@@ -239,6 +247,7 @@ Object {
     "count": 0,
     "data": Array [],
     "definition": QueryDefinition {
+      "cursor": undefined,
       "doctype": "io.cozy.todos",
       "fields": undefined,
       "id": undefined,
@@ -262,6 +271,7 @@ Object {
     "count": 0,
     "data": Array [],
     "definition": QueryDefinition {
+      "cursor": undefined,
       "doctype": "io.cozy.todos",
       "fields": undefined,
       "id": "not-existing-doc",
@@ -292,6 +302,7 @@ Object {
       "54321",
     ],
     "definition": QueryDefinition {
+      "cursor": undefined,
       "doctype": "io.cozy.todos",
       "fields": undefined,
       "id": undefined,
@@ -315,6 +326,7 @@ Object {
     "count": 0,
     "data": Array [],
     "definition": QueryDefinition {
+      "cursor": undefined,
       "doctype": "io.cozy.todos",
       "fields": undefined,
       "id": undefined,
