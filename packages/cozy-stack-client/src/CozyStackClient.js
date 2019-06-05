@@ -6,6 +6,7 @@ import KonnectorCollection, { KONNECTORS_DOCTYPE } from './KonnectorCollection'
 import SharingCollection from './SharingCollection'
 import PermissionCollection from './PermissionCollection'
 import TriggerCollection, { TRIGGERS_DOCTYPE } from './TriggerCollection'
+import JobCollection from './JobCollection'
 import getIconURL from './getIconURL'
 import logDeprecate from './logDeprecate'
 import errors from './errors'
@@ -30,6 +31,7 @@ class CozyStackClient {
     this.setToken(token)
 
     this.konnectors = new KonnectorCollection(this)
+    this.jobs = new JobCollection(this)
   }
 
   /**
