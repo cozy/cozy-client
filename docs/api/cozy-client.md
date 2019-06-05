@@ -710,6 +710,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
     * [.include(includes)](#QueryDefinition+include) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.limitBy(limit)](#QueryDefinition+limitBy) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.offset(skip)](#QueryDefinition+offset) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
+    * [.offsetCursor(cursor)](#QueryDefinition+offsetCursor) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.referencedBy(document)](#QueryDefinition+referencedBy) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
 
 <a name="new_QueryDefinition_new"></a>
@@ -833,12 +834,31 @@ Maximum number of documents returned, useful for pagination. Default is 100.
 ### queryDefinition.offset(skip) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
 Skip the first ‘n’ documents, where ‘n’ is the value specified.
 
+Beware, this [performs badly](http://docs.couchdb.org/en/stable/ddocs/views/pagination.html#paging-alternate-method) on view's index.
+ Prefer cursor-based pagination in such situation.
+
 **Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
 **Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | skip | <code>number</code> | The number of documents to skip. |
+
+<a name="QueryDefinition+offsetCursor"></a>
+
+### queryDefinition.offsetCursor(cursor) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
+Use [cursor-based](https://docs.cozy.io/en/cozy-stack/jsonapi/#pagination) pagination.
+The cursor is a [startkey, startkey_docid] array, where startkey is the view's key,
+e.g. ["io.cozy.photos.albums", "album-id"] and startkey_docid is the id of
+the starting document of the query, e.g. "file-id".
+Use the last docid of each query as startkey_docid to paginate or leave blank for the first query.
+
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
+**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| cursor | <code>Array</code> | The cursor for pagination. |
 
 <a name="QueryDefinition+referencedBy"></a>
 
