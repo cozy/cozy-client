@@ -1,19 +1,12 @@
 import pickBy from 'lodash/pickBy'
 
-const encodeValues = values => {
-  const encoded =
-    '[' +
-    encodeURIComponent(
-      values
-        .map(value => {
-          return Array.isArray(value)
-            ? '[' + value.map(arrayVal => `"${arrayVal}"`).join(',') + ']'
-            : `"${value}"`
-        })
-        .join(',')
-    ) +
-    ']'
-  return encoded
+const encodeValues = (values, fromArray = false) => {
+  if (Array.isArray(values)) {
+    return '[' + values.map(v => encodeValues(v, true)).join(',') + ']'
+  }
+  return fromArray
+    ? encodeURIComponent(`"${values}"`)
+    : encodeURIComponent(values)
 }
 
 /**
@@ -26,9 +19,7 @@ const encodeValues = values => {
 export const encode = data => {
   return Object.entries(data)
     .map(([k, v]) => {
-      const encodedValue = Array.isArray(v)
-        ? encodeValues(v)
-        : encodeURIComponent(v)
+      const encodedValue = encodeValues(v)
       return `${k}=${encodedValue}`
     })
     .join('&')

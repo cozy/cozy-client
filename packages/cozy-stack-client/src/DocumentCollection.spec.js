@@ -149,7 +149,7 @@ describe('DocumentCollection', () => {
       await collection.all({ keys: ['abc', 'def'] })
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
-        '/data/io.cozy.todos/_all_docs?include_docs=true&keys=[%22abc%22%2C%22def%22]'
+        '/data/io.cozy.todos/_all_docs?include_docs=true&keys=[%22abc%22,%22def%22]'
       )
     })
 
