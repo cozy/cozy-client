@@ -246,6 +246,7 @@ files associated to a specific document
     * [.updateFile(data, params)](#FileCollection+updateFile) ⇒ <code>object</code>
     * [.createDirectoryByPath(path)](#FileCollection+createDirectoryByPath) ⇒ <code>object</code>
     * [.updateFileMetadata(id, attributes)](#FileCollection+updateFileMetadata) ⇒ <code>object</code>
+    * [.createFileMetadata(attributes)](#FileCollection+createFileMetadata) ⇒ <code>object</code>
 
 <a name="FileCollection+find"></a>
 
@@ -336,6 +337,20 @@ async updateFileMetadata - Updates a file's metadata
 | --- | --- | --- |
 | id | <code>string</code> | File id |
 | attributes | <code>object</code> | New file meta data |
+
+<a name="FileCollection+createFileMetadata"></a>
+
+### fileCollection.createFileMetadata(attributes) ⇒ <code>object</code>
+Send a metadata object that can be associated to a file uploaded after that,
+via the MetadataID query parameter.
+See https://github.com/cozy/cozy-stack/blob/master/docs/files.md#post-filesuploadmetadata
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+**Returns**: <code>object</code> - The Metadata object  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| attributes | <code>object</code> | The file's metadata |
 
 <a name="OAuthClient"></a>
 
