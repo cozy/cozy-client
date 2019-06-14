@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.44.0](https://github.com/cozy/cozy-client/compare/v6.43.1...v6.44.0) (2019-06-14)
+
+
+### Bug Fixes
+
+* Add execution flag to scripts/deploy ([cf86dc4](https://github.com/cozy/cozy-client/commit/cf86dc4))
+
+
+### Features
+
+* Add createFileMetadata ([c5a282c](https://github.com/cozy/cozy-client/commit/c5a282c))
+* Publish git release with lerna ([f95cfcb](https://github.com/cozy/cozy-client/commit/f95cfcb))
+
+
+
+
+
       <a name="6.43.1"></a>
 ## [6.43.1](https://github.com/cozy/cozy-client/compare/v6.43.0...v6.43.1) (2019-06-05)
 
