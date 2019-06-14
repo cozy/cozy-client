@@ -1,5 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`FileCollection createFileMetadata should call the right route 1`] = `
+Array [
+  "POST",
+  "/files/upload/metadata",
+  Object {
+    "data": Object {
+      "attributes": Object {
+        "type": "bill",
+      },
+      "type": "io.cozy.files.metadata",
+    },
+  },
+]
+`;
+
 exports[`FileCollection findReferencedBy should pass all the filters 1`] = `
 [MockFunction] {
   "calls": Array [

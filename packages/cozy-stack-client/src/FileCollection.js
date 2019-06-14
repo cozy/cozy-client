@@ -155,7 +155,10 @@ class FileCollection extends DocumentCollection {
     return this.createFile(data, { dirId })
   }
 
-  createFile(data, { name, dirId = '', executable, ...options } = {}) {
+  async createFile(
+    data,
+    { name, dirId = '', executable, metadata, ...options } = {}
+  ) {
     // handle case where data is a file and contains the name
     if (!name && typeof data.name === 'string') {
       name = data.name
@@ -167,7 +170,12 @@ class FileCollection extends DocumentCollection {
     if (executable === undefined) {
       executable = false
     }
-    const path = uri`/files/${dirId}?Name=${name}&Type=file&Executable=${executable}`
+    let metadataId = ''
+    if (metadata) {
+      const meta = await this.createFileMetadata(metadata)
+      metadataId = meta.data.id
+    }
+    const path = uri`/files/${dirId}?Name=${name}&Type=file&Executable=${executable}&MetadataID=${metadataId}`
     return this.doUpload(data, path, options)
   }
 
@@ -363,6 +371,30 @@ class FileCollection extends DocumentCollection {
     })
     return {
       data: normalizeFile(resp.data)
+    }
+  }
+
+  /**
+   * Send a metadata object that can be associated to a file uploaded after that,
+   * via the MetadataID query parameter.
+   * See https://github.com/cozy/cozy-stack/blob/master/docs/files.md#post-filesuploadmetadata
+   *
+   * @param {object} attributes The file's metadata
+   * @returns {object}          The Metadata object
+   */
+  async createFileMetadata(attributes) {
+    const resp = await this.stackClient.fetchJSON(
+      'POST',
+      uri`/files/upload/metadata`,
+      {
+        data: {
+          type: 'io.cozy.files.metadata',
+          attributes
+        }
+      }
+    )
+    return {
+      data: resp.data
     }
   }
 

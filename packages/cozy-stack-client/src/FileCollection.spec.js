@@ -266,6 +266,26 @@ describe('FileCollection', () => {
     })
   })
 
+  describe('createFileMetadata', () => {
+    beforeEach(() => {
+      client.fetchJSON.mockReturnValue({ data: [] })
+    })
+
+    afterEach(() => {
+      client.fetchJSON.mockClear()
+    })
+
+    it('should call the right route', async () => {
+      await collection.createFileMetadata({
+        type: 'bill'
+      })
+      expect(client.fetchJSON.mock.calls.length).toBeGreaterThan(0)
+      expect(
+        client.fetchJSON.mock.calls[client.fetchJSON.mock.calls.length - 1]
+      ).toMatchSnapshot()
+    })
+  })
+
   describe('updateFile', () => {
     beforeEach(() => {
       client.fetchJSON.mockReturnValue({
@@ -333,6 +353,87 @@ describe('FileCollection', () => {
           id: FILE_ID,
           type: 'io.cozy.files',
           trashed: false
+        }
+      })
+    })
+  })
+
+  describe('createFile', () => {
+    const data = new File([''], 'mydoc.odt')
+    const id = '59140416-b95f'
+    const dirId = '41686c35-9d8e'
+
+    beforeEach(() => {
+      client.fetchJSON.mockReturnValue({
+        data: {
+          id: id,
+          _id: id,
+          dir_id: dirId
+        }
+      })
+    })
+
+    afterEach(() => {
+      client.fetchJSON.mockClear()
+    })
+
+    it('should create a file without metadata', async () => {
+      const params = {
+        dirId: '41686c35-9d8e'
+      }
+      const result = await collection.createFile(data, params)
+      const expectedPath = `/files/${dirId}?Name=mydoc.odt&Type=file&Executable=false&MetadataID=`
+      const expectedOptions = {
+        headers: {
+          'Content-Type': 'application/vnd.oasis.opendocument.text'
+        }
+      }
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        expectedPath,
+        data,
+        expectedOptions
+      )
+      expect(result).toEqual({
+        data: {
+          id: id,
+          _id: id,
+          _type: 'io.cozy.files',
+          dir_id: dirId
+        }
+      })
+    })
+
+    it('should create a file with metadata', async () => {
+      const metadataId = '2460a631-ae55'
+      client.fetchJSON.mockReturnValueOnce({
+        data: {
+          id: metadataId
+        }
+      })
+      const params = {
+        dirId: dirId,
+        metadata: { type: 'bill' }
+      }
+      const result = await collection.createFile(data, params)
+      const expectedPath = `/files/${dirId}?Name=mydoc.odt&Type=file&Executable=false&MetadataID=${metadataId}`
+      const expectedOptions = {
+        headers: {
+          'Content-Type': 'application/vnd.oasis.opendocument.text'
+        }
+      }
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        expectedPath,
+        data,
+        expectedOptions
+      )
+      expect(result).toEqual({
+        data: {
+          id: id,
+          _id: id,
+          _type: 'io.cozy.files',
+          dir_id: dirId
         }
       })
     })
