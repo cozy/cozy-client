@@ -49,6 +49,12 @@ const withMutations = (...mutations) => WrappedComponent => {
       return <WrappedComponent {...this.mutations} {...this.props} />
     }
   }
+  Wrapper.propTypes = {
+    ...WrappedComponent.propTypes,
+    createDocument: PropTypes.func,
+    saveDocument: PropTypes.func,
+    deleteDocument: PropTypes.func
+  }
 
   Wrapper.displayName = `WithMutations(${wrappedDisplayName})`
   return Wrapper
