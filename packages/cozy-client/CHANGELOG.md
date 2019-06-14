@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.45.0](https://github.com/cozy/cozy-client/compare/v6.44.0...v6.45.0) (2019-06-14)
+
+
+### Bug Fixes
+
+* **cozy-client:** Login links after the uri is set ([7ea68ea](https://github.com/cozy/cozy-client/commit/7ea68ea))
+
+
+
+
+
 # [6.44.0](https://github.com/cozy/cozy-client/compare/v6.43.1...v6.44.0) (2019-06-14)
 
 **Note:** Version bump only for package cozy-client
