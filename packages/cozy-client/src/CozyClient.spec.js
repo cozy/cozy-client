@@ -250,7 +250,7 @@ describe('CozyClient login', () => {
       }
     ]
     links.forEach(link => {
-      link.registerClient = jest.fn()
+      link.registerClient = jest.fn(client => (link.client = client))
     })
     client = new CozyClient({ links, schema: SCHEMA })
   })
@@ -263,10 +263,12 @@ describe('CozyClient login', () => {
   })
 
   it('Should call `onLogin` on every link that implements it', async () => {
-    links[0].onLogin = jest.fn()
+    links[0].onLogin = jest.fn(() =>
+      expect(links[0].client.stackClient.uri).toBe('http://cozy.tools')
+    )
     links[2].onLogin = jest.fn()
 
-    await client.login()
+    await client.login({ uri: 'http://cozy.tools' })
 
     expect(links[0].onLogin).toHaveBeenCalledTimes(1)
     expect(links[2].onLogin).toHaveBeenCalledTimes(1)
