@@ -89,7 +89,7 @@ class PouchManager {
     this.pouches = fromPairs(
       doctypes.map(doctype => [
         doctype,
-        new PouchDB(this.getDatabaseName(doctype, options.prefix), pouchOptions)
+        new PouchDB(this.getDatabaseName(doctype), pouchOptions)
       ])
     )
     this.syncedDoctypes = this.getPersistedSyncedDoctypes()
@@ -310,12 +310,8 @@ class PouchManager {
     window.localStorage.removeItem(LOCALSTORAGE_SYNCED_KEY)
   }
 
-  getDatabaseName(doctype, prefix) {
-    if (!prefix) {
-      return doctype
-    }
-
-    return `${prefix}_${doctype}`
+  getDatabaseName(doctype) {
+    return `${this.options.prefix}_${doctype}`
   }
 }
 
