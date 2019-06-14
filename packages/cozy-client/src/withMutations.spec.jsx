@@ -1,5 +1,7 @@
 import React from 'react'
 import { shallow } from 'enzyme'
+import omit from 'lodash/omit'
+import PropTypes from 'prop-types'
 
 import withMutations from './withMutations'
 
@@ -14,6 +16,35 @@ describe('withMutations', () => {
 
   afterEach(() => {
     jest.resetAllMocks()
+    jest.restoreAllMocks()
+  })
+
+  it('should expose all additional mutations provided proptypes', () => {
+    const mutationsMock = client => ({
+      myMutation1: () => {},
+      myMutation2: () => {}
+    })
+    const ConnectedFoo = withMutations(mutationsMock)(() => <div />)
+    const wrapper = shallow(<ConnectedFoo />, {
+      context: { client: clientMock }
+    })
+    // mock for proptypes
+    jest.spyOn(console, 'error').mockImplementation(message => {
+      throw new Error(message)
+    })
+
+    const componentProps = wrapper.props()
+    expect(omit(componentProps, Object.keys(mutationsMock())))
+      .toMatchInlineSnapshot(`
+Object {
+  "createDocument": [Function],
+  "deleteDocument": [Function],
+  "saveDocument": [Function],
+}
+`)
+    expect(() => {
+      PropTypes.checkPropTypes(componentProps, 'prop', 'ConnectedFoo')
+    }).not.toThrowError()
   })
 
   it('should inject base mutations props into wrapped component', async () => {
