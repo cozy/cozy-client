@@ -263,4 +263,30 @@ describe('CozyPouchLink', () => {
       expect(link.pouches.syncImmediately).toHaveBeenCalled()
     })
   })
+
+  describe('login', () => {
+    it('should throw if the stack client uri is not initialized', () => {
+      const clientWithoutUri = {
+        stackClient: {
+          token: {
+            toBasicAuth: () => 'user:token@'
+          }
+        }
+      }
+
+      const link = new CozyPouchLink({ doctypes: [TODO_DOCTYPE] })
+      const client = new CozyClient({
+        ...clientWithoutUri,
+        links: [link],
+        warningForCustomHandlers: false,
+        schema: {
+          todos: omit(SCHEMA.todos, ['relationships'])
+        }
+      })
+
+      link.registerClient(client)
+
+      expect(link.onLogin()).rejects.toThrow()
+    })
+  })
 })

@@ -29,7 +29,8 @@ describe('PouchManager', () => {
     managerOptions = {
       replicationDelay: 16,
       getReplicationURL: () => getReplicationURL(),
-      onSync
+      onSync,
+      prefix: 'cozy.tools'
     }
     manager = new PouchManager(['io.cozy.todos'], managerOptions)
     const pouch = manager.getPouch('io.cozy.todos')
@@ -145,7 +146,10 @@ describe('PouchManager', () => {
     const pouchOptions = { adapter: 'cordova-sqlite', location: 'default' }
     const options = { ...managerOptions, pouch: { options: pouchOptions } }
     new PouchManager(['io.cozy.todos'], options)
-    expect(PouchDB).toHaveBeenCalledWith('io.cozy.todos', pouchOptions)
+    expect(PouchDB).toHaveBeenCalledWith(
+      'cozy.tools_io.cozy.todos',
+      pouchOptions
+    )
   })
 
   describe('getPersistedSyncedDoctypes', () => {

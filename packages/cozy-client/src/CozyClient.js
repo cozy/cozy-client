@@ -161,19 +161,7 @@ class CozyClient {
   async _login(options) {
     this.emit('beforeLogin')
 
-    this.isLogged = true
-    this.isRevoked = false
     this.registerClientOnLinks()
-
-    for (const link of this.links) {
-      if (link.onLogin) {
-        try {
-          await link.onLogin()
-        } catch (e) {
-          console.warn(e)
-        }
-      }
-    }
 
     if (options) {
       if (options.uri) {
@@ -183,6 +171,15 @@ class CozyClient {
         this.stackClient.setToken(options.token)
       }
     }
+
+    for (const link of this.links) {
+      if (link.onLogin) {
+        await link.onLogin()
+      }
+    }
+
+    this.isLogged = true
+    this.isRevoked = false
 
     this.emit('login')
   }

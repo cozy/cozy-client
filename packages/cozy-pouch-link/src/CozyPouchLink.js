@@ -110,9 +110,14 @@ class PouchLink extends CozyLink {
       }
     }
 
+    if (!prefix) {
+      throw new Error('PouchLink: Prefix is required')
+    }
+
     if (process.env.NODE_ENV !== 'production') {
       logger.log('Create pouches with ' + prefix + ' prefix')
     }
+
     this.pouches = new PouchManager(this.doctypes, {
       pouch: this.options.pouch,
       getReplicationURL: this.getReplicationURL.bind(this),
