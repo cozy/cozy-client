@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.45.1](https://github.com/cozy/cozy-client/compare/v6.45.0...v6.45.1) (2019-06-19)
+
+
+### Bug Fixes
+
+* Broken link ([986d184](https://github.com/cozy/cozy-client/commit/986d184))
+* **withMutations:** Expose all withMutations provided props types ([ceeb9ee](https://github.com/cozy/cozy-client/commit/ceeb9ee))
+
+
+
+
+
 # [6.45.0](https://github.com/cozy/cozy-client/compare/v6.44.0...v6.45.0) (2019-06-14)
 
 
