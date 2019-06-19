@@ -19,7 +19,8 @@ describe('withMutations', () => {
     jest.restoreAllMocks()
   })
 
-  it('should expose all additional mutations provided proptypes', () => {
+  it('should not throw error on withMutations usage', () => {
+    const Foo = () => <div />
     // mock for proptypes
     jest.spyOn(console, 'error').mockImplementation(message => {
       throw new Error(message)
@@ -29,22 +30,29 @@ describe('withMutations', () => {
       myMutation2: () => {}
     })
 
-    let wrapper
     expect(() => {
-      const ConnectedFoo = withMutations(mutationsMock)(() => <div />)
-      wrapper = shallow(<ConnectedFoo />, {
+      const ConnectedFoo = withMutations(mutationsMock)(Foo)
+      shallow(<ConnectedFoo />, {
         context: { client: clientMock }
       })
     }).not.toThrowError()
+  })
 
-    const componentProps = wrapper.props()
-    for (const mutation of [
-      'createDocument',
-      'deleteDocument',
-      'saveDocument'
-    ]) {
-      expect(typeof componentProps[mutation]).toBe('function')
-    }
+  it('should expose all additional mutations provided proptypes', () => {
+    const Foo = () => <div />
+    const mutationsMock = client => ({
+      myMutation1: () => {},
+      myMutation2: () => {}
+    })
+
+    withMutations(mutationsMock)(Foo)
+    expect(Foo.propTypes).toEqual({
+      createDocument: PropTypes.func.isRequired,
+      deleteDocument: PropTypes.func.isRequired,
+      saveDocument: PropTypes.func.isRequired,
+      myMutation1: PropTypes.func.isRequired,
+      myMutation2: PropTypes.func.isRequired
+    })
   })
 
   it('should inject base mutations props into wrapped component', async () => {
