@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.45.2](https://github.com/cozy/cozy-client/compare/v6.45.1...v6.45.2) (2019-06-20)
+
+
+### Bug Fixes
+
+* :bug: Put proptypes on wrapped component instead of wrapper ([c52bc54](https://github.com/cozy/cozy-client/commit/c52bc54))
+
+
+
+
+
 ## [6.45.1](https://github.com/cozy/cozy-client/compare/v6.45.0...v6.45.1) (2019-06-19)
 
 
