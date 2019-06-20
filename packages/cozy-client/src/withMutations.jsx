@@ -2,6 +2,24 @@ import merge from 'lodash/merge'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
+const makeMutationsObject = (mutations, client, props) => {
+  return merge(
+    ...mutations.map(
+      mutations =>
+        typeof mutations === 'function' ? mutations(client, props) : mutations
+    )
+  )
+}
+
+const mutationsToPropTypes = mutations => {
+  return Object.keys(makeMutationsObject(mutations)).reduce(
+    (acc, mutationName) => {
+      return { ...acc, [mutationName]: PropTypes.func.isRequired }
+    },
+    {}
+  )
+}
+
 /**
  * @function
  * @description HOC to provide mutations to components. Needs client in context
@@ -14,6 +32,14 @@ import PropTypes from 'prop-types'
 const withMutations = (...mutations) => WrappedComponent => {
   const wrappedDisplayName =
     WrappedComponent.displayName || WrappedComponent.name || 'Component'
+
+  WrappedComponent.propTypes = {
+    ...WrappedComponent.propTypes,
+    createDocument: PropTypes.func.isRequired,
+    saveDocument: PropTypes.func.isRequired,
+    deleteDocument: PropTypes.func.isRequired,
+    ...mutationsToPropTypes(mutations)
+  }
 
   class Wrapper extends Component {
     static contextTypes = {
@@ -29,31 +55,16 @@ const withMutations = (...mutations) => WrappedComponent => {
         )
       }
       this.mutations = {
-        ...{
-          createDocument: client.create.bind(client),
-          saveDocument: client.save.bind(client),
-          deleteDocument: client.destroy.bind(client)
-        },
-        ...merge(
-          ...mutations.map(
-            mutations =>
-              typeof mutations === 'function'
-                ? mutations(client, props)
-                : mutations
-          )
-        )
+        createDocument: client.create.bind(client),
+        saveDocument: client.save.bind(client),
+        deleteDocument: client.destroy.bind(client),
+        ...makeMutationsObject(mutations, client, props)
       }
     }
 
     render() {
       return <WrappedComponent {...this.mutations} {...this.props} />
     }
-  }
-  Wrapper.propTypes = {
-    ...WrappedComponent.propTypes,
-    createDocument: PropTypes.func,
-    saveDocument: PropTypes.func,
-    deleteDocument: PropTypes.func
   }
 
   Wrapper.displayName = `WithMutations(${wrappedDisplayName})`
