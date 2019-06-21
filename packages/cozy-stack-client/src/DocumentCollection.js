@@ -139,6 +139,7 @@ class DocumentCollection {
       if (error.message.match(/not_found/)) {
         return { data: null }
       }
+      throw error
     }
     return {
       data: normalizeDoc(resp, this.doctype)

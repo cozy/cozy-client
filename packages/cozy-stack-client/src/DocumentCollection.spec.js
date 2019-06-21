@@ -468,6 +468,22 @@ describe('DocumentCollection', () => {
     })
   })
 
+  describe('get', () => {
+    afterEach(() => {
+      jest.resetAllMocks()
+    })
+
+    it('should throw', async () => {
+      jest.spyOn(client, 'fetchJSON').mockImplementation(() => {
+        throw new Error('Not a 404 error')
+      })
+      const collection = new DocumentCollection('io.cozy.todos', client)
+      await expect(collection.get('whatever_id')).rejects.toEqual(
+        new Error('Not a 404 error')
+      )
+    })
+  })
+
   describe('update', () => {
     const collection = new DocumentCollection('io.cozy.todos', client)
 
