@@ -108,8 +108,19 @@ class TriggerCollection {
     }
   }
 
-  async get() {
-    throw new Error('get() method is not yet implemented')
+  async get(id) {
+    const path = uri`/jobs/triggers/${id}`
+    try {
+      const resp = await this.stackClient.fetchJSON('GET', path)
+      return {
+        data: normalizeTrigger(resp.data)
+      }
+    } catch (error) {
+      if (error.message.match(/not_found/)) {
+        return { data: null }
+      }
+      throw error
+    }
   }
 
   /**
