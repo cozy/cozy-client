@@ -114,4 +114,44 @@ describe('TriggerCollection', () => {
       await expect(collection.destroy({ _rev: 'yolo' })).rejects.toThrowError()
     })
   })
+
+  describe('get', () => {
+    beforeEach(() => {
+      jest.spyOn(stackClient, 'fetchJSON').mockImplementation(id => ({
+        data: ALL_RESPONSE_FIXTURE.data.find(async t => t.id === id)
+      }))
+    })
+
+    it('should return trigger', async () => {
+      await expect(
+        collection.get('f100f8d2d30449b98ff1f25437829b3e')
+      ).resolves.toEqual({
+        data: {
+          ...ALL_RESPONSE_FIXTURE.data[0],
+          _id: 'f100f8d2d30449b98ff1f25437829b3e',
+          _type: 'io.cozy.triggers'
+        }
+      })
+    })
+
+    it('should return null', async () => {
+      jest.spyOn(stackClient, 'fetchJSON').mockImplementation(async () => {
+        throw new Error('not_found')
+      })
+
+      await expect(
+        collection.get('abcdef12345678abcdef12345678abde')
+      ).resolves.toEqual({ data: null })
+    })
+
+    it('should throw', async () => {
+      jest.spyOn(stackClient, 'fetchJSON').mockImplementation(async () => {
+        throw new Error('Test error')
+      })
+
+      await expect(
+        collection.get('f100f8d2d30449b98ff1f25437829b3e')
+      ).rejects.toEqual(new Error('Test error'))
+    })
+  })
 })
