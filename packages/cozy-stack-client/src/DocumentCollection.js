@@ -12,9 +12,9 @@ export const normalizeDoc = (doc, doctype) => {
   return { id, _id: id, _type: doctype, ...doc }
 }
 
-export const dontThrowNotFoundError = error => {
+export const dontThrowNotFoundError = (error, dataValue = []) => {
   if (error.message.match(/not_found/)) {
-    return { data: [], meta: { count: 0 }, skip: 0, next: false }
+    return { data: dataValue, meta: { count: 0 }, skip: 0, next: false }
   }
 
   throw error
@@ -136,10 +136,7 @@ class DocumentCollection {
         uri`/data/${this.doctype}/${id}`
       )
     } catch (error) {
-      if (error.message.match(/not_found/)) {
-        return { data: null }
-      }
-      throw error
+      dontThrowNotFoundError(error, null)
     }
     return {
       data: normalizeDoc(resp, this.doctype)
