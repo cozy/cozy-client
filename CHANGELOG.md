@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.47.1](https://github.com/cozy/cozy-client/compare/v6.47.0...v6.47.1) (2019-06-26)
+
+
+### Bug Fixes
+
+* **cozy-client:** Association HasOne don't fail if there is no data ([262d617](https://github.com/cozy/cozy-client/commit/262d617))
+
+
+
+
+
 # [6.47.0](https://github.com/cozy/cozy-client/compare/v6.46.0...v6.47.0) (2019-06-26)
 
 
