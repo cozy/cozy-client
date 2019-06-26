@@ -23,27 +23,38 @@ const fixtures = {
   }
 }
 
-const get = jest.fn().mockReturnValue(fixtures.apprentice)
-
-const hydrated = {
+const hydratedMaster = {
   ...fixtures.jediMaster,
-  padawan: new HasOne(fixtures.jediMaster, 'padawan', 'io.cozy.jedis', { get })
+  padawan: new HasOne(fixtures.jediMaster, 'padawan', 'io.cozy.jedis', {
+    get: jest.fn().mockReturnValue(fixtures.apprentice)
+  })
+}
+
+const hydratedApprentice = {
+  ...fixtures.apprentice,
+  padawan: new HasOne(fixtures.apprentice, 'padawan', 'io.cozy.jedis', {
+    get: jest.fn().mockReturnValue(undefined)
+  })
 }
 
 describe('HasOne', () => {
   describe('raw', () => {
     it('returns relationship raw data', () => {
-      expect(hydrated.padawan.raw).toEqual({
+      expect(hydratedMaster.padawan.raw).toEqual({
         _id: 'anakin',
         _type: 'io.cozy.jedis'
       })
+    })
+
+    it('returns null if the relationship has no data', () => {
+      expect(hydratedApprentice.padawan.raw).toEqual(null)
     })
   })
 
   describe('data', () => {
     it('calls get method', () => {
-      const jedi = hydrated.padawan.data
-      expect(hydrated.padawan.get).toHaveBeenCalledWith(
+      const jedi = hydratedMaster.padawan.data
+      expect(hydratedMaster.padawan.get).toHaveBeenCalledWith(
         'io.cozy.jedis',
         'anakin'
       )
