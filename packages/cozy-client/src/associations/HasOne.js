@@ -3,10 +3,14 @@ import Association from './Association'
 
 export default class HasOne extends Association {
   get raw() {
-    return this.target.relationships[this.name].data
+    return get(this.target, `relationships[${this.name}].data`, null)
   }
 
   get data() {
+    if (!this.raw) {
+      return null
+    }
+
     return this.get(this.doctype, this.raw._id)
   }
 
