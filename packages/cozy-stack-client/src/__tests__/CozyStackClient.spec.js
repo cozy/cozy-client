@@ -3,6 +3,7 @@
 
 import CozyStackClient, { FetchError } from '../CozyStackClient'
 import DocumentCollection from '../DocumentCollection'
+import JobCollection from '../JobCollection'
 import KonnectorCollection from '../KonnectorCollection'
 import jestFetchMock from 'jest-fetch-mock'
 
@@ -58,6 +59,10 @@ describe('CozyStackClient', () => {
       expect(client.collection('io.cozy.todos')).toBeInstanceOf(
         DocumentCollection
       )
+    })
+
+    it('should return a JobCollection for io.cozy.jobs doctype', () => {
+      expect(client.collection('io.cozy.jobs')).toBeInstanceOf(JobCollection)
     })
 
     it('should throw if the doctype is undefined', () => {

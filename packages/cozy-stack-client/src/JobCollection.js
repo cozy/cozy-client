@@ -1,4 +1,4 @@
-const JOB_DOCTYPE = 'io.cozy.jobs'
+export const JOBS_DOCTYPE = 'io.cozy.jobs'
 
 class JobCollection {
   constructor(stackClient) {
@@ -11,7 +11,7 @@ class JobCollection {
   create(workerType, args, options) {
     return this.stackClient.fetchJSON('POST', `/jobs/queue/${workerType}`, {
       data: {
-        type: JOB_DOCTYPE,
+        type: JOBS_DOCTYPE,
         attributes: {
           arguments: args || {},
           options: options || {}
