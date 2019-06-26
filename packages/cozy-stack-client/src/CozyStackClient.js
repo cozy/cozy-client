@@ -2,11 +2,11 @@ import AppCollection, { APPS_DOCTYPE } from './AppCollection'
 import AppToken from './AppToken'
 import DocumentCollection from './DocumentCollection'
 import FileCollection from './FileCollection'
+import JobCollection, { JOBS_DOCTYPE } from './JobCollection'
 import KonnectorCollection, { KONNECTORS_DOCTYPE } from './KonnectorCollection'
 import SharingCollection from './SharingCollection'
 import PermissionCollection from './PermissionCollection'
 import TriggerCollection, { TRIGGERS_DOCTYPE } from './TriggerCollection'
-import JobCollection from './JobCollection'
 import getIconURL from './getIconURL'
 import logDeprecate from './logDeprecate'
 import errors from './errors'
@@ -57,6 +57,8 @@ class CozyStackClient {
         return new PermissionCollection(doctype, this)
       case TRIGGERS_DOCTYPE:
         return new TriggerCollection(this)
+      case JOBS_DOCTYPE:
+        return new JobCollection(this)
       default:
         return new DocumentCollection(doctype, this)
     }
