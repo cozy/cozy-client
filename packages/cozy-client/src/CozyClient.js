@@ -505,11 +505,7 @@ class CozyClient {
 
     responseDocs.forEach(doc => {
       return forEach(relationshipsByName, (relationship, relName) => {
-        const queryDef = relationship.type.query(
-          doc,
-          this,
-          relationship
-        )
+        const queryDef = relationship.type.query(doc, this, relationship)
         const docId = doc._id
 
         // Used to reattach responses into the relationships attribute of
