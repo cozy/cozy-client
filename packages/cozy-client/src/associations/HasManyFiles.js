@@ -20,6 +20,7 @@ export default class HasManyFiles extends HasMany {
         lastRelationship._type,
         lastRelationship._id
       )
+      // Photos always have a datetime field in metadata
       const lastDatetime = lastRelDoc.attributes.metadata.datetime
       // cursor-based pagination
       const cursorKey = [this.target._type, this.target._id, lastDatetime]
