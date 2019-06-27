@@ -848,6 +848,7 @@ Beware, this [performs badly](http://docs.couchdb.org/en/stable/ddocs/views/pagi
 
 ### queryDefinition.offsetCursor(cursor) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
 Use [cursor-based](https://docs.cozy.io/en/cozy-stack/jsonapi/#pagination) pagination.
+*Warning*: this is only useful for views.
 The cursor is a [startkey, startkey_docid] array, where startkey is the view's key,
 e.g. ["io.cozy.photos.albums", "album-id"] and startkey_docid is the id of
 the starting document of the query, e.g. "file-id".
