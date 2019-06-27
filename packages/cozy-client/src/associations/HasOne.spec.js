@@ -72,4 +72,27 @@ describe('HasOne', () => {
       expect(queryDef.id).toEqual(fixtures.apprentice._id)
     })
   })
+
+  describe('set', () => {
+    it("should throw if the document to be set's type is not the same as the association type", () => {
+      expect(() =>
+        hydratedMaster.padawan.set({ _id: '1', _type: 'io.cozy.stuff' })
+      ).toThrow()
+    })
+
+    it('should update the associated document', () => {
+      const newPadawan = {
+        _id: 'shameonmeidontknowstarwars',
+        _type: 'io.cozy.jedis',
+        name: 'Bernard Nobody'
+      }
+
+      hydratedMaster.padawan.set(newPadawan)
+
+      expect(hydratedMaster.padawan.raw).toEqual({
+        _id: newPadawan._id,
+        _type: newPadawan._type
+      })
+    })
+  })
 })
