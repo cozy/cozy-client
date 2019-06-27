@@ -480,8 +480,7 @@ class CozyClient {
     }
     const withIncluded = await this.fetchRelationships(
       mainResponse,
-      this.getIncludesRelationships(definition),
-      definition.cursor
+      this.getIncludesRelationships(definition)
     )
     return withIncluded
   }
@@ -493,7 +492,7 @@ class CozyClient {
    * Can potentially result in several fetch requests.
    * Queries are optimized before being sent.
    */
-  async fetchRelationships(response, relationshipsByName, cursor) {
+  async fetchRelationships(response, relationshipsByName) {
     const isSingleDoc = !Array.isArray(response.data)
     if (!isSingleDoc && response.data.length === 0) {
       return response
@@ -509,8 +508,7 @@ class CozyClient {
         const queryDef = relationship.type.query(
           doc,
           this,
-          relationship,
-          cursor
+          relationship
         )
         const docId = doc._id
 
