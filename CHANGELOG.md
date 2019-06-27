@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.48.0](https://github.com/cozy/cozy-client/compare/v6.47.1...v6.48.0) (2019-06-27)
+
+
+### Features
+
+* **cozy-client:** Add set and unset methods on HasOne ([0d29b8a](https://github.com/cozy/cozy-client/commit/0d29b8a))
+
+
+
+
+
 ## [6.47.1](https://github.com/cozy/cozy-client/compare/v6.47.0...v6.47.1) (2019-06-26)
 
 
