@@ -4,8 +4,11 @@ import StackClient from './CozyStackClient'
 describe('job collection', () => {
   let stackClient, col
 
-  beforeEach(() => {
+  beforeAll(() => {
     stackClient = new StackClient()
+  })
+
+  beforeEach(() => {
     jest.spyOn(stackClient, 'fetchJSON').mockResolvedValue({})
     col = new JobCollection(stackClient)
   })
@@ -38,5 +41,45 @@ describe('job collection', () => {
       'GET',
       '/jobs/queue/service'
     )
+  })
+
+  describe('get', () => {
+    beforeEach(() => {
+      jest.spyOn(stackClient, 'fetchJSON').mockResolvedValue({
+        data: {
+          type: 'io.cozy.jobs',
+          id: '5396fc6299dd437d8d30fecd44745745',
+          attributes: {
+            domain: 'me.cozy.tools',
+            worker: 'sendmail',
+            options: {
+              priority: 3,
+              timeout: 60,
+              max_exec_count: 3
+            },
+            state: 'running',
+            queued_at: '2016-09-19T12:35:08Z',
+            started_at: '2016-09-19T12:35:08Z',
+            error: ''
+          },
+          links: {
+            self: '/jobs/5396fc6299dd437d8d30fecd44745745'
+          }
+        }
+      })
+    })
+
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it('should call the expected stack endpoint', async () => {
+      const jobId = '5396fc6299dd437d8d30fecd44745745'
+      await col.get(jobId)
+      expect(stackClient.fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/jobs/5396fc6299dd437d8d30fecd44745745'
+      )
+    })
   })
 })

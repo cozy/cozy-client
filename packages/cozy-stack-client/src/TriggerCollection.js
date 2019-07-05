@@ -1,17 +1,10 @@
 import Collection, { dontThrowNotFoundError } from './Collection'
 import { normalizeDoc } from './DocumentCollection'
+import { normalizeJob } from './JobCollection'
 import { uri } from './utils'
 
 export const JOBS_DOCTYPE = 'io.cozy.jobs'
 export const TRIGGERS_DOCTYPE = 'io.cozy.triggers'
-
-export const normalizeJob = job => {
-  return {
-    ...job,
-    ...normalizeDoc(job, JOBS_DOCTYPE),
-    ...job.attributes
-  }
-}
 
 export const normalizeTrigger = trigger => {
   return {
