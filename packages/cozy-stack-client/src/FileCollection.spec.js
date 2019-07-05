@@ -358,6 +358,36 @@ describe('FileCollection', () => {
     })
   })
 
+  describe('deleteFilePermanently', () => {
+    it('should definitely delete a file', async () => {
+      const FILE_ID = 'd04ab491-2fc6'
+      client.fetchJSON.mockReturnValue({
+        data: {
+          id: FILE_ID,
+          type: 'io.cozy.files'
+        }
+      })
+      const result = await collection.deleteFilePermanently(FILE_ID)
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'PATCH',
+        '/files/d04ab491-2fc6',
+        {
+          data: {
+            type: 'io.cozy.files',
+            id: 'd04ab491-2fc6',
+            attributes: {
+              permanent_delete: true
+            }
+          }
+        }
+      )
+      expect(result).toEqual({
+        id: FILE_ID,
+        type: 'io.cozy.files'
+      })
+    })
+  })
+
   describe('createFile', () => {
     const data = new File([''], 'mydoc.odt')
     const id = '59140416-b95f'

@@ -150,6 +150,26 @@ class FileCollection extends DocumentCollection {
     return this.stackClient.fetchJSON('POST', uri`/files/trash/${id}`)
   }
 
+  /**
+   * async deleteFilePermanently - Definitely delete a file
+   *
+   * @param  {string} id - The id of the file to delete
+   * @returns {object} The deleted file object
+   */
+  async deleteFilePermanently(id) {
+    const resp = await this.stackClient.fetchJSON('PATCH', uri`/files/${id}`, {
+      data: {
+        type: 'io.cozy.files',
+        id,
+        attributes: {
+          permanent_delete: true
+        }
+      }
+    })
+
+    return resp.data
+  }
+
   async upload(data, dirPath) {
     const dirId = await this.ensureDirectoryExists(dirPath)
     return this.createFile(data, { dirId })

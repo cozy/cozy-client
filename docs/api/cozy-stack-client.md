@@ -243,6 +243,7 @@ files associated to a specific document
     * [.find(selector, options)](#FileCollection+find) ⇒ <code>Object</code>
     * [.findReferencedBy(document, {, limit)](#FileCollection+findReferencedBy) ⇒ <code>object</code>
     * [.restore(id)](#FileCollection+restore) ⇒ <code>Promise</code>
+    * [.deleteFilePermanently(id)](#FileCollection+deleteFilePermanently) ⇒ <code>object</code>
     * [.updateFile(data, params)](#FileCollection+updateFile) ⇒ <code>object</code>
     * [.createDirectoryByPath(path)](#FileCollection+createDirectoryByPath) ⇒ <code>object</code>
     * [.updateFileMetadata(id, attributes)](#FileCollection+updateFileMetadata) ⇒ <code>object</code>
@@ -296,6 +297,18 @@ Restores a trashed file.
 | Param | Type | Description |
 | --- | --- | --- |
 | id | <code>string</code> | The file's id |
+
+<a name="FileCollection+deleteFilePermanently"></a>
+
+### fileCollection.deleteFilePermanently(id) ⇒ <code>object</code>
+async deleteFilePermanently - Definitely delete a file
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+**Returns**: <code>object</code> - The deleted file object  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | The id of the file to delete |
 
 <a name="FileCollection+updateFile"></a>
 
