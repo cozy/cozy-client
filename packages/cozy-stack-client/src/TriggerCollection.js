@@ -1,4 +1,5 @@
-import { normalizeDoc, dontThrowNotFoundError } from './DocumentCollection'
+import Collection, { dontThrowNotFoundError } from './Collection'
+import { normalizeDoc } from './DocumentCollection'
 import { uri } from './utils'
 
 export const JOBS_DOCTYPE = 'io.cozy.jobs'
@@ -109,18 +110,9 @@ class TriggerCollection {
   }
 
   async get(id) {
-    const path = uri`/jobs/triggers/${id}`
-    try {
-      const resp = await this.stackClient.fetchJSON('GET', path)
-      return {
-        data: normalizeTrigger(resp.data)
-      }
-    } catch (error) {
-      if (error.message.match(/not_found/)) {
-        return { data: null }
-      }
-      throw error
-    }
+    return Collection.get(this.stackClient, uri`/jobs/triggers/${id}`, {
+      normalize: normalizeTrigger
+    })
   }
 
   /**

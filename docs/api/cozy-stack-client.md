@@ -4,6 +4,10 @@
 <dt><a href="#AppCollection">AppCollection</a></dt>
 <dd><p>Extends <code>DocumentCollection</code> API along with specific methods for <code>io.cozy.apps</code>.</p>
 </dd>
+<dt><a href="#Collection">Collection</a></dt>
+<dd><p>Utility class to abstract an regroup identical methods and logics for
+specific collections.</p>
+</dd>
 <dt><a href="#CozyStackClient">CozyStackClient</a></dt>
 <dd><p>Main API against the <code>cozy-stack</code> server.</p>
 </dd>
@@ -30,6 +34,14 @@ through OAuth.</p>
 </dd>
 <dt><a href="#TriggerCollection">TriggerCollection</a></dt>
 <dd><p>Implements <code>DocumentCollection</code> API along with specific methods for <code>io.cozy.triggers</code>.</p>
+</dd>
+</dl>
+
+## Constants
+
+<dl>
+<dt><a href="#dontThrowNotFoundError">dontThrowNotFoundError</a> ⇒ <code>Object</code></dt>
+<dd><p>Handler for error response which return a empty value for &quot;not found&quot; error</p>
 </dd>
 </dl>
 
@@ -71,6 +83,30 @@ The returned documents are not paginated by the stack.
 **Throws**:
 
 - <code>FetchError</code> 
+
+<a name="Collection"></a>
+
+## Collection
+Utility class to abstract an regroup identical methods and logics for
+specific collections.
+
+**Kind**: global class  
+<a name="Collection.get"></a>
+
+### Collection.get(stackClient, endpoint, options) ⇒ <code>Object</code>
+Utility method aimed to return only one document.
+
+**Kind**: static method of [<code>Collection</code>](#Collection)  
+**Returns**: <code>Object</code> - JsonAPI response containing normalized
+document as data attribute  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| stackClient | <code>Object</code> |  |
+| endpoint | <code>String</code> | Stack endpoint |
+| options | <code>Object</code> |  |
+| options.normalize | <code>Func</code> | Callback to normalize response data (default `data => data`) |
+| options.method | <code>String</code> | HTTP method (default `GET`) |
 
 <a name="CozyStackClient"></a>
 
@@ -699,6 +735,20 @@ Force given trigger execution.
 | Param | Type | Description |
 | --- | --- | --- |
 | Trigger | <code>object</code> | to launch |
+
+<a name="dontThrowNotFoundError"></a>
+
+## dontThrowNotFoundError ⇒ <code>Object</code>
+Handler for error response which return a empty value for "not found" error
+
+**Kind**: global constant  
+**Returns**: <code>Object</code> - JsonAPI response with empty data in case of "not
+found" error.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| error | <code>Error</code> |  |
+| data | <code>Array</code> \| <code>Object</code> | Data to return in case of "not found" error |
 
 <a name="getAccessToken"></a>
 

@@ -5,6 +5,8 @@ import head from 'lodash/head'
 import omit from 'lodash/omit'
 import startsWith from 'lodash/startsWith'
 import qs from 'qs'
+
+import Collection, { dontThrowNotFoundError } from './Collection'
 import * as querystring from './querystring'
 
 export const normalizeDoc = (doc, doctype) => {
@@ -12,12 +14,8 @@ export const normalizeDoc = (doc, doctype) => {
   return { id, _id: id, _type: doctype, ...doc }
 }
 
-export const dontThrowNotFoundError = error => {
-  if (error.message.match(/not_found/)) {
-    return { data: [], meta: { count: 0 }, skip: 0, next: false }
-  }
-
-  throw error
+export const normalizeDoctype = doctype => doc => {
+  normalizeDoc(doc, doctype)
 }
 
 /**
@@ -129,20 +127,9 @@ class DocumentCollection {
   }
 
   async get(id) {
-    let resp
-    try {
-      resp = await this.stackClient.fetchJSON(
-        'GET',
-        uri`/data/${this.doctype}/${id}`
-      )
-    } catch (error) {
-      if (error.message.match(/not_found/)) {
-        return { data: null }
-      }
-    }
-    return {
-      data: normalizeDoc(resp, this.doctype)
-    }
+    return Collection.get(this.stackClient, uri`/data/${this.doctype}/${id}`, {
+      normalize: normalizeDoctype(this.doctype)
+    })
   }
 
   async getAll(ids) {
