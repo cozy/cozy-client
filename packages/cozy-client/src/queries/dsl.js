@@ -30,7 +30,8 @@ class QueryDefinition {
     includes,
     referenced,
     limit,
-    skip
+    skip,
+    cursor
   } = {}) {
     this.doctype = doctype
     this.id = id
@@ -43,6 +44,7 @@ class QueryDefinition {
     this.referenced = referenced
     this.limit = limit
     this.skip = skip
+    this.cursor = cursor
   }
 
   /**
@@ -142,6 +144,8 @@ class QueryDefinition {
   /**
    * Skip the first ‘n’ documents, where ‘n’ is the value specified.
    *
+   * Beware, this [performs badly](http://docs.couchdb.org/en/stable/ddocs/views/pagination.html#paging-alternate-method) on view's index.
+   *  Prefer cursor-based pagination in such situation.
    * @param {number} skip The number of documents to skip.
    * @return {QueryDefinition}  The QueryDefinition object.
    */
@@ -150,8 +154,22 @@ class QueryDefinition {
   }
 
   /**
-   * Use the [file reference system](https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/)
+   * Use [cursor-based](https://docs.cozy.io/en/cozy-stack/jsonapi/#pagination) pagination.
+   * *Warning*: this is only useful for views.
+   * The cursor is a [startkey, startkey_docid] array, where startkey is the view's key,
+   * e.g. ["io.cozy.photos.albums", "album-id"] and startkey_docid is the id of
+   * the starting document of the query, e.g. "file-id".
+   * Use the last docid of each query as startkey_docid to paginate or leave blank for the first query.
    *
+   * @param {Array} cursor The cursor for pagination.
+   * @return {QueryDefinition}  The QueryDefinition object.
+   */
+  offsetCursor(cursor) {
+    return new QueryDefinition({ ...this.toDefinition(), cursor })
+  }
+
+  /**
+   * Use the [file reference system](https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/)
    * @param {Object} document The reference document
    * @return {QueryDefinition}  The QueryDefinition object.
    */
@@ -171,7 +189,8 @@ class QueryDefinition {
       includes: this.includes,
       referenced: this.referenced,
       limit: this.limit,
-      skip: this.skip
+      skip: this.skip,
+      cursor: this.cursor
     }
   }
 }

@@ -32,9 +32,20 @@ const main = async _args => {
   }).include(['photos'])
 
   const resp = await client.query(query)
-  const albums = client.hydrateDocuments('io.cozy.photos.albums', resp.data)
+  let albums = client.hydrateDocuments('io.cozy.photos.albums', resp.data)
+  const albumId = albums[0]._id
+  // Paginate relationships
+  while (albums[0].photos.hasMore) {
+    await albums[0].photos.fetchMore()
+    const fromState = client.getDocumentFromState(
+      'io.cozy.photos.albums',
+      albumId
+    )
+    albums = client.hydrateDocuments('io.cozy.photos.albums', [fromState])
+  }
   console.log(albums[0].name)
   console.log(albums[0].photos.data)
+  console.log('Number of photos fetched : ', albums[0].photos.data.length)
 }
 
 main(process.argv).catch(e => console.error(e))

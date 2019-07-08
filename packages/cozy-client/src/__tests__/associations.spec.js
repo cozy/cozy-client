@@ -42,8 +42,26 @@ describe('Associations', () => {
           TODO_2
         ],
         included: [
-          { _id: 'abc', _type: 'io.cozy.files', name: 'abc.pdf' },
-          { _id: 'def', _type: 'io.cozy.files', name: 'def.png' }
+          {
+            _id: 'abc',
+            _type: 'io.cozy.files',
+            name: 'abc.jpg',
+            attributes: {
+              metadata: {
+                datetime: '2019-01-01'
+              }
+            }
+          },
+          {
+            _id: 'def',
+            _type: 'io.cozy.files',
+            name: 'def.png',
+            attributes: {
+              metadata: {
+                datetime: '2019-01-02'
+              }
+            }
+          }
         ]
       })
     )
@@ -52,8 +70,26 @@ describe('Associations', () => {
   describe('HasMany', () => {
     it('should return data', () => {
       expect(getTodo(TODO_1._id).attachments.data).toEqual([
-        { _id: 'abc', _type: 'io.cozy.files', name: 'abc.pdf' },
-        { _id: 'def', _type: 'io.cozy.files', name: 'def.png' }
+        {
+          _id: 'abc',
+          _type: 'io.cozy.files',
+          name: 'abc.jpg',
+          attributes: {
+            metadata: {
+              datetime: '2019-01-01'
+            }
+          }
+        },
+        {
+          _id: 'def',
+          _type: 'io.cozy.files',
+          name: 'def.png',
+          attributes: {
+            metadata: {
+              datetime: '2019-01-02'
+            }
+          }
+        }
       ])
     })
 
@@ -64,11 +100,21 @@ describe('Associations', () => {
     it('should be able to fetchMore data', async () => {
       const FAKE_RESPONSE = {
         data: [
+          {
+            _id: 'def',
+            _type: 'io.cozy.files',
+            name: 'def.png',
+            attributes: {
+              metadata: {
+                datetime: '2019-01-02'
+              }
+            }
+          },
           { _id: 'ghi', _type: 'io.cozy.files' },
           { _id: 'jkl', _type: 'io.cozy.files' }
         ],
         included: [
-          { _id: 'ghi', _type: 'io.cozy.files', name: 'ghi.pdf' },
+          { _id: 'ghi', _type: 'io.cozy.files', name: 'ghi.jpg' },
           { _id: 'jkl', _type: 'io.cozy.files', name: 'jkl.png' }
         ],
         next: false
@@ -78,9 +124,27 @@ describe('Associations', () => {
       const queryBefore = getQueryFromStore(client.store, 'allTodos')
       await getTodo(TODO_1._id).attachments.fetchMore()
       expect(getTodo(TODO_1._id).attachments.data).toEqual([
-        { _id: 'abc', _type: 'io.cozy.files', name: 'abc.pdf' },
-        { _id: 'def', _type: 'io.cozy.files', name: 'def.png' },
-        { _id: 'ghi', _type: 'io.cozy.files', name: 'ghi.pdf' },
+        {
+          _id: 'abc',
+          _type: 'io.cozy.files',
+          name: 'abc.jpg',
+          attributes: {
+            metadata: {
+              datetime: '2019-01-01'
+            }
+          }
+        },
+        {
+          _id: 'def',
+          _type: 'io.cozy.files',
+          name: 'def.png',
+          attributes: {
+            metadata: {
+              datetime: '2019-01-02'
+            }
+          }
+        },
+        { _id: 'ghi', _type: 'io.cozy.files', name: 'ghi.jpg' },
         { _id: 'jkl', _type: 'io.cozy.files', name: 'jkl.png' }
       ])
       const queryAfter = getQueryFromStore(client.store, 'allTodos')

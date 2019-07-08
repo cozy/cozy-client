@@ -241,7 +241,7 @@ files associated to a specific document
 
 * [FileCollection](#FileCollection)
     * [.find(selector, options)](#FileCollection+find) ⇒ <code>Object</code>
-    * [.findReferencedBy(document, {, limit)](#FileCollection+findReferencedBy) ⇒ <code>object</code>
+    * [.findReferencedBy(document, options)](#FileCollection+findReferencedBy) ⇒ <code>object</code>
     * [.restore(id)](#FileCollection+restore) ⇒ <code>Promise</code>
     * [.updateFile(data, params)](#FileCollection+updateFile) ⇒ <code>object</code>
     * [.createDirectoryByPath(path)](#FileCollection+createDirectoryByPath) ⇒ <code>object</code>
@@ -269,7 +269,7 @@ The returned documents are paginated by the stack.
 
 <a name="FileCollection+findReferencedBy"></a>
 
-### fileCollection.findReferencedBy(document, {, limit) ⇒ <code>object</code>
+### fileCollection.findReferencedBy(document, options) ⇒ <code>object</code>
 async findReferencedBy - Returns the list of files referenced by a document — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
@@ -278,8 +278,10 @@ async findReferencedBy - Returns the list of files referenced by a document — 
 | Param | Type | Description |
 | --- | --- | --- |
 | document | <code>object</code> | A JSON representing a document, with at least a `_type` and `_id` field. |
-| { | <code>number</code> | skip = 0   For pagination, the number of referenced files to skip |
-| limit | <code>number</code> | } For pagination, the number of results to return. |
+| options | <code>object</code> | Additional options |
+| options.skip | <code>number</code> | For skip-based pagination, the number of referenced files to skip. |
+| options.limit | <code>number</code> | For pagination, the number of results to return. |
+| options.cursor | <code>object</code> | For cursor-based pagination, the index cursor. |
 
 <a name="FileCollection+restore"></a>
 
