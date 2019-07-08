@@ -3,13 +3,13 @@
   "packages": [
     "packages/*"
   ],
-  "version": "6.48.0",
+  "version": "6.49.0",
   "npmClient": "yarn",
   "useWorkspaces": true,
   "command": {
     "version": {
       "conventionalCommits": true,
-      "githubRelease": true
+      "createRelease": "github"
     },
     "publish": {
       "conventionalCommits": true

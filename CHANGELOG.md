@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.49.0](https://github.com/cozy/cozy-client/compare/v6.48.0...v6.49.0) (2019-07-08)
+
+
+### Bug Fixes
+
+* Allow double-array in query param ([78e8d73](https://github.com/cozy/cozy-client/commit/78e8d73))
+
+
+### Features
+
+* Add cursor-based pagination ([a075999](https://github.com/cozy/cozy-client/commit/a075999))
+* Add relationship pagination example ([3f26b98](https://github.com/cozy/cozy-client/commit/3f26b98))
+* Force use of cursor for view pagination ([5ad9387](https://github.com/cozy/cozy-client/commit/5ad9387))
+* Use recursivity for querystrings ([daaa79f](https://github.com/cozy/cozy-client/commit/daaa79f))
+
+
+
+
+
 # [6.48.0](https://github.com/cozy/cozy-client/compare/v6.47.1...v6.48.0) (2019-06-27)
 
 
