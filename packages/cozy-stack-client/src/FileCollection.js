@@ -253,6 +253,37 @@ class FileCollection extends DocumentCollection {
     return resp.links.related
   }
 
+  /**
+   * Checks if the file belongs to the parent's hierarchy.
+   *
+   * @param  {string}  childFileID  The file ID of the child
+   * @param  {string}  childDirID   The dirID of the child
+   * @param  {string}  childPath    The child path
+   * @param  {string}  parentID     The parent's document id
+   * @return {boolean}              Whether the file is a parent's child
+   */
+  async isChild(childFileID, childDirID, childPath, parentID) {
+    if (childFileID === parentID || childDirID === parentID) {
+      return true
+    }
+    const paths = childPath.split('/')
+    paths.shift() // The path starts with '/'
+
+    const targetsPath = ['/' + paths[0]]
+    for (let i = 1; i < paths.length; i++) {
+      const newPath = targetsPath[i - 1] + '/' + paths[i]
+      targetsPath.push(newPath)
+    }
+
+    // Look for all hierarchy in parallel
+    const results = await Promise.all(
+      targetsPath.map(path => this.statByPath(path))
+    )
+    return results.some(dir => {
+      return dir.data._id === parentID
+    })
+  }
+
   async statById(id, options = {}) {
     const { limit, skip = 0 } = options
     const params = {
