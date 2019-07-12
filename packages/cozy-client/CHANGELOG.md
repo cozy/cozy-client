@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.49.1](https://github.com/cozy/cozy-client/compare/v6.49.0...v6.49.1) (2019-07-12)
+
+
+### Bug Fixes
+
+* **deps:** update dependency cozy-device-helper to v1.7.3 ([9e1328f](https://github.com/cozy/cozy-client/commit/9e1328f))
+
+
+
+
+
 # [6.49.0](https://github.com/cozy/cozy-client/compare/v6.48.0...v6.49.0) (2019-07-08)
 
 
