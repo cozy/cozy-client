@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.49.2](https://github.com/cozy/cozy-client/compare/v6.49.1...v6.49.2) (2019-07-12)
+
+
+### Bug Fixes
+
+* **deps:** update dependency lodash to v4.17.13 [security] ([3af67f3](https://github.com/cozy/cozy-client/commit/3af67f3))
+
+
+
+
+
 ## [6.49.1](https://github.com/cozy/cozy-client/compare/v6.49.0...v6.49.1) (2019-07-12)
 
 
