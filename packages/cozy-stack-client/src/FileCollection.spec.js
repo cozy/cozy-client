@@ -464,9 +464,10 @@ describe('FileCollection', () => {
         })
     })
 
-    it('should find the parent', async () => {
-      const parentId = 'root-id'
-      const res = await collection.isChild('file-id', '456', '/a/b/c', parentId)
+    it('should find the parent with path', async () => {
+      const child = { _id: 'file-id', path: '/a/b/c', dirID: '456' }
+      const parent = { _id: 'root-id' }
+      const res = await collection.isChildOf(child, parent)
       expect(res).toEqual(true)
 
       expect(client.fetchJSON).toHaveBeenNthCalledWith(
@@ -485,9 +486,18 @@ describe('FileCollection', () => {
         '/files/metadata?Path=%2Fa%2Fb%2Fc'
       )
     })
+
+    it('should find the parent with dirID', async () => {
+      const child = { _id: 'file-id', path: '/a/b/c', dirID: 'root-id' }
+      const parent = 'root-id'
+      const res = await collection.isChildOf(child, parent)
+      expect(res).toEqual(true)
+    })
+
     it('should not find the parent', async () => {
-      const parentId = 'fake-id'
-      const res = await collection.isChild('file-id', '456', '/a/b/c', parentId)
+      const child = { _id: 'file-id', path: '/a/b/c', dirID: '456' }
+      const parent = { _id: 'fake-id' }
+      const res = await collection.isChildOf(child, parent)
       expect(res).toEqual(false)
     })
   })
