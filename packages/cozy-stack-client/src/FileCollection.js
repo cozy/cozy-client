@@ -21,6 +21,24 @@ export const isFile = ({ _type, type }) =>
 
 export const isDirectory = ({ type }) => type === 'directory'
 
+const raceWithCondition = (promises, predicate) => {
+  return new Promise(resolve => {
+    promises.forEach(p =>
+      p.then(res => {
+        if (predicate(res)) {
+          resolve(true)
+        }
+      })
+    )
+    Promise.all(promises).then(() => resolve(false))
+  })
+}
+
+const dirName = path => {
+  const lastIndex = path.lastIndexOf('/')
+  return path.substring(0, lastIndex)
+}
+
 /**
  * Implements `DocumentCollection` API along with specific methods for
  * `io.cozy.files`.
@@ -256,32 +274,41 @@ class FileCollection extends DocumentCollection {
   /**
    * Checks if the file belongs to the parent's hierarchy.
    *
-   * @param  {string}  childFileID  The file ID of the child
-   * @param  {string}  childDirID   The dirID of the child
-   * @param  {string}  childPath    The child path
-   * @param  {string}  parentID     The parent's document id
-   * @return {boolean}              Whether the file is a parent's child
+   * @param  {string|object}  child    The file which can either be an id or an object
+   * @param  {string|object}  parent   The parent target which can either be an id or an object
+   * @return {boolean}                 Whether the file is a parent's child
    */
-  async isChild(childFileID, childDirID, childPath, parentID) {
-    if (childFileID === parentID || childDirID === parentID) {
+  async isChildOf(child, parent) {
+    let { _id: childID, dirID: childDirID, path: childPath } =
+      typeof child === 'object' ? child : { _id: child }
+    let { _id: parentID } =
+      typeof parent === 'object' ? parent : { _id: parent }
+    if (childID === parentID || childDirID === parentID) {
       return true
     }
-    const paths = childPath.split('/')
-    paths.shift() // The path starts with '/'
-
-    const targetsPath = ['/' + paths[0]]
-    for (let i = 1; i < paths.length; i++) {
-      const newPath = targetsPath[i - 1] + '/' + paths[i]
-      targetsPath.push(newPath)
+    if (!childPath) {
+      const childDoc = await this.statById(childID)
+      childPath = childDoc.path
+      childDirID = childDoc.dirID
     }
 
-    // Look for all hierarchy in parallel
-    const results = await Promise.all(
-      targetsPath.map(path => this.statByPath(path))
+    // Build hierarchy paths
+    let currPath = childPath
+    const targetsPath = [childPath]
+    while (currPath != '') {
+      const newPath = dirName(currPath)
+      if (newPath != '') {
+        targetsPath.push(newPath)
+      }
+      currPath = newPath
+    }
+    targetsPath.reverse()
+
+    // Look for all hierarchy in parallel and return true as soon as a dir is the searched parent
+    return raceWithCondition(
+      targetsPath.map(path => this.statByPath(path)),
+      stat => stat.data._id == parentID
     )
-    return results.some(dir => {
-      return dir.data._id === parentID
-    })
   }
 
   async statById(id, options = {}) {
