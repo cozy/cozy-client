@@ -11,7 +11,7 @@
     "url": "git+https://github.com/cozy/cozy-client.git"
   },
   "dependencies": {
-    "cozy-device-helper": "1.6.3",
+    "cozy-device-helper": "1.7.3",
     "cozy-stack-client": "^6.49.0",
     "lodash": "4.17.11",
     "microee": "0.0.6",
