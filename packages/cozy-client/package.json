@@ -13,7 +13,7 @@
   "dependencies": {
     "cozy-device-helper": "1.7.3",
     "cozy-stack-client": "^6.49.0",
-    "lodash": "4.17.11",
+    "lodash": "4.17.13",
     "microee": "0.0.6",
     "prop-types": "15.6.2",
     "react": "16.7.0",
