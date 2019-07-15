@@ -301,7 +301,7 @@ describe('FileCollection', () => {
       client.fetchJSON.mockClear()
     })
 
-    it('should update a file', async () => {
+    it('should update a file without metadata', async () => {
       const data = new File([''], 'mydoc.odt')
       const params = {
         fileId: '59140416-b95f',
@@ -310,6 +310,43 @@ describe('FileCollection', () => {
       const result = await collection.updateFile(data, params)
       const expectedPath =
         '/files/59140416-b95f?Name=mydoc.odt&Type=file&Executable=false'
+      const expectedOptions = {
+        headers: {
+          'Content-MD5': 'a6dabd99832b270468e254814df2ed20',
+          'Content-Type': 'application/vnd.oasis.opendocument.text'
+        }
+      }
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'PUT',
+        expectedPath,
+        data,
+        expectedOptions
+      )
+      expect(result).toEqual({
+        data: {
+          id: '59140416-b95f',
+          _id: '59140416-b95f',
+          _type: 'io.cozy.files',
+          dir_id: '41686c35-9d8e'
+        }
+      })
+    })
+
+    it('should update a file with metadata', async () => {
+      const metadataId = '2460a631-ae55'
+      client.fetchJSON.mockReturnValueOnce({
+        data: {
+          id: metadataId
+        }
+      })
+      const data = new File([''], 'mydoc.odt')
+      const params = {
+        fileId: '59140416-b95f',
+        checksum: 'a6dabd99832b270468e254814df2ed20',
+        metadata: { type: 'bill' }
+      }
+      const result = await collection.updateFile(data, params)
+      const expectedPath = `/files/59140416-b95f?Name=mydoc.odt&Type=file&Executable=false&MetadataID=${metadataId}`
       const expectedOptions = {
         headers: {
           'Content-MD5': 'a6dabd99832b270468e254814df2ed20',
