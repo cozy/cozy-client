@@ -313,6 +313,7 @@ updateFile - Updates a file's data
 | params | <code>object</code> | Additional parameters |
 | params.fileId | <code>string</code> | The id of the file to update (required) |
 | params.executable | <code>boolean</code> | Whether the file is executable or not |
+| params.metadata | <code>object</code> | Metadata to be attached to the File io.cozy.file |
 | params.options | <code>object</code> | Options to pass to doUpload method (additional headers) |
 
 <a name="FileCollection+createDirectoryByPath"></a>

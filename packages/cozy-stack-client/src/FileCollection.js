@@ -188,10 +188,14 @@ class FileCollection extends DocumentCollection {
    * @param  {object}  params             Additional parameters
    * @param  {string}  params.fileId      The id of the file to update (required)
    * @param  {boolean} params.executable  Whether the file is executable or not
+   * @param  {object}  params.metadata    Metadata to be attached to the File io.cozy.file
    * @param  {object}  params.options     Options to pass to doUpload method (additional headers)
    * @return {object}                     Updated document
    */
-  updateFile(data, { executable = false, fileId, ...options } = {}) {
+  async updateFile(
+    data,
+    { executable = false, fileId, metadata, ...options } = {}
+  ) {
     if (!fileId || typeof fileId !== 'string') {
       throw new Error('missing fileId argument')
     }
@@ -205,8 +209,23 @@ class FileCollection extends DocumentCollection {
     if (typeof name !== 'string' || name === '') {
       throw new Error('missing name argument')
     }
+    /**
+     * We already use the body to send the content of the file. So we have 2 choices :
+     * Use an object in a query string to send the metadata
+     * create a new header http
+     * In both case, we have a size limitation depending of the browser.
+     *
+     * So we had this current workaround where we create the metadata before
+     * (no size limit since we can use the body for that) and after we use the ID.
+     */
+    let metadataId
+    let path = uri`/files/${fileId}?Name=${name}&Type=file&Executable=${executable}`
+    if (metadata) {
+      const meta = await this.createFileMetadata(metadata)
+      metadataId = meta.data.id
+      path = path + `&MetadataID=${metadataId}`
+    }
 
-    const path = uri`/files/${fileId}?Name=${name}&Type=file&Executable=${executable}`
     return this.doUpload(data, path, options, 'PUT')
   }
 
