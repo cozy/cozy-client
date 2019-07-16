@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.50.0](https://github.com/cozy/cozy-client/compare/v6.49.3...v6.50.0) (2019-07-16)
+
+**Note:** Version bump only for package cozy-client
+
+
+
+
+
 ## [6.49.3](https://github.com/cozy/cozy-client/compare/v6.49.2...v6.49.3) (2019-07-13)
 
 

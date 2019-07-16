@@ -1,6 +1,6 @@
 {
   "name": "cozy-stack-client",
-  "version": "6.49.0",
+  "version": "6.50.0",
   "license": "MIT",
   "main": "dist/index.js",
   "files": [
