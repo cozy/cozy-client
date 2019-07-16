@@ -468,4 +468,67 @@ describe('FileCollection', () => {
       })
     })
   })
+  describe('isChild', () => {
+    beforeEach(() => {
+      client.fetchJSON
+        .mockReturnValue({
+          data: {
+            _id: 'root-id',
+            dir_id: '',
+            path: '/'
+          }
+        })
+        .mockReturnValueOnce({
+          data: {
+            _id: '123',
+            dir_id: 'root-id',
+            path: '/a/b'
+          }
+        })
+        .mockReturnValueOnce({
+          data: {
+            _id: '456',
+            dir_id: '123',
+            path: '/a/b/c'
+          }
+        })
+    })
+
+    it('should find the parent with path', async () => {
+      const child = { _id: 'file-id', path: '/a/b/c', dirID: '456' }
+      const parent = { _id: 'root-id' }
+      const res = await collection.isChildOf(child, parent)
+      expect(res).toEqual(true)
+
+      expect(client.fetchJSON).toHaveBeenNthCalledWith(
+        1,
+        'GET',
+        '/files/metadata?Path=%2Fa'
+      )
+      expect(client.fetchJSON).toHaveBeenNthCalledWith(
+        2,
+        'GET',
+        '/files/metadata?Path=%2Fa%2Fb'
+      )
+      expect(client.fetchJSON).toHaveBeenNthCalledWith(
+        3,
+        'GET',
+        '/files/metadata?Path=%2Fa%2Fb%2Fc'
+      )
+    })
+
+    it('should find the parent with dirID', async () => {
+      const child = { _id: 'file-id', path: '/a/b/c', dirID: 'root-id' }
+      const parent = 'root-id'
+      const res = await collection.isChildOf(child, parent)
+      expect(res).toEqual(true)
+    })
+
+    it('should not find the parent', async () => {
+      const child = { _id: 'file-id', path: '/a/b/c', dirID: '456' }
+      const parent = { _id: 'fake-id' }
+      const res = await collection.isChildOf(child, parent)
+      expect(res).toEqual(false)
+    })
+  })
 })

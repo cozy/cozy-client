@@ -245,6 +245,7 @@ files associated to a specific document
     * [.restore(id)](#FileCollection+restore) ⇒ <code>Promise</code>
     * [.deleteFilePermanently(id)](#FileCollection+deleteFilePermanently) ⇒ <code>object</code>
     * [.updateFile(data, params)](#FileCollection+updateFile) ⇒ <code>object</code>
+    * [.isChildOf(child, parent)](#FileCollection+isChildOf) ⇒ <code>boolean</code>
     * [.createDirectoryByPath(path)](#FileCollection+createDirectoryByPath) ⇒ <code>object</code>
     * [.updateFileMetadata(id, attributes)](#FileCollection+updateFileMetadata) ⇒ <code>object</code>
     * [.createFileMetadata(attributes)](#FileCollection+createFileMetadata) ⇒ <code>object</code>
@@ -327,6 +328,19 @@ updateFile - Updates a file's data
 | params.fileId | <code>string</code> | The id of the file to update (required) |
 | params.executable | <code>boolean</code> | Whether the file is executable or not |
 | params.options | <code>object</code> | Options to pass to doUpload method (additional headers) |
+
+<a name="FileCollection+isChildOf"></a>
+
+### fileCollection.isChildOf(child, parent) ⇒ <code>boolean</code>
+Checks if the file belongs to the parent's hierarchy.
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+**Returns**: <code>boolean</code> - Whether the file is a parent's child  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| child | <code>string</code> \| <code>object</code> | The file which can either be an id or an object |
+| parent | <code>string</code> \| <code>object</code> | The parent target which can either be an id or an object |
 
 <a name="FileCollection+createDirectoryByPath"></a>
 
