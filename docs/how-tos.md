@@ -1,41 +1,11 @@
 <!-- MarkdownTOC autolink=true -->
 
-- [How-to integrate with an existing store ?](#how-to-integrate-with-an-existing-store-)
 - [How to use the client on Node environment ?](#how-to-use-the-client-on-node-environment-referenceerror-fetch-is-not-defined)
-- [How to connect to the documents store declaratively ?](#how-to-connect-to-the-documents-store-declaratively-)
-- [How to provide a mutation to a component ?](#how-to-provide-a-mutation-to-a-component-)
 - [How to specify a schema ?](#how-to-specify-a-schema-)
 - [How to activate logging ?](#how-to-activate-logging-)
 
 <!-- /MarkdownTOC -->
 
-
-### How-to integrate with an existing store ?
-
-`cozy-client` uses redux internally to centralize the statuses of the various fetches and replications triggered by the library, and to store locally the data in a normalized way. If you already have a redux store in your app, you can configure `cozy-client` to use this existing store:
-
-```js
-import CozyClient from 'cozy-client'
-import { combineReducers, createStore, applyMiddleware } from 'redux'
-import myReducers from './myapp/reducers'
-import myMiddleware from './myapp/middleware'
-
-const client = new CozyClient({
-  /*...*/
-})
-
-const store = createStore(
-  combineReducers({ ...myReducers, cozy: client.reducer() }),
-  applyMiddleware(myMiddleware)
-)
-
-ReactDOM.render(
-  <CozyProvider client={client} store={store}>
-    <MyApp />
-  </CozyProvider>,
-  document.getElementById('main')
-)
-```
 
 ### How to use the client on Node environment (`ReferenceError: fetch is not defined`) ?
 
@@ -50,100 +20,6 @@ global.fetch = fetch
 
 Then you will be able to use all the client methods and fetch data correctly.
 
-### How to connect to the documents store declaratively ?
-
-Sometimes, HOCs are better suited than render-prop components, especially if you have multiple data-sources and you do not want to have multiple indent levelves. We provide a higher-order component called `queryConnect`. Basic example of usage:
-
-```jsx
-import React from 'react'
-import { queryConnect } from 'cozy-client'
-
-const query = client => client.find('io.cozy.todos').where({ checked: false })
-
-const TodoList = ({ todos }) =>
-  todos.fetchStatus !== 'loaded'
-    ? <h1>Loading...</h1>
-    : <ul>{todos.data.map(todo => <li>{todo.label}</li>)}</ul>
-
-export default queryConnect({
-  todos: {
-    query: query,
-    as: 'todos'
-  }
-})(TodoList)
-```
-
-When we use `queryConnect` to bind a query to a component, three things happen:
- - The queries passed as an argument will be executed when the component mounts, resulting in the loading of data from the client-side store, or the server if the data is not in the store ;
- - Our component subscribes to the store, so that it is updated if the data changes ;
- - props are injected into the component: if we were to declare `propTypes` they would look like this:
-```jsx
-TodoList.propTypes = {
-  todos: PropTypes.shape({
-    fetchStatus: PropTypes.string.isRequired,
-    data: PropTypes.array
-  })
-}
-```
-
-You can also connect multiples queries by adding other properties to the object passed to `queryConnect`:
-
-```jsx
-import { queryConnect } from 'cozy-client'
-import React from 'react'
-import TodoList from './TodoList'
-import Contacts from './Contacts'
-
-const App = ({ todos, contacts }) => (
-  <div>
-    {todos.fetchStatus !== 'loaded' ? <p>Loading...</p> : <TodoList items={todos.data} />}
-    {contacts.fetchStatus !== 'loaded' ? <p>Loading...</p> : <Contacts items={contact.data} />}
-  </div>
-)
-
-export default queryConnect({
-  todos: { query: client => client.all('io.cozy.todos'), as: 'todos' },
-  contacts: { query: client => client.all('io.cozy.contacts'), as: 'contact' }
-})(App)
-```
-
-Finally, `queryConnect` also allows us to make queries based on props by passing a function instead of a plain object. For example, if we want to fetch todos based on a selected contact:
-
-```js
-queryConnect({
-  todos: props => ({
-    query: client => client.all('io.cozy.todos').where({ author: props.selectedContact }),
-    as: 'todos'
-  })
-})
-```
-
-## How to provide a mutation to a component ?
-
-`withMutation` provides only a simple function to the wrapper component, in a prop called `mutate`:
-
-```jsx
-import { withMutation } from 'cozy-client'
-
-const AddTodo = ({ mutate: createTodo }) => {
-  let input
-
-  return (
-    <form onSubmit={e => {
-      e.preventDefault()
-      createTodo(input.value)
-      input.value = ''
-    }}>
-      <input ref={node => { input = node }} />
-      <button type="submit">Add Todo</button>
-    </form>
-  )
-}
-
-export default withMutation(
-  label => client => client.create('io.cozy.todos', { label })
-)(AddTodo)
-```
 
 ## How to specify a schema ?
 

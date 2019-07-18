@@ -1,4 +1,6 @@
 - Getting started: "./getting-started.md"
+- Using relationship: "./relationships.md"
+- React integration: "./react-integration.md"
 - How tos: "./how-tos.md"
 - Cozy Client API: "./api/cozy-client.md"
 - Cozy Pouch Link API: "./api/cozy-pouch-link.md"
