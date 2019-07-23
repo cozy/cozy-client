@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.54.0](https://github.com/cozy/cozy-client/compare/v6.53.0...v6.54.0) (2019-07-23)
+
+
+### Features
+
+* **cozy-client:** Add queryAll method ([932cdc1](https://github.com/cozy/cozy-client/commit/932cdc1))
+
+
+
+
+
 # [6.53.0](https://github.com/cozy/cozy-client/compare/v6.52.0...v6.53.0) (2019-07-16)
 
 
