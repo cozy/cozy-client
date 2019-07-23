@@ -801,6 +801,50 @@ describe('CozyClient', () => {
     })
   })
 
+  describe('queryAll', () => {
+    let query
+
+    beforeEach(() => {
+      query = client.all('io.cozy.todos')
+    })
+
+    afterEach(() => {
+      jest.restoreAllMocks()
+    })
+
+    it('should call `query` until there is no more document to query', async () => {
+      let i = 0
+      jest.spyOn(client, 'query').mockImplementation(() => {
+        let resp
+
+        if (i === 0) {
+          resp = { data: [{ _id: '0', label: 'Shopping' }], next: true }
+        }
+
+        if (i === 1) {
+          resp = { data: [{ _id: '1', label: 'Laundry' }], next: true }
+        }
+
+        if (i === 2) {
+          resp = { data: [{ _id: '2', label: 'Cook' }], next: true }
+        }
+
+        if (i === 3) {
+          resp = { data: [{ _id: '3', label: 'Rest' }], next: false }
+        }
+
+        ++i
+
+        return resp
+      })
+
+      const documents = await client.queryAll(query)
+
+      expect(client.query).toHaveBeenCalledTimes(4)
+      expect(documents).toMatchSnapshot()
+    })
+  })
+
   describe('mutate', () => {
     const mutation = { mutationType: 'FAKE' }
     const fakeResponse = {

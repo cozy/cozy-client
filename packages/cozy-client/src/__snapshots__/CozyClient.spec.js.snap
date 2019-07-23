@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CozyClient queryAll should call \`query\` until there is no more document to query 1`] = `
+Array [
+  Object {
+    "_id": "0",
+    "label": "Shopping",
+  },
+  Object {
+    "_id": "1",
+    "label": "Laundry",
+  },
+  Object {
+    "_id": "2",
+    "label": "Cook",
+  },
+  Object {
+    "_id": "3",
+    "label": "Rest",
+  },
+]
+`;
