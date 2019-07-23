@@ -1,4 +1,16 @@
+import Collection from './Collection'
+import { normalizeDoc } from './DocumentCollection'
+import { uri } from './utils'
+
 export const JOBS_DOCTYPE = 'io.cozy.jobs'
+
+export const normalizeJob = job => {
+  return {
+    ...job,
+    ...normalizeDoc(job, JOBS_DOCTYPE),
+    ...job.attributes
+  }
+}
 
 class JobCollection {
   constructor(stackClient) {
@@ -17,6 +29,12 @@ class JobCollection {
           options: options || {}
         }
       }
+    })
+  }
+
+  async get(id) {
+    return Collection.get(this.stackClient, uri`/jobs/${id}`, {
+      normalize: normalizeJob
     })
   }
 }
