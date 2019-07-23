@@ -442,6 +442,18 @@ class CozyClient {
     }
   }
 
+  async queryAll(queryDefinition, options) {
+    const documents = []
+    let resp = { next: true }
+
+    while (resp && resp.next) {
+      resp = await this.query(queryDefinition.offset(documents.length), options)
+      documents.push(...resp.data)
+    }
+
+    return documents
+  }
+
   watchQuery(queryDefinition, options = {}) {
     this.ensureStore()
     const queryId = options.as || this.generateId()
