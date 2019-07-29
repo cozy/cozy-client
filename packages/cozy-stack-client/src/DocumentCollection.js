@@ -127,9 +127,11 @@ class DocumentCollection {
   }
 
   async get(id) {
-    return Collection.get(this.stackClient, uri`/data/${this.doctype}/${id}`, {
-      normalize: normalizeDoctype(this.doctype)
-    })
+    const resp = await Collection.get(
+      this.stackClient,
+      uri`/data/${this.doctype}/${id}`
+    )
+    return { data: normalizeDoc(resp, this.doctype) }
   }
 
   async getAll(ids) {

@@ -103,9 +103,13 @@ class TriggerCollection {
   }
 
   async get(id) {
-    return Collection.get(this.stackClient, uri`/jobs/triggers/${id}`, {
-      normalize: normalizeTrigger
-    })
+    const resp = await Collection.get(
+      this.stackClient,
+      uri`/jobs/triggers/${id}`
+    )
+    return {
+      data: normalizeTrigger(resp.data)
+    }
   }
 
   /**

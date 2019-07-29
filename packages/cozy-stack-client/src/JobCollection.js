@@ -33,9 +33,10 @@ class JobCollection {
   }
 
   async get(id) {
-    return Collection.get(this.stackClient, uri`/jobs/${id}`, {
-      normalize: normalizeJob
-    })
+    const resp = await Collection.get(this.stackClient, uri`/jobs/${id}`)
+    return {
+      data: normalizeJob(resp.data)
+    }
   }
 }
 

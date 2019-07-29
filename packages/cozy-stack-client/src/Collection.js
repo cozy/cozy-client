@@ -35,16 +35,10 @@ export class Collection {
    * @return {Object}  JsonAPI response containing normalized
    * document as data attribute
    */
-  static async get(
-    stackClient,
-    endpoint,
-    { normalize = data => data, method = 'GET' }
-  ) {
+  static async get(stackClient, endpoint, { method = 'GET' }) {
     try {
       const resp = await stackClient.fetchJSON(method, endpoint)
-      return {
-        data: normalize(resp.data)
-      }
+      return resp
     } catch (error) {
       return dontThrowNotFoundError(error, null)
     }
