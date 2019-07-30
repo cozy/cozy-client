@@ -15,7 +15,7 @@
     "cozy-stack-client": "^6.55.0",
     "lodash": "4.17.14",
     "microee": "0.0.6",
-    "prop-types": "15.6.2",
+    "prop-types": "15.7.2",
     "react-redux": "5.0.7",
     "redux": "3.7.2",
     "redux-thunk": "2.3.0",
