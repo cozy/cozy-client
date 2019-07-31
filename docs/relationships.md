@@ -140,11 +140,59 @@ TODO
 
 ### Add a relation to an existing document
 
-TODO
+When the relationship is a `has-many` type, you can call the `addById(documentId)` to create the relationship:
+
+```javascript 
+const otherAuthorId = 'abc123'
+const response = await client.query( query )
+const docs = response.data
+const firstDoc = docs[0]
+firstDoc.authors.addById(otherAuthorId)
+````
+
+`addById` also accepts an array of document ids:
+
+```javascript
+firstDoc.authors.addById(mainAuthorId, coAuthorId)
+````
+
+When the relationship is a `has-one` type, use `set(document)` instead:
+
+```javascript 
+const printer = {
+  _id: 'abc123',
+  _type: 'io.cozy.company',
+  name: 'Harper & Brothers'
+}
+const response = await client.query( query )
+const docs = response.data
+const firstDoc = docs[0]
+firstDoc.printingCompany.set(printer)
+````
 
 ### Remove a relation to an existing document
 
-TODO
+For `has-many` relationships, use the `removeById` method:
+
+```javascript 
+const otherAuthorId = 'abc123'
+const response = await client.query( query )
+const docs = response.data
+const firstDoc = docs[0]
+firstDoc.authors.removeById(otherAuthorId)
+````
+
+Just like `addById`, `removeById` accepts an array of ids as parameter.
+
+For `has-one` relationships, use the `unset()` method:
+
+
+```javascript 
+const response = await client.query( query )
+const docs = response.data
+const firstDoc = docs[0]
+firstDoc.printingCompany.unset()
+````
 
 ### Create a new document with existing relations
 
