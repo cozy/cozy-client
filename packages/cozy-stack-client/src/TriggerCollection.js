@@ -2,7 +2,7 @@ import Collection, { dontThrowNotFoundError } from './Collection'
 import { normalizeDoc } from './DocumentCollection'
 import { normalizeJob } from './JobCollection'
 import { uri } from './utils'
-
+import DocumentCollection from './DocumentCollection'
 export const JOBS_DOCTYPE = 'io.cozy.jobs'
 export const TRIGGERS_DOCTYPE = 'io.cozy.triggers'
 
@@ -17,9 +17,9 @@ export const normalizeTrigger = trigger => {
 /**
  * Implements `DocumentCollection` API along with specific methods for `io.cozy.triggers`.
  */
-class TriggerCollection {
+class TriggerCollection extends DocumentCollection {
   constructor(stackClient) {
-    this.stackClient = stackClient
+    super(TRIGGERS_DOCTYPE, stackClient)
   }
 
   /**
@@ -80,25 +80,25 @@ class TriggerCollection {
     }
   }
 
-  async find(selector = {}) {
-    if (!selector.worker) {
-      throw new Error('TriggerCollection can only find triggers with worker')
-    }
+  async find(selector = {}, options = {}) {
+    if (Object.keys(selector).length === 1 && selector.worker) {
+      // @see https://github.com/cozy/cozy-stack/blob/master/docs/jobs.md#get-jobstriggers
+      const url = `/jobs/triggers?Worker=${selector.worker}`
 
-    // @see https://github.com/cozy/cozy-stack/blob/master/docs/jobs.md#get-jobstriggers
-    const url = `/jobs/triggers?Worker=${selector.worker}`
+      try {
+        const resp = await this.stackClient.fetchJSON('GET', url)
 
-    try {
-      const resp = await this.stackClient.fetchJSON('GET', url)
-
-      return {
-        data: resp.data.map(row => normalizeTrigger(row, TRIGGERS_DOCTYPE)),
-        meta: { count: resp.data.length },
-        next: false,
-        skip: 0
+        return {
+          data: resp.data.map(row => normalizeTrigger(row, TRIGGERS_DOCTYPE)),
+          meta: { count: resp.data.length },
+          next: false,
+          skip: 0
+        }
+      } catch (error) {
+        return dontThrowNotFoundError(error)
       }
-    } catch (error) {
-      return dontThrowNotFoundError(error)
+    } else {
+      return super.find(selector, options)
     }
   }
 
