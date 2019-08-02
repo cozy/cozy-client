@@ -1,10 +1,10 @@
-## What are relations
+## What are relations in Cozy-Client?
 
-CouchDb is a document store. It does not materialize relation between documents.
+CouchDb is a document store. It does not materialize relation between documents. We do, however, have a standardized way of describing relations between cozy documents. This allows Cozy-Client to give us some automation.
 
 ### In CouchDB
 
-We do, however, have a standardized way of describing relations between cozy documents. For that we use a special key inside the document named [`relationships`](https://github.com/cozy/cozy-doctypes#relationships). Please see the cozy-doctypes documentation for the exact syntax.
+To materialize relations, we use a special key inside the document named [`relationships`](https://github.com/cozy/cozy-doctypes#relationships). Please see the cozy-doctypes documentation for the exact syntax.
 
 ```javascript
 {
@@ -85,7 +85,7 @@ const document = {
 // for which the _id is "hermanmelville"
 ```
 
-`'has-one'` or `'has-many'` are here for backward compatibility. Instead of using the `relationships` attribute, you reference directly the ids of linked documents at the root of your data:
+`'has-one-in-place'` or `'has-many-in-place'` are here for backward compatibility. Instead of using the `relationships` attribute, you reference directly the ids of linked documents at the root of your data:
 
 ```javascript
 const schema = {
@@ -132,11 +132,7 @@ const response = await client.query( query )
 const docs = response.data
 const firstDoc = docs[0]
 const firstAuthors = firstDoc.authors.data
-````
-
-### Lazy load relations
-
-TODO
+```
 
 ### Add a relation to an existing document
 

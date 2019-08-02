@@ -1,4 +1,4 @@
-## What is it ?
+## What is the Cozy-Client React Integration?
 
 In addition to the Javascript client, Cozy-Client provides a way to connect directly the data from your Cozy instance to your React components. 
 
