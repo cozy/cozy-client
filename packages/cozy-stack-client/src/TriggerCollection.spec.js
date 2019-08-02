@@ -24,10 +24,83 @@ const ALL_RESPONSE_FIXTURE = {
   ]
 }
 
+const FIND_RESPONSE_FIXTURES = {
+  docs: [
+    {
+      arguments: '0 37 4 * * 2',
+      debounce: '',
+      domain: 'q.cozy.tools:8080',
+      message: {
+        account: '4e33fd27e1d8e55a34742bac6d147290',
+        folder_to_save: '4e33fd27e1d8e55a34742bac6d0e886f',
+        konnector: 'trainline'
+      },
+      options: null,
+      prefix: 'cozy971032aab50344a685d8862a25234d2c',
+      type: '@cron',
+      worker: 'konnector',
+      _id: '4e33fd27e1d8e55a34742bac6d147ab9',
+      _rev: '1-31dc8bf5420aadcf7359b8a5c3f24f83'
+    },
+    {
+      arguments: '0 52 1 * * 2',
+      debounce: '',
+      domain: 'q.cozy.tools:8080',
+      message: {
+        account: '4e33fd27e1d8e55a34742bac6d145e34',
+        folder_to_save: '4e33fd27e1d8e55a34742bac6d0e886f',
+        konnector: 'trainline'
+      },
+
+      options: null,
+      prefix: 'cozy971032aab50344a685d8862a25234d2c',
+      type: '@cron',
+      worker: 'konnector',
+      _id: '4e33fd27e1d8e55a34742bac6d146af1',
+      _rev: '1-1b356adff56becd91fbb5e2ddc18ea4b'
+    }
+  ],
+  limit: 100,
+  next: false
+}
+
+const attributes = {
+  type: '@event',
+  arguments: 'io.cozy.invitations',
+  debounce: '10m',
+  worker: 'sendmail',
+  worker_arguments: {},
+  options: {
+    priority: 3,
+    timeout: 60,
+    max_exec_count: 3
+  }
+}
+
+const CREATE_RESPONSE_FIXTURE = {
+  data: {
+    type: 'io.cozy.triggers',
+    id: 'b926bd6657614b82b7d6d4e63bd7cd3c',
+    attributes: {
+      type: '@every',
+      arguments: '30m10s',
+      debounce: '10m',
+      worker: 'sendmail',
+      options: {
+        priority: 3,
+        timeout: 60,
+        max_exec_count: 3
+      }
+    },
+    links: {
+      self: '/jobs/triggers/b926bd6657614b82b7d6d4e63bd7cd3c'
+    }
+  }
+}
+
 describe('TriggerCollection', () => {
   const stackClient = new CozyStackClient()
   const collection = new TriggerCollection(stackClient)
-
   beforeEach(() => {
     jest.spyOn(stackClient, 'fetchJSON').mockResolvedValue(ALL_RESPONSE_FIXTURE)
   })
@@ -85,15 +158,40 @@ describe('TriggerCollection', () => {
   })
 
   describe('find', () => {
-    it('should throw if no worker in selector', async () => {
-      await expect(collection.find()).rejects.toThrowError()
-    })
-
-    it('should call /jobs/triggers route', async () => {
+    it('should call /jobs/triggers route if only worker selector is passed', async () => {
       await collection.find({ worker: 'thumbnail' })
       expect(stackClient.fetchJSON).toHaveBeenLastCalledWith(
         'GET',
         '/jobs/triggers?Worker=thumbnail'
+      )
+    })
+
+    it('should call /data/io.cozy.triggers/_find route if multiple arguments are passed', async () => {
+      stackClient.fetchJSON.mockReturnValueOnce(
+        Promise.resolve({
+          id: '_design/123456',
+          name: '123456',
+          result: 'exists'
+        })
+      )
+      stackClient.fetchJSON.mockReturnValue(FIND_RESPONSE_FIXTURES)
+      await collection.find({
+        worker: 'thumbnail',
+        message: { konnector: 'trainline' }
+      })
+      expect(stackClient.fetchJSON).toHaveBeenLastCalledWith(
+        'POST',
+        '/data/io.cozy.triggers/_find',
+        {
+          selector: {
+            message: {
+              konnector: 'trainline'
+            },
+            worker: 'thumbnail'
+          },
+          skip: 0,
+          use_index: '_design/123456'
+        }
       )
     })
   })
@@ -152,6 +250,105 @@ describe('TriggerCollection', () => {
       await expect(
         collection.get('f100f8d2d30449b98ff1f25437829b3e')
       ).rejects.toEqual(new Error('Test error'))
+    })
+  })
+
+  describe('create', () => {
+    const collection = new TriggerCollection(stackClient)
+
+    beforeEach(() => {
+      stackClient.fetchJSON.mockResolvedValue(CREATE_RESPONSE_FIXTURE)
+    })
+    afterEach(() => {
+      jest.resetAllMocks()
+    })
+
+    it('should call the right route', async () => {
+      await collection.create(attributes)
+      expect(stackClient.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/jobs/triggers',
+        {
+          data: { attributes }
+        }
+      )
+    })
+
+    it('should return a correct JSON API response', async () => {
+      const resp = await collection.create(attributes)
+      expect(resp).toConformToJSONAPI()
+    })
+
+    it('should return normalized documents', async () => {
+      const resp = await collection.create(attributes)
+      expect(resp.data).toHaveDocumentIdentity()
+    })
+  })
+
+  describe('launch', () => {
+    const LAUNCH_RESPONSE_FIXTURE = {
+      data: {
+        type: 'io.cozy.jobs',
+        id: '123123',
+        attributes: {
+          domain: 'me.cozy.tools',
+          worker: 'sendmail',
+          options: {},
+          state: 'running',
+          queued_at: '2016-09-19T12:35:08Z',
+          started_at: '2016-09-19T12:35:08Z',
+          error: ''
+        },
+        links: {
+          self: '/jobs/123123'
+        }
+      }
+    }
+
+    const trigger = {
+      _id: '4fb62e7aa17146d8af8f45f5d536d753',
+      type: '@event',
+      arguments: 'io.cozy.invitations',
+      debounce: '10m',
+      worker: 'sendmail',
+      worker_arguments: {},
+      options: {
+        priority: 3,
+        timeout: 60,
+        max_exec_count: 3
+      }
+    }
+
+    beforeEach(() => {
+      stackClient.fetchJSON.mockResolvedValue(LAUNCH_RESPONSE_FIXTURE)
+    })
+    afterEach(() => {
+      jest.resetAllMocks()
+    })
+    it('should call the right route', async () => {
+      await collection.launch(trigger)
+      expect(stackClient.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/jobs/triggers/4fb62e7aa17146d8af8f45f5d536d753/launch'
+      )
+    })
+
+    it('should return a correct JSON API response', async () => {
+      const resp = await collection.launch(trigger)
+      expect(resp).toConformToJSONAPI()
+    })
+
+    it('should return normalized documents', async () => {
+      const resp = await collection.launch(trigger)
+      expect(resp.data).toHaveDocumentIdentity()
+    })
+  })
+
+  describe('update', () => {
+    it('should throw error', async () => {
+      expect(collection.update()).rejects.toThrowError(
+        'update() method is not available for triggers'
+      )
     })
   })
 })
