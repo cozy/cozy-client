@@ -79,7 +79,18 @@ class TriggerCollection extends DocumentCollection {
       data: normalizeTrigger({ ...document, _deleted: true })
     }
   }
-
+  /**
+   *
+   * Be warned, ATM /jobs/triggers does not return the same informations
+   * than /data/io.cozy.triggers (used by the super.find method).
+   *
+   * See https://github.com/cozy/cozy-stack/pull/2010
+   *
+   * @param {Object} selector
+   * @param {Object} options
+   * @return {{data, meta, skip, next}} The JSON API conformant response.
+   * @throws {FetchError}
+   */
   async find(selector = {}, options = {}) {
     if (Object.keys(selector).length === 1 && selector.worker) {
       // @see https://github.com/cozy/cozy-stack/blob/master/docs/jobs.md#get-jobstriggers

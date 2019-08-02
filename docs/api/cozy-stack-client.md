@@ -678,6 +678,7 @@ Implements `DocumentCollection` API along with specific methods for `io.cozy.tri
     * [.all(options)](#TriggerCollection+all) ⇒ <code>Object</code>
     * [.create(attributes)](#TriggerCollection+create) ⇒ <code>object</code>
     * [.destroy(document)](#TriggerCollection+destroy) ⇒ <code>object</code>
+    * [.find(selector, options)](#TriggerCollection+find) ⇒ <code>Object</code>
     * [.launch(Trigger)](#TriggerCollection+launch) ⇒ <code>object</code>
 
 <a name="TriggerCollection+all"></a>
@@ -722,6 +723,26 @@ Deletes a trigger
 | Param | Type | Description |
 | --- | --- | --- |
 | document | <code>object</code> | The trigger to delete — must have an _id field |
+
+<a name="TriggerCollection+find"></a>
+
+### triggerCollection.find(selector, options) ⇒ <code>Object</code>
+Be warned, ATM /jobs/triggers does not return the same informations
+than /data/io.cozy.triggers (used by the super.find method).
+
+See https://github.com/cozy/cozy-stack/pull/2010
+
+**Kind**: instance method of [<code>TriggerCollection</code>](#TriggerCollection)  
+**Returns**: <code>Object</code> - The JSON API conformant response.  
+**Throws**:
+
+- <code>FetchError</code> 
+
+
+| Param | Type |
+| --- | --- |
+| selector | <code>Object</code> | 
+| options | <code>Object</code> | 
 
 <a name="TriggerCollection+launch"></a>
 
