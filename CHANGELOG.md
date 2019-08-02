@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.56.0](https://github.com/cozy/cozy-client/compare/v6.55.1...v6.56.0) (2019-08-02)
+
+
+### Features
+
+* **cozy-stack-client:** We can find on TriggerCollection ([5cef03b](https://github.com/cozy/cozy-client/commit/5cef03b))
+
+
+
+
+
 ## [6.55.1](https://github.com/cozy/cozy-client/compare/v6.55.0...v6.55.1) (2019-07-30)
 
 **Note:** Version bump only for package cozy-client
