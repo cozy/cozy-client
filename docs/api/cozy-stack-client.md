@@ -242,6 +242,10 @@ files associated to a specific document
 * [FileCollection](#FileCollection)
     * [.find(selector, options)](#FileCollection+find) ⇒ <code>Object</code>
     * [.findReferencedBy(document, options)](#FileCollection+findReferencedBy) ⇒ <code>object</code>
+    * [.addReferencedBy(document, documents)](#FileCollection+addReferencedBy) ⇒ <code>object</code>
+    * [.removeReferencedBy(document, documents)](#FileCollection+removeReferencedBy) ⇒ <code>object</code>
+    * [.addReferencesTo(document, documents)](#FileCollection+addReferencesTo) ⇒ <code>object</code>
+    * [.removeReferencesTo(document, documents)](#FileCollection+removeReferencesTo) ⇒ <code>object</code>
     * [.restore(id)](#FileCollection+restore) ⇒ <code>Promise</code>
     * [.updateFile(data, params)](#FileCollection+updateFile) ⇒ <code>object</code>
     * [.isChildOf(child, parent)](#FileCollection+isChildOf) ⇒ <code>boolean</code>
@@ -283,6 +287,58 @@ async findReferencedBy - Returns the list of files referenced by a document — 
 | options.skip | <code>number</code> | For skip-based pagination, the number of referenced files to skip. |
 | options.limit | <code>number</code> | For pagination, the number of results to return. |
 | options.cursor | <code>object</code> | For cursor-based pagination, the index cursor. |
+
+<a name="FileCollection+addReferencedBy"></a>
+
+### fileCollection.addReferencedBy(document, documents) ⇒ <code>object</code>
+Add referenced_by documents to a file — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#post-filesfile-idrelationshipsreferenced_by
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+**Returns**: <code>object</code> - The JSON API conformant response.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | <code>object</code> | A JSON representing the file |
+| documents | <code>Array</code> | An array of JSON documents having a `_type` and `_id` field. |
+
+<a name="FileCollection+removeReferencedBy"></a>
+
+### fileCollection.removeReferencedBy(document, documents) ⇒ <code>object</code>
+Remove referenced_by documents from a file — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#delete-filesfile-idrelationshipsreferenced_by
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+**Returns**: <code>object</code> - The JSON API conformant response.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | <code>object</code> | A JSON representing the file |
+| documents | <code>Array</code> | An array of JSON documents having a `_type` and `_id` field. |
+
+<a name="FileCollection+addReferencesTo"></a>
+
+### fileCollection.addReferencesTo(document, documents) ⇒ <code>object</code>
+Add files references to a document — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#post-datatypedoc-idrelationshipsreferences
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+**Returns**: <code>object</code> - The JSON API conformant response.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | <code>object</code> | A JSON representing a document, with at least a `_type` and `_id` field. |
+| documents | <code>Array</code> | An array of JSON files having an `_id` field. |
+
+<a name="FileCollection+removeReferencesTo"></a>
+
+### fileCollection.removeReferencesTo(document, documents) ⇒ <code>object</code>
+Remove files references to a document — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#delete-datatypedoc-idrelationshipsreferences
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+**Returns**: <code>object</code> - The JSON API conformant response.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | <code>object</code> | A JSON representing a document, with at least a `_type` and `_id` field. |
+| documents | <code>Array</code> | An array of JSON files having an `_id` field. |
 
 <a name="FileCollection+restore"></a>
 
