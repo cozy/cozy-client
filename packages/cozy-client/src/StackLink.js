@@ -64,13 +64,25 @@ export default class StackLink extends CozyLink {
           .collection(props.document._type)
           .destroy(props.document)
       case MutationTypes.ADD_REFERENCES_TO:
-        return this.stackClient
-          .collection(props.referencedDocuments[0]._type)
-          .addReferencesTo(props.document, props.referencedDocuments)
+        if (props.referencedDocuments[0]._type === 'io.cozy.files') {
+          return this.stackClient
+            .collection('io.cozy.files')
+            .addReferencesTo(props.document, props.referencedDocuments)
+        } else {
+          return this.stackClient
+            .collection('io.cozy.files')
+            .addReferencedBy(props.document, props.referencedDocuments)
+        }
       case MutationTypes.REMOVE_REFERENCES_TO:
-        return this.stackClient
-          .collection(props.referencedDocuments[0]._type)
-          .removeReferencesTo(props.document, props.referencedDocuments)
+        if (props.referencedDocuments[0]._type === 'io.cozy.files') {
+          return this.stackClient
+            .collection('io.cozy.files')
+            .removeReferencesTo(props.document, props.referencedDocuments)
+        } else {
+          return this.stackClient
+            .collection('io.cozy.files')
+            .removeReferencedBy(props.document, props.referencedDocuments)
+        }
       case MutationTypes.UPLOAD_FILE:
         return this.stackClient
           .collection('io.cozy.files')

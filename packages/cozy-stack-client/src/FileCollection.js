@@ -113,6 +113,45 @@ class FileCollection extends DocumentCollection {
     }
   }
 
+  /**
+   *  Add referenced_by documents to a file — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#post-filesfile-idrelationshipsreferenced_by
+   *
+   * @param  {object} document        A JSON representing the file
+   * @param  {Array}  documents       An array of JSON documents having a `_type` and `_id` field.
+   * @returns {object}                The JSON API conformant response.
+   */
+  addReferencedBy(document, documents) {
+    const refs = documents.map(d => ({ id: d._id, type: d._type }))
+    return this.stackClient.fetchJSON(
+      'POST',
+      uri`/files/${document._id}/relationships/referenced_by`,
+      { data: refs }
+    )
+  }
+
+  /**
+   *  Remove referenced_by documents from a file — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#delete-filesfile-idrelationshipsreferenced_by
+   *
+   * @param  {object} document        A JSON representing the file
+   * @param  {Array}  documents       An array of JSON documents having a `_type` and `_id` field.
+   * @returns {object}                The JSON API conformant response.
+   */
+  removeReferencedBy(document, documents) {
+    const refs = documents.map(d => ({ id: d._id, type: d._type }))
+    return this.stackClient.fetchJSON(
+      'DELETE',
+      uri`/files/${document._id}/relationships/referenced_by`,
+      { data: refs }
+    )
+  }
+
+  /**
+   *  Add files references to a document — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#post-datatypedoc-idrelationshipsreferences
+   *
+   * @param  {object} document        A JSON representing a document, with at least a `_type` and `_id` field.
+   * @param  {Array}  documents       An array of JSON files having an `_id` field.
+   * @returns {object}                The JSON API conformant response.
+   */
   addReferencesTo(document, documents) {
     const refs = documents.map(d => ({ id: d._id, type: 'io.cozy.files' }))
     return this.stackClient.fetchJSON(
@@ -122,6 +161,13 @@ class FileCollection extends DocumentCollection {
     )
   }
 
+  /**
+   *  Remove files references to a document — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#delete-datatypedoc-idrelationshipsreferences
+   *
+   * @param  {object} document        A JSON representing a document, with at least a `_type` and `_id` field.
+   * @param  {Array}  documents       An array of JSON files having an `_id` field.
+   * @returns {object}                The JSON API conformant response.
+   */
   removeReferencesTo(document, documents) {
     const refs = documents.map(d => ({ id: d._id, type: 'io.cozy.files' }))
     return this.stackClient.fetchJSON(
