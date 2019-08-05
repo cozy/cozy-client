@@ -1,6 +1,6 @@
 ## What are relations in Cozy-Client?
 
-CouchDb is a document store. It does not materialize relation between documents. We do, however, have a standardized way of describing relations between cozy documents. This allows Cozy-Client to give us some automation.
+CouchDb is a document store. It does not materialize relations between documents. We do, however, have a standardized way of describing relations between cozy documents. This allows Cozy-Client to give us some automation.
 
 ### In CouchDB
 
@@ -17,7 +17,7 @@ To materialize relations, we use a special key inside the document named [`relat
 }
 ```
 
-### In the schema of Cozy-Client
+### In the Cozy-Client schema
 
 Cozy-client knows about these relations with the schema you provide at initialization: 
 
@@ -44,7 +44,7 @@ const client = new CozyClient({
 
 With the help of the schema, Cozy-Client will be able to manage the `relationships` attribute of your documents for you.
 
-### Types of relations
+### Relation types
 
 Cozy-Client [predefines](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/helpers.js) four basic relation types: 
 
@@ -118,7 +118,7 @@ You may also see a special type named `'io.cozy.files:has-many'`. It's used for 
 
 ### Include relations in your query
 
-Relations are not eager loaded by default. If you want your query to load your relations for you by defaut, you will have to name them in a `include()` request.
+Relations are not loaded eagerly by default. If you want your query to load your relations for you by default, you will have to name them in a `include()` request.
 
 ```javascript
 const query = client.find('io.cozy.books')
@@ -126,9 +126,9 @@ const query = client.find('io.cozy.books')
   .limitBy(20)
 ```
 
-You will then find your relations under a `data` attribute: 
+You will then find your relations under the `data` attribute: 
 ```javascript 
-const response = await client.query( query )
+const response = await client.query(query)
 const docs = response.data
 const firstDoc = docs[0]
 const firstAuthors = firstDoc.authors.data
@@ -140,7 +140,7 @@ When the relationship is a `has-many` type, you can call the `addById(documentId
 
 ```javascript 
 const otherAuthorId = 'abc123'
-const response = await client.query( query )
+const response = await client.query(query)
 const docs = response.data
 const firstDoc = docs[0]
 firstDoc.authors.addById(otherAuthorId)
@@ -149,7 +149,7 @@ firstDoc.authors.addById(otherAuthorId)
 `addById` also accepts an array of document ids:
 
 ```javascript
-firstDoc.authors.addById(mainAuthorId, coAuthorId)
+firstDoc.authors.addById([mainAuthorId, coAuthorId])
 ````
 
 When the relationship is a `has-one` type, use `set(document)` instead:
@@ -160,7 +160,7 @@ const printer = {
   _type: 'io.cozy.company',
   name: 'Harper & Brothers'
 }
-const response = await client.query( query )
+const response = await client.query(query)
 const docs = response.data
 const firstDoc = docs[0]
 firstDoc.printingCompany.set(printer)
@@ -172,7 +172,7 @@ For `has-many` relationships, use the `removeById` method:
 
 ```javascript 
 const otherAuthorId = 'abc123'
-const response = await client.query( query )
+const response = await client.query(query)
 const docs = response.data
 const firstDoc = docs[0]
 firstDoc.authors.removeById(otherAuthorId)
@@ -184,7 +184,7 @@ For `has-one` relationships, use the `unset()` method:
 
 
 ```javascript 
-const response = await client.query( query )
+const response = await client.query(query)
 const docs = response.data
 const firstDoc = docs[0]
 firstDoc.printingCompany.unset()

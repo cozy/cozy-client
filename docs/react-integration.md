@@ -12,13 +12,13 @@ The following procedure requires you to already know how to initialize a CozyCli
 ### 1. Initialize a CozyClient provider
 
 
-Load `CozyClient` and `CozyProvider` objects
+Import `CozyClient` and `CozyProvider`
 
 ```javascript
 import CozyClient, { CozyProvider } from 'cozy-client'
 ```
 
-Initialize a CozyClient instance (see the `CozyClient()` documentation for additionnal parameters, like to provide a schema)
+Initialize a CozyClient instance (see the `CozyClient()` documentation for additional parameters, for example to provide a schema)
 
 ```javascript
 const client = new CozyClient({
@@ -27,7 +27,7 @@ const client = new CozyClient({
 })
 ```
 
-Then wrap you React application inside a the CozyProvider component with your newly instance of CozyClient.
+Then wrap you React application inside a CozyProvider component with your newly instance of CozyClient in its props as `client`.
 
 ```jsx
 function MyCozyApp(props) {
@@ -82,7 +82,7 @@ const todos = 'io.cozy.todos'
 const checked = { checked: false }
 const query = client => client.find(todos).where(checked)
 
-function TodoList() {
+function TodoList(props) {
   return <Query query={query}>
     {
       ({ data, fetchStatus }) =>
@@ -95,9 +95,9 @@ function TodoList() {
 ```
 
 When we use `Query` to "wrap" a component, three things happen:
- - The query passed as a prop will be executed when `Query` mounts, resulting in the loading of data from the client-side store, or the server if the data is not in the store;
+ - The query passed as a prop will be executed when `Query` mounts, resulting in the loading of data from the local Pouchdb (if any) or from the server; in the future it may load the data directly from the client-side store;
  - `Query` subscribes to the store, so that it is updated if the data changes;
- - `Query` pass the result of the query as props to the children function.
+ - `Query` passes the result of the query as props to the children function.
 
 
 The following props will be given to your wrapped component:
@@ -119,7 +119,7 @@ const query = function (props) {
 }
 
 function TodoList() {
-  return <Query query={query}>
+  return <Query query={query} checked={props.checked}>
     {
       ({ data, fetchStatus }) =>
       fetchStatus !== 'loaded'
@@ -132,14 +132,14 @@ function TodoList() {
 // use <TodoList checked={false} />
 ```
 
-Note: Your query will be binded when the `<Query/>` component mounts. Future changes in props will not modify the query.
+Note: Your query will be bound when the `<Query/>` component mounts. Future changes in props will not modify the query.
 
-### 2.b Requesting data with the `withQuery` HOC
+### 2.b Requesting data with the `queryConnect` HOC
 
-At your preference, you could use an high order component. `withQuery` will take the name of the props field where it should send the result of the query and the actual query:
+At your preference, you can use an higher-order component. `queryConnect` will take the name of the props field where it should send the result of the query and the actual query:
 
 ```jsx
-import { withQuery } from 'cozy-client'
+import { queryConnect } from 'cozy-client'
 
 function TodoList(props) {
   const { data, fetchStatus } = props.result
@@ -156,12 +156,14 @@ const todos = 'io.cozy.todos'
 const checked = { checked: false }
 const query = (client, props) => client.find('id', props.id).where(checked)
 
-const ConnectedTodoList = withQuery(dest, query)(TodoList)
+const queryOpts = { [dest]: { query } }
+
+const ConnectedTodoList = queryConnect(queryOpts)(TodoList)
 ```
 
-`withQuery` will use `<Query />` internally so you will inherits the same behaviour.
+`queryConnect` will use `<Query />` internally so you will inherits the same behaviour.
 
-If you want to connect multiple queries you could also use `queryConnect` which takes all destination fields and queries as keyed object:
+With the same syntax, you may register multiple queries to run:
 
 ```jsx
 import { queryConnect } from 'cozy-client'
@@ -176,8 +178,8 @@ function TodoList(props) {
 }
 
 const todos = 'io.cozy.todos'
-const checked = client => client.find(todos).where({ checked: false })
-const archived = client => client.find(todos).where({ archive: false })
+const checked = { query: client => client.find(todos).where({ checked: false }) }
+const archived = { query: client => client.find(todos).where({ archive: false }) }
 
 const queries = { checked, archived }
 
@@ -186,35 +188,59 @@ const ConnectedTodoList = queryConnect(queries)(TodoList)
 
 ### 3. Mutating data
 
-The simplier way is to use the `withClient` high order component. It will inject a `client` in your props with the CozyClient instance you gave to the `<CozyProvider />` upper.
+The simplest way is to use the `withClient` high order component. It will inject a `client` in your props with the CozyClient instance you gave to the `<CozyProvider />` upper.
 
-```javascript
-import { queryConnect } from 'cozy-client'
+```jsx
+import { withClient } from 'cozy-client'
 
 function TodoList(props) {
   const { client } = props
-  // use client.create()
-  return <div />
+  const createNewTodo = e => client.create(
+    'io.cozy.todos', 
+    { label: e.target.elements['new-todo'], checked: false }
+  )
+  return (
+    <ul>
+      {/* todo items */}
+    </ul>
+    <form onSubmit={createNewTodo}>
+      <label htmlFor="new-todo">Todo</label>
+      <input id="new-todo" name="new-todo" />
+      <button type="submit">Add todo</button>
+    </form>
+  )
 }
 
 const ConnectedTodoList = withClient(TodoList)
 ```
 
-Alternatively, you have a `withMutation()` which returns HOC. This HOC forwards you a `createDocument`, a `saveDocument` and a `deleteDocument` in your props. They are the `create()`, `save()`and `delete()` functions from CozyClient, binded to the instance you gave to the `<CozyProvider />`.
+Alternatively, you have `withMutation()` which returns an HOC. This HOC forwards you a `createDocument`, a `saveDocument` and a `deleteDocument` in your props. They are the `create()`, `save()`and `delete()` functions from CozyClient, bound to the instance you gave to the `<CozyProvider />`.
 
-```javascript
-import { withMutation } from 'cozy-client'
+```jsx
+import { withMutations } from 'cozy-client'
 
 function TodoList(props) {
-  const { client } = props
-  // use client.create()
-  return <div />
+  const { createDocument } = props
+  const createNewTodo = e => createDocument(
+    'io.cozy.todos', 
+    { label: e.target.elements['new-todo'], checked: false }
+  )
+  return (
+    <ul>
+      {/* todo items */}
+    </ul>
+    <form onSubmit={createNewTodo}>
+      <label htmlFor="new-todo">Todo</label>
+      <input id="new-todo" name="new-todo" />
+      <button type="submit">Add todo</button>
+    </form>
+  )
 }
 
 const ConnectedTodoList = withMutations()(TodoList)
 ```
 
-Finally, `<Query />` also take a `mutations` optional props. It should have a function that will receive the CozyClient instance, the query requested and the rest of props given to the component, and should return a keyed object which will be added to the props of your wrapped component.
+Finally, `<Query />` also takes a `mutations` optional props. It should have a function that will receive the CozyClient instance, the query requested and the rest of props given to the component, and should return a keyed object which will be added to the props of your wrapped component.
 
 ```jsx
 import { Query } from 'cozy-client'

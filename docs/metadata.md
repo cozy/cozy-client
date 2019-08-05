@@ -30,7 +30,7 @@ This cozyMetadata block is managed by the apps themselves. Cozy-Client is able t
 
 * `slug`: the slug of the app or connector (will be used in `createdByApp` and `updatedByApps`)
 * `version`: version of the app (will be used in `createdByAppVersion` and `updatedByApps`)
-* when in a connector, `sourceAccount`: the id of the io.cozy.accounts document that trigger tue current execution (it will help to know which documents belong or are created by which account)
+* when in a connector, `sourceAccount`: the id of the io.cozy.accounts document that triggered the current execution (it will help to know which documents belong or are created by which account)
 
 ## What is automated and what is not
 
@@ -47,7 +47,7 @@ Cozy-Client will set the default for:
 * creation date, app and version
 * updated date, app and version
 
-If any of these fields already exists in the document you try to save, your values will override the defaults. This allows you to import a document with an existing history.
+If any of these fields already exists in the document you try to save, these values will override the defaults. This allows you to import a document with an existing history.
 
 ### For existing documents
 
@@ -56,5 +56,5 @@ Cozy-Client will:
 * Set the updated date
 * Add your app and version in the `updatedByApps` list
 
-These values will override any values that your document may already have.
+⚠️ These values will override any values that your document may already have.
 

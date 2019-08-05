@@ -29,7 +29,7 @@ All attributes but the `doctype` one are entirely optional.
 }
 ```
 
-Today, attributes have only a `unique` property which, when at `true` will validate the uniqness of the value. Other properties will be added in the future. 
+Today, attributes have only a `unique` property which, when at `true` will validate the uniqueness of the value. Other properties will be added in the future. 
 
 You do not need to list every attribute you use. You may only add those for which you have a constraint to list.
 
@@ -84,16 +84,16 @@ const additionalSchema = {
   }
 }
 
-client.addSchema( additionalSchema )
+client.addSchema(additionalSchema)
 ```
 
 ### Validation
 
 Today Cozy-Client only validates uniqueness of fields described as is in the schema.
 
-If you provide a schema, Cozy-Client will automatically try to validate your documents when you save them. An exception will be thrown if the validation fail.
+If you provide a schema, Cozy-Client will automatically try to validate your documents when you save them. An exception will be thrown if the validation fails.
 
-You can validate a document explicitly with `validate()` Be sure the document has a `_type` attribute with the doctype name if it has never been saved to CouchDB.
+You can validate a document explicitly with `validate()`. Be sure the document has a `_type` attribute with the doctype name if it has never been saved to CouchDB.
 
 ```javascript
 const book = {
@@ -101,7 +101,7 @@ const book = {
   name: 'La horde de contrevent'
 }
 
-if ( ! client.validate( book ) ) {
+if (!client.validate(book)) {
   throw new Error('Something is wrong with this book document')
 }
 ```

@@ -37,10 +37,7 @@ or
 `yarn add cozy-client`
 
 
-To get started using `cozy-client` with React, you need to create a `CozyClient`, and a `CozyProvider`:
-
-* `CozyClient` is the master of your data: it manages data queries and their status ;
-* `CozyProvider` injects the client into components' context.
+`CozyClient` is the master of your data: it manages data queries and their status 
 
 ## Creating a client
 
@@ -93,7 +90,7 @@ client.find('io.cozy.todos')
 By default all fields in the `where()` are automatically indexed. You can reverse this behaviour by specifying explicitly the list of fields to be indexed in `indexFields()`.
 
 
-Finaly, `client.query()` will execute your query and return a promise with a `data`attribute containing the requested documents.
+Finally, `client.query()` will execute your query and return a promise with a `data`attribute containing the requested documents.
 
 ```javascript
 import CozyClient from 'cozy-client'
