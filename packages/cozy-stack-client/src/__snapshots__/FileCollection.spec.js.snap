@@ -35,6 +35,56 @@ exports[`FileCollection findReferencedBy should pass all the filters 1`] = `
 }
 `;
 
+exports[`FileCollection referencedBy should add a reference 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "POST",
+      "/files/123/relationships/referenced_by",
+      Object {
+        "data": Array [
+          Object {
+            "id": "456",
+            "type": "io.cozy.photos.albums",
+          },
+        ],
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "isThrow": false,
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`FileCollection referencedBy should remove a reference 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "DELETE",
+      "/files/123/relationships/referenced_by",
+      Object {
+        "data": Array [
+          Object {
+            "id": "456",
+            "type": "io.cozy.photos.albums",
+          },
+        ],
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "isThrow": false,
+      "value": undefined,
+    },
+  ],
+}
+`;
+
 exports[`FileCollection updateFileMetadata should call the right route 1`] = `
 Array [
   "PATCH",
