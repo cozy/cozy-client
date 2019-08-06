@@ -527,6 +527,34 @@ describe('CozyClient', () => {
       ])
     })
 
+    it('should handle associations for a new file with relationship', () => {
+      const NEW_FILE = {
+        _type: 'io.cozy.files',
+        icons: [
+          {
+            id: 67890,
+            type: 'io.cozy.files'
+          }
+        ]
+      }
+      const EXPECTED_CREATED_FILE = { _id: 12345, _type: 'io.cozy.files' }
+      const mutation = client.getDocumentSavePlan(NEW_FILE, {
+        icons: [
+          {
+            id: 67890,
+            type: 'io.cozy.files'
+          }
+        ]
+      })
+      expect(Array.isArray(mutation)).toBe(true)
+      expect(typeof mutation[1] === 'function').toBe(true)
+      expect(mutation[1]({ data: EXPECTED_CREATED_FILE })).toEqual([
+        Mutations.addReferencedBy(EXPECTED_CREATED_FILE, [
+          { id: 67890, type: 'io.cozy.files' }
+        ])
+      ])
+    })
+
     it('should handle empty associations', () => {
       const NEW_TODO = {
         _type: 'io.cozy.todos',

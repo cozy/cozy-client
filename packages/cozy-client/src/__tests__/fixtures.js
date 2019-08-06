@@ -84,5 +84,14 @@ export const SCHEMA = {
         doctype: 'io.cozy.persons'
       }
     }
+  },
+  files: {
+    doctype: 'io.cozy.files',
+    relationships: {
+      icons: {
+        type: 'has-many',
+        doctype: 'io.cozy.files'
+      }
+    }
   }
 }
