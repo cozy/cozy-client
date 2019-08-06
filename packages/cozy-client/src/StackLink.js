@@ -64,24 +64,28 @@ export default class StackLink extends CozyLink {
           .collection(props.document._type)
           .destroy(props.document)
       case MutationTypes.ADD_REFERENCES_TO:
-        if (props.referencedDocuments[0]._type === 'io.cozy.files') {
-          return this.stackClient
-            .collection('io.cozy.files')
-            .addReferencesTo(props.document, props.referencedDocuments)
-        } else {
+        return this.stackClient
+          .collection(props.referencedDocuments[0]._type)
+          .addReferencesTo(props.document, props.referencedDocuments)
+      case MutationTypes.REMOVE_REFERENCES_TO:
+        return this.stackClient
+          .collection(props.referencedDocuments[0]._type)
+          .removeReferencesTo(props.document, props.referencedDocuments)
+      case MutationTypes.ADD_REFERENCED_BY:
+        if (props.document._type === 'io.cozy.files') {
           return this.stackClient
             .collection('io.cozy.files')
             .addReferencedBy(props.document, props.referencedDocuments)
-        }
-      case MutationTypes.REMOVE_REFERENCES_TO:
-        if (props.referencedDocuments[0]._type === 'io.cozy.files') {
-          return this.stackClient
-            .collection('io.cozy.files')
-            .removeReferencesTo(props.document, props.referencedDocuments)
         } else {
+          throw new Error('The document type should be io.cozy.files')
+        }
+      case MutationTypes.REMOVE_REFERENCED_BY:
+        if (props.document._type === 'io.cozy.files') {
           return this.stackClient
             .collection('io.cozy.files')
             .removeReferencedBy(props.document, props.referencedDocuments)
+        } else {
+          throw new Error('The document type should be io.cozy.files')
         }
       case MutationTypes.UPLOAD_FILE:
         return this.stackClient
