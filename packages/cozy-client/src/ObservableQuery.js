@@ -39,7 +39,7 @@ export default class ObservableQuery {
    */
   currentResult() {
     const result = getQueryFromState(this.getStore().getState(), this.queryId)
-    if (result.fetchStatus !== 'loaded') {
+    if (!result.lastFetch) {
       return result
     }
     const data = this.client.hydrateDocuments(
