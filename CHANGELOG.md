@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.56.1](https://github.com/cozy/cozy-client/compare/v6.56.0...v6.56.1) (2019-08-07)
+
+
+### Bug Fixes
+
+* Hydrate documents also for in-flight queries ([d4623ad](https://github.com/cozy/cozy-client/commit/d4623ad))
+
+
+
+
+
 # [6.56.0](https://github.com/cozy/cozy-client/compare/v6.55.1...v6.56.0) (2019-08-02)
 
 
