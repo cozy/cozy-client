@@ -293,6 +293,11 @@ async findReferencedBy - Returns the list of files referenced by a document — 
 ### fileCollection.addReferencedBy(document, documents) ⇒ <code>object</code>
 Add referenced_by documents to a file — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#post-filesfile-idrelationshipsreferenced_by
 
+ For example, to have an album referenced by a file:
+ ```
+addReferencedBy({_id: 123, _type: "io.cozy.files", name: "cozy.jpg"}, [{_id: 456, _type: "io.cozy.photos.albums", name: "Happy Cloud"}])
+```
+
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
 **Returns**: <code>object</code> - The JSON API conformant response.  
 
@@ -305,6 +310,11 @@ Add referenced_by documents to a file — see https://docs.cozy.io/en/cozy-stack
 
 ### fileCollection.removeReferencedBy(document, documents) ⇒ <code>object</code>
 Remove referenced_by documents from a file — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#delete-filesfile-idrelationshipsreferenced_by
+
+ For example, to remove an album reference from a file:
+ ```
+ removeReferencedBy({_id: 123, _type: "io.cozy.files", name: "cozy.jpg"}, [{_id: 456, _type: "io.cozy.photos.albums", name: "Happy Cloud"}])
+```
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
 **Returns**: <code>object</code> - The JSON API conformant response.  
@@ -319,6 +329,11 @@ Remove referenced_by documents from a file — see https://docs.cozy.io/en/cozy-
 ### fileCollection.addReferencesTo(document, documents) ⇒ <code>object</code>
 Add files references to a document — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#post-datatypedoc-idrelationshipsreferences
 
+ For example, to add a photo to an album:
+ ```
+ addReferencesTo({_id: 456, _type: "io.cozy.photos.albums", name: "Happy Cloud"}, [{_id: 123, _type: "io.cozy.files", name: "cozy.jpg"}])
+```
+
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
 **Returns**: <code>object</code> - The JSON API conformant response.  
 
@@ -331,6 +346,11 @@ Add files references to a document — see https://docs.cozy.io/en/cozy-stack/re
 
 ### fileCollection.removeReferencesTo(document, documents) ⇒ <code>object</code>
 Remove files references to a document — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#delete-datatypedoc-idrelationshipsreferences
+
+ For example, to remove a photo from an album:
+ ```
+ removeReferencesTo({_id: 456, _type: "io.cozy.photos.albums", name: "Happy Cloud"}, [{_id: 123, _type: "io.cozy.files", name: "cozy.jpg"}])
+```
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
 **Returns**: <code>object</code> - The JSON API conformant response.  

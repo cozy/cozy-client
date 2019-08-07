@@ -528,6 +528,7 @@ describe('CozyClient', () => {
     })
 
     it('should handle associations for a new file with relationship', () => {
+      // icons is a has-many relationship defined in __tests__/fixtures for files
       const NEW_FILE = {
         _type: 'io.cozy.files',
         icons: [
