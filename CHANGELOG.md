@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.57.0](https://github.com/cozy/cozy-client/compare/v6.56.1...v6.57.0) (2019-08-07)
+
+
+### Features
+
+* Implement referenced-by add/remove ([04aee66](https://github.com/cozy/cozy-client/commit/04aee66))
+
+
+
+
+
 ## [6.56.1](https://github.com/cozy/cozy-client/compare/v6.56.0...v6.56.1) (2019-08-07)
 
 
