@@ -9,6 +9,7 @@ export { default as Query } from './Query'
 export { default as compose } from 'lodash/flow'
 export {
   QueryDefinition,
+  Mutations,
   MutationTypes,
   getDoctypeFromOperation
 } from './queries/dsl'

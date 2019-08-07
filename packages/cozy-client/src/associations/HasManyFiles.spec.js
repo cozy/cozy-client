@@ -92,4 +92,12 @@ describe('HasManyFiles', () => {
     })
     expect(save).toHaveBeenCalled()
   })
+
+  it('add wrong file relations', () => {
+    const refTodo = {
+      _id: 456,
+      _type: 'io.cozy.todos'
+    }
+    expect(() => hydrated.files.insertDocuments([refTodo])).toThrow(Error)
+  })
 })

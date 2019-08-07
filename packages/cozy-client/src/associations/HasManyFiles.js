@@ -64,11 +64,27 @@ export default class HasManyFiles extends HasMany {
   }
 
   insertDocuments(referencedDocs) {
-    return Mutations.addReferencesTo(this.target, referencedDocs)
+    if (this.target._type === 'io.cozy.files') {
+      return Mutations.addReferencedBy(this.target, referencedDocs)
+    } else if (referencedDocs[0]._type === 'io.cozy.files') {
+      return Mutations.addReferencesTo(this.target, referencedDocs)
+    } else {
+      throw new Error(
+        'Either the document or the references should be io.cozy.files'
+      )
+    }
   }
 
   removeDocuments(referencedDocs) {
-    return Mutations.removeReferencesTo(this.target, referencedDocs)
+    if (this.target._type === 'io.cozy.files') {
+      return Mutations.removeReferencedBy(this.target, referencedDocs)
+    } else if (referencedDocs[0]._type === 'io.cozy.files') {
+      return Mutations.removeReferencesTo(this.target, referencedDocs)
+    } else {
+      throw new Error(
+        'Either the document or the references should be io.cozy.files'
+      )
+    }
   }
 
   dehydrate(doc) {

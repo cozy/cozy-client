@@ -201,6 +201,8 @@ const UPDATE_DOCUMENT = 'UPDATE_DOCUMENT'
 const DELETE_DOCUMENT = 'DELETE_DOCUMENT'
 const ADD_REFERENCES_TO = 'ADD_REFERENCES_TO'
 const REMOVE_REFERENCES_TO = 'REMOVE_REFERENCES_TO'
+const ADD_REFERENCED_BY = 'ADD_REFERENCED_BY'
+const REMOVE_REFERENCED_BY = 'REMOVE_REFERENCED_BY'
 const UPLOAD_FILE = 'UPLOAD_FILE'
 
 export const createDocument = document => ({
@@ -226,6 +228,18 @@ export const addReferencesTo = (document, referencedDocuments) => ({
 
 export const removeReferencesTo = (document, referencedDocuments) => ({
   mutationType: MutationTypes.REMOVE_REFERENCES_TO,
+  referencedDocuments,
+  document
+})
+
+export const addReferencedBy = (document, referencedDocuments) => ({
+  mutationType: MutationTypes.ADD_REFERENCED_BY,
+  referencedDocuments,
+  document
+})
+
+export const removeReferencedBy = (document, referencedDocuments) => ({
+  mutationType: MutationTypes.REMOVE_REFERENCED_BY,
   referencedDocuments,
   document
 })
@@ -264,6 +278,8 @@ export const Mutations = {
   deleteDocument,
   addReferencesTo,
   removeReferencesTo,
+  addReferencedBy,
+  removeReferencedBy,
   uploadFile
 }
 
@@ -273,6 +289,8 @@ export const MutationTypes = {
   DELETE_DOCUMENT,
   ADD_REFERENCES_TO,
   REMOVE_REFERENCES_TO,
+  ADD_REFERENCED_BY,
+  REMOVE_REFERENCED_BY,
   UPLOAD_FILE
 }
 

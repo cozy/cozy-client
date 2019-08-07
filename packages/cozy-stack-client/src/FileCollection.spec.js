@@ -246,6 +246,43 @@ describe('FileCollection', () => {
     })
   })
 
+  describe('referencedBy', () => {
+    const client = new CozyStackClient()
+    const collection = new FileCollection('io.cozy.files', client)
+
+    const spy = jest.spyOn(client, 'fetchJSON')
+
+    beforeEach(() => {
+      spy.mockClear()
+    })
+
+    const file = {
+      _type: 'io.cozy.files',
+      _id: '123'
+    }
+
+    it('should add a reference', async () => {
+      const refs = [
+        {
+          _id: '456',
+          _type: 'io.cozy.photos.albums'
+        }
+      ]
+      await collection.addReferencedBy(file, refs)
+      expect(spy).toMatchSnapshot()
+    })
+    it('should remove a reference', async () => {
+      const refs = [
+        {
+          _id: '456',
+          _type: 'io.cozy.photos.albums'
+        }
+      ]
+      await collection.removeReferencedBy(file, refs)
+      expect(spy).toMatchSnapshot()
+    })
+  })
+
   describe('updateFileMetadata', () => {
     beforeEach(() => {
       client.fetchJSON.mockReturnValue({ data: [] })

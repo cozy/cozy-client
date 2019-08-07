@@ -71,6 +71,22 @@ export default class StackLink extends CozyLink {
         return this.stackClient
           .collection(props.referencedDocuments[0]._type)
           .removeReferencesTo(props.document, props.referencedDocuments)
+      case MutationTypes.ADD_REFERENCED_BY:
+        if (props.document._type === 'io.cozy.files') {
+          return this.stackClient
+            .collection('io.cozy.files')
+            .addReferencedBy(props.document, props.referencedDocuments)
+        } else {
+          throw new Error('The document type should be io.cozy.files')
+        }
+      case MutationTypes.REMOVE_REFERENCED_BY:
+        if (props.document._type === 'io.cozy.files') {
+          return this.stackClient
+            .collection('io.cozy.files')
+            .removeReferencedBy(props.document, props.referencedDocuments)
+        } else {
+          throw new Error('The document type should be io.cozy.files')
+        }
       case MutationTypes.UPLOAD_FILE:
         return this.stackClient
           .collection('io.cozy.files')
