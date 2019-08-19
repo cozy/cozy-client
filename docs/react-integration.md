@@ -15,7 +15,8 @@ The following procedure requires you to already know how to initialize a CozyCli
 Import `CozyClient` and `CozyProvider`
 
 ```javascript
-import CozyClient, { CozyProvider } from 'cozy-client'
+import CozyClient from 'cozy-client'
+import { CozyProvider } from 'cozy-client/react'
 ```
 
 Initialize a CozyClient instance (see the `CozyClient()` documentation for additional parameters, for example to provide a schema)
@@ -46,7 +47,8 @@ The CozyClient will be available for consumption to all components inside your w
 `cozy-client` uses redux internally to centralize the statuses of the various fetches and replications triggered by the library, and to store locally the data in a normalized way. If you already have a redux store in your app, you can configure `cozy-client` to use this existing store:
 
 ```jsx
-import CozyClient, { CozyProvider } from 'cozy-client'
+import CozyClient from 'cozy-client'
+import { CozyProvider } from 'cozy-client/react'
 import { combineReducers, createStore, applyMiddleware } from 'redux'
 
 const client = new CozyClient({
@@ -76,7 +78,7 @@ To make it easy to fetch data and make it available to your component, we provid
 
 
 ```jsx
-import { Query } from 'cozy-client'
+import { Query } from 'cozy-client/react'
 
 const todos = 'io.cozy.todos'
 const checked = { checked: false }
@@ -110,7 +112,7 @@ The following props will be given to your wrapped component:
 You can also pass a function intead of a direct query. Your function will be given the props of the component and should return the requested query:
 
 ```jsx
-import { Query } from 'cozy-client'
+import { Query } from 'cozy-client/react'
 
 const query = function (props) {
   const todos = 'io.cozy.todos'
@@ -139,7 +141,7 @@ Note: Your query will be bound when the `<Query/>` component mounts. Future chan
 At your preference, you can use an higher-order component. `queryConnect` will take the name of the props field where it should send the result of the query and the actual query:
 
 ```jsx
-import { queryConnect } from 'cozy-client'
+import { queryConnect } from 'cozy-client/react'
 
 function TodoList(props) {
   const { data, fetchStatus } = props.result
@@ -166,7 +168,7 @@ const ConnectedTodoList = queryConnect(queryOpts)(TodoList)
 With the same syntax, you may register multiple queries to run:
 
 ```jsx
-import { queryConnect } from 'cozy-client'
+import { queryConnect } from 'cozy-client/react'
 
 function TodoList(props) {
   const { data, fetchStatus } = props.checked
@@ -191,7 +193,7 @@ const ConnectedTodoList = queryConnect(queries)(TodoList)
 The simplest way is to use the `withClient` high order component. It will inject a `client` in your props with the CozyClient instance you gave to the `<CozyProvider />` upper.
 
 ```jsx
-import { withClient } from 'cozy-client'
+import { withClient } from 'cozy-client/react'
 
 function TodoList(props) {
   const { client } = props
@@ -217,7 +219,7 @@ const ConnectedTodoList = withClient(TodoList)
 Alternatively, you have `withMutation()` which returns an HOC. This HOC forwards you a `createDocument`, a `saveDocument` and a `deleteDocument` in your props. They are the `create()`, `save()`and `delete()` functions from CozyClient, bound to the instance you gave to the `<CozyProvider />`.
 
 ```jsx
-import { withMutations } from 'cozy-client'
+import { withMutations } from 'cozy-client/react'
 
 function TodoList(props) {
   const { createDocument } = props
@@ -243,7 +245,7 @@ const ConnectedTodoList = withMutations()(TodoList)
 Finally, `<Query />` also takes a `mutations` optional props. It should have a function that will receive the CozyClient instance, the query requested and the rest of props given to the component, and should return a keyed object which will be added to the props of your wrapped component.
 
 ```jsx
-import { Query } from 'cozy-client'
+import { Query } from 'cozy-client/react'
 
 const todos = 'io.cozy.todos'
 const checked = { checked: false }

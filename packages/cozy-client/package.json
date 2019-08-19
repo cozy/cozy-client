@@ -4,7 +4,8 @@
   "license": "MIT",
   "main": "dist/index.js",
   "files": [
-    "dist"
+    "dist",
+    "codemods"
   ],
   "repository": {
     "type": "git",
