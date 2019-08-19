@@ -19,6 +19,10 @@ global.fetch = fetch
 
 Then you will be able to use all the client methods and fetch data correctly.
 
+When using cozy-client on Node environment, you don't have access to all React
+specific APIs. If, for any reason, you want to access these APIs, you can still
+import them from `cozy-client/dist/react`.
+
 
 ## How to activate logging ?
 
