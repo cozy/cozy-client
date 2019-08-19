@@ -2,7 +2,8 @@
   "name": "cozy-client",
   "version": "6.57.0",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "dist/node.js",
+  "browser": "dist/index.js",
   "files": [
     "dist"
   ],
