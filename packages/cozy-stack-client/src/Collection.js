@@ -43,7 +43,7 @@ export class Collection {
     try {
       const resp = await stackClient.fetchJSON(method, endpoint)
       return {
-        data: normalize(resp.data)
+        data: normalize(resp.data || resp)
       }
     } catch (error) {
       return dontThrowNotFoundError(error, null)

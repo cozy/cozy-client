@@ -302,6 +302,25 @@ describe('DocumentCollection', () => {
     })
   })
 
+  describe('get', () => {
+    it('should not fail when response data is undefined', async () => {
+      const expectedDoc = {
+        _id: '9d59b53cd5f045e8925c8a0d36530e2b',
+        _type: 'io.cozy.todos'
+      }
+
+      jest.spyOn(client, 'fetchJSON').mockResolvedValueOnce(expectedDoc)
+
+      const collection = new DocumentCollection('io.cozy.todos', client)
+
+      await expect(
+        collection.get('9d59b53cd5f045e8925c8a0d36530e2b')
+      ).resolves.toEqual({ data: { ...expectedDoc, id: expectedDoc._id } })
+
+      client.fetchJSON.mockReset()
+    })
+  })
+
   describe('find', () => {
     beforeEach(() => {
       client.fetchJSON.mockReturnValueOnce(

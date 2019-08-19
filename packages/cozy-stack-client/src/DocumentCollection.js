@@ -14,9 +14,7 @@ export const normalizeDoc = (doc, doctype) => {
   return { id, _id: id, _type: doctype, ...doc }
 }
 
-export const normalizeDoctype = doctype => doc => {
-  normalizeDoc(doc, doctype)
-}
+export const normalizeDoctype = doctype => doc => normalizeDoc(doc, doctype)
 
 /**
  * Abstracts a collection of documents of the same doctype, providing CRUD methods and other helpers.
