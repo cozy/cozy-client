@@ -38,12 +38,12 @@ export class Collection {
   static async get(
     stackClient,
     endpoint,
-    { normalize = data => data, method = 'GET' }
+    { normalize = (doc, response) => doc, method = 'GET' }
   ) {
     try {
       const resp = await stackClient.fetchJSON(method, endpoint)
       return {
-        data: normalize(resp.data || resp)
+        data: normalize(resp.data, resp)
       }
     } catch (error) {
       return dontThrowNotFoundError(error, null)

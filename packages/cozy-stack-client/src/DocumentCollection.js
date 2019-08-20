@@ -9,12 +9,15 @@ import qs from 'qs'
 import Collection, { dontThrowNotFoundError } from './Collection'
 import * as querystring from './querystring'
 
-export const normalizeDoc = (doc, doctype) => {
+export const normalizeDoc = (doc = {}, doctype) => {
   const id = doc._id || doc.id
   return { id, _id: id, _type: doctype, ...doc }
 }
 
-export const normalizeDoctype = doctype => doc => normalizeDoc(doc, doctype)
+export const normalizeDoctype = doctype => (doc, response = {}) => {
+  const data = doc || response
+  return normalizeDoc(data, doctype)
+}
 
 /**
  * Abstracts a collection of documents of the same doctype, providing CRUD methods and other helpers.
