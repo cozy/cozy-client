@@ -1,4 +1,4 @@
-import DocumentCollection, { normalizeDoc } from './DocumentCollection'
+import DocumentCollection, { normalizeDoc } from './JsonApiDocumentCollection'
 
 export const APPS_DOCTYPE = 'io.cozy.apps'
 

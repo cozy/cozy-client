@@ -1,7 +1,7 @@
 jest.mock('./CozyStackClient')
 
 import CozyStackClient from './CozyStackClient'
-import DocumentCollection from './DocumentCollection'
+import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 
 const ALL_RESPONSE_FIXTURE = {
   offset: 0,
@@ -171,6 +171,12 @@ describe('DocumentCollection', () => {
     })
 
     it('should not fail if there is no doc of this type yet', async () => {
+      collection.constructor.normalizeDoctype = function(doctype) {
+        return function(data, response) {
+          return normalizeDoc(response, doctype)
+        }
+      }
+
       client.fetchJSON.mockReturnValue(
         Promise.reject(new Error('404: not_found'))
       )
@@ -299,25 +305,6 @@ describe('DocumentCollection', () => {
         const resp = await collection.createIndex(['label', 'done'])
         expect(resp).toHaveProperty('id', '_design/123456')
       })
-    })
-  })
-
-  describe('get', () => {
-    it('should not fail when response data is undefined', async () => {
-      const expectedDoc = {
-        _id: '9d59b53cd5f045e8925c8a0d36530e2b',
-        _type: 'io.cozy.todos'
-      }
-
-      jest.spyOn(client, 'fetchJSON').mockResolvedValueOnce(expectedDoc)
-
-      const collection = new DocumentCollection('io.cozy.todos', client)
-
-      await expect(
-        collection.get('9d59b53cd5f045e8925c8a0d36530e2b')
-      ).resolves.toEqual({ data: { ...expectedDoc, id: expectedDoc._id } })
-
-      client.fetchJSON.mockReset()
     })
   })
 

@@ -1,8 +1,8 @@
 import Collection, { dontThrowNotFoundError } from './Collection'
-import { normalizeDoc } from './DocumentCollection'
+import { normalizeDoc } from './JsonApiDocumentCollection'
 import { normalizeJob } from './JobCollection'
 import { uri } from './utils'
-import DocumentCollection from './DocumentCollection'
+import DocumentCollection from './JsonApiDocumentCollection'
 export const JOBS_DOCTYPE = 'io.cozy.jobs'
 export const TRIGGERS_DOCTYPE = 'io.cozy.triggers'
 

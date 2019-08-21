@@ -9,14 +9,15 @@ import qs from 'qs'
 import Collection, { dontThrowNotFoundError } from './Collection'
 import * as querystring from './querystring'
 
-export const normalizeDoc = (doc = {}, doctype) => {
+/**
+ * Normalize a document, adding its doctype if needed
+ * @param {object} doc - Document to normalize
+ * @param {string} doctype
+ * @return {object} normalized document
+ */
+export function normalizeDoc(doc = {}, doctype) {
   const id = doc._id || doc.id
   return { id, _id: id, _type: doctype, ...doc }
-}
-
-export const normalizeDoctype = doctype => (doc, response = {}) => {
-  const data = doc || response
-  return normalizeDoc(data, doctype)
 }
 
 /**
@@ -27,6 +28,16 @@ class DocumentCollection {
     this.doctype = doctype
     this.stackClient = stackClient
     this.indexes = {}
+  }
+
+  /**
+   * Provide a callback for `Collection.get`
+   * @param {string} doctype
+   * @return {function} (data, response) => normalizedDocument
+   *                                        using `normalizeDoc`
+   */
+  static normalizeDoctype(doctype) {
+    throw 'You should not use this directly but use RawApiDocumentCollection or JonApiDocumentCollection'
   }
 
   /**
@@ -129,7 +140,7 @@ class DocumentCollection {
 
   async get(id) {
     return Collection.get(this.stackClient, uri`/data/${this.doctype}/${id}`, {
-      normalize: normalizeDoctype(this.doctype)
+      normalize: this.constructor.normalizeDoctype(this.doctype)
     })
   }
 
@@ -349,3 +360,5 @@ class DocumentCollection {
 }
 
 export default DocumentCollection
+
+export const normalizeDoctype = DocumentCollection.normalizeDoctype

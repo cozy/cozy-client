@@ -2,7 +2,7 @@
 /* global fetch */
 
 import CozyStackClient, { FetchError } from '../CozyStackClient'
-import DocumentCollection from '../DocumentCollection'
+import DocumentCollection from '../RawApiDocumentCollection'
 import JobCollection from '../JobCollection'
 import KonnectorCollection from '../KonnectorCollection'
 import jestFetchMock from 'jest-fetch-mock'

@@ -38,7 +38,7 @@ export class Collection {
   static async get(
     stackClient,
     endpoint,
-    { normalize = (doc, response) => doc, method = 'GET' }
+    { normalize = (data, response) => data, method = 'GET' }
   ) {
     try {
       const resp = await stackClient.fetchJSON(method, endpoint)

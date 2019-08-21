@@ -1,6 +1,6 @@
 import mime from 'mime/lite'
 import has from 'lodash/has'
-import DocumentCollection, { normalizeDoc } from './DocumentCollection'
+import DocumentCollection, { normalizeDoc } from './RawApiDocumentCollection'
 import { uri, slugify, forceFileDownload } from './utils'
 import * as querystring from './querystring'
 const ROOT_DIR_ID = 'io.cozy.files.root-dir'

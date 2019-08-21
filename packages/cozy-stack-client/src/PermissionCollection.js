@@ -1,4 +1,4 @@
-import DocumentCollection, { normalizeDoc } from './DocumentCollection'
+import DocumentCollection, { normalizeDoc } from './JsonApiDocumentCollection'
 import { isFile } from './FileCollection'
 import { uri } from './utils'
 
