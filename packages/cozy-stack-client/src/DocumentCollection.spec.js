@@ -253,13 +253,15 @@ describe('DocumentCollection', () => {
 
     describe('existing index', () => {
       beforeAll(() => {
-        client.fetchJSON.mockReturnValue(
-          Promise.resolve({
-            id: '_design/123456',
-            name: '123456',
-            result: 'exists'
-          })
-        )
+        jest.spyOn(client, 'fetchJSON').mockResolvedValue({
+          id: '_design/123456',
+          name: '123456',
+          result: 'exists'
+        })
+      })
+
+      afterAll(() => {
+        jest.resetAllMocks()
       })
 
       it('should call the right route with the right payload', async () => {

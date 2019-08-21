@@ -138,4 +138,6 @@ class TriggerCollection extends DocumentCollection {
   }
 }
 
+TriggerCollection.normalizeDoctype = DocumentCollection.normalizeDoctypeJsonApi
+
 export default TriggerCollection

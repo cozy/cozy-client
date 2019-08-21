@@ -54,6 +54,9 @@ through OAuth.</p>
 <dt><a href="#getAccessToken">getAccessToken()</a> ⇒ <code>string</code></dt>
 <dd><p>Get the app token string</p>
 </dd>
+<dt><a href="#normalizeDoc">normalizeDoc(doc, doctype)</a> ⇒ <code>object</code></dt>
+<dd><p>Normalize a document, adding its doctype if needed</p>
+</dd>
 <dt><a href="#garbageCollect">garbageCollect()</a></dt>
 <dd><p>Delete outdated results from cache</p>
 </dd>
@@ -196,10 +199,15 @@ Abstracts a collection of documents of the same doctype, providing CRUD methods 
 **Kind**: global class  
 
 * [DocumentCollection](#DocumentCollection)
-    * [.all(options)](#DocumentCollection+all) ⇒ <code>Object</code>
-    * [.find(selector, options)](#DocumentCollection+find) ⇒ <code>Object</code>
-    * [.getIndexFields(options)](#DocumentCollection+getIndexFields) ⇒ <code>Array</code>
-    * [.fetchChanges(couchOptions, options)](#DocumentCollection+fetchChanges)
+    * _instance_
+        * [.all(options)](#DocumentCollection+all) ⇒ <code>Object</code>
+        * [.find(selector, options)](#DocumentCollection+find) ⇒ <code>Object</code>
+        * [.getIndexFields(options)](#DocumentCollection+getIndexFields) ⇒ <code>Array</code>
+        * [.fetchChanges(couchOptions, options)](#DocumentCollection+fetchChanges)
+    * _static_
+        * [.normalizeDoctype(doctype)](#DocumentCollection.normalizeDoctype) ⇒ <code>function</code>
+        * [.normalizeDoctypeJsonApi(doctype)](#DocumentCollection.normalizeDoctypeJsonApi) ⇒ <code>function</code>
+        * [.normalizeDoctypeRawApi(doctype)](#DocumentCollection.normalizeDoctypeRawApi) ⇒ <code>function</code>
 
 <a name="DocumentCollection+all"></a>
 
@@ -262,6 +270,45 @@ Use Couch _changes API
 | --- | --- | --- |
 | couchOptions | <code>Object</code> | Couch options for changes https://kutt.it/5r7MNQ |
 | options | <code>Object</code> | { includeDesign: false, includeDeleted: false } |
+
+<a name="DocumentCollection.normalizeDoctype"></a>
+
+### DocumentCollection.normalizeDoctype(doctype) ⇒ <code>function</code>
+Provides a callback for `Collection.get`
+
+**Kind**: static method of [<code>DocumentCollection</code>](#DocumentCollection)  
+**Returns**: <code>function</code> - (data, response) => normalizedDocument
+                                       using `normalizeDoc`  
+
+| Param | Type |
+| --- | --- |
+| doctype | <code>string</code> | 
+
+<a name="DocumentCollection.normalizeDoctypeJsonApi"></a>
+
+### DocumentCollection.normalizeDoctypeJsonApi(doctype) ⇒ <code>function</code>
+`normalizeDoctype` for api end points returning json api responses
+
+**Kind**: static method of [<code>DocumentCollection</code>](#DocumentCollection)  
+**Returns**: <code>function</code> - (data, response) => normalizedDocument
+                                       using `normalizeDoc`  
+
+| Param | Type |
+| --- | --- |
+| doctype | <code>string</code> | 
+
+<a name="DocumentCollection.normalizeDoctypeRawApi"></a>
+
+### DocumentCollection.normalizeDoctypeRawApi(doctype) ⇒ <code>function</code>
+`normalizeDoctype` for api end points returning raw documents
+
+**Kind**: static method of [<code>DocumentCollection</code>](#DocumentCollection)  
+**Returns**: <code>function</code> - (data, response) => normalizedDocument
+                                       using `normalizeDoc`  
+
+| Param | Type |
+| --- | --- |
+| doctype | <code>string</code> | 
 
 <a name="FileCollection"></a>
 
@@ -863,6 +910,19 @@ Get the app token string
 **Kind**: global function  
 **Returns**: <code>string</code> - token  
 **See**: CozyStackClient.getAccessToken  
+<a name="normalizeDoc"></a>
+
+## normalizeDoc(doc, doctype) ⇒ <code>object</code>
+Normalize a document, adding its doctype if needed
+
+**Kind**: global function  
+**Returns**: <code>object</code> - normalized document  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doc | <code>object</code> | Document to normalize |
+| doctype | <code>string</code> |  |
+
 <a name="garbageCollect"></a>
 
 ## garbageCollect()

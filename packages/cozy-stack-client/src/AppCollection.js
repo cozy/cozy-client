@@ -52,4 +52,6 @@ class AppCollection extends DocumentCollection {
   }
 }
 
+AppCollection.normalizeDoctype = DocumentCollection.normalizeDoctypeJsonApi
+
 export default AppCollection
