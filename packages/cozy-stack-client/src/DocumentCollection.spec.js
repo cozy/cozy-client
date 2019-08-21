@@ -1,7 +1,7 @@
 jest.mock('./CozyStackClient')
 
 import CozyStackClient from './CozyStackClient'
-import DocumentCollection, { normalizeDoc } from './DocumentCollection'
+import DocumentCollection from './DocumentCollection'
 
 const ALL_RESPONSE_FIXTURE = {
   offset: 0,
@@ -171,12 +171,6 @@ describe('DocumentCollection', () => {
     })
 
     it('should not fail if there is no doc of this type yet', async () => {
-      collection.constructor.normalizeDoctype = function(doctype) {
-        return function(data, response) {
-          return normalizeDoc(response, doctype)
-        }
-      }
-
       client.fetchJSON.mockReturnValue(
         Promise.reject(new Error('404: not_found'))
       )

@@ -1,4 +1,4 @@
-import DocumentCollection, { normalizeDoc } from './JsonApiDocumentCollection'
+import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 import { isFile } from './FileCollection'
 import { uri } from './utils'
 
@@ -170,6 +170,9 @@ const getPermissionsFor = (document, publicLink = false) => {
         }
       }
 }
+
+PermissionCollection.normalizeDoctype =
+  DocumentCollection.normalizeDoctypeJsonApi
 
 const isPermissionRelatedTo = (perm, document) => {
   const { _id } = document

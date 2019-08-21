@@ -31,13 +31,39 @@ class DocumentCollection {
   }
 
   /**
-   * Provide a callback for `Collection.get`
+   * Provides a callback for `Collection.get`
    * @param {string} doctype
    * @return {function} (data, response) => normalizedDocument
    *                                        using `normalizeDoc`
    */
   static normalizeDoctype(doctype) {
-    throw 'You should not use this directly but use RawApiDocumentCollection or JonApiDocumentCollection'
+    return this.normalizeDoctypeRawApi(doctype)
+  }
+
+  /**
+   * `normalizeDoctype` for api end points returning json api responses
+   * @param {string} doctype
+   * @return {function} (data, response) => normalizedDocument
+   *                                        using `normalizeDoc`
+   */
+  static normalizeDoctypeJsonApi(doctype) {
+    return function(data, response) {
+      // use the "data" attribute of the response
+      return normalizeDoc(data, doctype)
+    }
+  }
+
+  /**
+   * `normalizeDoctype` for api end points returning raw documents
+   * @param {string} doctype
+   * @return {function} (data, response) => normalizedDocument
+   *                                        using `normalizeDoc`
+   */
+  static normalizeDoctypeRawApi(doctype) {
+    return function(data, response) {
+      // use the response directly
+      return normalizeDoc(response, doctype)
+    }
   }
 
   /**

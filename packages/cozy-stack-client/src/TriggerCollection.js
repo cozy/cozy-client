@@ -1,8 +1,8 @@
 import Collection, { dontThrowNotFoundError } from './Collection'
-import { normalizeDoc } from './JsonApiDocumentCollection'
+import { normalizeDoc } from './DocumentCollection'
 import { normalizeJob } from './JobCollection'
 import { uri } from './utils'
-import DocumentCollection from './JsonApiDocumentCollection'
+import DocumentCollection from './DocumentCollection'
 export const JOBS_DOCTYPE = 'io.cozy.jobs'
 export const TRIGGERS_DOCTYPE = 'io.cozy.triggers'
 
@@ -137,5 +137,7 @@ class TriggerCollection extends DocumentCollection {
     throw new Error('update() method is not available for triggers')
   }
 }
+
+TriggerCollection.normalizeDoctype = DocumentCollection.normalizeDoctypeJsonApi
 
 export default TriggerCollection

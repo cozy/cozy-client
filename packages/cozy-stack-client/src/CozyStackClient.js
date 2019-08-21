@@ -1,6 +1,6 @@
 import AppCollection, { APPS_DOCTYPE } from './AppCollection'
 import AppToken from './AppToken'
-import DocumentCollection from './RawApiDocumentCollection'
+import DocumentCollection from './DocumentCollection'
 import FileCollection from './FileCollection'
 import JobCollection, { JOBS_DOCTYPE } from './JobCollection'
 import KonnectorCollection, { KONNECTORS_DOCTYPE } from './KonnectorCollection'
@@ -60,7 +60,7 @@ class CozyStackClient {
       case JOBS_DOCTYPE:
         return new JobCollection(this)
       default:
-        return new RawApiDocumentCollection(doctype, this)
+        return new DocumentCollection(doctype, this)
     }
   }
 

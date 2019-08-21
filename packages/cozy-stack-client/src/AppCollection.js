@@ -1,4 +1,4 @@
-import DocumentCollection, { normalizeDoc } from './JsonApiDocumentCollection'
+import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 
 export const APPS_DOCTYPE = 'io.cozy.apps'
 
@@ -51,5 +51,7 @@ class AppCollection extends DocumentCollection {
     throw new Error('destroy() method is not available for applications')
   }
 }
+
+AppCollection.normalizeDoctype = DocumentCollection.normalizeDoctypeJsonApi
 
 export default AppCollection
