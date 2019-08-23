@@ -160,7 +160,7 @@ It causes an issue when writing tests that use React components from cozy-client
    }
 ```
 
-There can be some problems since the `browser` field can clash with other node detection mechanism in other libraries (for example `iconv-lite`), an alternative is to use the `moduleNameMapper` option to point Jest to the correct entrypoint only for `cozy-client`.
+There can be some problems since the `browser` field can clash with other node detection mechanism in other libraries (for example `iconv-lite`, see this [PR](https://github.com/ashtuchkin/iconv-lite/pull/222)), an alternative is to use the `moduleNameMapper` option to point Jest to the correct entrypoint only for `cozy-client`.
 
 ```
 "moduleNameMapper": {
