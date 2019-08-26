@@ -104,7 +104,7 @@ client.query(
 ).then(
   ({ data }) => console.log(data)
 )
-````
+```
 
 ## How to mutate the data
 
