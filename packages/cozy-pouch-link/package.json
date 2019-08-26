@@ -12,10 +12,10 @@
   },
   "dependencies": {
     "cozy-client": "^6.58.1",
-    "cozy-device-helper": "1.7.3",
-    "minilog": "3.1.0",
-    "pouchdb-browser": "7.0.0",
-    "pouchdb-find": "7.0.0"
+    "cozy-device-helper": "^1.7.3",
+    "minilog": "^3.1.0",
+    "pouchdb-browser": "^7.0.0",
+    "pouchdb-find": "^7.0.0"
   },
   "devDependencies": {
     "babel-cli": "6.26.0",
