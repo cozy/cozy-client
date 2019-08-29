@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.58.2](https://github.com/cozy/cozy-client/compare/v6.58.1...v6.58.2) (2019-08-29)
+
+
+### Bug Fixes
+
+* Typo ([92d6cf5](https://github.com/cozy/cozy-client/commit/92d6cf5))
+
+
+
+
+
 ## [6.58.1](https://github.com/cozy/cozy-client/compare/v6.58.0...v6.58.1) (2019-08-21)
 
 **Note:** Version bump only for package cozy-client
