@@ -95,6 +95,29 @@ class CozyClient {
   }
 
   /**
+   * A plugin is a function that receives the client as first argument.
+   * The main mean of interaction with the client should be with events
+   * like "login"/"logout".
+   *
+   * The plugin system is meant to encourage separation of concerns, modularity
+   * and testability : instead of registering events at module level, please
+   * create a plugin that subscribes to events.
+   *
+   * @example
+   * ```
+   * const alertPlugin = client => {
+   *   client.on("login", () => { alert("client has logged in !") }
+   *   client.on("logout", () => { alert("client has logged out !") }
+   * }
+   *
+   * client.registerPlugin(alertPlugin)
+   * ```
+   */
+  registerPlugin(plugin) {
+    return plugin(this)
+  }
+
+  /**
    * To help with the transition from cozy-client-js to cozy-client, it is possible to instantiate
    * a client with an instance of cozy-client-js.
    */

@@ -473,6 +473,7 @@ Responsible for
 * [CozyClient](#CozyClient)
     * [new CozyClient(options)](#new_CozyClient_new)
     * _instance_
+        * [.registerPlugin()](#CozyClient+registerPlugin)
         * [.login()](#CozyClient+login) ⇒ <code>Promise</code>
         * [.logout()](#CozyClient+logout) ⇒ <code>Promise</code>
         * [.collection(doctype)](#CozyClient+collection) ⇒ <code>DocumentCollection</code>
@@ -505,6 +506,27 @@ Responsible for
 | options.schema | <code>Object</code> | Schema description for each doctypes |
 | options.appMetadata | <code>Object</code> | Metadata about the application that will be used in ensureCozyMetadata Cozy-Client will automatically call `this.login()` if provided with a token and an uri |
 
+<a name="CozyClient+registerPlugin"></a>
+
+### cozyClient.registerPlugin()
+A plugin is a function that receives the client as first argument.
+The main mean of interaction with the client should be with events
+like "login"/"logout".
+
+The plugin system is meant to encourage separation of concerns, modularity
+and testability : instead of registering events at module level, please
+create a plugin that subscribes to events.
+
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Example**  
+```
+const alertPlugin = client => {
+  client.on("login", () => { alert("client has logged in !") }
+  client.on("logout", () => { alert("client has logged out !") }
+}
+
+client.registerPlugin(alertPlugin)
+```
 <a name="CozyClient+login"></a>
 
 ### cozyClient.login() ⇒ <code>Promise</code>
