@@ -102,6 +102,21 @@ describe('CozyClient initialization', () => {
     expect(client.stackClient.token.accessToken).toBe(token)
   })
 
+  it('can be instantiated from an old client', () => {
+    // Not using a real cozy-client-js here not to have to add it as a dep
+    const url = 'https://testcozy.mycozy.cloud'
+    const token = 'Registration-token'
+    const oldClient = {
+      _url: url,
+      _token: {
+        token
+      }
+    }
+    const client = CozyClient.fromOldClient(oldClient)
+    expect(client.stackClient.uri).toBe(url)
+    expect(client.stackClient.token.token).toBe(token)
+  })
+
   it('should have chained links', async () => {
     const res = await client.requestQuery({})
     expect(res).toBe('foobarbaz')

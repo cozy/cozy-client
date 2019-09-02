@@ -94,6 +94,18 @@ class CozyClient {
     }
   }
 
+  /**
+   * To help with the transition from cozy-client-js to cozy-client, it is possible to instantiate
+   * a client with an instance of cozy-client-js.
+   */
+  static fromOldClient(oldClient, options) {
+    return new CozyClient({
+      uri: oldClient._url,
+      token: oldClient._token.token,
+      ...options
+    })
+  }
+
   /** In konnector/service context, CozyClient can be instantiated from environment variables */
   static fromEnv(env, options = {}) {
     env = env || (typeof process !== 'undefined' ? process.env : {})

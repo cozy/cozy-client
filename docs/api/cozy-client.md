@@ -490,6 +490,7 @@ Responsible for
         * [.createClient()](#CozyClient+createClient)
         * [.setData(data)](#CozyClient+setData)
     * _static_
+        * [.fromOldClient()](#CozyClient.fromOldClient)
         * [.fromEnv()](#CozyClient.fromEnv)
 
 <a name="new_CozyClient_new"></a>
@@ -685,6 +686,13 @@ set some data in the store.
 | --- | --- | --- |
 | data | <code>Object</code> | { doctype: [data] } |
 
+<a name="CozyClient.fromOldClient"></a>
+
+### CozyClient.fromOldClient()
+To help with the transition from cozy-client-js to cozy-client, it is possible to instantiate
+a client with an instance of cozy-client-js.
+
+**Kind**: static method of [<code>CozyClient</code>](#CozyClient)  
 <a name="CozyClient.fromEnv"></a>
 
 ### CozyClient.fromEnv()
