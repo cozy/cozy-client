@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.60.0](https://github.com/cozy/cozy-client/compare/v6.59.0...v6.60.0) (2019-09-02)
+
+
+### Features
+
+* Add registerPlugin method ([#509](https://github.com/cozy/cozy-client/issues/509)) ([1341329](https://github.com/cozy/cozy-client/commit/1341329))
+
+
+
+
+
 # [6.59.0](https://github.com/cozy/cozy-client/compare/v6.58.2...v6.59.0) (2019-09-02)
 
 
