@@ -117,6 +117,15 @@ describe('CozyClient initialization', () => {
     expect(client.stackClient.token.token).toBe(token)
   })
 
+  it('can register a plugin', () => {
+    expect.assertions(1)
+    const testPlugin = testClient => {
+      expect(testClient).toBe(client)
+    }
+    const client = new CozyClient({})
+    client.registerPlugin(testPlugin)
+  })
+
   it('should have chained links', async () => {
     const res = await client.requestQuery({})
     expect(res).toBe('foobarbaz')
