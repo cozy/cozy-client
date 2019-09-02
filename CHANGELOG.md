@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.59.0](https://github.com/cozy/cozy-client/compare/v6.58.2...v6.59.0) (2019-09-02)
+
+
+### Features
+
+* Instantiate from old client ([#508](https://github.com/cozy/cozy-client/issues/508)) ([a63a5c1](https://github.com/cozy/cozy-client/commit/a63a5c1))
+
+
+
+
+
 ## [6.58.2](https://github.com/cozy/cozy-client/compare/v6.58.1...v6.58.2) (2019-08-29)
 
 
