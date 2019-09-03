@@ -509,7 +509,7 @@ Responsible for
 <a name="CozyClient+registerPlugin"></a>
 
 ### cozyClient.registerPlugin()
-A plugin is a function that receives the client as first argument.
+A plugin is a class whose constructor receives the client as first argument.
 The main mean of interaction with the client should be with events
 like "login"/"logout".
 
@@ -517,15 +517,39 @@ The plugin system is meant to encourage separation of concerns, modularity
 and testability : instead of registering events at module level, please
 create a plugin that subscribes to events.
 
+Plugin instances are stored internally in the `plugins` attribute of the client
+and can be accessed via this mean. A plugin class must have the attribute
+`pluginName` that will be use as the key in the `plugins` object.
+
+Two plugins with the same `pluginName` cannot co-exist.
+
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 **Example**  
 ```
-const alertPlugin = client => {
-  client.on("login", () => { alert("client has logged in !") }
-  client.on("logout", () => { alert("client has logged out !") }
+class AlertPlugin {
+  constructor(client, options) {
+    this.client = client
+    this.handleLogin = this.handleLogin.bind(this)
+    this.handleLogout = this.handleLogout.bind(this)
+    this.client.on("login", this.handleLogin)
+    this.client.on("logout", this.handleLogout)
+  }
+
+  handleLogin() {
+    alert("client has logged in !")
+  }
+
+  handleLogout() {
+    alert("client has logged out !")
+  }
 }
 
-client.registerPlugin(alertPlugin)
+AlertPlugin.pluginName = 'alerts'
+
+client.registerPlugin(AlertPlugin)
+
+// the instance of the plugin is accessible via
+client.plugins.alerts
 ```
 <a name="CozyClient+login"></a>
 

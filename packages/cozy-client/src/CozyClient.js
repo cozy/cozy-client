@@ -89,13 +89,16 @@ class CozyClient {
 
     this.schema = new Schema(schema, this.getStackClient())
 
+    // Instances of plugins registered with registerPlugin
+    this.plugins = {}
+
     if (options.uri && options.token) {
       this.login()
     }
   }
 
   /**
-   * A plugin is a function that receives the client as first argument.
+   * A plugin is a class whose constructor receives the client as first argument.
    * The main mean of interaction with the client should be with events
    * like "login"/"logout".
    *
@@ -103,18 +106,56 @@ class CozyClient {
    * and testability : instead of registering events at module level, please
    * create a plugin that subscribes to events.
    *
+   * Plugin instances are stored internally in the `plugins` attribute of the client
+   * and can be accessed via this mean. A plugin class must have the attribute
+   * `pluginName` that will be use as the key in the `plugins` object.
+   *
+   * Two plugins with the same `pluginName` cannot co-exist.
+   *
    * @example
    * ```
-   * const alertPlugin = client => {
-   *   client.on("login", () => { alert("client has logged in !") }
-   *   client.on("logout", () => { alert("client has logged out !") }
+   * class AlertPlugin {
+   *   constructor(client, options) {
+   *     this.client = client
+   *     this.handleLogin = this.handleLogin.bind(this)
+   *     this.handleLogout = this.handleLogout.bind(this)
+   *     this.client.on("login", this.handleLogin)
+   *     this.client.on("logout", this.handleLogout)
+   *   }
+   *
+   *   handleLogin() {
+   *     alert("client has logged in !")
+   *   }
+   *
+   *   handleLogout() {
+   *     alert("client has logged out !")
+   *   }
    * }
    *
-   * client.registerPlugin(alertPlugin)
+   * AlertPlugin.pluginName = 'alerts'
+   *
+   * client.registerPlugin(AlertPlugin)
+   *
+   * // the instance of the plugin is accessible via
+   * client.plugins.alerts
    * ```
    */
-  registerPlugin(plugin) {
-    return plugin(this)
+  registerPlugin(Plugin, options) {
+    if (!Plugin.pluginName) {
+      throw new Error(
+        'Cannot register a plugin whose class does not have `pluginName` attribute.'
+      )
+    }
+    if (this.plugins[Plugin.pluginName]) {
+      throw new Error(
+        `Cannot register plugin ${
+          Plugin.pluginName
+        }. A plugin with the same name has already been registered.`
+      )
+    }
+    const instance = new Plugin(this, options)
+    this.plugins[Plugin.pluginName] = instance
+    return instance
   }
 
   /**

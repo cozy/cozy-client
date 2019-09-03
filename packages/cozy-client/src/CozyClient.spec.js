@@ -117,13 +117,40 @@ describe('CozyClient initialization', () => {
     expect(client.stackClient.token.token).toBe(token)
   })
 
-  it('can register a plugin', () => {
-    expect.assertions(1)
-    const testPlugin = testClient => {
-      expect(testClient).toBe(client)
-    }
-    const client = new CozyClient({})
-    client.registerPlugin(testPlugin)
+  describe('plugins', () => {
+    it('can register a plugin', () => {
+      expect.assertions(2)
+      class TestPlugin {
+        constructor(testClient) {
+          expect(testClient).toBe(client)
+        }
+      }
+      TestPlugin.pluginName = 'test'
+      const client = new CozyClient({})
+      client.registerPlugin(TestPlugin)
+      expect(client.plugins.test).toBeInstanceOf(TestPlugin)
+    })
+
+    it('cannot register a plugin with the same name as another plugin', () => {
+      class TestPlugin {}
+      class TestPlugin2 {}
+      TestPlugin.pluginName = TestPlugin2.pluginName = 'test'
+      client.registerPlugin(TestPlugin)
+      expect(() => client.registerPlugin(TestPlugin2)).toThrow(
+        new Error(
+          'Cannot register plugin test. A plugin with the same name has already been registered.'
+        )
+      )
+    })
+
+    it('cannot register a plugin with no `pluginName`', () => {
+      class TestPlugin {}
+      expect(() => client.registerPlugin(TestPlugin)).toThrow(
+        new Error(
+          'Cannot register a plugin whose class does not have `pluginName` attribute.'
+        )
+      )
+    })
   })
 
   it('should have chained links', async () => {
