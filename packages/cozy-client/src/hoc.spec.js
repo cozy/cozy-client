@@ -41,7 +41,7 @@ describe('queryConnect', () => {
 
     const client = mocks.client({
       all: doctype => queryDefinitionFromDoctype(doctype),
-      watchQuery: queryDef => observableQueryFromDefinition(queryDef)
+      makeObservableQuery: queryDef => observableQueryFromDefinition(queryDef)
     })
 
     const WithQueries = queryConnect({

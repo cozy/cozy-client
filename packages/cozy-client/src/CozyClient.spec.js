@@ -164,8 +164,8 @@ describe('CozyClient initialization', () => {
     }
   })
 
-  it('should create a store when calling watch query', () => {
-    client.watchQuery(new QueryDefinition({ doctype: 'io.cozy.todos' }))
+  it('should create a store when calling makeObservableQuery', () => {
+    client.makeObservableQuery(new QueryDefinition({ doctype: 'io.cozy.todos' }))
     expect(client.store).not.toBe(undefined)
   })
 })
