@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.61.0](https://github.com/cozy/cozy-client/compare/v6.60.0...v6.61.0) (2019-09-03)
+
+
+### Features
+
+* Change plugin interface ([#511](https://github.com/cozy/cozy-client/issues/511)) ([04f4949](https://github.com/cozy/cozy-client/commit/04f4949))
+
+
+
+
+
 # [6.60.0](https://github.com/cozy/cozy-client/compare/v6.59.0...v6.60.0) (2019-09-02)
 
 
