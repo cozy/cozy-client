@@ -47,6 +47,8 @@ export default class Query extends Component {
     if (query.fetch) {
       this.fetch = query.fetch.bind(query)
     }
+
+    this.recomputeChildrenArgs()
   }
 
   componentDidMount() {
@@ -70,27 +72,30 @@ export default class Query extends Component {
     }
   }
 
+  recomputeChildrenArgs() {
+    const query = this.observableQuery
+    this.data = {
+      fetchMore: this.fetchMore,
+      fetch: this.fetch,
+      ...query.currentResult()
+    }
+    this.methods = {
+      createDocument: this.createDocument,
+      saveDocument: this.saveDocument,
+      deleteDocument: this.deleteDocument,
+      getAssociation: this.getAssociation,
+      ...this.mutations
+    }
+  }
+
   onQueryChange = () => {
+    this.recomputeChildrenArgs()
     this.setState(dummyState)
   }
 
   render() {
     const { children } = this.props
-    const query = this.observableQuery
-    return children(
-      {
-        fetchMore: this.fetchMore,
-        fetch: this.fetch,
-        ...query.currentResult()
-      },
-      {
-        createDocument: this.createDocument,
-        saveDocument: this.saveDocument,
-        deleteDocument: this.deleteDocument,
-        getAssociation: this.getAssociation,
-        ...this.mutations
-      }
-    )
+    return children(this.data, this.methods)
   }
 }
 
