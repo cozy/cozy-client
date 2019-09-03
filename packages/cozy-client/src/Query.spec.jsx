@@ -178,7 +178,7 @@ describe('Query', () => {
       })
       expect(children).toHaveBeenCalledWith(
         {
-          fetch: undefined,
+          fetch: null,
           fetchMore: expect.any(Function)
         },
         expect.any(Object)
