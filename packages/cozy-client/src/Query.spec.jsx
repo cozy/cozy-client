@@ -17,7 +17,7 @@ describe('Query', () => {
   const queryDef = client => ({ doctype: 'io.cozy.todos' })
   let observableQuery
   const client = mocks.client({
-    watchQuery: queryDef => observableQuery
+    makeObservableQuery: queryDef => observableQuery
   })
 
   const context = { client }
@@ -167,7 +167,7 @@ describe('Query', () => {
     })
 
     it('should work with a client not providing fetch', () => {
-      client.watchQuery = () => ({
+      client.makeObservableQuery = () => ({
         subscribe: () => {},
         fetchMore: () => {},
         currentResult: () => {}

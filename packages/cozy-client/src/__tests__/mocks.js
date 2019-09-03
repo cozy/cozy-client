@@ -14,7 +14,7 @@ export const client = implementations => {
     save: jest.fn(),
     destroy: jest.fn(),
     getAssociation: jest.fn(),
-    watchQuery: jest.fn(),
+    makeObservableQuery: jest.fn(),
     all: jest.fn()
   }
   mockImplementations(base, implementations)
