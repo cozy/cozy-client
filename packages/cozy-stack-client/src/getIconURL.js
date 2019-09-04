@@ -114,7 +114,17 @@ export default memoize(getIconURL, {
   maxDuration: 300 * 1000,
   key: (stackClient, opts) => {
     const { type, slug, priority } = opts
-    return stackClient.uri + +':' + type + ':' + slug + ':' + priority
+    return (
+      stackClient.uri +
+      +':' +
+      type +
+      ':' +
+      slug +
+      ':' +
+      priority +
+      ':' +
+      window.navigator.onLine
+    )
   }
 })
 
