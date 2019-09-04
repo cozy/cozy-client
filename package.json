@@ -14,7 +14,7 @@
     "eslint-plugin-react": "7.14.2",
     "husky": "0.14.3",
     "jest": "23.6.0",
-    "jest-fetch-mock": "1.6.6",
+    "jest-fetch-mock": "1.7.5",
     "jsdoc-to-markdown": "4.0.1",
     "lerna": "3.16.4",
     "react": "16.7.0",
