@@ -3,7 +3,6 @@ import { mount } from 'enzyme'
 import CozyProvider from './Provider'
 
 import Query from './Query'
-import { createTestAssets, queryResultFromData } from './__tests__/utils'
 import {
   initQuery,
   receiveQueryResult,
@@ -11,13 +10,19 @@ import {
   getQueryFromState
 } from './store'
 import { TODOS, TODO_WITH_RELATION, FILE_1 } from './__tests__/fixtures'
+
+// TODO we should have only one way of testing with the client
+import { createTestAssets, queryResultFromData } from './__tests__/utils'
 import * as mocks from './__tests__/mocks'
 
 describe('Query', () => {
   const queryDef = client => ({ doctype: 'io.cozy.todos' })
   let observableQuery
   const client = mocks.client({
-    makeObservableQuery: queryDef => observableQuery
+    makeObservableQuery: queryDef => observableQuery,
+    requestQuery: async () => {
+      return { data: [] }
+    }
   })
 
   const context = { client }
