@@ -22,13 +22,14 @@ describe('cancelable', () => {
   })
 
   it('should reject with the rejection of the promise', done => {
+    const error = 'normal-rejection-from-cancelable-test'
     const { reject, wrapped } = setup()
     expect.assertions(1)
     wrapped.catch(res => {
-      expect(res).toBe(5)
+      expect(res).toBe(error)
       done()
     })
-    reject(5)
+    reject(error)
   })
 
   it('should reject with canceled: true if canceled', done => {
