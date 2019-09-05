@@ -29,6 +29,26 @@ const memoize = (fn, options) => {
         result,
         date: Date.now()
       }
+      /**
+       * If the result is a promise and that this promise
+       * failed or resolved with a specific key (aka ''), let's remove
+       * the result from the cache since we don't want to
+       * memoize error
+       */
+
+      if (typeof result === 'object') {
+        if (typeof result.then === 'function') {
+          result
+            .then(v => {
+              if (v === '') {
+                delete cache[key]
+              }
+            })
+            .catch(() => {
+              delete cache[key]
+            })
+        }
+      }
       return result
     }
   }

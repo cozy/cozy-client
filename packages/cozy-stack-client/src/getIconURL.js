@@ -73,7 +73,6 @@ const _getIconURL = async (stackClient, opts) => {
       throw new Error(`Error while fetching icon ${resp.statusText}`)
     }
   })
-
   let icon = await resp.blob()
   let app
   if (!icon.type) {
@@ -99,13 +98,16 @@ const _getIconURL = async (stackClient, opts) => {
     }
     icon = new Blob([icon], { type: mimeTypes[ext] })
   }
-
   return URL.createObjectURL(icon)
 }
 
+/**
+ * We need to catch the error and return a special object in
+ * order to be able to delete the memoization if needed
+ */
+
 const getIconURL = function() {
   return _getIconURL.apply(this, arguments).catch(e => {
-    console.warn(e)
     return ''
   })
 }
@@ -114,17 +116,7 @@ export default memoize(getIconURL, {
   maxDuration: 300 * 1000,
   key: (stackClient, opts) => {
     const { type, slug, priority } = opts
-    return (
-      stackClient.uri +
-      +':' +
-      type +
-      ':' +
-      slug +
-      ':' +
-      priority +
-      ':' +
-      window.navigator.onLine
-    )
+    return stackClient.uri + +':' + type + ':' + slug + ':' + priority
   }
 })
 

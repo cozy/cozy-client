@@ -134,12 +134,39 @@ describe('get icon', () => {
       })
     )
   })
-  it('should not call create Object since it should be memoized', async () => {
-    responses['/konnectors/caissedepargne1/icon'] = {
+
+  it('should call the server the second time if the first time it failed', async () => {
+    responses['/registry/caissedepargne1/icon'] = {
       ok: true,
       blob: () => FakeBlob([svgData], { type: 'image/svg+xml' })
     }
-    const url = await getIconUrlDefault(stackClient, defaultOpts)
+    stackClient.fetch = jest.fn().mockRejectedValue('No connexion')
+
+    await getIconUrlDefault(stackClient, defaultOpts)
+    expect(global.URL.createObjectURL).not.toHaveBeenCalled()
+
+    stackClient.fetch = jest.fn().mockImplementation(fakeResp)
+    const url2 = await getIconUrlDefault(stackClient, defaultOpts)
+    expect(global.URL.createObjectURL).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: 'image/svg+xml'
+      })
+    )
+    expect(url2.data[0]).toBe('<svg></svg>')
+  })
+
+  it('should not call create createObjectURL since it should be memoized', async () => {
+    /**
+     * Create a new response / request to be sure to not having memoized it already
+     */
+    responses['/konnectors/caissedepargne10/icon'] = {
+      ok: true,
+      blob: () => FakeBlob([svgData], { type: 'image/svg+xml' })
+    }
+    const url = await getIconUrlDefault(stackClient, {
+      type: 'konnector',
+      slug: 'caissedepargne10'
+    })
     expect(global.URL.createObjectURL).toHaveBeenCalledWith(
       expect.objectContaining({
         type: 'image/svg+xml'
@@ -147,48 +174,8 @@ describe('get icon', () => {
     )
     expect(url.data[0]).toBe('<svg></svg>')
     resetcreateObjectURL()
-    const url2 = await getIconUrlDefault(stackClient, defaultOpts)
+    await getIconUrlDefault(stackClient, defaultOpts)
 
     expect(global.URL.createObjectURL).not.toHaveBeenCalled()
-  })
-
-  it('should call the server even if the first call failled', async () => {
-    responses['/registry/caissedepargne1/icon'] = {
-      ok: true,
-      blob: () => FakeBlob([svgData], { type: 'image/svg+xml' })
-    }
-    stackClient.fetch = jest.fn().mockRejectedValue('No connexion')
-
-    const url = await getIconURL(stackClient, defaultOpts)
-    expect(global.URL.createObjectURL).not.toHaveBeenCalled()
-
-    stackClient.fetch = jest.fn().mockImplementation(fakeResp)
-    const url2 = await getIconURL(stackClient, defaultOpts)
-    expect(global.URL.createObjectURL).toHaveBeenCalledWith(
-      expect.objectContaining({
-        type: 'image/svg+xml'
-      })
-    )
-    expect(url2.data[0]).toBe('<svg></svg>')
-  })
-
-  fit('should call the server second time if the first time it failed', async () => {
-    responses['/registry/caissedepargne1/icon'] = {
-      ok: true,
-      blob: () => FakeBlob([svgData], { type: 'image/svg+xml' })
-    }
-    stackClient.fetch = jest.fn().mockRejectedValue('No connexion')
-
-    const url = await getIconUrlDefault(stackClient, defaultOpts)
-    expect(global.URL.createObjectURL).not.toHaveBeenCalled()
-
-    stackClient.fetch = jest.fn().mockImplementation(fakeResp)
-    const url2 = await getIconUrlDefault(stackClient, defaultOpts)
-    expect(global.URL.createObjectURL).toHaveBeenCalledWith(
-      expect.objectContaining({
-        type: 'image/svg+xml'
-      })
-    )
-    expect(url2.data[0]).toBe('<svg></svg>')
   })
 })
