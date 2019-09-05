@@ -9,5 +9,10 @@
         "ignoreRestSiblings": true
       }
     ]
+  },
+  "settings": {
+    "react": {
+      "version": "16.2"
+    }
   }
 }
