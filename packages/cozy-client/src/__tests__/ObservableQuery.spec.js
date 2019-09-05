@@ -33,18 +33,17 @@ describe('ObservableQuery', () => {
   })
 
   describe('notifications', () => {
-    let query
-    const def = client.all('io.cozy.todos')
-    const observer = jest.fn()
-
-    beforeEach(async () => {
-      observer.mockReset()
-      query = new ObservableQuery('allTodos', def, client)
+    const setup = async () => {
+      const def = client.all('io.cozy.todos')
+      const observer = jest.fn()
+      const query = new ObservableQuery('allTodos', def, client)
       query.subscribe(observer)
       await store.dispatch(initQuery('allTodos', def))
-    })
+      return { observer, query }
+    }
 
     it('should notify observers when the fetchStatus change', async () => {
+      const { observer } = await setup()
       await store.dispatch(
         receiveQueryResult('allTodos', queryResultFromData([TODO_1]))
       )
@@ -52,6 +51,7 @@ describe('ObservableQuery', () => {
     })
 
     it('should not notify observers when other queries changed', async () => {
+      const { observer, query } = await setup()
       await store.dispatch(
         receiveQueryResult('allTodos', queryResultFromData([TODO_1, TODO_2]))
       )
