@@ -67,11 +67,20 @@ describe('CozyClient initialization', () => {
     expect(client.isLogged).toBeTruthy()
   })
 
-  it('should not break explicit login when provided token and uri', () => {
-    const token = 'fake_token'
-    const uri = 'https://example.mycozy.cloud'
-    client = new CozyClient({ token, uri })
-    expect(client.login()).toBeInstanceOf(Promise)
+  describe('explicit login', () => {
+    beforeEach(() => {
+      jest.spyOn(console, 'warn').mockImplementation(() => {})
+    })
+    afterEach(() => {
+      console.warn.mockRestore()
+    })
+
+    it('should not break explicit login when provided token and uri', () => {
+      const token = 'fake_token'
+      const uri = 'https://example.mycozy.cloud'
+      client = new CozyClient({ token, uri })
+      expect(client.login()).toBeInstanceOf(Promise)
+    })
   })
 
   it('can be instantiated from environment with string token', () => {
@@ -165,14 +174,25 @@ describe('CozyClient initialization', () => {
   })
 
   it('should create a store when calling makeObservableQuery', () => {
-    client.makeObservableQuery(new QueryDefinition({ doctype: 'io.cozy.todos' }))
+    jest.spyOn(console, 'warn').mockImplementation(() => {})
+    client.makeObservableQuery(
+      new QueryDefinition({ doctype: 'io.cozy.todos' })
+    )
+    console.warn.mockRestore()
     expect(client.store).not.toBe(undefined)
   })
 })
 
 describe('Stack client initialization', () => {
-  it('should add default callbacks', () => {
+  beforeEach(() => {
+    jest.spyOn(console, 'warn').mockImplementation(() => {})
+  })
+  afterEach(() => {
+    console.warn.mockRestore()
+  })
+  it('should add default callbacks', async () => {
     const client = new CozyClient({})
+    await client.login()
     expect(client.stackClient.options.onRevocationChange).toBe(
       client.handleRevocationChange
     )
@@ -249,7 +269,9 @@ describe('CozyClient logout', () => {
     expect(links[2].reset).toHaveBeenCalledTimes(1)
 
     // test if we launch twice logout, it doesn't launch twice reset.
+    jest.spyOn(console, 'warn').mockImplementation(() => {})
     await client.logout()
+    console.warn.mockRestore()
 
     expect(links[0].reset).toHaveBeenCalledTimes(1)
     expect(links[2].reset).toHaveBeenCalledTimes(1)

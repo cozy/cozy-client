@@ -3,6 +3,14 @@ import { mount } from 'enzyme'
 import { withClient, queryConnect } from './hoc'
 import * as mocks from './__tests__/mocks'
 
+beforeEach(() => {
+  jest.spyOn(console, 'warn').mockImplementation(() => {})
+})
+
+afterEach(() => {
+  console.warn.mockRestore()
+})
+
 class Component extends React.Component {
   render() {
     return <div />

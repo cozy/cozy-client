@@ -10,6 +10,14 @@ import { getQueryFromState, initQuery } from '../store'
 
 import { TODO_1, TODO_2, TODO_3 } from './fixtures'
 
+beforeEach(() => {
+  jest.spyOn(console, 'warn').mockImplementation(() => {})
+})
+
+afterEach(() => {
+  console.warn.mockRestore()
+})
+
 describe('connect', () => {
   const requestHandler = jest.fn()
   const link = new CozyLink(requestHandler)

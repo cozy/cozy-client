@@ -100,7 +100,9 @@ describe('get icon', () => {
     responses['/registry/caissedepargne1'] = {
       data: { name: 'caissedepargne1', icon: 'icon.mp4' }
     }
+    jest.spyOn(console, 'warn').mockImplementation(() => {})
     const url = await getIconURL(stackClient, defaultOpts)
+    console.warn.mockRestore()
     expect(url).toEqual('')
   })
 
