@@ -3,6 +3,277 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.62.0](https://github.com/cozy/cozy-client/compare/v6.61.0...v6.62.0) (2019-09-05)
+
+
+### Bug Fixes
+
+* Add execution flag to scripts/deploy ([cf86dc4](https://github.com/cozy/cozy-client/commit/cf86dc4))
+
+
+### Features
+
+* Publish git release with lerna ([f95cfcb](https://github.com/cozy/cozy-client/commit/f95cfcb))
+* Small improvements and refactor ([#518](https://github.com/cozy/cozy-client/issues/518)) ([d3a308c](https://github.com/cozy/cozy-client/commit/d3a308c))
+
+
+
+## [6.43.1](https://github.com/cozy/cozy-client/compare/v6.43.0...v6.43.1) (2019-06-05)
+
+
+
+# [6.43.0](https://github.com/cozy/cozy-client/compare/v6.42.0...v6.43.0) (2019-06-05)
+
+
+### Features
+
+* Add job creation + fetching ([77ffdf4](https://github.com/cozy/cozy-client/commit/77ffdf4))
+
+
+
+# [6.42.0](https://github.com/cozy/cozy-client/compare/v6.41.1...v6.42.0) (2019-06-04)
+
+
+### Features
+
+* Add an unified way to get the access token ([4799688](https://github.com/cozy/cozy-client/commit/4799688))
+
+
+
+## [6.41.1](https://github.com/cozy/cozy-client/compare/v6.41.0...v6.41.1) (2019-06-03)
+
+
+### Bug Fixes
+
+* **schema:** Map on names to show duplicate error ([606a84f](https://github.com/cozy/cozy-client/commit/606a84f))
+
+
+
+# [6.41.0](https://github.com/cozy/cozy-client/compare/v6.40.1...v6.41.0) (2019-06-03)
+
+
+
+## [6.40.1](https://github.com/cozy/cozy-client/compare/v6.40.0...v6.40.1) (2019-05-31)
+
+
+### Features
+
+* Add queries on id in dsl ([f625f3d](https://github.com/cozy/cozy-client/commit/f625f3d))
+
+
+
+# [6.40.0](https://github.com/cozy/cozy-client/compare/v6.39.0...v6.40.0) (2019-05-31)
+
+
+
+# [6.39.0](https://github.com/cozy/cozy-client/compare/v6.38.2...v6.39.0) (2019-05-31)
+
+
+### Bug Fixes
+
+* Use memory adapter ([14a6332](https://github.com/cozy/cozy-client/commit/14a6332))
+* Use pouchdb browser ([635f71a](https://github.com/cozy/cozy-client/commit/635f71a))
+
+
+### Features
+
+* Add fetch polyfill in jest setup ([750216d](https://github.com/cozy/cozy-client/commit/750216d))
+* Delete triggers ([198062b](https://github.com/cozy/cozy-client/commit/198062b))
+* Implicitly create the schema if it does not exist ([3a834a4](https://github.com/cozy/cozy-client/commit/3a834a4))
+
+
+
+## [6.38.2](https://github.com/cozy/cozy-client/compare/v6.38.1...v6.38.2) (2019-05-29)
+
+
+### Bug Fixes
+
+* **cozy-client:** Export cancelable util ([d262983](https://github.com/cozy/cozy-client/commit/d262983))
+
+
+
+## [6.38.1](https://github.com/cozy/cozy-client/compare/v6.38.0...v6.38.1) (2019-05-29)
+
+
+### Bug Fixes
+
+* Use NODE_ENV to differenciate authentication methods ([25499f0](https://github.com/cozy/cozy-client/commit/25499f0))
+
+
+
+# [6.38.0](https://github.com/cozy/cozy-client/compare/v6.37.1...v6.38.0) (2019-05-28)
+
+
+### Bug Fixes
+
+* Allow fromEnv instantiation from oauth client ([4f03be9](https://github.com/cozy/cozy-client/commit/4f03be9))
+
+
+### Features
+
+* **cozy-stack-client:** Add restore method on FileCollection ([cebca37](https://github.com/cozy/cozy-client/commit/cebca37))
+
+
+
+## [6.37.1](https://github.com/cozy/cozy-client/compare/v6.37.0...v6.37.1) (2019-05-27)
+
+
+
+# [6.37.0](https://github.com/cozy/cozy-client/compare/v6.36.0...v6.37.0) (2019-05-27)
+
+
+### Features
+
+* Add --verbose for babel for watch to show transpiled files ([56fb28a](https://github.com/cozy/cozy-client/commit/56fb28a))
+* Fetch apps ([0aa92e4](https://github.com/cozy/cozy-client/commit/0aa92e4))
+* Manifest sanitization ([0e75f3f](https://github.com/cozy/cozy-client/commit/0e75f3f))
+
+
+
+# [6.36.0](https://github.com/cozy/cozy-client/compare/v6.35.0...v6.36.0) (2019-05-27)
+
+
+### Features
+
+* Standard method of instantiating CozyClient from env vars ([dc2cfab](https://github.com/cozy/cozy-client/commit/dc2cfab))
+
+
+
+# [6.35.0](https://github.com/cozy/cozy-client/compare/v6.34.0...v6.35.0) (2019-05-23)
+
+
+### Features
+
+* Add cancelable util ([9f20d87](https://github.com/cozy/cozy-client/commit/9f20d87))
+
+
+
+# [6.34.0](https://github.com/cozy/cozy-client/compare/v6.33.0...v6.34.0) (2019-05-22)
+
+
+### Features
+
+* Add Registry API ([73fd7f0](https://github.com/cozy/cozy-client/commit/73fd7f0))
+
+
+
+# [6.33.0](https://github.com/cozy/cozy-client/compare/v6.32.0...v6.33.0) (2019-05-21)
+
+
+### Features
+
+* **cozy-stack-client:** Add updateFile method to FileCollection ([21006d1](https://github.com/cozy/cozy-client/commit/21006d1))
+
+
+
+# [6.32.0](https://github.com/cozy/cozy-client/compare/v6.31.1...v6.32.0) (2019-05-20)
+
+
+### Features
+
+* Add display name to queryConnect and withClient ([fead480](https://github.com/cozy/cozy-client/commit/fead480))
+
+
+
+## [6.31.1](https://github.com/cozy/cozy-client/compare/v6.31.0...v6.31.1) (2019-05-14)
+
+
+### Bug Fixes
+
+* Do not bind query.fetch if it does not exist ([18846e5](https://github.com/cozy/cozy-client/commit/18846e5))
+
+
+
+# [6.31.0](https://github.com/cozy/cozy-client/compare/v6.30.0...v6.31.0) (2019-05-14)
+
+
+
+# [6.30.0](https://github.com/cozy/cozy-client/compare/v6.29.0...v6.30.0) (2019-05-13)
+
+
+### Bug Fixes
+
+* Do not log warnings when we know what we are doing ([cad9243](https://github.com/cozy/cozy-client/commit/cad9243))
+
+
+### Features
+
+* Can insert task immediately into PouchLink loop ([7e99e0f](https://github.com/cozy/cozy-client/commit/7e99e0f))
+* Sync immediately ([343f394](https://github.com/cozy/cozy-client/commit/343f394))
+
+
+
+# [6.29.0](https://github.com/cozy/cozy-client/compare/v6.28.0...v6.29.0) (2019-05-10)
+
+
+### Features
+
+* Cozy-client will autologin if initialized with uri and token ([467a534](https://github.com/cozy/cozy-client/commit/467a534))
+
+
+
+# [6.28.0](https://github.com/cozy/cozy-client/compare/v6.27.0...v6.28.0) (2019-05-10)
+
+
+### Features
+
+* Fetch method on ObservableQuery ([4c505b6](https://github.com/cozy/cozy-client/commit/4c505b6))
+
+
+
+# [6.27.0](https://github.com/cozy/cozy-client/compare/v6.26.0...v6.27.0) (2019-05-06)
+
+
+### Features
+
+* Add beforeLogin event ([c574c6a](https://github.com/cozy/cozy-client/commit/c574c6a))
+
+
+
+# [6.26.0](https://github.com/cozy/cozy-client/compare/v6.25.0...v6.26.0) (2019-05-02)
+
+
+### Features
+
+* Emit beforeLogout event before doing the logout logic ([75a68c6](https://github.com/cozy/cozy-client/commit/75a68c6))
+
+
+
+# [6.25.0](https://github.com/cozy/cozy-client/compare/v6.24.2...v6.25.0) (2019-04-30)
+
+
+### Features
+
+* Allows to refresh app tokens ([8b55e2c](https://github.com/cozy/cozy-client/commit/8b55e2c))
+
+
+
+## [6.24.2](https://github.com/cozy/cozy-client/compare/v6.24.1...v6.24.2) (2019-04-29)
+
+
+
+## [6.24.1](https://github.com/cozy/cozy-client/compare/v6.24.0...v6.24.1) (2019-04-26)
+
+
+### Bug Fixes
+
+* Bad name for attribute ([4ce8968](https://github.com/cozy/cozy-client/commit/4ce8968))
+* Defensive condition ([b23e924](https://github.com/cozy/cozy-client/commit/b23e924))
+* Handle isRevoked in login() ([00668fb](https://github.com/cozy/cozy-client/commit/00668fb))
+* Set Authorization header ([976f47d](https://github.com/cozy/cozy-client/commit/976f47d))
+
+
+
+# [6.24.0](https://github.com/cozy/cozy-client/compare/v6.23.3...v6.24.0) (2019-04-25)
+
+
+
+## 6.23.3 (2019-04-25)
+
+
+
+
+
 # [6.61.0](https://github.com/cozy/cozy-client/compare/v6.60.0...v6.61.0) (2019-09-03)
 
 
