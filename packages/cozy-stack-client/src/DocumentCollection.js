@@ -352,7 +352,7 @@ class DocumentCollection {
     if (typeof couchOptions !== 'object') {
       urlParams = `?include_docs=true&since=${couchOptions}`
       console.warn(
-        'fetchChanges use couchOptions as Object not a string, since is deprecated, please use fetchChanges({include_docs: true, since: 0}).'
+        `fetchChanges use couchOptions as Object not a string, since is deprecated, please use fetchChanges({include_docs: true, since: "${couchOptions}"}).`
       )
     } else if (Object.keys(couchOptions).length > 0) {
       urlParams = `?${[
