@@ -21,7 +21,6 @@ export default class ObservableQuery {
     this.observers = {}
     this.idCounter = 1
     this.lastResult = this.currentRawResult()
-    this.unsubscribeStore = this.getStore().subscribe(this.handleStoreChange)
   }
 
   handleStoreChange = () => {
@@ -77,15 +76,41 @@ export default class ObservableQuery {
     Object.keys(this.observers).forEach(id => this.observers[id]())
   }
 
+  subscribeToStore() {
+    if (this._unsubscribeStore) {
+      throw new Error(
+        'ObservableQuery instance is already subscribed to store.'
+      )
+    }
+    this._unsubscribeStore = this.getStore().subscribe(this.handleStoreChange)
+  }
+
+  unsubscribeFromStore() {
+    if (!this._unsubscribeStore) {
+      throw new Error('ObservableQuery instance is not subscribed to store')
+    }
+    this._unsubscribeStore()
+  }
+
   subscribe(callback) {
     const callbackId = this.idCounter
     this.idCounter++
     this.observers[callbackId] = callback
+    if (Object.keys(this.observers).length === 1) {
+      this.subscribeToStore()
+    }
     return () => this.unsubscribe(callbackId)
   }
 
   unsubscribe(callbackId) {
+    if (!this.observers[callbackId]) {
+      throw new Error(`Cannot unsubscribe unknown callbackId ${callbackId}`)
+    }
     delete this.observers[callbackId]
+    if (Object.keys(this.observers).length === 0) {
+      this.unsubscribeFromStore()
+      this._unsubscribeStore = null
+    }
   }
 
   getStore() {
