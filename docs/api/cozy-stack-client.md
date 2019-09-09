@@ -60,13 +60,6 @@ through OAuth.</p>
 <dt><a href="#getAccessToken">getAccessToken()</a> ⇒ <code>string</code></dt>
 <dd><p>Get the app token string</p>
 </dd>
-<dt><a href="#normalizeDoc">normalizeDoc(doc, doctype)</a> ⇒ <code>object</code></dt>
-<dd><p>Normalize a document, adding its doctype if needed</p>
-</dd>
-<dt><a href="#getIconURL">getIconURL()</a></dt>
-<dd><p>We need to catch the error and return a special object in
-order to be able to delete the memoization if needed</p>
-</dd>
 <dt><a href="#garbageCollect">garbageCollect()</a></dt>
 <dd><p>Delete outdated results from cache</p>
 </dd>
