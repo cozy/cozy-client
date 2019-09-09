@@ -1,5 +1,6 @@
 import { Component } from 'react'
 import PropTypes from 'prop-types'
+import { getQueryFromState } from './store'
 
 const dummyState = {}
 
@@ -103,7 +104,16 @@ export default class Query extends Component {
 
   componentDidMount() {
     this.queryUnsubscribe = this.observableQuery.subscribe(this.onQueryChange)
-    if (this.props.fetchPolicy !== 'cache-only') {
+    if (this.props.fetchPolicy) {
+      const queryState = this.client.getQueryFromState(this.props.as)
+      if (
+        this.props.fetchPolicy &&
+        typeof this.props.fetchPolicy === 'function' &&
+        this.props.fetchPolicy(queryState)
+      ) {
+        fetchQuery(this.client, this.observableQuery)
+      }
+    } else {
       fetchQuery(this.client, this.observableQuery)
     }
   }
@@ -141,8 +151,22 @@ Query.propTypes = {
   as: PropTypes.string,
   /** Function called with the data from the query */
   children: PropTypes.func.isRequired,
-  /** How data is fetched */
-  fetchPolicy: PropTypes.oneOf(['cache-only'])
+  /**
+   * Decides if the query is fetched at mount time. If not present
+   * the query is always fetched at mount time. Receives the current
+   * state of the query from the store as 1st argument.
+   *
+   * @example
+   * If you want to only fetch queries that are older than 30 seconds:
+
+   * ```js
+   * const cache30s = ({ lastUpdate }) => {
+   *   return !lastUpdate || (Date.now() - 30 * 1000 > lastUpdate)
+   * }
+   * <Query fetchPolicy={cache30s} ... />
+   * ```
+   */
+  fetchPolicy: PropTypes.func
 }
 
 export { getQueryAttributes, computeChildrenArgs }
