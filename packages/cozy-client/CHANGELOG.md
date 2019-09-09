@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.63.0](https://github.com/cozy/cozy-client/compare/v6.62.0...v6.63.0) (2019-09-09)
+
+
+### Bug Fixes
+
+* Correctly mock requestQuery to send back a response shaped object ([c3ef9f9](https://github.com/cozy/cozy-client/commit/c3ef9f9))
+* Observable query automatically subscribes/unsubscribe from store ([63eddb9](https://github.com/cozy/cozy-client/commit/63eddb9))
+
+
+### Features
+
+* Better name for watchQuery ([6e83c12](https://github.com/cozy/cozy-client/commit/6e83c12))
+* Create children args only when query changes ([8224f70](https://github.com/cozy/cozy-client/commit/8224f70))
+
+
+
+
+
 # [6.62.0](https://github.com/cozy/cozy-client/compare/v6.61.0...v6.62.0) (2019-09-05)
 
 
