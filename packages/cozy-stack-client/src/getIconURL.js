@@ -1,5 +1,4 @@
-import memoize from './memoize'
-
+import memoize, { ErrorReturned } from './memoize'
 const mimeTypes = {
   gif: 'image/gif',
   ico: 'image/vnd.microsoft.icon',
@@ -101,14 +100,9 @@ const _getIconURL = async (stackClient, opts) => {
   return URL.createObjectURL(icon)
 }
 
-/**
- * We need to catch the error and return a special object in
- * order to be able to delete the memoization if needed
- */
-
 const getIconURL = function() {
   return _getIconURL.apply(this, arguments).catch(e => {
-    return ''
+    return new ErrorReturned()
   })
 }
 

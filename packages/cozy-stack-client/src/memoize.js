@@ -1,3 +1,9 @@
+class ErrorReturned extends String {
+  /**
+   * We need to catch the error and return a special object in
+   * order to be able to delete the memoization if needed
+   */
+}
 /**
  * Delete outdated results from cache
  */
@@ -30,9 +36,9 @@ const memoize = (fn, options) => {
         date: Date.now()
       }
       /**
-       * If the result is a promise and that this promise
-       * failed or resolved with a specific key (aka ''), let's remove
-       * the result from the cache since we don't want to
+       * If the result is a promise and this promise
+       * failed or resolved with a specific error (aka ErrorReturned),
+       * let's remove the result from the cache since we don't want to
        * memoize error
        */
 
@@ -40,11 +46,11 @@ const memoize = (fn, options) => {
         if (typeof result.then === 'function') {
           result
             .then(v => {
-              if (v === '') {
+              if (v instanceof ErrorReturned) {
                 delete cache[key]
               }
             })
-            .catch(() => {
+            .catch(e => {
               delete cache[key]
             })
         }
@@ -55,3 +61,4 @@ const memoize = (fn, options) => {
 }
 
 export default memoize
+export { ErrorReturned }
