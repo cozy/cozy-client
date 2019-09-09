@@ -3,6 +3,14 @@ import { mount } from 'enzyme'
 import { withClient, queryConnect } from './hoc'
 import * as mocks from './__tests__/mocks'
 
+beforeEach(() => {
+  jest.spyOn(console, 'warn').mockImplementation(() => {})
+})
+
+afterEach(() => {
+  console.warn.mockRestore()
+})
+
 class Component extends React.Component {
   render() {
     return <div />
@@ -41,7 +49,7 @@ describe('queryConnect', () => {
 
     const client = mocks.client({
       all: doctype => queryDefinitionFromDoctype(doctype),
-      watchQuery: queryDef => observableQueryFromDefinition(queryDef)
+      makeObservableQuery: queryDef => observableQueryFromDefinition(queryDef)
     })
 
     const WithQueries = queryConnect({

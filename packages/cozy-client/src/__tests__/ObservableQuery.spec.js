@@ -37,9 +37,11 @@ describe('ObservableQuery', () => {
       const def = client.all('io.cozy.todos')
       const observer = jest.fn()
       const query = new ObservableQuery('allTodos', def, client)
-      query.subscribe(observer)
+      jest.spyOn(query, 'subscribeToStore')
+      jest.spyOn(query, 'unsubscribeFromStore')
+      const unsubscribe = query.subscribe(observer)
       await store.dispatch(initQuery('allTodos', def))
-      return { observer, query }
+      return { observer, query, unsubscribe }
     }
 
     it('should notify observers when the fetchStatus change', async () => {
@@ -60,7 +62,14 @@ describe('ObservableQuery', () => {
         receiveQueryResult('allAuthors', queryResultFromData(AUTHORS))
       )
       expect(observer).toHaveBeenCalledTimes(2)
-      query.currentResult()
+    })
+
+    it('should automatically subscribe/unsubscribe from store', async () => {
+      const { unsubscribe, query } = await setup()
+      unsubscribe()
+      expect(query.unsubscribeFromStore).toHaveBeenCalledTimes(1)
+      query.subscribe()
+      expect(query.subscribeToStore).toHaveBeenCalledTimes(2)
     })
   })
 

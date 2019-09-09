@@ -548,7 +548,9 @@ describe('DocumentCollection', () => {
     })
 
     it('should call the right route with deprecated parameter', async () => {
+      jest.spyOn(console, 'warn').mockImplementation(() => {})
       await collection.fetchChanges('my-seq')
+      console.warn.mockRestore()
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
         '/data/io.cozy.todos/_changes?include_docs=true&since=my-seq',

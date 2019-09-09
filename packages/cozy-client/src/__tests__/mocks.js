@@ -3,7 +3,12 @@ const mockImplementations = (base, implementations) => {
     return
   }
   Object.entries(implementations).map(([name, implementation]) => {
-    base[name].mockImplementation(implementation)
+    try {
+      base[name].mockImplementation(implementation)
+    } catch (e) {
+      console.error(e)
+      throw new Error(`Could not mock '${name}. Original error above.`)
+    }
   })
 }
 
@@ -14,7 +19,8 @@ export const client = implementations => {
     save: jest.fn(),
     destroy: jest.fn(),
     getAssociation: jest.fn(),
-    watchQuery: jest.fn(),
+    makeObservableQuery: jest.fn(),
+    requestQuery: jest.fn(),
     all: jest.fn()
   }
   mockImplementations(base, implementations)

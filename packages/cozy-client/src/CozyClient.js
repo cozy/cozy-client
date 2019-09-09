@@ -530,7 +530,14 @@ class CozyClient {
     return documents
   }
 
-  watchQuery(queryDefinition, options = {}) {
+  watchQuery(...args) {
+    console.warn(
+      'client.watchQuery is deprecated, please use client.makeObservableQuery.'
+    )
+    return this.makeObservableQuery(...args)
+  }
+
+  makeObservableQuery(queryDefinition, options = {}) {
     this.ensureStore()
     const queryId = options.as || this.generateId()
     this.ensureQueryExists(queryId, queryDefinition)
