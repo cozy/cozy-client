@@ -40,7 +40,7 @@ describe('Query', () => {
       expect(observableQuery.fetch).toHaveBeenCalled()
     })
 
-    it('should not fire a query fetch when mounted with initialFetch=false', () => {
+    it('should not fire a query fetch when mounted with fetchPolicy=cache-only', () => {
       mount(
         <Query query={queryDef} as="allTodos" fetchPolicy="cache-only">
           {() => null}
