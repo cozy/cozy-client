@@ -760,6 +760,13 @@ class CozyClient {
     return this.storeAccessors
   }
 
+  /**
+   * Get a collection of documents from the internal store.
+   *
+   * @param {String} type - Doctype of the collection
+   *
+   * @return {Document[]} Array of documents or null if the collection does not exist.
+   */
   getCollectionFromState(type) {
     try {
       return getCollectionFromState(this.store.getState(), type)
@@ -769,11 +776,35 @@ class CozyClient {
     }
   }
 
+  /**
+   * Get a document from the internal store.
+   *
+   * @param {String} type - Doctype of the document
+   * @param {String} id   - Id of the document
+   *
+   * @return {Document} Document or null if the object does not exist.
+   */
   getDocumentFromState(type, id) {
     try {
       return getDocumentFromState(this.store.getState(), type, id)
     } catch (e) {
       console.warn('Could not getDocumentFromState', type, id, e.message)
+      return null
+    }
+  }
+
+  /**
+   * Get a query from the internal store.
+   *
+   * @param {String} id - Id of the query (set via Query.props.as)
+   *
+   * @return {QueryState} - Query state or null if it does not exist.
+   */
+  getQueryFromState(id) {
+    try {
+      return getQueryFromState(this.store.getState(), id)
+    } catch (e) {
+      console.warn('Could not getQueryFromState', id, e.message)
       return null
     }
   }

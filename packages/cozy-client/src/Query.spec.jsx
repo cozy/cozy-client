@@ -40,13 +40,18 @@ describe('Query', () => {
       expect(observableQuery.fetch).toHaveBeenCalled()
     })
 
-    it('should not fire a query fetch when mounted with fetchPolicy=cache-only', () => {
+    it('should not fire a query fetch when mounted when fetchPolicy returns false', () => {
+      const queryState = { lastUpdate: Date.now() }
+      client.getQueryFromState = jest.fn().mockReturnValue(queryState)
+      const fetchPolicy = jest.fn().mockReturnValue(false)
       mount(
-        <Query query={queryDef} as="allTodos" fetchPolicy="cache-only">
+        <Query query={queryDef} as="allTodos" fetchPolicy={fetchPolicy}>
           {() => null}
         </Query>,
         { context }
       )
+      expect(client.getQueryFromState).toHaveBeenCalledWith('allTodos')
+      expect(fetchPolicy).toHaveBeenCalledWith(queryState)
       expect(client.query).not.toHaveBeenCalled()
     })
 
@@ -77,10 +82,11 @@ describe('Query', () => {
       const assets = createTestAssets()
       store = assets.store
       client = assets.client
+      const noFetch = () => false
       await store.dispatch(initQuery('allTodos', queryDef(client)))
       uut = mount(
         <CozyProvider client={client}>
-          <Query fetchPolicy="cache-only" query={queryDef}>
+          <Query fetchPolicy={noFetch} query={queryDef}>
             {({ data }) => (
               <ul>
                 {data.map(x => (
@@ -139,9 +145,10 @@ describe('Query', () => {
     })
 
     const setup = ({ children }) => {
+      const noFetch = () => false
       mount(
         <CozyProvider client={client}>
-          <Query fetchPolicy="cache-only" query={queryDef}>
+          <Query fetchPolicy={noFetch} query={queryDef}>
             {children}
           </Query>
         </CozyProvider>
@@ -205,13 +212,11 @@ describe('Query', () => {
         update: jest.fn()
       })
 
+      const noFetch = () => false
+
       mount(
         <CozyProvider client={client}>
-          <Query
-            fetchPolicy="cache-only"
-            query={queryDef}
-            mutations={mutations}
-          >
+          <Query fetchPolicy={noFetch} query={queryDef} mutations={mutations}>
             {(result, mutations) => {
               mutationsArgument = mutations
               return null
@@ -237,13 +242,11 @@ describe('Query', () => {
         update: jest.fn()
       }
 
+      const noFetch = () => false
+
       mount(
         <CozyProvider client={client}>
-          <Query
-            fetchPolicy="cache-only"
-            query={queryDef}
-            mutations={mutations}
-          >
+          <Query fetchPolicy={noFetch} query={queryDef} mutations={mutations}>
             {(result, mutations) => {
               mutationsArgument = mutations
               return null
