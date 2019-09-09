@@ -483,6 +483,9 @@ Responsible for
         * [.makeNewDocument()](#CozyClient+makeNewDocument)
         * [.getAssociation()](#CozyClient+getAssociation)
         * [.getRelationshipStoreAccessors()](#CozyClient+getRelationshipStoreAccessors)
+        * [.getCollectionFromState(type)](#CozyClient+getCollectionFromState) ⇒ <code>Array.&lt;Document&gt;</code>
+        * [.getDocumentFromState(type, id)](#CozyClient+getDocumentFromState) ⇒ <code>Document</code>
+        * [.getQueryFromState(id)](#CozyClient+getQueryFromState) ⇒ <code>QueryState</code>
         * [.register(cozyURL)](#CozyClient+register) ⇒ <code>object</code>
         * [.startOAuthFlow(openURLCallback)](#CozyClient+startOAuthFlow) ⇒ <code>object</code>
         * [.renewAuthorization()](#CozyClient+renewAuthorization) ⇒ <code>object</code>
@@ -663,6 +666,43 @@ a modification (addById/removeById etc...) has been done. This wakes
 the store up, which in turn will update the `<Query>`s and re-render the data.
 
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+<a name="CozyClient+getCollectionFromState"></a>
+
+### cozyClient.getCollectionFromState(type) ⇒ <code>Array.&lt;Document&gt;</code>
+Get a collection of documents from the internal store.
+
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: <code>Array.&lt;Document&gt;</code> - Array of documents or null if the collection does not exist.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| type | <code>String</code> | Doctype of the collection |
+
+<a name="CozyClient+getDocumentFromState"></a>
+
+### cozyClient.getDocumentFromState(type, id) ⇒ <code>Document</code>
+Get a document from the internal store.
+
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: <code>Document</code> - Document or null if the object does not exist.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| type | <code>String</code> | Doctype of the document |
+| id | <code>String</code> | Id of the document |
+
+<a name="CozyClient+getQueryFromState"></a>
+
+### cozyClient.getQueryFromState(id) ⇒ <code>QueryState</code>
+Get a query from the internal store.
+
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: <code>QueryState</code> - - Query state or null if it does not exist.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | Id of the query (set via Query.props.as) |
+
 <a name="CozyClient+register"></a>
 
 ### cozyClient.register(cozyURL) ⇒ <code>object</code>

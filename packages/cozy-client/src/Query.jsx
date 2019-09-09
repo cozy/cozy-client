@@ -156,7 +156,6 @@ Query.propTypes = {
    * the query is always fetched at mount time. Receives the current
    * state of the query from the store as 1st argument.
    *
-   *
    * @example
    * If you want to only fetch queries that are older than 30 seconds:
 
