@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.64.0](https://github.com/cozy/cozy-client/compare/v6.63.0...v6.64.0) (2019-09-09)
+
+
+### Features
+
+* Add ready-made fetch policies ([fdfb6db](https://github.com/cozy/cozy-client/commit/fdfb6db))
+* Fetch policy ([22380bb](https://github.com/cozy/cozy-client/commit/22380bb))
+
+
+
+
+
 # [6.63.0](https://github.com/cozy/cozy-client/compare/v6.62.0...v6.63.0) (2019-09-09)
 
 
