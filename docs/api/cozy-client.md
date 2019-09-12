@@ -778,7 +778,7 @@ set some data in the store.
 <a name="CozyClient.fetchPolicies"></a>
 
 ### CozyClient.fetchPolicies
-Use those fetch policies with <Query /> to limit the number of re-fetch.
+Use those fetch policies with `<Query />` to limit the number of re-fetch.
 
 **Kind**: static property of [<code>CozyClient</code>](#CozyClient)  
 **Example**  
@@ -795,10 +795,10 @@ const olderThan30s = CozyClient.fetchPolicies.olderThan(30 * 1000)
 
 #### fetchPolicies.olderThan(delay) ⇒ <code>function</code>
 Returns a fetchPolicy that will only re-fetch queries that are older
-than <delay> ms.
+than `<delay>` ms.
 
 **Kind**: static method of [<code>fetchPolicies</code>](#CozyClient.fetchPolicies)  
-**Returns**: <code>function</code> - Fetch policy to be used with <Query />  
+**Returns**: <code>function</code> - Fetch policy to be used with `<Query />`  
 
 | Param | Type | Description |
 | --- | --- | --- |

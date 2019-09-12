@@ -1009,7 +1009,7 @@ class CozyClient {
 }
 
 /**
- * Use those fetch policies with <Query /> to limit the number of re-fetch.
+ * Use those fetch policies with `<Query />` to limit the number of re-fetch.
  *
  * @example
  * ```
@@ -1020,10 +1020,10 @@ class CozyClient {
 CozyClient.fetchPolicies = {
   /**
    * Returns a fetchPolicy that will only re-fetch queries that are older
-   * than <delay> ms.
+   * than `<delay>` ms.
    *
    * @param  {Number} delay - Milliseconds since the query has been fetched
-   * @return {Function} Fetch policy to be used with <Query />
+   * @return {Function} Fetch policy to be used with `<Query />`
    */
   olderThan: delay => queryState => {
     if (!queryState || !queryState.lastUpdate) {
