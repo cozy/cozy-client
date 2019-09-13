@@ -4,9 +4,8 @@ import PropTypes from 'prop-types'
 
 const makeMutationsObject = (mutations, client, props) => {
   return merge(
-    ...mutations.map(
-      mutations =>
-        typeof mutations === 'function' ? mutations(client, props) : mutations
+    ...mutations.map(mutations =>
+      typeof mutations === 'function' ? mutations(client, props) : mutations
     )
   )
 }
