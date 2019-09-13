@@ -124,30 +124,29 @@ describe('FileCollection', () => {
           }
         })
       )
-      jest.spyOn(collection, 'statByPath').mockImplementation(
-        path =>
-          path === '/foo'
-            ? Promise.resolve({
-                data: {
-                  _id: '8c217f9bf5e7118a34627f1ab800243b',
-                  attributes: {
-                    name: 'foo',
-                    dir_id: 'io.cozy.files.root-dir',
-                    path: '/foo'
-                  }
+      jest.spyOn(collection, 'statByPath').mockImplementation(path =>
+        path === '/foo'
+          ? Promise.resolve({
+              data: {
+                _id: '8c217f9bf5e7118a34627f1ab800243b',
+                attributes: {
+                  name: 'foo',
+                  dir_id: 'io.cozy.files.root-dir',
+                  path: '/foo'
                 }
-              })
-            : Promise.reject(
-                new Error(
-                  JSON.stringify({
-                    errors: [
-                      {
-                        status: '404'
-                      }
-                    ]
-                  })
-                )
+              }
+            })
+          : Promise.reject(
+              new Error(
+                JSON.stringify({
+                  errors: [
+                    {
+                      status: '404'
+                    }
+                  ]
+                })
               )
+            )
       )
       jest.spyOn(collection, 'createDirectory').mockImplementation(({ name }) =>
         Promise.resolve(

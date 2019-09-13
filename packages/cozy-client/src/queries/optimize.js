@@ -16,9 +16,8 @@ const isIdQuery = query => query.id || query.ids
  * @private
  */
 const optimizeDoctypeQueries = queries => {
-  const { idQueries = [], others = [] } = groupBy(
-    queries,
-    q => (isIdQuery(q) ? 'idQueries' : 'others')
+  const { idQueries = [], others = [] } = groupBy(queries, q =>
+    isIdQuery(q) ? 'idQueries' : 'others'
   )
   const groupedIdQueries =
     idQueries.length > 0
