@@ -11263,10 +11263,10 @@ shellwords@^0.1.1:
   resolved "https://registry.yarnpkg.com/shellwords/-/shellwords-0.1.1.tgz#d6b9181c1a48d397324c84871efbcfc73fc0654b"
   integrity sha512-vFwSUfQvqybiICwZY5+DAWIPLKsWO31Q91JSKl3UYv+K5c2QRPzn0qzec6QPu1Qc9eHYItiP3NdJqNVqetYAww==
 
-sift@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/sift/-/sift-6.0.0.tgz#f93a778e5cbf05a5024ebc391e6b32511a6d1f82"
-  integrity sha1-+Tp3jly/BaUCTrw5HmsyURptH4I=
+sift@^8.0.0:
+  version "8.5.0"
+  resolved "https://registry.yarnpkg.com/sift/-/sift-8.5.0.tgz#6ab3cb7465cecb58296778ecc3fa22245f3da166"
+  integrity sha512-IdHwlvlDbHYmcPYOfkU89Qo29cPR7fLM0htfeUP9YxeU213oKYH/6d416z+vFj6ArCsH+AzQQ8/rd1TIzRE7LQ==
 
 sigmund@^1.0.1:
   version "1.0.1"
