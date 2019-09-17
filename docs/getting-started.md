@@ -3,8 +3,8 @@
 - [What's cozy-client?](#whats-cozy-client)
 - [Install](#install)
 - [Creating a client](#creating-a-client)
-- [Using the client](#using-the-client)
-- [Making queries](#making-queries)
+- [How to query with Cozy Client](#how-to-query-with-cozy-client)
+- [How to mutate the data](#how-to-mutate-the-data)
 
 <!-- /MarkdownTOC -->
 
