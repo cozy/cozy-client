@@ -148,9 +148,7 @@ class CozyClient {
     }
     if (this.plugins[Plugin.pluginName]) {
       throw new Error(
-        `Cannot register plugin ${
-          Plugin.pluginName
-        }. A plugin with the same name has already been registered.`
+        `Cannot register plugin ${Plugin.pluginName}. A plugin with the same name has already been registered.`
       )
     }
     const instance = new Plugin(this, options)

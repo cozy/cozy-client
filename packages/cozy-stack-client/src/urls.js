@@ -25,9 +25,7 @@ export function getBrowserCozyURL() {
     return new URL(`${window.location.protocol}//${data.cozyDomain}`)
   } catch (e) {
     throw new Error(
-      `[cozy-url] cozyDomain isn't defined in index.ejs https://git.io/fhmP9, (${
-        e.message
-      })`
+      `[cozy-url] cozyDomain isn't defined in index.ejs https://git.io/fhmP9, (${e.message})`
     )
   }
 }

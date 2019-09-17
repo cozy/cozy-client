@@ -99,9 +99,7 @@ class FileCollection extends DocumentCollection {
       'page[cursor]': cursor,
       sort: 'datetime'
     }
-    const url = uri`/data/${document._type}/${
-      document._id
-    }/relationships/references`
+    const url = uri`/data/${document._type}/${document._id}/relationships/references`
     const path = querystring.buildURL(url, params)
     const resp = await this.stackClient.fetchJSON('GET', path)
     return {

@@ -20,9 +20,7 @@ const getIconExtensionFromApp = app => {
 
   if (!extension) {
     throw new Error(
-      `${app.name}: Unable to detect icon mime type from extension (${
-        app.icon
-      })`
+      `${app.name}: Unable to detect icon mime type from extension (${app.icon})`
     )
   }
 
