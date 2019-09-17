@@ -1,6 +1,5 @@
 import React from 'react'
 import { shallow } from 'enzyme'
-import omit from 'lodash/omit'
 import PropTypes from 'prop-types'
 
 import withMutations from './withMutations'

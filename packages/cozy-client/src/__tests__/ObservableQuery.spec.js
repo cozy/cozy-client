@@ -53,7 +53,7 @@ describe('ObservableQuery', () => {
     })
 
     it('should not notify observers when other queries changed', async () => {
-      const { observer, query } = await setup()
+      const { observer } = await setup()
       await store.dispatch(
         receiveQueryResult('allTodos', queryResultFromData([TODO_1, TODO_2]))
       )

@@ -23,9 +23,7 @@ export default class HasOne extends Association {
   set(doc) {
     if (doc && doc._type !== this.doctype) {
       throw new Error(
-        `Tried to associate a ${
-          doc._type
-        } document to a HasOne relationship on ${this.doctype} document`
+        `Tried to associate a ${doc._type} document to a HasOne relationship on ${this.doctype} document`
       )
     }
 
