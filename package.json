@@ -11,7 +11,7 @@
     "eslint-plugin-jsdoc": "^15.11.1",
     "eslint-plugin-react": "7.14.3",
     "husky": "0.14.3",
-    "jest": "23.6.0",
+    "jest": "24.9.0",
     "jest-fetch-mock": "1.7.5",
     "jsdoc-to-markdown": "4.0.1",
     "lerna": "3.16.4",
@@ -39,7 +39,9 @@
       "./jest.setup.js",
       "jest-localstorage-mock"
     ],
-    "setupTestFrameworkScriptFile": "<rootDir>/packages/cozy-stack-client/src/__tests__/setup.js",
+    "setupFilesAfterEnv": [
+      "<rootDir>/packages/cozy-stack-client/src/__tests__/setup.js"
+    ],
     "testMatch": [
       "**/(*.)(spec|test).js?(x)"
     ],
