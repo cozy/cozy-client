@@ -274,7 +274,7 @@ class DocumentCollection {
       if (
         e.reason &&
         e.reason.reason &&
-        e.reason.reason == DATABASE_DOES_NOT_EXIST
+        e.reason.reason === DATABASE_DOES_NOT_EXIST
       ) {
         const firstDoc = await this.create(docs[0])
         const resp = await this.updateAll(docs.slice(1))
