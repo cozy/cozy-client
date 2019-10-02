@@ -14,6 +14,7 @@ import * as querystring from './querystring'
  * @param {object} doc - Document to normalize
  * @param {string} doctype
  * @return {object} normalized document
+ * @private
  */
 export function normalizeDoc(doc = {}, doctype) {
   const id = doc._id || doc.id
@@ -32,6 +33,8 @@ class DocumentCollection {
 
   /**
    * Provides a callback for `Collection.get`
+   *
+   * @private
    * @param {string} doctype
    * @return {function} (data, response) => normalizedDocument
    *                                        using `normalizeDoc`
@@ -42,6 +45,8 @@ class DocumentCollection {
 
   /**
    * `normalizeDoctype` for api end points returning json api responses
+   *
+   * @private
    * @param {string} doctype
    * @return {function} (data, response) => normalizedDocument
    *                                        using `normalizeDoc`
@@ -55,6 +60,8 @@ class DocumentCollection {
 
   /**
    * `normalizeDoctype` for api end points returning raw documents
+   *
+   * @private
    * @param {string} doctype
    * @return {function} (data, response) => normalizedDocument
    *                                        using `normalizeDoc`
@@ -328,6 +335,7 @@ class DocumentCollection {
    * Compute fields that should be indexed for a mango
    * query to work
    *
+   * @private
    * @param  {Object} options - Mango query options
    * @return {Array} - Fields to index
    */
