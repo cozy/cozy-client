@@ -9,6 +9,8 @@ import qs from 'qs'
 import Collection, { dontThrowNotFoundError } from './Collection'
 import * as querystring from './querystring'
 
+const DATABASE_DOES_NOT_EXIST = 'Database does not exist.'
+
 /**
  * Normalize a document, adding its doctype if needed
  * @param {object} doc - Document to normalize
@@ -20,6 +22,8 @@ export function normalizeDoc(doc = {}, doctype) {
   const id = doc._id || doc.id
   return { id, _id: id, _type: doctype, ...doc }
 }
+
+const flagForDeletion = x => Object.assign({}, x, { _deleted: true })
 
 /**
  * Abstracts a collection of documents of the same doctype, providing CRUD methods and other helpers.
@@ -245,6 +249,49 @@ class DocumentCollection {
         this.doctype
       )
     }
+  }
+
+  /**
+   * Updates several documents in one batch
+   * @param  {Document[]} docs
+   */
+  async updateAll(docs) {
+    const stackClient = this.stackClient
+
+    if (!docs || !docs.length) {
+      return Promise.resolve([])
+    }
+    try {
+      const update = await stackClient.fetchJSON(
+        'POST',
+        `/data/${this.doctype}/_bulk_docs`,
+        {
+          docs
+        }
+      )
+      return update
+    } catch (e) {
+      if (
+        e.reason &&
+        e.reason.reason &&
+        e.reason.reason == DATABASE_DOES_NOT_EXIST
+      ) {
+        const firstDoc = await this.create(docs[0])
+        const resp = await this.updateAll(docs.slice(1))
+        resp.unshift({ ok: true, id: firstDoc._id, rev: firstDoc._rev })
+        return resp
+      } else {
+        throw e
+      }
+    }
+  }
+
+  /**
+   * Deletes several documents in one batch
+   * @param  {Document[]} docs - Documents to delete
+   */
+  destroyAll(docs) {
+    return this.updateAll(docs.map(flagForDeletion))
   }
 
   async toMangoOptions(selector, options = {}) {
