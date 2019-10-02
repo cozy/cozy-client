@@ -171,12 +171,18 @@ class DocumentCollection {
     }
   }
 
+  /**
+   * Get a document by id
+   */
   async get(id) {
     return Collection.get(this.stackClient, uri`/data/${this.doctype}/${id}`, {
       normalize: this.constructor.normalizeDoctype(this.doctype)
     })
   }
 
+  /**
+   * Get many documents by id
+   */
   async getAll(ids) {
     let resp
     try {
@@ -206,12 +212,14 @@ class DocumentCollection {
     const method = hasFixedId ? 'PUT' : 'POST'
     const endpoint = uri`/data/${this.doctype}/${hasFixedId ? _id : ''}`
     const resp = await this.stackClient.fetchJSON(method, endpoint, document)
-
     return {
       data: normalizeDoc(resp.data, this.doctype)
     }
   }
 
+  /**
+   * Updates a document
+   */
   async update(document) {
     const resp = await this.stackClient.fetchJSON(
       'PUT',
@@ -223,6 +231,9 @@ class DocumentCollection {
     }
   }
 
+  /**
+   * Destroys a document
+   */
   async destroy({ _id, _rev, ...document }) {
     const resp = await this.stackClient.fetchJSON(
       'DELETE',
