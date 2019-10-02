@@ -124,6 +124,11 @@ class CozyStackClient {
       method: 'GET',
       credentials: 'include'
     }
+
+    if (!global.document) {
+      throw new Error('Not in a web context, cannot refresh token')
+    }
+
     const response = await fetch('/', options)
 
     if (!response.ok) {
@@ -169,7 +174,12 @@ class CozyStackClient {
       return await this.fetchJSONWithCurrentToken(method, path, body, options)
     } catch (e) {
       if (errors.EXPIRED_TOKEN.test(e.message)) {
-        const token = await this.refreshToken()
+        let token
+        try {
+          token = await this.refreshToken()
+        } catch (refreshError) {
+          throw e
+        }
         this.setToken(token)
         return await this.fetchJSONWithCurrentToken(method, path, body, options)
       } else {
