@@ -14,6 +14,17 @@ export const normalizeTrigger = trigger => {
   }
 }
 
+export const isForKonnector = (triggerAttrs, slug) => {
+  return (
+    triggerAttrs.worker === 'konnector' &&
+    triggerAttrs.message.konnector == slug
+  )
+}
+
+export const isForAccount = (triggerAttrs, accountId) => {
+  return triggerAttrs.message.account == accountId
+}
+
 /**
  * Implements `DocumentCollection` API along with specific methods for `io.cozy.triggers`.
  */
