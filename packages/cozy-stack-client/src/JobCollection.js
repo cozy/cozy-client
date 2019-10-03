@@ -26,6 +26,13 @@ class JobCollection {
     return this.stackClient.fetchJSON('GET', `/jobs/queue/${workerType}`)
   }
 
+  /**
+   * Creates a job
+   * @param  {string} workerType - Ex: "konnector"
+   * @param  {Object} args - Ex: {"slug": "my-konnector", "trigger": "trigger-id"}
+   * @param  {Object} options
+   * @return {Object} createdJob
+   */
   create(workerType, args, options) {
     return this.stackClient.fetchJSON('POST', `/jobs/queue/${workerType}`, {
       data: {
