@@ -521,6 +521,65 @@ describe('DocumentCollection', () => {
     })
   })
 
+  describe('batch update/delete', () => {
+    const setup = () => {
+      const client = new CozyStackClient()
+      const collection = new DocumentCollection('io.cozy.simpsons', client)
+      jest.spyOn(collection, 'updateAll')
+      return { client, collection }
+    }
+
+    it('should create database when bulk updating', async () => {
+      const { client, collection } = setup()
+      jest.spyOn(collection, 'create').mockImplementation(doc => doc)
+      client.fetchJSON
+        .mockRejectedValueOnce({
+          reason: { reason: 'Database does not exist.' }
+        })
+        .mockImplementationOnce((method, doctype, data) =>
+          Promise.resolve(
+            data.docs.map(doc => ({
+              id: doc._id,
+              _rev: Math.random(),
+              ok: true
+            }))
+          )
+        )
+
+      const res = await collection.updateAll([
+        { _id: 1, name: 'Marge' },
+        { _id: 2, name: 'Homer' }
+      ])
+
+      expect(collection.create).toHaveBeenCalledWith({
+        _id: 1,
+        name: 'Marge'
+      })
+      expect(collection.updateAll).toHaveBeenCalledWith([
+        { _id: 2, name: 'Homer' }
+      ])
+      expect(res.map(doc => doc.id)).toEqual([1, 2])
+    })
+
+    it('should do bulk delete', async () => {
+      const { collection, client } = setup()
+      await collection.destroyAll([
+        { _id: 1, name: 'Marge' },
+        { _id: 2, name: 'Homer' }
+      ])
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/data/io.cozy.simpsons/_bulk_docs',
+        {
+          docs: [
+            { _deleted: true, _id: 1, name: 'Marge' },
+            { _deleted: true, _id: 2, name: 'Homer' }
+          ]
+        }
+      )
+    })
+  })
+
   describe('changes', () => {
     const collection = new DocumentCollection('io.cozy.todos', client)
     const defaultCouchOptions = { include_docs: true, since: 'my-seq' }

@@ -9,16 +9,21 @@ import qs from 'qs'
 import Collection, { dontThrowNotFoundError } from './Collection'
 import * as querystring from './querystring'
 
+const DATABASE_DOES_NOT_EXIST = 'Database does not exist.'
+
 /**
  * Normalize a document, adding its doctype if needed
  * @param {object} doc - Document to normalize
  * @param {string} doctype
  * @return {object} normalized document
+ * @private
  */
 export function normalizeDoc(doc = {}, doctype) {
   const id = doc._id || doc.id
   return { id, _id: id, _type: doctype, ...doc }
 }
+
+const flagForDeletion = x => Object.assign({}, x, { _deleted: true })
 
 /**
  * Abstracts a collection of documents of the same doctype, providing CRUD methods and other helpers.
@@ -32,6 +37,8 @@ class DocumentCollection {
 
   /**
    * Provides a callback for `Collection.get`
+   *
+   * @private
    * @param {string} doctype
    * @return {function} (data, response) => normalizedDocument
    *                                        using `normalizeDoc`
@@ -42,6 +49,8 @@ class DocumentCollection {
 
   /**
    * `normalizeDoctype` for api end points returning json api responses
+   *
+   * @private
    * @param {string} doctype
    * @return {function} (data, response) => normalizedDocument
    *                                        using `normalizeDoc`
@@ -55,6 +64,8 @@ class DocumentCollection {
 
   /**
    * `normalizeDoctype` for api end points returning raw documents
+   *
+   * @private
    * @param {string} doctype
    * @return {function} (data, response) => normalizedDocument
    *                                        using `normalizeDoc`
@@ -164,12 +175,18 @@ class DocumentCollection {
     }
   }
 
+  /**
+   * Get a document by id
+   */
   async get(id) {
     return Collection.get(this.stackClient, uri`/data/${this.doctype}/${id}`, {
       normalize: this.constructor.normalizeDoctype(this.doctype)
     })
   }
 
+  /**
+   * Get many documents by id
+   */
   async getAll(ids) {
     let resp
     try {
@@ -199,12 +216,14 @@ class DocumentCollection {
     const method = hasFixedId ? 'PUT' : 'POST'
     const endpoint = uri`/data/${this.doctype}/${hasFixedId ? _id : ''}`
     const resp = await this.stackClient.fetchJSON(method, endpoint, document)
-
     return {
       data: normalizeDoc(resp.data, this.doctype)
     }
   }
 
+  /**
+   * Updates a document
+   */
   async update(document) {
     const resp = await this.stackClient.fetchJSON(
       'PUT',
@@ -216,6 +235,9 @@ class DocumentCollection {
     }
   }
 
+  /**
+   * Destroys a document
+   */
   async destroy({ _id, _rev, ...document }) {
     const resp = await this.stackClient.fetchJSON(
       'DELETE',
@@ -227,6 +249,49 @@ class DocumentCollection {
         this.doctype
       )
     }
+  }
+
+  /**
+   * Updates several documents in one batch
+   * @param  {Document[]} docs
+   */
+  async updateAll(docs) {
+    const stackClient = this.stackClient
+
+    if (!docs || !docs.length) {
+      return Promise.resolve([])
+    }
+    try {
+      const update = await stackClient.fetchJSON(
+        'POST',
+        `/data/${this.doctype}/_bulk_docs`,
+        {
+          docs
+        }
+      )
+      return update
+    } catch (e) {
+      if (
+        e.reason &&
+        e.reason.reason &&
+        e.reason.reason === DATABASE_DOES_NOT_EXIST
+      ) {
+        const firstDoc = await this.create(docs[0])
+        const resp = await this.updateAll(docs.slice(1))
+        resp.unshift({ ok: true, id: firstDoc._id, rev: firstDoc._rev })
+        return resp
+      } else {
+        throw e
+      }
+    }
+  }
+
+  /**
+   * Deletes several documents in one batch
+   * @param  {Document[]} docs - Documents to delete
+   */
+  destroyAll(docs) {
+    return this.updateAll(docs.map(flagForDeletion))
   }
 
   async toMangoOptions(selector, options = {}) {
@@ -328,6 +393,7 @@ class DocumentCollection {
    * Compute fields that should be indexed for a mango
    * query to work
    *
+   * @private
    * @param  {Object} options - Mango query options
    * @return {Array} - Fields to index
    */
