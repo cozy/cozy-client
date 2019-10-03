@@ -78,7 +78,7 @@ class KonnectorCollection extends AppCollection {
    */
   async update(slug, options = {}) {
     if (!slug) {
-      throw new Error('Cannot call updat with no slug')
+      throw new Error('Cannot call update with no slug')
     }
     const source = options.source || null
     const sync = options.sync || false
