@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.65.0](https://github.com/cozy/cozy-client/compare/v6.64.7...v6.65.0) (2019-10-03)
+
+
+### Bug Fixes
+
+* Triple equal ([52edce0](https://github.com/cozy/cozy-client/commit/52edce0))
+
+
+### Features
+
+* Add updateAll and deleteAll ([e8aa1f1](https://github.com/cozy/cozy-client/commit/e8aa1f1))
+* Refresh token throws if not in web context ([b06c19d](https://github.com/cozy/cozy-client/commit/b06c19d))
+
+
+
+
+
 ## [6.64.7](https://github.com/cozy/cozy-client/compare/v6.64.6...v6.64.7) (2019-09-30)
 
 **Note:** Version bump only for package cozy-client
