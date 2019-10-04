@@ -82,4 +82,17 @@ describe('job collection', () => {
       )
     })
   })
+
+  describe('waitFor', () => {
+    it('should work', async () => {
+      let i = 0
+      jest.spyOn(col, 'get').mockImplementation(() => {
+        const state = i++ < 2 ? 'pending' : 'done'
+        return { data: { attributes: { state } } }
+      })
+      const finalJob = await col.waitFor('jobId', { delay: 1 })
+      expect(col.get).toHaveBeenCalledTimes(3)
+      expect(finalJob.state).toBe('done')
+    })
+  })
 })

@@ -3,6 +3,7 @@ jest.mock('../CozyStackClient')
 import CozyStackClient from '../CozyStackClient'
 import DocumentCollection from '../KonnectorCollection'
 import KonnectorCollection from '../KonnectorCollection'
+import TriggerCollection from '../TriggerCollection'
 import ALL_KONNECTORS_RESPONSE from './fixtures/konnectors.json'
 
 const FIXTURES = {
@@ -11,6 +12,10 @@ const FIXTURES = {
 describe(`KonnectorCollection`, () => {
   const client = new CozyStackClient()
 
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
   describe('all', () => {
     const collection = new KonnectorCollection(client)
 
@@ -18,10 +23,6 @@ describe(`KonnectorCollection`, () => {
       client.fetchJSON.mockReturnValue(
         Promise.resolve(FIXTURES.ALL_KONNECTORS_RESPONSE)
       )
-    })
-
-    afterEach(() => {
-      jest.restoreAllMocks()
     })
 
     it('should call the right route', async () => {
@@ -74,12 +75,71 @@ describe(`KonnectorCollection`, () => {
     })
   })
 
+  describe('launch', () => {
+    it('should launch the right konnector', async () => {
+      const collection = new KonnectorCollection(client)
+      jest.spyOn(TriggerCollection.prototype, 'all').mockResolvedValue({
+        data: [
+          {
+            id: 1,
+            attributes: {
+              _id: 1,
+              worker: 'konnector',
+              message: { account: '123a', konnector: 'konn1' }
+            }
+          },
+          {
+            id: 2,
+            attributes: {
+              _id: 2,
+              worker: 'service',
+              message: { account: '123a' }
+            }
+          }
+        ]
+      })
+      client.fetchJSON.mockReset().mockResolvedValue({ data: {} })
+      await collection.launch('konn1')
+      expect(client.fetchJSON).toMatchSnapshot()
+    })
+  })
+
   describe('update', () => {
     const collection = new KonnectorCollection(client)
 
-    it('should throw error', async () => {
-      await expect(collection.update()).rejects.toThrowError(
-        'update() method is not available for konnectors'
+    it('should call the right route', async () => {
+      await collection.update('boursorama83')
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'PUT',
+        '/konnectors/boursorama83',
+        {}
+      )
+    })
+
+    it('should call the right route (with source)', async () => {
+      await collection.update('boursorama83', {
+        source: 'registry://boursorama83/beta'
+      })
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'PUT',
+        '/konnectors/boursorama83?Source=registry://boursorama83/beta',
+        {}
+      )
+    })
+
+    it('should call the right route (with sync)', async () => {
+      await collection.update('boursorama83', {
+        sync: true,
+        source: 'registry://boursorama83/beta'
+      })
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'PUT',
+        '/konnectors/boursorama83?Source=registry://boursorama83/beta',
+        {
+          headers: {
+            Accept: 'text/event-stream'
+          }
+        }
       )
     })
   })
