@@ -43,6 +43,8 @@ ReactDOM.render(<MyCozyApp />,
 
 The CozyClient will be available for consumption to all components inside your wrapped application.
 
+#### 1.a Use your own Redux store
+
 `cozy-client` uses redux internally to centralize the statuses of the various fetches and replications triggered by the library, and to store locally the data in a normalized way. If you already have a redux store in your app, you can configure `cozy-client` to use this existing store:
 
 ```jsx
