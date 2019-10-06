@@ -90,14 +90,16 @@ export const getDocumentFromSlice = (state = {}, doctype, id) => {
   if (!state[doctype]) {
     if (process.env.NODE_ENV !== 'production') {
       console.warn(
-        `getDocumentFromSlice: ${doctype} is absent from the store documents`
+        `getDocumentFromSlice: ${doctype} is absent from the store's documents. State is`,
+        state
       )
     }
     return null
   } else if (!state[doctype][id]) {
     if (process.env.NODE_ENV !== 'production') {
       console.warn(
-        `getDocumentFromSlice: ${doctype}:${id} is absent from the store documents`
+        `getDocumentFromSlice: ${doctype}:${id} is absent from the store documents. State is`,
+        state
       )
     }
     return null
@@ -114,7 +116,8 @@ export const getCollectionFromSlice = (state = {}, doctype) => {
   if (!state[doctype]) {
     if (process.env.NODE_ENV !== 'production') {
       console.warn(
-        `getDocumentFromSlice: ${doctype} is absent from the store documents`
+        `getCollectionFromSlice: ${doctype} is absent from the store documents. State is`,
+        state
       )
     }
     return null
