@@ -99,12 +99,10 @@ class HasMany extends Association {
 
     ids = Array.isArray(ids) ? ids : [ids]
 
-    const newRelations = ids
-      .filter(id => !this.existsById(id))
-      .map(id => ({
-        _id: id,
-        _type: this.doctype
-      }))
+    const newRelations = ids.filter(id => !this.existsById(id)).map(id => ({
+      _id: id,
+      _type: this.doctype
+    }))
 
     this.target.relationships[this.name].data.push(...newRelations)
     this.updateMetaCount()
