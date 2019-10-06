@@ -34,27 +34,6 @@ export class StoreProxy {
     }))
   }
 
-  readQuery(queryId) {
-    return this.state.queries[queryId]
-  }
-
-  writeQuery(queryId, newValue) {
-    this.setState(state => ({
-      ...state,
-      queries: {
-        ...state.queries,
-        [queryId]: newValue
-      }
-    }))
-  }
-
-  touchQuery(queryId) {
-    this.writeQuery(queryId, {
-      ...this.readQuery(queryId),
-      lastUpdate: Date.now()
-    })
-  }
-
   setState(updaterFn) {
     this.state = updaterFn(this.state)
   }
