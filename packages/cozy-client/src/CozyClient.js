@@ -117,6 +117,7 @@ class CozyClient {
    * class AlertPlugin {
    *   constructor(client, options) {
    *     this.client = client
+   *     this.options = options
    *     this.handleLogin = this.handleLogin.bind(this)
    *     this.handleLogout = this.handleLogout.bind(this)
    *     this.client.on("login", this.handleLogin)
@@ -124,17 +125,20 @@ class CozyClient {
    *   }
    *
    *   handleLogin() {
-   *     alert("client has logged in !")
+   *     alert(this.options.onLoginAlert)
    *   }
    *
    *   handleLogout() {
-   *     alert("client has logged out !")
+   *     alert(this.options.onLogoutAlert)
    *   }
    * }
    *
    * AlertPlugin.pluginName = 'alerts'
    *
-   * client.registerPlugin(AlertPlugin)
+   * client.registerPlugin(AlertPlugin, {
+   *   onLoginAlert: 'client has logged in !',
+   *   onLogoutAlert: 'client has logged out !'
+   * })
    *
    * // the instance of the plugin is accessible via
    * client.plugins.alerts
