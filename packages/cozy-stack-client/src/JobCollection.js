@@ -68,7 +68,7 @@ class JobCollection {
       until = hasJobFinished,
       delay = 5 * 1000,
       timeout = 60 * 5 * 1000
-    }
+    } = {}
   ) {
     const start = Date.now()
     let jobData = (await this.get(id)).data.attributes
