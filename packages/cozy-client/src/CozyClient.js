@@ -872,9 +872,34 @@ class CozyClient {
     return this.authorize(authenticateWithCordova)
   }
 
-  setStore(store) {
+  /**
+   * Sets the internal store of the client. Use this when you want to have cozy-client's
+   * internal store colocated with your existing Redux store.
+   *
+   * Typically, you would need to do this only once in your application, this is why
+   * setStore throws if you do it twice. If you really need to set the store again,
+   * use options.force = true.
+   *
+   * @example
+   * ```
+   * const client = new CozyClient()
+   * const store = createStore(combineReducers({
+   *   todos: todoReducer,
+   *   cozy: client.reducer()
+   * })
+   * client.setStore(store)
+   * ```
+   *
+   * @param {ReduxStore} store - A redux store
+   * @param {Boolean} options.force - Will deactivate throwing when client's store already exists
+   */
+  setStore(store, { force = false } = {}) {
     if (store === undefined) {
       throw new Error('Store is undefined')
+    } else if (this.store && !force) {
+      throw new Error(
+        'Client already has a store, it is forbidden to change store.'
+      )
     }
 
     this.store = store
