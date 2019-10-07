@@ -21,7 +21,7 @@ describe('Associations', () => {
 
   beforeEach(async () => {
     const store = createStore()
-    client.setStore(store)
+    client.setStore(store, { force: true })
     await store.dispatch(initQuery('allTodos', { doctype: 'io.cozy.todos' }))
     await store.dispatch(
       receiveQueryResult('allTodos', {

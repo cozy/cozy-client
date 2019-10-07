@@ -586,15 +586,6 @@ describe('Store', () => {
       })
     })
 
-    it('should read queries', () => {
-      expect(proxy.readQuery('allTodos')).toEqual(QUERY)
-    })
-
-    it('should write queries', () => {
-      proxy.writeQuery('allTodos', { ...proxy.readQuery('allTodos'), count: 3 })
-      expect(proxy.getState().queries.allTodos.count).toEqual(3)
-    })
-
     it('should read documents', () => {
       expect(proxy.readDocument('io.cozy.todos', TODO_1._id)).toEqual(TODO_1)
     })

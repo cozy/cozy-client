@@ -29,7 +29,7 @@ describe('ObservableQuery', () => {
 
   beforeEach(() => {
     store = createStore(combineReducers({ cozy: client.reducer() }))
-    client.setStore(store)
+    client.setStore(store, { force: true })
   })
 
   describe('notifications', () => {

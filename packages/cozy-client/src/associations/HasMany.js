@@ -147,6 +147,8 @@ class HasMany extends Association {
   }
 
   updateTargetRelationship(store, updateFn) {
+    // TODO See if updateTargetRelationship is still used, removing it would enable us
+    // to remove store.readDocument and store.writeDocument and the StoreProxy
     const prevTarget = store.readDocument(this.target._type, this.target._id)
     store.writeDocument(this.updateRelationship(prevTarget, updateFn))
   }

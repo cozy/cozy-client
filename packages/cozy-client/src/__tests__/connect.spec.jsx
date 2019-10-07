@@ -25,7 +25,7 @@ describe('connect', () => {
 
   it('should dispatch the query on componentWillMount', () => {
     const store = configureMockStore()({})
-    client.setStore(store)
+    client.setStore(store, { force: true })
     const Foo = () => <div>Foo</div>
     const query = client.all('io.cozy.todos')
     const ConnectedFoo = connect(
@@ -38,7 +38,7 @@ describe('connect', () => {
 
   it('should inject data props into the wrapped component', async () => {
     const store = createStore(combineReducers({ cozy: client.reducer() }))
-    client.setStore(store)
+    client.setStore(store, { force: true })
     requestHandler.mockReturnValueOnce(
       Promise.resolve({
         data: [TODO_1, TODO_2, TODO_3],

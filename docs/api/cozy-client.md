@@ -489,6 +489,7 @@ Responsible for
         * [.register(cozyURL)](#CozyClient+register) ⇒ <code>object</code>
         * [.startOAuthFlow(openURLCallback)](#CozyClient+startOAuthFlow) ⇒ <code>object</code>
         * [.renewAuthorization()](#CozyClient+renewAuthorization) ⇒ <code>object</code>
+        * [.setStore(store)](#CozyClient+setStore)
         * [.handleRevocationChange()](#CozyClient+handleRevocationChange)
         * [.handleTokenRefresh()](#CozyClient+handleTokenRefresh)
         * [.createClient()](#CozyClient+createClient)
@@ -535,6 +536,7 @@ Two plugins with the same `pluginName` cannot co-exist.
 class AlertPlugin {
   constructor(client, options) {
     this.client = client
+    this.options = options
     this.handleLogin = this.handleLogin.bind(this)
     this.handleLogout = this.handleLogout.bind(this)
     this.client.on("login", this.handleLogin)
@@ -542,17 +544,20 @@ class AlertPlugin {
   }
 
   handleLogin() {
-    alert("client has logged in !")
+    alert(this.options.onLoginAlert)
   }
 
   handleLogout() {
-    alert("client has logged out !")
+    alert(this.options.onLogoutAlert)
   }
 }
 
 AlertPlugin.pluginName = 'alerts'
 
-client.registerPlugin(AlertPlugin)
+client.registerPlugin(AlertPlugin, {
+  onLoginAlert: 'client has logged in !',
+  onLogoutAlert: 'client has logged out !'
+})
 
 // the instance of the plugin is accessible via
 client.plugins.alerts
@@ -739,6 +744,32 @@ has expired.
 
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 **Returns**: <code>object</code> - Contains the fetched token and the client information.  
+<a name="CozyClient+setStore"></a>
+
+### cozyClient.setStore(store)
+Sets the internal store of the client. Use this when you want to have cozy-client's
+internal store colocated with your existing Redux store.
+
+Typically, you would need to do this only once in your application, this is why
+setStore throws if you do it twice. If you really need to set the store again,
+use options.force = true.
+
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| store | <code>ReduxStore</code> | A redux store |
+| options.force | <code>Boolean</code> | Will deactivate throwing when client's store already exists |
+
+**Example**  
+```
+const client = new CozyClient()
+const store = createStore(combineReducers({
+  todos: todoReducer,
+  cozy: client.reducer()
+})
+client.setStore(store)
+```
 <a name="CozyClient+handleRevocationChange"></a>
 
 ### cozyClient.handleRevocationChange()
