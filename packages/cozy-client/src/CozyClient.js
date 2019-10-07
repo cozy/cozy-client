@@ -152,9 +152,7 @@ class CozyClient {
     }
     if (this.plugins[Plugin.pluginName]) {
       throw new Error(
-        `Cannot register plugin ${
-          Plugin.pluginName
-        }. A plugin with the same name has already been registered.`
+        `Cannot register plugin ${Plugin.pluginName}. A plugin with the same name has already been registered.`
       )
     }
     const instance = new Plugin(this, options)
@@ -660,11 +658,10 @@ class CozyClient {
       const [first, ...rest] = definition
       const firstResponse = await this.requestMutation(first)
       await Promise.all(
-        rest.map(
-          def =>
-            typeof def === 'function'
-              ? this.requestMutation(def(firstResponse))
-              : this.requestMutation(def)
+        rest.map(def =>
+          typeof def === 'function'
+            ? this.requestMutation(def(firstResponse))
+            : this.requestMutation(def)
         )
       )
       return firstResponse
