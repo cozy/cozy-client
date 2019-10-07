@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.0.0](https://github.com/cozy/cozy-client/compare/v6.66.0...v7.0.0) (2019-10-07)
+
+
+### Bug Fixes
+
+* Job collection has default options ([1862faf](https://github.com/cozy/cozy-client/commit/1862faf))
+
+
+### Features
+
+* Remove unused code ([f4047cb](https://github.com/cozy/cozy-client/commit/f4047cb))
+* Show state when warning for unfound document/collection/query ([ff7155c](https://github.com/cozy/cozy-client/commit/ff7155c))
+* Throw error if a store already has been set on the client ([744be29](https://github.com/cozy/cozy-client/commit/744be29))
+
+
+### BREAKING CHANGES
+
+* If you need to use setStore twice, you need to pass
+options { force: true }
+* If using StoreProxy {read/write/touch}Query, you should
+not since it is undocumented and untested
+
+
+
+
+
 # [6.66.0](https://github.com/cozy/cozy-client/compare/v6.65.0...v6.66.0) (2019-10-04)
 
 
