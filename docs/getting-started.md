@@ -18,8 +18,8 @@ Main features :
 - Authentification with your Cozy
 - Requests to the couchdb data
 - Transparent relations between couchdb documents
-- Automaically takes care of updating metadata in couch documents
-- Offline : any data can be stored in a local cache without impacting your code that can continue to read and write.
+- Automatically takes care of updating metadata in couch documents
+- Offline: any data can be stored in a local cache without impacting your code that can continue to read and write.
 
 In addition, the library also provides a React integration to connect your components to the data stored in the cozy stack (with automatic refresh when the data is updated)
 
