@@ -282,7 +282,7 @@ describe('FileCollection', () => {
     })
   })
 
-  describe('updateFileMetadata', () => {
+  describe('updateAttributes', () => {
     beforeEach(() => {
       client.fetchJSON.mockReturnValue({ data: [] })
     })
@@ -292,7 +292,7 @@ describe('FileCollection', () => {
     })
 
     it('should call the right route', async () => {
-      await collection.updateFileMetadata('42', {
+      await collection.updateAttributes('42', {
         dir_id: '123'
       })
       expect(client.fetchJSON.mock.calls.length).toBeGreaterThan(0)
@@ -302,7 +302,7 @@ describe('FileCollection', () => {
     })
   })
 
-  describe('updateFileMetadataAttribute', () => {
+  describe('updateMetadataAttribute', () => {
     beforeEach(() => {
       client.fetchJSON.mockReturnValue({ data: [] })
     })
@@ -312,7 +312,7 @@ describe('FileCollection', () => {
     })
 
     it('should call the right route', async () => {
-      await collection.updateFileMetadataAttribute('42', {
+      await collection.updateMetadataAttribute('42', {
         classification: 'tax_notice'
       })
       expect(client.fetchJSON.mock.calls.length).toBeGreaterThan(0)
