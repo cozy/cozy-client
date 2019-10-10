@@ -302,6 +302,26 @@ describe('FileCollection', () => {
     })
   })
 
+  describe('updateFileMetadataAttribute', () => {
+    beforeEach(() => {
+      client.fetchJSON.mockReturnValue({ data: [] })
+    })
+
+    afterEach(() => {
+      client.fetchJSON.mockClear()
+    })
+
+    it('should call the right route', async () => {
+      await collection.updateFileMetadataAttribute('42', {
+        classification: 'tax_notice'
+      })
+      expect(client.fetchJSON.mock.calls.length).toBeGreaterThan(0)
+      expect(
+        client.fetchJSON.mock.calls[client.fetchJSON.mock.calls.length - 1]
+      ).toMatchSnapshot()
+    })
+  })
+
   describe('createFileMetadata', () => {
     beforeEach(() => {
       client.fetchJSON.mockReturnValue({ data: [] })
