@@ -100,3 +100,18 @@ Array [
   },
 ]
 `;
+
+exports[`FileCollection updateFileMetadataAttribute should call the right route 1`] = `
+Array [
+  "POST",
+  "/files/42/versions",
+  Object {
+    "data": Object {
+      "attributes": Object {
+        "classification": "tax_notice",
+      },
+      "type": "io.cozy.files.metadata",
+    },
+  },
+]
+`;

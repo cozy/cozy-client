@@ -518,7 +518,9 @@ class FileCollection extends DocumentCollection {
   }
 
   /**
-   * async updateFileMetadata - Updates a file's metadata
+   * async updateFileMetadata - Updates a file / folder's attributes except
+   * the metadata attribute. To update its metadata use `updateFileMetadataAttribute`
+   * see https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files/#folder
    *
    * @param  {string} id         File id
    * @param  {object} attributes New file meta data
@@ -549,6 +551,31 @@ class FileCollection extends DocumentCollection {
     const resp = await this.stackClient.fetchJSON(
       'POST',
       uri`/files/upload/metadata`,
+      {
+        data: {
+          type: 'io.cozy.files.metadata',
+          attributes
+        }
+      }
+    )
+    return {
+      data: resp.data
+    }
+  }
+
+  /**
+   *
+   * This method allows you to update the metadata attribute of a io.cozy.files
+   * It will result in a creation of a new version of the file
+   *
+   * @param {string} id File id
+   * @param {object} attributes io.cozy.files.metadata attributes
+   * @return {object} io.cozy.files updated
+   */
+  async updateFileMetadataAttribute(id, attributes) {
+    const resp = await this.stackClient.fetchJSON(
+      'POST',
+      uri`/files/${id}/versions`,
       {
         data: {
           type: 'io.cozy.files.metadata',

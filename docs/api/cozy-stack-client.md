@@ -327,6 +327,7 @@ files associated to a specific document
     * [.createDirectoryByPath(path)](#FileCollection+createDirectoryByPath) ⇒ <code>object</code>
     * [.updateFileMetadata(id, attributes)](#FileCollection+updateFileMetadata) ⇒ <code>object</code>
     * [.createFileMetadata(attributes)](#FileCollection+createFileMetadata) ⇒ <code>object</code>
+    * [.updateFileMetadataAttribute(id, attributes)](#FileCollection+updateFileMetadataAttribute) ⇒ <code>object</code>
 
 <a name="FileCollection+find"></a>
 
@@ -508,7 +509,9 @@ async createDirectoryByPath - Creates one or more folders until the given path e
 <a name="FileCollection+updateFileMetadata"></a>
 
 ### fileCollection.updateFileMetadata(id, attributes) ⇒ <code>object</code>
-async updateFileMetadata - Updates a file's metadata
+async updateFileMetadata - Updates a file / folder's attributes except
+the metadata attribute. To update its metadata use `updateFileMetadataAttribute`
+see https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files/#folder
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
 **Returns**: <code>object</code> - Updated document  
@@ -531,6 +534,20 @@ See https://github.com/cozy/cozy-stack/blob/master/docs/files.md#post-filesuploa
 | Param | Type | Description |
 | --- | --- | --- |
 | attributes | <code>object</code> | The file's metadata |
+
+<a name="FileCollection+updateFileMetadataAttribute"></a>
+
+### fileCollection.updateFileMetadataAttribute(id, attributes) ⇒ <code>object</code>
+This method allows you to update the metadata attribute of a io.cozy.files
+It will result in a creation of a new version of the file
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+**Returns**: <code>object</code> - io.cozy.files updated  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | File id |
+| attributes | <code>object</code> | io.cozy.files.metadata attributes |
 
 <a name="OAuthClient"></a>
 
