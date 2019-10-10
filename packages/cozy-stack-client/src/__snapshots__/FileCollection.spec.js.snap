@@ -85,7 +85,7 @@ exports[`FileCollection referencedBy should remove a reference 1`] = `
 }
 `;
 
-exports[`FileCollection updateFileMetadata should call the right route 1`] = `
+exports[`FileCollection updateAttributes should call the right route 1`] = `
 Array [
   "PATCH",
   "/files/42",
@@ -101,7 +101,7 @@ Array [
 ]
 `;
 
-exports[`FileCollection updateFileMetadataAttribute should call the right route 1`] = `
+exports[`FileCollection updateMetadataAttribute should call the right route 1`] = `
 Array [
   "POST",
   "/files/42/versions",
