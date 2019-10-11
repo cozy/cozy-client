@@ -322,12 +322,15 @@ files associated to a specific document
     * [.removeReferencesTo(document, documents)](#FileCollection+removeReferencesTo) ⇒ <code>object</code>
     * [.restore(id)](#FileCollection+restore) ⇒ <code>Promise</code>
     * [.deleteFilePermanently(id)](#FileCollection+deleteFilePermanently) ⇒ <code>object</code>
+    * [.upload(data, dirPath)](#FileCollection+upload) ⇒ <code>object</code>
+    * [.createFile(data, params)](#FileCollection+createFile)
     * [.updateFile(data, params)](#FileCollection+updateFile) ⇒ <code>object</code>
     * [.isChildOf(child, parent)](#FileCollection+isChildOf) ⇒ <code>boolean</code>
     * [.createDirectoryByPath(path)](#FileCollection+createDirectoryByPath) ⇒ <code>object</code>
     * [.updateAttributes(id, attributes)](#FileCollection+updateAttributes) ⇒ <code>object</code>
     * [.createFileMetadata(attributes)](#FileCollection+createFileMetadata) ⇒ <code>object</code>
     * [.updateMetadataAttribute(id, metadata)](#FileCollection+updateMetadataAttribute) ⇒ <code>object</code>
+    * [.doUpload(data, path, options, method)](#FileCollection+doUpload)
 
 <a name="FileCollection+find"></a>
 
@@ -370,7 +373,7 @@ async findReferencedBy - Returns the list of files referenced by a document — 
 Add referenced_by documents to a file — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#post-filesfile-idrelationshipsreferenced_by
 
  For example, to have an album referenced by a file:
- ```
+```
 addReferencedBy({_id: 123, _type: "io.cozy.files", name: "cozy.jpg"}, [{_id: 456, _type: "io.cozy.photos.albums", name: "Happy Cloud"}])
 ```
 
@@ -388,7 +391,7 @@ addReferencedBy({_id: 123, _type: "io.cozy.files", name: "cozy.jpg"}, [{_id: 456
 Remove referenced_by documents from a file — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#delete-filesfile-idrelationshipsreferenced_by
 
  For example, to remove an album reference from a file:
- ```
+```
  removeReferencedBy({_id: 123, _type: "io.cozy.files", name: "cozy.jpg"}, [{_id: 456, _type: "io.cozy.photos.albums", name: "Happy Cloud"}])
 ```
 
@@ -406,7 +409,7 @@ Remove referenced_by documents from a file — see https://docs.cozy.io/en/cozy-
 Add files references to a document — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#post-datatypedoc-idrelationshipsreferences
 
  For example, to add a photo to an album:
- ```
+```
  addReferencesTo({_id: 456, _type: "io.cozy.photos.albums", name: "Happy Cloud"}, [{_id: 123, _type: "io.cozy.files", name: "cozy.jpg"}])
 ```
 
@@ -424,7 +427,7 @@ Add files references to a document — see https://docs.cozy.io/en/cozy-stack/re
 Remove files references to a document — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#delete-datatypedoc-idrelationshipsreferences
 
  For example, to remove a photo from an album:
- ```
+```
  removeReferencesTo({_id: 456, _type: "io.cozy.photos.albums", name: "Happy Cloud"}, [{_id: 123, _type: "io.cozy.files", name: "cozy.jpg"}])
 ```
 
@@ -463,6 +466,32 @@ async deleteFilePermanently - Definitely delete a file
 | Param | Type | Description |
 | --- | --- | --- |
 | id | <code>string</code> | The id of the file to delete |
+
+<a name="FileCollection+upload"></a>
+
+### fileCollection.upload(data, dirPath) ⇒ <code>object</code>
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+**Returns**: <code>object</code> - Created io.cozy.files  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| data | <code>File</code> \| <code>Blob</code> \| <code>Stream</code> \| <code>String</code> \| <code>ArrayBuffer</code> | file to be uploaded |
+| dirPath | <code>string</code> | Path to upload the file to. ie : /Administative/XXX/ |
+
+<a name="FileCollection+createFile"></a>
+
+### fileCollection.createFile(data, params)
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| data | <code>File</code> \| <code>Blob</code> \| <code>Stream</code> \| <code>String</code> \| <code>ArrayBuffer</code> | file to be uploaded |
+| params | <code>object</code> | Additionnal parameters |
+| params.name | <code>string</code> | Name of the file |
+| params.dirId | <code>string</code> | Id of the directory you want to upload the file to |
+| params.executable | <code>boolean</code> | If the file is an executable or not |
+| params.metadata | <code>object</code> | io.cozy.files.metadata to attach to the file |
+| params.options | <code>object</code> | Options to pass to doUpload method (additional headers) |
 
 <a name="FileCollection+updateFile"></a>
 
@@ -560,6 +589,21 @@ see : https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files_metadata/
 | --- | --- | --- |
 | id | <code>string</code> | File id |
 | metadata | <code>object</code> | io.cozy.files.metadata attributes |
+
+<a name="FileCollection+doUpload"></a>
+
+### fileCollection.doUpload(data, path, options, method)
+This method should not be called directly to upload a file.
+You should use `createFile`
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | <code>File</code> \| <code>Blob</code> \| <code>Stream</code> \| <code>String</code> \| <code>ArrayBuffer</code> |  | file to be uploaded |
+| path | <code>String</code> |  | Uri to call the stack from. Something like `/files/${dirId}?Name=${name}&Type=file&Executable=${executable}&MetadataID=${metadataId}` |
+| options | <code>object</code> |  | Additional headers |
+| method | <code>string</code> | <code>&quot;POST&quot;</code> | POST / PUT / PATCH |
 
 <a name="OAuthClient"></a>
 

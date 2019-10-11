@@ -115,7 +115,7 @@ class FileCollection extends DocumentCollection {
    *  Add referenced_by documents to a file — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#post-filesfile-idrelationshipsreferenced_by
    *
    *  For example, to have an album referenced by a file:
-   *  ```
+   * ```
    * addReferencedBy({_id: 123, _type: "io.cozy.files", name: "cozy.jpg"}, [{_id: 456, _type: "io.cozy.photos.albums", name: "Happy Cloud"}])
    * ```
    *
@@ -136,7 +136,7 @@ class FileCollection extends DocumentCollection {
    *  Remove referenced_by documents from a file — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#delete-filesfile-idrelationshipsreferenced_by
    *
    *  For example, to remove an album reference from a file:
-   *  ```
+   * ```
    *  removeReferencedBy({_id: 123, _type: "io.cozy.files", name: "cozy.jpg"}, [{_id: 456, _type: "io.cozy.photos.albums", name: "Happy Cloud"}])
    * ```
    *
@@ -157,7 +157,7 @@ class FileCollection extends DocumentCollection {
    *  Add files references to a document — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#post-datatypedoc-idrelationshipsreferences
    *
    *  For example, to add a photo to an album:
-   *  ```
+   * ```
    *  addReferencesTo({_id: 456, _type: "io.cozy.photos.albums", name: "Happy Cloud"}, [{_id: 123, _type: "io.cozy.files", name: "cozy.jpg"}])
    * ```
    *
@@ -178,7 +178,7 @@ class FileCollection extends DocumentCollection {
    *  Remove files references to a document — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#delete-datatypedoc-idrelationshipsreferences
    *
    *  For example, to remove a photo from an album:
-   *  ```
+   * ```
    *  removeReferencesTo({_id: 456, _type: "io.cozy.photos.albums", name: "Happy Cloud"}, [{_id: 123, _type: "io.cozy.files", name: "cozy.jpg"}])
    * ```
    *
@@ -253,12 +253,27 @@ class FileCollection extends DocumentCollection {
 
     return resp.data
   }
-
+  /**
+   *
+   * @param {File|Blob|Stream|String|ArrayBuffer} data file to be uploaded
+   * @param {string} dirPath Path to upload the file to. ie : /Administative/XXX/
+   * @return {object} Created io.cozy.files
+   */
   async upload(data, dirPath) {
     const dirId = await this.ensureDirectoryExists(dirPath)
     return this.createFile(data, { dirId })
   }
 
+  /**
+   *
+   * @param {File|Blob|Stream|String|ArrayBuffer} data file to be uploaded
+   * @param {object} params Additionnal parameters
+   * @param {string} params.name Name of the file
+   * @param {string} params.dirId Id of the directory you want to upload the file to
+   * @param {boolean} params.executable If the file is an executable or not
+   * @param {object} params.metadata io.cozy.files.metadata to attach to the file
+   * @param  {object}  params.options     Options to pass to doUpload method (additional headers)
+   */
   async createFile(
     data,
     { name, dirId = '', executable, metadata, ...options } = {}
@@ -605,7 +620,17 @@ class FileCollection extends DocumentCollection {
       data: resp.data
     }
   }
-
+  /**
+   *
+   * This method should not be called directly to upload a file.
+   * You should use `createFile`
+   *
+   * @param {File|Blob|Stream|String|ArrayBuffer} data file to be uploaded
+   * @param {String} path Uri to call the stack from. Something like
+   * `/files/${dirId}?Name=${name}&Type=file&Executable=${executable}&MetadataID=${metadataId}`
+   * @param {object} options Additional headers
+   * @param {string} method POST / PUT / PATCH
+   */
   async doUpload(data, path, options, method = 'POST') {
     if (!data) {
       throw new Error('missing data argument')
