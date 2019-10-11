@@ -1,5 +1,7 @@
 ### cozy-client architecture
 
+This is an overview of the cozy-client architecture:
+
 ![Architecture schema](./architecture.png)
 
 The architecture schema can also be accessed [online here](https://whimsical.co/6AJnnS7v5ePRcuKZysPAF5).
