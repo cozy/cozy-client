@@ -478,6 +478,7 @@ Responsible for
         * [.logout()](#CozyClient+logout) ⇒ <code>Promise</code>
         * [.collection(doctype)](#CozyClient+collection) ⇒ <code>DocumentCollection</code>
         * [.getDocumentSavePlan(document, relationships)](#CozyClient+getDocumentSavePlan) ⇒ <code>Array.&lt;Mutation&gt;</code>
+        * [.query(queryDefinition)](#CozyClient+query) ⇒ <code>QueryResult</code>
         * [.fetchRelationships()](#CozyClient+fetchRelationships)
         * [.hydrateDocument()](#CozyClient+hydrateDocument)
         * [.makeNewDocument()](#CozyClient+makeNewDocument)
@@ -629,6 +630,22 @@ client.getDocumentSavePlan(baseDoc, relationships)
 | --- | --- | --- |
 | document | <code>object</code> | The base document to create |
 | relationships | <code>object</code> | The list of relationships to add, as a dictionnary. Keys should be relationship names and values the documents to link. |
+
+<a name="CozyClient+query"></a>
+
+### cozyClient.query(queryDefinition) ⇒ <code>QueryResult</code>
+Executes a query and returns its results.
+
+Results from the query will be saved internally and can be retrieved via
+`getQueryFromState` or directly using `<Query />`. `<Query />` automatically
+executes its query when mounted if no fetch policy has been indicated.
+
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) |  |
+| options.as | <code>String</code> | Names the query so it can be reused (by multiple components for example) |
 
 <a name="CozyClient+fetchRelationships"></a>
 
