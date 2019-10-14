@@ -502,6 +502,17 @@ class CozyClient {
     }
   }
 
+  /**
+   * Executes a query and returns its results.
+   *
+   * Results from the query will be saved internally and can be retrieved via
+   * `getQueryFromState` or directly using `<Query />`. `<Query />` automatically
+   * executes its query when mounted if no fetch policy has been indicated.
+   *
+   * @param  {QueryDefinition} queryDefinition
+   * @param  {String} options.as - Names the query so it can be reused (by multiple components for example)
+   * @return {QueryResult}
+   */
   async query(queryDefinition, { update, ...options } = {}) {
     this.ensureStore()
     const queryId = options.as || this.generateId()

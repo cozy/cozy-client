@@ -58,6 +58,14 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 </dd>
 </dl>
 
+## Constants
+
+<dl>
+<dt><a href="#triggerStates">triggerStates</a></dt>
+<dd><p>Trigger states come from /jobs/triggers</p>
+</dd>
+</dl>
+
 ## Functions
 
 <dl>
@@ -478,6 +486,7 @@ Responsible for
         * [.logout()](#CozyClient+logout) ⇒ <code>Promise</code>
         * [.collection(doctype)](#CozyClient+collection) ⇒ <code>DocumentCollection</code>
         * [.getDocumentSavePlan(document, relationships)](#CozyClient+getDocumentSavePlan) ⇒ <code>Array.&lt;Mutation&gt;</code>
+        * [.query(queryDefinition)](#CozyClient+query) ⇒ <code>QueryResult</code>
         * [.fetchRelationships()](#CozyClient+fetchRelationships)
         * [.hydrateDocument()](#CozyClient+hydrateDocument)
         * [.makeNewDocument()](#CozyClient+makeNewDocument)
@@ -629,6 +638,22 @@ client.getDocumentSavePlan(baseDoc, relationships)
 | --- | --- | --- |
 | document | <code>object</code> | The base document to create |
 | relationships | <code>object</code> | The list of relationships to add, as a dictionnary. Keys should be relationship names and values the documents to link. |
+
+<a name="CozyClient+query"></a>
+
+### cozyClient.query(queryDefinition) ⇒ <code>QueryResult</code>
+Executes a query and returns its results.
+
+Results from the query will be saved internally and can be retrieved via
+`getQueryFromState` or directly using `<Query />`. `<Query />` automatically
+executes its query when mounted if no fetch policy has been indicated.
+
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) |  |
+| options.as | <code>String</code> | Names the query so it can be reused (by multiple components for example) |
 
 <a name="CozyClient+fetchRelationships"></a>
 
@@ -1086,6 +1111,29 @@ Returns the relationship for a given doctype/name
 Validates a document considering the descriptions in schema.attributes.
 
 **Kind**: instance method of [<code>Schema</code>](#Schema)  
+<a name="triggerStates"></a>
+
+## triggerStates
+Trigger states come from /jobs/triggers
+
+**Kind**: global constant  
+
+* [triggerStates](#triggerStates)
+    * [.getLastExecution()](#triggerStates.getLastExecution)
+    * [.isErrored()](#triggerStates.isErrored)
+
+<a name="triggerStates.getLastExecution"></a>
+
+### triggerStates.getLastExecution()
+Returns when the trigger was last executed. Need a trigger
+
+**Kind**: static method of [<code>triggerStates</code>](#triggerStates)  
+<a name="triggerStates.isErrored"></a>
+
+### triggerStates.isErrored()
+Returns whether last job failed
+
+**Kind**: static method of [<code>triggerStates</code>](#triggerStates)  
 <a name="withClient"></a>
 
 ## withClient(Component) ⇒ <code>function</code>

@@ -1,0 +1,1 @@
+export { triggerResults } from './triggers'
