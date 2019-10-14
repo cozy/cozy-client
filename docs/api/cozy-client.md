@@ -58,6 +58,14 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 </dd>
 </dl>
 
+## Constants
+
+<dl>
+<dt><a href="#triggerStates">triggerStates</a></dt>
+<dd><p>Trigger states come from /jobs/triggers</p>
+</dd>
+</dl>
+
 ## Functions
 
 <dl>
@@ -1103,6 +1111,29 @@ Returns the relationship for a given doctype/name
 Validates a document considering the descriptions in schema.attributes.
 
 **Kind**: instance method of [<code>Schema</code>](#Schema)  
+<a name="triggerStates"></a>
+
+## triggerStates
+Trigger states come from /jobs/triggers
+
+**Kind**: global constant  
+
+* [triggerStates](#triggerStates)
+    * [.getLastExecution()](#triggerStates.getLastExecution)
+    * [.isErrored()](#triggerStates.isErrored)
+
+<a name="triggerStates.getLastExecution"></a>
+
+### triggerStates.getLastExecution()
+Returns when the trigger was last executed. Need a trigger
+
+**Kind**: static method of [<code>triggerStates</code>](#triggerStates)  
+<a name="triggerStates.isErrored"></a>
+
+### triggerStates.isErrored()
+Returns whether last job failed
+
+**Kind**: static method of [<code>triggerStates</code>](#triggerStates)  
 <a name="withClient"></a>
 
 ## withClient(Component) ⇒ <code>function</code>
