@@ -28,7 +28,7 @@ class Registry {
    *
    * Accepts the terms if the app has them.
 
-   * @param  {RegistryApp} app - App to be installed 
+   * @param  {RegistryApp} app - App to be installed
    * @param  {string} source - String (ex: registry://drive/stable)
    * @return {Promise}
    */
@@ -85,6 +85,15 @@ class Registry {
       `/registry?${querypart}`
     )
     return apps
+  }
+
+  /**
+   * Fetch the list of apps that are in maintenance mode
+   *
+   * @return {Array<RegistryApp>}
+   */
+  fetchAppsInMaintenance() {
+    return this.client.stackClient.fetchJSON('GET', '/registry/maintenance')
   }
 }
 
