@@ -32,14 +32,6 @@ const withMutations = (...mutations) => WrappedComponent => {
   const wrappedDisplayName =
     WrappedComponent.displayName || WrappedComponent.name || 'Component'
 
-  WrappedComponent.propTypes = {
-    ...WrappedComponent.propTypes,
-    createDocument: PropTypes.func.isRequired,
-    saveDocument: PropTypes.func.isRequired,
-    deleteDocument: PropTypes.func.isRequired,
-    ...mutationsToPropTypes(mutations)
-  }
-
   class Wrapper extends Component {
     static contextTypes = {
       client: PropTypes.object

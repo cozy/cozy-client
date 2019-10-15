@@ -37,23 +37,6 @@ describe('withMutations', () => {
     }).not.toThrowError()
   })
 
-  it('should expose all additional mutations provided proptypes', () => {
-    const Foo = () => <div />
-    const mutationsMock = client => ({
-      myMutation1: () => {},
-      myMutation2: () => {}
-    })
-
-    withMutations(mutationsMock)(Foo)
-    expect(Foo.propTypes).toEqual({
-      createDocument: PropTypes.func.isRequired,
-      deleteDocument: PropTypes.func.isRequired,
-      saveDocument: PropTypes.func.isRequired,
-      myMutation1: PropTypes.func.isRequired,
-      myMutation2: PropTypes.func.isRequired
-    })
-  })
-
   it('should inject base mutations props into wrapped component', async () => {
     const Foo = () => <div />
     const ConnectedFoo = withMutations()(Foo)
