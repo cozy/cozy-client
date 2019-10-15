@@ -95,6 +95,16 @@ class Registry {
   fetchAppsInMaintenance() {
     return this.client.stackClient.fetchJSON('GET', '/registry/maintenance')
   }
+
+  /**
+   * Fetch the status of a single app on the registry
+   * @param  {string} slug - The slug of the app to fetch
+   *
+   * @return {RegistryApp}
+   */
+  fetchApp(slug) {
+    return this.client.stackClient.fetchJSON('GET', `/registry/${slug}`)
+  }
 }
 
 export default Registry
