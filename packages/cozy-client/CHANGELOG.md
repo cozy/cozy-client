@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.5.0](https://github.com/cozy/cozy-client/compare/v7.4.1...v7.5.0) (2019-10-16)
+
+
+### Bug Fixes
+
+* Make unused variable an error ([19fa023](https://github.com/cozy/cozy-client/commit/19fa023))
+
+
+### Features
+
+* GetQueryFromState can hydrate documents directly ([6150ae3](https://github.com/cozy/cozy-client/commit/6150ae3))
+* GetQueryFromState can hydrate documents directly ([#542](https://github.com/cozy/cozy-client/issues/542)) ([04437d7](https://github.com/cozy/cozy-client/commit/04437d7))
+
+
+
+
+
 ## [7.4.1](https://github.com/cozy/cozy-client/compare/v7.4.0...v7.4.1) (2019-10-16)
 
 **Note:** Version bump only for package cozy-client
