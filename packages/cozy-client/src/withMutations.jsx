@@ -10,15 +10,6 @@ const makeMutationsObject = (mutations, client, props) => {
   )
 }
 
-const mutationsToPropTypes = mutations => {
-  return Object.keys(makeMutationsObject(mutations)).reduce(
-    (acc, mutationName) => {
-      return { ...acc, [mutationName]: PropTypes.func.isRequired }
-    },
-    {}
-  )
-}
-
 /**
  * @function
  * @description HOC to provide mutations to components. Needs client in context
