@@ -863,12 +863,18 @@ class CozyClient {
    * Get a query from the internal store.
    *
    * @param {String} id - Id of the query (set via Query.props.as)
+   * @param {Boolean} options.hydrated - Whether documents should be returned already hydrated (default: false)
    *
    * @return {QueryState} - Query state or null if it does not exist.
    */
-  getQueryFromState(id) {
+  getQueryFromState(id, options = {}) {
+    const hydrated = options.hydrated || false
     try {
-      return getQueryFromState(this.store.getState(), id)
+      const queryResults = getQueryFromState(this.store.getState(), id)
+      const data = hydrated
+        ? this.hydrateDocuments(queryResults.doctype, queryResults.data)
+        : queryResults.data
+      return { ...queryResults, data }
     } catch (e) {
       console.warn('Could not getQueryFromState', id, e.message)
       return null

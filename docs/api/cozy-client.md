@@ -787,6 +787,7 @@ Get a query from the internal store.
 | Param | Type | Description |
 | --- | --- | --- |
 | id | <code>String</code> | Id of the query (set via Query.props.as) |
+| options.hydrated | <code>Boolean</code> | Whether documents should be returned already hydrated (default: false) |
 
 <a name="CozyClient+register"></a>
 
