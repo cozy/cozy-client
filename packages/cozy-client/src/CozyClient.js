@@ -871,9 +871,11 @@ class CozyClient {
     const hydrated = options.hydrated || false
     try {
       const queryResults = getQueryFromState(this.store.getState(), id)
-      const data = hydrated
-        ? this.hydrateDocuments(queryResults.doctype, queryResults.data)
-        : queryResults.data
+      const doctype = queryResults.definition && queryResults.definition.doctype
+      const data =
+        hydrated && doctype
+          ? this.hydrateDocuments(doctype, queryResults.data)
+          : queryResults.data
       return { ...queryResults, data }
     } catch (e) {
       console.warn('Could not getQueryFromState', id, e.message)

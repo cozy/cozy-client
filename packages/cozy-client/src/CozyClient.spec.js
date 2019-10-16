@@ -5,6 +5,8 @@ import {
   TODO_1,
   TODO_2,
   TODO_3,
+  TODO_WITH_AUTHOR,
+  AUTHORS,
   DOCTYPE_VERSION,
   APP_NAME,
   APP_VERSION,
@@ -1006,6 +1008,34 @@ describe('CozyClient', () => {
   })
 
   describe('hydratation', () => {
+    it('getQueryFromState should hydrate the documents if asked', async () => {
+      client.store.dispatch.mockRestore()
+      client.requestQuery = async ({ doctype }) => {
+        if (doctype === 'io.cozy.todos') {
+          return {
+            data: [TODO_WITH_AUTHOR]
+          }
+        } else if (doctype == 'io.cozy.persons') {
+          return {
+            data: AUTHORS
+          }
+        }
+      }
+      await client.query({ doctype: 'io.cozy.todos' }, { as: 'todos' })
+      await client.query({ doctype: 'io.cozy.persons' }, { as: 'people' })
+
+      const { data: rawTodos } = client.getQueryFromState('todos')
+
+      const { data: hydratedTodos } = client.getQueryFromState('todos', {
+        hydrated: true
+      })
+
+      expect(rawTodos[0].authors).toBeUndefined()
+
+      // Since the todo is hydrated, we can access authors through the relationship
+      expect(hydratedTodos[0].authors.data[0].name).toBe('Alice')
+    })
+
     it('should hydrate relationships into associations with helper methods in the context of a query', () => {
       const doc = client
         .hydrateDocuments(
