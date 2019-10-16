@@ -37,17 +37,17 @@ export default class ObservableQuery {
    * @return {HydratedQueryState}
    */
   currentResult() {
-    const result = getQueryFromState(this.getStore().getState(), this.queryId)
+    const result = this.client.getQueryFromState(this.queryId, {
+      hydrated: true
+    })
     if (!result.lastFetch) {
       return result
     }
-    const data = this.client.hydrateDocuments(
-      this.definition.doctype,
-      result.data
-    )
     return {
       ...result,
-      data: this.definition.id ? data[0] : data
+      // Weird to have this.definition.id here, maybe it could be getQueryFromState
+      // that should do that
+      data: this.definition.id ? result.data[0] : result.data
     }
   }
 
