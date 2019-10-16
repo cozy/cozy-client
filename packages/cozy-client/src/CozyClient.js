@@ -463,6 +463,24 @@ class CozyClient {
     ]
   }
 
+  /**
+   * Hooks are an observable system for events on documents.
+   * There are at the moment only 2 hooks available.
+   *
+   * - before:destroy, called just before a document is destroyed via CozyClient::destroy
+   * - after:destroy, called after a document is destroyed via CozyClient::destroy
+   *
+   * @example
+   * ```
+   * CozyClient.registerHook('io.cozy.bank.accounts', 'before:destroy', () => {
+   *   console.log('A io.cozy.bank.accounts is being destroyed')
+   * })
+   * ```
+   *
+   * @param  {String}   doctype
+   * @param  {String}   name    Name of the hook
+   * @param  {Function} fn      Callback
+   */
   static registerHook(doctype, name, fn) {
     CozyClient.hooks = CozyClient.hooks || {}
     const hooks = (CozyClient.hooks[doctype] = CozyClient.hooks[doctype] || {})
@@ -479,6 +497,12 @@ class CozyClient {
     }
   }
 
+  /**
+   * Destroys a document. {before,after}:destroy hooks will be fired.
+   *
+   * @param  {Document} document
+   * @return {Document} The document that has been deleted
+   */
   async destroy(document, mutationOptions = {}) {
     await this.triggerHook('before:destroy', document)
     const res = await this.mutate(
@@ -531,6 +555,15 @@ class CozyClient {
     }
   }
 
+  /**
+   * Will fetch all documents for a `queryDefinition`, automatically fetching more
+   * documents if the total of documents is superior to the pagination limit. Can
+   * result in a lot of network requests.
+   *
+   * @param  {QueryDefinition} queryDefinition
+   * @param  {Object} options - Options to the query
+   * @return {Array} All documents matching the query
+   */
   async queryAll(queryDefinition, options) {
     const documents = []
     let resp = { next: true }
@@ -581,6 +614,13 @@ class CozyClient {
     }
   }
 
+  /**
+   * Executes a query through links and fetches relationships
+   *
+   * @private
+   * @param  {QueryDefinition} definition
+   * @return {Response}
+   */
   async requestQuery(definition) {
     const mainResponse = await this.chain.request(definition)
     if (!definition.includes) {
@@ -598,7 +638,8 @@ class CozyClient {
    * Fills the `relationships` attribute of each documents.
    *
    * Can potentially result in several fetch requests.
-   * Queries are optimized before being sent.
+   * Queries are optimized before being sent (multiple single documents queries can be packed into
+   * one multiple document query) for example.
    */
   async fetchRelationships(response, relationshipsByName) {
     const isSingleDoc = !Array.isArray(response.data)
@@ -691,6 +732,15 @@ class CozyClient {
     )
   }
 
+  /**
+   * Returns documents with their relationships resolved according to their schema.
+   * If related documents are not in the store, they will not be fetched automatically.
+   * Instead, the relationships will have null documents.
+   *
+   * @param  {String} doctype
+   * @param  {Array<Document>} documents
+   * @return {Array<HydratedDocument>}
+   */
   hydrateDocuments(doctype, documents) {
     if (this.options.autoHydrate === false) {
       return documents
@@ -705,10 +755,14 @@ class CozyClient {
   }
 
   /**
-   * Instantiate relationships on a document
+   * Resolves relationships on a document.
    *
    * The original document is kept in the target attribute of
    * the relationship
+   *
+   * @param  {Document} document for which relationships must be resolved
+   * @param  {Schema} schema for the document doctype
+   * @return {HydrateDocument}
    */
   hydrateDocument(document, schema) {
     if (!document) {
