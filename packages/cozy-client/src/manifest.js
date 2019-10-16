@@ -40,7 +40,7 @@ export function isPartnershipValid(partnership) {
  * Normalize app manifest, retrocompatibility for old manifests
  *
  * @param  {Manifest} manifest
- * @return {Manifest}
+ * @returns {Manifest}
  */
 export function sanitize(manifest) {
   const sanitized = { ...manifest }

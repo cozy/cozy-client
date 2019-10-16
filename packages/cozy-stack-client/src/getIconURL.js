@@ -43,6 +43,7 @@ const fallbacks = async (tries, check) => {
 
 /**
  * Fetch application/konnector that is installed
+ *
  * @private
  */
 const fetchAppOrKonnector = (stackClient, type, slug) =>
@@ -50,6 +51,7 @@ const fetchAppOrKonnector = (stackClient, type, slug) =>
 
 /**
  * Fetch application/konnector from the registry
+ *
  * @private
  */
 const fetchAppOrKonnectorViaRegistry = (stackClient, type, slug) =>

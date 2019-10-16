@@ -62,9 +62,9 @@ class FileCollection extends DocumentCollection {
    *
    * The returned documents are paginated by the stack.
    *
-   * @param  {Object} selector The Mango selector.
+   * @param  {object} selector The Mango selector.
    * @param  {{sort, fields, limit, skip, indexId}} options The query options.
-   * @return {{data, meta, skip, next}} The JSON API conformant response.
+   * @returns {{data, meta, skip, next}} The JSON API conformant response.
    * @throws {FetchError}
    */
   async find(selector, options = {}) {
@@ -255,9 +255,9 @@ class FileCollection extends DocumentCollection {
   }
   /**
    *
-   * @param {File|Blob|Stream|String|ArrayBuffer} data file to be uploaded
+   * @param {File|Blob|Stream|string|ArrayBuffer} data file to be uploaded
    * @param {string} dirPath Path to upload the file to. ie : /Administative/XXX/
-   * @return {object} Created io.cozy.files
+   * @returns {object} Created io.cozy.files
    */
   async upload(data, dirPath) {
     const dirId = await this.ensureDirectoryExists(dirPath)
@@ -266,7 +266,7 @@ class FileCollection extends DocumentCollection {
 
   /**
    *
-   * @param {File|Blob|Stream|String|ArrayBuffer} data file to be uploaded
+   * @param {File|Blob|Stream|string|ArrayBuffer} data file to be uploaded
    * @param {object} params Additionnal parameters
    * @param {string} params.name Name of the file
    * @param {string} params.dirId Id of the directory you want to upload the file to
@@ -307,7 +307,7 @@ class FileCollection extends DocumentCollection {
    * @param  {boolean} params.executable  Whether the file is executable or not
    * @param  {object}  params.metadata    Metadata to be attached to the File io.cozy.file
    * @param  {object}  params.options     Options to pass to doUpload method (additional headers)
-   * @return {object}                     Updated document
+   * @returns {object}                     Updated document
    */
   async updateFile(
     data,
@@ -394,7 +394,7 @@ class FileCollection extends DocumentCollection {
    *
    * @param  {string|object}  child    The file which can either be an id or an object
    * @param  {string|object}  parent   The parent target which can either be an id or an object
-   * @return {boolean}                 Whether the file is a parent's child
+   * @returns {boolean}                 Whether the file is a parent's child
    */
   async isChildOf(child, parent) {
     let { _id: childID, dirID: childDirID, path: childPath } =
@@ -601,9 +601,10 @@ class FileCollection extends DocumentCollection {
    *
    * To see available content of the metadata attribute
    * see : https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files_metadata/
+   *
    * @param {string} id File id
    * @param {object} metadata io.cozy.files.metadata attributes
-   * @return {object} io.cozy.files updated
+   * @returns {object} io.cozy.files updated
    */
   async updateMetadataAttribute(id, metadata) {
     const resp = await this.stackClient.fetchJSON(
@@ -625,8 +626,8 @@ class FileCollection extends DocumentCollection {
    * This method should not be called directly to upload a file.
    * You should use `createFile`
    *
-   * @param {File|Blob|Stream|String|ArrayBuffer} data file to be uploaded
-   * @param {String} path Uri to call the stack from. Something like
+   * @param {File|Blob|Stream|string|ArrayBuffer} data file to be uploaded
+   * @param {string} path Uri to call the stack from. Something like
    * `/files/${dirId}?Name=${name}&Type=file&Executable=${executable}&MetadataID=${metadataId}`
    * @param {object} options Additional headers
    * @param {string} method POST / PUT / PATCH

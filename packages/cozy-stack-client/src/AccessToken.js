@@ -31,8 +31,9 @@ export default class AccessToken {
 
   /**
    * Get the access token string
+   *
    * @see CozyStackClient.getAccessToken
-   * @return {string} token
+   * @returns {string} token
    */
   getAccessToken() {
     return this.accessToken

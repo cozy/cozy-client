@@ -4,7 +4,7 @@
  * before passing them to the React component.
  */
 
-import { getQueryFromState, getRawQueryFromState } from './store'
+import { getRawQueryFromState } from './store'
 
 const hasOwn = Object.prototype.hasOwnProperty
 
@@ -34,7 +34,7 @@ export default class ObservableQuery {
   /**
    * Returns the query from the store with hydrated documents.
    *
-   * @return {HydratedQueryState}
+   * @returns {HydratedQueryState}
    */
   currentResult() {
     const result = this.client.getQueryFromState(this.queryId, {

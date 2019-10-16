@@ -36,7 +36,7 @@ class PermissionCollection extends DocumentCollection {
    *
    * @param  {object}  document
    * @param  {object}  permission
-   * @return {Promise}
+   * @returns {Promise}
    *
    * @example
    * ```

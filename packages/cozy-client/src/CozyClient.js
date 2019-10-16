@@ -58,11 +58,11 @@ const TRIGGER_UPDATE = 'update'
  */
 class CozyClient {
   /**
-   * @param  {Object}       options
+   * @param  {object}       options
    * @param  {Link}         options.link   - Backward compatibility
    * @param  {Array.Link}   options.links  - List of links
-   * @param  {Object}       options.schema - Schema description for each doctypes
-   * @param  {Object}       options.appMetadata - Metadata about the application that will be used in ensureCozyMetadata
+   * @param  {object}       options.schema - Schema description for each doctypes
+   * @param  {object}       options.appMetadata - Metadata about the application that will be used in ensureCozyMetadata
    *
    * Cozy-Client will automatically call `this.login()` if provided with a token and an uri
    */
@@ -222,7 +222,7 @@ class CozyClient {
    *
    * @param  {options.token}   options.token  - If passed, the token is set on the client
    * @param  {options.uri}   options.uri  - If passed, the uri is set on the client
-   * @return {Promise} - Resolves when all links have been setup and client is fully logged in
+   * @returns {Promise} - Resolves when all links have been setup and client is fully logged in
    *
    */
   login(options) {
@@ -270,7 +270,7 @@ class CozyClient {
    * - "beforeLogout" at the beginning, before links have been reset
    * - "login" when the client is fully logged out and links have been reset
    *
-   * @return {Promise} - Resolves when all links have been reset and client is fully logged out
+   * @returns {Promise} - Resolves when all links have been reset and client is fully logged out
    */
   async logout() {
     if (!this.isLogged) {
@@ -311,8 +311,8 @@ class CozyClient {
    * Forwards to a stack client instance and returns
    * a [DocumentCollection]{@link https://docs.cozy.io/en/cozy-client/api/cozy-stack-client/#DocumentCollection} instance.
    *
-   * @param  {String} doctype The collection doctype.
-   * @return {DocumentCollection}
+   * @param  {string} doctype The collection doctype.
+   * @returns {DocumentCollection}
    */
   collection(doctype) {
     return this.getStackClient().collection(doctype)
@@ -477,8 +477,8 @@ class CozyClient {
    * })
    * ```
    *
-   * @param  {String}   doctype
-   * @param  {String}   name    Name of the hook
+   * @param  {string}   doctype
+   * @param  {string}   name    Name of the hook
    * @param  {Function} fn      Callback
    */
   static registerHook(doctype, name, fn) {
@@ -501,7 +501,7 @@ class CozyClient {
    * Destroys a document. {before,after}:destroy hooks will be fired.
    *
    * @param  {Document} document
-   * @return {Document} The document that has been deleted
+   * @returns {Document} The document that has been deleted
    */
   async destroy(document, mutationOptions = {}) {
     await this.triggerHook('before:destroy', document)
@@ -534,8 +534,8 @@ class CozyClient {
    * executes its query when mounted if no fetch policy has been indicated.
    *
    * @param  {QueryDefinition} queryDefinition
-   * @param  {String} options.as - Names the query so it can be reused (by multiple components for example)
-   * @return {QueryResult}
+   * @param  {string} options.as - Names the query so it can be reused (by multiple components for example)
+   * @returns {QueryResult}
    */
   async query(queryDefinition, { update, ...options } = {}) {
     this.ensureStore()
@@ -561,8 +561,8 @@ class CozyClient {
    * result in a lot of network requests.
    *
    * @param  {QueryDefinition} queryDefinition
-   * @param  {Object} options - Options to the query
-   * @return {Array} All documents matching the query
+   * @param  {object} options - Options to the query
+   * @returns {Array} All documents matching the query
    */
   async queryAll(queryDefinition, options) {
     const documents = []
@@ -619,7 +619,7 @@ class CozyClient {
    *
    * @private
    * @param  {QueryDefinition} definition
-   * @return {Response}
+   * @returns {Response}
    */
   async requestQuery(definition) {
     const mainResponse = await this.chain.request(definition)
@@ -737,9 +737,9 @@ class CozyClient {
    * If related documents are not in the store, they will not be fetched automatically.
    * Instead, the relationships will have null documents.
    *
-   * @param  {String} doctype
+   * @param  {string} doctype
    * @param  {Array<Document>} documents
-   * @return {Array<HydratedDocument>}
+   * @returns {Array<HydratedDocument>}
    */
   hydrateDocuments(doctype, documents) {
     if (this.options.autoHydrate === false) {
@@ -762,7 +762,7 @@ class CozyClient {
    *
    * @param  {Document} document for which relationships must be resolved
    * @param  {Schema} schema for the document doctype
-   * @return {HydrateDocument}
+   * @returns {HydrateDocument}
    */
   hydrateDocument(document, schema) {
     if (!document) {
@@ -829,9 +829,9 @@ class CozyClient {
   /**
    * Get a collection of documents from the internal store.
    *
-   * @param {String} type - Doctype of the collection
+   * @param {string} type - Doctype of the collection
    *
-   * @return {Document[]} Array of documents or null if the collection does not exist.
+   * @returns {Document[]} Array of documents or null if the collection does not exist.
    */
   getCollectionFromState(type) {
     try {
@@ -845,10 +845,10 @@ class CozyClient {
   /**
    * Get a document from the internal store.
    *
-   * @param {String} type - Doctype of the document
-   * @param {String} id   - Id of the document
+   * @param {string} type - Doctype of the document
+   * @param {string} id   - Id of the document
    *
-   * @return {Document} Document or null if the object does not exist.
+   * @returns {Document} Document or null if the object does not exist.
    */
   getDocumentFromState(type, id) {
     try {
@@ -862,10 +862,10 @@ class CozyClient {
   /**
    * Get a query from the internal store.
    *
-   * @param {String} id - Id of the query (set via Query.props.as)
-   * @param {Boolean} options.hydrated - Whether documents should be returned already hydrated (default: false)
+   * @param {string} id - Id of the query (set via Query.props.as)
+   * @param {boolean} options.hydrated - Whether documents should be returned already hydrated (default: false)
    *
-   * @return {QueryState} - Query state or null if it does not exist.
+   * @returns {QueryState} - Query state or null if it does not exist.
    */
   getQueryFromState(id, options = {}) {
     const hydrated = options.hydrated || false
@@ -884,6 +884,7 @@ class CozyClient {
   /**
    * Performs a complete OAuth flow using a Cordova webview for auth.
    * The `register` method's name has been chosen for compat reasons with the Authentication compo.
+   *
    * @param   {string} cozyURL Receives the URL of the cozy instance.
    * @returns {object}   Contains the fetched token and the client information.
    */
@@ -896,7 +897,7 @@ class CozyClient {
   /**
    * Performs a complete OAuth flow, including updating the internal token at the end.
    *
-   * @param   {function} openURLCallback Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
+   * @param   {Function} openURLCallback Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
    * @returns {object}   Contains the fetched token and the client information. These should be stored and used to restore the client.
    */
   async startOAuthFlow(openURLCallback) {
@@ -959,7 +960,7 @@ class CozyClient {
    * ```
    *
    * @param {ReduxStore} store - A redux store
-   * @param {Boolean} options.force - Will deactivate throwing when client's store already exists
+   * @param {boolean} options.force - Will deactivate throwing when client's store already exists
    */
   setStore(store, { force = false } = {}) {
     if (store === undefined) {
@@ -1119,8 +1120,8 @@ CozyClient.fetchPolicies = {
    * Returns a fetchPolicy that will only re-fetch queries that are older
    * than `<delay>` ms.
    *
-   * @param  {Number} delay - Milliseconds since the query has been fetched
-   * @return {Function} Fetch policy to be used with `<Query />`
+   * @param  {number} delay - Milliseconds since the query has been fetched
+   * @returns {Function} Fetch policy to be used with `<Query />`
    */
   olderThan: delay => queryState => {
     if (!queryState || !queryState.lastUpdate) {

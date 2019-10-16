@@ -73,18 +73,20 @@ class Association {
    * @param  {object} target - Original object containing raw data
    * @param  {string} name - Attribute under which the association is stored
    * @param  {string} doctype - Doctype of the documents managed by the association
-   * @param  {function} options.dispatch - Store's dispatch, comes from the client
+   * @param  {Function} options.dispatch - Store's dispatch, comes from the client
    * @param {string} options
    */
   constructor(target, name, doctype, options) {
     const { dispatch, get, query, mutate, save } = options
     /**
      * The original document declaring the relationship
+     *
      * @type {object}
      */
     this.target = target
     /**
      * The name of the relationship.
+     *
      * @type {string}
      * @example 'author'
      */
@@ -92,6 +94,7 @@ class Association {
 
     /**
      * Doctype of the relationship
+     *
      * @type {string}
      * @example 'io.cozy.authors'
      */
@@ -99,31 +102,36 @@ class Association {
 
     /**
      * Returns the document from the store
-     * @type {function}
+     *
+     * @type {Function}
      */
     this.get = get
 
     /**
      * Performs a query to retrieve relationship documents.
+     *
      * @param {QueryDefinition} queryDefinition
-     * @method
+     * @function
      */
     this.query = query
 
     /**
      * Performs a mutation on the relationship.
-     * @method
+     *
+     * @function
      */
     this.mutate = mutate
 
     /**
      * Saves the relationship in store.
-     * @type {function}
+     *
+     * @type {Function}
      */
     this.save = save
     /**
      * Dispatch an action on the store.
-     * @type {function}
+     *
+     * @type {Function}
      */
     this.dispatch = dispatch
   }
@@ -201,7 +209,8 @@ class Association {
 
   /**
    * Derived `Association`s need to implement this method.
-   * @return {QueryDefinition}
+   *
+   * @returns {QueryDefinition}
    */
   static query() {
     throw new Error('A custom relationship must define its query() function')

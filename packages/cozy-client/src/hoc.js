@@ -8,7 +8,7 @@ import Query from './Query'
  * @description HOC to provide client from context as prop
  *
  * @param  {Component} Component - wrapped component
- * @return {function} - Component that will receive client as prop
+ * @returns {Function} - Component that will receive client as prop
  */
 export const withClient = Component => {
   const Wrapped = (props, context) => (
@@ -60,7 +60,7 @@ const withQuery = (dest, queryOpts, Original) => {
  * @description HOC creator to connect component to several queries in a declarative manner
  *
  * @param  {object} querySpecs - Definition of the queries
- * @return {function} - HOC to apply to a component
+ * @returns {Function} - HOC to apply to a component
  */
 export const queryConnect = querySpecs => Component => {
   const enhancers = Object.keys(querySpecs).map(dest =>

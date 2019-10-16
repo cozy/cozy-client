@@ -22,8 +22,8 @@ const getSortKeys = sort => {
  * query to work
  *
  * @private
- * @param  {Object} options - Mango query options
- * @return {Array} - Fields to index
+ * @param  {object} options - Mango query options
+ * @returns {Array} - Fields to index
  */
 const defaultSelector = { _id: { $gt: null } }
 export const getIndexFields = ({ selector = defaultSelector, sort = {} }) => {

@@ -1,8 +1,9 @@
 /**
  * Handler for error response which return a empty value for "not found" error
+ *
  * @param  {Error}         error
- * @param  {Array|Object}  data Data to return in case of "not found" error
- * @return {Object}        JsonAPI response with empty data in case of "not
+ * @param  {Array|object}  data Data to return in case of "not found" error
+ * @returns {object}        JsonAPI response with empty data in case of "not
  * found" error.
  */
 export const dontThrowNotFoundError = (error, data = []) => {
@@ -26,13 +27,14 @@ export const dontThrowNotFoundError = (error, data = []) => {
 export class Collection {
   /**
    * Utility method aimed to return only one document.
-   * @param  {Object}  stackClient
-   * @param  {String}  endpoint          Stack endpoint
-   * @param  {Object}  options
+   *
+   * @param  {object}  stackClient
+   * @param  {string}  endpoint          Stack endpoint
+   * @param  {object}  options
    * @param  {Func}    options.normalize Callback to normalize response data
    * (default `data => data`)
-   * @param  {String}  options.method    HTTP method (default `GET`)
-   * @return {Object}  JsonAPI response containing normalized
+   * @param  {string}  options.method    HTTP method (default `GET`)
+   * @returns {object}  JsonAPI response containing normalized
    * document as data attribute
    */
   static async get(

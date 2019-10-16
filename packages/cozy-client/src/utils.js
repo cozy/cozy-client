@@ -4,7 +4,7 @@
  * Rejects with canceled: true as soon as cancel is called
  *
  * @param  {Promise} promise
- * @return {AugmentedPromise} - Promise with .cancel method
+ * @returns {AugmentedPromise} - Promise with .cancel method
  */
 const cancelable = promise => {
   let _reject

@@ -26,7 +26,7 @@ class KonnectorCollection extends AppCollection {
   /**
    * Find triggers for a particular konnector
    *
-   * @param  {String} slug of the konnector
+   * @param  {string} slug of the konnector
    */
   async findTriggersBySlug(slug) {
     const triggerCol = new TriggerCollection(this.stackClient)
@@ -39,9 +39,9 @@ class KonnectorCollection extends AppCollection {
   /**
    * Launch a trigger for a given konnector.
    *
-   * @param  {String} slug
-   * @param  {Object} options
-   * @param  {Object} options.accountId - Pinpoint the account that should be used, useful if the user
+   * @param  {string} slug
+   * @param  {object} options
+   * @param  {object} options.accountId - Pinpoint the account that should be used, useful if the user
    * has more than 1 account for 1 konnector
    */
   async launch(slug, options = {}) {
@@ -70,10 +70,10 @@ class KonnectorCollection extends AppCollection {
   /**
    * Updates a konnector
    *
-   * @param  {String} slug
-   * @param  {Object} options
-   * @param  {Object} options.source - Specify the source (ex: registry://slug/stable)
-   * @param  {Boolean} options.sync - Wait for konnector to be updated, otherwise the job
+   * @param  {string} slug
+   * @param  {object} options
+   * @param  {object} options.source - Specify the source (ex: registry://slug/stable)
+   * @param  {boolean} options.sync - Wait for konnector to be updated, otherwise the job
    * is just scheduled
    */
   async update(slug, options = {}) {

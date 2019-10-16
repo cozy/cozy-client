@@ -27,10 +27,10 @@ class Registry {
    * Installs or updates an app from a source.
    *
    * Accepts the terms if the app has them.
-
+   
    * @param  {RegistryApp} app - App to be installed
    * @param  {string} source - String (ex: registry://drive/stable)
-   * @return {Promise}
+   * @returns {Promise}
    */
   async installApp(app, source) {
     const { slug, terms } = app
@@ -65,7 +65,7 @@ class Registry {
    * @param  {string} options.type - "webapp" or "konnector"
    * @param  {string} options.channel - "dev"/"beta"/"stable"
    *
-   * @return {Array<RegistryApp>}
+   * @returns {Array<RegistryApp>}
    */
   async fetchApps(options) {
     const { channel, type } = options
@@ -90,7 +90,7 @@ class Registry {
   /**
    * Fetch the list of apps that are in maintenance mode
    *
-   * @return {Array<RegistryApp>}
+   * @returns {Array<RegistryApp>}
    */
   fetchAppsInMaintenance() {
     return this.client.stackClient.fetchJSON('GET', '/registry/maintenance')

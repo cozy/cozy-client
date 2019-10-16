@@ -13,8 +13,9 @@ export default class AppToken {
 
   /**
    * Get the app token string
+   *
    * @see CozyStackClient.getAccessToken
-   * @return {string} token
+   * @returns {string} token
    */
   getAccessToken() {
     return this.token

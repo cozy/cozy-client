@@ -37,8 +37,8 @@ class CozyStackClient {
   /**
    * Creates a {@link DocumentCollection} instance.
    *
-   * @param  {String} doctype The collection doctype.
-   * @return {DocumentCollection}
+   * @param  {string} doctype The collection doctype.
+   * @returns {DocumentCollection}
    */
   collection(doctype) {
     if (!doctype) {
@@ -67,11 +67,11 @@ class CozyStackClient {
   /**
    * Fetches an endpoint in an authorized way.
    *
-   * @param  {String} method The HTTP method.
-   * @param  {String} path The URI.
-   * @param  {Object} body The payload.
-   * @param  {Object} options
-   * @return {Object}
+   * @param  {string} method The HTTP method.
+   * @param  {string} path The URI.
+   * @param  {object} body The payload.
+   * @param  {object} options
+   * @returns {object}
    * @throws {FetchError}
    */
   async fetch(method, path, body, opts = {}) {
@@ -113,6 +113,7 @@ class CozyStackClient {
 
   /**
    * Retrieves a new app token by refreshing the currently used token.
+   *
    * @throws {Error} The client should already have an access token to use this function
    * @throws {Error} The client couldn't fetch a new token
    * @returns {Promise} A promise that resolves with a new AccessToken object
@@ -162,11 +163,11 @@ class CozyStackClient {
   /**
    * Fetches JSON in an authorized way.
    *
-   * @param  {String} method The HTTP method.
-   * @param  {String} path The URI.
-   * @param  {Object} body The payload.
-   * @param  {Object} options
-   * @return {Object}
+   * @param  {string} method The HTTP method.
+   * @param  {string} path The URI.
+   * @param  {object} body The payload.
+   * @param  {object} options
+   * @returns {object}
    * @throws {FetchError}
    */
   async fetchJSON(method, path, body, options = {}) {
@@ -245,7 +246,8 @@ class CozyStackClient {
 
   /**
    * Get the access token string, being an oauth token or an app token
-   * @return {string} token
+   *
+   * @returns {string} token
    */
   getAccessToken() {
     return this.token && this.token.getAccessToken()

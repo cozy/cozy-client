@@ -24,7 +24,7 @@ class SharingCollection extends DocumentCollection {
    * share - Creates a new sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#post-sharings
    *
    * @param  {object} document The document to share. Should have and _id and a name.
-   * @param  {array} recipients A list of io.cozy.contacts
+   * @param  {Array} recipients A list of io.cozy.contacts
    * @param  {string} sharingType
    * @param  {string} description
    * @param  {string=} previewPath Relative URL of the sharings preview page

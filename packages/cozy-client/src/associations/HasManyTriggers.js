@@ -4,7 +4,8 @@ const TRIGGERS_DOCTYPE = 'io.cozy.triggers'
 
 /**
  * Association used for konnectors to retrieve all their related triggers.
- * @extends HasMany
+ *
+ * @augments HasMany
  */
 class HasManyTriggers extends HasMany {
   get data() {

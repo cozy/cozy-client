@@ -13,9 +13,10 @@ const DATABASE_DOES_NOT_EXIST = 'Database does not exist.'
 
 /**
  * Normalize a document, adding its doctype if needed
+ *
  * @param {object} doc - Document to normalize
  * @param {string} doctype
- * @return {object} normalized document
+ * @returns {object} normalized document
  * @private
  */
 export function normalizeDoc(doc = {}, doctype) {
@@ -40,7 +41,7 @@ class DocumentCollection {
    *
    * @private
    * @param {string} doctype
-   * @return {function} (data, response) => normalizedDocument
+   * @returns {Function} (data, response) => normalizedDocument
    *                                        using `normalizeDoc`
    */
   static normalizeDoctype(doctype) {
@@ -52,7 +53,7 @@ class DocumentCollection {
    *
    * @private
    * @param {string} doctype
-   * @return {function} (data, response) => normalizedDocument
+   * @returns {Function} (data, response) => normalizedDocument
    *                                        using `normalizeDoc`
    */
   static normalizeDoctypeJsonApi(doctype) {
@@ -67,7 +68,7 @@ class DocumentCollection {
    *
    * @private
    * @param {string} doctype
-   * @return {function} (data, response) => normalizedDocument
+   * @returns {Function} (data, response) => normalizedDocument
    *                                        using `normalizeDoc`
    */
   static normalizeDoctypeRawApi(doctype) {
@@ -83,7 +84,7 @@ class DocumentCollection {
    * The returned documents are paginated by the stack.
    *
    * @param  {{limit, skip, keys}} options The fetch options: pagination & fetch of specific docs.
-   * @return {{data, meta, skip, next}} The JSON API conformant response.
+   * @returns {{data, meta, skip, next}} The JSON API conformant response.
    * @throws {FetchError}
    */
   async all(options = {}) {
@@ -145,9 +146,9 @@ class DocumentCollection {
    *
    * The returned documents are paginated by the stack.
    *
-   * @param  {Object} selector The Mango selector.
+   * @param  {object} selector The Mango selector.
    * @param  {{sort, fields, limit, skip, indexId}} options The query options.
-   * @return {{data, meta, skip, next}} The JSON API conformant response.
+   * @returns {{data, meta, skip, next}} The JSON API conformant response.
    * @throws {FetchError}
    */
   async find(selector, options = {}) {
@@ -253,6 +254,7 @@ class DocumentCollection {
 
   /**
    * Updates several documents in one batch
+   *
    * @param  {Document[]} docs
    */
   async updateAll(docs) {
@@ -288,6 +290,7 @@ class DocumentCollection {
 
   /**
    * Deletes several documents in one batch
+   *
    * @param  {Document[]} docs - Documents to delete
    */
   destroyAll(docs) {
@@ -394,8 +397,8 @@ class DocumentCollection {
    * query to work
    *
    * @private
-   * @param  {Object} options - Mango query options
-   * @return {Array} - Fields to index
+   * @param  {object} options - Mango query options
+   * @returns {Array} - Fields to index
    */
   getIndexFields({ selector, sort = [] }) {
     return Array.from(
@@ -409,8 +412,8 @@ class DocumentCollection {
   /**
    * Use Couch _changes API
    *
-   * @param  {Object} couchOptions Couch options for changes https://kutt.it/5r7MNQ
-   * @param  {Object} options      { includeDesign: false, includeDeleted: false }
+   * @param  {object} couchOptions Couch options for changes https://kutt.it/5r7MNQ
+   * @param  {object} options      { includeDesign: false, includeDeleted: false }
    */
   async fetchChanges(couchOptions = {}, options = {}) {
     const haveDocsIds = couchOptions.doc_ids && couchOptions.doc_ids.length > 0
