@@ -85,7 +85,7 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 <dd><p>Returns the query from the store with hydrated documents.</p>
 </dd>
 <dt><a href="#fetchMore">fetchMore()</a></dt>
-<dd><p>Generates and execute a query that is offsetted by the number of documents
+<dd><p>Generates and executes a query that is offsetted by the number of documents
 we have in the store.</p>
 </dd>
 <dt><a href="#cancelable">cancelable(promise)</a> ⇒ <code>AugmentedPromise</code></dt>
@@ -486,9 +486,12 @@ Responsible for
         * [.logout()](#CozyClient+logout) ⇒ <code>Promise</code>
         * [.collection(doctype)](#CozyClient+collection) ⇒ <code>DocumentCollection</code>
         * [.getDocumentSavePlan(document, relationships)](#CozyClient+getDocumentSavePlan) ⇒ <code>Array.&lt;Mutation&gt;</code>
+        * [.destroy(document)](#CozyClient+destroy) ⇒ <code>Document</code>
         * [.query(queryDefinition)](#CozyClient+query) ⇒ <code>QueryResult</code>
+        * [.queryAll(queryDefinition, options)](#CozyClient+queryAll) ⇒ <code>Array</code>
         * [.fetchRelationships()](#CozyClient+fetchRelationships)
-        * [.hydrateDocument()](#CozyClient+hydrateDocument)
+        * [.hydrateDocuments(doctype, documents)](#CozyClient+hydrateDocuments) ⇒ <code>Array.&lt;HydratedDocument&gt;</code>
+        * [.hydrateDocument(document, schema)](#CozyClient+hydrateDocument) ⇒ <code>HydrateDocument</code>
         * [.makeNewDocument()](#CozyClient+makeNewDocument)
         * [.getAssociation()](#CozyClient+getAssociation)
         * [.getRelationshipStoreAccessors()](#CozyClient+getRelationshipStoreAccessors)
@@ -509,6 +512,7 @@ Responsible for
             * [.noFetch()](#CozyClient.fetchPolicies.noFetch)
         * [.fromOldClient()](#CozyClient.fromOldClient)
         * [.fromEnv()](#CozyClient.fromEnv)
+        * [.registerHook(doctype, name, fn)](#CozyClient.registerHook)
 
 <a name="new_CozyClient_new"></a>
 
@@ -639,6 +643,18 @@ client.getDocumentSavePlan(baseDoc, relationships)
 | document | <code>object</code> | The base document to create |
 | relationships | <code>object</code> | The list of relationships to add, as a dictionnary. Keys should be relationship names and values the documents to link. |
 
+<a name="CozyClient+destroy"></a>
+
+### cozyClient.destroy(document) ⇒ <code>Document</code>
+Destroys a document. {before,after}:destroy hooks will be fired.
+
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: <code>Document</code> - The document that has been deleted  
+
+| Param | Type |
+| --- | --- |
+| document | <code>Document</code> | 
+
 <a name="CozyClient+query"></a>
 
 ### cozyClient.query(queryDefinition) ⇒ <code>QueryResult</code>
@@ -655,6 +671,21 @@ executes its query when mounted if no fetch policy has been indicated.
 | queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) |  |
 | options.as | <code>String</code> | Names the query so it can be reused (by multiple components for example) |
 
+<a name="CozyClient+queryAll"></a>
+
+### cozyClient.queryAll(queryDefinition, options) ⇒ <code>Array</code>
+Will fetch all documents for a `queryDefinition`, automatically fetching more
+documents if the total of documents is superior to the pagination limit. Can
+result in a lot of network requests.
+
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: <code>Array</code> - All documents matching the query  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) |  |
+| options | <code>Object</code> | Options to the query |
+
 <a name="CozyClient+fetchRelationships"></a>
 
 ### cozyClient.fetchRelationships()
@@ -662,18 +693,39 @@ Fetch relationships for a response (can be several docs).
 Fills the `relationships` attribute of each documents.
 
 Can potentially result in several fetch requests.
-Queries are optimized before being sent.
+Queries are optimized before being sent (multiple single documents queries can be packed into
+one multiple document query) for example.
 
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+<a name="CozyClient+hydrateDocuments"></a>
+
+### cozyClient.hydrateDocuments(doctype, documents) ⇒ <code>Array.&lt;HydratedDocument&gt;</code>
+Returns documents with their relationships resolved according to their schema.
+If related documents are not in the store, they will not be fetched automatically.
+Instead, the relationships will have null documents.
+
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+
+| Param | Type |
+| --- | --- |
+| doctype | <code>String</code> | 
+| documents | <code>Array.&lt;Document&gt;</code> | 
+
 <a name="CozyClient+hydrateDocument"></a>
 
-### cozyClient.hydrateDocument()
-Instantiate relationships on a document
+### cozyClient.hydrateDocument(document, schema) ⇒ <code>HydrateDocument</code>
+Resolves relationships on a document.
 
 The original document is kept in the target attribute of
 the relationship
 
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | <code>Document</code> | for which relationships must be resolved |
+| schema | [<code>Schema</code>](#Schema) | for the document doctype |
+
 <a name="CozyClient+makeNewDocument"></a>
 
 ### cozyClient.makeNewDocument()
@@ -879,6 +931,29 @@ a client with an instance of cozy-client-js.
 In konnector/service context, CozyClient can be instantiated from environment variables
 
 **Kind**: static method of [<code>CozyClient</code>](#CozyClient)  
+<a name="CozyClient.registerHook"></a>
+
+### CozyClient.registerHook(doctype, name, fn)
+Hooks are an observable system for events on documents.
+There are at the moment only 2 hooks available.
+
+- before:destroy, called just before a document is destroyed via CozyClient::destroy
+- after:destroy, called after a document is destroyed via CozyClient::destroy
+
+**Kind**: static method of [<code>CozyClient</code>](#CozyClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doctype | <code>String</code> |  |
+| name | <code>String</code> | Name of the hook |
+| fn | <code>function</code> | Callback |
+
+**Example**  
+```
+CozyClient.registerHook('io.cozy.bank.accounts', 'before:destroy', () => {
+  console.log('A io.cozy.bank.accounts is being destroyed')
+})
+```
 <a name="QueryDefinition"></a>
 
 ## QueryDefinition
@@ -1184,7 +1259,7 @@ Returns the query from the store with hydrated documents.
 <a name="fetchMore"></a>
 
 ## fetchMore()
-Generates and execute a query that is offsetted by the number of documents
+Generates and executes a query that is offsetted by the number of documents
 we have in the store.
 
 **Kind**: global function  

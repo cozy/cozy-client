@@ -56,7 +56,7 @@ export default class ObservableQuery {
   }
 
   /**
-   * Generates and execute a query that is offsetted by the number of documents
+   * Generates and executes a query that is offsetted by the number of documents
    * we have in the store.
    */
   fetchMore() {
