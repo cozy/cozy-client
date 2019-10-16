@@ -14,10 +14,10 @@ const makeMutationsObject = (mutations, client, props) => {
  * @function
  * @description HOC to provide mutations to components. Needs client in context
  * or as prop.
- * @param  {function} mutations One ore more mutations, which are function
+ * @param  {Function} mutations One ore more mutations, which are function
  * taking CozyClient as parameter and returning an object containing one or
  * more mutations as attributes.
- * @return {function} - Component that will receive mutations as props
+ * @returns {Function} - Component that will receive mutations as props
  */
 const withMutations = (...mutations) => WrappedComponent => {
   const wrappedDisplayName =

@@ -40,7 +40,7 @@ through OAuth.</p>
 ## Constants
 
 <dl>
-<dt><a href="#dontThrowNotFoundError">dontThrowNotFoundError</a> ⇒ <code>Object</code></dt>
+<dt><a href="#dontThrowNotFoundError">dontThrowNotFoundError</a> ⇒ <code>object</code></dt>
 <dd><p>Handler for error response which return a empty value for &quot;not found&quot; error</p>
 </dd>
 </dl>
@@ -93,20 +93,20 @@ specific collections.
 **Kind**: global class  
 <a name="Collection.get"></a>
 
-### Collection.get(stackClient, endpoint, options) ⇒ <code>Object</code>
+### Collection.get(stackClient, endpoint, options) ⇒ <code>object</code>
 Utility method aimed to return only one document.
 
 **Kind**: static method of [<code>Collection</code>](#Collection)  
-**Returns**: <code>Object</code> - JsonAPI response containing normalized
+**Returns**: <code>object</code> - JsonAPI response containing normalized
 document as data attribute  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| stackClient | <code>Object</code> |  |
-| endpoint | <code>String</code> | Stack endpoint |
-| options | <code>Object</code> |  |
+| stackClient | <code>object</code> |  |
+| endpoint | <code>string</code> | Stack endpoint |
+| options | <code>object</code> |  |
 | options.normalize | <code>Func</code> | Callback to normalize response data (default `data => data`) |
-| options.method | <code>String</code> | HTTP method (default `GET`) |
+| options.method | <code>string</code> | HTTP method (default `GET`) |
 
 <a name="CozyStackClient"></a>
 
@@ -117,9 +117,9 @@ Main API against the `cozy-stack` server.
 
 * [CozyStackClient](#CozyStackClient)
     * [.collection(doctype)](#CozyStackClient+collection) ⇒ [<code>DocumentCollection</code>](#DocumentCollection)
-    * [.fetch(method, path, body, options)](#CozyStackClient+fetch) ⇒ <code>Object</code>
+    * [.fetch(method, path, body, options)](#CozyStackClient+fetch) ⇒ <code>object</code>
     * [.refreshToken()](#CozyStackClient+refreshToken) ⇒ <code>Promise</code>
-    * [.fetchJSON(method, path, body, options)](#CozyStackClient+fetchJSON) ⇒ <code>Object</code>
+    * [.fetchJSON(method, path, body, options)](#CozyStackClient+fetchJSON) ⇒ <code>object</code>
     * [.getAccessToken()](#CozyStackClient+getAccessToken) ⇒ <code>string</code>
 
 <a name="CozyStackClient+collection"></a>
@@ -131,11 +131,11 @@ Creates a [DocumentCollection](#DocumentCollection) instance.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| doctype | <code>String</code> | The collection doctype. |
+| doctype | <code>string</code> | The collection doctype. |
 
 <a name="CozyStackClient+fetch"></a>
 
-### cozyStackClient.fetch(method, path, body, options) ⇒ <code>Object</code>
+### cozyStackClient.fetch(method, path, body, options) ⇒ <code>object</code>
 Fetches an endpoint in an authorized way.
 
 **Kind**: instance method of [<code>CozyStackClient</code>](#CozyStackClient)  
@@ -146,10 +146,10 @@ Fetches an endpoint in an authorized way.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| method | <code>String</code> | The HTTP method. |
-| path | <code>String</code> | The URI. |
-| body | <code>Object</code> | The payload. |
-| options | <code>Object</code> |  |
+| method | <code>string</code> | The HTTP method. |
+| path | <code>string</code> | The URI. |
+| body | <code>object</code> | The payload. |
+| options | <code>object</code> |  |
 
 <a name="CozyStackClient+refreshToken"></a>
 
@@ -165,7 +165,7 @@ Retrieves a new app token by refreshing the currently used token.
 
 <a name="CozyStackClient+fetchJSON"></a>
 
-### cozyStackClient.fetchJSON(method, path, body, options) ⇒ <code>Object</code>
+### cozyStackClient.fetchJSON(method, path, body, options) ⇒ <code>object</code>
 Fetches JSON in an authorized way.
 
 **Kind**: instance method of [<code>CozyStackClient</code>](#CozyStackClient)  
@@ -176,10 +176,10 @@ Fetches JSON in an authorized way.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| method | <code>String</code> | The HTTP method. |
-| path | <code>String</code> | The URI. |
-| body | <code>Object</code> | The payload. |
-| options | <code>Object</code> |  |
+| method | <code>string</code> | The HTTP method. |
+| path | <code>string</code> | The URI. |
+| body | <code>object</code> | The payload. |
+| options | <code>object</code> |  |
 
 <a name="CozyStackClient+getAccessToken"></a>
 
@@ -240,7 +240,7 @@ The returned documents are paginated by the stack.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| selector | <code>Object</code> | The Mango selector. |
+| selector | <code>object</code> | The Mango selector. |
 | options | <code>Object</code> | The query options. |
 
 <a name="DocumentCollection+get"></a>
@@ -298,8 +298,8 @@ Use Couch _changes API
 
 | Param | Type | Description |
 | --- | --- | --- |
-| couchOptions | <code>Object</code> | Couch options for changes https://kutt.it/5r7MNQ |
-| options | <code>Object</code> | { includeDesign: false, includeDeleted: false } |
+| couchOptions | <code>object</code> | Couch options for changes https://kutt.it/5r7MNQ |
+| options | <code>object</code> | { includeDesign: false, includeDeleted: false } |
 
 <a name="FileCollection"></a>
 
@@ -348,7 +348,7 @@ The returned documents are paginated by the stack.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| selector | <code>Object</code> | The Mango selector. |
+| selector | <code>object</code> | The Mango selector. |
 | options | <code>Object</code> | The query options. |
 
 <a name="FileCollection+findReferencedBy"></a>
@@ -475,7 +475,7 @@ async deleteFilePermanently - Definitely delete a file
 
 | Param | Type | Description |
 | --- | --- | --- |
-| data | <code>File</code> \| <code>Blob</code> \| <code>Stream</code> \| <code>String</code> \| <code>ArrayBuffer</code> | file to be uploaded |
+| data | <code>File</code> \| <code>Blob</code> \| <code>Stream</code> \| <code>string</code> \| <code>ArrayBuffer</code> | file to be uploaded |
 | dirPath | <code>string</code> | Path to upload the file to. ie : /Administative/XXX/ |
 
 <a name="FileCollection+createFile"></a>
@@ -485,7 +485,7 @@ async deleteFilePermanently - Definitely delete a file
 
 | Param | Type | Description |
 | --- | --- | --- |
-| data | <code>File</code> \| <code>Blob</code> \| <code>Stream</code> \| <code>String</code> \| <code>ArrayBuffer</code> | file to be uploaded |
+| data | <code>File</code> \| <code>Blob</code> \| <code>Stream</code> \| <code>string</code> \| <code>ArrayBuffer</code> | file to be uploaded |
 | params | <code>object</code> | Additionnal parameters |
 | params.name | <code>string</code> | Name of the file |
 | params.dirId | <code>string</code> | Id of the directory you want to upload the file to |
@@ -600,8 +600,8 @@ You should use `createFile`
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| data | <code>File</code> \| <code>Blob</code> \| <code>Stream</code> \| <code>String</code> \| <code>ArrayBuffer</code> |  | file to be uploaded |
-| path | <code>String</code> |  | Uri to call the stack from. Something like `/files/${dirId}?Name=${name}&Type=file&Executable=${executable}&MetadataID=${metadataId}` |
+| data | <code>File</code> \| <code>Blob</code> \| <code>Stream</code> \| <code>string</code> \| <code>ArrayBuffer</code> |  | file to be uploaded |
+| path | <code>string</code> |  | Uri to call the stack from. Something like `/files/${dirId}?Name=${name}&Type=file&Executable=${executable}&MetadataID=${metadataId}` |
 | options | <code>object</code> |  | Additional headers |
 | method | <code>string</code> | <code>&quot;POST&quot;</code> | POST / PUT / PATCH |
 
@@ -837,7 +837,7 @@ share - Creates a new sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#p
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | document | <code>object</code> |  | The document to share. Should have and _id and a name. |
-| recipients | <code>array</code> |  | A list of io.cozy.contacts |
+| recipients | <code>Array</code> |  | A list of io.cozy.contacts |
 | sharingType | <code>string</code> |  |  |
 | description | <code>string</code> |  |  |
 | [previewPath] | <code>string</code> | <code>null</code> | Relative URL of the sharings preview page |
@@ -928,8 +928,8 @@ See https://github.com/cozy/cozy-stack/pull/2010
 
 | Param | Type |
 | --- | --- |
-| selector | <code>Object</code> | 
-| options | <code>Object</code> | 
+| selector | <code>object</code> | 
+| options | <code>object</code> | 
 
 <a name="TriggerCollection+launch"></a>
 
@@ -946,17 +946,17 @@ Force given trigger execution.
 
 <a name="dontThrowNotFoundError"></a>
 
-## dontThrowNotFoundError ⇒ <code>Object</code>
+## dontThrowNotFoundError ⇒ <code>object</code>
 Handler for error response which return a empty value for "not found" error
 
 **Kind**: global constant  
-**Returns**: <code>Object</code> - JsonAPI response with empty data in case of "not
+**Returns**: <code>object</code> - JsonAPI response with empty data in case of "not
 found" error.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | error | <code>Error</code> |  |
-| data | <code>Array</code> \| <code>Object</code> | Data to return in case of "not found" error |
+| data | <code>Array</code> \| <code>object</code> | Data to return in case of "not found" error |
 
 <a name="getAccessToken"></a>
 

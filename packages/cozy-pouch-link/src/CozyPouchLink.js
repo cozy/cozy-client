@@ -163,7 +163,7 @@ class PouchLink extends CozyLink {
    * Typically, it can be used when the application regains focus.
    *
    * @public
-   * @return {void}
+   * @returns {void}
    */
   startReplication() {
     this.pouches.startReplicationLoop()
@@ -177,7 +177,7 @@ class PouchLink extends CozyLink {
    * Typically, it can be used when the applications loses focus.
    *
    * @public
-   * @return {void}
+   * @returns {void}
    */
   stopReplication() {
     this.pouches.stopReplicationLoop()

@@ -12,7 +12,7 @@ const isIdQuery = query => query.id || query.ids
  * Optimize queries on a single doctype
  *
  * @param  {QueryDefinition[]} queries - Queries of a same doctype
- * @return {QueryDefinition[]} Optimized queries
+ * @returns {QueryDefinition[]} Optimized queries
  * @private
  */
 const optimizeDoctypeQueries = queries => {
@@ -38,7 +38,7 @@ const optimizeDoctypeQueries = queries => {
  * - Groups id queries
  *
  * @param  {QueryDefinition[]} queries - Queries to optimized
- * @return {QueryDefinition[]} Optimized queries
+ * @returns {QueryDefinition[]} Optimized queries
  * @private
  */
 const optimizeQueries = queries => {

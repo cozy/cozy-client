@@ -520,11 +520,11 @@ Responsible for
 
 | Param | Type | Description |
 | --- | --- | --- |
-| options | <code>Object</code> |  |
+| options | <code>object</code> |  |
 | options.link | <code>Link</code> | Backward compatibility |
 | options.links | <code>Array.Link</code> | List of links |
-| options.schema | <code>Object</code> | Schema description for each doctypes |
-| options.appMetadata | <code>Object</code> | Metadata about the application that will be used in ensureCozyMetadata Cozy-Client will automatically call `this.login()` if provided with a token and an uri |
+| options.schema | <code>object</code> | Schema description for each doctypes |
+| options.appMetadata | <code>object</code> | Metadata about the application that will be used in ensureCozyMetadata Cozy-Client will automatically call `this.login()` if provided with a token and an uri |
 
 <a name="CozyClient+registerPlugin"></a>
 
@@ -618,7 +618,7 @@ a [DocumentCollection](https://docs.cozy.io/en/cozy-client/api/cozy-stack-client
 
 | Param | Type | Description |
 | --- | --- | --- |
-| doctype | <code>String</code> | The collection doctype. |
+| doctype | <code>string</code> | The collection doctype. |
 
 <a name="CozyClient+getDocumentSavePlan"></a>
 
@@ -669,7 +669,7 @@ executes its query when mounted if no fetch policy has been indicated.
 | Param | Type | Description |
 | --- | --- | --- |
 | queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) |  |
-| options.as | <code>String</code> | Names the query so it can be reused (by multiple components for example) |
+| options.as | <code>string</code> | Names the query so it can be reused (by multiple components for example) |
 
 <a name="CozyClient+queryAll"></a>
 
@@ -684,7 +684,7 @@ result in a lot of network requests.
 | Param | Type | Description |
 | --- | --- | --- |
 | queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) |  |
-| options | <code>Object</code> | Options to the query |
+| options | <code>object</code> | Options to the query |
 
 <a name="CozyClient+fetchRelationships"></a>
 
@@ -708,7 +708,7 @@ Instead, the relationships will have null documents.
 
 | Param | Type |
 | --- | --- |
-| doctype | <code>String</code> | 
+| doctype | <code>string</code> | 
 | documents | <code>Array.&lt;Document&gt;</code> | 
 
 <a name="CozyClient+hydrateDocument"></a>
@@ -761,7 +761,7 @@ Get a collection of documents from the internal store.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| type | <code>String</code> | Doctype of the collection |
+| type | <code>string</code> | Doctype of the collection |
 
 <a name="CozyClient+getDocumentFromState"></a>
 
@@ -773,8 +773,8 @@ Get a document from the internal store.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| type | <code>String</code> | Doctype of the document |
-| id | <code>String</code> | Id of the document |
+| type | <code>string</code> | Doctype of the document |
+| id | <code>string</code> | Id of the document |
 
 <a name="CozyClient+getQueryFromState"></a>
 
@@ -786,8 +786,8 @@ Get a query from the internal store.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| id | <code>String</code> | Id of the query (set via Query.props.as) |
-| options.hydrated | <code>Boolean</code> | Whether documents should be returned already hydrated (default: false) |
+| id | <code>string</code> | Id of the query (set via Query.props.as) |
+| options.hydrated | <code>boolean</code> | Whether documents should be returned already hydrated (default: false) |
 
 <a name="CozyClient+register"></a>
 
@@ -837,7 +837,7 @@ use options.force = true.
 | Param | Type | Description |
 | --- | --- | --- |
 | store | <code>ReduxStore</code> | A redux store |
-| options.force | <code>Boolean</code> | Will deactivate throwing when client's store already exists |
+| options.force | <code>boolean</code> | Will deactivate throwing when client's store already exists |
 
 **Example**  
 ```
@@ -911,7 +911,7 @@ than `<delay>` ms.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| delay | <code>Number</code> | Milliseconds since the query has been fetched |
+| delay | <code>number</code> | Milliseconds since the query has been fetched |
 
 <a name="CozyClient.fetchPolicies.noFetch"></a>
 
@@ -945,8 +945,8 @@ There are at the moment only 2 hooks available.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| doctype | <code>String</code> |  |
-| name | <code>String</code> | Name of the hook |
+| doctype | <code>string</code> |  |
+| name | <code>string</code> | Name of the hook |
 | fn | <code>function</code> | Callback |
 
 **Example**  
@@ -986,7 +986,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
 | doctype | <code>string</code> | The doctype of the doc. |
 | id | <code>string</code> | The id of the doc. |
 | ids | <code>Array</code> | The ids of the docs. |
-| selector | <code>Object</code> | The selector to query the docs. |
+| selector | <code>object</code> | The selector to query the docs. |
 | fields | <code>Array</code> | The fields to return. |
 | indexedFields | <code>Array</code> | The fields to index. |
 | sort | <code>Array</code> | The sorting params. |
@@ -1030,7 +1030,7 @@ Each field passed in the selector will be indexed, except if the indexField opti
 
 | Param | Type | Description |
 | --- | --- | --- |
-| selector | <code>Object</code> | The Mango selector. |
+| selector | <code>object</code> | The Mango selector. |
 
 <a name="QueryDefinition+select"></a>
 
@@ -1135,7 +1135,7 @@ Use the [file reference system](https://docs.cozy.io/en/cozy-stack/references-do
 
 | Param | Type | Description |
 | --- | --- | --- |
-| document | <code>Object</code> | The reference document |
+| document | <code>object</code> | The reference document |
 
 <a name="Schema"></a>
 

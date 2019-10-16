@@ -157,7 +157,7 @@ Query.propTypes = {
    *
    * @example
    * If you want to only fetch queries that are older than 30 seconds:
-
+   
    * ```js
    * const cache30s = ({ lastUpdate }) => {
    *   return !lastUpdate || (Date.now() - 30 * 1000 > lastUpdate)

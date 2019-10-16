@@ -38,7 +38,7 @@ class TriggerCollection extends DocumentCollection {
    *
    * @see https://docs.cozy.io/en/cozy-stack/jobs/#get-jobstriggers
    * @param  {{Worker}} options The fetch options: Worker allow to filter only triggers associated with a specific worker.
-   * @return {{data}} The JSON API conformant response.
+   * @returns {{data}} The JSON API conformant response.
    * @throws {FetchError}
    */
   async all(options = {}) {
@@ -58,9 +58,10 @@ class TriggerCollection extends DocumentCollection {
 
   /**
    * Creates a Trigger document
+   *
    * @see https://docs.cozy.io/en/cozy-stack/jobs/#post-jobstriggers
    * @param  {object}  attributes Trigger's attributes
-   * @return {object}  Stack response, containing trigger document under `data` attribute.
+   * @returns {object}  Stack response, containing trigger document under `data` attribute.
    */
   async create(attributes) {
     const path = uri`/jobs/triggers`
@@ -76,6 +77,7 @@ class TriggerCollection extends DocumentCollection {
 
   /**
    * Deletes a trigger
+   *
    * @see https://docs.cozy.io/en/cozy-stack/jobs/#delete-jobstriggerstrigger-id
    * @param  {object} document The trigger to delete — must have an _id field
    * @returns {object} The deleted document
@@ -97,9 +99,9 @@ class TriggerCollection extends DocumentCollection {
    *
    * See https://github.com/cozy/cozy-stack/pull/2010
    *
-   * @param {Object} selector
-   * @param {Object} options
-   * @return {{data, meta, skip, next}} The JSON API conformant response.
+   * @param {object} selector
+   * @param {object} options
+   * @returns {{data, meta, skip, next}} The JSON API conformant response.
    * @throws {FetchError}
    */
   async find(selector = {}, options = {}) {
@@ -132,9 +134,10 @@ class TriggerCollection extends DocumentCollection {
 
   /**
    * Force given trigger execution.
+   *
    * @see https://docs.cozy.io/en/cozy-stack/jobs/#post-jobstriggerstrigger-idlaunch
    * @param {object} Trigger to launch
-   * @return {object} Stack response, containing job launched by trigger, under `data` attribute.
+   * @returns {object} Stack response, containing job launched by trigger, under `data` attribute.
    */
   async launch(trigger) {
     const path = uri`/jobs/triggers/${trigger._id}/launch`
