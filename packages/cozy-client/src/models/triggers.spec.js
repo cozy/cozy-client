@@ -4,7 +4,9 @@ describe('trigger states', () => {
   it('should get execution date', () => {
     expect(
       triggerStates.getLastExecution({
-        last_execution: '2010-09-10T00:00'
+        current_state: {
+          last_execution: '2010-09-10T00:00'
+        }
       })
     ).toBe('2010-09-10T00:00')
   })
