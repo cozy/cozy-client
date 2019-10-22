@@ -188,6 +188,54 @@ const queries = { checked, archived }
 const ConnectedTodoList = queryConnect(queries)(TodoList)
 ```
 
+### 2.c Using a fetch policy to decrease network requests
+
+When multiple components share the same data, you might want to share the data between the two
+components. In this case, you do not want to execute 2 network requests for the same data, the
+two components should share the same data and only 1 network request should be executed.
+
+There are two solutions:
+
+1) Lift the data fetching up the React tree: make a parent of the two components be the responsible of the data.
+2) Using fetch policies to prevent re-fetching of the data
+
+1 can be a good solution but sometimes the components needing the data are too far down the tree and/or too decoupled;
+it might not make sense to lift the data fetching up only to have to drill the data down the tree again.
+
+Using both `Query` and `queryConnect`, you can declare a *fetch policy*. It tells cozy-client if it should
+execute the `query` at componentDidMount time. It enables n components to be connected to the same query without
+triggering n requests.
+
+A fetch policy is a function receiving the state of the current query and returning true if it should
+be fetched and false otherwise. It is important to name the query with `as` when using fetch policies
+otherwise query data cannot be shared across components.
+
+```jsx
+const query = client => client.all('io.cozy.todos')
+
+// io.cozy.todos will not be refetched if there are already io.cozy.todos
+// in the store and the data is fresh (updated less than 30s ago). 
+const fetchPolicy = CozyClient.olderThan(30*1000)
+const as = 'my-query'
+
+// With Query and a render prop
+<Query as={as} query={query} fetchPolicy={fetchPolicy}>{
+  ({ data: todos }) => {<TodoList todos={todos} />}
+}</Query>
+
+// With queryConnect
+queryConnect({
+  todos: {
+    as,
+    query,
+    fetchPolicy
+  }
+})(TodoList)
+```
+
+See [CozyClient::fetchPolicies](https://docs.cozy.io/en/cozy-client/api/cozy-client/#CozyClient.fetchPolicies)
+for the API documentation.
+
 ### 3. Mutating data
 
 The simplest way is to use the `withClient` high order component. It will inject a `client` in your props with the CozyClient instance you gave to the `<CozyProvider />` upper.
