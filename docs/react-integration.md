@@ -206,7 +206,7 @@ Using both `Query` and `queryConnect`, you can declare a *fetch policy*. It tell
 execute the `query` at componentDidMount time. It enables n components to be connected to the same query without
 triggering n requests.
 
-A fetch policy is a simple function receiving the state of the current query and returning true if it should
+A fetch policy is a function receiving the state of the current query and returning true if it should
 be fetched and false otherwise. It is important to name the query with `as` when using fetch policies
 otherwise query data cannot be shared across components.
 
