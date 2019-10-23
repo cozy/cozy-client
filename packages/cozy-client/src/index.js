@@ -33,3 +33,5 @@ export { queryConnect, withClient } from './hoc'
 
 import * as models from './models'
 export { models }
+
+export { default as fetchPolicies } from './policies'

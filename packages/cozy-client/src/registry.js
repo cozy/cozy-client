@@ -98,9 +98,10 @@ class Registry {
 
   /**
    * Fetch the status of a single app on the registry
+   *
    * @param  {string} slug - The slug of the app to fetch
    *
-   * @return {RegistryApp}
+   * @returns {RegistryApp}
    */
   fetchApp(slug) {
     return this.client.stackClient.fetchJSON('GET', `/registry/${slug}`)
