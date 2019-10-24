@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.6.0](https://github.com/cozy/cozy-client/compare/v7.5.2...v7.6.0) (2019-10-24)
+
+
+### Features
+
+* Export fetchPolicies directly ([89293b8](https://github.com/cozy/cozy-client/commit/89293b8))
+
+
+
+
+
 ## [7.5.2](https://github.com/cozy/cozy-client/compare/v7.5.1...v7.5.2) (2019-10-21)
 
 
