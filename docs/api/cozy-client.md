@@ -64,6 +64,9 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 <dt><a href="#triggerStates">triggerStates</a></dt>
 <dd><p>Trigger states come from /jobs/triggers</p>
 </dd>
+<dt><a href="#fetchPolicies">fetchPolicies</a></dt>
+<dd><p>Use those fetch policies with <code>&lt;Query /&gt;</code> to limit the number of re-fetch.</p>
+</dd>
 </dl>
 
 ## Functions
@@ -507,9 +510,6 @@ Responsible for
         * [.createClient()](#CozyClient+createClient)
         * [.setData(data)](#CozyClient+setData)
     * _static_
-        * [.fetchPolicies](#CozyClient.fetchPolicies)
-            * [.olderThan(delay)](#CozyClient.fetchPolicies.olderThan) ⇒ <code>function</code>
-            * [.noFetch()](#CozyClient.fetchPolicies.noFetch)
         * [.fromOldClient()](#CozyClient.fromOldClient)
         * [.fromEnv()](#CozyClient.fromEnv)
         * [.registerHook(doctype, name, fn)](#CozyClient.registerHook)
@@ -884,41 +884,6 @@ set some data in the store.
 | --- | --- | --- |
 | data | <code>Object</code> | { doctype: [data] } |
 
-<a name="CozyClient.fetchPolicies"></a>
-
-### CozyClient.fetchPolicies
-Use those fetch policies with `<Query />` to limit the number of re-fetch.
-
-**Kind**: static property of [<code>CozyClient</code>](#CozyClient)  
-**Example**  
-```
-const olderThan30s = CozyClient.fetchPolicies.olderThan(30 * 1000)
-<Query fetchPolicy={olderThan30s} />
-```
-
-* [.fetchPolicies](#CozyClient.fetchPolicies)
-    * [.olderThan(delay)](#CozyClient.fetchPolicies.olderThan) ⇒ <code>function</code>
-    * [.noFetch()](#CozyClient.fetchPolicies.noFetch)
-
-<a name="CozyClient.fetchPolicies.olderThan"></a>
-
-#### fetchPolicies.olderThan(delay) ⇒ <code>function</code>
-Returns a fetchPolicy that will only re-fetch queries that are older
-than `<delay>` ms.
-
-**Kind**: static method of [<code>fetchPolicies</code>](#CozyClient.fetchPolicies)  
-**Returns**: <code>function</code> - Fetch policy to be used with `<Query />`  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| delay | <code>number</code> | Milliseconds since the query has been fetched |
-
-<a name="CozyClient.fetchPolicies.noFetch"></a>
-
-#### fetchPolicies.noFetch()
-Fetch policy that deactivates any fetching.
-
-**Kind**: static method of [<code>fetchPolicies</code>](#CozyClient.fetchPolicies)  
 <a name="CozyClient.fromOldClient"></a>
 
 ### CozyClient.fromOldClient()
@@ -1210,6 +1175,42 @@ Returns when the trigger was last executed. Need a trigger
 Returns whether last job failed
 
 **Kind**: static method of [<code>triggerStates</code>](#triggerStates)  
+<a name="fetchPolicies"></a>
+
+## fetchPolicies
+Use those fetch policies with `<Query />` to limit the number of re-fetch.
+
+**Kind**: global constant  
+**Example**  
+```
+import { fetchPolicies } from 'cozy-client'
+const olderThan30s = fetchPolicies.olderThan(30 * 1000)
+<Query fetchPolicy={olderThan30s} />
+```
+
+* [fetchPolicies](#fetchPolicies)
+    * [.olderThan(delay)](#fetchPolicies.olderThan) ⇒ <code>function</code>
+    * [.noFetch()](#fetchPolicies.noFetch)
+
+<a name="fetchPolicies.olderThan"></a>
+
+### fetchPolicies.olderThan(delay) ⇒ <code>function</code>
+Returns a fetchPolicy that will only re-fetch queries that are older
+than `<delay>` ms.
+
+**Kind**: static method of [<code>fetchPolicies</code>](#fetchPolicies)  
+**Returns**: <code>function</code> - Fetch policy to be used with `<Query />`  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| delay | <code>number</code> | Milliseconds since the query has been fetched |
+
+<a name="fetchPolicies.noFetch"></a>
+
+### fetchPolicies.noFetch()
+Fetch policy that deactivates any fetching.
+
+**Kind**: static method of [<code>fetchPolicies</code>](#fetchPolicies)  
 <a name="withClient"></a>
 
 ## withClient(Component) ⇒ <code>function</code>
