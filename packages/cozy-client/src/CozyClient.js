@@ -282,16 +282,24 @@ class CozyClient {
     this.emit('beforeLogout')
     this.isLogged = false
 
-    try {
-      // unregister client on stack
-      if (
-        this.stackClient.unregister &&
-        (!this.stackClient.isRegistered || this.stackClient.isRegistered())
-      ) {
-        await this.stackClient.unregister()
+    if (this.stackClient instanceof OAuthClient) {
+      try {
+        // unregister client on stack
+        if (
+          this.stackClient.unregister &&
+          (!this.stackClient.isRegistered || this.stackClient.isRegistered())
+        ) {
+          await this.stackClient.unregister()
+        }
+      } catch (err) {
+        console.warn(`Impossible to unregister client on stack: ${err}`)
       }
-    } catch (err) {
-      console.warn(`Impossible to unregister client on stack: ${err}`)
+    } else {
+      try {
+        await this.stackClient.fetch('DELETE', '/auth/login')
+      } catch (err) {
+        console.warn(`Impossible to log out: ${err}`)
+      }
     }
 
     // clean information on links
