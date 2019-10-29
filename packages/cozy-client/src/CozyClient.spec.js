@@ -14,7 +14,7 @@ import {
 } from './__tests__/fixtures'
 
 import CozyClient from './CozyClient'
-import CozyStackClient from 'cozy-stack-client'
+import CozyStackClient, { OAuthClient } from 'cozy-stack-client'
 import CozyLink from './CozyLink'
 import { Mutations, QueryDefinition } from './queries/dsl'
 import {
@@ -242,7 +242,16 @@ describe('CozyClient handlers', () => {
 })
 
 describe('CozyClient logout', () => {
-  let client, links
+  let client, links, stackClient
+
+  class MockOAuthClient extends OAuthClient {
+    constructor() {
+      super({ oauth: {} })
+      this.unregister = jest.fn()
+      this.isRegistered = jest.fn()
+      this.fetch = jest.fn()
+    }
+  }
 
   beforeEach(() => {
     links = [
@@ -259,7 +268,13 @@ describe('CozyClient logout', () => {
     links.forEach(link => {
       link.registerClient = jest.fn()
     })
-    client = new CozyClient({ links, schema: SCHEMA })
+    stackClient = new MockOAuthClient()
+    client = new CozyClient({
+      links,
+      stackClient,
+      schema: SCHEMA,
+      warningForCustomHandlers: false
+    })
   })
 
   it('should call reset on each link that can be reset', async () => {
@@ -306,6 +321,33 @@ describe('CozyClient logout', () => {
     jest.spyOn(client, 'emit')
     await client.login()
     await client.logout()
+  })
+
+  it('should unregister an oauth client', async () => {
+    await client.login()
+    stackClient.isRegistered.mockReturnValue(true)
+
+    await client.logout()
+    expect(stackClient.unregister).toHaveBeenCalled()
+    expect(stackClient.fetch).not.toHaveBeenCalledWith('DELETE', '/auth/login')
+  })
+
+  it('should log out a web client', async () => {
+    stackClient = {
+      fetch: jest.fn(),
+      unregister: jest.fn()
+    }
+    client = new CozyClient({
+      links,
+      stackClient,
+      schema: SCHEMA,
+      uri: 'http://cozy.io',
+      token: '123abc',
+      warningForCustomHandlers: false
+    })
+    await client.logout()
+    expect(stackClient.fetch).toHaveBeenCalledWith('DELETE', '/auth/login')
+    expect(stackClient.unregister).not.toHaveBeenCalled()
   })
 })
 
@@ -445,7 +487,10 @@ describe('CozyClient', () => {
     it('should return a QueryDefinition', () => {
       expect(
         client.find('io.cozy.todos').where({ done: { $eq: true } })
-      ).toEqual({ doctype: 'io.cozy.todos', selector: { done: { $eq: true } } })
+      ).toEqual({
+        doctype: 'io.cozy.todos',
+        selector: { done: { $eq: true } }
+      })
     })
   })
 
