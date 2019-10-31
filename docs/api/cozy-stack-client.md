@@ -28,6 +28,9 @@ through OAuth.</p>
 <dt><a href="#PermissionCollection">PermissionCollection</a></dt>
 <dd><p>Implements <code>DocumentCollection</code> API along with specific methods for <code>io.cozy.permissions</code>.</p>
 </dd>
+<dt><a href="#SettingsCollection">SettingsCollection</a></dt>
+<dd><p>Implements <code>DocumentCollection</code> API to interact with the /settings endpoint of the stack</p>
+</dd>
 <dt><a href="#SharingCollection">SharingCollection</a></dt>
 <dd><p>Implements the <code>DocumentCollection</code> API along with specific methods for
 <code>io.cozy.sharings</code>.</p>
@@ -815,6 +818,24 @@ const permissions = await client
 async getOwnPermissions - Gets the permission for the current token
 
 **Kind**: instance method of [<code>PermissionCollection</code>](#PermissionCollection)  
+<a name="SettingsCollection"></a>
+
+## SettingsCollection
+Implements `DocumentCollection` API to interact with the /settings endpoint of the stack
+
+**Kind**: global class  
+<a name="SettingsCollection+get"></a>
+
+### settingsCollection.get(path) ⇒ <code>object</code>
+async get - Calls a route on the /settings API
+
+**Kind**: instance method of [<code>SettingsCollection</code>](#SettingsCollection)  
+**Returns**: <code>object</code> - The response from the route  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| path | <code>string</code> | The setting route to call, eg `instance` or `context` |
+
 <a name="SharingCollection"></a>
 
 ## SharingCollection
