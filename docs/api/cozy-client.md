@@ -72,6 +72,14 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 ## Functions
 
 <dl>
+<dt><a href="#createClientInteractive">createClientInteractive()</a></dt>
+<dd><p>Creates a client with interactive authentication.</p>
+<ul>
+<li>Will start an OAuth flow and open an authentication page</li>
+<li>Starts a local server to listen for the oauth callback</li>
+<li>Resolves with the client after user authentication</li>
+</ul>
+</dd>
 <dt><a href="#withClient">withClient(Component)</a> ⇒ <code>function</code></dt>
 <dd><p>HOC to provide client from context as prop</p>
 </dd>
@@ -1211,6 +1219,28 @@ than `<delay>` ms.
 Fetch policy that deactivates any fetching.
 
 **Kind**: static method of [<code>fetchPolicies</code>](#fetchPolicies)  
+<a name="createClientInteractive"></a>
+
+## createClientInteractive()
+Creates a client with interactive authentication.
+
+- Will start an OAuth flow and open an authentication page
+- Starts a local server to listen for the oauth callback
+- Resolves with the client after user authentication
+
+**Kind**: global function  
+**Params**: <code>Object</code> clientOptions Same as CozyClient::constructor.  
+**Example**  
+```
+import { createClientInteractive } from 'cozy-client/dist/cli'
+await createClientInteractive({
+  uri: 'http://cozy.tools:8080',
+  scope: ['io.cozy.bills'],
+  oauth: {
+    softwareID: 'my-cli-application-using-bills'
+  }
+})
+```
 <a name="withClient"></a>
 
 ## withClient(Component) ⇒ <code>function</code>
