@@ -197,6 +197,19 @@ class QueryDefinition {
   }
 }
 
+/**
+ * Helper to create a QueryDefinition. Recommended way to create
+ * query definitions.
+ *
+ * @example
+ * ```
+ * import { Q } from 'cozy-client'
+ *
+ * const qDef = Q('io.cozy.todos').where({ _id: '1234' })
+ * ```
+ */
+export const Q = doctype => new QueryDefinition({ doctype })
+
 // Mutations
 const CREATE_DOCUMENT = 'CREATE_DOCUMENT'
 const UPDATE_DOCUMENT = 'UPDATE_DOCUMENT'

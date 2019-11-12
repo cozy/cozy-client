@@ -67,6 +67,10 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 <dt><a href="#fetchPolicies">fetchPolicies</a></dt>
 <dd><p>Use those fetch policies with <code>&lt;Query /&gt;</code> to limit the number of re-fetch.</p>
 </dd>
+<dt><a href="#Q">Q</a></dt>
+<dd><p>Helper to create a QueryDefinition. Recommended way to create
+query definitions.</p>
+</dd>
 </dl>
 
 ## Functions
@@ -1219,6 +1223,19 @@ than `<delay>` ms.
 Fetch policy that deactivates any fetching.
 
 **Kind**: static method of [<code>fetchPolicies</code>](#fetchPolicies)  
+<a name="Q"></a>
+
+## Q
+Helper to create a QueryDefinition. Recommended way to create
+query definitions.
+
+**Kind**: global constant  
+**Example**  
+```
+import { Q } from 'cozy-client'
+
+const qDef = Q('io.cozy.todos').where({ _id: '1234' })
+```
 <a name="createClientInteractive"></a>
 
 ## createClientInteractive()

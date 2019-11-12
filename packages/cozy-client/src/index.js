@@ -4,6 +4,7 @@ export { default as StackLink } from './StackLink'
 export { default as compose } from 'lodash/flow'
 export {
   QueryDefinition,
+  Q,
   Mutations,
   MutationTypes,
   getDoctypeFromOperation
