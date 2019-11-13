@@ -328,6 +328,8 @@ files associated to a specific document
     * [.upload(data, dirPath)](#FileCollection+upload) ⇒ <code>object</code>
     * [.createFile(data, params)](#FileCollection+createFile)
     * [.updateFile(data, params)](#FileCollection+updateFile) ⇒ <code>object</code>
+    * [.download(file, versionId, filename)](#FileCollection+download)
+    * [.getBeautifulSize(file, decimal)](#FileCollection+getBeautifulSize)
     * [.isChildOf(child, parent)](#FileCollection+isChildOf) ⇒ <code>boolean</code>
     * [.createDirectoryByPath(path)](#FileCollection+createDirectoryByPath) ⇒ <code>object</code>
     * [.updateAttributes(id, attributes)](#FileCollection+updateAttributes) ⇒ <code>object</code>
@@ -512,6 +514,33 @@ updateFile - Updates a file's data
 | params.executable | <code>boolean</code> | Whether the file is executable or not |
 | params.metadata | <code>object</code> | Metadata to be attached to the File io.cozy.file |
 | params.options | <code>object</code> | Options to pass to doUpload method (additional headers) |
+
+<a name="FileCollection+download"></a>
+
+### fileCollection.download(file, versionId, filename)
+Download a file or a specific version of the file
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| file | <code>object</code> |  | io.cozy.files object |
+| versionId | <code>string</code> | <code>null</code> | Id of the io.cozy.files.version |
+| filename | <code>string</code> |  | The name you want for the downloaded file                            (by default the same as the file) |
+
+<a name="FileCollection+getBeautifulSize"></a>
+
+### fileCollection.getBeautifulSize(file, decimal)
+Get a beautified size for a given file
+1024B => 1KB
+102404500404B => 95.37 GB
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | <code>object</code> | io.cozy.files object |
+| decimal | <code>int</code> | number of decimal |
 
 <a name="FileCollection+isChildOf"></a>
 

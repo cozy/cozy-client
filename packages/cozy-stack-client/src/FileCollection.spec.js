@@ -480,7 +480,47 @@ describe('FileCollection', () => {
       })
     })
   })
+  describe('download', () => {
+    beforeEach(() => {
+      client.fetchJSON.mockResolvedValue({
+        data: {}
+      })
+    })
 
+    afterEach(() => {
+      client.fetchJSON.mockClear()
+    })
+
+    it('should work when not specifying a revision', async () => {
+      const file = {
+        _id: '42',
+        name: 'fileName'
+      }
+      collection.download(file)
+      const expectPath = `/files/downloads?Id=${file._id}&Filename=${file.name}`
+      expect(client.fetchJSON).toHaveBeenCalledWith('POST', expectPath)
+    })
+
+    it('should use download a specific version of a file', async () => {
+      const file = {
+        _id: '42',
+        name: 'fileName'
+      }
+      collection.download(file, '123')
+      const expectPath = `/files/downloads?VersionId=123&Filename=${file.name}`
+      expect(client.fetchJSON).toHaveBeenCalledWith('POST', expectPath)
+    })
+
+    it('should use download a specific version of a file with a specific name', async () => {
+      const file = {
+        _id: '42',
+        name: 'fileName'
+      }
+      collection.download(file, '123', 'myFileName')
+      const expectPath = `/files/downloads?VersionId=123&Filename=myFileName`
+      expect(client.fetchJSON).toHaveBeenCalledWith('POST', expectPath)
+    })
+  })
   describe('createFile', () => {
     const data = new File([''], 'mydoc.epub')
     const id = '59140416-b95f'
