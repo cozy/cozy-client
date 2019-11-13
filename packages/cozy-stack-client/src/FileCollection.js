@@ -1,7 +1,7 @@
 import mime from 'mime/lite'
 import has from 'lodash/has'
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
-import { uri, slugify, forceFileDownload } from './utils'
+import { uri, slugify, forceFileDownload, formatBytes } from './utils'
 import * as querystring from './querystring'
 const ROOT_DIR_ID = 'io.cozy.files.root-dir'
 const CONTENT_TYPE_OCTET_STREAM = 'application/octet-stream'
@@ -346,12 +346,20 @@ class FileCollection extends DocumentCollection {
     return this.doUpload(data, path, options, 'PUT')
   }
 
-  getDownloadLinkById(id) {
+  getDownloadLinkById(id, filename) {
     return this.stackClient
-      .fetchJSON('POST', uri`/files/downloads?Id=${id}`)
+      .fetchJSON('POST', uri`/files/downloads?Id=${id}&Filename=${filename}`)
       .then(this.extractResponseLinkRelated)
   }
 
+  getDownloadLinkByRevision(versionId, filename) {
+    return this.stackClient
+      .fetchJSON(
+        'POST',
+        uri`/files/downloads?VersionId=${versionId}&Filename=${filename}`
+      )
+      .then(this.extractResponseLinkRelated)
+  }
   getDownloadLinkByPath(path) {
     return this.stackClient
       .fetchJSON('POST', uri`/files/downloads?Path=${path}`)
@@ -364,9 +372,43 @@ class FileCollection extends DocumentCollection {
     return this.stackClient.fullpath(href)
   }
 
-  async download(file) {
-    const href = await this.getDownloadLinkById(file._id)
-    forceFileDownload(`${href}?Dl=1`, file.name)
+  /**
+   * Download a file or a specific version of the file
+   *
+   * @param {object} file io.cozy.files object
+   * @param {string} versionId Id of the io.cozy.files.version
+   * @param {string} filename The name you want for the downloaded file
+   *                            (by default the same as the file)
+   */
+  async download(file, versionId = null, filename = undefined) {
+    let href
+    const filenameToUse = filename ? filename : file.name
+    /**
+     * Passing a filename to forceFileDownload is not enough
+     * for a few browsers since the stack's response header will
+     * not contain that name. Passing the filename to
+     * getDownloadLinkBy{Id,Revision} will ask the stack to
+     * return this filename in its content-disposition
+     * header response
+     */
+    if (!versionId) {
+      href = await this.getDownloadLinkById(file._id, filenameToUse)
+    } else {
+      href = await this.getDownloadLinkByRevision(versionId, filenameToUse)
+    }
+    forceFileDownload(`${href}?Dl=1`, filenameToUse)
+  }
+
+  /**
+   * Get a beautified size for a given file
+   * 1024B => 1KB
+   * 102404500404B => 95.37 GB
+   *
+   * @param {object} file io.cozy.files object
+   * @param {int} decimal number of decimal
+   */
+  getBeautifulSize(file, decimal) {
+    return formatBytes(parseInt(file.size), decimal)
   }
 
   async downloadArchive(fileIds, notSecureFilename = 'files') {
