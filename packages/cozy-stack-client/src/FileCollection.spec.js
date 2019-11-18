@@ -664,4 +664,16 @@ describe('FileCollection', () => {
       expect(res).toEqual(false)
     })
   })
+
+  describe('fetchFileContent', () => {
+    it('should fetch the content of a file', async () => {
+      const FILE_ID = 'd04ab491-2fc6'
+
+      await collection.fetchFileContent(FILE_ID)
+      expect(client.fetch).toHaveBeenCalledWith(
+        'GET',
+        '/files/download/d04ab491-2fc6'
+      )
+    })
+  })
 })
