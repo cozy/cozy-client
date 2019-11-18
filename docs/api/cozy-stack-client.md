@@ -329,6 +329,7 @@ files associated to a specific document
     * [.createFile(data, params)](#FileCollection+createFile)
     * [.updateFile(data, params)](#FileCollection+updateFile) ⇒ <code>object</code>
     * [.download(file, versionId, filename)](#FileCollection+download)
+    * [.fetchFileContent(id)](#FileCollection+fetchFileContent)
     * [.getBeautifulSize(file, decimal)](#FileCollection+getBeautifulSize)
     * [.isChildOf(child, parent)](#FileCollection+isChildOf) ⇒ <code>boolean</code>
     * [.createDirectoryByPath(path)](#FileCollection+createDirectoryByPath) ⇒ <code>object</code>
@@ -527,6 +528,20 @@ Download a file or a specific version of the file
 | file | <code>object</code> |  | io.cozy.files object |
 | versionId | <code>string</code> | <code>null</code> | Id of the io.cozy.files.version |
 | filename | <code>string</code> |  | The name you want for the downloaded file                            (by default the same as the file) |
+
+<a name="FileCollection+fetchFileContent"></a>
+
+### fileCollection.fetchFileContent(id)
+Fetch the binary of a file or a specific version of a file
+Useful for instance when you can't download the file directly
+(via a content-disposition attachement header) and need to store
+it before doing an operation.
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | Id of the io.cozy.files or io.cozy.files.version |
 
 <a name="FileCollection+getBeautifulSize"></a>
 

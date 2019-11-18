@@ -400,6 +400,18 @@ class FileCollection extends DocumentCollection {
   }
 
   /**
+   * Fetch the binary of a file or a specific version of a file
+   * Useful for instance when you can't download the file directly
+   * (via a content-disposition attachement header) and need to store
+   * it before doing an operation.
+   *
+   * @param {string} id Id of the io.cozy.files or io.cozy.files.version
+   *
+   */
+  async fetchFileContent(id) {
+    return this.stackClient.fetch('GET', `/files/download/${id}`)
+  }
+  /**
    * Get a beautified size for a given file
    * 1024B => 1KB
    * 102404500404B => 95.37 GB
