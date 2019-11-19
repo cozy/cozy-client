@@ -520,6 +520,8 @@ Responsible for
         * [.handleRevocationChange()](#CozyClient+handleRevocationChange)
         * [.handleTokenRefresh()](#CozyClient+handleTokenRefresh)
         * [.createClient()](#CozyClient+createClient)
+        * [.getInstanceOptions()](#CozyClient+getInstanceOptions) ⇒ <code>object</code>
+        * [.loadInstanceOptionsFromDOM([selector])](#CozyClient+loadInstanceOptionsFromDOM) ⇒ <code>void</code>
         * [.setData(data)](#CozyClient+setData)
     * _static_
         * [.fromOldClient()](#CozyClient.fromOldClient)
@@ -883,6 +885,23 @@ revocation and token refresh.
 If `oauth` options are passed, stackClient is an OAuthStackClient.
 
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+<a name="CozyClient+getInstanceOptions"></a>
+
+### cozyClient.getInstanceOptions() ⇒ <code>object</code>
+getInstanceOptions - Returns current instance options, such as domain or app slug
+
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+<a name="CozyClient+loadInstanceOptionsFromDOM"></a>
+
+### cozyClient.loadInstanceOptionsFromDOM([selector]) ⇒ <code>void</code>
+loadInstanceOptionsFromDOM - Loads the dataset injected by the Stack in web pages and exposes it through getInstanceOptions
+
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [selector] | <code>string</code> | <code>&quot;[role&#x3D;application]&quot;</code> | A selector for the node that holds the dataset to load |
+
 <a name="CozyClient+setData"></a>
 
 ### cozyClient.setData(data)

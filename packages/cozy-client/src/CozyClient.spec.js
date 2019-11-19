@@ -1119,4 +1119,19 @@ describe('CozyClient', () => {
       expect(doc).toBe(null)
     })
   })
+
+  describe('Instance options', () => {
+    it('should expose options loaded via the DOM', () => {
+      const options = { cozyDomain: 'cozy.tools', cozyToken: 'abc123' }
+
+      const globalQuerySelectorBefore = document.querySelector
+      document.querySelector = jest.fn().mockReturnValue({ dataset: options })
+
+      const client = new CozyClient({})
+      client.loadInstanceOptionsFromDOM()
+      expect(client.getInstanceOptions()).toEqual(options)
+
+      document.querySelector = globalQuerySelectorBefore
+    })
+  })
 })

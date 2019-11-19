@@ -76,6 +76,7 @@ class CozyClient {
     this.options = options
     this.idCounter = 1
     this.isLogged = false
+    this.instanceOptions = {}
 
     // Bind handlers
     this.handleRevocationChange = this.handleRevocationChange.bind(this)
@@ -1100,6 +1101,27 @@ class CozyClient {
     const id = this.idCounter
     this.idCounter++
     return id
+  }
+
+  /**
+   * getInstanceOptions - Returns current instance options, such as domain or app slug
+   *
+   * @returns {object}
+   */
+  getInstanceOptions() {
+    return this.instanceOptions
+  }
+
+  /**
+   * loadInstanceOptionsFromDOM - Loads the dataset injected by the Stack in web pages and exposes it through getInstanceOptions
+   *
+   * @param {string} [selector=[role=application]] A selector for the node that holds the dataset to load
+   *
+   * @returns {void}
+   */
+  loadInstanceOptionsFromDOM(selector = '[role=application]') {
+    const root = document.querySelector(selector)
+    this.instanceOptions = { ...root.dataset } // convert from DOMStringMap to plain object
   }
 
   /**
