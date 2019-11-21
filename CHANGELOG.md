@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.13.0](https://github.com/cozy/cozy-client/compare/v7.12.0...v7.13.0) (2019-11-21)
+
+
+### Features
+
+* Attempt options auto load ([43786c8](https://github.com/cozy/cozy-client/commit/43786c8))
+* Expose instance options ([9824683](https://github.com/cozy/cozy-client/commit/9824683))
+
+
+
+
+
 # [7.12.0](https://github.com/cozy/cozy-client/compare/v7.11.0...v7.12.0) (2019-11-18)
 
 
