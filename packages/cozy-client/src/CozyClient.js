@@ -1023,7 +1023,10 @@ client.query(Q('io.cozy.bills'))`)
       throw new Error('Store is undefined')
     } else if (this.store && !force) {
       throw new Error(
-        'Client already has a store, it is forbidden to change store.'
+        `Client already has a store, it is forbidden to change store.
+setStore must be called before any query is executed. Try to 
+call setStore earlier in your code, preferably just after the 
+instantiation of the client.`
       )
     }
 
