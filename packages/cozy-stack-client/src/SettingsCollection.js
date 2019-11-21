@@ -18,11 +18,12 @@ class SettingsCollection extends DocumentCollection {
    */
   async get(path) {
     const resp = await this.stackClient.fetchJSON('GET', `/settings/${path}`)
-
-    return DocumentCollection.normalizeDoctypeJsonApi(SETTINGS_DOCTYPE)(
-      resp.data,
-      resp
-    )
+    return {
+      data: DocumentCollection.normalizeDoctypeJsonApi(SETTINGS_DOCTYPE)(
+        resp.data,
+        resp
+      )
+    }
   }
 }
 
