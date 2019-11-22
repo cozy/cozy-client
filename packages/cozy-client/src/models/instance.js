@@ -11,10 +11,27 @@ export const arePremiumLinksEnabled = instanceInfo => {
     ? true
     : false
 }
-export const isFreemiumUser = diskUsage => {
-  const quota = get(diskUsage, 'data.attributes.quota', false)
+export const isFreemiumUser = instanceInfo => {
+  const quota = get(instanceInfo, 'diskUsage.data.attributes.quota', false)
   return parseInt(quota) <= PREMIUM_QUOTA
 }
 export const getUuid = instanceInfo => {
   return get(instanceInfo, 'instance.data.attributes.uuid')
+}
+
+/**
+ * Returns whether an instance is concerned by our offers
+ *
+ * @param {object} data Object containing all the results from /settings/*
+ * @param {object} data.context Object returned by /settings/context
+ * @param {object} data.instance Object returned by /settings/instance
+ * @param {object} data.diskUsage Object returned by /settings/disk-usage
+ */
+export const shouldDisplayOffers = data => {
+  return (
+    !isSelfHosted(data) &&
+    arePremiumLinksEnabled(data) &&
+    getUuid(data) &&
+    isFreemiumUser(data)
+  )
 }
