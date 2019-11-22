@@ -61,6 +61,9 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 ## Constants
 
 <dl>
+<dt><a href="#shouldDisplayOffers">shouldDisplayOffers</a></dt>
+<dd><p>Returns whether an instance is concerned by our offers</p>
+</dd>
 <dt><a href="#triggerStates">triggerStates</a></dt>
 <dd><p>Trigger states come from /jobs/triggers</p>
 </dd>
@@ -1183,6 +1186,20 @@ Returns the relationship for a given doctype/name
 Validates a document considering the descriptions in schema.attributes.
 
 **Kind**: instance method of [<code>Schema</code>](#Schema)  
+<a name="shouldDisplayOffers"></a>
+
+## shouldDisplayOffers
+Returns whether an instance is concerned by our offers
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| data | <code>object</code> | Object containing all the results from /settings/* |
+| data.context | <code>object</code> | Object returned by /settings/context |
+| data.instance | <code>object</code> | Object returned by /settings/instance |
+| data.diskUsage | <code>object</code> | Object returned by /settings/disk-usage |
+
 <a name="triggerStates"></a>
 
 ## triggerStates
