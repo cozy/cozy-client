@@ -35,3 +35,20 @@ export const shouldDisplayOffers = data => {
     isFreemiumUser(data)
   )
 }
+
+/**
+ * Returns the link to the Premium page on the Cozy's Manager
+ *
+ * @param {object} instanceInfo
+ */
+export const buildPremiumLink = instanceInfo => {
+  const managerUrl = get(
+    instanceInfo,
+    'context.data.attributes.manager_url',
+    false
+  )
+  const uuid = getUuid(instanceInfo)
+  if (managerUrl && uuid) {
+    return `${managerUrl}/cozy/instances/${uuid}/premium`
+  }
+}

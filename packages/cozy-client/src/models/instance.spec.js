@@ -66,4 +66,9 @@ describe('instance', () => {
   it('should tell us that a selfhosted instance is not concerned by our offres', () => {
     expect(instance.shouldDisplayOffers(selftHostedInstance)).toBe(false)
   })
+
+  it('should generate the link to the manager', () => {
+    const url = instance.buildPremiumLink(noSelfHostedInstance)
+    expect(url).toBe('https://manager.cozy.cc/cozy/instances/1234/premium')
+  })
 })
