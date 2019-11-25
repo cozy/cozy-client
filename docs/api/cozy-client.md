@@ -64,6 +64,9 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 <dt><a href="#shouldDisplayOffers">shouldDisplayOffers</a></dt>
 <dd><p>Returns whether an instance is concerned by our offers</p>
 </dd>
+<dt><a href="#buildPremiumLink">buildPremiumLink</a></dt>
+<dd><p>Returns the link to the Premium page on the Cozy&#39;s Manager</p>
+</dd>
 <dt><a href="#triggerStates">triggerStates</a></dt>
 <dd><p>Trigger states come from /jobs/triggers</p>
 </dd>
@@ -1199,6 +1202,17 @@ Returns whether an instance is concerned by our offers
 | data.context | <code>object</code> | Object returned by /settings/context |
 | data.instance | <code>object</code> | Object returned by /settings/instance |
 | data.diskUsage | <code>object</code> | Object returned by /settings/disk-usage |
+
+<a name="buildPremiumLink"></a>
+
+## buildPremiumLink
+Returns the link to the Premium page on the Cozy's Manager
+
+**Kind**: global constant  
+
+| Param | Type |
+| --- | --- |
+| instanceInfo | <code>object</code> | 
 
 <a name="triggerStates"></a>
 
