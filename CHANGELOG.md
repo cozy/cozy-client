@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.2.0](https://github.com/cozy/cozy-client/compare/v8.1.0...v8.2.0) (2019-11-25)
+
+
+### Features
+
+* Instance model add buildPremiumLink ([722085d](https://github.com/cozy/cozy-client/commit/722085d))
+
+
+
+
+
 # [8.1.0](https://github.com/cozy/cozy-client/compare/v8.0.0...v8.1.0) (2019-11-25)
 
 
