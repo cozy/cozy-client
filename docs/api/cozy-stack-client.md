@@ -324,6 +324,7 @@ files associated to a specific document
 **Kind**: global class  
 
 * [FileCollection](#FileCollection)
+    * [.get(id)](#FileCollection+get) ⇒ <code>Object</code>
     * [.find(selector, options)](#FileCollection+find) ⇒ <code>Object</code>
     * [.findReferencedBy(document, options)](#FileCollection+findReferencedBy) ⇒ <code>object</code>
     * [.addReferencedBy(document, documents)](#FileCollection+addReferencedBy) ⇒ <code>object</code>
@@ -344,6 +345,18 @@ files associated to a specific document
     * [.createFileMetadata(attributes)](#FileCollection+createFileMetadata) ⇒ <code>object</code>
     * [.updateMetadataAttribute(id, metadata)](#FileCollection+updateMetadataAttribute) ⇒ <code>object</code>
     * [.doUpload(data, path, options, method)](#FileCollection+doUpload)
+
+<a name="FileCollection+get"></a>
+
+### fileCollection.get(id) ⇒ <code>Object</code>
+Fetches the file's data
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+**Returns**: <code>Object</code> - Information about the file or folder and it's descendents  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | File id |
 
 <a name="FileCollection+find"></a>
 
