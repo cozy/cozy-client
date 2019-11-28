@@ -1144,8 +1144,9 @@ class CozyClient {
     })
   }
 }
-
 CozyClient.fetchPolicies = fetchPolicies
+//COZY_CLIENT_VERSION_PACKAGE in replaced by babel. See babel config
+CozyClient.version = 'COZY_CLIENT_VERSION_PACKAGE'
 
 MicroEE.mixin(CozyClient)
 
