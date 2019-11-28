@@ -53,6 +53,12 @@ class FileCollection extends DocumentCollection {
     this.specialDirectories = {}
   }
 
+  /**
+   * Fetches the file's data
+   *
+   * @param {string} id File id
+   * @returns {{data, included}} Information about the file or folder and it's descendents
+   */
   get(id) {
     return this.statById(id)
   }
