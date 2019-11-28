@@ -10,7 +10,7 @@ exports[`KonnectorCollection launch should launch the right konnector 1`] = `
   ],
   "results": Array [
     Object {
-      "isThrow": false,
+      "type": "return",
       "value": Promise {},
     },
   ],

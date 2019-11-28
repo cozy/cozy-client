@@ -25,7 +25,7 @@ exports[`FileCollection findReferencedBy should pass all the filters 1`] = `
   ],
   "results": Array [
     Object {
-      "isThrow": false,
+      "type": "return",
       "value": Object {
         "data": Array [],
         "meta": Object {},
@@ -53,7 +53,7 @@ exports[`FileCollection referencedBy should add a reference 1`] = `
   ],
   "results": Array [
     Object {
-      "isThrow": false,
+      "type": "return",
       "value": undefined,
     },
   ],
@@ -78,7 +78,7 @@ exports[`FileCollection referencedBy should remove a reference 1`] = `
   ],
   "results": Array [
     Object {
-      "isThrow": false,
+      "type": "return",
       "value": undefined,
     },
   ],
