@@ -61,6 +61,16 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 ## Constants
 
 <dl>
+<dt><a href="#getStoreInstallationURL">getStoreInstallationURL</a> ⇒ <code>string</code></dt>
+<dd><p>Return Store URL where an app/konnector can be installed / updated</p>
+</dd>
+<dt><a href="#isInstalled">isInstalled</a> ⇒ <code>object</code></dt>
+<dd></dd>
+<dt><a href="#getUrl">getUrl</a> ⇒ <code>string</code></dt>
+<dd></dd>
+<dt><a href="#getAppDisplayName">getAppDisplayName</a> ⇒ <code>string</code></dt>
+<dd><p>getAppDisplayName</p>
+</dd>
 <dt><a href="#shouldDisplayOffers">shouldDisplayOffers</a></dt>
 <dd><p>Returns whether an instance is concerned by our offers</p>
 </dd>
@@ -1189,6 +1199,53 @@ Returns the relationship for a given doctype/name
 Validates a document considering the descriptions in schema.attributes.
 
 **Kind**: instance method of [<code>Schema</code>](#Schema)  
+<a name="getStoreInstallationURL"></a>
+
+## getStoreInstallationURL ⇒ <code>string</code>
+Return Store URL where an app/konnector can be installed / updated
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - URL as string  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [appData] | <code>Array</code> | <code>[]</code> | Apps data, as returned by endpoint /apps/ or /konnectors/ |
+| [app] | <code>object</code> | <code>{}</code> | AppObject |
+
+<a name="isInstalled"></a>
+
+## isInstalled ⇒ <code>object</code>
+**Kind**: global constant  
+**Returns**: <code>object</code> - The io.cozy.app is installed or undefined if not  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| apps | <code>Array</code> | Array of apps returned by /apps /konnectors |
+| wantedApp | <code>object</code> | io.cozy.app with at least a slug |
+
+<a name="getUrl"></a>
+
+## getUrl ⇒ <code>string</code>
+**Kind**: global constant  
+**Returns**: <code>string</code> - url to the app  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| app | <code>object</code> | io.cozy.app object |
+
+<a name="getAppDisplayName"></a>
+
+## getAppDisplayName ⇒ <code>string</code>
+getAppDisplayName
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - The name of the app suited for UI display  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| app | <code>object</code> | Object io.cozy.apps or io.cozy.konnectors |
+| lang | <code>string</code> | Locale to use |
+
 <a name="shouldDisplayOffers"></a>
 
 ## shouldDisplayOffers

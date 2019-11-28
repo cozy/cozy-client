@@ -1,3 +1,4 @@
+import get from 'lodash/get'
 const STORE_SLUG = 'store'
 
 /**
@@ -42,4 +43,27 @@ export const isInstalled = (apps = [], wantedApp = {}) => {
  */
 export const getUrl = app => {
   return app.links && app.links.related
+}
+
+/**
+ * getAppDisplayName
+ *
+ * @param {object} app Object io.cozy.apps or io.cozy.konnectors
+ * @param {string} lang Locale to use
+ *
+ * @returns {string} The name of the app suited for UI display
+ */
+export const getAppDisplayName = (app, lang) => {
+  const basePrefix = get(app, 'name_prefix')
+  const baseName = get(app, 'name')
+  const translatedName = get(app, ['locales', lang, 'name'], baseName)
+  const translatedPrefix = get(
+    app,
+    ['locales', lang, 'name_prefix'],
+    basePrefix
+  )
+
+  return translatedPrefix && translatedPrefix.toLowerCase() !== 'cozy'
+    ? `${translatedPrefix} ${translatedName}`
+    : translatedName
 }
