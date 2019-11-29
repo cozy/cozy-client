@@ -51,7 +51,7 @@ export const getUrl = app => {
  * @param {object} app Object io.cozy.apps or io.cozy.konnectors
  * @param {string} lang Locale to use
  *
- * @returns {string} The name of the app suited for UI display
+ * @returns {string} Name of the app suitable for display
  */
 export const getAppDisplayName = (app, lang) => {
   const basePrefix = get(app, 'name_prefix')
