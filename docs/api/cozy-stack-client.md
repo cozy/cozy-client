@@ -121,6 +121,7 @@ Main API against the `cozy-stack` server.
 * [CozyStackClient](#CozyStackClient)
     * [.collection(doctype)](#CozyStackClient+collection) ⇒ [<code>DocumentCollection</code>](#DocumentCollection)
     * [.fetch(method, path, body, options)](#CozyStackClient+fetch) ⇒ <code>object</code>
+    * [.checkForRevocation()](#CozyStackClient+checkForRevocation)
     * [.refreshToken()](#CozyStackClient+refreshToken) ⇒ <code>Promise</code>
     * [.fetchJSON(method, path, body, options)](#CozyStackClient+fetchJSON) ⇒ <code>object</code>
     * [.getAccessToken()](#CozyStackClient+getAccessToken) ⇒ <code>string</code>
@@ -154,6 +155,12 @@ Fetches an endpoint in an authorized way.
 | body | <code>object</code> | The payload. |
 | options | <code>object</code> |  |
 
+<a name="CozyStackClient+checkForRevocation"></a>
+
+### cozyStackClient.checkForRevocation()
+Returns whether the client has been revoked on the server
+
+**Kind**: instance method of [<code>CozyStackClient</code>](#CozyStackClient)  
 <a name="CozyStackClient+refreshToken"></a>
 
 ### cozyStackClient.refreshToken() ⇒ <code>Promise</code>

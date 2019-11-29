@@ -369,3 +369,39 @@ describe('FetchError', () => {
     )
   })
 })
+
+describe('checkForRevocation', () => {
+  let fetchInformation, stackClient
+
+  beforeAll(() => {
+    stackClient = new CozyStackClient({})
+
+    stackClient.fetchInformation = () => {
+      return fetchInformation()
+    }
+  })
+
+  it('should detect revocation', async () => {
+    fetchInformation = async () => {
+      throw new Error('Client not found')
+    }
+    const revoked = await stackClient.checkForRevocation()
+    expect(revoked).toBe(true)
+  })
+
+  it('should not trigger false positives 1', async () => {
+    fetchInformation = async () => {
+      throw new Error('No internet')
+    }
+    const revoked = await stackClient.checkForRevocation()
+    expect(revoked).toBe(false)
+  })
+
+  it('should not trigger false positives 2', async () => {
+    fetchInformation = async () => {
+      return
+    }
+    const revoked = await stackClient.checkForRevocation()
+    expect(revoked).toBe(false)
+  })
+})

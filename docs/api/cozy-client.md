@@ -87,6 +87,13 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 <dd><p>Helper to create a QueryDefinition. Recommended way to create
 query definitions.</p>
 </dd>
+<dt><a href="#isQueryLoading">isQueryLoading</a></dt>
+<dd><p>Returns whether the result of a query (given via queryConnect or Query)
+is loading.</p>
+</dd>
+<dt><a href="#hasQueryBeenLoaded">hasQueryBeenLoaded</a></dt>
+<dd><p>Returns whether a query has been loaded at least once</p>
+</dd>
 </dl>
 
 ## Functions
@@ -533,6 +540,7 @@ Responsible for
         * [.startOAuthFlow(openURLCallback)](#CozyClient+startOAuthFlow) ⇒ <code>object</code>
         * [.renewAuthorization()](#CozyClient+renewAuthorization) ⇒ <code>object</code>
         * [.setStore(store)](#CozyClient+setStore)
+        * [.checkForRevocation()](#CozyClient+checkForRevocation)
         * [.handleRevocationChange()](#CozyClient+handleRevocationChange)
         * [.handleTokenRefresh()](#CozyClient+handleTokenRefresh)
         * [.createClient()](#CozyClient+createClient)
@@ -878,6 +886,12 @@ const store = createStore(combineReducers({
 })
 client.setStore(store)
 ```
+<a name="CozyClient+checkForRevocation"></a>
+
+### cozyClient.checkForRevocation()
+Returns whether the client has been revoked on the server
+
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 <a name="CozyClient+handleRevocationChange"></a>
 
 ### cozyClient.handleRevocationChange()
@@ -1343,6 +1357,19 @@ import { Q } from 'cozy-client'
 
 const qDef = Q('io.cozy.todos').where({ _id: '1234' })
 ```
+<a name="isQueryLoading"></a>
+
+## isQueryLoading
+Returns whether the result of a query (given via queryConnect or Query)
+is loading.
+
+**Kind**: global constant  
+<a name="hasQueryBeenLoaded"></a>
+
+## hasQueryBeenLoaded
+Returns whether a query has been loaded at least once
+
+**Kind**: global constant  
 <a name="createClientInteractive"></a>
 
 ## createClientInteractive()

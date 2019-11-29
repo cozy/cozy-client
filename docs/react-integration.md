@@ -78,7 +78,7 @@ To make it easy to fetch data and make it available to your component, we provid
 
 
 ```jsx
-import { Query } from 'cozy-client'
+import { Query, isQueryLoading } from 'cozy-client'
 
 const todos = 'io.cozy.todos'
 const checked = { checked: false }
@@ -87,10 +87,9 @@ const query = client => client.find(todos).where(checked)
 function TodoList(props) {
   return <Query query={query}>
     {
-      ({ data, fetchStatus }) =>
-      fetchStatus !== 'loaded'
+      queryResult => isQueryLoading(queryResult)
         ? <h1>Loading...</h1>
-        : <ul>{data.map(todo => <li>{todo.label}</li>)}</ul>
+        : <ul>{queryResult.data.map(todo => <li>{todo.label}</li>)}</ul>
     }
   </Query>
 }
