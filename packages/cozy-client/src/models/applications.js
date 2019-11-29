@@ -38,7 +38,7 @@ export const isInstalled = (apps = [], wantedApp = {}) => {
 
 /**
  *
- * @param {object} app io.cozy.app object
+ * @param {object} app io.cozy.apps document
  * @returns {string} url to the app
  */
 export const getUrl = app => {
