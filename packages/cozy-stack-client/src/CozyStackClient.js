@@ -20,6 +20,10 @@ const normalizeUri = uri => {
   return uri
 }
 
+const isRevocationError = err => {
+  return err.message && errors.CLIENT_NOT_FOUND.test(err.message)
+}
+
 /**
  * Main API against the `cozy-stack` server.
  */
@@ -97,20 +101,28 @@ class CozyStackClient {
     options.credentials = 'include'
 
     return fetch(this.fullpath(path), options).catch(err => {
-      this.checkForRevocation(err)
+      if (isRevocationError(err)) {
+        this.onRevocationChange(true)
+      }
       throw err
     })
-  }
-
-  checkForRevocation(err) {
-    if (err.message && errors.CLIENT_NOT_FOUND.test(err.message)) {
-      this.onRevocationChange(true)
-    }
   }
 
   onRevocationChange(state) {
     if (this.options && this.options.onRevocationChange) {
       this.options.onRevocationChange(state)
+    }
+  }
+
+  /**
+   * Returns whether the client has been revoked on the server
+   */
+  async checkForRevocation() {
+    try {
+      await this.fetchInformation()
+      return false
+    } catch (err) {
+      return isRevocationError(err)
     }
   }
 

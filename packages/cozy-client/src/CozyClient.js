@@ -991,6 +991,13 @@ class CozyClient {
     }
   }
 
+  /**
+   * Returns whether the client has been revoked on the server
+   */
+  async checkForRevocation() {
+    return this.stackClient.checkForRevocation()
+  }
+
   /** Sets public attribute and emits event related to revocation */
   handleRevocationChange(state) {
     if (state) {
