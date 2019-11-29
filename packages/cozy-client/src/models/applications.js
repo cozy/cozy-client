@@ -46,7 +46,7 @@ export const getUrl = app => {
 }
 
 /**
- * getAppDisplayName
+ * getAppDisplayName - Combines the translated prefix and name of the app into a single string.
  *
  * @param {object} app io.cozy.apps or io.cozy.konnectors document
  * @param {string} lang Locale to use
