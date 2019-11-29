@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.4.0](https://github.com/cozy/cozy-client/compare/v8.3.1...v8.4.0) (2019-11-29)
+
+
+### Features
+
+* Add checkForRevocation helper ([e62d62b](https://github.com/cozy/cozy-client/commit/e62d62b))
+* Add helper functions ([3d9d2dd](https://github.com/cozy/cozy-client/commit/3d9d2dd))
+
+
+
+
+
 ## [8.3.1](https://github.com/cozy/cozy-client/compare/v8.3.0...v8.3.1) (2019-11-29)
 
 **Note:** Version bump only for package cozy-client
