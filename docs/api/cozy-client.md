@@ -62,14 +62,14 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 
 <dl>
 <dt><a href="#getStoreInstallationURL">getStoreInstallationURL</a> ⇒ <code>string</code></dt>
-<dd><p>Return Store URL where an app/konnector can be installed / updated</p>
+<dd><p>Returns the store URL to install/update an app/konnector</p>
 </dd>
 <dt><a href="#isInstalled">isInstalled</a> ⇒ <code>object</code></dt>
 <dd></dd>
 <dt><a href="#getUrl">getUrl</a> ⇒ <code>string</code></dt>
 <dd></dd>
 <dt><a href="#getAppDisplayName">getAppDisplayName</a> ⇒ <code>string</code></dt>
-<dd><p>getAppDisplayName</p>
+<dd><p>getAppDisplayName - Combines the translated prefix and name of the app into a single string.</p>
 </dd>
 <dt><a href="#shouldDisplayOffers">shouldDisplayOffers</a></dt>
 <dd><p>Returns whether an instance is concerned by our offers</p>
@@ -1202,7 +1202,7 @@ Validates a document considering the descriptions in schema.attributes.
 <a name="getStoreInstallationURL"></a>
 
 ## getStoreInstallationURL ⇒ <code>string</code>
-Return Store URL where an app/konnector can be installed / updated
+Returns the store URL to install/update an app/konnector
 
 **Kind**: global constant  
 **Returns**: <code>string</code> - URL as string  
@@ -1231,19 +1231,19 @@ Return Store URL where an app/konnector can be installed / updated
 
 | Param | Type | Description |
 | --- | --- | --- |
-| app | <code>object</code> | io.cozy.app object |
+| app | <code>object</code> | io.cozy.apps document |
 
 <a name="getAppDisplayName"></a>
 
 ## getAppDisplayName ⇒ <code>string</code>
-getAppDisplayName
+getAppDisplayName - Combines the translated prefix and name of the app into a single string.
 
 **Kind**: global constant  
-**Returns**: <code>string</code> - The name of the app suited for UI display  
+**Returns**: <code>string</code> - Name of the app suitable for display  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| app | <code>object</code> | Object io.cozy.apps or io.cozy.konnectors |
+| app | <code>object</code> | io.cozy.apps or io.cozy.konnectors document |
 | lang | <code>string</code> | Locale to use |
 
 <a name="shouldDisplayOffers"></a>
