@@ -2,7 +2,7 @@ import get from 'lodash/get'
 const STORE_SLUG = 'store'
 
 /**
- * Return Store URL where an app/konnector can be installed / updated
+ * Returns the store URL to install/update an app/konnector
  *
  * @param  {Array}  [appData=[]]   Apps data, as returned by endpoint /apps/ or
  * /konnectors/
