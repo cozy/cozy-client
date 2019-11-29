@@ -48,7 +48,7 @@ export const getUrl = app => {
 /**
  * getAppDisplayName
  *
- * @param {object} app Object io.cozy.apps or io.cozy.konnectors
+ * @param {object} app io.cozy.apps or io.cozy.konnectors document
  * @param {string} lang Locale to use
  *
  * @returns {string} Name of the app suitable for display
