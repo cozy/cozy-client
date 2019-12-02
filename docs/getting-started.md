@@ -147,7 +147,7 @@ CozyClient comes with HOC and render props functions to connect to your data ins
 
 ## Different entrypoints for node/browser
 
-cozy-client has different entry points for browser and node (the node version does export React components). It is implemented by using fields in `package.json`: 
+cozy-client has different entry points for browser and node (the node version does not export React components). It is implemented by using fields in `package.json`: 
 
 - `browser` field is the entrypoint for browsers
 - `main` field is for node
