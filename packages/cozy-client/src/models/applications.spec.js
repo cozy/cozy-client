@@ -1,4 +1,5 @@
-import { getAppDisplayName } from './applications'
+import { applications } from './'
+const { getAppDisplayName } = applications
 
 describe('applications model', () => {
   describe('application name', () => {
