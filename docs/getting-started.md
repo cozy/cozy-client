@@ -36,8 +36,10 @@ The following guide is an overview of a cozy-client integration to help you gett
 or
 `yarn add cozy-client`
 
+`CozyClient` is the master of your data: it manages data queries and their status.
 
-`CozyClient` is the master of your data: it manages data queries and their status 
+ℹ If you use Jest, you should also add a bit of configuration for imports to works properly,
+[see at the end of this document](#different-entrypoints-for-nodebrowser).
 
 ## Creating a client
 
