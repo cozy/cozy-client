@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.5.1](https://github.com/cozy/cozy-client/compare/v8.5.0...v8.5.1) (2019-12-05)
+
+
+### Bug Fixes
+
+* Don't change my headers ([fa25142](https://github.com/cozy/cozy-client/commit/fa25142))
+
+
+
+
+
 # [8.5.0](https://github.com/cozy/cozy-client/compare/v8.4.0...v8.5.0) (2019-12-02)
 
 
