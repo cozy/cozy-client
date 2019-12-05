@@ -1,3 +1,4 @@
+import cloneDeep from 'lodash/cloneDeep'
 import AppCollection, { APPS_DOCTYPE } from './AppCollection'
 import AppToken from './AppToken'
 import DocumentCollection from './DocumentCollection'
@@ -205,8 +206,10 @@ class CozyStackClient {
   }
 
   async fetchJSONWithCurrentToken(method, path, body, options = {}) {
-    const headers = (options.headers = options.headers || {})
-
+    //Since we modify the object later by adding in some case a
+    //content-type, let's clone this object to scope the modification
+    const clonedOptions = cloneDeep(options)
+    const headers = (clonedOptions.headers = clonedOptions.headers || {})
     headers['Accept'] = 'application/json'
 
     if (method !== 'GET' && method !== 'HEAD' && body !== undefined) {
@@ -215,8 +218,7 @@ class CozyStackClient {
         body = JSON.stringify(body)
       }
     }
-
-    const resp = await this.fetch(method, path, body, options)
+    const resp = await this.fetch(method, path, body, clonedOptions)
     const contentType = resp.headers.get('content-type')
     const isJson = contentType && contentType.indexOf('json') >= 0
     const data = await (isJson ? resp.json() : resp.text())

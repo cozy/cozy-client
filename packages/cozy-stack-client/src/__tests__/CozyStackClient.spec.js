@@ -289,6 +289,35 @@ describe('CozyStackClient', () => {
         expect(e.message).toMatch(/Not/)
       }
     })
+
+    it('should not change option header even if we recall the method after an expired token for instance', async () => {
+      jest.spyOn(client, 'fetchJSONWithCurrentToken')
+      fetch.mockRejectedValueOnce({ message: 'Expired token' })
+      jest.spyOn(client, 'refreshToken')
+      client.refreshToken.mockResolvedValue(FAKE_APP_TOKEN)
+      await client.fetchJSON(
+        'POST',
+        '/data/io.cozy.files/_index',
+        { index: { fields: ['dir_id', 'type'] } },
+        {}
+      )
+
+      expect(client.refreshToken).toHaveBeenCalled()
+      expect(client.fetchJSONWithCurrentToken).toHaveBeenNthCalledWith(
+        1,
+        'POST',
+        '/data/io.cozy.files/_index',
+        { index: { fields: ['dir_id', 'type'] } },
+        {}
+      )
+      expect(client.fetchJSONWithCurrentToken).toHaveBeenNthCalledWith(
+        2,
+        'POST',
+        '/data/io.cozy.files/_index',
+        { index: { fields: ['dir_id', 'type'] } },
+        {}
+      )
+    })
   })
 
   describe('refreshToken', () => {
