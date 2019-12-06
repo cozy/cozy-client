@@ -1,20 +1,10 @@
-const pacakgeJson = require('./packages/cozy-client/package.json')
+const packageJson = require('./packages/cozy-client/package.json')
 
 module.exports = function(api) {
-  const isTest = api.env('test')
   api.cache(true)
 
   return {
-    presets: [
-      [
-        'cozy-app',
-        {
-          transformRuntime: {
-            regenerator: isTest
-          }
-        }
-      ]
-    ],
+    presets: [['cozy-app']],
     plugins: [
       [
         'search-and-replace',
@@ -22,7 +12,7 @@ module.exports = function(api) {
           rules: [
             {
               search: 'COZY_CLIENT_VERSION_PACKAGE',
-              replace: pacakgeJson.version
+              replace: packageJson.version
             }
           ]
         }
