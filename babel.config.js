@@ -1,4 +1,4 @@
-const pacakgeJson = require('./packages/cozy-client/package.json')
+const packageJson = require('./packages/cozy-client/package.json')
 
 module.exports = function(api) {
   api.cache(true)
@@ -12,7 +12,7 @@ module.exports = function(api) {
           rules: [
             {
               search: 'COZY_CLIENT_VERSION_PACKAGE',
-              replace: pacakgeJson.version
+              replace: packageJson.version
             }
           ]
         }
