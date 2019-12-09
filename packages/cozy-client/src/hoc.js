@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import compose from 'lodash/flowRight'
 import Query from './Query'
+import { useClient } from './reactHooks' 
 
 /**
  * @function
@@ -11,13 +12,11 @@ import Query from './Query'
  * @returns {Function} - Component that will receive client as prop
  */
 export const withClient = Component => {
-  const Wrapped = (props, context) => (
-    <Component {...props} client={context.client} />
-  )
-  Wrapped.displayName = `withClient(${Component.displayName || Component.name})`
-  Wrapped.contextTypes = {
-    client: PropTypes.object
+  const Wrapped = (props) => {
+    const client = useClient()
+    return <Component {...props} client={client} />
   }
+  Wrapped.displayName = `withClient(${Component.displayName || Component.name})`
   return Wrapped
 }
 
@@ -28,9 +27,10 @@ const withQuery = (dest, queryOpts, Original) => {
     )
   }
   return Component => {
-    const Wrapped = (props, context) => {
+    const Wrapped = (props) => {
+      const client = useClient()
       queryOpts = typeof queryOpts === 'function' ? queryOpts(props) : queryOpts
-      if (!context.client) {
+      if (!client) {
         throw new Error(
           'Should be used with client in context (use CozyProvider to set context)'
         )
@@ -45,9 +45,6 @@ const withQuery = (dest, queryOpts, Original) => {
           {result => <Component {...{ [dest]: result, ...props }} />}
         </Query>
       )
-    }
-    Wrapped.contextTypes = {
-      client: PropTypes.object
     }
     Wrapped.displayName = `withQuery(${Component.displayName ||
       Component.name})`

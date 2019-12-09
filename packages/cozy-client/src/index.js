@@ -25,12 +25,14 @@ export { default as Registry } from './registry'
 import * as manifest from './manifest'
 export { manifest }
 
-export { default as CozyProvider } from './Provider'
+export { default as CozyProvider, CozyContextProvider, CozyLegacyProvider } from './Provider'
 export { default as connect } from './connect'
 export { default as withMutation } from './withMutation'
 export { default as withMutations } from './withMutations'
 export { default as Query } from './Query'
 export { queryConnect, withClient } from './hoc'
+export { useClient, useStore } from './reactHooks'
+export { default as CozyContext } from './reactContext'
 
 import * as models from './models'
 export { models }

@@ -1,18 +1,18 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+
+import CozyContext from './reactContext'
 
 const withMutation = (mutation, options = {}) => WrappedComponent => {
   const wrappedDisplayName =
     WrappedComponent.displayName || WrappedComponent.name || 'Component'
 
   class Wrapper extends Component {
-    static contextTypes = {
-      client: PropTypes.object
-    }
+    static contextTypes = CozyContext
 
     constructor(props, context) {
       super(props, context)
       this.client = props.client || context.client
+
       if (!this.client) {
         throw new Error(
           `Could not find "client" in either the context or props of ${wrappedDisplayName}`

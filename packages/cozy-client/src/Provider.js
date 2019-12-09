@@ -1,7 +1,34 @@
-import { Component } from 'react'
+import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 
-export default class CozyProvider extends Component {
+import CozyContext from './reactContext'
+
+/**
+ * CozyClient React Provider
+ * Set cozyClient instance and store in the React tree.
+ * This is a React component.
+ * @param {Object} _
+ * @param {CozyClient} _.client - cozy client instance
+ * @param {Store} _.store - store to be used by cozy client
+ */
+export function CozyContextProvider({client, store}) {
+  useMemo(
+    () => store && client && client.setStore(store),
+    [store, client]
+  )
+  return <CozyContext.Provider value={{client, store}}>
+    {children}
+  </CozyContext.Provider>
+}
+
+/**
+ * CozyClient Legacy React Provider
+ * This is given as backward compatibility with apps using the old context API.
+ * @param {CozyClient} _.client - cozy client instance
+ * @param {Store} _.store - store to be used by cozy client
+ */
+export class CozyLegacyProvider extends React.Component {
+  
   static propTypes = {
     store: PropTypes.shape({
       subscribe: PropTypes.func.isRequired,
@@ -11,15 +38,15 @@ export default class CozyProvider extends Component {
     client: PropTypes.object.isRequired,
     children: PropTypes.element.isRequired
   }
+  
+  static contextTypes = {
+    store: PropTypes.object
+  }
 
   static childContextTypes = {
     store: PropTypes.object,
     client: PropTypes.object.isRequired
-  }
-
-  static contextTypes = {
-    store: PropTypes.object
-  }
+  } 
 
   constructor(props, context) {
     super(props, context)
@@ -33,14 +60,23 @@ export default class CozyProvider extends Component {
 
   getChildContext() {
     return {
-      store: this.props.store || this.context.store || this.props.client.store,
-      client: this.props.client
+      store: this.getStore(),
+      client: this.getClient()
     }
   }
 
-  render() {
-    if (!this.props.children) return null
-    if (!Array.isArray(this.props.children)) return this.props.children
-    return this.props.children[0]
+  getClient() {
+    return this.props.client
   }
+
+  getStore() {
+    return this.props.store || this.context.store || this.props.client.store
+  }
+
+  render() {
+    return <CozyProvider client={this.getClient()} store={this.getStore()}>{this.props.children}</CozyProvider>
+  }
+
 }
+
+export default CozyLegacyProvider

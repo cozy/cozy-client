@@ -1,6 +1,8 @@
 import { Component } from 'react'
 import PropTypes from 'prop-types'
 
+import CozyContext from './reactContext'
+
 const dummyState = {}
 
 // Need to have this since Query and ObservableQuery might come from
@@ -138,10 +140,7 @@ export default class Query extends Component {
   }
 }
 
-Query.contextTypes = {
-  client: PropTypes.object,
-  store: PropTypes.object
-}
+Query.contextTypes = CozyContext
 
 Query.propTypes = {
   /** Query definition that will be executed and observed */

@@ -1,6 +1,7 @@
 import merge from 'lodash/merge'
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+
+import CozyContext from './reactContext'
 
 const makeMutationsObject = (mutations, client, props) => {
   return merge(
@@ -24,9 +25,7 @@ const withMutations = (...mutations) => WrappedComponent => {
     WrappedComponent.displayName || WrappedComponent.name || 'Component'
 
   class Wrapper extends Component {
-    static contextTypes = {
-      client: PropTypes.object
-    }
+    static contextTypes = CozyContext
 
     constructor(props, context) {
       super(props, context)

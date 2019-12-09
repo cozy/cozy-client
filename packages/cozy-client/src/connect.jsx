@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect as reduxConnect } from 'react-redux'
-import PropTypes from 'prop-types'
 
 import { getQueryFromState } from './store'
+import CozyContext from './reactContext'
 
 const connect = (query, options = {}) => {
   console.warn(
@@ -22,9 +22,7 @@ const connect = (query, options = {}) => {
     )
 
     class Wrapper extends Component {
-      static contextTypes = {
-        client: PropTypes.object
-      }
+      static contextTypes = CozyContext
 
       constructor(props, context) {
         super(props, context)
