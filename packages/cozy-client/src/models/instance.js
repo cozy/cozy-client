@@ -35,6 +35,23 @@ export const shouldDisplayOffers = data => {
     isFreemiumUser(data)
   )
 }
+/**
+ * Returns if an instance has subscribed to one of our offers
+ *
+ * @param {object} data Object containing all the results from /settings/*
+ * @param {object} data.context Object returned by /settings/context
+ * @param {object} data.instance Object returned by /settings/instance
+ * @param {object} data.diskUsage Object returned by /settings/disk-usage
+ *
+ */
+export const hasAnOffer = data => {
+  return (
+    !isSelfHosted(data) &&
+    arePremiumLinksEnabled(data) &&
+    getUuid(data) &&
+    !isFreemiumUser(data)
+  )
+}
 
 /**
  * Returns the link to the Premium page on the Cozy's Manager
