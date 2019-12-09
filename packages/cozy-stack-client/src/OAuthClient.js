@@ -36,7 +36,7 @@ class OAuthClient extends CozyStackClient {
   /**
    * Checks if the client has his registration information from the server
    *
-   * @returns {boolean}
+   * @returns {boolean} true if registered, false otherwise
    * @private
    */
   isRegistered() {
