@@ -74,6 +74,9 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 <dt><a href="#shouldDisplayOffers">shouldDisplayOffers</a></dt>
 <dd><p>Returns whether an instance is concerned by our offers</p>
 </dd>
+<dt><a href="#hasAnOffer">hasAnOffer</a></dt>
+<dd><p>Returns if an instance has subscribed to one of our offers</p>
+</dd>
 <dt><a href="#buildPremiumLink">buildPremiumLink</a></dt>
 <dd><p>Returns the link to the Premium page on the Cozy&#39;s Manager</p>
 </dd>
@@ -1264,6 +1267,20 @@ getAppDisplayName - Combines the translated prefix and name of the app into a si
 
 ## shouldDisplayOffers
 Returns whether an instance is concerned by our offers
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| data | <code>object</code> | Object containing all the results from /settings/* |
+| data.context | <code>object</code> | Object returned by /settings/context |
+| data.instance | <code>object</code> | Object returned by /settings/instance |
+| data.diskUsage | <code>object</code> | Object returned by /settings/disk-usage |
+
+<a name="hasAnOffer"></a>
+
+## hasAnOffer
+Returns if an instance has subscribed to one of our offers
 
 **Kind**: global constant  
 

@@ -39,6 +39,31 @@ const selftHostedInstance = {
     }
   }
 }
+
+const hadAnOfferInstance = {
+  context: {
+    data: {
+      attributes: {
+        manager_url: 'https://manager.cozy.cc',
+        enable_premium_links: true
+      }
+    }
+  },
+  instance: {
+    data: {
+      attributes: {
+        uuid: '1234'
+      }
+    }
+  },
+  diskUsage: {
+    data: {
+      attributes: {
+        quota: '60000000000'
+      }
+    }
+  }
+}
 describe('instance', () => {
   it('should test if self hosted or not', () => {
     expect(instance.isSelfHosted(noSelfHostedInstance)).toBe(false)
@@ -70,5 +95,11 @@ describe('instance', () => {
   it('should generate the link to the manager', () => {
     const url = instance.buildPremiumLink(noSelfHostedInstance)
     expect(url).toBe('https://manager.cozy.cc/cozy/instances/1234/premium')
+  })
+
+  it('should test if an instance has already subscribed to one of our offers', () => {
+    expect(instance.hasAnOffer(noSelfHostedInstance)).toBe(false)
+    expect(instance.hasAnOffer(hadAnOfferInstance)).toBe(true)
+    expect(instance.hasAnOffer(selftHostedInstance)).toBe(false)
   })
 })
