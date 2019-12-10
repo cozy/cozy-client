@@ -1,4 +1,8 @@
-const StackClient = jest.requireActual('cozy-stack-client')
+const {
+  default: StackClient,
+  OAuthClient: OriginalOAuthClient,
+  normalizeDoc
+} = jest.requireActual('cozy-stack-client')
 
 const collectionMock = {
   all: jest.fn(() => Promise.resolve()),
@@ -9,17 +13,19 @@ const collectionMock = {
   findReferencedBy: jest.fn(() => Promise.resolve())
 }
 
-class MockedStackClient extends StackClient.default {
+class MockedStackClient extends StackClient {
   constructor(opts) {
     super(opts)
     this.collection = jest.fn(() => collectionMock)
   }
 }
 
-export class OAuthClient extends StackClient.OAuthClient {
+export class OAuthClient extends OriginalOAuthClient {
   constructor(opts) {
     super(opts)
     this.collection = jest.fn(() => collectionMock)
   }
 }
+
 export default MockedStackClient
+export { normalizeDoc }
