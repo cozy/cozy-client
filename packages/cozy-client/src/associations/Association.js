@@ -73,8 +73,8 @@ class Association {
    * @param  {object} target - Original object containing raw data
    * @param  {string} name - Attribute under which the association is stored
    * @param  {string} doctype - Doctype of the documents managed by the association
-   * @param  {Function} options.dispatch - Store's dispatch, comes from the client
    * @param {string} options
+   * @param  {Function} options.dispatch - Store's dispatch, comes from the client
    */
   constructor(target, name, doctype, options) {
     const { dispatch, get, query, mutate, save } = options
