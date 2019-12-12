@@ -27,7 +27,7 @@ class Registry {
    * Installs or updates an app from a source.
    *
    * Accepts the terms if the app has them.
-
+   *
    * @param  {RegistryApp} app - App to be installed
    * @param  {string} source - String (ex: registry://drive/stable)
    * @returns {Promise}

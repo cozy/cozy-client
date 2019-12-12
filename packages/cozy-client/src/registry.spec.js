@@ -104,10 +104,10 @@ describe('registry api', () => {
     })
 
     it('should call the correct route (filtering)', async () => {
-      await api.fetchApps({ channel: 'beta', type: 'konnectors' })
+      await api.fetchApps({ channel: 'beta', type: 'konnector' })
       expect(fetchJSON).toHaveBeenCalledWith(
         'GET',
-        '/registry?limit=200&versionsChannel=beta&latestChannelVersion=beta&filter[type]=konnectors'
+        '/registry?limit=200&versionsChannel=beta&latestChannelVersion=beta&filter[type]=konnector'
       )
     })
   })
