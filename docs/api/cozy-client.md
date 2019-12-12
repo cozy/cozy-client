@@ -122,6 +122,13 @@ is loading.</p>
 <dt><a href="#sanitize">sanitize(manifest)</a> ⇒ <code>Manifest</code></dt>
 <dd><p>Normalize app manifest, retrocompatibility for old manifests</p>
 </dd>
+<dt><a href="#createMockClient">createMockClient()</a> ⇒ <code><a href="#CozyClient">CozyClient</a></code></dt>
+<dd><p>Creates a client suitable for use in tests</p>
+<ul>
+<li>client.{query,save} are mocked</li>
+<li>client.stackClient.fetchJSON is mocked</li>
+</ul>
+</dd>
 <dt><a href="#currentResult">currentResult()</a> ⇒ <code>HydratedQueryState</code></dt>
 <dd><p>Returns the query from the store with hydrated documents.</p>
 </dd>
@@ -133,6 +140,13 @@ we have in the store.</p>
 <dd><p>Wraps a promise so that it can be canceled</p>
 <p>Rejects with canceled: true as soon as cancel is called</p>
 </dd>
+</dl>
+
+## Typedefs
+
+<dl>
+<dt><a href="#QueryState">QueryState</a> : <code>object</code></dt>
+<dd></dd>
 </dl>
 
 <a name="Association"></a>
@@ -232,8 +246,8 @@ the hydrated document (.data method). View components will access
 | target | <code>object</code> | Original object containing raw data |
 | name | <code>string</code> | Attribute under which the association is stored |
 | doctype | <code>string</code> | Doctype of the documents managed by the association |
-| options.dispatch | <code>function</code> | Store's dispatch, comes from the client |
 | options | <code>string</code> |  |
+| options.dispatch | <code>function</code> | Store's dispatch, comes from the client |
 
 <a name="Association+target"></a>
 
@@ -523,22 +537,22 @@ Responsible for
     * [new CozyClient(options)](#new_CozyClient_new)
     * _instance_
         * [.registerPlugin()](#CozyClient+registerPlugin)
-        * [.login()](#CozyClient+login) ⇒ <code>Promise</code>
+        * [.login(options)](#CozyClient+login) ⇒ <code>Promise</code>
         * [.logout()](#CozyClient+logout) ⇒ <code>Promise</code>
         * [.collection(doctype)](#CozyClient+collection) ⇒ <code>DocumentCollection</code>
         * [.getDocumentSavePlan(document, relationships)](#CozyClient+getDocumentSavePlan) ⇒ <code>Array.&lt;Mutation&gt;</code>
         * [.destroy(document)](#CozyClient+destroy) ⇒ <code>Document</code>
-        * [.query(queryDefinition)](#CozyClient+query) ⇒ <code>QueryResult</code>
+        * [.query(queryDefinition, options)](#CozyClient+query) ⇒ <code>QueryResult</code>
         * [.queryAll(queryDefinition, options)](#CozyClient+queryAll) ⇒ <code>Array</code>
         * [.fetchRelationships()](#CozyClient+fetchRelationships)
         * [.hydrateDocuments(doctype, documents)](#CozyClient+hydrateDocuments) ⇒ <code>Array.&lt;HydratedDocument&gt;</code>
-        * [.hydrateDocument(document, schema)](#CozyClient+hydrateDocument) ⇒ <code>HydrateDocument</code>
+        * [.hydrateDocument(document, schema)](#CozyClient+hydrateDocument) ⇒ <code>HydratedDocument</code>
         * [.makeNewDocument()](#CozyClient+makeNewDocument)
         * [.getAssociation()](#CozyClient+getAssociation)
         * [.getRelationshipStoreAccessors()](#CozyClient+getRelationshipStoreAccessors)
         * [.getCollectionFromState(type)](#CozyClient+getCollectionFromState) ⇒ <code>Array.&lt;Document&gt;</code>
         * [.getDocumentFromState(type, id)](#CozyClient+getDocumentFromState) ⇒ <code>Document</code>
-        * [.getQueryFromState(id)](#CozyClient+getQueryFromState) ⇒ <code>QueryState</code>
+        * [.getQueryFromState(id)](#CozyClient+getQueryFromState) ⇒ [<code>QueryState</code>](#QueryState)
         * [.register(cozyURL)](#CozyClient+register) ⇒ <code>object</code>
         * [.startOAuthFlow(openURLCallback)](#CozyClient+startOAuthFlow) ⇒ <code>object</code>
         * [.renewAuthorization()](#CozyClient+renewAuthorization) ⇒ <code>object</code>
@@ -561,7 +575,7 @@ Responsible for
 
 | Param | Type | Description |
 | --- | --- | --- |
-| options | <code>object</code> |  |
+| options | <code>object</code> | Options |
 | options.link | <code>Link</code> | Backward compatibility |
 | options.links | <code>Array.Link</code> | List of links |
 | options.schema | <code>object</code> | Schema description for each doctypes |
@@ -618,7 +632,7 @@ client.plugins.alerts
 ```
 <a name="CozyClient+login"></a>
 
-### cozyClient.login() ⇒ <code>Promise</code>
+### cozyClient.login(options) ⇒ <code>Promise</code>
 Notify the links that they can start and set isLogged to true.
 
 On mobile, where url/token are set after instantiation, use this method
@@ -634,8 +648,9 @@ Emits
 
 | Param | Type | Description |
 | --- | --- | --- |
-| options.token | <code>options.token</code> | If passed, the token is set on the client |
-| options.uri | <code>options.uri</code> | If passed, the uri is set on the client |
+| options | <code>object</code> | Options |
+| options.token | <code>string</code> | If passed, the token is set on the client |
+| options.uri | <code>string</code> | If passed, the uri is set on the client |
 
 <a name="CozyClient+logout"></a>
 
@@ -656,6 +671,7 @@ Forwards to a stack client instance and returns
 a [DocumentCollection](https://docs.cozy.io/en/cozy-client/api/cozy-stack-client/#DocumentCollection) instance.
 
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: <code>DocumentCollection</code> - Collection corresponding to the doctype  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -692,13 +708,13 @@ Destroys a document. {before,after}:destroy hooks will be fired.
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 **Returns**: <code>Document</code> - The document that has been deleted  
 
-| Param | Type |
-| --- | --- |
-| document | <code>Document</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| document | <code>Document</code> | Document to be deleted |
 
 <a name="CozyClient+query"></a>
 
-### cozyClient.query(queryDefinition) ⇒ <code>QueryResult</code>
+### cozyClient.query(queryDefinition, options) ⇒ <code>QueryResult</code>
 Executes a query and returns its results.
 
 Results from the query will be saved internally and can be retrieved via
@@ -710,6 +726,7 @@ executes its query when mounted if no fetch policy has been indicated.
 | Param | Type | Description |
 | --- | --- | --- |
 | queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) |  |
+| options | <code>string</code> | Options |
 | options.as | <code>string</code> | Names the query so it can be reused (by multiple components for example) |
 
 <a name="CozyClient+queryAll"></a>
@@ -754,7 +771,7 @@ Instead, the relationships will have null documents.
 
 <a name="CozyClient+hydrateDocument"></a>
 
-### cozyClient.hydrateDocument(document, schema) ⇒ <code>HydrateDocument</code>
+### cozyClient.hydrateDocument(document, schema) ⇒ <code>HydratedDocument</code>
 Resolves relationships on a document.
 
 The original document is kept in the target attribute of
@@ -819,11 +836,11 @@ Get a document from the internal store.
 
 <a name="CozyClient+getQueryFromState"></a>
 
-### cozyClient.getQueryFromState(id) ⇒ <code>QueryState</code>
+### cozyClient.getQueryFromState(id) ⇒ [<code>QueryState</code>](#QueryState)
 Get a query from the internal store.
 
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
-**Returns**: <code>QueryState</code> - - Query state or null if it does not exist.  
+**Returns**: [<code>QueryState</code>](#QueryState) - - Query state or null if it does not exist.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -974,9 +991,9 @@ There are at the moment only 2 hooks available.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| doctype | <code>string</code> |  |
+| doctype | <code>string</code> | Doctype on which the hook will be registered |
 | name | <code>string</code> | Name of the hook |
-| fn | <code>function</code> | Callback |
+| fn | <code>function</code> | Callback to be executed |
 
 **Example**  
 ```
@@ -1450,6 +1467,22 @@ Normalize app manifest, retrocompatibility for old manifests
 | --- | --- |
 | manifest | <code>Manifest</code> | 
 
+<a name="createMockClient"></a>
+
+## createMockClient() ⇒ [<code>CozyClient</code>](#CozyClient)
+Creates a client suitable for use in tests
+
+- client.{query,save} are mocked
+- client.stackClient.fetchJSON is mocked
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options.queries | <code>object</code> | Prefill queries inside the store |
+| options.remote | <code>object</code> | Mock data from the server |
+| options.clientOptions | <code>object</code> | Options passed to the client |
+
 <a name="currentResult"></a>
 
 ## currentResult() ⇒ <code>HydratedQueryState</code>
@@ -1477,3 +1510,7 @@ Rejects with canceled: true as soon as cancel is called
 | --- | --- |
 | promise | <code>Promise</code> | 
 
+<a name="QueryState"></a>
+
+## QueryState : <code>object</code>
+**Kind**: global typedef  

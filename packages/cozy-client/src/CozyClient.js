@@ -46,6 +46,16 @@ const deprecatedHandler = msg => ({
   }
 })
 
+/**
+ * @typedef {object} Link
+ * @typedef {object} Mutation
+ * @typedef {object} DocumentCollection
+ * @typedef {object} QueryResult
+ * @typedef {object} HydratedDocument
+ * @typedef {object} ReduxStore
+ * @typedef {object} QueryState
+ */
+
 const TRIGGER_CREATION = 'creation'
 const TRIGGER_UPDATE = 'update'
 
@@ -59,7 +69,7 @@ const TRIGGER_UPDATE = 'update'
  */
 class CozyClient {
   /**
-   * @param  {object}       options
+   * @param  {object}       options - Options
    * @param  {Link}         options.link   - Backward compatibility
    * @param  {Array.Link}   options.links  - List of links
    * @param  {object}       options.schema - Schema description for each doctypes
@@ -228,8 +238,9 @@ class CozyClient {
    * - "beforeLogin" at the beginning, before links have been set up
    * - "login" when the client is fully logged in and links have been set up
    *
-   * @param  {options.token}   options.token  - If passed, the token is set on the client
-   * @param  {options.uri}   options.uri  - If passed, the uri is set on the client
+   * @param  {object}   options - Options
+   * @param  {string}   options.token  - If passed, the token is set on the client
+   * @param  {string}   options.uri  - If passed, the uri is set on the client
    * @returns {Promise} - Resolves when all links have been setup and client is fully logged in
    *
    */
@@ -328,7 +339,7 @@ class CozyClient {
    * a [DocumentCollection]{@link https://docs.cozy.io/en/cozy-client/api/cozy-stack-client/#DocumentCollection} instance.
    *
    * @param  {string} doctype The collection doctype.
-   * @returns {DocumentCollection}
+   * @returns {DocumentCollection} Collection corresponding to the doctype
    */
   collection(doctype) {
     return this.getStackClient().collection(doctype)
@@ -493,9 +504,9 @@ class CozyClient {
    * })
    * ```
    *
-   * @param  {string}   doctype
-   * @param  {string}   name    Name of the hook
-   * @param  {Function} fn      Callback
+   * @param  {string}   doctype - Doctype on which the hook will be registered
+   * @param  {string}   name    - Name of the hook
+   * @param  {Function} fn      - Callback to be executed
    */
   static registerHook(doctype, name, fn) {
     CozyClient.hooks = CozyClient.hooks || {}
@@ -516,7 +527,7 @@ class CozyClient {
   /**
    * Destroys a document. {before,after}:destroy hooks will be fired.
    *
-   * @param  {Document} document
+   * @param  {Document} document - Document to be deleted
    * @returns {Document} The document that has been deleted
    */
   async destroy(document, mutationOptions = {}) {
@@ -550,6 +561,7 @@ class CozyClient {
    * executes its query when mounted if no fetch policy has been indicated.
    *
    * @param  {QueryDefinition} queryDefinition
+   * @param  {string} options - Options
    * @param  {string} options.as - Names the query so it can be reused (by multiple components for example)
    * @returns {QueryResult}
    */
@@ -778,7 +790,7 @@ class CozyClient {
    *
    * @param  {Document} document for which relationships must be resolved
    * @param  {Schema} schema for the document doctype
-   * @returns {HydrateDocument}
+   * @returns {HydratedDocument}
    */
   hydrateDocument(document, schema) {
     if (!document) {
