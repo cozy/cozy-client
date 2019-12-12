@@ -4,12 +4,26 @@ In addition to the Javascript client, Cozy-Client provides a way to connect dire
 
 Once connected, your components will receive the requesting data and a fetch status in their props. The data will automatically be refreshed upon modification.
 
+<!-- MarkdownTOC autolink=true -->
 
-## Setup
+- [1. Setup](#1-setup)
+  - [1.a Initialize a CozyClient provider](#1a-initialize-a-cozyclient-provider)
+    - [1.b Use your own Redux store](#1b-use-your-own-redux-store)
+- [2. Usage](#2-usage)
+  - [2.a Requesting data with ``](#2a-requesting-data-with-)
+  - [2.b Requesting data with the `queryConnect` HOC](#2b-requesting-data-with-the-queryconnect-hoc)
+  - [2.c Using a fetch policy to decrease network requests](#2c-using-a-fetch-policy-to-decrease-network-requests)
+  - [3. Mutating data](#3-mutating-data)
+
+<!-- /MarkdownTOC -->
+
+
+
+## 1. Setup
 
 The following procedure requires you to already know how to initialize a CozyClient instance and create a query to fetch documents.
 
-### 1. Initialize a CozyClient provider
+### 1.a Initialize a CozyClient provider
 
 
 Import `CozyClient` and `CozyProvider`
@@ -43,7 +57,7 @@ ReactDOM.render(<MyCozyApp />,
 
 The CozyClient will be available for consumption to all components inside your wrapped application.
 
-#### 1.a Use your own Redux store
+#### 1.b Use your own Redux store
 
 `cozy-client` uses redux internally to centralize the statuses of the various fetches and replications triggered by the library, and to store locally the data in a normalized way. If you already have a redux store in your app, you can configure `cozy-client` to use this existing store:
 
@@ -71,6 +85,8 @@ ReactDOM.render(<MyCozyApp />,
   document.getElementById('main')
 )
 ```
+
+## 2. Usage
 
 ### 2.a Requesting data with `<Query />`
 
