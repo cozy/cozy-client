@@ -27,7 +27,7 @@ class Registry {
    * Installs or updates an app from a source.
    *
    * Accepts the terms if the app has them.
-   
+   *
    * @param  {RegistryApp} app - App to be installed
    * @param  {string} source - String (ex: registry://drive/stable)
    * @returns {Promise}
@@ -62,19 +62,19 @@ class Registry {
   /**
    * Fetch at most 200 apps from the channel
    *
-   * @param  {string} options.type - "webapp" or "konnector"
-   * @param  {string} options.channel - "dev"/"beta"/"stable"
+   * @param  {string} params.type - "webapp" or "konnector"
+   * @param  {string} params.channel - "dev"/"beta"/"stable"
    *
    * @returns {Array<RegistryApp>}
    */
-  async fetchApps(options) {
-    const { channel, type } = options
-    const params = {
+  async fetchApps(params) {
+    const { channel, type } = params
+    const searchParams = {
       limit: 200,
       versionsChannel: channel,
       latestChannelVersion: channel
     }
-    let querypart = new URLSearchParams(params).toString()
+    let querypart = new URLSearchParams(searchParams).toString()
     if (type) {
       // Unfortunately, URLSearchParams encodes brackets so we have to do
       // the querypart handling manually
