@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.8.1](https://github.com/cozy/cozy-client/compare/v8.8.0...v8.8.1) (2019-12-12)
+
+**Note:** Version bump only for package cozy-client
+
+
+
+
+
 # [8.8.0](https://github.com/cozy/cozy-client/compare/v8.7.1...v8.8.0) (2019-12-12)
 
 
