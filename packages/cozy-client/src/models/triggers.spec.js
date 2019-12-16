@@ -11,10 +11,18 @@ describe('trigger states', () => {
         }
       })
     ).toBe('2010-09-10T00:00')
+    expect(triggerStates.getLastExecution({})).toBe(undefined)
   })
 
-  it('shouldnt fail for unexecuted konnectors', () => {
-    expect(triggerStates.getLastExecution({})).toBe(undefined)
+  it('should return the last execution date', () => {
+    expect(
+      triggerStates.getLastsuccess({
+        current_state: {
+          last_success: '2010-09-12T00:00'
+        }
+      })
+    ).toBe('2010-09-12T00:00')
+    expect(triggerStates.getLastsuccess({})).toBe(undefined)
   })
 
   it('should return whether or not the konnector is errored', () => {

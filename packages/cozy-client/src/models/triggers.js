@@ -5,6 +5,9 @@ const triggerStates = {
   /** Returns when the trigger was last executed. Need a trigger */
   getLastExecution: triggerState =>
     get(triggerState, 'current_state.last_execution'),
+  /** Returns when the trigger was last successfully executed. */
+  getLastsuccess: triggerState =>
+    get(triggerState, 'current_state.last_success'),
   /** Returns whether last job failed */
   isErrored: triggerState =>
     get(triggerState, 'current_state.status') === 'errored',
