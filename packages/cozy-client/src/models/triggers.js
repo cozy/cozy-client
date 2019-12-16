@@ -1,9 +1,13 @@
+import get from 'lodash/get'
+
 /** Trigger states come from /jobs/triggers */
 const triggerStates = {
   /** Returns when the trigger was last executed. Need a trigger */
-  getLastExecution: triggerState => triggerState.current_state.last_execution,
+  getLastExecution: triggerState =>
+    get(triggerState, 'current_state.last_execution'),
   /** Returns whether last job failed */
-  isErrored: triggerState => triggerState.current_state.status === 'errored'
+  isErrored: triggerState =>
+    get(triggerState, 'current_state.status') === 'errored'
 }
 
 const triggers = {
