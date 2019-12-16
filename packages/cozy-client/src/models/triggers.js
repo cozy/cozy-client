@@ -18,6 +18,14 @@ const triggerStates = {
 
 const triggers = {
   isKonnectorWorker: trigger => trigger.worker === 'konnector',
+
+  /**
+   * getKonnector - Returns the konnector slug that executed a trigger
+   *
+   * @param {object} trigger io.cozy.triggers
+   *
+   * @returns {string} A konnector slug
+   */
   getKonnector: trigger => {
     if (!triggers.isKonnectorWorker(trigger)) {
       return
@@ -30,6 +38,13 @@ const triggers = {
       return message.konnector
     }
   },
+  /**
+   * getAccountId - Returns the account id for a trigger
+   *
+   * @param {object} trigger io.cozy.triggers
+   *
+   * @returns {string} Id for an io.cozy.accounts
+   */
   getAccountId: trigger => {
     const legacyData = get(trigger, 'message.Data')
 

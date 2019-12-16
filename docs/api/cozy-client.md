@@ -61,6 +61,12 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 ## Constants
 
 <dl>
+<dt><a href="#getMutedErrors">getMutedErrors</a> ⇒ <code>Array</code></dt>
+<dd><p>getMutedErrors - Returns the list of erros that have been muted for tyhe given account</p>
+</dd>
+<dt><a href="#muteError">muteError</a> ⇒ <code>object</code></dt>
+<dd><p>muteError - Adds an error to the list of muted errors for the given account</p>
+</dd>
 <dt><a href="#getStoreInstallationURL">getStoreInstallationURL</a> ⇒ <code>string</code></dt>
 <dd><p>Returns the store URL to install/update an app/konnector</p>
 </dd>
@@ -1241,6 +1247,31 @@ Returns the relationship for a given doctype/name
 Validates a document considering the descriptions in schema.attributes.
 
 **Kind**: instance method of [<code>Schema</code>](#Schema)  
+<a name="getMutedErrors"></a>
+
+## getMutedErrors ⇒ <code>Array</code>
+getMutedErrors - Returns the list of erros that have been muted for tyhe given account
+
+**Kind**: global constant  
+**Returns**: <code>Array</code> - AN array of errors with a `type` and `mutedAt` field  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| account | <code>object</code> | io.cozy.accounts |
+
+<a name="muteError"></a>
+
+## muteError ⇒ <code>object</code>
+muteError - Adds an error to the list of muted errors for the given account
+
+**Kind**: global constant  
+**Returns**: <code>object</code> - An updated io.cozy.accounts  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| account | <code>object</code> | io.cozy.accounts |
+| errorType | <code>string</code> | The type of the error to mute |
+
 <a name="getStoreInstallationURL"></a>
 
 ## getStoreInstallationURL ⇒ <code>string</code>
@@ -1373,7 +1404,9 @@ Trigger states come from /jobs/triggers
 
 * [triggerStates](#triggerStates)
     * [.getLastExecution()](#triggerStates.getLastExecution)
+    * [.getLastsuccess()](#triggerStates.getLastsuccess)
     * [.isErrored()](#triggerStates.isErrored)
+    * [.getLastError()](#triggerStates.getLastError)
 
 <a name="triggerStates.getLastExecution"></a>
 
@@ -1381,10 +1414,22 @@ Trigger states come from /jobs/triggers
 Returns when the trigger was last executed. Need a trigger
 
 **Kind**: static method of [<code>triggerStates</code>](#triggerStates)  
+<a name="triggerStates.getLastsuccess"></a>
+
+### triggerStates.getLastsuccess()
+Returns when the trigger was last successfully executed.
+
+**Kind**: static method of [<code>triggerStates</code>](#triggerStates)  
 <a name="triggerStates.isErrored"></a>
 
 ### triggerStates.isErrored()
 Returns whether last job failed
+
+**Kind**: static method of [<code>triggerStates</code>](#triggerStates)  
+<a name="triggerStates.getLastError"></a>
+
+### triggerStates.getLastError()
+Returns the type of the last error to occur
 
 **Kind**: static method of [<code>triggerStates</code>](#triggerStates)  
 <a name="fetchPolicies"></a>
