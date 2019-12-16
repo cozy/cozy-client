@@ -30,6 +30,20 @@ describe('trigger states', () => {
     ).toBe(false)
     expect(triggerStates.isErrored({})).toBe(false)
   })
+
+  it('should return the last error', () => {
+    expect(
+      triggerStates.getLastError({
+        current_state: { last_error: 'LOGIN_FAILED' }
+      })
+    ).toBe('LOGIN_FAILED')
+    expect(
+      triggerStates.getLastError({
+        current_state: { status: 'ok' }
+      })
+    ).toBe(undefined)
+    expect(triggerStates.getLastError({})).toBe(undefined)
+  })
 })
 
 describe('triggers model', () => {

@@ -7,7 +7,9 @@ const triggerStates = {
     get(triggerState, 'current_state.last_execution'),
   /** Returns whether last job failed */
   isErrored: triggerState =>
-    get(triggerState, 'current_state.status') === 'errored'
+    get(triggerState, 'current_state.status') === 'errored',
+  /** Returns the type of the last error to occur */
+  getLastError: triggerState => get(triggerState, 'current_state.last_error')
 }
 
 const triggers = {
