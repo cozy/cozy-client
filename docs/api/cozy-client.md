@@ -71,6 +71,12 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 <dt><a href="#getAppDisplayName">getAppDisplayName</a> ⇒ <code>string</code></dt>
 <dd><p>getAppDisplayName - Combines the translated prefix and name of the app into a single string.</p>
 </dd>
+<dt><a href="#isFile">isFile</a></dt>
+<dd></dd>
+<dt><a href="#isDirectory">isDirectory</a></dt>
+<dd></dd>
+<dt><a href="#isNote">isNote</a></dt>
+<dd></dd>
 <dt><a href="#shouldDisplayOffers">shouldDisplayOffers</a></dt>
 <dd><p>Returns whether an instance is concerned by our offers</p>
 </dd>
@@ -1279,6 +1285,33 @@ getAppDisplayName - Combines the translated prefix and name of the app into a si
 | --- | --- | --- |
 | app | <code>object</code> | io.cozy.apps or io.cozy.konnectors document |
 | lang | <code>string</code> | Locale to use |
+
+<a name="isFile"></a>
+
+## isFile
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | <code>File</code> | io.cozy.files |
+
+<a name="isDirectory"></a>
+
+## isDirectory
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | <code>File</code> | io.cozy.files |
+
+<a name="isNote"></a>
+
+## isNote
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | <code>File</code> | io.cozy.files |
 
 <a name="shouldDisplayOffers"></a>
 
