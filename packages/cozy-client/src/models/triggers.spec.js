@@ -1,4 +1,6 @@
-import { triggerStates, triggers } from './triggers'
+import { triggers as triggersModel } from './'
+
+const { triggerStates, triggers } = triggersModel
 
 describe('trigger states', () => {
   it('should get execution date', () => {
