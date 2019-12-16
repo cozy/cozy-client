@@ -1,4 +1,5 @@
 import get from 'lodash/get'
+import { getMutedErrors } from './accounts'
 
 /** Trigger states come from /jobs/triggers */
 const triggerStates = {
@@ -38,6 +39,32 @@ const triggers = {
     } else {
       return get(trigger, 'message.account')
     }
+  },
+  /**
+   * isCurrentErrorMuted - Checks if the triggers current error has been muted in the corresponding io.cozy.accounts
+   *
+   * @param {object} trigger      io.cozy.triggers
+   * @param {object} accountsById Object where the keys are account ids, and the values are io.cozy.accounts
+   *
+   * @returns {boolean} Whether the error is muted or not
+   */
+  isCurrentErrorMuted: (trigger, accountsById) => {
+    const lastErrorType = triggerStates.getLastError(trigger)
+    const lastSuccess = triggerStates.getLastsuccess(trigger)
+    const lastSuccessDate = lastSuccess ? new Date(lastSuccess) : new Date()
+
+    const accountId = triggers.getAccountId(trigger)
+    const account = accountsById[accountId]
+    const mutedErrors = getMutedErrors(account)
+
+    const isErrorMuted = mutedErrors.some(mutedError => {
+      return (
+        mutedError.type === lastErrorType &&
+        new Date(mutedError.mutedAt) > lastSuccessDate
+      )
+    })
+
+    return isErrorMuted
   }
 }
 
