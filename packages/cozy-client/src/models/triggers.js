@@ -23,6 +23,16 @@ const triggers = {
       const message = JSON.parse(atob(trigger.message.Data))
       return message.konnector
     }
+  },
+  getAccountId: trigger => {
+    const legacyData = get(trigger, 'message.Data')
+
+    if (legacyData) {
+      const message = JSON.parse(atob(legacyData))
+      return message.account
+    } else {
+      return get(trigger, 'message.account')
+    }
   }
 }
 
