@@ -86,6 +86,8 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 <dt><a href="#buildPremiumLink">buildPremiumLink</a></dt>
 <dd><p>Returns the link to the Premium page on the Cozy&#39;s Manager</p>
 </dd>
+<dt><a href="#generateUrlForNote">generateUrlForNote</a></dt>
+<dd></dd>
 <dt><a href="#triggerStates">triggerStates</a></dt>
 <dd><p>Trigger states come from /jobs/triggers</p>
 </dd>
@@ -1351,6 +1353,16 @@ Returns the link to the Premium page on the Cozy's Manager
 | Param | Type |
 | --- | --- |
 | instanceInfo | <code>object</code> | 
+
+<a name="generateUrlForNote"></a>
+
+## generateUrlForNote
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| notesAppUrl | <code>string</code> | URL to the Notes App (https://notes.foo.mycozy.cloud) |
+| file | <code>object</code> | io.cozy.files object |
 
 <a name="triggerStates"></a>
 
