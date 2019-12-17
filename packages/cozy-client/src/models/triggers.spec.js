@@ -107,7 +107,7 @@ describe('triggers model', () => {
     })
   })
 
-  describe('isCurrentErrorMuted', () => {
+  describe('isLatestErrorMuted', () => {
     const triggerWithError = {
       _id: 'fa4c076914ce46a92fa3e7e5f0672ca5',
       worker: 'konnector',
@@ -124,58 +124,46 @@ describe('triggers model', () => {
     }
 
     it('should return false when there are no muted errors', () => {
-      const accountsById = {}
-      expect(triggers.isCurrentErrorMuted(triggerWithError, accountsById)).toBe(
-        false
-      )
+      expect(triggers.isLatestErrorMuted(triggerWithError, {})).toBe(false)
     })
 
     it('should return true when the error is muted', () => {
-      const accountsById = {
-        '123abc': {
-          mutedErrors: [
-            {
-              type: 'LOGIN_FAILED',
-              mutedAt: '2010-09-15T00:00'
-            }
-          ]
-        }
+      const account = {
+        _id: '123abc',
+        mutedErrors: [
+          {
+            type: 'LOGIN_FAILED',
+            mutedAt: '2010-09-15T00:00'
+          }
+        ]
       }
-      expect(triggers.isCurrentErrorMuted(triggerWithError, accountsById)).toBe(
-        true
-      )
+      expect(triggers.isLatestErrorMuted(triggerWithError, account)).toBe(true)
     })
 
     it('should ignore errors that are not muted', () => {
-      const accountsById = {
-        '123abc': {
-          mutedErrors: [
-            {
-              type: 'USER_ACTION_NEEDED',
-              mutedAt: '2010-09-15T00:00'
-            }
-          ]
-        }
+      const account = {
+        _id: '123abc',
+        mutedErrors: [
+          {
+            type: 'USER_ACTION_NEEDED',
+            mutedAt: '2010-09-15T00:00'
+          }
+        ]
       }
-      expect(triggers.isCurrentErrorMuted(triggerWithError, accountsById)).toBe(
-        false
-      )
+      expect(triggers.isLatestErrorMuted(triggerWithError, account)).toBe(false)
     })
 
     it('should ignore muted errors if the trigger has been successful after the mute', () => {
-      const accountsById = {
-        '123abc': {
-          mutedErrors: [
-            {
-              type: 'LOGIN_FAILED',
-              mutedAt: '2010-09-01T00:00' // muted before the last_success in the trigger
-            }
-          ]
-        }
+      const account = {
+        _id: '123abc',
+        mutedErrors: [
+          {
+            type: 'LOGIN_FAILED',
+            mutedAt: '2010-09-01T00:00' // muted before the last_success in the trigger
+          }
+        ]
       }
-      expect(triggers.isCurrentErrorMuted(triggerWithError, accountsById)).toBe(
-        false
-      )
+      expect(triggers.isLatestErrorMuted(triggerWithError, account)).toBe(false)
     })
 
     it('should mute errors if there has never been a success date', () => {
@@ -192,19 +180,18 @@ describe('triggers model', () => {
           last_error: 'LOGIN_FAILED'
         }
       }
-      const accountsById = {
-        '123abc': {
-          mutedErrors: [
-            {
-              type: 'LOGIN_FAILED',
-              mutedAt: '2010-09-01T00:00' // muted before the last_success in the trigger
-            }
-          ]
-        }
+      const account = {
+        _id: '123abc',
+        mutedErrors: [
+          {
+            type: 'LOGIN_FAILED',
+            mutedAt: '2010-09-01T00:00' // muted before the last_success in the trigger
+          }
+        ]
       }
-      expect(
-        triggers.isCurrentErrorMuted(triggerWithNoSuccess, accountsById)
-      ).toBe(false)
+      expect(triggers.isLatestErrorMuted(triggerWithNoSuccess, account)).toBe(
+        false
+      )
     })
   })
 })
