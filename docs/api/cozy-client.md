@@ -62,7 +62,7 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 
 <dl>
 <dt><a href="#getMutedErrors">getMutedErrors</a> ⇒ <code>Array</code></dt>
-<dd><p>getMutedErrors - Returns the list of erros that have been muted for tyhe given account</p>
+<dd><p>getMutedErrors - Returns the list of errors that have been muted for the given account</p>
 </dd>
 <dt><a href="#muteError">muteError</a> ⇒ <code>object</code></dt>
 <dd><p>muteError - Adds an error to the list of muted errors for the given account</p>
@@ -1250,10 +1250,10 @@ Validates a document considering the descriptions in schema.attributes.
 <a name="getMutedErrors"></a>
 
 ## getMutedErrors ⇒ <code>Array</code>
-getMutedErrors - Returns the list of erros that have been muted for tyhe given account
+getMutedErrors - Returns the list of errors that have been muted for the given account
 
 **Kind**: global constant  
-**Returns**: <code>Array</code> - AN array of errors with a `type` and `mutedAt` field  
+**Returns**: <code>Array</code> - An array of errors with a `type` and `mutedAt` field  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1406,7 +1406,7 @@ Trigger states come from /jobs/triggers
     * [.getLastExecution()](#triggerStates.getLastExecution)
     * [.getLastsuccess()](#triggerStates.getLastsuccess)
     * [.isErrored()](#triggerStates.isErrored)
-    * [.getLastError()](#triggerStates.getLastError)
+    * [.getLastErrorType()](#triggerStates.getLastErrorType)
 
 <a name="triggerStates.getLastExecution"></a>
 
@@ -1426,9 +1426,9 @@ Returns when the trigger was last successfully executed.
 Returns whether last job failed
 
 **Kind**: static method of [<code>triggerStates</code>](#triggerStates)  
-<a name="triggerStates.getLastError"></a>
+<a name="triggerStates.getLastErrorType"></a>
 
-### triggerStates.getLastError()
+### triggerStates.getLastErrorType()
 Returns the type of the last error to occur
 
 **Kind**: static method of [<code>triggerStates</code>](#triggerStates)  
