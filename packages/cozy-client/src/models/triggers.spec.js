@@ -41,16 +41,16 @@ describe('trigger states', () => {
 
   it('should return the last error', () => {
     expect(
-      triggerStates.getLastError({
+      triggerStates.getLastErrorType({
         current_state: { last_error: 'LOGIN_FAILED' }
       })
     ).toBe('LOGIN_FAILED')
     expect(
-      triggerStates.getLastError({
+      triggerStates.getLastErrorType({
         current_state: { status: 'ok' }
       })
     ).toBe(undefined)
-    expect(triggerStates.getLastError({})).toBe(undefined)
+    expect(triggerStates.getLastErrorType({})).toBe(undefined)
   })
 })
 
