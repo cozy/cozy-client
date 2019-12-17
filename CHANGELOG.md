@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.10.1](https://github.com/cozy/cozy-client/compare/v8.10.0...v8.10.1) (2019-12-17)
+
+
+### Bug Fixes
+
+* Test if note ([dc80c34](https://github.com/cozy/cozy-client/commit/dc80c34))
+
+
+
+
+
 # [8.10.0](https://github.com/cozy/cozy-client/compare/v8.9.0...v8.10.0) (2019-12-17)
 
 
