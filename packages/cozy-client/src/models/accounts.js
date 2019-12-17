@@ -1,7 +1,7 @@
 import get from 'lodash/get'
 
 /**
- * getMutedErrors - Returns the list of erros that have been muted for tyhe given account
+ * getMutedErrors - Returns the list of errors that have been muted for the given account
  *
  * @param {object} account io.cozy.accounts
  *
