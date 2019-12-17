@@ -13,7 +13,8 @@ const triggerStates = {
   isErrored: triggerState =>
     get(triggerState, 'current_state.status') === 'errored',
   /** Returns the type of the last error to occur */
-  getLastError: triggerState => get(triggerState, 'current_state.last_error')
+  getLastErrorType: triggerState =>
+    get(triggerState, 'current_state.last_error')
 }
 
 const triggers = {
@@ -64,7 +65,7 @@ const triggers = {
    * @returns {boolean} Whether the error is muted or not
    */
   isCurrentErrorMuted: (trigger, accountsById) => {
-    const lastErrorType = triggerStates.getLastError(trigger)
+    const lastErrorType = triggerStates.getLastErrorType(trigger)
     const lastSuccess = triggerStates.getLastsuccess(trigger)
     const lastSuccessDate = lastSuccess ? new Date(lastSuccess) : new Date()
 
