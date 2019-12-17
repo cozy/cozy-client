@@ -5,7 +5,7 @@ import get from 'lodash/get'
  *
  * @param {object} account io.cozy.accounts
  *
- * @returns {Array} AN array of errors with a `type` and `mutedAt` field
+ * @returns {Array} An array of errors with a `type` and `mutedAt` field
  */
 export const getMutedErrors = account => get(account, 'mutedErrors', [])
 
