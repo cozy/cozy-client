@@ -13,9 +13,20 @@ describe('File Model', () => {
         content: 'content',
         schema: [],
         title: 'title',
-        version: '0'
+        version: 1
       }
     }
     expect(file.isNote(note)).toBe(true)
+    const note2 = {
+      type: 'file',
+      name: 'test.cozy-note',
+      metadata: {
+        content: 'content',
+        schema: [],
+        title: '',
+        version: 0
+      }
+    }
+    expect(file.isNote(note2)).toBe(true)
   })
 })
