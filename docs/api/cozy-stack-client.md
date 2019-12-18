@@ -63,6 +63,9 @@ through OAuth.</p>
 <dt><a href="#memoize">memoize()</a></dt>
 <dd><p>Memoize with maxDuration and custom key</p>
 </dd>
+<dt><a href="#getPermissionsFor">getPermissionsFor(document, publicLink, options)</a> ⇒ <code>object</code></dt>
+<dd><p>Build a permission set</p>
+</dd>
 <dt><a href="#getCozyURL">getCozyURL()</a></dt>
 <dd><p>Get a uniform formatted URL and SSL information according to a provided URL</p>
 </dd>
@@ -849,6 +852,7 @@ Implements `DocumentCollection` API along with specific methods for `io.cozy.per
 
 * [PermissionCollection](#PermissionCollection)
     * [.add(document, permission)](#PermissionCollection+add) ⇒ <code>Promise</code>
+    * [.createSharingLink(document, options)](#PermissionCollection+createSharingLink)
     * [.getOwnPermissions()](#PermissionCollection+getOwnPermissions) ⇒ <code>object</code>
 
 <a name="PermissionCollection+add"></a>
@@ -876,6 +880,19 @@ const permissions = await client
     }
  })
 ```
+<a name="PermissionCollection+createSharingLink"></a>
+
+### permissionCollection.createSharingLink(document, options)
+Create a share link
+
+**Kind**: instance method of [<code>PermissionCollection</code>](#PermissionCollection)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | <code>Object</code> | cozy document |
+| options | <code>object</code> | options |
+| options.verbs | <code>Array.&lt;string&gt;</code> | explicit permissions to use |
+
 <a name="PermissionCollection+getOwnPermissions"></a>
 
 ### permissionCollection.getOwnPermissions() ⇒ <code>object</code>
@@ -1071,6 +1088,21 @@ Delete outdated results from cache
 Memoize with maxDuration and custom key
 
 **Kind**: global function  
+<a name="getPermissionsFor"></a>
+
+## getPermissionsFor(document, publicLink, options) ⇒ <code>object</code>
+Build a permission set
+
+**Kind**: global function  
+**Returns**: <code>object</code> - permissions object that can be sent through /permissions/*  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| document | <code>Object</code> |  | cozy document |
+| publicLink | <code>boolean</code> | <code>false</code> | are the permissions for a public link ? |
+| options | <code>object</code> |  | options |
+| options.verbs | <code>Array.&lt;string&gt;</code> |  | explicit permissions to use |
+
 <a name="getCozyURL"></a>
 
 ## getCozyURL()
