@@ -1,6 +1,6 @@
-import { triggers as triggersModel } from './'
+import { trigger } from './'
 
-const { triggerStates, triggers } = triggersModel
+const { triggerStates, triggers: triggerModel } = trigger
 
 describe('trigger states', () => {
   it('should get execution date', () => {
@@ -54,7 +54,7 @@ describe('trigger states', () => {
   })
 })
 
-describe('triggers model', () => {
+describe('trigger model', () => {
   const normalTrigger = {
     _rev: '1-31eb8f0da1db0f3196ccf0d4329ea554',
     prefix: 'toto.mycozy.cloud',
@@ -88,20 +88,20 @@ describe('triggers model', () => {
 
   describe('getKonnectorFromTrigger', () => {
     it('should work with normal triggers', () => {
-      expect(triggers.getKonnector(normalTrigger)).toBe('orangemobile')
+      expect(triggerModel.getKonnector(normalTrigger)).toBe('orangemobile')
     })
 
     it('should work with legacy triggers', () => {
-      expect(triggers.getKonnector(legacyTrigger)).toBe('ameli')
+      expect(triggerModel.getKonnector(legacyTrigger)).toBe('ameli')
     })
   })
 
   describe('getAccountId', () => {
     it('should return the account id', () => {
-      expect(triggers.getAccountId(normalTrigger)).toBe(
+      expect(triggerModel.getAccountId(normalTrigger)).toBe(
         '4cbfe8f3d89edf60542d5fe9cdcac7b1'
       )
-      expect(triggers.getAccountId(legacyTrigger)).toBe(
+      expect(triggerModel.getAccountId(legacyTrigger)).toBe(
         '3a7c363eea2ddb4d73bd11afa9bb3eb6'
       )
     })
@@ -124,7 +124,7 @@ describe('triggers model', () => {
     }
 
     it('should return false when there are no muted errors', () => {
-      expect(triggers.isLatestErrorMuted(triggerWithError, {})).toBe(false)
+      expect(triggerModel.isLatestErrorMuted(triggerWithError, {})).toBe(false)
     })
 
     it('should return true when the error is muted', () => {
@@ -137,7 +137,9 @@ describe('triggers model', () => {
           }
         ]
       }
-      expect(triggers.isLatestErrorMuted(triggerWithError, account)).toBe(true)
+      expect(triggerModel.isLatestErrorMuted(triggerWithError, account)).toBe(
+        true
+      )
     })
 
     it('should ignore errors that are not muted', () => {
@@ -150,7 +152,9 @@ describe('triggers model', () => {
           }
         ]
       }
-      expect(triggers.isLatestErrorMuted(triggerWithError, account)).toBe(false)
+      expect(triggerModel.isLatestErrorMuted(triggerWithError, account)).toBe(
+        false
+      )
     })
 
     it('should ignore muted errors if the trigger has been successful after the mute', () => {
@@ -163,7 +167,9 @@ describe('triggers model', () => {
           }
         ]
       }
-      expect(triggers.isLatestErrorMuted(triggerWithError, account)).toBe(false)
+      expect(triggerModel.isLatestErrorMuted(triggerWithError, account)).toBe(
+        false
+      )
     })
 
     it('should mute errors if there has never been a success date', () => {
@@ -189,9 +195,9 @@ describe('triggers model', () => {
           }
         ]
       }
-      expect(triggers.isLatestErrorMuted(triggerWithNoSuccess, account)).toBe(
-        false
-      )
+      expect(
+        triggerModel.isLatestErrorMuted(triggerWithNoSuccess, account)
+      ).toBe(false)
     })
   })
 })
