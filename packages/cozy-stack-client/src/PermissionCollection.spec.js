@@ -1,7 +1,10 @@
 jest.mock('./CozyStackClient')
 
 import CozyStackClient from './CozyStackClient'
-import PermissionCollection, { getPermissionsFor } from './PermissionCollection'
+import PermissionCollection, {
+  getPermissionsFor,
+  shouldReferencedFiledBeIncluded
+} from './PermissionCollection'
 
 const fixtures = {
   permission: {
@@ -108,6 +111,12 @@ describe('PermissionCollection', () => {
   })
 
   describe('createSharingLink', () => {
+    beforeEach(() => {
+      client.fetch.mockReset()
+      client.fetchJSON.mockReset()
+      client.fetchJSON.mockReturnValue(Promise.resolve({ data: [] }))
+    })
+
     it('Should be read-only by default', async () => {
       const document = { _type: 'io.cozy.files', _id: '1234' }
       await collection.createSharingLink(document)
@@ -156,6 +165,76 @@ describe('PermissionCollection', () => {
       )
     })
   })
+
+  describe('createCompositeSharingLink', () => {
+    beforeEach(() => {
+      client.fetch.mockReset()
+      client.fetchJSON.mockReset()
+      client.fetchJSON.mockReturnValue(Promise.resolve({ data: [] }))
+    })
+
+    it('Should allow multiple documents', async () => {
+      const documents = {
+        files: { _type: 'io.cozy.files', _id: 'id1234' },
+        other_files: { _type: 'io.cozy.files', _id: 'id5678' }
+      }
+      await collection.createCompositeSharingLink(documents)
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/permissions?codes=email',
+        {
+          data: {
+            type: 'io.cozy.permissions',
+            attributes: {
+              permissions: {
+                files: {
+                  type: 'io.cozy.files',
+                  verbs: ['GET'],
+                  values: [documents.files._id]
+                },
+                other_files: {
+                  type: 'io.cozy.files',
+                  verbs: ['GET'],
+                  values: [documents.other_files._id]
+                }
+              }
+            }
+          }
+        }
+      )
+    })
+
+    it('Should use specific permissions when requested', async () => {
+      const documents = {
+        files: [{ _type: 'io.cozy.files', _id: 'id9876' }, { verbs: ['PUT'] }],
+        other_files: { _type: 'io.cozy.files', _id: 'id5678' }
+      }
+      await collection.createCompositeSharingLink(documents)
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/permissions?codes=email',
+        {
+          data: {
+            type: 'io.cozy.permissions',
+            attributes: {
+              permissions: {
+                files: {
+                  type: 'io.cozy.files',
+                  verbs: ['PUT'],
+                  values: [documents.files[0]._id]
+                },
+                other_files: {
+                  type: 'io.cozy.files',
+                  verbs: ['GET'],
+                  values: [documents.other_files._id]
+                }
+              }
+            }
+          }
+        }
+      )
+    })
+  })
 })
 
 describe('getPermissionsFor', () => {
@@ -179,5 +258,28 @@ describe('getPermissionsFor', () => {
     expect(perms.files.verbs).toEqual(expect.arrayContaining(verbs))
     const perms2 = getPermissionsFor(document, true, options)
     expect(perms2.files.verbs).toEqual(expect.arrayContaining(verbs))
+  })
+
+  it('Should allow other doctypes', () => {
+    const document = { _type: 'io.cozy.notes', _id: '1234' }
+    const perms = getPermissionsFor(document, false)
+    expect(perms.files.type).toEqual('io.cozy.notes')
+  })
+})
+
+describe('shouldReferencedFiledBeIncluded', () => {
+  it('io.cozy.file is not a collection', () => {
+    const document = { _type: 'io.cozy.files', _id: '1234' }
+    expect(shouldReferencedFiledBeIncluded(document)).toBe(false)
+  })
+
+  it('io.cozy.notes.events is not a collection', () => {
+    const document = { _type: 'io.cozy.notes.events', _id: '1234' }
+    expect(shouldReferencedFiledBeIncluded(document)).toBe(false)
+  })
+
+  it('io.cozy.photos.albums is a collection', () => {
+    const document = { _type: 'io.cozy.photos.albums', _id: '1234' }
+    expect(shouldReferencedFiledBeIncluded(document)).toBe(true)
   })
 })

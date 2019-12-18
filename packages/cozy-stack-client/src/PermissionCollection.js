@@ -105,14 +105,12 @@ class PermissionCollection extends DocumentCollection {
   }
 
   /**
-   * Create a share link
-   *
-   * @param {{_id, _type}} document - cozy document
-   * @param {object} options - options
-   * @param {string[]} options.verbs - explicit permissions to use
+   * Create a new set of permission on the stack
+   * @param {object} permissions - list of permissions
+   * @see https://docs.cozy.io/en/cozy-stack/permissions/#post-permissions
+   * @private
    */
-  async createSharingLink(document, options = {}) {
-    const { verbs } = options
+  async createPermissions(permissions) {
     const resp = await this.stackClient.fetchJSON(
       'POST',
       `/permissions?codes=email`,
@@ -120,16 +118,41 @@ class PermissionCollection extends DocumentCollection {
         data: {
           type: 'io.cozy.permissions',
           attributes: {
-            permissions: getPermissionsFor(
-              document,
-              true,
-              verbs ? { verbs } : {}
-            )
+            permissions: permissions
           }
         }
       }
     )
     return { data: normalizePermission(resp.data) }
+  }
+
+  /**
+   * Create a share link
+   *
+   * @param {{_id, _type}} document - cozy document
+   * @param {object} options - options
+   * @param {string[]} options.verbs - explicit permissions to use
+   */
+  async createSharingLink(document, options = {}) {
+    const permissions = getPermissionsFor(document, true, options)
+    return this.createPermissions(permissions)
+  }
+
+  /**
+   * Create a share link from multiple documents
+   *
+   * @param {object} documents - key/value
+   * where each value is either a document {_id, _type}
+   * or an array with a document and an option object
+   */
+  async createCompositeSharingLink(documents) {
+    const permissions = Object.keys(documents).map(key => {
+      const item = documents[key]
+      const document = Array.isArray(item) ? item[0] : item
+      const options = Array.isArray(item) ? item[1] : {}
+      return getPermissionsFor(document, true, { name: key, ...options })
+    })
+    return this.createPermissions(Object.assign({}, ...permissions))
   }
 
   async revokeSharingLink(document) {
@@ -156,6 +179,19 @@ class PermissionCollection extends DocumentCollection {
 }
 
 /**
+ * Should we also give access to referenced_by files ?
+ *
+ * @param {{_type}} document - document to share
+ * @returns {boolean}
+ */
+export const shouldReferencedFiledBeIncluded = document => {
+  if (isFile(document)) return false
+  if (document._type == 'io.cozy.notes') return false
+  if (document._type == 'io.cozy.notes.events') return false
+  return true
+}
+
+/**
  * Build a permission set
  *
  * @param {{_id, _type}} document - cozy document
@@ -171,27 +207,29 @@ export const getPermissionsFor = (
 ) => {
   const { _id, _type } = document
   const verbs = options.verbs ? options.verbs : publicLink ? ['GET'] : ['ALL']
+  const name = options.name || 'files'
+  const collectionName = (options.name || '') + 'collection'
   // TODO: this works for albums, but it needs to be generalized and integrated
   // with cozy-client ; some sort of doctype "schema" will be needed here
-  return isFile(document)
+  return shouldReferencedFiledBeIncluded(document)
     ? {
-        files: {
-          type: 'io.cozy.files',
-          verbs,
-          values: [_id]
-        }
-      }
-    : {
-        collection: {
+        [collectionName]: {
           type: _type,
           verbs,
           values: [_id]
         },
-        files: {
+        [name]: {
           type: 'io.cozy.files',
           verbs,
           values: [`${_type}/${_id}`],
           selector: 'referenced_by'
+        }
+      }
+    : {
+        [name]: {
+          type: _type,
+          verbs,
+          values: [_id]
         }
       }
 }

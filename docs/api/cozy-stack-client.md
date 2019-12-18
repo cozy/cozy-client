@@ -46,6 +46,9 @@ through OAuth.</p>
 <dt><a href="#dontThrowNotFoundError">dontThrowNotFoundError</a> ⇒ <code>object</code></dt>
 <dd><p>Handler for error response which return a empty value for &quot;not found&quot; error</p>
 </dd>
+<dt><a href="#shouldReferencedFiledBeIncluded">shouldReferencedFiledBeIncluded</a> ⇒ <code>boolean</code></dt>
+<dd><p>Should we also give access to referenced_by files ?</p>
+</dd>
 <dt><a href="#getPermissionsFor">getPermissionsFor</a> ⇒ <code>object</code></dt>
 <dd><p>Build a permission set</p>
 </dd>
@@ -853,6 +856,7 @@ Implements `DocumentCollection` API along with specific methods for `io.cozy.per
 * [PermissionCollection](#PermissionCollection)
     * [.add(document, permission)](#PermissionCollection+add) ⇒ <code>Promise</code>
     * [.createSharingLink(document, options)](#PermissionCollection+createSharingLink)
+    * [.createCompositeSharingLink(documents)](#PermissionCollection+createCompositeSharingLink)
     * [.getOwnPermissions()](#PermissionCollection+getOwnPermissions) ⇒ <code>object</code>
 
 <a name="PermissionCollection+add"></a>
@@ -892,6 +896,17 @@ Create a share link
 | document | <code>Object</code> | cozy document |
 | options | <code>object</code> | options |
 | options.verbs | <code>Array.&lt;string&gt;</code> | explicit permissions to use |
+
+<a name="PermissionCollection+createCompositeSharingLink"></a>
+
+### permissionCollection.createCompositeSharingLink(documents)
+Create a share link from multiple documents
+
+**Kind**: instance method of [<code>PermissionCollection</code>](#PermissionCollection)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| documents | <code>object</code> | key/value where each value is either a document {_id, _type} or an array with a document and an option object |
 
 <a name="PermissionCollection+getOwnPermissions"></a>
 
@@ -1059,6 +1074,17 @@ found" error.
 | --- | --- | --- |
 | error | <code>Error</code> |  |
 | data | <code>Array</code> \| <code>object</code> | Data to return in case of "not found" error |
+
+<a name="shouldReferencedFiledBeIncluded"></a>
+
+## shouldReferencedFiledBeIncluded ⇒ <code>boolean</code>
+Should we also give access to referenced_by files ?
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | <code>Object</code> | document to share |
 
 <a name="getPermissionsFor"></a>
 
