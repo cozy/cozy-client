@@ -46,6 +46,9 @@ through OAuth.</p>
 <dt><a href="#dontThrowNotFoundError">dontThrowNotFoundError</a> ⇒ <code>object</code></dt>
 <dd><p>Handler for error response which return a empty value for &quot;not found&quot; error</p>
 </dd>
+<dt><a href="#getPermissionsFor">getPermissionsFor</a> ⇒ <code>object</code></dt>
+<dd><p>Build a permission set</p>
+</dd>
 </dl>
 
 ## Functions
@@ -62,9 +65,6 @@ through OAuth.</p>
 </dd>
 <dt><a href="#memoize">memoize()</a></dt>
 <dd><p>Memoize with maxDuration and custom key</p>
-</dd>
-<dt><a href="#getPermissionsFor">getPermissionsFor(document, publicLink, options)</a> ⇒ <code>object</code></dt>
-<dd><p>Build a permission set</p>
 </dd>
 <dt><a href="#getCozyURL">getCozyURL()</a></dt>
 <dd><p>Get a uniform formatted URL and SSL information according to a provided URL</p>
@@ -1060,6 +1060,21 @@ found" error.
 | error | <code>Error</code> |  |
 | data | <code>Array</code> \| <code>object</code> | Data to return in case of "not found" error |
 
+<a name="getPermissionsFor"></a>
+
+## getPermissionsFor ⇒ <code>object</code>
+Build a permission set
+
+**Kind**: global constant  
+**Returns**: <code>object</code> - permissions object that can be sent through /permissions/*  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | <code>Object</code> | cozy document |
+| publicLink | <code>boolean</code> | are the permissions for a public link ? |
+| options | <code>object</code> | options |
+| options.verbs | <code>Array.&lt;string&gt;</code> | explicit permissions to use |
+
 <a name="getAccessToken"></a>
 
 ## getAccessToken() ⇒ <code>string</code>
@@ -1088,21 +1103,6 @@ Delete outdated results from cache
 Memoize with maxDuration and custom key
 
 **Kind**: global function  
-<a name="getPermissionsFor"></a>
-
-## getPermissionsFor(document, publicLink, options) ⇒ <code>object</code>
-Build a permission set
-
-**Kind**: global function  
-**Returns**: <code>object</code> - permissions object that can be sent through /permissions/*  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| document | <code>Object</code> |  | cozy document |
-| publicLink | <code>boolean</code> | <code>false</code> | are the permissions for a public link ? |
-| options | <code>object</code> |  | options |
-| options.verbs | <code>Array.&lt;string&gt;</code> |  | explicit permissions to use |
-
 <a name="getCozyURL"></a>
 
 ## getCozyURL()
