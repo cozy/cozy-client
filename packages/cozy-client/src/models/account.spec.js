@@ -1,8 +1,8 @@
 import MockDate from 'mockdate'
-import { accounts } from './'
-const { getMutedErrors, muteError } = accounts
+import { account } from './'
+const { getMutedErrors, muteError } = account
 
-describe('accounts model', () => {
+describe('account model', () => {
   const MOCKED_DATE = '2018-05-05T09:09:00.115Z'
 
   beforeAll(() => {

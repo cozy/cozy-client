@@ -1,5 +1,5 @@
 import get from 'lodash/get'
-import { getMutedErrors } from './accounts'
+import { getMutedErrors } from './account'
 
 /** Trigger states come from /jobs/triggers */
 const triggerStates = {
