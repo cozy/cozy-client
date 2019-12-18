@@ -24,7 +24,8 @@ export function normalizeDoc(doc = {}, doctype) {
   return { id, _id: id, _type: doctype, ...doc }
 }
 
-const flagForDeletion = x => Object.assign({}, x, { _deleted: true })
+const prepareForDeletion = x =>
+  Object.assign({}, omit(x, '_type'), { _deleted: true })
 
 /**
  * Abstracts a collection of documents of the same doctype, providing CRUD methods and other helpers.
@@ -294,7 +295,7 @@ class DocumentCollection {
    * @param  {Document[]} docs - Documents to delete
    */
   destroyAll(docs) {
-    return this.updateAll(docs.map(flagForDeletion))
+    return this.updateAll(docs.map(prepareForDeletion))
   }
 
   async toMangoOptions(selector, options = {}) {

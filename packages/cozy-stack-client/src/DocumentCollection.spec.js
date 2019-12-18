@@ -564,7 +564,7 @@ describe('DocumentCollection', () => {
     it('should do bulk delete', async () => {
       const { collection, client } = setup()
       await collection.destroyAll([
-        { _id: 1, name: 'Marge' },
+        { _id: 1, name: 'Marge', _type: 'io.cozy.simpsons' },
         { _id: 2, name: 'Homer' }
       ])
       expect(client.fetchJSON).toHaveBeenCalledWith(
