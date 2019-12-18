@@ -120,7 +120,11 @@ class PermissionCollection extends DocumentCollection {
         data: {
           type: 'io.cozy.permissions',
           attributes: {
-            permissions: getPermissionsFor(document, verbs ? { verbs } : true)
+            permissions: getPermissionsFor(
+              document,
+              true,
+              verbs ? { verbs } : {}
+            )
           }
         }
       }
@@ -160,9 +164,13 @@ class PermissionCollection extends DocumentCollection {
  * @param {string[]} options.verbs - explicit permissions to use
  * @returns {object} permissions object that can be sent through /permissions/*
  */
-const getPermissionsFor = (document, publicLink = false, options = {}) => {
+export const getPermissionsFor = (
+  document,
+  publicLink = false,
+  options = {}
+) => {
   const { _id, _type } = document
-  const verbs = options.verbs ? verbs : publicLink ? ['GET'] : ['ALL']
+  const verbs = options.verbs ? options.verbs : publicLink ? ['GET'] : ['ALL']
   // TODO: this works for albums, but it needs to be generalized and integrated
   // with cozy-client ; some sort of doctype "schema" will be needed here
   return isFile(document)
