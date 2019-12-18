@@ -46,6 +46,9 @@ through OAuth.</p>
 <dt><a href="#dontThrowNotFoundError">dontThrowNotFoundError</a> ⇒ <code>object</code></dt>
 <dd><p>Handler for error response which return a empty value for &quot;not found&quot; error</p>
 </dd>
+<dt><a href="#getPermissionsFor">getPermissionsFor</a> ⇒ <code>object</code></dt>
+<dd><p>Build a permission set</p>
+</dd>
 </dl>
 
 ## Functions
@@ -849,6 +852,7 @@ Implements `DocumentCollection` API along with specific methods for `io.cozy.per
 
 * [PermissionCollection](#PermissionCollection)
     * [.add(document, permission)](#PermissionCollection+add) ⇒ <code>Promise</code>
+    * [.createSharingLink(document, options)](#PermissionCollection+createSharingLink)
     * [.getOwnPermissions()](#PermissionCollection+getOwnPermissions) ⇒ <code>object</code>
 
 <a name="PermissionCollection+add"></a>
@@ -876,6 +880,19 @@ const permissions = await client
     }
  })
 ```
+<a name="PermissionCollection+createSharingLink"></a>
+
+### permissionCollection.createSharingLink(document, options)
+Create a share link
+
+**Kind**: instance method of [<code>PermissionCollection</code>](#PermissionCollection)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | <code>Object</code> | cozy document |
+| options | <code>object</code> | options |
+| options.verbs | <code>Array.&lt;string&gt;</code> | explicit permissions to use |
+
 <a name="PermissionCollection+getOwnPermissions"></a>
 
 ### permissionCollection.getOwnPermissions() ⇒ <code>object</code>
@@ -1042,6 +1059,21 @@ found" error.
 | --- | --- | --- |
 | error | <code>Error</code> |  |
 | data | <code>Array</code> \| <code>object</code> | Data to return in case of "not found" error |
+
+<a name="getPermissionsFor"></a>
+
+## getPermissionsFor ⇒ <code>object</code>
+Build a permission set
+
+**Kind**: global constant  
+**Returns**: <code>object</code> - permissions object that can be sent through /permissions/*  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | <code>Object</code> | cozy document |
+| publicLink | <code>boolean</code> | are the permissions for a public link ? |
+| options | <code>object</code> | options |
+| options.verbs | <code>Array.&lt;string&gt;</code> | explicit permissions to use |
 
 <a name="getAccessToken"></a>
 

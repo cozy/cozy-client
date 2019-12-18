@@ -104,7 +104,15 @@ class PermissionCollection extends DocumentCollection {
     return { ...resp, data: resp.data.map(a => ({ _id: a.id, ...a })) }
   }
 
-  async createSharingLink(document) {
+  /**
+   * Create a share link
+   *
+   * @param {{_id, _type}} document - cozy document
+   * @param {object} options - options
+   * @param {string[]} options.verbs - explicit permissions to use
+   */
+  async createSharingLink(document, options = {}) {
+    const { verbs } = options
     const resp = await this.stackClient.fetchJSON(
       'POST',
       `/permissions?codes=email`,
@@ -112,7 +120,11 @@ class PermissionCollection extends DocumentCollection {
         data: {
           type: 'io.cozy.permissions',
           attributes: {
-            permissions: getPermissionsFor(document, true)
+            permissions: getPermissionsFor(
+              document,
+              true,
+              verbs ? { verbs } : {}
+            )
           }
         }
       }
@@ -143,9 +155,22 @@ class PermissionCollection extends DocumentCollection {
   }
 }
 
-const getPermissionsFor = (document, publicLink = false) => {
+/**
+ * Build a permission set
+ *
+ * @param {{_id, _type}} document - cozy document
+ * @param {boolean} publicLink - are the permissions for a public link ?
+ * @param {object} options - options
+ * @param {string[]} options.verbs - explicit permissions to use
+ * @returns {object} permissions object that can be sent through /permissions/*
+ */
+export const getPermissionsFor = (
+  document,
+  publicLink = false,
+  options = {}
+) => {
   const { _id, _type } = document
-  const verbs = publicLink ? ['GET'] : ['ALL']
+  const verbs = options.verbs ? options.verbs : publicLink ? ['GET'] : ['ALL']
   // TODO: this works for albums, but it needs to be generalized and integrated
   // with cozy-client ; some sort of doctype "schema" will be needed here
   return isFile(document)
