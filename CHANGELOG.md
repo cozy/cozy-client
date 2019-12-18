@@ -3,6 +3,39 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.0.0](https://github.com/cozy/cozy-client/compare/v8.10.1...v9.0.0) (2019-12-18)
+
+
+### Bug Fixes
+
+* Export triggers model ([6553bd9](https://github.com/cozy/cozy-client/commit/6553bd9))
+* Fail safe trigger state checks ([e313b08](https://github.com/cozy/cozy-client/commit/e313b08))
+
+
+### Code Refactoring
+
+* Singularize method names ([6ecfede](https://github.com/cozy/cozy-client/commit/6ecfede))
+
+
+### Features
+
+* Check if trigger errors are muted ([3d33ef6](https://github.com/cozy/cozy-client/commit/3d33ef6))
+* Get accounts last error ([bed0445](https://github.com/cozy/cozy-client/commit/bed0445))
+* Get last trigger error ([4583e24](https://github.com/cozy/cozy-client/commit/4583e24))
+* Get last trigger exec date ([d208d88](https://github.com/cozy/cozy-client/commit/d208d88))
+* Get triggers account ([50b5f0d](https://github.com/cozy/cozy-client/commit/50b5f0d))
+* Mute account errors ([c2be0f9](https://github.com/cozy/cozy-client/commit/c2be0f9))
+
+
+### BREAKING CHANGES
+
+* The trigger model is now singular, update your import 
+statements
+
+
+
+
+
 ## [8.10.1](https://github.com/cozy/cozy-client/compare/v8.10.0...v8.10.1) (2019-12-17)
 
 
