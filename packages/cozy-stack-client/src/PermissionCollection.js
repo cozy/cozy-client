@@ -105,7 +105,7 @@ class PermissionCollection extends DocumentCollection {
   }
 
   /**
-   * Create a new set of permission on the stack
+   * Create a new set of permissions on the stack
    * @param {object} permissions - list of permissions
    * @see https://docs.cozy.io/en/cozy-stack/permissions/#post-permissions
    * @private
