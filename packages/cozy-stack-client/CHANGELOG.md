@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.2.0](https://github.com/cozy/cozy-client/compare/v9.1.1...v9.2.0) (2019-12-19)
+
+
+### Features
+
+* Destroy all removes the _type from the document ([1ca7ac7](https://github.com/cozy/cozy-client/commit/1ca7ac7))
+* Destroy all removes the _type from the document ([#597](https://github.com/cozy/cozy-client/issues/597)) ([cb5e61d](https://github.com/cozy/cozy-client/commit/cb5e61d))
+
+
+
+
+
 # [9.1.0](https://github.com/cozy/cozy-client/compare/v9.0.0...v9.1.0) (2019-12-18)
 
 
