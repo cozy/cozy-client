@@ -143,6 +143,11 @@ is loading.</p>
 <li>client.stackClient.fetchJSON is mocked</li>
 </ul>
 </dd>
+<dt><a href="#normalize">normalize(file, parent)</a> ⇒ <code>object</code></dt>
+<dd><p>Normalize an object representing a io.cozy.file object</p>
+<p>Ensure existence of <code>_id</code> and <code>_type</code> and define a <code>path</code>
+on files if provided the parent directory.</p>
+</dd>
 <dt><a href="#currentResult">currentResult()</a> ⇒ <code>HydratedQueryState</code></dt>
 <dd><p>Returns the query from the store with hydrated documents.</p>
 </dd>
@@ -1572,6 +1577,22 @@ Creates a client suitable for use in tests
 | options.queries | <code>object</code> | Prefill queries inside the store |
 | options.remote | <code>object</code> | Mock data from the server |
 | options.clientOptions | <code>object</code> | Options passed to the client |
+
+<a name="normalize"></a>
+
+## normalize(file, parent) ⇒ <code>object</code>
+Normalize an object representing a io.cozy.file object
+
+Ensure existence of `_id` and `_type` and define a `path`
+on files if provided the parent directory.
+
+**Kind**: global function  
+**Returns**: <code>object</code> - full normalized object  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | <code>object</code> | object representing the file |
+| parent | <code>object</code> | object representing the parent directory |
 
 <a name="currentResult"></a>
 
