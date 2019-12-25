@@ -32,7 +32,7 @@ export const isNote = file => {
 }
 
 /**
- * Normalize an object representing a io.cozy.file object
+ * Normalizes an object representing a io.cozy.files object
  *
  * Ensure existence of `_id` and `_type` and define a `path`
  * on files if provided the parent directory.
