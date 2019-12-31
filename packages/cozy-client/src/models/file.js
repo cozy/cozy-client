@@ -34,23 +34,30 @@ export const isNote = file => {
 /**
  * Normalizes an object representing a io.cozy.files object
  *
- * Ensures existence of `_id` and `_type` and defines a `path`
- * on file if the parent directory is provided.
+ * Ensures existence of `_id` and `_type`
  *
+ * @public
  * @param {object} file - object representing the file
- * @param {object} parent - object representing the parent directory
  * @returns {object} full normalized object
  */
-export function normalize(file, parent) {
+export function normalize(file) {
   const id = file._id || file.id
   const type = file.type || file._type || 'io.cozy.files'
-  const path = parent && parent.path ? parent.path + '/' + file.name : undefined
-  return {
-    _id: id,
-    id: id,
-    _type: type,
-    type: type,
-    path: path,
-    ...file
-  }
+  return { _id: id, id, _type: type, type, ...file }
+}
+
+/**
+ * Ensure the file has a `path` attribute, or build it
+ *
+ * @public
+ * @param {object} file - object representing the file
+ * @param {object} parent - parent directory for the file
+ * @returns {object} file object with path attribute
+ */
+export function ensureFilePath(file, parent) {
+  if (file.path) return file
+  if (!parent || !parent.path)
+    throw new Error(`Could not define a file path for ${file._id || file.id}`)
+  const path = parent.path + '/' + file.name
+  return { path: path, ...file }
 }
