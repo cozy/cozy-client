@@ -29,4 +29,58 @@ describe('File Model', () => {
     }
     expect(file.isNote(note2)).toBe(true)
   })
+
+  describe('normalizeFile', () => {
+    const id = 'uuid123'
+    const type = 'io.cozy.files'
+
+    it('should allow both `id` and `_id`', () => {
+      const doc = { id, type }
+      expect(file.normalize(doc)).toHaveProperty('_id', id)
+
+      const _doc = { _id: id, type }
+      expect(file.normalize(_doc)).toHaveProperty('_id', id)
+    })
+
+    it('should allow both `type` and `_type`', () => {
+      const doc = { id, type }
+      expect(file.normalize(doc)).toHaveProperty('_type', type)
+
+      const _doc = { id, _type: type }
+      expect(file.normalize(_doc)).toHaveProperty('_type', type)
+    })
+
+    it('should default to "io.cozy.files"', () => {
+      const doc = { id }
+      expect(file.normalize(doc)).toHaveProperty('_type', 'io.cozy.files')
+    })
+  })
+
+  describe('ensureFilePath', () => {
+    const id = 'uuid123'
+    const type = 'io.cozy.files'
+
+    it('should define the path if parent is provided', () => {
+      const doc = { id, name: 'myfile.ext' }
+      const parent = { path: '/my/path' }
+      expect(file.ensureFilePath(doc, parent)).toHaveProperty(
+        'path',
+        '/my/path/myfile.ext'
+      )
+    })
+
+    it('should not require a `parent` parameter if one is present', () => {
+      const doc = { id, type, path: '/test/file' }
+      expect(file.ensureFilePath(doc)).toHaveProperty('path', '/test/file')
+    })
+
+    it('should not buid a `path` if the one is already present', () => {
+      const doc = { id, type, path: '/test/file' }
+      const parent = { id, type, path: '/test/parent' }
+      expect(file.ensureFilePath(doc, parent)).toHaveProperty(
+        'path',
+        '/test/file'
+      )
+    })
+  })
 })
