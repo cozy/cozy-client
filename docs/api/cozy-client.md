@@ -143,10 +143,12 @@ is loading.</p>
 <li>client.stackClient.fetchJSON is mocked</li>
 </ul>
 </dd>
-<dt><a href="#normalize">normalize(file, parent)</a> ⇒ <code>object</code></dt>
-<dd><p>Normalize an object representing a io.cozy.file object</p>
-<p>Ensure existence of <code>_id</code> and <code>_type</code> and define a <code>path</code>
-on files if provided the parent directory.</p>
+<dt><a href="#normalize">normalize(file)</a> ⇒ <code>object</code></dt>
+<dd><p>Normalizes an object representing a io.cozy.files object</p>
+<p>Ensures existence of <code>_id</code> and <code>_type</code></p>
+</dd>
+<dt><a href="#ensureFilePath">ensureFilePath(file, parent)</a> ⇒ <code>object</code></dt>
+<dd><p>Ensure the file has a <code>path</code> attribute, or build it</p>
 </dd>
 <dt><a href="#currentResult">currentResult()</a> ⇒ <code>HydratedQueryState</code></dt>
 <dd><p>Returns the query from the store with hydrated documents.</p>
@@ -1580,19 +1582,32 @@ Creates a client suitable for use in tests
 
 <a name="normalize"></a>
 
-## normalize(file, parent) ⇒ <code>object</code>
-Normalize an object representing a io.cozy.file object
+## normalize(file) ⇒ <code>object</code>
+Normalizes an object representing a io.cozy.files object
 
-Ensure existence of `_id` and `_type` and define a `path`
-on files if provided the parent directory.
+Ensures existence of `_id` and `_type`
 
 **Kind**: global function  
 **Returns**: <code>object</code> - full normalized object  
+**Access**: public  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | file | <code>object</code> | object representing the file |
-| parent | <code>object</code> | object representing the parent directory |
+
+<a name="ensureFilePath"></a>
+
+## ensureFilePath(file, parent) ⇒ <code>object</code>
+Ensure the file has a `path` attribute, or build it
+
+**Kind**: global function  
+**Returns**: <code>object</code> - file object with path attribute  
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | <code>object</code> | object representing the file |
+| parent | <code>object</code> | parent directory for the file |
 
 <a name="currentResult"></a>
 
