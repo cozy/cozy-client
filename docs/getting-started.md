@@ -63,7 +63,7 @@ const client = new CozyClient({
 
 If you need guidance to get the URI of your instance and/or the token, see [the app tutorial](https://docs.cozy.io/en/tutorials/app/#behind-the-magic).
 
-Every doctype accessed in `cozy-client` needs to be declared in the schema section of the options. See the specific [how-to](./how-tos.md#how-to-specify-a-schema-) on how to use the schema features.
+Every doctype accessed in `cozy-client` needs to be declared in the schema section of the options. See the specific [documentation](https://docs.cozy.io/en/cozy-client/schema) on how to use the schema features.
 
 
 ## How to query with Cozy Client
