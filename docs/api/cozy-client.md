@@ -67,6 +67,9 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 <dt><a href="#muteError">muteError</a> ⇒ <code>object</code></dt>
 <dd><p>muteError - Adds an error to the list of muted errors for the given account</p>
 </dd>
+<dt><a href="#getStoreURL">getStoreURL</a> ⇒ <code>string</code></dt>
+<dd><p>Returns the store URL of an app/konnector</p>
+</dd>
 <dt><a href="#getStoreInstallationURL">getStoreInstallationURL</a> ⇒ <code>string</code></dt>
 <dd><p>Returns the store URL to install/update an app/konnector</p>
 </dd>
@@ -1278,6 +1281,19 @@ muteError - Adds an error to the list of muted errors for the given account
 | --- | --- | --- |
 | account | <code>object</code> | io.cozy.accounts |
 | errorType | <code>string</code> | The type of the error to mute |
+
+<a name="getStoreURL"></a>
+
+## getStoreURL ⇒ <code>string</code>
+Returns the store URL of an app/konnector
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - URL as string  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [appData] | <code>Array</code> | <code>[]</code> | Apps data, as returned by endpoint /apps/ or /konnectors |
+| [app] | <code>object</code> | <code>{}</code> | AppObject |
 
 <a name="getStoreInstallationURL"></a>
 
