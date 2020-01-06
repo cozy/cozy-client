@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.4.0](https://github.com/cozy/cozy-client/compare/v9.3.0...v9.4.0) (2020-01-06)
+
+
+### Features
+
+* **cozy-client:** Add getStoreURL method to applications model ([a6f5de0](https://github.com/cozy/cozy-client/commit/a6f5de0))
+
+
+
+
+
 # [9.3.0](https://github.com/cozy/cozy-client/compare/v9.2.0...v9.3.0) (2020-01-02)
 
 
