@@ -18,7 +18,12 @@ export {
   HasManyTriggers
 } from './associations'
 export { dehydrate } from './helpers'
-export { cancelable, isQueryLoading, hasQueryBeenLoaded } from './utils'
+export {
+  cancelable,
+  isQueryLoading,
+  hasQueryBeenLoaded,
+  ResolvablePromise
+} from './utils'
 export { getQueryFromState } from './store'
 export { default as Registry } from './registry'
 

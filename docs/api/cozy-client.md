@@ -56,6 +56,12 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 }, cozyStackClient)
 </code></pre>
 </dd>
+<dt><a href="#ResolvablePromise">ResolvablePromise</a></dt>
+<dd><p>Create a promise which can be canceled or resolved
+from outside</p>
+<p>It&#39;s a standard promise but with additionnal methods
+attached.</p>
+</dd>
 </dl>
 
 ## Constants
@@ -1257,6 +1263,49 @@ Returns the relationship for a given doctype/name
 Validates a document considering the descriptions in schema.attributes.
 
 **Kind**: instance method of [<code>Schema</code>](#Schema)  
+<a name="ResolvablePromise"></a>
+
+## ResolvablePromise
+Create a promise which can be canceled or resolved
+from outside
+
+It's a standard promise but with additionnal methods
+attached.
+
+**Kind**: global class  
+
+* [ResolvablePromise](#ResolvablePromise)
+    * [new exports.ResolvablePromise(callback)](#new_ResolvablePromise_new)
+    * [.hasResolved()](#ResolvablePromise+hasResolved) ⇒ <code>bool</code>
+    * [.hasRejected()](#ResolvablePromise+hasRejected) ⇒ <code>bool</code>
+    * [.isStillWaiting()](#ResolvablePromise+isStillWaiting) ⇒ <code>bool</code>
+
+<a name="new_ResolvablePromise_new"></a>
+
+### new exports.ResolvablePromise(callback)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callback | <code>function</code> | (resolve, reject) => void |
+
+<a name="ResolvablePromise+hasResolved"></a>
+
+### resolvablePromise.hasResolved() ⇒ <code>bool</code>
+Check if the promise has already resolved
+
+**Kind**: instance method of [<code>ResolvablePromise</code>](#ResolvablePromise)  
+<a name="ResolvablePromise+hasRejected"></a>
+
+### resolvablePromise.hasRejected() ⇒ <code>bool</code>
+Check if the promise has rejected
+
+**Kind**: instance method of [<code>ResolvablePromise</code>](#ResolvablePromise)  
+<a name="ResolvablePromise+isStillWaiting"></a>
+
+### resolvablePromise.isStillWaiting() ⇒ <code>bool</code>
+Check if the promise is still waiting a result
+
+**Kind**: instance method of [<code>ResolvablePromise</code>](#ResolvablePromise)  
 <a name="getMutedErrors"></a>
 
 ## getMutedErrors ⇒ <code>Array</code>
