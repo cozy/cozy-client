@@ -1,5 +1,5 @@
 import { applications } from './'
-const { getAppDisplayName } = applications
+const { getAppDisplayName, getStoreURL, getStoreInstallationURL } = applications
 
 describe('applications model', () => {
   describe('application name', () => {
@@ -79,6 +79,58 @@ describe('applications model', () => {
           lang
         )
       ).toBe('Test One')
+    })
+  })
+
+  describe('get store url', () => {
+    const contactsApp = { slug: 'contacts' }
+
+    describe('when the store app is not installed', () => {
+      it('should return null', () => {
+        expect(getStoreURL([], contactsApp)).toBe(null)
+      })
+    })
+
+    describe('when the store app is installed', () => {
+      it('should return the store url for the given app', () => {
+        const storeApp = {
+          attributes: {
+            slug: 'store'
+          },
+          links: {
+            related: 'http://store.cozy.tools:8080/'
+          }
+        }
+        expect(getStoreURL([storeApp], contactsApp)).toBe(
+          'http://store.cozy.tools:8080/#/discover/contacts'
+        )
+      })
+    })
+  })
+
+  describe('get store installation url', () => {
+    const contactsApp = { slug: 'contacts' }
+
+    describe('when the store app is not installed', () => {
+      it('should return null', () => {
+        expect(getStoreInstallationURL([], contactsApp)).toBe(null)
+      })
+    })
+
+    describe('when the store app is installed', () => {
+      it('should return the store installation url for the given app', () => {
+        const storeApp = {
+          attributes: {
+            slug: 'store'
+          },
+          links: {
+            related: 'http://store.cozy.tools:8080/'
+          }
+        }
+        expect(getStoreInstallationURL([storeApp], contactsApp)).toBe(
+          'http://store.cozy.tools:8080/#/discover/contacts/install'
+        )
+      })
     })
   })
 })

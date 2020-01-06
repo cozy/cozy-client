@@ -2,14 +2,13 @@ import get from 'lodash/get'
 const STORE_SLUG = 'store'
 
 /**
- * Returns the store URL to install/update an app/konnector
+ * Returns the store URL of an app/konnector
  *
- * @param  {Array}  [appData=[]]   Apps data, as returned by endpoint /apps/ or
- * /konnectors/
- * @param  {object} [app={}] AppObject
- * @returns {string}                URL as string
+ * @param {Array} [appData=[]] Apps data, as returned by endpoint /apps/ or /konnectors
+ * @param {object} [app={}] AppObject
+ * @returns {string} URL as string
  */
-export const getStoreInstallationURL = (appData = [], app = {}) => {
+export const getStoreURL = (appData = [], app = {}) => {
   if (!app.slug) {
     throw new Error('Expected app / konnector with the defined slug')
   }
@@ -21,7 +20,25 @@ export const getStoreInstallationURL = (appData = [], app = {}) => {
 
   if (!storeUrl) return null
 
-  return `${storeUrl}#/discover/${app.slug}/install`
+  return `${storeUrl}#/discover/${app.slug}`
+}
+
+/**
+ * Returns the store URL to install/update an app/konnector
+ *
+ * @param  {Array}  [appData=[]]   Apps data, as returned by endpoint /apps/ or
+ * /konnectors/
+ * @param  {object} [app={}] AppObject
+ * @returns {string}                URL as string
+ */
+export const getStoreInstallationURL = (appData = [], app = {}) => {
+  const storeUrl = getStoreURL(appData, app)
+
+  if (!storeUrl) {
+    return null
+  }
+
+  return `${storeUrl}/install`
 }
 
 /**
