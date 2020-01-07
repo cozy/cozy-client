@@ -73,6 +73,19 @@ const mkServerFlowCallback = serverOptions => authenticationURL =>
     }, 30 * 1000)
   })
 
+const hashCode = function(str) {
+  var hash = 0,
+    i,
+    chr
+  if (str.length === 0) return hash
+  for (i = 0; i < str.length; i++) {
+    chr = str.charCodeAt(i)
+    hash = (hash << 5) - hash + chr
+    hash |= 0 // Convert to 32bit integer
+  }
+  return hash
+}
+
 const DEFAULT_SERVER_OPTIONS = {
   port: 3333,
   route: '/do_access',
@@ -80,10 +93,11 @@ const DEFAULT_SERVER_OPTIONS = {
     if (!clientOptions.oauth.softwareID) {
       throw new Error('Please provide oauth.softwareID in your clientOptions.')
     }
+    const doctypeHash = Math.abs(hashCode(JSON.stringify(clientOptions.scope)))
     const sluggedURI = clientOptions.uri
       .replace(/https?:\/\//, '')
       .replace(/\./g, '-')
-    return `/tmp/cozy-client-oauth-${sluggedURI}-${clientOptions.oauth.softwareID}.json`
+    return `/tmp/cozy-client-oauth-${sluggedURI}-${clientOptions.oauth.softwareID}-${doctypeHash}.json`
   }
 }
 
