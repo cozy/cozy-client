@@ -165,7 +165,8 @@ const createClientInteractive = (clientOptions, serverOpts) => {
 
   if (savedCredentials) {
     log('debug', `Using saved credentials in ${savedCredentialsFilename}`)
-    client.stackClient.setToken(savedCredentials)
+    client.stackClient.setToken(savedCredentials.token)
+    client.stackClient.setOAuthOptions(savedCredentials.oauthOptions)
     return client
   }
 
@@ -174,11 +175,11 @@ const createClientInteractive = (clientOptions, serverOpts) => {
     const resolveWithClient = () => {
       resolve(client)
       log('debug', `Saving credentials to ${savedCredentialsFilename}`)
-      writeJSON(
-        createClientFS,
-        savedCredentialsFilename,
-        JSON.stringify(client.stackClient.token)
-      )
+
+      writeJSON(createClientFS, savedCredentialsFilename, {
+        oauthOptions: client.stackClient.oauthOptions,
+        token: client.stackClient.token
+      })
     }
     await client.startOAuthFlow(mkServerFlowCallback(serverOptions))
     resolveWithClient()
