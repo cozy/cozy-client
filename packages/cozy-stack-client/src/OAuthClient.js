@@ -111,8 +111,29 @@ class OAuthClient extends CozyStackClient {
     return result
   }
 
+  /** Performs the HTTP call to register the client to the server */
+  doRegistration() {
+    return this.fetchJSON(
+      'POST',
+      '/auth/register',
+      this.snakeCaseOAuthData({
+        redirectURI: this.oauthOptions.redirectURI,
+        clientName: this.oauthOptions.clientName,
+        softwareID: this.oauthOptions.softwareID,
+        clientKind: this.oauthOptions.clientKind,
+        clientURI: this.oauthOptions.clientURI,
+        logoURI: this.oauthOptions.logoURI,
+        policyURI: this.oauthOptions.policyURI,
+        softwareVersion: this.oauthOptions.softwareVersion,
+        notificationPlatform: this.oauthOptions.notificationPlatform,
+        notificationDeviceToken: this.oauthOptions.notificationDeviceToken
+      })
+    )
+  }
+
   /**
-   * Registers the currenly configured client with the OAuth server.
+   * Registers the currenly configured client with the OAuth server and
+   * sets internal information from the server response
    *
    * @throws {Error} When the client is already registered
    * @returns {promise} A promise that resolves with a complete list of client information, including client ID and client secret.
@@ -132,22 +153,7 @@ class OAuthClient extends CozyStackClient {
       )
     }
 
-    const data = await this.fetchJSON(
-      'POST',
-      '/auth/register',
-      this.snakeCaseOAuthData({
-        redirectURI: this.oauthOptions.redirectURI,
-        clientName: this.oauthOptions.clientName,
-        softwareID: this.oauthOptions.softwareID,
-        clientKind: this.oauthOptions.clientKind,
-        clientURI: this.oauthOptions.clientURI,
-        logoURI: this.oauthOptions.logoURI,
-        policyURI: this.oauthOptions.policyURI,
-        softwareVersion: this.oauthOptions.softwareVersion,
-        notificationPlatform: this.oauthOptions.notificationPlatform,
-        notificationDeviceToken: this.oauthOptions.notificationDeviceToken
-      })
-    )
+    const data = await this.doRegistration()
 
     this.setOAuthOptions({
       ...this.oauthOptions,
