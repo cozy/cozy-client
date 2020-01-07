@@ -7,14 +7,14 @@ Once connected, your components will receive the requesting data and a fetch sta
 <!-- MarkdownTOC autolink=true -->
 
 - [1. Setup](#1-setup)
-  - [1.a Initialize a CozyClient provider](#1a-initialize-a-cozyclient-provider)
+    - [1.a Initialize a CozyClient provider](#1a-initialize-a-cozyclient-provider)
     - [1.b Use your own Redux store](#1b-use-your-own-redux-store)
 - [2. Usage](#2-usage)
-  - [2.a Requesting data with ``](#2a-requesting-data-with-)
-  - [2.b Requesting data with the `queryConnect` HOC](#2b-requesting-data-with-the-queryconnect-hoc)
-  - [2.c Using a fetch policy to decrease network requests](#2c-using-a-fetch-policy-to-decrease-network-requests)
-  - [3. Mutating data](#3-mutating-data)
-  - [4. Testing](#4-testing)
+    - [2.a Requesting data with ``](#2a-requesting-data-with-)
+    - [2.b Requesting data with the `queryConnect` HOC](#2b-requesting-data-with-the-queryconnect-hoc)
+    - [2.c Using a fetch policy to decrease network requests](#2c-using-a-fetch-policy-to-decrease-network-requests)
+- [3. Mutating data](#3-mutating-data)
+- [4. Testing](#4-testing)
 
 <!-- /MarkdownTOC -->
 
