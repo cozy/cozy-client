@@ -191,13 +191,13 @@ describe('trigger model', () => {
         mutedErrors: [
           {
             type: 'LOGIN_FAILED',
-            mutedAt: '2010-09-01T00:00' // muted before the last_success in the trigger
+            mutedAt: '2010-09-01T00:00'
           }
         ]
       }
       expect(
         triggerModel.isLatestErrorMuted(triggerWithNoSuccess, account)
-      ).toBe(false)
+      ).toBe(true)
     })
   })
 })
