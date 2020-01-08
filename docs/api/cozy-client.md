@@ -1034,7 +1034,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
 **Kind**: global class  
 
 * [QueryDefinition](#QueryDefinition)
-    * [new QueryDefinition(doctype, id, ids, selector, fields, indexedFields, sort, includes, referenced, limit, skip)](#new_QueryDefinition_new)
+    * [new QueryDefinition(doctype, id, ids, selector, fields, indexedFields, sort, includes, referenced, limit, skip, cursor, bookmark)](#new_QueryDefinition_new)
     * [.getById(id)](#QueryDefinition+getById) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.getByIds(ids)](#QueryDefinition+getByIds) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.where(selector)](#QueryDefinition+where) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
@@ -1045,11 +1045,12 @@ from a Cozy. `QueryDefinition`s are sent to links.
     * [.limitBy(limit)](#QueryDefinition+limitBy) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.offset(skip)](#QueryDefinition+offset) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.offsetCursor(cursor)](#QueryDefinition+offsetCursor) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
+    * [.offsetBookmark()](#QueryDefinition+offsetBookmark)
     * [.referencedBy(document)](#QueryDefinition+referencedBy) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
 
 <a name="new_QueryDefinition_new"></a>
 
-### new QueryDefinition(doctype, id, ids, selector, fields, indexedFields, sort, includes, referenced, limit, skip)
+### new QueryDefinition(doctype, id, ids, selector, fields, indexedFields, sort, includes, referenced, limit, skip, cursor, bookmark)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1064,6 +1065,8 @@ from a Cozy. `QueryDefinition`s are sent to links.
 | referenced | <code>string</code> | The referenced document. |
 | limit | <code>number</code> | The document's limit to return. |
 | skip | <code>number</code> | The number of docs to skip. |
+| cursor | <code>number</code> | The cursor to paginate views. |
+| bookmark | <code>number</code> | The bookmark to paginate mango queries. |
 
 <a name="QueryDefinition+getById"></a>
 
@@ -1195,6 +1198,15 @@ Use the last docid of each query as startkey_docid to paginate or leave blank fo
 | --- | --- | --- |
 | cursor | <code>Array</code> | The cursor for pagination. |
 
+<a name="QueryDefinition+offsetBookmark"></a>
+
+### queryDefinition.offsetBookmark()
+Use [bookmark](https://docs.couchdb.org/en/2.2.0/api/database/find.html#pagination) pagination.
+Note this only applies for mango-queries (not views) and is way more efficient than skip pagination.
+The bookmark is a string returned by the _find response and can be seen as a pointer in
+the index for the next query.
+
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
 <a name="QueryDefinition+referencedBy"></a>
 
 ### queryDefinition.referencedBy(document) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)

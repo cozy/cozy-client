@@ -18,6 +18,8 @@ class QueryDefinition {
    * @param {string} referenced - The referenced document.
    * @param {number} limit - The document's limit to return.
    * @param {number} skip - The number of docs to skip.
+   * @param {number} cursor - The cursor to paginate views.
+   * @param {number} bookmark - The bookmark to paginate mango queries.
    */
   constructor({
     doctype,
@@ -31,7 +33,8 @@ class QueryDefinition {
     referenced,
     limit,
     skip,
-    cursor
+    cursor,
+    bookmark
   } = {}) {
     this.doctype = doctype
     this.id = id
@@ -45,6 +48,7 @@ class QueryDefinition {
     this.limit = limit
     this.skip = skip
     this.cursor = cursor
+    this.bookmark = bookmark
   }
 
   /**
@@ -170,6 +174,19 @@ class QueryDefinition {
   }
 
   /**
+   * Use [bookmark](https://docs.couchdb.org/en/2.2.0/api/database/find.html#pagination) pagination.
+   * Note this only applies for mango-queries (not views) and is way more efficient than skip pagination.
+   * The bookmark is a string returned by the _find response and can be seen as a pointer in
+   * the index for the next query.
+   *
+   * @param {string} bookmark The bookmark to continue a previous paginated query.
+   * @returns {QueryDefinition}  The QueryDefinition object.
+   */
+  offsetBookmark(bookmark) {
+    return new QueryDefinition({ ...this.toDefinition(), bookmark })
+  }
+
+  /**
    * Use the [file reference system](https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/)
    *
    * @param {object} document The reference document
@@ -192,7 +209,8 @@ class QueryDefinition {
       referenced: this.referenced,
       limit: this.limit,
       skip: this.skip,
-      cursor: this.cursor
+      cursor: this.cursor,
+      bookmark: this.bookmark
     }
   }
 }

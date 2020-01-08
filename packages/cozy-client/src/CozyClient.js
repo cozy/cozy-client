@@ -597,7 +597,10 @@ class CozyClient {
     let resp = { next: true }
 
     while (resp && resp.next) {
-      resp = await this.query(queryDefinition.offset(documents.length), options)
+      resp = await this.query(
+        queryDefinition.offsetBookmark(resp.bookmark),
+        options
+      )
       documents.push(...resp.data)
     }
 
