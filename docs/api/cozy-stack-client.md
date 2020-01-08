@@ -684,6 +684,7 @@ through OAuth.
 **Kind**: global class  
 
 * [OAuthClient](#OAuthClient)
+    * [.doRegistration()](#OAuthClient+doRegistration)
     * [.register()](#OAuthClient+register) ⇒ <code>promise</code>
     * [.unregister()](#OAuthClient+unregister) ⇒ <code>promise</code>
     * [.fetchInformation()](#OAuthClient+fetchInformation) ⇒ <code>promise</code>
@@ -697,10 +698,17 @@ through OAuth.
     * [.setOAuthOptions(options)](#OAuthClient+setOAuthOptions)
     * [.resetClient()](#OAuthClient+resetClient)
 
+<a name="OAuthClient+doRegistration"></a>
+
+### oAuthClient.doRegistration()
+Performs the HTTP call to register the client to the server
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
 <a name="OAuthClient+register"></a>
 
 ### oAuthClient.register() ⇒ <code>promise</code>
-Registers the currenly configured client with the OAuth server.
+Registers the currenly configured client with the OAuth server and
+sets internal information from the server response
 
 **Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
 **Returns**: <code>promise</code> - A promise that resolves with a complete list of client information, including client ID and client secret.  

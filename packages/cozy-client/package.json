@@ -31,8 +31,11 @@
   "devDependencies": {
     "@babel/cli": "7.6.2",
     "babel-plugin-search-and-replace": "1.0.1",
+    "btoa": "1.2.1",
+    "cozy-logger": "1.6.0",
     "mockdate": "^2.0.2",
-    "react": "16.10.1"
+    "react": "16.10.1",
+    "server-destroy": "^1.0.1"
   },
   "peerDependencies": {
     "react": "^16.7.0"

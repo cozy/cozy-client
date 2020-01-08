@@ -73,6 +73,19 @@ const mkServerFlowCallback = serverOptions => authenticationURL =>
     }, 30 * 1000)
   })
 
+const hashCode = function(str) {
+  var hash = 0,
+    i,
+    chr
+  if (str.length === 0) return hash
+  for (i = 0; i < str.length; i++) {
+    chr = str.charCodeAt(i)
+    hash = (hash << 5) - hash + chr
+    hash |= 0 // Convert to 32bit integer
+  }
+  return hash
+}
+
 const DEFAULT_SERVER_OPTIONS = {
   port: 3333,
   route: '/do_access',
@@ -80,11 +93,16 @@ const DEFAULT_SERVER_OPTIONS = {
     if (!clientOptions.oauth.softwareID) {
       throw new Error('Please provide oauth.softwareID in your clientOptions.')
     }
+    const doctypeHash = Math.abs(hashCode(JSON.stringify(clientOptions.scope)))
     const sluggedURI = clientOptions.uri
       .replace(/https?:\/\//, '')
       .replace(/\./g, '-')
-    return `/tmp/cozy-client-oauth-${sluggedURI}-${clientOptions.oauth.softwareID}.json`
+    return `/tmp/cozy-client-oauth-${sluggedURI}-${clientOptions.oauth.softwareID}-${doctypeHash}.json`
   }
+}
+
+const writeJSON = (fs, filename, data) => {
+  fs.writeFileSync(filename, JSON.stringify(data))
 }
 
 /**
@@ -93,7 +111,7 @@ const DEFAULT_SERVER_OPTIONS = {
  *
  * @private
  */
-const readJSON = filename => {
+const readJSON = (fs, filename) => {
   try {
     if (!fs.existsSync(filename)) {
       return null
@@ -129,6 +147,7 @@ const readJSON = filename => {
  */
 const createClientInteractive = (clientOptions, serverOpts) => {
   const serverOptions = merge(serverOpts, DEFAULT_SERVER_OPTIONS)
+  const createClientFS = serverOptions.fs || fs
 
   const mergedClientOptions = merge(
     {
@@ -141,13 +160,13 @@ const createClientInteractive = (clientOptions, serverOpts) => {
   )
   const getSavedCredentials = serverOptions.getSavedCredentials
   const savedCredentialsFilename = getSavedCredentials(mergedClientOptions)
-  const savedCredentials = readJSON(savedCredentialsFilename)
-
+  const savedCredentials = readJSON(createClientFS, savedCredentialsFilename)
   const client = new CozyClient(mergedClientOptions)
 
   if (savedCredentials) {
     log('debug', `Using saved credentials in ${savedCredentialsFilename}`)
-    client.stackClient.setToken(savedCredentials)
+    client.stackClient.setToken(savedCredentials.token)
+    client.stackClient.setOAuthOptions(savedCredentials.oauthOptions)
     return client
   }
 
@@ -156,10 +175,11 @@ const createClientInteractive = (clientOptions, serverOpts) => {
     const resolveWithClient = () => {
       resolve(client)
       log('debug', `Saving credentials to ${savedCredentialsFilename}`)
-      fs.writeFileSync(
-        savedCredentialsFilename,
-        JSON.stringify(client.stackClient.token)
-      )
+
+      writeJSON(createClientFS, savedCredentialsFilename, {
+        oauthOptions: client.stackClient.oauthOptions,
+        token: client.stackClient.token
+      })
     }
     await client.startOAuthFlow(mkServerFlowCallback(serverOptions))
     resolveWithClient()
