@@ -74,7 +74,7 @@ const triggers = {
     const isErrorMuted = mutedErrors.some(mutedError => {
       return (
         mutedError.type === lastErrorType &&
-        new Date(mutedError.mutedAt) > lastSuccessDate
+        (!lastSuccess || new Date(mutedError.mutedAt) > lastSuccessDate)
       )
     })
 
