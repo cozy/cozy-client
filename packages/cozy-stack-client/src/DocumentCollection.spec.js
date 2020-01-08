@@ -109,7 +109,7 @@ describe('DocumentCollection', () => {
       await collection.all()
       expect(client.fetchJSON).toHaveBeenLastCalledWith(
         'GET',
-        '/data/io.cozy.todos/_normal_docs?include_docs=true'
+        '/data/io.cozy.todos/_normal_docs?include_docs=true&limit=100'
       )
 
       client.fetchJSON.mockReturnValue(Promise.resolve(ALL_RESPONSE_FIXTURE))
@@ -128,7 +128,15 @@ describe('DocumentCollection', () => {
       )
     })
 
-    it('should paginate results', async () => {
+    it('should accept bookmark options', async () => {
+      await collection.all({ bookmark: 'himark' })
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/data/io.cozy.todos/_normal_docs?include_docs=true&limit=100&bookmark=himark'
+      )
+    })
+
+    it('should paginate results with skip', async () => {
       client.fetchJSON.mockReturnValue({
         rows: [{}, {}],
         total_rows: 3
@@ -144,12 +152,31 @@ describe('DocumentCollection', () => {
       expect(respWithoutNext.next).toBe(false)
     })
 
+    it('should paginate results with bookmark', async () => {
+      client.fetchJSON.mockReturnValue({
+        rows: [{}, {}],
+        total_rows: 3
+      })
+      const respWithNext = await collection.all({ limit: 2, bookmark: 'book' })
+      expect(respWithNext.next).toBe(true)
+
+      client.fetchJSON.mockReturnValue({
+        rows: [{}],
+        total_rows: 3
+      })
+      const respWithoutNext = await collection.all({
+        limit: 2,
+        bookmark: 'mark'
+      })
+      expect(respWithoutNext.next).toBe(false)
+    })
+
     it('should accept keys option', async () => {
       client.fetchJSON.mockReturnValue(Promise.resolve(ALL_RESPONSE_FIXTURE))
       await collection.all({ keys: ['abc', 'def'] })
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
-        '/data/io.cozy.todos/_all_docs?include_docs=true&keys=[%22abc%22,%22def%22]'
+        '/data/io.cozy.todos/_all_docs?include_docs=true&limit=100&keys=[%22abc%22,%22def%22]'
       )
     })
 

@@ -84,12 +84,12 @@ class DocumentCollection {
    *
    * The returned documents are paginated by the stack.
    *
-   * @param  {{limit, skip, keys}} options The fetch options: pagination & fetch of specific docs.
-   * @returns {{data, meta, skip, next}} The JSON API conformant response.
+   * @param  {{limit, skip, bookmark, keys}} options The fetch options: pagination & fetch of specific docs.
+   * @returns {{data, meta, skip, bookmark, next}} The JSON API conformant response.
    * @throws {FetchError}
    */
   async all(options = {}) {
-    const { limit, skip = 0, keys } = options
+    const { limit = 100, skip = 0, bookmark, keys } = options
 
     // If the limit is intentionnally null, we need to use _all_docs, since _normal_docs uses _find and have a hard limit of 100
     const isUsingAllDocsRoute = !!keys || limit === null
@@ -99,7 +99,8 @@ class DocumentCollection {
       include_docs: true,
       limit,
       skip,
-      keys
+      keys,
+      bookmark
     }
     const path = querystring.buildURL(url, params)
 
@@ -134,11 +135,18 @@ class DocumentCollection {
       })
     }
 
+    // The presence of a bookmark doesn’t guarantee that there are more results.
+    // See https://docs.couchdb.org/en/2.2.0/api/database/find.html#pagination
+    const next = bookmark
+      ? resp.rows.length >= limit
+      : skip + resp.rows.length < resp.total_rows
+
     return {
       data,
       meta: { count: isUsingAllDocsRoute ? data.length : resp.total_rows },
       skip: skip,
-      next: skip + resp.rows.length < resp.total_rows
+      bookmark: resp.bookmark,
+      next
     }
   }
 
