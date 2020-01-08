@@ -32,7 +32,8 @@
     "@babel/cli": "7.6.2",
     "babel-plugin-search-and-replace": "1.0.1",
     "mockdate": "^2.0.2",
-    "react": "16.10.1"
+    "react": "16.10.1",
+    "server-destroy": "^1.0.1"
   },
   "peerDependencies": {
     "react": "^16.7.0"
