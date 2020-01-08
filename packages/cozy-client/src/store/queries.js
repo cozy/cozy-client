@@ -1,7 +1,7 @@
 import mapValues from 'lodash/mapValues'
-import union from 'lodash/union'
 import difference from 'lodash/difference'
 import intersection from 'lodash/intersection'
+import concat from 'lodash/concat'
 import isPlainObject from 'lodash/isPlainObject'
 
 import { getDocumentFromSlice } from './documents'
@@ -141,8 +141,10 @@ const updateData = (query, newData) => {
   const toUpdate = intersection(originalIds, matchedIds)
 
   const changed = toRemove.length || toAdd.length || toUpdate.length
-
-  const updatedData = difference(union(originalIds, toAdd), toRemove)
+  // concat doesn't check duplicates (contrarily to union), which is ok as
+  // toAdd does not contain any id present in originalIds, by construction.
+  // It is also faster than union.
+  const updatedData = difference(concat(originalIds, toAdd), toRemove)
 
   return {
     ...query,
