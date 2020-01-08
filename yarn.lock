@@ -3184,6 +3184,11 @@ btoa-lite@^1.0.0:
   resolved "https://registry.yarnpkg.com/btoa-lite/-/btoa-lite-1.0.0.tgz#337766da15801210fdd956c22e9c6891ab9d0337"
   integrity sha1-M3dm2hWAEhD92VbCLpxokaudAzc=
 
+btoa@1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/btoa/-/btoa-1.2.1.tgz#01a9909f8b2c93f6bf680ba26131eb30f7fa3d73"
+  integrity sha512-SB4/MIGlsiVkMcHmT+pSmIPoNDoHg+7cMzmt3Uxt628MTz2487DKSqK/fuhFBrkuqrYv5UCEnACpF4dTFNKc/g==
+
 buffer-equal@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/buffer-equal/-/buffer-equal-0.0.1.tgz#91bc74b11ea405bc916bc6aa908faafa5b4aac4b"
@@ -4034,6 +4039,14 @@ cozy-device-helper@^1.7.3:
   integrity sha512-5L6QdsJYcE+UpKjJGL6Uk5Lc2sSpDS8KQTf7mvIVrd7IOg/UJIEp9rt1aHQnTRevGShe5ANkmGQmlTfI1uKzUg==
   dependencies:
     lodash "4.17.15"
+
+cozy-logger@1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/cozy-logger/-/cozy-logger-1.6.0.tgz#51675e081e0a40baae6c38c64718cfaee5ee66ff"
+  integrity sha512-UkPR5lQDY6HldNv3N3c8HaxlfgcgAB/iRBFwJNFL2I17lhcM0u7w27vo1nuFeX6geMeFUjvedq/awawxZ1mTQg==
+  dependencies:
+    chalk "^2.4.2"
+    json-stringify-safe "5.0.1"
 
 create-ecdh@^4.0.0:
   version "4.0.3"
@@ -7456,7 +7469,7 @@ json-stable-stringify-without-jsonify@^1.0.1:
   resolved "https://registry.yarnpkg.com/json-stable-stringify-without-jsonify/-/json-stable-stringify-without-jsonify-1.0.1.tgz#9db7b59496ad3f3cfef30a75142d2d930ad72651"
   integrity sha1-nbe1lJatPzz+8wp1FC0tkwrXJlE=
 
-json-stringify-safe@^5.0.1, json-stringify-safe@~5.0.1:
+json-stringify-safe@5.0.1, json-stringify-safe@^5.0.1, json-stringify-safe@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
   integrity sha1-Epai1Y/UXxmg9s4B1lcB4sc1tus=
