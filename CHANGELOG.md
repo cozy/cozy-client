@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.5.1](https://github.com/cozy/cozy-client/compare/v9.5.0...v9.5.1) (2020-01-09)
+
+
+### Bug Fixes
+
+* Mute trigger errors without success ([53ea662](https://github.com/cozy/cozy-client/commit/53ea662))
+
+
+
+
+
 # [9.5.0](https://github.com/cozy/cozy-client/compare/v9.4.0...v9.5.0) (2020-01-08)
 
 
