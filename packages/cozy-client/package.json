@@ -12,14 +12,19 @@
     "url": "git+https://github.com/cozy/cozy-client.git"
   },
   "dependencies": {
+    "btoa": "^1.2.1",
     "cozy-device-helper": "^1.7.3",
+    "cozy-logger": "^1.6.0",
     "cozy-stack-client": "^9.5.0",
+    "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.13",
     "microee": "^0.0.6",
+    "opn": "^6.0.0",
     "prop-types": "^15.6.2",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
     "redux-thunk": "^2.3.0",
+    "server-destroy": "^1.0.1",
     "sift": "^6.0.0",
     "url-search-params-polyfill": "^7.0.0"
   },
