@@ -24,6 +24,7 @@ describe('Helpers', () => {
         rows: [{ id: 'goodId' }, { id: '_design/wrongId' }],
         total_rows: 2
       }
+      jest.setTimeout(10000)
     })
     it('should remove design document', () => {
       const filteredResponse = withoutDesignDocuments(response)
