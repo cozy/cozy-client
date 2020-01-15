@@ -26,3 +26,5 @@ import * as manifest from './manifest'
 export { manifest }
 
 export * from './mock'
+
+export * from './cli'
