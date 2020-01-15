@@ -24,3 +24,5 @@ export { default as Registry } from './registry'
 
 import * as manifest from './manifest'
 export { manifest }
+
+export * from './mock'
