@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.7.0](https://github.com/cozy/cozy-client/compare/v9.6.1...v9.7.0) (2020-01-15)
+
+
+### Features
+
+* Deprecate client.all in favor of Q ([#615](https://github.com/cozy/cozy-client/issues/615)) ([2d648d2](https://github.com/cozy/cozy-client/commit/2d648d2))
+
+
+
+
+
 ## [9.6.1](https://github.com/cozy/cozy-client/compare/v9.6.0...v9.6.1) (2020-01-15)
 
 **Note:** Version bump only for package cozy-pouch-link
