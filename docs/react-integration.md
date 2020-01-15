@@ -331,51 +331,76 @@ function TodoList() {
 
 ### 4. Testing
 
-When testing, it is useful to prefill the client with data and mock the network. You can use a MockClient for this.
+When testing, it is useful to prefill the client with data and mock the
+network. You can use `createMockClient` for this.
 
+Say we want to test the following component:
 
 ```jsx
+import React from 'react'
+import { queryConnect, Q } from 'cozy-client'
+
+function DumbTodoList(props) {
+  const { data, fetchStatus } = props.todos
+  if (fetchStatus !== 'loaded') {
+    return <h1>Loading...</h1>
+  } else {
+    return (
+      <ul>
+        {data.map(todo => (
+          <li key={todo.id}>{todo.label}</li>
+        ))}
+      </ul>
+    )
+  }
+}
+
+const TodoList = queryConnect({
+  todos: {
+    as: 'todos',
+    query: () => Q('io.cozy.todos')
+  }
+})(DumbTodoList)
+
+export default TodoList
+```
+
+We want to make sure the component renders correctly. In our test, we can
+create a mocked client with predefined data for the `todos` query, and snapshot
+it:
+
+```jsx
+import React from 'react'
+import {
+  createMockClient,
+  CozyProvider,
+} from 'cozy-client'
 import { mount } from 'enzyme'
-import { CozyProvider, getCollectionFromState } from 'cozy-client'
+import TodoList from './TodoList'
 
-import { configureStore } from './store' 
-
-const todoFixtures = [
-  { name: 'Write tests', done: true },
-  { name: 'Write code', done: true},
-  { name: 'Take breaks', done: true },
-  { name: 'Write documentation', done: false }
-]
-
-describe("my component using the client's store", () => {
-  const setup = () => {
-    const client = mockClient({
+describe('TodoList', () => {
+  it('should show the todos', () => {
+    const client = createMockClient({
       queries: {
-        todos: todoFixtures
+        todos: {
+          doctype: 'io.cozy.todos',
+          data: [
+            { id: 'todo1', name: 'Write tests', done: true },
+            { id: 'todo2', name: 'Write code', done: true },
+            { id: 'todo3', name: 'Take breaks', done: true },
+            { id: 'todo4', name: 'Write documentation', done: false }
+          ]
+        }
       }
     })
 
-    const store = configureStore()
-    client.setStore(client)
-
-    const TodosLength = ({ todos }) => <span>{ todos.length }</span>
-    const ConnectedTodosLength = connect(state => {
-      todos: getCollectionFromState(state, 'io.cozy.todos')
-    })
-
-    const root = mount(
+    const wrapper = mount(
       <CozyProvider client={client}>
-        <ConnectedTodosLength />
+        <TodoList />
       </CozyProvider>
     )
 
-    return { client, root }
-  }
-
-  it('should get the correct data', () => {
-    const { client } = setup()
-    expect(root.html()).toBe('<span>5</span>')
+    expect(wrapper.html()).toMatchSnapshot()
   })
 })
 ```
-
