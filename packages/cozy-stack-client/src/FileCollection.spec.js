@@ -480,9 +480,13 @@ describe('FileCollection', () => {
       })
     })
   })
+
   describe('download', () => {
     beforeEach(() => {
       client.fetchJSON.mockResolvedValue({
+        links: {
+          related: 'http://downloadable-link'
+        },
         data: {}
       })
     })
@@ -496,7 +500,7 @@ describe('FileCollection', () => {
         _id: '42',
         name: 'fileName'
       }
-      collection.download(file)
+      await collection.download(file)
       const expectPath = `/files/downloads?Id=${file._id}&Filename=${file.name}`
       expect(client.fetchJSON).toHaveBeenCalledWith('POST', expectPath)
     })
@@ -506,7 +510,7 @@ describe('FileCollection', () => {
         _id: '42',
         name: 'fileName'
       }
-      collection.download(file, '123')
+      await collection.download(file, '123')
       const expectPath = `/files/downloads?VersionId=123&Filename=${file.name}`
       expect(client.fetchJSON).toHaveBeenCalledWith('POST', expectPath)
     })
@@ -516,11 +520,12 @@ describe('FileCollection', () => {
         _id: '42',
         name: 'fileName'
       }
-      collection.download(file, '123', 'myFileName')
+      await collection.download(file, '123', 'myFileName')
       const expectPath = `/files/downloads?VersionId=123&Filename=myFileName`
       expect(client.fetchJSON).toHaveBeenCalledWith('POST', expectPath)
     })
   })
+
   describe('createFile', () => {
     const data = new File([''], 'mydoc.epub')
     const id = '59140416-b95f'
@@ -601,6 +606,7 @@ describe('FileCollection', () => {
       })
     })
   })
+
   describe('isChild', () => {
     beforeEach(() => {
       client.fetchJSON
