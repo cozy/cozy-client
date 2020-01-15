@@ -133,7 +133,7 @@ describe('CozyPouchLink', () => {
     })
   })
 
-  describe('mutations', async () => {
+  describe('mutations', () => {
     it('should be possible to save a new document', async () => {
       await setup()
       link.pouches.isSynced = jest.fn().mockReturnValue(true)
@@ -169,7 +169,7 @@ describe('CozyPouchLink', () => {
     })
   })
 
-  describe('reset', async () => {
+  describe('reset', () => {
     let spy
 
     afterEach(async () => {
