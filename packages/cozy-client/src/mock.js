@@ -2,12 +2,11 @@ import CozyClient from './CozyClient'
 import { receiveQueryResult, initQuery } from './store'
 import { normalizeDoc } from 'cozy-stack-client'
 
+import { Q } from 'cozy-client'
+
 const fillQueryInsideClient = (client, queryName, queryOptions) => {
   client.store.dispatch(
-    initQuery(
-      queryName,
-      queryOptions.definition || client.all(queryOptions.doctype)
-    )
+    initQuery(queryName, queryOptions.definition || Q(queryOptions.doctype))
   )
   client.store.dispatch(
     receiveQueryResult(queryName, {

@@ -1,5 +1,7 @@
 import { createMockClient } from './mock'
 
+import { Q } from 'cozy-client'
+
 describe('createMockClient', () => {
   const simpsonsFixture = [
     { _id: 'homer', name: 'Homer' },
@@ -30,7 +32,7 @@ describe('createMockClient', () => {
         'io.cozy.simpsons': simpsonsFixture
       }
     })
-    const simpsons = await client.query(client.all('io.cozy.simpsons'))
+    const simpsons = await client.query(Q('io.cozy.simpsons'))
     await expect(simpsons.data.map(x => x._id)).toEqual(['homer', 'marge'])
   })
 
@@ -40,7 +42,7 @@ describe('createMockClient', () => {
         'io.cozy.simpsons': simpsonsFixture
       }
     })
-    const simpsons = await client.query(client.all('io.cozy.adams'))
+    const simpsons = await client.query(Q('io.cozy.adams'))
     await expect(simpsons.data.map(x => x._id)).toEqual([])
   })
 })

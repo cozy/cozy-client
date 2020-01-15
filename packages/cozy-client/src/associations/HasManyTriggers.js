@@ -1,5 +1,7 @@
 import HasMany from './HasMany'
 
+import { Q } from 'cozy-client'
+
 const TRIGGERS_DOCTYPE = 'io.cozy.triggers'
 
 /**
@@ -18,7 +20,7 @@ class HasManyTriggers extends HasMany {
    * `message.konnector` attribute
    */
   static query(doc, client) {
-    return client.all(TRIGGERS_DOCTYPE).where({ worker: 'konnector' })
+    return Q(TRIGGERS_DOCTYPE).where({ worker: 'konnector' })
   }
 }
 
