@@ -8,6 +8,8 @@ import { queryResultFromData } from './utils'
 import { SCHEMA, TODO_1, TODO_2 } from './fixtures'
 import omit from 'lodash/omit'
 
+import { Q } from 'cozy-client'
+
 const AUTHORS = [
   {
     _id: 1234,
@@ -34,7 +36,7 @@ describe('ObservableQuery', () => {
 
   describe('notifications', () => {
     const setup = async () => {
-      const def = client.all('io.cozy.todos')
+      const def = Q('io.cozy.todos')
       const observer = jest.fn()
       const query = new ObservableQuery('allTodos', def, client)
       jest.spyOn(query, 'subscribeToStore')
@@ -75,7 +77,7 @@ describe('ObservableQuery', () => {
 
   describe('fetch', () => {
     let query
-    const def = client.all('io.cozy.todos')
+    const def = Q('io.cozy.todos')
     const observer = jest.fn()
 
     beforeEach(async () => {
@@ -103,7 +105,7 @@ describe('ObservableQuery', () => {
     let query
 
     it('should be able to return its results', async () => {
-      const def = client.all('io.cozy.todos')
+      const def = Q('io.cozy.todos')
       await store.dispatch(initQuery('allTodos', def))
       query = new ObservableQuery('allTodos', def, client)
       await store.dispatch(

@@ -7,7 +7,7 @@ import {
   attachRelationships
 } from './associations/helpers'
 import { dehydrate } from './helpers'
-import { QueryDefinition, Mutations } from './queries/dsl'
+import { QueryDefinition, Mutations, Q } from './queries/dsl'
 import CozyStackClient, { OAuthClient } from 'cozy-stack-client'
 import { authenticateWithCordova } from './authentication/mobile'
 import optimizeQueryDefinitions from './queries/optimize'
@@ -350,7 +350,12 @@ class CozyClient {
   }
 
   all(doctype) {
-    return new QueryDefinition({ doctype })
+    console.warn(`
+client.all is deprecated, prefer to use the Q helper to build a new QueryDefinition.
+
+import { Q } from 'cozy-client'
+client.query(Q('io.cozy.bills'))`)
+    return Q(doctype)
   }
 
   find(doctype, selector = undefined) {

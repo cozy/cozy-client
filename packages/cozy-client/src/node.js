@@ -6,7 +6,8 @@ export {
   QueryDefinition,
   Mutations,
   MutationTypes,
-  getDoctypeFromOperation
+  getDoctypeFromOperation,
+  Q
 } from './queries/dsl'
 export {
   Association,

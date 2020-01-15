@@ -3,6 +3,8 @@ import StackLink from '../StackLink'
 
 import { SCHEMA } from './fixtures'
 
+import { Q } from 'cozy-client'
+
 describe('StackLink', () => {
   let stackClient, link, client
 
@@ -14,7 +16,7 @@ describe('StackLink', () => {
 
   describe('query execution', () => {
     it('should execute queries without a selector', async () => {
-      const query = client.all('io.cozy.todos')
+      const query = Q('io.cozy.todos')
       stackClient.collection().all.mockReset()
       await link.request(query)
       expect(stackClient.collection().all).toHaveBeenCalled()
@@ -32,7 +34,7 @@ describe('StackLink', () => {
     })
 
     it('should use find if a sort option is given', async () => {
-      const query = client.all('io.cozy.todos').sortBy([{ name: 'asc' }])
+      const query = Q('io.cozy.todos').sortBy([{ name: 'asc' }])
       stackClient.collection().find.mockReset()
       await link.request(query)
       expect(stackClient.collection().find).toHaveBeenCalled()
@@ -40,7 +42,7 @@ describe('StackLink', () => {
     })
 
     it('should use all if a no sort option is given', async () => {
-      const query = client.all('io.cozy.todos')
+      const query = Q('io.cozy.todos')
       stackClient.collection().all.mockReset()
       await link.request(query)
       expect(stackClient.collection().all).toHaveBeenCalled()

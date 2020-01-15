@@ -227,7 +227,8 @@ be fetched and false otherwise. It is important to name the query with `as` when
 otherwise query data cannot be shared across components.
 
 ```jsx
-const query = client => client.all('io.cozy.todos')
+import { Q } from 'cozy-client'
+const query = () => Q('io.cozy.todos')
 
 // io.cozy.todos will not be refetched if there are already io.cozy.todos
 // in the store and the data is fresh (updated less than 30s ago). 

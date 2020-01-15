@@ -3,6 +3,8 @@ import { mount } from 'enzyme'
 import { withClient, queryConnect } from './hoc'
 import * as mocks from './__tests__/mocks'
 
+import { Q } from 'cozy-client'
+
 beforeEach(() => {
   jest.spyOn(console, 'warn').mockImplementation(() => {})
 })
@@ -53,8 +55,8 @@ describe('queryConnect', () => {
     })
 
     const WithQueries = queryConnect({
-      toto: { query: client => client.all('io.cozy.toto') },
-      tata: { query: client => client.all('io.cozy.tata') }
+      toto: { query: client => Q('io.cozy.toto') },
+      tata: { query: client => Q('io.cozy.tata') }
     })(Component)
 
     return { WithQueries, client }

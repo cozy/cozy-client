@@ -6,6 +6,8 @@ import { SCHEMA, TODO_1, TODO_2, TODO_3, TODO_4 } from './__tests__/fixtures'
 import PouchDB from 'pouchdb-browser'
 import PouchDBMemoryAdapterPlugin from 'pouchdb-adapter-memory'
 
+import { Q } from 'cozy-client'
+
 // Necessary to have the memory adapter for the tests since neither
 // IndexedDB nor WebSQL adapter can be used in Jest
 PouchDB.plugin(PouchDBMemoryAdapterPlugin)
@@ -55,7 +57,7 @@ describe('CozyPouchLink', () => {
   describe('request handling', () => {
     it('should check if the doctype is supported and forward if not', async () => {
       await setup()
-      const query = client.all('io.cozy.rockets')
+      const query = Q('io.cozy.rockets')
       await link.request(query, null, () => {
         expect(true).toBe(true)
         return Promise.resolve()
@@ -64,7 +66,7 @@ describe('CozyPouchLink', () => {
 
     it('should check if the pouch is synced and forward if not', async () => {
       await setup()
-      const query = client.all(TODO_DOCTYPE)
+      const query = Q(TODO_DOCTYPE)
       expect.assertions(1)
       await link.request(query, null, () => {
         expect(true).toBe(true)
@@ -82,7 +84,7 @@ describe('CozyPouchLink', () => {
         label: 'Make PouchDB link work',
         done: false
       })
-      const query = client.all(TODO_DOCTYPE)
+      const query = Q(TODO_DOCTYPE)
       const docs = await link.request(query)
       expect(docs.data.length).toBe(1)
     })
@@ -131,7 +133,7 @@ describe('CozyPouchLink', () => {
     })
   })
 
-  describe('mutations', async () => {
+  describe('mutations', () => {
     it('should be possible to save a new document', async () => {
       await setup()
       link.pouches.isSynced = jest.fn().mockReturnValue(true)
@@ -167,7 +169,7 @@ describe('CozyPouchLink', () => {
     })
   })
 
-  describe('reset', async () => {
+  describe('reset', () => {
     let spy
 
     afterEach(async () => {

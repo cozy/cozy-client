@@ -10,6 +10,8 @@ import { getQueryFromState, initQuery } from '../store'
 
 import { TODO_1, TODO_2, TODO_3 } from './fixtures'
 
+import { Q } from 'cozy-client'
+
 beforeEach(() => {
   jest.spyOn(console, 'warn').mockImplementation(() => {})
 })
@@ -27,7 +29,7 @@ describe('connect', () => {
     const store = configureMockStore()({})
     client.setStore(store, { force: true })
     const Foo = () => <div>Foo</div>
-    const query = client.all('io.cozy.todos')
+    const query = Q('io.cozy.todos')
     const ConnectedFoo = connect(
       query,
       { as: 'allTodos' }
@@ -68,7 +70,7 @@ describe('connect', () => {
         </ul>
       )
 
-    const query = client.all('io.cozy.todos')
+    const query = Q('io.cozy.todos')
     const ConnectedTodoList = connect(
       query,
       { as: 'allTodos' }

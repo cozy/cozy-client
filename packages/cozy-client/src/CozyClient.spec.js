@@ -28,6 +28,8 @@ import {
 import { HasManyFiles, Association, HasMany } from './associations'
 import mapValues from 'lodash/mapValues'
 
+import { Q } from 'cozy-client'
+
 const normalizeData = data =>
   mapValues(data, (docs, doctype) => {
     return docs.map(doc => ({
@@ -449,7 +451,7 @@ describe('CozyClient', () => {
 
   describe('all', () => {
     it('should return a QueryDefinition', () => {
-      expect(client.all('io.cozy.todos')).toEqual({ doctype: 'io.cozy.todos' })
+      expect(Q('io.cozy.todos')).toEqual({ doctype: 'io.cozy.todos' })
     })
   })
 
@@ -843,7 +845,7 @@ describe('CozyClient', () => {
   describe('query', () => {
     let query, fakeResponse
     beforeEach(() => {
-      query = client.all('io.cozy.todos')
+      query = Q('io.cozy.todos')
       fakeResponse = { data: 'FAKE!!!' }
     })
 
@@ -908,7 +910,7 @@ describe('CozyClient', () => {
         .mockReturnValueOnce(Promise.resolve({ data: [], included: [] }))
 
       const resp = await client.query(
-        client.all('io.cozy.todos').include(['attachments'])
+        Q('io.cozy.todos').include(['attachments'])
       )
 
       expect(requestHandler).toHaveBeenCalledTimes(4)
@@ -954,7 +956,7 @@ describe('CozyClient', () => {
     let query
 
     beforeEach(() => {
-      query = client.all('io.cozy.todos')
+      query = Q('io.cozy.todos')
     })
 
     afterEach(() => {
