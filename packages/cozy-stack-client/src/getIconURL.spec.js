@@ -6,7 +6,6 @@ const FakeBlob = (data, options) => {
 }
 
 const resetcreateObjectURL = () => {
-  global.URL.createObjectURL = undefined
   global.URL.createObjectURL = jest.fn(blob => {
     return blob
   })
