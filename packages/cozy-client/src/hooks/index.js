@@ -1,4 +1,6 @@
-import useAppLinkWithStoreFallback from './useAppLinkWithStoreFallback'
-import useCapabilities from './useCapabilities'
-export { useAppLinkWithStoreFallback, useCapabilities }
+export {
+  default as useAppLinkWithStoreFallback
+} from './useAppLinkWithStoreFallback'
+export { default as useCapabilities } from './useCapabilities'
 export { default as useClient } from './useClient'
+export { default as useQuery } from './useQuery'
