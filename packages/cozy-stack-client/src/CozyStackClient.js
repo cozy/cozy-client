@@ -1,6 +1,7 @@
 import cloneDeep from 'lodash/cloneDeep'
 import AppCollection, { APPS_DOCTYPE } from './AppCollection'
 import AppToken from './AppToken'
+import AccessToken from './AccessToken'
 import DocumentCollection from './DocumentCollection'
 import FileCollection from './FileCollection'
 import JobCollection, { JOBS_DOCTYPE } from './JobCollection'
@@ -254,9 +255,25 @@ class CozyStackClient {
     return this.getAuthorizationHeader()
   }
 
+  /**
+   * Change or set the API token
+   *
+   * @param {string|AppToken|AccessToken} token - Stack API token
+   */
   setToken(token) {
-    this.token = token ? new AppToken(token) : null
-    if (token) {
+    if (!token) {
+      this.token = null
+    } else {
+      if (token.toAuthHeader) {
+        // AppToken or AccessToken
+        this.token = token
+      } else if (typeof token === 'string') {
+        // jwt string
+        this.token = new AppToken(token)
+      } else {
+        console.warn('Cozy-Client: Unknown token format', token)
+        throw new Error('Cozy-Client: Unknown token format')
+      }
       this.onRevocationChange(false)
     }
   }

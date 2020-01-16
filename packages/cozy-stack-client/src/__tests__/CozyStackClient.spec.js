@@ -6,6 +6,7 @@ import DocumentCollection from '../DocumentCollection'
 import JobCollection from '../JobCollection'
 import KonnectorCollection from '../KonnectorCollection'
 import jestFetchMock from 'jest-fetch-mock'
+import AppToken from '../AppToken'
 
 const FAKE_RESPONSE = {
   offset: 0,
@@ -50,6 +51,25 @@ describe('CozyStackClient', () => {
     })
 
     expect(stackClient.konnectors instanceof KonnectorCollection).toBe(true)
+  })
+
+  describe('setToken', () => {
+    it('allows a JWT string', () => {
+      const client = new CozyStackClient(FAKE_INIT_OPTIONS)
+      const jwt =
+        'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhcHAiLCJpYXQiOjE1NzkxOTAyODEsImlzcyI6ImNvenkudG9vbHM6ODA4MCIsInN1YiI6Im5vdGVzIiwic2Vzc2lvbl9pZCI6ImViMjM5NTBlZjY1NmY3MzllYjg4Y2E2MWZhMDA2ZmZiIn0.WvadOrBnidB3HBl8mCRuQUf0E-EFVQzNHzLPO923Zyv67aRguIdQyWvj6abjEHDcmk5OTEICeM7L5Um1tFWNlg'
+      client.setToken(jwt)
+      expect(client.token).toHaveProperty('token', jwt)
+    })
+
+    it('allows an AccessToken', () => {
+      const client = new CozyStackClient(FAKE_INIT_OPTIONS)
+      const jwt =
+        'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhcHAiLCJpYXQiOjE1NzkxOTAyODEsImlzcyI6ImNvenkudG9vbHM6ODA4MCIsInN1YiI6Im5vdGVzIiwic2Vzc2lvbl9pZCI6ImViMjM5NTBlZjY1NmY3MzllYjg4Y2E2MWZhMDA2ZmZiIn0.WvadOrBnidB3HBl8mCRuQUf0E-EFVQzNHzLPO923Zyv67aRguIdQyWvj6abjEHDcmk5OTEICeM7L5Um1tFWNlg'
+      const appToken = new AppToken(jwt)
+      client.setToken(appToken)
+      expect(client.token).toHaveProperty('token', jwt)
+    })
   })
 
   describe('collection', () => {

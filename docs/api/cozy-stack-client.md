@@ -127,6 +127,7 @@ Main API against the `cozy-stack` server.
     * [.checkForRevocation()](#CozyStackClient+checkForRevocation)
     * [.refreshToken()](#CozyStackClient+refreshToken) ⇒ <code>Promise</code>
     * [.fetchJSON(method, path, body, options)](#CozyStackClient+fetchJSON) ⇒ <code>object</code>
+    * [.setToken(token)](#CozyStackClient+setToken)
     * [.getAccessToken()](#CozyStackClient+getAccessToken) ⇒ <code>string</code>
 
 <a name="CozyStackClient+collection"></a>
@@ -193,6 +194,17 @@ Fetches JSON in an authorized way.
 | path | <code>string</code> | The URI. |
 | body | <code>object</code> | The payload. |
 | options | <code>object</code> |  |
+
+<a name="CozyStackClient+setToken"></a>
+
+### cozyStackClient.setToken(token)
+Change or set the API token
+
+**Kind**: instance method of [<code>CozyStackClient</code>](#CozyStackClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| token | <code>string</code> \| <code>AppToken</code> \| <code>AccessToken</code> | Stack API token |
 
 <a name="CozyStackClient+getAccessToken"></a>
 
