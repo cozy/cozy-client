@@ -11,7 +11,11 @@ const uniqueValue = () => {
   return Date.now().toString(36) + (Math.random() * 10 ** 18).toString(36)
 }
 
-export const useQuery = ({ query }) => {
+const generateFetchMoreQueryDefinition = collection => {
+  return collection.definition.offsetBookmark(collection.bookmark)
+}
+
+const useQuery = ({ query }) => {
   if (process.env.NODE_ENV !== 'prod' && !useSelector) {
     throw new Error(
       'You must use react-redux > 7.1.0 to use useQuery (uses useSelector) under the hood'
@@ -23,7 +27,7 @@ export const useQuery = ({ query }) => {
     throw new Error('Bad query')
   }
 
-  const as = useMemo(() => query.as || uniqueValue())
+  const as = useMemo(() => query.as || uniqueValue(), [query])
 
   const definition = resolveQueryDefinition(query)
 
@@ -38,15 +42,18 @@ export const useQuery = ({ query }) => {
     })
   })
 
-  useEffect(() => {
-    const shouldFetch = query.fetchPolicy ? query.fetchPolicy(collection) : true
-    if (shouldFetch) {
+  useEffect(
+    () => {
       client.query(definition, { as })
-    }
-  }, [query, as])
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [query, as]
+  )
 
   const fetchMore = () => {
-    throw new Error('Should be implemented')
+    client.query(generateFetchMoreQueryDefinition(collection), { as: query.as })
   }
   return { ...collection, fetchMore: fetchMore }
 }
+
+export default useQuery
