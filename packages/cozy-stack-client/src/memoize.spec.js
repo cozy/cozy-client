@@ -6,9 +6,11 @@ describe('memoize', () => {
   beforeEach(() => {
     jest.spyOn(Date, 'now').mockImplementation(() => now)
   })
+
   afterEach(() => {
     jest.resetAllMocks()
   })
+
   it('should remember results ', () => {
     now = 0
     c = 0
@@ -23,20 +25,17 @@ describe('memoize', () => {
 
   it('should not memoize the result if an error occurs', async () => {
     now = 0
-    c = 0
+    let callCounter = 0
+
+    // This counter always returns an error, so it will never be memoized
     const counter = async () => {
-      c++
-      return new Promise(function(resolve, reject) {
-        resolve(new ErrorReturned())
-      })
+      callCounter++
+      return new ErrorReturned()
     }
     const mcounter = memoize(counter, { key: () => 'A', maxDuration: 5 })
-    mcounter()
-    expect(c).toEqual(1)
-    mcounter()
-    //Let's wait the promise resolution
-    setTimeout(() => {
-      expect(c).toEqual(2)
-    }, 10)
+    await mcounter()
+    expect(callCounter).toEqual(1)
+    await mcounter()
+    expect(callCounter).toEqual(2)
   })
 })
