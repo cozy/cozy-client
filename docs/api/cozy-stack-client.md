@@ -21,6 +21,9 @@ specific collections.</p>
 special routes are to be used, and there is a notion of referenced files, aka
 files associated to a specific document</p>
 </dd>
+<dt><a href="#NotesCollection">NotesCollection</a></dt>
+<dd><p>Implements <code>DocumentCollection</code> API to interact with the /notes endpoint of the stack</p>
+</dd>
 <dt><a href="#OAuthClient">OAuthClient</a></dt>
 <dd><p>Specialized <code>CozyStackClient</code> for mobile, implementing stack registration
 through OAuth.</p>
@@ -686,6 +689,37 @@ You should use `createFile`
 | path | <code>string</code> |  | Uri to call the stack from. Something like `/files/${dirId}?Name=${name}&Type=file&Executable=${executable}&MetadataID=${metadataId}` |
 | options | <code>object</code> |  | Additional headers |
 | method | <code>string</code> | <code>&quot;POST&quot;</code> | POST / PUT / PATCH |
+
+<a name="NotesCollection"></a>
+
+## NotesCollection
+Implements `DocumentCollection` API to interact with the /notes endpoint of the stack
+
+**Kind**: global class  
+
+* [NotesCollection](#NotesCollection)
+    * [.all()](#NotesCollection+all) ⇒ <code>Object</code>
+    * [.destroy(note)](#NotesCollection+destroy) ⇒ <code>Object</code>
+
+<a name="NotesCollection+all"></a>
+
+### notesCollection.all() ⇒ <code>Object</code>
+all - Fetches all notes
+
+**Kind**: instance method of [<code>NotesCollection</code>](#NotesCollection)  
+**Returns**: <code>Object</code> - The JSON API conformant response.  
+<a name="NotesCollection+destroy"></a>
+
+### notesCollection.destroy(note) ⇒ <code>Object</code>
+destroy - Destroys the note on the server
+
+**Kind**: instance method of [<code>NotesCollection</code>](#NotesCollection)  
+**Returns**: <code>Object</code> - The deleted note  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| note | <code>io.cozy.notes</code> | The note document to destroy |
+| note._id | <code>string</code> | The note's id |
 
 <a name="OAuthClient"></a>
 
