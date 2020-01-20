@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.9.0](https://github.com/cozy/cozy-client/compare/v9.8.1...v9.9.0) (2020-01-20)
+
+
+### Bug Fixes
+
+* Add onLine to memoize ([b1febfc](https://github.com/cozy/cozy-client/commit/b1febfc))
+* Memoization for getIcon ([73c43eb](https://github.com/cozy/cozy-client/commit/73c43eb))
+* Use custom error ([0c091d4](https://github.com/cozy/cozy-client/commit/0c091d4))
+
+
+### Features
+
+* Correctly await during tests ([2852488](https://github.com/cozy/cozy-client/commit/2852488))
+
+
+
+
+
 ## [9.8.1](https://github.com/cozy/cozy-client/compare/v9.8.0...v9.8.1) (2020-01-16)
 
 
