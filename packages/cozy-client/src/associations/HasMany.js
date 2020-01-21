@@ -52,15 +52,22 @@ class HasMany extends Association {
   }
 
   get data() {
-    return this.getRelationship().data.map(({ _id, _type }) =>
-      this.get(_type, _id)
-    )
+    return this.getRelationship()
+      .data.map(({ _id, _type }) => this.get(_type, _id))
+      .filter(Boolean)
   }
 
   get hasMore() {
     return this.getRelationship().next
   }
 
+  /**
+   * Returns the total number of documents in the relationship.
+   * Does not handle documents absent from the store. If you want
+   * to do that, you can use .data.length.
+   *
+   * @returns {Number} - Total number of documents in the relationships
+   */
   get count() {
     const relationship = this.getRelationship()
     return relationship.meta
@@ -76,10 +83,14 @@ class HasMany extends Association {
     return this.existsById(document._id)
   }
 
-  existsById(id) {
+  containsById(id) {
     return (
       this.getRelationship().data.find(({ _id }) => id === _id) !== undefined
     )
+  }
+
+  existsById(id) {
+    return this.containsById(id) && Boolean(this.get(this.doctype, id))
   }
 
   /**
