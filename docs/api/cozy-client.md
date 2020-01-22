@@ -610,6 +610,7 @@ Responsible for
         * [.setData(data)](#CozyClient+setData)
     * _static_
         * [.fromOldClient()](#CozyClient.fromOldClient)
+        * [.fromOldOAuthClient()](#CozyClient.fromOldOAuthClient)
         * [.fromEnv()](#CozyClient.fromEnv)
         * [.registerHook(doctype, name, fn)](#CozyClient.registerHook)
 
@@ -1013,7 +1014,16 @@ set some data in the store.
 
 ### CozyClient.fromOldClient()
 To help with the transition from cozy-client-js to cozy-client, it is possible to instantiate
-a client with an instance of cozy-client-js.
+a client with a cookie-based instance of cozy-client-js.
+
+**Kind**: static method of [<code>CozyClient</code>](#CozyClient)  
+<a name="CozyClient.fromOldOAuthClient"></a>
+
+### CozyClient.fromOldOAuthClient()
+To help with the transition from cozy-client-js to cozy-client, it is possible to instantiate
+a client with an OAuth-based instance of cozy-client-js.
+
+Warning: unlike other instantiators, this one needs to be awaited.
 
 **Kind**: static method of [<code>CozyClient</code>](#CozyClient)  
 <a name="CozyClient.fromEnv"></a>
