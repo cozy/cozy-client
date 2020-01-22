@@ -1,5 +1,4 @@
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
-import Collection from './Collection'
 
 export const APPS_DOCTYPE = 'io.cozy.apps'
 
@@ -34,18 +33,6 @@ class AppCollection extends DocumentCollection {
       skip: 0,
       next: false
     }
-  }
-
-  /**
-   * Get an app by id
-   *
-   * @param  {string} id The document id.
-   * @returns {object}  JsonAPI response containing normalized document as data attribute
-   */
-  async get(id) {
-    return Collection.get(this.stackClient, `${this.endpoint}${id}`, {
-      normalize: this.constructor.normalizeDoctype(this.doctype)
-    })
   }
 
   async create() {
