@@ -2,10 +2,11 @@ jest.mock('../CozyStackClient')
 
 import CozyStackClient from '../CozyStackClient'
 import AppCollection from '../AppCollection'
-import ALL_APPS_RESPONSE from './fixtures/apps.json'
+import { ALL_APPS_RESPONSE, GET_APPS_RESPONSE } from './fixtures/apps'
 
 const FIXTURES = {
-  ALL_APPS_RESPONSE
+  ALL_APPS_RESPONSE,
+  GET_APPS_RESPONSE
 }
 describe(`AppCollection`, () => {
   const client = new CozyStackClient()
@@ -36,11 +37,26 @@ describe(`AppCollection`, () => {
   })
 
   describe('get', () => {
-    it('should throw error', async () => {
-      const collection = new AppCollection(client)
-      expect(collection.get()).rejects.toThrowError(
-        'get() method is not yet implemented'
+    const collection = new AppCollection(client)
+
+    beforeAll(() => {
+      client.fetchJSON.mockReturnValue(
+        Promise.resolve(FIXTURES.GET_APPS_RESPONSE)
       )
+    })
+    it('should call the right route', async () => {
+      await collection.get('fakeid')
+      expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/apps/fakeid')
+    })
+
+    it('should return a correct JSON API response', async () => {
+      const resp = await collection.get('fakeid')
+      expect(resp).toConformToJSONAPI()
+    })
+
+    it('should return normalized document', async () => {
+      const resp = await collection.get('fakeid')
+      expect(resp.data).toHaveDocumentIdentity()
     })
   })
 

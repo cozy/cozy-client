@@ -187,6 +187,9 @@ class DocumentCollection {
 
   /**
    * Get a document by id
+   *
+   * @param  {string} id The document id.
+   * @returns {object}  JsonAPI response containing normalized document as data attribute
    */
   async get(id) {
     return Collection.get(this.stackClient, uri`/data/${this.doctype}/${id}`, {
