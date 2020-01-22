@@ -35,7 +35,7 @@ class DocumentCollection {
     this.doctype = doctype
     this.stackClient = stackClient
     this.indexes = {}
-    this.endpoint = '/data/'
+    this.endpoint = `/data/${this.doctype}/`
   }
 
   /**

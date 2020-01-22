@@ -47,6 +47,12 @@ const FIND_RESPONSE_FIXTURE = {
   next: false
 }
 
+const GET_RESPONSE_FIXTURE = {
+  id: '12345',
+  label: 'Buy bread',
+  done: false
+}
+
 const NEW_TODO = {
   label: 'Jettison boosters',
   done: false
@@ -272,6 +278,31 @@ describe('DocumentCollection', () => {
       client.fetchJSON.mockReturnValue(Promise.resolve(responsesWithEmptyDoc))
       const docs = await collection.all({ keys: ['12345', '67890', '11111'] })
       expect(docs.data.length).toBe(2)
+    })
+  })
+
+  describe('get', () => {
+    const collection = new DocumentCollection('io.cozy.todos', client)
+
+    beforeAll(() => {
+      client.fetchJSON.mockReturnValue(Promise.resolve(GET_RESPONSE_FIXTURE))
+    })
+    it('should call the right route', async () => {
+      await collection.get('fakeid')
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/data/io.cozy.todos/fakeid'
+      )
+    })
+
+    it('should return a correct JSON API response', async () => {
+      const resp = await collection.get('fakeid')
+      expect(resp).toConformToJSONAPI()
+    })
+
+    it('should return normalized document', async () => {
+      const resp = await collection.get('fakeid')
+      expect(resp.data).toHaveDocumentIdentity()
     })
   })
 
