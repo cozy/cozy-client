@@ -35,6 +35,7 @@ class DocumentCollection {
     this.doctype = doctype
     this.stackClient = stackClient
     this.indexes = {}
+    this.endpoint = '/data/'
   }
 
   /**
@@ -192,9 +193,13 @@ class DocumentCollection {
    * @returns {object}  JsonAPI response containing normalized document as data attribute
    */
   async get(id) {
-    return Collection.get(this.stackClient, uri`/data/${this.doctype}/${id}`, {
-      normalize: this.constructor.normalizeDoctype(this.doctype)
-    })
+    return Collection.get(
+      this.stackClient,
+      `${this.endpoint}${encodeURIComponent(id)}`,
+      {
+        normalize: this.constructor.normalizeDoctype(this.doctype)
+      }
+    )
   }
 
   /**
