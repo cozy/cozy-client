@@ -4,10 +4,14 @@ import CozyStackClient from '../CozyStackClient'
 import DocumentCollection from '../KonnectorCollection'
 import KonnectorCollection from '../KonnectorCollection'
 import TriggerCollection from '../TriggerCollection'
-import ALL_KONNECTORS_RESPONSE from './fixtures/konnectors.json'
+import {
+  ALL_KONNECTORS_RESPONSE,
+  GET_KONNECTORS_RESPONSE
+} from './fixtures/konnectors'
 
 const FIXTURES = {
-  ALL_KONNECTORS_RESPONSE
+  ALL_KONNECTORS_RESPONSE,
+  GET_KONNECTORS_RESPONSE
 }
 describe(`KonnectorCollection`, () => {
   const client = new CozyStackClient()
@@ -57,11 +61,26 @@ describe(`KonnectorCollection`, () => {
   })
 
   describe('get', () => {
-    it('throw error', async () => {
-      const collection = new KonnectorCollection(client)
-      await expect(collection.get()).rejects.toThrowError(
-        'get() method is not yet implemented'
+    const collection = new KonnectorCollection(client)
+
+    beforeAll(() => {
+      client.fetchJSON.mockReturnValue(
+        Promise.resolve(FIXTURES.GET_KONNECTORS_RESPONSE)
       )
+    })
+    it('should call the right route', async () => {
+      await collection.get('fakeid')
+      expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/konnectors/fakeid')
+    })
+
+    it('should return a correct JSON API response', async () => {
+      const resp = await collection.get('fakeid')
+      expect(resp).toConformToJSONAPI()
+    })
+
+    it('should return normalized document', async () => {
+      const resp = await collection.get('fakeid')
+      expect(resp.data).toHaveDocumentIdentity()
     })
   })
 
