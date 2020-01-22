@@ -180,7 +180,7 @@ class CozyClient {
 
   /**
    * To help with the transition from cozy-client-js to cozy-client, it is possible to instantiate
-   * a client with an instance of cozy-client-js.
+   * a client with a cookie-based instance of cozy-client-js.
    */
   static fromOldClient(oldClient, options) {
     return new CozyClient({
@@ -188,6 +188,22 @@ class CozyClient {
       token: oldClient._token.token,
       ...options
     })
+  }
+
+  /**
+   * To help with the transition from cozy-client-js to cozy-client, it is possible to instantiate
+   * a client with an OAuth-based instance of cozy-client-js.
+   */
+  static async fromOldOAuthClient(oldClient, options) {
+    const hasOauthCreds = oldClient._oauth && oldClient._authcreds != null
+    if (hasOauthCreds) {
+      const token = (await oldClient._authcreds).token
+      return new CozyClient({
+        uri: oldClient._url,
+        token,
+        ...options
+      })
+    }
   }
 
   /** In konnector/service context, CozyClient can be instantiated from environment variables */

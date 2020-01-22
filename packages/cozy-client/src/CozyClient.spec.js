@@ -115,7 +115,7 @@ describe('CozyClient initialization', () => {
     expect(client.stackClient.token.accessToken).toBe(token)
   })
 
-  it('can be instantiated from an old client', () => {
+  it('can be instantiated from a cookie-based old client', () => {
     // Not using a real cozy-client-js here not to have to add it as a dep
     const url = 'https://testcozy.mycozy.cloud'
     const token = 'Registration-token'
@@ -126,6 +126,22 @@ describe('CozyClient initialization', () => {
       }
     }
     const client = CozyClient.fromOldClient(oldClient)
+    expect(client.stackClient.uri).toBe(url)
+    expect(client.stackClient.token.token).toBe(token)
+  })
+
+  it('can be instantiated from an oauth-based old client', async () => {
+    // Not using a real cozy-client-js here not to have to add it as a dep
+    const url = 'https://testcozy.mycozy.cloud'
+    const token = 'Registration-token'
+    const oldClient = {
+      _url: url,
+      _oauth: true,
+      _authcreds: Promise.resolve({
+        token
+      })
+    }
+    const client = await CozyClient.fromOldOAuthClient(oldClient)
     expect(client.stackClient.uri).toBe(url)
     expect(client.stackClient.token.token).toBe(token)
   })
