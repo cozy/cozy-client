@@ -1,16 +1,33 @@
 import HasMany from './HasMany'
 
+const TASK_DOCTYPE = 'io.cozy.tasks'
+
+const store = {
+  documents: {
+    [TASK_DOCTYPE]: {
+      1: { id: 1, doctype: TASK_DOCTYPE },
+      2: { id: 2, doctype: TASK_DOCTYPE },
+      4: { id: 4, doctype: TASK_DOCTYPE },
+      5: { id: 5, doctype: TASK_DOCTYPE }
+    }
+  }
+}
+
+const get = (doctype, id) => store.documents[TASK_DOCTYPE][id]
+
 describe('HasMany', () => {
   let original, hydrated, originalWithNorelation, hydratedWithNoRelation, save
+
   beforeEach(() => {
     original = {
       _type: 'io.cozy.todos',
-      label: 'Get rich',
+      label: 'Be kind',
       relationships: {
         tasks: {
           data: [
-            { _id: 1, _type: 'io.cozy.tasks' },
-            { _id: 2, _type: 'io.cozy.tasks' }
+            { _id: 1, _type: TASK_DOCTYPE },
+            { _id: 2, _type: TASK_DOCTYPE },
+            { _id: 3, _type: TASK_DOCTYPE }
           ]
         }
       }
@@ -18,24 +35,19 @@ describe('HasMany', () => {
 
     originalWithNorelation = {
       _type: 'io.cozy.todos',
-      label: 'Get rich'
+      label: 'Be kind'
     }
-
-    const get = (doctype, id) => ({
-      doctype,
-      id
-    })
 
     save = jest.fn()
 
     hydrated = {
       ...original,
-      tasks: new HasMany(original, 'tasks', 'io.cozy.tasks', { get, save })
+      tasks: new HasMany(original, 'tasks', TASK_DOCTYPE, { get, save })
     }
 
     hydratedWithNoRelation = {
       ...originalWithNorelation,
-      tasks: new HasMany(originalWithNorelation, 'tasks', 'io.cozy.tasks', {
+      tasks: new HasMany(originalWithNorelation, 'tasks', TASK_DOCTYPE, {
         get,
         save
       })
@@ -84,13 +96,15 @@ describe('HasMany', () => {
     ])
   })
 
-  it('removes multipe', () => {
+  it('can remove multiple docs from the relationship', () => {
     hydrated.tasks.removeById([1, 2])
     expect(hydrated.tasks.data).toEqual([])
   })
 
   it('updates the count metadata', () => {
-    const initialCount = hydrated.tasks.data.length
+    // count does not account for documents that are not in the store when metadata count
+    // is present in the relationship
+    const initialCount = hydrated.tasks.target.relationships.tasks.data.length
     hydrated.tasks.target.relationships.tasks.meta = {
       count: initialCount
     }
@@ -98,6 +112,10 @@ describe('HasMany', () => {
     expect(hydrated.tasks.count).toBe(initialCount + 1)
     hydrated.tasks.removeById(1)
     expect(hydrated.tasks.count).toBe(initialCount)
+  })
+
+  it('checks containment', () => {
+    expect(hydrated.tasks.containsById(2)).toBe(true)
   })
 
   it('checks non existence', () => {
