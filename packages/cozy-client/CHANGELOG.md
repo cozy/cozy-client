@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.0.0](https://github.com/cozy/cozy-client/compare/v9.10.0...v10.0.0) (2020-01-22)
+
+
+### Features
+
+* HasMany prunes absent documents before passing them down ([6ab4130](https://github.com/cozy/cozy-client/commit/6ab4130))
+* HasMany prunes absent documents before passing them down ([#622](https://github.com/cozy/cozy-client/issues/622)) ([3b1c4e4](https://github.com/cozy/cozy-client/commit/3b1c4e4))
+
+
+### BREAKING CHANGES
+
+* - HasMany::data does not return null values
+- existsById changes of semantics
+- containsById retains the previous behavior of existsById
+
+- containsById does not check for document existence in the store
+- existsById checks for existence of the document in the store
+
+
+
+
+
 # [9.10.0](https://github.com/cozy/cozy-client/compare/v9.9.0...v9.10.0) (2020-01-20)
 
 **Note:** Version bump only for package cozy-client
