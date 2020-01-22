@@ -226,7 +226,7 @@ Abstracts a collection of documents of the same doctype, providing CRUD methods 
 * [DocumentCollection](#DocumentCollection)
     * [.all(options)](#DocumentCollection+all) ⇒ <code>Object</code>
     * [.find(selector, options)](#DocumentCollection+find) ⇒ <code>Object</code>
-    * [.get()](#DocumentCollection+get)
+    * [.get(id)](#DocumentCollection+get) ⇒ <code>object</code>
     * [.getAll()](#DocumentCollection+getAll)
     * [.update()](#DocumentCollection+update)
     * [.destroy()](#DocumentCollection+destroy)
@@ -273,10 +273,16 @@ The returned documents are paginated by the stack.
 
 <a name="DocumentCollection+get"></a>
 
-### documentCollection.get()
+### documentCollection.get(id) ⇒ <code>object</code>
 Get a document by id
 
 **Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
+**Returns**: <code>object</code> - JsonAPI response containing normalized document as data attribute  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | The document id. |
+
 <a name="DocumentCollection+getAll"></a>
 
 ### documentCollection.getAll()
