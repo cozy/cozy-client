@@ -907,6 +907,9 @@ Implements `DocumentCollection` API along with specific methods for `io.cozy.per
 * [PermissionCollection](#PermissionCollection)
     * [.add(document, permission)](#PermissionCollection+add) ⇒ <code>Promise</code>
     * [.createSharingLink(document, options)](#PermissionCollection+createSharingLink)
+    * [.fetchPermissionsByLink(permissions)](#PermissionCollection+fetchPermissionsByLink)
+    * [.fetchAllLinks(document)](#PermissionCollection+fetchAllLinks) ⇒ <code>object</code>
+    * [.revokeSharingLink(document)](#PermissionCollection+revokeSharingLink)
     * [.getOwnPermissions()](#PermissionCollection+getOwnPermissions) ⇒ <code>object</code>
 
 <a name="PermissionCollection+add"></a>
@@ -946,6 +949,38 @@ Create a share link
 | document | <code>Object</code> | cozy document |
 | options | <code>object</code> | options |
 | options.verbs | <code>Array.&lt;string&gt;</code> | explicit permissions to use |
+
+<a name="PermissionCollection+fetchPermissionsByLink"></a>
+
+### permissionCollection.fetchPermissionsByLink(permissions)
+Follow the next link to fetch the next permissions
+
+**Kind**: instance method of [<code>PermissionCollection</code>](#PermissionCollection)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| permissions | <code>object</code> | JSON-API based permissions document |
+
+<a name="PermissionCollection+fetchAllLinks"></a>
+
+### permissionCollection.fetchAllLinks(document) ⇒ <code>object</code>
+**Kind**: instance method of [<code>PermissionCollection</code>](#PermissionCollection)  
+**Returns**: <code>object</code> - with all the permissions  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | <code>object</code> | Cozy doc |
+
+<a name="PermissionCollection+revokeSharingLink"></a>
+
+### permissionCollection.revokeSharingLink(document)
+Destroy a sharing link and the related permissions
+
+**Kind**: instance method of [<code>PermissionCollection</code>](#PermissionCollection)  
+
+| Param | Type |
+| --- | --- |
+| document | <code>object</code> | 
 
 <a name="PermissionCollection+getOwnPermissions"></a>
 
