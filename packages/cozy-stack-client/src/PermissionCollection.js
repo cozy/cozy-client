@@ -149,9 +149,38 @@ class PermissionCollection extends DocumentCollection {
     )
     return { data: normalizePermission(resp.data) }
   }
+  /**
+   * Follow the next link to fetch the next permissions
+   *
+   * @param {object} permissions JSON-API based permissions document
+   */
+  async fetchPermissionsByLink(permissions) {
+    if (permissions.links && permissions.links.next) {
+      return await this.stackClient.fetchJSON('GET', permissions.links.next)
+    }
+  }
 
+  /**
+   *
+   * @param {object} document Cozy doc
+   * @returns {object} with all the permissions
+   */
+  async fetchAllLinks(document) {
+    let allLinks = await this.findLinksByDoctype(document._type)
+    let resp = allLinks
+    while (resp.links && resp.links.next) {
+      resp = await this.fetchPermissionsByLink(resp)
+      allLinks.data.push(...resp.data.map(normalizePermission))
+    }
+    return allLinks
+  }
+  /**
+   * Destroy a sharing link and the related permissions
+   *
+   * @param {object} document
+   */
   async revokeSharingLink(document) {
-    const allLinks = await this.findLinksByDoctype(document._type)
+    const allLinks = await this.fetchAllLinks(document)
     const links = allLinks.data.filter(perm =>
       isPermissionRelatedTo(perm, document)
     )

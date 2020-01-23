@@ -218,6 +218,92 @@ describe('PermissionCollection', () => {
   })
 })
 
+describe('revokeSharingLink', () => {
+  const client = new CozyStackClient()
+  const collection = new PermissionCollection('io.cozy.permissions', client)
+
+  beforeEach(() => {
+    client.fetchJSON.mockReset()
+    client.fetchJSON.mockReturnValue(Promise.resolve({ data: [] }))
+  })
+
+  it('should revoke a sharing link', async () => {
+    client.fetchJSON.mockReturnValue(
+      Promise.resolve({
+        data: [
+          {
+            type: 'io.cozy.permissions',
+            id: 'perm_id_1',
+            attributes: {
+              type: 'share',
+              permissions: {
+                files: {
+                  type: 'io.cozy.files',
+                  verbs: ['GET'],
+                  values: ['file_1']
+                }
+              }
+            }
+          }
+        ]
+      })
+    )
+    await collection.revokeSharingLink({
+      _id: 'file_1',
+      _type: 'io.cozy.files'
+    })
+    expect(client.fetchJSON).toHaveBeenNthCalledWith(
+      1,
+      'GET',
+      '/permissions/doctype/io.cozy.files/shared-by-link'
+    )
+    expect(client.fetchJSON).toHaveBeenNthCalledWith(
+      2,
+      'DELETE',
+      '/permissions/perm_id_1'
+    )
+  })
+
+  it('it should fetch all the links by calling next links', async () => {
+    client.fetchJSON.mockReturnValueOnce(
+      Promise.resolve({
+        data: [
+          {
+            type: 'io.cozy.permissions',
+            id: 'perm_id_1',
+            attributes: {
+              type: 'share',
+              permissions: {
+                files: {
+                  type: 'io.cozy.files',
+                  verbs: ['GET'],
+                  values: ['file_1']
+                }
+              }
+            }
+          }
+        ],
+        links: {
+          next: '/permissions/next_page'
+        }
+      })
+    )
+    await collection.fetchAllLinks({ _type: 'io.cozy.files' })
+
+    expect(client.fetchJSON).toHaveBeenNthCalledWith(
+      1,
+      'GET',
+      '/permissions/doctype/io.cozy.files/shared-by-link'
+    )
+
+    expect(client.fetchJSON).toHaveBeenNthCalledWith(
+      2,
+      'GET',
+      '/permissions/next_page'
+    )
+  })
+})
+
 describe('getPermissionsFor', () => {
   it('Should give all permissions by default', () => {
     const document = { _type: 'io.cozy.files', _id: '1234' }
