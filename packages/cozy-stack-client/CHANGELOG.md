@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.3.0](https://github.com/cozy/cozy-client/compare/v10.2.1...v10.3.0) (2020-01-24)
+
+
+### Bug Fixes
+
+* Use correct data endpoint ([d3339bd](https://github.com/cozy/cozy-client/commit/d3339bd))
+
+
+### Features
+
+* Get apps by id ([a59bf77](https://github.com/cozy/cozy-client/commit/a59bf77))
+
+
+
+
+
 # [10.0.0](https://github.com/cozy/cozy-client/compare/v9.10.0...v10.0.0) (2020-01-22)
 
 **Note:** Version bump only for package cozy-stack-client
