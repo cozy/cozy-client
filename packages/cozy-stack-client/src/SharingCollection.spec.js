@@ -18,6 +18,9 @@ const RECIPIENT = {
   }
 }
 
+const SHARING = {
+  _id: 'sharing_1'
+}
 describe('SharingCollection', () => {
   const client = new CozyStackClient()
   const collection = new SharingCollection('io.cozy.sharings', client)
@@ -50,6 +53,21 @@ describe('SharingCollection', () => {
     it('should call the right route with the right payload', async () => {
       await collection.share(FOLDER, [RECIPIENT], 'one-way', 'foo', '/preview')
       expect(client.fetchJSON).toMatchSnapshot()
+    })
+  })
+
+  describe('revokeAllRecipients', () => {
+    beforeAll(() => {
+      client.fetch.mockReset()
+      client.fetchJSON.mockReturnValue(Promise.resolve({ data: [] }))
+    })
+
+    it('should call the right route', async () => {
+      await collection.revokeAllRecipients(SHARING)
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'DELETE',
+        `/sharings/${SHARING._id}/recipients`
+      )
     })
   })
 })

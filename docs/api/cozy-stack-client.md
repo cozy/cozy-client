@@ -988,6 +988,10 @@ Implements the `DocumentCollection` API along with specific methods for
 * [SharingCollection](#SharingCollection)
     * [.share(document, recipients, sharingType, description, [previewPath])](#SharingCollection+share)
     * [.getDiscoveryLink(sharingId, sharecode)](#SharingCollection+getDiscoveryLink) ⇒ <code>string</code>
+    * [.addRecipients(sharing, recipients, sharingType)](#SharingCollection+addRecipients)
+    * [.revokeRecipient(sharing, recipientIndex)](#SharingCollection+revokeRecipient)
+    * [.revokeSelf(sharing)](#SharingCollection+revokeSelf)
+    * [.revokeAllRecipients(sharing)](#SharingCollection+revokeAllRecipients)
 
 <a name="SharingCollection+share"></a>
 
@@ -1015,6 +1019,54 @@ getDiscoveryLink - Returns the URL of the page that can be used to accept a shar
 | --- | --- |
 | sharingId | <code>string</code> | 
 | sharecode | <code>string</code> | 
+
+<a name="SharingCollection+addRecipients"></a>
+
+### sharingCollection.addRecipients(sharing, recipients, sharingType)
+Add an array of contacts to the Sharing
+
+**Kind**: instance method of [<code>SharingCollection</code>](#SharingCollection)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| sharing | <code>object</code> | Sharing Object |
+| recipients | <code>Array</code> | Array of {id:1, type:"io.cozy.contacts"} |
+| sharingType | <code>string</code> | Read and write: two-way. Other only read |
+
+<a name="SharingCollection+revokeRecipient"></a>
+
+### sharingCollection.revokeRecipient(sharing, recipientIndex)
+Revoke only one recipient of the sharing.
+
+**Kind**: instance method of [<code>SharingCollection</code>](#SharingCollection)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| sharing | <code>object</code> | Sharing Object |
+| recipientIndex | <code>number</code> | Index of this recipient in the members array of the sharing |
+
+<a name="SharingCollection+revokeSelf"></a>
+
+### sharingCollection.revokeSelf(sharing)
+Remove self from the sharing.
+
+**Kind**: instance method of [<code>SharingCollection</code>](#SharingCollection)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| sharing | <code>object</code> | Sharing Object |
+
+<a name="SharingCollection+revokeAllRecipients"></a>
+
+### sharingCollection.revokeAllRecipients(sharing)
+Revoke the sharing for all the members. Must be called
+from the owner's cozy
+
+**Kind**: instance method of [<code>SharingCollection</code>](#SharingCollection)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| sharing | <code>object</code> | Sharing Objects |
 
 <a name="TriggerCollection"></a>
 
