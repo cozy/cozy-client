@@ -28,3 +28,6 @@ export { manifest }
 export * from './mock'
 
 export * from './cli'
+
+import * as models from './models'
+export { models }
