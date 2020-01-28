@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.5.0](https://github.com/cozy/cozy-client/compare/v10.4.0...v10.5.0) (2020-01-28)
+
+
+### Features
+
+* **cozy-client:** Export models in node entry point ([2da0c92](https://github.com/cozy/cozy-client/commit/2da0c92))
+
+
+
+
+
 # [10.4.0](https://github.com/cozy/cozy-client/compare/v10.3.0...v10.4.0) (2020-01-27)
 
 **Note:** Version bump only for package cozy-client
