@@ -73,4 +73,58 @@ describe('NotesCollection', () => {
       expect(result.data._deleted).toBe(true)
     })
   })
+
+  describe('fetchURL', () => {
+    const { stackClient, collection } = setup()
+
+    const note = {
+      _id: '1'
+    }
+
+    beforeEach(() => {
+      jest.spyOn(stackClient, 'fetchJSON').mockResolvedValue({
+        data: {
+          _id: note._id,
+          type: 'io.cozy.notes.url',
+          attributes: {
+            note_id: '2',
+            subdomain: 'flat',
+            protocol: 'http',
+            instance: 'alice.cozy.example',
+            sharecode: '431431',
+            public_name: 'Bob'
+          }
+        }
+      })
+    })
+
+    it('should call the appropriate route', async () => {
+      await collection.fetchURL({ _id: '1' })
+      expect(stackClient.fetchJSON).toHaveBeenCalledWith('GET', '/notes/1/open')
+    })
+
+    it('should normalize the returned note url document', async () => {
+      const result = await collection.fetchURL({ _id: '1' })
+      expect(result.data).toEqual({
+        _id: '1',
+        type: 'io.cozy.notes.url',
+        id: '1',
+        _type: 'io.cozy.notes.url',
+        note_id: '2',
+        subdomain: 'flat',
+        protocol: 'http',
+        instance: 'alice.cozy.example',
+        sharecode: '431431',
+        public_name: 'Bob',
+        attributes: {
+          note_id: '2',
+          subdomain: 'flat',
+          protocol: 'http',
+          instance: 'alice.cozy.example',
+          sharecode: '431431',
+          public_name: 'Bob'
+        }
+      })
+    })
+  })
 })
