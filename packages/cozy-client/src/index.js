@@ -17,7 +17,7 @@ export {
   HasManyInPlace,
   HasManyTriggers
 } from './associations'
-export { dehydrate } from './helpers'
+export { dehydrate, generateWebLink } from './helpers'
 export { cancelable, isQueryLoading, hasQueryBeenLoaded } from './utils'
 export { getQueryFromState } from './store'
 export { default as Registry } from './registry'
