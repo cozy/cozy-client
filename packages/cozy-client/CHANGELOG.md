@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.6.0](https://github.com/cozy/cozy-client/compare/v10.5.0...v10.6.0) (2020-01-31)
+
+
+### Features
+
+* Add generateWebLink helper ([#628](https://github.com/cozy/cozy-client/issues/628)) ([4d0966b](https://github.com/cozy/cozy-client/commit/4d0966b))
+
+
+
+
+
 # [10.5.0](https://github.com/cozy/cozy-client/compare/v10.4.0...v10.5.0) (2020-01-28)
 
 
