@@ -61,6 +61,13 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 ## Constants
 
 <dl>
+<dt><a href="#generateWebLink">generateWebLink</a> ⇒ <code>string</code></dt>
+<dd><p>generateWebLink - Construct a link to a web app</p>
+<p>This function does not get its cozy url from a CozyClient instance so it can
+be used to build urls that point to other Cozies than the user&#39;s own Cozy.
+This is useful when pointing to the Cozy of the owner of a shared note for
+example.</p>
+</dd>
 <dt><a href="#getMutedErrors">getMutedErrors</a> ⇒ <code>Array</code></dt>
 <dd><p>getMutedErrors - Returns the list of errors that have been muted for the given account</p>
 </dd>
@@ -1305,6 +1312,29 @@ Returns the relationship for a given doctype/name
 Validates a document considering the descriptions in schema.attributes.
 
 **Kind**: instance method of [<code>Schema</code>](#Schema)  
+<a name="generateWebLink"></a>
+
+## generateWebLink ⇒ <code>string</code>
+generateWebLink - Construct a link to a web app
+
+This function does not get its cozy url from a CozyClient instance so it can
+be used to build urls that point to other Cozies than the user's own Cozy.
+This is useful when pointing to the Cozy of the owner of a shared note for
+example.
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - Generated URL  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>object</code> | Object of options |
+| options.cozyUrl | <code>string</code> | Base URL of the cozy, eg. cozy.tools or test.mycozy.cloud |
+| options.searchParams | <code>Array</code> | Array of search parameters as [key, value] arrays, eg. ['username', 'bob'] |
+| options.pathname | <code>string</code> | Path to a specific part of the app, eg. /public |
+| options.hash | <code>string</code> | Path inside the app, eg. /files/test.jpg |
+| options.slug | <code>string</code> | Slug of the app |
+| options.subDomainType | <code>string</code> | Whether the cozy is using flat or nested subdomains. Defaults to flat. |
+
 <a name="getMutedErrors"></a>
 
 ## getMutedErrors ⇒ <code>Array</code>
