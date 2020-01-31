@@ -706,18 +706,19 @@ Implements `DocumentCollection` API to interact with the /notes endpoint of the 
 * [NotesCollection](#NotesCollection)
     * [.all()](#NotesCollection+all) ⇒ <code>Object</code>
     * [.destroy(note)](#NotesCollection+destroy) ⇒ <code>Object</code>
+    * [.fetchURL(note)](#NotesCollection+fetchURL) ⇒ <code>Object</code>
 
 <a name="NotesCollection+all"></a>
 
 ### notesCollection.all() ⇒ <code>Object</code>
-all - Fetches all notes
+Fetches all notes
 
 **Kind**: instance method of [<code>NotesCollection</code>](#NotesCollection)  
 **Returns**: <code>Object</code> - The JSON API conformant response.  
 <a name="NotesCollection+destroy"></a>
 
 ### notesCollection.destroy(note) ⇒ <code>Object</code>
-destroy - Destroys the note on the server
+Destroys the note on the server
 
 **Kind**: instance method of [<code>NotesCollection</code>](#NotesCollection)  
 **Returns**: <code>Object</code> - The deleted note  
@@ -725,6 +726,20 @@ destroy - Destroys the note on the server
 | Param | Type | Description |
 | --- | --- | --- |
 | note | <code>io.cozy.notes</code> | The note document to destroy |
+| note._id | <code>string</code> | The note's id |
+
+<a name="NotesCollection+fetchURL"></a>
+
+### notesCollection.fetchURL(note) ⇒ <code>Object</code>
+Returns the details to build the note's url
+
+**Kind**: instance method of [<code>NotesCollection</code>](#NotesCollection)  
+**Returns**: <code>Object</code> - The note's url details  
+**See**: https://github.com/cozy/cozy-stack/blob/master/docs/notes.md#get-notesidopen  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| note | <code>io.cozy.notes</code> | The note document to open |
 | note._id | <code>string</code> | The note's id |
 
 <a name="OAuthClient"></a>
