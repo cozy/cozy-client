@@ -24,7 +24,7 @@ class NotesCollection extends DocumentCollection {
   }
 
   /**
-   * all - Fetches all notes
+   * Fetches all notes
    *
    * @returns {{data, links, meta}} The JSON API conformant response.
    */
@@ -39,7 +39,7 @@ class NotesCollection extends DocumentCollection {
   }
 
   /**
-   * destroy - Destroys the note on the server
+   * Destroys the note on the server
    *
    * @param {io.cozy.notes} note     The note document to destroy
    * @param {string}   note._id The note's id

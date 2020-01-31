@@ -711,14 +711,14 @@ Implements `DocumentCollection` API to interact with the /notes endpoint of the 
 <a name="NotesCollection+all"></a>
 
 ### notesCollection.all() ⇒ <code>Object</code>
-all - Fetches all notes
+Fetches all notes
 
 **Kind**: instance method of [<code>NotesCollection</code>](#NotesCollection)  
 **Returns**: <code>Object</code> - The JSON API conformant response.  
 <a name="NotesCollection+destroy"></a>
 
 ### notesCollection.destroy(note) ⇒ <code>Object</code>
-destroy - Destroys the note on the server
+Destroys the note on the server
 
 **Kind**: instance method of [<code>NotesCollection</code>](#NotesCollection)  
 **Returns**: <code>Object</code> - The deleted note  
