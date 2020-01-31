@@ -5087,16 +5087,17 @@ escodegen@~1.9.0:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-cozy-app@1.3.2:
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/eslint-config-cozy-app/-/eslint-config-cozy-app-1.3.2.tgz#91ec714e4471bbfc5b5d042c315b88ad20924a1b"
-  integrity sha512-m/WbpmPmEX8ajtQcid0iRzSzBZ+3+mejk9K1UY/1aWwbozUB0hx2UrXX7ogi6v2wWSiYDeW4jbwTfirJCh5bmw==
+eslint-config-cozy-app@1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-cozy-app/-/eslint-config-cozy-app-1.4.0.tgz#fb751b78cafc4384f90b22570459376f5f775ff9"
+  integrity sha512-0XYwjd9XO6Sl3Rp5aiZnlCkXReg1xBrLWGnlDATgO2/EoHMEe9AUX7/Y7ui/j1YJwThZ5twjdkcjb8YJXgOX1w==
   dependencies:
     babel-eslint "10.0.1"
     eslint "5.16.0"
     eslint-config-prettier "4.3.0"
-    eslint-plugin-prettier "3.1.0"
+    eslint-plugin-prettier "3.1.2"
     eslint-plugin-react "7.14.3"
+    eslint-plugin-react-hooks "2.3.0"
     eslint-plugin-vue "5.2.3"
     prettier "1.18.2"
 
@@ -5119,12 +5120,17 @@ eslint-plugin-jsdoc@^15.11.1:
     object.entries-ponyfill "^1.0.1"
     regextras "^0.6.1"
 
-eslint-plugin-prettier@3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-prettier/-/eslint-plugin-prettier-3.1.0.tgz#8695188f95daa93b0dc54b249347ca3b79c4686d"
-  integrity sha512-XWX2yVuwVNLOUhQijAkXz+rMPPoCr7WFiAl8ig6I7Xn+pPVhDhzg4DxHpmbeb0iqjO9UronEA3Tb09ChnFVHHA==
+eslint-plugin-prettier@3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-prettier/-/eslint-plugin-prettier-3.1.2.tgz#432e5a667666ab84ce72f945c72f77d996a5c9ba"
+  integrity sha512-GlolCC9y3XZfv3RQfwGew7NnuFDKsfI4lbvRK+PIIo23SFH+LemGs4cKwzAaRa+Mdb+lQO/STaIayno8T5sJJA==
   dependencies:
     prettier-linter-helpers "^1.0.0"
+
+eslint-plugin-react-hooks@2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-2.3.0.tgz#53e073961f1f5ccf8dd19558036c1fac8c29d99a"
+  integrity sha512-gLKCa52G4ee7uXzdLiorca7JIQZPPXRAQDXV83J4bUEeUuc5pIEyZYAZ45Xnxe5IuupxEqHS+hUhSLIimK1EMw==
 
 eslint-plugin-react@7.14.3:
   version "7.14.3"
