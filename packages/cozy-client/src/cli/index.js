@@ -1,5 +1,5 @@
 import http from 'http'
-import opn from 'opn'
+import opn from 'open'
 import fs from 'fs'
 
 import merge from 'lodash/merge'
@@ -64,7 +64,7 @@ const mkServerFlowCallback = serverOptions => authenticationURL =>
           'debug',
           'OAuth callback server started, waiting for authentication'
         )
-        opn(authenticationURL, { wait: false })
+        opn(authenticationURL, { wait: false, url: true })
       }
     })
 

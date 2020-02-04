@@ -1,14 +1,14 @@
 import http from 'http'
 import { createClientInteractive } from './index'
 import { OAuthClient } from 'cozy-stack-client'
-import opn from 'opn'
+import opn from 'open'
 import fetch from 'node-fetch'
 import { URL } from 'url'
 import logger from 'cozy-logger'
 
 logger.setLevel('error')
 
-jest.mock('opn', () => jest.fn())
+jest.mock('open', () => jest.fn())
 
 describe('createClientInteractive', () => {
   let servers
