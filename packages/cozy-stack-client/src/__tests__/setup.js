@@ -5,13 +5,6 @@ expect.extend({
     if (!Array.isArray(received.data) && typeof received.data !== 'object')
       return fail('expected response to have a `data` property')
     if (Array.isArray(received.data)) {
-      if (
-        typeof received.meta !== 'object' ||
-        !received.meta.hasOwnProperty('count')
-      )
-        return fail(
-          'expected response to have a `meta` property with a `count`'
-        )
       if (typeof received.next !== 'boolean')
         return fail('expected response to have a boolean `next` property')
       if (typeof received.skip !== 'number')

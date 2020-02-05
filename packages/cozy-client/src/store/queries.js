@@ -69,10 +69,7 @@ const query = (state = queryInitialState, action) => {
           response.meta && response.meta.count
             ? response.meta.count
             : response.data.length,
-        data:
-          response.skip === 0
-            ? response.data.map(properId)
-            : [...state.data, ...response.data.map(properId)]
+        data: [...state.data, ...response.data.map(properId)]
       }
     }
     case RECEIVE_QUERY_ERROR:
