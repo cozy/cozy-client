@@ -1,10 +1,10 @@
 ## What are relations in Cozy-Client?
 
-CouchDb is a document store. It does not materialize relations between documents. We do, however, have a standardized way of describing relations between cozy documents. This allows Cozy-Client to give us some automation.
+CouchDB is a document store. It does not materialize relations between documents. We do, however, have a standardized way of describing relations between cozy documents. This allows Cozy-Client to give us some automation.
 
 ### In CouchDB
 
-To materialize relations, we use a special key inside the document named [`relationships`](https://github.com/cozy/cozy-doctypes#relationships). Please see the cozy-doctypes documentation for the exact syntax.
+To materialize relations, we use a special key inside the document named `relationships`. Please see the cozy-doctypes [documentation](https://github.com/cozy/cozy-doctypes/#relationships) for the exact syntax.
 
 ```javascript
 {
@@ -68,7 +68,7 @@ const schema = {
     }
   }
 }
-````
+```
 
 ```javascript
 const document = {
@@ -138,23 +138,23 @@ const firstAuthors = firstDoc.authors.data
 
 When the relationship is a `has-many` type, you can call the `addById(documentId)` to create the relationship:
 
-```javascript 
+```javascript
 const otherAuthorId = 'abc123'
 const response = await client.query(query)
 const docs = response.data
 const firstDoc = docs[0]
 firstDoc.authors.addById(otherAuthorId)
-````
+```
 
 `addById` also accepts an array of document ids:
 
 ```javascript
 firstDoc.authors.addById([mainAuthorId, coAuthorId])
-````
+```
 
 When the relationship is a `has-one` type, use `set(document)` instead:
 
-```javascript 
+```javascript
 const printer = {
   _id: 'abc123',
   _type: 'io.cozy.company',
@@ -164,26 +164,26 @@ const response = await client.query(query)
 const docs = response.data
 const firstDoc = docs[0]
 firstDoc.printingCompany.set(printer)
-````
+```
 
 ### Remove a relation to an existing document
 
 For `has-many` relationships, use the `removeById` method:
 
-```javascript 
+```javascript
 const otherAuthorId = 'abc123'
 const response = await client.query(query)
 const docs = response.data
 const firstDoc = docs[0]
 firstDoc.authors.removeById(otherAuthorId)
-````
+```
 
 Just like `addById`, `removeById` accepts an array of ids as parameter.
 
 For `has-one` relationships, use the `unset()` method:
 
 
-```javascript 
+```javascript
 const response = await client.query(query)
 const docs = response.data
 const firstDoc = docs[0]
