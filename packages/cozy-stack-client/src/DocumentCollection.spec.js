@@ -401,6 +401,22 @@ describe('DocumentCollection', () => {
       )
     })
 
+    it('should accept bookmark option', async () => {
+      const collection = new DocumentCollection('io.cozy.todos', client)
+      await collection.find({ done: false }, { bookmark: 'himark', limit: 200 })
+      expect(client.fetchJSON).toHaveBeenLastCalledWith(
+        'POST',
+        '/data/io.cozy.todos/_find',
+        {
+          limit: 200,
+          selector: { done: false },
+          skip: 0,
+          bookmark: 'himark',
+          use_index: '_design/123456'
+        }
+      )
+    })
+
     it('should accept a sort option', async () => {
       const collection = new DocumentCollection('io.cozy.todos', client)
       await collection.find({ done: false }, { sort: [{ label: 'desc' }] })
