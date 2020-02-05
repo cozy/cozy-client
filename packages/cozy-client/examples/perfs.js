@@ -60,7 +60,29 @@ const getAllContactsBookmark = async () => {
     doctype: 'io.cozy.contacts',
     limit: 100
   })
-  const contacts = await client.queryAll(query, { as: 'bookmark-query' })
+  const contacts = await client.queryAll(query, { as: 'bookmark-all-query' })
+  return contacts
+}
+
+const getFilteredContactsBookmark = async () => {
+  const selector = {
+    _id: {
+      $gt: null
+    }
+  }
+  const query = new QueryDefinition({
+    doctype: 'io.cozy.contacts',
+    limit: 100,
+    selector
+  })
+  const contacts = []
+  let resp = { next: true, bookmark: '' }
+  while (resp && resp.next) {
+    resp = await client.query(query.offsetBookmark(resp.bookmark), {
+      as: 'bookmark-find-query'
+    })
+    contacts.push(...resp.data)
+  }
   return contacts
 }
 
@@ -89,7 +111,7 @@ const main = async _args => {
   }
   client = new CozyClient({ uri, token, schema })
 
-  const count = 10000
+  const count = 1000
 
   await deleteAllContactsBulk()
   await createContactsBulk(count)
@@ -108,9 +130,13 @@ const main = async _args => {
 
   client.store = null
 
-  console.time(count + ' contacts bookmark')
+  console.time(count + ' all contacts bookmark')
   await getAllContactsBookmark()
-  console.timeEnd(count + ' contacts bookmark')
+  console.timeEnd(count + ' all contacts bookmark')
+
+  console.time(count + ' filtered contacts bookmark')
+  await getFilteredContactsBookmark()
+  console.timeEnd(count + ' filtered contacts bookmark')
 }
 
 main(process.argv).catch(e => console.error(e))
