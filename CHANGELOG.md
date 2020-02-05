@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.7.1](https://github.com/cozy/cozy-client/compare/v10.7.0...v10.7.1) (2020-02-05)
+
+
+### Bug Fixes
+
+* Use open package instead of old opn ([636c969](https://github.com/cozy/cozy-client/commit/636c969))
+
+
+
+
+
 # [10.7.0](https://github.com/cozy/cozy-client/compare/v10.6.0...v10.7.0) (2020-01-31)
 
 
