@@ -571,7 +571,11 @@ client.query(Q('io.cozy.bills'))`)
     this.ensureStore()
     const existingQuery = getQueryFromState(this.store.getState(), queryId)
     // Don't trigger the INIT_QUERY for fetchMore() calls
-    if (existingQuery.fetchStatus !== 'loaded' || !queryDefinition.skip) {
+    if (
+      existingQuery.fetchStatus !== 'loaded' ||
+      !queryDefinition.skip ||
+      !queryDefinition.bookmark
+    ) {
       this.dispatch(initQuery(queryId, queryDefinition))
     }
   }
@@ -1024,8 +1028,8 @@ client.query(Q('io.cozy.bills'))`)
     } else if (this.store && !force) {
       throw new Error(
         `Client already has a store, it is forbidden to change store.
-setStore must be called before any query is executed. Try to 
-call setStore earlier in your code, preferably just after the 
+setStore must be called before any query is executed. Try to
+call setStore earlier in your code, preferably just after the
 instantiation of the client.`
       )
     }

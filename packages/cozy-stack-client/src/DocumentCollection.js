@@ -157,8 +157,8 @@ class DocumentCollection {
    * The returned documents are paginated by the stack.
    *
    * @param  {object} selector The Mango selector.
-   * @param  {{sort, fields, limit, skip, indexId}} options The query options.
-   * @returns {{data, meta, skip, next}} The JSON API conformant response.
+   * @param  {{sort, fields, limit, skip, bookmark, indexId}} options The query options.
+   * @returns {{data, skip, bookmark, next}} The JSON API conformant response.
    * @throws {FetchError}
    */
   async find(selector, options = {}) {
@@ -175,14 +175,9 @@ class DocumentCollection {
     }
     return {
       data: resp.docs.map(doc => normalizeDoc(doc, this.doctype)),
-      // Mango queries don't return the total count of rows, so if next = true,
-      // we return a `meta.count` greater than the count of rows we have so that
-      // 'fetchMore' features would work
-      meta: {
-        count: resp.next ? skip + resp.docs.length + 1 : resp.docs.length
-      },
       next: resp.next,
-      skip
+      skip,
+      bookmark: resp.bookmark
     }
   }
 
@@ -316,7 +311,7 @@ class DocumentCollection {
 
   async toMangoOptions(selector, options = {}) {
     let { sort, indexedFields } = options
-    const { fields, skip = 0, limit } = options
+    const { fields, skip = 0, limit, bookmark } = options
 
     if (sort && !Array.isArray(sort)) {
       console.warn(
@@ -356,6 +351,7 @@ class DocumentCollection {
       fields: fields ? [...fields, '_id', '_type', 'class'] : undefined,
       limit,
       skip,
+      bookmark,
       sort
     }
   }

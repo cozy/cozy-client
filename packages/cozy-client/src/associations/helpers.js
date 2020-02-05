@@ -17,7 +17,8 @@ export const responseToRelationship = response =>
     data: applyHelper(pickTypeAndId, response.data),
     meta: response.meta,
     next: response.next,
-    skip: response.skip
+    skip: response.skip,
+    bookmark: response.bookmark
   })
 
 const attachRelationship = (doc, relationships) => {
