@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.8.0](https://github.com/cozy/cozy-client/compare/v10.7.1...v10.8.0) (2020-02-07)
+
+
+### Features
+
+* Checks if a doc has read-only permissions ([#636](https://github.com/cozy/cozy-client/issues/636)) ([a69184c](https://github.com/cozy/cozy-client/commit/a69184c))
+
+
+
+
+
 ## [10.7.1](https://github.com/cozy/cozy-client/compare/v10.7.0...v10.7.1) (2020-02-05)
 
 
