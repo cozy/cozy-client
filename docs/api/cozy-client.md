@@ -160,6 +160,12 @@ is loading.</p>
 <dt><a href="#ensureFilePath">ensureFilePath(file, parent)</a> ⇒ <code>object</code></dt>
 <dd><p>Ensure the file has a <code>path</code> attribute, or build it</p>
 </dd>
+<dt><a href="#getParentFolderId">getParentFolderId(file)</a> ⇒ <code>string</code> | <code>null</code></dt>
+<dd><p>Get the id of the parent folder (<code>null</code> for the root folder)</p>
+</dd>
+<dt><a href="#isForType">isForType(permission, type)</a></dt>
+<dd><p>Checks if the permission item is about a specific doctype</p>
+</dd>
 <dt><a href="#currentResult">currentResult()</a> ⇒ <code>HydratedQueryState</code></dt>
 <dd><p>Returns the query from the store with hydrated documents.</p>
 </dd>
@@ -177,6 +183,13 @@ we have in the store.</p>
 
 <dl>
 <dt><a href="#QueryState">QueryState</a> : <code>object</code></dt>
+<dd></dd>
+<dt><a href="#Document">Document</a> : <code>object</code></dt>
+<dd><p>Couchdb document like an io.cozy.files</p>
+</dd>
+<dt><a href="#PermissionVerb">PermissionVerb</a> : <code>&#x27;ALL&#x27;</code> | <code>&#x27;GET&#x27;</code> | <code>&#x27;PATCH&#x27;</code> | <code>&#x27;POST&#x27;</code> | <code>&#x27;PUT&#x27;</code> | <code>&#x27;DELETE&#x27;</code></dt>
+<dd></dd>
+<dt><a href="#PermissionItem">PermissionItem</a> : <code>object</code></dt>
 <dd></dd>
 </dl>
 
@@ -592,7 +605,7 @@ Responsible for
         * [.logout()](#CozyClient+logout) ⇒ <code>Promise</code>
         * [.collection(doctype)](#CozyClient+collection) ⇒ <code>DocumentCollection</code>
         * [.getDocumentSavePlan(document, relationships)](#CozyClient+getDocumentSavePlan) ⇒ <code>Array.&lt;Mutation&gt;</code>
-        * [.destroy(document)](#CozyClient+destroy) ⇒ <code>Document</code>
+        * [.destroy(document)](#CozyClient+destroy) ⇒ [<code>Document</code>](#Document)
         * [.query(queryDefinition, options)](#CozyClient+query) ⇒ <code>QueryResult</code>
         * [.queryAll(queryDefinition, options)](#CozyClient+queryAll) ⇒ <code>Array</code>
         * [.fetchRelationships()](#CozyClient+fetchRelationships)
@@ -601,8 +614,8 @@ Responsible for
         * [.makeNewDocument()](#CozyClient+makeNewDocument)
         * [.getAssociation()](#CozyClient+getAssociation)
         * [.getRelationshipStoreAccessors()](#CozyClient+getRelationshipStoreAccessors)
-        * [.getCollectionFromState(type)](#CozyClient+getCollectionFromState) ⇒ <code>Array.&lt;Document&gt;</code>
-        * [.getDocumentFromState(type, id)](#CozyClient+getDocumentFromState) ⇒ <code>Document</code>
+        * [.getCollectionFromState(type)](#CozyClient+getCollectionFromState) ⇒ [<code>Array.&lt;Document&gt;</code>](#Document)
+        * [.getDocumentFromState(type, id)](#CozyClient+getDocumentFromState) ⇒ [<code>Document</code>](#Document)
         * [.getQueryFromState(id)](#CozyClient+getQueryFromState) ⇒ [<code>QueryState</code>](#QueryState)
         * [.register(cozyURL)](#CozyClient+register) ⇒ <code>object</code>
         * [.startOAuthFlow(openURLCallback)](#CozyClient+startOAuthFlow) ⇒ <code>object</code>
@@ -754,15 +767,15 @@ client.getDocumentSavePlan(baseDoc, relationships)
 
 <a name="CozyClient+destroy"></a>
 
-### cozyClient.destroy(document) ⇒ <code>Document</code>
+### cozyClient.destroy(document) ⇒ [<code>Document</code>](#Document)
 Destroys a document. {before,after}:destroy hooks will be fired.
 
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
-**Returns**: <code>Document</code> - The document that has been deleted  
+**Returns**: [<code>Document</code>](#Document) - The document that has been deleted  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| document | <code>Document</code> | Document to be deleted |
+| document | [<code>Document</code>](#Document) | Document to be deleted |
 
 <a name="CozyClient+query"></a>
 
@@ -819,7 +832,7 @@ Instead, the relationships will have null documents.
 | Param | Type |
 | --- | --- |
 | doctype | <code>string</code> | 
-| documents | <code>Array.&lt;Document&gt;</code> | 
+| documents | [<code>Array.&lt;Document&gt;</code>](#Document) | 
 
 <a name="CozyClient+hydrateDocument"></a>
 
@@ -833,7 +846,7 @@ the relationship
 
 | Param | Type | Description |
 | --- | --- | --- |
-| document | <code>Document</code> | for which relationships must be resolved |
+| document | [<code>Document</code>](#Document) | for which relationships must be resolved |
 | schema | [<code>Schema</code>](#Schema) | for the document doctype |
 
 <a name="CozyClient+makeNewDocument"></a>
@@ -863,11 +876,11 @@ the store up, which in turn will update the `<Query>`s and re-render the data.
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 <a name="CozyClient+getCollectionFromState"></a>
 
-### cozyClient.getCollectionFromState(type) ⇒ <code>Array.&lt;Document&gt;</code>
+### cozyClient.getCollectionFromState(type) ⇒ [<code>Array.&lt;Document&gt;</code>](#Document)
 Get a collection of documents from the internal store.
 
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
-**Returns**: <code>Array.&lt;Document&gt;</code> - Array of documents or null if the collection does not exist.  
+**Returns**: [<code>Array.&lt;Document&gt;</code>](#Document) - Array of documents or null if the collection does not exist.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -875,11 +888,11 @@ Get a collection of documents from the internal store.
 
 <a name="CozyClient+getDocumentFromState"></a>
 
-### cozyClient.getDocumentFromState(type, id) ⇒ <code>Document</code>
+### cozyClient.getDocumentFromState(type, id) ⇒ [<code>Document</code>](#Document)
 Get a document from the internal store.
 
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
-**Returns**: <code>Document</code> - Document or null if the object does not exist.  
+**Returns**: [<code>Document</code>](#Document) - Document or null if the object does not exist.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1703,6 +1716,30 @@ Ensure the file has a `path` attribute, or build it
 | file | <code>object</code> | object representing the file |
 | parent | <code>object</code> | parent directory for the file |
 
+<a name="getParentFolderId"></a>
+
+## getParentFolderId(file) ⇒ <code>string</code> \| <code>null</code>
+Get the id of the parent folder (`null` for the root folder)
+
+**Kind**: global function  
+**Returns**: <code>string</code> \| <code>null</code> - id of the parent folder, if any  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | <code>object</code> | io.cozy.files document |
+
+<a name="isForType"></a>
+
+## isForType(permission, type)
+Checks if the permission item is about a specific doctype
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| permission | [<code>PermissionItem</code>](#PermissionItem) | - |
+| type | <code>string</code> | doctype |
+
 <a name="currentResult"></a>
 
 ## currentResult() ⇒ <code>HydratedQueryState</code>
@@ -1734,3 +1771,33 @@ Rejects with canceled: true as soon as cancel is called
 
 ## QueryState : <code>object</code>
 **Kind**: global typedef  
+<a name="Document"></a>
+
+## Document : <code>object</code>
+Couchdb document like an io.cozy.files
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type |
+| --- | --- |
+| _id | <code>string</code> | 
+| _type | <code>string</code> | 
+
+<a name="PermissionVerb"></a>
+
+## PermissionVerb : <code>&#x27;ALL&#x27;</code> \| <code>&#x27;GET&#x27;</code> \| <code>&#x27;PATCH&#x27;</code> \| <code>&#x27;POST&#x27;</code> \| <code>&#x27;PUT&#x27;</code> \| <code>&#x27;DELETE&#x27;</code>
+**Kind**: global typedef  
+<a name="PermissionItem"></a>
+
+## PermissionItem : <code>object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| verbs | [<code>Array.&lt;PermissionVerb&gt;</code>](#PermissionVerb) | ALL, GET, PUT, PATCH, DELETE, POST… |
+| selector | <code>string</code> | defaults to `id` |
+| values | <code>Array.&lt;string&gt;</code> |  |
+| type | <code>string</code> | a couch db database like 'io.cozy.files' |
+

@@ -4,6 +4,7 @@ import * as applications from './applications'
 import * as file from './file'
 import * as account from './account'
 import * as note from './note'
+import * as permission from './permission'
 
 // For backward compatibility before 9.0.0
 const triggers = trigger
@@ -17,5 +18,6 @@ export {
   file,
   note,
   account,
-  accounts
+  accounts,
+  permission
 }
