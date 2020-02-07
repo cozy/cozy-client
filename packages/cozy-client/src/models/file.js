@@ -1,3 +1,5 @@
+import get from 'lodash/get'
+
 const FILE_TYPE = 'file'
 const DIR_TYPE = 'directory'
 
@@ -60,4 +62,15 @@ export function ensureFilePath(file, parent) {
     throw new Error(`Could not define a file path for ${file._id || file.id}`)
   const path = parent.path + '/' + file.name
   return { path: path, ...file }
+}
+
+/**
+ * Get the id of the parent folder (`null` for the root folder)
+ *
+ * @param {object} file  - io.cozy.files document
+ * @returns {string|null} id of the parent folder, if any
+ */
+export function getParentFolderId(file) {
+  const parentId = get(file, 'attributes.dir_id')
+  return parentId === '' ? null : parentId
 }
