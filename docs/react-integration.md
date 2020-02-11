@@ -281,33 +281,7 @@ function TodoList(props) {
 const ConnectedTodoList = withClient(TodoList)
 ```
 
-Alternatively, you have `withMutation()` which returns an HOC. This HOC forwards you a `createDocument`, a `saveDocument` and a `deleteDocument` in your props. They are the `create()`, `save()`and `delete()` functions from CozyClient, bound to the instance you gave to the `<CozyProvider />`.
-
-```jsx
-import { withMutations } from 'cozy-client'
-
-function TodoList(props) {
-  const { createDocument } = props
-  const createNewTodo = e => createDocument(
-    'io.cozy.todos', 
-    { label: e.target.elements['new-todo'], checked: false }
-  )
-  return (
-    <ul>
-      {/* todo items */}
-    </ul>
-    <form onSubmit={createNewTodo}>
-      <label htmlFor="new-todo">Todo</label>
-      <input id="new-todo" name="new-todo" />
-      <button type="submit">Add todo</button>
-    </form>
-  )
-}
-
-const ConnectedTodoList = withMutations()(TodoList)
-```
-
-Finally, `<Query />` also takes a `mutations` optional props. It should have a function that will receive the CozyClient instance, the query requested and the rest of props given to the component, and should return a keyed object which will be added to the props of your wrapped component.
+`<Query />` also takes a `mutations` optional props. It should have a function that will receive the CozyClient instance, the query requested and the rest of props given to the component, and should return a keyed object which will be added to the props of your wrapped component.
 
 ```jsx
 import { Query } from 'cozy-client'
