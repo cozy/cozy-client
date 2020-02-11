@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.9.0](https://github.com/cozy/cozy-client/compare/v10.8.1...v10.9.0) (2020-02-11)
+
+
+### Features
+
+* Deprecate withMutations ([fd36af3](https://github.com/cozy/cozy-client/commit/fd36af3))
+
+
+
+
+
 ## [10.8.1](https://github.com/cozy/cozy-client/compare/v10.8.0...v10.8.1) (2020-02-07)
 
 
