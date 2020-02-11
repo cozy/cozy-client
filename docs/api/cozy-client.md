@@ -443,7 +443,7 @@ Responsible for
 
 * [HasMany](#HasMany)
     * [new HasMany()](#new_HasMany_new)
-    * [.count](#HasMany+count) ⇒ <code>Number</code>
+    * [.count](#HasMany+count) ⇒ <code>number</code>
     * [.addById()](#HasMany+addById)
 
 <a name="new_HasMany_new"></a>
@@ -477,13 +477,13 @@ const todo = {
 
 <a name="HasMany+count"></a>
 
-### hasMany.count ⇒ <code>Number</code>
+### hasMany.count ⇒ <code>number</code>
 Returns the total number of documents in the relationship.
 Does not handle documents absent from the store. If you want
 to do that, you can use .data.length.
 
 **Kind**: instance property of [<code>HasMany</code>](#HasMany)  
-**Returns**: <code>Number</code> - - Total number of documents in the relationships  
+**Returns**: <code>number</code> - - Total number of documents in the relationships  
 <a name="HasMany+addById"></a>
 
 ### hasMany.addById()
@@ -550,20 +550,20 @@ Association used for konnectors to retrieve all their related triggers.
 
 * [HasManyTriggers](#HasManyTriggers) ⇐ [<code>HasMany</code>](#HasMany)
     * _instance_
-        * [.count](#HasMany+count) ⇒ <code>Number</code>
+        * [.count](#HasMany+count) ⇒ <code>number</code>
         * [.addById()](#HasMany+addById)
     * _static_
         * [.query()](#HasManyTriggers.query)
 
 <a name="HasMany+count"></a>
 
-### hasManyTriggers.count ⇒ <code>Number</code>
+### hasManyTriggers.count ⇒ <code>number</code>
 Returns the total number of documents in the relationship.
 Does not handle documents absent from the store. If you want
 to do that, you can use .data.length.
 
 **Kind**: instance property of [<code>HasManyTriggers</code>](#HasManyTriggers)  
-**Returns**: <code>Number</code> - - Total number of documents in the relationships  
+**Returns**: <code>number</code> - - Total number of documents in the relationships  
 <a name="HasMany+addById"></a>
 
 ### hasManyTriggers.addById()
