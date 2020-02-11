@@ -23,6 +23,14 @@ describe('withMutations', () => {
     jest.spyOn(console, 'error').mockImplementation(message => {
       throw new Error(message)
     })
+    const originalWarn = console.warn
+    jest.spyOn(console, 'warn').mockImplementation(function(message) {
+      if (message.includes('Deprecation: withMutations')) {
+        return
+      } else {
+        return originalWarn.apply(this, arguments)
+      }
+    })
     const mutationsMock = client => ({
       myMutation1: () => {},
       myMutation2: () => {}

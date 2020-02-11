@@ -66,7 +66,7 @@ class HasMany extends Association {
    * Does not handle documents absent from the store. If you want
    * to do that, you can use .data.length.
    *
-   * @returns {Number} - Total number of documents in the relationships
+   * @returns {number} - Total number of documents in the relationships
    */
   get count() {
     const relationship = this.getRelationship()

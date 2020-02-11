@@ -12,8 +12,8 @@ const makeMutationsObject = (mutations, client, props) => {
 
 /**
  * @function
- * @description HOC to provide mutations to components. Needs client in context
- * or as prop.
+ * @description HOC to provide mutations to components. Needs client in context or as prop.
+ * @deprecated Prefer to use withClient and access directly the client.
  * @param  {Function} mutations One ore more mutations, which are function
  * taking CozyClient as parameter and returning an object containing one or
  * more mutations as attributes.
@@ -31,6 +31,9 @@ const withMutations = (...mutations) => WrappedComponent => {
     constructor(props, context) {
       super(props, context)
       const client = props.client || context.client
+      console.warn(
+        `Deprecation: withMutations will be removed in the near future, prefer to use withClient to access the client. See https://github.com/cozy/cozy-client/pull/638 for more information.`
+      )
       if (!client) {
         throw new Error(
           `Could not find "client" in either the context or props of ${wrappedDisplayName}`
