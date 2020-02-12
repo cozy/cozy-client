@@ -656,6 +656,34 @@ describe('FileCollection', () => {
       )
     })
 
+    it('should find the parent with id', async () => {
+      client.fetchJSON
+        .mockReturnValueOnce({
+          data: {
+            _id: 'root-id',
+            dir_id: '',
+            path: '/'
+          }
+        })
+        .mockReturnValueOnce({
+          data: {
+            _id: '123',
+            dir_id: 'root-id',
+            path: '/a'
+          }
+        })
+        .mockReturnValueOnce({
+          data: {
+            _id: 'file-id',
+            dir_id: '123',
+            path: '/a/b'
+          }
+        })
+
+      const res = await collection.isChildOf('file-id', 'root-id')
+      expect(res).toEqual(true)
+    })
+
     it('should find the parent with dirID', async () => {
       const child = { _id: 'file-id', path: '/a/b/c', dirID: 'root-id' }
       const parent = 'root-id'
