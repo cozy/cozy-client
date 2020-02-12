@@ -466,8 +466,8 @@ class FileCollection extends DocumentCollection {
     }
     if (!childPath) {
       const childDoc = await this.statById(childID)
-      childPath = childDoc.path
-      childDirID = childDoc.dirID
+      childPath = childDoc.data.path
+      childDirID = childDoc.data.dirID
     }
 
     // Build hierarchy paths
