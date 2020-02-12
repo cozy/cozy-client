@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.0.0](https://github.com/cozy/cozy-client/compare/v10.9.0...v11.0.0) (2020-02-12)
+
+
+### Features
+
+* Add support for bookmark pagination on _find queries ([070f626](https://github.com/cozy/cozy-client/commit/070f626))
+
+
+### BREAKING CHANGES
+
+* the `meta: {count}` in the response no longer exist.
+It was used to know how many docs were returned so far and was
+computed with the skip value.
+If the client needs this, it can be overcomed by keeping track of the
+returned docs for each query and perform a `.length` on it.
+
+
+
+
+
 # [10.7.0](https://github.com/cozy/cozy-client/compare/v10.6.0...v10.7.0) (2020-01-31)
 
 
