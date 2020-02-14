@@ -194,7 +194,10 @@ class CozyStackClient {
     try {
       return await this.fetchJSONWithCurrentToken(method, path, body, options)
     } catch (e) {
-      if (errors.EXPIRED_TOKEN.test(e.message)) {
+      if (
+        errors.EXPIRED_TOKEN.test(e.message) ||
+        errors.INVALID_TOKEN.test(e.message)
+      ) {
         let token
         try {
           token = await this.refreshToken()
