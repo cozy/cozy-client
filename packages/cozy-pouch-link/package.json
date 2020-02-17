@@ -22,8 +22,8 @@
     "jest-localstorage-mock": "2.4.0",
     "parcel": "1.12.3",
     "pouchdb-adapter-memory": "7.1.1",
-    "react": "16.10.1",
-    "react-dom": "16.10.1"
+    "react": "16.12.0",
+    "react-dom": "16.12.0"
   },
   "scripts": {
     "build": "../../bin/build",
