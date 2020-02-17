@@ -3,6 +3,256 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [11.1.1](https://github.com/cozy/cozy-client/compare/v11.1.0...v11.1.1) (2020-02-17)
+
+
+
+# [9.2.0](https://github.com/cozy/cozy-client/compare/v9.1.1...v9.2.0) (2019-12-19)
+
+
+
+## [9.1.1](https://github.com/cozy/cozy-client/compare/v9.1.0...v9.1.1) (2019-12-18)
+
+
+### Bug Fixes
+
+* Ensure backward compatibility from pre-9.0.0 ([92ee48e](https://github.com/cozy/cozy-client/commit/92ee48e))
+
+
+
+# [9.1.0](https://github.com/cozy/cozy-client/compare/v9.0.0...v9.1.0) (2019-12-18)
+
+
+### Features
+
+* Share a link with special permissions ([#598](https://github.com/cozy/cozy-client/issues/598)) ([ab73de8](https://github.com/cozy/cozy-client/commit/ab73de8))
+
+
+
+# [9.0.0](https://github.com/cozy/cozy-client/compare/v8.10.1...v9.0.0) (2019-12-18)
+
+
+### Bug Fixes
+
+* Export triggers model ([6553bd9](https://github.com/cozy/cozy-client/commit/6553bd9))
+* Fail safe trigger state checks ([e313b08](https://github.com/cozy/cozy-client/commit/e313b08))
+
+
+### Code Refactoring
+
+* Singularize method names ([6ecfede](https://github.com/cozy/cozy-client/commit/6ecfede))
+
+
+### Features
+
+* Check if trigger errors are muted ([3d33ef6](https://github.com/cozy/cozy-client/commit/3d33ef6))
+* Destroy all removes the _type from the document ([1ca7ac7](https://github.com/cozy/cozy-client/commit/1ca7ac7))
+* Get accounts last error ([bed0445](https://github.com/cozy/cozy-client/commit/bed0445))
+* Get last trigger error ([4583e24](https://github.com/cozy/cozy-client/commit/4583e24))
+* Get last trigger exec date ([d208d88](https://github.com/cozy/cozy-client/commit/d208d88))
+* Get triggers account ([50b5f0d](https://github.com/cozy/cozy-client/commit/50b5f0d))
+* Mute account errors ([c2be0f9](https://github.com/cozy/cozy-client/commit/c2be0f9))
+
+
+### BREAKING CHANGES
+
+* The trigger model is now singular, update your import 
+statements
+
+
+
+## [8.10.1](https://github.com/cozy/cozy-client/compare/v8.10.0...v8.10.1) (2019-12-17)
+
+
+### Bug Fixes
+
+* Test if note ([dc80c34](https://github.com/cozy/cozy-client/commit/dc80c34))
+
+
+
+# [8.10.0](https://github.com/cozy/cozy-client/compare/v8.9.0...v8.10.0) (2019-12-17)
+
+
+### Features
+
+* Add Note model ([5b4f150](https://github.com/cozy/cozy-client/commit/5b4f150))
+
+
+
+# [8.9.0](https://github.com/cozy/cozy-client/compare/v8.8.1...v8.9.0) (2019-12-16)
+
+
+### Features
+
+* Add file model ([b83e58d](https://github.com/cozy/cozy-client/commit/b83e58d))
+
+
+
+## [8.8.1](https://github.com/cozy/cozy-client/compare/v8.8.0...v8.8.1) (2019-12-12)
+
+
+
+# [8.8.0](https://github.com/cozy/cozy-client/compare/v8.7.1...v8.8.0) (2019-12-12)
+
+
+### Bug Fixes
+
+* JSDoc warnings ([ac3d55a](https://github.com/cozy/cozy-client/commit/ac3d55a))
+
+
+### Features
+
+* Add mockClient creation for use in tests ([b2c7b40](https://github.com/cozy/cozy-client/commit/b2c7b40))
+
+
+
+## [8.7.1](https://github.com/cozy/cozy-client/compare/v8.7.0...v8.7.1) (2019-12-10)
+
+
+
+# [8.7.0](https://github.com/cozy/cozy-client/compare/v8.6.0...v8.7.0) (2019-12-10)
+
+
+### Features
+
+* Fix regeneratorRuntime ([#588](https://github.com/cozy/cozy-client/issues/588)) ([4612ad9](https://github.com/cozy/cozy-client/commit/4612ad9)), closes [#584](https://github.com/cozy/cozy-client/issues/584)
+
+
+
+# [8.6.0](https://github.com/cozy/cozy-client/compare/v8.5.1...v8.6.0) (2019-12-09)
+
+
+### Bug Fixes
+
+* Require regenerator-runtime from @babel/runtime/regenerator ([3de520a](https://github.com/cozy/cozy-client/commit/3de520a))
+
+
+### Features
+
+* Instance add method to check if already subscribed ([6fb6938](https://github.com/cozy/cozy-client/commit/6fb6938))
+
+
+
+## [8.5.1](https://github.com/cozy/cozy-client/compare/v8.5.0...v8.5.1) (2019-12-05)
+
+
+### Bug Fixes
+
+* Don't change my headers ([fa25142](https://github.com/cozy/cozy-client/commit/fa25142))
+
+
+
+# [8.5.0](https://github.com/cozy/cozy-client/compare/v8.4.0...v8.5.0) (2019-12-02)
+
+
+### Features
+
+* Export applications model ([5579f07](https://github.com/cozy/cozy-client/commit/5579f07))
+
+
+
+# [8.4.0](https://github.com/cozy/cozy-client/compare/v8.3.1...v8.4.0) (2019-11-29)
+
+
+### Features
+
+* Add checkForRevocation helper ([e62d62b](https://github.com/cozy/cozy-client/commit/e62d62b))
+* Add helper functions ([3d9d2dd](https://github.com/cozy/cozy-client/commit/3d9d2dd))
+
+
+
+## [8.3.1](https://github.com/cozy/cozy-client/compare/v8.3.0...v8.3.1) (2019-11-29)
+
+
+
+# [8.3.0](https://github.com/cozy/cozy-client/compare/v8.2.0...v8.3.0) (2019-11-28)
+
+
+### Features
+
+* Expose cozy client's version ([df53db0](https://github.com/cozy/cozy-client/commit/df53db0))
+
+
+
+# [8.2.0](https://github.com/cozy/cozy-client/compare/v8.1.0...v8.2.0) (2019-11-25)
+
+
+### Features
+
+* Instance model add buildPremiumLink ([722085d](https://github.com/cozy/cozy-client/commit/722085d))
+
+
+
+# [8.1.0](https://github.com/cozy/cozy-client/compare/v8.0.0...v8.1.0) (2019-11-25)
+
+
+### Features
+
+* Add shoulDisplayOffers method ([d1a3b34](https://github.com/cozy/cozy-client/commit/d1a3b34))
+
+
+
+# [8.0.0](https://github.com/cozy/cozy-client/compare/v7.10.0...v8.0.0) (2019-11-22)
+
+
+### Bug Fixes
+
+* SettingsCollection fix data response ([11edf5e](https://github.com/cozy/cozy-client/commit/11edf5e))
+
+
+### BREAKING CHANGES
+
+* SettingsCollection now returns the result in data : {}
+
+
+
+# [7.10.0](https://github.com/cozy/cozy-client/compare/v7.9.0...v7.10.0) (2019-11-12)
+
+
+### Features
+
+* Expose Q helper to build query definitions ([64f1924](https://github.com/cozy/cozy-client/commit/64f1924))
+
+
+
+# [7.9.0](https://github.com/cozy/cozy-client/compare/v7.8.0...v7.9.0) (2019-11-08)
+
+
+### Features
+
+* Add client creation for CLI ([d5c76cf](https://github.com/cozy/cozy-client/commit/d5c76cf))
+
+
+
+# [7.8.0](https://github.com/cozy/cozy-client/compare/v7.7.0...v7.8.0) (2019-10-31)
+
+
+### Features
+
+* Added a simple settings collection ([fa0c1d6](https://github.com/cozy/cozy-client/commit/fa0c1d6))
+
+
+
+# [7.7.0](https://github.com/cozy/cozy-client/compare/v7.6.0...v7.7.0) (2019-10-29)
+
+
+### Features
+
+* Log out a web client ([1569893](https://github.com/cozy/cozy-client/commit/1569893))
+
+
+
+# [7.6.0](https://github.com/cozy/cozy-client/compare/e3dcce6...v7.6.0) (2019-10-24)
+
+
+### Features
+
+* Export fetchPolicies directly ([#550](https://github.com/cozy/cozy-client/issues/550)) ([e3dcce6](https://github.com/cozy/cozy-client/commit/e3dcce6))
+
+
+
+
+
 # [11.1.0](https://github.com/cozy/cozy-client/compare/v11.0.1...v11.1.0) (2020-02-14)
 
 
