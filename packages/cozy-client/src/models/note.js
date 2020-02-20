@@ -1,4 +1,6 @@
 import { generateWebLink } from '../helpers'
+import { QueryDefinition } from '../../dist/queries/dsl'
+
 /**
  *
  * @param {string} notesAppUrl URL to the Notes App (https://notes.foo.mycozy.cloud)
@@ -29,12 +31,15 @@ export const generateUrlForNote = (notesAppUrl, file) => {
 
 export const fetchURL = async (client, file) => {
 
+  const queryDef = new QueryDefinition({
+    doctype: 'io.cozy.notes',
+    id: file.id,
+    method: 'fetchURL'
+  })
+
   const {
     data: { note_id, subdomain, protocol, instance, sharecode, public_name }
-  } = await client
-    .getStackClient()
-    .collection('io.cozy.notes')
-    .fetchURL({ _id: file.id })
+  } = await client.query(queryDef)
 
 
   if (sharecode) {
@@ -57,21 +62,4 @@ export const fetchURL = async (client, file) => {
       hash: `/n/${note_id}`
     })
   }
-}
-
-function orderedToObject(ordered) {
-  return ordered.reduce(function(acc, cur) {
-    acc[cur[0]] = cur[1]
-    return acc
-  }, {})
-}
-
-export const getDefaultSchema = () => {
-  nodes, marks
-}
-
-export const schemaObject = {
-  nodes: orderedToObject(nodes),
-  marks: orderedToObject(marks)
->>>>>>> feat: Add create to NotesCollection
 }

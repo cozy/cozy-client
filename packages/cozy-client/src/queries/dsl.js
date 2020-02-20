@@ -20,6 +20,7 @@ class QueryDefinition {
    * @param {number} skip - The number of docs to skip.
    * @param {number} cursor - The cursor to paginate views.
    * @param {number} bookmark - The bookmark to paginate mango queries.
+   * @param {string} method - Method name to execute on the collection
    */
   constructor({
     doctype,
@@ -34,7 +35,8 @@ class QueryDefinition {
     limit,
     skip,
     cursor,
-    bookmark
+    bookmark,
+    method
   } = {}) {
     this.doctype = doctype
     this.id = id
@@ -49,6 +51,7 @@ class QueryDefinition {
     this.skip = skip
     this.cursor = cursor
     this.bookmark = bookmark
+    this.method = method
   }
 
   /**
@@ -210,7 +213,8 @@ class QueryDefinition {
       limit: this.limit,
       skip: this.skip,
       cursor: this.cursor,
-      bookmark: this.bookmark
+      bookmark: this.bookmark,
+      method: this.method
     }
   }
 }
