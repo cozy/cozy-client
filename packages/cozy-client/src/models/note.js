@@ -26,7 +26,7 @@ export const generateUrlForNote = (notesAppUrl, file) => {
  * @param {object} file io.cozy.file object
  * @returns {string} url
  */
-export const fetchPublicUrl = async (client, file) => {
+export const fetchURL = async (client, file) => {
   const {
     data: { note_id, subdomain, protocol, instance, sharecode, public_name }
   } = await client
@@ -34,16 +34,22 @@ export const fetchPublicUrl = async (client, file) => {
     .collection('io.cozy.notes')
     .fetchURL({ _id: file.id })
   const searchParams = [['id', note_id]]
-  if (sharecode) searchParams.push(['sharecode', sharecode])
+  let pathname = ''
+  let publicArgs = {}
+  if (sharecode) {
+    searchParams.push(['sharecode', sharecode])
+    pathname = sharecode ? '/public/' : ''
+    publicArgs = { hash: `/n/${note_id}` }
+  }
   if (public_name) searchParams.push(['username', public_name])
-  const pathname = sharecode ? '/public/' : ''
+
   const url = generateWebLink({
     cozyUrl: `${protocol}://${instance}`,
     searchParams,
     pathname,
-    hash: `/n/${note_id}`,
     slug: 'notes',
-    subDomainType: subdomain
+    subDomainType: subdomain,
+    ...publicArgs
   })
   return url
 }

@@ -1,6 +1,6 @@
 import DocumentCollection from './DocumentCollection'
 import { uri } from './utils'
-import { getDefaultSchema } from './NotesSchema'
+import { getDefaultSchema as modelDefaultSchema } from './NotesSchema'
 export const NOTES_DOCTYPE = 'io.cozy.notes'
 export const NOTES_URL_DOCTYPE = 'io.cozy.notes.url'
 
@@ -56,8 +56,8 @@ class NotesCollection extends DocumentCollection {
   /**
    * Create a note
    *
-   * @param {Object} option 
-   * @param {String} option.dir_id dir_id where to create the note
+   * @param {object} option
+   * @param {string} option.dir_id dir_id where to create the note
    * @returns {{data, links, meta}} The JSON API conformant response.
    */
   async create({ dir_id }) {
@@ -66,12 +66,12 @@ class NotesCollection extends DocumentCollection {
         type: 'io.cozy.notes.documents',
         attributes: {
           title: '',
-          schema: getDefaultSchema(),
+          schema: modelDefaultSchema(),
           dir_id
         }
       }
     })
-    return  {
+    return {
       ...resp,
       data: normalizeNote(resp.data)
     }
@@ -97,11 +97,12 @@ class NotesCollection extends DocumentCollection {
     }
   }
   /**
-   * Returns promise mirror schema for a note 
-   * @returns {Object} schema
+   * Returns promise mirror schema for a note
+   *
+   * @returns {object} schema
    */
-  getDefaultSchema(){
-    return getDefaultSchema()
+  getDefaultSchema() {
+    return modelDefaultSchema()
   }
 }
 

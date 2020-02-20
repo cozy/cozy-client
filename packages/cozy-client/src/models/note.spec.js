@@ -13,7 +13,7 @@ describe('note model', () => {
     )
   })
 
-  describe('fetchPublicUrl', () => {
+  describe('fetchURL', () => {
     it('should build the right url from the stack response', async () => {
       const fetchURLspy = jest.fn()
       const mockedClient = {
@@ -26,12 +26,12 @@ describe('note model', () => {
       fetchURLspy.mockResolvedValue({
         data: { note_id: 1, protocol: 'https', instance: 'foo.mycozy' }
       })
-      const generatedUrl = await note.fetchPublicUrl(mockedClient, {
+      const generatedUrl = await note.fetchURL(mockedClient, {
         id: 1
       })
 
       expect(generatedUrl.toString()).toEqual(
-        'https://foo-notes.mycozy/?id=1#/n/1'
+        'https://foo-notes.mycozy/?id=1#/'
       )
 
       fetchURLspy.mockResolvedValue({
@@ -42,7 +42,7 @@ describe('note model', () => {
           sharecode: 'hahaha'
         }
       })
-      const generatedUrl2 = await note.fetchPublicUrl(mockedClient, {
+      const generatedUrl2 = await note.fetchURL(mockedClient, {
         id: 1
       })
 
@@ -59,7 +59,7 @@ describe('note model', () => {
           public_name: 'Crash'
         }
       })
-      const generatedUrl3 = await note.fetchPublicUrl(mockedClient, {
+      const generatedUrl3 = await note.fetchURL(mockedClient, {
         id: 1
       })
 

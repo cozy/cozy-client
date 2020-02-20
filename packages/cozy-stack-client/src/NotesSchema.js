@@ -526,5 +526,5 @@ export const marks = [
 ]
 
 export const getDefaultSchema = () => {
-    return {nodes, marks}
+  return { nodes, marks }
 }
