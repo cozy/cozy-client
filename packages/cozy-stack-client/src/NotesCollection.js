@@ -1,6 +1,7 @@
 import DocumentCollection from './DocumentCollection'
 import { uri } from './utils'
 import { getDefaultSchema as modelDefaultSchema } from './NotesSchema'
+
 export const NOTES_DOCTYPE = 'io.cozy.notes'
 export const NOTES_URL_DOCTYPE = 'io.cozy.notes.url'
 

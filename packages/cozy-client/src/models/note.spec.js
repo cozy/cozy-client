@@ -12,7 +12,6 @@ describe('note model', () => {
       `http://notes.cozy.tools/#/n/${noteDocument._id}`
     )
   })
-
   describe('fetchURL', () => {
     it('should build the right url from the stack response', async () => {
       const fetchURLspy = jest.fn()
@@ -26,6 +25,7 @@ describe('note model', () => {
       fetchURLspy.mockResolvedValue({
         data: { note_id: 1, protocol: 'https', instance: 'foo.mycozy' }
       })
+
       const generatedUrl = await note.fetchURL(mockedClient, {
         id: 1
       })
@@ -57,6 +57,7 @@ describe('note model', () => {
           public_name: 'Crash'
         }
       })
+
       const generatedUrl3 = await note.fetchURL(mockedClient, {
         id: 1
       })

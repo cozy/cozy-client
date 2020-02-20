@@ -26,13 +26,17 @@ export const generateUrlForNote = (notesAppUrl, file) => {
  * @param {object} file io.cozy.file object
  * @returns {string} url
  */
+
 export const fetchURL = async (client, file) => {
+
   const {
     data: { note_id, subdomain, protocol, instance, sharecode, public_name }
   } = await client
     .getStackClient()
     .collection('io.cozy.notes')
     .fetchURL({ _id: file.id })
+
+
   if (sharecode) {
     const searchParams = [['id', note_id]]
     searchParams.push(['sharecode', sharecode])
@@ -53,4 +57,21 @@ export const fetchURL = async (client, file) => {
       hash: `/n/${note_id}`
     })
   }
+}
+
+function orderedToObject(ordered) {
+  return ordered.reduce(function(acc, cur) {
+    acc[cur[0]] = cur[1]
+    return acc
+  }, {})
+}
+
+export const getDefaultSchema = () => {
+  nodes, marks
+}
+
+export const schemaObject = {
+  nodes: orderedToObject(nodes),
+  marks: orderedToObject(marks)
+>>>>>>> feat: Add create to NotesCollection
 }
