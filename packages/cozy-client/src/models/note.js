@@ -1,15 +1,24 @@
-import { Schema } from 'prosemirror-model'
 import { generateWebLink } from '../helpers'
-import { marks, nodes } from './note_schema'
 /**
  *
  * @param {string} notesAppUrl URL to the Notes App (https://notes.foo.mycozy.cloud)
  * @param {object} file io.cozy.files object
  */
-export const generateUrlForNote = (notesAppUrl, file) => {
-  return notesAppUrl + '#/n/' + file._id
+export const generatePrivateUrl = (notesAppUrl, file, options = {}) => {
+  const { returnUrl } = options
+  const url = new URL(notesAppUrl)
+  if (returnUrl) {
+    url.searchParams.set('returnUrl', returnUrl)
+  }
+  url.hash = `#/n/${file.id}`
+  return url.toString()
 }
-
+export const generateUrlForNote = (notesAppUrl, file) => {
+  console.warn(
+    'generateUrlForNote is deprecated. Please use models.note.generatePrivateUrl instead'
+  )
+  return generatePrivateUrl(notesAppUrl, file)
+}
 /**
  * Fetch and build an URL to open a note.
  *
@@ -17,7 +26,7 @@ export const generateUrlForNote = (notesAppUrl, file) => {
  * @param {object} file io.cozy.file object
  * @returns {string} url
  */
-export const fetchUrlToOpenANote = async (client, file) => {
+export const fetchPublicUrl = async (client, file) => {
   const {
     data: { note_id, subdomain, protocol, instance, sharecode, public_name }
   } = await client
@@ -38,53 +47,3 @@ export const fetchUrlToOpenANote = async (client, file) => {
   })
   return url
 }
-
-/**
- * @typedef {object} CozyClient
- *
- * Create a note and return the created object
- * @param {CozyClient} client
- * @param {string} dir_id
- */
-export function createNoteDocument(client, dir_id) {
-  return client.getStackClient().fetchJSON('POST', '/notes', {
-    data: {
-      type: 'io.cozy.notes.documents',
-      attributes: {
-        title: '',
-        schema: schemaOrdered,
-        dir_id
-      }
-    }
-  })
-}
-
-export const generateUrlForNoteWithReturnUrl = (
-  noteAppUrl,
-  file,
-  returnUrl
-) => {
-  const url = new URL(generateUrlForNote(noteAppUrl, file))
-  url.searchParams.set('returnUrl', returnUrl)
-  url.hash = `#/n/${file.id}`
-  return url
-}
-
-function orderedToObject(ordered) {
-  return ordered.reduce(function(acc, cur) {
-    acc[cur[0]] = cur[1]
-    return acc
-  }, {})
-}
-
-export const schemaOrdered = {
-  nodes,
-  marks
-}
-
-export const schemaObject = {
-  nodes: orderedToObject(nodes),
-  marks: orderedToObject(marks)
-}
-
-export const schema = new Schema(schemaObject)

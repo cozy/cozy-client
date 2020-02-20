@@ -8,12 +8,12 @@ describe('note model', () => {
     }
     const notesAppUrl = 'http://notes.cozy.tools/'
 
-    expect(note.generateUrlForNote(notesAppUrl, noteDocument)).toEqual(
+    expect(note.generatePrivateUrl(notesAppUrl, noteDocument)).toEqual(
       `http://notes.cozy.tools/#/n/${noteDocument._id}`
     )
   })
 
-  describe('fetchUrlToOpenANote', () => {
+  describe('fetchPublicUrl', () => {
     it('should build the right url from the stack response', async () => {
       const fetchURLspy = jest.fn()
       const mockedClient = {
@@ -26,7 +26,7 @@ describe('note model', () => {
       fetchURLspy.mockResolvedValue({
         data: { note_id: 1, protocol: 'https', instance: 'foo.mycozy' }
       })
-      const generatedUrl = await note.fetchUrlToOpenANote(mockedClient, {
+      const generatedUrl = await note.fetchPublicUrl(mockedClient, {
         id: 1
       })
 
@@ -42,7 +42,7 @@ describe('note model', () => {
           sharecode: 'hahaha'
         }
       })
-      const generatedUrl2 = await note.fetchUrlToOpenANote(mockedClient, {
+      const generatedUrl2 = await note.fetchPublicUrl(mockedClient, {
         id: 1
       })
 
@@ -59,7 +59,7 @@ describe('note model', () => {
           public_name: 'Crash'
         }
       })
-      const generatedUrl3 = await note.fetchUrlToOpenANote(mockedClient, {
+      const generatedUrl3 = await note.fetchPublicUrl(mockedClient, {
         id: 1
       })
 
@@ -69,15 +69,15 @@ describe('note model', () => {
     })
   })
 
-  describe('generateUrlForNoteWithReturnUrl', () => {
+  describe('generatePrivateUrl', () => {
     it('should generate an URL with the returnkey', () => {
-      const generatedUrl = note.generateUrlForNoteWithReturnUrl(
+      const generatedUrl = note.generatePrivateUrl(
         'https://notes.cozy.foo',
         {
           id: 1,
           _id: 1
         },
-        'https://drive.cozy.foo/#/folder/1'
+        { returnUrl: 'https://drive.cozy.foo/#/folder/1' }
       )
 
       expect(generatedUrl.toString()).toEqual(
