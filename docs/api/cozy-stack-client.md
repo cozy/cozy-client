@@ -706,7 +706,9 @@ Implements `DocumentCollection` API to interact with the /notes endpoint of the 
 * [NotesCollection](#NotesCollection)
     * [.all()](#NotesCollection+all) ⇒ <code>Object</code>
     * [.destroy(note)](#NotesCollection+destroy) ⇒ <code>Object</code>
+    * [.create(option)](#NotesCollection+create) ⇒ <code>Object</code>
     * [.fetchURL(note)](#NotesCollection+fetchURL) ⇒ <code>Object</code>
+    * [.getDefaultSchema()](#NotesCollection+getDefaultSchema) ⇒ <code>Object</code>
 
 <a name="NotesCollection+all"></a>
 
@@ -728,6 +730,19 @@ Destroys the note on the server
 | note | <code>io.cozy.notes</code> | The note document to destroy |
 | note._id | <code>string</code> | The note's id |
 
+<a name="NotesCollection+create"></a>
+
+### notesCollection.create(option) ⇒ <code>Object</code>
+Create a note
+
+**Kind**: instance method of [<code>NotesCollection</code>](#NotesCollection)  
+**Returns**: <code>Object</code> - The JSON API conformant response.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| option | <code>Object</code> |  |
+| option.dir_id | <code>String</code> | dir_id where to create the note |
+
 <a name="NotesCollection+fetchURL"></a>
 
 ### notesCollection.fetchURL(note) ⇒ <code>Object</code>
@@ -742,6 +757,13 @@ Returns the details to build the note's url
 | note | <code>io.cozy.notes</code> | The note document to open |
 | note._id | <code>string</code> | The note's id |
 
+<a name="NotesCollection+getDefaultSchema"></a>
+
+### notesCollection.getDefaultSchema() ⇒ <code>Object</code>
+Returns promise mirror schema for a note
+
+**Kind**: instance method of [<code>NotesCollection</code>](#NotesCollection)  
+**Returns**: <code>Object</code> - schema  
 <a name="OAuthClient"></a>
 
 ## OAuthClient

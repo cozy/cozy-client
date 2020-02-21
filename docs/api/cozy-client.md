@@ -102,8 +102,11 @@ example.</p>
 <dt><a href="#buildPremiumLink">buildPremiumLink</a></dt>
 <dd><p>Returns the link to the Premium page on the Cozy&#39;s Manager</p>
 </dd>
-<dt><a href="#generateUrlForNote">generateUrlForNote</a></dt>
+<dt><a href="#generatePrivateUrl">generatePrivateUrl</a></dt>
 <dd></dd>
+<dt><a href="#fetchPublicUrl">fetchPublicUrl</a> ⇒ <code>string</code></dt>
+<dd><p>Fetch and build an URL to open a note.</p>
+</dd>
 <dt><a href="#triggerStates">triggerStates</a></dt>
 <dd><p>Trigger states come from /jobs/triggers</p>
 </dd>
@@ -1499,15 +1502,28 @@ Returns the link to the Premium page on the Cozy's Manager
 | --- | --- |
 | instanceInfo | <code>object</code> | 
 
-<a name="generateUrlForNote"></a>
+<a name="generatePrivateUrl"></a>
 
-## generateUrlForNote
+## generatePrivateUrl
 **Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | notesAppUrl | <code>string</code> | URL to the Notes App (https://notes.foo.mycozy.cloud) |
 | file | <code>object</code> | io.cozy.files object |
+
+<a name="fetchPublicUrl"></a>
+
+## fetchPublicUrl ⇒ <code>string</code>
+Fetch and build an URL to open a note.
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - url  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| client | <code>object</code> | CozyClient instance |
+| file | <code>object</code> | io.cozy.file object |
 
 <a name="triggerStates"></a>
 
