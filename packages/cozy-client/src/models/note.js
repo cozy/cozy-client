@@ -33,23 +33,24 @@ export const fetchURL = async (client, file) => {
     .getStackClient()
     .collection('io.cozy.notes')
     .fetchURL({ _id: file.id })
-  const searchParams = [['id', note_id]]
-  let pathname = ''
-  let publicArgs = {}
   if (sharecode) {
+    const searchParams = [['id', note_id]]
     searchParams.push(['sharecode', sharecode])
-    pathname = sharecode ? '/public/' : ''
-    publicArgs = { hash: `/n/${note_id}` }
+    if (public_name) searchParams.push(['username', public_name])
+    return generateWebLink({
+      cozyUrl: `${protocol}://${instance}`,
+      searchParams,
+      pathname: '/public/',
+      slug: 'notes',
+      subDomainType: subdomain
+    })
+  } else {
+    return generateWebLink({
+      cozyUrl: `${protocol}://${instance}`,
+      pathname: '',
+      slug: 'notes',
+      subDomainType: subdomain,
+      hash: `/n/${note_id}`
+    })
   }
-  if (public_name) searchParams.push(['username', public_name])
-
-  const url = generateWebLink({
-    cozyUrl: `${protocol}://${instance}`,
-    searchParams,
-    pathname,
-    slug: 'notes',
-    subDomainType: subdomain,
-    ...publicArgs
-  })
-  return url
 }

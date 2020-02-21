@@ -30,9 +30,7 @@ describe('note model', () => {
         id: 1
       })
 
-      expect(generatedUrl.toString()).toEqual(
-        'https://foo-notes.mycozy/?id=1#/'
-      )
+      expect(generatedUrl.toString()).toEqual('https://foo-notes.mycozy/#/n/1')
 
       fetchURLspy.mockResolvedValue({
         data: {
@@ -47,7 +45,7 @@ describe('note model', () => {
       })
 
       expect(generatedUrl2.toString()).toEqual(
-        'https://foo-notes.mycozy/public/?id=1&sharecode=hahaha#/n/1'
+        'https://foo-notes.mycozy/public/?id=1&sharecode=hahaha#/'
       )
 
       fetchURLspy.mockResolvedValue({
@@ -64,7 +62,7 @@ describe('note model', () => {
       })
 
       expect(generatedUrl3.toString()).toEqual(
-        'https://foo-notes.mycozy/public/?id=1&sharecode=hahaha&username=Crash#/n/1'
+        'https://foo-notes.mycozy/public/?id=1&sharecode=hahaha&username=Crash#/'
       )
     })
   })
