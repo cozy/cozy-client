@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [11.2.1](https://github.com/cozy/cozy-client/compare/v11.2.0...v11.2.1) (2020-02-21)
+
+
+### Bug Fixes
+
+* Invert private / public params for a note url ([adf9fac](https://github.com/cozy/cozy-client/commit/adf9fac))
+
+
+
+
+
 # [11.2.0](https://github.com/cozy/cozy-client/compare/v11.1.1...v11.2.0) (2020-02-21)
 
 
