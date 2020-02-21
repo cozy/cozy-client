@@ -104,7 +104,7 @@ example.</p>
 </dd>
 <dt><a href="#generatePrivateUrl">generatePrivateUrl</a></dt>
 <dd></dd>
-<dt><a href="#fetchPublicUrl">fetchPublicUrl</a> ⇒ <code>string</code></dt>
+<dt><a href="#fetchURL">fetchURL</a> ⇒ <code>string</code></dt>
 <dd><p>Fetch and build an URL to open a note.</p>
 </dd>
 <dt><a href="#triggerStates">triggerStates</a></dt>
@@ -1512,9 +1512,9 @@ Returns the link to the Premium page on the Cozy's Manager
 | notesAppUrl | <code>string</code> | URL to the Notes App (https://notes.foo.mycozy.cloud) |
 | file | <code>object</code> | io.cozy.files object |
 
-<a name="fetchPublicUrl"></a>
+<a name="fetchURL"></a>
 
-## fetchPublicUrl ⇒ <code>string</code>
+## fetchURL ⇒ <code>string</code>
 Fetch and build an URL to open a note.
 
 **Kind**: global constant  
