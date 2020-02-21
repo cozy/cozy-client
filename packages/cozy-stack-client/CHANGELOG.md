@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.2.0](https://github.com/cozy/cozy-client/compare/v11.1.1...v11.2.0) (2020-02-21)
+
+
+### Features
+
+* Add create to NotesCollection ([77ab427](https://github.com/cozy/cozy-client/commit/77ab427))
+
+
+
+
+
 # [11.1.0](https://github.com/cozy/cozy-client/compare/v11.0.1...v11.1.0) (2020-02-14)
 
 
