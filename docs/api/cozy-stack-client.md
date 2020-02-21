@@ -708,7 +708,7 @@ Implements `DocumentCollection` API to interact with the /notes endpoint of the 
     * [.destroy(note)](#NotesCollection+destroy) ⇒ <code>Object</code>
     * [.create(option)](#NotesCollection+create) ⇒ <code>Object</code>
     * [.fetchURL(note)](#NotesCollection+fetchURL) ⇒ <code>Object</code>
-    * [.getDefaultSchema()](#NotesCollection+getDefaultSchema) ⇒ <code>Object</code>
+    * [.getDefaultSchema()](#NotesCollection+getDefaultSchema) ⇒ <code>object</code>
 
 <a name="NotesCollection+all"></a>
 
@@ -740,8 +740,8 @@ Create a note
 
 | Param | Type | Description |
 | --- | --- | --- |
-| option | <code>Object</code> |  |
-| option.dir_id | <code>String</code> | dir_id where to create the note |
+| option | <code>object</code> |  |
+| option.dir_id | <code>string</code> | dir_id where to create the note |
 
 <a name="NotesCollection+fetchURL"></a>
 
@@ -759,11 +759,11 @@ Returns the details to build the note's url
 
 <a name="NotesCollection+getDefaultSchema"></a>
 
-### notesCollection.getDefaultSchema() ⇒ <code>Object</code>
+### notesCollection.getDefaultSchema() ⇒ <code>object</code>
 Returns promise mirror schema for a note
 
 **Kind**: instance method of [<code>NotesCollection</code>](#NotesCollection)  
-**Returns**: <code>Object</code> - schema  
+**Returns**: <code>object</code> - schema  
 <a name="OAuthClient"></a>
 
 ## OAuthClient
