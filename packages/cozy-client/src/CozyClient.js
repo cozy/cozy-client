@@ -36,6 +36,7 @@ import zip from 'lodash/zip'
 import forEach from 'lodash/forEach'
 import get from 'lodash/get'
 import MicroEE from 'microee'
+import MicroEE from 'microee'
 
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
 
