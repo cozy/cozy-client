@@ -1151,5 +1151,21 @@ describe('CozyClient', () => {
 
       document.querySelector = globalQuerySelectorBefore
     })
+
+    it('should load the single DOM dataset', () => {
+      const options = { domain: 'cozy.tools', token: 'abc123' }
+      const dataset = {
+        cozy: JSON.stringify(options)
+      }
+
+      const globalQuerySelectorBefore = document.querySelector
+      document.querySelector = jest.fn().mockReturnValue({ dataset })
+
+      const client = new CozyClient({})
+      client.loadInstanceOptionsFromDOM()
+      expect(client.getInstanceOptions()).toEqual(options)
+
+      document.querySelector = globalQuerySelectorBefore
+    })
   })
 })
