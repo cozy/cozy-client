@@ -1179,7 +1179,9 @@ instantiation of the client.`
    */
   loadInstanceOptionsFromDOM(selector = '[role=application]') {
     const root = document.querySelector(selector)
-    this.instanceOptions = { ...root.dataset } // convert from DOMStringMap to plain object
+    this.instanceOptions = root.dataset.cozy
+      ? JSON.parse(root.dataset.cozy)
+      : { ...root.dataset } // convert from DOMStringMap to plain object
   }
 
   /**
