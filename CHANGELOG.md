@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.4.0](https://github.com/cozy/cozy-client/compare/v11.3.0...v11.4.0) (2020-02-24)
+
+
+### Bug Fixes
+
+* Don't expose React from node entry point ([e4bc988](https://github.com/cozy/cozy-client/commit/e4bc988))
+
+
+### Features
+
+* Add useAppLinkWithStoreFallback hook ([7c4dcd2](https://github.com/cozy/cozy-client/commit/7c4dcd2))
+
+
+
+
+
 # [11.3.0](https://github.com/cozy/cozy-client/compare/v11.2.1...v11.3.0) (2020-02-24)
 
 
