@@ -33,46 +33,6 @@
     "clean": "rm -rf packages/*/dist",
     "docs": "node scripts/docs.js"
   },
-  "jest": {
-    "projects": [
-      {
-        "displayName": "Test JS files",
-        "testRegex": [
-          "(\\.|/)(test|spec)\\.js$"
-        ],
-        "testURL": "http://localhost",
-        "setupFiles": [
-          "./jest.setup.js",
-          "jest-localstorage-mock"
-        ],
-        "setupFilesAfterEnv": [
-          "<rootDir>/packages/cozy-stack-client/src/__tests__/setup.js"
-        ],
-        "modulePathIgnorePatterns": [
-          "<rootDir>/packages/.*/dist/"
-        ]
-        
-      },
-      {
-        "displayName": "Test JSX files",
-        "testMatch": [
-          "**/(*.)(spec|test).jsx"
-        ],
-        "testURL": "http://localhost",
-        "setupFiles": [
-          "./jest.setup.js",
-          "jest-localstorage-mock"
-        ],
-        "setupFilesAfterEnv": [
-          "<rootDir>/packages/cozy-stack-client/src/__tests__/setup.js"
-        ],
-        "browser": true,
-        "modulePathIgnorePatterns": [
-          "<rootDir>/packages/.*/dist/"
-        ]
-      }
-    ]
-  },
   "commitlint": {
     "extends": [
       "cozy"
