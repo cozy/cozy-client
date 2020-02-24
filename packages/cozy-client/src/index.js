@@ -38,3 +38,5 @@ export { models }
 export { default as fetchPolicies } from './policies'
 
 export * from './mock'
+
+export * from './hooks'
