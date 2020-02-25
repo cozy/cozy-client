@@ -29,6 +29,7 @@ describe('createClientInteractive', () => {
       servers.push(server)
       return server
     })
+    fs.writeFileSync.mockClear()
   })
 
   afterEach(() => {
@@ -55,7 +56,7 @@ describe('createClientInteractive', () => {
     OAuthClient.prototype.fetchAccessToken.mockRestore()
   })
 
-  const setup = () => {
+  const setup = ({ getSavedCredentials } = {}) => {
     let clientPromise = createClientInteractive(
       {
         uri: 'http://cozy.tools:8080',
@@ -68,7 +69,8 @@ describe('createClientInteractive', () => {
         }
       },
       {
-        fs
+        fs,
+        getSavedCredentials
       }
     )
 
@@ -158,5 +160,30 @@ describe('createClientInteractive', () => {
       softwareID: 'fake-software-id',
       softwareVersion: '1.1.0'
     })
+  })
+
+  it('allows to customize target token file path', async () => {
+    fs.existsSync.mockReturnValue(false)
+    fs.readFileSync.mockReturnValue(
+      JSON.stringify({
+        token: {
+          accessToken: 'saved-access-token',
+          refreshToken: 'saved-refresh-token'
+        },
+        oauthOptions: {
+          clientName: 'fake-client-name',
+          clientURI: 'http://testcozy.mycozy.cloud',
+          redirectURI: 'http://localhost:3333/do_access',
+          softwareID: 'fake-software-id',
+          softwareVersion: '1.1.0',
+          clientID: 'client-1337'
+        }
+      })
+    )
+    const { clientPromise } = setup({
+      getSavedCredentials: () => 'custom file path'
+    })
+    await clientPromise
+    expect(fs.writeFileSync.mock.calls[0][0]).toBe('custom file path')
   })
 })
