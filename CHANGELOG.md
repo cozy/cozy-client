@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [11.4.1](https://github.com/cozy/cozy-client/compare/v11.4.0...v11.4.1) (2020-02-25)
+
+
+### Bug Fixes
+
+* Don't import from cozy-client. Import from path ([93978ff](https://github.com/cozy/cozy-client/commit/93978ff))
+
+
+
+
+
 # [11.4.0](https://github.com/cozy/cozy-client/compare/v11.3.0...v11.4.0) (2020-02-24)
 
 
