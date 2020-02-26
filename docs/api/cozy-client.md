@@ -93,6 +93,8 @@ example.</p>
 <dd></dd>
 <dt><a href="#isNote">isNote</a></dt>
 <dd></dd>
+<dt><a href="#isShortcurt">isShortcurt</a> ⇒ <code>boolean</code></dt>
+<dd></dd>
 <dt><a href="#shouldDisplayOffers">shouldDisplayOffers</a></dt>
 <dd><p>Returns whether an instance is concerned by our offers</p>
 </dd>
@@ -1458,6 +1460,16 @@ getAppDisplayName - Combines the translated prefix and name of the app into a si
 
 ## isNote
 **Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | <code>File</code> | io.cozy.files |
+
+<a name="isShortcurt"></a>
+
+## isShortcurt ⇒ <code>boolean</code>
+**Kind**: global constant  
+**Returns**: <code>boolean</code> - true if the file is a shortcut  
 
 | Param | Type | Description |
 | --- | --- | --- |

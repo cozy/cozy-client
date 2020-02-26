@@ -30,6 +30,21 @@ describe('File Model', () => {
     expect(file.isNote(note2)).toBe(true)
   })
 
+  it('test if a file is a shortcut or not', () => {
+    const shortcut = {
+      type: 'file',
+      class: 'shortcut'
+    }
+
+    const image = {
+      type: 'file',
+      class: 'image'
+    }
+
+    expect(file.isShortcurt(shortcut)).toBe(true)
+    expect(file.isShortcurt(image)).toBe(false)
+  })
+
   describe('normalizeFile', () => {
     const id = 'uuid123'
     const type = 'io.cozy.files'
