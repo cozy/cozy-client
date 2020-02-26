@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.5.0](https://github.com/cozy/cozy-client/compare/v11.4.1...v11.5.0) (2020-02-26)
+
+
+### Features
+
+* Add useCapabilities hook ([e8bd041](https://github.com/cozy/cozy-client/commit/e8bd041))
+
+
+
+
+
 ## [11.4.1](https://github.com/cozy/cozy-client/compare/v11.4.0...v11.4.1) (2020-02-25)
 
 
