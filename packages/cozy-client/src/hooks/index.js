@@ -1,2 +1,3 @@
 import useAppLinkWithStoreFallback from './useAppLinkWithStoreFallback'
-export { useAppLinkWithStoreFallback }
+import useCapabilities from './useCapabilities'
+export { useAppLinkWithStoreFallback, useCapabilities }
