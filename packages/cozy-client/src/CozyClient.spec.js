@@ -1152,4 +1152,11 @@ describe('CozyClient', () => {
       document.querySelector = globalQuerySelectorBefore
     })
   })
+
+  describe('serialization', () => {
+    it('should be snapshotted in a simplified format', () => {
+      const client = new CozyClient({ uri: 'http://localhost:8080' })
+      expect(client).toMatchSnapshot()
+    })
+  })
 })

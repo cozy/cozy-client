@@ -20,3 +20,9 @@ Array [
   },
 ]
 `;
+
+exports[`CozyClient serialization should be snapshotted in a simplified format 1`] = `
+CozyClient {
+  "uri": "http://localhost:8080",
+}
+`;
