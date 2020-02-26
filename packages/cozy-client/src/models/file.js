@@ -34,6 +34,14 @@ export const isNote = file => {
 }
 
 /**
+ *
+ * @param {File} file io.cozy.files
+ * @returns {boolean} true if the file is a shortcut
+ */
+export const isShortcurt = file => {
+  return file && file.class === 'shortcut'
+}
+/**
  * Normalizes an object representing a io.cozy.files object
  *
  * Ensures existence of `_id` and `_type`
