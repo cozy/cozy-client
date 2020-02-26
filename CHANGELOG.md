@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.6.0](https://github.com/cozy/cozy-client/compare/v11.5.0...v11.6.0) (2020-02-26)
+
+
+### Features
+
+* Add isShortcut method ([b9b919c](https://github.com/cozy/cozy-client/commit/b9b919c))
+
+
+
+
+
 # [11.5.0](https://github.com/cozy/cozy-client/compare/v11.4.1...v11.5.0) (2020-02-26)
 
 
