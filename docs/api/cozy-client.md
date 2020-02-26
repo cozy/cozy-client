@@ -95,6 +95,15 @@ example.</p>
 <dd></dd>
 <dt><a href="#isShortcurt">isShortcurt</a> ⇒ <code>boolean</code></dt>
 <dd></dd>
+<dt><a href="#ensureMagicFolder">ensureMagicFolder</a> ⇒ <code>object</code></dt>
+<dd><p>Returns a &quot;Magic Folder&quot;, given its id. See <a href="https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.apps/#special-iocozyapps-doctypes">https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.apps/#special-iocozyapps-doctypes</a></p>
+</dd>
+<dt><a href="#createFolderWithReference">createFolderWithReference</a> ⇒ <code>object</code></dt>
+<dd><p>Create a folder with a reference to the given document</p>
+</dd>
+<dt><a href="#getReferencedFolder">getReferencedFolder</a> ⇒ <code>Array</code></dt>
+<dd><p>Returns an array of folder referenced by the given document</p>
+</dd>
 <dt><a href="#shouldDisplayOffers">shouldDisplayOffers</a></dt>
 <dd><p>Returns whether an instance is concerned by our offers</p>
 </dd>
@@ -1474,6 +1483,48 @@ getAppDisplayName - Combines the translated prefix and name of the app into a si
 | Param | Type | Description |
 | --- | --- | --- |
 | file | <code>File</code> | io.cozy.files |
+
+<a name="ensureMagicFolder"></a>
+
+## ensureMagicFolder ⇒ <code>object</code>
+Returns a "Magic Folder", given its id. See https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.apps/#special-iocozyapps-doctypes
+
+**Kind**: global constant  
+**Returns**: <code>object</code> - Folder document  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| client | <code>object</code> | cozy-client instance |
+| id | <code>string</code> | Magic Folder id. `CozyFolder.magicFolders` contains the ids of folders that can be magic folders. |
+| path | <code>string</code> | Default path to use if magic folder does not exist |
+
+<a name="createFolderWithReference"></a>
+
+## createFolderWithReference ⇒ <code>object</code>
+Create a folder with a reference to the given document
+
+**Kind**: global constant  
+**Returns**: <code>object</code> - Folder document  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| client | <code>object</code> | cozy-client instance |
+| path | <code>string</code> | Folder path |
+| document | <code>object</code> | Document to make reference to. Any doctype. |
+
+<a name="getReferencedFolder"></a>
+
+## getReferencedFolder ⇒ <code>Array</code>
+Returns an array of folder referenced by the given document
+
+**Kind**: global constant  
+**Returns**: <code>Array</code> - Array of folders referenced with the given
+document  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| client | <code>object</code> | cozy-client instance |
+| document | <code>object</code> | Document to get references from |
 
 <a name="shouldDisplayOffers"></a>
 

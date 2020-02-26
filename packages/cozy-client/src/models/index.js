@@ -2,6 +2,7 @@ import * as trigger from './trigger'
 import * as instance from './instance'
 import * as applications from './applications'
 import * as file from './file'
+import * as folder from './folder'
 import * as account from './account'
 import * as note from './note'
 import * as permission from './permission'
@@ -16,6 +17,7 @@ export {
   instance,
   applications,
   file,
+  folder,
   note,
   account,
   accounts,
