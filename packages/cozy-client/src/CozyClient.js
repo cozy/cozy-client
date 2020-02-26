@@ -36,6 +36,7 @@ import zip from 'lodash/zip'
 import forEach from 'lodash/forEach'
 import get from 'lodash/get'
 import MicroEE from 'microee'
+import { CozyClient as SnapshotClient } from './testing/snapshots'
 
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
 
@@ -1196,6 +1197,10 @@ instantiation of the client.`
     Object.entries(data).forEach(([doctype, data]) => {
       this.dispatch(receiveQueryResult(null, { data }))
     })
+  }
+
+  toJSON() {
+    return new SnapshotClient({ uri: this.options.uri })
   }
 }
 CozyClient.fetchPolicies = fetchPolicies
