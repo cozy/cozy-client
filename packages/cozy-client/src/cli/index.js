@@ -63,7 +63,12 @@ const mkServerFlowCallback = serverOptions => authenticationURL =>
           'debug',
           'OAuth callback server started, waiting for authentication'
         )
-        opn(authenticationURL, { wait: false })
+        if (serverOptions.shouldOpenAuthenticationPage !== false) {
+          opn(authenticationURL, { wait: false })
+        }
+        if (serverOptions.onListen) {
+          serverOptions.onListen({ authenticationURL })
+        }
       }
     })
 
