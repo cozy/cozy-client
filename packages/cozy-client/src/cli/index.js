@@ -192,4 +192,22 @@ const createClientInteractive = (clientOptions, serverOpts) => {
   })
 }
 
+const main = async () => {
+  const client = await createClientInteractive({
+    scope: ['io.cozy.files'],
+    uri: 'http://cozy.tools:8080',
+    oauth: {
+      softwareID: 'io.cozy.client.cli'
+    }
+  })
+  console.log(client.toJSON())
+}
+
+if (require.main === module) {
+  main().catch(e => {
+    console.error(e)
+    process.exit(1)
+  })
+}
+
 export { createClientInteractive }
