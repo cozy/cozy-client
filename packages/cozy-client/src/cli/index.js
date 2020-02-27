@@ -19,9 +19,6 @@ const createCallbackServer = serverOptions => {
       serverOptions.onAuthentication(request.url)
       response.write('Authentication successful, you can close this page.')
       response.end()
-      setTimeout(() => {
-        server.destroy()
-      }, 1000)
     }
   })
   server.listen(serverOptions.port, () => {
@@ -46,18 +43,20 @@ const createCallbackServer = serverOptions => {
  */
 const mkServerFlowCallback = serverOptions => authenticationURL =>
   new Promise((resolve, reject) => {
+    let rejectTimeout, successTimeout
     const server = createCallbackServer({
       ...serverOptions,
       onAuthentication: callbackURL => {
         log('debug', 'Authenticated, Shutting server down')
-        resolve('http://localhost:8000/' + callbackURL)
-        setTimeout(() => {
+        successTimeout = setTimeout(() => {
           // Is there a way to call destroy only after all requests have
           // been completely served ? Otherwise we close the server while
           // the successful oauth page is being served and the page does
           // not get loaded on the client side.
           server.destroy()
-        }, 1000)
+          resolve('http://localhost:8000/' + callbackURL)
+          clearTimeout(rejectTimeout)
+        }, 300)
       },
       onListen: () => {
         log(
@@ -68,7 +67,9 @@ const mkServerFlowCallback = serverOptions => authenticationURL =>
       }
     })
 
-    setTimeout(() => {
+    rejectTimeout = setTimeout(() => {
+      clearTimeout(successTimeout)
+      server.destroy()
       reject('Timeout for authentication')
     }, 30 * 1000)
   })
