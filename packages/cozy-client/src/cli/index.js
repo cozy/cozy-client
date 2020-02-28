@@ -13,16 +13,29 @@ const log = logger.namespace('create-cli-client')
 global.fetch = require('isomorphic-fetch')
 global.btoa = require('btoa')
 
+/**
+ * Creates and starts and HTTP server suitable for OAuth authentication
+ *
+ * @param  {Function} serverOptions.onAuthentication - Additional callback called
+ * when the user authenticates
+ * @param  {Function} serverOptions.route - Route used for authentication
+ * @param  {Function} serverOptions.route - Port on which the server will listen
+ * @param  {Function} serverOptions.onListen - Callback called when the
+ * server starts
+ *
+ * @private
+ */
 const createCallbackServer = serverOptions => {
+  const { route, onListen, onAuthentication, port } = serverOptions
   const server = http.createServer((request, response) => {
-    if (request.url.indexOf(serverOptions.route) === 0) {
-      serverOptions.onAuthentication(request.url)
+    if (request.url.indexOf(route) === 0) {
+      onAuthentication(request.url)
       response.write('Authentication successful, you can close this page.')
       response.end()
     }
   })
-  server.listen(serverOptions.port, () => {
-    serverOptions.onListen()
+  server.listen(port, () => {
+    onListen()
   })
   enableDestroy(server)
   return server
@@ -38,6 +51,13 @@ const createCallbackServer = serverOptions => {
  *
  * When the server is started, the authentication page is opened on the
  * desktop browser of the user.
+ *
+ * @param {Integer} serverOptions.port - Port used for the OAuth callback server
+ * @param {Function} serverOptions.onAuthentication - Callback when the user authenticates
+ * @param {Function} serverOptions.onListen - Callback called with the authentication URL
+ * when the server starts
+ * @param {boolean} serverOptions.shouldOpenAuthenticationPage - Whether the authentication
+ * page should be automatically opened (default: true)
  *
  * @private
  */
