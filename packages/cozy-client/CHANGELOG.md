@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [12.1.0](https://github.com/cozy/cozy-client/compare/v12.0.0...v12.1.0) (2020-02-28)
+
+
+### Bug Fixes
+
+* Remove open handles after resolve/reject ([b145056](https://github.com/cozy/cozy-client/commit/b145056))
+
+
+### Features
+
+* Add onListen callback + option to disable authentication page open ([7c6f787](https://github.com/cozy/cozy-client/commit/7c6f787))
+* Add test CLI for createClientInteractive ([91648e4](https://github.com/cozy/cozy-client/commit/91648e4))
+
+
+
+
+
 # [12.0.0](https://github.com/cozy/cozy-client/compare/v11.6.0...v12.0.0) (2020-02-26)
 
 
