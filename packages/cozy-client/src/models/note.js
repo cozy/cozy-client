@@ -1,4 +1,6 @@
 import { generateWebLink } from '../helpers'
+import { QueryDefinition } from '../../dist/queries/dsl'
+
 /**
  *
  * @param {string} notesAppUrl URL to the Notes App (https://notes.foo.mycozy.cloud)
@@ -26,13 +28,20 @@ export const generateUrlForNote = (notesAppUrl, file) => {
  * @param {object} file io.cozy.file object
  * @returns {string} url
  */
+
 export const fetchURL = async (client, file) => {
+
+  const queryDef = new QueryDefinition({
+    doctype: 'io.cozy.notes',
+    id: file.id,
+    method: 'fetchURL'
+  })
+
   const {
     data: { note_id, subdomain, protocol, instance, sharecode, public_name }
-  } = await client
-    .getStackClient()
-    .collection('io.cozy.notes')
-    .fetchURL({ _id: file.id })
+  } = await client.query(queryDef)
+
+
   if (sharecode) {
     const searchParams = [['id', note_id]]
     searchParams.push(['sharecode', sharecode])

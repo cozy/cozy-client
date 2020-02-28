@@ -28,17 +28,19 @@ export default class StackLink extends CozyLink {
   }
 
   executeQuery(query) {
-    const { doctype, selector, id, ids, referenced, ...options } = query
+    const { doctype, selector, id, ids, referenced, method, ...options } = query
     if (!doctype) {
       console.warn('Bad query', query)
       throw new Error('No doctype found in a query definition')
     }
     const collection = this.stackClient.collection(doctype)
     if (id) {
-      return collection.get(id)
+      if (!method) return collection.get(id)
+      return collection[method](id)
     }
     if (ids) {
-      return collection.getAll(ids)
+      if (!method) return collection.getAll(ids)
+      return collection[method](id)
     }
     if (referenced) {
       return collection.findReferencedBy(referenced, options)
