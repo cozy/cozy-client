@@ -13,19 +13,29 @@ const log = logger.namespace('create-cli-client')
 global.fetch = require('isomorphic-fetch')
 global.btoa = require('btoa')
 
+/**
+ * Creates and starts and HTTP server suitable for OAuth authentication
+ *
+ * @param  {Function} serverOptions.onAuthentication - Additional callback called
+ * when the user authenticates
+ * @param  {Function} serverOptions.route - Route used for authentication
+ * @param  {Function} serverOptions.route - Port on which the server will listen
+ * @param  {Function} serverOptions.onListen - Callback called when the
+ * server starts
+ *
+ * @private
+ */
 const createCallbackServer = serverOptions => {
+  const { route, onListen, onAuthentication, port } = serverOptions
   const server = http.createServer((request, response) => {
-    if (request.url.indexOf(serverOptions.route) === 0) {
-      serverOptions.onAuthentication(request.url)
+    if (request.url.indexOf(route) === 0) {
+      onAuthentication(request.url)
       response.write('Authentication successful, you can close this page.')
       response.end()
-      setTimeout(() => {
-        server.destroy()
-      }, 1000)
     }
   })
-  server.listen(serverOptions.port, () => {
-    serverOptions.onListen()
+  server.listen(port, () => {
+    onListen()
   })
   enableDestroy(server)
   return server
@@ -42,33 +52,49 @@ const createCallbackServer = serverOptions => {
  * When the server is started, the authentication page is opened on the
  * desktop browser of the user.
  *
+ * @param {Integer} serverOptions.port - Port used for the OAuth callback server
+ * @param {Function} serverOptions.onAuthentication - Callback when the user authenticates
+ * @param {Function} serverOptions.onListen - Callback called with the authentication URL
+ * when the server starts
+ * @param {boolean} serverOptions.shouldOpenAuthenticationPage - Whether the authentication
+ * page should be automatically opened (default: true)
+ *
  * @private
  */
 const mkServerFlowCallback = serverOptions => authenticationURL =>
   new Promise((resolve, reject) => {
+    let rejectTimeout, successTimeout
     const server = createCallbackServer({
       ...serverOptions,
       onAuthentication: callbackURL => {
         log('debug', 'Authenticated, Shutting server down')
-        resolve('http://localhost:8000/' + callbackURL)
-        setTimeout(() => {
+        successTimeout = setTimeout(() => {
           // Is there a way to call destroy only after all requests have
           // been completely served ? Otherwise we close the server while
           // the successful oauth page is being served and the page does
           // not get loaded on the client side.
           server.destroy()
-        }, 1000)
+          resolve('http://localhost:8000/' + callbackURL)
+          clearTimeout(rejectTimeout)
+        }, 300)
       },
       onListen: () => {
         log(
           'debug',
           'OAuth callback server started, waiting for authentication'
         )
-        opn(authenticationURL, { wait: false })
+        if (serverOptions.shouldOpenAuthenticationPage !== false) {
+          opn(authenticationURL, { wait: false })
+        }
+        if (serverOptions.onListen) {
+          serverOptions.onListen({ authenticationURL })
+        }
       }
     })
 
-    setTimeout(() => {
+    rejectTimeout = setTimeout(() => {
+      clearTimeout(successTimeout)
+      server.destroy()
       reject('Timeout for authentication')
     }, 30 * 1000)
   })
@@ -183,6 +209,24 @@ const createClientInteractive = (clientOptions, serverOpts) => {
     }
     await client.startOAuthFlow(mkServerFlowCallback(serverOptions))
     resolveWithClient()
+  })
+}
+
+const main = async () => {
+  const client = await createClientInteractive({
+    scope: ['io.cozy.files'],
+    uri: 'http://cozy.tools:8080',
+    oauth: {
+      softwareID: 'io.cozy.client.cli'
+    }
+  })
+  console.log(client.toJSON())
+}
+
+if (require.main === module) {
+  main().catch(e => {
+    console.error(e)
+    process.exit(1)
   })
 }
 
