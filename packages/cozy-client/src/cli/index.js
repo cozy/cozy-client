@@ -172,7 +172,7 @@ const readJSON = (fs, filename) => {
  * ```
  */
 const createClientInteractive = (clientOptions, serverOpts) => {
-  const serverOptions = merge(serverOpts, DEFAULT_SERVER_OPTIONS)
+  const serverOptions = merge(DEFAULT_SERVER_OPTIONS, serverOpts)
   const createClientFS = serverOptions.fs || fs
 
   const mergedClientOptions = merge(
