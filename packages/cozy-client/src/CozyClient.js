@@ -600,6 +600,20 @@ client.query(Q('io.cozy.bills'))`)
     this.ensureStore()
     const queryId = options.as || this.generateId()
     this.ensureQueryExists(queryId, queryDefinition)
+
+    if (options.fetchPolicy) {
+      if (!options.as) {
+        throw new Error(
+          'Cannot use `fetchPolicy` without naming the query, please use `as` to name the query'
+        )
+      }
+
+      const existingQuery = getQueryFromState(this.store.getState(), queryId)
+      const shouldFetch = options.fetchPolicy(existingQuery)
+      if (!shouldFetch) {
+        return
+      }
+    }
     try {
       const response = await this.requestQuery(queryDefinition)
       this.dispatch(
