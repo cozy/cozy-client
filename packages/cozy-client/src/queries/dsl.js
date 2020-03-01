@@ -1,54 +1,45 @@
 const isString = require('lodash/isString')
 
 /**
+ * typedef QueryDefinition
+ */
+
+/**
  * Chainable API to create query definitions to retrieve documents
  * from a Cozy. `QueryDefinition`s are sent to links.
  */
 class QueryDefinition {
   /**
    * @class
-   * @param {string} doctype - The doctype of the doc.
-   * @param {string} id - The id of the doc.
-   * @param {Array} ids - The ids of the docs.
-   * @param {object} selector - The selector to query the docs.
-   * @param {Array} fields - The fields to return.
-   * @param {Array} indexedFields - The fields to index.
-   * @param {Array} sort - The sorting params.
-   * @param {string} includes - The docs to include.
-   * @param {string} referenced - The referenced document.
-   * @param {number} limit - The document's limit to return.
-   * @param {number} skip - The number of docs to skip.
-   * @param {number} cursor - The cursor to paginate views.
-   * @param {number} bookmark - The bookmark to paginate mango queries.
+   * @param {object} options Initial options for the query definition
+   * @param {string} options.doctype - The doctype of the doc.
+   * @param {string} options.id - The id of the doc.
+   * @param {Array} options.ids - The ids of the docs.
+   * @param {object} options.selector - The selector to query the docs.
+   * @param {Array} options.fields - The fields to return.
+   * @param {Array} options.indexedFields - The fields to index.
+   * @param {Array} options.sort - The sorting params.
+   * @param {string} options.includes - The docs to include.
+   * @param {string} options.referenced - The referenced document.
+   * @param {number} options.limit - The document's limit to return.
+   * @param {number} options.skip - The number of docs to skip.
+   * @param {number} options.cursor - The cursor to paginate views.
+   * @param {number} options.bookmark - The bookmark to paginate mango queries.
    */
-  constructor({
-    doctype,
-    id,
-    ids,
-    selector,
-    fields,
-    indexedFields,
-    sort,
-    includes,
-    referenced,
-    limit,
-    skip,
-    cursor,
-    bookmark
-  } = {}) {
-    this.doctype = doctype
-    this.id = id
-    this.ids = ids
-    this.selector = selector
-    this.fields = fields
-    this.indexedFields = indexedFields
-    this.sort = sort
-    this.includes = includes
-    this.referenced = referenced
-    this.limit = limit
-    this.skip = skip
-    this.cursor = cursor
-    this.bookmark = bookmark
+  constructor(options = {}) {
+    this.doctype = options.doctype
+    this.id = options.id
+    this.ids = options.ids
+    this.selector = options.selector
+    this.fields = options.fields
+    this.indexedFields = options.indexedFields
+    this.sort = options.sort
+    this.includes = options.includes
+    this.referenced = options.referenced
+    this.limit = options.limit
+    this.skip = options.skip
+    this.cursor = options.cursor
+    this.bookmark = options.bookmark
   }
 
   /**
@@ -95,7 +86,7 @@ class QueryDefinition {
   /**
    * Specify which fields should be indexed. This prevent the automatic indexing of the mango fields.
    *
-   * @param {Array} fields The fields to index.
+   * @param {Array} indexedFields The fields to index.
    * @returns {QueryDefinition}  The QueryDefinition object.
    */
   indexFields(indexedFields) {

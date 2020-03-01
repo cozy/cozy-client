@@ -15,6 +15,10 @@ const getBaseRoute = app => {
   return `/${route}`
 }
 
+/**
+ *@typedef {RegistryApp}
+ */
+
 class Registry {
   constructor(options) {
     if (!options.client) {
@@ -62,6 +66,7 @@ class Registry {
   /**
    * Fetch at most 200 apps from the channel
    *
+   * @param  {string} params - Fetching parameters
    * @param  {string} params.type - "webapp" or "konnector"
    * @param  {string} params.channel - "dev"/"beta"/"stable"
    *

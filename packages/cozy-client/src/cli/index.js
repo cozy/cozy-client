@@ -16,6 +16,7 @@ global.btoa = require('btoa')
 /**
  * Creates and starts and HTTP server suitable for OAuth authentication
  *
+ * @param  {Function} serverOptions - OAuth callback server options
  * @param  {Function} serverOptions.onAuthentication - Additional callback called
  * when the user authenticates
  * @param  {Function} serverOptions.route - Route used for authentication
@@ -52,7 +53,8 @@ const createCallbackServer = serverOptions => {
  * When the server is started, the authentication page is opened on the
  * desktop browser of the user.
  *
- * @param {Integer} serverOptions.port - Port used for the OAuth callback server
+ * @param {object} serverOptions - Options for the OAuth callback server
+ * @param {integer} serverOptions.port - Port used for the OAuth callback server
  * @param {Function} serverOptions.onAuthentication - Callback when the user authenticates
  * @param {Function} serverOptions.onListen - Callback called with the authentication URL
  * when the server starts
@@ -157,7 +159,7 @@ const readJSON = (fs, filename) => {
  * - Starts a local server to listen for the oauth callback
  * - Resolves with the client after user authentication
  *
- * @params {Object} clientOptions Same as CozyClient::constructor.
+ * @param {object} clientOptions Same as CozyClient::constructor.
  *
  * @example
  * ```
