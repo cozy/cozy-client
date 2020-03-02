@@ -172,9 +172,15 @@ is loading.</p>
 <dd><p>Generates and executes a query that is offsetted by the number of documents
 we have in the store.</p>
 </dd>
+<dt><a href="#getQueryAttributes">getQueryAttributes()</a></dt>
+<dd><p>Get attributes that will be assigned to the instance of a Query</p>
+</dd>
 <dt><a href="#cancelable">cancelable(promise)</a> ⇒ <code>AugmentedPromise</code></dt>
 <dd><p>Wraps a promise so that it can be canceled</p>
 <p>Rejects with canceled: true as soon as cancel is called</p>
+</dd>
+<dt><del><a href="#withMutations">withMutations(...mutations)</a> ⇒ <code>function</code></del></dt>
+<dd><p>HOC to provide mutations to components. Needs client in context or as prop.</p>
 </dd>
 </dl>
 
@@ -1751,6 +1757,12 @@ Generates and executes a query that is offsetted by the number of documents
 we have in the store.
 
 **Kind**: global function  
+<a name="getQueryAttributes"></a>
+
+## getQueryAttributes()
+Get attributes that will be assigned to the instance of a Query
+
+**Kind**: global function  
 <a name="cancelable"></a>
 
 ## cancelable(promise) ⇒ <code>AugmentedPromise</code>
@@ -1764,6 +1776,20 @@ Rejects with canceled: true as soon as cancel is called
 | Param | Type |
 | --- | --- |
 | promise | <code>Promise</code> | 
+
+<a name="withMutations"></a>
+
+## ~~withMutations(...mutations) ⇒ <code>function</code>~~
+***Deprecated***
+
+HOC to provide mutations to components. Needs client in context or as prop.
+
+**Kind**: global function  
+**Returns**: <code>function</code> - - Component that will receive mutations as props  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ...mutations | <code>function</code> | One ore more mutations, which are function taking CozyClient as parameter and returning an object containing one or more mutations as attributes. |
 
 <a name="QueryState"></a>
 
