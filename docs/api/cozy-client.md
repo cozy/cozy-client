@@ -609,7 +609,6 @@ Responsible for
         * [.destroy(document)](#CozyClient+destroy) ⇒ [<code>Document</code>](#Document)
         * [.query(queryDefinition, options)](#CozyClient+query) ⇒ <code>QueryResult</code>
         * [.queryAll(queryDefinition, options)](#CozyClient+queryAll) ⇒ <code>Array</code>
-        * [.fetchRelationships()](#CozyClient+fetchRelationships)
         * [.hydrateDocuments(doctype, documents)](#CozyClient+hydrateDocuments) ⇒ <code>Array.&lt;HydratedDocument&gt;</code>
         * [.hydrateDocument(document, schema)](#CozyClient+hydrateDocument) ⇒ <code>HydratedDocument</code>
         * [.makeNewDocument()](#CozyClient+makeNewDocument)
@@ -794,6 +793,7 @@ executes its query when mounted if no fetch policy has been indicated.
 | queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) | Definition that will be executed |
 | options | <code>string</code> | Options |
 | options.as | <code>string</code> | Names the query so it can be reused (by multiple components for example) |
+| options.fetchPolicy | <code>string</code> | Fetch policy to bypass fetching based on what's already inside the state. See "Fetch policies" |
 
 <a name="CozyClient+queryAll"></a>
 
@@ -810,17 +810,6 @@ result in a lot of network requests.
 | queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) | Definition to be executed |
 | options | <code>object</code> | Options to the query |
 
-<a name="CozyClient+fetchRelationships"></a>
-
-### cozyClient.fetchRelationships()
-Fetch relationships for a response (can be several docs).
-Fills the `relationships` attribute of each documents.
-
-Can potentially result in several fetch requests.
-Queries are optimized before being sent (multiple single documents queries can be packed into
-one multiple document query) for example.
-
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 <a name="CozyClient+hydrateDocuments"></a>
 
 ### cozyClient.hydrateDocuments(doctype, documents) ⇒ <code>Array.&lt;HydratedDocument&gt;</code>
