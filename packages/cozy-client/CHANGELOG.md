@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [12.2.0](https://github.com/cozy/cozy-client/compare/v12.1.1...v12.2.0) (2020-03-03)
+
+
+### Features
+
+* Hooks for useClient ([6fcf963](https://github.com/cozy/cozy-client/commit/6fcf963))
+* Provider and withClient use new context API ([df1d12b](https://github.com/cozy/cozy-client/commit/df1d12b))
+
+
+
+
+
 ## [12.1.1](https://github.com/cozy/cozy-client/compare/v12.1.0...v12.1.1) (2020-02-28)
 
 
