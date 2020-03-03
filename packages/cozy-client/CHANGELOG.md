@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [12.3.0](https://github.com/cozy/cozy-client/compare/v12.2.0...v12.3.0) (2020-03-03)
+
+
+### Features
+
+* Added folder model ([ba14aee](https://github.com/cozy/cozy-client/commit/ba14aee))
+
+
+
+
+
 # [12.2.0](https://github.com/cozy/cozy-client/compare/v12.1.1...v12.2.0) (2020-03-03)
 
 
