@@ -126,7 +126,7 @@ Main API against the `cozy-stack` server.
 
 * [CozyStackClient](#CozyStackClient)
     * [.collection(doctype)](#CozyStackClient+collection) ⇒ [<code>DocumentCollection</code>](#DocumentCollection)
-    * [.fetch(method, path, body, options)](#CozyStackClient+fetch) ⇒ <code>object</code>
+    * [.fetch(method, path, body, opts)](#CozyStackClient+fetch) ⇒ <code>object</code>
     * [.checkForRevocation()](#CozyStackClient+checkForRevocation)
     * [.refreshToken()](#CozyStackClient+refreshToken) ⇒ <code>Promise</code>
     * [.fetchJSON(method, path, body, options)](#CozyStackClient+fetchJSON) ⇒ <code>object</code>
@@ -146,7 +146,7 @@ Creates a [DocumentCollection](#DocumentCollection) instance.
 
 <a name="CozyStackClient+fetch"></a>
 
-### cozyStackClient.fetch(method, path, body, options) ⇒ <code>object</code>
+### cozyStackClient.fetch(method, path, body, opts) ⇒ <code>object</code>
 Fetches an endpoint in an authorized way.
 
 **Kind**: instance method of [<code>CozyStackClient</code>](#CozyStackClient)  
@@ -160,7 +160,7 @@ Fetches an endpoint in an authorized way.
 | method | <code>string</code> | The HTTP method. |
 | path | <code>string</code> | The URI. |
 | body | <code>object</code> | The payload. |
-| options | <code>object</code> |  |
+| opts | <code>object</code> |  |
 
 <a name="CozyStackClient+checkForRevocation"></a>
 
@@ -1117,7 +1117,7 @@ Implements `DocumentCollection` API along with specific methods for `io.cozy.tri
     * [.create(attributes)](#TriggerCollection+create) ⇒ <code>object</code>
     * [.destroy(document)](#TriggerCollection+destroy) ⇒ <code>object</code>
     * [.find(selector, options)](#TriggerCollection+find) ⇒ <code>Object</code>
-    * [.launch(Trigger)](#TriggerCollection+launch) ⇒ <code>object</code>
+    * [.launch(trigger)](#TriggerCollection+launch) ⇒ <code>object</code>
 
 <a name="TriggerCollection+all"></a>
 
@@ -1184,7 +1184,7 @@ See https://github.com/cozy/cozy-stack/pull/2010
 
 <a name="TriggerCollection+launch"></a>
 
-### triggerCollection.launch(Trigger) ⇒ <code>object</code>
+### triggerCollection.launch(trigger) ⇒ <code>object</code>
 Force given trigger execution.
 
 **Kind**: instance method of [<code>TriggerCollection</code>](#TriggerCollection)  
@@ -1193,7 +1193,7 @@ Force given trigger execution.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| Trigger | <code>object</code> | to launch |
+| trigger | <code>object</code> | Trigger to launch |
 
 <a name="dontThrowNotFoundError"></a>
 

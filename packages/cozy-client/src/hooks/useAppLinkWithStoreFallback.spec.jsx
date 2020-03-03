@@ -1,5 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks'
-import { useAppLinkWithStoreFallback } from 'cozy-client'
+import useAppLinkWithStoreFallback from './useAppLinkWithStoreFallback'
+
 describe('useAppLinkWithStoreFallback', () => {
   const mockClient = { query: jest.fn() }
 

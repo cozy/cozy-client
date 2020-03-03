@@ -196,6 +196,8 @@ class CozyClient {
    * a client with an OAuth-based instance of cozy-client-js.
    *
    * Warning: unlike other instantiators, this one needs to be awaited.
+   *
+   * @returns {CozyClient} An instance of a client, configured from the old client
    */
   static async fromOldOAuthClient(oldClient, options) {
     const hasOauthCreds = oldClient._oauth && oldClient._authcreds != null
@@ -588,7 +590,7 @@ client.query(Q('io.cozy.bills'))`)
    * `getQueryFromState` or directly using `<Query />`. `<Query />` automatically
    * executes its query when mounted if no fetch policy has been indicated.
    *
-   * @param  {QueryDefinition} queryDefinition
+   * @param  {QueryDefinition} queryDefinition - Definition that will be executed
    * @param  {string} options - Options
    * @param  {string} options.as - Names the query so it can be reused (by multiple components for example)
    * @returns {QueryResult}
@@ -616,7 +618,7 @@ client.query(Q('io.cozy.bills'))`)
    * documents if the total of documents is superior to the pagination limit. Can
    * result in a lot of network requests.
    *
-   * @param  {QueryDefinition} queryDefinition
+   * @param  {QueryDefinition} queryDefinition - Definition to be executed
    * @param  {object} options - Options to the query
    * @returns {Array} All documents matching the query
    */
@@ -922,6 +924,7 @@ client.query(Q('io.cozy.bills'))`)
    * Get a query from the internal store.
    *
    * @param {string} id - Id of the query (set via Query.props.as)
+   * @param {object} options - Options
    * @param {boolean} options.hydrated - Whether documents should be returned already hydrated (default: false)
    *
    * @returns {QueryState} - Query state or null if it does not exist.
@@ -949,9 +952,9 @@ client.query(Q('io.cozy.bills'))`)
    * @param   {string} cozyURL Receives the URL of the cozy instance.
    * @returns {object}   Contains the fetched token and the client information.
    */
-  register(cozyUrl) {
+  register(cozyURL) {
     const stackClient = this.getStackClient()
-    stackClient.setUri(cozyUrl)
+    stackClient.setUri(cozyURL)
     return this.startOAuthFlow(authenticateWithCordova)
   }
 
@@ -1021,6 +1024,7 @@ client.query(Q('io.cozy.bills'))`)
    * ```
    *
    * @param {ReduxStore} store - A redux store
+   * @param {object} options - Options
    * @param {boolean} options.force - Will deactivate throwing when client's store already exists
    */
   setStore(store, { force = false } = {}) {

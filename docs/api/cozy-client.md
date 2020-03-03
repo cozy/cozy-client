@@ -131,7 +131,7 @@ is loading.</p>
 ## Functions
 
 <dl>
-<dt><a href="#createClientInteractive">createClientInteractive()</a></dt>
+<dt><a href="#createClientInteractive">createClientInteractive(clientOptions)</a></dt>
 <dd><p>Creates a client with interactive authentication.</p>
 <ul>
 <li>Will start an OAuth flow and open an authentication page</li>
@@ -139,19 +139,13 @@ is loading.</p>
 <li>Resolves with the client after user authentication</li>
 </ul>
 </dd>
-<dt><a href="#withClient">withClient(Component)</a> ⇒ <code>function</code></dt>
-<dd><p>HOC to provide client from context as prop</p>
-</dd>
-<dt><a href="#queryConnect">queryConnect(querySpecs)</a> ⇒ <code>function</code></dt>
-<dd><p>HOC creator to connect component to several queries in a declarative manner</p>
-</dd>
 <dt><a href="#sanitizeCategories">sanitizeCategories()</a></dt>
 <dd><p>Filters unauthorized categories. Defaults to [&#39;others&#39;] if no suitable category.</p>
 </dd>
 <dt><a href="#sanitize">sanitize(manifest)</a> ⇒ <code>Manifest</code></dt>
 <dd><p>Normalize app manifest, retrocompatibility for old manifests</p>
 </dd>
-<dt><a href="#createMockClient">createMockClient()</a> ⇒ <code><a href="#CozyClient">CozyClient</a></code></dt>
+<dt><a href="#createMockClient">createMockClient(options)</a> ⇒ <code><a href="#CozyClient">CozyClient</a></code></dt>
 <dd><p>Creates a client suitable for use in tests</p>
 <ul>
 <li>client.{query,save} are mocked</li>
@@ -195,6 +189,8 @@ we have in the store.</p>
 <dt><a href="#PermissionVerb">PermissionVerb</a> : <code>&#x27;ALL&#x27;</code> | <code>&#x27;GET&#x27;</code> | <code>&#x27;PATCH&#x27;</code> | <code>&#x27;POST&#x27;</code> | <code>&#x27;PUT&#x27;</code> | <code>&#x27;DELETE&#x27;</code></dt>
 <dd></dd>
 <dt><a href="#PermissionItem">PermissionItem</a> : <code>object</code></dt>
+<dd></dd>
+<dt><a href="#Registry">Registry</a> : <code>RegistryApp</code></dt>
 <dd></dd>
 </dl>
 
@@ -621,11 +617,11 @@ Responsible for
         * [.getRelationshipStoreAccessors()](#CozyClient+getRelationshipStoreAccessors)
         * [.getCollectionFromState(type)](#CozyClient+getCollectionFromState) ⇒ [<code>Array.&lt;Document&gt;</code>](#Document)
         * [.getDocumentFromState(type, id)](#CozyClient+getDocumentFromState) ⇒ [<code>Document</code>](#Document)
-        * [.getQueryFromState(id)](#CozyClient+getQueryFromState) ⇒ [<code>QueryState</code>](#QueryState)
+        * [.getQueryFromState(id, options)](#CozyClient+getQueryFromState) ⇒ [<code>QueryState</code>](#QueryState)
         * [.register(cozyURL)](#CozyClient+register) ⇒ <code>object</code>
         * [.startOAuthFlow(openURLCallback)](#CozyClient+startOAuthFlow) ⇒ <code>object</code>
         * [.renewAuthorization()](#CozyClient+renewAuthorization) ⇒ <code>object</code>
-        * [.setStore(store)](#CozyClient+setStore)
+        * [.setStore(store, options)](#CozyClient+setStore)
         * [.checkForRevocation()](#CozyClient+checkForRevocation)
         * [.handleRevocationChange()](#CozyClient+handleRevocationChange)
         * [.handleTokenRefresh()](#CozyClient+handleTokenRefresh)
@@ -635,7 +631,7 @@ Responsible for
         * [.setData(data)](#CozyClient+setData)
     * _static_
         * [.fromOldClient()](#CozyClient.fromOldClient)
-        * [.fromOldOAuthClient()](#CozyClient.fromOldOAuthClient)
+        * [.fromOldOAuthClient()](#CozyClient.fromOldOAuthClient) ⇒ [<code>CozyClient</code>](#CozyClient)
         * [.fromEnv()](#CozyClient.fromEnv)
         * [.registerHook(doctype, name, fn)](#CozyClient.registerHook)
 
@@ -795,7 +791,7 @@ executes its query when mounted if no fetch policy has been indicated.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) |  |
+| queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) | Definition that will be executed |
 | options | <code>string</code> | Options |
 | options.as | <code>string</code> | Names the query so it can be reused (by multiple components for example) |
 
@@ -811,7 +807,7 @@ result in a lot of network requests.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) |  |
+| queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) | Definition to be executed |
 | options | <code>object</code> | Options to the query |
 
 <a name="CozyClient+fetchRelationships"></a>
@@ -906,7 +902,7 @@ Get a document from the internal store.
 
 <a name="CozyClient+getQueryFromState"></a>
 
-### cozyClient.getQueryFromState(id) ⇒ [<code>QueryState</code>](#QueryState)
+### cozyClient.getQueryFromState(id, options) ⇒ [<code>QueryState</code>](#QueryState)
 Get a query from the internal store.
 
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
@@ -915,6 +911,7 @@ Get a query from the internal store.
 | Param | Type | Description |
 | --- | --- | --- |
 | id | <code>string</code> | Id of the query (set via Query.props.as) |
+| options | <code>object</code> | Options |
 | options.hydrated | <code>boolean</code> | Whether documents should be returned already hydrated (default: false) |
 
 <a name="CozyClient+register"></a>
@@ -952,7 +949,7 @@ has expired.
 **Returns**: <code>object</code> - Contains the fetched token and the client information.  
 <a name="CozyClient+setStore"></a>
 
-### cozyClient.setStore(store)
+### cozyClient.setStore(store, options)
 Sets the internal store of the client. Use this when you want to have cozy-client's
 internal store colocated with your existing Redux store.
 
@@ -965,6 +962,7 @@ use options.force = true.
 | Param | Type | Description |
 | --- | --- | --- |
 | store | <code>ReduxStore</code> | A redux store |
+| options | <code>object</code> | Options |
 | options.force | <code>boolean</code> | Will deactivate throwing when client's store already exists |
 
 **Example**  
@@ -1044,13 +1042,14 @@ a client with a cookie-based instance of cozy-client-js.
 **Kind**: static method of [<code>CozyClient</code>](#CozyClient)  
 <a name="CozyClient.fromOldOAuthClient"></a>
 
-### CozyClient.fromOldOAuthClient()
+### CozyClient.fromOldOAuthClient() ⇒ [<code>CozyClient</code>](#CozyClient)
 To help with the transition from cozy-client-js to cozy-client, it is possible to instantiate
 a client with an OAuth-based instance of cozy-client-js.
 
 Warning: unlike other instantiators, this one needs to be awaited.
 
 **Kind**: static method of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: [<code>CozyClient</code>](#CozyClient) - An instance of a client, configured from the old client  
 <a name="CozyClient.fromEnv"></a>
 
 ### CozyClient.fromEnv()
@@ -1089,12 +1088,12 @@ from a Cozy. `QueryDefinition`s are sent to links.
 **Kind**: global class  
 
 * [QueryDefinition](#QueryDefinition)
-    * [new QueryDefinition(doctype, id, ids, selector, fields, indexedFields, sort, includes, referenced, limit, skip, cursor, bookmark)](#new_QueryDefinition_new)
+    * [new QueryDefinition(options)](#new_QueryDefinition_new)
     * [.getById(id)](#QueryDefinition+getById) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.getByIds(ids)](#QueryDefinition+getByIds) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.where(selector)](#QueryDefinition+where) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.select(fields)](#QueryDefinition+select) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
-    * [.indexFields(fields)](#QueryDefinition+indexFields) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
+    * [.indexFields(indexedFields)](#QueryDefinition+indexFields) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.sortBy(sort)](#QueryDefinition+sortBy) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.include(includes)](#QueryDefinition+include) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.limitBy(limit)](#QueryDefinition+limitBy) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
@@ -1105,23 +1104,24 @@ from a Cozy. `QueryDefinition`s are sent to links.
 
 <a name="new_QueryDefinition_new"></a>
 
-### new QueryDefinition(doctype, id, ids, selector, fields, indexedFields, sort, includes, referenced, limit, skip, cursor, bookmark)
+### new QueryDefinition(options)
 
 | Param | Type | Description |
 | --- | --- | --- |
-| doctype | <code>string</code> | The doctype of the doc. |
-| id | <code>string</code> | The id of the doc. |
-| ids | <code>Array</code> | The ids of the docs. |
-| selector | <code>object</code> | The selector to query the docs. |
-| fields | <code>Array</code> | The fields to return. |
-| indexedFields | <code>Array</code> | The fields to index. |
-| sort | <code>Array</code> | The sorting params. |
-| includes | <code>string</code> | The docs to include. |
-| referenced | <code>string</code> | The referenced document. |
-| limit | <code>number</code> | The document's limit to return. |
-| skip | <code>number</code> | The number of docs to skip. |
-| cursor | <code>number</code> | The cursor to paginate views. |
-| bookmark | <code>number</code> | The bookmark to paginate mango queries. |
+| options | <code>object</code> | Initial options for the query definition |
+| options.doctype | <code>string</code> | The doctype of the doc. |
+| options.id | <code>string</code> | The id of the doc. |
+| options.ids | <code>Array</code> | The ids of the docs. |
+| options.selector | <code>object</code> | The selector to query the docs. |
+| options.fields | <code>Array</code> | The fields to return. |
+| options.indexedFields | <code>Array</code> | The fields to index. |
+| options.sort | <code>Array</code> | The sorting params. |
+| options.includes | <code>string</code> | The docs to include. |
+| options.referenced | <code>string</code> | The referenced document. |
+| options.limit | <code>number</code> | The document's limit to return. |
+| options.skip | <code>number</code> | The number of docs to skip. |
+| options.cursor | <code>number</code> | The cursor to paginate views. |
+| options.bookmark | <code>number</code> | The bookmark to paginate mango queries. |
 
 <a name="QueryDefinition+getById"></a>
 
@@ -1174,7 +1174,7 @@ Specify which fields of each object should be returned. If it is omitted, the en
 
 <a name="QueryDefinition+indexFields"></a>
 
-### queryDefinition.indexFields(fields) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
+### queryDefinition.indexFields(indexedFields) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
 Specify which fields should be indexed. This prevent the automatic indexing of the mango fields.
 
 **Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
@@ -1182,7 +1182,7 @@ Specify which fields should be indexed. This prevent the automatic indexing of t
 
 | Param | Type | Description |
 | --- | --- | --- |
-| fields | <code>Array</code> | The fields to index. |
+| indexedFields | <code>Array</code> | The fields to index. |
 
 <a name="QueryDefinition+sortBy"></a>
 
@@ -1638,7 +1638,7 @@ Returns whether a query has been loaded at least once
 **Kind**: global constant  
 <a name="createClientInteractive"></a>
 
-## createClientInteractive()
+## createClientInteractive(clientOptions)
 Creates a client with interactive authentication.
 
 - Will start an OAuth flow and open an authentication page
@@ -1646,7 +1646,11 @@ Creates a client with interactive authentication.
 - Resolves with the client after user authentication
 
 **Kind**: global function  
-**Params**: <code>Object</code> clientOptions Same as CozyClient::constructor.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| clientOptions | <code>object</code> | Same as CozyClient::constructor. |
+
 **Example**  
 ```
 import { createClientInteractive } from 'cozy-client/dist/cli'
@@ -1658,30 +1662,6 @@ await createClientInteractive({
   }
 })
 ```
-<a name="withClient"></a>
-
-## withClient(Component) ⇒ <code>function</code>
-HOC to provide client from context as prop
-
-**Kind**: global function  
-**Returns**: <code>function</code> - - Component that will receive client as prop  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| Component | <code>Component</code> | wrapped component |
-
-<a name="queryConnect"></a>
-
-## queryConnect(querySpecs) ⇒ <code>function</code>
-HOC creator to connect component to several queries in a declarative manner
-
-**Kind**: global function  
-**Returns**: <code>function</code> - - HOC to apply to a component  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| querySpecs | <code>object</code> | Definition of the queries |
-
 <a name="sanitizeCategories"></a>
 
 ## sanitizeCategories()
@@ -1701,7 +1681,7 @@ Normalize app manifest, retrocompatibility for old manifests
 
 <a name="createMockClient"></a>
 
-## createMockClient() ⇒ [<code>CozyClient</code>](#CozyClient)
+## createMockClient(options) ⇒ [<code>CozyClient</code>](#CozyClient)
 Creates a client suitable for use in tests
 
 - client.{query,save} are mocked
@@ -1711,6 +1691,7 @@ Creates a client suitable for use in tests
 
 | Param | Type | Description |
 | --- | --- | --- |
+| options | <code>object</code> | Options |
 | options.queries | <code>object</code> | Prefill queries inside the store |
 | options.remote | <code>object</code> | Mock data from the server |
 | options.clientOptions | <code>object</code> | Options passed to the client |
@@ -1828,4 +1809,66 @@ Couchdb document like an io.cozy.files
 | selector | <code>string</code> | defaults to `id` |
 | values | <code>Array.&lt;string&gt;</code> |  |
 | type | <code>string</code> | a couch db database like 'io.cozy.files' |
+
+<a name="Registry"></a>
+
+## Registry : <code>RegistryApp</code>
+**Kind**: global typedef  
+
+* [Registry](#Registry) : <code>RegistryApp</code>
+    * [.installApp(app, source)](#Registry+installApp) ⇒ <code>Promise</code>
+    * [.uninstallApp()](#Registry+uninstallApp)
+    * [.fetchApps(params)](#Registry+fetchApps) ⇒ <code>Array.&lt;RegistryApp&gt;</code>
+    * [.fetchAppsInMaintenance()](#Registry+fetchAppsInMaintenance) ⇒ <code>Array.&lt;RegistryApp&gt;</code>
+    * [.fetchApp(slug)](#Registry+fetchApp) ⇒ <code>RegistryApp</code>
+
+<a name="Registry+installApp"></a>
+
+### registry.installApp(app, source) ⇒ <code>Promise</code>
+Installs or updates an app from a source.
+
+Accepts the terms if the app has them.
+
+**Kind**: instance method of [<code>Registry</code>](#Registry)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| app | <code>RegistryApp</code> | App to be installed |
+| source | <code>string</code> | String (ex: registry://drive/stable) |
+
+<a name="Registry+uninstallApp"></a>
+
+### registry.uninstallApp()
+Uninstalls an app.
+
+**Kind**: instance method of [<code>Registry</code>](#Registry)  
+<a name="Registry+fetchApps"></a>
+
+### registry.fetchApps(params) ⇒ <code>Array.&lt;RegistryApp&gt;</code>
+Fetch at most 200 apps from the channel
+
+**Kind**: instance method of [<code>Registry</code>](#Registry)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>string</code> | Fetching parameters |
+| params.type | <code>string</code> | "webapp" or "konnector" |
+| params.channel | <code>string</code> | "dev"/"beta"/"stable" |
+
+<a name="Registry+fetchAppsInMaintenance"></a>
+
+### registry.fetchAppsInMaintenance() ⇒ <code>Array.&lt;RegistryApp&gt;</code>
+Fetch the list of apps that are in maintenance mode
+
+**Kind**: instance method of [<code>Registry</code>](#Registry)  
+<a name="Registry+fetchApp"></a>
+
+### registry.fetchApp(slug) ⇒ <code>RegistryApp</code>
+Fetch the status of a single app on the registry
+
+**Kind**: instance method of [<code>Registry</code>](#Registry)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| slug | <code>string</code> | The slug of the app to fetch |
 

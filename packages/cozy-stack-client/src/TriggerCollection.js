@@ -136,7 +136,7 @@ class TriggerCollection extends DocumentCollection {
    * Force given trigger execution.
    *
    * @see https://docs.cozy.io/en/cozy-stack/jobs/#post-jobstriggerstrigger-idlaunch
-   * @param {object} Trigger to launch
+   * @param {object} trigger Trigger to launch
    * @returns {object} Stack response, containing job launched by trigger, under `data` attribute.
    */
   async launch(trigger) {

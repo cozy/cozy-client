@@ -2,6 +2,7 @@ import React from 'react'
 import { mount } from 'enzyme'
 import { withClient, queryConnect } from './hoc'
 import * as mocks from './__tests__/mocks'
+import Provider from './Provider'
 
 import { Q } from 'cozy-client'
 
@@ -20,17 +21,25 @@ class Component extends React.Component {
 }
 
 describe('with client', () => {
-  it('should pass the client to its children', () => {
-    const fakeClient = mocks.client()
-    const context = { client: fakeClient }
-    const WithClientComponent = withClient(Component)
-    const uut = mount(<WithClientComponent />, { context })
-    expect(uut.find(Component).prop('client')).toBe(fakeClient)
-  })
-
   it('should give a display name', () => {
     const WithClientComponent = withClient(Component)
     expect(WithClientComponent.displayName).toBe('withClient(Component)')
+  })
+
+  it('should work with Provider', () => {
+    const client = mocks.client()
+    const store = {
+      dispatch: jest.fn(),
+      subscribe: jest.fn(),
+      getState: jest.fn()
+    }
+    const WithClientComponent = withClient(Component)
+    const uut = mount(
+      <Provider client={client} store={store}>
+        <WithClientComponent />
+      </Provider>
+    )
+    expect(uut.find(Component).prop('client')).toBe(client)
   })
 })
 
