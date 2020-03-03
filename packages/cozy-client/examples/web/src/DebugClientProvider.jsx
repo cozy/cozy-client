@@ -4,17 +4,6 @@ import { Provider } from 'react-redux'
 
 import useStickyState from './useStickyState'
 
-class ExpiredTokenHandler extends Component {
-  componentDidCatch(error) {
-    console.log('error', error)
-    if (error.message.indexOf('Expired token')) {
-      this.props.onExpiredToken()
-    } else {
-      throw error
-    }
-  }
-  render() {
-    return this.props.children
 const styles = {
   uriTokenPrompt: {
     maxWidth: '800px',
@@ -71,6 +60,24 @@ const DebugClientProvider = ({ children }) => {
       onChangeToken={setToken}
       onChangeURI={setURI} />
   }
+}
+
+class ExpiredTokenHandler extends Component {
+  componentDidCatch(error) {
+    console.log('error', error)
+    if (error.message.indexOf('Expired token') > -1) {
+      this.props.onExpiredToken()
+    } else {
+      throw error
+    }
+  }
+
+  static getDerivedStateFromError(error) {
+    return { error }
+  }
+
+  render() {
+    return this.props.children
   }
 }
 
