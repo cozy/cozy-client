@@ -351,12 +351,8 @@ class DocumentCollection {
       fields: fields ? [...fields, '_id', '_type', 'class'] : undefined,
       limit,
       skip,
-      bookmark,
+      bookmark: options.bookmark || bookmark,
       sort
-    }
-
-    if (options.bookmark) {
-      opts.bookmark = options.bookmark
     }
 
     return opts

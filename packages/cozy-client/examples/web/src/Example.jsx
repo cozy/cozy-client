@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { useQuery, Q } from 'cozy-client'
 
 const styles = {
@@ -58,8 +58,8 @@ const QueryResult = ({ collection }) => {
 
 const useCounter = initialCount => {
   const [count, setCount] = useState(initialCount)
-  const increment = () => setCount(count + 1)
-  const decrement = () => setCount(count - 1)
+  const increment = useCallback(() => setCount(count + 1), [setCount, count])
+  const decrement = useCallback(() => setCount(count - 1), [setCount, count])
   return [count, increment, decrement]
 }
 
