@@ -206,6 +206,7 @@ describe('Store', () => {
   describe('getQueryFromStore', () => {
     it('should return a default state when the store is empty', () => {
       expect(getQueryFromStore(store, 'allTodos')).toEqual({
+        bookmark: null,
         definition: null,
         id: null,
         fetchStatus: 'pending',
