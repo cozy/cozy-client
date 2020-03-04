@@ -608,7 +608,7 @@ client.query(Q('io.cozy.bills'))`)
         )
       }
 
-      const existingQuery = getQueryFromState(this.store.getState(), queryId)
+      const existingQuery = this.getQueryFromState(queryId)
       const shouldFetch = options.fetchPolicy(existingQuery)
       if (!shouldFetch) {
         return
