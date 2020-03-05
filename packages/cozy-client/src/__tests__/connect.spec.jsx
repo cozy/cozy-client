@@ -1,13 +1,14 @@
 import React from 'react'
 import { createStore, combineReducers } from 'redux'
 import { default as configureMockStore } from 'redux-mock-store'
-import { shallow } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 
 import CozyClient from '../CozyClient'
 import CozyLink from '../CozyLink'
 import connect from '../connect'
 import { getQueryFromState, initQuery } from '../store'
-
+import { Provider as ReduxProvider } from 'react-redux'
+import CozyProvider from '../Provider'
 import { TODO_1, TODO_2, TODO_3 } from './fixtures'
 
 import { Q } from 'cozy-client'
@@ -59,8 +60,8 @@ describe('connect', () => {
         })
       })
 
-    const TodoList = ({ data, fetchStatus }) =>
-      fetchStatus === 'loading' ? (
+    const TodoList = ({ data, fetchStatus }) => {
+      return fetchStatus === 'loading' || fetchStatus === 'pending' ? (
         <div>Loading</div>
       ) : (
         <ul>
@@ -69,29 +70,24 @@ describe('connect', () => {
           ))}
         </ul>
       )
-
+    }
     const query = Q('io.cozy.todos')
     const ConnectedTodoList = connect(
       query,
       { as: 'allTodos' }
     )(TodoList)
-    const wrapper = shallow(<ConnectedTodoList />, {
-      context: { client, store }
-    })
-    expect(
-      wrapper
-        .dive()
-        .dive()
-        .contains(<div>Loading</div>)
-    ).toBe(true)
+    const wrapper = mount(
+      <CozyProvider client={client}>
+        <ReduxProvider store={store}>
+          <ConnectedTodoList />
+        </ReduxProvider>
+      </CozyProvider>
+    )
+    expect(wrapper.contains(<div>Loading</div>)).toBe(true)
 
     await waitForSuccess()
+    wrapper.update()
 
-    expect(
-      wrapper
-        .dive()
-        .dive()
-        .find('li')
-    ).toHaveLength(3)
+    expect(wrapper.find('li')).toHaveLength(3)
   })
 })
