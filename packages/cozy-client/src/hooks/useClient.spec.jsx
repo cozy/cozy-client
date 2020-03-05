@@ -8,7 +8,7 @@ describe('useClient', () => {
     const client = useClient()
     return <div>{client.stackClient.uri}</div>
   }
-  it('should work', () => {
+  it('should get the client from the nearest Provider', () => {
     const client = { stackClient: { uri: 'https://test.mycozy.cloud' } }
     const root = mount(
       <Provider client={client}>
