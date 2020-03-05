@@ -12,10 +12,12 @@ const generateFetchMoreQueryDefinition = collection => {
 }
 
 /**
+ * Fetches a queryDefinition and returns the queryState
+ *
  * @param  {object} queryDefinition - Definition created with Q()
  *
  * @param  {object} options - Options
- * @param  {object} options.as - Name for the query (random if not given)
+ * @param  {object} options.as - Name for the query [required]
  * @param  {object} options.fetchPolicy - Fetch policy
  *
  * @returns {object}
@@ -33,8 +35,11 @@ const useQuery = (queryDefinition, options) => {
   }
 
   const definition = resolveToValue(queryDefinition)
-
   const as = options.as
+
+  if (!as) {
+    throw new Error('You must specify options.as when using useQuery')
+  }
 
   const client = useClient()
   const queryState = useSelector(() => {
