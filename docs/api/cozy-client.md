@@ -139,6 +139,15 @@ is loading.</p>
 <li>Resolves with the client after user authentication</li>
 </ul>
 </dd>
+<dt><a href="#withClient">withClient(Component)</a> ⇒ <code>function</code></dt>
+<dd><p>HOC to provide client from context as prop</p>
+</dd>
+<dt><a href="#queryConnect">queryConnect(querySpecs)</a> ⇒ <code>function</code></dt>
+<dd><p>HOC creator to connect component to several queries in a declarative manner</p>
+</dd>
+<dt><a href="#useQuery">useQuery(queryDefinition, options)</a> ⇒ <code>object</code></dt>
+<dd><p>Fetches a queryDefinition and returns the queryState</p>
+</dd>
 <dt><a href="#sanitizeCategories">sanitizeCategories()</a></dt>
 <dd><p>Filters unauthorized categories. Defaults to [&#39;others&#39;] if no suitable category.</p>
 </dd>
@@ -1657,6 +1666,44 @@ await createClientInteractive({
   }
 })
 ```
+<a name="withClient"></a>
+
+## withClient(Component) ⇒ <code>function</code>
+HOC to provide client from context as prop
+
+**Kind**: global function  
+**Returns**: <code>function</code> - - Component that will receive client as prop  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| Component | <code>Component</code> | wrapped component |
+
+<a name="queryConnect"></a>
+
+## queryConnect(querySpecs) ⇒ <code>function</code>
+HOC creator to connect component to several queries in a declarative manner
+
+**Kind**: global function  
+**Returns**: <code>function</code> - - HOC to apply to a component  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| querySpecs | <code>object</code> | Definition of the queries |
+
+<a name="useQuery"></a>
+
+## useQuery(queryDefinition, options) ⇒ <code>object</code>
+Fetches a queryDefinition and returns the queryState
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| queryDefinition | <code>object</code> | Definition created with Q() |
+| options | <code>object</code> | Options |
+| options.as | <code>object</code> | Name for the query [required] |
+| options.fetchPolicy | <code>object</code> | Fetch policy |
+
 <a name="sanitizeCategories"></a>
 
 ## sanitizeCategories()
