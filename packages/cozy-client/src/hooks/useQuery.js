@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import useClient from './useClient'
 import logger from '../logger'
@@ -37,7 +37,7 @@ const useQuery = (queryDefinition, options) => {
   const as = options.as
 
   const client = useClient()
-  const collection = useSelector(() => {
+  const queryState = useSelector(() => {
     return client.getQueryFromState(as, {
       hydrated: true
     })
@@ -51,11 +51,12 @@ const useQuery = (queryDefinition, options) => {
     [as]
   )
 
-  const fetchMore = () => {
-    client.query(generateFetchMoreQueryDefinition(collection), { as })
-  }
+  const fetchMore = useCallback(() => {
+    const queryState = client.getQueryFromState(as)
+    client.query(generateFetchMoreQueryDefinition(queryState), { as })
+  }, [as, client])
 
-  return { ...collection, fetchMore: fetchMore }
+  return { ...queryState, fetchMore: fetchMore }
 }
 
 export default useQuery
