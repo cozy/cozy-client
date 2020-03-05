@@ -96,6 +96,7 @@ const Queries = () => {
         <QueryResult collection={transactions} />
       </div>
       <div style={styles.block}>
+        {transactions.data ? `${transactions.data.length} transactions shown` : null }
         {transactions.data &&
           transactions.data.map(tr => (
             <TransactionRow key={tr._id} transaction={tr} />
