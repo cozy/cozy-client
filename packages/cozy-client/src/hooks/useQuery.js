@@ -1,40 +1,40 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import useClient from './useClient'
 import logger from '../logger'
 
-const resolveQueryDefinition = query => {
-  const value = query.query || query.definition
-  return typeof value === 'function' ? value() : value
-}
-
-const uniqueValue = () => {
-  return Date.now().toString(36) + (Math.random() * 10 ** 18).toString(36)
+const resolveToValue = fnOrValue => {
+  return typeof resolveToValue === 'function' ? fnOrValue() : fnOrValue
 }
 
 const generateFetchMoreQueryDefinition = collection => {
   return collection.definition.offsetBookmark(collection.bookmark)
 }
 
-const useQuery = ({ query }) => {
+/**
+ * @param  {object} queryDefinition - Definition created with Q()
+ *
+ * @param  {object} options - Options
+ * @param  {object} options.as - Name for the query (random if not given)
+ * @param  {object} options.fetchPolicy - Fetch policy
+ *
+ * @returns {object}
+ */
+const useQuery = (queryDefinition, options) => {
   if (!useSelector) {
     throw new Error(
       'You must use react-redux > 7.1.0 to use useQuery (uses useSelector) under the hood'
     )
   }
 
-  if (!query) {
-    logger.warn('Bad query', query)
+  if (!queryDefinition) {
+    logger.warn('Bad query', queryDefinition)
     throw new Error('Bad query')
   }
 
   const as = useMemo(() => query.as || uniqueValue(), [query])
+  const definition = resolveToValue(queryDefinition)
 
-  const definition = resolveQueryDefinition(query)
-
-  if (!definition) {
-    throw new Error('query should have as query|definition property')
-  }
 
   const client = useClient()
   const collection = useSelector(() => {
@@ -45,15 +45,16 @@ const useQuery = ({ query }) => {
 
   useEffect(
     () => {
-      client.query(definition, { as })
+      client.query(definition, options)
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [query, as]
+    [as]
   )
 
   const fetchMore = () => {
     client.query(generateFetchMoreQueryDefinition(collection), { as })
   }
+
   return { ...collection, fetchMore: fetchMore }
 }
 

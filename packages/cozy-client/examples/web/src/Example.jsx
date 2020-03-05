@@ -36,13 +36,17 @@ const styles = {
 }
 
 const accountsConn = {
-  as: 'accounts',
-  query: () => Q('io.cozy.bank.accounts')
+  definition: () => Q('io.cozy.bank.accounts'),
+  options: {
+    as: 'accounts'
+  }
 }
 
 const transactionsConn = {
-  as: 'transactions',
-  query: () => Q('io.cozy.bank.operations').limitBy(10).sortBy([{'date': 'desc'}]).where({})
+  definition: () => Q('io.cozy.bank.operations').limitBy(10).sortBy([{'date': 'desc'}]).where({}),
+  options: {
+    as: 'transactions'
+  }
 }
 
 const QueryResult = ({ collection }) => {
@@ -75,10 +79,8 @@ const TransactionRow = ({ transaction: tr }) => (
 
 const Queries = () => {
   const [count, increment, decrement] = useCounter(0)
-  const accounts = useQuery({ query: accountsConn })
-  const transactions = useQuery({
-    query: transactionsConn
-  })
+  const accounts = useQuery(accountsConn.definition, accountsConn.options)
+  const transactions = useQuery(transactionsConn.definition, transactionsConn.options)
 
   return (
     <div style={styles.queries}>

@@ -10,7 +10,7 @@ import { createMockClient } from '../mock'
 import simpsonsFixture from '../testing/simpsons.json'
 
 describe('use query', () => {
-  const setup = ({ query }) => {
+  const setup = ({ queryDefinition, queryOptions }) => {
     const client = createMockClient({
       queries: {
         simpsons: {
@@ -25,9 +25,12 @@ describe('use query', () => {
         <ClientProvider client={client}>{children}</ClientProvider>
       </ReduxProvider>
     )
-    const hookResult = renderHook(() => useQuery({ query }), {
-      wrapper
-    })
+    const hookResult = renderHook(
+      () => useQuery(queryDefinition, queryOptions),
+      {
+        wrapper
+      }
+    )
     return { client, hookResult }
   }
 
@@ -37,10 +40,10 @@ describe('use query', () => {
         result: { current }
       }
     } = setup({
-      query: {
-        as: 'simpsons',
-        definition: () => Q('io.cozy.simpsons')
-      }
+      queryOptions: {
+        as: 'simpsons'
+      },
+      queryDefinition: () => Q('io.cozy.simpsons')
     })
     expect(current).toMatchObject({
       data: [
