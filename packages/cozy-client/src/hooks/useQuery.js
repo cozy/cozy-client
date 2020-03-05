@@ -32,9 +32,9 @@ const useQuery = (queryDefinition, options) => {
     throw new Error('Bad query')
   }
 
-  const as = useMemo(() => query.as || uniqueValue(), [query])
   const definition = resolveToValue(queryDefinition)
 
+  const as = options.as
 
   const client = useClient()
   const collection = useSelector(() => {
