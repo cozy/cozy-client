@@ -93,7 +93,7 @@ example.</p>
 <dd></dd>
 <dt><a href="#isNote">isNote</a></dt>
 <dd></dd>
-<dt><a href="#isShortcurt">isShortcurt</a> ⇒ <code>boolean</code></dt>
+<dt><a href="#isShortcut">isShortcut</a> ⇒ <code>boolean</code></dt>
 <dd></dd>
 <dt><a href="#ensureMagicFolder">ensureMagicFolder</a> ⇒ <code>object</code></dt>
 <dd><p>Returns a &quot;Magic Folder&quot;, given its id. See <a href="https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.apps/#special-iocozyapps-doctypes">https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.apps/#special-iocozyapps-doctypes</a></p>
@@ -1474,9 +1474,9 @@ getAppDisplayName - Combines the translated prefix and name of the app into a si
 | --- | --- | --- |
 | file | <code>File</code> | io.cozy.files |
 
-<a name="isShortcurt"></a>
+<a name="isShortcut"></a>
 
-## isShortcurt ⇒ <code>boolean</code>
+## isShortcut ⇒ <code>boolean</code>
 **Kind**: global constant  
 **Returns**: <code>boolean</code> - true if the file is a shortcut  
 
