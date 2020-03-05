@@ -1,4 +1,5 @@
 import useAppLinkWithStoreFallback from './useAppLinkWithStoreFallback'
 import useCapabilities from './useCapabilities'
-export { useAppLinkWithStoreFallback, useCapabilities }
+import useFetchShortcut from './useFetchShortcut'
+export { useAppLinkWithStoreFallback, useCapabilities, useFetchShortcut }
 export { default as useClient } from './useClient'
