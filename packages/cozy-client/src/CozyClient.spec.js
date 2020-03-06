@@ -966,6 +966,16 @@ describe('CozyClient', () => {
         ]
       })
     })
+
+    it('should do nothing if fetch policy returns false', async () => {
+      jest.spyOn(client, 'requestQuery')
+      const fetchPolicy = jest.fn(() => false)
+      const fakeQueryState = {}
+      jest.spyOn(client, 'getQueryFromState').mockReturnValue(fakeQueryState)
+      await client.query(query, { as: 'allTodos', fetchPolicy })
+      expect(fetchPolicy).toHaveBeenCalledWith(fakeQueryState)
+      expect(client.requestQuery).not.toHaveBeenCalled()
+    })
   })
 
   describe('queryAll', () => {

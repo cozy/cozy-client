@@ -162,6 +162,7 @@ describe('Query', () => {
       })
       expect(children).toHaveBeenCalledWith(
         {
+          bookmark: null,
           count: 0,
           data: [],
           definition: { doctype: 'io.cozy.todos' },

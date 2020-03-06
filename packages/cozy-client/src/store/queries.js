@@ -30,7 +30,8 @@ const queryInitialState = {
   lastError: null,
   hasMore: false,
   count: 0,
-  data: []
+  data: [],
+  bookmark: null
 }
 
 const query = (state = queryInitialState, action) => {
@@ -64,6 +65,7 @@ const query = (state = queryInitialState, action) => {
       return {
         ...state,
         ...common,
+        bookmark: response.bookmark || null,
         hasMore: response.next !== undefined ? response.next : state.hasMore,
         count:
           response.meta && response.meta.count

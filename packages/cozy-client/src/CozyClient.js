@@ -593,12 +593,27 @@ client.query(Q('io.cozy.bills'))`)
    * @param  {QueryDefinition} queryDefinition - Definition that will be executed
    * @param  {string} options - Options
    * @param  {string} options.as - Names the query so it can be reused (by multiple components for example)
+   * @param  {string} options.fetchPolicy - Fetch policy to bypass fetching based on what's already inside the state. See "Fetch policies"
    * @returns {QueryResult}
    */
   async query(queryDefinition, { update, ...options } = {}) {
     this.ensureStore()
     const queryId = options.as || this.generateId()
     this.ensureQueryExists(queryId, queryDefinition)
+
+    if (options.fetchPolicy) {
+      if (!options.as) {
+        throw new Error(
+          'Cannot use `fetchPolicy` without naming the query, please use `as` to name the query'
+        )
+      }
+
+      const existingQuery = this.getQueryFromState(queryId)
+      const shouldFetch = options.fetchPolicy(existingQuery)
+      if (!shouldFetch) {
+        return
+      }
+    }
     try {
       const response = await this.requestQuery(queryDefinition)
       this.dispatch(
@@ -679,7 +694,7 @@ client.query(Q('io.cozy.bills'))`)
    * Executes a query through links and fetches relationships
    *
    * @private
-   * @param  {QueryDefinition} definition
+   * @param  {QueryDefinition} definition QueryDefinition to be executed
    * @returns {Response}
    */
   async requestQuery(definition) {
@@ -701,6 +716,8 @@ client.query(Q('io.cozy.bills'))`)
    * Can potentially result in several fetch requests.
    * Queries are optimized before being sent (multiple single documents queries can be packed into
    * one multiple document query) for example.
+   *
+   * @private
    */
   async fetchRelationships(response, relationshipsByName) {
     const isSingleDoc = !Array.isArray(response.data)

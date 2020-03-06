@@ -344,16 +344,18 @@ class DocumentCollection {
       }
     }
 
-    return {
+    const opts = {
       selector,
       use_index: indexId,
       // TODO: type and class should not be necessary, it's just a temp fix for a stack bug
       fields: fields ? [...fields, '_id', '_type', 'class'] : undefined,
       limit,
       skip,
-      bookmark,
+      bookmark: options.bookmark || bookmark,
       sort
     }
+
+    return opts
   }
 
   async checkUniquenessOf(property, value) {
@@ -417,7 +419,7 @@ class DocumentCollection {
     return Array.from(
       new Set([
         ...sort.map(sortOption => head(Object.keys(sortOption))),
-        ...Object.keys(selector)
+        ...(selector ? Object.keys(selector) : [])
       ])
     )
   }

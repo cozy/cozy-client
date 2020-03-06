@@ -148,6 +148,15 @@ is loading.</p>
 <li>Resolves with the client after user authentication</li>
 </ul>
 </dd>
+<dt><a href="#withClient">withClient(Component)</a> ⇒ <code>function</code></dt>
+<dd><p>HOC to provide client from context as prop</p>
+</dd>
+<dt><a href="#queryConnect">queryConnect(querySpecs)</a> ⇒ <code>function</code></dt>
+<dd><p>HOC creator to connect component to several queries in a declarative manner</p>
+</dd>
+<dt><a href="#useQuery">useQuery(queryDefinition, options)</a> ⇒ <code>object</code></dt>
+<dd><p>Fetches a queryDefinition and returns the queryState</p>
+</dd>
 <dt><a href="#sanitizeCategories">sanitizeCategories()</a></dt>
 <dd><p>Filters unauthorized categories. Defaults to [&#39;others&#39;] if no suitable category.</p>
 </dd>
@@ -181,9 +190,15 @@ is loading.</p>
 <dd><p>Generates and executes a query that is offsetted by the number of documents
 we have in the store.</p>
 </dd>
+<dt><a href="#getQueryAttributes">getQueryAttributes()</a></dt>
+<dd><p>Get attributes that will be assigned to the instance of a Query</p>
+</dd>
 <dt><a href="#cancelable">cancelable(promise)</a> ⇒ <code>AugmentedPromise</code></dt>
 <dd><p>Wraps a promise so that it can be canceled</p>
 <p>Rejects with canceled: true as soon as cancel is called</p>
+</dd>
+<dt><del><a href="#withMutations">withMutations(...mutations)</a> ⇒ <code>function</code></del></dt>
+<dd><p>HOC to provide mutations to components. Needs client in context or as prop.</p>
 </dd>
 </dl>
 
@@ -618,7 +633,6 @@ Responsible for
         * [.destroy(document)](#CozyClient+destroy) ⇒ [<code>Document</code>](#Document)
         * [.query(queryDefinition, options)](#CozyClient+query) ⇒ <code>QueryResult</code>
         * [.queryAll(queryDefinition, options)](#CozyClient+queryAll) ⇒ <code>Array</code>
-        * [.fetchRelationships()](#CozyClient+fetchRelationships)
         * [.hydrateDocuments(doctype, documents)](#CozyClient+hydrateDocuments) ⇒ <code>Array.&lt;HydratedDocument&gt;</code>
         * [.hydrateDocument(document, schema)](#CozyClient+hydrateDocument) ⇒ <code>HydratedDocument</code>
         * [.makeNewDocument()](#CozyClient+makeNewDocument)
@@ -803,6 +817,7 @@ executes its query when mounted if no fetch policy has been indicated.
 | queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) | Definition that will be executed |
 | options | <code>string</code> | Options |
 | options.as | <code>string</code> | Names the query so it can be reused (by multiple components for example) |
+| options.fetchPolicy | <code>string</code> | Fetch policy to bypass fetching based on what's already inside the state. See "Fetch policies" |
 
 <a name="CozyClient+queryAll"></a>
 
@@ -819,17 +834,6 @@ result in a lot of network requests.
 | queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) | Definition to be executed |
 | options | <code>object</code> | Options to the query |
 
-<a name="CozyClient+fetchRelationships"></a>
-
-### cozyClient.fetchRelationships()
-Fetch relationships for a response (can be several docs).
-Fills the `relationships` attribute of each documents.
-
-Can potentially result in several fetch requests.
-Queries are optimized before being sent (multiple single documents queries can be packed into
-one multiple document query) for example.
-
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 <a name="CozyClient+hydrateDocuments"></a>
 
 ### cozyClient.hydrateDocuments(doctype, documents) ⇒ <code>Array.&lt;HydratedDocument&gt;</code>
@@ -1713,6 +1717,44 @@ await createClientInteractive({
   }
 })
 ```
+<a name="withClient"></a>
+
+## withClient(Component) ⇒ <code>function</code>
+HOC to provide client from context as prop
+
+**Kind**: global function  
+**Returns**: <code>function</code> - - Component that will receive client as prop  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| Component | <code>Component</code> | wrapped component |
+
+<a name="queryConnect"></a>
+
+## queryConnect(querySpecs) ⇒ <code>function</code>
+HOC creator to connect component to several queries in a declarative manner
+
+**Kind**: global function  
+**Returns**: <code>function</code> - - HOC to apply to a component  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| querySpecs | <code>object</code> | Definition of the queries |
+
+<a name="useQuery"></a>
+
+## useQuery(queryDefinition, options) ⇒ <code>object</code>
+Fetches a queryDefinition and returns the queryState
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| queryDefinition | <code>object</code> | Definition created with Q() |
+| options | <code>object</code> | Options |
+| options.as | <code>object</code> | Name for the query [required] |
+| options.fetchPolicy | <code>object</code> | Fetch policy |
+
 <a name="sanitizeCategories"></a>
 
 ## sanitizeCategories()
@@ -1813,6 +1855,12 @@ Generates and executes a query that is offsetted by the number of documents
 we have in the store.
 
 **Kind**: global function  
+<a name="getQueryAttributes"></a>
+
+## getQueryAttributes()
+Get attributes that will be assigned to the instance of a Query
+
+**Kind**: global function  
 <a name="cancelable"></a>
 
 ## cancelable(promise) ⇒ <code>AugmentedPromise</code>
@@ -1826,6 +1874,20 @@ Rejects with canceled: true as soon as cancel is called
 | Param | Type |
 | --- | --- |
 | promise | <code>Promise</code> | 
+
+<a name="withMutations"></a>
+
+## ~~withMutations(...mutations) ⇒ <code>function</code>~~
+***Deprecated***
+
+HOC to provide mutations to components. Needs client in context or as prop.
+
+**Kind**: global function  
+**Returns**: <code>function</code> - - Component that will receive mutations as props  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ...mutations | <code>function</code> | One ore more mutations, which are function taking CozyClient as parameter and returning an object containing one or more mutations as attributes. |
 
 <a name="QueryState"></a>
 

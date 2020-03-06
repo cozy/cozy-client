@@ -18,7 +18,7 @@ const main = async () => {
   const packages = await globPromise('packages/*')
   await fs.mkdirp(path.resolve(docsFolder, 'api'))
   for (let pkg of packages) {
-    const files = await globPromise(`${pkg}/src/**/*.js`, { ignore: ['*.spec.js']})
+    const files = await globPromise(`${pkg}/src/**/*.js*`, { ignore: ['*.spec.js']})
     if (files.length === 0) { continue }
     const pkgName = pkg.split('/')[1]
     const pkgDoc = path.join(docsFolder, pkgName)
