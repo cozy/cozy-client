@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [12.4.0](https://github.com/cozy/cozy-client/compare/v12.3.0...v12.4.0) (2020-03-06)
+
+
+### Bug Fixes
+
+* Removed timeout ([8fda21d](https://github.com/cozy/cozy-client/commit/8fda21d))
+* Typo in the method name ([a77427c](https://github.com/cozy/cozy-client/commit/a77427c))
+
+
+### Features
+
+* Add useFetchShortcut hooks ([5bebdcf](https://github.com/cozy/cozy-client/commit/5bebdcf))
+
+
+
+
+
 # [12.3.0](https://github.com/cozy/cozy-client/compare/v12.2.0...v12.3.0) (2020-03-03)
 
 
