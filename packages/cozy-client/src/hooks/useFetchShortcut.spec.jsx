@@ -51,7 +51,6 @@ describe('useFetchShortcut', () => {
     )
 
     await waitForNextUpdate()
-    expect(result.current.shouldDisplayImg).toEqual(false)
     expect(result.current.shortcutInfos).toEqual({
       data: {
         type: 'io.cozy.files.shortcuts',
@@ -69,7 +68,5 @@ describe('useFetchShortcut', () => {
     expect(result.current.shortcurtImg).toEqual(
       `${mockClient.getStackClient().uri}/bitwarden/icons/cozy.io/icon.png`
     )
-    await waitForNextUpdate()
-    expect(result.current.shouldDisplayImg).toEqual(true)
   })
 })
