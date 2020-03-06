@@ -41,8 +41,8 @@ describe('File Model', () => {
       class: 'image'
     }
 
-    expect(file.isShortcurt(shortcut)).toBe(true)
-    expect(file.isShortcurt(image)).toBe(false)
+    expect(file.isShortcut(shortcut)).toBe(true)
+    expect(file.isShortcut(image)).toBe(false)
   })
 
   describe('normalizeFile', () => {
