@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [12.5.0](https://github.com/cozy/cozy-client/compare/v12.4.0...v12.5.0) (2020-03-06)
+
+
+### Bug Fixes
+
+* Add relative dep on cozy-client ([5fd9cd6](https://github.com/cozy/cozy-client/commit/5fd9cd6))
+* Take review into account ([7a1a2e8](https://github.com/cozy/cozy-client/commit/7a1a2e8))
+* Tests ([9515444](https://github.com/cozy/cozy-client/commit/9515444))
+
+
+### Features
+
+* Better UI/token prompt ([b022232](https://github.com/cozy/cozy-client/commit/b022232))
+* Implement correctly getDerivedState ([e26588c](https://github.com/cozy/cozy-client/commit/e26588c))
+* Make options.as mandatory ([38fb7fb](https://github.com/cozy/cozy-client/commit/38fb7fb))
+* Show nb of transactions shown ([6b709c2](https://github.com/cozy/cozy-client/commit/6b709c2))
+* Store bookmark inside query ([1bf9f36](https://github.com/cozy/cozy-client/commit/1bf9f36))
+* Use query hook ([96cad34](https://github.com/cozy/cozy-client/commit/96cad34))
+* Use random name for query when missing ([46c68f0](https://github.com/cozy/cozy-client/commit/46c68f0))
+
+
+
+
+
 # [12.4.0](https://github.com/cozy/cozy-client/compare/v12.3.0...v12.4.0) (2020-03-06)
 
 

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [12.5.0](https://github.com/cozy/cozy-client/compare/v12.4.0...v12.5.0) (2020-03-06)
+
+
+### Bug Fixes
+
+* Take review into account ([7a1a2e8](https://github.com/cozy/cozy-client/commit/7a1a2e8))
+
+
+### Features
+
+* Store bookmark inside query ([1bf9f36](https://github.com/cozy/cozy-client/commit/1bf9f36))
+
+
+
+
+
 # [12.2.0](https://github.com/cozy/cozy-client/compare/v12.1.1...v12.2.0) (2020-03-03)
 
 **Note:** Version bump only for package cozy-stack-client
