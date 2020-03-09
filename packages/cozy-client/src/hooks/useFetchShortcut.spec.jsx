@@ -65,7 +65,7 @@ describe('useFetchShortcut', () => {
         meta: { rev: '1-60e1359e63fa7fa9fa000a2726d5d4c7' }
       }
     })
-    expect(result.current.shortcurtImg).toEqual(
+    expect(result.current.shortcutImg).toEqual(
       `${mockClient.getStackClient().uri}/bitwarden/icons/cozy.io/icon.png`
     )
   })
