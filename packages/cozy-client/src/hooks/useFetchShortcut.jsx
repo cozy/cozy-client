@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 
 const useFetchShortcut = (client, id) => {
   const [shortcutInfos, setShortcutInfos] = useState()
-  const [shortcurtImg, setShotcutImg] = useState()
+  const [shortcutImg, setShotcutImg] = useState()
   const [fetchStatus, setFetchStatus] = useState('idle')
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +31,7 @@ const useFetchShortcut = (client, id) => {
 
   return {
     shortcutInfos,
-    shortcurtImg,
+    shortcutImg,
     fetchStatus
   }
 }
