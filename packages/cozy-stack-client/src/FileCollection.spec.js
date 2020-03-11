@@ -74,6 +74,97 @@ describe('FileCollection', () => {
     })
   })
 
+  describe('find', () => {
+    client.uri = 'http://cozy.tools'
+    const FIND_RESPONSE = {
+      data: [{ id: '1' }, { id: '2' }],
+      links: {
+        next: '/files/_find?page[cursor]=bookmark-id-123'
+      },
+      meta: {
+        count: 4
+      }
+    }
+
+    beforeAll(() => {
+      client.fetchJSON.mockReturnValue(Promise.resolve(FIND_RESPONSE))
+    })
+
+    afterAll(() => {
+      client.fetchJSON.mockReset()
+    })
+
+    it('should call the right route with the right params', async () => {
+      await collection.find(
+        { trashed: false },
+        {
+          indexId: 'index-1',
+          bookmark: 'bookmark-123',
+          limit: 2,
+          skip: 4,
+          sort: [{ name: 'asc' }]
+        }
+      )
+      expect(client.fetchJSON).toHaveBeenCalledWith('POST', '/files/_find', {
+        bookmark: 'bookmark-123',
+        fields: undefined,
+        limit: 2,
+        selector: { trashed: false },
+        skip: 4,
+        sort: [{ name: 'asc' }, { trashed: 'asc' }],
+        use_index: 'index-1'
+      })
+    })
+
+    it('should return the expected value', async () => {
+      const result = await collection.find(
+        { trashed: false },
+        {
+          indexId: 'index-1',
+          bookmark: 'bookmark-123',
+          limit: 2,
+          skip: 4,
+          sort: [{ name: 'asc' }]
+        }
+      )
+
+      expect(result.data.length).toEqual(FIND_RESPONSE.data.length)
+      expect(result.meta).toEqual(FIND_RESPONSE.meta)
+      expect(result.bookmark).toEqual('bookmark-id-123')
+    })
+
+    it('should handle malformatted next links', async () => {
+      client.fetchJSON.mockReturnValue(Promise.resolve({ data: [], meta: {} }))
+      const resultWithoutNext = await collection.find(
+        {},
+        { indexId: 'index-1' }
+      )
+      expect(resultWithoutNext.bookmark).toBeUndefined()
+
+      client.fetchJSON.mockReturnValue(
+        Promise.resolve({ next: {}, data: [], meta: {} })
+      )
+      const resultWithoutLink = await collection.find(
+        {},
+        { indexId: 'index-1' }
+      )
+      expect(resultWithoutLink.bookmark).toBeUndefined()
+
+      client.fetchJSON.mockReturnValue(
+        Promise.resolve({
+          next: { link: '/no-cursor-here' },
+          data: [],
+          meta: {}
+        })
+      )
+      const resultWithoutCursor = await collection.find(
+        {},
+        { indexId: 'index-1' }
+      )
+      expect(resultWithoutCursor.bookmark).toBeUndefined()
+    })
+  })
+
   describe('createDirectory', () => {
     const NEW_DIR = {
       name: 'notes',
