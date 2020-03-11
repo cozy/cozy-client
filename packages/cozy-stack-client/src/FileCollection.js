@@ -1,5 +1,6 @@
 import mime from 'mime/lite'
 import has from 'lodash/has'
+import get from 'lodash/get'
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 import { uri, slugify, forceFileDownload, formatBytes } from './utils'
 import * as querystring from './querystring'
@@ -69,22 +70,28 @@ class FileCollection extends DocumentCollection {
    * The returned documents are paginated by the stack.
    *
    * @param  {object} selector The Mango selector.
-   * @param  {{sort, fields, limit, skip, indexId}} options The query options.
-   * @returns {{data, meta, skip, next}} The JSON API conformant response.
+   * @param  {{sort, fields, limit, skip, indexId, bookmark}} options The query options.
+   * @returns {{data, meta, skip, next, bookmark}} The JSON API conformant response.
    * @throws {FetchError}
    */
   async find(selector, options = {}) {
     const { skip = 0 } = options
+
     const resp = await this.stackClient.fetchJSON(
       'POST',
       '/files/_find',
       await this.toMangoOptions(selector, options)
     )
+
+    const nextLink = get(resp, 'links.next', '')
+    const nextLinkURL = new URL(`${this.stackClient.uri}${nextLink}`)
+    const nextBookmark = nextLinkURL.searchParams.get('page[cursor]')
     return {
       data: resp.data.map(f => normalizeFile(f)),
       meta: resp.meta,
       next: resp.meta.count > skip + resp.data.length,
-      skip
+      skip,
+      bookmark: nextBookmark || undefined
     }
   }
 
