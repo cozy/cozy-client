@@ -3,6 +3,7 @@ import difference from 'lodash/difference'
 import intersection from 'lodash/intersection'
 import concat from 'lodash/concat'
 import isPlainObject from 'lodash/isPlainObject'
+import uniq from 'lodash/uniq'
 
 import { getDocumentFromSlice } from './documents'
 import { isReceivingMutationResult } from './mutations'
@@ -71,7 +72,7 @@ const query = (state = queryInitialState, action) => {
           response.meta && response.meta.count
             ? response.meta.count
             : response.data.length,
-        data: [...state.data, ...response.data.map(properId)]
+        data: uniq([...state.data, ...response.data.map(properId)])
       }
     }
     case RECEIVE_QUERY_ERROR:

@@ -50,6 +50,13 @@ describe('queries reducer', () => {
         })
       )
       expect(state).toMatchSnapshot()
+      expect(state['a'].data).toEqual([TODO_1._id, TODO_2._id])
+      applyAction(
+        receiveQueryResult('a', {
+          data: [TODO_1, TODO_2]
+        })
+      )
+      expect(state['a'].data).toEqual([TODO_1._id, TODO_2._id])
     })
     it('should correctly update two queries', () => {
       applyAction(
