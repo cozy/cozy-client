@@ -60,12 +60,14 @@ export default class ObservableQuery {
    * we have in the store.
    */
   fetchMore() {
-    return this.client.query(
-      this.definition.offset(this.currentRawResult().data.length),
-      {
-        as: this.queryId
-      }
-    )
+    const rawResult = this.currentRawResult()
+    return rawResult.bookmark
+      ? this.client.query(this.definition.offsetBookmark(rawResult.bookmark), {
+          as: this.queryId
+        })
+      : this.client.query(this.definition.offset(rawResult.data.length), {
+          as: this.queryId
+        })
   }
 
   currentRawResult() {

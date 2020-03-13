@@ -576,8 +576,7 @@ client.query(Q('io.cozy.bills'))`)
     // Don't trigger the INIT_QUERY for fetchMore() calls
     if (
       existingQuery.fetchStatus !== 'loaded' ||
-      !queryDefinition.skip ||
-      !queryDefinition.bookmark
+      (!queryDefinition.skip && !queryDefinition.bookmark)
     ) {
       this.dispatch(initQuery(queryId, queryDefinition))
     }
