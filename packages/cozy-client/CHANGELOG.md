@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.5.1](https://github.com/cozy/cozy-client/compare/v12.5.0...v12.5.1) (2020-03-13)
+
+
+### Bug Fixes
+
+* Make query data duplicate free ([a06dddc](https://github.com/cozy/cozy-client/commit/a06dddc))
+
+
+
+
+
 # [12.5.0](https://github.com/cozy/cozy-client/compare/v12.4.0...v12.5.0) (2020-03-06)
 
 
