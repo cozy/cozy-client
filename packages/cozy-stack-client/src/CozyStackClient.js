@@ -11,6 +11,7 @@ import PermissionCollection from './PermissionCollection'
 import TriggerCollection, { TRIGGERS_DOCTYPE } from './TriggerCollection'
 import SettingsCollection, { SETTINGS_DOCTYPE } from './SettingsCollection'
 import NotesCollection, { NOTES_DOCTYPE } from './NotesCollection'
+import ShortcutsCollection, { SHORTCUTS_DOCTYPE } from './ShortcutsCollection'
 import getIconURL from './getIconURL'
 import logDeprecate from './logDeprecate'
 import errors from './errors'
@@ -71,6 +72,8 @@ class CozyStackClient {
         return new SettingsCollection(this)
       case NOTES_DOCTYPE:
         return new NotesCollection(this)
+      case SHORTCUTS_DOCTYPE:
+        return new ShortcutsCollection(this)
       default:
         return new DocumentCollection(doctype, this)
     }
