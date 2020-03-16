@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.0.0](https://github.com/cozy/cozy-client/compare/v12.6.0...v13.0.0) (2020-03-16)
+
+
+### Bug Fixes
+
+* Typo ([a2e7c63](https://github.com/cozy/cozy-client/commit/a2e7c63))
+
+
+### BREAKING CHANGES
+
+* Renamed shortcurtImg to shotcutImg in useFetchShortcut
+
+
+
+
+
 # [12.6.0](https://github.com/cozy/cozy-client/compare/v12.5.1...v12.6.0) (2020-03-16)
 
 **Note:** Version bump only for package cozy-client
