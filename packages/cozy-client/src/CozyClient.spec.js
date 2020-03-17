@@ -23,7 +23,8 @@ import {
   receiveQueryError,
   initMutation,
   receiveMutationResult,
-  receiveMutationError
+  receiveMutationError,
+  getQueryFromState
 } from './store'
 import { HasManyFiles, Association, HasMany } from './associations'
 import mapValues from 'lodash/mapValues'
@@ -41,6 +42,11 @@ const normalizeData = data =>
   })
 
 const METADATA_VERSION = 1
+
+jest.mock('./store', () => ({
+  ...jest.requireActual('./store'),
+  getQueryFromState: jest.fn().mockReturnValue({})
+}))
 
 describe('CozyClient initialization', () => {
   let client, links
@@ -976,6 +982,40 @@ describe('CozyClient', () => {
       expect(fetchPolicy).toHaveBeenCalledWith(fakeQueryState)
       expect(client.requestQuery).not.toHaveBeenCalled()
     })
+
+    it('should dispatch a INIT_QUERY action if status is not loaded', async () => {
+      getQueryFromState.mockReturnValueOnce({
+        fetchStatus: 'pending'
+      })
+      await client.query(query, { as: 'allTodos' })
+      expect(client.store.dispatch.mock.calls[0][0]).toEqual(
+        initQuery('allTodos', { doctype: 'io.cozy.todos' })
+      )
+    })
+
+    it('should dispatch a RECEIVE_QUERY_RESULT action if query has skip', async () => {
+      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
+      getQueryFromState.mockReturnValueOnce({
+        fetchStatus: 'loaded'
+      })
+      query.skip = 100
+      await client.query(query, { as: 'allTodos' })
+      expect(client.store.dispatch.mock.calls[0][0]).toEqual(
+        receiveQueryResult('allTodos', fakeResponse)
+      )
+    })
+
+    it('should dispatch a RECEIVE_QUERY_RESULT action if query has bookmark', async () => {
+      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
+      getQueryFromState.mockReturnValueOnce({
+        fetchStatus: 'loaded'
+      })
+      query.bookmark = 'ohhimark'
+      await client.query(query, { as: 'allTodos' })
+      expect(client.store.dispatch.mock.calls[0][0]).toEqual(
+        receiveQueryResult('allTodos', fakeResponse)
+      )
+    })
   })
 
   describe('queryAll', () => {
@@ -1097,12 +1137,18 @@ describe('CozyClient', () => {
       await client.query({ doctype: 'io.cozy.todos' }, { as: 'todos' })
       await client.query({ doctype: 'io.cozy.persons' }, { as: 'people' })
 
+      getQueryFromState.mockReturnValueOnce({
+        data: AUTHORS
+      })
       const { data: rawTodos } = client.getQueryFromState('todos')
 
+      getQueryFromState.mockReturnValueOnce({
+        definition: { doctype: 'io.cozy.todos' },
+        data: [TODO_WITH_AUTHOR]
+      })
       const { data: hydratedTodos } = client.getQueryFromState('todos', {
         hydrated: true
       })
-
       expect(rawTodos[0].authors).toBeUndefined()
 
       // Since the todo is hydrated, we can access authors through the relationship
