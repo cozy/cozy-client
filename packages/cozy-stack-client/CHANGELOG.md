@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.1.0](https://github.com/cozy/cozy-client/compare/v13.0.0...v13.1.0) (2020-03-17)
+
+
+### Features
+
+* Support cursor on FilesCollection.find ([418ff0d](https://github.com/cozy/cozy-client/commit/418ff0d))
+
+
+
+
+
 # [13.0.0](https://github.com/cozy/cozy-client/compare/v12.6.0...v13.0.0) (2020-03-16)
 
 **Note:** Version bump only for package cozy-stack-client
