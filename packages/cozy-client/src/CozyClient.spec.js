@@ -993,6 +993,16 @@ describe('CozyClient', () => {
       )
     })
 
+    it('should dispatch a INIT_QUERY action if no skip and no bookmark', async () => {
+      getQueryFromState.mockReturnValueOnce({
+        fetchStatus: 'loaded'
+      })
+      await client.query(query, { as: 'allTodos' })
+      expect(client.store.dispatch.mock.calls[0][0]).toEqual(
+        initQuery('allTodos', { doctype: 'io.cozy.todos' })
+      )
+    })
+
     it('should dispatch a RECEIVE_QUERY_RESULT action if query has skip', async () => {
       requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
       getQueryFromState.mockReturnValueOnce({
