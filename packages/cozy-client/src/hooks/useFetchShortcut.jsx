@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 
 const useFetchShortcut = (client, id) => {
   const [shortcutInfos, setShortcutInfos] = useState()
-  const [shortcutImg, setShotcutImg] = useState()
+  const [shortcutImg, setShortcutImg] = useState()
   const [fetchStatus, setFetchStatus] = useState('idle')
   useEffect(() => {
     const fetchData = async () => {
@@ -19,7 +19,7 @@ const useFetchShortcut = (client, id) => {
           shortcutRemoteUrl.host
         }/icon.png`
 
-        setShotcutImg(imgUrl)
+        setShortcutImg(imgUrl)
         setShortcutInfos(shortcutInfosResult)
         setFetchStatus('loaded')
       } catch (e) {
