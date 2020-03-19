@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.1.1](https://github.com/cozy/cozy-client/compare/v13.1.0...v13.1.1) (2020-03-19)
+
+
+### Bug Fixes
+
+* Use bookmark with fetchMore ([5ace9b8](https://github.com/cozy/cozy-client/commit/5ace9b8))
+
+
+
+
+
 # [13.1.0](https://github.com/cozy/cozy-client/compare/v13.0.0...v13.1.0) (2020-03-17)
 
 
