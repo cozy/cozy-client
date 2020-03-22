@@ -747,7 +747,8 @@ class FileCollection extends DocumentCollection {
     if (ifMatch) headers['If-Match'] = ifMatch
 
     const resp = await this.stackClient.fetchJSON(method, path, data, {
-      headers
+      headers,
+      onUploadProgress: options.onUploadProgress
     })
     return {
       data: normalizeFile(resp.data)

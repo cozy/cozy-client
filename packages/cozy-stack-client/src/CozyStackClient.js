@@ -14,6 +14,7 @@ import NotesCollection, { NOTES_DOCTYPE } from './NotesCollection'
 import getIconURL from './getIconURL'
 import logDeprecate from './logDeprecate'
 import errors from './errors'
+import { fetchWithXMLHttpRequest, shouldXMLHTTPRequestBeUsed } from './xhrFetch'
 
 const normalizeUri = uri => {
   if (uri === null) return null
@@ -105,7 +106,13 @@ class CozyStackClient {
     // request even for cross-origin requests
     options.credentials = 'include'
 
-    return fetch(this.fullpath(path), options).catch(err => {
+    const fullPath = this.fullpath(path)
+
+    const fetcher = shouldXMLHTTPRequestBeUsed(method, path, options)
+      ? fetchWithXMLHttpRequest
+      : window.fetch
+
+    return fetcher(fullPath, options).catch(err => {
       if (isRevocationError(err)) {
         this.onRevocationChange(true)
       }
