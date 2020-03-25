@@ -53,7 +53,7 @@ const fetchWithXMLHttpRequest = async (fullpath, options) => {
 
 const doesXHRSupportLoadAndProgress = memoize(() => {
   const xhr = new XMLHttpRequest()
-  return ('onload' in xhr) && ('onprogress' in xhr)
+  return 'onload' in xhr && 'onprogress' in xhr
 })
 
 const shouldXMLHTTPRequestBeUsed = (method, path, options) => {
