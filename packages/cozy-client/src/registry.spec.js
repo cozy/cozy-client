@@ -15,7 +15,9 @@ describe('registry api', () => {
       .mockImplementation(() => Promise.resolve({ apps: [] }))
     client = new CozyClient({
       stackClient: {
-        fetchJSON
+        fetchJSON,
+        on: jest.fn(),
+        removeListener: jest.fn()
       }
     })
     api = new Registry({ client })

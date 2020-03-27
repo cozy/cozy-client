@@ -1,7 +1,8 @@
 const {
   default: StackClient,
   OAuthClient: OriginalOAuthClient,
-  normalizeDoc
+  normalizeDoc,
+  FetchError
 } = jest.requireActual('cozy-stack-client')
 
 const collectionMock = {
@@ -28,4 +29,4 @@ export class OAuthClient extends OriginalOAuthClient {
 }
 
 export default MockedStackClient
-export { normalizeDoc }
+export { normalizeDoc, FetchError }

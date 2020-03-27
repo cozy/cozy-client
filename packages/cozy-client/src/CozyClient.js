@@ -94,13 +94,15 @@ class CozyClient {
     this.handleTokenRefresh = this.handleTokenRefresh.bind(this)
 
     this.createClient()
+    const stackClient = this.getStackClient()
+    stackClient.on('error', (...args) => this.emit('error', ...args))
 
     this.links = ensureArray(link || links || new StackLink())
     this.registerClientOnLinks()
 
     this.chain = chain(this.links)
 
-    this.schema = new Schema(schema, this.getStackClient())
+    this.schema = new Schema(schema, stackClient)
 
     // Instances of plugins registered with registerPlugin
     this.plugins = {}

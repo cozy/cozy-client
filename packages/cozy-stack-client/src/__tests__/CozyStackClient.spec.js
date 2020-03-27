@@ -223,6 +223,21 @@ describe('CozyStackClient', () => {
       // if it has a .text method, it should be a Response object
       expect(resp.text).not.toBeUndefined()
     })
+
+    it('should emit on error', async () => {
+      const response = new Response(null, {
+        status: 413,
+        statusText: 'Quota exceeded'
+      })
+      fetch.mockReturnValueOnce(response)
+      const handler = jest.fn()
+      client.on('error', handler)
+      await client.fetch('GET', '/data/anyroute')
+      expect(handler).toHaveBeenCalledWith(expect.any(FetchError))
+      expect(handler).toHaveBeenCalledWith(
+        expect.objectContaining({ response })
+      )
+    })
   })
 
   describe('fetchJSON', () => {
