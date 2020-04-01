@@ -12081,10 +12081,10 @@ side-channel@^1.0.2:
     es-abstract "^1.17.0-next.1"
     object-inspect "^1.7.0"
 
-sift@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/sift/-/sift-6.0.0.tgz#f93a778e5cbf05a5024ebc391e6b32511a6d1f82"
-  integrity sha1-+Tp3jly/BaUCTrw5HmsyURptH4I=
+sift@^12.0.0:
+  version "12.0.0"
+  resolved "https://registry.yarnpkg.com/sift/-/sift-12.0.0.tgz#744d46c52e60430eb80da227f8f983b946faeedb"
+  integrity sha512-aWQoexMzacDdUrUuPWLrvfHiYCW7QyMYZ6D7ipkuas7gdvn0GoUVzU/fyvPpgPjS49IRvZktCQWYxgWOwACk/A==
 
 signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"
