@@ -154,6 +154,9 @@ is loading.</p>
 <dt><a href="#queryConnect">queryConnect(querySpecs)</a> ⇒ <code>function</code></dt>
 <dd><p>HOC creator to connect component to several queries in a declarative manner</p>
 </dd>
+<dt><a href="#getErrorComponent">getErrorComponent(error)</a> ⇒ <code>function</code> | <code>null</code></dt>
+<dd><p>Returns the handler for an error</p>
+</dd>
 <dt><a href="#useQuery">useQuery(queryDefinition, options)</a> ⇒ <code>object</code></dt>
 <dd><p>Fetches a queryDefinition and returns the queryState</p>
 </dd>
@@ -1740,6 +1743,18 @@ HOC creator to connect component to several queries in a declarative manner
 | Param | Type | Description |
 | --- | --- | --- |
 | querySpecs | <code>object</code> | Definition of the queries |
+
+<a name="getErrorComponent"></a>
+
+## getErrorComponent(error) ⇒ <code>function</code> \| <code>null</code>
+Returns the handler for an error
+
+**Kind**: global function  
+**Returns**: <code>function</code> \| <code>null</code> - React Component  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| error | <code>Error</code> | - |
 
 <a name="useQuery"></a>
 

@@ -213,9 +213,11 @@ describe('Stack client initialization', () => {
   beforeEach(() => {
     jest.spyOn(console, 'warn').mockImplementation(() => {})
   })
+
   afterEach(() => {
     console.warn.mockRestore()
   })
+
   it('should add default callbacks', async () => {
     const client = new CozyClient({})
     await client.login()
@@ -225,6 +227,15 @@ describe('Stack client initialization', () => {
     expect(client.stackClient.options.onTokenRefresh).toBe(
       client.handleTokenRefresh
     )
+  })
+
+  it('proxies errors from stackClient', done => {
+    const client = new CozyClient({ uri: 'http://localhost:8080' })
+    client.on('error', function(value) {
+      expect(value).toEqual('hello')
+      done()
+    })
+    client.getStackClient().emit('error', 'hello')
   })
 })
 
@@ -359,7 +370,8 @@ describe('CozyClient logout', () => {
   it('should log out a web client', async () => {
     stackClient = {
       fetch: jest.fn(),
-      unregister: jest.fn()
+      unregister: jest.fn(),
+      on: jest.fn()
     }
     client = new CozyClient({
       links,

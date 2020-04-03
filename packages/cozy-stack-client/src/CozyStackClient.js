@@ -16,6 +16,7 @@ import getIconURL from './getIconURL'
 import logDeprecate from './logDeprecate'
 import errors from './errors'
 import { fetchWithXMLHttpRequest, shouldXMLHTTPRequestBeUsed } from './xhrFetch'
+import MicroEE from 'microee'
 
 const normalizeUri = uri => {
   if (uri === null) return null
@@ -115,12 +116,21 @@ class CozyStackClient {
       ? fetchWithXMLHttpRequest
       : window.fetch
 
-    return fetcher(fullPath, options).catch(err => {
+    try {
+      const response = await fetcher(fullPath, options)
+      if (!response.ok) {
+        this.emit(
+          'error',
+          new FetchError(response, `${response.status} ${response.statusText}`)
+        )
+      }
+      return response
+    } catch (err) {
       if (isRevocationError(err)) {
         this.onRevocationChange(true)
       }
       throw err
-    })
+    }
   }
 
   onRevocationChange(state) {
@@ -333,4 +343,5 @@ export class FetchError extends Error {
   }
 }
 
+MicroEE.mixin(CozyStackClient)
 export default CozyStackClient

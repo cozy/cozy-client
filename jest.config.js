@@ -4,7 +4,8 @@ const commonConfig = {
   setupFilesAfterEnv: [
     '<rootDir>/packages/cozy-stack-client/src/__tests__/setup.js'
   ],
-  modulePathIgnorePatterns: ['<rootDir>/packages/.*/dist/']
+  modulePathIgnorePatterns: ['<rootDir>/packages/.*/dist/'],
+  transformIgnorePatterns: ['node_modules/(?!(cozy-ui))']
 }
 
 module.exports = {

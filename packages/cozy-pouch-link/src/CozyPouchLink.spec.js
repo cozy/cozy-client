@@ -1,4 +1,3 @@
-import CozyClient from '../../cozy-client/src'
 import omit from 'lodash/omit'
 
 import CozyPouchLink from '.'
@@ -6,7 +5,7 @@ import { SCHEMA, TODO_1, TODO_2, TODO_3, TODO_4 } from './__tests__/fixtures'
 import PouchDB from 'pouchdb-browser'
 import PouchDBMemoryAdapterPlugin from 'pouchdb-adapter-memory'
 
-import { Q } from 'cozy-client'
+import CozyClient, { Q } from 'cozy-client'
 
 // Necessary to have the memory adapter for the tests since neither
 // IndexedDB nor WebSQL adapter can be used in Jest
@@ -17,7 +16,8 @@ const mockClient = {
     uri: 'http://cozy.tools:8080',
     token: {
       toBasicAuth: () => 'user:token@'
-    }
+    },
+    on: jest.fn()
   }
 }
 
@@ -272,7 +272,8 @@ describe('CozyPouchLink', () => {
         stackClient: {
           token: {
             toBasicAuth: () => 'user:token@'
-          }
+          },
+          on: jest.fn()
         }
       }
 
