@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { useClient } from './'
 import QuotaAlert from 'cozy-ui/transpiled/react/QuotaAlert'
-import { pull } from 'lodash'
+import filter from 'lodash/filter'
 import { FetchError } from 'cozy-stack-client'
 
 /**
@@ -52,7 +52,8 @@ function renderErrors(errorStack, setErrorStack) {
   const errors = errorStack.map((error, key) => {
     const Component = getErrorComponent(error)
     if (Component) {
-      const dismiss = () => setErrorStack(stack => [...pull(stack, error)])
+      const dismiss = () =>
+        setErrorStack(stack => filter(stack, e => e !== error))
       return <Component key={key} error={error} dismiss={dismiss} />
     } else {
       return null

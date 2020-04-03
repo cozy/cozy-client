@@ -50,11 +50,11 @@ describe('useClientErrors', () => {
     })
 
     describe('for quota errors', () => {
-      it('displays a a QuotaAlert', async () => {
+      const findQuotaAlert = node => {
+        return node.at(0).dive()
+      }
+      const setup = async () => {
         const client = createCozyClient()
-        const { result, waitForNextUpdate } = renderWrappedHook(client)
-        const nextUpdate = waitForNextUpdate()
-
         const response = new Response(null, {
           status: 413,
           statusText: 'Quota exceeded'
@@ -63,6 +63,10 @@ describe('useClientErrors', () => {
           response,
           `${response.status} ${response.statusText}`
         )
+
+        const { result, waitForNextUpdate } = renderWrappedHook(client)
+        const nextUpdate = waitForNextUpdate()
+
         act(() => {
           const handler = client.on.mock.calls[0][1]
           handler(error)
@@ -71,13 +75,25 @@ describe('useClientErrors', () => {
         await nextUpdate
         const { ClientErrors } = result.current
         const node = wrappedShallow(<ClientErrors />, client)
+        return { node, result, client }
+      }
+
+      it('displays a a QuotaAlert', async () => {
+        const { node } = await setup()
         expect(node).toHaveLength(1)
-        expect(
-          node
-            .at(0)
-            .dive()
-            .type().name
-        ).toEqual('QuotaAlert')
+        expect(findQuotaAlert(node).type().name).toEqual('QuotaAlert')
+      })
+
+      it('can be dismissed', async () => {
+        const { node, result, client } = await setup()
+        const quotaAlert = findQuotaAlert(node)
+        const onClose = quotaAlert.props().onClose
+        act(() => onClose())
+
+        // re-render ClientErrors returned by the hook
+        const { ClientErrors } = result.current
+        const updatedNode = wrappedShallow(<ClientErrors />, client)
+        expect(updatedNode.at(0).length).toBe(0)
       })
     })
   })
