@@ -70,6 +70,18 @@ function renderErrors(errorStack, setErrorStack) {
  *
  * Only Quota Errors are managed for now.
  *
+ * @example
+ * ```
+ * const App = () => {
+ *   const { ClientErrors } = useClientErrors()
+ *
+ *   return <Layout>
+ *      <h1>My app</h1>
+ *      <ClientErrors />
+ *   </Layout>
+ * }
+ * ```
+ *
  * @param {boolean} handleExceptions - should cozy-client directly handle errors before forwarding them to the caller?
  * @returns {{ClientErrors: Function}} React component
  */
