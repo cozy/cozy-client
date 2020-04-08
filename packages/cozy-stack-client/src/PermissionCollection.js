@@ -78,7 +78,7 @@ class PermissionCollection extends DocumentCollection {
       }
     })
 
-    return resp.data
+    return { data: normalizePermission(resp.data) }
   }
 
   destroy(permission) {
