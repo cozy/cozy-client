@@ -104,6 +104,31 @@ describe('PermissionCollection', () => {
           )
         )
       })
+
+      it('normalizes the resulting document', async () => {
+        client.fetchJSON.mockReturnValue({
+          data: {
+            type: 'io.cozy.permissions',
+            id: 'a340d5e0d64711e6b66c5fc9ce1e17c6',
+            attributes: {
+              permissions: fixtures.permission
+            }
+          }
+        })
+        const resp = await collection.add(
+          {
+            _type: 'io.cozy.permissions',
+            _id: 'a340d5e0d64711e6b66c5fc9ce1e17c6'
+          },
+          fixtures.permission
+        )
+
+        expect(resp.data.type).toEqual('io.cozy.permissions')
+        expect(resp.data._type).toEqual('io.cozy.permissions')
+        expect(resp.data.id).toEqual('a340d5e0d64711e6b66c5fc9ce1e17c6')
+        expect(resp.data._id).toEqual('a340d5e0d64711e6b66c5fc9ce1e17c6')
+        expect(resp.data.attributes.permissions).toEqual(fixtures.permission)
+      })
     })
   })
 
