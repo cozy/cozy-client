@@ -3,6 +3,26 @@ import get from 'lodash/get'
 const FILE_TYPE = 'file'
 const DIR_TYPE = 'directory'
 
+const FILENAME_WITH_EXTENSION_REGEX = /(.+)(\..*)$/
+
+/**
+ * Returns base filename and extension
+ *
+ * @param {object} file An io.cozy.files
+ * @returns {object}  {filename, extension}
+ */
+export const splitFilename = file => {
+  if (!file.name) throw new Error('file should have a name property ')
+
+  if (file.type === 'file') {
+    const match = file.name.match(FILENAME_WITH_EXTENSION_REGEX)
+    if (match) {
+      return { filename: match[1], extension: match[2] }
+    }
+  }
+  return { filename: file.name, extension: '' }
+}
+
 /**
  *
  * @param {File} file io.cozy.files
