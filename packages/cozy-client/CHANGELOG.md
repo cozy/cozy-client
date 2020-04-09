@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.4.0](https://github.com/cozy/cozy-client/compare/v13.3.0...v13.4.0) (2020-04-09)
+
+
+### Features
+
+* Add splitFilename ([f7986ee](https://github.com/cozy/cozy-client/commit/f7986ee))
+
+
+
+
+
 # [13.3.0](https://github.com/cozy/cozy-client/compare/v13.2.1...v13.3.0) (2020-04-03)
 
 
