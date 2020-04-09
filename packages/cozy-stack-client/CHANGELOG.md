@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.4.2](https://github.com/cozy/cozy-client/compare/v13.4.1...v13.4.2) (2020-04-09)
+
+
+### Bug Fixes
+
+* Normalize PermissionsCol.add response ([a9d2fa6](https://github.com/cozy/cozy-client/commit/a9d2fa6))
+
+
+
+
+
 # [13.3.0](https://github.com/cozy/cozy-client/compare/v13.2.1...v13.3.0) (2020-04-03)
 
 
