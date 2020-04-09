@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.4.1](https://github.com/cozy/cozy-client/compare/v13.4.0...v13.4.1) (2020-04-09)
+
+
+### Bug Fixes
+
+* Add minilog dependency ([b82edb4](https://github.com/cozy/cozy-client/commit/b82edb4))
+
+
+
+
+
 # [13.4.0](https://github.com/cozy/cozy-client/compare/v13.3.0...v13.4.0) (2020-04-09)
 
 
