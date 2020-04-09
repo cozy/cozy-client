@@ -1,4 +1,5 @@
-import { file } from './'
+import * as file from './file'
+
 describe('File Model', () => {
   it('should test if a file is a note or not', () => {
     const fileDocument = {
@@ -68,6 +69,51 @@ describe('File Model', () => {
     it('should default to "io.cozy.files"', () => {
       const doc = { id }
       expect(file.normalize(doc)).toHaveProperty('_type', 'io.cozy.files')
+    })
+  })
+
+  describe('splitFilename', () => {
+    const joinName = ({ filename, extension }) => filename + extension
+    const mkFile = expectation => ({
+      type: 'file',
+      name: joinName(expectation)
+    })
+    const { stringify } = JSON
+
+    const scenarios = [
+      { filename: 'file', extension: '.ext' },
+      { filename: 'file', extension: '' },
+      { filename: 'file.html', extension: '.ejs' },
+      { filename: 'file', extension: '.' },
+      { filename: 'file.', extension: '.' },
+      { filename: 'file.', extension: '.ext' },
+      { filename: '.file', extension: '' },
+      { filename: '.file', extension: '.ext' }
+    ]
+
+    for (const expectation of scenarios) {
+      it(`splits ${stringify(joinName(expectation))} into ${stringify(
+        expectation
+      )}`, () => {
+        expect(file.splitFilename(mkFile(expectation))).toEqual(expectation)
+      })
+    }
+
+    it('should throw an error if the file is not correct', () => {
+      const badFile = {}
+
+      expect(() => file.splitFilename(badFile)).toThrow()
+    })
+    it('should return only the folder name if its a folder', () => {
+      const dir = {
+        name: 'foo',
+        type: 'directory'
+      }
+      const result = file.splitFilename(dir)
+      expect(result).toEqual({
+        filename: 'foo',
+        extension: ''
+      })
     })
   })
 
