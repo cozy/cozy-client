@@ -87,6 +87,9 @@ example.</p>
 <dt><a href="#getAppDisplayName">getAppDisplayName</a> ⇒ <code>string</code></dt>
 <dd><p>getAppDisplayName - Combines the translated prefix and name of the app into a single string.</p>
 </dd>
+<dt><a href="#splitFilename">splitFilename</a> ⇒ <code>object</code></dt>
+<dd><p>Returns base filename and extension</p>
+</dd>
 <dt><a href="#isFile">isFile</a></dt>
 <dd></dd>
 <dt><a href="#isDirectory">isDirectory</a></dt>
@@ -1453,6 +1456,18 @@ getAppDisplayName - Combines the translated prefix and name of the app into a si
 | --- | --- | --- |
 | app | <code>object</code> | io.cozy.apps or io.cozy.konnectors document |
 | lang | <code>string</code> | Locale to use |
+
+<a name="splitFilename"></a>
+
+## splitFilename ⇒ <code>object</code>
+Returns base filename and extension
+
+**Kind**: global constant  
+**Returns**: <code>object</code> - {filename, extension}  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | <code>object</code> | An io.cozy.files |
 
 <a name="isFile"></a>
 
