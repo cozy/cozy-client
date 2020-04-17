@@ -160,6 +160,11 @@ is loading.</p>
 <dt><a href="#getErrorComponent">getErrorComponent(error)</a> ⇒ <code>function</code> | <code>null</code></dt>
 <dd><p>Returns the handler for an error</p>
 </dd>
+<dt><a href="#useFetchJSON">useFetchJSON()</a></dt>
+<dd><p>Hook to use the generic fetchJSON method</p>
+<p>Takes the same arguments as fetchJSON</p>
+<p>Returns an object with the same keys { data, fetchStatus, error } as useQuery</p>
+</dd>
 <dt><a href="#useQuery">useQuery(queryDefinition, options)</a> ⇒ <code>object</code></dt>
 <dd><p>Fetches a queryDefinition and returns the queryState</p>
 </dd>
@@ -1771,6 +1776,16 @@ Returns the handler for an error
 | --- | --- | --- |
 | error | <code>Error</code> | - |
 
+<a name="useFetchJSON"></a>
+
+## useFetchJSON()
+Hook to use the generic fetchJSON method
+
+Takes the same arguments as fetchJSON
+
+Returns an object with the same keys { data, fetchStatus, error } as useQuery
+
+**Kind**: global function  
 <a name="useQuery"></a>
 
 ## useQuery(queryDefinition, options) ⇒ <code>object</code>
