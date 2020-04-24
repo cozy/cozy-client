@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.5.1](https://github.com/cozy/cozy-client/compare/v13.5.0...v13.5.1) (2020-04-24)
+
+
+### Bug Fixes
+
+* Add onerror handler to fetchXHR ([eaf9fbb](https://github.com/cozy/cozy-client/commit/eaf9fbb))
+
+
+
+
+
 # [13.5.0](https://github.com/cozy/cozy-client/compare/v13.4.2...v13.5.0) (2020-04-22)
 
 
