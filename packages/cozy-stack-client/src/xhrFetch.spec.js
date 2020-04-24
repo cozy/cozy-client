@@ -1,6 +1,6 @@
 import { fetchWithXMLHttpRequest } from './xhrFetch'
 
-const setup = ({ supportsOnUploadProgress } = {}) => {
+const setup = ({ supportsOnUploadProgress, error } = {}) => {
   const send = jest.fn()
   const open = jest.fn()
   const setRequestHeader = jest.fn()
@@ -12,6 +12,11 @@ const setup = ({ supportsOnUploadProgress } = {}) => {
       this.responseText = '{"result": true}'
       this.status = 200
       this.onload()
+    }
+
+    const fakeError = () => {
+      this.readyState = 4
+      this.onerror(error)
     }
 
     if (supportsOnUploadProgress) {
@@ -26,7 +31,11 @@ const setup = ({ supportsOnUploadProgress } = {}) => {
       getAllResponseHeaders: () =>
         'content-type: application/json;\r\ncontent-length: 16',
       open: open.mockImplementation(() => {
-        setTimeout(fakeResolve, 5)
+        if (error) {
+          setTimeout(fakeError, 5)
+        } else {
+          setTimeout(fakeResolve, 5)
+        }
       })
     }
     Object.assign(this, methods)
@@ -79,5 +88,23 @@ describe('xhr fetch', () => {
       onUploadProgress,
       false
     )
+  })
+
+  it('should handle errors', async () => {
+    const err = new Error('Quota error')
+    setup({
+      supportsOnUploadProgress: true,
+      error: err
+    })
+    await expect(
+      fetchWithXMLHttpRequest('simple-path', {
+        method: 'GET',
+        body: '{"body":"my-body"}',
+        headers: {
+          Accept: 'application/json'
+        },
+        onUploadProgress: () => {}
+      })
+    ).rejects.toEqual(err)
   })
 })

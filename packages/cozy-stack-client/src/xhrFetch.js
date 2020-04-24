@@ -34,6 +34,10 @@ const fetchWithXMLHttpRequest = async (fullpath, options) => {
       }
     }
 
+    xhr.onerror = function(err) {
+      reject(err)
+    }
+
     xhr.open(options.method, fullpath, true)
     xhr.withCredentials = true
     for (let [headerName, headerValue] of Object.entries(options.headers)) {
