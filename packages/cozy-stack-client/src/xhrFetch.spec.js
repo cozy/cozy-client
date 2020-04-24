@@ -1,6 +1,6 @@
 import { fetchWithXMLHttpRequest } from './xhrFetch'
 
-const setup = ({ supportsOnUploadProgress, error } = {}) => {
+const setup = ({ supportsOnUploadProgress, error, ko } = {}) => {
   const send = jest.fn()
   const open = jest.fn()
   const setRequestHeader = jest.fn()
@@ -11,12 +11,23 @@ const setup = ({ supportsOnUploadProgress, error } = {}) => {
       this.readyState = 4
       this.responseText = '{"result": true}'
       this.status = 200
+      this.statusText = 'OK'
       this.onload()
     }
 
     const fakeError = () => {
       this.readyState = 4
+      this.status = '500'
+      this.statusText = 'Internal Server Error'
       this.onerror(error)
+    }
+
+    const fakeResultKO = () => {
+      this.readyState = 4
+      this.status = 409
+      this.statusText = 'Conflict'
+      this.responseText = error
+      this.onload()
     }
 
     if (supportsOnUploadProgress) {
@@ -31,7 +42,9 @@ const setup = ({ supportsOnUploadProgress, error } = {}) => {
       getAllResponseHeaders: () =>
         'content-type: application/json;\r\ncontent-length: 16',
       open: open.mockImplementation(() => {
-        if (error) {
+        if (ko) {
+          setTimeout(fakeResultKO, 5)
+        } else if (error) {
           setTimeout(fakeError, 5)
         } else {
           setTimeout(fakeResolve, 5)
@@ -64,6 +77,8 @@ describe('xhr fetch', () => {
     expect(send).toHaveBeenCalledWith('{"body":"my-body"}')
     const data = await result.json()
     expect(data).toEqual({ result: true })
+    expect(result.status).toEqual(200)
+    expect(result.statusText).toEqual('OK')
   })
 
   it('should add event listener', async () => {
@@ -106,5 +121,26 @@ describe('xhr fetch', () => {
         onUploadProgress: () => {}
       })
     ).rejects.toEqual(err)
+  })
+
+  it('should hand KO return', async () => {
+    const err = new Error('Conflict')
+    setup({
+      supportsOnUploadProgress: true,
+      error: err,
+      ko: true
+    })
+    const data = await fetchWithXMLHttpRequest('simple-path', {
+      method: 'GET',
+      body: '{"body":"my-body"}',
+      headers: {
+        Accept: 'application/json'
+      },
+      onUploadProgress: () => {}
+    })
+    const text = await data.text()
+    expect(text).toEqual(err)
+    expect(data.ok).toBe(false)
+    expect(data.status).toBe(409)
   })
 })

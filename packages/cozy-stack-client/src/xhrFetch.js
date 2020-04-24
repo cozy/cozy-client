@@ -51,7 +51,9 @@ const fetchWithXMLHttpRequest = async (fullpath, options) => {
     headers: headersFromString(response.getAllResponseHeaders()),
     ok: response.status >= 200 && response.status < 300,
     text: async () => response.responseText,
-    json: async () => JSON.parse(response.responseText)
+    json: async () => JSON.parse(response.responseText),
+    status: response.status,
+    statusText: response.statusText
   }
 }
 
