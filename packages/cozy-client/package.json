@@ -48,7 +48,7 @@
     "server-destroy": "^1.0.1"
   },
   "peerDependencies": {
-    "cozy-ui": "^34.0.0",
+    "cozy-ui": "^35.0.0",
     "react": "^16.7.0"
   },
   "sideEffects": false
