@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.5.3](https://github.com/cozy/cozy-client/compare/v13.5.2...v13.5.3) (2020-05-06)
+
+
+### Bug Fixes
+
+* **cozy-stack-client:** Allow fetch to work in node ([bd00205](https://github.com/cozy/cozy-client/commit/bd00205))
+
+
+
+
+
 ## [13.5.2](https://github.com/cozy/cozy-client/compare/v13.5.1...v13.5.2) (2020-04-24)
 
 
