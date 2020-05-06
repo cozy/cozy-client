@@ -114,7 +114,7 @@ class CozyStackClient {
 
     const fetcher = shouldXMLHTTPRequestBeUsed(method, path, options)
       ? fetchWithXMLHttpRequest
-      : window.fetch
+      : fetch
 
     try {
       const response = await fetcher(fullPath, options)
