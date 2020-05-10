@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "@babel/cli": "7.6.2",
+    "@cozy/codemods": "^1.1.0",
     "@testing-library/react-hooks": "^3.2.1",
     "babel-plugin-search-and-replace": "1.0.1",
     "btoa": "1.2.1",
