@@ -64,4 +64,13 @@ const useQuery = (queryDefinition, options) => {
   return { ...queryState, fetchMore: fetchMore }
 }
 
+export const useQueries = querySpecs => {
+  const res = {}
+  for (const [queryAttrName, queryOpts] of Object.entries(querySpecs)) {
+    // eslint-disable-next-line
+    res[queryAttrName] = useQuery(queryOpts.query, queryOpts)
+  }
+  return res
+}
+
 export default useQuery

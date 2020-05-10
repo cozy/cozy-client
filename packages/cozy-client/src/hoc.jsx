@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import compose from 'lodash/flowRight'
 import Query from './Query'
 import useClient from './hooks/useClient'
+import { useQueries } from './hooks/useQuery'
 
 /**
  * @function
@@ -67,4 +68,21 @@ export const queryConnect = querySpecs => Component => {
     withQuery(dest, querySpecs[dest], Component)
   )
   return compose.apply(null, enhancers)(Component)
+}
+
+/**
+ * @function
+ * @description HOC creator to connect component to several queries in a declarative manner
+ *
+ * @param  {object} querySpecs - Definition of the queries
+ * @returns {Function} - HOC to apply to a component
+ */
+export const queryConnectFlat = querySpecs => Component => {
+  const Wrapper = props => {
+    const queryResults = useQueries(querySpecs)
+    return <Component {...props} {...queryResults} />
+  }
+  Wrapper.displayName = `queryConnectFlat(${Component.displayName ||
+    Component.name})`
+  return Wrapper
 }
