@@ -27,15 +27,16 @@ const withQuery = (dest, queryOpts, Original) => {
     )
   }
   return Component => {
-    const Wrapped = (props, context) => {
-      queryOpts = typeof queryOpts === 'function' ? queryOpts(props) : queryOpts
+    const Wrapper = (props, context) => {
       if (!context.client) {
         throw new Error(
           'Should be used with client in context (use CozyProvider to set context)'
         )
       }
 
+      queryOpts = typeof queryOpts === 'function' ? queryOpts(props) : queryOpts
       if (queryOpts.doc) {
+        console.warn('queryOpts.doc is deprecated')
         return <Component {...{ [dest]: queryOpts.doc, ...props }} />
       }
 
@@ -45,12 +46,12 @@ const withQuery = (dest, queryOpts, Original) => {
         </Query>
       )
     }
-    Wrapped.contextTypes = {
+    Wrapper.contextTypes = {
       client: PropTypes.object
     }
-    Wrapped.displayName = `withQuery(${Component.displayName ||
+    Wrapper.displayName = `withQuery(${Component.displayName ||
       Component.name})`
-    return Wrapped
+    return Wrapper
   }
 }
 
