@@ -1,11 +1,14 @@
 import React from 'react'
+import { Provider as ReduxProvider } from 'react-redux'
 import { mount } from 'enzyme'
-import { withClient, queryConnect } from './hoc'
-import * as mocks from './__tests__/mocks'
+
+import { withClient, queryConnect, queryConnectFlat } from './hoc'
+import { Q } from './queries/dsl'
 import Provider from './Provider'
 
+// At some point __tests__/mocks and testing/utils shall be reconciled
+import * as mocks from './__tests__/mocks'
 import { setupClient } from './testing/utils'
-import { Q } from 'cozy-client'
 
 beforeEach(() => {
   jest.spyOn(console, 'warn').mockImplementation(() => {})
@@ -73,6 +76,45 @@ describe('queryConnect', () => {
       client
     }
     const uut = mount(<WithQueries />, { context })
+    expect(
+      uut
+        .find(Component)
+        .prop('simpsons')
+        .data.map(x => x.name)
+    ).toEqual(['Homer', 'Marge'])
+    expect(
+      uut
+        .find(Component)
+        .prop('upperSimpsons')
+        .data.map(x => x.name)
+    ).toEqual(['HOMER', 'MARGE'])
+  })
+})
+
+describe('queryConnectFlat', () => {
+  const setup = () => {
+    const client = setupClient()
+    const WithQueries = queryConnectFlat({
+      simpsons: queryConns.simpsons,
+      upperSimpsons: queryConns.upperSimpsons
+    })(Component)
+    return { WithQueries, client }
+  }
+
+  it('should give a display name', () => {
+    const { WithQueries } = setup()
+    expect(WithQueries.displayName).toBe('queryConnectFlat(Component)')
+  })
+
+  it('should pass result of query definitions as props', () => {
+    const { WithQueries, client } = setup()
+    const uut = mount(
+      <ReduxProvider store={client.store}>
+        <Provider client={client}>
+          <WithQueries />
+        </Provider>
+      </ReduxProvider>
+    )
     expect(
       uut
         .find(Component)
