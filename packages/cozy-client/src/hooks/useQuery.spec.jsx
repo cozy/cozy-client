@@ -1,36 +1,9 @@
-import React from 'react'
 import { renderHook } from '@testing-library/react-hooks'
 
 import useQuery, { useQueries } from './useQuery'
 import { Q } from '../queries/dsl'
-import ClientProvider from '../Provider'
-import { Provider as ReduxProvider } from 'react-redux'
 
-import { createMockClient } from '../mock'
-import simpsonsFixture from '../testing/simpsons.json'
-
-const setupClient = () => {
-  const client = createMockClient({
-    queries: {
-      simpsons: {
-        data: simpsonsFixture,
-        doctype: 'io.cozy.simpsons'
-      },
-      upperSimpsons: {
-        data: simpsonsFixture.map(x => ({ ...x, name: x.name.toUpperCase() })),
-        doctype: 'io.cozy.simpsons-upper'
-      }
-    }
-  })
-  client.ensureStore()
-  return client
-}
-
-const makeWrapper = client => ({ children }) => (
-  <ReduxProvider store={client.store}>
-    <ClientProvider client={client}>{children}</ClientProvider>
-  </ReduxProvider>
-)
+import { setupClient, makeWrapper } from '../testing/utils'
 
 const setupQuery = ({ queryDefinition, queryOptions }) => {
   const client = setupClient()
