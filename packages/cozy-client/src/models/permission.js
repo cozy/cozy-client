@@ -40,13 +40,12 @@ export function isReadOnly(perm, options = {}) {
 }
 
 /**
- * Get the list of permissions blocks
+ * Fetches the list of permissions blocks
  *
- * @private
  * @param {CozyClient} client -
  * @returns {PermissionItem[]} list of permissions
  */
-async function fetchOwn(client) {
+export async function fetchOwn(client) {
   const collection = client.collection('io.cozy.permissions')
   const data = await collection.getOwnPermissions()
   const permissions = get(data, 'data.attributes.permissions')

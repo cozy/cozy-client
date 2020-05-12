@@ -196,6 +196,9 @@ if there are N queries, only 1 extra level of nesting is introduced.</p>
 <dt><a href="#getParentFolderId">getParentFolderId(file)</a> ⇒ <code>string</code> | <code>null</code></dt>
 <dd><p>Get the id of the parent folder (<code>null</code> for the root folder)</p>
 </dd>
+<dt><a href="#fetchOwn">fetchOwn(client)</a> ⇒ <code><a href="#PermissionItem">Array.&lt;PermissionItem&gt;</a></code></dt>
+<dd><p>Fetches the list of permissions blocks</p>
+</dd>
 <dt><a href="#isForType">isForType(permission, type)</a></dt>
 <dd><p>Checks if the permission item is about a specific doctype</p>
 </dd>
@@ -1893,6 +1896,18 @@ Get the id of the parent folder (`null` for the root folder)
 | Param | Type | Description |
 | --- | --- | --- |
 | file | <code>object</code> | io.cozy.files document |
+
+<a name="fetchOwn"></a>
+
+## fetchOwn(client) ⇒ [<code>Array.&lt;PermissionItem&gt;</code>](#PermissionItem)
+Fetches the list of permissions blocks
+
+**Kind**: global function  
+**Returns**: [<code>Array.&lt;PermissionItem&gt;</code>](#PermissionItem) - list of permissions  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| client | [<code>CozyClient</code>](#CozyClient) | - |
 
 <a name="isForType"></a>
 
