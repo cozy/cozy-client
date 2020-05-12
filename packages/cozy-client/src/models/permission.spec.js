@@ -1,4 +1,4 @@
-import { isReadOnly, isDocumentReadOnly } from './permission'
+import { isReadOnly, isDocumentReadOnly, fetchOwn } from './permission'
 
 function getById(id, doctype) {
   const parents = {
@@ -147,5 +147,17 @@ describe('isDocumentReadOnly', () => {
         })
       })
     })
+  })
+})
+
+describe('fetchOwn', () => {
+  it('returns a list of permissions', async () => {
+    const client = setupClient()
+    const result = await fetchOwn(client)
+
+    expect(result).toEqual([
+      { type: 'io.cozy.files', values: ['first', 'other'], verbs: [] },
+      { type: 'io.cozy.photo.albums', values: ['third'], verbs: [] }
+    ])
   })
 })
