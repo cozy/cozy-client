@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.6.0](https://github.com/cozy/cozy-client/compare/v13.5.3...v13.6.0) (2020-05-12)
+
+
+### Features
+
+* Codemod to transform withClient into useClient ([23753fc](https://github.com/cozy/cozy-client/commit/23753fc))
+
+
+
+
+
 ## [13.5.3](https://github.com/cozy/cozy-client/compare/v13.5.2...v13.5.3) (2020-05-06)
 
 
