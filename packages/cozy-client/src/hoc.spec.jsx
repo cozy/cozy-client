@@ -44,17 +44,21 @@ describe('with client', () => {
   })
 })
 
+const queryConns = {
+  simpsons: { query: client => Q('io.cozy.simpsons'), as: 'simpsons' },
+  upperSimpsons: {
+    query: client => Q('io.cozy.simpsons-upper'),
+    as: 'upperSimpsons'
+  }
+}
+
 describe('queryConnect', () => {
   const setup = () => {
     const client = setupClient()
     const WithQueries = queryConnect({
-      simpsons: { query: client => Q('io.cozy.simpsons'), as: 'simpsons' },
-      upperSimpsons: {
-        query: client => Q('io.cozy.simpsons-upper'),
-        as: 'upperSimpsons'
-      }
+      simpsons: queryConns.simpsons,
+      upperSimpsons: queryConns.upperSimpsons
     })(Component)
-
     return { WithQueries, client }
   }
 
