@@ -9,31 +9,34 @@ import { Provider as ReduxProvider } from 'react-redux'
 import { createMockClient } from '../mock'
 import simpsonsFixture from '../testing/simpsons.json'
 
-describe('use query', () => {
-  const setup = ({ queryDefinition, queryOptions }) => {
-    const client = createMockClient({
-      queries: {
-        simpsons: {
-          data: simpsonsFixture,
-          doctype: 'io.cozy.simpsons'
-        }
+const setupClient = () => {
+  const client = createMockClient({
+    queries: {
+      simpsons: {
+        data: simpsonsFixture,
+        doctype: 'io.cozy.simpsons'
       }
-    })
-    client.ensureStore()
-    const wrapper = ({ children }) => (
-      <ReduxProvider store={client.store}>
-        <ClientProvider client={client}>{children}</ClientProvider>
-      </ReduxProvider>
-    )
-    const hookResult = renderHook(
-      () => useQuery(queryDefinition, queryOptions),
-      {
-        wrapper
-      }
-    )
-    return { client, hookResult }
-  }
+    }
+  })
+  client.ensureStore()
+  return client
+}
 
+const makeWrapper = client => ({ children }) => (
+  <ReduxProvider store={client.store}>
+    <ClientProvider client={client}>{children}</ClientProvider>
+  </ReduxProvider>
+)
+
+const setup = ({ queryDefinition, queryOptions }) => {
+  const client = setupClient()
+  const hookResult = renderHook(() => useQuery(queryDefinition, queryOptions), {
+    wrapper: makeWrapper(client)
+  })
+  return { client, hookResult }
+}
+
+describe('use query', () => {
   it('should return the correct data', () => {
     const {
       hookResult: {
