@@ -3,6 +3,8 @@ import has from 'lodash/has'
 import get from 'lodash/get'
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 import { uri, slugify, forceFileDownload, formatBytes } from './utils'
+import { shouldXMLHTTPRequestBeUsed } from './xhrFetch'
+
 import * as querystring from './querystring'
 const ROOT_DIR_ID = 'io.cozy.files.root-dir'
 const CONTENT_TYPE_OCTET_STREAM = 'application/octet-stream'
@@ -715,6 +717,7 @@ class FileCollection extends DocumentCollection {
     const isStream = data.readable === true && typeof data.pipe === 'function'
     const isString = typeof data === 'string'
 
+    const shouldUseXHR = shouldXMLHTTPRequestBeUsed(method, path, options)
     if (!isBuffer && !isFile && !isBlob && !isStream && !isString) {
       throw new Error('invalid data type')
     }
@@ -750,7 +753,12 @@ class FileCollection extends DocumentCollection {
     }
     if (contentLength) headers['Content-Length'] = String(contentLength)
     if (checksum) headers['Content-MD5'] = checksum
-    if (lastModifiedDate) headers['Date'] = lastModifiedDate.toGMTString()
+
+    if (lastModifiedDate) {
+      const qs = new URLSearchParams(path)
+      qs.set('UpdatedAt', lastModifiedDate.toISOString())
+      path = decodeURIComponent(qs.toString())
+    }
     if (ifMatch) headers['If-Match'] = ifMatch
 
     const resp = await this.stackClient.fetchJSON(method, path, data, {
