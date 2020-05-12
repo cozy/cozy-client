@@ -73,6 +73,8 @@ export const queryConnect = querySpecs => Component => {
 /**
  * @function
  * @description HOC creator to connect component to several queries in a declarative manner
+ * The only difference with queryConnect is that it does not wrap the component in N component
+ * if there are N queries, only 1 extra level of nesting is introduced.
  *
  * @param  {object} querySpecs - Definition of the queries
  * @returns {Function} - HOC to apply to a component
