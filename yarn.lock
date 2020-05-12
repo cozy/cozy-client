@@ -1737,6 +1737,13 @@
   dependencies:
     find-up "^2.1.0"
 
+"@cozy/codemods@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@cozy/codemods/-/codemods-1.1.0.tgz#f68af27506ed80d24afb12fc5d5c57ee1b333cc7"
+  integrity sha512-kgbqyjUs3Ub/N4e9OqqKoE4KA8IwPmz+bOho6z6wYGQqe/xCo54/XQ1YOjWTRn/rKXVKOhkz9R2/v7Udh2Tjaw==
+  dependencies:
+    eslint-config-cozy-app "^1.5.0"
+
 "@emotion/cache@^10.0.27":
   version "10.0.29"
   resolved "https://registry.yarnpkg.com/@emotion/cache/-/cache-10.0.29.tgz#87e7e64f412c060102d589fe7c6dc042e6f9d1e0"
@@ -5975,6 +5982,20 @@ eslint-config-cozy-app@1.4.0:
     eslint-plugin-vue "5.2.3"
     prettier "1.18.2"
 
+eslint-config-cozy-app@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-cozy-app/-/eslint-config-cozy-app-1.5.0.tgz#a68addd27286984d808304f4cdac95ef8757aa8c"
+  integrity sha512-3iHvM5b77w2Xl9ZnbRvRVmfOaKJt6JmNGkNbOQTqihLesehlX9C6ax4XueEIBfwvJVP/P1b8OAuXOcr+5pi07Q==
+  dependencies:
+    babel-eslint "10.0.1"
+    eslint "5.16.0"
+    eslint-config-prettier "4.3.0"
+    eslint-plugin-prettier "3.1.2"
+    eslint-plugin-react "7.14.3"
+    eslint-plugin-react-hooks "2.3.0"
+    eslint-plugin-vue "5.2.3"
+    prettier "1.18.2"
+
 eslint-config-prettier@4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-4.3.0.tgz#c55c1fcac8ce4518aeb77906984e134d9eb5a4f0"
@@ -9202,14 +9223,7 @@ min-document@^2.19.0:
   dependencies:
     dom-walk "^0.1.0"
 
-minilog@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/minilog/-/minilog-3.1.0.tgz#d2d0f1887ca363d1acf0ea86d5c4df293b3fb675"
-  integrity sha1-0tDxiHyjY9Gs8OqG1cTfKTs/tnU=
-  dependencies:
-    microee "0.0.6"
-
-"minilog@https://github.com/cozy/minilog.git#master":
+minilog@^3.1.0, "minilog@https://github.com/cozy/minilog.git#master":
   version "3.1.0"
   resolved "https://github.com/cozy/minilog.git#f01f7d9dfe20981177dd34b9662c2f077d818f82"
   dependencies:
