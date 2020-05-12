@@ -4,6 +4,7 @@ import { withClient, queryConnect } from './hoc'
 import * as mocks from './__tests__/mocks'
 import Provider from './Provider'
 
+import { setupClient } from './testing/utils'
 import { Q } from 'cozy-client'
 
 beforeEach(() => {
@@ -45,27 +46,13 @@ describe('with client', () => {
 
 describe('queryConnect', () => {
   const setup = () => {
-    const fakeData = {
-      'io.cozy.toto': 'hello',
-      'io.cozy.tata': 'hello2'
-    }
-    const queryDefinitionFromDoctype = doctype => ({ doctype })
-    const observableQueryFromDefinition = definition => {
-      return mocks.observableQuery({
-        currentResult: () => ({
-          data: fakeData[definition.doctype]
-        })
-      })
-    }
-
-    const client = mocks.client({
-      all: doctype => queryDefinitionFromDoctype(doctype),
-      makeObservableQuery: queryDef => observableQueryFromDefinition(queryDef)
-    })
-
+    const client = setupClient()
     const WithQueries = queryConnect({
-      toto: { query: client => Q('io.cozy.toto') },
-      tata: { query: client => Q('io.cozy.tata') }
+      simpsons: { query: client => Q('io.cozy.simpsons'), as: 'simpsons' },
+      upperSimpsons: {
+        query: client => Q('io.cozy.simpsons-upper'),
+        as: 'upperSimpsons'
+      }
     })(Component)
 
     return { WithQueries, client }
@@ -82,7 +69,17 @@ describe('queryConnect', () => {
       client
     }
     const uut = mount(<WithQueries />, { context })
-    expect(uut.find(Component).prop('toto').data).toBe('hello')
-    expect(uut.find(Component).prop('tata').data).toBe('hello2')
+    expect(
+      uut
+        .find(Component)
+        .prop('simpsons')
+        .data.map(x => x.name)
+    ).toEqual(['Homer', 'Marge'])
+    expect(
+      uut
+        .find(Component)
+        .prop('upperSimpsons')
+        .data.map(x => x.name)
+    ).toEqual(['HOMER', 'MARGE'])
   })
 })
