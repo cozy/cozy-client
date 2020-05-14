@@ -128,4 +128,18 @@ describe('queryConnectFlat', () => {
         .data.map(x => x.name)
     ).toEqual(['HOMER', 'MARGE'])
   })
+
+  it('should have Component as direct children of queryConnectFlag', () => {
+    const { WithQueries, client } = setup()
+    const uut = mount(
+      <ReduxProvider store={client.store}>
+        <Provider client={client}>
+          <WithQueries />
+        </Provider>
+      </ReduxProvider>
+    )
+    const queryConnectFlatComponent = uut.find('queryConnectFlat(Component)')
+    expect(queryConnectFlatComponent.length).toBe(1)
+    expect(queryConnectFlatComponent.children().is('Component')).toBe(true)
+  })
 })
