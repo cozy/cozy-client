@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.7.0](https://github.com/cozy/cozy-client/compare/v13.6.0...v13.7.0) (2020-05-14)
+
+
+### Features
+
+* useQueries and queryConnectFlat ([9cd7735](https://github.com/cozy/cozy-client/commit/9cd7735))
+
+
+
+
+
 # [13.6.0](https://github.com/cozy/cozy-client/compare/v13.5.3...v13.6.0) (2020-05-12)
 
 
