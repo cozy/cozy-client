@@ -30,7 +30,7 @@ export { default as connect } from './connect'
 export { default as withMutation } from './withMutation'
 export { default as withMutations } from './withMutations'
 export { default as Query } from './Query'
-export { queryConnect, withClient } from './hoc'
+export { queryConnect, queryConnectFlat, withClient } from './hoc'
 
 import * as models from './models'
 export { models }

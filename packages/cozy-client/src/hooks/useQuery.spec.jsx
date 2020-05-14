@@ -1,45 +1,33 @@
-import React from 'react'
 import { renderHook } from '@testing-library/react-hooks'
 
-import useQuery from './useQuery'
+import useQuery, { useQueries } from './useQuery'
 import { Q } from '../queries/dsl'
-import ClientProvider from '../Provider'
-import { Provider as ReduxProvider } from 'react-redux'
 
-import { createMockClient } from '../mock'
-import simpsonsFixture from '../testing/simpsons.json'
+import { setupClient, makeWrapper } from '../testing/utils'
+
+const setupQuery = ({ queryDefinition, queryOptions }) => {
+  const client = setupClient()
+  const hookResult = renderHook(() => useQuery(queryDefinition, queryOptions), {
+    wrapper: makeWrapper(client)
+  })
+  return { client, hookResult }
+}
+
+const setupQueries = ({ querySpecs }) => {
+  const client = setupClient()
+  const hookResult = renderHook(() => useQueries(querySpecs), {
+    wrapper: makeWrapper(client)
+  })
+  return { client, hookResult }
+}
 
 describe('use query', () => {
-  const setup = ({ queryDefinition, queryOptions }) => {
-    const client = createMockClient({
-      queries: {
-        simpsons: {
-          data: simpsonsFixture,
-          doctype: 'io.cozy.simpsons'
-        }
-      }
-    })
-    client.ensureStore()
-    const wrapper = ({ children }) => (
-      <ReduxProvider store={client.store}>
-        <ClientProvider client={client}>{children}</ClientProvider>
-      </ReduxProvider>
-    )
-    const hookResult = renderHook(
-      () => useQuery(queryDefinition, queryOptions),
-      {
-        wrapper
-      }
-    )
-    return { client, hookResult }
-  }
-
   it('should return the correct data', () => {
     const {
       hookResult: {
         result: { current }
       }
-    } = setup({
+    } = setupQuery({
       queryOptions: {
         as: 'simpsons'
       },
@@ -53,6 +41,47 @@ describe('use query', () => {
       definition: expect.objectContaining({
         doctype: 'io.cozy.simpsons'
       })
+    })
+  })
+})
+
+describe('use queries', () => {
+  it('should return the correct data', () => {
+    const {
+      hookResult: {
+        result: { current }
+      }
+    } = setupQueries({
+      querySpecs: {
+        simpsons: {
+          query: () => Q('io.cozy.simpsons'),
+          as: 'simpsons'
+        },
+        upperSimpsons: {
+          query: () => Q('io.cozy.simpsons-upper'),
+          as: 'upperSimpsons'
+        }
+      }
+    })
+    expect(current).toMatchObject({
+      simpsons: {
+        data: [
+          expect.objectContaining({ name: 'Homer' }),
+          expect.objectContaining({ name: 'Marge' })
+        ],
+        definition: expect.objectContaining({
+          doctype: 'io.cozy.simpsons'
+        })
+      },
+      upperSimpsons: {
+        data: [
+          expect.objectContaining({ name: 'HOMER' }),
+          expect.objectContaining({ name: 'MARGE' })
+        ],
+        definition: expect.objectContaining({
+          doctype: 'io.cozy.simpsons-upper'
+        })
+      }
     })
   })
 })

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import compose from 'lodash/flowRight'
 import Query from './Query'
 import useClient from './hooks/useClient'
+import { useQueries } from './hooks/useQuery'
 
 /**
  * @function
@@ -27,15 +28,16 @@ const withQuery = (dest, queryOpts, Original) => {
     )
   }
   return Component => {
-    const Wrapped = (props, context) => {
-      queryOpts = typeof queryOpts === 'function' ? queryOpts(props) : queryOpts
+    const Wrapper = (props, context) => {
       if (!context.client) {
         throw new Error(
           'Should be used with client in context (use CozyProvider to set context)'
         )
       }
 
+      queryOpts = typeof queryOpts === 'function' ? queryOpts(props) : queryOpts
       if (queryOpts.doc) {
+        console.warn('queryOpts.doc is deprecated')
         return <Component {...{ [dest]: queryOpts.doc, ...props }} />
       }
 
@@ -45,12 +47,12 @@ const withQuery = (dest, queryOpts, Original) => {
         </Query>
       )
     }
-    Wrapped.contextTypes = {
+    Wrapper.contextTypes = {
       client: PropTypes.object
     }
-    Wrapped.displayName = `withQuery(${Component.displayName ||
+    Wrapper.displayName = `withQuery(${Component.displayName ||
       Component.name})`
-    return Wrapped
+    return Wrapper
   }
 }
 
@@ -66,4 +68,23 @@ export const queryConnect = querySpecs => Component => {
     withQuery(dest, querySpecs[dest], Component)
   )
   return compose.apply(null, enhancers)(Component)
+}
+
+/**
+ * @function
+ * @description HOC creator to connect component to several queries in a declarative manner
+ * The only difference with queryConnect is that it does not wrap the component in N component
+ * if there are N queries, only 1 extra level of nesting is introduced.
+ *
+ * @param  {object} querySpecs - Definition of the queries
+ * @returns {Function} - HOC to apply to a component
+ */
+export const queryConnectFlat = querySpecs => Component => {
+  const Wrapper = props => {
+    const queryResults = useQueries(querySpecs)
+    return <Component {...props} {...queryResults} />
+  }
+  Wrapper.displayName = `queryConnectFlat(${Component.displayName ||
+    Component.name})`
+  return Wrapper
 }

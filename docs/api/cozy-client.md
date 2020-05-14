@@ -157,6 +157,11 @@ is loading.</p>
 <dt><a href="#queryConnect">queryConnect(querySpecs)</a> ⇒ <code>function</code></dt>
 <dd><p>HOC creator to connect component to several queries in a declarative manner</p>
 </dd>
+<dt><a href="#queryConnectFlat">queryConnectFlat(querySpecs)</a> ⇒ <code>function</code></dt>
+<dd><p>HOC creator to connect component to several queries in a declarative manner
+The only difference with queryConnect is that it does not wrap the component in N component
+if there are N queries, only 1 extra level of nesting is introduced.</p>
+</dd>
 <dt><a href="#getErrorComponent">getErrorComponent(error)</a> ⇒ <code>function</code> | <code>null</code></dt>
 <dd><p>Returns the handler for an error</p>
 </dd>
@@ -1756,6 +1761,20 @@ HOC to provide client from context as prop
 
 ## queryConnect(querySpecs) ⇒ <code>function</code>
 HOC creator to connect component to several queries in a declarative manner
+
+**Kind**: global function  
+**Returns**: <code>function</code> - - HOC to apply to a component  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| querySpecs | <code>object</code> | Definition of the queries |
+
+<a name="queryConnectFlat"></a>
+
+## queryConnectFlat(querySpecs) ⇒ <code>function</code>
+HOC creator to connect component to several queries in a declarative manner
+The only difference with queryConnect is that it does not wrap the component in N component
+if there are N queries, only 1 extra level of nesting is introduced.
 
 **Kind**: global function  
 **Returns**: <code>function</code> - - HOC to apply to a component  
