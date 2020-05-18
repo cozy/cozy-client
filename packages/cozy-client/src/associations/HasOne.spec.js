@@ -1,5 +1,6 @@
 import HasOne from './HasOne'
 import { QueryDefinition } from '../queries/dsl'
+import merge from 'lodash/merge'
 
 const clientMock = {
   get: (doctype, id) => new QueryDefinition({ doctype, id })
@@ -70,6 +71,18 @@ describe('HasOne', () => {
       })
       expect(queryDef.doctype).toEqual('io.cozy.jedis')
       expect(queryDef.id).toEqual(fixtures.apprentice._id)
+    })
+
+    it('returns null if the relationship is invalid', () => {
+      const queryDef = HasOne.query(
+        merge({}, fixtures.jediMaster, { relationships: { padawan: null } }),
+        clientMock,
+        {
+          name: 'padawan',
+          doctype: 'io.cozy.jedis'
+        }
+      )
+      expect(queryDef).toBe(null)
     })
   })
 
