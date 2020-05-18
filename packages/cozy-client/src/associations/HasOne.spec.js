@@ -1,5 +1,7 @@
 import HasOne from './HasOne'
 import { QueryDefinition } from '../queries/dsl'
+import merge from 'lodash/merge'
+import { dehydrate } from '../helpers'
 
 const clientMock = {
   get: (doctype, id) => new QueryDefinition({ doctype, id })
@@ -51,6 +53,20 @@ describe('HasOne', () => {
     })
   })
 
+  describe('dehydrate', () => {
+    it('should not create a relationship attribute if document has no relationship', () => {
+      const dehydrated = dehydrate(hydratedApprentice)
+      expect(dehydrated.relationships).toBe(undefined)
+    })
+
+    it('should dehydrate correctly', () => {
+      const dehydrated = dehydrate(hydratedMaster)
+      expect(dehydrated.relationships).toEqual({
+        padawan: { data: { _id: 'anakin', _type: 'io.cozy.jedis' } }
+      })
+    })
+  })
+
   describe('data', () => {
     it('calls get method', () => {
       const jedi = hydratedMaster.padawan.data
@@ -70,6 +86,18 @@ describe('HasOne', () => {
       })
       expect(queryDef.doctype).toEqual('io.cozy.jedis')
       expect(queryDef.id).toEqual(fixtures.apprentice._id)
+    })
+
+    it('returns null if the relationship is invalid', () => {
+      const queryDef = HasOne.query(
+        merge({}, fixtures.jediMaster, { relationships: { padawan: null } }),
+        clientMock,
+        {
+          name: 'padawan',
+          doctype: 'io.cozy.jedis'
+        }
+      )
+      expect(queryDef).toBe(null)
     })
   })
 

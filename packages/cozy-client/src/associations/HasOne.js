@@ -17,6 +17,9 @@ export default class HasOne extends Association {
 
   static query(doc, client, assoc) {
     const relationship = get(doc, `relationships.${assoc.name}.data`, {})
+    if (!relationship || !relationship._id) {
+      return null
+    }
     return client.get(assoc.doctype, relationship._id)
   }
 
@@ -44,6 +47,9 @@ export default class HasOne extends Association {
   }
 
   dehydrate(doc) {
+    if (!this.raw) {
+      return doc
+    }
     return {
       ...doc,
       relationships: {
