@@ -47,6 +47,9 @@ export default class HasOne extends Association {
   }
 
   dehydrate(doc) {
+    if (!this.raw) {
+      return doc
+    }
     return {
       ...doc,
       relationships: {

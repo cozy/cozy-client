@@ -1,6 +1,7 @@
 import HasOne from './HasOne'
 import { QueryDefinition } from '../queries/dsl'
 import merge from 'lodash/merge'
+import { dehydrate } from '../helpers'
 
 const clientMock = {
   get: (doctype, id) => new QueryDefinition({ doctype, id })
@@ -49,6 +50,20 @@ describe('HasOne', () => {
 
     it('returns null if the relationship has no data', () => {
       expect(hydratedApprentice.padawan.raw).toEqual(null)
+    })
+  })
+
+  describe('dehydrate', () => {
+    it('should not create a relationship attribute if document has no relationship', () => {
+      const dehydrated = dehydrate(hydratedApprentice)
+      expect(dehydrated.relationships).toBe(undefined)
+    })
+
+    it('should dehydrate correctly', () => {
+      const dehydrated = dehydrate(hydratedMaster)
+      expect(dehydrated.relationships).toEqual({
+        padawan: { data: { _id: 'anakin', _type: 'io.cozy.jedis' } }
+      })
     })
   })
 
