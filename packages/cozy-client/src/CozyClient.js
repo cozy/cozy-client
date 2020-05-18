@@ -733,19 +733,25 @@ client.query(Q('io.cozy.bills'))`)
 
     responseDocs.forEach(doc => {
       return forEach(relationshipsByName, (relationship, relName) => {
-        const queryDef = relationship.type.query(doc, this, relationship)
-        const docId = doc._id
+        try {
+          const queryDef = relationship.type.query(doc, this, relationship)
+          const docId = doc._id
 
-        // Used to reattach responses into the relationships attribute of
-        // each document
-        queryDefToDocIdAndRel.set(queryDef, [docId, relName])
+          // Used to reattach responses into the relationships attribute of
+          // each document
+          queryDefToDocIdAndRel.set(queryDef, [docId, relName])
 
-        // Relationships can yield "queries" that are already resolved documents.
-        // These do not need to go through the usual link request mechanism.
-        if (queryDef instanceof QueryDefinition) {
-          definitions.push(queryDef)
-        } else {
-          documents.push(queryDef)
+          // Relationships can yield "queries" that are already resolved documents.
+          // These do not need to go through the usual link request mechanism.
+          if (queryDef instanceof QueryDefinition) {
+            definitions.push(queryDef)
+          } else {
+            documents.push(queryDef)
+          }
+        } catch {
+          // eslint-disable-next-line
+          // We do not crash completely if one the relationship behaves badly and
+          // throws
         }
       })
     })

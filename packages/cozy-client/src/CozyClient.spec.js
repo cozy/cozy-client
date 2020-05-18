@@ -985,6 +985,53 @@ describe('CozyClient', () => {
       })
     })
 
+    describe('relationship with query failure', () => {
+      beforeEach(() => {
+        jest.spyOn(HasManyFiles, 'query').mockImplementation(() => {
+          throw new Error('Query error')
+        })
+      })
+
+      afterEach(() => {
+        HasManyFiles.query.mockRestore()
+      })
+
+      it('should not fail to retrieve document if relationship query fails', async () => {
+        requestHandler.mockReturnValueOnce(
+          Promise.resolve({
+            data: [TODO_1]
+          })
+        )
+        requestHandler.mockReturnValueOnce(
+          Promise.resolve({
+            data: [
+              { _id: 'abc', _type: 'io.cozy.files' },
+              { _id: 'def', _type: 'io.cozy.files' }
+            ],
+            included: [
+              { _id: 'abc', _type: 'io.cozy.files', name: 'abc.png' },
+              { _id: 'def', _type: 'io.cozy.files', name: 'def.png' }
+            ]
+          })
+        )
+
+        const resp = await client.query(
+          Q('io.cozy.todos').include(['attachments'])
+        )
+
+        expect(requestHandler).toHaveBeenCalledTimes(1)
+        expect(resp).toEqual({
+          data: [
+            {
+              ...TODO_1,
+              relationships: {}
+            }
+          ],
+          included: []
+        })
+      })
+    })
+
     it('should do nothing if fetch policy returns false', async () => {
       jest.spyOn(client, 'requestQuery')
       const fetchPolicy = jest.fn(() => false)
