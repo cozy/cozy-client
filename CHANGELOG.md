@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.8.1](https://github.com/cozy/cozy-client/compare/v13.8.0...v13.8.1) (2020-05-18)
+
+
+### Bug Fixes
+
+* Do not crash if relationship is set to null ([2ec65f8](https://github.com/cozy/cozy-client/commit/2ec65f8))
+* Do not dehydrate unexistent relationship as null ([2c5eeca](https://github.com/cozy/cozy-client/commit/2c5eeca))
+* No failure if bad Relationship::query() throws ([e1bf884](https://github.com/cozy/cozy-client/commit/e1bf884))
+
+
+
+
+
 # [13.8.0](https://github.com/cozy/cozy-client/compare/v13.7.0...v13.8.0) (2020-05-15)
 
 
