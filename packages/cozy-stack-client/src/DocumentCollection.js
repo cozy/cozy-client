@@ -224,6 +224,8 @@ class DocumentCollection {
 
   /**
    * Creates a document
+   *
+   * @param {object} doc - Document to create. Optional: you can force the id with an _id attribute
    */
   async create({ _id, _type, ...document }) {
     // In case of a fixed id, let's use the dedicated creation endpoint
@@ -239,6 +241,8 @@ class DocumentCollection {
 
   /**
    * Updates a document
+   *
+   * @param {object} doc - Document to update. Do not forget _id attribute
    */
   async update(document) {
     const resp = await this.stackClient.fetchJSON(
@@ -253,6 +257,8 @@ class DocumentCollection {
 
   /**
    * Destroys a document
+   *
+   * @param {object} doc - Document to destroy. Do not forget _id and _rev attributes
    */
   async destroy({ _id, _rev, ...document }) {
     const resp = await this.stackClient.fetchJSON(
