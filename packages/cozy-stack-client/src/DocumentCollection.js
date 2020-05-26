@@ -222,6 +222,9 @@ class DocumentCollection {
     }
   }
 
+  /**
+   * Creates a document
+   */
   async create({ _id, _type, ...document }) {
     // In case of a fixed id, let's use the dedicated creation endpoint
     // https://github.com/cozy/cozy-stack/blob/master/docs/data-system.md#create-a-document-with-a-fixed-id
