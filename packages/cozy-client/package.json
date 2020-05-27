@@ -1,6 +1,6 @@
 {
   "name": "cozy-client",
-  "version": "13.8.1",
+  "version": "13.8.2",
   "license": "MIT",
   "main": "dist/node.js",
   "browser": "dist/index.js",
@@ -15,7 +15,7 @@
     "btoa": "^1.2.1",
     "cozy-device-helper": "^1.7.3",
     "cozy-logger": "^1.6.0",
-    "cozy-stack-client": "^13.5.3",
+    "cozy-stack-client": "^13.8.2",
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.13",
     "microee": "^0.0.6",
