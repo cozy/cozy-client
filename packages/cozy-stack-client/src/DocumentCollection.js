@@ -242,7 +242,7 @@ class DocumentCollection {
   /**
    * Updates a document
    *
-   * @param {object} doc - Document to update. Do not forget _id attribute
+   * @param {object} doc - Document to update. Do not forget the _id attribute
    */
   async update(document) {
     const resp = await this.stackClient.fetchJSON(
