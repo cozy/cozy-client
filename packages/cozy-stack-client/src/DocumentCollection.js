@@ -225,7 +225,7 @@ class DocumentCollection {
   /**
    * Creates a document
    *
-   * @param {object} doc - Document to create. Optional: you can force the id with an _id attribute
+   * @param {object} doc - Document to create. Optional: you can force the id with the _id attribute
    */
   async create({ _id, _type, ...document }) {
     // In case of a fixed id, let's use the dedicated creation endpoint
