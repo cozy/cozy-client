@@ -15,7 +15,7 @@ const DATABASE_DOES_NOT_EXIST = 'Database does not exist.'
  * Normalize a document, adding its doctype if needed
  *
  * @param {object} doc - Document to normalize
- * @param {string} doctype
+ * @param {string} doctype - Document doctype
  * @returns {object} normalized document
  * @private
  */
@@ -42,7 +42,7 @@ class DocumentCollection {
    * Provides a callback for `Collection.get`
    *
    * @private
-   * @param {string} doctype
+   * @param {string} doctype - Document doctype
    * @returns {Function} (data, response) => normalizedDocument
    *                                        using `normalizeDoc`
    */
@@ -54,7 +54,7 @@ class DocumentCollection {
    * `normalizeDoctype` for api end points returning json api responses
    *
    * @private
-   * @param {string} doctype
+   * @param {string} doctype - Document doctype
    * @returns {Function} (data, response) => normalizedDocument
    *                                        using `normalizeDoc`
    */
@@ -69,7 +69,7 @@ class DocumentCollection {
    * `normalizeDoctype` for api end points returning raw documents
    *
    * @private
-   * @param {string} doctype
+   * @param {string} doctype - Document doctype
    * @returns {Function} (data, response) => normalizedDocument
    *                                        using `normalizeDoc`
    */
@@ -242,7 +242,7 @@ class DocumentCollection {
   /**
    * Updates a document
    *
-   * @param {object} doc - Document to update. Do not forget the _id attribute
+   * @param {object} document - Document to update. Do not forget the _id attribute
    */
   async update(document) {
     const resp = await this.stackClient.fetchJSON(
@@ -276,7 +276,7 @@ class DocumentCollection {
   /**
    * Updates several documents in one batch
    *
-   * @param  {Document[]} docs
+   * @param  {Document[]} docs Documents to be updated
    */
   async updateAll(docs) {
     const stackClient = this.stackClient

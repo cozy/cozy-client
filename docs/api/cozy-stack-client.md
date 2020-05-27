@@ -229,7 +229,7 @@ Abstracts a collection of documents of the same doctype, providing CRUD methods 
     * [.get(id)](#DocumentCollection+get) ⇒ <code>object</code>
     * [.getAll()](#DocumentCollection+getAll)
     * [.create(doc)](#DocumentCollection+create)
-    * [.update(doc)](#DocumentCollection+update)
+    * [.update(document)](#DocumentCollection+update)
     * [.destroy(doc)](#DocumentCollection+destroy)
     * [.updateAll(docs)](#DocumentCollection+updateAll)
     * [.destroyAll(docs)](#DocumentCollection+destroyAll)
@@ -303,14 +303,14 @@ Creates a document
 
 <a name="DocumentCollection+update"></a>
 
-### documentCollection.update(doc)
+### documentCollection.update(document)
 Updates a document
 
 **Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| doc | <code>object</code> | Document to update. Do not forget the _id attribute |
+| document | <code>object</code> | Document to update. Do not forget the _id attribute |
 
 <a name="DocumentCollection+destroy"></a>
 
@@ -330,9 +330,9 @@ Updates several documents in one batch
 
 **Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
 
-| Param | Type |
-| --- | --- |
-| docs | <code>Array.&lt;Document&gt;</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| docs | <code>Array.&lt;Document&gt;</code> | Documents to be updated |
 
 <a name="DocumentCollection+destroyAll"></a>
 
