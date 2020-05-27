@@ -15,7 +15,7 @@ const DATABASE_DOES_NOT_EXIST = 'Database does not exist.'
  * Normalize a document, adding its doctype if needed
  *
  * @param {object} doc - Document to normalize
- * @param {string} doctype
+ * @param {string} doctype - Document doctype
  * @returns {object} normalized document
  * @private
  */
@@ -42,7 +42,7 @@ class DocumentCollection {
    * Provides a callback for `Collection.get`
    *
    * @private
-   * @param {string} doctype
+   * @param {string} doctype - Document doctype
    * @returns {Function} (data, response) => normalizedDocument
    *                                        using `normalizeDoc`
    */
@@ -54,7 +54,7 @@ class DocumentCollection {
    * `normalizeDoctype` for api end points returning json api responses
    *
    * @private
-   * @param {string} doctype
+   * @param {string} doctype - Document doctype
    * @returns {Function} (data, response) => normalizedDocument
    *                                        using `normalizeDoc`
    */
@@ -69,7 +69,7 @@ class DocumentCollection {
    * `normalizeDoctype` for api end points returning raw documents
    *
    * @private
-   * @param {string} doctype
+   * @param {string} doctype - Document doctype
    * @returns {Function} (data, response) => normalizedDocument
    *                                        using `normalizeDoc`
    */
@@ -222,6 +222,11 @@ class DocumentCollection {
     }
   }
 
+  /**
+   * Creates a document
+   *
+   * @param {object} doc - Document to create. Optional: you can force the id with the _id attribute
+   */
   async create({ _id, _type, ...document }) {
     // In case of a fixed id, let's use the dedicated creation endpoint
     // https://github.com/cozy/cozy-stack/blob/master/docs/data-system.md#create-a-document-with-a-fixed-id
@@ -236,6 +241,8 @@ class DocumentCollection {
 
   /**
    * Updates a document
+   *
+   * @param {object} document - Document to update. Do not forget the _id attribute
    */
   async update(document) {
     const resp = await this.stackClient.fetchJSON(
@@ -250,6 +257,8 @@ class DocumentCollection {
 
   /**
    * Destroys a document
+   *
+   * @param {object} doc - Document to destroy. Do not forget _id and _rev attributes
    */
   async destroy({ _id, _rev, ...document }) {
     const resp = await this.stackClient.fetchJSON(
@@ -267,7 +276,7 @@ class DocumentCollection {
   /**
    * Updates several documents in one batch
    *
-   * @param  {Document[]} docs
+   * @param  {Document[]} docs Documents to be updated
    */
   async updateAll(docs) {
     const stackClient = this.stackClient

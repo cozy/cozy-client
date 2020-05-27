@@ -228,8 +228,9 @@ Abstracts a collection of documents of the same doctype, providing CRUD methods 
     * [.find(selector, options)](#DocumentCollection+find) ⇒ <code>Object</code>
     * [.get(id)](#DocumentCollection+get) ⇒ <code>object</code>
     * [.getAll()](#DocumentCollection+getAll)
-    * [.update()](#DocumentCollection+update)
-    * [.destroy()](#DocumentCollection+destroy)
+    * [.create(doc)](#DocumentCollection+create)
+    * [.update(document)](#DocumentCollection+update)
+    * [.destroy(doc)](#DocumentCollection+destroy)
     * [.updateAll(docs)](#DocumentCollection+updateAll)
     * [.destroyAll(docs)](#DocumentCollection+destroyAll)
     * [.fetchChanges(couchOptions, options)](#DocumentCollection+fetchChanges)
@@ -289,18 +290,39 @@ Get a document by id
 Get many documents by id
 
 **Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
+<a name="DocumentCollection+create"></a>
+
+### documentCollection.create(doc)
+Creates a document
+
+**Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doc | <code>object</code> | Document to create. Optional: you can force the id with the _id attribute |
+
 <a name="DocumentCollection+update"></a>
 
-### documentCollection.update()
+### documentCollection.update(document)
 Updates a document
 
 **Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | <code>object</code> | Document to update. Do not forget the _id attribute |
+
 <a name="DocumentCollection+destroy"></a>
 
-### documentCollection.destroy()
+### documentCollection.destroy(doc)
 Destroys a document
 
 **Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doc | <code>object</code> | Document to destroy. Do not forget _id and _rev attributes |
+
 <a name="DocumentCollection+updateAll"></a>
 
 ### documentCollection.updateAll(docs)
@@ -308,9 +330,9 @@ Updates several documents in one batch
 
 **Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
 
-| Param | Type |
-| --- | --- |
-| docs | <code>Array.&lt;Document&gt;</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| docs | <code>Array.&lt;Document&gt;</code> | Documents to be updated |
 
 <a name="DocumentCollection+destroyAll"></a>
 
