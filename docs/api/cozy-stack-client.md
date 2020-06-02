@@ -196,7 +196,7 @@ Fetches JSON in an authorized way.
 | method | <code>string</code> | The HTTP method. |
 | path | <code>string</code> | The URI. |
 | body | <code>object</code> | The payload. |
-| options | <code>object</code> |  |
+| options | <code>object</code> | Options |
 
 <a name="CozyStackClient+setToken"></a>
 
