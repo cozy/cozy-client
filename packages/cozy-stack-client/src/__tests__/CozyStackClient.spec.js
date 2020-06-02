@@ -386,10 +386,11 @@ describe('CozyStackClient', () => {
       fetch.mockResponse(FAKE_APP_HTML)
     })
 
-    const getClient = () =>
+    const getClient = (options = {}) =>
       new CozyStackClient({
         uri: 'http://cozy.tools:8080/',
-        token: 'azertyuio'
+        token: 'azertyuio',
+        ...options
       })
 
     it('should return a new token', async () => {
@@ -399,13 +400,14 @@ describe('CozyStackClient', () => {
     })
 
     it('should have called onRefreshToken`', async () => {
-      const client = getClient()
-      const promise = new Promise(function(res, rej) {
-        client.onTokenRefresh = tok => res(tok)
+      const handleRefresh = jest.fn()
+      const client = getClient({
+        onTokenRefresh: handleRefresh
       })
-      client.refreshToken()
-      const newToken = await promise
-      expect(newToken.token).toEqual(FAKE_APP_TOKEN)
+      await client.refreshToken()
+      expect(handleRefresh).toHaveBeenCalledWith({
+        token: FAKE_APP_TOKEN
+      })
     })
 
     it('should fail without repeat on server error', async () => {

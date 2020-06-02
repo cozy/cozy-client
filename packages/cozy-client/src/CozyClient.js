@@ -1095,7 +1095,7 @@ instantiation of the client.`
     this.emit('tokenRefreshed')
     if (this.options.onTokenRefresh) {
       deprecatedHandler(
-        `Using onTokenRefresh is deprecated, please use events like this: cozyClient.on('tokenUpdated', token => console.log('Token is updated', token)). https://git.io/fj3M3`
+        `Using onTokenRefresh is deprecated, please use events like this: cozyClient.on('tokenRefreshed', token => console.log('Token has been refreshed', token)). https://git.io/fj3M3`
       )
       this.options.onTokenRefresh(token)
     }
