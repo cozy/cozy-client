@@ -1,3 +1,5 @@
+![npm-badge-cozy-client](https://badge.fury.io/js/cozy-client.svg)
+
 # cozy-client
 
 - **Describe** your data and their **relationships**
