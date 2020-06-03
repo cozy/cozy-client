@@ -133,6 +133,12 @@ class CozyStackClient {
     }
   }
 
+  onTokenRefresh(token) {
+    if (this.options && this.options.onTokenRefresh) {
+      this.options.onTokenRefresh(token)
+    }
+  }
+
   onRevocationChange(state) {
     if (this.options && this.options.onRevocationChange) {
       this.options.onRevocationChange(state)
@@ -194,9 +200,7 @@ class CozyStackClient {
       )
     }
     const newToken = new AppToken(cozyToken)
-    if (this.onTokenRefresh && typeof this.onTokenRefresh === 'function') {
-      this.onTokenRefresh(newToken)
-    }
+    this.onTokenRefresh(newToken)
     return newToken
   }
 
@@ -206,7 +210,7 @@ class CozyStackClient {
    * @param  {string} method The HTTP method.
    * @param  {string} path The URI.
    * @param  {object} body The payload.
-   * @param  {object} options
+   * @param  {object} options Options
    * @returns {object}
    * @throws {FetchError}
    */
