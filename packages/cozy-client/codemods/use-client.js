@@ -1,4 +1,4 @@
-import { hocReplacer } from 'cozy-codemods'
+import { hocReplacer } from '@cozy/codemods'
 
 const isClientProp = prop => {
   return prop.key && prop.key.name === 'client'
