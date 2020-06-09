@@ -36,5 +36,5 @@ export default function transformer(file, api) {
     }
   })
 
-  return replaceClientPropsByHook(root)
+  return replaceClientPropsByHook(root).toSource()
 }
