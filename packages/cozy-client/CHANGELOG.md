@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.8.4](https://github.com/cozy/cozy-client/compare/v13.8.3...v13.8.4) (2020-06-10)
+
+
+### Bug Fixes
+
+* Need to return the source from a codemod ([10d09cf](https://github.com/cozy/cozy-client/commit/10d09cf))
+* Use correct package for codemods ([181d036](https://github.com/cozy/cozy-client/commit/181d036))
+
+
+
+
+
 ## [13.8.3](https://github.com/cozy/cozy-client/compare/v13.8.2...v13.8.3) (2020-06-03)
 
 
