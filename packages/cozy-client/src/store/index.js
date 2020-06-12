@@ -12,6 +12,10 @@ import documents, {
 import queries, { getQueryFromSlice, isQueryAction } from './queries'
 import { isMutationAction } from './mutations'
 
+const RESET_ACTION_TYPE = 'COZY_CLIENT.RESET_STATE'
+
+const resetState = () => ({ type: RESET_ACTION_TYPE })
+
 export class StoreProxy {
   constructor(state) {
     this.state = state
@@ -43,7 +47,12 @@ export class StoreProxy {
   }
 }
 
-const combinedReducer = (state = { documents: {}, queries: {} }, action) => {
+const initialState = { documents: {}, queries: {} }
+
+const combinedReducer = (state = initialState, action) => {
+  if (action.type == RESET_ACTION_TYPE) {
+    return initialState
+  }
   if (!isQueryAction(action) && !isMutationAction(action)) {
     return state
   }
@@ -59,6 +68,7 @@ const combinedReducer = (state = { documents: {}, queries: {} }, action) => {
       )
     }
   }
+
   const nextDocuments = documents(state.documents, action)
   const haveDocumentsChanged = nextDocuments !== state.documents
 
@@ -97,6 +107,8 @@ export const getRawQueryFromState = (state, queryId) =>
   getQueryFromSlice(getStateRoot(state).queries, queryId)
 
 export { initQuery, receiveQueryResult, receiveQueryError } from './queries'
+
+export { resetState }
 
 export {
   initMutation,

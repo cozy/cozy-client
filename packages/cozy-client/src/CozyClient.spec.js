@@ -385,6 +385,27 @@ describe('CozyClient logout', () => {
     expect(stackClient.fetch).toHaveBeenCalledWith('DELETE', '/auth/login')
     expect(stackClient.unregister).not.toHaveBeenCalled()
   })
+
+  it('should reset the redux state', async () => {
+    client = new CozyClient({
+      links,
+      stackClient,
+      schema: SCHEMA,
+      uri: 'http://cozy.io',
+      token: '123abc',
+      warningForCustomHandlers: false
+    })
+
+    client.ensureStore()
+    client.store.dispatch(initQuery('allTodos', { doctype: 'io.cozy.todos' }))
+
+    await client.logout()
+
+    expect(client.store.getState().cozy).toEqual({
+      documents: {},
+      queries: {}
+    })
+  })
 })
 
 describe('CozyClient login', () => {
