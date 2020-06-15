@@ -22,7 +22,8 @@ import {
   receiveMutationError,
   getQueryFromState,
   getCollectionFromState,
-  getDocumentFromState
+  getDocumentFromState,
+  resetState
 } from './store'
 import fetchPolicies from './policies'
 import Schema from './Schema'
@@ -354,6 +355,9 @@ class CozyClient {
       }
     }
 
+    if (this.store) {
+      this.dispatch(resetState())
+    }
     this.emit('logout')
   }
 
