@@ -116,9 +116,7 @@ describe('Store', () => {
       store.dispatch(
         initQuery('my-query-name', query.sortBy([{ label: 'desc' }]))
       )
-      store.dispatch(
-        initQuery('other-query', query.sortBy([{ label: 'asc' }]))
-      )
+      store.dispatch(initQuery('other-query', query.sortBy([{ label: 'asc' }])))
       store.dispatch(
         receiveQueryResult('my-query-name', {
           data: [TODO_1, TODO_2]

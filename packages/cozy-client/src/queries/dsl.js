@@ -103,7 +103,9 @@ class QueryDefinition {
   sortBy(sort) {
     if (!isArray(sort)) {
       throw new Error(
-        `Invalid sort, should be an array ([{ label: "desc"}, { name: "asc"}]), you passed ${JSON.stringify(sort)}.`
+        `Invalid sort, should be an array ([{ label: "desc"}, { name: "asc"}]), you passed ${JSON.stringify(
+          sort
+        )}.`
       )
     }
     return new QueryDefinition({ ...this.toDefinition(), sort })
@@ -295,12 +297,7 @@ export const makeSorterFromDefinition = definition => {
     const attributeOrders = sort.map(x => Object.entries(x)[0])
     const attrs = attributeOrders.map(x => x[0])
     const orders = attributeOrders.map(x => x[1])
-    return docs =>
-      orderBy(
-        docs,
-        attrs,
-        orders
-      )
+    return docs => orderBy(docs, attrs, orders)
   }
 }
 

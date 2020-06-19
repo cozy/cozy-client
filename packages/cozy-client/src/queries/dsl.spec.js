@@ -36,7 +36,7 @@ describe('QueryDefinition', () => {
 
 describe('makeSorterFromDefinition', () => {
   it('should make a sort function from a definition', () => {
-    const q = Q('io.cozy.files').sortBy([{ name: 'desc'}, { label: 'asc'}])
+    const q = Q('io.cozy.files').sortBy([{ name: 'desc' }, { label: 'asc' }])
 
     const sorter = makeSorterFromDefinition(q)
     const files = [
@@ -46,9 +46,6 @@ describe('makeSorterFromDefinition', () => {
       { _id: '4', name: 3, label: 'A' }
     ]
     const sorted = sorter(files)
-    expect(sorted.map(x => x._id)).toEqual([
-      '4', '3', '2', '1'
-    ])
-
+    expect(sorted.map(x => x._id)).toEqual(['4', '3', '2', '1'])
   })
 })
