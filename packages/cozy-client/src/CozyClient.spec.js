@@ -1364,12 +1364,13 @@ describe('file creation', () => {
     const { data: doc } = await client.create('io.cozy.files', {
       type: 'file',
       data: data,
+      dirId: 'folder-id',
       name: 'toto.pdf'
     })
     expect(doc._id).toEqual('1337')
     expect(client.stackClient.fetchJSON).toHaveBeenCalledWith(
       'POST',
-      '/files/?Name=toto.pdf&Type=file&Executable=false&MetadataID=',
+      '/files/folder-id?Name=toto.pdf&Type=file&Executable=false&MetadataID=',
       'file-content',
       { headers: { 'Content-Type': 'text/plain' }, onUploadProgress: undefined }
     )
