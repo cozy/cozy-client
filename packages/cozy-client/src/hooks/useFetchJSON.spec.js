@@ -3,9 +3,12 @@ import { renderHook } from '@testing-library/react-hooks'
 import useFetchJSON from './useFetchJSON'
 import Provider from '../Provider'
 
-const makeWrapper = client => ({ children }) => (
-  <Provider client={client}>{children}</Provider>
-)
+const makeWrapper = client => {
+  const Wrapper = ({ children }) => (
+    <Provider client={client}>{children}</Provider>
+  )
+  return Wrapper
+}
 
 describe('use fetch json', () => {
   const setup = ({ fetchJSON }) => {

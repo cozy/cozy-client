@@ -25,8 +25,8 @@ class SharingCollection extends DocumentCollection {
    *
    * @param  {object} document The document to share. Should have and _id and a name.
    * @param  {Array} recipients A list of io.cozy.contacts
-   * @param  {string} sharingType
-   * @param  {string} description
+   * @param  {string} sharingType - If "two-way", will set the open_sharing attribute to true
+   * @param  {string} description - Describes the sharing
    * @param  {string=} previewPath Relative URL of the sharings preview page
    */
   async share(
@@ -58,8 +58,8 @@ class SharingCollection extends DocumentCollection {
   /**
    * getDiscoveryLink - Returns the URL of the page that can be used to accept a sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#get-sharingssharing-iddiscovery
    *
-   * @param  {string} sharingId
-   * @param  {string} sharecode
+   * @param  {string} sharingId - Id of the sharing
+   * @param  {string} sharecode - Code of the sharing
    * @returns {string}
    */
   getDiscoveryLink(sharingId, sharecode) {

@@ -21,10 +21,13 @@ const setupClient = () => {
   return client
 }
 
-const makeWrapper = client => ({ children }) => (
-  <ReduxProvider store={client.store}>
-    <ClientProvider client={client}>{children}</ClientProvider>
-  </ReduxProvider>
-)
+const makeWrapper = client => {
+  const Wrapper = ({ children }) => (
+    <ReduxProvider store={client.store}>
+      <ClientProvider client={client}>{children}</ClientProvider>
+    </ReduxProvider>
+  )
+  return Wrapper
+}
 
 export { setupClient, makeWrapper }

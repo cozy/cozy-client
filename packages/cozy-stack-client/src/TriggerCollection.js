@@ -3,6 +3,8 @@ import { normalizeDoc } from './DocumentCollection'
 import { normalizeJob } from './JobCollection'
 import { uri } from './utils'
 import DocumentCollection from './DocumentCollection'
+import { FetchError } from './errors'
+
 export const JOBS_DOCTYPE = 'io.cozy.jobs'
 export const TRIGGERS_DOCTYPE = 'io.cozy.triggers'
 
@@ -99,8 +101,8 @@ class TriggerCollection extends DocumentCollection {
    *
    * See https://github.com/cozy/cozy-stack/pull/2010
    *
-   * @param {object} selector
-   * @param {object} options
+   * @param {object} selector - Which kind of worker {konnector,service}
+   * @param {object} options - Options
    * @returns {{data, meta, skip, next}} The JSON API conformant response.
    * @throws {FetchError}
    */

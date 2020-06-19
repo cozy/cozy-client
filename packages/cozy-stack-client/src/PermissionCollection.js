@@ -34,8 +34,8 @@ class PermissionCollection extends DocumentCollection {
    * Adds a permission to the given document. Document type must be
    * `io.cozy.apps`, `io.cozy.konnectors` or `io.cozy.permissions`
    *
-   * @param  {object}  document
-   * @param  {object}  permission
+   * @param  {object}  document - Document which receives the permission
+   * @param  {object}  permission - Describes the permission
    * @returns {Promise}
    *
    * @example
