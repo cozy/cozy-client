@@ -8,6 +8,7 @@ import qs from 'qs'
 
 import Collection, { dontThrowNotFoundError } from './Collection'
 import * as querystring from './querystring'
+import { FetchError } from './errors'
 
 const DATABASE_DOES_NOT_EXIST = 'Database does not exist.'
 

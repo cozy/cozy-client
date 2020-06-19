@@ -4,6 +4,8 @@ import get from 'lodash/get'
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 import { uri, slugify, forceFileDownload, formatBytes } from './utils'
 import * as querystring from './querystring'
+import { FetchError } from './errors'
+
 const ROOT_DIR_ID = 'io.cozy.files.root-dir'
 const CONTENT_TYPE_OCTET_STREAM = 'application/octet-stream'
 

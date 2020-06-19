@@ -1,4 +1,5 @@
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
+import { FetchError } from './errors'
 
 export const APPS_DOCTYPE = 'io.cozy.apps'
 

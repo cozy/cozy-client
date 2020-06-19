@@ -17,6 +17,7 @@ import logDeprecate from './logDeprecate'
 import errors from './errors'
 import { fetchWithXMLHttpRequest, shouldXMLHTTPRequestBeUsed } from './xhrFetch'
 import MicroEE from 'microee'
+import { FetchError } from './errors'
 
 const normalizeUri = uri => {
   if (uri === null) return null
@@ -323,27 +324,6 @@ class CozyStackClient {
 
   getIconURL(opts) {
     return getIconURL(this, opts)
-  }
-}
-
-export class FetchError extends Error {
-  constructor(response, reason) {
-    super()
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, this.constructor)
-    }
-    // WARN We have to hardcode this because babel doesn't play nice when extending Error
-    this.name = 'FetchError'
-    this.response = response
-    this.url = response.url
-    this.status = response.status
-    this.reason = reason
-
-    Object.defineProperty(this, 'message', {
-      value:
-        reason.message ||
-        (typeof reason === 'string' ? reason : JSON.stringify(reason))
-    })
   }
 }
 
