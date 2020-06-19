@@ -278,6 +278,19 @@ class FileCollection extends DocumentCollection {
   }
 
   /**
+   * Creates for both directory or file.
+   * - Used by StackLink to support CozyClient.create('io.cozy.files', options)
+   */
+  async create(attributes) {
+    if (attributes.type === 'directory') {
+      return this.createDirectory(attributes)
+    } else {
+      const { data, ...createFileOptions } = attributes
+      return this.createFile(data, createFileOptions)
+    }
+  }
+
+  /**
    *
    * @param {File|Blob|Stream|string|ArrayBuffer} data file to be uploaded
    * @param {object} params Additionnal parameters
