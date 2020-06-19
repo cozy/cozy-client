@@ -443,7 +443,7 @@ class FileCollection extends DocumentCollection {
    * 102404500404B => 95.37 GB
    *
    * @param {object} file io.cozy.files object
-   * @param {int} decimal number of decimal
+   * @param {number} decimal number of decimal
    */
   getBeautifulSize(file, decimal) {
     return formatBytes(parseInt(file.size), decimal)
