@@ -32,7 +32,7 @@
     "lint": "eslint 'packages/*/src/**/*.{js,jsx}' 'packages/*/examples/**/*.{js,jsx}'",
     "test": "jest",
     "watch": "lerna run watch --parallel",
-    "build": "lerna run build",
+    "build": "lerna run build --parallel",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "clean": "rm -rf packages/*/dist",
     "docs": "node scripts/docs.js"
