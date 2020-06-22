@@ -6,6 +6,25 @@ import { uri, slugify, forceFileDownload, formatBytes } from './utils'
 import * as querystring from './querystring'
 import { FetchError } from './errors'
 
+/**
+ * Attributes used for directory creation
+ *
+ * @typedef {object} DirectoryAttributes
+ * @property {string} dirId - Id of the parent directory.
+ * @property {boolean} name - Name of the created directory.
+ * @property {boolean} executable - Indicates whether the file will be executable.
+ */
+
+/**
+ * Attributes used for file creation
+ *
+ * @typedef {object} FileAttributes
+ * @property {string} dirId - Id of the parent directory.
+ * @property {string} name - Name of the created file.
+ * @property {Date} lastModifiedDate - Can be used to set the last modified date of a file.
+ * @property {object} metadata io.cozy.files.metadata to attach to the file
+ */
+
 const ROOT_DIR_ID = 'io.cozy.files.root-dir'
 const CONTENT_TYPE_OCTET_STREAM = 'application/octet-stream'
 
@@ -280,8 +299,11 @@ class FileCollection extends DocumentCollection {
   }
 
   /**
-   * Creates for both directory or file.
+   * Creates directory or file.
    * - Used by StackLink to support CozyClient.create('io.cozy.files', options)
+   *
+   * @param {FileAttributes|DirectoryAttributes} attributes - Attributes of the created file/directory
+   * @param {File|Blob|string|ArrayBuffer} attributes.data Will be used as content of the created file
    */
   async create(attributes) {
     if (attributes.type === 'directory') {
@@ -293,13 +315,11 @@ class FileCollection extends DocumentCollection {
   }
 
   /**
+   * Creates a file
    *
+   * @private
    * @param {File|Blob|Stream|string|ArrayBuffer} data file to be uploaded
-   * @param {object} params Additionnal parameters
-   * @param {string} params.name Name of the file
-   * @param {string} params.dirId Id of the directory you want to upload the file to
-   * @param {boolean} params.executable If the file is an executable or not
-   * @param {object} params.metadata io.cozy.files.metadata to attach to the file
+   * @param {FileAttributes} params Additional parameters
    * @param  {object}  params.options     Options to pass to doUpload method (additional headers)
    */
   async createFile(
@@ -537,6 +557,13 @@ class FileCollection extends DocumentCollection {
     }
   }
 
+  /**
+   * Create directory
+   *
+   * @private
+   * @param  {DirectoryAttributes} attributes - Attributes of the directory
+   * @returns {Promise}
+   */
   async createDirectory(attributes = {}) {
     const { name, dirId, lastModifiedDate } = attributes
     const safeName = sanitizeFileName(name)
@@ -600,7 +627,7 @@ class FileCollection extends DocumentCollection {
   /**
    * async createDirectoryByPath - Creates one or more folders until the given path exists
    *
-   * @param  {string} path
+   * @param  {string} path - Path of the created directory
    * @returns {object} The document corresponding to the last segment of the path
    */
   async createDirectoryByPath(path) {
