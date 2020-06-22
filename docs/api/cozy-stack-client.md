@@ -74,6 +74,17 @@ through OAuth.</p>
 </dd>
 </dl>
 
+## Typedefs
+
+<dl>
+<dt><a href="#DirectoryAttributes">DirectoryAttributes</a> : <code>object</code></dt>
+<dd><p>Attributes used for directory creation</p>
+</dd>
+<dt><a href="#FileAttributes">FileAttributes</a> : <code>object</code></dt>
+<dd><p>Attributes used for file creation</p>
+</dd>
+</dl>
+
 <a name="AppCollection"></a>
 
 ## AppCollection
@@ -111,9 +122,9 @@ document as data attribute
 
 | Param | Type | Description |
 | --- | --- | --- |
-| stackClient | <code>object</code> |  |
+| stackClient | [<code>CozyStackClient</code>](#CozyStackClient) | CozyStackClient |
 | endpoint | <code>string</code> | Stack endpoint |
-| options | <code>object</code> |  |
+| options | <code>object</code> | Options of the collection |
 | options.normalize | <code>Func</code> | Callback to normalize response data (default `data => data`) |
 | options.method | <code>string</code> | HTTP method (default `GET`) |
 
@@ -380,7 +391,7 @@ files associated to a specific document
     * [.restore(id)](#FileCollection+restore) ⇒ <code>Promise</code>
     * [.deleteFilePermanently(id)](#FileCollection+deleteFilePermanently) ⇒ <code>object</code>
     * [.upload(data, dirPath)](#FileCollection+upload) ⇒ <code>object</code>
-    * [.createFile(data, params)](#FileCollection+createFile)
+    * [.create(attributes)](#FileCollection+create)
     * [.updateFile(data, params)](#FileCollection+updateFile) ⇒ <code>object</code>
     * [.download(file, versionId, filename)](#FileCollection+download)
     * [.fetchFileContent(id)](#FileCollection+fetchFileContent)
@@ -550,20 +561,18 @@ async deleteFilePermanently - Definitely delete a file
 | data | <code>File</code> \| <code>Blob</code> \| <code>Stream</code> \| <code>string</code> \| <code>ArrayBuffer</code> | file to be uploaded |
 | dirPath | <code>string</code> | Path to upload the file to. ie : /Administative/XXX/ |
 
-<a name="FileCollection+createFile"></a>
+<a name="FileCollection+create"></a>
 
-### fileCollection.createFile(data, params)
+### fileCollection.create(attributes)
+Creates directory or file.
+- Used by StackLink to support CozyClient.create('io.cozy.files', options)
+
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| data | <code>File</code> \| <code>Blob</code> \| <code>Stream</code> \| <code>string</code> \| <code>ArrayBuffer</code> | file to be uploaded |
-| params | <code>object</code> | Additionnal parameters |
-| params.name | <code>string</code> | Name of the file |
-| params.dirId | <code>string</code> | Id of the directory you want to upload the file to |
-| params.executable | <code>boolean</code> | If the file is an executable or not |
-| params.metadata | <code>object</code> | io.cozy.files.metadata to attach to the file |
-| params.options | <code>object</code> | Options to pass to doUpload method (additional headers) |
+| attributes | [<code>FileAttributes</code>](#FileAttributes) \| [<code>DirectoryAttributes</code>](#DirectoryAttributes) | Attributes of the created file/directory |
+| attributes.data | <code>File</code> \| <code>Blob</code> \| <code>string</code> \| <code>ArrayBuffer</code> | Will be used as content of the created file |
 
 <a name="FileCollection+updateFile"></a>
 
@@ -621,7 +630,7 @@ Get a beautified size for a given file
 | Param | Type | Description |
 | --- | --- | --- |
 | file | <code>object</code> | io.cozy.files object |
-| decimal | <code>int</code> | number of decimal |
+| decimal | <code>number</code> | number of decimal |
 
 <a name="FileCollection+isChildOf"></a>
 
@@ -644,9 +653,9 @@ async createDirectoryByPath - Creates one or more folders until the given path e
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
 **Returns**: <code>object</code> - The document corresponding to the last segment of the path  
 
-| Param | Type |
-| --- | --- |
-| path | <code>string</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| path | <code>string</code> | Path of the created directory |
 
 <a name="FileCollection+updateAttributes"></a>
 
@@ -796,10 +805,10 @@ through OAuth.
 
 * [OAuthClient](#OAuthClient)
     * [.doRegistration()](#OAuthClient+doRegistration)
-    * [.register()](#OAuthClient+register) ⇒ <code>promise</code>
-    * [.unregister()](#OAuthClient+unregister) ⇒ <code>promise</code>
-    * [.fetchInformation()](#OAuthClient+fetchInformation) ⇒ <code>promise</code>
-    * [.updateInformation(information, resetSecret)](#OAuthClient+updateInformation) ⇒ <code>promise</code>
+    * [.register()](#OAuthClient+register) ⇒ <code>Promise</code>
+    * [.unregister()](#OAuthClient+unregister) ⇒ <code>Promise</code>
+    * [.fetchInformation()](#OAuthClient+fetchInformation) ⇒ <code>Promise</code>
+    * [.updateInformation(information, resetSecret)](#OAuthClient+updateInformation) ⇒ <code>Promise</code>
     * [.generateStateCode()](#OAuthClient+generateStateCode) ⇒ <code>string</code>
     * [.getAuthCodeURL(stateCode, scopes)](#OAuthClient+getAuthCodeURL) ⇒ <code>string</code>
     * [.getAccessCodeFromURL(pageURL, stateCode)](#OAuthClient+getAccessCodeFromURL) ⇒ <code>string</code>
@@ -817,19 +826,19 @@ Performs the HTTP call to register the client to the server
 **Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
 <a name="OAuthClient+register"></a>
 
-### oAuthClient.register() ⇒ <code>promise</code>
+### oAuthClient.register() ⇒ <code>Promise</code>
 Registers the currenly configured client with the OAuth server and
 sets internal information from the server response
 
 **Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
-**Returns**: <code>promise</code> - A promise that resolves with a complete list of client information, including client ID and client secret.  
+**Returns**: <code>Promise</code> - A promise that resolves with a complete list of client information, including client ID and client secret.  
 **Throws**:
 
 - <code>Error</code> When the client is already registered
 
 <a name="OAuthClient+unregister"></a>
 
-### oAuthClient.unregister() ⇒ <code>promise</code>
+### oAuthClient.unregister() ⇒ <code>Promise</code>
 Unregisters the currenly configured client with the OAuth server.
 
 **Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
@@ -839,7 +848,7 @@ Unregisters the currenly configured client with the OAuth server.
 
 <a name="OAuthClient+fetchInformation"></a>
 
-### oAuthClient.fetchInformation() ⇒ <code>promise</code>
+### oAuthClient.fetchInformation() ⇒ <code>Promise</code>
 Fetches the complete set of client information from the server after it has been registered.
 
 **Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
@@ -849,11 +858,11 @@ Fetches the complete set of client information from the server after it has been
 
 <a name="OAuthClient+updateInformation"></a>
 
-### oAuthClient.updateInformation(information, resetSecret) ⇒ <code>promise</code>
+### oAuthClient.updateInformation(information, resetSecret) ⇒ <code>Promise</code>
 Overwrites the client own information. This method will update both the local information and the remote information on the OAuth server.
 
 **Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
-**Returns**: <code>promise</code> - A promise that resolves to a complete, updated list of client information  
+**Returns**: <code>Promise</code> - Resolves to a complete, updated list of client information  
 **Throws**:
 
 - <code>NotRegisteredException</code> When the client doesn't have it's registration information
@@ -982,10 +991,10 @@ Adds a permission to the given document. Document type must be
 
 **Kind**: instance method of [<code>PermissionCollection</code>](#PermissionCollection)  
 
-| Param | Type |
-| --- | --- |
-| document | <code>object</code> | 
-| permission | <code>object</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| document | <code>object</code> | Document which receives the permission |
+| permission | <code>object</code> | Describes the permission |
 
 **Example**  
 ```
@@ -1063,8 +1072,8 @@ share - Creates a new sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#p
 | --- | --- | --- | --- |
 | document | <code>object</code> |  | The document to share. Should have and _id and a name. |
 | recipients | <code>Array</code> |  | A list of io.cozy.contacts |
-| sharingType | <code>string</code> |  |  |
-| description | <code>string</code> |  |  |
+| sharingType | <code>string</code> |  | If "two-way", will set the open_sharing attribute to true |
+| description | <code>string</code> |  | Describes the sharing |
 | [previewPath] | <code>string</code> | <code>null</code> | Relative URL of the sharings preview page |
 
 <a name="SharingCollection+getDiscoveryLink"></a>
@@ -1074,10 +1083,10 @@ getDiscoveryLink - Returns the URL of the page that can be used to accept a shar
 
 **Kind**: instance method of [<code>SharingCollection</code>](#SharingCollection)  
 
-| Param | Type |
-| --- | --- |
-| sharingId | <code>string</code> | 
-| sharecode | <code>string</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| sharingId | <code>string</code> | Id of the sharing |
+| sharecode | <code>string</code> | Code of the sharing |
 
 <a name="SharingCollection+addRecipients"></a>
 
@@ -1199,10 +1208,10 @@ See https://github.com/cozy/cozy-stack/pull/2010
 - <code>FetchError</code> 
 
 
-| Param | Type |
-| --- | --- |
-| selector | <code>object</code> | 
-| options | <code>object</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| selector | <code>object</code> | Which kind of worker {konnector,service} |
+| options | <code>object</code> | Options |
 
 <a name="TriggerCollection+launch"></a>
 
@@ -1280,3 +1289,32 @@ Memoize with maxDuration and custom key
 Get a uniform formatted URL and SSL information according to a provided URL
 
 **Kind**: global function  
+<a name="DirectoryAttributes"></a>
+
+## DirectoryAttributes : <code>object</code>
+Attributes used for directory creation
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| dirId | <code>string</code> | Id of the parent directory. |
+| name | <code>boolean</code> | Name of the created directory. |
+| executable | <code>boolean</code> | Indicates whether the file will be executable. |
+
+<a name="FileAttributes"></a>
+
+## FileAttributes : <code>object</code>
+Attributes used for file creation
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| dirId | <code>string</code> | Id of the parent directory. |
+| name | <code>string</code> | Name of the created file. |
+| lastModifiedDate | <code>Date</code> | Can be used to set the last modified date of a file. |
+| metadata | <code>object</code> | io.cozy.files.metadata to attach to the file |
+
