@@ -283,7 +283,6 @@ export const uploadFile = (file, dirPath) => ({
  * Used to sort query results inside the store when creating a file or
  * receiving updates.
  */
-
 export const makeSorterFromDefinition = definition => {
   const sort = definition.sort
   if (!sort) {
