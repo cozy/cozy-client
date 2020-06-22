@@ -282,6 +282,8 @@ export const uploadFile = (file, dirPath) => ({
  *
  * Used to sort query results inside the store when creating a file or
  * receiving updates.
+ *
+ * @private
  */
 export const makeSorterFromDefinition = definition => {
   const sort = definition.sort

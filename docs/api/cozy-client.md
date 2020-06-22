@@ -131,11 +131,6 @@ example.</p>
 <dd><p>Helper to create a QueryDefinition. Recommended way to create
 query definitions.</p>
 </dd>
-<dt><a href="#makeSorterFromDefinition">makeSorterFromDefinition</a></dt>
-<dd><p>Creates a sort function from a definition.</p>
-<p>Used to sort query results inside the store when creating a file or
-receiving updates.</p>
-</dd>
 <dt><a href="#isQueryLoading">isQueryLoading</a></dt>
 <dd><p>Returns whether the result of a query (given via queryConnect or Query)
 is loading.</p>
@@ -1714,15 +1709,6 @@ import { Q } from 'cozy-client'
 
 const qDef = Q('io.cozy.todos').where({ _id: '1234' })
 ```
-<a name="makeSorterFromDefinition"></a>
-
-## makeSorterFromDefinition
-Creates a sort function from a definition.
-
-Used to sort query results inside the store when creating a file or
-receiving updates.
-
-**Kind**: global constant  
 <a name="isQueryLoading"></a>
 
 ## isQueryLoading
