@@ -1,5 +1,4 @@
 const isArray = require('lodash/isArray')
-const orderBy = require('lodash/orderBy')
 
 /**
  * typedef QueryDefinition
@@ -276,31 +275,6 @@ export const uploadFile = (file, dirPath) => ({
   file,
   dirPath
 })
-
-/**
- * Creates a sort function from a definition.
- *
- * Used to sort query results inside the store when creating a file or
- * receiving updates.
- *
- * @private
- */
-export const makeSorterFromDefinition = definition => {
-  const sort = definition.sort
-  if (!sort) {
-    return docs => docs
-  } else if (!isArray(definition.sort)) {
-    console.warn(
-      'Correct update of queries with a sort that is not an array is not supported. Use an array as argument of QueryDefinition::sort'
-    )
-    return docs => docs
-  } else {
-    const attributeOrders = sort.map(x => Object.entries(x)[0])
-    const attrs = attributeOrders.map(x => x[0])
-    const orders = attributeOrders.map(x => x[1])
-    return docs => orderBy(docs, attrs, orders)
-  }
-}
 
 export const getDoctypeFromOperation = operation => {
   if (operation.mutationType) {

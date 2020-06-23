@@ -1,4 +1,4 @@
-import { QueryDefinition, Q, makeSorterFromDefinition } from '../queries/dsl'
+import { QueryDefinition, Q } from '../queries/dsl'
 
 describe('QueryDefinition', () => {
   it('should build query defs on selected fields', () => {
@@ -31,21 +31,5 @@ describe('QueryDefinition', () => {
       ids: ['id1', 'ids2'],
       doctype: 'io.cozy.files'
     })
-  })
-})
-
-describe('makeSorterFromDefinition', () => {
-  it('should make a sort function from a definition', () => {
-    const q = Q('io.cozy.files').sortBy([{ name: 'desc' }, { label: 'asc' }])
-
-    const sorter = makeSorterFromDefinition(q)
-    const files = [
-      { _id: '1', name: 1, label: 'C' },
-      { _id: '2', name: 2, label: 'B' },
-      { _id: '3', name: 3, label: 'C' },
-      { _id: '4', name: 3, label: 'A' }
-    ]
-    const sorted = sorter(files)
-    expect(sorted.map(x => x._id)).toEqual(['4', '3', '2', '1'])
   })
 })

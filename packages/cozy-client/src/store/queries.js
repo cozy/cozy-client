@@ -4,13 +4,14 @@ import intersection from 'lodash/intersection'
 import concat from 'lodash/concat'
 import isPlainObject from 'lodash/isPlainObject'
 import uniq from 'lodash/uniq'
+import orderBy from 'lodash/orderBy'
+import isArray from 'lodash/isArray'
 
 import { getDocumentFromSlice } from './documents'
 import { isReceivingMutationResult } from './mutations'
 import { properId } from './helpers'
 import sift from 'sift'
 import get from 'lodash/get'
-import { makeSorterFromDefinition } from '../queries/dsl'
 
 const INIT_QUERY = 'INIT_QUERY'
 const RECEIVE_QUERY_RESULT = 'RECEIVE_QUERY_RESULT'
@@ -143,6 +144,31 @@ const getQueryDocumentsChecker = query => {
     }
     if (datum._deleted) return false
     return true
+  }
+}
+
+/**
+ * Creates a sort function from a definition.
+ *
+ * Used to sort query results inside the store when creating a file or
+ * receiving updates.
+ *
+ * @private
+ */
+export const makeSorterFromDefinition = definition => {
+  const sort = definition.sort
+  if (!sort) {
+    return docs => docs
+  } else if (!isArray(definition.sort)) {
+    console.warn(
+      'Correct update of queries with a sort that is not an array is not supported. Use an array as argument of QueryDefinition::sort'
+    )
+    return docs => docs
+  } else {
+    const attributeOrders = sort.map(x => Object.entries(x)[0])
+    const attrs = attributeOrders.map(x => x[0])
+    const orders = attributeOrders.map(x => x[1])
+    return docs => orderBy(docs, attrs, orders)
   }
 }
 
