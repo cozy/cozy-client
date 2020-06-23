@@ -1,5 +1,5 @@
 export const TODO_1 = {
-  _id: '12345',
+  _id: 'todo_1',
   _rev: '4-43bdf4f7123f4d748645ba9536a46daa',
   _type: 'io.cozy.todos',
   label: 'Buy bread',
@@ -7,7 +7,7 @@ export const TODO_1 = {
 }
 
 export const TODO_2 = {
-  _id: '67890',
+  _id: 'todo_2',
   _rev: '2-4e015d830d3246e5a83b3466f437bf1f',
   _type: 'io.cozy.todos',
   label: 'Check email',
@@ -15,14 +15,14 @@ export const TODO_2 = {
 }
 
 export const TODO_3 = {
-  _id: '54321',
+  _id: 'todo_3',
   _rev: '22-6af94ee48bcc4867aa06b72b635837e9',
   _type: 'io.cozy.todos',
   label: 'Build stuff',
   done: true
 }
 export const TODO_4 = {
-  _id: '4',
+  _id: 'todo_4',
   _rev: '19-cc30042f909f4fa7a487c4c7f0a11d19',
   _type: 'io.cozy.todos',
   label: 'Run a semi-marathon',

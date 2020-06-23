@@ -136,7 +136,7 @@ class OAuthClient extends CozyStackClient {
    * sets internal information from the server response
    *
    * @throws {Error} When the client is already registered
-   * @returns {promise} A promise that resolves with a complete list of client information, including client ID and client secret.
+   * @returns {Promise} A promise that resolves with a complete list of client information, including client ID and client secret.
    */
   async register() {
     if (this.isRegistered()) throw new Error('Client already registered')
@@ -171,7 +171,7 @@ class OAuthClient extends CozyStackClient {
    * Unregisters the currenly configured client with the OAuth server.
    *
    * @throws {NotRegisteredException} When the client doesn't have it's registration information
-   * @returns {promise}
+   * @returns {Promise}
    */
   async unregister() {
     if (!this.isRegistered()) throw new NotRegisteredException()
@@ -190,7 +190,7 @@ class OAuthClient extends CozyStackClient {
    * Fetches the complete set of client information from the server after it has been registered.
    *
    * @throws {NotRegisteredException} When the client doesn't have it's registration information
-   * @returns {promise}
+   * @returns {Promise}
    */
   async fetchInformation() {
     if (!this.isRegistered()) throw new NotRegisteredException()
@@ -213,7 +213,7 @@ class OAuthClient extends CozyStackClient {
    * @throws {NotRegisteredException} When the client doesn't have it's registration information
    * @param   {object} information Set of information to update. Note that some fields such as `clientID` can't be updated.
    * @param   {boolean} resetSecret = false Optionnal, whether to reset the client secret or not
-   * @returns {promise} A promise that resolves to a complete, updated list of client information
+   * @returns {Promise} Resolves to a complete, updated list of client information
    */
   async updateInformation(information, resetSecret = false) {
     if (!this.isRegistered()) throw new NotRegisteredException()

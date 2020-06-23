@@ -4,12 +4,15 @@ import intersection from 'lodash/intersection'
 import concat from 'lodash/concat'
 import isPlainObject from 'lodash/isPlainObject'
 import uniq from 'lodash/uniq'
+import orderBy from 'lodash/orderBy'
+import isArray from 'lodash/isArray'
 
 import { getDocumentFromSlice } from './documents'
 import { isReceivingMutationResult } from './mutations'
 import { properId } from './helpers'
 import sift from 'sift'
 import get from 'lodash/get'
+
 const INIT_QUERY = 'INIT_QUERY'
 const RECEIVE_QUERY_RESULT = 'RECEIVE_QUERY_RESULT'
 const RECEIVE_QUERY_ERROR = 'RECEIVE_QUERY_ERROR'
@@ -35,7 +38,20 @@ const queryInitialState = {
   bookmark: null
 }
 
-const query = (state = queryInitialState, action) => {
+const updateQueryDataFromResponse = (queryState, response, nextDocuments) => {
+  let updatedIds = uniq([...queryState.data, ...response.data.map(properId)])
+  if (queryState.definition.sort) {
+    const sorter = makeSorterFromDefinition(queryState.definition)
+    const doctype = queryState.definition.doctype
+    const allDocs = nextDocuments[doctype]
+    const docs = updatedIds.map(_id => allDocs[_id])
+    const sortedDocs = sorter(docs)
+    updatedIds = sortedDocs.map(properId)
+  }
+  return updatedIds
+}
+
+const query = (state = queryInitialState, action, nextDocuments) => {
   switch (action.type) {
     case INIT_QUERY:
       return {
@@ -72,7 +88,7 @@ const query = (state = queryInitialState, action) => {
           response.meta && response.meta.count
             ? response.meta.count
             : response.data.length,
-        data: uniq([...state.data, ...response.data.map(properId)])
+        data: updateQueryDataFromResponse(state, response, nextDocuments)
       }
     }
     case RECEIVE_QUERY_ERROR:
@@ -131,7 +147,32 @@ const getQueryDocumentsChecker = query => {
   }
 }
 
-const updateData = (query, newData) => {
+/**
+ * Creates a sort function from a definition.
+ *
+ * Used to sort query results inside the store when creating a file or
+ * receiving updates.
+ *
+ * @private
+ */
+export const makeSorterFromDefinition = definition => {
+  const sort = definition.sort
+  if (!sort) {
+    return docs => docs
+  } else if (!isArray(definition.sort)) {
+    console.warn(
+      'Correct update of queries with a sort that is not an array is not supported. Use an array as argument of QueryDefinition::sort'
+    )
+    return docs => docs
+  } else {
+    const attributeOrders = sort.map(x => Object.entries(x)[0])
+    const attrs = attributeOrders.map(x => x[0])
+    const orders = attributeOrders.map(x => x[1])
+    return docs => orderBy(docs, attrs, orders)
+  }
+}
+
+const updateData = (query, newData, nextDocuments) => {
   const isFulfilled = getQueryDocumentsChecker(query)
   const matchedIds = newData.filter(doc => isFulfilled(doc)).map(properId)
   const unmatchedIds = newData.filter(doc => !isFulfilled(doc)).map(properId)
@@ -141,10 +182,19 @@ const updateData = (query, newData) => {
   const toUpdate = intersection(originalIds, matchedIds)
 
   const changed = toRemove.length || toAdd.length || toUpdate.length
+
   // concat doesn't check duplicates (contrarily to union), which is ok as
   // toAdd does not contain any id present in originalIds, by construction.
   // It is also faster than union.
-  const updatedData = difference(concat(originalIds, toAdd), toRemove)
+  let updatedData = difference(concat(originalIds, toAdd), toRemove)
+
+  if (query.definition.sort && nextDocuments) {
+    const sorter = makeSorterFromDefinition(query.definition)
+    const allDocs = nextDocuments[query.definition.doctype]
+    const docs = updatedData.map(_id => allDocs[_id])
+    const sortedDocs = sorter(docs)
+    updatedData = sortedDocs.map(properId)
+  }
 
   return {
     ...query,
@@ -154,7 +204,7 @@ const updateData = (query, newData) => {
   }
 }
 
-const autoQueryUpdater = action => query => {
+const autoQueryUpdater = (action, nextDocuments) => query => {
   let data = get(action, 'response.data') || get(action, 'definition.document')
 
   if (!data) return query
@@ -165,10 +215,12 @@ const autoQueryUpdater = action => query => {
   if (!data.length) {
     return query
   }
+
   if (query.definition.doctype !== data[0]._type) {
     return query
   }
-  return updateData(query, data)
+
+  return updateData(query, data, nextDocuments)
 }
 
 const manualQueryUpdater = (action, documents) => query => {
@@ -205,10 +257,10 @@ const queries = (
     }
   }
   if (isQueryAction(action)) {
-    const updater = autoQueryUpdater(action)
+    const updater = autoQueryUpdater(action, nextDocuments)
     return mapValues(state, queryState => {
       if (queryState.id == action.queryId) {
-        return query(queryState, action)
+        return query(queryState, action, nextDocuments)
       } else if (haveDocumentsChanged) {
         return updater(queryState)
       } else {
@@ -219,7 +271,7 @@ const queries = (
   if (isReceivingMutationResult(action)) {
     const updater = action.updateQueries
       ? manualQueryUpdater(action, nextDocuments)
-      : autoQueryUpdater(action)
+      : autoQueryUpdater(action, nextDocuments)
     return mapValues(state, updater)
   }
   return state

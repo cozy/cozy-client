@@ -79,7 +79,7 @@ class CozyClient {
    *
    * Cozy-Client will automatically call `this.login()` if provided with a token and an uri
    */
-  constructor({ link, links, schema = {}, appMetadata = {}, ...options }) {
+  constructor({ link, links, schema = {}, appMetadata = {}, ...options } = {}) {
     if (link) {
       console.warn('`link` is deprecated, use `links`')
     }

@@ -107,6 +107,57 @@ describe('Store', () => {
         )
       ).toEqual(UPDATED_TODO)
     })
+
+    it('should correctly update a query with sort', () => {
+      const query = new Q({
+        doctype: 'io.cozy.todos'
+      })
+      let queryResult
+      store.dispatch(
+        initQuery('my-query-name', query.sortBy([{ label: 'desc' }]))
+      )
+      store.dispatch(initQuery('other-query', query.sortBy([{ label: 'asc' }])))
+      store.dispatch(
+        receiveQueryResult('my-query-name', {
+          data: [TODO_1, TODO_2]
+        })
+      )
+      queryResult = getQueryFromStore(store, 'my-query-name')
+      expect(queryResult.data.map(x => x._id)).toEqual(['todo_2', 'todo_1'])
+
+      store.dispatch(
+        receiveQueryResult('my-query-name', {
+          data: [TODO_4]
+        })
+      )
+      queryResult = getQueryFromStore(store, 'my-query-name')
+      expect(queryResult.data.map(x => x._id)).toEqual([
+        'todo_4',
+        'todo_2',
+        'todo_1'
+      ])
+
+      store.dispatch(
+        receiveQueryResult('my-query-name', {
+          data: [TODO_3]
+        })
+      )
+      queryResult = getQueryFromStore(store, 'my-query-name')
+      expect(queryResult.data.map(x => x._id)).toEqual([
+        'todo_4',
+        'todo_2',
+        'todo_1',
+        'todo_3'
+      ])
+
+      const otherQueryResult = getQueryFromStore(store, 'other-query')
+      expect(otherQueryResult.data.map(x => x._id)).toEqual([
+        'todo_3',
+        'todo_1',
+        'todo_2',
+        'todo_4'
+      ])
+    })
   })
 
   describe('getDocumentFromState', () => {

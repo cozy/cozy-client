@@ -28,9 +28,9 @@ export class Collection {
   /**
    * Utility method aimed to return only one document.
    *
-   * @param  {object}  stackClient
-   * @param  {string}  endpoint          Stack endpoint
-   * @param  {object}  options
+   * @param  {CozyStackClient}  stackClient - CozyStackClient
+   * @param  {string}  endpoint - Stack endpoint
+   * @param  {object}  options - Options of the collection
    * @param  {Func}    options.normalize Callback to normalize response data
    * (default `data => data`)
    * @param  {string}  options.method    HTTP method (default `GET`)

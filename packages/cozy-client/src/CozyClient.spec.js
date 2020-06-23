@@ -28,7 +28,7 @@ import {
 } from './store'
 import { HasManyFiles, Association, HasMany } from './associations'
 import mapValues from 'lodash/mapValues'
-
+import FileCollection from 'cozy-stack-client/dist/FileCollection'
 import { Q } from 'cozy-client'
 
 const normalizeData = data =>
@@ -1320,5 +1320,63 @@ describe('CozyClient', () => {
       const client = new CozyClient({ uri: 'http://localhost:8080' })
       expect(client).toMatchSnapshot()
     })
+  })
+})
+
+describe('file creation', () => {
+  const setup = () => {
+    const client = new CozyClient({})
+    const fileCol = new FileCollection('io.cozy.files', client.stackClient)
+    client.stackClient.collection.mockReturnValue(fileCol)
+    return { client }
+  }
+
+  it('should be possible to create a directory', async () => {
+    const { client } = setup()
+    client.stackClient.fetchJSON = jest.fn().mockResolvedValue({
+      data: {
+        _id: '1337'
+      }
+    })
+    const { data: doc } = await client.create('io.cozy.files', {
+      dirId: 'dirid1337',
+      type: 'directory',
+      name: 'toto.pdf'
+    })
+    expect(doc._id).toEqual('1337')
+    expect(client.stackClient.fetchJSON).toHaveBeenCalledWith(
+      'POST',
+      '/files/dirid1337?Name=toto.pdf&Type=directory',
+      undefined,
+      { headers: { Date: '' } }
+    )
+  })
+
+  it('should be possible to create a file', async () => {
+    const { client } = setup()
+    client.stackClient.fetchJSON = jest.fn().mockResolvedValue({
+      data: {
+        _id: '1337'
+      }
+    })
+    jest.spyOn(client, 'dispatch')
+    const data = 'file-content'
+    const { data: doc } = await client.create('io.cozy.files', {
+      type: 'file',
+      data: data,
+      dirId: 'folder-id',
+      name: 'toto.pdf'
+    })
+    expect(doc._id).toEqual('1337')
+    expect(client.stackClient.fetchJSON).toHaveBeenCalledWith(
+      'POST',
+      '/files/folder-id?Name=toto.pdf&Type=file&Executable=false&MetadataID=',
+      'file-content',
+      { headers: { 'Content-Type': 'text/plain' }, onUploadProgress: undefined }
+    )
+    expect(client.dispatch.mock.calls.map(x => x[0].type)).toEqual([
+      'INIT_MUTATION',
+      'RECEIVE_MUTATION_RESULT'
+    ])
   })
 })

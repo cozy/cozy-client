@@ -1,4 +1,4 @@
-const isString = require('lodash/isString')
+const isArray = require('lodash/isArray')
 
 /**
  * typedef QueryDefinition
@@ -100,9 +100,11 @@ class QueryDefinition {
    * @returns {QueryDefinition}  The QueryDefinition object.
    */
   sortBy(sort) {
-    if (isString(sort)) {
+    if (!isArray(sort)) {
       throw new Error(
-        'Invalid sort, should be an object (`{ label: "desc"}`), you passed a string.'
+        `Invalid sort, should be an array ([{ label: "desc"}, { name: "asc"}]), you passed ${JSON.stringify(
+          sort
+        )}.`
       )
     }
     return new QueryDefinition({ ...this.toDefinition(), sort })

@@ -1,7 +1,8 @@
 import queries, {
   initQuery,
   receiveQueryResult,
-  convert$gtNullSelectors
+  convert$gtNullSelectors,
+  makeSorterFromDefinition
 } from './queries'
 import { QueryDefinition as Q } from '../queries/dsl'
 import { TODO_1, TODO_2, TODO_3 } from '../__tests__/fixtures'
@@ -191,5 +192,21 @@ describe('selectors', () => {
         $gt: 2
       }
     })
+  })
+})
+
+describe('makeSorterFromDefinition', () => {
+  it('should make a sort function from a definition', () => {
+    const q = Q('io.cozy.files').sortBy([{ name: 'desc' }, { label: 'asc' }])
+
+    const sorter = makeSorterFromDefinition(q)
+    const files = [
+      { _id: '1', name: 1, label: 'C' },
+      { _id: '2', name: 2, label: 'B' },
+      { _id: '3', name: 3, label: 'C' },
+      { _id: '4', name: 3, label: 'A' }
+    ]
+    const sorted = sorter(files)
+    expect(sorted.map(x => x._id)).toEqual(['4', '3', '2', '1'])
   })
 })
