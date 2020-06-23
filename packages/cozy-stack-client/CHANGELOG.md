@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.9.0](https://github.com/cozy/cozy-client/compare/v13.8.5...v13.9.0) (2020-06-23)
+
+
+### Features
+
+* Support file/folder creation through client.create ([149231a](https://github.com/cozy/cozy-client/commit/149231a))
+
+
+
+
+
 ## [13.8.3](https://github.com/cozy/cozy-client/compare/v13.8.2...v13.8.3) (2020-06-03)
 
 

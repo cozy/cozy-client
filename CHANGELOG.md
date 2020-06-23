@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.9.0](https://github.com/cozy/cozy-client/compare/v13.8.5...v13.9.0) (2020-06-23)
+
+
+### Features
+
+* CozyClient can be instantiated without any options ([908ae86](https://github.com/cozy/cozy-client/commit/908ae86))
+* Keep query results sorted if a sort has been used on the query ([1ac9386](https://github.com/cozy/cozy-client/commit/1ac9386))
+* Support file/folder creation through client.create ([149231a](https://github.com/cozy/cozy-client/commit/149231a))
+
+
+### Performance Improvements
+
+* Transpile files in parallel ([34f25a2](https://github.com/cozy/cozy-client/commit/34f25a2))
+
+
+
+
+
 ## [13.8.5](https://github.com/cozy/cozy-client/compare/v13.8.4...v13.8.5) (2020-06-15)
 
 
