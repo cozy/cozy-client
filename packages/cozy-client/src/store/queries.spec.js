@@ -4,7 +4,7 @@ import queries, {
   convert$gtNullSelectors,
   makeSorterFromDefinition
 } from './queries'
-import { QueryDefinition as Q } from '../queries/dsl'
+import { QueryDefinition, Q } from '../queries/dsl'
 import { TODO_1, TODO_2, TODO_3 } from '../__tests__/fixtures'
 
 describe('queries reducer', () => {
@@ -25,7 +25,7 @@ describe('queries reducer', () => {
     applyAction(
       initQuery(
         'a',
-        new Q({
+        new QueryDefinition({
           doctype: 'io.cozy.todos'
         })
       )
@@ -38,7 +38,7 @@ describe('queries reducer', () => {
       applyAction(
         initQuery(
           'a',
-          new Q({
+          new QueryDefinition({
             doctype: 'io.cozy.todos'
           })
         )
@@ -63,7 +63,7 @@ describe('queries reducer', () => {
       applyAction(
         initQuery(
           'b',
-          new Q({
+          new QueryDefinition({
             doctype: 'io.cozy.todos'
           })
         )
@@ -77,7 +77,7 @@ describe('queries reducer', () => {
     })
 
     it('should correctly update a query with a selector', () => {
-      const query = new Q({
+      const query = new QueryDefinition({
         doctype: 'io.cozy.todos'
       })
       applyAction(initQuery('b', query.where({ done: true })))
@@ -90,7 +90,7 @@ describe('queries reducer', () => {
     })
 
     it('should correctly update a query with a $gt: null selector', () => {
-      const query = new Q({
+      const query = new QueryDefinition({
         doctype: 'io.cozy.todos'
       })
       applyAction(
@@ -113,7 +113,7 @@ describe('queries reducer', () => {
     })
 
     it('should not update a query not concerned even with a selector', () => {
-      const query = new Q({
+      const query = new QueryDefinition({
         doctype: 'io.cozy.todos'
       })
       applyAction(initQuery('b', query.where({ done: false })))
@@ -126,7 +126,7 @@ describe('queries reducer', () => {
     })
 
     it('should not crash if data is null', () => {
-      const query = new Q({
+      const query = new QueryDefinition({
         doctype: 'io.cozy.todos',
         id: 'not-existing-doc'
       })
@@ -140,7 +140,7 @@ describe('queries reducer', () => {
     })
 
     it('should only update queries with the right id selector', () => {
-      const query = new Q({
+      const query = new QueryDefinition({
         doctype: 'io.cozy.todos',
         id: TODO_3._id
       })
