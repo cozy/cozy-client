@@ -276,12 +276,16 @@ class PouchLink extends CozyLink {
     }
   }
 
-  async executeQuery({ doctype, selector, sort, fields, limit, id }) {
+  async executeQuery({ doctype, selector, sort, fields, limit, id, ids }) {
     const db = this.getPouch(doctype)
     let res, withRows
     if (id) {
       res = await db.get(id)
       withRows = false
+    } else if (ids) {
+      res = await allDocs(db, { include_docs: true, keys: ids })
+      res = withoutDesignDocuments(res)
+      withRows = true
     } else if (!selector && !fields && !sort) {
       res = await allDocs(db, { include_docs: true, limit })
       res = withoutDesignDocuments(res)
