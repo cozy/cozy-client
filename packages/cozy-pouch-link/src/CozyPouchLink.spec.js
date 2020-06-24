@@ -103,6 +103,19 @@ describe('CozyPouchLink', () => {
       expect(resp.data.label).toBe('Make PouchDB link work')
     })
 
+    it('should be possible to query multiple docs', async () => {
+      await setup()
+      link.pouches.isSynced = jest.fn().mockReturnValue(true)
+      const db = link.getPouch(TODO_DOCTYPE)
+      await db.bulkDocs(docs.map(x => omit(x, '_type')))
+      const ids = [TODO_1._id, TODO_3._id]
+      const query = Q(TODO_DOCTYPE).getByIds(ids)
+      const resp = await link.request(query)
+      expect(resp.data.length).toEqual(2)
+      expect(resp.data[0]._id).toEqual(TODO_1._id)
+      expect(resp.data[1]._id).toEqual(TODO_3._id)
+    })
+
     it('should be possible to select', async () => {
       await setup()
       link.pouches.isSynced = jest.fn().mockReturnValue(true)
