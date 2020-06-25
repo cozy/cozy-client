@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.10.0](https://github.com/cozy/cozy-client/compare/v13.9.0...v13.10.0) (2020-06-25)
+
+
+### Features
+
+* Support query defs with multiple ids in pouch link ([942d900](https://github.com/cozy/cozy-client/commit/942d900))
+
+
+
+
+
 # [13.9.0](https://github.com/cozy/cozy-client/compare/v13.8.5...v13.9.0) (2020-06-23)
 
 **Note:** Version bump only for package cozy-pouch-link
