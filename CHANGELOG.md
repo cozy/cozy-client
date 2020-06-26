@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.11.2](https://github.com/cozy/cozy-client/compare/v13.11.1...v13.11.2) (2020-06-26)
+
+
+### Bug Fixes
+
+* Support multiple ids in store query updates ([9c33207](https://github.com/cozy/cozy-client/commit/9c33207))
+
+
+
+
+
 ## [13.11.1](https://github.com/cozy/cozy-client/compare/v13.11.0...v13.11.1) (2020-06-26)
 
 
