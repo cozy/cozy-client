@@ -255,6 +255,13 @@ class FileCollection extends DocumentCollection {
       data: normalizeFile(resp.data)
     }
   }
+  /**
+   * Empty the Trash
+   */
+
+  emptyTrash() {
+    return this.stackClient.fetchJSON('DELETE', '/files/trash')
+  }
 
   /**
    * Restores a trashed file.
