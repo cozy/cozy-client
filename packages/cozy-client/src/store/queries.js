@@ -6,6 +6,7 @@ import isPlainObject from 'lodash/isPlainObject'
 import uniq from 'lodash/uniq'
 import orderBy from 'lodash/orderBy'
 import isArray from 'lodash/isArray'
+import isString from 'lodash/isString'
 
 import { getDocumentFromSlice } from './documents'
 import { isReceivingMutationResult } from './mutations'
@@ -147,6 +148,11 @@ const getQueryDocumentsChecker = query => {
   }
 }
 
+const makeCaseInsensitiveStringSorter = attrName => item => {
+  const attrValue = item[attrName]
+  return isString(attrValue) ? attrValue.toLowerCase() : attrValue
+}
+
 /**
  * Creates a sort function from a definition.
  *
@@ -166,7 +172,9 @@ export const makeSorterFromDefinition = definition => {
     return docs => docs
   } else {
     const attributeOrders = sort.map(x => Object.entries(x)[0])
-    const attrs = attributeOrders.map(x => x[0])
+    const attrs = attributeOrders
+      .map(x => x[0])
+      .map(makeCaseInsensitiveStringSorter)
     const orders = attributeOrders.map(x => x[1])
     return docs => orderBy(docs, attrs, orders)
   }

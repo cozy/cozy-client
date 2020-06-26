@@ -204,9 +204,10 @@ describe('makeSorterFromDefinition', () => {
       { _id: '1', name: 1, label: 'C' },
       { _id: '2', name: 2, label: 'B' },
       { _id: '3', name: 3, label: 'C' },
-      { _id: '4', name: 3, label: 'A' }
+      { _id: '4', name: 3, label: 'A' },
+      { _id: '5', name: 3, label: 'a' }
     ]
     const sorted = sorter(files)
-    expect(sorted.map(x => x._id)).toEqual(['4', '3', '2', '1'])
+    expect(sorted.map(x => x._id)).toEqual(['4', '5', '3', '2', '1'])
   })
 })
