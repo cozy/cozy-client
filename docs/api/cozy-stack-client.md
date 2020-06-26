@@ -388,6 +388,7 @@ files associated to a specific document
     * [.removeReferencedBy(document, documents)](#FileCollection+removeReferencedBy) ⇒ <code>object</code>
     * [.addReferencesTo(document, documents)](#FileCollection+addReferencesTo) ⇒ <code>object</code>
     * [.removeReferencesTo(document, documents)](#FileCollection+removeReferencesTo) ⇒ <code>object</code>
+    * [.emptyTrash()](#FileCollection+emptyTrash)
     * [.restore(id)](#FileCollection+restore) ⇒ <code>Promise</code>
     * [.deleteFilePermanently(id)](#FileCollection+deleteFilePermanently) ⇒ <code>object</code>
     * [.upload(data, dirPath)](#FileCollection+upload) ⇒ <code>object</code>
@@ -522,6 +523,12 @@ Remove files references to a document — see https://docs.cozy.io/en/cozy-stack
 | document | <code>object</code> | A JSON representing a document, with at least a `_type` and `_id` field. |
 | documents | <code>Array</code> | An array of JSON files having an `_id` field. |
 
+<a name="FileCollection+emptyTrash"></a>
+
+### fileCollection.emptyTrash()
+Empty the Trash
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
 <a name="FileCollection+restore"></a>
 
 ### fileCollection.restore(id) ⇒ <code>Promise</code>

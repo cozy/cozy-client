@@ -516,7 +516,12 @@ describe('FileCollection', () => {
       })
     })
   })
-
+  describe('emptyTrash', () => {
+    it('should empty the trash', async () => {
+      await collection.emptyTrash()
+      expect(client.fetchJSON).toHaveBeenCalledWith('DELETE', '/files/trash')
+    })
+  })
   describe('restore', () => {
     it('should restore a trashed file', async () => {
       const FILE_ID = 'd04ab491-2fc6'
