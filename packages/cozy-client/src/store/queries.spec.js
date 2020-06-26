@@ -89,6 +89,25 @@ describe('queries reducer', () => {
       expect(state).toMatchSnapshot()
     })
 
+    it('should correctly update a query with several ids', () => {
+      const query = new QueryDefinition({
+        doctype: 'io.cozy.todos'
+      })
+      applyAction(initQuery('b', query.getByIds([TODO_1._id, TODO_2._id])))
+      applyAction(
+        receiveQueryResult('b', {
+          data: [TODO_1, TODO_2]
+        })
+      )
+      expect(state.b.data).toEqual([TODO_1._id, TODO_2._id])
+      applyAction(
+        receiveQueryResult('a', {
+          data: [TODO_3]
+        })
+      )
+      expect(state.b.data).toEqual([TODO_1._id, TODO_2._id]) // TODO_3 does not appear in the results of query b, because it is not part of the specified ids
+    })
+
     it('should correctly update a query with a $gt: null selector', () => {
       const query = new QueryDefinition({
         doctype: 'io.cozy.todos'
