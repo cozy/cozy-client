@@ -321,6 +321,17 @@ class FileCollection extends DocumentCollection {
     }
   }
 
+  /***
+   * Update the io.cozy.files
+   * Used by StackLink to support CozyClient.save({file})
+   * @param {FileAttributes}  The file with its new content
+   * @returns {FileAttributes} Updated document
+   */
+
+  async update(file) {
+    return this.updateAttributes(file.id, file)
+  }
+
   /**
    * Creates a file
    *
@@ -649,6 +660,7 @@ class FileCollection extends DocumentCollection {
   }
 
   /**
+   *
    * async updateAttributes - Updates a file / folder's attributes except
    * the metadata attribute. If you want to update its metadata attribute,
    * then use `updateFileMetadataAttribute` since `metadata` is a specific
@@ -661,6 +673,7 @@ class FileCollection extends DocumentCollection {
    * same doctype they have a few in common) here :
    * https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files/#iocozyfiles
    *
+   * @private You shoud use update() directly.
    * @param  {string} id         File id
    * @param  {object} attributes New file attributes
    * @returns {object}            Updated document

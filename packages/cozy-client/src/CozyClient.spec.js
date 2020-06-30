@@ -10,7 +10,8 @@ import {
   DOCTYPE_VERSION,
   APP_NAME,
   APP_VERSION,
-  SOURCE_ACCOUNT_ID
+  SOURCE_ACCOUNT_ID,
+  FILE_1
 } from './__tests__/fixtures'
 
 import CozyClient from './CozyClient'
@@ -1378,5 +1379,44 @@ describe('file creation', () => {
       'INIT_MUTATION',
       'RECEIVE_MUTATION_RESULT'
     ])
+  })
+})
+
+describe('file update', () => {
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+  const setup = () => {
+    const client = new CozyClient({})
+    const fileCol = new FileCollection('io.cozy.files', client.stackClient)
+    client.stackClient.collection.mockReturnValue(fileCol)
+    return { client }
+  }
+
+  it('should be possible to update a file', async () => {
+    const { client } = setup()
+    client.setData(
+      normalizeData({
+        'io.cozy.files': [FILE_1]
+      })
+    )
+    jest.spyOn(client.store, 'dispatch').mockImplementation(() => {})
+    client.stackClient.fetchJSON = jest.fn().mockResolvedValue({
+      data: {
+        label: 'edited'
+      }
+    })
+    const { data: doc } = await client.save({ ...FILE_1, label: 'edited' })
+    expect(client.store.dispatch.mock.calls[0][0]).toMatchObject(
+      initMutation(1, {
+        mutationType: 'UPDATE_DOCUMENT',
+        document: {
+          ...FILE_1,
+          label: 'edited'
+        }
+      })
+    )
+
+    expect(doc).toMatchObject({ label: 'edited' })
   })
 })
