@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.12.1](https://github.com/cozy/cozy-client/compare/v13.12.0...v13.12.1) (2020-06-30)
+
+
+### Bug Fixes
+
+* FileCollection.statById pagination ([8f07797](https://github.com/cozy/cozy-client/commit/8f07797))
+
+
+
+
+
 # [13.12.0](https://github.com/cozy/cozy-client/compare/v13.11.2...v13.12.0) (2020-06-30)
 
 
