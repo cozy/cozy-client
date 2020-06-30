@@ -398,6 +398,7 @@ files associated to a specific document
     * [.fetchFileContent(id)](#FileCollection+fetchFileContent)
     * [.getBeautifulSize(file, decimal)](#FileCollection+getBeautifulSize)
     * [.isChildOf(child, parent)](#FileCollection+isChildOf) ⇒ <code>boolean</code>
+    * [.statById(id, [options])](#FileCollection+statById) ⇒ <code>object</code>
     * [.createDirectoryByPath(path)](#FileCollection+createDirectoryByPath) ⇒ <code>object</code>
     * [.createFileMetadata(attributes)](#FileCollection+createFileMetadata) ⇒ <code>object</code>
     * [.updateMetadataAttribute(id, metadata)](#FileCollection+updateMetadataAttribute) ⇒ <code>object</code>
@@ -650,6 +651,22 @@ Checks if the file belongs to the parent's hierarchy.
 | --- | --- | --- |
 | child | <code>string</code> \| <code>object</code> | The file which can either be an id or an object |
 | parent | <code>string</code> \| <code>object</code> | The parent target which can either be an id or an object |
+
+<a name="FileCollection+statById"></a>
+
+### fileCollection.statById(id, [options]) ⇒ <code>object</code>
+statById - Fetches the metadata about a document. For folders, the results include the list of child files and folders.
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+**Returns**: <code>object</code> - A promise resolving to an object containing "data" (the document metadata), "included" (the child documents) and "links" (pagination informations)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| id | <code>string</code> |  | ID of the document |
+| [options] | <code>object</code> | <code>{}</code> | Description |
+| [options.page[limit]] | <code>number</code> |  | Max number of children documents to return |
+| [options.page[skip]] | <code>number</code> |  | Number of children documents to skip from the start |
+| [options.page[cursor]] | <code>string</code> |  | A cursor id for pagination |
 
 <a name="FileCollection+createDirectoryByPath"></a>
 
