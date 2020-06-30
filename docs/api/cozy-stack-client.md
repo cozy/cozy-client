@@ -399,7 +399,6 @@ files associated to a specific document
     * [.getBeautifulSize(file, decimal)](#FileCollection+getBeautifulSize)
     * [.isChildOf(child, parent)](#FileCollection+isChildOf) ⇒ <code>boolean</code>
     * [.createDirectoryByPath(path)](#FileCollection+createDirectoryByPath) ⇒ <code>object</code>
-    * [.updateAttributes(id, attributes)](#FileCollection+updateAttributes) ⇒ <code>object</code>
     * [.createFileMetadata(attributes)](#FileCollection+createFileMetadata) ⇒ <code>object</code>
     * [.updateMetadataAttribute(id, metadata)](#FileCollection+updateMetadataAttribute) ⇒ <code>object</code>
     * [.doUpload(data, path, options, method)](#FileCollection+doUpload)
@@ -663,29 +662,6 @@ async createDirectoryByPath - Creates one or more folders until the given path e
 | Param | Type | Description |
 | --- | --- | --- |
 | path | <code>string</code> | Path of the created directory |
-
-<a name="FileCollection+updateAttributes"></a>
-
-### fileCollection.updateAttributes(id, attributes) ⇒ <code>object</code>
-async updateAttributes - Updates a file / folder's attributes except
-the metadata attribute. If you want to update its metadata attribute,
-then use `updateFileMetadataAttribute` since `metadata` is a specific
-doctype.
-
-For instance, if you want to update the name of a file, you can pass
-attributes = { name: 'newName'}
-
-You can see the attributes for both Folder and File (as they share the
-same doctype they have a few in common) here :
-https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files/#iocozyfiles
-
-**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
-**Returns**: <code>object</code> - Updated document  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>string</code> | File id |
-| attributes | <code>object</code> | New file attributes |
 
 <a name="FileCollection+createFileMetadata"></a>
 
