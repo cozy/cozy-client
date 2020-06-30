@@ -1,6 +1,7 @@
 import mime from 'mime/lite'
 import has from 'lodash/has'
 import get from 'lodash/get'
+import pick from 'lodash/pick'
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 import { uri, slugify, forceFileDownload, formatBytes } from './utils'
 import * as querystring from './querystring'
@@ -549,18 +550,27 @@ class FileCollection extends DocumentCollection {
     )
   }
 
+  /**
+   * statById - Fetches the metadata about a document. For folders, the results include the list of child files and folders.
+   *
+   * @param {string}   id           ID of the document
+   * @param {object} [options={}] Description
+   * @param {number} [options.page[limit]] Max number of children documents to return
+   * @param {number} [options.page[skip]] Number of children documents to skip from the start
+   * @param {string} [options.page[cursor]] A cursor id for pagination
+   *
+   * @returns {object} A promise resolving to an object containing "data" (the document metadata), "included" (the child documents) and "links" (pagination informations)
+   */
+
   async statById(id, options = {}) {
-    const { limit, skip = 0 } = options
-    const params = {
-      limit,
-      skip
-    }
+    const params = pick(options, ['page[limit]', 'page[skip]', 'page[cursor]'])
     const url = uri`/files/${id}`
     const path = querystring.buildURL(url, params)
     const resp = await this.stackClient.fetchJSON('GET', path)
     return {
       data: normalizeFile(resp.data),
-      included: resp.included && resp.included.map(f => normalizeFile(f))
+      included: resp.included && resp.included.map(f => normalizeFile(f)),
+      links: resp.links
     }
   }
 

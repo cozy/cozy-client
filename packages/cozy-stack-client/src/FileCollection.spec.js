@@ -45,11 +45,11 @@ describe('FileCollection', () => {
   const collection = new FileCollection('io.cozy.files', client)
 
   describe('statById', () => {
-    beforeAll(() => {
+    beforeEach(() => {
       client.fetchJSON.mockReturnValue(Promise.resolve(STAT_BY_ID_RESPONSE))
     })
 
-    afterAll(() => {
+    afterEach(() => {
       client.fetchJSON.mockReset()
     })
 
@@ -58,9 +58,17 @@ describe('FileCollection', () => {
       expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/files/42')
     })
 
-    it('should accept skip and limit options', async () => {
-      await collection.statById(42, { skip: 50, limit: 200 })
-      expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/files/42')
+    it('should accept skip, cursor and limit options', async () => {
+      await collection.statById(42, {
+        'page[skip]': 50,
+        'page[limit]': 200,
+        'page[cursor]': 'abc123',
+        ignoredOption: 'not-included'
+      })
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/files/42?page[limit]=200&page[skip]=50&page[cursor]=abc123'
+      )
     })
 
     it('should return a correct JSON API response', async () => {
