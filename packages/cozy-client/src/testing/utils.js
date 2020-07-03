@@ -4,7 +4,7 @@ import simpsonsFixture from '../testing/simpsons.json'
 import ClientProvider from '../Provider'
 import { Provider as ReduxProvider } from 'react-redux'
 
-const setupClient = () => {
+const setupClient = ({ queries } = {}) => {
   const client = createMockClient({
     queries: {
       simpsons: {
@@ -14,7 +14,8 @@ const setupClient = () => {
       upperSimpsons: {
         data: simpsonsFixture.map(x => ({ ...x, name: x.name.toUpperCase() })),
         doctype: 'io.cozy.simpsons-upper'
-      }
+      },
+      ...queries
     }
   })
   client.ensureStore()

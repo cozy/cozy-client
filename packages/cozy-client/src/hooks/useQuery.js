@@ -7,8 +7,10 @@ const resolveToValue = fnOrValue => {
   return typeof resolveToValue === 'function' ? fnOrValue() : fnOrValue
 }
 
-const generateFetchMoreQueryDefinition = collection => {
-  return collection.definition.offsetBookmark(collection.bookmark)
+const generateFetchMoreQueryDefinition = queryResult => {
+  return queryResult.bookmark
+    ? queryResult.definition.offsetBookmark(queryResult.bookmark)
+    : queryResult.definition.offset(queryResult.data.length)
 }
 
 /**
@@ -58,7 +60,7 @@ const useQuery = (queryDefinition, options) => {
 
   const fetchMore = useCallback(() => {
     const queryState = client.getQueryFromState(as)
-    client.query(generateFetchMoreQueryDefinition(queryState), { as })
+    return client.query(generateFetchMoreQueryDefinition(queryState), { as })
   }, [as, client])
 
   return { ...queryState, fetchMore: fetchMore }
