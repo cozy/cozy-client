@@ -1,5 +1,27 @@
 import { fromPouchResult, normalizeDoc } from './jsonapi'
 
+const BART_FIXTURE = {
+  id: 1,
+  doc: {
+    _id: 1,
+    name: 'Bart'
+  }
+}
+const LISA_FIXTURE = {
+  id: 2,
+  doc: {
+    _id: 2,
+    name: 'Lisa'
+  }
+}
+const MARGE_FIXTURE = {
+  id: 3,
+  doc: {
+    _id: 3,
+    name: 'Marge'
+  }
+}
+
 describe('doc normalization', () => {
   it('keeps the highest between rev and _rev and removes the rev attribute', () => {
     const normalized = normalizeDoc({
@@ -22,29 +44,7 @@ describe('doc normalization', () => {
 describe('jsonapi', () => {
   it('should return a response understandable by cozy-client', () => {
     const res = {
-      rows: [
-        {
-          id: 1,
-          doc: {
-            _id: 1,
-            name: 'Bart'
-          }
-        },
-        {
-          id: 2,
-          doc: {
-            _id: 2,
-            name: 'Lisa'
-          }
-        },
-        {
-          id: 3,
-          doc: {
-            _id: 3,
-            name: 'Marge'
-          }
-        }
-      ]
+      rows: [BART_FIXTURE, LISA_FIXTURE, MARGE_FIXTURE]
     }
     const normalized = fromPouchResult(res, true, 'io.cozy.simpsons')
     expect(normalized.data[0].name).toBe('Bart')
@@ -59,5 +59,29 @@ describe('jsonapi', () => {
     expect(normalized.data[2].name).toBe('Marge')
     expect(normalized.data[2].id).toBe(3)
     expect(normalized.data[2]._id).toBe(3)
+  })
+
+  describe('pagination', () => {
+    it('has no next when there is no pagination information', () => {
+      const res = { rows: [BART_FIXTURE] }
+      const normalized = fromPouchResult(res, true, 'io.cozy.simpsons')
+      expect(normalized.next).toBe(false)
+    })
+
+    it('paginates when there is a total_rows field', () => {
+      const res = { rows: [BART_FIXTURE], total_rows: 3 }
+      const normalized = fromPouchResult(res, true, 'io.cozy.simpsons')
+      expect(normalized.next).toBe(true)
+    })
+
+    it('paginates when there is a limit field', () => {
+      const res = { rows: [BART_FIXTURE, LISA_FIXTURE], limit: 2 }
+      const normalized = fromPouchResult(res, true, 'io.cozy.simpsons')
+      expect(normalized.next).toBe(true)
+
+      const lastRes = { rows: [MARGE_FIXTURE], limit: 2 }
+      const lastNormalized = fromPouchResult(lastRes, true, 'io.cozy.simpsons')
+      expect(lastNormalized.next).toBe(false)
+    })
   })
 })
