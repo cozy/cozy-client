@@ -36,9 +36,7 @@ const startReplication = (pouch, getReplicationURL) => {
   const start = new Date()
   const promise = new Promise((resolve, reject) => {
     const url = getReplicationURL()
-    replication = pouch.sync(url, {
-      batch_size: 1000 // we have mostly small documents
-    })
+    replication = pouch.replicate.from(url)
     const docs = {}
     replication.on('change', ({ change }) => {
       if (change.docs) {
