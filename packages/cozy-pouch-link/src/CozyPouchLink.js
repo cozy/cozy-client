@@ -276,9 +276,20 @@ class PouchLink extends CozyLink {
     }
   }
 
-  async executeQuery({ doctype, selector, sort, fields, limit, id, ids }) {
+  async executeQuery({
+    doctype,
+    selector,
+    sort,
+    fields,
+    limit,
+    id,
+    ids,
+    skip
+  }) {
     const db = this.getPouch(doctype)
-    let res, withRows
+    window.db = db
+    let res = {},
+      withRows
     if (id) {
       res = await db.get(id)
       withRows = false
@@ -295,11 +306,18 @@ class PouchLink extends CozyLink {
         sort,
         selector,
         fields,
-        limit
+        limit,
+        skip
       }
-      await this.ensureIndex(doctype, findOpts)
-      res = await find(db, findOpts)
+      console.log('findOpts', findOpts)
+      const createdIndex = await this.ensureIndex(doctype, findOpts)
+      const cloned = { ...findOpts }
+      const data = await find(db, cloned)
+      //res.rows = res
+      res.docs = data.docs
+      res.offset = skip
       withRows = true
+      return jsonapi.fromPouchResult(res, withRows, doctype, limit)
     }
     return jsonapi.fromPouchResult(res, withRows, doctype)
   }
