@@ -26,7 +26,7 @@ export const fromPouchResult = (res, withRows, doctype) => {
       data: docs.map(doc => normalizeDoc(doc, doctype)),
       meta: { count: docs.length },
       skip: offset,
-      next: offset + docs.length <= res.total_rows
+      next: offset + docs.length <= res.total_rows || docs.length >= res.limit
     }
   } else {
     return {

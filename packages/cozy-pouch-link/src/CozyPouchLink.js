@@ -276,7 +276,16 @@ class PouchLink extends CozyLink {
     }
   }
 
-  async executeQuery({ doctype, selector, sort, fields, limit, id, ids }) {
+  async executeQuery({
+    doctype,
+    selector,
+    sort,
+    fields,
+    limit,
+    id,
+    ids,
+    skip
+  }) {
     const db = this.getPouch(doctype)
     let res, withRows
     if (id) {
@@ -295,10 +304,13 @@ class PouchLink extends CozyLink {
         sort,
         selector,
         fields,
-        limit
+        limit,
+        skip
       }
       await this.ensureIndex(doctype, findOpts)
       res = await find(db, findOpts)
+      res.offset = skip
+      res.limit = limit
       withRows = true
     }
     return jsonapi.fromPouchResult(res, withRows, doctype)
