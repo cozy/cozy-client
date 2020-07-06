@@ -148,7 +148,12 @@ class QueryDefinition {
    * @returns {QueryDefinition}  The QueryDefinition object.
    */
   offset(skip) {
-    return new QueryDefinition({ ...this.toDefinition(), skip })
+    return new QueryDefinition({
+      ...this.toDefinition(),
+      bookmark: null,
+      cursor: null,
+      skip
+    })
   }
 
   /**
@@ -163,7 +168,12 @@ class QueryDefinition {
    * @returns {QueryDefinition}  The QueryDefinition object.
    */
   offsetCursor(cursor) {
-    return new QueryDefinition({ ...this.toDefinition(), cursor })
+    return new QueryDefinition({
+      ...this.toDefinition(),
+      bookmark: null,
+      skip: null,
+      cursor
+    })
   }
 
   /**
@@ -176,7 +186,12 @@ class QueryDefinition {
    * @returns {QueryDefinition}  The QueryDefinition object.
    */
   offsetBookmark(bookmark) {
-    return new QueryDefinition({ ...this.toDefinition(), bookmark })
+    return new QueryDefinition({
+      ...this.toDefinition(),
+      skip: null,
+      cursor: null,
+      bookmark
+    })
   }
 
   /**

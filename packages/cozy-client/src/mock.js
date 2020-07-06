@@ -5,14 +5,12 @@ import { normalizeDoc } from 'cozy-stack-client'
 import { Q } from 'cozy-client'
 
 const fillQueryInsideClient = (client, queryName, queryOptions) => {
-  client.store.dispatch(
-    initQuery(queryName, queryOptions.definition || Q(queryOptions.doctype))
-  )
+  const { definition, doctype, data, ...queryResult } = queryOptions
+  client.store.dispatch(initQuery(queryName, definition || Q(doctype)))
   client.store.dispatch(
     receiveQueryResult(queryName, {
-      data: queryOptions.data.map(doc =>
-        normalizeDoc(doc, queryOptions.doctype)
-      )
+      data: data.map(doc => normalizeDoc(doc, doctype)),
+      ...queryResult
     })
   )
 }
