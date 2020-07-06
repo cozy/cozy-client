@@ -47,7 +47,7 @@ describe('use query', () => {
 
   it('fetches more results with bookmark', async () => {
     const bookmark = 'bookmark-123'
-    const queryDefinition = Q('io.cozy.simpsons').offsetBookmark(bookmark)
+    const queryDefinition = Q('io.cozy.simpsons')
     const {
       hookResult: {
         result: { current }
@@ -62,7 +62,8 @@ describe('use query', () => {
         simpsonsBookmarked: {
           data: simpsonsFixture,
           doctype: 'io.cozy.simpsons',
-          definition: queryDefinition
+          definition: queryDefinition,
+          bookmark
         }
       }
     })
@@ -70,7 +71,7 @@ describe('use query', () => {
     const fetchMoreResult = await current.fetchMore()
     const lastCallArgs =
       client.query.mock.calls[client.query.mock.calls.length - 1][0]
-    expect(lastCallArgs).toMatchObject({ bookmark: 'bookmark-123' })
+    expect(lastCallArgs).toMatchObject({ bookmark })
     expect(fetchMoreResult).toEqual({ data: null })
   })
 
