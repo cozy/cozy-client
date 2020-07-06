@@ -307,6 +307,7 @@ class PouchLink extends CozyLink {
     } else if (ids) {
       res = await allDocs(db, { include_docs: true, keys: ids })
       res = withoutDesignDocuments(res)
+      res.total_rows = null // pouch indicates the total number of docs in res.total_rows, even though we use "keys". Setting it to null avoids cozy-client thinking there are more docs to fetch.
       withRows = true
     } else if (!selector && !fields && !sort) {
       res = await allDocs(db, { include_docs: true, limit })
