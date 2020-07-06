@@ -30,15 +30,35 @@ const humanTimeDelta = timeMs => {
   return str
 }
 
-/* Create a cancellable promise for replication with default options */
-const startReplication = (pouch, getReplicationURL) => {
+/**
+ * startReplication - Create a cancellable promise for replication with default options
+ *
+ * @private
+ * @param {object} pouch                 Pouch database instance
+ * @param {object} replicationOptions Any option supported by the Pouch replication API (https://pouchdb.com/api.html#replication)
+ * @param {string} replicationOptions.strategy The direction of the replication. Can be "fromRemote",  "toRemote" or "sync"
+ * @param {Function} getReplicationURL A function that should return the remote replication URL
+ *
+ * @returns {Promise} A cancelable promise that resolves at the end of the replication
+ */
+const startReplication = (pouch, replicationOptions, getReplicationURL) => {
   let replication
   const start = new Date()
   const promise = new Promise((resolve, reject) => {
     const url = getReplicationURL()
-    replication = pouch.sync(url, {
-      batch_size: 1000 // we have mostly small documents
-    })
+    const { strategy, ...customReplicationOptions } = replicationOptions
+    const options = {
+      batch_size: 1000, // we have mostly small documents
+      ...customReplicationOptions
+    }
+    let replication
+
+    if (strategy === 'fromRemote')
+      replication = pouch.replicate.from(url, options)
+    else if (strategy === 'toRemote')
+      replication = pouch.replicate.to(url, options)
+    else replication = pouch.sync(url, options)
+
     const docs = {}
     replication.on('change', ({ change }) => {
       if (change.docs) {
@@ -94,6 +114,7 @@ class PouchManager {
     )
     this.syncedDoctypes = this.getPersistedSyncedDoctypes()
     this.getReplicationURL = options.getReplicationURL
+    this.doctypesReplicationOptions = options.doctypesReplicationOptions || {}
     this.listenerLaunched = false
 
     // We must ensure databases exist on the remote before
@@ -213,7 +234,16 @@ class PouchManager {
       logger.info('PouchManager: Starting replication for ' + doctype)
 
       const getReplicationURL = () => this.getReplicationURL(doctype)
-      return startReplication(pouch, getReplicationURL).then(res => {
+      const replicationOptions = get(
+        this.doctypesReplicationOptions,
+        doctype,
+        {}
+      )
+      return startReplication(
+        pouch,
+        replicationOptions,
+        getReplicationURL
+      ).then(res => {
         this.addSyncedDoctype(doctype)
 
         logger.log('PouchManager: Replication for ' + doctype + ' ended', res)
