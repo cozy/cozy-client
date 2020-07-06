@@ -21,6 +21,10 @@ const MARGE_FIXTURE = {
     name: 'Marge'
   }
 }
+const DELETED_DOC_FIXTURE = {
+  id: 4,
+  delete: true
+}
 
 describe('doc normalization', () => {
   it('keeps the highest between rev and _rev and removes the rev attribute', () => {
@@ -44,7 +48,7 @@ describe('doc normalization', () => {
 describe('jsonapi', () => {
   it('should return a response understandable by cozy-client', () => {
     const res = {
-      rows: [BART_FIXTURE, LISA_FIXTURE, MARGE_FIXTURE]
+      rows: [BART_FIXTURE, LISA_FIXTURE, MARGE_FIXTURE, DELETED_DOC_FIXTURE]
     }
     const normalized = fromPouchResult(res, true, 'io.cozy.simpsons')
     expect(normalized.data[0].name).toBe('Bart')

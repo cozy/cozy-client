@@ -18,9 +18,13 @@ export const normalizeDoc = (doc, doctype) => {
   return normalizedDoc
 }
 
+const filterDeletedDocumentsFromRows = doc => !!doc
+
 export const fromPouchResult = (res, withRows, doctype) => {
   if (withRows) {
-    const docs = res.rows ? res.rows.map(row => row.doc) : res.docs
+    const docs = res.rows
+      ? res.rows.map(row => row.doc).filter(filterDeletedDocumentsFromRows)
+      : res.docs
     const offset = res.offset || 0
     return {
       data: docs.map(doc => normalizeDoc(doc, doctype)),
