@@ -111,6 +111,7 @@ describe('CozyPouchLink', () => {
       const ids = [TODO_1._id, TODO_3._id]
       const query = Q(TODO_DOCTYPE).getByIds(ids)
       const resp = await link.request(query)
+      expect(resp.next).toBe(false)
       expect(resp.data.length).toEqual(2)
       expect(resp.data[0]._id).toEqual(TODO_1._id)
       expect(resp.data[1]._id).toEqual(TODO_3._id)
