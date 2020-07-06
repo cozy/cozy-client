@@ -182,3 +182,24 @@ The `PouchLink` will create the PouchDB databases for all offline doctypes and
 synchronize them with the distant CouchDB. All doctypes that are not managed by
 the `PouchLink` will be passed to the next link in the chain (in the previous
 example, the `StackLink`).
+
+Additionally, it is possible to replicate some doctypes only in a specific direction:
+
+```js
+
+const pouchLink = new PouchLink({
+  doctypes: ['io.cozy.todos', 'io.cozy.files', 'io.cozy.localtype'],
+  doctypesReplicationOptions: {
+    'io.cozy.todos': {
+      strategy: 'sync' // default, replicate both ways
+    },
+    'io.cozy.files': {
+      strategy: 'fromRemote' // replicate changes from the remote locally, but don't push any changes
+    },
+    'io.cozy.localtype': {
+      strategy: 'toRemote' // push changes to remote, but don't replicate changes from it
+    }
+  }
+  initialSync: true
+})
+```

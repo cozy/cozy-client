@@ -69,11 +69,36 @@ describe('PouchManager', () => {
     expect(manager.getPouch('io.cozy.todos').info).toHaveBeenCalledTimes(1)
   })
 
-  it('should periodically call replicate', async () => {
+  it('should periodically call sync', async () => {
     manager.startReplicationLoop()
     await sleep(1000)
     const pouch = manager.getPouch('io.cozy.todos')
     expect(pouch.sync.mock.calls.length).toBeGreaterThan(5)
+  })
+
+  it('should only replicate from the remote for some doctypes', async () => {
+    manager = new PouchManager(
+      ['io.cozy.todos', 'io.cozy.readonly', 'io.cozy.writeonly'],
+      {
+        ...managerOptions,
+        doctypesReplicationOptions: {
+          'io.cozy.readonly': { strategy: 'fromRemote' },
+          'io.cozy.writeonly': { strategy: 'toRemote' }
+        }
+      }
+    )
+    const normalPouch = manager.getPouch('io.cozy.todos')
+    const readOnlyPouch = manager.getPouch('io.cozy.readonly')
+    readOnlyPouch.replicate = {}
+    readOnlyPouch.replicate.from = jest.fn()
+    const writeOnlyPouch = manager.getPouch('io.cozy.writeonly')
+    writeOnlyPouch.replicate = {}
+    writeOnlyPouch.replicate.to = jest.fn()
+    manager.startReplicationLoop()
+    await sleep(1000)
+    expect(readOnlyPouch.replicate.from).toHaveBeenCalled()
+    expect(writeOnlyPouch.replicate.to).toHaveBeenCalled()
+    expect(normalPouch.sync).toHaveBeenCalled()
   })
 
   it('should stop in case of error', async () => {

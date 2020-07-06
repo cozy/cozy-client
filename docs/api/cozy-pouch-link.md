@@ -36,9 +36,23 @@ to respond to queries and mutations.
 **Kind**: global class  
 
 * [PouchLink](#PouchLink)
+    * [new PouchLink([opts])](#new_PouchLink_new)
     * [.handleOnSync()](#PouchLink+handleOnSync)
     * [.startReplication()](#PouchLink+startReplication) ⇒ <code>void</code>
     * [.stopReplication()](#PouchLink+stopReplication) ⇒ <code>void</code>
+
+<a name="new_PouchLink_new"></a>
+
+### new PouchLink([opts])
+constructor - Initializes a new PouchLink
+
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [opts] | <code>object</code> | <code>{}</code> |  |
+| [opts.replicationInterval] | <code>number</code> |  | Milliseconds between replications |
+| opts.doctypes | <code>Array.&lt;string&gt;</code> |  | Doctypes to replicate |
+| opts.doctypesReplicationOptions | <code>Array.&lt;object&gt;</code> |  | A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote") |
 
 <a name="PouchLink+handleOnSync"></a>
 

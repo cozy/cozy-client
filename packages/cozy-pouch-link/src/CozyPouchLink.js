@@ -49,10 +49,21 @@ const normalizeAll = (docs, doctype) => {
  * to respond to queries and mutations.
  */
 class PouchLink extends CozyLink {
+  /**
+   * constructor - Initializes a new PouchLink
+   *
+   * @param {object} [opts={}]
+   * @param {number} [opts.replicationInterval] Milliseconds between replications
+   * @param {string[]} opts.doctypes Doctypes to replicate
+   * @param {object[]} opts.doctypesReplicationOptions A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote")
+   *
+   * @returns {object} The PouchLink instance
+   */
+
   constructor(opts = {}) {
     const options = defaults({}, opts, DEFAULT_OPTIONS)
     super(options)
-    const { doctypes } = options
+    const { doctypes, doctypesReplicationOptions } = options
     this.options = options
     if (!doctypes) {
       throw new Error(
@@ -60,6 +71,7 @@ class PouchLink extends CozyLink {
       )
     }
     this.doctypes = doctypes
+    this.doctypesReplicationOptions = doctypesReplicationOptions
     this.indexes = {}
   }
 
@@ -121,6 +133,7 @@ class PouchLink extends CozyLink {
     this.pouches = new PouchManager(this.doctypes, {
       pouch: this.options.pouch,
       getReplicationURL: this.getReplicationURL.bind(this),
+      doctypesReplicationOptions: this.doctypesReplicationOptions,
       onError: err => this.onSyncError(err),
       onSync: this.handleOnSync.bind(this),
       prefix
