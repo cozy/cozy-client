@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.13.0](https://github.com/cozy/cozy-client/compare/v13.12.1...v13.13.0) (2020-07-07)
+
+
+### Bug Fixes
+
+* Support results paginated with limit ([1b7f430](https://github.com/cozy/cozy-client/commit/1b7f430))
+
+
+### Features
+
+* Support monodirectionnal sync for some doctypes ([c60beef](https://github.com/cozy/cozy-client/commit/c60beef))
+
+
+
+
+
 ## [13.12.1](https://github.com/cozy/cozy-client/compare/v13.12.0...v13.12.1) (2020-06-30)
 
 **Note:** Version bump only for package cozy-pouch-link

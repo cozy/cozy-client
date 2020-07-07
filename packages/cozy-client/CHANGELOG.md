@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.13.0](https://github.com/cozy/cozy-client/compare/v13.12.1...v13.13.0) (2020-07-07)
+
+
+### Bug Fixes
+
+* Can't combine skip, cursor and bookmark in the DSL ([44e1855](https://github.com/cozy/cozy-client/commit/44e1855))
+* Use query support fetchMore without bookmark + fetchMore return ([383cb48](https://github.com/cozy/cozy-client/commit/383cb48))
+
+
+
+
+
 ## [13.12.1](https://github.com/cozy/cozy-client/compare/v13.12.0...v13.12.1) (2020-06-30)
 
 **Note:** Version bump only for package cozy-client
