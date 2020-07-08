@@ -1,4 +1,5 @@
 import MockDate from 'mockdate'
+import mapValues from 'lodash/mapValues'
 
 import {
   SCHEMA,
@@ -14,8 +15,12 @@ import {
   FILE_1
 } from './__tests__/fixtures'
 
-import CozyClient from './CozyClient'
 import CozyStackClient, { OAuthClient } from 'cozy-stack-client'
+import FileCollection from 'cozy-stack-client/dist/FileCollection'
+import SettingsCollection from 'cozy-stack-client/src/SettingsCollection'
+
+import { Q } from 'cozy-client'
+import CozyClient from './CozyClient'
 import CozyLink from './CozyLink'
 import { Mutations, QueryDefinition } from './queries/dsl'
 import {
@@ -28,9 +33,6 @@ import {
   getQueryFromState
 } from './store'
 import { HasManyFiles, Association, HasMany } from './associations'
-import mapValues from 'lodash/mapValues'
-import FileCollection from 'cozy-stack-client/dist/FileCollection'
-import { Q } from 'cozy-client'
 
 const normalizeData = data =>
   mapValues(data, (docs, doctype) => {
@@ -1418,5 +1420,31 @@ describe('file update', () => {
     )
 
     expect(doc).toMatchObject({ label: 'edited' })
+  })
+})
+
+describe('Settings Creation', () => {
+  const setup = () => {
+    const client = new CozyClient({})
+    const settingsCol = new SettingsCollection(client.stackClient)
+    client.stackClient.collection.mockReturnValue(settingsCol)
+    return { client }
+  }
+
+  it('should be possible to call the synchronized route', async () => {
+    const { client } = setup()
+    client.stackClient.fetchJSON = jest.fn().mockResolvedValue({
+      data: {
+        _id: '1337'
+      }
+    })
+    const { data: doc } = await client.create('io.cozy.settings', {
+      path: '/synchronized'
+    })
+    expect(doc._id).toEqual('1337')
+    expect(client.stackClient.fetchJSON).toHaveBeenCalledWith(
+      'POST',
+      '/settings/synchronized'
+    )
   })
 })

@@ -29,6 +29,12 @@ describe('SettingsCollection', () => {
       'GET',
       '/settings/disk-usage'
     )
+
+    await collection.create({ path: 'synchronized' })
+    expect(stackClient.fetchJSON).toHaveBeenCalledWith(
+      'POST',
+      '/settings/synchronized'
+    )
   })
 
   it('should format correctly the response', async () => {
