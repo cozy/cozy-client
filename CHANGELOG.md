@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.13.1](https://github.com/cozy/cozy-client/compare/v13.13.0...v13.13.1) (2020-07-08)
+
+
+### Bug Fixes
+
+* No next page when querying a set of ids ([12be191](https://github.com/cozy/cozy-client/commit/12be191))
+* Support deleted documents in pouch responses ([c64bfb3](https://github.com/cozy/cozy-client/commit/c64bfb3))
+
+
+
+
+
 # [13.13.0](https://github.com/cozy/cozy-client/compare/v13.12.1...v13.13.0) (2020-07-07)
 
 
