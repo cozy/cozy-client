@@ -157,6 +157,8 @@ class PouchLink extends CozyLink {
    * Receives PouchDB updates (documents grouped by doctype).
    * Normalizes the data (.id -> ._id, .rev -> _rev).
    * Passes the data to the client and to the onSync handler.
+   *
+   * Emits an event (pouchlink:sync:end) when the sync (all doctypes) is done
    */
   handleOnSync(doctypeUpdates) {
     const normalizedData = mapValues(doctypeUpdates, normalizeAll)
@@ -169,16 +171,20 @@ class PouchLink extends CozyLink {
     if (process.env.NODE_ENV !== 'production') {
       logger.info('Pouch synced')
     }
+    this.client.emit('pouchlink:sync:end')
   }
 
   /**
    * User of the link can call this to start ongoing replications.
    * Typically, it can be used when the application regains focus.
    *
+   * Emits pouchlink:sync:start event when the replication begins
+   *
    * @public
    * @returns {void}
    */
   startReplication() {
+    this.client.emit('pouchlink:sync:start')
     this.pouches.startReplicationLoop()
     if (this.options.onStartReplication) {
       this.options.onStartReplication.apply(this)
@@ -189,6 +195,8 @@ class PouchLink extends CozyLink {
    * User of the link can call this to stop ongoing replications.
    * Typically, it can be used when the applications loses focus.
    *
+   * Emits pouchlink:sync:stop event
+   *
    * @public
    * @returns {void}
    */
@@ -197,6 +205,7 @@ class PouchLink extends CozyLink {
     if (this.options.onStopReplication) {
       this.options.onStopReplication.apply(this)
     }
+    this.client.emit('pouchlink:sync:stop')
   }
 
   async onSyncError(error) {

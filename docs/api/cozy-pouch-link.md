@@ -61,12 +61,16 @@ Receives PouchDB updates (documents grouped by doctype).
 Normalizes the data (.id -> ._id, .rev -> _rev).
 Passes the data to the client and to the onSync handler.
 
+Emits an event (pouchlink:sync:end) when the sync (all doctypes) is done
+
 **Kind**: instance method of [<code>PouchLink</code>](#PouchLink)  
 <a name="PouchLink+startReplication"></a>
 
 ### pouchLink.startReplication() ⇒ <code>void</code>
 User of the link can call this to start ongoing replications.
 Typically, it can be used when the application regains focus.
+
+Emits pouchlink:sync:start event when the replication begins
 
 **Kind**: instance method of [<code>PouchLink</code>](#PouchLink)  
 **Access**: public  
@@ -75,6 +79,8 @@ Typically, it can be used when the application regains focus.
 ### pouchLink.stopReplication() ⇒ <code>void</code>
 User of the link can call this to stop ongoing replications.
 Typically, it can be used when the applications loses focus.
+
+Emits pouchlink:sync:stop event
 
 **Kind**: instance method of [<code>PouchLink</code>](#PouchLink)  
 **Access**: public  
