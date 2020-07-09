@@ -36,7 +36,7 @@ async function setup(linkOpts = {}) {
       todos: omit(SCHEMA.todos, ['relationships'])
     }
   })
-
+  client.emit = jest.fn()
   await link.onLogin()
   client.setData = jest.fn()
 }
@@ -220,6 +220,7 @@ describe('CozyPouchLink', () => {
       link.handleOnSync({
         'io.cozy.todos': [{ ...TODO_1, rev: '1-deadbeef' }]
       })
+
       expect(client.setData).toHaveBeenCalledTimes(1)
       expect(client.setData).toHaveBeenCalledWith({
         'io.cozy.todos': [
@@ -233,9 +234,25 @@ describe('CozyPouchLink', () => {
           }
         ]
       })
+      expect(client.emit).toHaveBeenCalledWith('pouchlink:sync:end')
     })
   })
+  describe('startReplication', () => {
+    it('should emit the event', async () => {
+      await setup()
+      link.startReplication()
 
+      expect(client.emit).toHaveBeenCalledWith('pouchlink:sync:start')
+    })
+  })
+  describe('stopReplication', () => {
+    it('should emit the event', async () => {
+      await setup()
+      link.stopReplication()
+
+      expect(client.emit).toHaveBeenCalledWith('pouchlink:sync:stop')
+    })
+  })
   describe('onLogin', () => {
     let spy
 
