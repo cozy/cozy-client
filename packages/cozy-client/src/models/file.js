@@ -1,4 +1,5 @@
 import get from 'lodash/get'
+import isString from 'lodash/isString'
 
 const FILE_TYPE = 'file'
 const DIR_TYPE = 'directory'
@@ -12,7 +13,7 @@ const FILENAME_WITH_EXTENSION_REGEX = /(.+)(\..*)$/
  * @returns {object}  {filename, extension}
  */
 export const splitFilename = file => {
-  if (!file.name) throw new Error('file should have a name property ')
+  if (!isString(file.name)) throw new Error('file should have a name property ')
 
   if (file.type === 'file') {
     const match = file.name.match(FILENAME_WITH_EXTENSION_REGEX)

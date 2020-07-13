@@ -100,9 +100,9 @@ describe('File Model', () => {
     }
 
     it('should throw an error if the file is not correct', () => {
-      const badFile = {}
-
-      expect(() => file.splitFilename(badFile)).toThrow()
+      expect(() => file.splitFilename({})).toThrow()
+      expect(() => file.splitFilename({ name: null })).toThrow()
+      expect(() => file.splitFilename({ name: '' })).not.toThrow()
     })
     it('should return only the folder name if its a folder', () => {
       const dir = {
