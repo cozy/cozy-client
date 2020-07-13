@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.14.1](https://github.com/cozy/cozy-client/compare/v13.14.0...v13.14.1) (2020-07-13)
+
+
+### Bug Fixes
+
+* Splitfile name accepts empty names ([19af5b2](https://github.com/cozy/cozy-client/commit/19af5b2))
+
+
+
+
+
 # [13.13.0](https://github.com/cozy/cozy-client/compare/v13.12.1...v13.13.0) (2020-07-07)
 
 
