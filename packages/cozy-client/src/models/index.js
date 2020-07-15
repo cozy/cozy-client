@@ -22,5 +22,6 @@ export {
   note,
   account,
   accounts,
-  permission
+  permission,
+  utils
 }

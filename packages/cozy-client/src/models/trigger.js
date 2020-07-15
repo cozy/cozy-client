@@ -1,7 +1,6 @@
 import get from 'lodash/get'
 import { getMutedErrors } from './account'
 
-
 const actionableErrors = [
   'CHALLENGE_ASKED',
   'DISK_QUOTA_EXCEEDED',
