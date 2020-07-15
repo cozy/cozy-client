@@ -48,7 +48,7 @@ describe('File Model', () => {
 
   describe('normalizeFile', () => {
     const id = 'uuid123'
-    const type = 'io.cozy.files'
+    const type = 'directory'
 
     it('should allow both `id` and `_id`', () => {
       const doc = { id, type }
@@ -58,17 +58,19 @@ describe('File Model', () => {
       expect(file.normalize(_doc)).toHaveProperty('_id', id)
     })
 
-    it('should allow both `type` and `_type`', () => {
+    it('should enforce a `_type`', () => {
       const doc = { id, type }
-      expect(file.normalize(doc)).toHaveProperty('_type', type)
-
-      const _doc = { id, _type: type }
-      expect(file.normalize(_doc)).toHaveProperty('_type', type)
-    })
-
-    it('should default to "io.cozy.files"', () => {
-      const doc = { id }
       expect(file.normalize(doc)).toHaveProperty('_type', 'io.cozy.files')
+      expect(file.normalize(doc)).toHaveProperty('type', type)
+
+      const doc2 = { id, _type: 'io.cozy.something.else' }
+      expect(file.normalize(doc2)).toHaveProperty(
+        '_type',
+        'io.cozy.something.else'
+      )
+
+      const doc3 = { id }
+      expect(file.normalize(doc3)).toHaveProperty('_type', 'io.cozy.files')
     })
   })
 

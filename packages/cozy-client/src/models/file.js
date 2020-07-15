@@ -73,8 +73,8 @@ export const isShortcut = file => {
  */
 export function normalize(file) {
   const id = file._id || file.id
-  const type = file.type || file._type || 'io.cozy.files'
-  return { _id: id, id, _type: type, type, ...file }
+  const doctype = file._type || 'io.cozy.files'
+  return { _id: id, id, _type: doctype, ...file }
 }
 
 /**
