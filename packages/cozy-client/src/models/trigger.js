@@ -1,6 +1,19 @@
 import get from 'lodash/get'
 import { getMutedErrors } from './account'
 
+
+const actionableErrors = [
+  'CHALLENGE_ASKED',
+  'DISK_QUOTA_EXCEEDED',
+  'TERMS_VERSION_MISMATCH',
+  'USER_ACTION_NEEDED',
+  'USER_ACTION_NEEDED.CHANGE_PASSWORD',
+  'USER_ACTION_NEEDED.ACCOUNT_REMOVED',
+  'USER_ACTION_NEEDED.WEBAUTH_REQUIRED',
+  'USER_ACTION_NEEDED.SCA_REQUIRED',
+  'LOGIN_FAILED'
+]
+
 /** Trigger states come from /jobs/triggers */
 const triggerStates = {
   /** Returns when the trigger was last executed. Need a trigger */
@@ -21,7 +34,7 @@ const triggers = {
   isKonnectorWorker: trigger => trigger.worker === 'konnector',
 
   /**
-   * getKonnector - Returns the konnector slug that executed a trigger
+   * Returns the konnector slug that executed a trigger
    *
    * @param {object} trigger io.cozy.triggers
    *
@@ -39,6 +52,7 @@ const triggers = {
       return message.konnector
     }
   },
+
   /**
    * getAccountId - Returns the account id for a trigger
    *
@@ -56,8 +70,9 @@ const triggers = {
       return get(trigger, 'message.account')
     }
   },
+
   /**
-   * isLatestErrorMuted - Checks if the triggers current error has been muted in the corresponding io.cozy.accounts
+   * Checks if the triggers current error has been muted in the corresponding io.cozy.accounts
    *
    * @param {object} trigger      io.cozy.triggers
    * @param {object} account      io.cozy.accounts used by the trigger
@@ -79,6 +94,17 @@ const triggers = {
     })
 
     return isErrorMuted
+  },
+
+  /**
+   * Returns whether the error in trigger can be solved by the user
+   *
+   * @param {object} trigger      io.cozy.triggers
+   *
+   * @returns {boolean} Whether the error is muted or not
+   */
+  hasActionableError: trigger => {
+    return actionableErrors.includes(trigger.current_state.last_error)
   }
 }
 

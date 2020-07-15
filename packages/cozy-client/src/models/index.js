@@ -6,6 +6,7 @@ import * as folder from './folder'
 import * as account from './account'
 import * as note from './note'
 import * as permission from './permission'
+import * as utils from './utils'
 
 // For backward compatibility before 9.0.0
 const triggers = trigger
