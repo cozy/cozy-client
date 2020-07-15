@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.14.2](https://github.com/cozy/cozy-client/compare/v13.14.1...v13.14.2) (2020-07-15)
+
+
+### Bug Fixes
+
+* Normalize _type but not type ([5d75e1a](https://github.com/cozy/cozy-client/commit/5d75e1a))
+
+
+
+
+
 ## [13.14.1](https://github.com/cozy/cozy-client/compare/v13.14.0...v13.14.1) (2020-07-13)
 
 
