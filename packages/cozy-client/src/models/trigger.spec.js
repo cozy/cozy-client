@@ -200,4 +200,23 @@ describe('trigger model', () => {
       ).toBe(true)
     })
   })
+
+  describe('hasActionableError', () => {
+    it('should return a trigger error can be fixed by the user', () => {
+      expect(
+        triggerModel.hasActionableError({
+          current_state: {
+            last_error: 'LOGIN_FAILED'
+          }
+        })
+      ).toBe(true)
+      expect(
+        triggerModel.hasActionableError({
+          current_state: {
+            last_error: 'UNKNOWN_ERROR'
+          }
+        })
+      ).toBe(false)
+    })
+  })
 })
