@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.15.0](https://github.com/cozy/cozy-client/compare/v13.14.2...v13.15.0) (2020-07-15)
+
+
+### Features
+
+* Add hasActionableError ([ef489c6](https://github.com/cozy/cozy-client/commit/ef489c6))
+* Add method to get createdByApp ([313c2b0](https://github.com/cozy/cozy-client/commit/313c2b0))
+
+
+
+
+
 ## [13.14.2](https://github.com/cozy/cozy-client/compare/v13.14.1...v13.14.2) (2020-07-15)
 
 
