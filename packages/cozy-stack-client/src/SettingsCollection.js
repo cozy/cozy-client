@@ -20,7 +20,7 @@ class SettingsCollection extends DocumentCollection {
     const resp = await this.stackClient.fetchJSON('GET', `/settings/${path}`)
     return {
       data: DocumentCollection.normalizeDoctypeJsonApi(SETTINGS_DOCTYPE)(
-        resp.data,
+        { id: `/settings/${path}`, ...resp.data },
         resp
       )
     }

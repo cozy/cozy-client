@@ -32,7 +32,7 @@ describe('SettingsCollection', () => {
   })
 
   it('should format correctly the response', async () => {
-    jest.spyOn(stackClient, 'fetchJSON').mockResolvedValue({
+    jest.spyOn(stackClient, 'fetchJSON').mockResolvedValueOnce({
       data: {
         type: 'io.cozy.settings',
         id: 'io.cozy.settings.disk-usage'
@@ -40,6 +40,15 @@ describe('SettingsCollection', () => {
     })
     const resp = await collection.get('disk-usage')
     expect(resp.data.id).toBe('io.cozy.settings.disk-usage')
+
+    jest.spyOn(stackClient, 'fetchJSON').mockResolvedValueOnce({
+      data: {
+        0: { id: 'client-0' },
+        1: { id: 'client-1' }
+      }
+    })
+    const clientsResp = await collection.get('clients')
+    expect(clientsResp.data.id).toBe('/settings/clients')
   })
 
   it('should throw server error', async () => {
