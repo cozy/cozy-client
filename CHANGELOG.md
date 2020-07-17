@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.15.1](https://github.com/cozy/cozy-client/compare/v13.15.0...v13.15.1) (2020-07-17)
+
+
+### Bug Fixes
+
+* Always have response ids for settings routes ([5327493](https://github.com/cozy/cozy-client/commit/5327493))
+
+
+
+
+
 # [13.15.0](https://github.com/cozy/cozy-client/compare/v13.14.2...v13.15.0) (2020-07-15)
 
 
