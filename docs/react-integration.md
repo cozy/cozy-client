@@ -125,7 +125,7 @@ The following props will be given to your wrapped component:
  - `hasMore`: the fetches being paginated, this property indicates if there are more documents to load
 
 
-You can also pass a function intead of a direct query. Your function will be given the props of the component and should return the requested query:
+You can also pass a function instead of a direct query. Your function will be given the props of the component and should return the requested query:
 
 ```jsx
 import { Query } from 'cozy-client'
@@ -252,6 +252,27 @@ queryConnect({
 
 See [CozyClient::fetchPolicies](https://docs.cozy.io/en/cozy-client/api/cozy-client/#CozyClient.fetchPolicies)
 for the API documentation.
+
+### 2.d Keeping data up to date in real time
+
+Sometimes the data you are displaying will be changed from other places than your app. Maybe the data is shared and someone else has updated it, or maybe it simply changes over time.
+
+You can however keep your UI always up to date without constantly re-running your queries, by subscribing to changes in real time. This is done with the `RealTimeQueries` component:
+
+```jsx
+import { RealTimeQueries } from 'cozy-client'
+
+function MyParentComponent(props) {
+  return (
+    <>
+      <ConnectedTodoList +>
+      <RealTimeQueries doctype="io.cozy.todos" />
+    </>
+  )
+}
+```
+
+You subscribe to changes for an entire doctype using `RealTimeQueries`, and as long as that component is rendered all documents from the given doctype in your queries will automatically stay up to date.
 
 ### 3. Mutating data
 

@@ -5,7 +5,8 @@ const commonConfig = {
     '<rootDir>/packages/cozy-stack-client/src/__tests__/setup.js'
   ],
   modulePathIgnorePatterns: ['<rootDir>/packages/.*/dist/'],
-  transformIgnorePatterns: ['node_modules/(?!(cozy-ui))']
+  transformIgnorePatterns: ['node_modules/(?!(cozy-ui))'],
+  testEnvironment: 'jest-environment-jsdom-sixteen'
 }
 
 module.exports = {
