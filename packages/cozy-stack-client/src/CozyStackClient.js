@@ -12,6 +12,7 @@ import TriggerCollection, { TRIGGERS_DOCTYPE } from './TriggerCollection'
 import SettingsCollection, { SETTINGS_DOCTYPE } from './SettingsCollection'
 import NotesCollection, { NOTES_DOCTYPE } from './NotesCollection'
 import ShortcutsCollection, { SHORTCUTS_DOCTYPE } from './ShortcutsCollection'
+import ContactsCollection, { CONTACTS_DOCTYPE } from './ContactsCollection'
 import getIconURL from './getIconURL'
 import logDeprecate from './logDeprecate'
 import errors from './errors'
@@ -56,6 +57,7 @@ class CozyStackClient {
     if (!doctype) {
       throw new Error('CozyStackClient.collection() called without a doctype')
     }
+
     switch (doctype) {
       case APPS_DOCTYPE:
         return new AppCollection(this)
@@ -67,6 +69,8 @@ class CozyStackClient {
         return new SharingCollection(doctype, this)
       case 'io.cozy.permissions':
         return new PermissionCollection(doctype, this)
+      case CONTACTS_DOCTYPE:
+        return new ContactsCollection(doctype, this)
       case TRIGGERS_DOCTYPE:
         return new TriggerCollection(this)
       case JOBS_DOCTYPE:
