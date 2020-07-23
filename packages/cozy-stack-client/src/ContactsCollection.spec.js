@@ -23,8 +23,10 @@ describe('ContactsCollection', () => {
       .mockImplementation(async (method, route) => {
         if (method === 'POST' && route === '/contacts/myself') {
           return stackMyselfResponse
+        } else if (route.includes('_index')) {
+          return { result: 'exists' }
         } else {
-          return []
+          return { docs: [] }
         }
       })
     const col = new ContactsCollection('io.cozy.contacts', stackClient)
@@ -47,5 +49,17 @@ describe('ContactsCollection', () => {
         fullname: 'Alice'
       })
     ])
+  })
+
+  it('should not use a special route for other types of find', async () => {
+    const { col, stackClient } = setup()
+    await col.find({
+      name: 'Alice'
+    })
+    expect(stackClient.fetchJSON).toHaveBeenCalledWith(
+      'POST',
+      '/data/io.cozy.contacts/_find',
+      expect.objectContaining({ selector: { name: 'Alice' } })
+    )
   })
 })
