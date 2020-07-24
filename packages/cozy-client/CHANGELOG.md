@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.16.1](https://github.com/cozy/cozy-client/compare/v13.16.0...v13.16.1) (2020-07-24)
+
+
+### Bug Fixes
+
+* Reset other offsets in queries ([36cbade](https://github.com/cozy/cozy-client/commit/36cbade))
+
+
+
+
+
 # [13.16.0](https://github.com/cozy/cozy-client/compare/v13.15.1...v13.16.0) (2020-07-23)
 
 **Note:** Version bump only for package cozy-client
