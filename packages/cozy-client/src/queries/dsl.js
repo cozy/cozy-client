@@ -150,8 +150,8 @@ class QueryDefinition {
   offset(skip) {
     return new QueryDefinition({
       ...this.toDefinition(),
-      bookmark: null,
-      cursor: null,
+      bookmark: undefined,
+      cursor: undefined,
       skip
     })
   }
@@ -170,8 +170,8 @@ class QueryDefinition {
   offsetCursor(cursor) {
     return new QueryDefinition({
       ...this.toDefinition(),
-      bookmark: null,
-      skip: null,
+      bookmark: undefined,
+      skip: undefined,
       cursor
     })
   }
@@ -188,8 +188,8 @@ class QueryDefinition {
   offsetBookmark(bookmark) {
     return new QueryDefinition({
       ...this.toDefinition(),
-      skip: null,
-      cursor: null,
+      skip: undefined,
+      cursor: undefined,
       bookmark
     })
   }

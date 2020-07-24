@@ -32,4 +32,27 @@ describe('QueryDefinition', () => {
       doctype: 'io.cozy.files'
     })
   })
+
+  it('paginates only one way', () => {
+    const q = Q('io.cozy.files')
+    const withSkip = q.offset(2)
+    expect(withSkip.skip).toEqual(2)
+    expect(withSkip.bookmark).toBeUndefined()
+    expect(withSkip.cursor).toBeUndefined()
+
+    const withCursor = withSkip.offsetCursor('cursor-id')
+    expect(withCursor.cursor).toEqual('cursor-id')
+    expect(withCursor.bookmark).toBeUndefined()
+    expect(withCursor.skip).toBeUndefined()
+
+    const withBookmark = withCursor.offsetBookmark('bookmark-id')
+    expect(withBookmark.bookmark).toEqual('bookmark-id')
+    expect(withBookmark.cursor).toBeUndefined()
+    expect(withBookmark.skip).toBeUndefined()
+
+    const withSkipAgain = withBookmark.offset(2)
+    expect(withSkipAgain.skip).toEqual(2)
+    expect(withSkipAgain.bookmark).toBeUndefined()
+    expect(withSkipAgain.cursor).toBeUndefined()
+  })
 })
