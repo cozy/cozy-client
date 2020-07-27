@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.17.0](https://github.com/cozy/cozy-client/compare/v13.16.1...v13.17.0) (2020-07-27)
+
+
+### Features
+
+* Add hasBeenUpdatedByApp helper ([7c17fc8](https://github.com/cozy/cozy-client/commit/7c17fc8))
+
+
+
+
+
 ## [13.16.1](https://github.com/cozy/cozy-client/compare/v13.16.0...v13.16.1) (2020-07-24)
 
 
