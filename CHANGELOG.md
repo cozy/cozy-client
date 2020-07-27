@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.18.0](https://github.com/cozy/cozy-client/compare/v13.17.0...v13.18.0) (2020-07-27)
+
+
+### Bug Fixes
+
+* Switch CI to node 10 ([2d474ea](https://github.com/cozy/cozy-client/commit/2d474ea))
+
+
+### Features
+
+* RealTimeQueries component ([0e818d6](https://github.com/cozy/cozy-client/commit/0e818d6))
+
+
+
+
+
 # [13.17.0](https://github.com/cozy/cozy-client/compare/v13.16.1...v13.17.0) (2020-07-27)
 
 
