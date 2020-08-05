@@ -8,7 +8,7 @@ import {
   getPrimaryPhone,
   getPrimaryAddress,
   getPrimaryOrFirst
-} from './contacts'
+} from './contact'
 
 describe('getPrimaryOrFirst', () => {
   it("should return the first contact's email address if no primary", () => {
