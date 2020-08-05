@@ -60,7 +60,15 @@ const startReplication = (pouch, replicationOptions, getReplicationURL) => {
     else replication = pouch.sync(url, options)
 
     const docs = {}
-    replication.on('change', ({ change }) => {
+
+    replication.on('change', infos => {
+      //! Since we introduced the concept of strategy we can use
+      // PouchDB.replicate or PouchDB.sync. But both don't share the
+      // same API for the change's event.
+      // See https://pouchdb.com/api.html#replication
+      // and https://pouchdb.com/api.html#sync (see example response)
+      const change = infos.change ? infos.change : infos
+
       if (change.docs) {
         change.docs
           .filter(doc => !isDesignDocument(doc) && !isDeletedDocument(doc))
