@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.19.0](https://github.com/cozy/cozy-client/compare/v13.18.2...v13.19.0) (2020-08-05)
+
+
+### Bug Fixes
+
+* Rename contacts to contact (singular) ([26b5546](https://github.com/cozy/cozy-client/commit/26b5546))
+
+
+### Features
+
+* Add contacts model ([10ade3c](https://github.com/cozy/cozy-client/commit/10ade3c))
+
+
+
+
+
 ## [13.18.1](https://github.com/cozy/cozy-client/compare/v13.18.0...v13.18.1) (2020-08-03)
 
 **Note:** Version bump only for package cozy-client
