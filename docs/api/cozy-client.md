@@ -87,6 +87,30 @@ example.</p>
 <dt><a href="#getAppDisplayName">getAppDisplayName</a> ⇒ <code>string</code></dt>
 <dd><p>getAppDisplayName - Combines the translated prefix and name of the app into a single string.</p>
 </dd>
+<dt><a href="#getInitials">getInitials</a> ⇒ <code>string</code></dt>
+<dd><p>Returns the initials of the contact.</p>
+</dd>
+<dt><a href="#getPrimaryEmail">getPrimaryEmail</a> ⇒ <code>string</code></dt>
+<dd><p>Returns the contact&#39;s main email</p>
+</dd>
+<dt><a href="#getPrimaryCozy">getPrimaryCozy</a> ⇒ <code>string</code></dt>
+<dd><p>Returns the contact&#39;s main cozy</p>
+</dd>
+<dt><a href="#getPrimaryPhone">getPrimaryPhone</a> ⇒ <code>string</code></dt>
+<dd><p>Returns the contact&#39;s main phone number</p>
+</dd>
+<dt><a href="#getPrimaryAddress">getPrimaryAddress</a> ⇒ <code>string</code></dt>
+<dd><p>Returns the contact&#39;s main address</p>
+</dd>
+<dt><a href="#getFullname">getFullname</a> ⇒ <code>string</code></dt>
+<dd><p>Returns the contact&#39;s fullname</p>
+</dd>
+<dt><a href="#getDisplayName">getDisplayName</a> ⇒ <code>string</code></dt>
+<dd><p>Returns a display name for the contact</p>
+</dd>
+<dt><a href="#getIndexByFamilyNameGivenNameEmailCozyUrl">getIndexByFamilyNameGivenNameEmailCozyUrl</a> ⇒ <code>string</code></dt>
+<dd><p>Returns &#39;byFamilyNameGivenNameEmailCozyUrl&#39; index of a contact</p>
+</dd>
 <dt><a href="#splitFilename">splitFilename</a> ⇒ <code>object</code></dt>
 <dd><p>Returns base filename and extension</p>
 </dd>
@@ -1469,6 +1493,102 @@ getAppDisplayName - Combines the translated prefix and name of the app into a si
 | --- | --- | --- |
 | app | <code>object</code> | io.cozy.apps or io.cozy.konnectors document |
 | lang | <code>string</code> | Locale to use |
+
+<a name="getInitials"></a>
+
+## getInitials ⇒ <code>string</code>
+Returns the initials of the contact.
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - - the contact's initials  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| contact | <code>object</code> | A contact |
+
+<a name="getPrimaryEmail"></a>
+
+## getPrimaryEmail ⇒ <code>string</code>
+Returns the contact's main email
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - - The contact's main email  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| contact | <code>object</code> | A contact |
+
+<a name="getPrimaryCozy"></a>
+
+## getPrimaryCozy ⇒ <code>string</code>
+Returns the contact's main cozy
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - - The contact's main cozy  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| contact | <code>object</code> | A contact |
+
+<a name="getPrimaryPhone"></a>
+
+## getPrimaryPhone ⇒ <code>string</code>
+Returns the contact's main phone number
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - - The contact's main phone number  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| contact | <code>object</code> | A contact |
+
+<a name="getPrimaryAddress"></a>
+
+## getPrimaryAddress ⇒ <code>string</code>
+Returns the contact's main address
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - - The contact's main address  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| contact | <code>object</code> | A contact |
+
+<a name="getFullname"></a>
+
+## getFullname ⇒ <code>string</code>
+Returns the contact's fullname
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - - The contact's fullname  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| contact | <code>object</code> | A contact |
+
+<a name="getDisplayName"></a>
+
+## getDisplayName ⇒ <code>string</code>
+Returns a display name for the contact
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - - the contact's display name  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| contact | <code>object</code> | A contact |
+
+<a name="getIndexByFamilyNameGivenNameEmailCozyUrl"></a>
+
+## getIndexByFamilyNameGivenNameEmailCozyUrl ⇒ <code>string</code>
+Returns 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - - the contact's 'byFamilyNameGivenNameEmailCozyUrl' index  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| contact | <code>object</code> | A contact |
 
 <a name="splitFilename"></a>
 
