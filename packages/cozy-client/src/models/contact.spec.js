@@ -7,7 +7,8 @@ import {
   getPrimaryCozy,
   getPrimaryPhone,
   getPrimaryAddress,
-  getPrimaryOrFirst
+  getPrimaryOrFirst,
+  getPrimaryCozyDomain
 } from './contact'
 
 describe('getPrimaryOrFirst', () => {
@@ -293,10 +294,13 @@ describe('getDisplayName', () => {
       fullname: undefined,
       name: undefined,
       email: [],
-      cozy: [{ url: 'https//www.john.com' }, { url: 'https//www.smith.com' }]
+      cozy: [
+        { url: 'https://john.mycozy.cloud' },
+        { url: 'https://smith.mycozy.cloud' }
+      ]
     }
     const result = getDisplayName(contact)
-    expect(result).toEqual('https//www.john.com')
+    expect(result).toEqual('https://john.mycozy.cloud')
   })
 })
 
@@ -351,10 +355,13 @@ describe('getIndexByFamilyNameGivenNameEmailCozyUrl', () => {
         { address: 'john.smith@cozy.cc' },
         { address: 'john.two@cozy.cc' }
       ],
-      cozy: [{ url: 'https//www.john.com' }, { url: 'https//www.smith.com' }]
+      cozy: [
+        { url: 'https://john.mycozy.cloud' },
+        { url: 'https://smith.mycozy.cloud' }
+      ]
     }
     const result = getIndexByFamilyNameGivenNameEmailCozyUrl(contact)
-    expect(result).toEqual('SmithJohnjohn.smith@cozy.cchttps//www.john.com')
+    expect(result).toEqual('SmithJohnjohn.smith@cozy.ccjohn.mycozy.cloud')
   })
 
   it('should returns only familyName if no givenName, email and cozy url', () => {
@@ -384,10 +391,10 @@ describe('getIndexByFamilyNameGivenNameEmailCozyUrl', () => {
       name: { givenName: '', familyName: '' },
       fullname: '',
       email: [],
-      cozy: [{ url: 'https//www.smith.com' }]
+      cozy: [{ url: 'https://smith.mycozy.cloud' }]
     }
     const result = getIndexByFamilyNameGivenNameEmailCozyUrl(contact)
-    expect(result).toEqual('https//www.smith.com')
+    expect(result).toEqual('smith.mycozy.cloud')
   })
 
   it('should returns empty string if no givenName, familyName, email and cozy url', () => {
@@ -405,10 +412,10 @@ describe('getIndexByFamilyNameGivenNameEmailCozyUrl', () => {
     const contact = {
       name: { givenName: 'John' },
       fullname: 'John',
-      cozy: [{ url: 'https//www.smith.com' }]
+      cozy: [{ url: 'https://smith.mycozy.cloud' }]
     }
     const result = getIndexByFamilyNameGivenNameEmailCozyUrl(contact)
-    expect(result).toEqual('Johnhttps//www.smith.com')
+    expect(result).toEqual('Johnsmith.mycozy.cloud')
   })
 
   it('should returns only email if no name and cozy url', () => {
@@ -419,5 +426,77 @@ describe('getIndexByFamilyNameGivenNameEmailCozyUrl', () => {
     }
     const result = getIndexByFamilyNameGivenNameEmailCozyUrl(contact)
     expect(result).toEqual('john.smith@cozy.cc')
+  })
+})
+
+describe('getPrimaryCozyDomain', () => {
+  it('should returns empty string if no cozy url', () => {
+    const contact = {
+      cozy: [{ url: '' }]
+    }
+    const expected = ''
+
+    const result = getPrimaryCozyDomain(contact)
+    expect(result).toEqual(expected)
+  })
+
+  it('should returns cozy url without "https://"', () => {
+    const contact = {
+      cozy: [{ url: 'https://smith.mycozy.cloud' }]
+    }
+    const expected = 'smith.mycozy.cloud'
+
+    const result = getPrimaryCozyDomain(contact)
+    expect(result).toEqual(expected)
+  })
+
+  it('should returns cozy url without "http://"', () => {
+    const contact = {
+      cozy: [{ url: 'http://smith.mycozy.cloud' }]
+    }
+    const expected = 'smith.mycozy.cloud'
+
+    const result = getPrimaryCozyDomain(contact)
+    expect(result).toEqual(expected)
+  })
+
+  it('should returns cozy url without pathname if any', () => {
+    const contact = {
+      cozy: [{ url: 'https://smith.mycozy.cloud/contacts' }]
+    }
+    const expected = 'smith.mycozy.cloud'
+
+    const result = getPrimaryCozyDomain(contact)
+    expect(result).toEqual(expected)
+  })
+
+  it('should returns cozy url without ended "/" if no pathname', () => {
+    const contact = {
+      cozy: [{ url: 'https://smith.mycozy.cloud/' }]
+    }
+    const expected = 'smith.mycozy.cloud'
+
+    const result = getPrimaryCozyDomain(contact)
+    expect(result).toEqual(expected)
+  })
+
+  it('should returns cozy url without any transformation if not valid url', () => {
+    const contact = {
+      cozy: [{ url: 'smith.mycozy.cloud' }]
+    }
+    const expected = 'smith.mycozy.cloud'
+
+    const result = getPrimaryCozyDomain(contact)
+    expect(result).toEqual(expected)
+  })
+
+  it('should returns cozy url without www subdomain', () => {
+    const contact = {
+      cozy: [{ url: 'https://www.mycozy.com' }]
+    }
+    const expected = 'mycozy.com'
+
+    const result = getPrimaryCozyDomain(contact)
+    expect(result).toEqual(expected)
   })
 })

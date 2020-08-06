@@ -52,6 +52,21 @@ export const getPrimaryCozy = contact =>
     : contact.url
 
 /**
+ * Returns the contact's main cozy url without protocol
+ *
+ * @param {object} contact - A contact
+ * @returns {string} - The contact's main cozy url
+ */
+export const getPrimaryCozyDomain = contact => {
+  try {
+    const url = new URL(getPrimaryCozy(contact))
+    return url.hostname.replace(/^(www.)/g, '')
+  } catch {
+    return getPrimaryCozy(contact)
+  }
+}
+
+/**
  * Returns the contact's main phone number
  *
  * @param {object} contact - A contact
@@ -121,7 +136,7 @@ export const getIndexByFamilyNameGivenNameEmailCozyUrl = contact =>
       get(contact, 'name.familyName', ''),
       get(contact, 'name.givenName', ''),
       getPrimaryEmail(contact),
-      getPrimaryCozy(contact)
+      getPrimaryCozyDomain(contact)
     ]
       .join('')
       .trim()
