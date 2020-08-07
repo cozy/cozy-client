@@ -96,6 +96,9 @@ example.</p>
 <dt><a href="#getPrimaryCozy">getPrimaryCozy</a> ⇒ <code>string</code></dt>
 <dd><p>Returns the contact&#39;s main cozy</p>
 </dd>
+<dt><a href="#getPrimaryCozyDomain">getPrimaryCozyDomain</a> ⇒ <code>string</code></dt>
+<dd><p>Returns the contact&#39;s main cozy url without protocol</p>
+</dd>
 <dt><a href="#getPrimaryPhone">getPrimaryPhone</a> ⇒ <code>string</code></dt>
 <dd><p>Returns the contact&#39;s main phone number</p>
 </dd>
@@ -1525,6 +1528,18 @@ Returns the contact's main cozy
 
 **Kind**: global constant  
 **Returns**: <code>string</code> - - The contact's main cozy  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| contact | <code>object</code> | A contact |
+
+<a name="getPrimaryCozyDomain"></a>
+
+## getPrimaryCozyDomain ⇒ <code>string</code>
+Returns the contact's main cozy url without protocol
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - - The contact's main cozy url  
 
 | Param | Type | Description |
 | --- | --- | --- |
