@@ -119,7 +119,9 @@ export const getDisplayName = contact =>
   get(
     contact,
     'displayName',
-    getFullname(contact) || getPrimaryEmail(contact) || getPrimaryCozy(contact)
+    getFullname(contact) ||
+      getPrimaryEmail(contact) ||
+      getPrimaryCozyDomain(contact)
   )
 
 /**
