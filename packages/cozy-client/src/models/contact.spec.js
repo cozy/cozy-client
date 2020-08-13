@@ -289,7 +289,7 @@ describe('getDisplayName', () => {
     expect(result).toEqual('doran.martell@dorne.westeros')
   })
 
-  it("should return the contact's primary cozy url if no fullname, no name and no primary email", () => {
+  it("should return the contact's cozy domain if no fullname, no name and no primary email", () => {
     const contact = {
       fullname: undefined,
       name: undefined,
@@ -300,7 +300,7 @@ describe('getDisplayName', () => {
       ]
     }
     const result = getDisplayName(contact)
-    expect(result).toEqual('https://john.mycozy.cloud')
+    expect(result).toEqual('john.mycozy.cloud')
   })
 })
 
