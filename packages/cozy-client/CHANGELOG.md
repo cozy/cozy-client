@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.20.1](https://github.com/cozy/cozy-client/compare/v13.20.0...v13.20.1) (2020-08-13)
+
+
+### Bug Fixes
+
+* Get cozyDomain instead of primaryCozy for contact displayName ([b96b817](https://github.com/cozy/cozy-client/commit/b96b817))
+
+
+
+
+
 # [13.20.0](https://github.com/cozy/cozy-client/compare/v13.19.0...v13.20.0) (2020-08-07)
 
 
