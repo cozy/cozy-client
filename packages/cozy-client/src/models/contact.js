@@ -130,16 +130,21 @@ export const getDisplayName = contact =>
  * @param {object} contact - A contact
  * @returns {string} - the contact's 'byFamilyNameGivenNameEmailCozyUrl' index
  */
-export const getIndexByFamilyNameGivenNameEmailCozyUrl = contact =>
-  get(
+export const getIndexByFamilyNameGivenNameEmailCozyUrl = contact => {
+  const indexByFamilyNameGivenNameEmailCozyUrl = [
+    get(contact, 'name.familyName', ''),
+    get(contact, 'name.givenName', ''),
+    getPrimaryEmail(contact),
+    getPrimaryCozyDomain(contact)
+  ]
+    .join('')
+    .trim()
+
+  return get(
     contact,
     'indexes.byFamilyNameGivenNameEmailCozyUrl',
-    [
-      get(contact, 'name.familyName', ''),
-      get(contact, 'name.givenName', ''),
-      getPrimaryEmail(contact),
-      getPrimaryCozyDomain(contact)
-    ]
-      .join('')
-      .trim()
+    indexByFamilyNameGivenNameEmailCozyUrl.length === 0
+      ? {}
+      : indexByFamilyNameGivenNameEmailCozyUrl
   )
+}
