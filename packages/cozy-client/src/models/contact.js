@@ -1,4 +1,4 @@
-import get from 'lodash/get'
+import { get, capitalize } from 'lodash'
 import logger from 'cozy-logger'
 
 export const getPrimaryOrFirst = property => obj =>
@@ -131,14 +131,16 @@ export const getDisplayName = contact =>
  * @returns {string} - the contact's 'byFamilyNameGivenNameEmailCozyUrl' index
  */
 export const getIndexByFamilyNameGivenNameEmailCozyUrl = contact => {
-  const indexByFamilyNameGivenNameEmailCozyUrl = [
-    get(contact, 'name.familyName', ''),
-    get(contact, 'name.givenName', ''),
-    getPrimaryEmail(contact),
-    getPrimaryCozyDomain(contact)
-  ]
-    .join('')
-    .trim()
+  const indexByFamilyNameGivenNameEmailCozyUrl = capitalize(
+    [
+      get(contact, 'name.familyName', ''),
+      get(contact, 'name.givenName', ''),
+      getPrimaryEmail(contact),
+      getPrimaryCozyDomain(contact)
+    ]
+      .join('')
+      .trim()
+  )
 
   return get(
     contact,
