@@ -81,6 +81,34 @@ describe('getInitials', () => {
     expect(result).toEqual('A')
   })
 
+  it('should return the first letter of the primary email if contact has empty name', () => {
+    const contact = {
+      name: {},
+      email: [
+        {
+          address: 'arya.stark@thenorth.westeros',
+          primary: true
+        }
+      ]
+    }
+    const result = getInitials(contact)
+    expect(result).toEqual('A')
+  })
+
+  it('should return the first letter of the cozy domain if contact has empty name, an empty email but has a cozy url', () => {
+    const contact = {
+      name: {},
+      cozy: [
+        {
+          url: 'https://john.mycozy.cloud',
+          primary: true
+        }
+      ]
+    }
+    const result = getInitials(contact)
+    expect(result).toEqual('J')
+  })
+
   it('should return an empty string if contact has no name/email', () => {
     const result = getInitials({})
     expect(result).toEqual('')
