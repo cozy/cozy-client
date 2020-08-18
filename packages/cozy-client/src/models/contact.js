@@ -1,5 +1,4 @@
-import { get, capitalize } from 'lodash'
-import logger from 'cozy-logger'
+import { get, capitalize, isEmpty } from 'lodash'
 
 export const getPrimaryOrFirst = property => obj =>
   !obj[property] || obj[property].length === 0
@@ -13,7 +12,7 @@ export const getPrimaryOrFirst = property => obj =>
  * @returns {string} - the contact's initials
  */
 export const getInitials = contact => {
-  if (contact.name) {
+  if (contact.name && !isEmpty(contact.name)) {
     return ['givenName', 'familyName']
       .map(part => get(contact, ['name', part, 0], ''))
       .join('')
@@ -25,7 +24,11 @@ export const getInitials = contact => {
     return email[0].toUpperCase()
   }
 
-  logger.warn('Contact has no name and no email.')
+  const cozy = getPrimaryCozyDomain(contact)
+  if (cozy) {
+    return cozy[0].toUpperCase()
+  }
+
   return ''
 }
 
