@@ -83,6 +83,9 @@ through OAuth.</p>
 <dt><a href="#FileAttributes">FileAttributes</a> : <code>object</code></dt>
 <dd><p>Attributes used for file creation</p>
 </dd>
+<dt><a href="#FileDocument">FileDocument</a> : <code>object</code></dt>
+<dd><p>Document representing a io.cozy.files</p>
+</dd>
 </dl>
 
 <a name="AppCollection"></a>
@@ -388,6 +391,7 @@ files associated to a specific document
     * [.removeReferencedBy(document, documents)](#FileCollection+removeReferencedBy) ⇒ <code>object</code>
     * [.addReferencesTo(document, documents)](#FileCollection+addReferencesTo) ⇒ <code>object</code>
     * [.removeReferencesTo(document, documents)](#FileCollection+removeReferencesTo) ⇒ <code>object</code>
+    * [.destroy(file)](#FileCollection+destroy) ⇒ <code>Promise</code>
     * [.emptyTrash()](#FileCollection+emptyTrash)
     * [.restore(id)](#FileCollection+restore) ⇒ <code>Promise</code>
     * [.deleteFilePermanently(id)](#FileCollection+deleteFilePermanently) ⇒ <code>object</code>
@@ -466,7 +470,7 @@ addReferencedBy({_id: 123, _type: "io.cozy.files", name: "cozy.jpg"}, [{_id: 456
 
 | Param | Type | Description |
 | --- | --- | --- |
-| document | <code>object</code> | A JSON representing the file |
+| document | [<code>FileDocument</code>](#FileDocument) | A JSON representing the file |
 | documents | <code>Array</code> | An array of JSON documents having a `_type` and `_id` field. |
 
 <a name="FileCollection+removeReferencedBy"></a>
@@ -522,6 +526,19 @@ Remove files references to a document — see https://docs.cozy.io/en/cozy-stack
 | --- | --- | --- |
 | document | <code>object</code> | A JSON representing a document, with at least a `_type` and `_id` field. |
 | documents | <code>Array</code> | An array of JSON files having an `_id` field. |
+
+<a name="FileCollection+destroy"></a>
+
+### fileCollection.destroy(file) ⇒ <code>Promise</code>
+Sends file to trash and removes references to it
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+**Returns**: <code>Promise</code> - - Resolves when references have been removed
+and file has been sent to trash  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | [<code>FileDocument</code>](#FileDocument) | File that will be sent to trash |
 
 <a name="FileCollection+emptyTrash"></a>
 
@@ -1317,4 +1334,16 @@ Attributes used for file creation
 | name | <code>string</code> | Name of the created file. |
 | lastModifiedDate | <code>Date</code> | Can be used to set the last modified date of a file. |
 | metadata | <code>object</code> | io.cozy.files.metadata to attach to the file |
+
+<a name="FileDocument"></a>
+
+## FileDocument : <code>object</code>
+Document representing a io.cozy.files
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| _id | <code>string</code> | Id of the file |
 

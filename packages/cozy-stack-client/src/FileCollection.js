@@ -26,6 +26,13 @@ import { FetchError } from './errors'
  * @property {object} metadata io.cozy.files.metadata to attach to the file
  */
 
+/**
+ * Document representing a io.cozy.files
+ *
+ * @typedef {object} FileDocument
+ * @property {string} _id - Id of the file
+ */
+
 const ROOT_DIR_ID = 'io.cozy.files.root-dir'
 const CONTENT_TYPE_OCTET_STREAM = 'application/octet-stream'
 
@@ -154,7 +161,7 @@ class FileCollection extends DocumentCollection {
    * addReferencedBy({_id: 123, _type: "io.cozy.files", name: "cozy.jpg"}, [{_id: 456, _type: "io.cozy.photos.albums", name: "Happy Cloud"}])
    * ```
    *
-   * @param  {object} document        A JSON representing the file
+   * @param  {FileDocument} document        A JSON representing the file
    * @param  {Array}  documents       An array of JSON documents having a `_type` and `_id` field.
    * @returns {object}                The JSON API conformant response.
    */
@@ -230,7 +237,15 @@ class FileCollection extends DocumentCollection {
     )
   }
 
-  async destroy({ _id, relationships }, { ifMatch = '' } = {}) {
+  /**
+   * Sends file to trash and removes references to it
+   *
+   * @param  {FileDocument} file - File that will be sent to trash
+   * @returns {Promise} - Resolves when references have been removed
+   * and file has been sent to trash
+   */
+  async destroy(file, { ifMatch = '' } = {}) {
+    const { _id, relationships } = file
     if (
       relationships &&
       relationships.referenced_by &&
