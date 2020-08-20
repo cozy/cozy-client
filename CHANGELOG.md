@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.21.0](https://github.com/cozy/cozy-client/compare/v13.20.3...v13.21.0) (2020-08-20)
+
+
+### Bug Fixes
+
+* Link from React Integration to fetchPolicies ([c37acb0](https://github.com/cozy/cozy-client/commit/c37acb0))
+
+
+### Features
+
+* Throw if scope is not passed ([78b72e4](https://github.com/cozy/cozy-client/commit/78b72e4))
+
+
+
+
+
 ## [13.20.3](https://github.com/cozy/cozy-client/compare/v13.20.2...v13.20.3) (2020-08-20)
 
 
