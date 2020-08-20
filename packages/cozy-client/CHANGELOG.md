@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.20.3](https://github.com/cozy/cozy-client/compare/v13.20.2...v13.20.3) (2020-08-20)
+
+
+### Bug Fixes
+
+* GetInitials now deals with empty name and cozy url ([73f92a0](https://github.com/cozy/cozy-client/commit/73f92a0))
+* Method to get contact index now capitalize the index ([7eb266a](https://github.com/cozy/cozy-client/commit/7eb266a))
+* Method to get contact index return now an object when empty ([83c1b5c](https://github.com/cozy/cozy-client/commit/83c1b5c))
+
+
+
+
+
 ## [13.20.2](https://github.com/cozy/cozy-client/compare/v13.20.1...v13.20.2) (2020-08-19)
 
 **Note:** Version bump only for package cozy-client
