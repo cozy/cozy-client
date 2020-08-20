@@ -250,7 +250,7 @@ queryConnect({
 })(TodoList)
 ```
 
-See [CozyClient::fetchPolicies](https://docs.cozy.io/en/cozy-client/api/cozy-client/#CozyClient.fetchPolicies)
+See [CozyClient::fetchPolicies](../api/cozy-client/#fetchpolicies)
 for the API documentation.
 
 ### 2.d Keeping data up to date in real time
