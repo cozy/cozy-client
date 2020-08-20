@@ -186,6 +186,11 @@ const createClientInteractive = (clientOptions, serverOpts) => {
     },
     clientOptions
   )
+
+  if (!clientOptions.scope) {
+    throw new Error('scope must be provided in client options')
+  }
+
   const getSavedCredentials = serverOptions.getSavedCredentials
   const savedCredentialsFilename = getSavedCredentials(mergedClientOptions)
   const savedCredentials = readJSON(createClientFS, savedCredentialsFilename)
