@@ -996,9 +996,24 @@ Implements `DocumentCollection` API along with specific methods for `io.cozy.per
 **Kind**: global class  
 
 * [PermissionCollection](#PermissionCollection)
+    * [.create(permission)](#PermissionCollection+create)
     * [.add(document, permission)](#PermissionCollection+add) ⇒ <code>Promise</code>
     * [.createSharingLink(document, options)](#PermissionCollection+createSharingLink)
     * [.getOwnPermissions()](#PermissionCollection+getOwnPermissions) ⇒ <code>object</code>
+
+<a name="PermissionCollection+create"></a>
+
+### permissionCollection.create(permission)
+Create a new set of permissions
+It can also associates one or more codes to it, via the codes parameter
+
+**Kind**: instance method of [<code>PermissionCollection</code>](#PermissionCollection)  
+**See**: https://docs.cozy.io/en/cozy-stack/permissions/#post-permissions  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| permission | <code>object</code> |  |
+| permission.codes | <code>string</code> | A comma separed list of values (defaulted to code) |
 
 <a name="PermissionCollection+add"></a>
 

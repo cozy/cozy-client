@@ -18,13 +18,27 @@ class PermissionCollection extends DocumentCollection {
     }
   }
 
-  async create({ _id, _type, ...attributes }) {
-    const resp = await this.stackClient.fetchJSON('POST', uri`/permissions`, {
-      data: {
-        type: 'io.cozy.permissions',
-        attributes
+  /**
+   * Create a new set of permissions
+   * It can also associates one or more codes to it, via the codes parameter
+   *
+   * @param {object} permission
+   * @param {string} permission.codes A comma separed list of values (defaulted to code)
+   *
+   * @see https://docs.cozy.io/en/cozy-stack/permissions/#post-permissions
+   *
+   */
+  async create({ _id, _type, codes = 'code', ...attributes }) {
+    const resp = await this.stackClient.fetchJSON(
+      'POST',
+      uri`/permissions?codes=${codes}`,
+      {
+        data: {
+          type: 'io.cozy.permissions',
+          attributes
+        }
       }
-    })
+    )
     return {
       data: normalizePermission(resp.data)
     }

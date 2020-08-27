@@ -21,7 +21,30 @@ describe('PermissionCollection', () => {
       client.fetch.mockReset()
       client.fetchJSON.mockReturnValue(Promise.resolve({ data: [] }))
     })
+    describe('create', () => {
+      it('calls with the right args', async () => {
+        await collection.create({
+          _type: 'io.cozy.permissions',
+          _id: 'a340d5e0d64711e6b66c5fc9ce1e17c6',
+          codes: 'a,b'
+        })
+        expect(client.fetchJSON).toHaveBeenCalledWith(
+          'POST',
+          '/permissions?codes=a%2Cb',
+          { data: { attributes: {}, type: 'io.cozy.permissions' } }
+        )
 
+        await collection.create({
+          _type: 'io.cozy.permissions',
+          _id: 'a340d5e0d64711e6b66c5fc9ce1e17c6'
+        })
+        expect(client.fetchJSON).toHaveBeenCalledWith(
+          'POST',
+          '/permissions?codes=code',
+          { data: { attributes: {}, type: 'io.cozy.permissions' } }
+        )
+      })
+    })
     it('should get its own permissions', async () => {
       await collection.getOwnPermissions()
       expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/permissions/self')
