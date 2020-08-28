@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [14.0.0](https://github.com/cozy/cozy-client/compare/v13.21.0...v14.0.0) (2020-08-28)
+
+
+### Features
+
+* We can pass a codes argument at the perm creation ([720ab0c](https://github.com/cozy/cozy-client/commit/720ab0c))
+
+
+### BREAKING CHANGES
+
+* By default, we defaulted the codes values
+to code for PermissionsCollection.create. Without we
+receive an object without key in response
+shortcodes: {"": "abcdfef"}. Now by default we have :
+shortcodes: {"code": "adcdef"}.
+
+It's a BC, but this method is not used in our code base for
+now.
+
+
+
+
+
 ## [13.20.2](https://github.com/cozy/cozy-client/compare/v13.20.1...v13.20.2) (2020-08-19)
 
 **Note:** Version bump only for package cozy-stack-client
