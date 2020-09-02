@@ -1014,6 +1014,7 @@ It can also associates one or more codes to it, via the codes parameter
 | --- | --- | --- |
 | permission | <code>object</code> |  |
 | permission.codes | <code>string</code> | A comma separed list of values (defaulted to code) |
+| permission.ttl | <code>string</code> | Make the codes expire after a delay (bigduration format) bigduration format: https://github.com/justincampbell/bigduration/blob/master/README.md |
 
 <a name="PermissionCollection+add"></a>
 
