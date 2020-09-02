@@ -17,21 +17,25 @@ class PermissionCollection extends DocumentCollection {
       data: normalizePermission(resp.data)
     }
   }
-
   /**
    * Create a new set of permissions
    * It can also associates one or more codes to it, via the codes parameter
    *
    * @param {object} permission
    * @param {string} permission.codes A comma separed list of values (defaulted to code)
+   * @param {string} permission.ttl Make the codes expire after a delay (bigduration format)
    *
+   * bigduration format: https://github.com/justincampbell/bigduration/blob/master/README.md
    * @see https://docs.cozy.io/en/cozy-stack/permissions/#post-permissions
    *
    */
-  async create({ _id, _type, codes = 'code', ...attributes }) {
+  async create({ _id, _type, codes = 'code', ttl, ...attributes }) {
+    const searchParams = new URLSearchParams()
+    searchParams.append('codes', codes)
+    if (ttl) searchParams.append('ttl', ttl)
     const resp = await this.stackClient.fetchJSON(
       'POST',
-      uri`/permissions?codes=${codes}`,
+      `/permissions?${searchParams}`,
       {
         data: {
           type: 'io.cozy.permissions',
