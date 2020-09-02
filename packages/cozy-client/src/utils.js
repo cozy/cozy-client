@@ -3,7 +3,7 @@
  *
  * Rejects with canceled: true as soon as cancel is called
  *
- * @param  {Promise} promise
+ * @param {Promise} promise
  * @returns {AugmentedPromise} - Promise with .cancel method
  */
 const cancelable = promise => {
@@ -40,4 +40,15 @@ export const isQueryLoading = col => {
  */
 export const hasQueryBeenLoaded = col => {
   return col.lastFetch
+}
+
+/**
+ * Returns whether a query has more data to fetch
+ */
+export const hasQueryMoreToFetch = col => {
+  if (!col) {
+    console.warn('hasQueryMoreToFetch called on falsy value.') // eslint-disable-line no-console
+    return false
+  }
+  return col.hasMore
 }

@@ -165,6 +165,9 @@ is loading.</p>
 <dt><a href="#hasQueryBeenLoaded">hasQueryBeenLoaded</a></dt>
 <dd><p>Returns whether a query has been loaded at least once</p>
 </dd>
+<dt><a href="#hasQueryMoreToFetch">hasQueryMoreToFetch</a></dt>
+<dd><p>Returns whether a query has more data to fetch</p>
+</dd>
 </dl>
 
 ## Functions
@@ -1855,6 +1858,12 @@ is loading.
 
 ## hasQueryBeenLoaded
 Returns whether a query has been loaded at least once
+
+**Kind**: global constant  
+<a name="hasQueryMoreToFetch"></a>
+
+## hasQueryMoreToFetch
+Returns whether a query has more data to fetch
 
 **Kind**: global constant  
 <a name="createClientInteractive"></a>

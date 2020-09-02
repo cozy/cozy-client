@@ -18,7 +18,12 @@ export {
   HasManyTriggers
 } from './associations'
 export { dehydrate, generateWebLink } from './helpers'
-export { cancelable, isQueryLoading, hasQueryBeenLoaded } from './utils'
+export {
+  cancelable,
+  isQueryLoading,
+  hasQueryBeenLoaded,
+  hasQueryMoreToFetch
+} from './utils'
 export { getQueryFromState } from './store'
 export { default as Registry } from './registry'
 export { default as RealTimeQueries } from './RealTimeQueries'
