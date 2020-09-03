@@ -33,6 +33,12 @@ import { FetchError } from './errors'
  * @property {string} _id - Id of the file
  */
 
+/**
+ * Stream is not defined in a browser, but is on NodeJS environment
+ *
+ * @typedef {object} Stream
+ */
+
 const ROOT_DIR_ID = 'io.cozy.files.root-dir'
 const CONTENT_TYPE_OCTET_STREAM = 'application/octet-stream'
 
@@ -311,7 +317,6 @@ class FileCollection extends DocumentCollection {
     return resp.data
   }
   /**
-   *
    * @param {File|Blob|Stream|string|ArrayBuffer} data file to be uploaded
    * @param {string} dirPath Path to upload the file to. ie : /Administative/XXX/
    * @returns {object} Created io.cozy.files

@@ -16,7 +16,10 @@ const getBaseRoute = app => {
 }
 
 /**
- *@typedef {RegistryApp}
+ * @typedef {object} RegistryApp
+ * @property {string} slug
+ * @property {object} terms
+ * @property {boolean} installed
  */
 
 class Registry {
