@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [14.1.1](https://github.com/cozy/cozy-client/compare/v14.1.0...v14.1.1) (2020-09-03)
+
+
+### Bug Fixes
+
+* Do not reassign to function parameters ([feb6e8e](https://github.com/cozy/cozy-client/commit/feb6e8e))
+* Query can be passed a simple object ([cc6e1a6](https://github.com/cozy/cozy-client/commit/cc6e1a6))
+* Query with props based query definitions would use stale def ([6ef9c11](https://github.com/cozy/cozy-client/commit/6ef9c11))
+
+
+
+
+
 # [14.1.0](https://github.com/cozy/cozy-client/compare/v14.0.0...v14.1.0) (2020-09-03)
 
 **Note:** Version bump only for package cozy-client
