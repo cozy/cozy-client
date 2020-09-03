@@ -86,6 +86,9 @@ through OAuth.</p>
 <dt><a href="#FileDocument">FileDocument</a> : <code>object</code></dt>
 <dd><p>Document representing a io.cozy.files</p>
 </dd>
+<dt><a href="#Stream">Stream</a> : <code>object</code></dt>
+<dd><p>Stream is not defined in a browser, but is on NodeJS environment</p>
+</dd>
 </dl>
 
 <a name="AppCollection"></a>
@@ -174,7 +177,7 @@ Fetches an endpoint in an authorized way.
 | method | <code>string</code> | The HTTP method. |
 | path | <code>string</code> | The URI. |
 | body | <code>object</code> | The payload. |
-| opts | <code>object</code> |  |
+| opts | <code>object</code> | Options for fetch |
 
 <a name="CozyStackClient+checkForRevocation"></a>
 
@@ -406,7 +409,7 @@ files associated to a specific document
     * [.createDirectoryByPath(path)](#FileCollection+createDirectoryByPath) ⇒ <code>object</code>
     * [.createFileMetadata(attributes)](#FileCollection+createFileMetadata) ⇒ <code>object</code>
     * [.updateMetadataAttribute(id, metadata)](#FileCollection+updateMetadataAttribute) ⇒ <code>object</code>
-    * [.doUpload(data, path, options, method)](#FileCollection+doUpload)
+    * [.doUpload(dataArg, path, options, method)](#FileCollection+doUpload)
 
 <a name="FileCollection+get"></a>
 
@@ -582,7 +585,7 @@ async deleteFilePermanently - Definitely delete a file
 
 | Param | Type | Description |
 | --- | --- | --- |
-| data | <code>File</code> \| <code>Blob</code> \| <code>Stream</code> \| <code>string</code> \| <code>ArrayBuffer</code> | file to be uploaded |
+| data | <code>File</code> \| <code>Blob</code> \| [<code>Stream</code>](#Stream) \| <code>string</code> \| <code>ArrayBuffer</code> | file to be uploaded |
 | dirPath | <code>string</code> | Path to upload the file to. ie : /Administative/XXX/ |
 
 <a name="FileCollection+create"></a>
@@ -731,7 +734,7 @@ see : https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files_metadata/
 
 <a name="FileCollection+doUpload"></a>
 
-### fileCollection.doUpload(data, path, options, method)
+### fileCollection.doUpload(dataArg, path, options, method)
 This method should not be called directly to upload a file.
 You should use `createFile`
 
@@ -739,7 +742,7 @@ You should use `createFile`
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| data | <code>File</code> \| <code>Blob</code> \| <code>Stream</code> \| <code>string</code> \| <code>ArrayBuffer</code> |  | file to be uploaded |
+| dataArg | <code>File</code> \| <code>Blob</code> \| [<code>Stream</code>](#Stream) \| <code>string</code> \| <code>ArrayBuffer</code> |  | file to be uploaded |
 | path | <code>string</code> |  | Uri to call the stack from. Something like `/files/${dirId}?Name=${name}&Type=file&Executable=${executable}&MetadataID=${metadataId}` |
 | options | <code>object</code> |  | Additional headers |
 | method | <code>string</code> | <code>&quot;POST&quot;</code> | POST / PUT / PATCH |
@@ -829,7 +832,7 @@ through OAuth.
     * [.generateStateCode()](#OAuthClient+generateStateCode) ⇒ <code>string</code>
     * [.getAuthCodeURL(stateCode, scopes)](#OAuthClient+getAuthCodeURL) ⇒ <code>string</code>
     * [.getAccessCodeFromURL(pageURL, stateCode)](#OAuthClient+getAccessCodeFromURL) ⇒ <code>string</code>
-    * [.fetchAccessToken(accessCode, oauthOptions, uri)](#OAuthClient+fetchAccessToken) ⇒ <code>Promise</code>
+    * [.fetchAccessToken(accessCode, oauthOptionsArg, uri)](#OAuthClient+fetchAccessToken) ⇒ <code>Promise</code>
     * [.refreshToken()](#OAuthClient+refreshToken) ⇒ <code>Promise</code>
     * [.setToken(token)](#OAuthClient+setToken)
     * [.setOAuthOptions(options)](#OAuthClient+setOAuthOptions)
@@ -932,7 +935,7 @@ Retrieves the access code contained in the URL to which the user is redirected a
 
 <a name="OAuthClient+fetchAccessToken"></a>
 
-### oAuthClient.fetchAccessToken(accessCode, oauthOptions, uri) ⇒ <code>Promise</code>
+### oAuthClient.fetchAccessToken(accessCode, oauthOptionsArg, uri) ⇒ <code>Promise</code>
 Exchanges an access code for an access token. This function does **not** update the client's token.
 
 **Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
@@ -945,7 +948,7 @@ Exchanges an access code for an access token. This function does **not** update 
 | Param | Type | Description |
 | --- | --- | --- |
 | accessCode | <code>string</code> | The access code contained in the redirection URL — see `client.getAccessCodeFromURL()` |
-| oauthOptions | <code>object</code> | — To use when OAuthClient is not yet registered (during login process) |
+| oauthOptionsArg | <code>object</code> | — To use when OAuthClient is not yet registered (during login process) |
 | uri | <code>string</code> | — To use when OAuthClient is not yet registered (during login process) |
 
 <a name="OAuthClient+refreshToken"></a>
@@ -1362,3 +1365,9 @@ Document representing a io.cozy.files
 | --- | --- | --- |
 | _id | <code>string</code> | Id of the file |
 
+<a name="Stream"></a>
+
+## Stream : <code>object</code>
+Stream is not defined in a browser, but is on NodeJS environment
+
+**Kind**: global typedef  
