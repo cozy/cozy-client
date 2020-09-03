@@ -7,7 +7,7 @@
     "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.2",
     "eslint": "5.16.0",
-    "eslint-config-cozy-app": "1.4.0",
+    "eslint-config-cozy-app": "1.6.0",
     "eslint-config-react-app": "^5.2.0",
     "eslint-plugin-flowtype": "^4.6.0",
     "eslint-plugin-import": "^2.20.1",
