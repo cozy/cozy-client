@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [14.1.0](https://github.com/cozy/cozy-client/compare/v14.0.0...v14.1.0) (2020-09-03)
+
+
+### Features
+
+* Add ttl params to create Permissions ([cf3478c](https://github.com/cozy/cozy-client/commit/cf3478c))
+
+
+
+
+
 # [14.0.0](https://github.com/cozy/cozy-client/compare/v13.21.0...v14.0.0) (2020-08-28)
 
 
