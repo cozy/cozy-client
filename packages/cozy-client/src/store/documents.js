@@ -1,8 +1,10 @@
 import { isReceivingData } from './queries'
+import { MutationTypes } from '../queries/dsl'
 import { isReceivingMutationResult } from './mutations'
 import keyBy from 'lodash/keyBy'
 import get from 'lodash/get'
 import isEqual from 'lodash/isEqual'
+import omit from 'lodash/omit'
 import { properId } from './helpers'
 
 const storeDocument = (state, document) => {
@@ -62,8 +64,22 @@ const documents = (state = {}, action) => {
     return state
   }
 
+  if (
+    action &&
+    action.definition &&
+    action.definition.mutationType === MutationTypes.DELETE_DOCUMENT
+  ) {
+    const docId = action.definition.document._id
+    const _type = action.definition.document._type
+    return {
+      ...state,
+      [_type]: omit(state[_type], docId)
+    }
+  }
+
   const { data, included } = action.response
   if (!data || (Array.isArray(data) && data.length === 0)) return state
+
   const updatedStateWithIncluded = included
     ? included.reduce(storeDocument, state)
     : state
