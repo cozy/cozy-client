@@ -215,8 +215,8 @@ class CozyClient {
   }
 
   /** In konnector/service context, CozyClient can be instantiated from environment variables */
-  static fromEnv(env, options = {}) {
-    env = env || (typeof process !== 'undefined' ? process.env : {})
+  static fromEnv(envArg, options = {}) {
+    const env = envArg || (typeof process !== 'undefined' ? process.env : {})
     const { COZY_URL, COZY_CREDENTIALS, NODE_ENV } = env
     if (!COZY_URL || !COZY_CREDENTIALS) {
       throw new Error(
@@ -850,14 +850,14 @@ client.query(Q('io.cozy.bills'))`)
    * the relationship
    *
    * @param  {Document} document for which relationships must be resolved
-   * @param  {Schema} schema for the document doctype
+   * @param  {Schema} schemaArg for the document doctype
    * @returns {HydratedDocument}
    */
-  hydrateDocument(document, schema) {
+  hydrateDocument(document, schemaArg) {
     if (!document) {
       return document
     }
-    schema = schema || this.schema.getDoctypeSchema(document._type)
+    const schema = schemaArg || this.schema.getDoctypeSchema(document._type)
     return {
       ...document,
       ...this.hydrateRelationships(document, schema.relationships)

@@ -41,8 +41,8 @@ export default class HasManyFiles extends HasMany {
     })
   }
 
-  async addById(ids) {
-    ids = Array.isArray(ids) ? ids : [ids]
+  async addById(idsArg) {
+    const ids = Array.isArray(idsArg) ? idsArg : [idsArg]
     const relations = ids.map(id => ({
       _id: id,
       _type: this.doctype
@@ -52,8 +52,8 @@ export default class HasManyFiles extends HasMany {
     await super.addById(ids)
   }
 
-  async removeById(ids) {
-    ids = Array.isArray(ids) ? ids : [ids]
+  async removeById(idsArg) {
+    const ids = Array.isArray(idsArg) ? idsArg : [idsArg]
     const relations = ids.map(id => ({
       _id: id,
       _type: this.doctype

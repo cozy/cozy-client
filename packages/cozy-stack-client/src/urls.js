@@ -11,7 +11,8 @@ export function getCozyURL() {
   return isNode ? getNodeCozyURL() : getBrowserCozyURL()
 }
 
-export function isSecureProtocol(url) {
+export function isSecureProtocol(urlArg) {
+  let url = urlArg
   if (url === undefined) url = getCozyURL()
 
   return url.protocol === SECURED_PROTOCOL

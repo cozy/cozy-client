@@ -358,8 +358,16 @@ class FileCollection extends DocumentCollection {
    */
   async createFile(
     data,
-    { name, dirId = '', executable, metadata, ...options } = {}
+    {
+      name: nameOption,
+      dirId = '',
+      executable: executableOption,
+      metadata,
+      ...options
+    } = {}
   ) {
+    let name = nameOption
+    let executable = executableOption
     // handle case where data is a file and contains the name
     if (!name && typeof data.name === 'string') {
       name = data.name
@@ -780,16 +788,18 @@ class FileCollection extends DocumentCollection {
    * This method should not be called directly to upload a file.
    * You should use `createFile`
    *
-   * @param {File|Blob|Stream|string|ArrayBuffer} data file to be uploaded
+   * @param {File|Blob|Stream|string|ArrayBuffer} dataArg file to be uploaded
    * @param {string} path Uri to call the stack from. Something like
    * `/files/${dirId}?Name=${name}&Type=file&Executable=${executable}&MetadataID=${metadataId}`
    * @param {object} options Additional headers
    * @param {string} method POST / PUT / PATCH
    */
-  async doUpload(data, path, options, method = 'POST') {
+  async doUpload(dataArg, path, options, method = 'POST') {
+    let data = dataArg
     if (!data) {
       throw new Error('missing data argument')
     }
+
     // transform any ArrayBufferView to ArrayBuffer
     if (data.buffer && data.buffer instanceof ArrayBuffer) {
       data = data.buffer

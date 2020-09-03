@@ -330,15 +330,16 @@ class OAuthClient extends CozyStackClient {
    *
    * @throws {NotRegisteredException} When the client doesn't have it's registration information
    * @param   {string} accessCode - The access code contained in the redirection URL — see `client.getAccessCodeFromURL()`
-   * @param   {object} oauthOptions — To use when OAuthClient is not yet registered (during login process)
+   * @param   {object} oauthOptionsArg — To use when OAuthClient is not yet registered (during login process)
    * @param   {string} uri — To use when OAuthClient is not yet registered (during login process)
    * @returns {Promise} A promise that resolves with an AccessToken object.
    */
-  async fetchAccessToken(accessCode, oauthOptions, uri) {
-    if (!this.isRegistered() && !oauthOptions)
+  async fetchAccessToken(accessCode, oauthOptionsArg, uri) {
+    if (!this.isRegistered() && !oauthOptionsArg) {
       throw new NotRegisteredException()
+    }
 
-    oauthOptions = oauthOptions || this.oauthOptions
+    let oauthOptions = oauthOptionsArg || this.oauthOptions
     const data = {
       grant_type: 'authorization_code',
       code: accessCode,
