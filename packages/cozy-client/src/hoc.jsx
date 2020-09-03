@@ -27,6 +27,7 @@ const withQuery = (dest, queryOpts, Original) => {
       `withQuery has no options for ${dest} (wrapping ${Original.name})`
     )
   }
+
   return Component => {
     const Wrapper = (props, context) => {
       if (!context.client) {
@@ -35,14 +36,16 @@ const withQuery = (dest, queryOpts, Original) => {
         )
       }
 
-      queryOpts = typeof queryOpts === 'function' ? queryOpts(props) : queryOpts
+      const queryOptsRes =
+        typeof queryOpts === 'function' ? queryOpts(props) : queryOpts
+
       if (queryOpts.doc) {
         console.warn('queryOpts.doc is deprecated')
-        return <Component {...{ [dest]: queryOpts.doc, ...props }} />
+        return <Component {...{ [dest]: queryOptsRes.doc, ...props }} />
       }
 
       return (
-        <Query {...queryOpts}>
+        <Query {...queryOptsRes}>
           {result => <Component {...{ [dest]: result, ...props }} />}
         </Query>
       )

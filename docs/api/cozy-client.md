@@ -229,9 +229,6 @@ if there are N queries, only 1 extra level of nesting is introduced.</p>
 <dt><a href="#isForType">isForType(permission, type)</a></dt>
 <dd><p>Checks if the permission item is about a specific doctype</p>
 </dd>
-<dt><a href="#currentResult">currentResult()</a> ⇒ <code>HydratedQueryState</code></dt>
-<dd><p>Returns the query from the store with hydrated documents.</p>
-</dd>
 <dt><a href="#fetchMore">fetchMore()</a></dt>
 <dd><p>Generates and executes a query that is offsetted by the number of documents
 we have in the store.</p>
@@ -260,7 +257,10 @@ we have in the store.</p>
 <dd></dd>
 <dt><a href="#PermissionItem">PermissionItem</a> : <code>object</code></dt>
 <dd></dd>
-<dt><a href="#Registry">Registry</a> : <code>RegistryApp</code></dt>
+<dt><a href="#HydratedQueryState">HydratedQueryState</a> ⇒ <code><a href="#HydratedQueryState">HydratedQueryState</a></code></dt>
+<dd><p>Returns the query from the store with hydrated documents.</p>
+</dd>
+<dt><a href="#RegistryApp">RegistryApp</a> : <code>object</code></dt>
 <dd></dd>
 </dl>
 
@@ -680,7 +680,7 @@ Responsible for
         * [.query(queryDefinition, options)](#CozyClient+query) ⇒ <code>QueryResult</code>
         * [.queryAll(queryDefinition, options)](#CozyClient+queryAll) ⇒ <code>Array</code>
         * [.hydrateDocuments(doctype, documents)](#CozyClient+hydrateDocuments) ⇒ <code>Array.&lt;HydratedDocument&gt;</code>
-        * [.hydrateDocument(document, schema)](#CozyClient+hydrateDocument) ⇒ <code>HydratedDocument</code>
+        * [.hydrateDocument(document, schemaArg)](#CozyClient+hydrateDocument) ⇒ <code>HydratedDocument</code>
         * [.makeNewDocument()](#CozyClient+makeNewDocument)
         * [.getAssociation()](#CozyClient+getAssociation)
         * [.getRelationshipStoreAccessors()](#CozyClient+getRelationshipStoreAccessors)
@@ -896,7 +896,7 @@ Instead, the relationships will have null documents.
 
 <a name="CozyClient+hydrateDocument"></a>
 
-### cozyClient.hydrateDocument(document, schema) ⇒ <code>HydratedDocument</code>
+### cozyClient.hydrateDocument(document, schemaArg) ⇒ <code>HydratedDocument</code>
 Resolves relationships on a document.
 
 The original document is kept in the target attribute of
@@ -907,7 +907,7 @@ the relationship
 | Param | Type | Description |
 | --- | --- | --- |
 | document | [<code>Document</code>](#Document) | for which relationships must be resolved |
-| schema | [<code>Schema</code>](#Schema) | for the document doctype |
+| schemaArg | [<code>Schema</code>](#Schema) | for the document doctype |
 
 <a name="CozyClient+makeNewDocument"></a>
 
@@ -2056,12 +2056,6 @@ Checks if the permission item is about a specific doctype
 | permission | [<code>PermissionItem</code>](#PermissionItem) | - |
 | type | <code>string</code> | doctype |
 
-<a name="currentResult"></a>
-
-## currentResult() ⇒ <code>HydratedQueryState</code>
-Returns the query from the store with hydrated documents.
-
-**Kind**: global function  
 <a name="fetchMore"></a>
 
 ## fetchMore()
@@ -2137,65 +2131,21 @@ Couchdb document like an io.cozy.files
 | values | <code>Array.&lt;string&gt;</code> |  |
 | type | <code>string</code> | a couch db database like 'io.cozy.files' |
 
-<a name="Registry"></a>
+<a name="HydratedQueryState"></a>
 
-## Registry : <code>RegistryApp</code>
+## HydratedQueryState ⇒ [<code>HydratedQueryState</code>](#HydratedQueryState)
+Returns the query from the store with hydrated documents.
+
 **Kind**: global typedef  
+<a name="RegistryApp"></a>
 
-* [Registry](#Registry) : <code>RegistryApp</code>
-    * [.installApp(app, source)](#Registry+installApp) ⇒ <code>Promise</code>
-    * [.uninstallApp()](#Registry+uninstallApp)
-    * [.fetchApps(params)](#Registry+fetchApps) ⇒ <code>Array.&lt;RegistryApp&gt;</code>
-    * [.fetchAppsInMaintenance()](#Registry+fetchAppsInMaintenance) ⇒ <code>Array.&lt;RegistryApp&gt;</code>
-    * [.fetchApp(slug)](#Registry+fetchApp) ⇒ <code>RegistryApp</code>
+## RegistryApp : <code>object</code>
+**Kind**: global typedef  
+**Properties**
 
-<a name="Registry+installApp"></a>
-
-### registry.installApp(app, source) ⇒ <code>Promise</code>
-Installs or updates an app from a source.
-
-Accepts the terms if the app has them.
-
-**Kind**: instance method of [<code>Registry</code>](#Registry)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| app | <code>RegistryApp</code> | App to be installed |
-| source | <code>string</code> | String (ex: registry://drive/stable) |
-
-<a name="Registry+uninstallApp"></a>
-
-### registry.uninstallApp()
-Uninstalls an app.
-
-**Kind**: instance method of [<code>Registry</code>](#Registry)  
-<a name="Registry+fetchApps"></a>
-
-### registry.fetchApps(params) ⇒ <code>Array.&lt;RegistryApp&gt;</code>
-Fetch at most 200 apps from the channel
-
-**Kind**: instance method of [<code>Registry</code>](#Registry)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| params | <code>string</code> | Fetching parameters |
-| params.type | <code>string</code> | "webapp" or "konnector" |
-| params.channel | <code>string</code> | "dev"/"beta"/"stable" |
-
-<a name="Registry+fetchAppsInMaintenance"></a>
-
-### registry.fetchAppsInMaintenance() ⇒ <code>Array.&lt;RegistryApp&gt;</code>
-Fetch the list of apps that are in maintenance mode
-
-**Kind**: instance method of [<code>Registry</code>](#Registry)  
-<a name="Registry+fetchApp"></a>
-
-### registry.fetchApp(slug) ⇒ <code>RegistryApp</code>
-Fetch the status of a single app on the registry
-
-**Kind**: instance method of [<code>Registry</code>](#Registry)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| slug | <code>string</code> | The slug of the app to fetch |
+| Name | Type |
+| --- | --- |
+| slug | <code>string</code> | 
+| terms | <code>object</code> | 
+| installed | <code>boolean</code> | 
 

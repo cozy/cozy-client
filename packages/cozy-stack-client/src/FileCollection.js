@@ -33,6 +33,12 @@ import { FetchError } from './errors'
  * @property {string} _id - Id of the file
  */
 
+/**
+ * Stream is not defined in a browser, but is on NodeJS environment
+ *
+ * @typedef {object} Stream
+ */
+
 const ROOT_DIR_ID = 'io.cozy.files.root-dir'
 const CONTENT_TYPE_OCTET_STREAM = 'application/octet-stream'
 
@@ -311,7 +317,6 @@ class FileCollection extends DocumentCollection {
     return resp.data
   }
   /**
-   *
    * @param {File|Blob|Stream|string|ArrayBuffer} data file to be uploaded
    * @param {string} dirPath Path to upload the file to. ie : /Administative/XXX/
    * @returns {object} Created io.cozy.files
@@ -358,8 +363,16 @@ class FileCollection extends DocumentCollection {
    */
   async createFile(
     data,
-    { name, dirId = '', executable, metadata, ...options } = {}
+    {
+      name: nameOption,
+      dirId = '',
+      executable: executableOption,
+      metadata,
+      ...options
+    } = {}
   ) {
+    let name = nameOption
+    let executable = executableOption
     // handle case where data is a file and contains the name
     if (!name && typeof data.name === 'string') {
       name = data.name
@@ -780,16 +793,18 @@ class FileCollection extends DocumentCollection {
    * This method should not be called directly to upload a file.
    * You should use `createFile`
    *
-   * @param {File|Blob|Stream|string|ArrayBuffer} data file to be uploaded
+   * @param {File|Blob|Stream|string|ArrayBuffer} dataArg file to be uploaded
    * @param {string} path Uri to call the stack from. Something like
    * `/files/${dirId}?Name=${name}&Type=file&Executable=${executable}&MetadataID=${metadataId}`
    * @param {object} options Additional headers
    * @param {string} method POST / PUT / PATCH
    */
-  async doUpload(data, path, options, method = 'POST') {
+  async doUpload(dataArg, path, options, method = 'POST') {
+    let data = dataArg
     if (!data) {
       throw new Error('missing data argument')
     }
+
     // transform any ArrayBufferView to ArrayBuffer
     if (data.buffer && data.buffer instanceof ArrayBuffer) {
       data = data.buffer

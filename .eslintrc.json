@@ -14,7 +14,7 @@
     "jsdoc/require-param": 0, // --fix breaks docstrings without params
     "jsdoc/require-returns": 0, // too much warnings for now
     "jsdoc/require-returns-description": 0, // too much warnings for now
-    "jsdoc/check-param-names": 2
+    "no-param-reassign": 2
   },
   "settings": {
     "react": {

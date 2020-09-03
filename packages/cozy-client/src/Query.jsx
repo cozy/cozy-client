@@ -143,9 +143,11 @@ Query.contextTypes = {
   store: PropTypes.object
 }
 
+const queryPropType = PropTypes.object
+
 Query.propTypes = {
   /** Query definition that will be executed and observed */
-  query: PropTypes.func.isRequired,
+  query: PropTypes.oneOfType([PropTypes.func, queryPropType]).isRequired,
   /** Name of the query */
   as: PropTypes.string,
   /** Function called with the data from the query */

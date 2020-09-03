@@ -20,7 +20,8 @@ import { fetchWithXMLHttpRequest, shouldXMLHTTPRequestBeUsed } from './xhrFetch'
 import MicroEE from 'microee'
 import { FetchError } from './errors'
 
-const normalizeUri = uri => {
+const normalizeUri = uriArg => {
+  let uri = uriArg
   if (uri === null) return null
   while (uri[uri.length - 1] === '/') {
     uri = uri.slice(0, -1)
@@ -92,7 +93,7 @@ class CozyStackClient {
    * @param  {string} method The HTTP method.
    * @param  {string} path The URI.
    * @param  {object} body The payload.
-   * @param  {object} opts
+   * @param  {object} opts Options for fetch
    * @returns {object}
    * @throws {FetchError}
    */
@@ -241,13 +242,14 @@ class CozyStackClient {
     }
   }
 
-  async fetchJSONWithCurrentToken(method, path, body, options = {}) {
+  async fetchJSONWithCurrentToken(method, path, bodyArg, options = {}) {
     //Since we modify the object later by adding in some case a
     //content-type, let's clone this object to scope the modification
     const clonedOptions = cloneDeep(options)
     const headers = (clonedOptions.headers = clonedOptions.headers || {})
     headers['Accept'] = 'application/json'
 
+    let body = bodyArg
     if (method !== 'GET' && method !== 'HEAD' && body !== undefined) {
       if (!headers['Content-Type']) {
         headers['Content-Type'] = 'application/json'

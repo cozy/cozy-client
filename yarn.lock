@@ -6195,10 +6195,10 @@ escodegen@~1.9.0:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-cozy-app@1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-cozy-app/-/eslint-config-cozy-app-1.4.0.tgz#fb751b78cafc4384f90b22570459376f5f775ff9"
-  integrity sha512-0XYwjd9XO6Sl3Rp5aiZnlCkXReg1xBrLWGnlDATgO2/EoHMEe9AUX7/Y7ui/j1YJwThZ5twjdkcjb8YJXgOX1w==
+eslint-config-cozy-app@1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-cozy-app/-/eslint-config-cozy-app-1.6.0.tgz#68b4c24adb341c445dc44825255fe3f2ae3e8fc0"
+  integrity sha512-5Cc9Vdp7KR/McWEeG/9Git+zN525/2YbI9AUzXlPjNPHTLo/5yYIFyWWDk2OAvuKCKt7kJ4xFyADWB3q/Y2rwg==
   dependencies:
     babel-eslint "10.0.1"
     eslint "5.16.0"

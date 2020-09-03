@@ -102,13 +102,13 @@ class HasMany extends Association {
    * We certainly should use something like `updateRelationship`
    *
    */
-  addById(ids) {
+  addById(idsArg) {
     if (!this.target.relationships) this.target.relationships = {}
     if (!this.target.relationships[this.name]) {
       this.target.relationships[this.name] = { data: [] }
     }
 
-    ids = Array.isArray(ids) ? ids : [ids]
+    const ids = Array.isArray(idsArg) ? idsArg : [idsArg]
 
     const newRelations = ids
       .filter(id => !this.existsById(id))
@@ -123,8 +123,8 @@ class HasMany extends Association {
     return this.save(this.target)
   }
 
-  removeById(ids) {
-    ids = Array.isArray(ids) ? ids : [ids]
+  removeById(idsArg) {
+    const ids = Array.isArray(idsArg) ? idsArg : [idsArg]
 
     this.target.relationships[this.name].data = this.target.relationships[
       this.name

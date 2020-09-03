@@ -1,5 +1,6 @@
 export default class AccessToken {
-  constructor(data) {
+  constructor(dataArg) {
+    let data = dataArg
     if (typeof data === 'string') data = JSON.parse(data)
 
     this.tokenType = data.token_type || data.tokenType

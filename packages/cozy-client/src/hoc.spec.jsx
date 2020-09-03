@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Provider as ReduxProvider } from 'react-redux'
 import { mount } from 'enzyme'
 
@@ -88,6 +88,42 @@ describe('queryConnect', () => {
         .prop('upperSimpsons')
         .data.map(x => x.name)
     ).toEqual(['HOMER', 'MARGE'])
+  })
+
+  it('should be possible to pass props', () => {
+    const WithQuery = queryConnect({
+      simpson: props => ({
+        query: Q('io.cozy.simpsons').getById(props.simpsonId),
+        as: `simpsons/${props.simpsonId}`
+      })
+    })(Component)
+    const client = setupClient()
+    const Wrapper = ({ client }) => {
+      const [id, setId] = useState('marge')
+      return (
+        <Provider client={client}>
+          <div>
+            <WithQuery simpsonId={id} />
+            <button onClick={() => setId('homer')}>change to homer</button>
+          </div>
+        </Provider>
+      )
+    }
+    const uut = mount(<Wrapper client={client} />)
+    const props = uut.find('Query').props()
+    expect(props.query).toEqual(
+      expect.objectContaining({
+        id: 'marge'
+      })
+    )
+    uut.find('button').simulate('click')
+    uut.update()
+    const props2 = uut.find('Query').props()
+    expect(props2.query).toEqual(
+      expect.objectContaining({
+        id: 'homer'
+      })
+    )
   })
 })
 
