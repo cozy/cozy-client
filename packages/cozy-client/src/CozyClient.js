@@ -15,6 +15,7 @@ import {
   default as reducer,
   createStore,
   initQuery,
+  loadQuery,
   receiveQueryResult,
   receiveQueryError,
   initMutation,
@@ -620,6 +621,7 @@ client.query(Q('io.cozy.bills'))`)
       }
     }
     try {
+      this.dispatch(loadQuery(queryId))
       const response = await this.requestQuery(queryDefinition)
       this.dispatch(
         receiveQueryResult(queryId, response, {

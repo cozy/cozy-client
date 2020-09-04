@@ -106,7 +106,12 @@ export const getQueryFromState = (state, queryId) =>
 export const getRawQueryFromState = (state, queryId) =>
   getQueryFromSlice(getStateRoot(state).queries, queryId)
 
-export { initQuery, receiveQueryResult, receiveQueryError } from './queries'
+export {
+  initQuery,
+  loadQuery,
+  receiveQueryResult,
+  receiveQueryError
+} from './queries'
 
 export { resetState }
 

@@ -15,6 +15,7 @@ import sift from 'sift'
 import get from 'lodash/get'
 
 const INIT_QUERY = 'INIT_QUERY'
+const LOAD_QUERY = 'LOAD_QUERY'
 const RECEIVE_QUERY_RESULT = 'RECEIVE_QUERY_RESULT'
 const RECEIVE_QUERY_ERROR = 'RECEIVE_QUERY_ERROR'
 
@@ -59,6 +60,19 @@ const query = (state = queryInitialState, action, nextDocuments) => {
         ...state,
         id: action.queryId,
         definition: action.queryDefinition,
+
+        // When the query is new, we set "fetchStatus" to "loading"
+        // directly since we know it will be loaded right away.
+        // This way, the loadQuery action will have no effect, and
+        // we save an additional render.
+        fetchStatus: state.lastUpdate ? state.fetchStatus : 'loading'
+      }
+    case LOAD_QUERY:
+      if (state.fetchStatus === 'loading') {
+        return state
+      }
+      return {
+        ...state,
         fetchStatus: 'loading'
       }
     case RECEIVE_QUERY_RESULT: {
@@ -297,6 +311,13 @@ export const initQuery = (queryId, queryDefinition) => {
     type: INIT_QUERY,
     queryId,
     queryDefinition
+  }
+}
+
+export const loadQuery = queryId => {
+  return {
+    type: LOAD_QUERY,
+    queryId
   }
 }
 

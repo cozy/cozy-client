@@ -72,7 +72,7 @@ describe('Query', () => {
       }
       expect(spy).toHaveBeenNthCalledWith(1, initQueryDispatch)
       expect(spy).toHaveBeenNthCalledWith(2, initQueryDispatch)
-      expect(spy).toHaveBeenCalledTimes(2)
+      expect(spy).toHaveBeenCalledTimes(3)
     })
   })
 
