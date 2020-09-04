@@ -828,8 +828,8 @@ client.query(Q('io.cozy.bills'))`)
    * If related documents are not in the store, they will not be fetched automatically.
    * Instead, the relationships will have null documents.
    *
-   * @param  {string} doctype
-   * @param  {Array<Document>} documents
+   * @param  {string} doctype - Doctype of the documents being hydrated
+   * @param  {Array<Document>} documents - Documents to be hydrated
    * @returns {Array<HydratedDocument>}
    */
   hydrateDocuments(doctype, documents) {
@@ -1224,7 +1224,7 @@ instantiation of the client.`
    * This is useful for cases like Pouch replication, which wants to
    * set some data in the store.
    *
-   * @param data {Object} { doctype: [data] }
+   * @param {object} data - Data that is inserted in the store. Shape: { doctype: [data] }
    */
   setData(data) {
     this.ensureStore()

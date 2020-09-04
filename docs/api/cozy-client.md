@@ -889,10 +889,10 @@ Instead, the relationships will have null documents.
 
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 
-| Param | Type |
-| --- | --- |
-| doctype | <code>string</code> | 
-| documents | [<code>Array.&lt;Document&gt;</code>](#Document) | 
+| Param | Type | Description |
+| --- | --- | --- |
+| doctype | <code>string</code> | Doctype of the documents being hydrated |
+| documents | [<code>Array.&lt;Document&gt;</code>](#Document) | Documents to be hydrated |
 
 <a name="CozyClient+hydrateDocument"></a>
 
@@ -1090,7 +1090,7 @@ set some data in the store.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| data | <code>Object</code> | { doctype: [data] } |
+| data | <code>object</code> | Data that is inserted in the store. Shape: { doctype: [data] } |
 
 <a name="CozyClient.fromOldClient"></a>
 

@@ -54,7 +54,7 @@ const createCallbackServer = serverOptions => {
  * desktop browser of the user.
  *
  * @param {object} serverOptions - Options for the OAuth callback server
- * @param {integer} serverOptions.port - Port used for the OAuth callback server
+ * @param {number} serverOptions.port - Port used for the OAuth callback server
  * @param {Function} serverOptions.onAuthentication - Callback when the user authenticates
  * @param {Function} serverOptions.onListen - Callback called with the authentication URL
  * when the server starts
