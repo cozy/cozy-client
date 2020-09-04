@@ -215,6 +215,7 @@ describe('Store', () => {
           .label
       ).toBe('Buy croissants')
     })
+
     it('it should store documents with included from a mutation result', () => {
       store.dispatch(
         receiveMutationResult('foo', {
@@ -227,6 +228,64 @@ describe('Store', () => {
         getDocumentFromState(store.getState(), 'io.cozy.files', FILE_1._id)
           .label
       ).toBe(FILE_1.label)
+    })
+
+    describe('deletion', () => {
+      let originalWarn
+      beforeEach(() => {
+        originalWarn = console.warn
+        console.warn = function(message) {
+          if (
+            message.includes(
+              'getDocumentFromSlice: io.cozy.todos:todo_1 is absent'
+            )
+          ) {
+            return
+          } else {
+            return originalWarn.apply(this, arguments)
+          }
+        }
+      })
+
+      afterEach(() => {
+        console.warn = originalWarn
+      })
+
+      it('should remove a deleted doc received in a mutation result', () => {
+        store.dispatch(
+          receiveQueryResult('allTodos', {
+            data: [TODO_1, TODO_2],
+            meta: { count: 2 },
+            skip: 0,
+            next: false
+          })
+        )
+        store.dispatch(
+          receiveMutationResult(
+            'foo',
+            {
+              data: [TODO_1]
+            },
+            {},
+            {
+              document: TODO_1,
+              mutationType: 'DELETE_DOCUMENT'
+            }
+          )
+        )
+        expect(
+          getDocumentFromState(store.getState(), 'io.cozy.todos', TODO_1._id)
+        ).toBe(null)
+        expect(store.getState().cozy.documents['io.cozy.todos']).toEqual({
+          todo_2: {
+            _id: 'todo_2',
+            _rev: '2-4e015d830d3246e5a83b3466f437bf1f',
+            _type: 'io.cozy.todos',
+            done: false,
+            label: 'Check email'
+          }
+        })
+      })
     })
   })
 

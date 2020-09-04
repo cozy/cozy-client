@@ -2,6 +2,7 @@ import {
   extractAndMergeDocument,
   mergeDocumentsWithRelationships
 } from './documents'
+
 describe('extractAndMerge', () => {
   it('should return the right data', () => {
     const data = {

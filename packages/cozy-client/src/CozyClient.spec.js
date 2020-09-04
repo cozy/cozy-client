@@ -607,6 +607,34 @@ describe('CozyClient', () => {
     })
   })
 
+  describe('destroy', () => {
+    let doc
+    beforeEach(() => {
+      client.setData(
+        normalizeData({
+          'io.cozy.todos': [TODO_1]
+        })
+      )
+      doc = { ...TODO_1, label: 'Buy croissants' }
+      client.store.dispatch.mockReset()
+    })
+
+    it('should remove the document from the store', async () => {
+      await client.destroy(doc)
+      expect(client.store.dispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          definition: {
+            document: expect.objectContaining({
+              _id: 'todo_1'
+            }),
+            mutationType: 'DELETE_DOCUMENT'
+          },
+          mutationId: 1
+        })
+      )
+    })
+  })
+
   describe('getDocumentSavePlan', () => {
     it('should handle missing _rev and _id', () => {
       const NEW_FOO = {
