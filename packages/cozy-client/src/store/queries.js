@@ -56,6 +56,13 @@ const updateQueryDataFromResponse = (queryState, response, nextDocuments) => {
 const query = (state = queryInitialState, action, nextDocuments) => {
   switch (action.type) {
     case INIT_QUERY:
+      if (
+        state.lastUpdate &&
+        state.id === action.queryId &&
+        state.definition === action.queryDefinition
+      ) {
+        return state
+      }
       return {
         ...state,
         id: action.queryId,
@@ -275,9 +282,14 @@ const queries = (
   haveDocumentsChanged = true
 ) => {
   if (action.type == INIT_QUERY) {
+    const newQueryState = query(state[action.queryId], action)
+    // Do not create new object unnecessarily
+    if (newQueryState === state[action.queryId]) {
+      return state
+    }
     return {
       ...state,
-      [action.queryId]: query(state[action.queryId], action)
+      [action.queryId]: newQueryState
     }
   }
   if (isQueryAction(action)) {

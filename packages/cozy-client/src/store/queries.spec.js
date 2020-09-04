@@ -22,15 +22,26 @@ describe('queries reducer', () => {
   })
 
   it('should init correctly', () => {
-    applyAction(
-      initQuery(
-        'a',
-        new QueryDefinition({
-          doctype: 'io.cozy.todos'
-        })
-      )
-    )
+    const qdef = new QueryDefinition({
+      doctype: 'io.cozy.todos'
+    })
+    applyAction(initQuery('a', qdef))
     expect(state).toMatchSnapshot()
+  })
+
+  test('init should have no effect after receiveQueryResult', () => {
+    const qdef = new QueryDefinition({
+      doctype: 'io.cozy.todos'
+    })
+    applyAction(initQuery('a', qdef))
+    applyAction(
+      receiveQueryResult('a', {
+        data: [TODO_1, TODO_2]
+      })
+    )
+    let state1 = state
+    applyAction(initQuery('a', qdef))
+    expect(state1).toBe(state)
   })
 
   test('init should not set status to loading after receiveQueryResult', () => {
