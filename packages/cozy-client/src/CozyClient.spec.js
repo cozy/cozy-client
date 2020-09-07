@@ -943,7 +943,9 @@ describe('CozyClient', () => {
     it('should then dispatch a RECEIVE_QUERY_RESULT action', async () => {
       requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
       await client.query(query, { as: 'allTodos' })
-      expect(client.store.dispatch.mock.calls[1][0]).toEqual(
+      const dispatchCalls = client.store.dispatch.mock.calls
+      const lastDispatchCall = dispatchCalls[dispatchCalls.length - 1]
+      expect(lastDispatchCall[0]).toEqual(
         receiveQueryResult('allTodos', fakeResponse)
       )
     })
@@ -954,9 +956,9 @@ describe('CozyClient', () => {
       try {
         await client.query(query, { as: 'allTodos' })
       } catch (e) {} // eslint-disable-line no-empty
-      expect(client.store.dispatch.mock.calls[1][0]).toEqual(
-        receiveQueryError('allTodos', error)
-      )
+      const dispatchCalls = client.store.dispatch.mock.calls
+      const lastDispatchCall = dispatchCalls[dispatchCalls.length - 1]
+      expect(lastDispatchCall[0]).toEqual(receiveQueryError('allTodos', error))
     })
 
     it('should resolve to the query response', async () => {
@@ -1085,10 +1087,10 @@ describe('CozyClient', () => {
     it('should do nothing if fetch policy returns false', async () => {
       jest.spyOn(client, 'requestQuery')
       const fetchPolicy = jest.fn(() => false)
-      const fakeQueryState = {}
-      jest.spyOn(client, 'getQueryFromState').mockReturnValue(fakeQueryState)
       await client.query(query, { as: 'allTodos', fetchPolicy })
-      expect(fetchPolicy).toHaveBeenCalledWith(fakeQueryState)
+      const state = client.store.getState()
+      const queryState = getQueryFromState(state.cozy, 'allTodos')
+      expect(fetchPolicy).toHaveBeenCalledWith(queryState)
       expect(client.requestQuery).not.toHaveBeenCalled()
     })
 
@@ -1119,7 +1121,9 @@ describe('CozyClient', () => {
       })
       query.skip = 100
       await client.query(query, { as: 'allTodos' })
-      expect(client.store.dispatch.mock.calls[0][0]).toEqual(
+      const dispatchCalls = client.store.dispatch.mock.calls
+      const lastDispatchCall = dispatchCalls[dispatchCalls.length - 1]
+      expect(lastDispatchCall[0]).toEqual(
         receiveQueryResult('allTodos', fakeResponse)
       )
     })
@@ -1129,9 +1133,11 @@ describe('CozyClient', () => {
       getQueryFromState.mockReturnValueOnce({
         fetchStatus: 'loaded'
       })
-      query.bookmark = 'ohhimark'
+      query.bookmark = 'fake-bookmark'
       await client.query(query, { as: 'allTodos' })
-      expect(client.store.dispatch.mock.calls[0][0]).toEqual(
+      const dispatchCalls = client.store.dispatch.mock.calls
+      const lastDispatchCall = dispatchCalls[dispatchCalls.length - 1]
+      expect(lastDispatchCall[0]).toEqual(
         receiveQueryResult('allTodos', fakeResponse)
       )
     })

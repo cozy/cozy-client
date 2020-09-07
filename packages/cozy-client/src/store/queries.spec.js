@@ -22,15 +22,40 @@ describe('queries reducer', () => {
   })
 
   it('should init correctly', () => {
-    applyAction(
-      initQuery(
-        'a',
-        new QueryDefinition({
-          doctype: 'io.cozy.todos'
-        })
-      )
-    )
+    const qdef = new QueryDefinition({
+      doctype: 'io.cozy.todos'
+    })
+    applyAction(initQuery('a', qdef))
     expect(state).toMatchSnapshot()
+  })
+
+  test('init should have no effect after receiveQueryResult', () => {
+    const qdef = new QueryDefinition({
+      doctype: 'io.cozy.todos'
+    })
+    applyAction(initQuery('a', qdef))
+    applyAction(
+      receiveQueryResult('a', {
+        data: [TODO_1, TODO_2]
+      })
+    )
+    let state1 = state
+    applyAction(initQuery('a', qdef))
+    expect(state1).toBe(state)
+  })
+
+  test('init should not set status to loading after receiveQueryResult', () => {
+    const qdef = new QueryDefinition({
+      doctype: 'io.cozy.todos'
+    })
+    applyAction(initQuery('a', qdef))
+    applyAction(
+      receiveQueryResult('a', {
+        data: [TODO_1, TODO_2]
+      })
+    )
+    applyAction(initQuery('a', qdef))
+    expect(state.a.fetchStatus).toBe('loaded')
   })
 
   describe('updates', () => {
@@ -44,6 +69,7 @@ describe('queries reducer', () => {
         )
       )
     })
+
     it('should correctly update', () => {
       applyAction(
         receiveQueryResult('a', {
@@ -59,6 +85,7 @@ describe('queries reducer', () => {
       )
       expect(state['a'].data).toEqual([TODO_1._id, TODO_2._id])
     })
+
     it('should correctly update two queries', () => {
       applyAction(
         initQuery(
