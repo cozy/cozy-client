@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [14.2.0](https://github.com/cozy/cozy-client/compare/v14.1.3...v14.2.0) (2020-09-07)
+
+
+### Bug Fixes
+
+* Do not set loading on queryState for noninitial initQuery ([293cd1c](https://github.com/cozy/cozy-client/commit/293cd1c))
+
+
+### Features
+
+* Do not change references unnecessarily ([e8c2c81](https://github.com/cozy/cozy-client/commit/e8c2c81))
+
+
+
+
+
 ## [14.1.3](https://github.com/cozy/cozy-client/compare/v14.1.2...v14.1.3) (2020-09-04)
 
 
