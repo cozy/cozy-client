@@ -125,6 +125,21 @@ example.</p>
 <dd></dd>
 <dt><a href="#isShortcut">isShortcut</a> ⇒ <code>boolean</code></dt>
 <dd></dd>
+<dt><a href="#getSharingShortcutStatus">getSharingShortcutStatus</a> ⇒ <code>string</code></dt>
+<dd><p>Returns the status of a sharing shortcut.</p>
+</dd>
+<dt><a href="#getSharingShortcutTargetMime">getSharingShortcutTargetMime</a> ⇒ <code>string</code></dt>
+<dd><p>Returns the mime type of the target of the sharing shortcut, if it is a file.</p>
+</dd>
+<dt><a href="#getSharingShortcutTargetDoctype">getSharingShortcutTargetDoctype</a> ⇒ <code>string</code></dt>
+<dd><p>Returns the doctype of the target of the sharing shortcut.</p>
+</dd>
+<dt><a href="#isSharingShorcut">isSharingShorcut</a> ⇒ <code>boolean</code></dt>
+<dd><p>Returns whether the file is a shortcut to a sharing</p>
+</dd>
+<dt><a href="#isSharingShorcutNew">isSharingShorcutNew</a> ⇒ <code>boolean</code></dt>
+<dd><p>Returns whether the sharing shortcut is new</p>
+</dd>
 <dt><a href="#ensureMagicFolder">ensureMagicFolder</a> ⇒ <code>object</code></dt>
 <dd><p>Returns a &quot;Magic Folder&quot;, given its id. See <a href="https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.apps/#special-iocozyapps-doctypes">https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.apps/#special-iocozyapps-doctypes</a></p>
 </dd>
@@ -1653,6 +1668,64 @@ Returns base filename and extension
 | Param | Type | Description |
 | --- | --- | --- |
 | file | <code>File</code> | io.cozy.files |
+
+<a name="getSharingShortcutStatus"></a>
+
+## getSharingShortcutStatus ⇒ <code>string</code>
+Returns the status of a sharing shortcut.
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - A description of the status  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | <code>object</code> | io.cozy.files document |
+
+<a name="getSharingShortcutTargetMime"></a>
+
+## getSharingShortcutTargetMime ⇒ <code>string</code>
+Returns the mime type of the target of the sharing shortcut, if it is a file.
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - The mime-type of the target file, or an empty string is the target is not a file.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | <code>object</code> | io.cozy.files document |
+
+<a name="getSharingShortcutTargetDoctype"></a>
+
+## getSharingShortcutTargetDoctype ⇒ <code>string</code>
+Returns the doctype of the target of the sharing shortcut.
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - A doctype  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | <code>object</code> | io.cozy.files document |
+
+<a name="isSharingShorcut"></a>
+
+## isSharingShorcut ⇒ <code>boolean</code>
+Returns whether the file is a shortcut to a sharing
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | <code>object</code> | io.cozy.files document |
+
+<a name="isSharingShorcutNew"></a>
+
+## isSharingShorcutNew ⇒ <code>boolean</code>
+Returns whether the sharing shortcut is new
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | <code>object</code> | io.cozy.files document |
 
 <a name="ensureMagicFolder"></a>
 
