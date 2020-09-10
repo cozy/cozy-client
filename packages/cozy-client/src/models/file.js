@@ -103,3 +103,52 @@ export function getParentFolderId(file) {
   const parentId = get(file, 'attributes.dir_id')
   return parentId === '' ? null : parentId
 }
+
+/**
+ * Returns the status of a sharing shortcut.
+ *
+ * @param {object} file  - io.cozy.files document
+ *
+ * @returns {string} A description of the status
+ */
+export const getSharingShortcutStatus = file =>
+  get(file, 'metadata.sharing.status')
+
+/**
+ * Returns the mime type of the target of the sharing shortcut, if it is a file.
+ *
+ * @param {object} file  - io.cozy.files document
+ *
+ * @returns {string} The mime-type of the target file, or an empty string is the target is not a file.
+ */
+export const getSharingShortcutTargetMime = file =>
+  get(file, 'metadata.target.mime')
+
+/**
+ * Returns the doctype of the target of the sharing shortcut.
+ *
+ * @param {object} file  - io.cozy.files document
+ *
+ * @returns {string} A doctype
+ */
+export const getSharingShortcutTargetDoctype = file =>
+  get(file, 'metadata.target._type')
+
+/**
+ * Returns whether the file is a shortcut to a sharing
+ *
+ * @param {object} file  - io.cozy.files document
+ *
+ * @returns {boolean}
+ */
+export const isSharingShorcut = file => Boolean(getSharingShortcutStatus(file))
+
+/**
+ * Returns whether the sharing shortcut is new
+ *
+ * @param {object} file  - io.cozy.files document
+ *
+ * @returns {boolean}
+ */
+export const isSharingShorcutNew = file =>
+  getSharingShortcutStatus(file) === 'new'

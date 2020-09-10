@@ -146,4 +146,73 @@ describe('File Model', () => {
       )
     })
   })
+
+  describe('Sharing shortcuts', () => {
+    const id = 'abc123'
+    const type = 'io.cozy.files'
+
+    const nonSharingShortcutDocument = { id, type }
+    const sharingShortcutDocument = {
+      ...nonSharingShortcutDocument,
+      metadata: {
+        sharing: { status: 'seen' },
+        target: {
+          mime: 'target-mimetype',
+          _type: 'io.cozy.files'
+        }
+      }
+    }
+    const newShortcutDocument = {
+      ...nonSharingShortcutDocument,
+      metadata: {
+        sharing: { status: 'new' },
+        target: {
+          mime: 'target-mimetype-2',
+          _type: 'io.cozy.files'
+        }
+      }
+    }
+
+    it('identifies a sharing shortcut', () => {
+      expect(file.isSharingShorcut(sharingShortcutDocument)).toBe(true)
+      expect(file.isSharingShorcut(nonSharingShortcutDocument)).toBe(false)
+    })
+
+    it('detects if a sharing shortcut is new', () => {
+      expect(file.isSharingShorcutNew(newShortcutDocument)).toBe(true)
+      expect(file.isSharingShorcutNew(nonSharingShortcutDocument)).toBe(false)
+      expect(file.isSharingShorcutNew(sharingShortcutDocument)).toBe(false)
+    })
+
+    it('returns the sharring shortcut status', () => {
+      expect(file.getSharingShortcutStatus(newShortcutDocument)).toBe('new')
+      expect(file.getSharingShortcutStatus(sharingShortcutDocument)).toBe(
+        'seen'
+      )
+      expect(
+        file.getSharingShortcutStatus(nonSharingShortcutDocument)
+      ).toBeUndefined()
+    })
+
+    it('returns the sharring shortcut target mime type', () => {
+      expect(file.getSharingShortcutTargetMime(newShortcutDocument)).toBe(
+        'target-mimetype-2'
+      )
+      expect(file.getSharingShortcutTargetMime(sharingShortcutDocument)).toBe(
+        'target-mimetype'
+      )
+      expect(
+        file.getSharingShortcutTargetMime(nonSharingShortcutDocument)
+      ).toBeUndefined()
+    })
+
+    it('returns the sharring shortcut target doctype', () => {
+      expect(
+        file.getSharingShortcutTargetDoctype(sharingShortcutDocument)
+      ).toBe('io.cozy.files')
+      expect(
+        file.getSharingShortcutTargetMime(nonSharingShortcutDocument)
+      ).toBeUndefined()
+    })
+  })
 })
