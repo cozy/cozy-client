@@ -49,6 +49,9 @@ class QueryDefinition {
    * @returns {QueryDefinition}  The QueryDefinition object.
    */
   getById(id) {
+    if (!id) {
+      throw new Error('getById called with undefined id')
+    }
     return new QueryDefinition({ ...this.toDefinition(), id })
   }
 
