@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [14.3.0](https://github.com/cozy/cozy-client/compare/v14.2.0...v14.3.0) (2020-09-10)
+
+
+### Features
+
+* Add model functions to deal with sharing shortcuts ([4f02370](https://github.com/cozy/cozy-client/commit/4f02370))
+
+
+
+
+
 # [14.2.0](https://github.com/cozy/cozy-client/compare/v14.1.3...v14.2.0) (2020-09-07)
 
 
