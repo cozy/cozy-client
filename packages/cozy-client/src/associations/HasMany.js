@@ -1,4 +1,5 @@
 import get from 'lodash/get'
+import merge from 'lodash/merge'
 import Association from './Association'
 import { QueryDefinition } from '../queries/dsl'
 import { receiveQueryResult, getDocumentFromState } from '../store'
@@ -9,6 +10,9 @@ const empty = () => ({
   meta: { count: 0 }
 })
 
+const updateArray = (array, indexArg, el) => {
+  const index = indexArg === -1 ? array.length : indexArg
+  return [...array.slice(0, index), el, ...array.slice(index + 1)]
 }
 
 /**
@@ -213,6 +217,54 @@ class HasMany extends Association {
   }
 }
 
+/**
+ * Gets a relationship item with the relationship name and id
+ *
+ * @param {object} doc - Document to be updated
+ * @param {string} relName - Name of the relationship
+ * @param {string} relItemId - Id of the relationship item
+ */
+HasMany.getHasManyItem = (doc, relName, relItemId) => {
+  const relData = get(doc, `relationships.${relName}.data`, [])
+  return relData.find(rel => rel._id == relItemId)
+}
+
+/**
+ * Sets a relationship item with the relationship name and id
+ *
+ * @param {object} doc - Document to be updated
+ * @param {string} relName - Name of the relationship
+ * @param {string} relItemId - Id of the relationship item
+ * @param {object} relItemAttrs - Attributes to be set (at least _id and _type)
+ */
+HasMany.setHasManyItem = (doc, relName, relItemId, relItemAttrs) => {
+  const relData = get(doc, `relationships.${relName}.data`, [])
+  const relIndex = relData.findIndex(rel => rel._id === relItemId)
+  const updatedRelItem = merge({}, relData[relIndex], relItemAttrs)
+  const updatedRelData = updateArray(relData, relIndex, updatedRelItem)
+  const updatedDocument = HasMany.updateRelationship(
+    doc,
+    relName,
+    relationship => merge({}, relationship, { data: updatedRelData })
+  )
+  return updatedDocument
+}
+
+/**
+ * Updates a relationship item with the relationship name and id
+ *
+ * @param {object} doc - Document to be updated
+ * @param {string} relName - Name of the relationship
+ * @param {string} relItemId - Id of the relationship item
+ * @param {Function} updater - receives the current relationship item and should
+ * return an updated version. Merge should be used in the updater
+ * if previous relationship item fields are to be kept.
+ */
+HasMany.updateHasManyItem = (doc, relName, relItemId, updater) => {
+  const relItem = HasMany.getHasManyItem(doc, relName, relItemId)
+  const updatedRelItem = updater(relItem)
+  return HasMany.setHasManyItem(doc, relName, relItemId, updatedRelItem)
+}
 
 HasMany.updateRelationship = (doc, relName, updateFn) => {
   return {
