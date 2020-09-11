@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [14.4.0](https://github.com/cozy/cozy-client/compare/v14.3.0...v14.4.0) (2020-09-11)
+
+
+### Bug Fixes
+
+* Remove fast_finish: true ([8fa88ec](https://github.com/cozy/cozy-client/commit/8fa88ec))
+
+
+### Features
+
+* Add account model helpers ([bc68346](https://github.com/cozy/cozy-client/commit/bc68346))
+* Add static helpers to deal with relationship data ([cae291f](https://github.com/cozy/cozy-client/commit/cae291f))
+* Throw if getById is called without id ([bc00255](https://github.com/cozy/cozy-client/commit/bc00255))
+
+
+
+
+
 # [14.3.0](https://github.com/cozy/cozy-client/compare/v14.2.0...v14.3.0) (2020-09-10)
 
 
