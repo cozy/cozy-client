@@ -9,6 +9,8 @@ const empty = () => ({
   meta: { count: 0 }
 })
 
+}
+
 /**
  * Related documents are stored in the relationships attribute of the object,
  * following the JSON API spec.
@@ -165,16 +167,7 @@ class HasMany extends Association {
   }
 
   updateRelationship(target, updateFn) {
-    return {
-      ...target,
-      relationships: {
-        ...target.relationships,
-        [this.name]: {
-          ...target.relationships[this.name],
-          ...updateFn(target.relationships[this.name])
-        }
-      }
-    }
+    return HasMany.updateRelationship(target, this.name, updateFn)
   }
 
   updateRelationshipData = getUpdatedRelationshipData => (
@@ -217,6 +210,20 @@ class HasMany extends Association {
     const relationships = get(document, `relationships.${assoc.name}.data`, [])
     const ids = relationships.map(assoc => assoc._id)
     return new QueryDefinition({ doctype: assoc.doctype, ids })
+  }
+}
+
+
+HasMany.updateRelationship = (doc, relName, updateFn) => {
+  return {
+    ...doc,
+    relationships: {
+      ...doc.relationships,
+      [relName]: {
+        ...doc.relationships[relName],
+        ...updateFn(doc.relationships[name])
+      }
+    }
   }
 }
 
