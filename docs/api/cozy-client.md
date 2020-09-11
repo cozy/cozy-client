@@ -61,6 +61,15 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 ## Constants
 
 <dl>
+<dt><a href="#getHasManyItem">getHasManyItem</a></dt>
+<dd><p>Gets a relationship item with the relationship name and id</p>
+</dd>
+<dt><a href="#setHasManyItem">setHasManyItem</a></dt>
+<dd><p>Sets a relationship item with the relationship name and id</p>
+</dd>
+<dt><a href="#updateHasManyItem">updateHasManyItem</a></dt>
+<dd><p>Updates a relationship item with the relationship name and id</p>
+</dd>
 <dt><a href="#generateWebLink">generateWebLink</a> ⇒ <code>string</code></dt>
 <dd><p>generateWebLink - Construct a link to a web app</p>
 <p>This function does not get its cozy url from a CozyClient instance so it can
@@ -71,8 +80,14 @@ example.</p>
 <dt><a href="#getMutedErrors">getMutedErrors</a> ⇒ <code>Array</code></dt>
 <dd><p>getMutedErrors - Returns the list of errors that have been muted for the given account</p>
 </dd>
-<dt><a href="#muteError">muteError</a> ⇒ <code>object</code></dt>
+<dt><a href="#muteError">muteError</a> ⇒ <code><a href="#CozyAccount">CozyAccount</a></code></dt>
 <dd><p>muteError - Adds an error to the list of muted errors for the given account</p>
+</dd>
+<dt><a href="#getContractSyncStatusFromAccount">getContractSyncStatusFromAccount</a></dt>
+<dd><p>Returns whether a contract is synced from account relationship</p>
+</dd>
+<dt><a href="#setContractSyncStatusInAccount">setContractSyncStatusInAccount</a></dt>
+<dd><p>Sets contract sync status into account relationship</p>
 </dd>
 <dt><a href="#getStoreURL">getStoreURL</a> ⇒ <code>string</code></dt>
 <dd><p>Returns the store URL of an app/konnector</p>
@@ -264,6 +279,8 @@ we have in the store.</p>
 
 <dl>
 <dt><a href="#QueryState">QueryState</a> : <code>object</code></dt>
+<dd></dd>
+<dt><a href="#CozyAccount">CozyAccount</a> : <code>object</code></dt>
 <dd></dd>
 <dt><a href="#Document">Document</a> : <code>object</code></dt>
 <dd><p>Couchdb document like an io.cozy.files</p>
@@ -1404,6 +1421,47 @@ Returns the relationship for a given doctype/name
 Validates a document considering the descriptions in schema.attributes.
 
 **Kind**: instance method of [<code>Schema</code>](#Schema)  
+<a name="getHasManyItem"></a>
+
+## getHasManyItem
+Gets a relationship item with the relationship name and id
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doc | <code>object</code> | Document to be updated |
+| relName | <code>string</code> | Name of the relationship |
+| relItemId | <code>string</code> | Id of the relationship item |
+
+<a name="setHasManyItem"></a>
+
+## setHasManyItem
+Sets a relationship item with the relationship name and id
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doc | <code>object</code> | Document to be updated |
+| relName | <code>string</code> | Name of the relationship |
+| relItemId | <code>string</code> | Id of the relationship item |
+| relItemAttrs | <code>object</code> | Attributes to be set (at least _id and _type) |
+
+<a name="updateHasManyItem"></a>
+
+## updateHasManyItem
+Updates a relationship item with the relationship name and id
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doc | <code>object</code> | Document to be updated |
+| relName | <code>string</code> | Name of the relationship |
+| relItemId | <code>string</code> | Id of the relationship item |
+| updater | <code>function</code> | receives the current relationship item and should return an updated version. Merge should be used in the updater if previous relationship item fields are to be kept. |
+
 <a name="generateWebLink"></a>
 
 ## generateWebLink ⇒ <code>string</code>
@@ -1441,16 +1499,38 @@ getMutedErrors - Returns the list of errors that have been muted for the given a
 
 <a name="muteError"></a>
 
-## muteError ⇒ <code>object</code>
+## muteError ⇒ [<code>CozyAccount</code>](#CozyAccount)
 muteError - Adds an error to the list of muted errors for the given account
 
 **Kind**: global constant  
-**Returns**: <code>object</code> - An updated io.cozy.accounts  
+**Returns**: [<code>CozyAccount</code>](#CozyAccount) - An updated io.cozy.accounts  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| account | <code>object</code> | io.cozy.accounts |
+| account | [<code>CozyAccount</code>](#CozyAccount) | io.cozy.accounts |
 | errorType | <code>string</code> | The type of the error to mute |
+
+<a name="getContractSyncStatusFromAccount"></a>
+
+## getContractSyncStatusFromAccount
+Returns whether a contract is synced from account relationship
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| account | [<code>CozyAccount</code>](#CozyAccount) | Cozy account |
+
+<a name="setContractSyncStatusInAccount"></a>
+
+## setContractSyncStatusInAccount
+Sets contract sync status into account relationship
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| account | [<code>CozyAccount</code>](#CozyAccount) | Cozy account |
 
 <a name="getStoreURL"></a>
 
@@ -2173,6 +2253,10 @@ HOC to provide mutations to components. Needs client in context or as prop.
 <a name="QueryState"></a>
 
 ## QueryState : <code>object</code>
+**Kind**: global typedef  
+<a name="CozyAccount"></a>
+
+## CozyAccount : <code>object</code>
 **Kind**: global typedef  
 <a name="Document"></a>
 

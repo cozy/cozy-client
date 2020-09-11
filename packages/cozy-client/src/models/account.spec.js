@@ -1,6 +1,34 @@
 import MockDate from 'mockdate'
-import { account } from './'
-const { getMutedErrors, muteError } = account
+import {
+  setContractSyncStatusInAccount,
+  getContractSyncStatusFromAccount,
+  getMutedErrors,
+  muteError
+} from './account'
+
+const fixtures = {
+  simpleAccount: {
+    _id: 'simple-account-id',
+    account_type: 'test',
+    auth: {
+      login: 'login',
+      password: 'pass'
+    }
+  },
+  existingAccount: {
+    _id: '561be660ff384ce0846c8f20e829ad62',
+    account_type: 'test',
+    auth: {
+      login: 'login',
+      password: 'pass'
+    },
+    relationships: {
+      contracts: {
+        data: [{ _id: 'contract-id-1', _type: 'io.cozy.bank.accounts' }]
+      }
+    }
+  }
+}
 
 describe('account model', () => {
   const MOCKED_DATE = '2018-05-05T09:09:00.115Z'
@@ -96,6 +124,56 @@ describe('account model', () => {
           mutedAt: MOCKED_DATE
         }
       ]
+    })
+  })
+
+  describe('contract sync status', () => {
+    it('should get/set correctly the sync status', () => {
+      const CONTRACT_ID = 'contract-id-1'
+
+      const syncStatus = getContractSyncStatusFromAccount(
+        fixtures.existingAccount,
+        CONTRACT_ID
+      )
+      // Check that default value is correctly returned
+      expect(syncStatus).toBe(true)
+
+      const account2 = setContractSyncStatusInAccount(
+        fixtures.existingAccount,
+        CONTRACT_ID,
+        false
+      )
+      const syncStatus2 = getContractSyncStatusFromAccount(
+        account2,
+        CONTRACT_ID
+      )
+      expect(syncStatus2).toBe(false)
+      const account3 = setContractSyncStatusInAccount(
+        account2,
+        CONTRACT_ID,
+        true
+      )
+      const syncStatus3 = getContractSyncStatusFromAccount(
+        account3,
+        CONTRACT_ID
+      )
+
+      expect(syncStatus3).toBe(true)
+    })
+
+    it('should throw when getting/setting sync status for contract that does not exist', () => {
+      expect(() =>
+        getContractSyncStatusFromAccount(
+          fixtures.existingAccount,
+          'non-existing-contract-id'
+        )
+      ).toThrow('Cannot find contrat non-existing-contract-id in account')
+      expect(() =>
+        setContractSyncStatusInAccount(
+          fixtures.existingAccount,
+          'non-existing-contract-id'
+        )
+      ).toThrow('Cannot find contrat non-existing-contract-id in account')
     })
   })
 })
