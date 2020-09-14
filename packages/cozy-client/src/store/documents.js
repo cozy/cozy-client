@@ -1,10 +1,12 @@
-import { isReceivingData } from './queries'
-import { MutationTypes } from '../queries/dsl'
-import { isReceivingMutationResult } from './mutations'
 import keyBy from 'lodash/keyBy'
 import get from 'lodash/get'
 import isEqual from 'lodash/isEqual'
 import omit from 'lodash/omit'
+
+import { isReceivingData } from './queries'
+import { MutationTypes } from '../queries/dsl'
+import { isReceivingMutationResult } from './mutations'
+
 import { properId } from './helpers'
 
 const storeDocument = (state, document) => {

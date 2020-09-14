@@ -1,3 +1,14 @@
+import mapValues from 'lodash/mapValues'
+import fromPairs from 'lodash/fromPairs'
+import flatten from 'lodash/flatten'
+import uniqBy from 'lodash/uniqBy'
+import zip from 'lodash/zip'
+import forEach from 'lodash/forEach'
+import get from 'lodash/get'
+import MicroEE from 'microee'
+
+import CozyStackClient, { OAuthClient } from 'cozy-stack-client'
+
 import { REGISTRATION_ABORT } from './const'
 
 import StackLink from './StackLink'
@@ -8,7 +19,6 @@ import {
 } from './associations/helpers'
 import { dehydrate } from './helpers'
 import { QueryDefinition, Mutations, Q } from './queries/dsl'
-import CozyStackClient, { OAuthClient } from 'cozy-stack-client'
 import { authenticateWithCordova } from './authentication/mobile'
 import optimizeQueryDefinitions from './queries/optimize'
 import {
@@ -30,14 +40,6 @@ import fetchPolicies from './policies'
 import Schema from './Schema'
 import { chain } from './CozyLink'
 import ObservableQuery from './ObservableQuery'
-import mapValues from 'lodash/mapValues'
-import fromPairs from 'lodash/fromPairs'
-import flatten from 'lodash/flatten'
-import uniqBy from 'lodash/uniqBy'
-import zip from 'lodash/zip'
-import forEach from 'lodash/forEach'
-import get from 'lodash/get'
-import MicroEE from 'microee'
 import { CozyClient as SnapshotClient } from './testing/snapshots'
 
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
