@@ -100,7 +100,7 @@ const schema = {
     }
   }
 }
-````
+```
 
 ```javascript
 const document = {
