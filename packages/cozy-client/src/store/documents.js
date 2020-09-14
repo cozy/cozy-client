@@ -6,6 +6,7 @@ import get from 'lodash/get'
 import isEqual from 'lodash/isEqual'
 import omit from 'lodash/omit'
 import { properId } from './helpers'
+import debug from '../debug'
 
 const storeDocument = (state, document) => {
   const type = document._type
@@ -104,7 +105,7 @@ export const getDocumentFromSlice = (state = {}, doctype, id) => {
     )
   }
   if (!state[doctype]) {
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV !== 'production' && debug.debug) {
       console.warn(
         `getDocumentFromSlice: ${doctype} is absent from the store's documents. State is`,
         state
@@ -112,7 +113,7 @@ export const getDocumentFromSlice = (state = {}, doctype, id) => {
     }
     return null
   } else if (!state[doctype][id]) {
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV !== 'production' && debug.debug) {
       console.warn(
         `getDocumentFromSlice: ${doctype}:${id} is absent from the store documents. State is`,
         state
@@ -129,7 +130,7 @@ export const getCollectionFromSlice = (state = {}, doctype) => {
       'getDocumentFromSlice: Cannot retrieve document with undefined doctype'
     )
   }
-  if (!state[doctype]) {
+  if (!state[doctype] && debug.debug) {
     if (process.env.NODE_ENV !== 'production') {
       console.warn(
         `getCollectionFromSlice: ${doctype} is absent from the store documents. State is`,
