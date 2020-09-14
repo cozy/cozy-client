@@ -1,5 +1,6 @@
 import { useEffect, useCallback } from 'react'
 import { useSelector } from 'react-redux'
+import get from 'lodash/get'
 import useClient from './useClient'
 import logger from '../logger'
 
@@ -45,8 +46,14 @@ const useQuery = (queryDefinition, options) => {
 
   const client = useClient()
   const queryState = useSelector(() => {
+
+    if (options.singleDocData === undefined) {
+      logger.warn('useQuery options.singleDocData will pass to true in a next version of cozy-client, please add it now to prevent any problem in the future.')
+    }
+
     return client.getQueryFromState(as, {
-      hydrated: true
+      hydrated: true,
+      singleDocData: get(options, 'singleDocData', false)
     })
   })
 

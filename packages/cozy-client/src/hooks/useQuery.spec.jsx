@@ -45,6 +45,50 @@ describe('use query', () => {
     })
   })
 
+  it('should return a single doc data for a single doc query if singleDocData is provided', () => {
+    const {
+      hookResult: {
+        result: { current }
+      }
+    } = setupQuery({
+      queryOptions: {
+        as: 'simpsons/marge',
+        singleDocData: true
+      },
+      queryDefinition: () => Q('io.cozy.simpsons').getById('marge')
+    })
+    expect(current).toMatchObject({
+      data: expect.objectContaining({ name: 'Marge' }),
+      definition: expect.objectContaining({
+        doctype: 'io.cozy.simpsons',
+        id: 'marge'
+      })
+    })
+  })
+
+  it('should return an array for data for a single doc query if singleDocData is not provided', () => {
+    const {
+      hookResult: {
+        result: { current }
+      }
+    } = setupQuery({
+      queryOptions: {
+        as: 'simpsons/marge'
+      },
+      queryDefinition: () => Q('io.cozy.simpsons').getById('marge')
+    })
+    expect(current.data.length).toBe(1)
+    expect(current).toMatchObject({
+      data: expect.arrayContaining([
+        expect.objectContaining({ name: 'Marge' })
+      ]),
+      definition: expect.objectContaining({
+        doctype: 'io.cozy.simpsons',
+        id: 'marge'
+      })
+    })
+  })
+
   it('fetches more results with bookmark', async () => {
     const bookmark = 'bookmark-123'
     const queryDefinition = Q('io.cozy.simpsons')

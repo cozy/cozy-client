@@ -961,16 +961,27 @@ client.query(Q('io.cozy.bills'))`)
    */
   getQueryFromState(id, options = {}) {
     const hydrated = options.hydrated || false
+    const singleDocData = options.singleDocData || false
     try {
       const queryResults = getQueryFromState(this.store.getState(), id)
       const doctype = queryResults.definition && queryResults.definition.doctype
+      const isSingleDocQuery = queryResults.definition && queryResults.definition.id
+
+      if (!hydrated && !singleDocData) {
+        // Early return let's us preserve reference equality in the simple case
+        return queryResults
+      }
+
       const data =
         hydrated && doctype
           ? this.hydrateDocuments(doctype, queryResults.data)
           : queryResults.data
-      return { ...queryResults, data }
+      return {
+        ...queryResults,
+        data: isSingleDocQuery && singleDocData ? data[0] : data
+      }
     } catch (e) {
-      console.warn('Could not getQueryFromState', id, e.message)
+      console.warn(`Could not get query from state. queryId: ${id}, error: ${e.message}`)
       return null
     }
   }

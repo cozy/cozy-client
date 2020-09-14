@@ -11,6 +11,14 @@ const setupClient = ({ queries } = {}) => {
         data: simpsonsFixture,
         doctype: 'io.cozy.simpsons'
       },
+      'simpsons/marge': {
+        data: simpsonsFixture.filter(x => x.name === 'Marge'),
+        doctype: 'io.cozy.simpsons',
+        definition: {
+          id: 'marge',
+          doctype: 'io.cozy.simpsons'
+        }
+      },
       upperSimpsons: {
         data: simpsonsFixture.map(x => ({ ...x, name: x.name.toUpperCase() })),
         doctype: 'io.cozy.simpsons-upper'
