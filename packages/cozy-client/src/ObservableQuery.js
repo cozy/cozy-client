@@ -1,15 +1,16 @@
+
 /**
  * ObservableQueries are the glue between the store and observers
  * of the store. They have the responsibility to hydrate the documents
  * before passing them to the React component.
  */
-
+import get from 'lodash/get'
 import { getRawQueryFromState } from './store'
 
 const hasOwn = Object.prototype.hasOwnProperty
 
 export default class ObservableQuery {
-  constructor(queryId, definition, client) {
+  constructor(queryId, definition, client, options) {
     if (!queryId || !definition || !client) {
       throw new Error(
         'ObservableQuery takes 3 arguments: queryId, definition and client'
@@ -21,6 +22,7 @@ export default class ObservableQuery {
     this.observers = {}
     this.idCounter = 1
     this.lastResult = this.currentRawResult()
+    this.options = options
   }
 
   handleStoreChange = () => {
@@ -40,7 +42,7 @@ export default class ObservableQuery {
    */
   currentResult() {
     return this.client.getQueryFromState(this.queryId, {
-      hydrated: true,
+      hydrated: get(this.options, 'hydrated', true),
       singleDocData: true
     })
   }

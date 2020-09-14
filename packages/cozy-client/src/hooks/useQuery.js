@@ -52,7 +52,7 @@ const useQuery = (queryDefinition, options) => {
     }
 
     return client.getQueryFromState(as, {
-      hydrated: true,
+      hydrated: get(options, 'hydrated', true),
       singleDocData: get(options, 'singleDocData', false)
     })
   })

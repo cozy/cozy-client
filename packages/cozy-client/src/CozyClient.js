@@ -670,7 +670,7 @@ client.query(Q('io.cozy.bills'))`)
     this.ensureStore()
     const queryId = options.as || this.generateId()
     this.ensureQueryExists(queryId, queryDefinition)
-    return new ObservableQuery(queryId, queryDefinition, this)
+    return new ObservableQuery(queryId, queryDefinition, this, options)
   }
 
   async mutate(mutationDefinition, { update, updateQueries, ...options } = {}) {
