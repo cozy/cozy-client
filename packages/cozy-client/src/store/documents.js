@@ -3,6 +3,8 @@ import get from 'lodash/get'
 import isEqual from 'lodash/isEqual'
 import omit from 'lodash/omit'
 
+import logger from '../logger'
+
 import { isReceivingData } from './queries'
 import { MutationTypes } from '../queries/dsl'
 import { isReceivingMutationResult } from './mutations'
@@ -13,13 +15,13 @@ const storeDocument = (state, document) => {
   const type = document._type
   if (!type) {
     if (process.env.NODE_ENV !== 'production') {
-      console.warn('Document without _type', document)
+      logger.info('Document without _type', document)
     }
     throw new Error('Document without _type')
   }
   if (!properId(document)) {
     if (process.env.NODE_ENV !== 'production') {
-      console.warn('Document without id', document)
+      logger.info('Document without id', document)
     }
     throw new Error('Document without id')
   }
@@ -107,7 +109,7 @@ export const getDocumentFromSlice = (state = {}, doctype, id) => {
   }
   if (!state[doctype]) {
     if (process.env.NODE_ENV !== 'production') {
-      console.warn(
+      logger.info(
         `getDocumentFromSlice: ${doctype} is absent from the store's documents. State is`,
         state
       )
@@ -115,7 +117,7 @@ export const getDocumentFromSlice = (state = {}, doctype, id) => {
     return null
   } else if (!state[doctype][id]) {
     if (process.env.NODE_ENV !== 'production') {
-      console.warn(
+      logger.info(
         `getDocumentFromSlice: ${doctype}:${id} is absent from the store documents. State is`,
         state
       )
@@ -133,7 +135,7 @@ export const getCollectionFromSlice = (state = {}, doctype) => {
   }
   if (!state[doctype]) {
     if (process.env.NODE_ENV !== 'production') {
-      console.warn(
+      logger.info(
         `getCollectionFromSlice: ${doctype} is absent from the store documents. State is`,
         state
       )
@@ -146,7 +148,7 @@ export const getCollectionFromSlice = (state = {}, doctype) => {
 
 /*
   This method has been created in order to get a returned object 
-  in `data` with the full set on information coming potentielly from 
+  in `data` with the full set on information coming potentially from 
   ìncluded`
 
   This method should be somewhere else. The `document` shall not be 

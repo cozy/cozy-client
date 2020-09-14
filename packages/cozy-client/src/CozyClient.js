@@ -41,6 +41,7 @@ import Schema from './Schema'
 import { chain } from './CozyLink'
 import ObservableQuery from './ObservableQuery'
 import { CozyClient as SnapshotClient } from './testing/snapshots'
+import logger from './logger'
 
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
 
@@ -320,7 +321,7 @@ class CozyClient {
    */
   async logout() {
     if (!this.isLogged) {
-      console.warn(`CozyClient isn't logged.`)
+      logger.warn(`CozyClient isn't logged.`)
       return
     }
 
@@ -337,13 +338,13 @@ class CozyClient {
           await this.stackClient.unregister()
         }
       } catch (err) {
-        console.warn(`Impossible to unregister client on stack: ${err}`)
+        logger.warn(`Impossible to unregister client on stack: ${err}`)
       }
     } else {
       try {
         await this.stackClient.fetch('DELETE', '/auth/login')
       } catch (err) {
-        console.warn(`Impossible to log out: ${err}`)
+        logger.warn(`Impossible to log out: ${err}`)
       }
     }
 
@@ -380,7 +381,7 @@ class CozyClient {
   }
 
   all(doctype) {
-    console.warn(`
+    logger.warn(`
 client.all is deprecated, prefer to use the Q helper to build a new QueryDefinition.
 
 import { Q } from 'cozy-client'
@@ -930,7 +931,7 @@ client.query(Q('io.cozy.bills'))`)
     try {
       return getCollectionFromState(this.store.getState(), type)
     } catch (e) {
-      console.warn('Could not getCollectionFromState', type, e.message)
+      logger.warn('Could not getCollectionFromState', type, e.message)
       return null
     }
   }
@@ -947,7 +948,7 @@ client.query(Q('io.cozy.bills'))`)
     try {
       return getDocumentFromState(this.store.getState(), type, id)
     } catch (e) {
-      console.warn('Could not getDocumentFromState', type, id, e.message)
+      logger.warn('Could not getDocumentFromState', type, id, e.message)
       return null
     }
   }
