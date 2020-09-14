@@ -5,7 +5,7 @@ import useClient from './useClient'
 import logger from '../logger'
 
 const resolveToValue = fnOrValue => {
-  return typeof resolveToValue === 'function' ? fnOrValue() : fnOrValue
+  return typeof fnOrValue === 'function' ? fnOrValue() : fnOrValue
 }
 
 const generateFetchMoreQueryDefinition = queryResult => {
