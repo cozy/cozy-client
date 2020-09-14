@@ -100,7 +100,7 @@ const schema = {
     }
   }
 }
-````
+```
 
 ```javascript
 const document = {
@@ -188,7 +188,7 @@ const response = await client.query(query)
 const docs = response.data
 const firstDoc = docs[0]
 firstDoc.printingCompany.unset()
-````
+```
 
 ### Create a new document with existing relations
 
