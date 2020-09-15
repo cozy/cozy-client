@@ -1,4 +1,5 @@
-import { get, capitalize, isEmpty } from 'lodash'
+import get from 'lodash/get'
+import isEmpty from 'lodash/isEmpty'
 
 export const getPrimaryOrFirst = property => obj =>
   !obj[property] || obj[property].length === 0
@@ -134,22 +135,25 @@ export const getDisplayName = contact =>
  * @returns {string} - the contact's 'byFamilyNameGivenNameEmailCozyUrl' index
  */
 export const getIndexByFamilyNameGivenNameEmailCozyUrl = contact => {
-  const indexByFamilyNameGivenNameEmailCozyUrl = capitalize(
-    [
-      get(contact, 'name.familyName', ''),
-      get(contact, 'name.givenName', ''),
-      getPrimaryEmail(contact),
-      getPrimaryCozyDomain(contact)
-    ]
-      .join('')
-      .trim()
-  )
+  if (get(contact, 'indexes.byFamilyNameGivenNameEmailCozyUrl')) {
+    if (isEmpty(contact.indexes.byFamilyNameGivenNameEmailCozyUrl)) {
+      return null
+    }
+    return contact.indexes.byFamilyNameGivenNameEmailCozyUrl
+  }
 
-  return get(
-    contact,
-    'indexes.byFamilyNameGivenNameEmailCozyUrl',
-    indexByFamilyNameGivenNameEmailCozyUrl.length === 0
-      ? {}
-      : indexByFamilyNameGivenNameEmailCozyUrl
-  )
+  const createIndexByFamilyNameGivenNameEmailCozyUrl = [
+    get(contact, 'name.familyName', ''),
+    get(contact, 'name.givenName', ''),
+    getPrimaryEmail(contact),
+    getPrimaryCozyDomain(contact)
+  ]
+    .join('')
+    .trim()
+    .toLowerCase()
+
+  if (createIndexByFamilyNameGivenNameEmailCozyUrl.length === 0) {
+    return null
+  }
+  return createIndexByFamilyNameGivenNameEmailCozyUrl
 }
