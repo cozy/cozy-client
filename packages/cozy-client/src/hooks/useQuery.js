@@ -22,6 +22,9 @@ const generateFetchMoreQueryDefinition = queryResult => {
  * @param  {object} options - Options
  * @param  {object} options.as - Name for the query [required]
  * @param  {object} options.fetchPolicy - Fetch policy
+ * @param  {object} options.singleDocData - If true, the "data" returned will be
+ * a single doc instead of an array for single doc queries. Defaults to false for backward
+ * compatibility but will be set to true in the future. 
  *
  * @returns {object}
  */
