@@ -1,4 +1,3 @@
-
 /**
  * ObservableQueries are the glue between the store and observers
  * of the store. They have the responsibility to hydrate the documents

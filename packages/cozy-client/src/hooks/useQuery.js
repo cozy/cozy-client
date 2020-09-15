@@ -24,7 +24,7 @@ const generateFetchMoreQueryDefinition = queryResult => {
  * @param  {object} options.fetchPolicy - Fetch policy
  * @param  {object} options.singleDocData - If true, the "data" returned will be
  * a single doc instead of an array for single doc queries. Defaults to false for backward
- * compatibility but will be set to true in the future. 
+ * compatibility but will be set to true in the future.
  *
  * @returns {object}
  */
@@ -49,9 +49,10 @@ const useQuery = (queryDefinition, options) => {
 
   const client = useClient()
   const queryState = useSelector(() => {
-
     if (options.singleDocData === undefined) {
-      logger.warn('useQuery options.singleDocData will pass to true in a next version of cozy-client, please add it now to prevent any problem in the future.')
+      logger.warn(
+        'useQuery options.singleDocData will pass to true in a next version of cozy-client, please add it now to prevent any problem in the future.'
+      )
     }
 
     return client.getQueryFromState(as, {

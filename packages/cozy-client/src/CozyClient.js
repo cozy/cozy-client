@@ -968,7 +968,8 @@ client.query(Q('io.cozy.bills'))`)
     try {
       const queryResults = getQueryFromState(this.store.getState(), id)
       const doctype = queryResults.definition && queryResults.definition.doctype
-      const isSingleDocQuery = queryResults.definition && queryResults.definition.id
+      const isSingleDocQuery =
+        queryResults.definition && queryResults.definition.id
 
       if (!hydrated && !singleDocData) {
         // Early return let's us preserve reference equality in the simple case
@@ -984,7 +985,9 @@ client.query(Q('io.cozy.bills'))`)
         data: isSingleDocQuery && singleDocData ? data[0] : data
       }
     } catch (e) {
-      console.warn(`Could not get query from state. queryId: ${id}, error: ${e.message}`)
+      console.warn(
+        `Could not get query from state. queryId: ${id}, error: ${e.message}`
+      )
       return null
     }
   }
