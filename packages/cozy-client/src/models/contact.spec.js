@@ -389,7 +389,7 @@ describe('getIndexByFamilyNameGivenNameEmailCozyUrl', () => {
       ]
     }
     const result = getIndexByFamilyNameGivenNameEmailCozyUrl(contact)
-    expect(result).toEqual('Smithjohnjohn.smith@cozy.ccjohn.mycozy.cloud')
+    expect(result).toEqual('smithjohnjohn.smith@cozy.ccjohn.mycozy.cloud')
   })
 
   it('should returns only familyName if no givenName, email and cozy url', () => {
@@ -400,7 +400,7 @@ describe('getIndexByFamilyNameGivenNameEmailCozyUrl', () => {
       cozy: [{ url: '' }]
     }
     const result = getIndexByFamilyNameGivenNameEmailCozyUrl(contact)
-    expect(result).toEqual('Smith')
+    expect(result).toEqual('smith')
   })
 
   it('should returns only givenName if no familyName, email and cozy url', () => {
@@ -411,7 +411,7 @@ describe('getIndexByFamilyNameGivenNameEmailCozyUrl', () => {
       cozy: [{ url: '' }]
     }
     const result = getIndexByFamilyNameGivenNameEmailCozyUrl(contact)
-    expect(result).toEqual('John')
+    expect(result).toEqual('john')
   })
 
   it('should returns only cozy url if no givenName, familyName and email', () => {
@@ -422,10 +422,10 @@ describe('getIndexByFamilyNameGivenNameEmailCozyUrl', () => {
       cozy: [{ url: 'https://smith.mycozy.cloud' }]
     }
     const result = getIndexByFamilyNameGivenNameEmailCozyUrl(contact)
-    expect(result).toEqual('Smith.mycozy.cloud')
+    expect(result).toEqual('smith.mycozy.cloud')
   })
 
-  it('should returns empty object if no givenName, familyName, email and cozy url', () => {
+  it('should returns null if no givenName, familyName, email and cozy url', () => {
     const contact = {
       name: {},
       fullname: '',
@@ -433,7 +433,7 @@ describe('getIndexByFamilyNameGivenNameEmailCozyUrl', () => {
       cozy: []
     }
     const result = getIndexByFamilyNameGivenNameEmailCozyUrl(contact)
-    expect(result).toEqual({})
+    expect(result).toEqual(null)
   })
 
   it('should returns concatenated string of givenName and cozy url if no familyName and email', () => {
@@ -443,7 +443,7 @@ describe('getIndexByFamilyNameGivenNameEmailCozyUrl', () => {
       cozy: [{ url: 'https://smith.mycozy.cloud' }]
     }
     const result = getIndexByFamilyNameGivenNameEmailCozyUrl(contact)
-    expect(result).toEqual('Johnsmith.mycozy.cloud')
+    expect(result).toEqual('johnsmith.mycozy.cloud')
   })
 
   it('should returns only email if no name and cozy url', () => {
@@ -453,7 +453,22 @@ describe('getIndexByFamilyNameGivenNameEmailCozyUrl', () => {
       cozy: [{ url: '' }]
     }
     const result = getIndexByFamilyNameGivenNameEmailCozyUrl(contact)
-    expect(result).toEqual('John.smith@cozy.cc')
+    expect(result).toEqual('john.smith@cozy.cc')
+  })
+
+  it('should returns null if indexes.byFamilyNameGivenNameEmailCozyUrl was an empty object', () => {
+    const contact = {
+      indexes: { byFamilyNameGivenNameEmailCozyUrl: {} }
+    }
+    const result = getIndexByFamilyNameGivenNameEmailCozyUrl(contact)
+    expect(result).toEqual(null)
+  })
+  it('should returns indexes.byFamilyNameGivenNameEmailCozyUrl if already present', () => {
+    const contact = {
+      indexes: { byFamilyNameGivenNameEmailCozyUrl: 'john' }
+    }
+    const result = getIndexByFamilyNameGivenNameEmailCozyUrl(contact)
+    expect(result).toEqual('john')
   })
 })
 
