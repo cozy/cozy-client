@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [14.5.0](https://github.com/cozy/cozy-client/compare/v14.4.0...v14.5.0) (2020-09-16)
+
+
+### Bug Fixes
+
+* Typo preventing to use object directly as query in useQuery ([f73e7f1](https://github.com/cozy/cozy-client/commit/f73e7f1))
+
+
+### Features
+
+* Ability to deactivate hydration ([0378e4b](https://github.com/cozy/cozy-client/commit/0378e4b))
+* Use logger for warn / info messages ([adbec45](https://github.com/cozy/cozy-client/commit/adbec45))
+* Use query can return single doc data for single doc queries ([60a1ec5](https://github.com/cozy/cozy-client/commit/60a1ec5))
+
+
+
+
+
 # [14.4.0](https://github.com/cozy/cozy-client/compare/v14.3.0...v14.4.0) (2020-09-11)
 
 
