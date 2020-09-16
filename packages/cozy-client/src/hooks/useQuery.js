@@ -1,10 +1,11 @@
 import { useEffect, useCallback } from 'react'
 import { useSelector } from 'react-redux'
+import get from 'lodash/get'
 import useClient from './useClient'
 import logger from '../logger'
 
 const resolveToValue = fnOrValue => {
-  return typeof resolveToValue === 'function' ? fnOrValue() : fnOrValue
+  return typeof fnOrValue === 'function' ? fnOrValue() : fnOrValue
 }
 
 const generateFetchMoreQueryDefinition = queryResult => {
@@ -21,6 +22,9 @@ const generateFetchMoreQueryDefinition = queryResult => {
  * @param  {object} options - Options
  * @param  {object} options.as - Name for the query [required]
  * @param  {object} options.fetchPolicy - Fetch policy
+ * @param  {object} options.singleDocData - If true, the "data" returned will be
+ * a single doc instead of an array for single doc queries. Defaults to false for backward
+ * compatibility but will be set to true in the future.
  *
  * @returns {object}
  */
@@ -45,8 +49,15 @@ const useQuery = (queryDefinition, options) => {
 
   const client = useClient()
   const queryState = useSelector(() => {
+    if (options.singleDocData === undefined) {
+      logger.warn(
+        'useQuery options.singleDocData will pass to true in a next version of cozy-client, please add it now to prevent any problem in the future.'
+      )
+    }
+
     return client.getQueryFromState(as, {
-      hydrated: true
+      hydrated: get(options, 'hydrated', true),
+      singleDocData: get(options, 'singleDocData', false)
     })
   })
 

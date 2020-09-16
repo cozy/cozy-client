@@ -2109,6 +2109,7 @@ Fetches a queryDefinition and returns the queryState
 | options | <code>object</code> | Options |
 | options.as | <code>object</code> | Name for the query [required] |
 | options.fetchPolicy | <code>object</code> | Fetch policy |
+| options.singleDocData | <code>object</code> | If true, the "data" returned will be a single doc instead of an array for single doc queries. Defaults to false for backward compatibility but will be set to true in the future. |
 
 <a name="sanitizeCategories"></a>
 

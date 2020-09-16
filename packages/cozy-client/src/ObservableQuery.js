@@ -3,13 +3,13 @@
  * of the store. They have the responsibility to hydrate the documents
  * before passing them to the React component.
  */
-
+import get from 'lodash/get'
 import { getRawQueryFromState } from './store'
 
 const hasOwn = Object.prototype.hasOwnProperty
 
 export default class ObservableQuery {
-  constructor(queryId, definition, client) {
+  constructor(queryId, definition, client, options) {
     if (!queryId || !definition || !client) {
       throw new Error(
         'ObservableQuery takes 3 arguments: queryId, definition and client'
@@ -21,6 +21,7 @@ export default class ObservableQuery {
     this.observers = {}
     this.idCounter = 1
     this.lastResult = this.currentRawResult()
+    this.options = options
   }
 
   handleStoreChange = () => {
@@ -39,18 +40,10 @@ export default class ObservableQuery {
    * @returns {HydratedQueryState}
    */
   currentResult() {
-    const result = this.client.getQueryFromState(this.queryId, {
-      hydrated: true
+    return this.client.getQueryFromState(this.queryId, {
+      hydrated: get(this.options, 'hydrated', true),
+      singleDocData: true
     })
-    if (!result.lastFetch) {
-      return result
-    }
-    return {
-      ...result,
-      // Weird to have this.definition.id here, maybe it could be getQueryFromState
-      // that should do that
-      data: this.definition.id ? result.data[0] : result.data
-    }
   }
 
   fetch() {
