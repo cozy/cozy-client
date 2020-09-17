@@ -172,7 +172,7 @@ const getQueryDocumentsChecker = query => {
 }
 
 const makeCaseInsensitiveStringSorter = attrName => item => {
-  const attrValue = item[attrName]
+  const attrValue = get(item, attrName)
   return isString(attrValue) ? attrValue.toLowerCase() : attrValue
 }
 
