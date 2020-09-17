@@ -256,4 +256,18 @@ describe('makeSorterFromDefinition', () => {
     const sorted = sorter(files)
     expect(sorted.map(x => x._id)).toEqual(['4', '5', '3', '2', '1'])
   })
+
+  it('should handle objects with deep properties', () => {
+    const q = Q('io.cozy.files').sortBy([{ 'name.label': 'asc' }])
+    const sorter = makeSorterFromDefinition(q)
+    const files = [
+      { name: { label: 'C' } },
+      { name: { label: 'B' } },
+      { name: { label: 'a' } },
+      { name: { label: 'A' } },
+      { name: { label: 'b' } }
+    ]
+    const sorted = sorter(files)
+    expect(sorted.map(x => x.name.label)).toEqual(['a', 'A', 'B', 'b', 'C'])
+  })
 })
