@@ -136,7 +136,8 @@ class PouchLink extends CozyLink {
       doctypesReplicationOptions: this.doctypesReplicationOptions,
       onError: err => this.onSyncError(err),
       onSync: this.handleOnSync.bind(this),
-      prefix
+      prefix,
+      executeQuery: this.executeQuery.bind(this)
     })
 
     if (this.client && this.options.initialSync) {
@@ -259,6 +260,15 @@ class PouchLink extends CozyLink {
       return forward(operation)
     }
 
+    if (this.needsToWaitWarmup(doctype)) {
+      if (process.env.NODE_ENV !== 'production') {
+        logger.info(
+          `Tried to access local ${doctype} but not warmuped yet. Forwarding the operation to next link`
+        )
+      }
+      return forward(operation)
+    }
+
     // Forwards if doctype not supported
     if (!this.supportsOperation(operation)) {
       if (process.env.NODE_ENV !== 'production') {
@@ -274,6 +284,26 @@ class PouchLink extends CozyLink {
     } else {
       return this.executeQuery(operation)
     }
+  }
+  /**
+   *
+   * @param {string} doctype
+   * @returns {boolean} the need to wait for the warmup
+   * Check if there is warmup queries for this doctype
+   * and return if those queries are already warmedup or not
+   */
+  needsToWaitWarmup(doctype) {
+    if (
+      this.doctypesReplicationOptions &&
+      this.doctypesReplicationOptions[doctype] &&
+      this.doctypesReplicationOptions[doctype].warmupQueries
+    ) {
+      return !this.pouches.areWarmedUpQueries(
+        doctype,
+        this.doctypesReplicationOptions[doctype].warmupQueries
+      )
+    }
+    return false
   }
 
   hasIndex(name) {

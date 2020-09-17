@@ -15,6 +15,14 @@ export const LOCALSTORAGE_WARMUPEDQUERIES_KEY =
   'cozy-client-pouch-link-warmupedqueries'
 
 /**
+ * @param {QueryDefinition} query
+ * @returns {string} alias
+ */
+const getQueryAlias = query => {
+  return query.options.as
+}
+
+/**
  * Handles the lifecycle of several pouches
  *
  * - Creates/Destroys the pouches
@@ -33,6 +41,7 @@ class PouchManager {
       ])
     )
     this.syncedDoctypes = this.getPersistedSyncedDoctypes()
+    this.warmedUpQueries = this.getPersistedWarmedUpQueries()
     this.getReplicationURL = options.getReplicationURL
     this.doctypesReplicationOptions = options.doctypesReplicationOptions || {}
     this.listenerLaunched = false
@@ -44,6 +53,7 @@ class PouchManager {
     this.startReplicationLoop = this.startReplicationLoop.bind(this)
     this.stopReplicationLoop = this.stopReplicationLoop.bind(this)
     this.replicateOnce = this.replicateOnce.bind(this)
+    this.executeQuery = this.options.executeQuery
   }
 
   addListeners() {
@@ -74,6 +84,8 @@ class PouchManager {
     this.stopReplicationLoop()
     this.removeListeners()
     this.destroySyncedDoctypes()
+    this.destroyWarmedUpQueries()
+
     return Promise.all(
       Object.values(this.pouches).map(pouch => pouch.destroy())
     )
@@ -108,7 +120,6 @@ class PouchManager {
     if (process.env.NODE_ENV !== 'production') {
       logger.info('PouchManager: Start replication loop')
     }
-
     const delay = this.options.replicationDelay || DEFAULT_DELAY
     this.replicationLoop = new Loop(this.replicateOnce, delay)
     this.replicationLoop.start()
@@ -165,9 +176,16 @@ class PouchManager {
         getReplicationURL
       ).then(res => {
         this.addSyncedDoctype(doctype)
-
         logger.log('PouchManager: Replication for ' + doctype + ' ended', res)
-
+        //We want to warmupQueries only once by "start". aka we want to warmup
+        //every time we launch the client (app) but not every time a replication
+        //is done (aka every 30s at least)
+        if (
+          !this.warmedUpQueries[doctype] &&
+          replicationOptions.warmupQueries
+        ) {
+          this.warmupQueries(doctype, replicationOptions.warmupQueries)
+        }
         return res
       })
     })
@@ -262,6 +280,54 @@ class PouchManager {
 
   getDatabaseName(doctype) {
     return `${this.options.prefix}_${doctype}`
+  }
+
+  async warmupQueries(doctype, queries) {
+    if (!this.warmedUpQueries[doctype]) this.warmedUpQueries[doctype] = []
+    await Promise.all(
+      queries.map(query => {
+        const def = getQueryAlias(query)
+        if (!this.warmedUpQueries[doctype].includes(def)) {
+          this.warmedUpQueries[doctype].push(def)
+          try {
+            return this.executeQuery(query.definition().toDefinition())
+          } catch {
+            delete this.warmedUpQueries[doctype][def]
+          }
+        }
+      })
+    )
+    this.persistwarmedUpQueries()
+    logger.log('PouchManager: warmupQueries for ' + doctype + ' are done')
+  }
+
+  persistwarmedUpQueries() {
+    window.localStorage.setItem(
+      LOCALSTORAGE_WARMUPEDQUERIES_KEY,
+      JSON.stringify(this.warmedUpQueries)
+    )
+  }
+
+  areWarmedUpQueries(doctype, queries) {
+    const persistwarmedUpQueries = this.getPersistedWarmedUpQueries()
+    return queries.every(
+      query =>
+        persistwarmedUpQueries[doctype] &&
+        persistwarmedUpQueries[doctype].includes(getQueryAlias(query))
+    )
+  }
+
+  getPersistedWarmedUpQueries() {
+    const item = window.localStorage.getItem(LOCALSTORAGE_WARMUPEDQUERIES_KEY)
+    if (!item) {
+      return {}
+    }
+    return JSON.parse(item)
+  }
+
+  destroyWarmedUpQueries() {
+    this.warmedUpQueries = {}
+    window.localStorage.removeItem(LOCALSTORAGE_WARMUPEDQUERIES_KEY)
   }
 }
 

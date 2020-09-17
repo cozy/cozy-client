@@ -55,6 +55,19 @@ describe('CozyPouchLink', () => {
   })
 
   describe('request handling', () => {
+    const query1 = () => ({
+      definition: () => Q(TODO_DOCTYPE).limitBy(100),
+      options: {
+        as: 'query1'
+      }
+    })
+    const query2 = () => ({
+      definition: () => Q(TODO_DOCTYPE).limitBy(100),
+      options: {
+        as: 'query2'
+      }
+    })
+
     it('should check if the doctype is supported and forward if not', async () => {
       await setup()
       const query = Q('io.cozy.rockets')
@@ -68,6 +81,34 @@ describe('CozyPouchLink', () => {
       await setup()
       const query = Q(TODO_DOCTYPE)
       expect.assertions(1)
+      await link.request(query, null, () => {
+        expect(true).toBe(true)
+      })
+    })
+
+    it('should check if the pouch is synced and queries warmuped and forward if not', async () => {
+      await setup({
+        doctypesReplicationOptions: {
+          TODO_DOCTYPE: { warmupQueries: [query1(), query2()] }
+        }
+      })
+      const query = Q(TODO_DOCTYPE)
+      expect.assertions(1)
+      await link.request(query, null, () => {
+        expect(true).toBe(true)
+      })
+    })
+
+    it('test if the pouch is synced and no warmup queries for this doctype, it should not forward', async () => {
+      await setup({
+        doctypesReplicationOptions: {
+          'io.cozy.files': { warmupQueries: [query1(), query2()] }
+        }
+      })
+      link.pouches.isSynced = jest.fn().mockReturnValue(true)
+
+      const query = Q(TODO_DOCTYPE)
+      expect.assertions(0)
       await link.request(query, null, () => {
         expect(true).toBe(true)
       })

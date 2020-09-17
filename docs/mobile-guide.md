@@ -185,6 +185,11 @@ example, the `StackLink`).
 
 Additionally, it is possible to replicate some doctypes only in a specific direction:
 
+Since making the first query can be long (PouchDB will create the index first), you can 
+specify the queries you want to be "warmed up". It means that, those queries will be 
+executed by CozyClient during the PouchLink's instanciation, but CozyClient will use 
+PouchDB only if those queries have been resolved at least one time.
+
 ```js
 
 const pouchLink = new PouchLink({
