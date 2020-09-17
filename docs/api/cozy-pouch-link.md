@@ -26,6 +26,13 @@ and on demand immediately.</p>
 </dd>
 </dl>
 
+## Functions
+
+<dl>
+<dt><a href="#getQueryAlias">getQueryAlias(query)</a> ⇒ <code>string</code></dt>
+<dd></dd>
+</dl>
+
 <a name="PouchLink"></a>
 
 ## PouchLink
@@ -40,6 +47,7 @@ to respond to queries and mutations.
     * [.handleOnSync()](#PouchLink+handleOnSync)
     * [.startReplication()](#PouchLink+startReplication) ⇒ <code>void</code>
     * [.stopReplication()](#PouchLink+stopReplication) ⇒ <code>void</code>
+    * [.needsToWaitWarmup(doctype)](#PouchLink+needsToWaitWarmup) ⇒ <code>boolean</code>
 
 <a name="new_PouchLink_new"></a>
 
@@ -84,6 +92,18 @@ Emits pouchlink:sync:stop event
 
 **Kind**: instance method of [<code>PouchLink</code>](#PouchLink)  
 **Access**: public  
+<a name="PouchLink+needsToWaitWarmup"></a>
+
+### pouchLink.needsToWaitWarmup(doctype) ⇒ <code>boolean</code>
+**Kind**: instance method of [<code>PouchLink</code>](#PouchLink)  
+**Returns**: <code>boolean</code> - the need to wait for the warmup
+Check if there is warmup queries for this doctype
+and return if those queries are already warmedup or not  
+
+| Param | Type |
+| --- | --- |
+| doctype | <code>string</code> | 
+
 <a name="Loop"></a>
 
 ## Loop
@@ -207,3 +227,13 @@ immediately
 Starts replication
 
 **Kind**: instance method of [<code>PouchManager</code>](#PouchManager)  
+<a name="getQueryAlias"></a>
+
+## getQueryAlias(query) ⇒ <code>string</code>
+**Kind**: global function  
+**Returns**: <code>string</code> - alias  
+
+| Param | Type |
+| --- | --- |
+| query | <code>QueryDefinition</code> | 
+
