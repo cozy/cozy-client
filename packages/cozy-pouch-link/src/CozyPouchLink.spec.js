@@ -4,7 +4,6 @@ import CozyPouchLink from '.'
 import { SCHEMA, TODO_1, TODO_2, TODO_3, TODO_4 } from './__tests__/fixtures'
 import PouchDB from 'pouchdb-browser'
 import PouchDBMemoryAdapterPlugin from 'pouchdb-adapter-memory'
-
 import CozyClient, { Q } from 'cozy-client'
 
 // Necessary to have the memory adapter for the tests since neither
@@ -362,6 +361,34 @@ describe('CozyPouchLink', () => {
       link.registerClient(client)
 
       expect(link.onLogin()).rejects.toThrow()
+    })
+  })
+
+  describe('index creation', () => {
+    let spy
+
+    afterEach(() => {
+      spy.mockRestore()
+    })
+
+    it('uses the default index aka the from the sort', async () => {
+      spy = jest.spyOn(PouchDB.prototype, 'createIndex')
+      await setup()
+      link.pouches.isSynced = jest.fn().mockReturnValue(true)
+      const query = Q(TODO_DOCTYPE)
+        .where({})
+        .sortBy([{ name: 'asc' }])
+      await link.request(query)
+      expect(spy).toHaveBeenCalledWith({ index: { fields: ['name'] } })
+    })
+
+    it('uses indexFields if provided', async () => {
+      spy = jest.spyOn(PouchDB.prototype, 'createIndex').mockReturnValue({})
+      await setup()
+      link.ensureIndex(TODO_DOCTYPE, {
+        indexedFields: ['myIndex']
+      })
+      expect(spy).toHaveBeenCalledWith({ index: { fields: ['myIndex'] } })
     })
   })
 })

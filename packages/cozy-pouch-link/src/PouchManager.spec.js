@@ -10,7 +10,7 @@ import PouchManager, {
 } from './PouchManager'
 import * as mocks from './__tests__/mocks'
 
-import CozyClient, { Q } from 'cozy-client'
+import { Q } from 'cozy-client'
 
 import { isMobileApp } from 'cozy-device-helper'
 

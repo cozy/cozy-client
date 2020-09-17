@@ -311,7 +311,7 @@ class PouchLink extends CozyLink {
   }
 
   async ensureIndex(doctype, query) {
-    const fields = getIndexFields(query)
+    const fields = query.indexedFields || getIndexFields(query)
     const name = getIndexNameFromFields(fields)
     const absName = `${doctype}/${name}`
     const db = this.pouches.getPouch(doctype)
@@ -336,7 +336,8 @@ class PouchLink extends CozyLink {
     limit,
     id,
     ids,
-    skip
+    skip,
+    indexedFields
   }) {
     const db = this.getPouch(doctype)
     let res, withRows
@@ -360,7 +361,7 @@ class PouchLink extends CozyLink {
         limit,
         skip
       }
-      await this.ensureIndex(doctype, findOpts)
+      await this.ensureIndex(doctype, { ...findOpts, indexedFields })
       res = await find(db, findOpts)
       res.offset = skip
       res.limit = limit
