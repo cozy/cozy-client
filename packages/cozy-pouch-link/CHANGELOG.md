@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [14.7.0](https://github.com/cozy/cozy-client/compare/v14.6.0...v14.7.0) (2020-09-18)
+
+
+### Bug Fixes
+
+* Remove old and not wanted tests ([5b9ce0b](https://github.com/cozy/cozy-client/commit/5b9ce0b))
+* Use indexedFields in priority ([4371100](https://github.com/cozy/cozy-client/commit/4371100))
+
+
+### Features
+
+* Handle executeQuery fail ([25c74a4](https://github.com/cozy/cozy-client/commit/25c74a4))
+* PouchLink add warmup queries ([6df1413](https://github.com/cozy/cozy-client/commit/6df1413))
+
+
+
+
+
 # [14.6.0](https://github.com/cozy/cozy-client/compare/v14.5.0...v14.6.0) (2020-09-18)
 
 **Note:** Version bump only for package cozy-pouch-link
