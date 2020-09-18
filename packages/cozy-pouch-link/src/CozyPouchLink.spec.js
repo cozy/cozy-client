@@ -98,7 +98,7 @@ describe('CozyPouchLink', () => {
       })
     })
 
-    it('test if the pouch is synced and no warmup queries for this doctype, it should not forward', async () => {
+    it('should not forward if the pouch is synced and there is no warmup queries for this doctype', async () => {
       await setup({
         doctypesReplicationOptions: {
           'io.cozy.files': { warmupQueries: [query1(), query2()] }
@@ -371,7 +371,7 @@ describe('CozyPouchLink', () => {
       spy.mockRestore()
     })
 
-    it('uses the default index aka the from the sort', async () => {
+    it('uses the default index, the one from the sort', async () => {
       spy = jest.spyOn(PouchDB.prototype, 'createIndex')
       await setup()
       link.pouches.isSynced = jest.fn().mockReturnValue(true)

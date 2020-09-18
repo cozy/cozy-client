@@ -501,7 +501,7 @@ describe('PouchManager', () => {
       expect(executeMock).toHaveBeenCalledTimes(2)
     })
 
-    it('should not persist or cache warmedup queries if one have failled', async () => {
+    it('should not persist or cache warmedup queries if one has failed', async () => {
       jest
         .spyOn(rep, 'startReplication')
         .mockImplementation(() => Promise.resolve({}))
