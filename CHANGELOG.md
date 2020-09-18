@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [14.6.0](https://github.com/cozy/cozy-client/compare/v14.5.0...v14.6.0) (2020-09-18)
+
+
+### Bug Fixes
+
+* Empty contact indexes are objects ([351129a](https://github.com/cozy/cozy-client/commit/351129a))
+
+
+### Features
+
+* Client-side query sort handles nested attributes ([ea8c06b](https://github.com/cozy/cozy-client/commit/ea8c06b))
+
+
+
+
+
 # [14.5.0](https://github.com/cozy/cozy-client/compare/v14.4.0...v14.5.0) (2020-09-16)
 
 
