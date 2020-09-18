@@ -84,7 +84,7 @@ class PouchManager {
     this.stopReplicationLoop()
     this.removeListeners()
     this.destroySyncedDoctypes()
-    this.destroyWarmedUpQueries()
+    this.clearWarmedUpQueries()
 
     return Promise.all(
       Object.values(this.pouches).map(pouch => pouch.destroy())
@@ -301,19 +301,19 @@ class PouchManager {
     logger.log('PouchManager: warmupQueries for ' + doctype + ' are done')
   }
 
-  persistwarmedUpQueries() {
+  persistWarmedUpQueries() {
     window.localStorage.setItem(
       LOCALSTORAGE_WARMUPEDQUERIES_KEY,
       JSON.stringify(this.warmedUpQueries)
     )
   }
 
-  areWarmedUpQueries(doctype, queries) {
-    const persistwarmedUpQueries = this.getPersistedWarmedUpQueries()
+  areQueriesWarmedUp(doctype, queries) {
+    const persistWarmedUpQueries = this.getPersistedWarmedUpQueries()
     return queries.every(
       query =>
-        persistwarmedUpQueries[doctype] &&
-        persistwarmedUpQueries[doctype].includes(getQueryAlias(query))
+        persistWarmedUpQueries[doctype] &&
+        persistWarmedUpQueries[doctype].includes(getQueryAlias(query))
     )
   }
 
@@ -325,7 +325,7 @@ class PouchManager {
     return JSON.parse(item)
   }
 
-  destroyWarmedUpQueries() {
+  clearWarmedUpQueries() {
     this.warmedUpQueries = {}
     window.localStorage.removeItem(LOCALSTORAGE_WARMUPEDQUERIES_KEY)
   }

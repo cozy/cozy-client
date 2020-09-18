@@ -321,11 +321,11 @@ describe('PouchManager', () => {
     })
   })
 
-  describe('persistwarmedUpQueries', () => {
+  describe('persistWarmedUpQueries', () => {
     it('Should put the list of warmedUpQueries in localStorage', () => {
       const manager = new PouchManager(['io.cozy.todos'], managerOptions)
       manager.warmedUpQueries = { 'io.cozy.todos': ['query1', 'query2'] }
-      manager.persistwarmedUpQueries()
+      manager.persistWarmedUpQueries()
 
       expect(localStorage.__STORE__[LOCALSTORAGE_WARMUPEDQUERIES_KEY]).toEqual(
         JSON.stringify(manager.warmedUpQueries)
@@ -350,7 +350,7 @@ describe('PouchManager', () => {
     }) */
   })
 
-  describe('areWarmedUpQueries', () => {
+  describe('areQueriesWarmedUp', () => {
     let manager
 
     beforeEach(() => {
@@ -361,10 +361,10 @@ describe('PouchManager', () => {
       manager.warmedUpQueries = {
         'io.cozy.todos': [query1().options.as, query2().options.as]
       }
-      manager.persistwarmedUpQueries()
+      manager.persistWarmedUpQueries()
 
       expect(
-        manager.areWarmedUpQueries('io.cozy.todos', [query1(), query2()])
+        manager.areQueriesWarmedUp('io.cozy.todos', [query1(), query2()])
       ).toBe(true)
     })
 
@@ -372,23 +372,23 @@ describe('PouchManager', () => {
       manager.warmedUpQueries = {
         'io.cozy.todos': [query2().options.as]
       }
-      manager.persistwarmedUpQueries()
+      manager.persistWarmedUpQueries()
 
       expect(
-        manager.areWarmedUpQueries('io.cozy.todos', [query1(), query2()])
+        manager.areQueriesWarmedUp('io.cozy.todos', [query1(), query2()])
       ).toBe(false)
     })
 
     it('Should return false if the queries are not been done', () => {
       expect(
-        manager.areWarmedUpQueries('io.cozy.todos', [query1(), query2()])
+        manager.areQueriesWarmedUp('io.cozy.todos', [query1(), query2()])
       ).toBe(false)
     })
   })
 
-  describe('destroyWarmedupQueries', () => {
-    it('Should destroy the local storage item', () => {
-      manager.destroyWarmedUpQueries()
+  describe('clearWarmedupQueries', () => {
+    it('Should clear the local storage item', () => {
+      manager.clearWarmedUpQueries()
 
       expect(localStorage.removeItem).toHaveBeenLastCalledWith(
         LOCALSTORAGE_WARMUPEDQUERIES_KEY
@@ -398,7 +398,7 @@ describe('PouchManager', () => {
       manager.warmedUpQueries = {
         'io.cozy.todos': [query2().options.as]
       }
-      manager.destroyWarmedUpQueries()
+      manager.clearWarmedUpQueries()
       expect(manager.warmedUpQueries).toEqual({})
     })
   })

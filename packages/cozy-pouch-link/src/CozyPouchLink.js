@@ -298,7 +298,7 @@ class PouchLink extends CozyLink {
       this.doctypesReplicationOptions[doctype] &&
       this.doctypesReplicationOptions[doctype].warmupQueries
     ) {
-      return !this.pouches.areWarmedUpQueries(
+      return !this.pouches.areQueriesWarmedUp(
         doctype,
         this.doctypesReplicationOptions[doctype].warmupQueries
       )
