@@ -276,21 +276,23 @@ class PouchManager {
 
   async warmupQueries(doctype, queries) {
     if (!this.warmedUpQueries[doctype]) this.warmedUpQueries[doctype] = []
-    await Promise.all(
-      queries.map(query => {
-        const def = getQueryAlias(query)
-        if (!this.warmedUpQueries[doctype].includes(def)) {
-          this.warmedUpQueries[doctype].push(def)
-          try {
-            return this.executeQuery(query.definition().toDefinition())
-          } catch {
-            delete this.warmedUpQueries[doctype][def]
+    try {
+      await Promise.all(
+        queries.map(async query => {
+          const def = getQueryAlias(query)
+          if (!this.warmedUpQueries[doctype].includes(def)) {
+            await this.executeQuery(query.definition().toDefinition())
+            this.warmedUpQueries[doctype].push(def)
           }
-        }
-      })
-    )
-    this.persistwarmedUpQueries()
-    logger.log('PouchManager: warmupQueries for ' + doctype + ' are done')
+        })
+      )
+      this.persistWarmedUpQueries()
+      logger.log('PouchManager: warmupQueries for ' + doctype + ' are done')
+    } catch {
+      delete this.warmedUpQueries[doctype]
+    }
+  }
+
   // Queries are warmed up only once per instantiation of the PouchManager. Since
   // the PouchManager lives during the complete lifecycle of the app, warm up
   // happens only on app start / restart.

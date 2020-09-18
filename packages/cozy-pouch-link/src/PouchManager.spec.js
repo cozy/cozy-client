@@ -517,5 +517,17 @@ describe('PouchManager', () => {
       await sleep(10)
       expect(executeMock).toHaveBeenCalledTimes(2)
     })
+
+    it('should not persist or cache warmedup queries if one have failled', async () => {
+      jest
+        .spyOn(rep, 'startReplication')
+        .mockImplementation(() => Promise.resolve({}))
+      executeMock.mockRejectedValueOnce('error').mockResolvedValue({})
+
+      await manager.replicateOnce()
+      await sleep(10)
+      expect(manager.getPersistedWarmedUpQueries()).toEqual({})
+      expect(manager.warmedUpQueries['io.cozy.todos']).toBeUndefined()
+    })
   })
 })
