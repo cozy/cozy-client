@@ -56,6 +56,9 @@ class PouchLink extends CozyLink {
    * @param {number} [opts.replicationInterval] Milliseconds between replications
    * @param {string[]} opts.doctypes Doctypes to replicate
    * @param {object[]} opts.doctypesReplicationOptions A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote")
+   * @param {object[]} opts.pouch
+   * @param {object[]} opts.pouch.plugins List of Pouch plugins to use
+   * @param {boolean} opts.pouch.options.debug To debug Pouch action
    *
    * @returns {object} The PouchLink instance
    */

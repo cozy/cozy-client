@@ -1,12 +1,16 @@
 import PouchDB from 'pouchdb-browser'
+import pouchdbDebug from 'pouchdb-debug'
+
 import fromPairs from 'lodash/fromPairs'
 import forEach from 'lodash/forEach'
 import get from 'lodash/get'
 import map from 'lodash/map'
 import zip from 'lodash/zip'
+
+import { isMobileApp } from 'cozy-device-helper'
+
 import Loop from './loop'
 import { default as helpers } from './helpers'
-import { isMobileApp } from 'cozy-device-helper'
 import logger from './logger'
 
 const { isDesignDocument, isDeletedDocument } = helpers
@@ -114,6 +118,11 @@ class PouchManager {
     const pouchPlugins = get(options, 'pouch.plugins', [])
     const pouchOptions = get(options, 'pouch.options', {})
     forEach(pouchPlugins, plugin => PouchDB.plugin(plugin))
+    if (pouchOptions.debug) {
+      PouchDB.plugin(pouchdbDebug)
+      PouchDB.debug.enable('*')
+    }
+
     this.pouches = fromPairs(
       doctypes.map(doctype => [
         doctype,

@@ -53,6 +53,9 @@ constructor - Initializes a new PouchLink
 | [opts.replicationInterval] | <code>number</code> |  | Milliseconds between replications |
 | opts.doctypes | <code>Array.&lt;string&gt;</code> |  | Doctypes to replicate |
 | opts.doctypesReplicationOptions | <code>Array.&lt;object&gt;</code> |  | A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote") |
+| opts.pouch | <code>Array.&lt;object&gt;</code> |  |  |
+| opts.pouch.plugins | <code>Array.&lt;object&gt;</code> |  | List of Pouch plugins to use |
+| opts.pouch.options.debug | <code>boolean</code> |  | To debug Pouch action |
 
 <a name="PouchLink+handleOnSync"></a>
 
