@@ -4,12 +4,21 @@
 // See https://github.com/cozy/cozy-client/pull/239 for example
 // on how to use fake timers with setTimeout created in promises.
 
-import PouchManager, { LOCALSTORAGE_SYNCED_KEY } from './PouchManager'
+import PouchManager, {
+  LOCALSTORAGE_SYNCED_KEY,
+  LOCALSTORAGE_WARMUPEDQUERIES_KEY
+} from './PouchManager'
 import * as mocks from './__tests__/mocks'
+
+import { Q } from 'cozy-client'
+
 import { isMobileApp } from 'cozy-device-helper'
 
 jest.mock('pouchdb-browser')
 jest.mock('cozy-device-helper')
+
+import * as rep from './startReplication'
+
 import PouchDB from 'pouchdb-browser'
 
 const sleep = delay => {
@@ -18,6 +27,34 @@ const sleep = delay => {
   })
 }
 
+const query = () => ({
+  definition: () =>
+    Q('io.cozy.files')
+      .where({
+        trashed: false,
+        type: 'file',
+        updated_at: { $gt: null }
+      })
+      .indexFields(['updated_at', 'type', 'trashed'])
+      .sortBy([{ updated_at: 'desc' }])
+      .limitBy(100),
+  options: {
+    as: 'recent-view-query'
+  }
+})
+
+const query1 = () => ({
+  definition: () => Q('io.cozy.todos').limitBy(100),
+  options: {
+    as: 'query1'
+  }
+})
+const query2 = () => ({
+  definition: () => Q('io.cozy.todos').limitBy(100),
+  options: {
+    as: 'query2'
+  }
+})
 describe('PouchManager', () => {
   let manager,
     managerOptions,
@@ -266,6 +303,89 @@ describe('PouchManager', () => {
     })
   })
 
+  describe('getPersistedWarmedUpQueriess', () => {
+    it('Should return an empty object if local storage is empty', () => {
+      const manager = new PouchManager(['io.cozy.todos'], managerOptions)
+
+      expect(manager.getPersistedWarmedUpQueries()).toEqual({})
+    })
+
+    it('Should return the list of queries if local storage contains ones', () => {
+      const persistedQueries = [query().options.as]
+      localStorage.__STORE__[LOCALSTORAGE_WARMUPEDQUERIES_KEY] = JSON.stringify(
+        persistedQueries
+      )
+      const manager = new PouchManager(['io.cozy.todos'], managerOptions)
+
+      expect(manager.getPersistedWarmedUpQueries()).toEqual(persistedQueries)
+    })
+  })
+
+  describe('persistWarmedUpQueries', () => {
+    it('Should put the list of warmedUpQueries in localStorage', () => {
+      const manager = new PouchManager(['io.cozy.todos'], managerOptions)
+      manager.warmedUpQueries = { 'io.cozy.todos': ['query1', 'query2'] }
+      manager.persistWarmedUpQueries()
+
+      expect(localStorage.__STORE__[LOCALSTORAGE_WARMUPEDQUERIES_KEY]).toEqual(
+        JSON.stringify(manager.warmedUpQueries)
+      )
+    })
+  })
+
+  describe('areQueriesWarmedUp', () => {
+    let manager
+
+    beforeEach(() => {
+      manager = new PouchManager(['io.cozy.todos'], managerOptions)
+    })
+
+    it('Should return true if all the queries are warmuped', () => {
+      manager.warmedUpQueries = {
+        'io.cozy.todos': [query1().options.as, query2().options.as]
+      }
+      manager.persistWarmedUpQueries()
+
+      expect(
+        manager.areQueriesWarmedUp('io.cozy.todos', [query1(), query2()])
+      ).toBe(true)
+    })
+
+    it('Should return false if at least one query is not warmuped', () => {
+      manager.warmedUpQueries = {
+        'io.cozy.todos': [query2().options.as]
+      }
+      manager.persistWarmedUpQueries()
+
+      expect(
+        manager.areQueriesWarmedUp('io.cozy.todos', [query1(), query2()])
+      ).toBe(false)
+    })
+
+    it('Should return false if the queries are not been done', () => {
+      expect(
+        manager.areQueriesWarmedUp('io.cozy.todos', [query1(), query2()])
+      ).toBe(false)
+    })
+  })
+
+  describe('clearWarmedupQueries', () => {
+    it('Should clear the local storage item', () => {
+      manager.clearWarmedUpQueries()
+
+      expect(localStorage.removeItem).toHaveBeenLastCalledWith(
+        LOCALSTORAGE_WARMUPEDQUERIES_KEY
+      )
+    })
+    it('Should reset warmedupQueries', () => {
+      manager.warmedUpQueries = {
+        'io.cozy.todos': [query2().options.as]
+      }
+      manager.clearWarmedUpQueries()
+      expect(manager.warmedUpQueries).toEqual({})
+    })
+  })
+
   describe('Events Listeners', () => {
     describe('Add/Remove Listeners', () => {
       beforeEach(() => {
@@ -332,6 +452,65 @@ describe('PouchManager', () => {
           expect(stopReplicationLoop).toHaveBeenCalled()
         })
       }
+    })
+  })
+
+  describe('warmupQueries', () => {
+    let manager
+    const executeMock = jest.fn()
+    beforeEach(() => {
+      let newManagerOptions = {
+        ...managerOptions,
+        executeQuery: executeMock,
+        doctypesReplicationOptions: {
+          'io.cozy.todos': {
+            strategy: 'fromRemote',
+            warmupQueries: [query1(), query2()]
+          }
+        }
+      }
+      manager = new PouchManager(['io.cozy.todos'], newManagerOptions)
+    })
+
+    it('should executes warmeupQueries on the first replicationLoop only', async () => {
+      jest
+        .spyOn(rep, 'startReplication')
+        .mockImplementation(() => Promise.resolve({}))
+      await manager.replicateOnce()
+      await sleep(10)
+      executeMock.mockResolvedValue({})
+      expect(executeMock).toHaveBeenCalledTimes(2)
+      expect(executeMock).toHaveBeenNthCalledWith(
+        1,
+        query1()
+          .definition()
+          .toDefinition()
+      )
+      expect(executeMock).toHaveBeenNthCalledWith(
+        2,
+        query2()
+          .definition()
+          .toDefinition()
+      )
+      expect(manager.getPersistedWarmedUpQueries()).toEqual({
+        'io.cozy.todos': ['query1', 'query2']
+      })
+      //Simulation of a loop. Let's replicate again
+      await manager.replicateOnce()
+      await sleep(10)
+      expect(executeMock).toHaveBeenCalledTimes(2)
+    })
+
+    it('should not persist or cache warmedup queries if one has failed', async () => {
+      jest
+        .spyOn(rep, 'startReplication')
+        .mockImplementation(() => Promise.resolve({}))
+      executeMock.mockRejectedValueOnce('error').mockResolvedValue({})
+
+      await manager.replicateOnce()
+      await sleep(10)
+      expect(manager.getPersistedWarmedUpQueries()).toEqual({})
+      expect(manager.warmedUpQueries['io.cozy.todos']).toBeUndefined()
     })
   })
 })

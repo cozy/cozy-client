@@ -5,102 +5,22 @@ import get from 'lodash/get'
 import map from 'lodash/map'
 import zip from 'lodash/zip'
 import Loop from './loop'
-import { default as helpers } from './helpers'
 import { isMobileApp } from 'cozy-device-helper'
 import logger from './logger'
-
-const { isDesignDocument, isDeletedDocument } = helpers
+import { startReplication } from './startReplication'
 const DEFAULT_DELAY = 30 * 1000
 
-const TIME_UNITS = [['ms', 1000], ['s', 60], ['m', 60], ['h', 24]]
-const humanTimeDelta = timeMs => {
-  let cur = timeMs
-  let unitIndex = 0
-  let str = ''
-  while (cur >= TIME_UNITS[unitIndex][1]) {
-    let unit = TIME_UNITS[unitIndex]
-    const int = Math.round(cur / unit[1])
-    const rest = cur % unit[1]
-    str = `${rest}${unit[0]}` + str
-    cur = int
-    unitIndex++
-  }
-  const lastUnit = TIME_UNITS[unitIndex]
-  str = `${cur}${lastUnit[0]}` + str
-  return str
-}
+export const LOCALSTORAGE_SYNCED_KEY = 'cozy-client-pouch-link-synced'
+export const LOCALSTORAGE_WARMUPEDQUERIES_KEY =
+  'cozy-client-pouch-link-warmupedqueries'
 
 /**
- * startReplication - Create a cancellable promise for replication with default options
- *
- * @private
- * @param {object} pouch                 Pouch database instance
- * @param {object} replicationOptions Any option supported by the Pouch replication API (https://pouchdb.com/api.html#replication)
- * @param {string} replicationOptions.strategy The direction of the replication. Can be "fromRemote",  "toRemote" or "sync"
- * @param {Function} getReplicationURL A function that should return the remote replication URL
- *
- * @returns {Promise} A cancelable promise that resolves at the end of the replication
+ * @param {QueryDefinition} query
+ * @returns {string} alias
  */
-const startReplication = (pouch, replicationOptions, getReplicationURL) => {
-  let replication
-  const start = new Date()
-  const promise = new Promise((resolve, reject) => {
-    const url = getReplicationURL()
-    const { strategy, ...customReplicationOptions } = replicationOptions
-    const options = {
-      batch_size: 1000, // we have mostly small documents
-      ...customReplicationOptions
-    }
-    let replication
-
-    if (strategy === 'fromRemote')
-      replication = pouch.replicate.from(url, options)
-    else if (strategy === 'toRemote')
-      replication = pouch.replicate.to(url, options)
-    else replication = pouch.sync(url, options)
-
-    const docs = {}
-
-    replication.on('change', infos => {
-      //! Since we introduced the concept of strategy we can use
-      // PouchDB.replicate or PouchDB.sync. But both don't share the
-      // same API for the change's event.
-      // See https://pouchdb.com/api.html#replication
-      // and https://pouchdb.com/api.html#sync (see example response)
-      const change = infos.change ? infos.change : infos
-
-      if (change.docs) {
-        change.docs
-          .filter(doc => !isDesignDocument(doc) && !isDeletedDocument(doc))
-          .forEach(doc => {
-            docs[doc._id] = doc
-          })
-      }
-    })
-    replication.on('error', reject).on('complete', () => {
-      const end = new Date()
-      if (process.env.NODE_ENV !== 'production') {
-        logger.info(
-          `PouchManager: replication for ${url} took ${humanTimeDelta(
-            end - start
-          )}`
-        )
-      }
-      resolve(Object.values(docs))
-    })
-  })
-
-  const cancel = () => {
-    if (replication) {
-      replication.cancel()
-    }
-  }
-
-  promise.cancel = cancel
-  return promise
+const getQueryAlias = query => {
+  return query.options.as
 }
-
-export const LOCALSTORAGE_SYNCED_KEY = 'cozy-client-pouch-link-synced'
 
 /**
  * Handles the lifecycle of several pouches
@@ -121,6 +41,7 @@ class PouchManager {
       ])
     )
     this.syncedDoctypes = this.getPersistedSyncedDoctypes()
+    this.warmedUpQueries = this.getPersistedWarmedUpQueries()
     this.getReplicationURL = options.getReplicationURL
     this.doctypesReplicationOptions = options.doctypesReplicationOptions || {}
     this.listenerLaunched = false
@@ -132,6 +53,7 @@ class PouchManager {
     this.startReplicationLoop = this.startReplicationLoop.bind(this)
     this.stopReplicationLoop = this.stopReplicationLoop.bind(this)
     this.replicateOnce = this.replicateOnce.bind(this)
+    this.executeQuery = this.options.executeQuery
   }
 
   addListeners() {
@@ -162,6 +84,8 @@ class PouchManager {
     this.stopReplicationLoop()
     this.removeListeners()
     this.destroySyncedDoctypes()
+    this.clearWarmedUpQueries()
+
     return Promise.all(
       Object.values(this.pouches).map(pouch => pouch.destroy())
     )
@@ -196,7 +120,6 @@ class PouchManager {
     if (process.env.NODE_ENV !== 'production') {
       logger.info('PouchManager: Start replication loop')
     }
-
     const delay = this.options.replicationDelay || DEFAULT_DELAY
     this.replicationLoop = new Loop(this.replicateOnce, delay)
     this.replicationLoop.start()
@@ -253,9 +176,8 @@ class PouchManager {
         getReplicationURL
       ).then(res => {
         this.addSyncedDoctype(doctype)
-
         logger.log('PouchManager: Replication for ' + doctype + ' ended', res)
-
+        this.checkToWarmupDoctype(doctype, replicationOptions)
         return res
       })
     })
@@ -350,6 +272,63 @@ class PouchManager {
 
   getDatabaseName(doctype) {
     return `${this.options.prefix}_${doctype}`
+  }
+
+  async warmupQueries(doctype, queries) {
+    if (!this.warmedUpQueries[doctype]) this.warmedUpQueries[doctype] = []
+    try {
+      await Promise.all(
+        queries.map(async query => {
+          const def = getQueryAlias(query)
+          if (!this.warmedUpQueries[doctype].includes(def)) {
+            await this.executeQuery(query.definition().toDefinition())
+            this.warmedUpQueries[doctype].push(def)
+          }
+        })
+      )
+      this.persistWarmedUpQueries()
+      logger.log('PouchManager: warmupQueries for ' + doctype + ' are done')
+    } catch {
+      delete this.warmedUpQueries[doctype]
+    }
+  }
+
+  // Queries are warmed up only once per instantiation of the PouchManager. Since
+  // the PouchManager lives during the complete lifecycle of the app, warm up
+  // happens only on app start / restart.
+  checkToWarmupDoctype(doctype, replicationOptions) {
+    if (!this.warmedUpQueries[doctype] && replicationOptions.warmupQueries) {
+      this.warmupQueries(doctype, replicationOptions.warmupQueries)
+    }
+  }
+
+  persistWarmedUpQueries() {
+    window.localStorage.setItem(
+      LOCALSTORAGE_WARMUPEDQUERIES_KEY,
+      JSON.stringify(this.warmedUpQueries)
+    )
+  }
+
+  areQueriesWarmedUp(doctype, queries) {
+    const persistWarmedUpQueries = this.getPersistedWarmedUpQueries()
+    return queries.every(
+      query =>
+        persistWarmedUpQueries[doctype] &&
+        persistWarmedUpQueries[doctype].includes(getQueryAlias(query))
+    )
+  }
+
+  getPersistedWarmedUpQueries() {
+    const item = window.localStorage.getItem(LOCALSTORAGE_WARMUPEDQUERIES_KEY)
+    if (!item) {
+      return {}
+    }
+    return JSON.parse(item)
+  }
+
+  clearWarmedUpQueries() {
+    this.warmedUpQueries = {}
+    window.localStorage.removeItem(LOCALSTORAGE_WARMUPEDQUERIES_KEY)
   }
 }
 

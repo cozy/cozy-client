@@ -136,7 +136,8 @@ class PouchLink extends CozyLink {
       doctypesReplicationOptions: this.doctypesReplicationOptions,
       onError: err => this.onSyncError(err),
       onSync: this.handleOnSync.bind(this),
-      prefix
+      prefix,
+      executeQuery: this.executeQuery.bind(this)
     })
 
     if (this.client && this.options.initialSync) {
@@ -259,6 +260,15 @@ class PouchLink extends CozyLink {
       return forward(operation)
     }
 
+    if (this.needsToWaitWarmup(doctype)) {
+      if (process.env.NODE_ENV !== 'production') {
+        logger.info(
+          `Tried to access local ${doctype} but not warmuped yet. Forwarding the operation to next link`
+        )
+      }
+      return forward(operation)
+    }
+
     // Forwards if doctype not supported
     if (!this.supportsOperation(operation)) {
       if (process.env.NODE_ENV !== 'production') {
@@ -275,13 +285,34 @@ class PouchLink extends CozyLink {
       return this.executeQuery(operation)
     }
   }
+  /**
+   *
+   * Check if there is warmup queries for this doctype
+   * and return if those queries are already warmedup or not
+   *
+   * @param {string} doctype
+   * @returns {boolean} the need to wait for the warmup
+   */
+  needsToWaitWarmup(doctype) {
+    if (
+      this.doctypesReplicationOptions &&
+      this.doctypesReplicationOptions[doctype] &&
+      this.doctypesReplicationOptions[doctype].warmupQueries
+    ) {
+      return !this.pouches.areQueriesWarmedUp(
+        doctype,
+        this.doctypesReplicationOptions[doctype].warmupQueries
+      )
+    }
+    return false
+  }
 
   hasIndex(name) {
     return Boolean(this.indexes[name])
   }
 
   async ensureIndex(doctype, query) {
-    const fields = getIndexFields(query)
+    const fields = query.indexedFields || getIndexFields(query)
     const name = getIndexNameFromFields(fields)
     const absName = `${doctype}/${name}`
     const db = this.pouches.getPouch(doctype)
@@ -306,7 +337,8 @@ class PouchLink extends CozyLink {
     limit,
     id,
     ids,
-    skip
+    skip,
+    indexedFields
   }) {
     const db = this.getPouch(doctype)
     let res, withRows
@@ -330,7 +362,7 @@ class PouchLink extends CozyLink {
         limit,
         skip
       }
-      await this.ensureIndex(doctype, findOpts)
+      await this.ensureIndex(doctype, { ...findOpts, indexedFields })
       res = await find(db, findOpts)
       res.offset = skip
       res.limit = limit

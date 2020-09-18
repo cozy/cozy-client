@@ -4,7 +4,6 @@ import CozyPouchLink from '.'
 import { SCHEMA, TODO_1, TODO_2, TODO_3, TODO_4 } from './__tests__/fixtures'
 import PouchDB from 'pouchdb-browser'
 import PouchDBMemoryAdapterPlugin from 'pouchdb-adapter-memory'
-
 import CozyClient, { Q } from 'cozy-client'
 
 // Necessary to have the memory adapter for the tests since neither
@@ -55,6 +54,19 @@ describe('CozyPouchLink', () => {
   })
 
   describe('request handling', () => {
+    const query1 = () => ({
+      definition: () => Q(TODO_DOCTYPE).limitBy(100),
+      options: {
+        as: 'query1'
+      }
+    })
+    const query2 = () => ({
+      definition: () => Q(TODO_DOCTYPE).limitBy(100),
+      options: {
+        as: 'query2'
+      }
+    })
+
     it('should check if the doctype is supported and forward if not', async () => {
       await setup()
       const query = Q('io.cozy.rockets')
@@ -68,6 +80,34 @@ describe('CozyPouchLink', () => {
       await setup()
       const query = Q(TODO_DOCTYPE)
       expect.assertions(1)
+      await link.request(query, null, () => {
+        expect(true).toBe(true)
+      })
+    })
+
+    it('should check if the pouch is synced and queries warmuped and forward if not', async () => {
+      await setup({
+        doctypesReplicationOptions: {
+          TODO_DOCTYPE: { warmupQueries: [query1(), query2()] }
+        }
+      })
+      const query = Q(TODO_DOCTYPE)
+      expect.assertions(1)
+      await link.request(query, null, () => {
+        expect(true).toBe(true)
+      })
+    })
+
+    it('should not forward if the pouch is synced and there is no warmup queries for this doctype', async () => {
+      await setup({
+        doctypesReplicationOptions: {
+          'io.cozy.files': { warmupQueries: [query1(), query2()] }
+        }
+      })
+      link.pouches.isSynced = jest.fn().mockReturnValue(true)
+
+      const query = Q(TODO_DOCTYPE)
+      expect.assertions(0)
       await link.request(query, null, () => {
         expect(true).toBe(true)
       })
@@ -321,6 +361,34 @@ describe('CozyPouchLink', () => {
       link.registerClient(client)
 
       expect(link.onLogin()).rejects.toThrow()
+    })
+  })
+
+  describe('index creation', () => {
+    let spy
+
+    afterEach(() => {
+      spy.mockRestore()
+    })
+
+    it('uses the default index, the one from the sort', async () => {
+      spy = jest.spyOn(PouchDB.prototype, 'createIndex')
+      await setup()
+      link.pouches.isSynced = jest.fn().mockReturnValue(true)
+      const query = Q(TODO_DOCTYPE)
+        .where({})
+        .sortBy([{ name: 'asc' }])
+      await link.request(query)
+      expect(spy).toHaveBeenCalledWith({ index: { fields: ['name'] } })
+    })
+
+    it('uses indexFields if provided', async () => {
+      spy = jest.spyOn(PouchDB.prototype, 'createIndex').mockReturnValue({})
+      await setup()
+      link.ensureIndex(TODO_DOCTYPE, {
+        indexedFields: ['myIndex']
+      })
+      expect(spy).toHaveBeenCalledWith({ index: { fields: ['myIndex'] } })
     })
   })
 })
