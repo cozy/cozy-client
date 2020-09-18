@@ -333,23 +333,6 @@ describe('PouchManager', () => {
     })
   })
 
-  describe('warmupQueries', () => {
-    /* it('Should add the doctype to synced doctypes', () => {
-      const manager = new PouchManager(['io.cozy.todos'], managerOptions)
-      manager.addSyncedDoctype('io.cozy.todos')
-
-      expect(manager.syncedDoctypes).toEqual(['io.cozy.todos'])
-    })
-
-    it('Should persist the new synced doctypes list', () => {
-      const manager = new PouchManager(['io.cozy.todos'], managerOptions)
-      manager.persistSyncedDoctypes = jest.fn()
-      manager.addSyncedDoctype('io.cozy.todos')
-
-      expect(manager.persistSyncedDoctypes).toHaveBeenCalledTimes(1)
-    }) */
-  })
-
   describe('areQueriesWarmedUp', () => {
     let manager
 
