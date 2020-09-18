@@ -95,10 +95,11 @@ Emits pouchlink:sync:stop event
 <a name="PouchLink+needsToWaitWarmup"></a>
 
 ### pouchLink.needsToWaitWarmup(doctype) ⇒ <code>boolean</code>
-**Kind**: instance method of [<code>PouchLink</code>](#PouchLink)  
-**Returns**: <code>boolean</code> - the need to wait for the warmup
 Check if there is warmup queries for this doctype
-and return if those queries are already warmedup or not  
+and return if those queries are already warmedup or not
+
+**Kind**: instance method of [<code>PouchLink</code>](#PouchLink)  
+**Returns**: <code>boolean</code> - the need to wait for the warmup  
 
 | Param | Type |
 | --- | --- |
