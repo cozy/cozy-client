@@ -177,15 +177,7 @@ class PouchManager {
       ).then(res => {
         this.addSyncedDoctype(doctype)
         logger.log('PouchManager: Replication for ' + doctype + ' ended', res)
-        //We want to warmupQueries only once by "start". aka we want to warmup
-        //every time we launch the client (app) but not every time a replication
-        //is done (aka every 30s at least)
-        if (
-          !this.warmedUpQueries[doctype] &&
-          replicationOptions.warmupQueries
-        ) {
-          this.warmupQueries(doctype, replicationOptions.warmupQueries)
-        }
+        this.checkToWarmupDoctype(doctype, replicationOptions)
         return res
       })
     })
@@ -299,6 +291,13 @@ class PouchManager {
     )
     this.persistwarmedUpQueries()
     logger.log('PouchManager: warmupQueries for ' + doctype + ' are done')
+  // Queries are warmed up only once per instantiation of the PouchManager. Since
+  // the PouchManager lives during the complete lifecycle of the app, warm up
+  // happens only on app start / restart.
+  checkToWarmupDoctype(doctype, replicationOptions) {
+    if (!this.warmedUpQueries[doctype] && replicationOptions.warmupQueries) {
+      this.warmupQueries(doctype, replicationOptions.warmupQueries)
+    }
   }
 
   persistWarmedUpQueries() {
