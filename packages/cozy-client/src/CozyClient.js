@@ -603,6 +603,7 @@ client.query(Q('io.cozy.bills'))`)
    * @param  {string} options - Options
    * @param  {string} options.as - Names the query so it can be reused (by multiple components for example)
    * @param  {string} options.fetchPolicy - Fetch policy to bypass fetching based on what's already inside the state. See "Fetch policies"
+   * @param  {number} options.timeout - ms before throwing a timeout
    * @returns {QueryResult}
    */
   async query(queryDefinition, { update, ...options } = {}) {
@@ -625,12 +626,31 @@ client.query(Q('io.cozy.bills'))`)
     }
     try {
       this.dispatch(loadQuery(queryId))
-      const response = await this.requestQuery(queryDefinition)
-      this.dispatch(
-        receiveQueryResult(queryId, response, {
-          update
+      let response
+      if (options.timeout) {
+        let timeout = new Promise((resolve, reject) => {
+          let id = setTimeout(() => {
+            clearTimeout(id)
+            reject('Timed out')
+          }, options.timeout)
         })
-      )
+        response = await Promise.race([
+          timeout,
+          this.requestQuery(queryDefinition)
+        ])
+        this.dispatch(
+          receiveQueryResult(queryId, response, {
+            update
+          })
+        )
+      } else {
+        response = await this.requestQuery(queryDefinition)
+        this.dispatch(
+          receiveQueryResult(queryId, response, {
+            update
+          })
+        )
+      }
       return response
     } catch (error) {
       this.dispatch(receiveQueryError(queryId, error))
