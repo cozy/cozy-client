@@ -140,6 +140,9 @@ client.query(
 
 Both `create()` and `save()` will return a Promise with a `data` attribute containing the saved document.
 
+## Learn more about queries
+
+You can check out our dedicated [query documentation](https://docs.cozy.io/en/tutorials/data/queries/) to know more about querying with cozy-client and avoid common traps that can dramatically impact your app performances.
 
 ## Connecting with you React components
 
