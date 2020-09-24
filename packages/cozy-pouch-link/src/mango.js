@@ -2,10 +2,8 @@ import flatten from 'lodash/flatten'
 import isArray from 'lodash/isArray'
 import isObject from 'lodash/isObject'
 
-const fieldsComparator = (a, b) => a.localeCompare(b)
-
 export const getIndexNameFromFields = fields => {
-  return `by_${fields.sort(fieldsComparator).join('_and_')}`
+  return `by_${fields.join('_and_')}`
 }
 
 const getSortKeys = sort => {
