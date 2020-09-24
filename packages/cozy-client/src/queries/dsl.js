@@ -43,6 +43,42 @@ class QueryDefinition {
   }
 
   /**
+   * Check if the sort order matches the index' fields order.
+   *
+   * When sorting with CouchDB, it is required to:
+   * - use indexed fields
+   * - keep the same order than the indexed fields.
+   *
+   * See https://docs.cozy.io/en/tutorials/data/queries/#sort-data-with-mango
+   *
+   * @param {sort|selector|indexedFields}
+   */
+  checkSortOrder({ sort, selector, indexedFields }) {
+    const _sort = this.sort || sort
+    const _selector = this.selector || selector || {}
+    const _indexedFields = this.indexedFields || indexedFields
+    if (!_sort) {
+      return
+    }
+    const fieldsToIndex = _indexedFields || Object.keys(_selector)
+    if (!fieldsToIndex || fieldsToIndex.length < 1) {
+      return
+    }
+    if (_sort.length > fieldsToIndex.length) {
+      console.warn('You should not sort on non-indexed fields')
+      return
+    }
+    for (let i = 0; i < _sort.length; i++) {
+      if (Object.keys(_sort[i])[0] !== fieldsToIndex[i]) {
+        console.warn(
+          'The sort order should be the same than the indexed fields'
+        )
+        return
+      }
+    }
+  }
+
+  /**
    * Query a single document on its id.
    *
    * @param {string} id   The document id.
@@ -73,6 +109,7 @@ class QueryDefinition {
    * @returns {QueryDefinition}  The QueryDefinition object.
    */
   where(selector) {
+    this.checkSortOrder({ selector })
     return new QueryDefinition({ ...this.toDefinition(), selector })
   }
 
@@ -93,6 +130,7 @@ class QueryDefinition {
    * @returns {QueryDefinition}  The QueryDefinition object.
    */
   indexFields(indexedFields) {
+    this.checkSortOrder({ indexedFields })
     return new QueryDefinition({ ...this.toDefinition(), indexedFields })
   }
 
@@ -110,6 +148,7 @@ class QueryDefinition {
         )}.`
       )
     }
+    this.checkSortOrder({ sort })
     return new QueryDefinition({ ...this.toDefinition(), sort })
   }
 
