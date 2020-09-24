@@ -1180,6 +1180,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
 
 * [QueryDefinition](#QueryDefinition)
     * [new QueryDefinition(options)](#new_QueryDefinition_new)
+    * [.checkSortOrder(sort|selector|indexedFields)](#QueryDefinition+checkSortOrder)
     * [.getById(id)](#QueryDefinition+getById) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.getByIds(ids)](#QueryDefinition+getByIds) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.where(selector)](#QueryDefinition+where) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
@@ -1213,6 +1214,23 @@ from a Cozy. `QueryDefinition`s are sent to links.
 | options.skip | <code>number</code> | The number of docs to skip. |
 | options.cursor | <code>number</code> | The cursor to paginate views. |
 | options.bookmark | <code>number</code> | The bookmark to paginate mango queries. |
+
+<a name="QueryDefinition+checkSortOrder"></a>
+
+### queryDefinition.checkSortOrder(sort|selector|indexedFields)
+Check if the sort order matches the index' fields order.
+
+When sorting with CouchDB, it is required to:
+- use indexed fields
+- keep the same order than the indexed fields.
+
+See https://docs.cozy.io/en/tutorials/data/queries/#sort-data-with-mango
+
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
+
+| Param | Type |
+| --- | --- |
+| sort|selector|indexedFields | <code>object</code> | 
 
 <a name="QueryDefinition+getById"></a>
 
