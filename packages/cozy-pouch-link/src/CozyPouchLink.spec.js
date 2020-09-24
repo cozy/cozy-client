@@ -143,6 +143,20 @@ describe('CozyPouchLink', () => {
       expect(resp.data.label).toBe('Make PouchDB link work')
     })
 
+    it('should be possible to explicitly index fields', async () => {
+      await setup()
+      link.pouches.isSynced = jest.fn().mockReturnValue(true)
+      const db = link.getPouch(TODO_DOCTYPE)
+      await db.bulkDocs(docs.map(x => omit(x, '_type')))
+      const query = client
+        .find(TODO_DOCTYPE, { done: true, label: { $gt: null } })
+        .indexFields(['label', 'done'])
+      const resp = await link.request(query)
+      expect(resp.data.length).toEqual(2)
+      expect(resp.data[0]._id).toEqual(TODO_3._id)
+      expect(resp.data[1]._id).toEqual(TODO_4._id)
+    })
+
     it('should be possible to query multiple docs', async () => {
       await setup()
       link.pouches.isSynced = jest.fn().mockReturnValue(true)
@@ -164,6 +178,7 @@ describe('CozyPouchLink', () => {
       await db.bulkDocs(docs.map(x => omit(x, '_type')))
       const query = client
         .find(TODO_DOCTYPE, { label: { $gt: null }, done: true })
+        .indexFields(['done', 'label'])
         .sortBy([{ done: 'asc' }, { label: 'asc' }])
       const res = await link.request(query)
       // expect(link.hasIndex('io.cozy.todos/by_done_and_id')).toBe(true)
