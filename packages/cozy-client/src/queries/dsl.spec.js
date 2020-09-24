@@ -1,6 +1,14 @@
 import { QueryDefinition, Q } from '../queries/dsl'
 
 describe('QueryDefinition', () => {
+  beforeEach(() => {
+    jest.spyOn(console, 'warn')
+  })
+
+  afterEach(() => {
+    console.warn.mockRestore()
+  })
+
   it('should build query defs on selected fields', () => {
     const q = new QueryDefinition({ doctype: 'io.cozy.todos' })
     expect(q.select(['toto'])).toMatchObject({
@@ -54,5 +62,37 @@ describe('QueryDefinition', () => {
     expect(withSkipAgain.skip).toEqual(2)
     expect(withSkipAgain.bookmark).toBeUndefined()
     expect(withSkipAgain.cursor).toBeUndefined()
+  })
+
+  it('should not warn for valid queries', () => {
+    Q('io.cozy.files')
+      .sortBy([{ type: 'asc' }, { dirID: 'asc' }])
+      .where({ type: 'file', dirID: '123' })
+      .indexFields(['type', 'dirID'])
+    expect(console.warn).toHaveBeenCalledTimes(0)
+  })
+  it('should warn on sorting non-indexed fields', () => {
+    Q('io.cozy.files')
+      .where({ type: 'file', dirID: '123' })
+      .indexFields(['type', 'dirID'])
+      .sortBy([{ type: 'asc' }, { dirID: 'asc' }, { date: 'asc' }])
+    expect(console.warn).toHaveBeenCalledTimes(1)
+  })
+  it('should warn on sort order', () => {
+    Q('io.cozy.files')
+      .where({ type: 'file', dirID: '123' })
+      .indexFields(['type', 'dirID'])
+      .sortBy([{ dirID: 'asc' }, { type: 'asc' }])
+    expect(console.warn).toHaveBeenCalledTimes(1)
+  })
+  it('should warn on sort order through the selector', () => {
+    Q('io.cozy.files')
+      .where({ type: 'file', dirID: '123' })
+      .sortBy([{ dirID: 'asc' }, { type: 'asc' }])
+    expect(console.warn).toHaveBeenCalledTimes(1)
+  })
+  it('should not warn for queries with no selector', () => {
+    Q('io.cozy.files').sortBy([{ dirID: 'asc' }, { type: 'asc' }])
+    expect(console.warn).toHaveBeenCalledTimes(0)
   })
 })
