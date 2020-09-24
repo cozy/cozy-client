@@ -51,7 +51,7 @@ class QueryDefinition {
    *
    * See https://docs.cozy.io/en/tutorials/data/queries/#sort-data-with-mango
    *
-   * @param {sort|selector|indexedFields}
+   * @param {object} sort|selector|indexedFields
    */
   checkSortOrder({ sort, selector, indexedFields }) {
     const _sort = this.sort || sort
