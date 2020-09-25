@@ -1,5 +1,12 @@
 import omit from 'lodash/omit'
 
+import { find, allDocs, withoutDesignDocuments } from './helpers'
+jest.mock('./helpers', () => ({
+  find: jest.fn(),
+  allDocs: jest.fn(),
+  withoutDesignDocuments: jest.fn()
+}))
+
 import CozyPouchLink from '.'
 import { SCHEMA, TODO_1, TODO_2, TODO_3, TODO_4 } from './__tests__/fixtures'
 import PouchDB from 'pouchdb-browser'
@@ -45,6 +52,11 @@ async function clean() {
 }
 
 describe('CozyPouchLink', () => {
+  beforeEach(() => {
+    allDocs.mockReturnValue({ docs: [] })
+    withoutDesignDocuments.mockReturnValue({ docs: [] })
+    find.mockReturnValue({ docs: [] })
+  })
   afterEach(clean)
 
   it('should generate replication url', async () => {
@@ -115,6 +127,11 @@ describe('CozyPouchLink', () => {
   })
 
   describe('queries', () => {
+    beforeEach(() => {
+      allDocs.mockReturnValue({ docs: [TODO_1] })
+      withoutDesignDocuments.mockReturnValue({ docs: [TODO_1] })
+      find.mockReturnValue({ docs: [TODO_1] })
+    })
     const docs = [TODO_1, TODO_2, TODO_3, TODO_4]
     it('should be able to execute a query', async () => {
       await setup()
@@ -144,6 +161,7 @@ describe('CozyPouchLink', () => {
     })
 
     it('should be possible to explicitly index fields', async () => {
+      find.mockReturnValue({ docs: [TODO_3, TODO_4] })
       await setup()
       link.pouches.isSynced = jest.fn().mockReturnValue(true)
       const db = link.getPouch(TODO_DOCTYPE)
@@ -158,6 +176,7 @@ describe('CozyPouchLink', () => {
     })
 
     it('should be possible to query multiple docs', async () => {
+      withoutDesignDocuments.mockReturnValue({ docs: [TODO_1, TODO_3] })
       await setup()
       link.pouches.isSynced = jest.fn().mockReturnValue(true)
       const db = link.getPouch(TODO_DOCTYPE)
@@ -172,6 +191,7 @@ describe('CozyPouchLink', () => {
     })
 
     it('should be possible to select', async () => {
+      find.mockReturnValue({ docs: [TODO_3, TODO_4] })
       await setup()
       link.pouches.isSynced = jest.fn().mockReturnValue(true)
       const db = link.getPouch(TODO_DOCTYPE)
@@ -381,7 +401,11 @@ describe('CozyPouchLink', () => {
 
   describe('index creation', () => {
     let spy
-
+    beforeEach(() => {
+      allDocs.mockReturnValue({ docs: [] })
+      withoutDesignDocuments.mockReturnValue({ docs: [] })
+      find.mockReturnValue({ docs: [] })
+    })
     afterEach(() => {
       spy.mockRestore()
     })
@@ -404,6 +428,35 @@ describe('CozyPouchLink', () => {
         indexedFields: ['myIndex']
       })
       expect(spy).toHaveBeenCalledWith({ index: { fields: ['myIndex'] } })
+    })
+
+    it('uses the specified index', async () => {
+      let spyIndex = jest
+        .spyOn(CozyPouchLink.prototype, 'ensureIndex')
+        .mockReturnValue({ id: 'design/myIndex2' })
+
+      await setup()
+      const db = link.getPouch(TODO_DOCTYPE)
+      await link.executeQuery({
+        doctype: TODO_DOCTYPE,
+        indexedFields: ['myIndex2'],
+        selector: {}
+      })
+      const params = {
+        sort: undefined,
+        selector: {},
+        fields: undefined,
+        limit: undefined,
+        skip: undefined
+      }
+
+      expect(spyIndex).toHaveBeenCalledWith('io.cozy.todos', {
+        ...params,
+        indexedFields: ['myIndex2']
+      })
+      params.use_index = 'design/myIndex2'
+      expect(find).toHaveBeenCalledWith(db, params)
+      spyIndex.mockRestore()
     })
   })
 })
