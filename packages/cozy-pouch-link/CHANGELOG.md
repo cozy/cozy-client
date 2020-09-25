@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [15.0.0](https://github.com/cozy/cozy-client/compare/v14.7.0...v15.0.0) (2020-09-25)
+
+
+### Bug Fixes
+
+* Do not sort fields for index name ([88a1878](https://github.com/cozy/cozy-client/commit/88a1878)), closes [/github.com/cozy/cozy-client/blob/ea768adecaf0dd1c52e9876bf68e86d099579a9b/packages/cozy-stack-client/src/DocumentCollection.js#L416-L418](https://github.com//github.com/cozy/cozy-client/blob/ea768adecaf0dd1c52e9876bf68e86d099579a9b/packages/cozy-stack-client/src/DocumentCollection.js/issues/L416-L418)
+
+
+### BREAKING CHANGES
+
+* in the absence of an `indexedFields` directive, the
+attributes order in a `where` selector will matter to create the index.
+To force an attributes order for an index, use `indexedFields`.
+
+We used to sort the index fields to build its name, e.g.
+"by_date_and_type", which allows to keep the same order independently
+from their position in the `where` selector.
+However, this breaks the `indexedFields` behavior: because of the sort,
+the fields might be indexed in a wrong order, e.g. `[type, date]` will
+actually produce a `[date, type]` index. As the order is important
+in Mango, this can break some queries.
+
+We remove this sort to be consistent with
+
+
+
+
+
 # [14.7.0](https://github.com/cozy/cozy-client/compare/v14.6.0...v14.7.0) (2020-09-18)
 
 

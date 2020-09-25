@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [15.0.0](https://github.com/cozy/cozy-client/compare/v14.7.0...v15.0.0) (2020-09-25)
+
+
+### Features
+
+* Check if the sort is correct ([5f1f597](https://github.com/cozy/cozy-client/commit/5f1f597))
+
+
+
+
+
 # [14.6.0](https://github.com/cozy/cozy-client/compare/v14.5.0...v14.6.0) (2020-09-18)
 
 
