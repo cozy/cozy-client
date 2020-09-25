@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [15.0.1](https://github.com/cozy/cozy-client/compare/v15.0.0...v15.0.1) (2020-09-25)
+
+
+### Bug Fixes
+
+* Use index for PouchDB mango queries ([#796](https://github.com/cozy/cozy-client/issues/796)) ([7d264df](https://github.com/cozy/cozy-client/commit/7d264df))
+
+
+
+
+
 # [15.0.0](https://github.com/cozy/cozy-client/compare/v14.7.0...v15.0.0) (2020-09-25)
 
 
