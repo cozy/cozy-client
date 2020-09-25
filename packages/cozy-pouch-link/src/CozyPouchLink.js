@@ -362,7 +362,11 @@ class PouchLink extends CozyLink {
         limit,
         skip
       }
-      await this.ensureIndex(doctype, { ...findOpts, indexedFields })
+      const index = await this.ensureIndex(doctype, {
+        ...findOpts,
+        indexedFields
+      })
+      findOpts.use_index = index.id
       res = await find(db, findOpts)
       res.offset = skip
       res.limit = limit
