@@ -208,3 +208,6 @@ const pouchLink = new PouchLink({
   initialSync: true
 })
 ```
+
+If you choose the `fromRemote` strategy, the cozy-client mutation will not be executed 
+on the PouchLink but rather on the StackLink. 
