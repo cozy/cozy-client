@@ -235,6 +235,15 @@ class PouchLink extends CozyLink {
 
   supportsOperation(operation) {
     const impactedDoctype = getDoctypeFromOperation(operation)
+    // If the Pouch is configured only to replicate from the remote,
+    // we don't want to apply the mutation on it, but to forward
+    // to the next link
+    if (
+      this.doctypesReplicationOptions &&
+      this.doctypesReplicationOptions[impactedDoctype] &&
+      this.doctypesReplicationOptions[impactedDoctype].strategy === 'fromRemote'
+    )
+      return false
     return !!this.getPouch(impactedDoctype)
   }
 
