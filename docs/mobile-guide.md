@@ -185,11 +185,6 @@ example, the `StackLink`).
 
 Additionally, it is possible to replicate some doctypes only in a specific direction:
 
-Since making the first query can be long (PouchDB will create the index first), you can 
-specify the queries you want to be "warmed up". It means that, those queries will be 
-executed by CozyClient during the PouchLink's instanciation, but CozyClient will use 
-PouchDB only if those queries have been resolved at least one time.
-
 ```js
 
 const pouchLink = new PouchLink({
@@ -211,3 +206,40 @@ const pouchLink = new PouchLink({
 
 If you choose the `fromRemote` strategy, the cozy-client mutation will not be executed 
 on the PouchLink but rather on the StackLink. 
+
+Since making the first query can be long (PouchDB will create the index first), you can 
+specify the queries you want to be "warmed up". It means that, those queries will be 
+executed by CozyClient during the PouchLink's instanciation, but CozyClient will use 
+PouchDB only if those queries have been resolved at least one time.
+
+```js
+
+const buildRecentQuery = () => ({
+  definition: () =>
+    Q('io.cozy.files')
+      .where({
+        type: 'file',
+        trashed: false,
+        updated_at: {
+          $gt: null
+        }
+      })
+  options: {
+    as: 'recent-view-query',
+    fetchPolicy: defaultFetchPolicy,
+  }
+})
+
+const pouchLink = new PouchLink({
+  doctypes: ['io.cozy.todos', 'io.cozy.files', 'io.cozy.localtype'],
+  doctypesReplicationOptions: {
+    'io.cozy.files': {
+      warmupQueries: [
+        buildRecentQuery()
+      ]
+    }
+  }
+  initialSync: true
+})
+```
+
