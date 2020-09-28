@@ -124,6 +124,42 @@ describe('CozyPouchLink', () => {
         expect(true).toBe(true)
       })
     })
+
+    test('supportsOperation returns false if the doctype is sync with a read only strategy', async () => {
+      const operationTODO = {
+        doctype: TODO_DOCTYPE
+      }
+
+      await setup({
+        doctypesReplicationOptions: {
+          'io.cozy.todos': { strategy: 'fromRemote' }
+        }
+      })
+
+      expect(link.supportsOperation(operationTODO)).toBe(false)
+    })
+
+    test('supportsOperation with a synchronized doctype', async () => {
+      const operationTODO = {
+        doctype: TODO_DOCTYPE
+      }
+
+      await setup()
+      expect(link.supportsOperation(operationTODO)).toBe(true)
+    })
+
+    it('should forward if the doctype is sync only for read access', async () => {
+      await setup({
+        doctypesReplicationOptions: {
+          'io.cozy.todos': { strategy: 'fromRemote' }
+        }
+      })
+      const query = Q(TODO_DOCTYPE)
+      expect.assertions(1)
+      await link.request(query, null, () => {
+        expect(true).toBe(true)
+      })
+    })
   })
 
   describe('queries', () => {
