@@ -156,7 +156,20 @@ describe('CozyClient initialization', () => {
   it('can be instantiated from dataset injected by the Stack in DOM', async () => {
     const options = { cozyDomain: 'cozy.tools', cozyToken: 'abc123' }
     jest.spyOn(document, 'querySelector').mockReturnValue({ dataset: options })
-    document.querySelector = jest.fn().mockReturnValue({ dataset: options })
+    const client = CozyClient.fromDOM()
+    expect(client.stackClient.uri).toBe('http://cozy.tools')
+    expect(client.stackClient.token.token).toBe('abc123')
+    document.querySelector.mockRestore()
+  })
+
+  it('fromDOM should handle single DOM dataset', async () => {
+    const options = JSON.stringify({
+      cozyDomain: 'cozy.tools',
+      cozyToken: 'abc123'
+    })
+    jest
+      .spyOn(document, 'querySelector')
+      .mockReturnValue({ dataset: { cozy: options } })
     const client = CozyClient.fromDOM()
     expect(client.stackClient.uri).toBe('http://cozy.tools')
     expect(client.stackClient.token.token).toBe('abc123')

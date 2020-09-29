@@ -252,7 +252,11 @@ class CozyClient {
       throw new Error(`Found no data in ${selector} to instantiate cozyClient`)
     }
 
-    const { cozyDomain, cozyToken } = root.dataset
+    const data = root.dataset.cozy
+      ? JSON.parse(root.dataset.cozy)
+      : { ...root.dataset }
+
+    const { cozyDomain, cozyToken } = data
 
     if (!cozyDomain || !cozyToken) {
       throw new Error(
