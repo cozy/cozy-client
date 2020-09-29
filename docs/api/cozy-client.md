@@ -734,6 +734,7 @@ Responsible for
         * [.fromOldClient()](#CozyClient.fromOldClient)
         * [.fromOldOAuthClient()](#CozyClient.fromOldOAuthClient) ⇒ [<code>CozyClient</code>](#CozyClient)
         * [.fromEnv()](#CozyClient.fromEnv)
+        * [.fromDOM(selector, options)](#CozyClient.fromDOM) ⇒ <code>object</code>
         * [.registerHook(doctype, name, fn)](#CozyClient.registerHook)
 
 <a name="new_CozyClient_new"></a>
@@ -1147,6 +1148,20 @@ Warning: unlike other instantiators, this one needs to be awaited.
 In konnector/service context, CozyClient can be instantiated from environment variables
 
 **Kind**: static method of [<code>CozyClient</code>](#CozyClient)  
+<a name="CozyClient.fromDOM"></a>
+
+### CozyClient.fromDOM(selector, options) ⇒ <code>object</code>
+When used from an app, CozyClient can be instantiated from the data injected by the stack in
+the DOM.
+
+**Kind**: static method of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: <code>object</code> - - CozyClient instance  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| selector | <code>string</code> | <code>&quot;[role&#x3D;application]&quot;</code> | Options |
+| options | <code>object</code> |  | CozyClient constructor options |
+
 <a name="CozyClient.registerHook"></a>
 
 ### CozyClient.registerHook(doctype, name, fn)

@@ -240,7 +240,8 @@ class CozyClient {
   }
 
   /**
-   * In cozy app context, CozyClient can be instantiated from data injected by the stack
+   * When used from an app, CozyClient can be instantiated from the data injected by the stack in
+   * the DOM.
    *
    * @param  {string}   selector - Options
    * @param  {object}   options  - CozyClient constructor options
