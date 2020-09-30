@@ -239,6 +239,7 @@ class PouchLink extends CozyLink {
     // we don't want to apply the mutation on it, but to forward
     // to the next link
     if (
+      operation.mutationType &&
       this.doctypesReplicationOptions &&
       this.doctypesReplicationOptions[impactedDoctype] &&
       this.doctypesReplicationOptions[impactedDoctype].strategy === 'fromRemote'
