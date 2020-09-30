@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [15.1.0](https://github.com/cozy/cozy-client/compare/v15.0.3...v15.1.0) (2020-09-30)
+
+
+### Bug Fixes
+
+* Handle single dom dataset ([e9b1f54](https://github.com/cozy/cozy-client/commit/e9b1f54))
+
+
+### Features
+
+* Add fromDOM method ([1740ee7](https://github.com/cozy/cozy-client/commit/1740ee7))
+
+
+
+
+
 # [15.0.0](https://github.com/cozy/cozy-client/compare/v14.7.0...v15.0.0) (2020-09-25)
 
 
