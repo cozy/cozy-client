@@ -239,6 +239,39 @@ class CozyClient {
     })
   }
 
+  /**
+   * When used from an app, CozyClient can be instantiated from the data injected by the stack in
+   * the DOM.
+   *
+   * @param  {string}   selector - Options
+   * @param  {object}   options  - CozyClient constructor options
+   * @returns {object} - CozyClient instance
+   */
+  static fromDOM(selector = '[role=application]', options = {}) {
+    const root = document.querySelector(selector)
+    if (!root || !root.dataset) {
+      throw new Error(`Found no data in ${selector} to instantiate cozyClient`)
+    }
+
+    const data = root.dataset.cozy
+      ? JSON.parse(root.dataset.cozy)
+      : { ...root.dataset }
+
+    const { cozyDomain, cozyToken } = data
+
+    if (!cozyDomain || !cozyToken) {
+      throw new Error(
+        `Found no data in ${root.dataset} to instantiate cozyClient`
+      )
+    }
+
+    return new CozyClient({
+      uri: `${window.location.protocol}//${cozyDomain}`,
+      token: cozyToken,
+      ...options
+    })
+  }
+
   addSchema(schemaDefinition) {
     this.schema.add(schemaDefinition)
   }
