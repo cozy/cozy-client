@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [15.0.3](https://github.com/cozy/cozy-client/compare/v15.0.2...v15.0.3) (2020-09-30)
+
+
+### Bug Fixes
+
+* PouchLink should not forward if this is a read only operation ([af021ad](https://github.com/cozy/cozy-client/commit/af021ad))
+
+
+
+
+
 ## [15.0.2](https://github.com/cozy/cozy-client/compare/v15.0.1...v15.0.2) (2020-09-28)
 
 **Note:** Version bump only for package cozy-client
