@@ -125,9 +125,11 @@ describe('CozyPouchLink', () => {
       })
     })
 
-    test('supportsOperation returns false if the doctype is sync with a read only strategy', async () => {
+    test('supportsOperation returns false if the doctype is synched with a read only strategy and the operation is a mutation', async () => {
       const operationTODO = {
-        doctype: TODO_DOCTYPE
+        doctype: TODO_DOCTYPE,
+        mutationType: 'CREATE_DOCUMENT',
+        document: { _type: 'io.cozy.todos' }
       }
 
       await setup({
@@ -139,6 +141,20 @@ describe('CozyPouchLink', () => {
       expect(link.supportsOperation(operationTODO)).toBe(false)
     })
 
+    test('supportsOperation returns true if the doctype is synched with a read only strategy and the operation is not a mutation', async () => {
+      const operationTODO = {
+        doctype: TODO_DOCTYPE
+      }
+
+      await setup({
+        doctypesReplicationOptions: {
+          'io.cozy.todos': { strategy: 'fromRemote' }
+        }
+      })
+
+      expect(link.supportsOperation(operationTODO)).toBe(true)
+    })
+
     test('supportsOperation with a synchronized doctype', async () => {
       const operationTODO = {
         doctype: TODO_DOCTYPE
@@ -148,17 +164,36 @@ describe('CozyPouchLink', () => {
       expect(link.supportsOperation(operationTODO)).toBe(true)
     })
 
-    it('should forward if the doctype is sync only for read access', async () => {
+    it('should forward if the doctype is synched only for read access and the query is a mutation', async () => {
       await setup({
         doctypesReplicationOptions: {
           'io.cozy.todos': { strategy: 'fromRemote' }
         }
       })
-      const query = Q(TODO_DOCTYPE)
-      expect.assertions(1)
-      await link.request(query, null, () => {
-        expect(true).toBe(true)
+      link.pouches.isSynced = jest.fn().mockReturnValue(true)
+      await link.request(
+        {
+          doctype: TODO_DOCTYPE,
+          mutationType: 'CREATE_DOCUMENT',
+          document: { _type: 'io.cozy.todos' }
+        },
+        null,
+        () => {
+          expect(true).toBe(true)
+        }
+      )
+    })
+
+    it('should not forward if the doctype is synched only for read access and the query is not a mutation', async () => {
+      await setup({
+        doctypesReplicationOptions: {
+          'io.cozy.todos': { strategy: 'fromRemote' }
+        }
       })
+      link.pouches.isSynced = jest.fn().mockReturnValue(true)
+      const mock = jest.fn()
+      await link.request(Q(TODO_DOCTYPE), null, mock)
+      expect(mock).not.toHaveBeenCalled()
     })
   })
 
