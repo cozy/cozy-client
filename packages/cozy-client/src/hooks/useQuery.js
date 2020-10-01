@@ -49,7 +49,7 @@ const useQuery = (queryDefinition, options) => {
 
   const client = useClient()
   const queryState = useSelector(() => {
-    if (options.singleDocData === undefined) {
+    if (options.singleDocData === undefined && queryDefinition.id) {
       logger.warn(
         'useQuery options.singleDocData will pass to true in a next version of cozy-client, please add it now to prevent any problem in the future.'
       )
