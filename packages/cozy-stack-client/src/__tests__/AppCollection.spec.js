@@ -44,18 +44,33 @@ describe(`AppCollection`, () => {
         Promise.resolve(FIXTURES.GET_APPS_RESPONSE)
       )
     })
+
     it('should call the right route', async () => {
-      await collection.get('fakeid')
+      await collection.get('io.cozy.apps/fakeid')
       expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/apps/fakeid')
     })
 
+    describe('deprecated get call without <doctype>/', () => {
+      beforeEach(() => {
+        jest.spyOn(console, 'warn').mockImplementation(() => {})
+      })
+
+      afterEach(() => {
+        console.warn.mockRestore()
+      })
+      it('should call the right route (deprecated call with <doctype>/)', async () => {
+        await collection.get('fakeid')
+        expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/apps/fakeid')
+      })
+    })
+
     it('should return a correct JSON API response', async () => {
-      const resp = await collection.get('fakeid')
+      const resp = await collection.get('io.cozy.apps/fakeid')
       expect(resp).toConformToJSONAPI()
     })
 
     it('should return normalized document', async () => {
-      const resp = await collection.get('fakeid')
+      const resp = await collection.get('io.cozy.apps/fakeid')
       expect(resp.data).toHaveDocumentIdentity()
     })
   })
