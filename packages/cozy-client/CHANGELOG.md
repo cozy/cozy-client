@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [15.1.1](https://github.com/cozy/cozy-client/compare/v15.1.0...v15.1.1) (2020-10-02)
+
+
+### Bug Fixes
+
+* Do not show singleDocData warning for non single doc queries ([8dbc52b](https://github.com/cozy/cozy-client/commit/8dbc52b))
+
+
+
+
+
 # [15.1.0](https://github.com/cozy/cozy-client/compare/v15.0.3...v15.1.0) (2020-09-30)
 
 
