@@ -1,5 +1,6 @@
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 import { FetchError } from './errors'
+import Collection from './Collection'
 
 export const APPS_DOCTYPE = 'io.cozy.apps'
 
@@ -14,6 +15,28 @@ class AppCollection extends DocumentCollection {
   constructor(stackClient) {
     super(APPS_DOCTYPE, stackClient)
     this.endpoint = '/apps/'
+  }
+
+  get(idArg) {
+    let id
+    if (idArg.indexOf('/') > -1) {
+      id = idArg.split('/')[1]
+    } else {
+      console.warn(
+        `Deprecated: in next versions of cozy-client, it will not be possible to query apps/konnectors only with id, please use the form ${this.doctype}/${idArg}
+
+- Q('io.cozy.apps').getById('banks')
++ Q('io.cozy.apps').getById('io.cozy.apps/banks')`
+      )
+      id = idArg
+    }
+    return Collection.get(
+      this.stackClient,
+      `${this.endpoint}${encodeURIComponent(id)}`,
+      {
+        normalize: this.constructor.normalizeDoctype(this.doctype)
+      }
+    )
   }
 
   /**
