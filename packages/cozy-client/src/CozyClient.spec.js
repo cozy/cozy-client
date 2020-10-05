@@ -1383,19 +1383,21 @@ describe('CozyClient', () => {
 
 describe('file creation', () => {
   const setup = () => {
-    const client = new CozyClient({})
+    const client = new CozyClient({
+      schema: SCHEMA
+    })
     const fileCol = new FileCollection('io.cozy.files', client.stackClient)
     client.stackClient.collection.mockReturnValue(fileCol)
-    return { client }
-  }
-
-  it('should be possible to create a directory', async () => {
-    const { client } = setup()
     client.stackClient.fetchJSON = jest.fn().mockResolvedValue({
       data: {
         _id: '1337'
       }
     })
+    return { client }
+  }
+
+  it('should be possible to create a directory', async () => {
+    const { client } = setup()
     const { data: doc } = await client.create('io.cozy.files', {
       dirId: 'dirid1337',
       type: 'directory',
@@ -1412,11 +1414,6 @@ describe('file creation', () => {
 
   it('should be possible to create a file', async () => {
     const { client } = setup()
-    client.stackClient.fetchJSON = jest.fn().mockResolvedValue({
-      data: {
-        _id: '1337'
-      }
-    })
     jest.spyOn(client, 'dispatch')
     const data = 'file-content'
     const { data: doc } = await client.create('io.cozy.files', {
