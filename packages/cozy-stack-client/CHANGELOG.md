@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [15.2.0](https://github.com/cozy/cozy-client/compare/v15.1.1...v15.2.0) (2020-10-05)
+
+
+### Features
+
+* When an app/konnector is fetched by id, doctype should be present ([1487ec1](https://github.com/cozy/cozy-client/commit/1487ec1))
+
+
+
+
+
 # [15.0.0](https://github.com/cozy/cozy-client/compare/v14.7.0...v15.0.0) (2020-09-25)
 
 **Note:** Version bump only for package cozy-stack-client
