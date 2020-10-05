@@ -549,11 +549,11 @@ client.query(Q('io.cozy.bills'))`)
       saveMutation,
       response => {
         const document = this.hydrateDocument(response.data)
-        return Object.keys(relationships).map(name => {
-          const val = relationships[name]
-          return Array.isArray(val)
-            ? document[name].insertDocuments(val)
-            : document[name].setDocument(val)
+        return Object.entries(relationships).map(([relName, relItem]) => {
+          const relationship = document[relName]
+          return Array.isArray(relItem)
+            ? relationship.insertDocuments(relItem)
+            : relationship.setDocument(relItem)
         })
       }
     ]
