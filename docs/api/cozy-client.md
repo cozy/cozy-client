@@ -1035,6 +1035,7 @@ Get a query from the internal store.
 | id | <code>string</code> | Id of the query (set via Query.props.as) |
 | options | <code>object</code> | Options |
 | options.hydrated | <code>boolean</code> | Whether documents should be returned already hydrated (default: false) |
+| options.singleDocData | <code>object</code> | If true, the "data" returned will be a single doc instead of an array for single doc queries. Defaults to false for backward compatibility but will be set to true in the future. |
 
 <a name="CozyClient+register"></a>
 
