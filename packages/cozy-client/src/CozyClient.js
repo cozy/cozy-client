@@ -1075,6 +1075,9 @@ client.query(Q('io.cozy.bills'))`)
    * @param {string} id - Id of the query (set via Query.props.as)
    * @param {object} options - Options
    * @param {boolean} options.hydrated - Whether documents should be returned already hydrated (default: false)
+   * @param  {object} options.singleDocData - If true, the "data" returned will be
+   * a single doc instead of an array for single doc queries. Defaults to false for backward
+   * compatibility but will be set to true in the future.
    *
    * @returns {QueryState} - Query state or null if it does not exist.
    */
