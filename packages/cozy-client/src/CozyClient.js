@@ -719,20 +719,19 @@ client.query(Q('io.cozy.bills'))`)
    * @param  {string} options - Options
    * @param  {string} options.as - Names the query so it can be reused (by multiple components for example)
    * @param  {string} options.fetchPolicy - Fetch policy to bypass fetching based on what's already inside the state. See "Fetch policies"
+   * @param  {boolean} options.hydrated - Whether documents should be returned already hydrated (default: false)
    * @returns {QueryResult}
    */
   async query(queryDefinition, { update, ...options } = {}) {
     this.ensureStore()
     const queryId = options.as || this.generateId()
     this.ensureQueryExists(queryId, queryDefinition)
-
     if (options.fetchPolicy) {
       if (!options.as) {
         throw new Error(
           'Cannot use `fetchPolicy` without naming the query, please use `as` to name the query'
         )
       }
-
       const existingQuery = this.getQueryFromState(queryId)
       const shouldFetch = options.fetchPolicy(existingQuery)
       if (!shouldFetch) {
@@ -747,6 +746,9 @@ client.query(Q('io.cozy.bills'))`)
           update
         })
       )
+      if (options.hydrated) {
+        return this.getQueryFromState(queryId, { hydrated: options.hydrated })
+      }
       return response
     } catch (error) {
       this.dispatch(receiveQueryError(queryId, error))
