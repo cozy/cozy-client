@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [15.3.1](https://github.com/cozy/cozy-client/compare/v15.3.0...v15.3.1) (2020-10-06)
+
+
+### Bug Fixes
+
+* HasMany helpers ([1786148](https://github.com/cozy/cozy-client/commit/1786148))
+
+
+
+
+
 # [15.3.0](https://github.com/cozy/cozy-client/compare/v15.2.0...v15.3.0) (2020-10-06)
 
 
