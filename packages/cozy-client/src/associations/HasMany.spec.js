@@ -150,7 +150,7 @@ describe('HasMany', () => {
 })
 
 describe('HasMany static helpers', () => {
-  it('should work', () => {
+  it('should work with a doc that already have setted relationships', () => {
     const doc = {
       _id: 'doc-1',
       label: 'Document 1',
@@ -176,5 +176,23 @@ describe('HasMany static helpers', () => {
 
     expect(doc2).toMatchSnapshot()
     expect(doc3).toMatchSnapshot()
+  })
+
+  it(`should work with a doc that don't have relationships yet`, () => {
+    const docWithoutRelationships = {
+      _id: 'doc-1',
+      label: 'Document 1'
+    }
+
+    const docWithRelationships = HasMany.setHasManyItem(
+      docWithoutRelationships,
+      'books',
+      'book-1',
+      {
+        _id: 'book-1',
+        _type: 'io.cozy.books'
+      }
+    )
+    expect(docWithRelationships).toMatchSnapshot()
   })
 })
