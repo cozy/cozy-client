@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`HasMany static helpers should work 1`] = `
+exports[`HasMany static helpers should work with a doc that already have setted relationships 1`] = `
 Object {
   "_id": "doc-1",
   "label": "Document 1",
@@ -34,7 +34,7 @@ Object {
 }
 `;
 
-exports[`HasMany static helpers should work 2`] = `
+exports[`HasMany static helpers should work with a doc that already have setted relationships 2`] = `
 Object {
   "_id": "doc-1",
   "label": "Document 1",
@@ -64,6 +64,23 @@ Object {
           "metadata": Object {
             "read": true,
           },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`HasMany static helpers should work with a doc that don't have relationships yet 1`] = `
+Object {
+  "_id": "doc-1",
+  "label": "Document 1",
+  "relationships": Object {
+    "books": Object {
+      "data": Array [
+        Object {
+          "_id": "book-1",
+          "_type": "io.cozy.books",
         },
       ],
     },

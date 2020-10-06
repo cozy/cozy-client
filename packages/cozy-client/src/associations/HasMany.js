@@ -290,8 +290,8 @@ export const updateRelationship = (HasMany.updateRelationship = (
     relationships: {
       ...doc.relationships,
       [relName]: {
-        ...doc.relationships[relName],
-        ...updateFn(doc.relationships[name])
+        ...(doc.relationships ? doc.relationships[relName] : {}),
+        ...updateFn(doc.relationships ? doc.relationships[relName] : {})
       }
     }
   }
