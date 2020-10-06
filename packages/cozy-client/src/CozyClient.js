@@ -52,6 +52,19 @@ const deprecatedHandler = msg => ({
   }
 })
 
+const supportsReferences = relationshipClass => {
+  return (
+    relationshipClass.prototype.addReferences &&
+    relationshipClass.prototype.removeReferences
+  )
+}
+
+const referencesUnsupportedError = relationshipClassName => {
+  return new Error(
+    `The "${relationshipClassName}" relationship does not support references. If you need to add references to a document, its relationship class must have the methods {add,remove}References`
+  )
+}
+
 /**
  * @typedef {object} Link
  * @typedef {object} Mutation
@@ -60,6 +73,15 @@ const deprecatedHandler = msg => ({
  * @typedef {object} HydratedDocument
  * @typedef {object} ReduxStore
  * @typedef {object} QueryState
+ */
+
+/**
+ * A reference to a document (special case of a relationship used between photos and albums)
+ * https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files/#references
+ *
+ * @typedef {object} Reference
+ * @property {string} _id - id of the document
+ * @property {string} _type - doctype of the document
  */
 
 const TRIGGER_CREATION = 'creation'
@@ -80,6 +102,23 @@ class CozyClient {
    * @param  {Array.Link}   options.links  - List of links
    * @param  {object}       options.schema - Schema description for each doctypes
    * @param  {object}       options.appMetadata - Metadata about the application that will be used in ensureCozyMetadata
+   *
+   * @example
+   * ```js
+   * const client = new CozyClient({
+   *   schema: {
+   *     todos: {
+   *       doctype: 'io.cozy.todos',
+   *       relationships: {
+   *         authors: {
+   *           type: 'has-many',
+   *           doctype: 'io.cozy.persons'
+   *         }
+   *       }
+   *     }
+   *   }
+   * })
+   * ```
    *
    * Cozy-Client will automatically call `this.login()` if provided with a token and an uri
    */
@@ -139,7 +178,7 @@ class CozyClient {
    * Two plugins with the same `pluginName` cannot co-exist.
    *
    * @example
-   * ```
+   * ```js
    * class AlertPlugin {
    *   constructor(client, options) {
    *     this.client = client
@@ -430,12 +469,37 @@ client.query(Q('io.cozy.bills'))`)
     return new QueryDefinition({ doctype, id })
   }
 
-  async create(type, { _type, ...attributes }, relationships, options = {}) {
-    const document = { _type: type, ...attributes }
+  /**
+   * Creates a document and saves it on the server
+   *
+   * @param  {string} type - Doctype of the document
+   * @param  {object} doc - Document to save
+   * @param  {Array.<Reference>} references - (Optional) References are a special kind of relationship
+   * that is not stored inside the referencer document, they are used for example between a photo
+   * and its album. You should not need to use it normally.
+   * @param  {object} options - Mutation options
+   *
+   * @example
+   * ```js
+   * await client.create('io.cozy.todos', {
+   *   label: 'My todo',
+   *   relationships: {
+   *     authors: {
+   *       data: [{_id: 1, _type: 'io.cozy.persons'}]
+   *     }
+   *   }
+   * })
+   * ```
+   *
+   * @returns {Promise}
+   */
+  async create(type, doc, references, options = {}) {
+    const { _type, ...attributes } = doc
+    const normalizedDoc = { _type: type, ...attributes }
     const ret = await this.schema.validate(document)
     if (ret !== true) throw new Error('Validation failed')
     return this.mutate(
-      this.getDocumentSavePlan(document, relationships),
+      this.getDocumentSavePlan(normalizedDoc, references),
       options
     )
   }
@@ -521,39 +585,58 @@ client.query(Q('io.cozy.bills'))`)
    * client.getDocumentSavePlan(baseDoc, relationships)
    * ```
    *
-   * @param  {object} document      The base document to create
-   * @param  {object} relationships The list of relationships to add, as a dictionnary. Keys should be relationship names and values the documents to link.
+   * @param  {object} document - Document to create
+   * @param  {object.<string, Array.<Reference>>} [referencesByName] - References to the created document. The
+   * relationship class associated to each reference list should support references, otherwise this
+   * method will throw.
+   *
    * @returns {Mutation[]}  One or more mutation to execute
    */
-  getDocumentSavePlan(document, relationships) {
-    const newDocument = !document._rev
+  getDocumentSavePlan(document, referencesByName) {
+    const isNewDoc = !document._rev
     const dehydratedDoc = this.ensureCozyMetadata(dehydrate(document), {
-      event: newDocument ? TRIGGER_CREATION : TRIGGER_UPDATE
+      event: isNewDoc ? TRIGGER_CREATION : TRIGGER_UPDATE
     })
 
-    const saveMutation = newDocument
+    const saveMutation = isNewDoc
       ? Mutations.createDocument(dehydratedDoc)
       : Mutations.updateDocument(dehydratedDoc)
-    const hasRelationships =
-      relationships &&
-      Object.values(relationships).filter(relations => {
-        return Array.isArray(relations) ? relations.length > 0 : relations
+
+    const hasReferences =
+      referencesByName &&
+      Object.values(referencesByName).filter(references => {
+        return Array.isArray(references) ? references.length > 0 : references
       }).length > 0
-    if (!hasRelationships) {
+
+    if (!hasReferences) {
       return saveMutation
+    } else {
+      for (let relName of Object.keys(referencesByName)) {
+        const doctype = document._type
+        const doctypeRelationship = this.schema.getRelationship(
+          doctype,
+          relName
+        )
+        const relationshipClass = doctypeRelationship.type
+        if (!supportsReferences(relationshipClass)) {
+          throw referencesUnsupportedError(doctypeRelationship.name)
+        }
+      }
     }
-    if (relationships && !newDocument) {
-      throw new Error('Unable to save relationships on a not-new document')
+
+    if (referencesByName && !isNewDoc) {
+      throw new Error(
+        'Unable to save external relationships on a not-new document'
+      )
     }
+
     return [
       saveMutation,
       response => {
         const document = this.hydrateDocument(response.data)
-        return Object.keys(relationships).map(name => {
-          const val = relationships[name]
-          return Array.isArray(val)
-            ? document[name].insertDocuments(val)
-            : document[name].setDocument(val)
+        return Object.entries(referencesByName).map(([relName, references]) => {
+          const relationship = document[relName]
+          return relationship.addReferences(references)
         })
       }
     ]
@@ -837,11 +920,11 @@ client.query(Q('io.cozy.bills'))`)
       const [first, ...rest] = definition
       const firstResponse = await this.requestMutation(first)
       await Promise.all(
-        rest.map(def =>
-          typeof def === 'function'
-            ? this.requestMutation(def(firstResponse))
-            : this.requestMutation(def)
-        )
+        rest.map(def => {
+          const mutationDef =
+            typeof def === 'function' ? def(firstResponse) : def
+          return this.requestMutation(mutationDef)
+        })
       )
       return firstResponse
     }

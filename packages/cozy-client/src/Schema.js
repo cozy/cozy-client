@@ -123,7 +123,16 @@ class Schema {
    * Returns the relationship for a given doctype/name
    */
   getRelationship(doctype, relationshipName) {
+    if (!doctype) {
+      throw new TypeError(`Invalid doctype ${doctype}`)
+    }
     const schema = this.getDoctypeSchema(doctype)
+    if (!schema) {
+      throw new Error(`Cannot find doctype ${doctype} in schema`)
+    }
+    if (!schema.relationships) {
+      throw new Error(`Schema for doctype ${doctype} has no relationships`)
+    }
     return schema.relationships[relationshipName]
   }
 
