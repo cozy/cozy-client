@@ -280,6 +280,10 @@ we have in the store.</p>
 <dl>
 <dt><a href="#QueryState">QueryState</a> : <code>object</code></dt>
 <dd></dd>
+<dt><a href="#Reference">Reference</a> : <code>object</code></dt>
+<dd><p>A reference to a document (special case of a relationship used between photos and albums)
+<a href="https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files/#references">https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files/#references</a></p>
+</dd>
 <dt><a href="#CozyAccount">CozyAccount</a> : <code>object</code></dt>
 <dd></dd>
 <dt><a href="#Document">Document</a> : <code>object</code></dt>
@@ -707,7 +711,8 @@ Responsible for
         * [.login(options)](#CozyClient+login) ⇒ <code>Promise</code>
         * [.logout()](#CozyClient+logout) ⇒ <code>Promise</code>
         * [.collection(doctype)](#CozyClient+collection) ⇒ <code>DocumentCollection</code>
-        * [.getDocumentSavePlan(document, relationships)](#CozyClient+getDocumentSavePlan) ⇒ <code>Array.&lt;Mutation&gt;</code>
+        * [.create(type, doc, references, options)](#CozyClient+create) ⇒ <code>Promise</code>
+        * [.getDocumentSavePlan(document, [referencesByName])](#CozyClient+getDocumentSavePlan) ⇒ <code>Array.&lt;Mutation&gt;</code>
         * [.destroy(document)](#CozyClient+destroy) ⇒ [<code>Document</code>](#Document)
         * [.query(queryDefinition, options)](#CozyClient+query) ⇒ <code>QueryResult</code>
         * [.queryAll(queryDefinition, options)](#CozyClient+queryAll) ⇒ <code>Array</code>
@@ -747,7 +752,7 @@ Responsible for
 | options.link | <code>Link</code> | Backward compatibility |
 | options.links | <code>Array.Link</code> | List of links |
 | options.schema | <code>object</code> | Schema description for each doctypes |
-| options.appMetadata | <code>object</code> | Metadata about the application that will be used in ensureCozyMetadata Cozy-Client will automatically call `this.login()` if provided with a token and an uri |
+| options.appMetadata | <code>object</code> | Metadata about the application that will be used in ensureCozyMetadata |
 
 <a name="CozyClient+registerPlugin"></a>
 
@@ -768,7 +773,7 @@ Two plugins with the same `pluginName` cannot co-exist.
 
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 **Example**  
-```
+```js
 class AlertPlugin {
   constructor(client, options) {
     this.client = client
@@ -845,9 +850,34 @@ a [DocumentCollection](https://docs.cozy.io/en/cozy-client/api/cozy-stack-client
 | --- | --- | --- |
 | doctype | <code>string</code> | The collection doctype. |
 
+<a name="CozyClient+create"></a>
+
+### cozyClient.create(type, doc, references, options) ⇒ <code>Promise</code>
+Creates a document and saves it on the server
+
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| type | <code>string</code> | Doctype of the document |
+| doc | <code>object</code> | Document to save |
+| references | [<code>Array.&lt;Reference&gt;</code>](#Reference) | (Optional) References are a special kind of relationship that is not stored inside the referencer document, they are used for example between a photo and its album. You should not need to use it normally. |
+| options | <code>object</code> | Mutation options |
+
+**Example**  
+```js
+await client.create('io.cozy.todos', {
+  label: 'My todo',
+  relationships: {
+    authors: {
+      data: [{_id: 1, _type: 'io.cozy.persons'}]
+    }
+  }
+})
+```
 <a name="CozyClient+getDocumentSavePlan"></a>
 
-### cozyClient.getDocumentSavePlan(document, relationships) ⇒ <code>Array.&lt;Mutation&gt;</code>
+### cozyClient.getDocumentSavePlan(document, [referencesByName]) ⇒ <code>Array.&lt;Mutation&gt;</code>
 Creates a list of mutations to execute to create a document and its relationships.
 
 ```js
@@ -865,8 +895,8 @@ client.getDocumentSavePlan(baseDoc, relationships)
 
 | Param | Type | Description |
 | --- | --- | --- |
-| document | <code>object</code> | The base document to create |
-| relationships | <code>object</code> | The list of relationships to add, as a dictionnary. Keys should be relationship names and values the documents to link. |
+| document | <code>object</code> | Document to create |
+| [referencesByName] | <code>object.&lt;string, Array.&lt;Reference&gt;&gt;</code> | References to the created document. The relationship class associated to each reference list should support references, otherwise this method will throw. |
 
 <a name="CozyClient+destroy"></a>
 
@@ -2288,6 +2318,20 @@ HOC to provide mutations to components. Needs client in context or as prop.
 
 ## QueryState : <code>object</code>
 **Kind**: global typedef  
+<a name="Reference"></a>
+
+## Reference : <code>object</code>
+A reference to a document (special case of a relationship used between photos and albums)
+https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files/#references
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| _id | <code>string</code> | id of the document |
+| _type | <code>string</code> | doctype of the document |
+
 <a name="CozyAccount"></a>
 
 ## CozyAccount : <code>object</code>

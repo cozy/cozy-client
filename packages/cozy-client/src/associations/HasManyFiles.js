@@ -47,23 +47,23 @@ export default class HasManyFiles extends HasMany {
       _id: id,
       _type: this.doctype
     }))
-    await this.mutate(this.insertDocuments(relations))
+    await this.mutate(this.addReferences(relations))
 
     await super.addById(ids)
   }
 
   async removeById(idsArg) {
     const ids = Array.isArray(idsArg) ? idsArg : [idsArg]
-    const relations = ids.map(id => ({
+    const references = ids.map(id => ({
       _id: id,
       _type: this.doctype
     }))
-    await this.mutate(this.removeDocuments(relations))
+    await this.mutate(this.removeReferences(references))
 
     await super.removeById(ids)
   }
 
-  insertDocuments(referencedDocs) {
+  addReferences(referencedDocs) {
     if (this.target._type === 'io.cozy.files') {
       return Mutations.addReferencedBy(this.target, referencedDocs)
     } else if (referencedDocs[0]._type === 'io.cozy.files') {
@@ -75,7 +75,7 @@ export default class HasManyFiles extends HasMany {
     }
   }
 
-  removeDocuments(referencedDocs) {
+  removeReferences(referencedDocs) {
     if (this.target._type === 'io.cozy.files') {
       return Mutations.removeReferencedBy(this.target, referencedDocs)
     } else if (referencedDocs[0]._type === 'io.cozy.files') {

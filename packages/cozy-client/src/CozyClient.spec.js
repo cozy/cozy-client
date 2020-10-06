@@ -737,7 +737,7 @@ describe('CozyClient', () => {
       ])
     })
 
-    it('should handle associations for a new document with mutation creators', () => {
+    it('should handle references for a new document with mutation creators', () => {
       const NEW_TODO = {
         _type: 'io.cozy.todos',
         label: 'Buy RAM',
@@ -756,7 +756,7 @@ describe('CozyClient', () => {
       ])
     })
 
-    it('should handle associations for a new file with relationship', () => {
+    it('should handle references for a new file with relationship', () => {
       // icons is a has-many relationship defined in __tests__/fixtures for files
       const NEW_FILE = {
         _type: 'io.cozy.files',
@@ -785,7 +785,7 @@ describe('CozyClient', () => {
       ])
     })
 
-    it('should handle empty associations', () => {
+    it('should handle empty references', () => {
       const NEW_TODO = {
         _type: 'io.cozy.todos',
         label: 'Buy RAM',
@@ -1434,6 +1434,34 @@ describe('file creation', () => {
       'RECEIVE_MUTATION_RESULT'
     ])
   })
+
+  it('should support creating a file with references', async () => {
+    const { client } = setup()
+    jest.spyOn(client, 'requestMutation')
+    await client.create(
+      'io.cozy.files',
+      {
+        type: 'file',
+        data: 'file-content',
+        dirId: 'folder-id',
+        name: 'toto.pdf'
+      },
+      {
+        icons: [{ _id: 1, _type: 'io.cozy.files' }]
+      }
+    )
+    const requestMutationCalls = client.requestMutation.mock.calls
+    const lastCall = requestMutationCalls[requestMutationCalls.length - 1]
+    expect(lastCall[0]).toEqual(
+      expect.objectContaining({
+        document: expect.objectContaining({
+          _id: '1337'
+        }),
+        mutationType: 'ADD_REFERENCED_BY',
+        referencedDocuments: [expect.objectContaining({ _id: 1 })]
+      })
+    )
+  })
 })
 
 describe('file update', () => {
@@ -1472,5 +1500,61 @@ describe('file update', () => {
     )
 
     expect(doc).toMatchObject({ label: 'edited' })
+  })
+})
+
+describe('document creation', () => {
+  it('should not be possible to create documents with references for a relationship not supporting references', async () => {
+    class ExternalHasManyAuthor {}
+    const client = new CozyClient({
+      schema: {
+        todos: {
+          ...SCHEMA.todos,
+          relationships: {
+            authors: {
+              type: ExternalHasManyAuthor,
+              doctype: 'io.cozy.persons'
+            }
+          }
+        }
+      }
+    })
+    client.stackClient.collection = () => ({
+      create: jest
+        .fn()
+        .mockImplementation(doc => ({ data: { ...doc, _id: 'fake-id' } }))
+    })
+
+    await expect(
+      client.create(
+        'io.cozy.todos',
+        { label: 'Todo with external author' },
+        {
+          authors: [{ _id: 1, _type: 'io.cozy.persons' }]
+        }
+      )
+    ).rejects.toEqual(
+      new Error(
+        'The "authors" relationship does not support references. If you need to add references to a document, its relationship class must have the methods {add,remove}References'
+      )
+    )
+  })
+
+  it('should be possible to create a document containing relationships', async () => {
+    const client = new CozyClient({ schema: SCHEMA })
+    client.stackClient.collection = () => ({
+      create: jest
+        .fn()
+        .mockImplementation(doc => ({ data: { ...doc, _id: 'fake-id' } }))
+    })
+    const updatedDoc = await client.create('io.cozy.todos', {
+      label: 'Todo with external author',
+      relationships: {
+        authors: {
+          data: [{ _id: 1, _type: 'io.cozy.persons' }]
+        }
+      }
+    })
+    expect(updatedDoc.data.relationships.authors.data[0]._id).toBe(1)
   })
 })
