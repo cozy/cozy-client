@@ -1,6 +1,6 @@
 import {
   getFullname,
-  getIndexByFamilyNameGivenNameEmailCozyUrl,
+  getDefaultSortIndexValue,
   getDisplayName,
   getInitials,
   getPrimaryEmail,
@@ -8,7 +8,10 @@ import {
   getPrimaryPhone,
   getPrimaryAddress,
   getPrimaryOrFirst,
-  getPrimaryCozyDomain
+  getPrimaryCozyDomain,
+  makeFullname,
+  makeDisplayName,
+  makeDefaultSortIndexValue
 } from './contact'
 
 describe('getPrimaryOrFirst', () => {
@@ -190,11 +193,23 @@ describe('getPrimaryAddress', () => {
 })
 
 describe('getFullname', () => {
-  it("should return contact's fullname", () => {
+  it("should return contact's fullname if present", () => {
     const contact = {
-      fullname: 'Doran Martell',
+      fullname: 'John Doe',
       name: {
-        givenName: 'Do',
+        givenName: 'Doran',
+        familyName: 'Martell'
+      }
+    }
+    const result = getFullname(contact)
+    expect(result).toEqual('John Doe')
+  })
+
+  it('should return computed fullname if fullname attribute is empty', () => {
+    const contact = {
+      fullname: '',
+      name: {
+        givenName: 'Doran',
         familyName: 'Martell'
       }
     }
@@ -202,9 +217,22 @@ describe('getFullname', () => {
     expect(result).toEqual('Doran Martell')
   })
 
+  it('should return computed fullname if no fullname attribute', () => {
+    const contact = {
+      fullname: undefined,
+      name: {
+        givenName: 'Doran',
+        familyName: 'Martell'
+      }
+    }
+    const result = getFullname(contact)
+    expect(result).toEqual('Doran Martell')
+  })
+})
+
+describe('makeFullname', () => {
   it('should combine all name parts', () => {
     const contact = {
-      fullname: '',
       name: {
         namePrefix: 'The Mother of Dragons',
         givenName: 'Daenerys',
@@ -213,53 +241,89 @@ describe('getFullname', () => {
         nameSuffix: 'Breaker of Chains'
       }
     }
-    const result = getDisplayName(contact)
+    const result = makeFullname(contact)
     expect(result).toEqual(
       'The Mother of Dragons Daenerys The Unburnt Targaryen Breaker of Chains'
     )
   })
 
-  it("should return contact's givenName + familyName if no fullname", () => {
-    const contact = {
-      fullname: undefined,
-      name: {
-        givenName: 'Doran',
-        familyName: 'Martell'
-      }
-    }
-    const result = getFullname(contact)
-    expect(result).toEqual('Doran Martell')
-  })
-
   it("should return contact's givenName if no familyName", () => {
     const contact = {
-      fullname: undefined,
       name: {
         givenName: 'Doran',
         familyName: ''
       }
     }
-    const result = getFullname(contact)
+    const result = makeFullname(contact)
     expect(result).toEqual('Doran')
   })
 
   it("should return contact's familyName if no givenName", () => {
     const contact = {
-      fullname: undefined,
       name: {
         givenName: '',
         familyName: 'Martell'
       }
     }
-    const result = getFullname(contact)
+    const result = makeFullname(contact)
     expect(result).toEqual('Martell')
+  })
+
+  it('should return empty string if no name in contact', () => {
+    const contact = { email: [] }
+    const result = makeFullname(contact)
+    expect(result).toEqual('')
+  })
+
+  it('should return empty string for empty contact', () => {
+    const contact = {}
+    const result = makeFullname(contact)
+    expect(result).toEqual('')
   })
 })
 
 describe('getDisplayName', () => {
-  it("should return the contact's fullname if any", () => {
+  it("should return the contact's displayName if present", () => {
     const contact = {
-      fullname: 'Doran Martell',
+      displayName: 'John Doe',
+      name: {
+        givenName: 'Doran',
+        familyName: 'Martell'
+      }
+    }
+    const result = getDisplayName(contact)
+    expect(result).toEqual('John Doe')
+  })
+
+  it('should return computed displayName if empty', () => {
+    const contact = {
+      displayName: '',
+      name: {
+        givenName: 'Doran',
+        familyName: 'Martell'
+      }
+    }
+    const result = getDisplayName(contact)
+    expect(result).toEqual('Doran Martell')
+  })
+
+  it('should return computed displayName if undefined', () => {
+    const contact = {
+      displayName: undefined,
+      name: {
+        givenName: 'Doran',
+        familyName: 'Martell'
+      }
+    }
+    const result = getDisplayName(contact)
+    expect(result).toEqual('Doran Martell')
+  })
+})
+
+describe('makeDisplayName', () => {
+  it("should return the contact's name instead of fullname if present", () => {
+    const contact = {
+      fullname: 'John Doe',
       name: {
         givenName: 'Doran',
         familyName: 'Martell'
@@ -271,13 +335,12 @@ describe('getDisplayName', () => {
         }
       ]
     }
-    const result = getDisplayName(contact)
+    const result = makeDisplayName(contact)
     expect(result).toEqual('Doran Martell')
   })
 
-  it("should return the contact's name if no fullname", () => {
+  it("should return the contact's name", () => {
     const contact = {
-      fullname: '',
       name: {
         givenName: 'Doran',
         familyName: 'Martell'
@@ -289,22 +352,20 @@ describe('getDisplayName', () => {
         }
       ]
     }
-    const result = getDisplayName(contact)
+    const result = makeDisplayName(contact)
     expect(result).toEqual('Doran Martell')
   })
 
-  it("should return the contact's givenName if no fullname and no familyName", () => {
+  it("should return the contact's givenName if no familyName", () => {
     const contact = {
-      fullname: undefined,
       name: { givenName: 'John' }
     }
-    const result = getDisplayName(contact)
+    const result = makeDisplayName(contact)
     expect(result).toEqual('John')
   })
 
-  it("should return the contact's primary email if no fullname and no name", () => {
+  it("should return the contact's primary email if no name", () => {
     const contact = {
-      fullname: undefined,
       name: undefined,
       email: [
         {
@@ -313,13 +374,12 @@ describe('getDisplayName', () => {
         }
       ]
     }
-    const result = getDisplayName(contact)
+    const result = makeDisplayName(contact)
     expect(result).toEqual('doran.martell@dorne.westeros')
   })
 
-  it("should return the contact's cozy domain if no fullname, no name and no primary email", () => {
+  it("should return the contact's cozy domain no name and no primary email", () => {
     const contact = {
-      fullname: undefined,
       name: undefined,
       email: [],
       cozy: [
@@ -327,8 +387,20 @@ describe('getDisplayName', () => {
         { url: 'https://smith.mycozy.cloud' }
       ]
     }
-    const result = getDisplayName(contact)
+    const result = makeDisplayName(contact)
     expect(result).toEqual('john.mycozy.cloud')
+  })
+
+  it('should return empty string if no name/email/cozy url in contact', () => {
+    const contact = { email: [] }
+    const result = makeDisplayName(contact)
+    expect(result).toEqual('')
+  })
+
+  it('should return empty string for empty contact', () => {
+    const contact = {}
+    const result = makeDisplayName(contact)
+    expect(result).toEqual('')
   })
 })
 
@@ -374,7 +446,44 @@ describe('getPrimaryEmail', () => {
   })
 })
 
-describe('getIndexByFamilyNameGivenNameEmailCozyUrl', () => {
+describe('getDefaultSortIndexValue', () => {
+  it('should returns indexes.byFamilyNameGivenNameEmailCozyUrl if already present', () => {
+    const contact = {
+      indexes: { byFamilyNameGivenNameEmailCozyUrl: 'jane' },
+      name: { givenName: 'John' }
+    }
+    const result = getDefaultSortIndexValue(contact)
+    expect(result).toEqual('jane')
+  })
+
+  it('should returns null if indexes.byFamilyNameGivenNameEmailCozyUrl is empty', () => {
+    const contact = {
+      indexes: { byFamilyNameGivenNameEmailCozyUrl: '' },
+      name: { givenName: 'John' }
+    }
+    const result = getDefaultSortIndexValue(contact)
+    expect(result).toEqual(null)
+  })
+
+  it('should returns null if indexes.byFamilyNameGivenNameEmailCozyUrl is empty object', () => {
+    const contact = {
+      indexes: { byFamilyNameGivenNameEmailCozyUrl: {} },
+      name: { givenName: 'John' }
+    }
+    const result = getDefaultSortIndexValue(contact)
+    expect(result).toEqual(null)
+  })
+
+  it('should returns computed indexes.byFamilyNameGivenNameEmailCozyUrl if is undefined', () => {
+    const contact = {
+      name: { givenName: 'John' }
+    }
+    const result = getDefaultSortIndexValue(contact)
+    expect(result).toEqual('john')
+  })
+})
+
+describe('makeDefaultSortIndexValue', () => {
   it('should returns concatenated string of familyName, givenName, first email and first cozy url', () => {
     const contact = {
       name: { givenName: 'John', familyName: 'Smith' },
@@ -388,7 +497,7 @@ describe('getIndexByFamilyNameGivenNameEmailCozyUrl', () => {
         { url: 'https://smith.mycozy.cloud' }
       ]
     }
-    const result = getIndexByFamilyNameGivenNameEmailCozyUrl(contact)
+    const result = makeDefaultSortIndexValue(contact)
     expect(result).toEqual('smithjohnjohn.smith@cozy.ccjohn.mycozy.cloud')
   })
 
@@ -399,7 +508,7 @@ describe('getIndexByFamilyNameGivenNameEmailCozyUrl', () => {
       email: [{ address: '' }],
       cozy: [{ url: '' }]
     }
-    const result = getIndexByFamilyNameGivenNameEmailCozyUrl(contact)
+    const result = makeDefaultSortIndexValue(contact)
     expect(result).toEqual('smith')
   })
 
@@ -410,7 +519,7 @@ describe('getIndexByFamilyNameGivenNameEmailCozyUrl', () => {
       email: [{ address: '' }],
       cozy: [{ url: '' }]
     }
-    const result = getIndexByFamilyNameGivenNameEmailCozyUrl(contact)
+    const result = makeDefaultSortIndexValue(contact)
     expect(result).toEqual('john')
   })
 
@@ -421,7 +530,7 @@ describe('getIndexByFamilyNameGivenNameEmailCozyUrl', () => {
       email: [],
       cozy: [{ url: 'https://smith.mycozy.cloud' }]
     }
-    const result = getIndexByFamilyNameGivenNameEmailCozyUrl(contact)
+    const result = makeDefaultSortIndexValue(contact)
     expect(result).toEqual('smith.mycozy.cloud')
   })
 
@@ -432,7 +541,7 @@ describe('getIndexByFamilyNameGivenNameEmailCozyUrl', () => {
       email: [],
       cozy: []
     }
-    const result = getIndexByFamilyNameGivenNameEmailCozyUrl(contact)
+    const result = makeDefaultSortIndexValue(contact)
     expect(result).toEqual(null)
   })
 
@@ -442,7 +551,7 @@ describe('getIndexByFamilyNameGivenNameEmailCozyUrl', () => {
       fullname: 'John',
       cozy: [{ url: 'https://smith.mycozy.cloud' }]
     }
-    const result = getIndexByFamilyNameGivenNameEmailCozyUrl(contact)
+    const result = makeDefaultSortIndexValue(contact)
     expect(result).toEqual('johnsmith.mycozy.cloud')
   })
 
@@ -452,22 +561,16 @@ describe('getIndexByFamilyNameGivenNameEmailCozyUrl', () => {
       email: [{ address: 'john.smith@cozy.cc' }],
       cozy: [{ url: '' }]
     }
-    const result = getIndexByFamilyNameGivenNameEmailCozyUrl(contact)
+    const result = makeDefaultSortIndexValue(contact)
     expect(result).toEqual('john.smith@cozy.cc')
   })
 
-  it('should returns null if indexes.byFamilyNameGivenNameEmailCozyUrl was an empty object', () => {
+  it('should not care about indexes.byFamilyNameGivenNameEmailCozyUrl if present', () => {
     const contact = {
-      indexes: { byFamilyNameGivenNameEmailCozyUrl: {} }
+      indexes: { byFamilyNameGivenNameEmailCozyUrl: 'jane' },
+      name: { givenName: 'John' }
     }
-    const result = getIndexByFamilyNameGivenNameEmailCozyUrl(contact)
-    expect(result).toEqual(null)
-  })
-  it('should returns indexes.byFamilyNameGivenNameEmailCozyUrl if already present', () => {
-    const contact = {
-      indexes: { byFamilyNameGivenNameEmailCozyUrl: 'john' }
-    }
-    const result = getIndexByFamilyNameGivenNameEmailCozyUrl(contact)
+    const result = makeDefaultSortIndexValue(contact)
     expect(result).toEqual('john')
   })
 })
