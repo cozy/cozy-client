@@ -89,15 +89,13 @@ export const getPrimaryAddress = contact =>
   getPrimaryOrFirst('address')(contact).formattedAddress || ''
 
 /**
- * Returns the contact's fullname
+ * Makes fullname from contact name
  *
- * @param {object} contact - A contact
+ * @param {*} contact - A contact
  * @returns {string} - The contact's fullname
  */
-export const getFullname = contact => {
-  if (get(contact, 'fullname')) {
-    return contact.fullname
-  } else if (contact.name) {
+export const makeFullname = contact => {
+  if (contact.name) {
     return [
       'namePrefix',
       'givenName',
@@ -110,6 +108,45 @@ export const getFullname = contact => {
       .join(' ')
       .trim()
   }
+
+  return ''
+}
+
+/**
+ * Returns the contact's fullname
+ *
+ * @param {object} contact - A contact
+ * @returns {string} - The contact's fullname
+ */
+export const getFullname = contact => {
+  if (get(contact, 'fullname')) {
+    return contact.fullname
+  }
+
+  return makeFullname(contact)
+}
+
+/**
+ * Makes displayName from contact data
+ *
+ * @param {*} contact - A contact
+ * @returns {string} - The contact's displayName
+ */
+export const makeDisplayName = contact => {
+  const fullname = makeFullname(contact)
+  const primaryEmail = getPrimaryEmail(contact)
+  const primaryCozyDomain = getPrimaryCozyDomain(contact)
+
+  if (fullname && fullname.length > 0) {
+    return fullname
+  }
+  if (primaryEmail && primaryEmail.length > 0) {
+    return primaryEmail
+  }
+  if (primaryCozyDomain && primaryCozyDomain.length > 0) {
+    return primaryCozyDomain
+  }
+
   return ''
 }
 
@@ -119,30 +156,22 @@ export const getFullname = contact => {
  * @param {object} contact - A contact
  * @returns {string} - the contact's display name
  **/
-export const getDisplayName = contact =>
-  get(
-    contact,
-    'displayName',
-    getFullname(contact) ||
-      getPrimaryEmail(contact) ||
-      getPrimaryCozyDomain(contact)
-  )
+export const getDisplayName = contact => {
+  if (get(contact, 'displayName')) {
+    return contact.displayName
+  }
+
+  return makeDisplayName(contact)
+}
 
 /**
- * Returns 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
+ * Makes 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
  *
  * @param {object} contact - A contact
  * @returns {string} - the contact's 'byFamilyNameGivenNameEmailCozyUrl' index
  */
-export const getIndexByFamilyNameGivenNameEmailCozyUrl = contact => {
-  if (get(contact, 'indexes.byFamilyNameGivenNameEmailCozyUrl')) {
-    if (isEmpty(contact.indexes.byFamilyNameGivenNameEmailCozyUrl)) {
-      return null
-    }
-    return contact.indexes.byFamilyNameGivenNameEmailCozyUrl
-  }
-
-  const createIndexByFamilyNameGivenNameEmailCozyUrl = [
+export const makeDefaultSortIndexValue = contact => {
+  const defaultSortIndexValue = [
     get(contact, 'name.familyName', ''),
     get(contact, 'name.givenName', ''),
     getPrimaryEmail(contact),
@@ -152,8 +181,44 @@ export const getIndexByFamilyNameGivenNameEmailCozyUrl = contact => {
     .trim()
     .toLowerCase()
 
-  if (createIndexByFamilyNameGivenNameEmailCozyUrl.length === 0) {
+  if (defaultSortIndexValue.length === 0) {
     return null
   }
-  return createIndexByFamilyNameGivenNameEmailCozyUrl
+
+  return defaultSortIndexValue
+}
+
+/**
+ * Returns 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
+ *
+ * @param {object} contact - A contact
+ * @returns {string} - the contact's 'byFamilyNameGivenNameEmailCozyUrl' index
+ */
+export const getDefaultSortIndexValue = contact => {
+  const defaultSortIndexValue = get(
+    contact,
+    'indexes.byFamilyNameGivenNameEmailCozyUrl',
+    null
+  )
+
+  if (defaultSortIndexValue !== null) {
+    return isEmpty(defaultSortIndexValue) ? null : defaultSortIndexValue
+  }
+
+  return makeDefaultSortIndexValue(contact)
+}
+
+/**
+ * Returns 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
+ *
+ * @deprecated Prefer to use getDefaultSortIndexValue.
+ * @param {object} contact - A contact
+ * @returns {string} - the contact's 'byFamilyNameGivenNameEmailCozyUrl' index
+ */
+export const getIndexByFamilyNameGivenNameEmailCozyUrl = contact => {
+  console.warn(
+    'Deprecation: `getIndexByFamilyNameGivenNameEmailCozyUrl` is deprecated, please use `getDefaultSortIndexValue` instead'
+  )
+
+  return getDefaultSortIndexValue(contact)
 }

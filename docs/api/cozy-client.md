@@ -120,13 +120,25 @@ example.</p>
 <dt><a href="#getPrimaryAddress">getPrimaryAddress</a> ⇒ <code>string</code></dt>
 <dd><p>Returns the contact&#39;s main address</p>
 </dd>
+<dt><a href="#makeFullname">makeFullname</a> ⇒ <code>string</code></dt>
+<dd><p>Makes fullname from contact name</p>
+</dd>
 <dt><a href="#getFullname">getFullname</a> ⇒ <code>string</code></dt>
 <dd><p>Returns the contact&#39;s fullname</p>
+</dd>
+<dt><a href="#makeDisplayName">makeDisplayName</a> ⇒ <code>string</code></dt>
+<dd><p>Makes displayName from contact data</p>
 </dd>
 <dt><a href="#getDisplayName">getDisplayName</a> ⇒ <code>string</code></dt>
 <dd><p>Returns a display name for the contact</p>
 </dd>
-<dt><a href="#getIndexByFamilyNameGivenNameEmailCozyUrl">getIndexByFamilyNameGivenNameEmailCozyUrl</a> ⇒ <code>string</code></dt>
+<dt><a href="#makeDefaultSortIndexValue">makeDefaultSortIndexValue</a> ⇒ <code>string</code></dt>
+<dd><p>Makes &#39;byFamilyNameGivenNameEmailCozyUrl&#39; index of a contact</p>
+</dd>
+<dt><a href="#getDefaultSortIndexValue">getDefaultSortIndexValue</a> ⇒ <code>string</code></dt>
+<dd><p>Returns &#39;byFamilyNameGivenNameEmailCozyUrl&#39; index of a contact</p>
+</dd>
+<dt><del><a href="#getIndexByFamilyNameGivenNameEmailCozyUrl">getIndexByFamilyNameGivenNameEmailCozyUrl</a> ⇒ <code>string</code></del></dt>
 <dd><p>Returns &#39;byFamilyNameGivenNameEmailCozyUrl&#39; index of a contact</p>
 </dd>
 <dt><a href="#splitFilename">splitFilename</a> ⇒ <code>object</code></dt>
@@ -1728,6 +1740,18 @@ Returns the contact's main address
 | --- | --- | --- |
 | contact | <code>object</code> | A contact |
 
+<a name="makeFullname"></a>
+
+## makeFullname ⇒ <code>string</code>
+Makes fullname from contact name
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - - The contact's fullname  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| contact | <code>\*</code> | A contact |
+
 <a name="getFullname"></a>
 
 ## getFullname ⇒ <code>string</code>
@@ -1739,6 +1763,18 @@ Returns the contact's fullname
 | Param | Type | Description |
 | --- | --- | --- |
 | contact | <code>object</code> | A contact |
+
+<a name="makeDisplayName"></a>
+
+## makeDisplayName ⇒ <code>string</code>
+Makes displayName from contact data
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - - The contact's displayName  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| contact | <code>\*</code> | A contact |
 
 <a name="getDisplayName"></a>
 
@@ -1752,9 +1788,35 @@ Returns a display name for the contact
 | --- | --- | --- |
 | contact | <code>object</code> | A contact |
 
+<a name="makeDefaultSortIndexValue"></a>
+
+## makeDefaultSortIndexValue ⇒ <code>string</code>
+Makes 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - - the contact's 'byFamilyNameGivenNameEmailCozyUrl' index  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| contact | <code>object</code> | A contact |
+
+<a name="getDefaultSortIndexValue"></a>
+
+## getDefaultSortIndexValue ⇒ <code>string</code>
+Returns 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - - the contact's 'byFamilyNameGivenNameEmailCozyUrl' index  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| contact | <code>object</code> | A contact |
+
 <a name="getIndexByFamilyNameGivenNameEmailCozyUrl"></a>
 
-## getIndexByFamilyNameGivenNameEmailCozyUrl ⇒ <code>string</code>
+## ~~getIndexByFamilyNameGivenNameEmailCozyUrl ⇒ <code>string</code>~~
+***Deprecated***
+
 Returns 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
 
 **Kind**: global constant  
