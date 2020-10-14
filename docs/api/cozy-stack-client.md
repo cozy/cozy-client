@@ -402,7 +402,7 @@ files associated to a specific document
     * [.create(attributes)](#FileCollection+create)
     * [.updateFile(data, params)](#FileCollection+updateFile) ⇒ <code>object</code>
     * [.download(file, versionId, filename)](#FileCollection+download)
-    * [.fetchFileContent(id)](#FileCollection+fetchFileContent)
+    * [.fetchFileContentById(id)](#FileCollection+fetchFileContentById)
     * [.getBeautifulSize(file, decimal)](#FileCollection+getBeautifulSize)
     * [.isChildOf(child, parent)](#FileCollection+isChildOf) ⇒ <code>boolean</code>
     * [.statById(id, [options])](#FileCollection+statById) ⇒ <code>object</code>
@@ -631,9 +631,9 @@ Download a file or a specific version of the file
 | versionId | <code>string</code> | <code>null</code> | Id of the io.cozy.files.version |
 | filename | <code>string</code> |  | The name you want for the downloaded file                            (by default the same as the file) |
 
-<a name="FileCollection+fetchFileContent"></a>
+<a name="FileCollection+fetchFileContentById"></a>
 
-### fileCollection.fetchFileContent(id)
+### fileCollection.fetchFileContentById(id)
 Fetch the binary of a file or a specific version of a file
 Useful for instance when you can't download the file directly
 (via a content-disposition attachement header) and need to store
