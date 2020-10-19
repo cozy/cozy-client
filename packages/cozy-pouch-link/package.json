@@ -11,9 +11,9 @@
     "url": "git+https://github.com/cozy/cozy-client.git"
   },
   "dependencies": {
+    "@cozy/minilog": "1.0.0",
     "cozy-client": "^15.4.1",
     "cozy-device-helper": "^1.7.3",
-    "minilog": "^3.1.0",
     "pouchdb-browser": "^7.0.0",
     "pouchdb-find": "^7.0.0"
   },
