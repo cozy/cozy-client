@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [15.4.1](https://github.com/cozy/cozy-client/compare/v15.4.0...v15.4.1) (2020-10-19)
+
+
+### Bug Fixes
+
+* Rename fetchFileContent to fetchFilecontentById ([a77607c](https://github.com/cozy/cozy-client/commit/a77607c))
+
+
+
+
+
 # [15.2.0](https://github.com/cozy/cozy-client/compare/v15.1.1...v15.2.0) (2020-10-05)
 
 

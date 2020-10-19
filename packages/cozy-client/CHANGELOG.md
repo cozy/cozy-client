@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [15.4.1](https://github.com/cozy/cozy-client/compare/v15.4.0...v15.4.1) (2020-10-19)
+
+
+### Bug Fixes
+
+* Use console.warn for depreciation ([ae05f44](https://github.com/cozy/cozy-client/commit/ae05f44))
+
+
+
+
+
 # [15.4.0](https://github.com/cozy/cozy-client/compare/v15.3.1...v15.4.0) (2020-10-16)
 
 
