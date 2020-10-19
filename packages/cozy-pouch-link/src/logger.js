@@ -1,4 +1,4 @@
-import minilog from 'minilog'
+import minilog from '@cozy/minilog'
 
 const logger = minilog('cozy-pouch-link')
 minilog.suggest.deny('cozy-pouch-link', 'info')
