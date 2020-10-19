@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [15.4.2](https://github.com/cozy/cozy-client/compare/v15.4.1...v15.4.2) (2020-10-19)
+
+
+### Bug Fixes
+
+* Use cozy's fork of minilog ([6601431](https://github.com/cozy/cozy-client/commit/6601431))
+
+
+
+
+
 ## [15.4.1](https://github.com/cozy/cozy-client/compare/v15.4.0...v15.4.1) (2020-10-19)
 
 **Note:** Version bump only for package cozy-pouch-link
