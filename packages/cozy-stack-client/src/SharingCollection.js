@@ -19,6 +19,45 @@ class SharingCollection extends DocumentCollection {
       data: resp.data.map(normalizeSharing)
     }
   }
+  /**
+   *
+   * Creates a new Sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#post-sharings
+   *
+   * @param {object} params
+   * @param {object} params.document The document to share
+   * @param {string} params.description Description of the sharin
+   * @param {string} params.previewPath The path (route) to see the preview
+   * @param {Array} params.rules The rules defined to the sharing. See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing
+   * @param {Array} params.recipients Recipients to add to the sharings (will have the same permissions given by the rules defined by the sharing )
+   * @param {Array} params.readOnlyRecipients Recipients to add to the sharings with only read only access
+   * @param {boolean} params.openSharing If someone else than the owner can add a recipient to the sharing
+   */
+  async create({
+    document,
+    description,
+    previewPath,
+    rules,
+    recipients = [],
+    readOnlyRecipients = [],
+    openSharing
+  }) {
+    const resp = await this.stackClient.fetchJSON('POST', '/sharings/', {
+      data: {
+        type: 'io.cozy.sharings',
+        attributes: {
+          description,
+          preview_path: previewPath,
+          open_sharing: openSharing,
+          rules: rules ? rules : getSharingRules(document)
+        },
+        relationships: {
+          recipients: getRecipientsPayload(recipients),
+          read_only_recipients: getRecipientsPayload(readOnlyRecipients)
+        }
+      }
+    })
+    return { data: normalizeSharing(resp.data) }
+  }
 
   /**
    * share - Creates a new sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#post-sharings
@@ -142,8 +181,18 @@ SharingCollection.normalizeDoctype = DocumentCollection.normalizeDoctypeJsonApi
 
 // Rules determine the behavior of the sharing when changes are made to the shared document
 // See https://github.com/cozy/cozy-stack/blob/master/docs/sharing-design.md#description-of-a-sharing
-const getSharingRules = (document, sharingType) => {
-  const { _id, _type } = document
+export const getSharingRules = (document, sharingType) => {
+  if (sharingType) {
+    console.warn(
+      `sharingType is deprecated and will be removed. We now set this default policy : ${
+        isFile(document)
+          ? getSharingRulesForFile(document)
+          : getSharingRulesForPhotosAlbum(document)
+      }} \n      
+      If this default policy doesn't follow your need, please set custom rules 
+      by using the 'rules' object of the SharingCollection.create() method`
+    )
+  }
   return isFile(document)
     ? [
         {
@@ -171,16 +220,27 @@ const getSharingRules = (document, sharingType) => {
         }
       ]
 }
-
+// @deprecated sharingType is deprecated see getSharingRules for more details
 const getSharingPolicy = (document, sharingType) => {
   if (isFile(document) && isDirectory(document)) {
+    if (!sharingType) return { add: 'sync', update: 'sync', remove: 'sync' }
     return sharingType === 'two-way'
       ? { add: 'sync', update: 'sync', remove: 'sync' }
       : { add: 'push', update: 'push', remove: 'push' }
   }
+  if (!sharingType) return { update: 'sync', remove: 'revoke' }
   return sharingType === 'two-way'
     ? { update: 'sync', remove: 'revoke' }
     : { update: 'push', remove: 'revoke' }
 }
 
+const getRecipientsPayload = recipients => {
+  const recipientsPayload = {
+    data: recipients.map(({ _id, _type }) => ({
+      id: _id,
+      type: _type
+    }))
+  }
+  return recipientsPayload
+}
 export default SharingCollection
