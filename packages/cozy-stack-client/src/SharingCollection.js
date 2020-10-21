@@ -60,6 +60,7 @@ class SharingCollection extends DocumentCollection {
   }
 
   /**
+   * @deprecated Use create() instead
    * share - Creates a new sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#post-sharings
    *
    * @param  {object} document The document to share. Should have and _id and a name.
@@ -75,23 +76,21 @@ class SharingCollection extends DocumentCollection {
     description,
     previewPath = null
   ) {
-    const resp = await this.stackClient.fetchJSON('POST', '/sharings/', {
-      data: {
-        type: 'io.cozy.sharings',
-        attributes: {
-          description,
-          preview_path: previewPath,
-          open_sharing: sharingType === 'two-way',
-          rules: getSharingRules(document, sharingType)
-        },
-        relationships: {
-          recipients: {
-            data: recipients.map(({ _id, _type }) => ({ id: _id, type: _type }))
-          }
-        }
-      }
+    console.warn(
+      'SharingCollection.share is deprecated, use SharingCollection.create instead'
+    )
+    const recipientsToUse =
+      sharingType === 'two-way'
+        ? { recipients }
+        : { readOnlyRecipients: recipients }
+    return this.create({
+      document,
+      ...recipientsToUse,
+      description,
+      previewPath,
+      openSharing: sharingType === 'two-way',
+      rules: getSharingRules(document, sharingType)
     })
-    return { data: normalizeSharing(resp.data) }
   }
 
   /**
