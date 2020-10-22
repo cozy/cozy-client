@@ -365,4 +365,124 @@ describe('SharingCollection', () => {
       )
     })
   })
+
+  describe('addRecipients Old API', () => {
+    beforeEach(() => {
+      jest.spyOn(console, 'warn').mockImplementation(() => {})
+      client.fetch.mockReset()
+      client.fetchJSON.mockReturnValue(Promise.resolve({ data: [] }))
+    })
+
+    it('should accept old API', async () => {
+      await collection.addRecipients(SHARING, [RECIPIENT], 'two-way')
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        `/sharings/${SHARING._id}/recipients`,
+        {
+          data: {
+            id: SHARING._id,
+            relationships: {
+              recipients: {
+                data: [{ id: 'contact_1', type: 'io.cozy.contacts' }]
+              }
+            },
+            type: 'io.cozy.sharings'
+          }
+        }
+      )
+      await collection.addRecipients(SHARING, [RECIPIENT], 'one-way')
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        `/sharings/${SHARING._id}/recipients`,
+        {
+          data: {
+            id: SHARING._id,
+            relationships: {
+              read_only_recipients: {
+                data: [{ id: 'contact_1', type: 'io.cozy.contacts' }]
+              }
+            },
+            type: 'io.cozy.sharings'
+          }
+        }
+      )
+    })
+  })
+
+  describe('addRecipients', () => {
+    beforeEach(() => {
+      client.fetch.mockReset()
+      client.fetchJSON.mockReturnValue(Promise.resolve({ data: [] }))
+    })
+
+    it('should accept recipient API', async () => {
+      await collection.addRecipients({
+        document: SHARING,
+        recipients: [RECIPIENT]
+      })
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        `/sharings/${SHARING._id}/recipients`,
+        {
+          data: {
+            id: SHARING._id,
+            relationships: {
+              recipients: {
+                data: [{ id: 'contact_1', type: 'io.cozy.contacts' }]
+              },
+              read_only_recipients: { data: [] }
+            },
+            type: 'io.cozy.sharings'
+          }
+        }
+      )
+    })
+    it('should accept read only', async () => {
+      await collection.addRecipients({
+        document: SHARING,
+        readOnlyRecipients: [RECIPIENT]
+      })
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        `/sharings/${SHARING._id}/recipients`,
+        {
+          data: {
+            id: SHARING._id,
+            relationships: {
+              recipients: { data: [] },
+              read_only_recipients: {
+                data: [{ id: 'contact_1', type: 'io.cozy.contacts' }]
+              }
+            },
+            type: 'io.cozy.sharings'
+          }
+        }
+      )
+    })
+    it('should accept both', async () => {
+      await collection.addRecipients({
+        document: SHARING,
+        readOnlyRecipients: [RECIPIENT],
+        recipients: [RECIPIENT]
+      })
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        `/sharings/${SHARING._id}/recipients`,
+        {
+          data: {
+            id: SHARING._id,
+            relationships: {
+              read_only_recipients: {
+                data: [{ id: 'contact_1', type: 'io.cozy.contacts' }]
+              },
+              recipients: {
+                data: [{ id: 'contact_1', type: 'io.cozy.contacts' }]
+              }
+            },
+            type: 'io.cozy.sharings'
+          }
+        }
+      )
+    })
+  })
 })

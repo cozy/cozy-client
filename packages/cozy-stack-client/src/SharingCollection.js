@@ -123,31 +123,54 @@ class SharingCollection extends DocumentCollection {
    * Add an array of contacts to the Sharing
    *
    * @param {object} sharing Sharing Object
-   * @param {Array} recipients Array of {id:1, type:"io.cozy.contacts"}
-   * @param {string} sharingType Read and write: two-way. Other only read
+   * @param {Array=} recipients Array of {id:1, type:"io.cozy.contacts"}
+   * @param {string=} sharingType Read and write: two-way. Other only read
    */
   async addRecipients(sharing, recipients, sharingType) {
-    const resp = await this.stackClient.fetchJSON(
-      'POST',
-      uri`/sharings/${sharing._id}/recipients`,
-      {
-        data: {
-          type: 'io.cozy.sharings',
-          id: sharing._id,
-          relationships:
-            sharingType === 'two-way'
-              ? {
-                  recipients: { data: recipients.map(toRelationshipItem) }
-                }
-              : {
-                  read_only_recipients: {
-                    data: recipients.map(toRelationshipItem)
+    if (recipients !== undefined) {
+      console.warn(`addRecipients(sharing, recipients, sharingType is deprecated) use : \n 
+      addRecipients({document, recipients,readOnlyRecipients})`)
+      const resp = await this.stackClient.fetchJSON(
+        'POST',
+        uri`/sharings/${sharing._id}/recipients`,
+        {
+          data: {
+            type: 'io.cozy.sharings',
+            id: sharing._id,
+            relationships:
+              sharingType === 'two-way'
+                ? {
+                    recipients: { data: recipients.map(toRelationshipItem) }
                   }
-                }
+                : {
+                    read_only_recipients: {
+                      data: recipients.map(toRelationshipItem)
+                    }
+                  }
+          }
         }
-      }
-    )
-    return { data: normalizeSharing(resp.data) }
+      )
+      return { data: normalizeSharing(resp.data) }
+    } else {
+      const { document, recipients = [], readOnlyRecipients = [] } = sharing
+      const resp = await this.stackClient.fetchJSON(
+        'POST',
+        uri`/sharings/${document._id}/recipients`,
+        {
+          data: {
+            type: 'io.cozy.sharings',
+            id: document._id,
+            relationships: {
+              recipients: { data: recipients.map(toRelationshipItem) },
+              read_only_recipients: {
+                data: readOnlyRecipients.map(toRelationshipItem)
+              }
+            }
+          }
+        }
+      )
+      return { data: normalizeSharing(resp.data) }
+    }
   }
   /**
    * Revoke only one recipient of the sharing.

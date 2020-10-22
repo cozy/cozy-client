@@ -1131,7 +1131,7 @@ Implements the `DocumentCollection` API along with specific methods for
     * [.create(params)](#SharingCollection+create)
     * ~~[.share(document, recipients, sharingType, description, [previewPath])](#SharingCollection+share)~~
     * [.getDiscoveryLink(sharingId, sharecode)](#SharingCollection+getDiscoveryLink) ⇒ <code>string</code>
-    * [.addRecipients(sharing, recipients, sharingType)](#SharingCollection+addRecipients)
+    * [.addRecipients(sharing, [recipients], [sharingType])](#SharingCollection+addRecipients)
     * [.revokeRecipient(sharing, recipientIndex)](#SharingCollection+revokeRecipient)
     * [.revokeSelf(sharing)](#SharingCollection+revokeSelf)
     * [.revokeAllRecipients(sharing)](#SharingCollection+revokeAllRecipients)
@@ -1183,7 +1183,7 @@ getDiscoveryLink - Returns the URL of the page that can be used to accept a shar
 
 <a name="SharingCollection+addRecipients"></a>
 
-### sharingCollection.addRecipients(sharing, recipients, sharingType)
+### sharingCollection.addRecipients(sharing, [recipients], [sharingType])
 Add an array of contacts to the Sharing
 
 **Kind**: instance method of [<code>SharingCollection</code>](#SharingCollection)  
@@ -1191,8 +1191,8 @@ Add an array of contacts to the Sharing
 | Param | Type | Description |
 | --- | --- | --- |
 | sharing | <code>object</code> | Sharing Object |
-| recipients | <code>Array</code> | Array of {id:1, type:"io.cozy.contacts"} |
-| sharingType | <code>string</code> | Read and write: two-way. Other only read |
+| [recipients] | <code>Array</code> | Array of {id:1, type:"io.cozy.contacts"} |
+| [sharingType] | <code>string</code> | Read and write: two-way. Other only read |
 
 <a name="SharingCollection+revokeRecipient"></a>
 
