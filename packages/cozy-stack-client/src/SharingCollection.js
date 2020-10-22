@@ -61,8 +61,10 @@ class SharingCollection extends DocumentCollection {
           rules: rules ? rules : getSharingRules(document)
         },
         relationships: {
-          recipients: getRecipientsPayload(recipients),
-          read_only_recipients: getRecipientsPayload(readOnlyRecipients)
+          recipients: { data: recipients.map(toRelationshipItem) },
+          read_only_recipients: {
+            data: readOnlyRecipients.map(toRelationshipItem)
+          }
         }
       }
     })
@@ -123,12 +125,6 @@ class SharingCollection extends DocumentCollection {
    * @param {string} sharingType Read and write: two-way. Other only read
    */
   async addRecipients(sharing, recipients, sharingType) {
-    const recipientsPayload = {
-      data: recipients.map(({ _id, _type }) => ({
-        id: _id,
-        type: _type
-      }))
-    }
     const resp = await this.stackClient.fetchJSON(
       'POST',
       uri`/sharings/${sharing._id}/recipients`,
@@ -139,10 +135,12 @@ class SharingCollection extends DocumentCollection {
           relationships:
             sharingType === 'two-way'
               ? {
-                  recipients: recipientsPayload
+                  recipients: { data: recipients.map(toRelationshipItem) }
                 }
               : {
-                  read_only_recipients: recipientsPayload
+                  read_only_recipients: {
+                    data: recipients.map(toRelationshipItem)
+                  }
                 }
         }
       }
@@ -261,13 +259,11 @@ const getSharingPolicyForFile = (document, sharingType) => {
     : { update: 'push', remove: 'revoke' }
 }
 
-const getRecipientsPayload = recipients => {
-  const recipientsPayload = {
-    data: recipients.map(({ _id, _type }) => ({
-      id: _id,
-      type: _type
-    }))
+const toRelationshipItem = item => {
+  return {
+    id: item._id,
+    type: item._type
   }
-  return recipientsPayload
 }
+
 export default SharingCollection
