@@ -179,7 +179,7 @@ class SharingCollection extends DocumentCollection {
 SharingCollection.normalizeDoctype = DocumentCollection.normalizeDoctypeJsonApi
 
 // Rules determine the behavior of the sharing when changes are made to the shared document
-// See https://github.com/cozy/cozy-stack/blob/master/docs/sharing-design.md#description-of-a-sharing
+// See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing
 export const getSharingRules = (document, sharingType) => {
   if (sharingType) {
     console.warn(
