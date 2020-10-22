@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [15.5.0](https://github.com/cozy/cozy-client/compare/v15.4.2...v15.5.0) (2020-10-22)
+
+
+### Features
+
+* New Create method for SharingCollection ([0f7c917](https://github.com/cozy/cozy-client/commit/0f7c917))
+
+
+
+
+
 ## [15.4.2](https://github.com/cozy/cozy-client/compare/v15.4.1...v15.4.2) (2020-10-19)
 
 
