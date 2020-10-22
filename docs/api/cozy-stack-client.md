@@ -1125,17 +1125,36 @@ Implements the `DocumentCollection` API along with specific methods for
 **Kind**: global class  
 
 * [SharingCollection](#SharingCollection)
-    * [.share(document, recipients, sharingType, description, [previewPath])](#SharingCollection+share)
+    * [.create(params)](#SharingCollection+create)
+    * ~~[.share(document, recipients, sharingType, description, [previewPath])](#SharingCollection+share)~~
     * [.getDiscoveryLink(sharingId, sharecode)](#SharingCollection+getDiscoveryLink) ⇒ <code>string</code>
     * [.addRecipients(sharing, recipients, sharingType)](#SharingCollection+addRecipients)
     * [.revokeRecipient(sharing, recipientIndex)](#SharingCollection+revokeRecipient)
     * [.revokeSelf(sharing)](#SharingCollection+revokeSelf)
     * [.revokeAllRecipients(sharing)](#SharingCollection+revokeAllRecipients)
 
+<a name="SharingCollection+create"></a>
+
+### sharingCollection.create(params)
+Creates a new Sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#post-sharings
+
+**Kind**: instance method of [<code>SharingCollection</code>](#SharingCollection)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>object</code> |  |
+| params.document | <code>object</code> | The document to share |
+| params.description | <code>string</code> | Description of the sharin |
+| params.previewPath | <code>string</code> | The path (route) to see the preview |
+| params.rules | <code>Array</code> | The rules defined to the sharing. See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing |
+| params.recipients | <code>Array</code> | Recipients to add to the sharings (will have the same permissions given by the rules defined by the sharing ) |
+| params.readOnlyRecipients | <code>Array</code> | Recipients to add to the sharings with only read only access |
+| params.openSharing | <code>boolean</code> | If someone else than the owner can add a recipient to the sharing |
+
 <a name="SharingCollection+share"></a>
 
-### sharingCollection.share(document, recipients, sharingType, description, [previewPath])
-share - Creates a new sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#post-sharings
+### ~~sharingCollection.share(document, recipients, sharingType, description, [previewPath])~~
+***Deprecated***
 
 **Kind**: instance method of [<code>SharingCollection</code>](#SharingCollection)  
 
