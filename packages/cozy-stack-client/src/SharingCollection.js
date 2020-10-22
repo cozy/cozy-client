@@ -193,35 +193,53 @@ export const getSharingRules = (document, sharingType) => {
     )
   }
   return isFile(document)
-    ? [
-        {
-          title: document.name,
-          doctype: 'io.cozy.files',
-          values: [_id],
-          ...getSharingPolicy(document, sharingType)
-        }
-      ]
-    : [
-        {
-          title: 'collection',
-          doctype: _type,
-          values: [_id],
-          ...getSharingPolicy(document, sharingType)
-        },
-        {
-          title: 'items',
-          doctype: 'io.cozy.files',
-          values: [`${_type}/${_id}`],
-          selector: 'referenced_by',
-          ...(sharingType === 'two-way'
-            ? { add: 'sync', update: 'sync', remove: 'sync' }
-            : { add: 'push', update: 'none', remove: 'push' })
-        }
-      ]
+    ? getSharingRulesForFile(document, sharingType)
+    : getSharingRulesForPhotosAlbum(document, sharingType)
 }
-// @deprecated sharingType is deprecated see getSharingRules for more details
-const getSharingPolicy = (document, sharingType) => {
-  if (isFile(document) && isDirectory(document)) {
+
+const getSharingRulesForPhotosAlbum = (document, sharingType) => {
+  const { _id, _type } = document
+  return [
+    {
+      title: 'collection',
+      doctype: _type,
+      values: [_id],
+      ...getSharingPolicyForAlbum(sharingType)
+    },
+    {
+      title: 'items',
+      doctype: 'io.cozy.files',
+      values: [`${_type}/${_id}`],
+      selector: 'referenced_by',
+      ...getSharingPolicyForReferencedFiles(sharingType)
+    }
+  ]
+}
+
+const getSharingPolicyForReferencedFiles = sharingType => {
+  return sharingType === 'two-way'
+    ? { add: 'sync', update: 'sync', remove: 'sync' }
+    : { add: 'push', update: 'none', remove: 'push' }
+}
+const getSharingPolicyForAlbum = sharingType => {
+  if (!sharingType) return { update: 'sync', remove: 'revoke' }
+  return sharingType === 'two-way'
+    ? { update: 'sync', remove: 'revoke' }
+    : { update: 'push', remove: 'revoke' }
+}
+const getSharingRulesForFile = (document, sharingType) => {
+  const { _id, name } = document
+  return [
+    {
+      title: name,
+      doctype: 'io.cozy.files',
+      values: [_id],
+      ...getSharingPolicyForFile(document, sharingType)
+    }
+  ]
+}
+const getSharingPolicyForFile = (document, sharingType) => {
+  if (isDirectory(document)) {
     if (!sharingType) return { add: 'sync', update: 'sync', remove: 'sync' }
     return sharingType === 'two-way'
       ? { add: 'sync', update: 'sync', remove: 'sync' }
