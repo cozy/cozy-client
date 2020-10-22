@@ -193,12 +193,12 @@ SharingCollection.normalizeDoctype = DocumentCollection.normalizeDoctypeJsonApi
 export const getSharingRules = (document, sharingType) => {
   if (sharingType) {
     console.warn(
-      `sharingType is deprecated and will be removed. We now set this default policy : ${
+      `sharingType is deprecated and will be removed. We now set this default rules: ${
         isFile(document)
           ? getSharingRulesForFile(document)
           : getSharingRulesForPhotosAlbum(document)
       }} \n      
-      If this default policy doesn't follow your need, please set custom rules 
+      If this default rules do not fill your need, please set custom rules 
       by using the 'rules' object of the SharingCollection.create() method`
     )
   }
