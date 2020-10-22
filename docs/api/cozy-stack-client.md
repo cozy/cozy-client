@@ -89,8 +89,9 @@ through OAuth.</p>
 <dt><a href="#Stream">Stream</a> : <code>object</code></dt>
 <dd><p>Stream is not defined in a browser, but is on NodeJS environment</p>
 </dd>
-<dt><a href="#Rule">Rule</a> : <code>object</code></dt>
-<dd></dd>
+<dt><a href="#Recipient">Recipient</a> : <code>object</code></dt>
+<dd><p>A sharing rule</p>
+</dd>
 </dl>
 
 <a name="AppCollection"></a>
@@ -1148,9 +1149,9 @@ Creates a new Sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#post-shar
 | params.document | <code>object</code> | The document to share |
 | params.description | <code>string</code> | Description of the sharing |
 | [params.previewPath] | <code>string</code> | The preview path |
-| [params.rules] | [<code>Array.&lt;Rule&gt;</code>](#Rule) | The rules defined to the sharing. See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing |
-| [params.recipients] | <code>Array</code> | Recipients to add to the sharings (will have the same permissions given by the rules defined by the sharing ) |
-| [params.readOnlyRecipients] | <code>Array</code> | Recipients to add to the sharings with only read only access |
+| [params.rules] | <code>Array.&lt;Rule&gt;</code> | The rules defined to the sharing. See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing |
+| [params.recipients] | [<code>Array.&lt;Recipient&gt;</code>](#Recipient) | Recipients to add to the sharings (will have the same permissions given by the rules defined by the sharing ) |
+| [params.readOnlyRecipients] | [<code>Array.&lt;Recipient&gt;</code>](#Recipient) | Recipients to add to the sharings with only read only access |
 | [params.openSharing] | <code>boolean</code> | If someone else than the owner can add a recipient to the sharing |
 
 <a name="SharingCollection+share"></a>
@@ -1428,9 +1429,11 @@ Document representing a io.cozy.files
 Stream is not defined in a browser, but is on NodeJS environment
 
 **Kind**: global typedef  
-<a name="Rule"></a>
+<a name="Recipient"></a>
 
-## Rule : <code>object</code>
+## Recipient : <code>object</code>
+A sharing rule
+
 **Kind**: global typedef  
 **Properties**
 
