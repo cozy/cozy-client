@@ -5,13 +5,15 @@ import { uri } from './utils'
 const normalizeSharing = sharing => normalizeDoc(sharing, 'io.cozy.sharings')
 
 /**
- * @typedef {object} Rule
+ * @typedef {object} Rule A sharing rule
  * @property {string} title
  * @property {string} doctype
  * @property {Array} values
  * @property {string=} add
  * @property {string=} update
  * @property {string=} remove
+ *
+ * @typedef {object} Recipient An io.cozy.contact
  */
 
 /**
@@ -38,8 +40,8 @@ class SharingCollection extends DocumentCollection {
    * @param {string} params.description Description of the sharing
    * @param {string=} params.previewPath The preview path
    * @param {Array<Rule>=} params.rules The rules defined to the sharing. See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing
-   * @param {Array=} params.recipients Recipients to add to the sharings (will have the same permissions given by the rules defined by the sharing )
-   * @param {Array=} params.readOnlyRecipients Recipients to add to the sharings with only read only access
+   * @param {Array<Recipient>=} params.recipients Recipients to add to the sharings (will have the same permissions given by the rules defined by the sharing )
+   * @param {Array<Recipient>=} params.readOnlyRecipients Recipients to add to the sharings with only read only access
    * @param {boolean=} params.openSharing If someone else than the owner can add a recipient to the sharing
    */
   async create({
