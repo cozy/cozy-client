@@ -415,7 +415,7 @@ describe('SharingCollection', () => {
       client.fetchJSON.mockReturnValue(Promise.resolve({ data: [] }))
     })
 
-    it('should accept recipient API', async () => {
+    it('handle the recipients option', async () => {
       await collection.addRecipients({
         document: SHARING,
         recipients: [RECIPIENT]
@@ -437,7 +437,7 @@ describe('SharingCollection', () => {
         }
       )
     })
-    it('should accept read only', async () => {
+    it('should accept the readOnlyRecipients option', async () => {
       await collection.addRecipients({
         document: SHARING,
         readOnlyRecipients: [RECIPIENT]
@@ -459,7 +459,7 @@ describe('SharingCollection', () => {
         }
       )
     })
-    it('should accept both', async () => {
+    it('should accept both options', async () => {
       await collection.addRecipients({
         document: SHARING,
         readOnlyRecipients: [RECIPIENT],
