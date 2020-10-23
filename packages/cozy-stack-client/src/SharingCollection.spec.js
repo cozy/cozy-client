@@ -86,8 +86,7 @@ describe('SharingCollection', () => {
           relationships: {
             read_only_recipients: {
               data: [{ id: 'contact_1', type: 'io.cozy.contacts' }]
-            },
-            recipients: { data: [] }
+            }
           },
           type: 'io.cozy.sharings'
         }
@@ -126,8 +125,7 @@ describe('SharingCollection', () => {
           relationships: {
             read_only_recipients: {
               data: [{ id: 'contact_1', type: 'io.cozy.contacts' }]
-            },
-            recipients: { data: [] }
+            }
           },
           type: 'io.cozy.sharings'
         }
@@ -164,9 +162,6 @@ describe('SharingCollection', () => {
             ]
           },
           relationships: {
-            read_only_recipients: {
-              data: []
-            },
             recipients: {
               data: [{ id: 'contact_1', type: 'io.cozy.contacts' }]
             }
@@ -207,9 +202,6 @@ describe('SharingCollection', () => {
             ]
           },
           relationships: {
-            read_only_recipients: {
-              data: []
-            },
             recipients: {
               data: [{ id: 'contact_1', type: 'io.cozy.contacts' }]
             }
@@ -258,9 +250,6 @@ describe('SharingCollection', () => {
           relationships: {
             read_only_recipients: {
               data: [{ id: 'contact_1', type: 'io.cozy.contacts' }]
-            },
-            recipients: {
-              data: []
             }
           },
           type: 'io.cozy.sharings'
@@ -299,9 +288,6 @@ describe('SharingCollection', () => {
           relationships: {
             read_only_recipients: {
               data: [{ id: 'contact_1', type: 'io.cozy.contacts' }]
-            },
-            recipients: {
-              data: []
             }
           },
           type: 'io.cozy.sharings'
@@ -338,9 +324,6 @@ describe('SharingCollection', () => {
             ]
           },
           relationships: {
-            read_only_recipients: {
-              data: []
-            },
             recipients: {
               data: [{ id: 'contact_1', type: 'io.cozy.contacts' }]
             }
