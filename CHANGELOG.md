@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [15.6.0](https://github.com/cozy/cozy-client/compare/v15.5.0...v15.6.0) (2020-10-23)
+
+
+### Features
+
+* GetOwnPermissions returns included ([868c63e](https://github.com/cozy/cozy-client/commit/868c63e))
+
+
+
+
+
 # [15.5.0](https://github.com/cozy/cozy-client/compare/v15.4.2...v15.5.0) (2020-10-22)
 
 
