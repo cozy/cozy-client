@@ -89,8 +89,14 @@ through OAuth.</p>
 <dt><a href="#Stream">Stream</a> : <code>object</code></dt>
 <dd><p>Stream is not defined in a browser, but is on NodeJS environment</p>
 </dd>
-<dt><a href="#Recipient">Recipient</a> : <code>object</code></dt>
+<dt><a href="#Rule">Rule</a> : <code>object</code></dt>
 <dd><p>A sharing rule</p>
+</dd>
+<dt><a href="#Recipient">Recipient</a> : <code>object</code></dt>
+<dd><p>An io.cozy.contact</p>
+</dd>
+<dt><a href="#Sharing">Sharing</a> : <code>object</code></dt>
+<dd><p>An io.cozy.sharings document</p>
 </dd>
 </dl>
 
@@ -1131,7 +1137,7 @@ Implements the `DocumentCollection` API along with specific methods for
     * [.create(params)](#SharingCollection+create)
     * ~~[.share(document, recipients, sharingType, description, [previewPath])](#SharingCollection+share)~~
     * [.getDiscoveryLink(sharingId, sharecode)](#SharingCollection+getDiscoveryLink) ⇒ <code>string</code>
-    * [.addRecipients(sharing, [recipients], [sharingType])](#SharingCollection+addRecipients)
+    * [.addRecipients(options)](#SharingCollection+addRecipients)
     * [.revokeRecipient(sharing, recipientIndex)](#SharingCollection+revokeRecipient)
     * [.revokeSelf(sharing)](#SharingCollection+revokeSelf)
     * [.revokeAllRecipients(sharing)](#SharingCollection+revokeAllRecipients)
@@ -1146,10 +1152,10 @@ Creates a new Sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#post-shar
 | Param | Type | Description |
 | --- | --- | --- |
 | params | <code>object</code> | Sharing  params |
-| params.document | <code>object</code> | The document to share |
+| params.document | [<code>Sharing</code>](#Sharing) | The document to share |
 | params.description | <code>string</code> | Description of the sharing |
 | [params.previewPath] | <code>string</code> | The preview path |
-| [params.rules] | <code>Array.&lt;Rule&gt;</code> | The rules defined to the sharing. See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing |
+| [params.rules] | [<code>Array.&lt;Rule&gt;</code>](#Rule) | The rules defined to the sharing. See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing |
 | [params.recipients] | [<code>Array.&lt;Recipient&gt;</code>](#Recipient) | Recipients to add to the sharings (will have the same permissions given by the rules defined by the sharing ) |
 | [params.readOnlyRecipients] | [<code>Array.&lt;Recipient&gt;</code>](#Recipient) | Recipients to add to the sharings with only read only access |
 | [params.openSharing] | <code>boolean</code> | If someone else than the owner can add a recipient to the sharing |
@@ -1163,7 +1169,7 @@ Creates a new Sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#post-shar
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| document | <code>object</code> |  | The document to share. Should have and _id and a name. |
+| document | [<code>Sharing</code>](#Sharing) |  | The document to share. Should have and _id and a name. |
 | recipients | <code>Array</code> |  | A list of io.cozy.contacts |
 | sharingType | <code>string</code> |  | If "two-way", will set the open_sharing attribute to true |
 | description | <code>string</code> |  | Describes the sharing |
@@ -1183,16 +1189,17 @@ getDiscoveryLink - Returns the URL of the page that can be used to accept a shar
 
 <a name="SharingCollection+addRecipients"></a>
 
-### sharingCollection.addRecipients(sharing, [recipients], [sharingType])
+### sharingCollection.addRecipients(options)
 Add an array of contacts to the Sharing
 
 **Kind**: instance method of [<code>SharingCollection</code>](#SharingCollection)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| sharing | <code>object</code> | Sharing Object |
-| [recipients] | <code>Array</code> | Array of {id:1, type:"io.cozy.contacts"} |
-| [sharingType] | <code>string</code> | Read and write: two-way. Other only read |
+| options | <code>object</code> | Object |
+| options.document | [<code>Sharing</code>](#Sharing) | Sharing Object |
+| [options.recipients] | [<code>Array.&lt;Recipient&gt;</code>](#Recipient) | Recipients to add to the sharing |
+| [options.readOnlyRecipients] | [<code>Array.&lt;Recipient&gt;</code>](#Recipient) | Recipients to add to the sharings with only read only access |
 
 <a name="SharingCollection+revokeRecipient"></a>
 
@@ -1429,9 +1436,9 @@ Document representing a io.cozy.files
 Stream is not defined in a browser, but is on NodeJS environment
 
 **Kind**: global typedef  
-<a name="Recipient"></a>
+<a name="Rule"></a>
 
-## Recipient : <code>object</code>
+## Rule : <code>object</code>
 A sharing rule
 
 **Kind**: global typedef  
@@ -1446,3 +1453,15 @@ A sharing rule
 | [update] | <code>string</code> | 
 | [remove] | <code>string</code> | 
 
+<a name="Recipient"></a>
+
+## Recipient : <code>object</code>
+An io.cozy.contact
+
+**Kind**: global typedef  
+<a name="Sharing"></a>
+
+## Sharing : <code>object</code>
+An io.cozy.sharings document
+
+**Kind**: global typedef  

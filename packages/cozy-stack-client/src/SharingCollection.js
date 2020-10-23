@@ -12,8 +12,12 @@ const normalizeSharing = sharing => normalizeDoc(sharing, 'io.cozy.sharings')
  * @property {string=} add
  * @property {string=} update
  * @property {string=} remove
- *
+ */
+/**
  * @typedef {object} Recipient An io.cozy.contact
+ */
+/**
+ * @typedef {object} Sharing An io.cozy.sharings document
  */
 
 /**
@@ -36,7 +40,7 @@ class SharingCollection extends DocumentCollection {
    * Creates a new Sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#post-sharings
    *
    * @param {object} params Sharing  params
-   * @param {object} params.document The document to share
+   * @param {Sharing} params.document The document to share
    * @param {string} params.description Description of the sharing
    * @param {string=} params.previewPath The preview path
    * @param {Array<Rule>=} params.rules The rules defined to the sharing. See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing
@@ -77,7 +81,7 @@ class SharingCollection extends DocumentCollection {
    * @deprecated Use create() instead
    * share - Creates a new sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#post-sharings
    *
-   * @param  {object} document The document to share. Should have and _id and a name.
+   * @param  {Sharing} document The document to share. Should have and _id and a name.
    * @param  {Array} recipients A list of io.cozy.contacts
    * @param  {string} sharingType - If "two-way", will set the open_sharing attribute to true
    * @param  {string} description - Describes the sharing
@@ -119,58 +123,37 @@ class SharingCollection extends DocumentCollection {
       `/sharings/${sharingId}/discovery?sharecode=${sharecode}`
     )
   }
+
   /**
    * Add an array of contacts to the Sharing
    *
-   * @param {object} sharing Sharing Object
-   * @param {Array=} recipients Array of {id:1, type:"io.cozy.contacts"}
-   * @param {string=} sharingType Read and write: two-way. Other only read
+   * @param {object} options Object
+   * @param {Sharing} options.document Sharing Object
+   * @param {Array<Recipient>=} options.recipients Recipients to add to the sharing
+   * @param {Array<Recipient>=} options.readOnlyRecipients Recipients to add to the sharings with only read only access
    */
-  async addRecipients(sharing, recipients, sharingType) {
-    if (recipients !== undefined) {
-      console.warn(`addRecipients(sharing, recipients, sharingType is deprecated) use : \n 
-      addRecipients({document, recipients,readOnlyRecipients})`)
-      const resp = await this.stackClient.fetchJSON(
-        'POST',
-        uri`/sharings/${sharing._id}/recipients`,
-        {
-          data: {
-            type: 'io.cozy.sharings',
-            id: sharing._id,
-            relationships:
-              sharingType === 'two-way'
-                ? {
-                    recipients: { data: recipients.map(toRelationshipItem) }
-                  }
-                : {
-                    read_only_recipients: {
-                      data: recipients.map(toRelationshipItem)
-                    }
-                  }
-          }
-        }
-      )
-      return { data: normalizeSharing(resp.data) }
-    } else {
-      const { document, recipients = [], readOnlyRecipients = [] } = sharing
-      const resp = await this.stackClient.fetchJSON(
-        'POST',
-        uri`/sharings/${document._id}/recipients`,
-        {
-          data: {
-            type: 'io.cozy.sharings',
-            id: document._id,
-            relationships: {
-              recipients: { data: recipients.map(toRelationshipItem) },
+  async addRecipients({ document, recipients = [], readOnlyRecipients = [] }) {
+    const resp = await this.stackClient.fetchJSON(
+      'POST',
+      uri`/sharings/${document._id}/recipients`,
+      {
+        data: {
+          type: 'io.cozy.sharings',
+          id: document._id,
+          relationships: {
+            ...(recipients.length > 0 && {
+              recipients: { data: recipients.map(toRelationshipItem) }
+            }),
+            ...(readOnlyRecipients.length > 0 && {
               read_only_recipients: {
                 data: readOnlyRecipients.map(toRelationshipItem)
               }
-            }
+            })
           }
         }
-      )
-      return { data: normalizeSharing(resp.data) }
-    }
+      }
+    )
+    return { data: normalizeSharing(resp.data) }
   }
   /**
    * Revoke only one recipient of the sharing.
