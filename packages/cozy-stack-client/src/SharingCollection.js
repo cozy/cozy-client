@@ -67,10 +67,14 @@ class SharingCollection extends DocumentCollection {
           rules: rules ? rules : getSharingRules(document)
         },
         relationships: {
-          recipients: { data: recipients.map(toRelationshipItem) },
-          read_only_recipients: {
-            data: readOnlyRecipients.map(toRelationshipItem)
-          }
+          ...(recipients.length > 0 && {
+            recipients: { data: recipients.map(toRelationshipItem) }
+          }),
+          ...(readOnlyRecipients.length > 0 && {
+            read_only_recipients: {
+              data: readOnlyRecipients.map(toRelationshipItem)
+            }
+          })
         }
       }
     })
