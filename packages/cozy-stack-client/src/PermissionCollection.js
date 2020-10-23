@@ -197,7 +197,8 @@ class PermissionCollection extends DocumentCollection {
   async getOwnPermissions() {
     const resp = await this.stackClient.fetchJSON('GET', '/permissions/self')
     return {
-      data: normalizePermission(resp.data)
+      data: normalizePermission(resp.data),
+      included: resp.included ? resp.included.map(normalizePermission) : []
     }
   }
 }
