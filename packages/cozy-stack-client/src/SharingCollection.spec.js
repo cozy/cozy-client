@@ -366,49 +366,6 @@ describe('SharingCollection', () => {
     })
   })
 
-  describe('addRecipients Old API', () => {
-    beforeEach(() => {
-      jest.spyOn(console, 'warn').mockImplementation(() => {})
-      client.fetch.mockReset()
-      client.fetchJSON.mockReturnValue(Promise.resolve({ data: [] }))
-    })
-
-    it('should accept old API', async () => {
-      await collection.addRecipients(SHARING, [RECIPIENT], 'two-way')
-      expect(client.fetchJSON).toHaveBeenCalledWith(
-        'POST',
-        `/sharings/${SHARING._id}/recipients`,
-        {
-          data: {
-            id: SHARING._id,
-            relationships: {
-              recipients: {
-                data: [{ id: 'contact_1', type: 'io.cozy.contacts' }]
-              }
-            },
-            type: 'io.cozy.sharings'
-          }
-        }
-      )
-      await collection.addRecipients(SHARING, [RECIPIENT], 'one-way')
-      expect(client.fetchJSON).toHaveBeenCalledWith(
-        'POST',
-        `/sharings/${SHARING._id}/recipients`,
-        {
-          data: {
-            id: SHARING._id,
-            relationships: {
-              read_only_recipients: {
-                data: [{ id: 'contact_1', type: 'io.cozy.contacts' }]
-              }
-            },
-            type: 'io.cozy.sharings'
-          }
-        }
-      )
-    })
-  })
-
   describe('addRecipients', () => {
     beforeEach(() => {
       client.fetch.mockReset()
@@ -429,8 +386,7 @@ describe('SharingCollection', () => {
             relationships: {
               recipients: {
                 data: [{ id: 'contact_1', type: 'io.cozy.contacts' }]
-              },
-              read_only_recipients: { data: [] }
+              }
             },
             type: 'io.cozy.sharings'
           }
@@ -449,7 +405,6 @@ describe('SharingCollection', () => {
           data: {
             id: SHARING._id,
             relationships: {
-              recipients: { data: [] },
               read_only_recipients: {
                 data: [{ id: 'contact_1', type: 'io.cozy.contacts' }]
               }
