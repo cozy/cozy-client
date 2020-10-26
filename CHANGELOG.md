@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.0.0](https://github.com/cozy/cozy-client/compare/v15.6.0...v16.0.0) (2020-10-26)
+
+
+### Bug Fixes
+
+* Don't send empty params ([8a384ce](https://github.com/cozy/cozy-client/commit/8a384ce))
+* Remove the reference to policy in getSharingRules warning ([b654415](https://github.com/cozy/cozy-client/commit/b654415))
+
+
+### Features
+
+* New addRecipients API to follow recipients and readOnlyRecipients ([41a8b75](https://github.com/cozy/cozy-client/commit/41a8b75))
+* Remove OLD addRecipients API ([8bec3dd](https://github.com/cozy/cozy-client/commit/8bec3dd))
+
+
+### BREAKING CHANGES
+
+* addRecipients(sharing, recipients, sharingType) is now
+addRecipients({document, recipients, readOnlyRecipients})
+
+Added Recipient / Sharing / Rule Typedef
+
+Don't send params (recipients / readOnlyRecipients) if they are empty
+
+
+
+
+
 # [15.6.0](https://github.com/cozy/cozy-client/compare/v15.5.0...v15.6.0) (2020-10-23)
 
 
