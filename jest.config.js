@@ -6,7 +6,8 @@ const commonConfig = {
   ],
   modulePathIgnorePatterns: ['<rootDir>/packages/.*/dist/'],
   transformIgnorePatterns: ['node_modules/(?!(cozy-ui))'],
-  testEnvironment: 'jest-environment-jsdom-sixteen'
+  testEnvironment: 'jest-environment-jsdom-sixteen',
+  moduleFileExtensions: ['js', 'jsx', 'json']
 }
 
 module.exports = {
