@@ -32,6 +32,15 @@ only the ids.</p>
 <li>Associations</li>
 </ul>
 </dd>
+<dt><a href="#Qualification">Qualification</a></dt>
+<dd><p>This class is used to create document Qualification, i.e. metadata
+attributes used to describe the document.
+The qualifications model is stored in the assets, associating
+labels to attributes, namely: purpose, sourceCategory, sourceSubCategory
+and subjects.
+Only subjects can be customized: see the checkQualification for more
+details about the qualification rules.</p>
+</dd>
 <dt><a href="#QueryDefinition">QueryDefinition</a></dt>
 <dd><p>Chainable API to create query definitions to retrieve documents
 from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
@@ -141,6 +150,15 @@ example.</p>
 <dt><del><a href="#getIndexByFamilyNameGivenNameEmailCozyUrl">getIndexByFamilyNameGivenNameEmailCozyUrl</a> ⇒ <code>string</code></del></dt>
 <dd><p>Returns &#39;byFamilyNameGivenNameEmailCozyUrl&#39; index of a contact</p>
 </dd>
+<dt><a href="#getQualificationByLabel">getQualificationByLabel</a> ⇒ <code>object</code></dt>
+<dd><p>Returns the qualification associated to a label.</p>
+</dd>
+<dt><a href="#setQualification">setQualification</a> ⇒ <code>object</code></dt>
+<dd><p>Set the qualification to the document metadata</p>
+</dd>
+<dt><a href="#getQualification">getQualification</a> ⇒ <code>object</code></dt>
+<dd><p>Helper to get the qualification from a document</p>
+</dd>
 <dt><a href="#splitFilename">splitFilename</a> ⇒ <code>object</code></dt>
 <dd><p>Returns base filename and extension</p>
 </dd>
@@ -166,6 +184,9 @@ example.</p>
 </dd>
 <dt><a href="#isSharingShorcutNew">isSharingShorcutNew</a> ⇒ <code>boolean</code></dt>
 <dd><p>Returns whether the sharing shortcut is new</p>
+</dd>
+<dt><a href="#saveFileQualification">saveFileQualification</a> ⇒ <code>object</code></dt>
+<dd><p>Save the file with the given qualification</p>
 </dd>
 <dt><a href="#ensureMagicFolder">ensureMagicFolder</a> ⇒ <code>object</code></dt>
 <dd><p>Returns a &quot;Magic Folder&quot;, given its id. See <a href="https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.apps/#special-iocozyapps-doctypes">https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.apps/#special-iocozyapps-doctypes</a></p>
@@ -1228,6 +1249,115 @@ CozyClient.registerHook('io.cozy.bank.accounts', 'before:destroy', () => {
   console.log('A io.cozy.bank.accounts is being destroyed')
 })
 ```
+<a name="Qualification"></a>
+
+## Qualification
+This class is used to create document Qualification, i.e. metadata
+attributes used to describe the document.
+The qualifications model is stored in the assets, associating
+labels to attributes, namely: purpose, sourceCategory, sourceSubCategory
+and subjects.
+Only subjects can be customized: see the checkQualification for more
+details about the qualification rules.
+
+**Kind**: global class  
+
+* [Qualification](#Qualification)
+    * [new Qualification(label, attributes)](#new_Qualification_new)
+    * [.checkQualification(qualification)](#Qualification+checkQualification)
+    * [.setPurpose(purpose)](#Qualification+setPurpose) ⇒ [<code>Qualification</code>](#Qualification)
+    * [.setSourceCategory(sourceCategory)](#Qualification+setSourceCategory) ⇒ [<code>Qualification</code>](#Qualification)
+    * [.setSourceSubCategory(sourceSubCategory)](#Qualification+setSourceSubCategory) ⇒ [<code>Qualification</code>](#Qualification)
+    * [.setSubjects(subjects)](#Qualification+setSubjects) ⇒ [<code>Qualification</code>](#Qualification)
+    * [.toQualification()](#Qualification+toQualification) ⇒ <code>object</code>
+
+<a name="new_Qualification_new"></a>
+
+### new Qualification(label, attributes)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| label | <code>string</code> | The qualification label. |
+| attributes | <code>object</code> | Qualification attributes. |
+| attributes.purpose | <code>string</code> | The document purpose. |
+| attributes.sourceCategory | <code>string</code> | The activity field of the document source. |
+| attributes.sourceSubCategory | <code>string</code> | The sub-activity field of the document source. |
+| attributes.subjects | <code>Array</code> | On what is about the document. |
+
+<a name="Qualification+checkQualification"></a>
+
+### qualification.checkQualification(qualification)
+Check the given qualification respects the following rules:
+  - For the given label, if a purpose, sourceCategory or sourceSubCategory
+    attribute is defined in the model, it must match the given qualification.
+  - If not defined in the model for the label, a custom purpose, sourceCategory or
+    sourceSubCategory value can be defined, if it exist in their respective
+    authorized values list.
+  - For the given label, if subjects are defined in the model, they must be included
+    in the given qualification.
+  - If extra subjects are set, they should exist in the authorized values.
+
+**Kind**: instance method of [<code>Qualification</code>](#Qualification)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| qualification | <code>object</code> | The qualification to check |
+
+<a name="Qualification+setPurpose"></a>
+
+### qualification.setPurpose(purpose) ⇒ [<code>Qualification</code>](#Qualification)
+Set purpose to the qualification.
+
+**Kind**: instance method of [<code>Qualification</code>](#Qualification)  
+**Returns**: [<code>Qualification</code>](#Qualification) - The Qualification object.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| purpose | <code>Array</code> | The purpose to set. |
+
+<a name="Qualification+setSourceCategory"></a>
+
+### qualification.setSourceCategory(sourceCategory) ⇒ [<code>Qualification</code>](#Qualification)
+Set sourceCategory to the qualification.
+
+**Kind**: instance method of [<code>Qualification</code>](#Qualification)  
+**Returns**: [<code>Qualification</code>](#Qualification) - The Qualification object.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| sourceCategory | <code>Array</code> | The sourceCategory to set. |
+
+<a name="Qualification+setSourceSubCategory"></a>
+
+### qualification.setSourceSubCategory(sourceSubCategory) ⇒ [<code>Qualification</code>](#Qualification)
+Set sourceSubCategory to the qualification.
+
+**Kind**: instance method of [<code>Qualification</code>](#Qualification)  
+**Returns**: [<code>Qualification</code>](#Qualification) - The Qualification object.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| sourceSubCategory | <code>Array</code> | The sourceSubCategory to set. |
+
+<a name="Qualification+setSubjects"></a>
+
+### qualification.setSubjects(subjects) ⇒ [<code>Qualification</code>](#Qualification)
+Set subjects to the qualification.
+
+**Kind**: instance method of [<code>Qualification</code>](#Qualification)  
+**Returns**: [<code>Qualification</code>](#Qualification) - The Qualification object.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| subjects | <code>Array</code> | The subjects to set. |
+
+<a name="Qualification+toQualification"></a>
+
+### qualification.toQualification() ⇒ <code>object</code>
+Returns the qualification attributes
+
+**Kind**: instance method of [<code>Qualification</code>](#Qualification)  
+**Returns**: <code>object</code> - The qualification attributes  
 <a name="QueryDefinition"></a>
 
 ## QueryDefinition
@@ -1826,6 +1956,43 @@ Returns 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
 | --- | --- | --- |
 | contact | <code>object</code> | A contact |
 
+<a name="getQualificationByLabel"></a>
+
+## getQualificationByLabel ⇒ <code>object</code>
+Returns the qualification associated to a label.
+
+**Kind**: global constant  
+**Returns**: <code>object</code> - - The qualification  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| label | <code>string</code> | The label to qualify |
+
+<a name="setQualification"></a>
+
+## setQualification ⇒ <code>object</code>
+Set the qualification to the document metadata
+
+**Kind**: global constant  
+**Returns**: <code>object</code> - - The qualified document  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | <code>object</code> | The document to set the qualification |
+| qualification | <code>object</code> | The qualification to set |
+
+<a name="getQualification"></a>
+
+## getQualification ⇒ <code>object</code>
+Helper to get the qualification from a document
+
+**Kind**: global constant  
+**Returns**: <code>object</code> - - The document qualification  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | <code>object</code> | The document |
+
 <a name="splitFilename"></a>
 
 ## splitFilename ⇒ <code>object</code>
@@ -1932,6 +2099,20 @@ Returns whether the sharing shortcut is new
 | Param | Type | Description |
 | --- | --- | --- |
 | file | <code>object</code> | io.cozy.files document |
+
+<a name="saveFileQualification"></a>
+
+## saveFileQualification ⇒ <code>object</code>
+Save the file with the given qualification
+
+**Kind**: global constant  
+**Returns**: <code>object</code> - - The saved file  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| client | <code>object</code> | The CozyClient instance |
+| file | <code>object</code> | The file to qualify |
+| qualification | <code>object</code> | The file qualification |
 
 <a name="ensureMagicFolder"></a>
 
