@@ -1,0 +1,361 @@
+{
+  "qualifications": [
+    {
+      "label": "national_id_card",
+      "purpose": "attestation",
+      "sourceCategory": "gov",
+      "sourceSubCategory": "civil_registration",
+      "subjects": ["identity"]
+    },
+    {
+      "label": "passport",
+      "purpose": "attestation",
+      "sourceCategory": "gov",
+      "sourceSubCategory": "civil_registration",
+      "subjects": ["identity"]
+    },
+    {
+      "label": "residence_permit",
+      "purpose": "attestation",
+      "sourceCategory": "gov",
+      "sourceSubCategory": "immigration",
+      "subjects": ["permit", "identity"]
+    },
+    {
+      "label": "family_record_book",
+      "purpose": "attestation",
+      "sourceCategory": "gov",
+      "sourceSubCategory": "civil_registration",
+      "subjects": ["family"]
+    },
+    {
+      "label": "birth_certificate",
+      "purpose": "attestation",
+      "sourceCategory": "gov",
+      "sourceSubCategory": "civil_registration",
+      "subjects": ["identity", "family"]
+    },
+    {
+      "label": "driver_license",
+      "purpose": "attestation",
+      "sourceCategory": "gov",
+      "sourceSubCategory": "transport",
+      "subjects": ["permit", "driving"]
+    },
+    {
+      "label": "other_identity_document",
+      "purpose": "attestation"
+    },
+    {
+      "label": "wedding",
+      "purpose": "contract",
+      "sourceCategory": "gov",
+      "sourceSubCategory": "civil_registration",
+      "subjects": ["family"]
+    },
+    {
+      "label": "pacs",
+      "purpose": "contract",
+      "sourceCategory": "gov",
+      "sourceSubCategory": "civil_registration",
+      "subjects": ["family"]
+    },
+    {
+      "label": "divorce",
+      "purpose": "contract",
+      "sourceCategory": "gov",
+      "sourceSubCategory": "civil_registration",
+      "subjects": ["family"]
+    },
+    {
+      "label": "large_family_card",
+      "purpose": "attestation",
+      "sourceCategory": "transport",
+      "subjects": ["right"]
+    },
+    {
+      "label": "caf",
+      "purpose": "attestation",
+      "sourceCategory": "gov",
+      "sourceSubCategory": "family",
+      "subjects": ["right"]
+    },
+    {
+      "label": "other_family_document"
+    },
+    {
+      "label": "diploma",
+      "purpose": "attestation",
+      "sourceCategory": "education",
+      "subjects": ["achievement"]
+    },
+    {
+      "label": "work_contract",
+      "purpose": "contract",
+      "sourceCategory": "employer",
+      "subjects": ["work", "employment"]
+    },
+    {
+      "label": "pay_sheet",
+      "purpose": "attestation",
+      "sourceCategory": "employer",
+      "subjects": ["work", "revenues"]
+    },
+    {
+      "label": "unemployment_benefit",
+      "purpose": "attestation",
+      "sourceCategory": "gov",
+      "subjects": ["revenues"]
+    },
+    {
+      "label": "pension",
+      "purpose": "attestation",
+      "sourceCategory": "gov",
+      "subjects": ["revenues"]
+    },
+    {
+      "label": "other_revenue",
+      "purpose": "attestation",
+      "subjects": ["revenues"]
+    },
+    {
+      "label": "gradebook",
+      "purpose": "report",
+      "sourceCategory": "education",
+      "subjects": ["history"]
+    },
+    {
+      "label": "student_card",
+      "purpose": "attestation",
+      "sourceCategory": "education",
+      "subjects": ["identity"]
+    },
+    {
+      "label": "resume",
+      "purpose": "description",
+      "subjects": ["employment"]
+    },
+    {
+      "label": "motivation_letter",
+      "purpose": "description",
+      "subjects": ["employment"]
+    },
+    {
+      "label": "other_work_document"
+    },
+    {
+      "label": "health_book",
+      "purpose": "report",
+      "sourceCategory": "health",
+      "subjects": ["history"]
+    },
+    {
+      "label": "national_insurance_card",
+      "purpose": "attestation",
+      "sourceCategory": "gov",
+      "sourceSubCategory": "health",
+      "subjects": ["insurance"]
+    },
+    {
+      "label": "health_insurance_card",
+      "purpose": "attestation",
+      "sourceCategory": "insurance",
+      "sourceSubCategory": "health",
+      "subjects": ["insurance"]
+    },
+    {
+      "label": "prescription",
+      "purpose": "attestation",
+      "sourceCategory": "health",
+      "subjects": ["right"]
+    },
+    {
+      "label": "health_invoice",
+      "purpose": "invoice",
+      "sourceCategory": "health"
+    },
+    {
+      "label": "vehicle_registration",
+      "purpose": "attestation",
+      "sourceCategory": "gov",
+      "sourceSubCategory": "transport",
+      "subjects": ["right", "identity"]
+    },
+    {
+      "label": "car_insurance",
+      "purpose": "attestation",
+      "sourceCategory": "insurance",
+      "sourceSubCategory": "transport",
+      "subjects": ["insurance", "car"]
+    },
+    {
+      "label": "mechanic_invoice",
+      "purpose": "invoice",
+      "sourceCategory": "transport"
+    },
+    {
+      "label": "transport_invoice",
+      "purpose": "invoice",
+      "sourceCategory": "transport"
+    },
+    {
+      "label": "other_transport_document"
+    },
+    {
+      "label": "house_sale_agreeement",
+      "purpose": "contract",
+      "sourceCategory": "real_estate",
+      "subjects": ["house"]
+    },
+    {
+      "label": "building_permit",
+      "purpose": "attestation",
+      "sourceCategory": "gov",
+      "sourceSubCategory": "real_estate",
+      "subjects": ["permit", "house"]
+    },
+    {
+      "label": "technical_diagnostic_record",
+      "purpose": "report",
+      "sourceCategory": "real_estate",
+      "subjects": ["compliance", "house"]
+    },
+    {
+      "label": "lease",
+      "purpose": "contract",
+      "sourceCategory": "real_estate",
+      "subjects": ["house"]
+    },
+    {
+      "label": "rent_receipt",
+      "purpose": "invoice",
+      "sourceCategory": "real_estate",
+      "subjects": ["house"]
+    },
+    {
+      "label": "house_insurance",
+      "purpose": "contract",
+      "sourceCategory": "insurance",
+      "sourceSubCategory": "real_estate",
+      "subjects": ["insurance", "house"]
+    },
+    {
+      "label": "work_quote",
+      "purpose": "description",
+      "sourceCategory": "building",
+      "subjects": ["building", "house"]
+    },
+    {
+      "label": "work_invoice",
+      "purpose": "invoice",
+      "sourceCategory": "building",
+      "subjects": ["building", "house"]
+    },
+    {
+      "label": "other_house_document"
+    },
+    {
+      "label": "phone_invoice",
+      "purpose": "invoice",
+      "sourceCategory": "telecom",
+      "sourceSubCategory": "mobile"
+    },
+    {
+      "label": "isp_invoice",
+      "purpose": "invoice",
+      "sourceCategory": "telecom",
+      "sourceSubCategory": "internet",
+      "subjects": ["subscription"]
+    },
+    {
+      "label": "energy_invoice",
+      "purpose": "invoice",
+      "sourceCategory": "energy"
+    },
+    {
+      "label": "water_invoice",
+      "purpose": "invoice",
+      "sourceCategory": "water"
+    },
+    {
+      "label": "appliance_invoice",
+      "purpose": "invoice",
+      "sourceCategory": "retail"
+    },
+    {
+      "label": "web_service_invoice",
+      "purpose": "invoice",
+      "sourceCategory": "web"
+    },
+    {
+      "label": "restaurant_invoice",
+      "purpose": "invoice",
+      "sourceCategory": "alimentation"
+    },
+    {
+      "label": "other_invoice",
+      "purpose": "invoice"
+    },
+    {
+      "label": "tax_return",
+      "purpose": "report",
+      "sourceCategory": "gov",
+      "sourceSubCategory": "tax",
+      "subjects": ["tax"]
+    },
+    {
+      "label": "tax_notice",
+      "purpose": "invoice",
+      "sourceCategory": "gov",
+      "sourceSubCategory": "tax",
+      "subjects": ["tax"]
+    },
+    {
+      "label": "tax_timetable",
+      "purpose": "report",
+      "sourceCategory": "gov",
+      "sourceSubCategory": "tax",
+      "subjects": ["tax"]
+    },
+    {
+      "label": "bank_details",
+      "purpose": "attestation",
+      "sourceCategory": "bank",
+      "subjects": ["identity"]
+    },
+    {
+      "label": "bank_statement",
+      "purpose": "report",
+      "sourceCategory": "bank",
+      "subjects": ["history"]
+    },
+    {
+      "label": "loan_agreement",
+      "purpose": "contract",
+      "sourceCategory": "bank"
+    },
+    {
+      "label": "other_bank_document",
+      "sourceCategory": "bank"
+    }
+  ],
+  "purposeAuthorizedValues": [
+    "attestation", "contract", "invoice", "report", "description", "evaluation"
+  ],
+  "sourceCategoryAuthorizedValues": [
+    "bank", "insurance", "retail", "telecom", "energy", "water", "health", "gov",
+    "education", "employer", "transport", "goods", "alimentation", "building",
+    "real_estate", "web"
+  ],
+  "sourceSubCategoryAuthorizedValues": [
+    "civil_registration", "immigration", "transport", "family", "tax", "health", 
+    "real_estate", "mobile", "internet"
+  ],
+  "subjectsAuthorizedValues": [
+    "identity", "permit", "family", "driving", "right", "subvention", "achievement",
+    "degree", "work", "employment", "revenues", "history", "insurance", "drugs",
+    "medical_act", "car", "moto", "truck", "boat", "subscription", "buy/sale",
+    "house", "compliance", "building", "food", "real_estate", "tax", "insurance",
+    "education", "statement", "course"
+  ]
+}
