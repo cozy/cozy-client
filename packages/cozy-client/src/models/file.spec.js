@@ -1,4 +1,5 @@
 import * as file from './file'
+import { getQualificationByLabel } from './document'
 
 describe('File Model', () => {
   it('should test if a file is a note or not', () => {
@@ -213,6 +214,48 @@ describe('File Model', () => {
       expect(
         file.getSharingShortcutTargetMime(nonSharingShortcutDocument)
       ).toBeUndefined()
+    })
+  })
+})
+
+describe('File qualification', () => {
+  let mockedClient
+  let updateMetadataAttribute
+  beforeEach(() => {
+    updateMetadataAttribute = jest.fn()
+    mockedClient = {
+      collection: name => ({
+        updateMetadataAttribute
+      })
+    }
+  })
+
+  it('should save the qualification', async () => {
+    updateMetadataAttribute.mockImplementation((_id, attributes) => {
+      return { _id, metadata: { ...attributes } }
+    })
+    const fileDoc = {
+      _id: '123',
+      metadata: {
+        datetime: '2020-01-01T20:38:04Z'
+      }
+    }
+    const qualification = getQualificationByLabel('health_invoice')
+    const updFile = await file.saveFileQualification(
+      mockedClient,
+      fileDoc,
+      qualification
+    )
+    expect(updFile).toEqual({
+      _id: '123',
+      metadata: {
+        datetime: '2020-01-01T20:38:04Z',
+        qualification: {
+          label: 'health_invoice',
+          sourceCategory: 'health',
+          purpose: 'invoice'
+        }
+      }
     })
   })
 })

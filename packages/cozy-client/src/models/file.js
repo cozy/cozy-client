@@ -1,5 +1,6 @@
 import get from 'lodash/get'
 import isString from 'lodash/isString'
+import { setQualification } from './document'
 
 const FILE_TYPE = 'file'
 const DIR_TYPE = 'directory'
@@ -152,3 +153,18 @@ export const isSharingShorcut = file => Boolean(getSharingShortcutStatus(file))
  */
 export const isSharingShorcutNew = file =>
   getSharingShortcutStatus(file) === 'new'
+
+/**
+ * Save the file with the given qualification
+ *
+ * @param {object} client - The CozyClient instance
+ * @param {object} file - The file to qualify
+ * @param {object} qualification - The file qualification
+ * @returns {object} - The saved file
+ */
+export const saveFileQualification = async (client, file, qualification) => {
+  const qualifiedFile = setQualification(file, qualification)
+  return client
+    .collection('io.cozy.files')
+    .updateMetadataAttribute(file._id, qualifiedFile.metadata)
+}
