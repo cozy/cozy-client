@@ -3646,10 +3646,10 @@ babel-plugin-jest-hoist@^24.9.0:
   dependencies:
     "@types/babel__traverse" "^7.0.6"
 
-babel-plugin-search-and-replace@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/babel-plugin-search-and-replace/-/babel-plugin-search-and-replace-1.0.1.tgz#04701015116e9223ee183ea014ffd1a1efea70ac"
-  integrity sha512-/DBaV38i2/kj2iQK99zW8Te6XxMntMwV/1wfGSvBOIC0xAv7gc9vLxaCgi2gZbI76dpHsvH0vd6Rx7Bxu04WEw==
+babel-plugin-search-and-replace@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-search-and-replace/-/babel-plugin-search-and-replace-1.1.0.tgz#ad26f2037a80034613dae61b913902d9aa58ed2c"
+  integrity sha512-qo3E08GmT43/IgfbEiAZoauYW3SILLTyt79QPZc2ME3sHvuBuRA01nQl7WnJRKZTnqUCimXSMOU+LBHxe+HTUw==
 
 babel-plugin-syntax-flow@^6.18.0:
   version "6.18.0"
