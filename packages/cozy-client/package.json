@@ -35,7 +35,7 @@
     "prepublishOnly": "yarn run build"
   },
   "devDependencies": {
-    "@babel/cli": "7.6.2",
+    "@babel/cli": "7.12.1",
     "@cozy/codemods": "^1.1.0",
     "@testing-library/react": "^10.0.1",
     "@testing-library/react-hooks": "^3.2.1",
