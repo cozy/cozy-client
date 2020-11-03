@@ -23,7 +23,10 @@ describe('document qualification', () => {
   })
   it('should get the file qualification', () => {
     const qualification = {
+      label: 'isp_invoice',
       purpose: 'invoice',
+      sourceCategory: 'telecom',
+      sourceSubCategory: 'internet',
       subjects: ['subscription']
     }
     const fileDoc = {
