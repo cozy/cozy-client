@@ -339,19 +339,19 @@
       "sourceCategory": "bank"
     }
   ],
-  "purposeAuthorizedValues": [
+  "purposeKnownValues": [
     "attestation", "contract", "invoice", "report", "description", "evaluation"
   ],
-  "sourceCategoryAuthorizedValues": [
+  "sourceCategoryKnownValues": [
     "bank", "insurance", "retail", "telecom", "energy", "water", "health", "gov",
     "education", "employer", "transport", "goods", "alimentation", "building",
     "real_estate", "web"
   ],
-  "sourceSubCategoryAuthorizedValues": [
+  "sourceSubCategoryKnownValues": [
     "civil_registration", "immigration", "transport", "family", "tax", "health", 
     "real_estate", "mobile", "internet"
   ],
-  "subjectsAuthorizedValues": [
+  "subjectsKnownValues": [
     "identity", "permit", "family", "driving", "right", "subvention", "achievement",
     "degree", "work", "employment", "revenues", "history", "insurance", "drugs",
     "medical_act", "car", "moto", "truck", "boat", "subscription", "buy/sale",

@@ -114,14 +114,14 @@ describe('document qualification', () => {
   })
 })
 describe('qualifications items', () => {
-  const isAttributeValueAuthorized = (attributeVal, authorizedValues) => {
-    let isAuthorized
+  const isAttributeValueKnown = (attributeVal, authorizedValues) => {
+    let isKnown
     if (Array.isArray(attributeVal)) {
-      isAuthorized = attributeVal.some(s => authorizedValues.includes(s))
+      isKnown = attributeVal.some(s => authorizedValues.includes(s))
     } else {
-      isAuthorized = authorizedValues.includes(attributeVal)
+      isKnown = authorizedValues.includes(attributeVal)
     }
-    expect(isAuthorized).toBe(true)
+    expect(isKnown).toBe(true)
   }
 
   it('should always define a label', () => {
@@ -133,27 +133,24 @@ describe('qualifications items', () => {
   it('should define authorized attributes', () => {
     qualificationModel.qualifications.forEach(q => {
       if (q.purpose) {
-        isAttributeValueAuthorized(
-          q.purpose,
-          qualificationModel.purposeAuthorizedValues
-        )
+        isAttributeValueKnown(q.purpose, qualificationModel.purposeKnownValues)
       }
       if (q.sourceCategory) {
-        isAttributeValueAuthorized(
+        isAttributeValueKnown(
           q.sourceCategory,
-          qualificationModel.sourceCategoryAuthorizedValues
+          qualificationModel.sourceCategoryKnownValues
         )
       }
       if (q.sourceSubCategory) {
-        isAttributeValueAuthorized(
+        isAttributeValueKnown(
           q.sourceSubCategory,
-          qualificationModel.sourceSubCategoryAuthorizedValues
+          qualificationModel.sourceSubCategoryKnownValues
         )
       }
       if (q.subjects) {
-        isAttributeValueAuthorized(
+        isAttributeValueKnown(
           q.subjects,
-          qualificationModel.subjectsAuthorizedValues
+          qualificationModel.subjectsKnownValues
         )
       }
     })
