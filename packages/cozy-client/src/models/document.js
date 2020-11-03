@@ -12,13 +12,17 @@ import * as qualificationModel from '../assets/qualifications.json'
  */
 class Qualification {
   /**
-   * @class
-   * @param {string} label - The qualification label.
-   * @param {object} attributes - Qualification attributes.
-   * @param {string} attributes.purpose - The document purpose.
-   * @param {string} attributes.sourceCategory - The activity field of the document source.
-   * @param {string} attributes.sourceSubCategory - The sub-activity field of the document source.
-   * @param {Array} attributes.subjects - On what is about the document.
+   * @typedef {object} Qualification Qualification's object.
+   * @property {string} label - The qualification label.
+   * @property {string} purpose - The document purpose.
+   * @property {string} sourceCategory - The activity field of the document source.
+   * @property {string} sourceSubCategory - The sub-activity field of the document source.
+   * @property {Array} subjects - On what is about the document.
+   */
+
+  /**
+   * @param {string} label - The qualification label
+   * @param {Qualification} attributes - Qualification's attributes
    */
   constructor(label, attributes = {}) {
     const qualification = qualificationModel.qualifications.find(
@@ -196,7 +200,7 @@ class Qualification {
  * Returns the qualification associated to a label.
  *
  * @param {string} label - The label to qualify
- * @returns {object} - The qualification
+ * @returns {Qualification} - The qualification
  */
 export const getQualificationByLabel = label => {
   return new Qualification(label)
@@ -206,7 +210,7 @@ export const getQualificationByLabel = label => {
  * Set the qualification to the document metadata
  *
  * @param {object} document - The document to set the qualification
- * @param {object} qualification - The qualification to set
+ * @param {Qualification} qualification - The qualification to set
  * @returns {object} - The qualified document
  */
 export const setQualification = (document, qualification) => {
