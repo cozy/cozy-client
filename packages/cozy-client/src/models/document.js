@@ -227,17 +227,14 @@ export const setQualification = (document, qualification) => {
  * Helper to get the qualification from a document
  *
  * @param {object} document - The document
- * @returns {object} - The document qualification
+ * @returns {Qualification} - The document qualification
  *
  */
 export const getQualification = document => {
-  return {
-    purpose: get(document, 'metadata.qualification.purpose'),
-    sourceCategory: get(document, 'metadata.qualification.sourceCategory'),
-    sourceSubCategory: get(
-      document,
-      'metadata.qualification.sourceSubCategory'
-    ),
-    subjects: get(document, 'metadata.qualification.subjects')
-  }
+  const docQualification = get(document, 'metadata.qualification')
+  const qualification = new Qualification(
+    docQualification.label,
+    docQualification.qualification
+  )
+  return qualification.toQualification()
 }
