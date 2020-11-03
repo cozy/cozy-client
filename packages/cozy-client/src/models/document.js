@@ -42,27 +42,27 @@ export class Qualification {
   }
 
   /**
-   * Check the given qualification respects the following rules:
+   * Check the given qualification attributes respects the following rules:
    *   - For the given label, if a purpose, sourceCategory or sourceSubCategory
    *     attribute is defined in the model, it must match the given qualification.
    *   - If not defined in the model for the label, a custom purpose, sourceCategory or
    *     sourceSubCategory value can be defined, if it exist in their respective
-   *     authorized values list.
+   *     known values list.
    *   - For the given label, if subjects are defined in the model, they must be included
    *     in the given qualification.
-   *   - If extra subjects are set, they should exist in the authorized values.
+   *   - If extra subjects are set, they should exist in the known values.
    *
-   * @param {Qualification} qualification - The qualification to check
+   * @param {object} attributes - The qualification attributes to check
    */
-  checkQualification(qualification) {
-    if (this.purpose !== qualification.purpose) {
+  checkValueAttributes(attributes) {
+    if (this.purpose !== attributes.purpose) {
       if (!this.purpose) {
-        const isListedValue = qualificationModel.purposeAuthorizedValues.includes(
-          qualification.purpose
+        const isKnownValue = qualificationModel.purposeKnownValues.includes(
+          attributes.purpose
         )
-        if (!isListedValue) {
+        if (!isKnownValue) {
           console.info(
-            `This purpose is not listed among the possible values: ${qualification.purpose}. ` +
+            `This purpose is not listed among the known values: ${attributes.purpose}. ` +
               `Please open an issue on https://github.com/cozy/cozy-client/issues`
           )
         }
@@ -73,14 +73,14 @@ export class Qualification {
         )
       }
     }
-    if (this.sourceCategory !== qualification.sourceCategory) {
+    if (this.sourceCategory !== attributes.sourceCategory) {
       if (!this.sourceCategory) {
-        const isListedValue = qualificationModel.sourceCategoryAuthorizedValues.includes(
-          qualification.sourceCategory
+        const isKnownValue = qualificationModel.sourceCategoryKnownValues.includes(
+          attributes.sourceCategory
         )
-        if (!isListedValue) {
+        if (!isKnownValue) {
           console.info(
-            `This sourceCategory is not listed among the possible values: ${qualification.sourceCategory}. ` +
+            `This sourceCategory is not listed among the known values: ${attributes.sourceCategory}. ` +
               `Please open an issue on https://github.com/cozy/cozy-client/issues`
           )
         }
@@ -91,14 +91,14 @@ export class Qualification {
         )
       }
     }
-    if (this.sourceSubCategory !== qualification.sourceSubCategory) {
+    if (this.sourceSubCategory !== attributes.sourceSubCategory) {
       if (!this.sourceSubCategory) {
-        const isListedValue = qualificationModel.sourceSubCategoryAuthorizedValues.includes(
-          qualification.sourceSubCategory
+        const isKnownValue = qualificationModel.sourceSubCategoryKnownValues.includes(
+          attributes.sourceSubCategory
         )
-        if (!isListedValue) {
+        if (!isKnownValue) {
           console.info(
-            `This sourceSubCategory is not listed among the possible values: ${qualification.sourceSubCategory}. ` +
+            `This sourceSubCategory is not listed among the known values: ${attributes.sourceSubCategory}. ` +
               `Please open an issue on https://github.com/cozy/cozy-client/issues`
           )
         }
@@ -110,22 +110,22 @@ export class Qualification {
       }
     }
 
-    const missingSubjects = difference(this.subjects, qualification.subjects)
+    const missingSubjects = difference(this.subjects, attributes.subjects)
     if (missingSubjects.length > 0) {
       throw new Error(
         `The subjects for the label ${this.label} should include ${this.subjects}. ` +
           `Please use this or open an issue on https://github.com/cozy/cozy-client/issues`
       )
     }
-    const extraSubjects = difference(qualification.subjects, this.subjects)
+    const extraSubjects = difference(attributes.subjects, this.subjects)
     if (extraSubjects.length > 0) {
       const unknownSubjects = difference(
         extraSubjects,
-        qualificationModel.subjectsAuthorizedValues
+        qualificationModel.subjectsKnownValues
       )
       if (unknownSubjects.length > 0)
         console.info(
-          `These subjects are not listed among the possible values: ${unknownSubjects}. ` +
+          `These subjects are not listed among the known values: ${unknownSubjects}. ` +
             `Please open an issue on https://github.com/cozy/cozy-client/issues`
         )
     }
@@ -215,7 +215,7 @@ Qualification.getQualificationByLabel = label => {
  */
 export const setQualification = (document, qualification) => {
   if (qualification.label) {
-    new Qualification(qualification.label).checkQualification(qualification)
+    new Qualification(qualification.label).checkValueAttributes(qualification)
   } else {
     throw new Error('You must set a label to qualify')
   }
