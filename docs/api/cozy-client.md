@@ -38,8 +38,8 @@ attributes used to describe the document.
 The qualifications model is stored in the assets, associating
 labels to attributes, namely: purpose, sourceCategory, sourceSubCategory
 and subjects.
-Only subjects can be customized: see the checkQualification for more
-details about the qualification rules.</p>
+A qualification can be customized accordingly to rules detailed in
+the checkValueAttributes method.</p>
 </dd>
 <dt><a href="#QueryDefinition">QueryDefinition</a></dt>
 <dd><p>Chainable API to create query definitions to retrieve documents
@@ -149,9 +149,6 @@ example.</p>
 </dd>
 <dt><del><a href="#getIndexByFamilyNameGivenNameEmailCozyUrl">getIndexByFamilyNameGivenNameEmailCozyUrl</a> ⇒ <code>string</code></del></dt>
 <dd><p>Returns &#39;byFamilyNameGivenNameEmailCozyUrl&#39; index of a contact</p>
-</dd>
-<dt><a href="#getQualificationByLabel">getQualificationByLabel</a> ⇒ <code><a href="#Qualification">Qualification</a></code></dt>
-<dd><p>Returns the qualification associated to a label.</p>
 </dd>
 <dt><a href="#setQualification">setQualification</a> ⇒ <code>object</code></dt>
 <dd><p>Set the qualification to the document metadata</p>
@@ -1260,47 +1257,50 @@ attributes used to describe the document.
 The qualifications model is stored in the assets, associating
 labels to attributes, namely: purpose, sourceCategory, sourceSubCategory
 and subjects.
-Only subjects can be customized: see the checkQualification for more
-details about the qualification rules.
+A qualification can be customized accordingly to rules detailed in
+the checkValueAttributes method.
 
 **Kind**: global class  
 
 * [Qualification](#Qualification)
-    * [new Qualification(label, attributes)](#new_Qualification_new)
-    * [.checkQualification(qualification)](#Qualification+checkQualification)
-    * [.setPurpose(purpose)](#Qualification+setPurpose) ⇒ [<code>Qualification</code>](#Qualification)
-    * [.setSourceCategory(sourceCategory)](#Qualification+setSourceCategory) ⇒ [<code>Qualification</code>](#Qualification)
-    * [.setSourceSubCategory(sourceSubCategory)](#Qualification+setSourceSubCategory) ⇒ [<code>Qualification</code>](#Qualification)
-    * [.setSubjects(subjects)](#Qualification+setSubjects) ⇒ [<code>Qualification</code>](#Qualification)
-    * [.toQualification()](#Qualification+toQualification) ⇒ <code>object</code>
+    * [new exports.Qualification(label, attributes)](#new_Qualification_new)
+    * _instance_
+        * [.checkValueAttributes(attributes)](#Qualification+checkValueAttributes)
+        * [.setPurpose(purpose)](#Qualification+setPurpose) ⇒ [<code>Qualification</code>](#Qualification)
+        * [.setSourceCategory(sourceCategory)](#Qualification+setSourceCategory) ⇒ [<code>Qualification</code>](#Qualification)
+        * [.setSourceSubCategory(sourceSubCategory)](#Qualification+setSourceSubCategory) ⇒ [<code>Qualification</code>](#Qualification)
+        * [.setSubjects(subjects)](#Qualification+setSubjects) ⇒ [<code>Qualification</code>](#Qualification)
+        * [.toQualification()](#Qualification+toQualification) ⇒ <code>object</code>
+    * _static_
+        * [.getQualificationByLabel(label)](#Qualification.getQualificationByLabel) ⇒ [<code>Qualification</code>](#Qualification)
 
 <a name="new_Qualification_new"></a>
 
-### new Qualification(label, attributes)
+### new exports.Qualification(label, attributes)
 
 | Param | Type | Description |
 | --- | --- | --- |
 | label | <code>string</code> | The qualification label |
 | attributes | [<code>Qualification</code>](#Qualification) | Qualification's attributes |
 
-<a name="Qualification+checkQualification"></a>
+<a name="Qualification+checkValueAttributes"></a>
 
-### qualification.checkQualification(qualification)
-Check the given qualification respects the following rules:
+### qualification.checkValueAttributes(attributes)
+Check the given qualification attributes respects the following rules:
   - For the given label, if a purpose, sourceCategory or sourceSubCategory
     attribute is defined in the model, it must match the given qualification.
   - If not defined in the model for the label, a custom purpose, sourceCategory or
     sourceSubCategory value can be defined, if it exist in their respective
-    authorized values list.
+    known values list.
   - For the given label, if subjects are defined in the model, they must be included
     in the given qualification.
-  - If extra subjects are set, they should exist in the authorized values.
+  - If extra subjects are set, they should exist in the known values.
 
 **Kind**: instance method of [<code>Qualification</code>](#Qualification)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| qualification | [<code>Qualification</code>](#Qualification) | The qualification to check |
+| attributes | <code>object</code> | The qualification attributes to check |
 
 <a name="Qualification+setPurpose"></a>
 
@@ -1357,6 +1357,18 @@ Returns the qualification attributes
 
 **Kind**: instance method of [<code>Qualification</code>](#Qualification)  
 **Returns**: <code>object</code> - The qualification attributes  
+<a name="Qualification.getQualificationByLabel"></a>
+
+### Qualification.getQualificationByLabel(label) ⇒ [<code>Qualification</code>](#Qualification)
+Returns the qualification associated to a label.
+
+**Kind**: static method of [<code>Qualification</code>](#Qualification)  
+**Returns**: [<code>Qualification</code>](#Qualification) - - The qualification  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| label | <code>string</code> | The label to qualify |
+
 <a name="QueryDefinition"></a>
 
 ## QueryDefinition
@@ -1954,18 +1966,6 @@ Returns 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
 | Param | Type | Description |
 | --- | --- | --- |
 | contact | <code>object</code> | A contact |
-
-<a name="getQualificationByLabel"></a>
-
-## getQualificationByLabel ⇒ [<code>Qualification</code>](#Qualification)
-Returns the qualification associated to a label.
-
-**Kind**: global constant  
-**Returns**: [<code>Qualification</code>](#Qualification) - - The qualification  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| label | <code>string</code> | The label to qualify |
 
 <a name="setQualification"></a>
 
@@ -2597,41 +2597,44 @@ Qualification's object.
 
 
 * [Qualification](#Qualification) : <code>object</code>
-    * [new Qualification(label, attributes)](#new_Qualification_new)
-    * [.checkQualification(qualification)](#Qualification+checkQualification)
-    * [.setPurpose(purpose)](#Qualification+setPurpose) ⇒ [<code>Qualification</code>](#Qualification)
-    * [.setSourceCategory(sourceCategory)](#Qualification+setSourceCategory) ⇒ [<code>Qualification</code>](#Qualification)
-    * [.setSourceSubCategory(sourceSubCategory)](#Qualification+setSourceSubCategory) ⇒ [<code>Qualification</code>](#Qualification)
-    * [.setSubjects(subjects)](#Qualification+setSubjects) ⇒ [<code>Qualification</code>](#Qualification)
-    * [.toQualification()](#Qualification+toQualification) ⇒ <code>object</code>
+    * [new exports.Qualification(label, attributes)](#new_Qualification_new)
+    * _instance_
+        * [.checkValueAttributes(attributes)](#Qualification+checkValueAttributes)
+        * [.setPurpose(purpose)](#Qualification+setPurpose) ⇒ [<code>Qualification</code>](#Qualification)
+        * [.setSourceCategory(sourceCategory)](#Qualification+setSourceCategory) ⇒ [<code>Qualification</code>](#Qualification)
+        * [.setSourceSubCategory(sourceSubCategory)](#Qualification+setSourceSubCategory) ⇒ [<code>Qualification</code>](#Qualification)
+        * [.setSubjects(subjects)](#Qualification+setSubjects) ⇒ [<code>Qualification</code>](#Qualification)
+        * [.toQualification()](#Qualification+toQualification) ⇒ <code>object</code>
+    * _static_
+        * [.getQualificationByLabel(label)](#Qualification.getQualificationByLabel) ⇒ [<code>Qualification</code>](#Qualification)
 
 <a name="new_Qualification_new"></a>
 
-### new Qualification(label, attributes)
+### new exports.Qualification(label, attributes)
 
 | Param | Type | Description |
 | --- | --- | --- |
 | label | <code>string</code> | The qualification label |
 | attributes | [<code>Qualification</code>](#Qualification) | Qualification's attributes |
 
-<a name="Qualification+checkQualification"></a>
+<a name="Qualification+checkValueAttributes"></a>
 
-### qualification.checkQualification(qualification)
-Check the given qualification respects the following rules:
+### qualification.checkValueAttributes(attributes)
+Check the given qualification attributes respects the following rules:
   - For the given label, if a purpose, sourceCategory or sourceSubCategory
     attribute is defined in the model, it must match the given qualification.
   - If not defined in the model for the label, a custom purpose, sourceCategory or
     sourceSubCategory value can be defined, if it exist in their respective
-    authorized values list.
+    known values list.
   - For the given label, if subjects are defined in the model, they must be included
     in the given qualification.
-  - If extra subjects are set, they should exist in the authorized values.
+  - If extra subjects are set, they should exist in the known values.
 
 **Kind**: instance method of [<code>Qualification</code>](#Qualification)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| qualification | [<code>Qualification</code>](#Qualification) | The qualification to check |
+| attributes | <code>object</code> | The qualification attributes to check |
 
 <a name="Qualification+setPurpose"></a>
 
@@ -2688,6 +2691,18 @@ Returns the qualification attributes
 
 **Kind**: instance method of [<code>Qualification</code>](#Qualification)  
 **Returns**: <code>object</code> - The qualification attributes  
+<a name="Qualification.getQualificationByLabel"></a>
+
+### Qualification.getQualificationByLabel(label) ⇒ [<code>Qualification</code>](#Qualification)
+Returns the qualification associated to a label.
+
+**Kind**: static method of [<code>Qualification</code>](#Qualification)  
+**Returns**: [<code>Qualification</code>](#Qualification) - - The qualification  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| label | <code>string</code> | The label to qualify |
+
 <a name="Document"></a>
 
 ## Document : <code>object</code>
