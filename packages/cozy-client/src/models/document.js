@@ -7,10 +7,10 @@ import * as qualificationModel from '../assets/qualifications.json'
  * The qualifications model is stored in the assets, associating
  * labels to attributes, namely: purpose, sourceCategory, sourceSubCategory
  * and subjects.
- * Only subjects can be customized: see the checkQualification for more
- * details about the qualification rules.
+ * A qualification can be customized accordingly to rules detailed in
+ * the checkValueAttributes method.
  */
-class Qualification {
+export class Qualification {
   /**
    * @typedef {object} Qualification Qualification's object.
    * @property {string} label - The qualification label.
@@ -202,7 +202,7 @@ class Qualification {
  * @param {string} label - The label to qualify
  * @returns {Qualification} - The qualification
  */
-export const getQualificationByLabel = label => {
+Qualification.getQualificationByLabel = label => {
   return new Qualification(label)
 }
 
