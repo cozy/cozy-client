@@ -1265,14 +1265,14 @@ the checkValueAttributes method.
 * [Qualification](#Qualification)
     * [new exports.Qualification(label, attributes)](#new_Qualification_new)
     * _instance_
-        * [.checkValueAttributes(attributes)](#Qualification+checkValueAttributes)
+        * [.checkAttributes(attributes)](#Qualification+checkAttributes)
         * [.setPurpose(purpose)](#Qualification+setPurpose) ⇒ [<code>Qualification</code>](#Qualification)
         * [.setSourceCategory(sourceCategory)](#Qualification+setSourceCategory) ⇒ [<code>Qualification</code>](#Qualification)
         * [.setSourceSubCategory(sourceSubCategory)](#Qualification+setSourceSubCategory) ⇒ [<code>Qualification</code>](#Qualification)
         * [.setSubjects(subjects)](#Qualification+setSubjects) ⇒ [<code>Qualification</code>](#Qualification)
         * [.toQualification()](#Qualification+toQualification) ⇒ <code>object</code>
     * _static_
-        * [.getQualificationByLabel(label)](#Qualification.getQualificationByLabel) ⇒ [<code>Qualification</code>](#Qualification)
+        * [.getByLabel(label)](#Qualification.getByLabel) ⇒ [<code>Qualification</code>](#Qualification)
 
 <a name="new_Qualification_new"></a>
 
@@ -1283,9 +1283,9 @@ the checkValueAttributes method.
 | label | <code>string</code> | The qualification label |
 | attributes | [<code>Qualification</code>](#Qualification) | Qualification's attributes |
 
-<a name="Qualification+checkValueAttributes"></a>
+<a name="Qualification+checkAttributes"></a>
 
-### qualification.checkValueAttributes(attributes)
+### qualification.checkAttributes(attributes)
 Check the given qualification attributes respects the following rules:
   - For the given label, if a purpose, sourceCategory or sourceSubCategory
     attribute is defined in the model, it must match the given qualification.
@@ -1357,9 +1357,9 @@ Returns the qualification attributes
 
 **Kind**: instance method of [<code>Qualification</code>](#Qualification)  
 **Returns**: <code>object</code> - The qualification attributes  
-<a name="Qualification.getQualificationByLabel"></a>
+<a name="Qualification.getByLabel"></a>
 
-### Qualification.getQualificationByLabel(label) ⇒ [<code>Qualification</code>](#Qualification)
+### Qualification.getByLabel(label) ⇒ [<code>Qualification</code>](#Qualification)
 Returns the qualification associated to a label.
 
 **Kind**: static method of [<code>Qualification</code>](#Qualification)  
@@ -2599,14 +2599,14 @@ Qualification's object.
 * [Qualification](#Qualification) : <code>object</code>
     * [new exports.Qualification(label, attributes)](#new_Qualification_new)
     * _instance_
-        * [.checkValueAttributes(attributes)](#Qualification+checkValueAttributes)
+        * [.checkAttributes(attributes)](#Qualification+checkAttributes)
         * [.setPurpose(purpose)](#Qualification+setPurpose) ⇒ [<code>Qualification</code>](#Qualification)
         * [.setSourceCategory(sourceCategory)](#Qualification+setSourceCategory) ⇒ [<code>Qualification</code>](#Qualification)
         * [.setSourceSubCategory(sourceSubCategory)](#Qualification+setSourceSubCategory) ⇒ [<code>Qualification</code>](#Qualification)
         * [.setSubjects(subjects)](#Qualification+setSubjects) ⇒ [<code>Qualification</code>](#Qualification)
         * [.toQualification()](#Qualification+toQualification) ⇒ <code>object</code>
     * _static_
-        * [.getQualificationByLabel(label)](#Qualification.getQualificationByLabel) ⇒ [<code>Qualification</code>](#Qualification)
+        * [.getByLabel(label)](#Qualification.getByLabel) ⇒ [<code>Qualification</code>](#Qualification)
 
 <a name="new_Qualification_new"></a>
 
@@ -2617,9 +2617,9 @@ Qualification's object.
 | label | <code>string</code> | The qualification label |
 | attributes | [<code>Qualification</code>](#Qualification) | Qualification's attributes |
 
-<a name="Qualification+checkValueAttributes"></a>
+<a name="Qualification+checkAttributes"></a>
 
-### qualification.checkValueAttributes(attributes)
+### qualification.checkAttributes(attributes)
 Check the given qualification attributes respects the following rules:
   - For the given label, if a purpose, sourceCategory or sourceSubCategory
     attribute is defined in the model, it must match the given qualification.
@@ -2691,9 +2691,9 @@ Returns the qualification attributes
 
 **Kind**: instance method of [<code>Qualification</code>](#Qualification)  
 **Returns**: <code>object</code> - The qualification attributes  
-<a name="Qualification.getQualificationByLabel"></a>
+<a name="Qualification.getByLabel"></a>
 
-### Qualification.getQualificationByLabel(label) ⇒ [<code>Qualification</code>](#Qualification)
+### Qualification.getByLabel(label) ⇒ [<code>Qualification</code>](#Qualification)
 Returns the qualification associated to a label.
 
 **Kind**: static method of [<code>Qualification</code>](#Qualification)  

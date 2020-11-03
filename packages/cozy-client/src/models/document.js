@@ -54,7 +54,7 @@ export class Qualification {
    *
    * @param {object} attributes - The qualification attributes to check
    */
-  checkValueAttributes(attributes) {
+  checkAttributes(attributes) {
     if (this.purpose !== attributes.purpose) {
       if (!this.purpose) {
         const isKnownValue = qualificationModel.purposeKnownValues.includes(
@@ -202,7 +202,7 @@ export class Qualification {
  * @param {string} label - The label to qualify
  * @returns {Qualification} - The qualification
  */
-Qualification.getQualificationByLabel = label => {
+Qualification.getByLabel = label => {
   return new Qualification(label)
 }
 
@@ -215,7 +215,7 @@ Qualification.getQualificationByLabel = label => {
  */
 export const setQualification = (document, qualification) => {
   if (qualification.label) {
-    new Qualification(qualification.label).checkValueAttributes(qualification)
+    new Qualification(qualification.label).checkAttributes(qualification)
   } else {
     throw new Error('You must set a label to qualify')
   }

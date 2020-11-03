@@ -240,9 +240,7 @@ describe('File qualification', () => {
         datetime: '2020-01-01T20:38:04Z'
       }
     }
-    const qualification = Qualification.getQualificationByLabel(
-      'health_invoice'
-    )
+    const qualification = Qualification.getByLabel('health_invoice')
     const updFile = await file.saveFileQualification(
       mockedClient,
       fileDoc,

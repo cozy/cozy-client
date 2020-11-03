@@ -13,7 +13,7 @@ describe('document qualification', () => {
   })
 
   it('should get the correct qualification by the label', () => {
-    const qualification = Qualification.getQualificationByLabel(
+    const qualification = Qualification.getByLabel(
       'national_id_card'
     ).toQualification()
     expect(qualification.label).toEqual('national_id_card')
@@ -62,9 +62,7 @@ describe('document qualification', () => {
       }
     })
 
-    qualification = Qualification.getQualificationByLabel(
-      'other_identity_document'
-    )
+    qualification = Qualification.getByLabel('other_identity_document')
       .setPurpose('attestation')
       .setSourceCategory('gov')
       .setSourceSubCategory('civil_registration')
