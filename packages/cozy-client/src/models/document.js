@@ -52,15 +52,15 @@ class Qualification {
    *     in the given qualification.
    *   - If extra subjects are set, they should exist in the authorized values.
    *
-   * @param {object} qualification - The qualification to check
+   * @param {Qualification} qualification - The qualification to check
    */
   checkQualification(qualification) {
     if (this.purpose !== qualification.purpose) {
       if (!this.purpose) {
-        const allowedValue = qualificationModel.purposeAuthorizedValues.includes(
+        const isListedValue = qualificationModel.purposeAuthorizedValues.includes(
           qualification.purpose
         )
-        if (!allowedValue) {
+        if (!isListedValue) {
           console.info(
             `This purpose is not listed among the possible values: ${qualification.purpose}. ` +
               `Please open an issue on https://github.com/cozy/cozy-client/issues`
@@ -75,10 +75,10 @@ class Qualification {
     }
     if (this.sourceCategory !== qualification.sourceCategory) {
       if (!this.sourceCategory) {
-        const allowedValue = qualificationModel.sourceCategoryAuthorizedValues.includes(
+        const isListedValue = qualificationModel.sourceCategoryAuthorizedValues.includes(
           qualification.sourceCategory
         )
-        if (!allowedValue) {
+        if (!isListedValue) {
           console.info(
             `This sourceCategory is not listed among the possible values: ${qualification.sourceCategory}. ` +
               `Please open an issue on https://github.com/cozy/cozy-client/issues`
@@ -93,10 +93,10 @@ class Qualification {
     }
     if (this.sourceSubCategory !== qualification.sourceSubCategory) {
       if (!this.sourceSubCategory) {
-        const allowedValue = qualificationModel.sourceSubCategoryAuthorizedValues.includes(
+        const isListedValue = qualificationModel.sourceSubCategoryAuthorizedValues.includes(
           qualification.sourceSubCategory
         )
-        if (!allowedValue) {
+        if (!isListedValue) {
           console.info(
             `This sourceSubCategory is not listed among the possible values: ${qualification.sourceSubCategory}. ` +
               `Please open an issue on https://github.com/cozy/cozy-client/issues`
