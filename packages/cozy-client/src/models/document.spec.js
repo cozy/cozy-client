@@ -1,4 +1,4 @@
-import * as Document from './document'
+import { Qualification, setQualification, getQualification } from './document'
 import * as qualificationModel from '../assets/qualifications.json'
 
 describe('document qualification', () => {
@@ -13,7 +13,7 @@ describe('document qualification', () => {
   })
 
   it('should get the correct qualification by the label', () => {
-    const qualification = Document.getQualificationByLabel(
+    const qualification = Qualification.getQualificationByLabel(
       'national_id_card'
     ).toQualification()
     expect(qualification.label).toEqual('national_id_card')
@@ -33,7 +33,7 @@ describe('document qualification', () => {
       _id: '123',
       metadata: { qualification }
     }
-    const fileQualification = Document.getQualification(fileDoc)
+    const fileQualification = getQualification(fileDoc)
     expect(fileQualification).toEqual(qualification)
   })
 
@@ -49,7 +49,7 @@ describe('document qualification', () => {
       purpose: 'invoice',
       sourceCategory: 'health'
     }
-    Document.setQualification(fileDoc, qualification)
+    setQualification(fileDoc, qualification)
     expect(fileDoc).toEqual({
       _id: '123',
       metadata: {
@@ -62,12 +62,14 @@ describe('document qualification', () => {
       }
     })
 
-    qualification = Document.getQualificationByLabel('other_identity_document')
+    qualification = Qualification.getQualificationByLabel(
+      'other_identity_document'
+    )
       .setPurpose('attestation')
       .setSourceCategory('gov')
       .setSourceSubCategory('civil_registration')
       .setSubjects(['identity'])
-    Document.setQualification(fileDoc, qualification)
+    setQualification(fileDoc, qualification)
     expect(fileDoc).toEqual({
       _id: '123',
       metadata: {
@@ -84,14 +86,12 @@ describe('document qualification', () => {
   })
 
   it('should throw an error when setting a qualification with no label', () => {
-    expect(() =>
-      Document.setQualification({}, { purpose: 'invoice' })
-    ).toThrow()
+    expect(() => setQualification({}, { purpose: 'invoice' })).toThrow()
   })
 
   it('should throw an error when setting a qualification with an unknown label', () => {
     expect(() =>
-      Document.setQualification({}, { label: 'dummy', purpose: 'invoice' })
+      setQualification({}, { label: 'dummy', purpose: 'invoice' })
     ).toThrow()
   })
 
@@ -99,7 +99,7 @@ describe('document qualification', () => {
     const qualification = {
       label: 'health_invoice'
     }
-    expect(() => Document.setQualification({}, qualification)).toThrow()
+    expect(() => setQualification({}, qualification)).toThrow()
   })
 
   it('should inform when setting an unknown subject', () => {
@@ -109,7 +109,7 @@ describe('document qualification', () => {
       sourceCategory: 'health',
       subjects: ['very_hard_drugs']
     }
-    Document.setQualification({}, qualification)
+    setQualification({}, qualification)
     expect(console.info).toHaveBeenCalledTimes(1)
   })
 })

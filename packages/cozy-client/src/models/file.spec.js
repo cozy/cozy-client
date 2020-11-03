@@ -1,5 +1,5 @@
 import * as file from './file'
-import { getQualificationByLabel } from './document'
+import { Qualification } from './document'
 
 describe('File Model', () => {
   it('should test if a file is a note or not', () => {
@@ -240,7 +240,9 @@ describe('File qualification', () => {
         datetime: '2020-01-01T20:38:04Z'
       }
     }
-    const qualification = getQualificationByLabel('health_invoice')
+    const qualification = Qualification.getQualificationByLabel(
+      'health_invoice'
+    )
     const updFile = await file.saveFileQualification(
       mockedClient,
       fileDoc,
