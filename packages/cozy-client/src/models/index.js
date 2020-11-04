@@ -8,6 +8,7 @@ import * as note from './note'
 import * as permission from './permission'
 import * as utils from './utils'
 import * as contact from './contact'
+import * as document from './document'
 
 // For backward compatibility before 9.0.0
 const triggers = trigger
@@ -25,5 +26,6 @@ export {
   accounts,
   permission,
   utils,
-  contact
+  contact,
+  document
 }
