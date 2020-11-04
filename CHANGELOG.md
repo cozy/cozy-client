@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.1.0](https://github.com/cozy/cozy-client/compare/v16.0.0...v16.1.0) (2020-11-04)
+
+
+### Features
+
+* Add qualification model ([2320e60](https://github.com/cozy/cozy-client/commit/2320e60))
+* Add qualifications helpers ([573f625](https://github.com/cozy/cozy-client/commit/573f625))
+* Export document model ([ffc2894](https://github.com/cozy/cozy-client/commit/ffc2894))
+* File helper to save qualification ([7204d60](https://github.com/cozy/cozy-client/commit/7204d60))
+
+
+
+
+
 # [16.0.0](https://github.com/cozy/cozy-client/compare/v15.6.0...v16.0.0) (2020-10-26)
 
 
