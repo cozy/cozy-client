@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [16.1.1](https://github.com/cozy/cozy-client/compare/v16.1.0...v16.1.1) (2020-11-05)
+
+
+### Bug Fixes
+
+* **deps:** update dependency isomorphic-fetch to v3 ([0575af6](https://github.com/cozy/cozy-client/commit/0575af6))
+
+
+
+
+
 # [16.1.0](https://github.com/cozy/cozy-client/compare/v16.0.0...v16.1.0) (2020-11-04)
 
 
