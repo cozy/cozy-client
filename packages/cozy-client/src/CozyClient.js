@@ -496,7 +496,7 @@ client.query(Q('io.cozy.bills'))`)
   async create(type, doc, references, options = {}) {
     const { _type, ...attributes } = doc
     const normalizedDoc = { _type: type, ...attributes }
-    const ret = await this.schema.validate(document)
+    const ret = await this.schema.validate(normalizedDoc)
     if (ret !== true) throw new Error('Validation failed')
     return this.mutate(
       this.getDocumentSavePlan(normalizedDoc, references),
