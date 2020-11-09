@@ -49,7 +49,6 @@ jest.mock('./store', () => ({
   getQueryFromState: jest.fn().mockReturnValue({})
 }))
 
-
 describe('CozyClient initialization', () => {
   let client, links
 
