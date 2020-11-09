@@ -49,6 +49,7 @@ jest.mock('./store', () => ({
   getQueryFromState: jest.fn().mockReturnValue({})
 }))
 
+
 describe('CozyClient initialization', () => {
   let client, links
 
@@ -1382,9 +1383,9 @@ describe('CozyClient', () => {
 })
 
 describe('file creation', () => {
-  const setup = () => {
+  const setup = (options = {}) => {
     const client = new CozyClient({
-      schema: SCHEMA
+      schema: options.schema || SCHEMA
     })
     const fileCol = new FileCollection('io.cozy.files', client.stackClient)
     client.stackClient.collection.mockReturnValue(fileCol)
@@ -1410,6 +1411,23 @@ describe('file creation', () => {
       undefined,
       { headers: { Date: '' } }
     )
+  })
+
+  it('should not be possible to create a document with a wrong schema', async () => {
+    const customSchema = {
+      validated: {
+        doctype: 'io.cozy.validated',
+        attributes: {
+          dummy: 'dummy'
+        }
+      }
+    }
+    const { client } = setup({ schema: customSchema })
+    jest
+      .spyOn(client.schema, 'validateAttribute')
+      .mockResolvedValue('must be unique')
+    const res = client.create('io.cozy.validated', {})
+    await expect(res).rejects.toEqual(new Error('Validation failed'))
   })
 
   it('should be possible to create a file', async () => {
