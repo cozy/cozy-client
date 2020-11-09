@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.2.0](https://github.com/cozy/cozy-client/compare/v16.1.2...v16.2.0) (2020-11-09)
+
+
+### Features
+
+* Add telecom invoice qualification ([d26df60](https://github.com/cozy/cozy-client/commit/d26df60))
+
+
+
+
+
 ## [16.1.2](https://github.com/cozy/cozy-client/compare/v16.1.1...v16.1.2) (2020-11-09)
 
 
