@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [16.1.2](https://github.com/cozy/cozy-client/compare/v16.1.1...v16.1.2) (2020-11-09)
+
+
+### Bug Fixes
+
+* Lint ([c000331](https://github.com/cozy/cozy-client/commit/c000331))
+* Use correct var ([38c6599](https://github.com/cozy/cozy-client/commit/38c6599))
+
+
+
+
+
 ## [16.1.1](https://github.com/cozy/cozy-client/compare/v16.1.0...v16.1.1) (2020-11-05)
 
 
