@@ -175,6 +175,9 @@
       "sourceCategory": "health"
     },
     {
+      "label": "other_health_document"
+    },
+    {
       "label": "vehicle_registration",
       "purpose": "attestation",
       "sourceCategory": "gov",
@@ -318,6 +321,12 @@
     {
       "label": "tax_timetable",
       "purpose": "report",
+      "sourceCategory": "gov",
+      "sourceSubCategory": "tax",
+      "subjects": ["tax"]
+    },
+    {
+      "label": "other_tax_document",
       "sourceCategory": "gov",
       "sourceSubCategory": "tax",
       "subjects": ["tax"]
