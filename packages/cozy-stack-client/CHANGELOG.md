@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.4.0](https://github.com/cozy/cozy-client/compare/v16.3.0...v16.4.0) (2020-11-16)
+
+
+### Bug Fixes
+
+* Rename getOwnPermissions to fetchOwnPermissions ([5731ea5](https://github.com/cozy/cozy-client/commit/5731ea5))
+
+
+### Features
+
+* Add get on SharingCollection ([61b4c62](https://github.com/cozy/cozy-client/commit/61b4c62))
+
+
+
+
+
 # [16.0.0](https://github.com/cozy/cozy-client/compare/v15.6.0...v16.0.0) (2020-10-26)
 
 

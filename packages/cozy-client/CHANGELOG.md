@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.4.0](https://github.com/cozy/cozy-client/compare/v16.3.0...v16.4.0) (2020-11-16)
+
+
+### Features
+
+* Add isShortcutCreated to permission's model ([cfee955](https://github.com/cozy/cozy-client/commit/cfee955))
+* Add others qualifications ([4b3b8b1](https://github.com/cozy/cozy-client/commit/4b3b8b1))
+
+
+
+
+
 # [16.3.0](https://github.com/cozy/cozy-client/compare/v16.2.0...v16.3.0) (2020-11-16)
 
 
