@@ -333,6 +333,16 @@ we have in the store.</p>
 <dd></dd>
 <dt><a href="#PermissionItem">PermissionItem</a> : <code>object</code></dt>
 <dd></dd>
+<dt><a href="#Permission">Permission</a> : <code>object</code></dt>
+<dd><p>When a cozy to cozy sharing is created Cozy&#39;s stack creates a
+shortcut in <code>/Inbox of sharing</code> on the recipient&#39;s cozy to have a
+quick access even when the sharing is not accepted yet.</p>
+<p>However, this file is created only if the stack knows the URL of the cozy.
+This is not always the case.</p>
+<p>This method is here to tell us if the shortcut&#39;s file is created
+on the recipient&#39;s cozy. It can be used to make an UI distinction between the
+both situation.</p>
+</dd>
 <dt><a href="#HydratedQueryState">HydratedQueryState</a> ⇒ <code><a href="#HydratedQueryState">HydratedQueryState</a></code></dt>
 <dd><p>Returns the query from the store with hydrated documents.</p>
 </dd>
@@ -2775,6 +2785,33 @@ Couchdb document like an io.cozy.files
 | selector | <code>string</code> | defaults to `id` |
 | values | <code>Array.&lt;string&gt;</code> |  |
 | type | <code>string</code> | a couch db database like 'io.cozy.files' |
+
+<a name="Permission"></a>
+
+## Permission : <code>object</code>
+When a cozy to cozy sharing is created Cozy's stack creates a
+shortcut in `/Inbox of sharing` on the recipient's cozy to have a
+quick access even when the sharing is not accepted yet.
+
+However, this file is created only if the stack knows the URL of the cozy.
+This is not always the case.
+
+This method is here to tell us if the shortcut's file is created
+on the recipient's cozy. It can be used to make an UI distinction between the
+both situation.
+
+**Kind**: global typedef  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| permission | [<code>Permission</code>](#Permission) | From getOwnPermissions mainly |
+
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| data | <code>object</code> | Permission document |
+| included | <code>Array</code> | Member information from the sharing |
 
 <a name="HydratedQueryState"></a>
 
