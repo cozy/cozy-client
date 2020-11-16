@@ -195,4 +195,33 @@ describe('HasMany static helpers', () => {
     )
     expect(docWithRelationships).toMatchSnapshot()
   })
+
+  it('should remove an item from a relationship data', () => {
+    const docWithRelationships = {
+      _id: 'task-1',
+      label: 'Task 1',
+      relationships: {
+        contacts: {
+          data: [
+            { _id: 'contactId-1', _type: 'io.cozy.contacts' },
+            { _id: 'contactId-2', _type: 'io.cozy.contacts' }
+          ]
+        },
+        docrules: {
+          data: [
+            { _id: 'io.cozy.docrules/payslip', _type: 'io.cozy.docrules' },
+            { _id: 'io.cozy.docrules/certificate', _type: 'io.cozy.docrules' }
+          ]
+        }
+      }
+    }
+
+    const docWithoutContact1 = HasMany.removeHasManyItem(
+      docWithRelationships,
+      'contacts',
+      'contactId-1'
+    )
+
+    expect(docWithoutContact1).toMatchSnapshot()
+  })
 })

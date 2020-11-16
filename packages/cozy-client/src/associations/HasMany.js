@@ -4,6 +4,18 @@ import Association from './Association'
 import { QueryDefinition } from '../queries/dsl'
 import { receiveQueryResult, getDocumentFromState } from '../store'
 
+/**
+ * @typedef {object} Relationship
+ * @property {string} relName - name of the relationship
+ * @property {string} relItemId - id of the relation
+ * @property {Relation} relItemAttrs - Attributes to be set (at least _id and _type)
+ */
+/**
+ * @typedef {object} Relation
+ * @property {string} _id - id of the relation
+ * @property {string} _type - doctype of the relation
+ */
+
 const empty = () => ({
   data: [],
   next: true,
@@ -233,6 +245,10 @@ export const getHasManyItem = (HasMany.getHasManyItem = (
   return relData.find(rel => rel._id == relItemId)
 })
 
+export const getHasManyItems = (HasMany.getHasManyItems = (doc, relName) => {
+  return get(doc, `relationships.${relName}.data`, [])
+})
+
 /**
  * Sets a relationship item with the relationship name and id
  *
@@ -247,7 +263,7 @@ export const setHasManyItem = (HasMany.setHasManyItem = (
   relItemId,
   relItemAttrs
 ) => {
-  const relData = get(doc, `relationships.${relName}.data`, [])
+  const relData = HasMany.getHasManyItems(doc, relName)
   const relIndex = relData.findIndex(rel => rel._id === relItemId)
   const updatedRelItem = merge({}, relData[relIndex], relItemAttrs)
   const updatedRelData = updateArray(relData, relIndex, updatedRelItem)
@@ -256,6 +272,28 @@ export const setHasManyItem = (HasMany.setHasManyItem = (
     relName,
     relationship => merge({}, relationship, { data: updatedRelData })
   )
+
+  return updatedDocument
+})
+
+/**
+ * Remove one relationship item
+ *
+ * @param {object} doc - Document to be updated
+ * @param {string} relName - Name of the relationship
+ * @param {string} relItemId - Id of the relationship item
+ */
+export const removeHasManyItem = (HasMany.removeHasManyItem = (
+  doc,
+  relName,
+  relItemId
+) => {
+  const relData = HasMany.getHasManyItems(doc, relName)
+  const updatedRelData = relData.filter(rel => rel._id !== relItemId)
+  const updatedDocument = HasMany.updateRelationship(doc, relName, () => ({
+    data: updatedRelData
+  }))
+
   return updatedDocument
 })
 
