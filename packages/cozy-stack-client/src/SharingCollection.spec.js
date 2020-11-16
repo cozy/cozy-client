@@ -32,7 +32,7 @@ describe('SharingCollection', () => {
   const collection = new SharingCollection('io.cozy.sharings', client)
 
   describe('get', () => {
-    it('tests if it calls the right route', async () => {
+    it('should call the right route', async () => {
       client.fetchJSON.mockReturnValue(Promise.resolve({ data: [] }))
       await collection.get('1')
       expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/sharings/1')

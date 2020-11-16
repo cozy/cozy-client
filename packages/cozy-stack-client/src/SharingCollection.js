@@ -37,6 +37,7 @@ class SharingCollection extends DocumentCollection {
     }
   }
   /**
+   * Fetches a sharing by id
    *
    * @param {string} id Sharing's id
    * @returns {Sharing} sharing
