@@ -139,3 +139,32 @@ export async function isDocumentReadOnly(args) {
     return undefined
   }
 }
+
+/**
+ * When a cozy to cozy sharing is created Cozy's stack creates a
+ * shortcut in `/Inbox of sharing` on the recipient's cozy to have a
+ * quick access even when the sharing is not accepted yet.
+ *
+ * However, this file is created only if the stack knows the URL of the cozy.
+ * This is not always the case.
+ *
+ * This method is here to tell us if the shortcut's file is created
+ * on the recipient's cozy. It can be used to make an UI distinction between the
+ * both situation.
+ *
+ * @typedef  {object} Permission
+ * @property {object} data Permission document
+ * @property {Array} included Member information from the sharing
+ *
+ * @param {Permission} permission From getOwnPermissions mainly
+ */
+export const isShortcutCreatedOnTheRecipientCozy = permission => {
+  if (!permission.included) return false
+  const sharingMember = permission.included.find(
+    item => item.type === 'io.cozy.sharings.members'
+  )
+  if (sharingMember && sharingMember.attributes.instance) {
+    return true
+  }
+  return false
+}

@@ -1,4 +1,9 @@
-import { isReadOnly, isDocumentReadOnly, fetchOwn } from './permission'
+import {
+  isReadOnly,
+  isDocumentReadOnly,
+  fetchOwn,
+  isShortcutCreatedOnTheRecipientCozy
+} from './permission'
 
 function getById(id, doctype) {
   const parents = {
@@ -159,5 +164,40 @@ describe('fetchOwn', () => {
       { type: 'io.cozy.files', values: ['first', 'other'], verbs: [] },
       { type: 'io.cozy.photo.albums', values: ['third'], verbs: [] }
     ])
+  })
+})
+
+describe('isShortcutCreatedOnTheRecipientCozy', () => {
+  it('tests the return ', () => {
+    const includedWithInstance = [
+      {
+        type: 'io.cozy.sharings.members',
+        id: '',
+        attributes: {
+          status: 'seen',
+          name: 'alice@cozy.tools',
+          email: 'alice@cozy.tools',
+          instance: 'http://q2.cozy.tools:8080'
+        }
+      }
+    ]
+    expect(
+      isShortcutCreatedOnTheRecipientCozy({ included: includedWithInstance })
+    ).toBeTruthy()
+
+    const includedWithoutInstance = [
+      {
+        type: 'io.cozy.sharings.members',
+        id: '',
+        attributes: {
+          status: 'seen',
+          name: 'alice@cozy.tools',
+          email: 'alice@cozy.tools'
+        }
+      }
+    ]
+    expect(
+      isShortcutCreatedOnTheRecipientCozy({ included: includedWithoutInstance })
+    ).toBeFalsy()
   })
 })
