@@ -189,14 +189,20 @@ class PermissionCollection extends DocumentCollection {
     }
   }
 
+  async getOwnPermissions() {
+    console.warn(
+      'getOwnPermissions is deprecated, please use fetchOwnPermissions instead'
+    )
+    return this.fetchOwnPermissions()
+  }
   /**
-   * async getOwnPermissions - Gets the permission for the current token
+   * async fetchOwnPermissions - Fetches permissions
    *
    * @typedef {object} Permission
    *
    * @returns {Permission} permission
    */
-  async getOwnPermissions() {
+  async fetchOwnPermissions() {
     const resp = await this.stackClient.fetchJSON('GET', '/permissions/self')
     return {
       data: normalizePermission(resp.data),

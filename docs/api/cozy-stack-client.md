@@ -90,7 +90,7 @@ through OAuth.</p>
 <dd><p>Stream is not defined in a browser, but is on NodeJS environment</p>
 </dd>
 <dt><a href="#Permission">Permission</a> ⇒ <code><a href="#Permission">Permission</a></code></dt>
-<dd><p>async getOwnPermissions - Gets the permission for the current token</p>
+<dd><p>async fetchOwnPermissions - Fetches permissions</p>
 </dd>
 <dt><a href="#Rule">Rule</a> : <code>object</code></dt>
 <dd><p>A sharing rule</p>
@@ -1446,7 +1446,7 @@ Stream is not defined in a browser, but is on NodeJS environment
 <a name="Permission"></a>
 
 ## Permission ⇒ [<code>Permission</code>](#Permission)
-async getOwnPermissions - Gets the permission for the current token
+async fetchOwnPermissions - Fetches permissions
 
 **Kind**: global typedef  
 **Returns**: [<code>Permission</code>](#Permission) - permission  

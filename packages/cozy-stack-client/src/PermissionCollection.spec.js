@@ -57,8 +57,8 @@ describe('PermissionCollection', () => {
         )
       })
     })
-    it('should get its own permissions', async () => {
-      await collection.getOwnPermissions()
+    it('should fetch its own permissions', async () => {
+      await collection.fetchOwnPermissions()
       expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/permissions/self')
     })
 
