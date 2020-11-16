@@ -1142,6 +1142,8 @@ Implements the `DocumentCollection` API along with specific methods for
 <a name="SharingCollection+get"></a>
 
 ### sharingCollection.get(id) ⇒ [<code>Sharing</code>](#Sharing)
+Fetches a sharing by id
+
 **Kind**: instance method of [<code>SharingCollection</code>](#SharingCollection)  
 **Returns**: [<code>Sharing</code>](#Sharing) - sharing  
 
