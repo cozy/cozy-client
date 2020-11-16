@@ -15,6 +15,7 @@ import {
 } from './__tests__/fixtures'
 
 import CozyClient from './CozyClient'
+import { Q } from './queries/dsl'
 import CozyStackClient, { OAuthClient } from 'cozy-stack-client'
 import CozyLink from './CozyLink'
 import { Mutations, QueryDefinition } from './queries/dsl'
@@ -30,7 +31,6 @@ import {
 import { HasManyFiles, Association, HasMany } from './associations'
 import mapValues from 'lodash/mapValues'
 import FileCollection from 'cozy-stack-client/dist/FileCollection'
-import { Q } from 'cozy-client'
 
 const normalizeData = data =>
   mapValues(data, (docs, doctype) => {
@@ -566,9 +566,7 @@ describe('CozyClient', () => {
 
   describe('find', () => {
     it('should return a QueryDefinition', () => {
-      expect(
-        client.find('io.cozy.todos').where({ done: { $eq: true } })
-      ).toEqual({
+      expect(Q('io.cozy.todos').where({ done: { $eq: true } })).toEqual({
         doctype: 'io.cozy.todos',
         selector: { done: { $eq: true } }
       })

@@ -462,10 +462,16 @@ client.query(Q('io.cozy.bills'))`)
   }
 
   find(doctype, selector = undefined) {
+    console.warn(
+      'client.find(doctype, selector) is deprecated, please use Q(doctype).where(selector) to build the same query.'
+    )
     return new QueryDefinition({ doctype, selector })
   }
 
   get(doctype, id) {
+    console.warn(
+      'client.get(doctype, id) is deprecated, please use Q(doctype).getById(id) to build the same query.'
+    )
     return new QueryDefinition({ doctype, id })
   }
 

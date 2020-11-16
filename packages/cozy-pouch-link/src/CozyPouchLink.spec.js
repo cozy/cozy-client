@@ -226,7 +226,7 @@ describe('CozyPouchLink', () => {
         label: 'Make PouchDB link work',
         done: false
       })
-      const query = client.get(TODO_DOCTYPE, 'deadbeef')
+      const query = Q(TODO_DOCTYPE).getById('deadbeef')
       const resp = await link.request(query)
       expect(resp.data.label).toBe('Make PouchDB link work')
     })
@@ -237,8 +237,8 @@ describe('CozyPouchLink', () => {
       link.pouches.isSynced = jest.fn().mockReturnValue(true)
       const db = link.getPouch(TODO_DOCTYPE)
       await db.bulkDocs(docs.map(x => omit(x, '_type')))
-      const query = client
-        .find(TODO_DOCTYPE, { done: true, label: { $gt: null } })
+      const query = Q(TODO_DOCTYPE)
+        .where({ done: true, label: { $gt: null } })
         .indexFields(['label', 'done'])
       const resp = await link.request(query)
       expect(resp.data.length).toEqual(2)
@@ -267,8 +267,8 @@ describe('CozyPouchLink', () => {
       link.pouches.isSynced = jest.fn().mockReturnValue(true)
       const db = link.getPouch(TODO_DOCTYPE)
       await db.bulkDocs(docs.map(x => omit(x, '_type')))
-      const query = client
-        .find(TODO_DOCTYPE, { label: { $gt: null }, done: true })
+      const query = Q(TODO_DOCTYPE)
+        .where({ label: { $gt: null }, done: true })
         .indexFields(['done', 'label'])
         .sortBy([{ done: 'asc' }, { label: 'asc' }])
       const res = await link.request(query)

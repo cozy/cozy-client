@@ -24,7 +24,7 @@ describe('StackLink', () => {
     })
 
     it('should execute queries with a selector', async () => {
-      const query = client.find('io.cozy.todos').where({ checked: true })
+      const query = Q('io.cozy.todos').where({ checked: true })
       stackClient.collection().find.mockReset()
       await link.request(query)
       expect(stackClient.collection().find).toHaveBeenCalledWith(
