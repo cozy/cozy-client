@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.3.0](https://github.com/cozy/cozy-client/compare/v16.2.0...v16.3.0) (2020-11-16)
+
+
+### Bug Fixes
+
+* Update docs & delete setHasManyItems ([86af0f0](https://github.com/cozy/cozy-client/commit/86af0f0))
+
+
+### Features
+
+* Add setHasManyItems & removeHasManyItem helpers ([209c4bb](https://github.com/cozy/cozy-client/commit/209c4bb))
+
+
+
+
+
 # [16.2.0](https://github.com/cozy/cozy-client/compare/v16.1.2...v16.2.0) (2020-11-09)
 
 
