@@ -89,6 +89,9 @@ through OAuth.</p>
 <dt><a href="#Stream">Stream</a> : <code>object</code></dt>
 <dd><p>Stream is not defined in a browser, but is on NodeJS environment</p>
 </dd>
+<dt><a href="#Permission">Permission</a> ⇒ <code><a href="#Permission">Permission</a></code></dt>
+<dd><p>async getOwnPermissions - Gets the permission for the current token</p>
+</dd>
 <dt><a href="#Rule">Rule</a> : <code>object</code></dt>
 <dd><p>A sharing rule</p>
 </dd>
@@ -1014,7 +1017,6 @@ Implements `DocumentCollection` API along with specific methods for `io.cozy.per
     * [.fetchPermissionsByLink(permissions)](#PermissionCollection+fetchPermissionsByLink)
     * [.fetchAllLinks(document)](#PermissionCollection+fetchAllLinks) ⇒ <code>object</code>
     * [.revokeSharingLink(document)](#PermissionCollection+revokeSharingLink)
-    * [.getOwnPermissions()](#PermissionCollection+getOwnPermissions) ⇒ <code>object</code>
 
 <a name="PermissionCollection+create"></a>
 
@@ -1101,12 +1103,6 @@ Destroy a sharing link and the related permissions
 | --- | --- |
 | document | <code>object</code> | 
 
-<a name="PermissionCollection+getOwnPermissions"></a>
-
-### permissionCollection.getOwnPermissions() ⇒ <code>object</code>
-async getOwnPermissions - Gets the permission for the current token
-
-**Kind**: instance method of [<code>PermissionCollection</code>](#PermissionCollection)  
 <a name="SettingsCollection"></a>
 
 ## SettingsCollection
@@ -1134,6 +1130,7 @@ Implements the `DocumentCollection` API along with specific methods for
 **Kind**: global class  
 
 * [SharingCollection](#SharingCollection)
+    * [.get(id)](#SharingCollection+get) ⇒ [<code>Sharing</code>](#Sharing)
     * [.create(params)](#SharingCollection+create)
     * ~~[.share(document, recipients, sharingType, description, [previewPath])](#SharingCollection+share)~~
     * [.getDiscoveryLink(sharingId, sharecode)](#SharingCollection+getDiscoveryLink) ⇒ <code>string</code>
@@ -1141,6 +1138,16 @@ Implements the `DocumentCollection` API along with specific methods for
     * [.revokeRecipient(sharing, recipientIndex)](#SharingCollection+revokeRecipient)
     * [.revokeSelf(sharing)](#SharingCollection+revokeSelf)
     * [.revokeAllRecipients(sharing)](#SharingCollection+revokeAllRecipients)
+
+<a name="SharingCollection+get"></a>
+
+### sharingCollection.get(id) ⇒ [<code>Sharing</code>](#Sharing)
+**Kind**: instance method of [<code>SharingCollection</code>](#SharingCollection)  
+**Returns**: [<code>Sharing</code>](#Sharing) - sharing  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | Sharing's id |
 
 <a name="SharingCollection+create"></a>
 
@@ -1436,6 +1443,13 @@ Document representing a io.cozy.files
 Stream is not defined in a browser, but is on NodeJS environment
 
 **Kind**: global typedef  
+<a name="Permission"></a>
+
+## Permission ⇒ [<code>Permission</code>](#Permission)
+async getOwnPermissions - Gets the permission for the current token
+
+**Kind**: global typedef  
+**Returns**: [<code>Permission</code>](#Permission) - permission  
 <a name="Rule"></a>
 
 ## Rule : <code>object</code>

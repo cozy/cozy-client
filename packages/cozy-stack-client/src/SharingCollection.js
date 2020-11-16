@@ -1,8 +1,9 @@
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 import { isFile, isDirectory } from './FileCollection'
 import { uri } from './utils'
+export const SHARING_DOCTYPE = 'io.cozy.sharings'
 
-const normalizeSharing = sharing => normalizeDoc(sharing, 'io.cozy.sharings')
+const normalizeSharing = sharing => normalizeDoc(sharing, SHARING_DOCTYPE)
 
 /**
  * @typedef {object} Rule A sharing rule
@@ -35,6 +36,19 @@ class SharingCollection extends DocumentCollection {
       data: resp.data.map(normalizeSharing)
     }
   }
+  /**
+   *
+   * @param {string} id Sharing's id
+   * @returns {Sharing} sharing
+   */
+  async get(id) {
+    const path = uri`/sharings/${id}`
+    const resp = await this.stackClient.fetchJSON('GET', path)
+    return {
+      data: normalizeSharing(resp.data)
+    }
+  }
+
   /**
    *
    * Creates a new Sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#post-sharings

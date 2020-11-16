@@ -192,7 +192,9 @@ class PermissionCollection extends DocumentCollection {
   /**
    * async getOwnPermissions - Gets the permission for the current token
    *
-   * @returns {object}
+   * @typedef {object} Permission
+   *
+   * @returns {Permission} permission
    */
   async getOwnPermissions() {
     const resp = await this.stackClient.fetchJSON('GET', '/permissions/self')
