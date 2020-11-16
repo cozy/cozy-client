@@ -196,36 +196,7 @@ describe('HasMany static helpers', () => {
     expect(docWithRelationships).toMatchSnapshot()
   })
 
-  it(`should set multiple relationships on a doc that don't have relationships yet`, () => {
-    const docWithoutRelationships = {
-      _id: 'task-1',
-      label: 'Task 1'
-    }
-
-    const relationships = [
-      {
-        relName: 'contacts',
-        relItemId: 'contactId-1',
-        relItemAttrs: { _id: 'contactId-1', _type: 'io.cozy.contacts' }
-      },
-      {
-        relName: 'docrules',
-        relItemId: 'io.cozy.docrules/payslip',
-        relItemAttrs: {
-          _id: 'io.cozy.docrules/payslip',
-          _type: 'io.cozy.docrules'
-        }
-      }
-    ]
-
-    const docWithRelationships = HasMany.setHasManyItems(
-      docWithoutRelationships,
-      relationships
-    )
-    expect(docWithRelationships).toMatchSnapshot()
-  })
-
-  it('should remove one relationship', () => {
+  it('should remove an item from a relationship data', () => {
     const docWithRelationships = {
       _id: 'task-1',
       label: 'Task 1',

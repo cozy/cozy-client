@@ -76,6 +76,9 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 <dt><a href="#setHasManyItem">setHasManyItem</a></dt>
 <dd><p>Sets a relationship item with the relationship name and id</p>
 </dd>
+<dt><a href="#removeHasManyItem">removeHasManyItem</a></dt>
+<dd><p>Remove one relationship item</p>
+</dd>
 <dt><a href="#updateHasManyItem">updateHasManyItem</a></dt>
 <dd><p>Updates a relationship item with the relationship name and id</p>
 </dd>
@@ -308,6 +311,10 @@ we have in the store.</p>
 ## Typedefs
 
 <dl>
+<dt><a href="#Relationship">Relationship</a> : <code>object</code></dt>
+<dd></dd>
+<dt><a href="#Relation">Relation</a> : <code>object</code></dt>
+<dd></dd>
 <dt><a href="#QueryState">QueryState</a> : <code>object</code></dt>
 <dd></dd>
 <dt><a href="#Reference">Reference</a> : <code>object</code></dt>
@@ -1665,6 +1672,19 @@ Sets a relationship item with the relationship name and id
 | relItemId | <code>string</code> | Id of the relationship item |
 | relItemAttrs | <code>object</code> | Attributes to be set (at least _id and _type) |
 
+<a name="removeHasManyItem"></a>
+
+## removeHasManyItem
+Remove one relationship item
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doc | <code>object</code> | Document to be updated |
+| relName | <code>string</code> | Name of the relationship |
+| relItemId | <code>string</code> | Id of the relationship item |
+
 <a name="updateHasManyItem"></a>
 
 ## updateHasManyItem
@@ -2556,6 +2576,29 @@ HOC to provide mutations to components. Needs client in context or as prop.
 | Param | Type | Description |
 | --- | --- | --- |
 | ...mutations | <code>function</code> | One ore more mutations, which are function taking CozyClient as parameter and returning an object containing one or more mutations as attributes. |
+
+<a name="Relationship"></a>
+
+## Relationship : <code>object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| relName | <code>string</code> | name of the relationship |
+| relItemId | <code>string</code> | id of the relation |
+| relItemAttrs | [<code>Relation</code>](#Relation) | Attributes to be set (at least _id and _type) |
+
+<a name="Relation"></a>
+
+## Relation : <code>object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| _id | <code>string</code> | id of the relation |
+| _type | <code>string</code> | doctype of the relation |
 
 <a name="QueryState"></a>
 

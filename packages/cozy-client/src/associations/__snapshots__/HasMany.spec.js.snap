@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`HasMany static helpers should remove one relationship 1`] = `
+exports[`HasMany static helpers should remove an item from a relationship data 1`] = `
 Object {
   "_id": "task-1",
   "label": "Task 1",
@@ -21,31 +21,6 @@ Object {
         },
         Object {
           "_id": "io.cozy.docrules/certificate",
-          "_type": "io.cozy.docrules",
-        },
-      ],
-    },
-  },
-}
-`;
-
-exports[`HasMany static helpers should set multiple relationships on a doc that don't have relationships yet 1`] = `
-Object {
-  "_id": "task-1",
-  "label": "Task 1",
-  "relationships": Object {
-    "contacts": Object {
-      "data": Array [
-        Object {
-          "_id": "contactId-1",
-          "_type": "io.cozy.contacts",
-        },
-      ],
-    },
-    "docrules": Object {
-      "data": Array [
-        Object {
-          "_id": "io.cozy.docrules/payslip",
           "_type": "io.cozy.docrules",
         },
       ],

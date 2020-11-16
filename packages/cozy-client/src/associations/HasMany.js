@@ -277,29 +277,7 @@ export const setHasManyItem = (HasMany.setHasManyItem = (
 })
 
 /**
- * Sets multiple relationships with their respective name and ID
- *
- * @param {object} doc - Document to be updated
- * @param {Array.<Relationship>} relationships - Array of relationships to be sets
- */
-export const setHasManyItems = (HasMany.setHasManyItems = (
-  doc,
-  relationships
-) => {
-  let updatedDocument = { ...doc }
-  relationships.forEach(item => {
-    updatedDocument = HasMany.setHasManyItem(
-      updatedDocument,
-      item.relName,
-      item.relItemId,
-      item.relItemAttrs
-    )
-  })
-  return updatedDocument
-})
-
-/**
- * Remove one relationship
+ * Remove one relationship item
  *
  * @param {object} doc - Document to be updated
  * @param {string} relName - Name of the relationship
