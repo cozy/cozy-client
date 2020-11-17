@@ -69,17 +69,17 @@ describe(`KonnectorCollection`, () => {
       )
     })
     it('should call the right route', async () => {
-      await collection.get('fakeid')
+      await collection.get('io.cozy.konnectors/fakeid')
       expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/konnectors/fakeid')
     })
 
     it('should return a correct JSON API response', async () => {
-      const resp = await collection.get('fakeid')
+      const resp = await collection.get('io.cozy.konnectors/fakeid')
       expect(resp).toConformToJSONAPI()
     })
 
     it('should return normalized document', async () => {
-      const resp = await collection.get('fakeid')
+      const resp = await collection.get('io.cozy.konnectors/fakeid')
       expect(resp.data).toHaveDocumentIdentity()
     })
   })
