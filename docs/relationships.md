@@ -121,12 +121,13 @@ You may also see a special type named `'io.cozy.files:has-many'`. It's used for 
 Relations are not loaded eagerly by default. If you want your query to load your relations for you by default, you will have to name them in a `include()` request.
 
 ```javascript
-const query = client.find('io.cozy.books')
+const query = Q('io.cozy.books')
   .include(['authors'])
   .limitBy(20)
 ```
 
 You will then find your relations under the `data` attribute: 
+
 ```javascript 
 const response = await client.query(query)
 const docs = response.data

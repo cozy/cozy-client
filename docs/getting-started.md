@@ -5,6 +5,9 @@
 - [Creating a client](#creating-a-client)
 - [How to query with Cozy Client](#how-to-query-with-cozy-client)
 - [How to mutate the data](#how-to-mutate-the-data)
+- [Learn more about queries](#learn-more-about-queries)
+- [Connecting with you React components](#connecting-with-you-react-components)
+- [Different entrypoints for node/browser](#different-entrypoints-for-nodebrowser)
 
 <!-- /MarkdownTOC -->
 
@@ -68,18 +71,19 @@ Every doctype accessed in `cozy-client` needs to be declared in the schema secti
 
 ## How to query with Cozy Client
 
-The two main methods to query data with cozyClient are `find()` and `get()`. Both take an doctype as first argument and return a `QueryDefinition` object: 
+To run a query, we first build a `QueryDefinition` with `Q`: 
 
 ```javascript
-client.find('io.cozy.todos')
+import { Q } from 'cozy-client'
 
-client.get('io.cozy.todos', '5fcbbf2cb171b1d5c3bc6df3d4affb32')
+const allTodosQuery = Q('io.cozy.todos')
+const singleTodoQuery = Q('io.cozy.todos').getById('5fcbbf2cb171b1d5c3bc6df3d4affb32')
 ```
 
 A `QueryDefinition` is a special object that describe a query to be sent to CouchDB. It uses a fluent interface:
 
 ```javascript
-client.find('io.cozy.todos')
+Q('io.cozy.todos')
   .select(['title', 'checked'])
   .where({checked: false})
   .include(['dependencies'])
@@ -101,11 +105,8 @@ const client = new CozyClient({
   /*...*/
 })
 
-client.query(
-  client.find('io.cozy.todos').where({ checked: false })
-).then(
-  ({ data }) => console.log(data)
-)
+const { data } = await client.query(Q('io.cozy.todos').where({ checked: false }))
+console.log(data)
 ```
 
 ## How to mutate the data
@@ -123,19 +124,11 @@ const client = new CozyClient({
 // create a new io.cozy.todo
 await client.create('io.cozy.todos', { label: 'Buy bread', checked: false })
 
-client.query(
-  client.find('io.cozy.todos').where({ checked: false })
-).then(
-  
-  ({ data }) => {
-
-    const doc = data[0]
-    // modify existing io.cozy.todo
-    await client.save({...doc, checked: true})
-
-  }
-
-)
+const qdef = Q('io.cozy.todos').where({ checked: false })
+const { data: todos } = await client.query(qdef)
+const doc = todos[0]
+// modify existing io.cozy.todo
+await client.save({...doc, checked: true})
 ```
 
 Both `create()` and `save()` will return a Promise with a `data` attribute containing the saved document.

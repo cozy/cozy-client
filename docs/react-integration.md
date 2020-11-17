@@ -7,14 +7,15 @@ Once connected, your components will receive the requesting data and a fetch sta
 <!-- MarkdownTOC autolink=true -->
 
 - [1. Setup](#1-setup)
-    - [1.a Initialize a CozyClient provider](#1a-initialize-a-cozyclient-provider)
+  - [1.a Initialize a CozyClient provider](#1a-initialize-a-cozyclient-provider)
     - [1.b Use your own Redux store](#1b-use-your-own-redux-store)
 - [2. Usage](#2-usage)
-    - [2.a Requesting data with ``](#2a-requesting-data-with-)
-    - [2.b Requesting data with the `queryConnect` HOC](#2b-requesting-data-with-the-queryconnect-hoc)
-    - [2.c Using a fetch policy to decrease network requests](#2c-using-a-fetch-policy-to-decrease-network-requests)
-- [3. Mutating data](#3-mutating-data)
-- [4. Testing](#4-testing)
+  - [2.a Requesting data with ``](#2a-requesting-data-with-)
+  - [2.b Requesting data with the `queryConnect` HOC](#2b-requesting-data-with-the-queryconnect-hoc)
+  - [2.c Using a fetch policy to decrease network requests](#2c-using-a-fetch-policy-to-decrease-network-requests)
+  - [2.d Keeping data up to date in real time](#2d-keeping-data-up-to-date-in-real-time)
+  - [3. Mutating data](#3-mutating-data)
+  - [4. Testing](#4-testing)
 
 <!-- /MarkdownTOC -->
 
@@ -95,11 +96,13 @@ To make it easy to fetch data and make it available to your component, we provid
 
 
 ```jsx
-import { Query, isQueryLoading } from 'cozy-client'
+import { Query, isQueryLoading, Q } from 'cozy-client'
 
 const todos = 'io.cozy.todos'
 const checked = { checked: false }
-const query = client => client.find(todos).where(checked)
+
+// Use the Q helper to build queries
+const query = Q(todos).where(checked)
 
 function TodoList(props) {
   return <Query query={query}>
@@ -128,12 +131,12 @@ The following props will be given to your wrapped component:
 You can also pass a function instead of a direct query. Your function will be given the props of the component and should return the requested query:
 
 ```jsx
-import { Query } from 'cozy-client'
+import { Query, Q } from 'cozy-client'
 
 const query = function (props) {
   const todos = 'io.cozy.todos'
   const where = { checked: props.checked }
-  return client => client.find(todos).where(where)
+  return Q(todos).where(where)
 }
 
 function TodoList() {
@@ -168,15 +171,11 @@ function TodoList(props) {
   }
 }
 
-const dest = 'result'
-
-const todos = 'io.cozy.todos'
-const checked = { checked: false }
-const query = (client, props) => client.find('id', props.id).where(checked)
-
-const queryOpts = { [dest]: { query } }
-
-const ConnectedTodoList = queryConnect(queryOpts)(TodoList)
+const ConnectedTodoList = queryConnect({
+  result: {
+     query: Q('io.cozy.todos').where({ checked: false })
+  }
+})(TodoList)
 ```
 
 `queryConnect` will use `<Query />` internally so you will inherits the same behaviour.
@@ -196,8 +195,8 @@ function TodoList(props) {
 }
 
 const todos = 'io.cozy.todos'
-const checked = { query: client => client.find(todos).where({ checked: false }) }
-const archived = { query: client => client.find(todos).where({ archive: false }) }
+const checked = { query: Q(todos).where({ checked: false }) }
+const archived = { query: Q(todos).where({ archive: false }) }
 
 const queries = { checked, archived }
 
@@ -309,7 +308,7 @@ import { Query } from 'cozy-client'
 
 const todos = 'io.cozy.todos'
 const checked = { checked: false }
-const query = client => client.find(todos).where(checked)
+const query = Q(todos).where(checked)
 const mutations = client => ({ createDocument: client.create.bind(client) })
 
 function TodoList() {
