@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [16.4.1](https://github.com/cozy/cozy-client/compare/v16.4.0...v16.4.1) (2020-11-23)
+
+
+### Bug Fixes
+
+* Do not log in tests ([9cb6d2b](https://github.com/cozy/cozy-client/commit/9cb6d2b))
+
+
+
+
+
 # [16.4.0](https://github.com/cozy/cozy-client/compare/v16.3.0...v16.4.0) (2020-11-16)
 
 
