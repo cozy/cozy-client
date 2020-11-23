@@ -3,8 +3,8 @@ import * as qualificationModel from '../assets/qualifications.json'
 
 describe('document qualification', () => {
   beforeEach(() => {
-    jest.spyOn(console, 'warn')
-    jest.spyOn(console, 'info')
+    jest.spyOn(console, 'warn').mockImplementation(() => {})
+    jest.spyOn(console, 'info').mockImplementation(() => {})
   })
 
   afterEach(() => {
