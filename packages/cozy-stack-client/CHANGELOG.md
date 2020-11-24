@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.6.0](https://github.com/cozy/cozy-client/compare/v16.5.0...v16.6.0) (2020-11-24)
+
+
+### Features
+
+* Use node-fetch in place of isomorphic-fetch ([87f9e4e](https://github.com/cozy/cozy-client/commit/87f9e4e2f23f86f9fd9f81f96070f4eede2e01ce)), closes [konnectors/libs#724](https://github.com/konnectors/libs/issues/724)
+
+
+
+
+
 # [16.5.0](https://github.com/cozy/cozy-client/compare/v16.4.1...v16.5.0) (2020-11-24)
 
 **Note:** Version bump only for package cozy-stack-client
