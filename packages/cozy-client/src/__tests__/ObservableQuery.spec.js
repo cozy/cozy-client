@@ -115,7 +115,7 @@ describe('ObservableQuery', () => {
     })
 
     it('should be able to return its results', async () => {
-      const def = client.get('io.cozy.todos', TODO_1._id)
+      const def = Q('io.cozy.todos').getById(TODO_1._id)
       await store.dispatch(initQuery('oneTodo', def))
       query = new ObservableQuery('oneTodo', def, client)
       await store.dispatch(
@@ -126,7 +126,7 @@ describe('ObservableQuery', () => {
 
     it('should return hydrated results even if fetch status != loaded', async () => {
       jest.spyOn(client, 'hydrateDocuments')
-      const def = client.get('io.cozy.todos', TODO_1._id)
+      const def = Q('io.cozy.todos').getById(TODO_1._id)
       await store.dispatch(initQuery('oneTodo', def))
       query = new ObservableQuery('oneTodo', def, client)
       await store.dispatch(
