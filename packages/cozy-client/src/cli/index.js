@@ -10,7 +10,7 @@ import logger from 'cozy-logger'
 
 const log = logger.namespace('create-cli-client')
 
-global.fetch = require('isomorphic-fetch')
+global.fetch = require('node-fetch')
 global.btoa = require('btoa')
 
 /**
