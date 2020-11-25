@@ -1403,11 +1403,13 @@ from a Cozy. `QueryDefinition`s are sent to links.
 * [QueryDefinition](#QueryDefinition)
     * [new QueryDefinition(options)](#new_QueryDefinition_new)
     * [.checkSortOrder(sort|selector|indexedFields)](#QueryDefinition+checkSortOrder)
+    * [.checkSelector(selector)](#QueryDefinition+checkSelector)
     * [.getById(id)](#QueryDefinition+getById) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.getByIds(ids)](#QueryDefinition+getByIds) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.where(selector)](#QueryDefinition+where) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.select(fields)](#QueryDefinition+select) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.indexFields(indexedFields)](#QueryDefinition+indexFields) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
+    * [.partialIndex(partialFilter)](#QueryDefinition+partialIndex)
     * [.sortBy(sort)](#QueryDefinition+sortBy) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.include(includes)](#QueryDefinition+include) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.limitBy(limit)](#QueryDefinition+limitBy) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
@@ -1429,6 +1431,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
 | options.selector | <code>object</code> | The selector to query the docs. |
 | options.fields | <code>Array</code> | The fields to return. |
 | options.indexedFields | <code>Array</code> | The fields to index. |
+| options.partialFilter | <code>object</code> | The partial index definition to filter docs. |
 | options.sort | <code>Array</code> | The sorting params. |
 | options.includes | <code>string</code> | The docs to include. |
 | options.referenced | <code>string</code> | The referenced document. |
@@ -1453,6 +1456,19 @@ See https://docs.cozy.io/en/tutorials/data/queries/#sort-data-with-mango
 | Param | Type |
 | --- | --- |
 | sort|selector|indexedFields | <code>object</code> | 
+
+<a name="QueryDefinition+checkSelector"></a>
+
+### queryDefinition.checkSelector(selector)
+Check the selector predicates.
+
+It is useful to warn the developer when a partial index might be used.
+
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| selector | <code>object</code> | The selector definition |
 
 <a name="QueryDefinition+getById"></a>
 
@@ -1514,6 +1530,21 @@ Specify which fields should be indexed. This prevent the automatic indexing of t
 | Param | Type | Description |
 | --- | --- | --- |
 | indexedFields | <code>Array</code> | The fields to index. |
+
+<a name="QueryDefinition+partialIndex"></a>
+
+### queryDefinition.partialIndex(partialFilter)
+Specify a [partial index](https://docs.couchdb.org/en/stable/api/database/find.html#find-partial-indexes).
+The filter must follow the same syntax than the selector.
+
+A partial index includes a filter, used to select documents before the indexing.
+You can find more information about partial indexes [here](https://docs.cozy.io/en/tutorials/data/advanced/#partial-indexes)
+
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| partialFilter | <code>object</code> | The filter definition. |
 
 <a name="QueryDefinition+sortBy"></a>
 
