@@ -179,10 +179,16 @@ example.</p>
 <dt><a href="#getSharingShortcutTargetDoctype">getSharingShortcutTargetDoctype</a> ⇒ <code>string</code></dt>
 <dd><p>Returns the doctype of the target of the sharing shortcut.</p>
 </dd>
-<dt><a href="#isSharingShorcut">isSharingShorcut</a> ⇒ <code>boolean</code></dt>
+<dt><a href="#isSharingShortcut">isSharingShortcut</a> ⇒ <code>boolean</code></dt>
 <dd><p>Returns whether the file is a shortcut to a sharing</p>
 </dd>
-<dt><a href="#isSharingShorcutNew">isSharingShorcutNew</a> ⇒ <code>boolean</code></dt>
+<dt><del><a href="#isSharingShorcut">isSharingShorcut</a> ⇒ <code>boolean</code></del></dt>
+<dd><p>Returns whether the file is a shortcut to a sharing</p>
+</dd>
+<dt><a href="#isSharingShortcutNew">isSharingShortcutNew</a> ⇒ <code>boolean</code></dt>
+<dd><p>Returns whether the sharing shortcut is new</p>
+</dd>
+<dt><del><a href="#isSharingShorcutNew">isSharingShorcutNew</a> ⇒ <code>boolean</code></del></dt>
 <dd><p>Returns whether the sharing shortcut is new</p>
 </dd>
 <dt><a href="#saveFileQualification">saveFileQualification</a> ⇒ <code>object</code></dt>
@@ -2107,10 +2113,34 @@ Returns the doctype of the target of the sharing shortcut.
 | --- | --- | --- |
 | file | <code>object</code> | io.cozy.files document |
 
+<a name="isSharingShortcut"></a>
+
+## isSharingShortcut ⇒ <code>boolean</code>
+Returns whether the file is a shortcut to a sharing
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | <code>object</code> | io.cozy.files document |
+
 <a name="isSharingShorcut"></a>
 
-## isSharingShorcut ⇒ <code>boolean</code>
+## ~~isSharingShorcut ⇒ <code>boolean</code>~~
+***Deprecated***
+
 Returns whether the file is a shortcut to a sharing
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | <code>object</code> | io.cozy.files document |
+
+<a name="isSharingShortcutNew"></a>
+
+## isSharingShortcutNew ⇒ <code>boolean</code>
+Returns whether the sharing shortcut is new
 
 **Kind**: global constant  
 
@@ -2120,7 +2150,9 @@ Returns whether the file is a shortcut to a sharing
 
 <a name="isSharingShorcutNew"></a>
 
-## isSharingShorcutNew ⇒ <code>boolean</code>
+## ~~isSharingShorcutNew ⇒ <code>boolean</code>~~
+***Deprecated***
+
 Returns whether the sharing shortcut is new
 
 **Kind**: global constant  

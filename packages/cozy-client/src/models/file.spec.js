@@ -175,14 +175,14 @@ describe('File Model', () => {
     }
 
     it('identifies a sharing shortcut', () => {
-      expect(file.isSharingShorcut(sharingShortcutDocument)).toBe(true)
-      expect(file.isSharingShorcut(nonSharingShortcutDocument)).toBe(false)
+      expect(file.isSharingShortcut(sharingShortcutDocument)).toBe(true)
+      expect(file.isSharingShortcut(nonSharingShortcutDocument)).toBe(false)
     })
 
     it('detects if a sharing shortcut is new', () => {
-      expect(file.isSharingShorcutNew(newShortcutDocument)).toBe(true)
-      expect(file.isSharingShorcutNew(nonSharingShortcutDocument)).toBe(false)
-      expect(file.isSharingShorcutNew(sharingShortcutDocument)).toBe(false)
+      expect(file.isSharingShortcutNew(newShortcutDocument)).toBe(true)
+      expect(file.isSharingShortcutNew(nonSharingShortcutDocument)).toBe(false)
+      expect(file.isSharingShortcutNew(sharingShortcutDocument)).toBe(false)
     })
 
     it('returns the sharring shortcut status', () => {
