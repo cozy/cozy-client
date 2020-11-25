@@ -321,6 +321,30 @@ class PouchLink extends CozyLink {
     return Boolean(this.indexes[name])
   }
 
+  /**
+   * Merge the selector and partial filter definitions.
+   *
+   * This is necessary because PouchDB does not support partial indexes, so
+   * we have to express any partial filter definition directly in the selector.
+   * Note the partial filter evaluation will be done in-memory, which might decrease
+   * performances.
+   *
+   * @param {object} selector - The query selector
+   * @param {object} partialFilter - The partial filter
+   * @returns {object} The merge between the selector and the partial filter
+   */
+  mergePartialIndexInSelector(selector, partialFilter) {
+    if (partialFilter) {
+      logger.info(
+        `PouchLink: The query contains a partial index but PouchDB does not support it. ` +
+          `Hence, the partial index definition is used in the selector for in-memory evaluation, ` +
+          `which might impact expected performances.`
+      )
+      return { ...selector, ...partialFilter }
+    }
+    return selector
+  }
+
   async ensureIndex(doctype, query) {
     const fields = query.indexedFields || getIndexFields(query)
     const name = getIndexNameFromFields(fields)
@@ -331,7 +355,7 @@ class PouchLink extends CozyLink {
     } else {
       const index = await db.createIndex({
         index: {
-          fields: fields
+          fields
         }
       })
       this.indexes[absName] = index
@@ -348,9 +372,15 @@ class PouchLink extends CozyLink {
     id,
     ids,
     skip,
-    indexedFields
+    indexedFields,
+    partialFilter
   }) {
     const db = this.getPouch(doctype)
+    // The partial index is not supported by PouchDB, so we ensure the selector includes it
+    const mergedSelector = this.mergePartialIndexInSelector(
+      selector,
+      partialFilter
+    )
     let res, withRows
     if (id) {
       res = await db.get(id)
@@ -360,14 +390,14 @@ class PouchLink extends CozyLink {
       res = withoutDesignDocuments(res)
       res.total_rows = null // pouch indicates the total number of docs in res.total_rows, even though we use "keys". Setting it to null avoids cozy-client thinking there are more docs to fetch.
       withRows = true
-    } else if (!selector && !fields && !sort) {
+    } else if (!mergedSelector && !fields && !sort) {
       res = await allDocs(db, { include_docs: true, limit })
       res = withoutDesignDocuments(res)
       withRows = true
     } else {
       const findOpts = {
         sort,
-        selector,
+        selector: mergedSelector,
         fields,
         limit,
         skip
