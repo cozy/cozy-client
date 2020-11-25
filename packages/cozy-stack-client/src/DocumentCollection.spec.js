@@ -331,6 +331,23 @@ describe('DocumentCollection', () => {
         )
       })
 
+      it('should use the partial filter if defined', async () => {
+        const partialFilter = { $trashed: false }
+        await collection.createIndex(['label', 'done'], {
+          partialFilter
+        })
+        expect(client.fetchJSON).toHaveBeenCalledWith(
+          'POST',
+          '/data/io.cozy.todos/_index',
+          {
+            index: {
+              fields: ['label', 'done'],
+              partial_filter_selector: partialFilter
+            }
+          }
+        )
+      })
+
       it('should return the index ID', async () => {
         const resp = await collection.createIndex(['label', 'done'])
         expect(resp).toHaveProperty('id', '_design/123456')
