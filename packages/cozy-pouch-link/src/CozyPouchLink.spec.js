@@ -291,6 +291,28 @@ describe('CozyPouchLink', () => {
         next: false
       })
     })
+
+    it('should merge selector and partial filter definitions', () => {
+      const selector = { _id: { $gt: null } }
+      expect(link.mergePartialIndexInSelector(selector, {})).toEqual(selector)
+
+      const partialFilter = {
+        trashed: {
+          $exists: false
+        }
+      }
+      const expectedMergedSelector = {
+        _id: {
+          $gt: null
+        },
+        trashed: {
+          $exists: false
+        }
+      }
+      expect(link.mergePartialIndexInSelector(selector, partialFilter)).toEqual(
+        expectedMergedSelector
+      )
+    })
   })
 
   describe('mutations', () => {
