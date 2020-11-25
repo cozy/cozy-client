@@ -104,12 +104,14 @@ const getFilteredContactsBookmark = async () => {
  *   - bookmark pagination: ~7 850 ms
  */
 const main = async _args => {
-  const uri = process.env.COZY_URL || 'http://cozy.tools:8080'
-  const token = process.env.COZY_TOKEN
-  if (!token) {
-    throw new Error('You should provide COZY_TOKEN as an environement variable')
-  }
-  client = new CozyClient({ uri, token, schema })
+  const client = await createClientInteractive({
+    scope: ['io.cozy.contacts'],
+    uri: process.env.COZY_URL || 'http://cozy.tools:8080',
+    schema,
+    oauth: {
+      softwareID: 'io.cozy.client.cli'
+    }
+  })
 
   const count = 1000
 

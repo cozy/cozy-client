@@ -2,8 +2,8 @@ const minimist = require('minimist')
 const {
   QueryDefinition,
   HasManyInPlace,
-  default: CozyClient
-} = require('../dist')
+  createClientInteractive
+} = require('cozy-client')
 
 class HasManyBills extends HasManyInPlace {
   get data() {
@@ -46,15 +46,17 @@ const schema = {
 global.fetch = require('node-fetch') // in the browser we have native fetch
 
 const main = async _args => {
-  const uri = process.env.COZY_URL || 'http://cozy.tools:8080'
-  const token = process.env.COZY_TOKEN
-  if (!token) {
-    throw new Error('You should provide COZY_TOKEN as an environement variable')
-  }
+  const client = await createClientInteractive({
+    scope: [TRANSACTION_DOCTYPE, BILLS_DOCTYPE],
+    uri: process.env.COZY_URL || 'http://cozy.tools:8080',
+    schema,
+    oauth: {
+      softwareID: 'io.cozy.client.cli'
+    }
+  })
   const args = minimist(_args.slice(2), {
     string: ['selector']
   })
-  const client = new CozyClient({ uri, token, schema })
   const query = new QueryDefinition({
     doctype: 'io.cozy.bank.operations',
     limit: 500,
