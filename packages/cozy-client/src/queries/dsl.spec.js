@@ -2,11 +2,13 @@ import { QueryDefinition, Q } from '../queries/dsl'
 
 describe('QueryDefinition', () => {
   beforeEach(() => {
-    jest.spyOn(console, 'warn')
+    jest.spyOn(console, 'warn').mockImplementation(() => jest.fn())
+    jest.spyOn(console, 'info').mockImplementation(() => jest.fn())
   })
 
   afterEach(() => {
     console.warn.mockRestore()
+    console.info.mockRestore()
   })
 
   it('should build query defs on selected fields', () => {
@@ -94,5 +96,14 @@ describe('QueryDefinition', () => {
   it('should not warn for queries with no selector', () => {
     Q('io.cozy.files').sortBy([{ dirID: 'asc' }, { type: 'asc' }])
     expect(console.warn).toHaveBeenCalledTimes(0)
+  })
+
+  it('should warn when using a selector with $exists: false', () => {
+    Q('io.cozy.files').where({ trashed: { $exists: false } })
+    expect(console.warn).toHaveBeenCalledTimes(1)
+  })
+  it('should inform when using a selector with $neq', () => {
+    Q('io.cozy.files').where({ _id: { $ne: 'io.cozy.root-id' } })
+    expect(console.info).toHaveBeenCalledTimes(1)
   })
 })
