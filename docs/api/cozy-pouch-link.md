@@ -48,6 +48,7 @@ to respond to queries and mutations.
     * [.startReplication()](#PouchLink+startReplication) ⇒ <code>void</code>
     * [.stopReplication()](#PouchLink+stopReplication) ⇒ <code>void</code>
     * [.needsToWaitWarmup(doctype)](#PouchLink+needsToWaitWarmup) ⇒ <code>boolean</code>
+    * [.mergePartialIndexInSelector(selector, partialFilter)](#PouchLink+mergePartialIndexInSelector) ⇒ <code>object</code>
 
 <a name="new_PouchLink_new"></a>
 
@@ -104,6 +105,24 @@ and return if those queries are already warmedup or not
 | Param | Type |
 | --- | --- |
 | doctype | <code>string</code> | 
+
+<a name="PouchLink+mergePartialIndexInSelector"></a>
+
+### pouchLink.mergePartialIndexInSelector(selector, partialFilter) ⇒ <code>object</code>
+Merge the selector and partial filter definitions.
+
+This is necessary because PouchDB does not support partial indexes, so
+we have to express any partial filter definition directly in the selector.
+Note the partial filter evaluation will be done in-memory, which might decrease
+performances.
+
+**Kind**: instance method of [<code>PouchLink</code>](#PouchLink)  
+**Returns**: <code>object</code> - The merge between the selector and the partial filter  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| selector | <code>object</code> | The query selector |
+| partialFilter | <code>object</code> | The partial filter |
 
 <a name="Loop"></a>
 
