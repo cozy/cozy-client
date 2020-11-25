@@ -142,7 +142,22 @@ export const getSharingShortcutTargetDoctype = file =>
  *
  * @returns {boolean}
  */
-export const isSharingShorcut = file => Boolean(getSharingShortcutStatus(file))
+export const isSharingShortcut = file => Boolean(getSharingShortcutStatus(file))
+
+/**
+ * Returns whether the file is a shortcut to a sharing
+ *
+ * @deprecated Prefer to use isSharingShortcut.
+ * @param {object} file  - io.cozy.files document
+ *
+ * @returns {boolean}
+ */
+export const isSharingShorcut = file => {
+  console.warn(
+    'Deprecation: `isSharingShorcut` is deprecated, please use `isSharingShortcut` instead'
+  )
+  return isSharingShortcut(file)
+}
 
 /**
  * Returns whether the sharing shortcut is new
@@ -151,8 +166,23 @@ export const isSharingShorcut = file => Boolean(getSharingShortcutStatus(file))
  *
  * @returns {boolean}
  */
-export const isSharingShorcutNew = file =>
+export const isSharingShortcutNew = file =>
   getSharingShortcutStatus(file) === 'new'
+
+/**
+ * Returns whether the sharing shortcut is new
+ *
+ * @deprecated Prefer to use isSharingShortcutNew.
+ * @param {object} file  - io.cozy.files document
+ *
+ * @returns {boolean}
+ */
+export const isSharingShorcutNew = file => {
+  console.warn(
+    'Deprecation: `isSharingShorcutNew` is deprecated, please use `isSharingShortcutNew` instead'
+  )
+  return isSharingShortcutNew(file)
+}
 
 /**
  * Save the file with the given qualification
