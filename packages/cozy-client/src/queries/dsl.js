@@ -1,4 +1,4 @@
-const isArray = require('lodash/isArray')
+import { isArray, findKey } from 'lodash'
 
 /**
  * typedef QueryDefinition
@@ -18,6 +18,7 @@ class QueryDefinition {
    * @param {object} options.selector - The selector to query the docs.
    * @param {Array} options.fields - The fields to return.
    * @param {Array} options.indexedFields - The fields to index.
+   * @param {object} options.partialFilter - The partial index definition to filter docs.
    * @param {Array} options.sort - The sorting params.
    * @param {string} options.includes - The docs to include.
    * @param {string} options.referenced - The referenced document.
@@ -33,6 +34,7 @@ class QueryDefinition {
     this.selector = options.selector
     this.fields = options.fields
     this.indexedFields = options.indexedFields
+    this.partialFilter = options.partialFilter
     this.sort = options.sort
     this.includes = options.includes
     this.referenced = options.referenced
@@ -79,6 +81,28 @@ class QueryDefinition {
   }
 
   /**
+   * Check the selector predicates.
+   *
+   * It is useful to warn the developer when a partial index might be used.
+   *
+   * @param {object} selector - The selector definition
+   */
+  checkSelector(selector) {
+    const hasExistsFalse = findKey(selector, ['$exists', false])
+    if (hasExistsFalse) {
+      console.warn(
+        'The "$exists: false" predicate should be defined as a partial index.'
+      )
+    }
+    const hasNe = findKey(selector, '$ne')
+    if (hasNe) {
+      console.info(
+        'The use of the $ne operator is more efficient with a partial index.'
+      )
+    }
+  }
+
+  /**
    * Query a single document on its id.
    *
    * @param {string} id   The document id.
@@ -110,6 +134,7 @@ class QueryDefinition {
    */
   where(selector) {
     this.checkSortOrder({ selector })
+    this.checkSelector(selector)
     return new QueryDefinition({ ...this.toDefinition(), selector })
   }
 
@@ -132,6 +157,19 @@ class QueryDefinition {
   indexFields(indexedFields) {
     this.checkSortOrder({ indexedFields })
     return new QueryDefinition({ ...this.toDefinition(), indexedFields })
+  }
+
+  /**
+   * Specify a [partial index](https://docs.couchdb.org/en/stable/api/database/find.html#find-partial-indexes).
+   * The filter must follow the same syntax than the selector.
+   *
+   * A partial index includes a filter, used to select documents before the indexing.
+   * You can find more information about partial indexes [here](https://docs.cozy.io/en/tutorials/data/advanced/#partial-indexes)
+   *
+   * @param {object} partialFilter - The filter definition.
+   */
+  partialIndex(partialFilter) {
+    return new QueryDefinition({ ...this.toDefinition(), partialFilter })
   }
 
   /**
@@ -254,6 +292,7 @@ class QueryDefinition {
       selector: this.selector,
       fields: this.fields,
       indexedFields: this.indexedFields,
+      partialFilter: this.partialFilter,
       sort: this.sort,
       includes: this.includes,
       referenced: this.referenced,
