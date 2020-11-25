@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.7.0](https://github.com/cozy/cozy-client/compare/v16.6.0...v16.7.0) (2020-11-25)
+
+
+### Features
+
+* Add isSharingShortcut and isSharingShortcutNew ([d9bbaec](https://github.com/cozy/cozy-client/commit/d9bbaec51bbd5d9a738278fa79523f676c0d529b))
+
+
+
+
+
 # [16.6.0](https://github.com/cozy/cozy-client/compare/v16.5.0...v16.6.0) (2020-11-24)
 
 
