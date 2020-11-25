@@ -320,7 +320,7 @@ class DocumentCollection {
   }
 
   async toMangoOptions(selector, options = {}) {
-    let { sort, indexedFields } = options
+    let { sort, indexedFields, partialFilter } = options
     const { fields, skip = 0, limit, bookmark } = options
 
     if (sort && !Array.isArray(sort)) {
@@ -338,7 +338,9 @@ class DocumentCollection {
       ? indexedFields
       : this.getIndexFields({ sort, selector })
 
-    const indexId = options.indexId || (await this.getIndexId(indexedFields))
+    const indexId =
+      options.indexId ||
+      (await this.getIndexId(indexedFields, { partialFilter }))
 
     if (sort) {
       const sortOrders = uniq(
@@ -364,7 +366,6 @@ class DocumentCollection {
       bookmark: options.bookmark || bookmark,
       sort
     }
-
     return opts
   }
 
@@ -378,18 +379,32 @@ class DocumentCollection {
   }
 
   getUniqueIndexId(property) {
-    return this.getIndexId([property], `${this.doctype}/${property}`)
+    return this.getIndexId([property], {
+      indexName: `${this.doctype}/${property}`
+    })
   }
 
-  async getIndexId(fields, indexName = this.getIndexNameFromFields(fields)) {
+  async getIndexId(
+    fields,
+    { partialFilter, indexName = this.getIndexNameFromFields(fields) }
+  ) {
     if (!this.indexes[indexName]) {
-      this.indexes[indexName] = await this.createIndex(fields)
+      this.indexes[indexName] = await this.createIndex(fields, {
+        partialFilter
+      })
     }
     return this.indexes[indexName].id
   }
 
-  async createIndex(fields) {
-    const indexDef = { index: { fields } }
+  async createIndex(fields, { partialFilter } = {}) {
+    const indexDef = {
+      index: {
+        fields
+      }
+    }
+    if (partialFilter) {
+      indexDef.index.partial_filter_selector = partialFilter
+    }
     const resp = await this.stackClient.fetchJSON(
       'POST',
       uri`/data/${this.doctype}/_index`,
