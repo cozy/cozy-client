@@ -7,13 +7,18 @@ const {
   getContactsByIndexesAttribute,
   getContactsTest
 } = require('./contacts')
+const { ArgumentParser } = require('argparse')
 
 global.fetch = require('node-fetch') // in the browser we have native fetch
 
-const main = async _args => {
+const main = async () => {
+  const parser = new ArgumentParser()
+  parser.addArgument('--url', { defaultValue: 'http://cozy.tools:8080' })
+  const args = parser.parseArgs()
+
   const client = await createClientInteractive({
     scope: ['io.cozy.contacts'],
-    uri: process.env.COZY_URL || 'http://cozy.tools:8080',
+    uri: args.url,
     schema,
     oauth: {
       softwareID: 'io.cozy.client.cli'
