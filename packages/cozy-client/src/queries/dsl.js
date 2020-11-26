@@ -1,4 +1,5 @@
-import { isArray, findKey } from 'lodash'
+import isArray from 'lodash/isArray'
+import findKey from 'lodash/findKey'
 
 /**
  * typedef QueryDefinition
