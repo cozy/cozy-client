@@ -1,4 +1,4 @@
-const minimist = require('minimist')
+const { ArgumentParser } = require('argparse')
 const {
   QueryDefinition,
   HasManyInPlace,
@@ -45,18 +45,20 @@ const schema = {
 
 global.fetch = require('node-fetch') // in the browser we have native fetch
 
-const main = async _args => {
+const main = async () => {
+  const parser = new ArgumentParser()
+  parser.addArgument('--url', { defaultValue: 'http://cozy.tools:8080' })
+  const args = parser.parseArgs()
+
   const client = await createClientInteractive({
     scope: [TRANSACTION_DOCTYPE, BILLS_DOCTYPE],
-    uri: process.env.COZY_URL || 'http://cozy.tools:8080',
+    uri: args.url,
     schema,
     oauth: {
       softwareID: 'io.cozy.client.cli'
     }
   })
-  const args = minimist(_args.slice(2), {
-    string: ['selector']
-  })
+
   const query = new QueryDefinition({
     doctype: 'io.cozy.bank.operations',
     limit: 500,
