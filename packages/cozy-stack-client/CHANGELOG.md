@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.8.0](https://github.com/cozy/cozy-client/compare/v16.7.0...v16.8.0) (2020-11-26)
+
+
+### Features
+
+* Support partial index in DocumentCollection ([cb3a7f7](https://github.com/cozy/cozy-client/commit/cb3a7f7feaabd0c1d72fe311c738ba8d84a37d2e))
+
+
+
+
+
 # [16.6.0](https://github.com/cozy/cozy-client/compare/v16.5.0...v16.6.0) (2020-11-24)
 
 

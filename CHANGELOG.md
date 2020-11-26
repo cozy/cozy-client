@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.8.0](https://github.com/cozy/cozy-client/compare/v16.7.0...v16.8.0) (2020-11-26)
+
+
+### Bug Fixes
+
+* Split imports ([f2175aa](https://github.com/cozy/cozy-client/commit/f2175aa90fd6a1b00b1aefd0d6af9d8eb80249b1))
+
+
+### Features
+
+* Add partial index example ([18a3bbb](https://github.com/cozy/cozy-client/commit/18a3bbb56d2fe826b1e51737ce150e6352284a14))
+* Add partial index in QueryDefinition ([2a3f4c5](https://github.com/cozy/cozy-client/commit/2a3f4c55d7fc5f427ed5a9213579977ee0e73bd2))
+* Support partial index in DocumentCollection ([cb3a7f7](https://github.com/cozy/cozy-client/commit/cb3a7f7feaabd0c1d72fe311c738ba8d84a37d2e))
+* Use createClientInteractive for examples ([7f4257e](https://github.com/cozy/cozy-client/commit/7f4257e0e1b172d1a072c29b99e0592409c0007c))
+* Use partial filter in selector for PouchDB ([ba6bc9b](https://github.com/cozy/cozy-client/commit/ba6bc9bef5e6dcd21e647ad15b678d0f7e60e9f5))
+
+
+
+
+
 # [16.7.0](https://github.com/cozy/cozy-client/compare/v16.6.0...v16.7.0) (2020-11-25)
 
 

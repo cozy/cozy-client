@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.8.0](https://github.com/cozy/cozy-client/compare/v16.7.0...v16.8.0) (2020-11-26)
+
+
+### Features
+
+* Use partial filter in selector for PouchDB ([ba6bc9b](https://github.com/cozy/cozy-client/commit/ba6bc9bef5e6dcd21e647ad15b678d0f7e60e9f5))
+
+
+
+
+
 # [16.7.0](https://github.com/cozy/cozy-client/compare/v16.6.0...v16.7.0) (2020-11-25)
 
 **Note:** Version bump only for package cozy-pouch-link
