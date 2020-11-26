@@ -1403,7 +1403,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
 * [QueryDefinition](#QueryDefinition)
     * [new QueryDefinition(options)](#new_QueryDefinition_new)
     * [.checkSortOrder(sort|selector|indexedFields)](#QueryDefinition+checkSortOrder)
-    * [.checkSelector(selector)](#QueryDefinition+checkSelector)
+    * [.checkSelector(selector)](#QueryDefinition+checkSelector) ⇒ <code>void</code>
     * [.getById(id)](#QueryDefinition+getById) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.getByIds(ids)](#QueryDefinition+getByIds) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.where(selector)](#QueryDefinition+where) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
@@ -1443,7 +1443,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
 <a name="QueryDefinition+checkSortOrder"></a>
 
 ### queryDefinition.checkSortOrder(sort|selector|indexedFields)
-Check if the sort order matches the index' fields order.
+Checks if the sort order matches the index' fields order.
 
 When sorting with CouchDB, it is required to:
 - use indexed fields
@@ -1459,8 +1459,8 @@ See https://docs.cozy.io/en/tutorials/data/queries/#sort-data-with-mango
 
 <a name="QueryDefinition+checkSelector"></a>
 
-### queryDefinition.checkSelector(selector)
-Check the selector predicates.
+### queryDefinition.checkSelector(selector) ⇒ <code>void</code>
+Checks the selector predicates.
 
 It is useful to warn the developer when a partial index might be used.
 

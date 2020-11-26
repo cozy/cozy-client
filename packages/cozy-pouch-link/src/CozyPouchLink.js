@@ -321,24 +321,14 @@ class PouchLink extends CozyLink {
     return Boolean(this.indexes[name])
   }
 
-  /**
-   * Merge the selector and partial filter definitions.
-   *
-   * This is necessary because PouchDB does not support partial indexes, so
-   * we have to express any partial filter definition directly in the selector.
-   * Note the partial filter evaluation will be done in-memory, which might decrease
-   * performances.
-   *
-   * @param {object} selector - The query selector
-   * @param {object} partialFilter - The partial filter
-   * @returns {object} The merge between the selector and the partial filter
-   */
+  // This merge is necessary because PouchDB does not support partial indexes
   mergePartialIndexInSelector(selector, partialFilter) {
     if (partialFilter) {
       logger.info(
         `PouchLink: The query contains a partial index but PouchDB does not support it. ` +
           `Hence, the partial index definition is used in the selector for in-memory evaluation, ` +
-          `which might impact expected performances.`
+          `which might impact expected performances. If this support is important in your use-case, ` +
+          `please let us know or help us contribute to PouchDB!`
       )
       return { ...selector, ...partialFilter }
     }

@@ -46,7 +46,7 @@ class QueryDefinition {
   }
 
   /**
-   * Check if the sort order matches the index' fields order.
+   * Checks if the sort order matches the index' fields order.
    *
    * When sorting with CouchDB, it is required to:
    * - use indexed fields
@@ -82,17 +82,18 @@ class QueryDefinition {
   }
 
   /**
-   * Check the selector predicates.
+   * Checks the selector predicates.
    *
    * It is useful to warn the developer when a partial index might be used.
    *
    * @param {object} selector - The selector definition
+   * @returns {void}
    */
   checkSelector(selector) {
     const hasExistsFalse = findKey(selector, ['$exists', false])
     if (hasExistsFalse) {
       console.warn(
-        'The "$exists: false" predicate should be defined as a partial index.'
+        'The "$exists: false" predicate should be defined as a partial index for better performance'
       )
     }
     const hasNe = findKey(selector, '$ne')
