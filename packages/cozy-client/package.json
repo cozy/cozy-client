@@ -27,7 +27,7 @@
     "redux-thunk": "^2.3.0",
     "server-destroy": "^1.0.1",
     "sift": "^6.0.0",
-    "url-search-params-polyfill": "^7.0.0"
+    "url-search-params-polyfill": "^8.0.0"
   },
   "scripts": {
     "build": "../../bin/build",
