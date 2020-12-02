@@ -56,4 +56,4 @@ const main = async () => {
   console.log('Number of photos fetched : ', albums[0].photos.data.length)
 }
 
-main(process.argv).catch(e => console.error(e))
+main().catch(e => console.error(e))

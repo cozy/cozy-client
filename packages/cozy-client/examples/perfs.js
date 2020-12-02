@@ -71,4 +71,4 @@ const main = async () => {
   console.timeEnd(count + ' filtered contacts bookmark')
 }
 
-main(process.argv).catch(e => console.error(e))
+main().catch(e => console.error(e))

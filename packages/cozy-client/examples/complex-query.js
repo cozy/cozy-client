@@ -48,4 +48,4 @@ const main = async () => {
   console.log('Number of contacts fetched : ', contacts.length)
 }
 
-main(process.argv).catch(e => console.error(e))
+main().catch(e => console.error(e))
