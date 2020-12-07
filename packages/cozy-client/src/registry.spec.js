@@ -105,6 +105,14 @@ describe('registry api', () => {
       )
     })
 
+    it('should handle the limit parameter', async () => {
+      await api.fetchApps({ channel: 'dev', limit: 400 })
+      expect(fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/registry?limit=400&versionsChannel=dev&latestChannelVersion=dev'
+      )
+    })
+
     it('should call the correct route (filtering)', async () => {
       await api.fetchApps({ channel: 'beta', type: 'konnector' })
       expect(fetchJSON).toHaveBeenCalledWith(
