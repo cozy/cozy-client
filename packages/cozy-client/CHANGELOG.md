@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.9.0](https://github.com/cozy/cozy-client/compare/v16.8.0...v16.9.0) (2020-12-07)
+
+
+### Features
+
+* Allow registry collection fetch to have a limit parameter ([7071d48](https://github.com/cozy/cozy-client/commit/7071d48077f8627c36e4de999792ab3f1de1480a)), closes [/github.com/cozy/cozy-store/pull/705#issuecomment-739244759](https://github.com//github.com/cozy/cozy-store/pull/705/issues/issuecomment-739244759)
+
+
+
+
+
 # [16.8.0](https://github.com/cozy/cozy-client/compare/v16.7.0...v16.8.0) (2020-11-26)
 
 
