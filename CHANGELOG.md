@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.10.0](https://github.com/cozy/cozy-client/compare/v16.9.0...v16.10.0) (2020-12-10)
+
+
+### Features
+
+* Add receipt qualification ([a838a39](https://github.com/cozy/cozy-client/commit/a838a39687ed813b938406e2d5a7be5cc7bfd4f2))
+
+
+
+
+
 # [16.9.0](https://github.com/cozy/cozy-client/compare/v16.8.0...v16.9.0) (2020-12-07)
 
 
