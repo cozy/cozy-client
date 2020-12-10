@@ -351,6 +351,10 @@
     {
       "label": "other_bank_document",
       "sourceCategory": "bank"
+    },
+    {
+      "label": "receipt",
+      "purpose": "report"
     }
   ],
   "purposeKnownValues": [
