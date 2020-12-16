@@ -227,6 +227,9 @@ example.</p>
 <dd><p>Helper to create a QueryDefinition. Recommended way to create
 query definitions.</p>
 </dd>
+<dt><a href="#mergeSelectorAndPartialIndex">mergeSelectorAndPartialIndex</a> ⇒ <code>object</code></dt>
+<dd><p>Merges query selectors with query partial indexes</p>
+</dd>
 <dt><a href="#isQueryLoading">isQueryLoading</a></dt>
 <dd><p>Returns whether the result of a query (given via queryConnect or Query)
 is loading.</p>
@@ -2396,6 +2399,18 @@ import { Q } from 'cozy-client'
 
 const qDef = Q('io.cozy.todos').where({ _id: '1234' })
 ```
+<a name="mergeSelectorAndPartialIndex"></a>
+
+## mergeSelectorAndPartialIndex ⇒ <code>object</code>
+Merges query selectors with query partial indexes
+
+**Kind**: global constant  
+**Returns**: <code>object</code> - A query definition selector  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| queryDefinition | <code>object</code> | A query definition |
+
 <a name="isQueryLoading"></a>
 
 ## isQueryLoading

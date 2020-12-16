@@ -2,7 +2,8 @@ import queries, {
   initQuery,
   receiveQueryResult,
   convert$gtNullSelectors,
-  makeSorterFromDefinition
+  makeSorterFromDefinition,
+  mergeSelectorAndPartialIndex
 } from './queries'
 import { QueryDefinition, Q } from '../queries/dsl'
 import { TODO_1, TODO_2, TODO_3 } from '../__tests__/fixtures'
@@ -269,5 +270,42 @@ describe('makeSorterFromDefinition', () => {
     ]
     const sorted = sorter(files)
     expect(sorted.map(x => x.name.label)).toEqual(['a', 'A', 'B', 'b', 'C'])
+  })
+})
+
+describe('mergeSelectorAndPartialIndex', () => {
+  it('should return a selector even if no partial index', () => {
+    const query = Q('io.cozy.files').where({
+      _id: {
+        $gt: null
+      }
+    })
+
+    const result = {
+      _id: { $gt: null }
+    }
+
+    expect(mergeSelectorAndPartialIndex(query)).toMatchObject(result)
+  })
+
+  it('should return a selector with partial index', () => {
+    const query = Q('io.cozy.files')
+      .where({
+        _id: {
+          $gt: null
+        }
+      })
+      .partialIndex({
+        specificAttributes: {
+          $exists: false
+        }
+      })
+
+    const result = {
+      _id: { $gt: null },
+      specificAttributes: { $exists: false }
+    }
+
+    expect(mergeSelectorAndPartialIndex(query)).toMatchObject(result)
   })
 })

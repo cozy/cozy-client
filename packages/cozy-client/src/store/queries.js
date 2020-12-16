@@ -139,15 +139,28 @@ export const convert$gtNullSelectors = selector => {
   return result
 }
 
+/**
+ * Merges query selectors with query partial indexes
+ *
+ * @param {object} queryDefinition - A query definition
+ * @returns {object} A query definition selector
+ */
+export const mergeSelectorAndPartialIndex = queryDefinition => ({
+  ...queryDefinition.selector,
+  ...get(queryDefinition, 'partialFilter')
+})
+
 const getSelectorFilterFn = queryDefinition => {
+  console.info('qdef', queryDefinition)
   if (queryDefinition.selector) {
+    const selectors = mergeSelectorAndPartialIndex(queryDefinition)
     // sift does not work like couchdb when using { $gt: null } as a selector, so we use a custom operator
     sift.use({
       $gtnull: (selectorValue, actualValue) => {
         return !!actualValue
       }
     })
-    return sift(convert$gtNullSelectors(queryDefinition.selector))
+    return sift(convert$gtNullSelectors(selectors))
   } else if (queryDefinition.id) {
     return sift({ _id: queryDefinition.id })
   } else if (queryDefinition.ids) {
