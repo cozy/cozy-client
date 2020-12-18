@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [16.10.1](https://github.com/cozy/cozy-client/compare/v16.10.0...v16.10.1) (2020-12-18)
+
+
+### Bug Fixes
+
+* Add partial index selectors to sift ([29d8b39](https://github.com/cozy/cozy-client/commit/29d8b39fe2898f4e495554df0050cadc4ab64679))
+
+
+
+
+
 # [16.10.0](https://github.com/cozy/cozy-client/compare/v16.9.0...v16.10.0) (2020-12-10)
 
 
