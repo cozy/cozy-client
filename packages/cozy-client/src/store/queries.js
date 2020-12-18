@@ -151,7 +151,6 @@ export const mergeSelectorAndPartialIndex = queryDefinition => ({
 })
 
 const getSelectorFilterFn = queryDefinition => {
-  console.info('qdef', queryDefinition)
   if (queryDefinition.selector) {
     const selectors = mergeSelectorAndPartialIndex(queryDefinition)
     // sift does not work like couchdb when using { $gt: null } as a selector, so we use a custom operator
