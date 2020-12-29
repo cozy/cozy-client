@@ -84,8 +84,8 @@ const referencesUnsupportedError = relationshipClassName => {
  * @property {string} _type - doctype of the document
  */
 
-const TRIGGER_CREATION = 'creation'
-const TRIGGER_UPDATE = 'update'
+const DOC_CREATION = 'creation'
+const DOC_UPDATE = 'update'
 
 /**
  * Responsible for
@@ -523,7 +523,7 @@ client.query(Q('io.cozy.bills'))`)
   ensureCozyMetadata(
     document,
     options = {
-      event: TRIGGER_CREATION
+      event: DOC_CREATION
     }
   ) {
     const METADATA_VERSION = 1
@@ -539,7 +539,7 @@ client.query(Q('io.cozy.bills'))`)
     const now = new Date().toISOString()
 
     let cozyMetadata = get(document, 'cozyMetadata', {})
-    if (options.event === TRIGGER_CREATION) {
+    if (options.event === DOC_CREATION) {
       cozyMetadata = {
         metadataVersion: METADATA_VERSION,
         doctypeVersion,
@@ -559,7 +559,7 @@ client.query(Q('io.cozy.bills'))`)
           : [],
         ...cozyMetadata // custom metadata that are set by the app
       }
-    } else if (options.event === TRIGGER_UPDATE) {
+    } else if (options.event === DOC_UPDATE) {
       cozyMetadata = {
         ...cozyMetadata,
         updatedAt: now,
@@ -601,7 +601,7 @@ client.query(Q('io.cozy.bills'))`)
   getDocumentSavePlan(document, referencesByName) {
     const isNewDoc = !document._rev
     const dehydratedDoc = this.ensureCozyMetadata(dehydrate(document), {
-      event: isNewDoc ? TRIGGER_CREATION : TRIGGER_UPDATE
+      event: isNewDoc ? DOC_CREATION : DOC_UPDATE
     })
 
     const saveMutation = isNewDoc
