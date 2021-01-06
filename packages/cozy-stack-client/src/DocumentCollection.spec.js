@@ -1,5 +1,6 @@
 jest.mock('./CozyStackClient')
 
+import flag from 'cozy-flags'
 import CozyStackClient from './CozyStackClient'
 import DocumentCollection from './DocumentCollection'
 
@@ -534,6 +535,22 @@ describe('DocumentCollection', () => {
           selector: { done: { $exists: true } },
           sort: [{ label: 'desc' }],
           use_index: '_design/123456'
+        }
+      )
+    })
+
+    it('should set executions stats if flag is enabled', async () => {
+      const collection = new DocumentCollection('io.cozy.todos', client)
+      flag('perfs.execution_stats', true)
+      await collection.find({ done: false })
+      expect(client.fetchJSON).toHaveBeenLastCalledWith(
+        'POST',
+        '/data/io.cozy.todos/_find',
+        {
+          selector: { done: false },
+          skip: 0,
+          use_index: '_design/123456',
+          execution_stats: true
         }
       )
     })
