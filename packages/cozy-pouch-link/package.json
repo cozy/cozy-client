@@ -14,6 +14,7 @@
     "@cozy/minilog": "1.0.0",
     "cozy-client": "^16.10.2",
     "cozy-device-helper": "^1.7.3",
+    "cozy-flags": "^2.5.0",
     "pouchdb-browser": "^7.0.0",
     "pouchdb-find": "^7.0.0"
   },
