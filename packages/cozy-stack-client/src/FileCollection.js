@@ -126,7 +126,8 @@ class FileCollection extends DocumentCollection {
       meta: resp.meta,
       next: resp.meta.count > skip + resp.data.length,
       skip,
-      bookmark: nextBookmark || undefined
+      bookmark: nextBookmark || undefined,
+      execution_stats: resp.execution_stats
     }
   }
 

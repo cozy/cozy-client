@@ -1,3 +1,4 @@
+import flag from 'cozy-flags'
 import { uri, attempt, sleep } from './utils'
 import uniq from 'lodash/uniq'
 import transform from 'lodash/transform'
@@ -178,7 +179,8 @@ class DocumentCollection {
       data: resp.docs.map(doc => normalizeDoc(doc, this.doctype)),
       next: resp.next,
       skip,
-      bookmark: resp.bookmark
+      bookmark: resp.bookmark,
+      execution_stats: resp.execution_stats
     }
   }
 
@@ -364,7 +366,8 @@ class DocumentCollection {
       limit,
       skip,
       bookmark: options.bookmark || bookmark,
-      sort
+      sort,
+      execution_stats: flag('perfs.execution_stats') ? true : undefined
     }
     return opts
   }
