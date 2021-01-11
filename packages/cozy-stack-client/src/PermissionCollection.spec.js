@@ -55,6 +55,19 @@ describe('PermissionCollection', () => {
           '/permissions?codes=a%2Cb&ttl=1D',
           { data: { attributes: {}, type: 'io.cozy.permissions' } }
         )
+
+        await collection.create({
+          _type: 'io.cozy.permissions',
+          _id: 'a340d5e0d64711e6b66c5fc9ce1e17c6',
+          codes: 'a,b',
+          ttl: '1D',
+          tiny: 'true'
+        })
+        expect(client.fetchJSON).toHaveBeenCalledWith(
+          'POST',
+          '/permissions?codes=a%2Cb&ttl=1D&tiny=true',
+          { data: { attributes: {}, type: 'io.cozy.permissions' } }
+        )
       })
     })
     it('should fetch its own permissions', async () => {

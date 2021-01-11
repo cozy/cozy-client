@@ -1031,7 +1031,8 @@ It can also associates one or more codes to it, via the codes parameter
 | --- | --- | --- |
 | permission | <code>object</code> |  |
 | permission.codes | <code>string</code> | A comma separed list of values (defaulted to code) |
-| permission.ttl | <code>string</code> | Make the codes expire after a delay (bigduration format) bigduration format: https://github.com/justincampbell/bigduration/blob/master/README.md |
+| permission.ttl | <code>string</code> | Make the codes expire after a delay (bigduration format) |
+| permission.tiny | <code>boolean</code> | If set to true then the generated shortcode will be 6 digits Cozy-Stack has a few conditions to be able to use this tiny shortcode ATM you have to specifiy a ttl < 1h, but it can change. see https://docs.cozy.io/en/cozy-stack/permissions/#post-permissions for exact informations bigduration format: https://github.com/justincampbell/bigduration/blob/master/README.md |
 
 <a name="PermissionCollection+add"></a>
 

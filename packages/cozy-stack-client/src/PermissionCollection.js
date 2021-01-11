@@ -24,15 +24,20 @@ class PermissionCollection extends DocumentCollection {
    * @param {object} permission
    * @param {string} permission.codes A comma separed list of values (defaulted to code)
    * @param {string} permission.ttl Make the codes expire after a delay (bigduration format)
+   * @param {boolean} permission.tiny If set to true then the generated shortcode will be 6 digits
+   * Cozy-Stack has a few conditions to be able to use this tiny shortcode ATM you have to specifiy
+   * a ttl < 1h, but it can change.
+   * see https://docs.cozy.io/en/cozy-stack/permissions/#post-permissions for exact informations
    *
    * bigduration format: https://github.com/justincampbell/bigduration/blob/master/README.md
    * @see https://docs.cozy.io/en/cozy-stack/permissions/#post-permissions
    *
    */
-  async create({ _id, _type, codes = 'code', ttl, ...attributes }) {
+  async create({ _id, _type, codes = 'code', ttl, tiny, ...attributes }) {
     const searchParams = new URLSearchParams()
     searchParams.append('codes', codes)
     if (ttl) searchParams.append('ttl', ttl)
+    if (tiny) searchParams.append('tiny', true)
     const resp = await this.stackClient.fetchJSON(
       'POST',
       `/permissions?${searchParams}`,
