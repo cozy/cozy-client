@@ -955,6 +955,7 @@ describe('CozyClient', () => {
     })
 
     it('should first dispatch a INIT_QUERY action', async () => {
+      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
       await client.query(query, { as: 'allTodos' })
       expect(client.store.dispatch.mock.calls[0][0]).toEqual(
         initQuery('allTodos', { doctype: 'io.cozy.todos' })
@@ -989,6 +990,7 @@ describe('CozyClient', () => {
     })
 
     it('should call the link with the query', async () => {
+      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
       await client.query(query)
       expect(requestHandler).toHaveBeenCalledTimes(1)
       expect(requestHandler.mock.calls[0][0]).toBe(query)
@@ -1116,6 +1118,7 @@ describe('CozyClient', () => {
     })
 
     it('should dispatch a INIT_QUERY action if status is not loaded', async () => {
+      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
       getQueryFromState.mockReturnValueOnce({
         fetchStatus: 'pending'
       })
@@ -1126,6 +1129,7 @@ describe('CozyClient', () => {
     })
 
     it('should dispatch a INIT_QUERY action if no skip and no bookmark', async () => {
+      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
       getQueryFromState.mockReturnValueOnce({
         fetchStatus: 'loaded'
       })
