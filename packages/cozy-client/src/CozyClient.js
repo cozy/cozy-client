@@ -748,6 +748,13 @@ client.query(Q('io.cozy.bills'))`)
     try {
       this.dispatch(loadQuery(queryId))
       const response = await this.requestQuery(queryDefinition)
+      if (response.execution_stats) {
+        console.log(
+          `Execution stats for query ${queryId}: ${JSON.stringify(
+            response.execution_stats
+          )}`
+        )
+      }
       this.dispatch(
         receiveQueryResult(queryId, response, {
           update
