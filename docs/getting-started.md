@@ -137,6 +137,11 @@ Both `create()` and `save()` will return a Promise with a `data` attribute conta
 
 You can check out our dedicated [query documentation](https://docs.cozy.io/en/tutorials/data/queries/) to know more about querying with cozy-client and avoid common traps that can dramatically impact your app performances.
 
+Note you can audit your queries performance by setting a `{ perfs.execution_stats: true }` flag. 
+This will add a log in the browser's development tools console for each query. This log provides  insights such as the query execution time taken on the database or the number of documents scanned. All the available stats are described [here](https://docs.couchdb.org/en/2.3.1/api/database/find.html#execution-statistics).
+
+See [cozy-flags](https://github.com/cozy/cozy-libs/tree/master/packages/cozy-flags) to know how to set flags.
+
 ## Connecting with you React components
 
 CozyClient comes with HOC and render props functions to connect to your data inside you own components. See the specific documentation for [React integration](./react-integration.md)
