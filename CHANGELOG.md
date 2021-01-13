@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.12.0](https://github.com/cozy/cozy-client/compare/v16.11.0...v16.12.0) (2021-01-13)
+
+
+### Bug Fixes
+
+* Files API uses meta ([d8b402e](https://github.com/cozy/cozy-client/commit/d8b402efd1b0a2da6928121f91a4a10e64fbecc9))
+
+
+### Features
+
+* Add log when execution_stats is set ([5959db4](https://github.com/cozy/cozy-client/commit/5959db4afea134f7354305c2324a712388c2f391))
+* Support for perfs.execution_stats flag ([19cda8c](https://github.com/cozy/cozy-client/commit/19cda8cb6df9f9c204f3ba964ecb4709120c77a1))
+
+
+
+
+
 # [16.11.0](https://github.com/cozy/cozy-client/compare/v16.10.2...v16.11.0) (2021-01-11)
 
 

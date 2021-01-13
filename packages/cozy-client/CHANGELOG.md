@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.12.0](https://github.com/cozy/cozy-client/compare/v16.11.0...v16.12.0) (2021-01-13)
+
+
+### Features
+
+* Add log when execution_stats is set ([5959db4](https://github.com/cozy/cozy-client/commit/5959db4afea134f7354305c2324a712388c2f391))
+
+
+
+
+
 # [16.11.0](https://github.com/cozy/cozy-client/compare/v16.10.2...v16.11.0) (2021-01-11)
 
 **Note:** Version bump only for package cozy-client

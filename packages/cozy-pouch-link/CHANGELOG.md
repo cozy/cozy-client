@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.12.0](https://github.com/cozy/cozy-client/compare/v16.11.0...v16.12.0) (2021-01-13)
+
+
+### Features
+
+* Support for perfs.execution_stats flag ([19cda8c](https://github.com/cozy/cozy-client/commit/19cda8cb6df9f9c204f3ba964ecb4709120c77a1))
+
+
+
+
+
 # [16.11.0](https://github.com/cozy/cozy-client/compare/v16.10.2...v16.11.0) (2021-01-11)
 
 **Note:** Version bump only for package cozy-pouch-link
