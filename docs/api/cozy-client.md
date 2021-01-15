@@ -2322,7 +2322,7 @@ Trigger states come from /jobs/triggers
 
 * [triggerStates](#triggerStates)
     * [.getLastExecution()](#triggerStates.getLastExecution)
-    * [.getLastsuccess()](#triggerStates.getLastsuccess)
+    * [.getLastSuccess()](#triggerStates.getLastSuccess)
     * [.isErrored()](#triggerStates.isErrored)
     * [.getLastErrorType()](#triggerStates.getLastErrorType)
 
@@ -2332,9 +2332,9 @@ Trigger states come from /jobs/triggers
 Returns when the trigger was last executed. Need a trigger
 
 **Kind**: static method of [<code>triggerStates</code>](#triggerStates)  
-<a name="triggerStates.getLastsuccess"></a>
+<a name="triggerStates.getLastSuccess"></a>
 
-### triggerStates.getLastsuccess()
+### triggerStates.getLastSuccess()
 Returns when the trigger was last successfully executed.
 
 **Kind**: static method of [<code>triggerStates</code>](#triggerStates)  
