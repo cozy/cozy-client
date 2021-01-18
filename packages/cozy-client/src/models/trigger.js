@@ -18,8 +18,14 @@ const triggerStates = {
   /** Returns when the trigger was last executed. Need a trigger */
   getLastExecution: triggerState =>
     get(triggerState, 'current_state.last_execution'),
+  getLastsuccess: triggerState => {
+    console.warn(
+      'Deprecated, please use getLastSuccess instead of getLastsuccess'
+    )
+    return get(triggerState, 'current_state.last_success')
+  },
   /** Returns when the trigger was last successfully executed. */
-  getLastsuccess: triggerState =>
+  getLastSuccess: triggerState =>
     get(triggerState, 'current_state.last_success'),
   /** Returns whether last job failed */
   isErrored: triggerState =>
@@ -80,7 +86,7 @@ const triggers = {
    */
   isLatestErrorMuted: (trigger, account) => {
     const lastErrorType = triggerStates.getLastErrorType(trigger)
-    const lastSuccess = triggerStates.getLastsuccess(trigger)
+    const lastSuccess = triggerStates.getLastSuccess(trigger)
     const lastSuccessDate = lastSuccess ? new Date(lastSuccess) : new Date()
 
     const mutedErrors = getMutedErrors(account)

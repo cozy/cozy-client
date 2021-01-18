@@ -88,4 +88,4 @@ const main = async () => {
   })
 }
 
-main(process.argv).catch(e => console.error(e))
+main().catch(e => console.error(e))

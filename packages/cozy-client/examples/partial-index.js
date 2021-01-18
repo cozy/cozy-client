@@ -54,4 +54,4 @@ const main = async () => {
   console.log(contacts.length)
 }
 
-main(process.argv).catch(e => console.error(e))
+main().catch(e => console.error(e))
