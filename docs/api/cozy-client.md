@@ -194,6 +194,9 @@ example.</p>
 <dt><a href="#saveFileQualification">saveFileQualification</a> ⇒ <code>object</code></dt>
 <dd><p>Save the file with the given qualification</p>
 </dd>
+<dt><a href="#getFilesByQualificationRules">getFilesByQualificationRules</a> ⇒ <code>object</code></dt>
+<dd><p>Helper to query files based on qualification rules</p>
+</dd>
 <dt><a href="#ensureMagicFolder">ensureMagicFolder</a> ⇒ <code>object</code></dt>
 <dd><p>Returns a &quot;Magic Folder&quot;, given its id. See <a href="https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.apps/#special-iocozyapps-doctypes">https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.apps/#special-iocozyapps-doctypes</a></p>
 </dd>
@@ -2208,6 +2211,19 @@ Save the file with the given qualification
 | client | <code>object</code> | The CozyClient instance |
 | file | <code>object</code> | The file to qualify |
 | qualification | <code>object</code> | The file qualification |
+
+<a name="getFilesByQualificationRules"></a>
+
+## getFilesByQualificationRules ⇒ <code>object</code>
+Helper to query files based on qualification rules
+
+**Kind**: global constant  
+**Returns**: <code>object</code> - - The files found by the rules  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| client | <code>object</code> | The CozyClient instance |
+| docRules | <code>object</code> | the rules containing the searched qualification and the count |
 
 <a name="ensureMagicFolder"></a>
 

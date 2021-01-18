@@ -1,6 +1,7 @@
 import get from 'lodash/get'
 import isString from 'lodash/isString'
 import { setQualification } from './document'
+import { Q } from '../queries/dsl'
 
 const FILE_TYPE = 'file'
 const DIR_TYPE = 'directory'
@@ -197,4 +198,28 @@ export const saveFileQualification = async (client, file, qualification) => {
   return client
     .collection('io.cozy.files')
     .updateMetadataAttribute(file._id, qualifiedFile.metadata)
+}
+
+/**
+ * Helper to query files based on qualification rules
+ *
+ * @param {object} client - The CozyClient instance
+ * @param {object} docRules - the rules containing the searched qualification and the count
+ * @returns {object} - The files found by the rules
+ */
+export const getFilesByQualificationRules = async (client, docRules) => {
+  const { rules, count } = docRules
+  const query = Q('io.cozy.files')
+    .where({
+      ...rules
+    })
+    .partialIndex({
+      class: 'file',
+      trashed: false
+    })
+    .indexFields(['cozyMetadata.updatedAt', 'metadata.qualification'])
+    .sortBy([{ 'cozyMetadata.updatedAt': 'desc' }])
+    .limitBy(count ? count : 1)
+  const result = await client.query(query)
+  return result
 }
