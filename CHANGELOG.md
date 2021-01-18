@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [16.12.1](https://github.com/cozy/cozy-client/compare/v16.12.0...v16.12.1) (2021-01-18)
+
+
+### Bug Fixes
+
+* getLastsuccess -> getLastSuccess ([4a60bb2](https://github.com/cozy/cozy-client/commit/4a60bb252a9c04543194e8697b8afeb96a0a62b7))
+
+
+
+
+
 # [16.12.0](https://github.com/cozy/cozy-client/compare/v16.11.0...v16.12.0) (2021-01-13)
 
 
