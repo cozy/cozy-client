@@ -207,7 +207,7 @@ export const saveFileQualification = async (client, file, qualification) => {
  * @param {object} docRules - the rules containing the searched qualification and the count
  * @returns {object} - The files found by the rules
  */
-export const getFilesByQualificationRules = async (client, docRules) => {
+export const fetchFilesByQualificationRules = async (client, docRules) => {
   const { rules, count } = docRules
   const query = Q('io.cozy.files')
     .where({
