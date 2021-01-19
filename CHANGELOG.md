@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [16.13.1](https://github.com/cozy/cozy-client/compare/v16.13.0...v16.13.1) (2021-01-19)
+
+
+### Bug Fixes
+
+* Fetch qualifications by rules ([72ed55d](https://github.com/cozy/cozy-client/commit/72ed55da9bbb389b1286dd848be8f790ab4a489c))
+
+
+
+
+
 # [16.13.0](https://github.com/cozy/cozy-client/compare/v16.12.1...v16.13.0) (2021-01-19)
 
 
