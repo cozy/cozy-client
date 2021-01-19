@@ -214,7 +214,6 @@ export const fetchFilesByQualificationRules = async (client, docRules) => {
       ...rules
     })
     .partialIndex({
-      class: 'file',
       trashed: false
     })
     .indexFields(['cozyMetadata.updatedAt', 'metadata.qualification'])
