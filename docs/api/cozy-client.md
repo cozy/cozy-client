@@ -194,7 +194,7 @@ example.</p>
 <dt><a href="#saveFileQualification">saveFileQualification</a> ⇒ <code>object</code></dt>
 <dd><p>Save the file with the given qualification</p>
 </dd>
-<dt><a href="#getFilesByQualificationRules">getFilesByQualificationRules</a> ⇒ <code>object</code></dt>
+<dt><a href="#fetchFilesByQualificationRules">fetchFilesByQualificationRules</a> ⇒ <code>object</code></dt>
 <dd><p>Helper to query files based on qualification rules</p>
 </dd>
 <dt><a href="#ensureMagicFolder">ensureMagicFolder</a> ⇒ <code>object</code></dt>
@@ -2212,9 +2212,9 @@ Save the file with the given qualification
 | file | <code>object</code> | The file to qualify |
 | qualification | <code>object</code> | The file qualification |
 
-<a name="getFilesByQualificationRules"></a>
+<a name="fetchFilesByQualificationRules"></a>
 
-## getFilesByQualificationRules ⇒ <code>object</code>
+## fetchFilesByQualificationRules ⇒ <code>object</code>
 Helper to query files based on qualification rules
 
 **Kind**: global constant  
