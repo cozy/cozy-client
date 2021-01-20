@@ -21,6 +21,16 @@ export const dontThrowNotFoundError = (error, data = []) => {
 }
 
 /**
+ * Helper to identify an index conflict
+ *
+ * @param {Error} error
+ * @returns {boolean} - Whether or not the error is an index conflict error
+ */
+export const isIndexConflictError = error => {
+  return error.message.match(/error_saving_ddoc/)
+}
+
+/**
  * Utility class to abstract an regroup identical methods and logics for
  * specific collections.
  */
