@@ -49,6 +49,9 @@ through OAuth.</p>
 <dt><a href="#dontThrowNotFoundError">dontThrowNotFoundError</a> ⇒ <code>object</code></dt>
 <dd><p>Handler for error response which return a empty value for &quot;not found&quot; error</p>
 </dd>
+<dt><a href="#isIndexNotFoundError">isIndexNotFoundError</a> ⇒ <code>boolean</code></dt>
+<dd><p>Helper to identify an index not found error</p>
+</dd>
 <dt><a href="#isIndexConflictError">isIndexConflictError</a> ⇒ <code>boolean</code></dt>
 <dd><p>Helper to identify an index conflict</p>
 </dd>
@@ -257,6 +260,7 @@ Abstracts a collection of documents of the same doctype, providing CRUD methods 
 
 * [DocumentCollection](#DocumentCollection)
     * [.all(options)](#DocumentCollection+all) ⇒ <code>Object</code>
+    * [.findWithMango(path, selector, options)](#DocumentCollection+findWithMango) ⇒ <code>object</code>
     * [.find(selector, options)](#DocumentCollection+find) ⇒ <code>Object</code>
     * [.get(id)](#DocumentCollection+get) ⇒ <code>object</code>
     * [.getAll()](#DocumentCollection+getAll)
@@ -284,6 +288,26 @@ The returned documents are paginated by the stack.
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | The fetch options: pagination & fetch of specific docs. |
+
+<a name="DocumentCollection+findWithMango"></a>
+
+### documentCollection.findWithMango(path, selector, options) ⇒ <code>object</code>
+Find documents with the mango selector and create index
+if missing.
+
+We adopt an optimistic approach for index creation:
+we run the query first, and only if an index missing
+error is returned, the index is created and
+the query run again.
+
+**Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
+**Returns**: <code>object</code> - - The find response  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| path | <code>string</code> | The route path |
+| selector | <code>object</code> | The mango selector |
+| options | <code>object</code> | The find options |
 
 <a name="DocumentCollection+find"></a>
 
@@ -1352,6 +1376,18 @@ found" error.
 | --- | --- | --- |
 | error | <code>Error</code> |  |
 | data | <code>Array</code> \| <code>object</code> | Data to return in case of "not found" error |
+
+<a name="isIndexNotFoundError"></a>
+
+## isIndexNotFoundError ⇒ <code>boolean</code>
+Helper to identify an index not found error
+
+**Kind**: global constant  
+**Returns**: <code>boolean</code> - - Whether or not the error is an index not found error  
+
+| Param | Type |
+| --- | --- |
+| error | <code>Error</code> | 
 
 <a name="isIndexConflictError"></a>
 

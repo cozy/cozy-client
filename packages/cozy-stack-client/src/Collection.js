@@ -21,6 +21,16 @@ export const dontThrowNotFoundError = (error, data = []) => {
 }
 
 /**
+ * Helper to identify an index not found error
+ *
+ * @param {Error} error
+ * @returns {boolean} - Whether or not the error is an index not found error
+ */
+export const isIndexNotFoundError = error => {
+  return error.message.match(/no_index/)
+}
+
+/**
  * Helper to identify an index conflict
  *
  * @param {Error} error

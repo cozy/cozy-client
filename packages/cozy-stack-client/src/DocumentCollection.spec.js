@@ -380,13 +380,6 @@ describe('DocumentCollection', () => {
 
   describe('find', () => {
     beforeEach(() => {
-      client.fetchJSON.mockReturnValueOnce(
-        Promise.resolve({
-          id: '_design/123456',
-          name: '123456',
-          result: 'exists'
-        })
-      )
       client.fetchJSON.mockReturnValue(Promise.resolve(FIND_RESPONSE_FIXTURE))
     })
 
@@ -399,7 +392,7 @@ describe('DocumentCollection', () => {
         {
           selector: { done: false },
           skip: 0,
-          use_index: '_design/123456'
+          use_index: 'by_done'
         }
       )
     })
@@ -414,7 +407,7 @@ describe('DocumentCollection', () => {
           limit: 200,
           selector: { done: false },
           skip: 50,
-          use_index: '_design/123456'
+          use_index: 'by_done'
         }
       )
     })
@@ -430,7 +423,7 @@ describe('DocumentCollection', () => {
           selector: { done: false },
           skip: 0,
           bookmark: 'himark',
-          use_index: '_design/123456'
+          use_index: 'by_done'
         }
       )
     })
@@ -445,7 +438,7 @@ describe('DocumentCollection', () => {
           skip: 0,
           selector: { done: false },
           sort: [{ label: 'desc' }, { done: 'desc' }],
-          use_index: '_design/123456'
+          use_index: 'by_label_and_done'
         }
       )
     })
@@ -460,7 +453,7 @@ describe('DocumentCollection', () => {
           skip: 0,
           selector: { done: false },
           sort: [{ label: 'asc' }, { done: 'asc' }],
-          use_index: '_design/123456'
+          use_index: 'by_label_and_done'
         }
       )
       await collection.find({ done: false }, { sort: [{ label: 'desc' }] })
@@ -471,7 +464,7 @@ describe('DocumentCollection', () => {
           skip: 0,
           selector: { done: false },
           sort: [{ label: 'desc' }, { done: 'desc' }],
-          use_index: '_design/123456'
+          use_index: 'by_label_and_done'
         }
       )
     })
@@ -499,7 +492,7 @@ describe('DocumentCollection', () => {
           skip: 0,
           selector: { done: false },
           sort: [{ label: 'desc' }, { _id: 'desc' }, { done: 'desc' }],
-          use_index: '_design/123456'
+          use_index: 'by_label_and__id_and_done'
         }
       )
     })
@@ -516,26 +509,70 @@ describe('DocumentCollection', () => {
       expect(resp.data[0]).toHaveDocumentIdentity()
     })
 
-    it('should index the specified fields', async () => {
+    it('should index the specified fields when no index exists', async () => {
+      client.fetchJSON.mockRejectedValueOnce(new Error('no_index'))
+
       const collection = new DocumentCollection('io.cozy.todos', client)
       await collection.find(
         { done: { $exists: true } },
         { indexedFields: ['label'], sort: [{ label: 'desc' }] }
       )
+      const expectedFindParams = {
+        skip: 0,
+        selector: { done: { $exists: true } },
+        sort: [{ label: 'desc' }],
+        use_index: 'by_label'
+      }
+
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'POST',
+        '/data/io.cozy.todos/_find',
+        expectedFindParams
+      )
+
+      expect(client.fetchJSON).toHaveBeenNthCalledWith(
+        1,
+        'POST',
         '/data/io.cozy.todos/_index',
-        { index: { fields: ['label'] } }
+        { index: { fields: ['label', 'done'] } }
       )
       expect(client.fetchJSON).toHaveBeenLastCalledWith(
         'POST',
         '/data/io.cozy.todos/_find',
-        {
-          skip: 0,
-          selector: { done: { $exists: true } },
-          sort: [{ label: 'desc' }],
-          use_index: '_design/123456'
-        }
+        expectedFindParams
+      )
+    })
+
+    it('should deal with index conflict', async () => {
+      client.fetchJSON.mockRejectedValueOnce(new Error('no_index'))
+      client.fetchJSON.mockRejectedValueOnce(new Error('error_saving_ddoc'))
+
+      const collection = new DocumentCollection('io.cozy.todos', client)
+      await collection.find(
+        { done: { $exists: true } },
+        { indexedFields: ['label'], sort: [{ label: 'desc' }] }
+      )
+      const expectedFindParams = {
+        skip: 0,
+        selector: { done: { $exists: true } },
+        sort: [{ label: 'desc' }],
+        use_index: 'by_label'
+      }
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/data/io.cozy.todos/_find',
+        expectedFindParams
+      )
+      expect(client.fetchJSON).toHaveBeenNthCalledWith(
+        1,
+        'POST',
+        '/data/io.cozy.todos/_index',
+        { index: { fields: ['label', 'done'] } }
+      )
+      expect(client.fetchJSON).toHaveBeenLastCalledWith(
+        'POST',
+        '/data/io.cozy.todos/_find',
+        expectedFindParams
       )
     })
 
@@ -591,7 +628,7 @@ describe('DocumentCollection', () => {
         {
           selector: { done: false },
           skip: 0,
-          use_index: '_design/123456',
+          use_index: 'by_done',
           execution_stats: true
         }
       )

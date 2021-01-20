@@ -9,6 +9,7 @@ import qs from 'qs'
 
 import Collection, {
   dontThrowNotFoundError,
+  isIndexNotFoundError,
   isIndexConflictError
 } from './Collection'
 import * as querystring from './querystring'
@@ -156,6 +157,47 @@ class DocumentCollection {
     }
   }
 
+  async fetchDocumentsWithMango(path, selector, options = {}) {
+    return this.stackClient.fetchJSON(
+      'POST',
+      path,
+      await this.toMangoOptions(selector, options)
+    )
+  }
+
+  /**
+   * Find documents with the mango selector and create index
+   * if missing.
+   *
+   * We adopt an optimistic approach for index creation:
+   * we run the query first, and only if an index missing
+   * error is returned, the index is created and
+   * the query run again.
+   *
+   * @param {string} path - The route path
+   * @param {object} selector - The mango selector
+   * @param {object} options - The find options
+   * @returns {object} - The find response
+   */
+  async findWithMango(path, selector, options = {}) {
+    const { indexedFields, partialFilter } = options
+    let resp
+    try {
+      resp = await this.fetchDocumentsWithMango(path, selector, options)
+    } catch (error) {
+      if (!isIndexNotFoundError(error)) {
+        throw error
+      } else {
+        await this.createIndex(indexedFields, {
+          partialFilter,
+          indexName: this.getIndexNameFromFields(indexedFields)
+        })
+        resp = await this.fetchDocumentsWithMango(path, selector, options)
+      }
+    }
+    return resp
+  }
+
   /**
    * Returns a filtered list of documents using a Mango selector.
    *
@@ -170,11 +212,8 @@ class DocumentCollection {
     const { skip = 0 } = options
     let resp
     try {
-      resp = await this.stackClient.fetchJSON(
-        'POST',
-        uri`/data/${this.doctype}/_find`,
-        await this.toMangoOptions(selector, options)
-      )
+      const path = uri`/data/${this.doctype}/_find`
+      resp = await this.findWithMango(path, selector, options)
     } catch (error) {
       return dontThrowNotFoundError(error)
     }
@@ -325,7 +364,7 @@ class DocumentCollection {
   }
 
   async toMangoOptions(selector, options = {}) {
-    let { sort, indexedFields, partialFilter } = options
+    let { sort, indexedFields } = options
     const { fields, skip = 0, limit, bookmark } = options
 
     if (sort && !Array.isArray(sort)) {
@@ -338,15 +377,12 @@ class DocumentCollection {
         []
       )
     }
-
     indexedFields = indexedFields
       ? indexedFields
       : this.getIndexFields({ sort, selector })
 
     const indexId =
-      options.indexId ||
-      (await this.getIndexId(indexedFields, { partialFilter }))
-
+      options.indexId || this.getIndexNameFromFields(indexedFields)
     if (sort) {
       const sortOrders = uniq(
         sort.map(sortOption => head(Object.values(sortOption)))
@@ -417,20 +453,34 @@ class DocumentCollection {
     return this.indexes[indexName].id
   }
 
-  async createIndex(fields, { partialFilter } = {}) {
+  async createIndex(fields, { partialFilter, indexName } = {}) {
     const indexDef = {
       index: {
         fields
       }
     }
+    if (indexName) {
+      indexDef.ddoc = indexName
+    }
     if (partialFilter) {
       indexDef.index.partial_filter_selector = partialFilter
     }
-    const resp = await this.stackClient.fetchJSON(
-      'POST',
-      uri`/data/${this.doctype}/_index`,
-      indexDef
-    )
+    let resp
+    try {
+      resp = await this.stackClient.fetchJSON(
+        'POST',
+        uri`/data/${this.doctype}/_index`,
+        indexDef
+      )
+    } catch (error) {
+      if (!isIndexConflictError(error)) {
+        throw error
+      } else {
+        // This error much probably comes from 2 parallel index creation,
+        // so there is nothing to do here.
+        return
+      }
+    }
     const indexResp = {
       id: resp.id,
       fields
