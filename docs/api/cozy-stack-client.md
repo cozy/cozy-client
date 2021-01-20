@@ -49,6 +49,9 @@ through OAuth.</p>
 <dt><a href="#dontThrowNotFoundError">dontThrowNotFoundError</a> ⇒ <code>object</code></dt>
 <dd><p>Handler for error response which return a empty value for &quot;not found&quot; error</p>
 </dd>
+<dt><a href="#isIndexConflictError">isIndexConflictError</a> ⇒ <code>boolean</code></dt>
+<dd><p>Helper to identify an index conflict</p>
+</dd>
 <dt><a href="#getPermissionsFor">getPermissionsFor</a> ⇒ <code>object</code></dt>
 <dd><p>Build a permission set</p>
 </dd>
@@ -1349,6 +1352,18 @@ found" error.
 | --- | --- | --- |
 | error | <code>Error</code> |  |
 | data | <code>Array</code> \| <code>object</code> | Data to return in case of "not found" error |
+
+<a name="isIndexConflictError"></a>
+
+## isIndexConflictError ⇒ <code>boolean</code>
+Helper to identify an index conflict
+
+**Kind**: global constant  
+**Returns**: <code>boolean</code> - - Whether or not the error is an index conflict error  
+
+| Param | Type |
+| --- | --- |
+| error | <code>Error</code> | 
 
 <a name="getPermissionsFor"></a>
 

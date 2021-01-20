@@ -7,7 +7,10 @@ import omit from 'lodash/omit'
 import startsWith from 'lodash/startsWith'
 import qs from 'qs'
 
-import Collection, { dontThrowNotFoundError } from './Collection'
+import Collection, {
+  dontThrowNotFoundError,
+  isIndexConflictError
+} from './Collection'
 import * as querystring from './querystring'
 import { FetchError } from './errors'
 
@@ -392,9 +395,24 @@ class DocumentCollection {
     { partialFilter, indexName = this.getIndexNameFromFields(fields) }
   ) {
     if (!this.indexes[indexName]) {
-      this.indexes[indexName] = await this.createIndex(fields, {
-        partialFilter
-      })
+      let index
+      try {
+        index = await this.createIndex(fields, {
+          partialFilter
+        })
+      } catch (error) {
+        if (!isIndexConflictError(error)) {
+          throw error
+        } else {
+          // This error much probably comes from 2 parallel index creation.
+          // So we wait & retry
+          await sleep(1000)
+          index = await this.createIndex(fields, {
+            partialFilter
+          })
+        }
+      }
+      this.indexes[indexName] = index
     }
     return this.indexes[indexName].id
   }

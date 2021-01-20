@@ -539,6 +539,48 @@ describe('DocumentCollection', () => {
       )
     })
 
+    it('should deal with index conflict', async () => {
+      client.fetchJSON.mockRestore()
+      client.fetchJSON
+        .mockRejectedValueOnce(new Error('error_saving_ddoc'))
+        .mockReturnValueOnce(
+          Promise.resolve({
+            id: '_design/123456',
+            name: '123456',
+            result: 'exists'
+          })
+        )
+        .mockReturnValueOnce(Promise.resolve(FIND_RESPONSE_FIXTURE))
+      const collection = new DocumentCollection('io.cozy.todos', client)
+      await collection.find(
+        { done: { $exists: true } },
+        { indexedFields: ['label'], sort: [{ label: 'desc' }] }
+      )
+
+      expect(client.fetchJSON).toHaveBeenNthCalledWith(
+        1,
+        'POST',
+        '/data/io.cozy.todos/_index',
+        { index: { fields: ['label'] } }
+      )
+      expect(client.fetchJSON).toHaveBeenNthCalledWith(
+        2,
+        'POST',
+        '/data/io.cozy.todos/_index',
+        { index: { fields: ['label'] } }
+      )
+      expect(client.fetchJSON).toHaveBeenLastCalledWith(
+        'POST',
+        '/data/io.cozy.todos/_find',
+        {
+          skip: 0,
+          selector: { done: { $exists: true } },
+          sort: [{ label: 'desc' }],
+          use_index: '_design/123456'
+        }
+      )
+    })
+
     it('should set executions stats if flag is enabled', async () => {
       const collection = new DocumentCollection('io.cozy.todos', client)
       flag('perfs.execution_stats', true)
