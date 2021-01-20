@@ -6,6 +6,7 @@ import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 import { uri, slugify, forceFileDownload, formatBytes } from './utils'
 import * as querystring from './querystring'
 import { FetchError } from './errors'
+import { dontThrowNotFoundError } from './Collection'
 
 /**
  * Attributes used for directory creation
@@ -99,6 +100,14 @@ class FileCollection extends DocumentCollection {
     return this.statById(id)
   }
 
+  async fetchFindFiles(selector, options) {
+    return this.stackClient.fetchJSON(
+      'POST',
+      '/files/_find',
+      await this.toMangoOptions(selector, options)
+    )
+  }
+
   /**
    * Returns a filtered list of documents using a Mango selector.
    *
@@ -111,12 +120,13 @@ class FileCollection extends DocumentCollection {
    */
   async find(selector, options = {}) {
     const { skip = 0 } = options
-
-    const resp = await this.stackClient.fetchJSON(
-      'POST',
-      '/files/_find',
-      await this.toMangoOptions(selector, options)
-    )
+    let resp
+    try {
+      const path = '/files/_find'
+      resp = await this.findWithMango(path, selector, options)
+    } catch (error) {
+      return dontThrowNotFoundError(error)
+    }
 
     const nextLink = get(resp, 'links.next', '')
     const nextLinkURL = new URL(`${this.stackClient.uri}${nextLink}`)

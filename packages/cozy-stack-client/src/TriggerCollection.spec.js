@@ -202,13 +202,6 @@ describe('TriggerCollection', () => {
     })
 
     it('should call /data/io.cozy.triggers/_find route if multiple arguments are passed', async () => {
-      stackClient.fetchJSON.mockReturnValueOnce(
-        Promise.resolve({
-          id: '_design/123456',
-          name: '123456',
-          result: 'exists'
-        })
-      )
       stackClient.fetchJSON.mockReturnValue(FIND_RESPONSE_FIXTURES)
       await collection.find({
         worker: 'thumbnail',
@@ -225,7 +218,7 @@ describe('TriggerCollection', () => {
             worker: 'thumbnail'
           },
           skip: 0,
-          use_index: '_design/123456'
+          use_index: 'by_worker_and_message'
         }
       )
     })
