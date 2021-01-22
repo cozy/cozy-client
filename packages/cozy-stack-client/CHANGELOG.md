@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.14.0](https://github.com/cozy/cozy-client/compare/v16.13.1...v16.14.0) (2021-01-22)
+
+
+### Features
+
+* Handle index conflicts ([5fa5832](https://github.com/cozy/cozy-client/commit/5fa58327201a95c4e9bff054d8aad41180c9d446))
+
+
+
+
+
 # [16.12.0](https://github.com/cozy/cozy-client/compare/v16.11.0...v16.12.0) (2021-01-13)
 
 
