@@ -1,6 +1,7 @@
 import get from 'lodash/get'
 import set from 'lodash/set'
 import Association from './Association'
+import { Q } from '../queries/dsl'
 
 export default class HasOne extends Association {
   get raw() {
@@ -20,7 +21,7 @@ export default class HasOne extends Association {
     if (!relationship || !relationship._id) {
       return null
     }
-    return client.get(assoc.doctype, relationship._id)
+    return Q(assoc.doctype).getById(relationship._id)
   }
 
   set(doc) {

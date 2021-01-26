@@ -1,6 +1,6 @@
 import omit from 'lodash/omit'
 import HasMany from './HasMany'
-import { QueryDefinition, Mutations } from '../queries/dsl'
+import { QueryDefinition, Mutations, Q } from '../queries/dsl'
 import { getDocumentFromState } from '../store'
 
 /**
@@ -95,7 +95,9 @@ export default class HasManyFiles extends HasMany {
   static query(document, client, assoc) {
     const key = [document._type, document._id]
     const cursor = [key, '']
-    const queryAll = client.find(assoc.doctype)
-    return queryAll.referencedBy(document).offsetCursor(cursor)
+    const qDef = Q(assoc.doctype)
+      .referencedBy(document)
+      .offsetCursor(cursor)
+    return qDef
   }
 }
