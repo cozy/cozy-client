@@ -4,6 +4,7 @@ const commonConfig = {
   setupFilesAfterEnv: [
     '<rootDir>/packages/cozy-stack-client/src/__tests__/setup.js'
   ],
+  watchPathIgnorePatterns: ['node_modules'],
   modulePathIgnorePatterns: ['<rootDir>/packages/.*/dist/'],
   transformIgnorePatterns: ['node_modules/(?!(cozy-ui))'],
   testEnvironment: 'jest-environment-jsdom-sixteen',
