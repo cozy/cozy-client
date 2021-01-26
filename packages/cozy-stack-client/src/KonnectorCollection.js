@@ -1,10 +1,11 @@
+import pick from 'lodash/pick'
+
 import AppCollection from './AppCollection'
 import TriggerCollection, {
   isForKonnector,
   isForAccount
 } from './TriggerCollection'
 import { normalizeDoc } from './DocumentCollection'
-import pick from 'lodash/pick'
 
 export const KONNECTORS_DOCTYPE = 'io.cozy.konnectors'
 

@@ -1,6 +1,12 @@
+import get from 'lodash/get'
+import {
+  transformRegistryFormatToStackFormat,
+  registryEndpoint
+} from 'cozy-client/dist/registry'
+
+import Collection from './Collection'
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 import { FetchError } from './errors'
-import Collection from './Collection'
 
 export const APPS_DOCTYPE = 'io.cozy.apps'
 
@@ -17,7 +23,7 @@ class AppCollection extends DocumentCollection {
     this.endpoint = '/apps/'
   }
 
-  get(idArg, query) {
+  async get(idArg, query) {
     let id
     if (idArg.indexOf('/') > -1) {
       id = idArg.split('/')[1]
@@ -30,13 +36,45 @@ class AppCollection extends DocumentCollection {
       )
       id = idArg
     }
-    return Collection.get(
-      this.stackClient,
-      `${this.endpoint}${encodeURIComponent(id)}`,
-      {
-        normalize: this.constructor.normalizeDoctype(this.doctype)
+
+    const sources = get(query, 'sources', ['stack'])
+
+    if (sources.length === 0 || (query && !Array.isArray(query.sources))) {
+      throw new Error(
+        'Invalid "sources" attribute passed in query, please use an array with at least one element.'
+      )
+    }
+
+    const dataFetchers = {
+      stack: () =>
+        Collection.get(
+          this.stackClient,
+          `${this.endpoint}${encodeURIComponent(id)}`,
+          {
+            normalize: this.constructor.normalizeDoctype(this.doctype)
+          }
+        ),
+      registry: () => this.stackClient.fetchJSON('GET', registryEndpoint + id)
+    }
+
+    for (const source of sources) {
+      try {
+        const res = await dataFetchers[source]()
+
+        if (source !== 'registry') {
+          return res
+        }
+
+        const data = transformRegistryFormatToStackFormat(res)
+        const normalizedDoc = normalizeDoc(data, this.doctype)
+
+        return { data: normalizedDoc }
+      } catch (err) {
+        if (source === sources[sources.length - 1]) {
+          throw err
+        }
       }
-    )
+    }
   }
 
   /**
