@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Q } from '../queries/dsl'
 
 const useCapabilities = client => {
   const [capabilities, setCapabilities] = useState()
@@ -8,7 +9,7 @@ const useCapabilities = client => {
       setFetchStatus('loading')
       try {
         const capabilitiesResult = await client.query(
-          client.get('io.cozy.settings', 'capabilities')
+          Q('io.cozy.settings').getById('capabilities')
         )
 
         setCapabilities(capabilitiesResult)

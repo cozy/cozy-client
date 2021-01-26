@@ -1,5 +1,5 @@
 import Association from './Association'
-
+import { Q } from '../queries/dsl'
 /**
  * Here the id of the document is directly set in the attribute
  * of the document, not in the relationships attribute
@@ -10,7 +10,7 @@ export default class HasOneInPlace extends Association {
   }
 
   get data() {
-    return this.get(this.doctype, this.raw)
+    return Q(this.doctype).getById(this.raw)
   }
 
   static query(doc, client, assoc) {
