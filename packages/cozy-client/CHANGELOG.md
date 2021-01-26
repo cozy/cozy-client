@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.15.0](https://github.com/cozy/cozy-client/compare/v16.14.0...v16.15.0) (2021-01-26)
+
+
+### Features
+
+* Use Q instead of client.get ([623f02c](https://github.com/cozy/cozy-client/commit/623f02cd697e7b26d6707bd085be87fc46f99605))
+
+
+
+
+
 # [16.14.0](https://github.com/cozy/cozy-client/compare/v16.13.1...v16.14.0) (2021-01-22)
 
 **Note:** Version bump only for package cozy-client
