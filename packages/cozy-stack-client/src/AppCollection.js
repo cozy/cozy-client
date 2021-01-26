@@ -17,7 +17,7 @@ class AppCollection extends DocumentCollection {
     this.endpoint = '/apps/'
   }
 
-  get(idArg) {
+  get(idArg, query) {
     let id
     if (idArg.indexOf('/') > -1) {
       id = idArg.split('/')[1]
