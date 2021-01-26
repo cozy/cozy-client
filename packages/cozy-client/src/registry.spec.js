@@ -1,6 +1,6 @@
 import CozyClient from 'cozy-client'
 import termUtils from './terms'
-import Registry from './registry'
+import Registry, { transformRegistryFormatToStackFormat } from './registry'
 
 jest.mock('./terms', () => ({
   save: jest.fn()
@@ -120,5 +120,24 @@ describe('registry api', () => {
         '/registry?limit=200&versionsChannel=beta&latestChannelVersion=beta&filter[type]=konnector'
       )
     })
+  })
+})
+
+describe('transformRegistryFormatToStackFormat', () => {
+  it('should add "id" and "attributes" properties', () => {
+    const registryRes = {
+      latest_version: { manifest: { name: 'name', source: 'source' } },
+      type: 'konnector'
+    }
+    const stackFormat = {
+      id: 'source',
+      attributes: { name: 'name', source: 'source' },
+      latest_version: { manifest: { name: 'name', source: 'source' } },
+      type: 'konnector'
+    }
+
+    expect(transformRegistryFormatToStackFormat(registryRes)).toEqual(
+      stackFormat
+    )
   })
 })

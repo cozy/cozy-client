@@ -1,6 +1,16 @@
+import get from 'lodash/get'
 import 'url-search-params-polyfill'
+
 import termUtils from './terms'
 import { APP_TYPE } from './constants'
+
+export const transformRegistryFormatToStackFormat = doc => ({
+  id: get(doc, 'latest_version.manifest.source'),
+  attributes: get(doc, 'latest_version.manifest'),
+  ...doc
+})
+
+export const registryEndpoint = '/registry/'
 
 const queryPartFromOptions = options => {
   const query = new URLSearchParams(options).toString()
