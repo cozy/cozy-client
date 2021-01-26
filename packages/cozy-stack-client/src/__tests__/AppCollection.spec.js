@@ -50,6 +50,16 @@ describe(`AppCollection`, () => {
       expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/apps/fakeid')
     })
 
+    it('should return a correct JSON API response', async () => {
+      const resp = await collection.get('io.cozy.apps/fakeid')
+      expect(resp).toConformToJSONAPI()
+    })
+
+    it('should return normalized document', async () => {
+      const resp = await collection.get('io.cozy.apps/fakeid')
+      expect(resp.data).toHaveDocumentIdentity()
+    })
+
     describe('deprecated get call without <doctype>/', () => {
       beforeEach(() => {
         jest.spyOn(console, 'warn').mockImplementation(() => {})
@@ -64,14 +74,83 @@ describe(`AppCollection`, () => {
       })
     })
 
-    it('should return a correct JSON API response', async () => {
-      const resp = await collection.get('io.cozy.apps/fakeid')
-      expect(resp).toConformToJSONAPI()
-    })
+    describe('get call with query argument', () => {
+      const query = { sources: ['stack', 'registry'] }
 
-    it('should return normalized document', async () => {
-      const resp = await collection.get('io.cozy.apps/fakeid')
-      expect(resp.data).toHaveDocumentIdentity()
+      it('should throw an error if query.sources is not an array', async () => {
+        const query = { sources: {} }
+        expect.assertions(1)
+        try {
+          await collection.get('io.cozy.apps/fakeid', query)
+        } catch (e) {
+          expect(e.message).toBe(
+            'Invalid "sources" attribute passed in query, please use an array with at least one element.'
+          )
+        }
+      })
+
+      it('should fetch /apps/fakeid first and not /registry/fakeid if nothing went wrong', async () => {
+        await collection.get('io.cozy.apps/fakeid', query)
+
+        expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/apps/fakeid')
+
+        expect(client.fetchJSON).not.toHaveBeenCalledWith(
+          'GET',
+          '/registry/fakeid'
+        )
+      })
+
+      it('should fetch /registry/fakeid if /apps/fakeid returns an error', async () => {
+        jest
+          .spyOn(client, 'fetchJSON')
+          .mockReturnValueOnce(Promise.reject(new Error('Bad request')))
+
+        await collection.get('io.cozy.apps/fakeid', query)
+
+        expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/apps/fakeid')
+        expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/registry/fakeid')
+      })
+
+      it('should return an app from stack if the fetch worked', async () => {
+        const stackRes = {
+          data: {
+            id: 'fromStack',
+            type: 'type',
+            attributes: 'attributes'
+          }
+        }
+        const registryRes = {
+          id: 'fromRegistry',
+          type: 'type',
+          attributes: 'attributes'
+        }
+
+        jest
+          .spyOn(client, 'fetchJSON')
+          .mockResolvedValueOnce(stackRes)
+          .mockResolvedValue(registryRes)
+
+        const { data } = await collection.get('io.cozy.apps/fakeid', query)
+
+        expect(data.id).toBe('fromStack')
+      })
+
+      it('should return app from registry if something went wrong in fetching stack', async () => {
+        const registryRes = {
+          id: 'fromRegistry',
+          type: 'type',
+          attributes: 'attributes'
+        }
+
+        jest
+          .spyOn(client, 'fetchJSON')
+          .mockReturnValueOnce(Promise.reject(new Error('Bad request')))
+          .mockResolvedValue(registryRes)
+
+        const { data } = await collection.get('io.cozy.apps/fakeid', query)
+
+        expect(data.id).toBe('fromRegistry')
+      })
     })
   })
 
