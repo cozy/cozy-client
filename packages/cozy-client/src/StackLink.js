@@ -35,7 +35,7 @@ export default class StackLink extends CozyLink {
     }
     const collection = this.stackClient.collection(doctype)
     if (id) {
-      return collection.get(id)
+      return collection.get(id, query)
     }
     if (ids) {
       return collection.getAll(ids)
