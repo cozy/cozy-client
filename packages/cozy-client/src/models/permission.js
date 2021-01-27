@@ -1,6 +1,7 @@
 import intersection from 'lodash/intersection'
 import get from 'lodash/get'
-import CozyClient from 'cozy-client'
+import CozyClient from '../CozyClient'
+import { Q } from '../queries/dsl'
 import { getParentFolderId } from './file'
 
 /**
@@ -88,7 +89,7 @@ async function findPermissionFor({ document, client, permissions }) {
   return _findPermissionFor({ doc, client, perms })
 
   async function getFile(id) {
-    const query = client.find('io.cozy.files').getById(id)
+    const query = Q('io.cozy.files').getById(id)
     const data = await client.query(query)
     return data && data.data
   }

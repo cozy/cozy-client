@@ -17,7 +17,7 @@ export default class HasOneInPlace extends Association {
     const id = doc[assoc.name]
     return (
       client.getDocumentFromState(assoc.doctype, id) ||
-      client.get(assoc.doctype, id)
+      Q(assoc.doctype).getById(id)
     )
   }
 

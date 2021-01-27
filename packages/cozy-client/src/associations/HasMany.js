@@ -108,7 +108,7 @@ class HasMany extends Association {
   }
 
   existsById(id) {
-    return this.containsById(id) && Boolean(this.get(this.doctype, id))
+    return Boolean(this.containsById(id) && this.get(this.doctype, id))
   }
 
   /**

@@ -4,6 +4,11 @@ import {
   fetchOwn,
   isShortcutCreatedOnTheRecipientCozy
 } from './permission'
+import { Q } from '../queries/dsl'
+
+jest.mock('../queries/dsl', () => ({
+  Q: jest.fn()
+}))
 
 function getById(id, doctype) {
   const parents = {
@@ -31,10 +36,10 @@ function getById(id, doctype) {
 }
 
 function setupClient(verbs = [], ids = ['first', 'other']) {
+  Q.mockImplementation(doctype => ({
+    getById: id => ({ data: getById(id, doctype) })
+  }))
   return {
-    find: doctype => ({
-      getById: id => ({ data: getById(id, doctype) })
-    }),
     query: async data => data,
     collection: () => ({
       getOwnPermissions: async () => ({
