@@ -3,6 +3,46 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [16.15.1](https://github.com/cozy/cozy-client/compare/v16.15.0...v16.15.1) (2021-01-26)
+
+**Note:** Version bump only for package cozy-pouch-link
+
+
+
+
+
+# [16.15.0](https://github.com/cozy/cozy-client/compare/v16.14.0...v16.15.0) (2021-01-26)
+
+**Note:** Version bump only for package cozy-pouch-link
+
+
+
+
+
+# [16.14.0](https://github.com/cozy/cozy-client/compare/v16.13.1...v16.14.0) (2021-01-22)
+
+**Note:** Version bump only for package cozy-pouch-link
+
+
+
+
+
+## [16.13.1](https://github.com/cozy/cozy-client/compare/v16.13.0...v16.13.1) (2021-01-19)
+
+**Note:** Version bump only for package cozy-pouch-link
+
+
+
+
+
+# [16.13.0](https://github.com/cozy/cozy-client/compare/v16.12.1...v16.13.0) (2021-01-19)
+
+**Note:** Version bump only for package cozy-pouch-link
+
+
+
+
+
 ## [16.12.1](https://github.com/cozy/cozy-client/compare/v16.12.0...v16.12.1) (2021-01-18)
 
 **Note:** Version bump only for package cozy-pouch-link

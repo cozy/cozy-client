@@ -95,9 +95,8 @@ export default class HasManyFiles extends HasMany {
   static query(document, client, assoc) {
     const key = [document._type, document._id]
     const cursor = [key, '']
-    const qDef = Q(assoc.doctype)
+    return Q(assoc.doctype)
       .referencedBy(document)
       .offsetCursor(cursor)
-    return qDef
   }
 }

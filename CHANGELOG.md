@@ -3,6 +3,58 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [16.15.1](https://github.com/cozy/cozy-client/compare/v16.15.0...v16.15.1) (2021-01-26)
+
+**Note:** Version bump only for package cozy-client
+
+
+
+
+
+# [16.15.0](https://github.com/cozy/cozy-client/compare/v16.14.0...v16.15.0) (2021-01-26)
+
+
+### Features
+
+* Use Q instead of client.get ([623f02c](https://github.com/cozy/cozy-client/commit/623f02cd697e7b26d6707bd085be87fc46f99605))
+
+
+
+
+
+# [16.14.0](https://github.com/cozy/cozy-client/compare/v16.13.1...v16.14.0) (2021-01-22)
+
+
+### Features
+
+* Handle index conflicts ([5fa5832](https://github.com/cozy/cozy-client/commit/5fa58327201a95c4e9bff054d8aad41180c9d446))
+
+
+
+
+
+## [16.13.1](https://github.com/cozy/cozy-client/compare/v16.13.0...v16.13.1) (2021-01-19)
+
+
+### Bug Fixes
+
+* Fetch qualifications by rules ([72ed55d](https://github.com/cozy/cozy-client/commit/72ed55da9bbb389b1286dd848be8f790ab4a489c))
+
+
+
+
+
+# [16.13.0](https://github.com/cozy/cozy-client/compare/v16.12.1...v16.13.0) (2021-01-19)
+
+
+### Features
+
+* Add helper to get files by qualification rules ([017b078](https://github.com/cozy/cozy-client/commit/017b07826286df602a5159cd366e8df5b6a42520))
+
+
+
+
+
 ## [16.12.1](https://github.com/cozy/cozy-client/compare/v16.12.0...v16.12.1) (2021-01-18)
 
 
