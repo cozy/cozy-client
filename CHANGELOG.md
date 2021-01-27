@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.16.0](https://github.com/cozy/cozy-client/compare/v16.15.1...v16.16.0) (2021-01-27)
+
+
+### Bug Fixes
+
+* Prevent Too many open files error ([4505818](https://github.com/cozy/cozy-client/commit/4505818a47964a24bdfc42e58bb56f6a3b01d08c))
+
+
+### Features
+
+* Only return booleans in existsById ([b80c86a](https://github.com/cozy/cozy-client/commit/b80c86a29042a0078d773019d6e81e64bba66e9c))
+* Use Q instead of client.get / client.find ([eb5cf84](https://github.com/cozy/cozy-client/commit/eb5cf849592f45ccfad92383cfc23b2f5e4f3cb6))
+* Use Q instead of client.get / client.find ([f6581d6](https://github.com/cozy/cozy-client/commit/f6581d6f27c05e3a4351b1ce5dc52175141eb5f2))
+
+
+
+
+
 ## [16.15.1](https://github.com/cozy/cozy-client/compare/v16.15.0...v16.15.1) (2021-01-26)
 
 **Note:** Version bump only for package cozy-client
