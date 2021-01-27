@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.17.0](https://github.com/cozy/cozy-client/compare/v16.16.0...v16.17.0) (2021-01-27)
+
+
+### Features
+
+* Add possibility to chose sources when executing a Q().getById() ([cfb82f5](https://github.com/cozy/cozy-client/commit/cfb82f51d45c2998e1c7b9281cd55032534fa21d))
+* Add query as argument to collection.get() ([dbab610](https://github.com/cozy/cozy-client/commit/dbab61064dc869460a7bc2eabee3085e93283424))
+
+
+
+
+
 # [16.14.0](https://github.com/cozy/cozy-client/compare/v16.13.1...v16.14.0) (2021-01-22)
 
 
