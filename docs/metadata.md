@@ -1,5 +1,3 @@
-## What is cozyMetadata?
-
 Cozy documents have a [`cozyMetadata`](https://github.com/cozy/cozy-doctypes/tree/master/docs#document-metadata) block with metadata about the document, like its schema version, its creation date, its source, etc.
 
 ```json
@@ -24,7 +22,7 @@ Cozy documents have a [`cozyMetadata`](https://github.com/cozy/cozy-doctypes/tre
 }
 ```
 
-## Cozy-Client helper
+## Options for cozy-client
 
 This cozyMetadata block is managed by the apps themselves. Cozy-Client is able to manage some parts of cozyMetadata automatically. For this it needs an `appMetadata` parameter with a few informations:
 
@@ -32,20 +30,41 @@ This cozyMetadata block is managed by the apps themselves. Cozy-Client is able t
 * `version`: version of the app (will be used in `createdByAppVersion` and `updatedByApps`)
 * when in a connector, `sourceAccount`: the id of the io.cozy.accounts document that triggered the current execution (it will help to know which documents belong or are created by which account)
 
-## What is automated and what is not
+```
+const client = new CozyClient({
+  appMetadata: {
+    slug: 'banks',
+    version: '1.27.1'
+  }
+})
+```
 
-If you provide an `appMetadata`(and only if you provide it):
+When you provide this information, cozy-client will automatically update metadata when it saves a document.
 
 ### For new documents
 
-Cozy-Client will set the default for: 
+Cozy-Client will set: 
 
-* `metadataVersion` to the last version known to Cozy-Client. It's the version of the schema for the metadata block itself.
-* `doctypeVersion` if it's provided in the `schema` at the Cozy-Client initialization.
-* `slug` of your app
-* `sourceAccount`
+* `metadataVersion` <string>: to the last version known to Cozy-Client. It's the version of the schema for the metadata block itself.
+* `doctypeVersion` <string>: if it's provided in the `schema` at Cozy-Client initialization
+* `slug` <string>: Slug of the app
+* `sourceAccount`: 
 * creation date, app and version
 * updated date, app and version
+  
+```
+const client = new CozyClient({
+  appMetadata: {
+    slug: 'banks',
+    version: '1.27.1'
+  },
+  schema: {
+    bankAccounts: {
+      doctypeVersion: '1.0.0'
+    }
+  }
+})
+```
 
 If any of these fields already exists in the document you try to save, these values will override the defaults. This allows you to import a document with an existing history.
 
