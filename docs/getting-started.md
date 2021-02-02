@@ -1,50 +1,35 @@
-<!-- MarkdownTOC autolink=true -->
-
-- [What's cozy-client?](#whats-cozy-client)
-- [Install](#install)
-- [Creating a client](#creating-a-client)
-- [How to query with Cozy Client](#how-to-query-with-cozy-client)
-- [How to mutate the data](#how-to-mutate-the-data)
-- [Learn more about queries](#learn-more-about-queries)
-- [Connecting with you React components](#connecting-with-you-react-components)
-- [Different entrypoints for node/browser](#different-entrypoints-for-nodebrowser)
-
-<!-- /MarkdownTOC -->
-
-
-## What's cozy-client?
-
-`cozy-client` is the sdk to interact with the cozy stack from a Javascript application. It aims at hidding all low level details and providing a simple high level API.
+`cozy-client` is the sdk to interact with the cozy stack from a Javascript application. It aims at hiding all low level details and providing a simple high level API to fetch and cache documents.
 
 Main features :
 
-- Authentification with your Cozy
-- Requests to the couchdb data
+- Authentication with a Cozy
+- Querying and caching documents
 - Transparent relations between couchdb documents
-- Automatically takes care of updating metadata in couch documents
-- Offline: any data can be stored in a local cache without impacting your code that can continue to read and write.
+- Updates metadata in couch documents
+- Offline: any data can be stored in a local PouchDB that is persisted across page loads
 
-In addition, the library also provides a React integration to connect your components to the data stored in the cozy stack (with automatic refresh when the data is updated)
+We also provide a React integration to connect your components to the data
+stored in the cozy stack (with automatic refresh when the data is updated)
 
 Additional features with plugins :
 
-- Real-time : be notified when changes occur on the server side.
-- InterApp : API to interact with other apps (exemple : file picking within your app)
+- [Realtime][cozy-realtime] : be notified when changes occur on the server side.
+- [InterApp][cozy-interapp] : Interact with other apps (exemple : file picking within your app)
+- [Flag][cozy-flags] : Use feature flags
 
 The following guide is an overview of a cozy-client integration to help you getting started.
 
 ## Install
 
-`npm install --save cozy-client`
-or
-`yarn add cozy-client`
-
-`CozyClient` is the master of your data: it manages data queries and their status.
+```
+npm install --save cozy-client
+# or yarn add cozy-client
+```
 
 ℹ If you use Jest, you should also add a bit of configuration for imports to works properly,
 [see at the end of this document](#different-entrypoints-for-nodebrowser).
 
-## Creating a client
+## Usage
 
 ```js
 import CozyClient from 'cozy-client'
@@ -64,14 +49,25 @@ const client = new CozyClient({
 })
 ```
 
-If you need guidance to get the URI of your instance and/or the token, see [the app tutorial](https://docs.cozy.io/en/tutorials/app/#behind-the-magic).
+Usually, the token and URI are provided by the stack on the DOM node `<div role="application">`.
+When using this, you can instantiate a client with :
 
-Every doctype accessed in `cozy-client` needs to be declared in the schema section of the options. See the specific [documentation](https://docs.cozy.io/en/cozy-client/schema) on how to use the schema features.
+```
+const client = CozyClient.fromDOM({
+   schema
+}) // Note how token and uri are not passed, instead they are taken from the DOM
+```
+
+If you need guidance to get the URI of your instance and/or the token,
+see [the app tutorial](https://docs.cozy.io/en/tutorials/app/#behind-the-magic).
+
+Every doctype accessed in `cozy-client` needs to be declared in the schema section of the options.
+See [how to use the schema features](https://docs.cozy.io/en/cozy-client/schema). 
 
 
-## How to query with Cozy Client
+## Fetch data
 
-To run a query, we first build a `QueryDefinition` with `Q`: 
+To fetch data, we first build a `QueryDefinition` with the `Q` helper: 
 
 ```javascript
 import { Q } from 'cozy-client'
@@ -80,7 +76,7 @@ const allTodosQuery = Q('io.cozy.todos')
 const singleTodoQuery = Q('io.cozy.todos').getById('5fcbbf2cb171b1d5c3bc6df3d4affb32')
 ```
 
-A `QueryDefinition` is a special object that describe a query to be sent to CouchDB. It uses a fluent interface:
+`QueryDefinition`s describe which documents to be fetched from CouchDB. It uses a fluent interface:
 
 ```javascript
 Q('io.cozy.todos')
@@ -91,12 +87,17 @@ Q('io.cozy.todos')
   .limitBy(20)
 ```
 
-`select()` lists the fields you want in the response (all by default), `where()` allows a [mango selector](http://docs.couchdb.org/en/latest/api/database/find.html#find-selectors), `include()` allows to name the relationships in the schema that you want to load in your response, then `sortBy` and `limitBy` restricts the returned results.
+- `select()` lists the fields you want in the response (all by default)
+- `where()` allows a [mango selector](http://docs.couchdb.org/en/latest/api/database/find.html#find-selectors)
+- `include()` will cause the query to fetch the related documents (see [relationships][cozy-relationships])
+- `sortBy` sorts the documents by their `updatedAt` metadata in descending order 
+- `limitBy` limits the number of results to 20
 
-By default all fields in the `where()` are automatically indexed. You can reverse this behaviour by specifying explicitly the list of fields to be indexed in `indexFields()`.
+By default all fields in the `where()` are automatically indexed. You can turn off this behavior by specifying
+explicitly the list of fields to be indexed in `indexFields()`.
 
 
-Finally, `client.query()` will execute your query and return a promise with a `data`attribute containing the requested documents.
+Finally, `client.query()` will execute your query and return a promise with a `data` attribute containing the requested documents.
 
 ```javascript
 import CozyClient from 'cozy-client'
@@ -109,7 +110,19 @@ const { data } = await client.query(Q('io.cozy.todos').where({ checked: false })
 console.log(data)
 ```
 
-## How to mutate the data
+ℹ️ Inside a react application, instead of using directly `client.query`, please use `useQuery`, `<Query />` or `queryConnect`
+to connect your components to cozy-client queries.
+
+ℹ️ Check out our dedicated [query documentation](https://docs.cozy.io/en/tutorials/data/queries/) to 
+know more about querying with cozy-client and avoid common traps that can dramatically impact your app performances.
+
+🚀 Audit your queries performance by setting the `{ perfs.execution_stats: true }` flag ([how to set flag ?][cozy-flags]). It adds a log in the browser's
+development tools console for each query, providing insights such as the query execution time taken on the database or
+the number of  documents scanned. All the available stats are described [here](https://docs.couchdb.org/en/2.3.1/api/database/find.html#execution-statistics).
+
+See [cozy-flags][] to know how to set flags.
+
+## Mutate the data
 
 An instance of `CozyClient` allows you to query and mutate (update) data, here's how it looks:
 
@@ -133,44 +146,10 @@ await client.save({...doc, checked: true})
 
 Both `create()` and `save()` will return a Promise with a `data` attribute containing the saved document.
 
-## Learn more about queries
+ℹ️ When mutating data, queries that depend on the mutated document(s) will automatically be refreshed : components
+that depend on these queries will be re-rendered.
 
-You can check out our dedicated [query documentation](https://docs.cozy.io/en/tutorials/data/queries/) to know more about querying with cozy-client and avoid common traps that can dramatically impact your app performances.
-
-Note you can audit your queries performance by setting a `{ perfs.execution_stats: true }` flag. 
-This will add a log in the browser's development tools console for each query. This log provides  insights such as the query execution time taken on the database or the number of documents scanned. All the available stats are described [here](https://docs.couchdb.org/en/2.3.1/api/database/find.html#execution-statistics).
-
-See [cozy-flags](https://github.com/cozy/cozy-libs/tree/master/packages/cozy-flags) to know how to set flags.
-
-## Connecting with you React components
-
-CozyClient comes with HOC and render props functions to connect to your data inside you own components. See the specific documentation for [React integration](./react-integration.md)
-
-## Different entrypoints for node/browser
-
-cozy-client has different entry points for browser and node (the node version does not export React components). It is implemented by using fields in `package.json`: 
-
-- `browser` field is the entrypoint for browsers
-- `main` field is for node
-
-It causes an issue when writing tests that use React components from cozy-client (`Provider` for example) since Jest does not support the `browser` field (contrary to webpack).
-
-⚠️ If you use react APIs, you should configure Jest with the [`browser` option](https://jest-bot.github.io/jest/docs/configuration.html#browser-boolean) in your `package.json` or `jest.config.js`:
-
-```patch
-   "jest": {
-+    "browser": true
-   }
-```
-
-There can be some problems since the `browser` field can clash with other node detection mechanism in other libraries (for example `iconv-lite`, see this [PR](https://github.com/ashtuchkin/iconv-lite/pull/222)), an alternative is to use the `moduleNameMapper` option to point Jest to the correct entrypoint only for `cozy-client`.
-
-```
-"moduleNameMapper": {
-  "^cozy-client$": "cozy-client/dist/index"
-}
-```
-
-This will force Jest to use the browser entry point.
-
-See [this page](https://github.com/marko-js/jest#why-override-the-resolver-enhanced-resolve-jest) for another alternative solution that overrides the jest resolver so that it supports the `browser` field.
+[cozy-flags]: https://docs.cozy.io/en/cozy-flags/
+[cozy-relationships]: https://docs.cozy.io/en/cozy-doctypes/docs/#relationships
+[react-integration]: ./react-integration.md
+[cozy-interapp]: https://github.com/cozy/cozy-libs/tree/master/packages/cozy-interapp
