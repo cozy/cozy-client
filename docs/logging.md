@@ -14,3 +14,12 @@ minilog.enable()
 // You can enable/disable loggers via minilog filters
 require('minilog').suggest.allow('cozy-pouch-link', 'debug')
 ```
+
+
+If you want to see everything :
+
+```
+require('minilog').suggest.clear()
+```
+
+More info on [minilog docs](http://mixu.net/minilog/filter.html#filters).
