@@ -11,9 +11,9 @@ Main features :
 
 Additional features with plugins:
 
-- [Realtime][cozy-realtime] : be notified when changes occur on the server side.
-- [InterApp][cozy-interapp] : Interact with other apps (exemple : file picking within your app)
-- [Flag][cozy-flags] : Use feature flags
+- [Realtime][cozy-realtime]: Be notified when changes occur on the server side
+- [InterApp][cozy-interapp]: Interact with other apps (exemple : file picking within your app)
+- [Flag][cozy-flags]: Use feature flags
 
 The following guide is an overview of a cozy-client integration to help you getting started.
 
