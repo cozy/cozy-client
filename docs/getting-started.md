@@ -24,8 +24,8 @@ npm install --save cozy-client
 # or yarn add cozy-client
 ```
 
-ℹ If you use Jest, you should also add a bit of configuration for imports to works properly,
-[see at the end of this document](#different-entrypoints-for-nodebrowser).
+⚠️ If you use Jest, you should also add a bit of configuration for imports to works properly,
+[see this document for more information](./entrypoints.md).
 
 ## Usage
 
