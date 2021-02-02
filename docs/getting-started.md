@@ -7,11 +7,9 @@ Main features :
 - Transparent relations between couchdb documents
 - Updates metadata in couch documents
 - Offline: any data can be stored in a local PouchDB that is persisted across page loads
+- React integration to connect your components to remote data
 
-We also provide a React integration to connect your components to the data
-stored in the cozy stack (with automatic refresh when the data is updated)
-
-Additional features with plugins :
+Additional features with plugins:
 
 - [Realtime][cozy-realtime] : be notified when changes occur on the server side.
 - [InterApp][cozy-interapp] : Interact with other apps (exemple : file picking within your app)
@@ -153,3 +151,4 @@ that depend on these queries will be re-rendered.
 [cozy-relationships]: https://docs.cozy.io/en/cozy-doctypes/docs/#relationships
 [react-integration]: ./react-integration.md
 [cozy-interapp]: https://github.com/cozy/cozy-libs/tree/master/packages/cozy-interapp
+[cozy-realtime]: https://docs.cozy.io/en/cozy-realtime/
