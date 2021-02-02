@@ -108,8 +108,8 @@ const { data } = await client.query(Q('io.cozy.todos').where({ checked: false })
 console.log(data)
 ```
 
-ℹ️ Inside a react application, instead of using directly `client.query`, please use `useQuery`, `<Query />` or `queryConnect`
-to connect your components to cozy-client queries.
+✅ Inside a react application, instead of using directly `client.query`, please use [`useQuery`, `<Query />` or `queryConnect`
+to connect your components to cozy-client queries][react-integration].
 
 ℹ️ Check out our dedicated [query documentation](https://docs.cozy.io/en/tutorials/data/queries/) to 
 know more about querying with cozy-client and avoid common traps that can dramatically impact your app performances.
