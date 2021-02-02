@@ -1381,6 +1381,75 @@ describe('CozyClient', () => {
       expect(client).toMatchSnapshot()
     })
   })
+
+  describe('fetchQueryAndGetFromState', () => {
+    const setup = () => {
+      const client = new CozyClient({})
+      const fileCol = new FileCollection('io.cozy.files', client.stackClient)
+      client.stackClient.collection.mockReturnValue(fileCol)
+      client.stackClient.fetchJSON = jest.fn().mockResolvedValue({
+        data: {
+          _id: 'resultFromQuery'
+        }
+      })
+      getQueryFromState.mockReturnValue({
+        data: {
+          _id: 'resultFromState'
+        }
+      })
+      return { client }
+    }
+
+    afterEach(() => {
+      jest.restoreAllMocks()
+    })
+
+    it('should fetch data if fetchPolicy is true and get result from state', async () => {
+      const query = {
+        definition: Q('io.cozy.files').getById('id'),
+        options: {
+          as: 'io.cozy.files/id',
+          fetchPolicy: jest.fn(() => true)
+        }
+      }
+      const { client } = setup()
+
+      const res = await client.fetchQueryAndGetFromState(query)
+      expect(client.stackClient.fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/files/id'
+      )
+      expect(res).not.toMatchObject({
+        data: {
+          _id: 'resultFromQuery'
+        }
+      })
+      expect(res).toMatchObject({
+        data: {
+          _id: 'resultFromState'
+        }
+      })
+    })
+
+    it('should not fetch data if fetchPolicy is false and get result from state', async () => {
+      const query = {
+        definition: Q('io.cozy.files').getById('id'),
+        options: {
+          as: 'io.cozy.files/id',
+          fetchPolicy: jest.fn(() => false)
+        }
+      }
+      const { client } = setup()
+
+      const res = await client.fetchQueryAndGetFromState(query)
+      expect(client.stackClient.fetchJSON).not.toHaveBeenCalled()
+      expect(res).toMatchObject({
+        data: {
+          _id: 'resultFromState'
+        }
+      })
+    })
+  })
 })
 
 describe('file creation', () => {

@@ -769,6 +769,7 @@ Responsible for
 * [CozyClient](#CozyClient)
     * [new CozyClient(options)](#new_CozyClient_new)
     * _instance_
+        * [.fetchQueryAndGetFromState](#CozyClient+fetchQueryAndGetFromState) ⇒ [<code>QueryState</code>](#QueryState)
         * [.registerPlugin()](#CozyClient+registerPlugin)
         * [.login(options)](#CozyClient+login) ⇒ <code>Promise</code>
         * [.logout()](#CozyClient+logout) ⇒ <code>Promise</code>
@@ -815,6 +816,21 @@ Responsible for
 | options.links | <code>Array.Link</code> | List of links |
 | options.schema | <code>object</code> | Schema description for each doctypes |
 | options.appMetadata | <code>object</code> | Metadata about the application that will be used in ensureCozyMetadata |
+
+<a name="CozyClient+fetchQueryAndGetFromState"></a>
+
+### cozyClient.fetchQueryAndGetFromState ⇒ [<code>QueryState</code>](#QueryState)
+Executes a query and returns the results from internal store.
+
+Can be useful in pure JS context (without React)
+Has a behavior close to <Query /> or useQuery
+
+**Kind**: instance property of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: [<code>QueryState</code>](#QueryState) - Query state  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| query | <code>object</code> | Query with definition and options |
 
 <a name="CozyClient+registerPlugin"></a>
 

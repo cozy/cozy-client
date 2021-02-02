@@ -1125,6 +1125,24 @@ client.query(Q('io.cozy.bills'))`)
   }
 
   /**
+   * Executes a query and returns the results from internal store.
+   *
+   * Can be useful in pure JS context (without React)
+   * Has a behavior close to <Query /> or useQuery
+   *
+   * @param {object} query - Query with definition and options
+   * @returns {QueryState} Query state
+   */
+  fetchQueryAndGetFromState = async query => {
+    try {
+      await this.query(query.definition, query.options)
+      return this.getQueryFromState(query.options.as)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  /**
    * Performs a complete OAuth flow using a Cordova webview for auth.
    * The `register` method's name has been chosen for compat reasons with the Authentication compo.
    *
