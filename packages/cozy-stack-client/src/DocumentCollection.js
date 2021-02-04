@@ -1,16 +1,16 @@
 import flag from 'cozy-flags'
 import { uri, attempt, sleep } from './utils'
 import uniq from 'lodash/uniq'
-import transform from 'lodash/transform'
-import head from 'lodash/head'
 import omit from 'lodash/omit'
+import head from 'lodash/head'
 import startsWith from 'lodash/startsWith'
 import qs from 'qs'
 
 import Collection, {
   dontThrowNotFoundError,
   isIndexNotFoundError,
-  isIndexConflictError
+  isIndexConflictError,
+  isDocumentUpdateConflict
 } from './Collection'
 import {
   getIndexNameFromFields,
@@ -168,8 +168,44 @@ class DocumentCollection {
     return this.stackClient.fetchJSON(
       'POST',
       path,
-      await this.toMangoOptions(selector, options)
+      this.toMangoOptions(selector, options)
     )
+  }
+
+  /**
+   * Handle index creation if it is missing.
+   *
+   * When an index is missing, we first check if there is one with a different
+   * name but the same definition. If yes, we copy it to re-use the same index
+   * and remove the old one.
+   * If there is none, we create the new index.
+   *
+   *
+   * @param {object} selector - The mango selector
+   * @param {object} options - The find options
+   * @private
+   */
+  async handleMissingIndex(selector, options) {
+    const { indexedFields, partialFilter } = options
+    const existingIndex = await this.findExistingIndex(selector, options)
+    const indexName = getIndexNameFromFields(indexedFields)
+    if (!existingIndex) {
+      await this.createIndex(indexedFields, {
+        partialFilter,
+        indexName
+      })
+    } else {
+      try {
+        await this.copyIndex(existingIndex, indexName)
+        await this.destroyIndex(existingIndex)
+      } catch (error) {
+        // There might be a conflict error when 2 queries using the same index
+        // are run in parallel
+        if (!isDocumentUpdateConflict(error)) {
+          throw error
+        }
+      }
+    }
   }
 
   /**
@@ -185,9 +221,9 @@ class DocumentCollection {
    * @param {object} selector - The mango selector
    * @param {object} options - The find options
    * @returns {object} - The find response
+   * @private
    */
   async findWithMango(path, selector, options = {}) {
-    const { indexedFields, partialFilter } = options
     let resp
     try {
       resp = await this.fetchDocumentsWithMango(path, selector, options)
@@ -195,10 +231,7 @@ class DocumentCollection {
       if (!isIndexNotFoundError(error)) {
         throw error
       } else {
-        await this.createIndex(indexedFields, {
-          partialFilter,
-          indexName: this.getIndexNameFromFields(indexedFields)
-        })
+        await this.handleMissingIndex(selector, options)
         resp = await this.fetchDocumentsWithMango(path, selector, options)
       }
     }
@@ -499,25 +532,78 @@ class DocumentCollection {
     return indexResp
   }
 
-  getIndexNameFromFields(fields) {
-    return `by_${fields.join('_and_')}`
+  /**
+   * Retrieve all design docs of mango indexes
+   *
+   * @returns {Array} The design docs
+   */
+  async fetchAllMangoIndexes() {
+    const path = uri`/data/${this.doctype}/_design_docs?include_docs=true`
+    const indexes = await this.stackClient.fetchJSON('GET', path)
+    // Filter out views index
+    return indexes.rows
+      .filter(index => index.doc.language === 'query')
+      .map(doc => normalizeDesignDoc(doc))
   }
 
   /**
-   * Compute fields that should be indexed for a mango
-   * query to work
+   * Delete the specified design doc
    *
-   * @private
-   * @param  {object} options - Mango query options
-   * @returns {Array} - Fields to index
+   * @param {object} index - The design doc to remove
+   * @returns {object} The delete response
    */
-  getIndexFields({ selector, sort = [] }) {
-    return Array.from(
-      new Set([
-        ...sort.map(sortOption => head(Object.keys(sortOption))),
-        ...(selector ? Object.keys(selector) : [])
-      ])
-    )
+  async destroyIndex(index) {
+    const ddoc = index._id.split('/')[1]
+    const rev = index._rev
+    const path = uri`/data/${this.doctype}/_design/${ddoc}?rev=${rev}`
+    return this.stackClient.fetchJSON('DELETE', path)
+  }
+
+  /**
+   * Copy an existing design doc.
+   *
+   * This is useful to create a new design doc without
+   * having to recompute the existing index.
+   *
+   * @param {object} existingIndex - The design doc to copy
+   * @param {string} newIndexName - The name of the copy
+   * @returns {object} The copy response
+   */
+  async copyIndex(existingIndex, newIndexName) {
+    const ddoc = existingIndex._id.split('/')[1]
+    const rev = existingIndex._rev
+    const path = uri`/data/${this.doctype}/_design/${ddoc}/copy?rev=${rev}`
+    const options = {
+      headers: {
+        Destination: `_design/${newIndexName}`
+      }
+    }
+    return this.stackClient.fetchJSON('POST', path, null, options)
+  }
+
+  /**
+   * Find an existing mango index based on the query definition
+   *
+   * This is useful to avoid creating new indexes having the
+   * same definition of an existing one.
+   *
+   * @param {object} selector - The query selector
+   * @param {object} options - The query options
+   * @returns {object} A matching index if it exists
+   * @private
+   */
+  async findExistingIndex(selector, options) {
+    let { sort, indexedFields, partialFilter } = options
+    const indexes = await this.fetchAllMangoIndexes()
+    if (indexes.length < 1) {
+      return null
+    }
+    sort = transformSort(sort)
+    const fieldsToIndex = indexedFields
+      ? indexedFields
+      : getIndexFields({ sort, selector })
+
+    return getMatchingIndex(indexes, fieldsToIndex, partialFilter)
   }
 
   /**

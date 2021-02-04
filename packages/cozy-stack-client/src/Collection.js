@@ -41,6 +41,16 @@ export const isIndexConflictError = error => {
 }
 
 /**
+ * Helper to identify a document conflict
+ *
+ * @param {Error} error
+ * @returns {boolean} - Whether or not the error is a document conflict error
+ */
+export const isDocumentUpdateConflict = error => {
+  return error.message.match(/Document update conflict/)
+}
+
+/**
  * Utility class to abstract an regroup identical methods and logics for
  * specific collections.
  */

@@ -356,6 +356,9 @@ describe('DocumentCollection', () => {
     })
 
     describe('new index', () => {
+      afterAll(() => {
+        jest.resetAllMocks()
+      })
       it('should return the index ID', async () => {
         client.fetchJSON
           .mockReturnValueOnce(
@@ -510,7 +513,23 @@ describe('DocumentCollection', () => {
     })
 
     it('should index the specified fields when no index exists', async () => {
-      client.fetchJSON.mockRejectedValueOnce(new Error('no_index'))
+      client.fetchJSON.mockRestore()
+      client.fetchJSON
+        .mockRejectedValueOnce(new Error('no_index'))
+        .mockReturnValueOnce(
+          Promise.resolve({
+            rows: []
+          })
+        )
+        .mockReturnValueOnce(
+          Promise.resolve({
+            id: '_design/by_label',
+            name: 'by_label',
+            result: 'created'
+          })
+        )
+        .mockReturnValueOnce(Promise.resolve(FIND_RESPONSE_FIXTURE))
+        .mockReturnValueOnce(Promise.resolve(FIND_RESPONSE_FIXTURE))
 
       const collection = new DocumentCollection('io.cozy.todos', client)
       await collection.find(
@@ -529,45 +548,16 @@ describe('DocumentCollection', () => {
         '/data/io.cozy.todos/_find',
         expectedFindParams
       )
-
       expect(client.fetchJSON).toHaveBeenNthCalledWith(
-        1,
-        'POST',
-        '/data/io.cozy.todos/_index',
-        { index: { fields: ['label', 'done'] } }
-      )
-      expect(client.fetchJSON).toHaveBeenLastCalledWith(
-        'POST',
-        '/data/io.cozy.todos/_find',
-        expectedFindParams
-      )
-    })
-
-    it('should deal with index conflict', async () => {
-      client.fetchJSON.mockRejectedValueOnce(new Error('no_index'))
-      client.fetchJSON.mockRejectedValueOnce(new Error('error_saving_ddoc'))
-
-      const collection = new DocumentCollection('io.cozy.todos', client)
-      await collection.find(
-        { done: { $exists: true } },
-        { indexedFields: ['label'], sort: [{ label: 'desc' }] }
-      )
-      const expectedFindParams = {
-        skip: 0,
-        selector: { done: { $exists: true } },
-        sort: [{ label: 'desc' }],
-        use_index: 'by_label'
-      }
-      expect(client.fetchJSON).toHaveBeenCalledWith(
-        'POST',
-        '/data/io.cozy.todos/_find',
-        expectedFindParams
+        2,
+        'GET',
+        '/data/io.cozy.todos/_design_docs?include_docs=true'
       )
       expect(client.fetchJSON).toHaveBeenNthCalledWith(
-        1,
+        3,
         'POST',
         '/data/io.cozy.todos/_index',
-        { index: { fields: ['label', 'done'] } }
+        { index: { fields: ['label'] }, ddoc: 'by_label' }
       )
       expect(client.fetchJSON).toHaveBeenLastCalledWith(
         'POST',
@@ -579,42 +569,131 @@ describe('DocumentCollection', () => {
     it('should deal with index conflict', async () => {
       client.fetchJSON.mockRestore()
       client.fetchJSON
+        .mockRejectedValueOnce(new Error('no_index'))
+        .mockReturnValueOnce(Promise.resolve({ rows: [] }))
         .mockRejectedValueOnce(new Error('error_saving_ddoc'))
-        .mockReturnValueOnce(
-          Promise.resolve({
-            id: '_design/123456',
-            name: '123456',
-            result: 'exists'
-          })
-        )
         .mockReturnValueOnce(Promise.resolve(FIND_RESPONSE_FIXTURE))
+
       const collection = new DocumentCollection('io.cozy.todos', client)
       await collection.find(
         { done: { $exists: true } },
         { indexedFields: ['label'], sort: [{ label: 'desc' }] }
       )
-
-      expect(client.fetchJSON).toHaveBeenNthCalledWith(
-        1,
+      const expectedFindParams = {
+        skip: 0,
+        selector: { done: { $exists: true } },
+        sort: [{ label: 'desc' }],
+        use_index: 'by_label'
+      }
+      expect(client.fetchJSON).toHaveBeenCalledWith(
         'POST',
-        '/data/io.cozy.todos/_index',
-        { index: { fields: ['label'] } }
+        '/data/io.cozy.todos/_find',
+        expectedFindParams
       )
       expect(client.fetchJSON).toHaveBeenNthCalledWith(
         2,
+        'GET',
+        '/data/io.cozy.todos/_design_docs?include_docs=true'
+      )
+      expect(client.fetchJSON).toHaveBeenNthCalledWith(
+        3,
         'POST',
         '/data/io.cozy.todos/_index',
-        { index: { fields: ['label'] } }
+        { index: { fields: ['label'] }, ddoc: 'by_label' }
       )
       expect(client.fetchJSON).toHaveBeenLastCalledWith(
         'POST',
         '/data/io.cozy.todos/_find',
-        {
-          skip: 0,
-          selector: { done: { $exists: true } },
-          sort: [{ label: 'desc' }],
-          use_index: '_design/123456'
+        expectedFindParams
+      )
+    })
+
+    it('should copy existing index', async () => {
+      const index = {
+        id: '_design/123456',
+        doc: {
+          _id: '_design/123456',
+          _rev: '1-123',
+          language: 'query',
+          views: {
+            123456: {
+              map: {
+                fields: {
+                  label: 'asc',
+                  done: 'asc'
+                },
+                partial_filter_selector: {
+                  trashed: false
+                }
+              }
+            }
+          }
         }
+      }
+      client.fetchJSON.mockRestore()
+      client.fetchJSON
+        .mockRejectedValueOnce(new Error('no_index'))
+        .mockReturnValueOnce(Promise.resolve({ rows: [index] }))
+        .mockReturnValueOnce(
+          Promise.resolve({
+            id: '_design/by_label_and_done',
+            ok: true,
+            rev: '1-123'
+          })
+        )
+        .mockReturnValueOnce(
+          Promise.resolve({
+            id: '_design/123456',
+            ok: true,
+            rev: '1-123'
+          })
+        )
+        .mockReturnValueOnce(Promise.resolve(FIND_RESPONSE_FIXTURE))
+        .mockReturnValueOnce(Promise.resolve(FIND_RESPONSE_FIXTURE))
+
+      const collection = new DocumentCollection('io.cozy.todos', client)
+      await collection.find(
+        { done: { $exists: true } },
+        {
+          indexedFields: ['label', 'done'],
+          sort: [{ label: 'desc' }],
+          partialFilter: {
+            trashed: false
+          }
+        }
+      )
+      const expectedFindParams = {
+        skip: 0,
+        selector: { done: { $exists: true } },
+        sort: [{ label: 'desc' }, { done: 'desc' }],
+        use_index: 'by_label_and_done'
+      }
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/data/io.cozy.todos/_find',
+        expectedFindParams
+      )
+      expect(client.fetchJSON).toHaveBeenNthCalledWith(
+        2,
+        'GET',
+        '/data/io.cozy.todos/_design_docs?include_docs=true'
+      )
+      expect(client.fetchJSON).toHaveBeenNthCalledWith(
+        3,
+        'POST',
+        '/data/io.cozy.todos/_design/123456/copy?rev=1-123',
+        null,
+        { headers: { Destination: '_design/by_label_and_done' } }
+      )
+      expect(client.fetchJSON).toHaveBeenNthCalledWith(
+        4,
+        'DELETE',
+        '/data/io.cozy.todos/_design/123456?rev=1-123'
+      )
+      expect(client.fetchJSON).toHaveBeenLastCalledWith(
+        'POST',
+        '/data/io.cozy.todos/_find',
+        expectedFindParams
       )
     })
 
@@ -639,6 +718,7 @@ describe('DocumentCollection', () => {
     const collection = new DocumentCollection('io.cozy.todos', client)
 
     beforeAll(() => {
+      jest.resetAllMocks()
       client.fetchJSON.mockReturnValue(Promise.resolve(CREATE_RESPONSE_FIXTURE))
     })
 
