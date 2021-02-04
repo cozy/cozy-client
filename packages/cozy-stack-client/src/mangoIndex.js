@@ -4,6 +4,11 @@ import get from 'lodash/get'
 import difference from 'lodash/difference'
 import isEqual from 'lodash/difference'
 
+export const normalizeDesignDoc = designDoc => {
+  const id = designDoc._id || designDoc.id
+  return { id, _id: id, ...designDoc.doc }
+}
+
 export const getIndexNameFromFields = fields => {
   return `by_${fields.join('_and_')}`
 }
@@ -36,4 +41,33 @@ export const getIndexFields = ({ selector, sort = [] }) => {
       ...(selector ? Object.keys(selector) : [])
     ])
   )
+}
+
+/**
+ * Get a matching index based on the given parameters
+ *
+ * @param {Array} indexes - The list of indexes to search
+ * @param {object} fields  - The index fields
+ * @param {object} partialFilter - A partial filter selector
+ * @returns {object} A matching index
+ */
+export const getMatchingIndex = (indexes, fields, partialFilter) => {
+  return indexes.find(index => {
+    const ddoc = index.id.split('/')[1]
+    const viewId = Object.keys(get(index, `views`))[0]
+    const fieldsInIndex = get(index, `views.${viewId}.map.fields`)
+    if (difference(Object.keys(fieldsInIndex), fields).length === 0) {
+      if (!partialFilter) {
+        return true
+      }
+      const partialFilterInIndex = get(
+        index,
+        `views.${ddoc}.map.partial_filter_selector`
+      )
+      if (isEqual(partialFilter, partialFilterInIndex)) {
+        return true
+      }
+    }
+    return false
+  })
 }

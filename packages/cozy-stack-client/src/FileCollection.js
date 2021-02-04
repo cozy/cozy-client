@@ -104,7 +104,7 @@ class FileCollection extends DocumentCollection {
     return this.stackClient.fetchJSON(
       'POST',
       '/files/_find',
-      await this.toMangoOptions(selector, options)
+      this.toMangoOptions(selector, options)
     )
   }
 
