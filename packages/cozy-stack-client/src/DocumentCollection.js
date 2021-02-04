@@ -12,6 +12,13 @@ import Collection, {
   isIndexNotFoundError,
   isIndexConflictError
 } from './Collection'
+import {
+  getIndexNameFromFields,
+  transformSort,
+  getIndexFields,
+  getMatchingIndex,
+  normalizeDesignDoc
+} from './mangoIndex'
 import * as querystring from './querystring'
 import { FetchError } from './errors'
 
@@ -363,23 +370,16 @@ class DocumentCollection {
     return this.updateAll(docs.map(prepareForDeletion))
   }
 
-  async toMangoOptions(selector, options = {}) {
+  toMangoOptions(selector, options = {}) {
     let { sort, indexedFields } = options
     const { fields, skip = 0, limit, bookmark } = options
 
-    if (sort && !Array.isArray(sort)) {
-      console.warn(
-        'Passing an object to the "sort" is deprecated, please use an array instead.'
-      )
-      sort = transform(
-        sort,
-        (acc, order, field) => acc.push({ [field]: order }),
-        []
-      )
-    }
+    sort = transformSort(sort)
+
     indexedFields = indexedFields
       ? indexedFields
-      : this.getIndexFields({ sort, selector })
+      : getIndexFields({ sort, selector })
+    const indexId = options.indexId || getIndexNameFromFields(indexedFields)
 
     const indexId =
       options.indexId || this.getIndexNameFromFields(indexedFields)
