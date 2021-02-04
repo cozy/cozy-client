@@ -414,8 +414,6 @@ class DocumentCollection {
       : getIndexFields({ sort, selector })
     const indexId = options.indexId || getIndexNameFromFields(indexedFields)
 
-    const indexId =
-      options.indexId || this.getIndexNameFromFields(indexedFields)
     if (sort) {
       const sortOrders = uniq(
         sort.map(sortOption => head(Object.values(sortOption)))
@@ -509,8 +507,8 @@ class DocumentCollection {
       if (!isIndexConflictError(error)) {
         throw error
       } else {
-        // This error much probably comes from 2 parallel index creation,
-        // so there is nothing to do here.
+        // This error much probably comes from 2 parallel index creation, so
+        // there is nothing to do here as the index will eventually be created
         return
       }
     }
@@ -522,7 +520,7 @@ class DocumentCollection {
 
     // indexes might not be usable right after being created; so we delay the resolving until they are
     const selector = { [fields[0]]: { $gt: null } }
-    const options = { indexId: indexResp.id }
+    const options = { indexId: indexResp.id, limit: 1 }
 
     if (await attempt(this.find(selector, options))) return indexResp
     // one retry
