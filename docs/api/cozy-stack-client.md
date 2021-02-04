@@ -55,6 +55,16 @@ through OAuth.</p>
 <dt><a href="#isIndexConflictError">isIndexConflictError</a> ⇒ <code>boolean</code></dt>
 <dd><p>Helper to identify an index conflict</p>
 </dd>
+<dt><a href="#isDocumentUpdateConflict">isDocumentUpdateConflict</a> ⇒ <code>boolean</code></dt>
+<dd><p>Helper to identify a document conflict</p>
+</dd>
+<dt><a href="#getIndexFields">getIndexFields</a> ⇒ <code>Array</code></dt>
+<dd><p>Compute fields that should be indexed for a mango
+query to work</p>
+</dd>
+<dt><a href="#getMatchingIndex">getMatchingIndex</a> ⇒ <code>object</code></dt>
+<dd><p>Get a matching index based on the given parameters</p>
+</dd>
 <dt><a href="#getPermissionsFor">getPermissionsFor</a> ⇒ <code>object</code></dt>
 <dd><p>Build a permission set</p>
 </dd>
@@ -260,7 +270,6 @@ Abstracts a collection of documents of the same doctype, providing CRUD methods 
 
 * [DocumentCollection](#DocumentCollection)
     * [.all(options)](#DocumentCollection+all) ⇒ <code>Object</code>
-    * [.findWithMango(path, selector, options)](#DocumentCollection+findWithMango) ⇒ <code>object</code>
     * [.find(selector, options)](#DocumentCollection+find) ⇒ <code>Object</code>
     * [.get(id)](#DocumentCollection+get) ⇒ <code>object</code>
     * [.getAll()](#DocumentCollection+getAll)
@@ -269,6 +278,9 @@ Abstracts a collection of documents of the same doctype, providing CRUD methods 
     * [.destroy(doc)](#DocumentCollection+destroy)
     * [.updateAll(docs)](#DocumentCollection+updateAll)
     * [.destroyAll(docs)](#DocumentCollection+destroyAll)
+    * [.fetchAllMangoIndexes()](#DocumentCollection+fetchAllMangoIndexes) ⇒ <code>Array</code>
+    * [.destroyIndex(index)](#DocumentCollection+destroyIndex) ⇒ <code>object</code>
+    * [.copyIndex(existingIndex, newIndexName)](#DocumentCollection+copyIndex) ⇒ <code>object</code>
     * [.fetchChanges(couchOptions, options)](#DocumentCollection+fetchChanges)
 
 <a name="DocumentCollection+all"></a>
@@ -288,26 +300,6 @@ The returned documents are paginated by the stack.
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | The fetch options: pagination & fetch of specific docs. |
-
-<a name="DocumentCollection+findWithMango"></a>
-
-### documentCollection.findWithMango(path, selector, options) ⇒ <code>object</code>
-Find documents with the mango selector and create index
-if missing.
-
-We adopt an optimistic approach for index creation:
-we run the query first, and only if an index missing
-error is returned, the index is created and
-the query run again.
-
-**Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
-**Returns**: <code>object</code> - - The find response  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| path | <code>string</code> | The route path |
-| selector | <code>object</code> | The mango selector |
-| options | <code>object</code> | The find options |
 
 <a name="DocumentCollection+find"></a>
 
@@ -400,6 +392,41 @@ Deletes several documents in one batch
 | Param | Type | Description |
 | --- | --- | --- |
 | docs | <code>Array.&lt;Document&gt;</code> | Documents to delete |
+
+<a name="DocumentCollection+fetchAllMangoIndexes"></a>
+
+### documentCollection.fetchAllMangoIndexes() ⇒ <code>Array</code>
+Retrieve all design docs of mango indexes
+
+**Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
+**Returns**: <code>Array</code> - The design docs  
+<a name="DocumentCollection+destroyIndex"></a>
+
+### documentCollection.destroyIndex(index) ⇒ <code>object</code>
+Delete the specified design doc
+
+**Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
+**Returns**: <code>object</code> - The delete response  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| index | <code>object</code> | The design doc to remove |
+
+<a name="DocumentCollection+copyIndex"></a>
+
+### documentCollection.copyIndex(existingIndex, newIndexName) ⇒ <code>object</code>
+Copy an existing design doc.
+
+This is useful to create a new design doc without
+having to recompute the existing index.
+
+**Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
+**Returns**: <code>object</code> - The copy response  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| existingIndex | <code>object</code> | The design doc to copy |
+| newIndexName | <code>string</code> | The name of the copy |
 
 <a name="DocumentCollection+fetchChanges"></a>
 
@@ -1400,6 +1427,45 @@ Helper to identify an index conflict
 | Param | Type |
 | --- | --- |
 | error | <code>Error</code> | 
+
+<a name="isDocumentUpdateConflict"></a>
+
+## isDocumentUpdateConflict ⇒ <code>boolean</code>
+Helper to identify a document conflict
+
+**Kind**: global constant  
+**Returns**: <code>boolean</code> - - Whether or not the error is a document conflict error  
+
+| Param | Type |
+| --- | --- |
+| error | <code>Error</code> | 
+
+<a name="getIndexFields"></a>
+
+## getIndexFields ⇒ <code>Array</code>
+Compute fields that should be indexed for a mango
+query to work
+
+**Kind**: global constant  
+**Returns**: <code>Array</code> - - Fields to index  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>object</code> | Mango query options |
+
+<a name="getMatchingIndex"></a>
+
+## getMatchingIndex ⇒ <code>object</code>
+Get a matching index based on the given parameters
+
+**Kind**: global constant  
+**Returns**: <code>object</code> - A matching index  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| indexes | <code>Array</code> | The list of indexes to search |
+| fields | <code>object</code> | The index fields |
+| partialFilter | <code>object</code> | A partial filter selector |
 
 <a name="getPermissionsFor"></a>
 
