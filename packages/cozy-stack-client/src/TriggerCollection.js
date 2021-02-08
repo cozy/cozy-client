@@ -107,9 +107,9 @@ class TriggerCollection extends DocumentCollection {
    * @throws {FetchError}
    */
   async find(selector = {}, options = {}) {
-    if (Object.keys(selector).length === 1 && selector.worker) {
+    if (Object.keys(selector).length > 0 && selector.worker && selector.type) {
       // @see https://github.com/cozy/cozy-stack/blob/master/docs/jobs.md#get-jobstriggers
-      const url = `/jobs/triggers?Worker=${selector.worker}`
+      const url = `/jobs/triggers?Worker=${selector.worker}&Type=${selector.type}`
 
       try {
         const resp = await this.stackClient.fetchJSON('GET', url)
