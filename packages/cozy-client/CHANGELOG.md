@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.18.0](https://github.com/cozy/cozy-client/compare/v16.17.0...v16.18.0) (2021-02-08)
+
+
+### Features
+
+* Add fetchQueryAndGetFromState ([f06b5a8](https://github.com/cozy/cozy-client/commit/f06b5a8ff1fcc185bfefb9a06b7b2c5fcbdef890))
+
+
+
+
+
 # [16.17.0](https://github.com/cozy/cozy-client/compare/v16.16.0...v16.17.0) (2021-01-27)
 
 

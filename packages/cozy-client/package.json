@@ -1,6 +1,6 @@
 {
   "name": "cozy-client",
-  "version": "16.17.0",
+  "version": "16.18.0",
   "license": "MIT",
   "main": "dist/node.js",
   "browser": "dist/index.js",
