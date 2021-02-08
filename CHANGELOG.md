@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.19.0](https://github.com/cozy/cozy-client/compare/v16.18.0...v16.19.0) (2021-02-08)
+
+
+### Bug Fixes
+
+* Add type to path ([e529b99](https://github.com/cozy/cozy-client/commit/e529b99198d7d83b66a0864f8e691543452e5d24))
+
+
+### Features
+
+* Add posibility to have multiple values in type with $in ([3ea6132](https://github.com/cozy/cozy-client/commit/3ea6132a27c9a32a735048051862742b3380bd22))
+* Docs update architecture schema ([4bbe866](https://github.com/cozy/cozy-client/commit/4bbe866023c05f15cb15383731b407483ab987d8))
+
+
+
+
+
 # [16.18.0](https://github.com/cozy/cozy-client/compare/v16.17.0...v16.18.0) (2021-02-08)
 
 
