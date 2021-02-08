@@ -166,6 +166,41 @@ describe('TriggerCollection', () => {
       )
     })
 
+    it('should call /jobs/triggers route if only type selector is passed', async () => {
+      await collection.find({ type: '@cron' })
+      expect(stackClient.fetchJSON).toHaveBeenLastCalledWith(
+        'GET',
+        '/jobs/triggers?Type=%40cron'
+      )
+    })
+
+    it('should call /jobs/triggers route if only type selector is passed with multiple values', async () => {
+      await collection.find({ type: { $in: ['@cron', '@webhook'] } })
+      expect(stackClient.fetchJSON).toHaveBeenLastCalledWith(
+        'GET',
+        '/jobs/triggers?Type=%40cron%2C%40webhook'
+      )
+    })
+
+    it('should call /jobs/triggers route if only Worker and type selector is passed', async () => {
+      await collection.find({ worker: 'thumbnail', type: '@cron' })
+      expect(stackClient.fetchJSON).toHaveBeenLastCalledWith(
+        'GET',
+        '/jobs/triggers?Worker=thumbnail&Type=%40cron'
+      )
+    })
+
+    it('should call /jobs/triggers route if only Worker and type selector is passed with multiple type values', async () => {
+      await collection.find({
+        worker: 'thumbnail',
+        type: { $in: ['@cron', '@webhook'] }
+      })
+      expect(stackClient.fetchJSON).toHaveBeenLastCalledWith(
+        'GET',
+        '/jobs/triggers?Worker=thumbnail&Type=%40cron%2C%40webhook'
+      )
+    })
+
     it('should call /data/io.cozy.triggers/_find route if multiple arguments are passed', async () => {
       stackClient.fetchJSON.mockReturnValueOnce(
         Promise.resolve({

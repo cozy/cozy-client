@@ -27,6 +27,22 @@ export const isForAccount = (triggerAttrs, accountId) => {
   return triggerAttrs.message.account == accountId
 }
 
+const buildParamsUrl = (worker, type) => {
+  const urlParams = new URLSearchParams()
+
+  if (worker) {
+    urlParams.set('Worker', worker)
+  }
+  if (type) {
+    if (Array.isArray(type.$in)) {
+      urlParams.set('Type', type.$in.join(','))
+    } else {
+      urlParams.set('Type', type)
+    }
+  }
+  return urlParams.toString()
+}
+
 /**
  * Implements `DocumentCollection` API along with specific methods for `io.cozy.triggers`.
  */
@@ -107,9 +123,11 @@ class TriggerCollection extends DocumentCollection {
    * @throws {FetchError}
    */
   async find(selector = {}, options = {}) {
-    if (Object.keys(selector).length > 0 && selector.worker && selector.type) {
+    const { worker, type, ...rest } = selector
+    const hasOnlyWorkerAndType = Object.keys(rest).length === 0
+    if (hasOnlyWorkerAndType) {
       // @see https://github.com/cozy/cozy-stack/blob/master/docs/jobs.md#get-jobstriggers
-      const url = `/jobs/triggers?Worker=${selector.worker}&Type=${selector.type}`
+      const url = `/jobs/triggers?${buildParamsUrl(worker, type)}`
 
       try {
         const resp = await this.stackClient.fetchJSON('GET', url)
