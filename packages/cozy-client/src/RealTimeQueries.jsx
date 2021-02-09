@@ -34,6 +34,12 @@ const RealTimeQueries = ({ doctype }) => {
   useEffect(() => {
     const realtime = client.plugins.realtime
 
+    if (!realtime) {
+      throw new Error(
+        'You must include the realtime plugin to use RealTimeQueries'
+      )
+    }
+
     const dispatchCreate = document => {
       dispatchChange(client, document, Mutations.createDocument)
     }
