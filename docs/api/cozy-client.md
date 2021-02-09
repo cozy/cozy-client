@@ -311,6 +311,10 @@ we have in the store.</p>
 <dt><a href="#getQueryAttributes">getQueryAttributes()</a></dt>
 <dd><p>Get attributes that will be assigned to the instance of a Query</p>
 </dd>
+<dt><a href="#RealTimeQueries">RealTimeQueries()</a> ⇒ <code>null</code></dt>
+<dd><p>Component that subscribes to a doctype changes and keep the
+internal store updated.</p>
+</dd>
 <dt><a href="#cancelable">cancelable(promise)</a> ⇒ <code>AugmentedPromise</code></dt>
 <dd><p>Wraps a promise so that it can be canceled</p>
 <p>Rejects with canceled: true as soon as cancel is called</p>
@@ -2669,6 +2673,19 @@ we have in the store.
 Get attributes that will be assigned to the instance of a Query
 
 **Kind**: global function  
+<a name="RealTimeQueries"></a>
+
+## RealTimeQueries() ⇒ <code>null</code>
+Component that subscribes to a doctype changes and keep the
+internal store updated.
+
+**Kind**: global function  
+**Returns**: <code>null</code> - The component does not display anything.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options.doctype | <code>Doctype</code> | The doctype to watch |
+
 <a name="cancelable"></a>
 
 ## cancelable(promise) ⇒ <code>AugmentedPromise</code>
