@@ -20,6 +20,14 @@ const dispatchChange = (client, document, mutationDefinitionCreator) => {
   )
 }
 
+/**
+ * Component that subscribes to a doctype changes and keep the
+ * internal store updated.
+ *
+ *
+ * @param  {Doctype} options.doctype - The doctype to watch
+ * @returns {null} The component does not display anything.
+ */
 const RealTimeQueries = ({ doctype }) => {
   const client = useClient()
 
