@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [17.0.0](https://github.com/cozy/cozy-client/compare/v16.19.0...v17.0.0) (2021-02-10)
+
+
+### Code Refactoring
+
+* Remove deprecated connect ([4b41dad](https://github.com/cozy/cozy-client/commit/4b41dad2d52204cb5903df6a67d2fe4ee501c5b3))
+
+
+### Features
+
+* Throw if realtime plugin not registered inside client ([2a85818](https://github.com/cozy/cozy-client/commit/2a858188fff5905940c60bcda474fbbf32a8fbdb))
+
+
+### BREAKING CHANGES
+
+* connect has been removed, please use Query,
+queryConnect or useQuery to bind data to components.
+
+
+
+
+
 # [16.19.0](https://github.com/cozy/cozy-client/compare/v16.18.0...v16.19.0) (2021-02-08)
 
 
