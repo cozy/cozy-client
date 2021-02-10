@@ -1,8 +1,7 @@
 import { transform } from './utils'
 import head from 'lodash/head'
 import get from 'lodash/get'
-import difference from 'lodash/difference'
-import isEqual from 'lodash/difference'
+import isEqual from 'lodash/isEqual'
 
 export const normalizeDesignDoc = designDoc => {
   const id = designDoc._id || designDoc.id
@@ -53,16 +52,17 @@ export const getIndexFields = ({ selector, sort = [] }) => {
  */
 export const getMatchingIndex = (indexes, fields, partialFilter) => {
   return indexes.find(index => {
-    const ddoc = index.id.split('/')[1]
     const viewId = Object.keys(get(index, `views`))[0]
     const fieldsInIndex = get(index, `views.${viewId}.map.fields`)
-    if (difference(Object.keys(fieldsInIndex), fields).length === 0) {
+    const sortedFields = fields.sort()
+    const sortedFieldsInIndex = Object.keys(fieldsInIndex).sort()
+    if (isEqual(sortedFieldsInIndex, sortedFields)) {
       if (!partialFilter) {
         return true
       }
       const partialFilterInIndex = get(
         index,
-        `views.${ddoc}.map.partial_filter_selector`
+        `views.${viewId}.map.partial_filter_selector`
       )
       if (isEqual(partialFilter, partialFilterInIndex)) {
         return true

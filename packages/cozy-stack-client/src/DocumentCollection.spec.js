@@ -666,7 +666,7 @@ describe('DocumentCollection', () => {
         skip: 0,
         selector: { done: { $exists: true } },
         sort: [{ label: 'desc' }, { done: 'desc' }],
-        use_index: 'by_label_and_done'
+        use_index: 'by_done_and_label'
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'POST',
@@ -683,7 +683,7 @@ describe('DocumentCollection', () => {
         'POST',
         '/data/io.cozy.todos/_design/123456/copy?rev=1-123',
         null,
-        { headers: { Destination: '_design/by_label_and_done' } }
+        { headers: { Destination: '_design/by_done_and_label' } }
       )
       expect(client.fetchJSON).toHaveBeenNthCalledWith(
         4,
