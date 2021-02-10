@@ -173,13 +173,35 @@ class DocumentCollection {
   }
 
   /**
+   * Migrate an existing unamed index to a named one.
+   *
+   * Index migration became necessary for optimistic index, because
+   * we started to use named index while we used to have unamed index,
+   * i.e. indexes with CouchDB-generated ID.
+   *
+   * @param {object} sourceIndex - The index to migrate
+   * @param {string} targetIndexName - The new index name
+   * @private
+   */
+  async migrateUnamedIndex(sourceIndex, targetIndexName) {
+    try {
+      await this.copyIndex(sourceIndex, targetIndexName)
+      await this.destroyIndex(sourceIndex)
+    } catch (error) {
+      // There might be a conflict error when 2 queries using the same index
+      // are run in parallel
+      if (!isDocumentUpdateConflict(error)) {
+        throw error
+      }
+    }
+  }
+
+  /**
    * Handle index creation if it is missing.
    *
    * When an index is missing, we first check if there is one with a different
-   * name but the same definition. If yes, we copy it to re-use the same index
-   * and remove the old one.
-   * If there is none, we create the new index.
-   *
+   * name but the same definition. If yes, it means we found an old unamed
+   * index, so we migrate it. If there is none, we create the new index.
    *
    * @param {object} selector - The mango selector
    * @param {object} options - The find options
@@ -195,16 +217,7 @@ class DocumentCollection {
         indexName
       })
     } else {
-      try {
-        await this.copyIndex(existingIndex, indexName)
-        await this.destroyIndex(existingIndex)
-      } catch (error) {
-        // There might be a conflict error when 2 queries using the same index
-        // are run in parallel
-        if (!isDocumentUpdateConflict(error)) {
-          throw error
-        }
-      }
+      await this.migrateUnamedIndex(existingIndex, indexName)
     }
   }
 
