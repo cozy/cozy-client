@@ -20,11 +20,25 @@ const dispatchChange = (client, document, mutationDefinitionCreator) => {
   )
 }
 
+/**
+ * Component that subscribes to a doctype changes and keep the
+ * internal store updated.
+ *
+ *
+ * @param  {Doctype} options.doctype - The doctype to watch
+ * @returns {null} The component does not display anything.
+ */
 const RealTimeQueries = ({ doctype }) => {
   const client = useClient()
 
   useEffect(() => {
     const realtime = client.plugins.realtime
+
+    if (!realtime) {
+      throw new Error(
+        'You must include the realtime plugin to use RealTimeQueries'
+      )
+    }
 
     const dispatchCreate = document => {
       dispatchChange(client, document, Mutations.createDocument)
