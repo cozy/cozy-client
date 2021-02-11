@@ -1,8 +1,8 @@
-jest.mock('../CozyStackClient')
+jest.mock('./CozyStackClient')
 
-import CozyStackClient from '../CozyStackClient'
-import AppCollection from '../AppCollection'
-import { ALL_APPS_RESPONSE, GET_APPS_RESPONSE } from './fixtures/apps'
+import CozyStackClient from './CozyStackClient'
+import AppCollection from './AppCollection'
+import { ALL_APPS_RESPONSE, GET_APPS_RESPONSE } from './__tests__/fixtures/apps'
 
 const FIXTURES = {
   ALL_APPS_RESPONSE,
