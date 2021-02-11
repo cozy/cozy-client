@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [17.0.1](https://github.com/cozy/cozy-client/compare/v17.0.0...v17.0.1) (2021-02-11)
+
+
+### Bug Fixes
+
+* Moving of some spec files to src root folder ([9256942](https://github.com/cozy/cozy-client/commit/92569424e1191cf89f88b7b5af90de0f1295e14c))
+* Throw an error only if sources is not an array ([07d4de4](https://github.com/cozy/cozy-client/commit/07d4de452624490f722e22109203779385e96264))
+
+
+
+
+
 # [17.0.0](https://github.com/cozy/cozy-client/compare/v16.19.0...v17.0.0) (2021-02-10)
 
 **Note:** Version bump only for package cozy-stack-client
