@@ -1,8 +1,8 @@
-jest.mock('../CozyStackClient')
+jest.mock('./CozyStackClient')
 
-import CozyStackClient from '../CozyStackClient'
-import AppCollection from '../AppCollection'
-import { ALL_APPS_RESPONSE, GET_APPS_RESPONSE } from './fixtures/apps'
+import CozyStackClient from './CozyStackClient'
+import AppCollection from './AppCollection'
+import { ALL_APPS_RESPONSE, GET_APPS_RESPONSE } from './__tests__/fixtures/apps'
 
 const FIXTURES = {
   ALL_APPS_RESPONSE,
@@ -79,14 +79,40 @@ describe(`AppCollection`, () => {
 
       it('should throw an error if query.sources is not an array', async () => {
         const query = { sources: {} }
-        expect.assertions(1)
-        try {
-          await collection.get('io.cozy.apps/fakeid', query)
-        } catch (e) {
-          expect(e.message).toBe(
-            'Invalid "sources" attribute passed in query, please use an array with at least one element.'
-          )
-        }
+        await expect(
+          collection.get('io.cozy.apps/fakeid', query)
+        ).rejects.toThrow(
+          'Invalid "sources" attribute passed in query, please use an array with at least one element.'
+        )
+      })
+
+      it('should throw an error if query.sources is an empty array', async () => {
+        const query = { sources: [] }
+        await expect(
+          collection.get('io.cozy.apps/fakeid', query)
+        ).rejects.toThrow(
+          'Invalid "sources" attribute passed in query, please use an array with at least one element.'
+        )
+      })
+
+      it('should call stack with query {} or undefined', async () => {
+        const query1 = {}
+        await collection.get('io.cozy.apps/fakeid', query1)
+
+        expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/apps/fakeid')
+        expect(client.fetchJSON).not.toHaveBeenCalledWith(
+          'GET',
+          '/registry/fakeid'
+        )
+
+        const query2 = undefined
+        await collection.get('io.cozy.apps/fakeid', query2)
+
+        expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/apps/fakeid')
+        expect(client.fetchJSON).not.toHaveBeenCalledWith(
+          'GET',
+          '/registry/fakeid'
+        )
       })
 
       it('should fetch /apps/fakeid first and not /registry/fakeid if nothing went wrong', async () => {

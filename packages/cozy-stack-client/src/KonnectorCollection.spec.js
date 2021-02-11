@@ -1,13 +1,13 @@
-jest.mock('../CozyStackClient')
+jest.mock('./CozyStackClient')
 
-import CozyStackClient from '../CozyStackClient'
-import DocumentCollection from '../KonnectorCollection'
-import KonnectorCollection from '../KonnectorCollection'
-import TriggerCollection from '../TriggerCollection'
+import CozyStackClient from './CozyStackClient'
+import DocumentCollection from './KonnectorCollection'
+import KonnectorCollection from './KonnectorCollection'
+import TriggerCollection from './TriggerCollection'
 import {
   ALL_KONNECTORS_RESPONSE,
   GET_KONNECTORS_RESPONSE
-} from './fixtures/konnectors'
+} from './__tests__/fixtures/konnectors'
 
 const FIXTURES = {
   ALL_KONNECTORS_RESPONSE,

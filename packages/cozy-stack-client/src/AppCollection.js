@@ -36,14 +36,17 @@ class AppCollection extends DocumentCollection {
       )
       id = idArg
     }
-
-    const sources = get(query, 'sources', ['stack'])
-
-    if (sources.length === 0 || (query && !Array.isArray(query.sources))) {
+    if (
+      query &&
+      query.sources &&
+      (!Array.isArray(query.sources) || query.sources.length === 0)
+    ) {
       throw new Error(
         'Invalid "sources" attribute passed in query, please use an array with at least one element.'
       )
     }
+
+    const sources = get(query, 'sources', ['stack'])
 
     const dataFetchers = {
       stack: () =>

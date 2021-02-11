@@ -1,5 +1,5 @@
-import OAuthClient from '../OAuthClient'
-import AccessToken from '../AccessToken'
+import OAuthClient from './OAuthClient'
+import AccessToken from './AccessToken'
 
 const CLIENT_INIT_OPTIONS = {
   uri: 'http://cozy.tools:8080',
