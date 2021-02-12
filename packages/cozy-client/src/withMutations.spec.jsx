@@ -4,6 +4,17 @@ import { shallow } from 'enzyme'
 import withMutations from './withMutations'
 
 describe('withMutations', () => {
+  beforeEach(() => {
+    let originalWarn = console.warn
+    // eslint-disable-next-line no-console
+    jest.spyOn(console, 'warn').mockImplementation(function(msg) {
+      if (msg.includes && msg.includes('withMutations will be removed')) {
+        return
+      }
+      return originalWarn.apply(this, arguments)
+    })
+  })
+
   const clientMock = {
     create: jest.fn(),
     destroy: jest.fn(),
