@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [17.0.3](https://github.com/cozy/cozy-client/compare/v17.0.2...v17.0.3) (2021-02-12)
+
+
+### Bug Fixes
+
+* HasOneInPlace correctly gets its data ([55668a9](https://github.com/cozy/cozy-client/commit/55668a97ec8455e2d4a1588778675f5f18226e74))
+
+
+
+
+
 ## [17.0.2](https://github.com/cozy/cozy-client/compare/v17.0.1...v17.0.2) (2021-02-12)
 
 **Note:** Version bump only for package cozy-client
