@@ -10,7 +10,7 @@ export default class HasOneInPlace extends Association {
   }
 
   get data() {
-    return Q(this.doctype).getById(this.raw)
+    return this.get(this.doctype, this.raw)
   }
 
   static query(doc, client, assoc) {
