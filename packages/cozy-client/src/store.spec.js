@@ -10,8 +10,8 @@ import reducer, {
   receiveQueryError,
   receiveMutationResult,
   StoreProxy
-} from '../store'
-import { QueryDefinition as Q } from '../queries/dsl'
+} from './store'
+import { QueryDefinition as Q } from './queries/dsl'
 import {
   TODO_1,
   TODO_2,
@@ -20,7 +20,7 @@ import {
   TODO_WITH_RELATION,
   FILE_1,
   FILE_2
-} from './fixtures'
+} from './__tests__/fixtures'
 
 describe('Store', () => {
   let store

@@ -1,9 +1,8 @@
-import CozyClient from '../CozyClient'
-import StackLink from '../StackLink'
-
-import { SCHEMA } from './fixtures'
-
 import { Q } from 'cozy-client'
+
+import CozyClient from './CozyClient'
+import StackLink from './StackLink'
+import { SCHEMA } from './__tests__/fixtures'
 
 describe('StackLink', () => {
   let stackClient, link, client
