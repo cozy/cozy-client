@@ -1,9 +1,9 @@
-import CozyClient from '../CozyClient'
-import CozyLink from '../CozyLink'
+import CozyClient from './CozyClient'
+import CozyLink from './CozyLink'
+import { createStore, getQueryFromStore } from './store'
+import { receiveQueryResult, initQuery } from './store/queries'
 
-import { createStore, getQueryFromStore } from '../store'
-import { SCHEMA, TODO_1, TODO_2 } from './fixtures'
-import { receiveQueryResult, initQuery } from '../store/queries'
+import { SCHEMA, TODO_1, TODO_2 } from './__tests__/fixtures'
 
 describe('Associations', () => {
   const requestHandler = jest.fn()

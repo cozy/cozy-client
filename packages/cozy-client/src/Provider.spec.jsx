@@ -1,12 +1,12 @@
-jest.mock('../CozyClient')
+jest.mock('./CozyClient')
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import configureStore from 'redux-mock-store'
 import { mount, shallow } from 'enzyme'
 
-import Provider from '../Provider'
-import CozyClient from '../CozyClient'
+import Provider from './Provider'
+import CozyClient from './CozyClient'
 
 describe('Provider', () => {
   const client = new CozyClient()

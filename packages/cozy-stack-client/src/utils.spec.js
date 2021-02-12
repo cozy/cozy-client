@@ -1,4 +1,4 @@
-import { uri } from '../utils'
+import { uri } from './utils'
 
 describe('uri template tag function', () => {
   it('should encode URI components', () => {

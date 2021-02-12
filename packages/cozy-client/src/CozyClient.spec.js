@@ -13,6 +13,7 @@ import {
   SOURCE_ACCOUNT_ID,
   FILE_1
 } from './__tests__/fixtures'
+import { withIgnoreConsoleWarn } from './__tests__/console'
 
 import CozyClient from './CozyClient'
 import { Q } from './queries/dsl'
@@ -471,8 +472,10 @@ describe('CozyClient login', () => {
     expect(links[0].onLogin).toHaveBeenCalledTimes(1)
     expect(links[2].onLogin).toHaveBeenCalledTimes(1)
 
-    // test if we launch twice login, it doesn't launch twice onLogin.
-    await client.login()
+    await withIgnoreConsoleWarn(async () => {
+      // test if we launch twice login, it doesn't launch twice onLogin.
+      await client.login()
+    })
 
     expect(links[0].onLogin).toHaveBeenCalledTimes(1)
     expect(links[2].onLogin).toHaveBeenCalledTimes(1)
