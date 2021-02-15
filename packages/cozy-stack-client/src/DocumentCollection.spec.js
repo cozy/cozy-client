@@ -516,10 +516,10 @@ describe('DocumentCollection', () => {
       client.fetchJSON.mockRestore()
       client.fetchJSON
         .mockRejectedValueOnce(new Error('no_index'))
-        .mockReturnValueOnce(Promise.resolve({ rows: [] }))
-        .mockReturnValueOnce(Promise.resolve({}))
-        .mockReturnValueOnce(Promise.resolve(FIND_RESPONSE_FIXTURE))
-        .mockReturnValueOnce(Promise.resolve(FIND_RESPONSE_FIXTURE))
+        .mockResolvedValueOnce({ rows: [] })
+        .mockResolvedValueOnce({})
+        .mockResolvedValueOnce(FIND_RESPONSE_FIXTURE)
+        .mockResolvedValueOnce(FIND_RESPONSE_FIXTURE)
       const collection = new DocumentCollection('io.cozy.todos', client)
       await expect(
         collection.findWithMango(
@@ -530,10 +530,10 @@ describe('DocumentCollection', () => {
       ).resolves.toBe(FIND_RESPONSE_FIXTURE)
       client.fetchJSON
         .mockRejectedValueOnce(new Error('no_usable_index'))
-        .mockReturnValueOnce(Promise.resolve({ rows: [] }))
-        .mockReturnValueOnce(Promise.resolve({}))
-        .mockReturnValueOnce(Promise.resolve(FIND_RESPONSE_FIXTURE))
-        .mockReturnValueOnce(Promise.resolve(FIND_RESPONSE_FIXTURE))
+        .mockResolvedValueOnce({ rows: [] })
+        .mockResolvedValueOnce({})
+        .mockResolvedValueOnce(FIND_RESPONSE_FIXTURE)
+        .mockResolvedValueOnce(FIND_RESPONSE_FIXTURE)
 
       await expect(
         collection.findWithMango(
