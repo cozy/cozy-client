@@ -46,7 +46,7 @@ export const getIndexFields = ({ selector, sort = [] }) => {
  * Get a matching index based on the given parameters
  *
  * @param {Array} indexes - The list of indexes to search
- * @param {object} fields  - The index fields
+ * @param {Array} fields  - The index fields
  * @param {object} partialFilter - A partial filter selector
  * @returns {object} A matching index
  */
@@ -54,7 +54,7 @@ export const getMatchingIndex = (indexes, fields, partialFilter) => {
   return indexes.find(index => {
     const viewId = Object.keys(get(index, `views`))[0]
     const fieldsInIndex = get(index, `views.${viewId}.map.fields`)
-    const sortedFields = fields.sort()
+    const sortedFields = [...fields].sort()
     const sortedFieldsInIndex = Object.keys(fieldsInIndex).sort()
     if (isEqual(sortedFieldsInIndex, sortedFields)) {
       if (!partialFilter) {
