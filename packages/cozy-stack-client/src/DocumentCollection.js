@@ -10,6 +10,7 @@ import Collection, {
   dontThrowNotFoundError,
   isIndexNotFoundError,
   isIndexConflictError,
+  isNoUsableIndexError,
   isDocumentUpdateConflict
 } from './Collection'
 import {
@@ -241,7 +242,7 @@ class DocumentCollection {
     try {
       resp = await this.fetchDocumentsWithMango(path, selector, options)
     } catch (error) {
-      if (!isIndexNotFoundError(error)) {
+      if (!isIndexNotFoundError(error) && !isNoUsableIndexError(error)) {
         throw error
       } else {
         await this.handleMissingIndex(selector, options)

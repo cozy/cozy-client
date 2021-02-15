@@ -41,6 +41,16 @@ export const isIndexConflictError = error => {
 }
 
 /**
+ * Helper to identify a no usable index error
+ *
+ * @param {Error} error
+ * @returns {boolean} - Whether or not the error is a no usable index error
+ */
+export const isNoUsableIndexError = error => {
+  return error.message.match(/no_usable_index/)
+}
+
+/**
  * Helper to identify a document conflict
  *
  * @param {Error} error
