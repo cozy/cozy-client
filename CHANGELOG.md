@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [17.1.0](https://github.com/cozy/cozy-client/compare/v17.0.3...v17.1.0) (2021-02-15)
+
+
+### Features
+
+* Copy design doc when equivalent index is found ([65b3e75](https://github.com/cozy/cozy-client/commit/65b3e75cb5f04fb8000fe41cbd53502f2a73e3b1))
+* Limit to 1 the queries after index creation ([20c13ec](https://github.com/cozy/cozy-client/commit/20c13ec80203694a2353708b91c1f8b91af76263))
+* Optimistic index creation ([f104d0d](https://github.com/cozy/cozy-client/commit/f104d0df97a553093e640437b22cd94362b95a50))
+
+
+
+
+
 ## [17.0.3](https://github.com/cozy/cozy-client/compare/v17.0.2...v17.0.3) (2021-02-12)
 
 
