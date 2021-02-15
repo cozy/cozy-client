@@ -55,6 +55,9 @@ through OAuth.</p>
 <dt><a href="#isIndexConflictError">isIndexConflictError</a> ⇒ <code>boolean</code></dt>
 <dd><p>Helper to identify an index conflict</p>
 </dd>
+<dt><a href="#isNoUsableIndexError">isNoUsableIndexError</a> ⇒ <code>boolean</code></dt>
+<dd><p>Helper to identify a no usable index error</p>
+</dd>
 <dt><a href="#isDocumentUpdateConflict">isDocumentUpdateConflict</a> ⇒ <code>boolean</code></dt>
 <dd><p>Helper to identify a document conflict</p>
 </dd>
@@ -1428,6 +1431,18 @@ Helper to identify an index conflict
 | --- | --- |
 | error | <code>Error</code> | 
 
+<a name="isNoUsableIndexError"></a>
+
+## isNoUsableIndexError ⇒ <code>boolean</code>
+Helper to identify a no usable index error
+
+**Kind**: global constant  
+**Returns**: <code>boolean</code> - - Whether or not the error is a no usable index error  
+
+| Param | Type |
+| --- | --- |
+| error | <code>Error</code> | 
+
 <a name="isDocumentUpdateConflict"></a>
 
 ## isDocumentUpdateConflict ⇒ <code>boolean</code>
@@ -1464,7 +1479,7 @@ Get a matching index based on the given parameters
 | Param | Type | Description |
 | --- | --- | --- |
 | indexes | <code>Array</code> | The list of indexes to search |
-| fields | <code>object</code> | The index fields |
+| fields | <code>Array</code> | The index fields |
 | partialFilter | <code>object</code> | A partial filter selector |
 
 <a name="getPermissionsFor"></a>
