@@ -512,6 +512,51 @@ describe('DocumentCollection', () => {
       expect(resp.data[0]).toHaveDocumentIdentity()
     })
 
+    it('should not throw an error if it is a missing index', async () => {
+      client.fetchJSON.mockRestore()
+      client.fetchJSON
+        .mockRejectedValueOnce(new Error('no_index'))
+        .mockReturnValueOnce(Promise.resolve({ rows: [] }))
+        .mockReturnValueOnce(Promise.resolve({}))
+        .mockReturnValueOnce(Promise.resolve(FIND_RESPONSE_FIXTURE))
+        .mockReturnValueOnce(Promise.resolve(FIND_RESPONSE_FIXTURE))
+      const collection = new DocumentCollection('io.cozy.todos', client)
+      await expect(
+        collection.findWithMango(
+          'fakepath',
+          { done: { $exists: true } },
+          { indexedFields: ['label'] }
+        )
+      ).resolves.toBe(FIND_RESPONSE_FIXTURE)
+      client.fetchJSON
+        .mockRejectedValueOnce(new Error('no_usable_index'))
+        .mockReturnValueOnce(Promise.resolve({ rows: [] }))
+        .mockReturnValueOnce(Promise.resolve({}))
+        .mockReturnValueOnce(Promise.resolve(FIND_RESPONSE_FIXTURE))
+        .mockReturnValueOnce(Promise.resolve(FIND_RESPONSE_FIXTURE))
+
+      await expect(
+        collection.findWithMango(
+          'fakepath',
+          { done: { $exists: true } },
+          { indexedFields: ['label'] }
+        )
+      ).resolves.toBe(FIND_RESPONSE_FIXTURE)
+    })
+
+    it('should throw an error if it is not a missing index', async () => {
+      client.fetchJSON.mockRestore()
+      client.fetchJSON.mockRejectedValueOnce(new Error('custom error'))
+      const collection = new DocumentCollection('io.cozy.todos', client)
+      await expect(
+        collection.findWithMango(
+          'fakepath',
+          { done: { $exists: true } },
+          { indexedFields: ['label'] }
+        )
+      ).rejects.toThrow()
+    })
+
     it('should index the specified fields when no index exists', async () => {
       client.fetchJSON.mockRestore()
       client.fetchJSON
