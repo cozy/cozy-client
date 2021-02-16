@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [17.1.1](https://github.com/cozy/cozy-client/compare/v17.1.0...v17.1.1) (2021-02-16)
+
+
+### Bug Fixes
+
+* Copy fields before sort ([a880556](https://github.com/cozy/cozy-client/commit/a880556ddd8dfdc34579708ed1411409bbd0f2d1))
+* Do not throw no_usable_index error after find query ([22f7db6](https://github.com/cozy/cozy-client/commit/22f7db69c0fa702f6fa268cb63d4db059febc4bf))
+
+
+
+
+
 # [17.1.0](https://github.com/cozy/cozy-client/compare/v17.0.3...v17.1.0) (2021-02-15)
 
 
