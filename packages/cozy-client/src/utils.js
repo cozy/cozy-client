@@ -3,7 +3,10 @@
  *
  * Rejects with canceled: true as soon as cancel is called
  *
- * @param  {Promise} promise
+ * @typedef AugmentedPromise {Promise}
+ * @property {Function} cancel - Cancel the promise
+ *
+ * @param  {Promise} promise  - Promise
  * @returns {AugmentedPromise} - Promise with .cancel method
  */
 const cancelable = promise => {

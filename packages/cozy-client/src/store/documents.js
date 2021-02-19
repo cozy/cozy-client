@@ -162,7 +162,8 @@ export const extractAndMergeDocument = (data, updatedStateWithIncluded) => {
   const doctype = data[0]._type
 
   if (!doctype) {
-    throw new Error('Document without _type', data[0])
+    logger.info('Document without _type', data[0])
+    throw new Error('Document without _type')
   }
   const sortedData = keyBy(data, properId)
 

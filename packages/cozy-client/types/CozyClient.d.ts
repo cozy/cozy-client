@@ -287,11 +287,13 @@ declare class CozyClient {
      * @param  {object} options - Options
      * @param  {string} options.as - Names the query so it can be reused (by multiple components for example)
      * @param  {string} options.fetchPolicy - Fetch policy to bypass fetching based on what's already inside the state. See "Fetch policies"
+     * @param  {string} options.update - Does not seem to be used
      * @returns {QueryResult}
      */
     query(queryDefinition: QueryDefinition, { update, ...options }?: {
         as: string;
         fetchPolicy: string;
+        update: string;
     }): QueryResult;
     /**
      * Will fetch all documents for a `queryDefinition`, automatically fetching more

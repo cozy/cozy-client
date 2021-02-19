@@ -9,6 +9,20 @@ const DIR_TYPE = 'directory'
 const FILENAME_WITH_EXTENSION_REGEX = /(.+)(\..*)$/
 
 /**
+ * @typedef {object} File - An io.cozy.files document
+ * @property {string} name - Name of the file
+ * @property {object} metadata - Metadata of the file
+ * @property {object} type - Type of the file
+ */
+
+/**
+ * TODO find if this type already exists
+ *
+ * @typedef {object} QueryResult - Result of a query
+ * @property {data} array - Data fetched in the query
+ */
+
+/**
  * Returns base filename and extension
  *
  * @param {object} file An io.cozy.files
@@ -205,7 +219,7 @@ export const saveFileQualification = async (client, file, qualification) => {
  *
  * @param {object} client - The CozyClient instance
  * @param {object} docRules - the rules containing the searched qualification and the count
- * @returns {object} - The files found by the rules
+ * @returns {Promise<QueryResult>} - The files found by the rules
  */
 export const fetchFilesByQualificationRules = async (client, docRules) => {
   const { rules, count } = docRules

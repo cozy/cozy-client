@@ -42,7 +42,13 @@ export default HasManyInPlace;
  */
 declare class HasManyInPlace extends Association {
     static query(): any;
-    constructor(target: any, name: string, doctype: string, options: string);
+    constructor(target: any, name: string, doctype: string, options: {
+        get: Function;
+        query: Function;
+        mutate: Function;
+        save: Function;
+        dispatch: Function;
+    });
     addById(id: any): void;
     removeById(id: any): void;
     existsById(id: any): boolean;

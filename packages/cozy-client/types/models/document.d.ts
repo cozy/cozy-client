@@ -42,11 +42,11 @@ export class Qualification {
          */
         subjects: any[];
     });
-    label: any;
-    purpose: any;
-    sourceCategory: any;
-    sourceSubCategory: any;
-    subjects: any;
+    label: string;
+    purpose: string;
+    sourceCategory: string;
+    sourceSubCategory: string;
+    subjects: any[];
     /**
      * Check the given qualification attributes respects the following rules:
      *   - For the given label, if a purpose, sourceCategory or sourceSubCategory

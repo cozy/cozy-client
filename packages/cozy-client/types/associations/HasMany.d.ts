@@ -68,7 +68,13 @@ export type Relation = {
  */
 declare class HasMany extends Association {
     static query(document: any, client: any, assoc: any): QueryDefinition;
-    constructor(target: any, name: string, doctype: string, options: string);
+    constructor(target: any, name: string, doctype: string, options: {
+        get: Function;
+        query: Function;
+        mutate: Function;
+        save: Function;
+        dispatch: Function;
+    });
     get hasMore(): any;
     /**
      * Returns the total number of documents in the relationship.

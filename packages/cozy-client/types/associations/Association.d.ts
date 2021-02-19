@@ -5,6 +5,18 @@ export default Association;
  * used by the client to automatically fetch relationship data.
  *
  * Hydrated documents used by components come with Association instances.
+ */
+export type Association = any;
+/**
+ * Associations are used by components to access related store documents that are
+ * linked in a document. They are also responsible for building the `QueryDefinition` that is
+ * used by the client to automatically fetch relationship data.
+ *
+ * Hydrated documents used by components come with Association instances.
+ *
+ * @interface
+ *
+ * @typedef Association
  *
  * @description
  * Example: The schema defines an `author` relationship :
@@ -80,10 +92,20 @@ declare class Association {
      * @param  {object} target - Original object containing raw data
      * @param  {string} name - Attribute under which the association is stored
      * @param  {string} doctype - Doctype of the documents managed by the association
-     * @param {string} options
+     * @param {object} options - Options passed from the client
+     * @param {Function} options.get - Get a document from the store
+     * @param {Function} options.query - Execute client query
+     * @param {Function} options.mutate - Execute client mutate
+     * @param {Function} options.save - Execute client save
      * @param  {Function} options.dispatch - Store's dispatch, comes from the client
      */
-    constructor(target: object, name: string, doctype: string, options: string);
+    constructor(target: object, name: string, doctype: string, options: {
+        get: Function;
+        query: Function;
+        mutate: Function;
+        save: Function;
+        dispatch: Function;
+    });
     /**
      * The original document declaring the relationship
      *
@@ -116,13 +138,13 @@ declare class Association {
      * @param {QueryDefinition} queryDefinition
      * @function
      */
-    query: any;
+    query: Function;
     /**
      * Performs a mutation on the relationship.
      *
      * @function
      */
-    mutate: any;
+    mutate: Function;
     /**
      * Saves the relationship in store.
      *

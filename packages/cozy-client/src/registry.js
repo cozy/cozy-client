@@ -79,12 +79,12 @@ class Registry {
   /**
    * Fetch at most 200 apps from the channel
    *
-   * @param  {string} params - Fetching parameters
+   * @param  {object} params - Fetching parameters
    * @param  {string} params.type - "webapp" or "konnector"
    * @param  {string} params.channel - "dev"/"beta"/"stable"
    * @param  {string} params.limit - maximum number of fetched apps - defaults to 200
    *
-   * @returns {Array<RegistryApp>}
+   * @returns {Promise<Array<RegistryApp>>}
    */
   async fetchApps(params) {
     const { channel, type, limit = 200 } = params

@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 /**
- * @typedef Wrapper
- * @returns {Wrapper}
+ * @typedef {Component} Wrapper
+ * @returns {Function}
  */
 const withMutation = (mutation, options = {}) => WrappedComponent => {
   const wrappedDisplayName =

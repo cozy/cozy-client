@@ -1,7 +1,9 @@
 /**
  * @typedef {object} Document - Couchdb document like an io.cozy.files
  * @property {string} _id
+ * @property {string} id
  * @property {string} _type
+ * @property {string} type
  */
 /**
  * @typedef {('ALL'|'GET'|'PATCH'|'POST'|'PUT'|'DELETE')} PermissionVerb
@@ -18,8 +20,8 @@
  *
  * @private
  * @param {PermissionItem} perm - permission node in a io.cozy.permissions document
- * @param {object} options -
- * @param {PermissionVerb[]} options.writability  -
+ * @param {object} options - Options
+ * @param {PermissionVerb[]} [options.writability] - Writability
  * @returns {boolean} true if the note should be displayed read-only
  */
 export function isReadOnly(perm: PermissionItem, options?: {
@@ -29,9 +31,9 @@ export function isReadOnly(perm: PermissionItem, options?: {
  * Fetches the list of permissions blocks
  *
  * @param {CozyClient} client -
- * @returns {PermissionItem[]} list of permissions
+ * @returns {Promise<PermissionItem[]>} list of permissions
  */
-export function fetchOwn(client: CozyClient): PermissionItem[];
+export function fetchOwn(client: CozyClient): Promise<PermissionItem[]>;
 /**
  * Checks if the permission item is about a specific doctype
  *
@@ -46,7 +48,9 @@ export function isShortcutCreatedOnTheRecipientCozy(permission: Permission): boo
  */
 export type Document = {
     _id: string;
+    id: string;
     _type: string;
+    type: string;
 };
 export type PermissionVerb = "DELETE" | "ALL" | "GET" | "PATCH" | "POST" | "PUT";
 export type PermissionItem = {

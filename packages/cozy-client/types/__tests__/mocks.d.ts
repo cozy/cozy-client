@@ -1,17 +1,17 @@
 export function client(implementations: any): {
-    query: any;
-    create: any;
-    save: any;
-    destroy: any;
-    getAssociation: any;
-    makeObservableQuery: any;
-    requestQuery: any;
-    all: any;
-    setStore: any;
+    query: jest.Mock<any, any>;
+    create: jest.Mock<any, any>;
+    save: jest.Mock<any, any>;
+    destroy: jest.Mock<any, any>;
+    getAssociation: jest.Mock<any, any>;
+    makeObservableQuery: jest.Mock<any, any>;
+    requestQuery: jest.Mock<any, any>;
+    all: jest.Mock<any, any>;
+    setStore: jest.Mock<any, any>;
 };
 export function observableQuery(implementations: any): {
-    currentResult: any;
-    subscribe: any;
-    fetchMore: any;
-    fetch: any;
+    currentResult: jest.Mock<any, any>;
+    subscribe: jest.Mock<any, any>;
+    fetchMore: jest.Mock<any, any>;
+    fetch: jest.Mock<any, any>;
 };

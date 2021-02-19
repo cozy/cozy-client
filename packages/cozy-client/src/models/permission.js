@@ -7,7 +7,9 @@ import { getParentFolderId } from './file'
 /**
  * @typedef {object} Document - Couchdb document like an io.cozy.files
  * @property {string} _id
+ * @property {string} id
  * @property {string} _type
+ * @property {string} type
  */
 
 /**
@@ -27,8 +29,8 @@ import { getParentFolderId } from './file'
  *
  * @private
  * @param {PermissionItem} perm - permission node in a io.cozy.permissions document
- * @param {object} options -
- * @param {PermissionVerb[]} options.writability  -
+ * @param {object} options - Options
+ * @param {PermissionVerb[]} [options.writability] - Writability
  * @returns {boolean} true if the note should be displayed read-only
  */
 export function isReadOnly(perm, options = {}) {
@@ -44,7 +46,7 @@ export function isReadOnly(perm, options = {}) {
  * Fetches the list of permissions blocks
  *
  * @param {CozyClient} client -
- * @returns {PermissionItem[]} list of permissions
+ * @returns {Promise<PermissionItem[]>} list of permissions
  */
 export async function fetchOwn(client) {
   const collection = client.collection('io.cozy.permissions')
@@ -72,13 +74,14 @@ export function isForType(permission, type) {
  * until we can find the permissions attached to the share
  *
  * @private
- * @param {object} object -
- * @param {Document} object.document - a couchdb document
- * @param {CozyClient} object.document.client -
- * @param {PermissionItem[]} object.permissions -
- * @returns {PermissionItem|undefined} the corresponding permission block
+ * @param {object} options - Options
+ * @param {Document} options.document - a couchdb document
+ * @param {CozyClient} options.client - A cozy client
+ * @param {PermissionItem[]} options.permissions -
+ * @returns {Promise<PermissionItem|undefined>} the corresponding permission block
  */
-async function findPermissionFor({ document, client, permissions }) {
+async function findPermissionFor(options) {
+  const { document, client, permissions } = options
   const id = document._id || document.id
   const type = document._type || document.type
   const doc = { ...document, id, type }

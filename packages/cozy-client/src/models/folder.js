@@ -17,7 +17,7 @@ export const MAGIC_FOLDERS = {
  * @param  {string} id Magic Folder id. `CozyFolder.magicFolders` contains the
  * ids of folders that can be magic folders.
  * @param {string} path Default path to use if magic folder does not exist
- * @returns {object} Folder document
+ * @returns {Promise<object>} Folder document
  */
 export const ensureMagicFolder = async (client, id, path) => {
   const magicFolderDocument = {

@@ -1,7 +1,8 @@
 export default withMutation;
-export type Wrapper = any;
+export type Wrapper = React.Component<any, any, any>;
 /**
- * @typedef Wrapper
- * @returns {Wrapper}
+ * @typedef {Component} Wrapper
+ * @returns {Function}
  */
-declare function withMutation(mutation: any, options?: {}): any;
+declare function withMutation(mutation: any, options?: {}): Function;
+import React from "react";

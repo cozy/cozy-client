@@ -1,5 +1,7 @@
 import { Component } from 'react'
+import CozyClient from './CozyClient'
 import PropTypes from 'prop-types'
+import ObservableQuery from './ObservableQuery'
 
 const dummyState = {}
 
@@ -99,6 +101,25 @@ export default class Query extends Component {
     Object.assign(this, getQueryAttributes(client, props))
 
     this.recomputeChildrenArgs()
+
+    /**
+     * Current client
+     *
+     * @type {CozyClient}
+     */
+    this.client = null
+    /**
+     * Observable query to connect store to query
+     *
+     * @type {ObservableQuery}
+     */
+    this.observableQuery = null
+    /**
+     * Callback to unsubscribe from observable query
+     *
+     * @type {Function}
+     */
+    this.queryUnsubscribe = null
   }
 
   componentDidMount() {

@@ -4,7 +4,13 @@
  */
 export default class HasOneInPlace extends Association {
     static query(doc: any, client: any, assoc: any): any;
-    constructor(target: any, name: string, doctype: string, options: string);
+    constructor(target: any, name: string, doctype: string, options: {
+        get: Function;
+        query: Function;
+        mutate: Function;
+        save: Function;
+        dispatch: Function;
+    });
     dehydrate(doc: any): any;
 }
 export const BelongsToInPlace: typeof HasOneInPlace;

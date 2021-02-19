@@ -58,44 +58,50 @@ export namespace MutationTypes {
     export { UPLOAD_FILE };
 }
 export type PartialQueryDefinition = {
-    indexedField: any[];
-    sort: any[];
-    selector: object;
+    indexedFields?: any[];
+    sort?: any[];
+    selector?: object;
 };
 export type MangoSelector = any;
+export type Cursor = any[];
 /**
  * @typedef PartialQueryDefinition
  *
- * @property {Array} indexedField
- * @property {Array} sort
- * @property {object} selector
+ * @property {Array} [indexedFields]
+ * @property {Array} [sort]
+ * @property {object} [selector]
  */
 /**
- * @typedef MangoSelector
+ * @typedef {object} MangoSelector
+ */
+/**
+ * @typedef {Array} Cursor
  */
 /**
  * Chainable API to create query definitions to retrieve documents
  * from a Cozy. `QueryDefinition`s are sent to links.
+ *
+ * @augments {object}
  */
 export class QueryDefinition {
     /**
      * @class
-     * @augments {object}
+     *
      * @param {object} options Initial options for the query definition
-     * @param {string} options.doctype - The doctype of the doc.
-     * @param {string} options.id - The id of the doc.
-     * @param {Array} options.ids - The ids of the docs.
-     * @param {object} options.selector - The selector to query the docs.
-     * @param {Array} options.fields - The fields to return.
-     * @param {Array} options.indexedFields - The fields to index.
-     * @param {object} options.partialFilter - The partial index definition to filter docs.
-     * @param {Array} options.sort - The sorting params.
-     * @param {string} options.includes - The docs to include.
-     * @param {string} options.referenced - The referenced document.
-     * @param {number} options.limit - The document's limit to return.
-     * @param {number} options.skip - The number of docs to skip.
-     * @param {number} options.cursor - The cursor to paginate views.
-     * @param {number} options.bookmark - The bookmark to paginate mango queries.
+     * @param {string} [options.doctype] - The doctype of the doc.
+     * @param {string} [options.id] - The id of the doc.
+     * @param {Array} [options.ids] - The ids of the docs.
+     * @param {object} [options.selector] - The selector to query the docs.
+     * @param {Array} [options.fields] - The fields to return.
+     * @param {Array} [options.indexedFields] - The fields to index.
+     * @param {object} [options.partialFilter] - The partial index definition to filter docs.
+     * @param {Array} [options.sort] - The sorting params.
+     * @param {Array<string>} [options.includes] - The docs to include.
+     * @param {string} [options.referenced] - The referenced document.
+     * @param {number} [options.limit] - The document's limit to return.
+     * @param {number} [options.skip] - The number of docs to skip.
+     * @param {Cursor} [options.cursor] - The cursor to paginate views.
+     * @param {string} [options.bookmark] - The bookmark to paginate mango queries.
      */
     constructor(options?: {
         doctype: string;
@@ -106,12 +112,12 @@ export class QueryDefinition {
         indexedFields: any[];
         partialFilter: object;
         sort: any[];
-        includes: string;
+        includes: Array<string>;
         referenced: string;
         limit: number;
         skip: number;
-        cursor: number;
-        bookmark: number;
+        cursor: Cursor;
+        bookmark: string;
     });
     doctype: string;
     id: string;
@@ -121,12 +127,12 @@ export class QueryDefinition {
     indexedFields: any[];
     partialFilter: any;
     sort: any[];
-    includes: string;
+    includes: string[];
     referenced: string;
     limit: number;
     skip: number;
-    cursor: number;
-    bookmark: number;
+    cursor: Cursor;
+    bookmark: string;
     /**
      * Checks if the sort order matches the index' fields order.
      *
@@ -147,8 +153,7 @@ export class QueryDefinition {
      * @param {MangoSelector} selector - The selector definition
      * @returns {void}
      */
-    checkSelector(selector: any): void;
-    doStuff(): void;
+    checkSelector(selector: MangoSelector): void;
     /**
      * Query a single document on its id.
      *
@@ -170,7 +175,7 @@ export class QueryDefinition {
      * @param {MangoSelector} selector   The Mango selector.
      * @returns {QueryDefinition}  The QueryDefinition object.
      */
-    where(selector: any): QueryDefinition;
+    where(selector: MangoSelector): QueryDefinition;
     /**
      * Specify which fields of each object should be returned. If it is omitted, the entire object is returned.
      *
@@ -236,10 +241,10 @@ export class QueryDefinition {
      * the starting document of the query, e.g. "file-id".
      * Use the last docid of each query as startkey_docid to paginate or leave blank for the first query.
      *
-     * @param {Array} cursor The cursor for pagination.
+     * @param {Cursor} cursor The cursor for pagination.
      * @returns {QueryDefinition}  The QueryDefinition object.
      */
-    offsetCursor(cursor: any[]): QueryDefinition;
+    offsetCursor(cursor: Cursor): QueryDefinition;
     /**
      * Use [bookmark](https://docs.couchdb.org/en/2.2.0/api/database/find.html#pagination) pagination.
      * Note this only applies for mango-queries (not views) and is way more efficient than skip pagination.
@@ -266,12 +271,12 @@ export class QueryDefinition {
         indexedFields: any[];
         partialFilter: any;
         sort: any[];
-        includes: string;
+        includes: string[];
         referenced: string;
         limit: number;
         skip: number;
-        cursor: number;
-        bookmark: number;
+        cursor: Cursor;
+        bookmark: string;
     };
 }
 declare const CREATE_DOCUMENT: "CREATE_DOCUMENT";

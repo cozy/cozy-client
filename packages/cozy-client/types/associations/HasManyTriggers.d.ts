@@ -11,6 +11,12 @@ declare class HasManyTriggers extends HasMany {
      * `message.konnector` attribute
      */
     static query(doc: any, client: any): import("../queries/dsl").QueryDefinition;
-    constructor(target: any, name: string, doctype: string, options: string);
+    constructor(target: any, name: string, doctype: string, options: {
+        get: Function;
+        query: Function;
+        mutate: Function;
+        save: Function;
+        dispatch: Function;
+    });
 }
 import HasMany from "./HasMany";

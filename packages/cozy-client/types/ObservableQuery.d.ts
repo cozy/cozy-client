@@ -11,7 +11,7 @@ export default class ObservableQuery {
     /**
      * Returns the query from the store with hydrated documents.
      *
-     * @typedef HydratedQueryState
+     * @typedef {object} HydratedQueryState
      *
      * @returns {HydratedQueryState}
      */

@@ -4,38 +4,44 @@ import findKey from 'lodash/findKey'
 /**
  * @typedef PartialQueryDefinition
  *
- * @property {Array} indexedField
- * @property {Array} sort
- * @property {object} selector
+ * @property {Array} [indexedFields]
+ * @property {Array} [sort]
+ * @property {object} [selector]
  */
 
 /**
- * @typedef MangoSelector
+ * @typedef {object} MangoSelector
+ */
+
+/**
+ * @typedef {Array} Cursor
  */
 
 /**
  * Chainable API to create query definitions to retrieve documents
  * from a Cozy. `QueryDefinition`s are sent to links.
+ *
+ * @augments {object}
  */
 class QueryDefinition {
   /**
    * @class
-   * @augments {object}
+   *
    * @param {object} options Initial options for the query definition
-   * @param {string} options.doctype - The doctype of the doc.
-   * @param {string} options.id - The id of the doc.
-   * @param {Array} options.ids - The ids of the docs.
-   * @param {object} options.selector - The selector to query the docs.
-   * @param {Array} options.fields - The fields to return.
-   * @param {Array} options.indexedFields - The fields to index.
-   * @param {object} options.partialFilter - The partial index definition to filter docs.
-   * @param {Array} options.sort - The sorting params.
-   * @param {string} options.includes - The docs to include.
-   * @param {string} options.referenced - The referenced document.
-   * @param {number} options.limit - The document's limit to return.
-   * @param {number} options.skip - The number of docs to skip.
-   * @param {number} options.cursor - The cursor to paginate views.
-   * @param {number} options.bookmark - The bookmark to paginate mango queries.
+   * @param {string} [options.doctype] - The doctype of the doc.
+   * @param {string} [options.id] - The id of the doc.
+   * @param {Array} [options.ids] - The ids of the docs.
+   * @param {object} [options.selector] - The selector to query the docs.
+   * @param {Array} [options.fields] - The fields to return.
+   * @param {Array} [options.indexedFields] - The fields to index.
+   * @param {object} [options.partialFilter] - The partial index definition to filter docs.
+   * @param {Array} [options.sort] - The sorting params.
+   * @param {Array<string>} [options.includes] - The docs to include.
+   * @param {string} [options.referenced] - The referenced document.
+   * @param {number} [options.limit] - The document's limit to return.
+   * @param {number} [options.skip] - The number of docs to skip.
+   * @param {Cursor} [options.cursor] - The cursor to paginate views.
+   * @param {string} [options.bookmark] - The bookmark to paginate mango queries.
    */
   constructor(options = {}) {
     this.doctype = options.doctype
@@ -255,7 +261,7 @@ class QueryDefinition {
    * the starting document of the query, e.g. "file-id".
    * Use the last docid of each query as startkey_docid to paginate or leave blank for the first query.
    *
-   * @param {Array} cursor The cursor for pagination.
+   * @param {Cursor} cursor The cursor for pagination.
    * @returns {QueryDefinition}  The QueryDefinition object.
    */
   offsetCursor(cursor) {

@@ -37,4 +37,30 @@ export function isSharingShorcut(file: object): boolean;
 export function isSharingShortcutNew(file: object): boolean;
 export function isSharingShorcutNew(file: object): boolean;
 export function saveFileQualification(client: object, file: object, qualification: object): object;
-export function fetchFilesByQualificationRules(client: object, docRules: object): object;
+export function fetchFilesByQualificationRules(client: object, docRules: object): Promise<QueryResult>;
+/**
+ * - An io.cozy.files document
+ */
+export type File = {
+    /**
+     * - Name of the file
+     */
+    name: string;
+    /**
+     * - Metadata of the file
+     */
+    metadata: object;
+    /**
+     * - Type of the file
+     */
+    type: object;
+};
+/**
+ * - Result of a query
+ */
+export type QueryResult = {
+    /**
+     * - Data fetched in the query
+     */
+    array: any;
+};
