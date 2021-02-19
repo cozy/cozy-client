@@ -2,7 +2,15 @@ import isArray from 'lodash/isArray'
 import findKey from 'lodash/findKey'
 
 /**
- * typedef QueryDefinition
+ * @typedef PartialQueryDefinition
+ *
+ * @property {Array} indexedField
+ * @property {Array} sort
+ * @property {object} selector
+ */
+
+/**
+ * @typedef MangoSelector
  */
 
 /**
@@ -12,6 +20,7 @@ import findKey from 'lodash/findKey'
 class QueryDefinition {
   /**
    * @class
+   * @augments {object}
    * @param {object} options Initial options for the query definition
    * @param {string} options.doctype - The doctype of the doc.
    * @param {string} options.id - The id of the doc.
@@ -54,7 +63,7 @@ class QueryDefinition {
    *
    * See https://docs.cozy.io/en/tutorials/data/queries/#sort-data-with-mango
    *
-   * @param {object} sort|selector|indexedFields
+   * @param {PartialQueryDefinition} obj - A partial QueryDefinition to check
    */
   checkSortOrder({ sort, selector, indexedFields }) {
     const _sort = this.sort || sort
@@ -86,7 +95,7 @@ class QueryDefinition {
    *
    * It is useful to warn the developer when a partial index might be used.
    *
-   * @param {object} selector - The selector definition
+   * @param {MangoSelector} selector - The selector definition
    * @returns {void}
    */
   checkSelector(selector) {
@@ -131,7 +140,7 @@ class QueryDefinition {
    * Query documents with a [mango selector](http://docs.couchdb.org/en/latest/api/database/find.html#find-selectors).
    * Each field passed in the selector will be indexed, except if the indexField option is used.
    *
-   * @param {object} selector   The Mango selector.
+   * @param {MangoSelector} selector   The Mango selector.
    * @returns {QueryDefinition}  The QueryDefinition object.
    */
   where(selector) {

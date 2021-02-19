@@ -722,7 +722,7 @@ client.query(Q('io.cozy.bills'))`)
    * executes its query when mounted if no fetch policy has been indicated.
    *
    * @param  {QueryDefinition} queryDefinition - Definition that will be executed
-   * @param  {string} options - Options
+   * @param  {object} options - Options
    * @param  {string} options.as - Names the query so it can be reused (by multiple components for example)
    * @param  {string} options.fetchPolicy - Fetch policy to bypass fetching based on what's already inside the state. See "Fetch policies"
    * @returns {QueryResult}

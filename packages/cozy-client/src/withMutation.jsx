@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
+/**
+ * @typedef Wrapper
+ * @returns {Wrapper}
+ */
 const withMutation = (mutation, options = {}) => WrappedComponent => {
   const wrappedDisplayName =
     WrappedComponent.displayName || WrappedComponent.name || 'Component'
