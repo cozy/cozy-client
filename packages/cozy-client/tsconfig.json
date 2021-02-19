@@ -1,0 +1,9 @@
+{
+    "include": ["src/**/*"],
+    "exclude": ["**/*.spec.*"],
+    "compilerOptions": {
+        "allowJs": true,
+        "outDir": "types",
+        "declaration": true
+    }
+}
