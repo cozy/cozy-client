@@ -728,6 +728,7 @@ client.query(Q('io.cozy.bills'))`)
    * @param  {object} options - Options
    * @param  {string} options.as - Names the query so it can be reused (by multiple components for example)
    * @param  {string} options.fetchPolicy - Fetch policy to bypass fetching based on what's already inside the state. See "Fetch policies"
+   * @param  {string} options.update - Does not seem to be used
    * @returns {QueryResult}
    */
   async query(queryDefinition, { update, ...options } = {}) {
