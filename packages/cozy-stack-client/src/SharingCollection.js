@@ -62,6 +62,7 @@ class SharingCollection extends DocumentCollection {
    * @param {Array<Recipient>=} params.recipients Recipients to add to the sharings (will have the same permissions given by the rules defined by the sharing )
    * @param {Array<Recipient>=} params.readOnlyRecipients Recipients to add to the sharings with only read only access
    * @param {boolean=} params.openSharing If someone else than the owner can add a recipient to the sharing
+   * @param {string=} params.appSlug Slug of the targeted app
    */
   async create({
     document,
@@ -70,17 +71,26 @@ class SharingCollection extends DocumentCollection {
     rules,
     recipients = [],
     readOnlyRecipients = [],
-    openSharing
+    openSharing,
+    appSlug
   }) {
+    const attributes = {
+      description,
+      preview_path: previewPath,
+      open_sharing: openSharing,
+      rules: rules ? rules : getSharingRules(document)
+    }
+    let optionalAttributes = {}
+    if (appSlug) {
+      optionalAttributes = {
+        app_slug: appSlug
+      }
+    }
+
     const resp = await this.stackClient.fetchJSON('POST', '/sharings/', {
       data: {
         type: 'io.cozy.sharings',
-        attributes: {
-          description,
-          preview_path: previewPath,
-          open_sharing: openSharing,
-          rules: rules ? rules : getSharingRules(document)
-        },
+        attributes: { ...attributes, ...optionalAttributes },
         relationships: {
           ...(recipients.length > 0 && {
             recipients: { data: recipients.map(toRelationshipItem) }
