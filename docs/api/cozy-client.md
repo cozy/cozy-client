@@ -206,6 +206,46 @@ example.</p>
 <dt><a href="#getReferencedFolder">getReferencedFolder</a> ⇒ <code>Array</code></dt>
 <dd><p>Returns an array of folder referenced by the given document</p>
 </dd>
+<dt><a href="#getRootPath">getRootPath</a></dt>
+<dd><p>Get root path according the OS</p>
+</dd>
+<dt><a href="#getTemporaryRootPath">getTemporaryRootPath</a></dt>
+<dd><p>Get the temporary root path according to the OS</p>
+</dd>
+<dt><a href="#getCozyPath">getCozyPath</a></dt>
+<dd><p>Get Cozy path according to the OS</p>
+</dd>
+<dt><a href="#getEntry">getEntry</a></dt>
+<dd><p>Get entry of a path in the cordova.file location</p>
+</dd>
+<dt><a href="#getCozyEntry">getCozyEntry</a></dt>
+<dd><p>Get Cozy location on the device</p>
+</dd>
+<dt><a href="#createCozyPath">createCozyPath</a></dt>
+<dd><p>Create Cozy path on the device</p>
+</dd>
+<dt><a href="#getDirectory">getDirectory</a></dt>
+<dd><p>Get the directory according to its name</p>
+</dd>
+<dt><a href="#writeFile">writeFile</a></dt>
+<dd></dd>
+<dt><a href="#openFileWithCordova">openFileWithCordova</a></dt>
+<dd><p>Open a file in an other app</p>
+</dd>
+<dt><a href="#deleteOfflineFile">deleteOfflineFile</a></dt>
+<dd></dd>
+<dt><a href="#saveFileWithCordova">saveFileWithCordova</a></dt>
+<dd></dd>
+<dt><a href="#temporarySave">temporarySave</a></dt>
+<dd><p>Save the document in the temporary folder</p>
+</dd>
+<dt><a href="#saveAndOpenWithCordova">saveAndOpenWithCordova</a></dt>
+<dd><p>Save the document in the temporary folder and open it in an other app</p>
+</dd>
+<dt><a href="#getNativeFile">getNativeFile</a></dt>
+<dd></dd>
+<dt><a href="#openOfflineFile">openOfflineFile</a></dt>
+<dd></dd>
 <dt><a href="#shouldDisplayOffers">shouldDisplayOffers</a></dt>
 <dd><p>Returns whether an instance is concerned by our offers</p>
 </dd>
@@ -298,6 +338,8 @@ if there are N queries, only 1 extra level of nesting is introduced.</p>
 <dt><a href="#getParentFolderId">getParentFolderId(file)</a> ⇒ <code>string</code> | <code>null</code></dt>
 <dd><p>Get the id of the parent folder (<code>null</code> for the root folder)</p>
 </dd>
+<dt><a href="#saveFile">saveFile(dirEntry, fileData, fileName)</a></dt>
+<dd></dd>
 <dt><a href="#fetchOwn">fetchOwn(client)</a> ⇒ <code><a href="#PermissionItem">Array.&lt;PermissionItem&gt;</a></code></dt>
 <dd><p>Fetches the list of permissions blocks</p>
 </dd>
@@ -2287,6 +2329,142 @@ document
 | client | <code>object</code> | cozy-client instance |
 | document | <code>object</code> | Document to get references from |
 
+<a name="getRootPath"></a>
+
+## getRootPath
+Get root path according the OS
+
+**Kind**: global constant  
+<a name="getTemporaryRootPath"></a>
+
+## getTemporaryRootPath
+Get the temporary root path according to the OS
+
+**Kind**: global constant  
+<a name="getCozyPath"></a>
+
+## getCozyPath
+Get Cozy path according to the OS
+
+**Kind**: global constant  
+<a name="getEntry"></a>
+
+## getEntry
+Get entry of a path in the cordova.file location
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| path | <code>string</code> | Path wanting to be getted |
+
+<a name="getCozyEntry"></a>
+
+## getCozyEntry
+Get Cozy location on the device
+
+**Kind**: global constant  
+<a name="createCozyPath"></a>
+
+## createCozyPath
+Create Cozy path on the device
+
+**Kind**: global constant  
+<a name="getDirectory"></a>
+
+## getDirectory
+Get the directory according to its name
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| rootDirEntry | <code>object</code> | The root directory entry |
+| folderName | <code>string</code> | The folder's name |
+
+<a name="writeFile"></a>
+
+## writeFile
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| fileEntry | <code>object</code> | The file entry |
+| dataObj | <code>object</code> | The data to be written |
+
+<a name="openFileWithCordova"></a>
+
+## openFileWithCordova
+Open a file in an other app
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| URI | <code>\*</code> | URI to be opened |
+| mimetype | <code>\*</code> | Mimetype of the opened file |
+
+<a name="deleteOfflineFile"></a>
+
+## deleteOfflineFile
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| fileName | <code>string</code> | The file name |
+
+<a name="saveFileWithCordova"></a>
+
+## saveFileWithCordova
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| fileData | <code>object</code> | The file data |
+| fileName | <code>string</code> | The file name |
+
+<a name="temporarySave"></a>
+
+## temporarySave
+Save the document in the temporary folder
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | <code>object</code> | io.cozy.files document |
+| fileName | <code>string</code> | The file name |
+
+<a name="saveAndOpenWithCordova"></a>
+
+## saveAndOpenWithCordova
+Save the document in the temporary folder and open it in an other app
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| blob | <code>Blob</code> | Binary of the file |
+| file | <code>object</code> | io.cozy.files document |
+
+<a name="getNativeFile"></a>
+
+## getNativeFile
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | <code>object</code> | io.cozy.files document |
+
+<a name="openOfflineFile"></a>
+
+## openOfflineFile
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | <code>object</code> | io.cozy.files document |
+
 <a name="shouldDisplayOffers"></a>
 
 ## shouldDisplayOffers
@@ -2635,6 +2813,17 @@ Get the id of the parent folder (`null` for the root folder)
 | Param | Type | Description |
 | --- | --- | --- |
 | file | <code>object</code> | io.cozy.files document |
+
+<a name="saveFile"></a>
+
+## saveFile(dirEntry, fileData, fileName)
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| dirEntry | <code>object</code> | The directory entry |
+| fileData | <code>object</code> | The file data |
+| fileName | <code>string</code> | The file name |
 
 <a name="fetchOwn"></a>
 
