@@ -220,6 +220,14 @@ example.</p>
 <dt><a href="#fetchURL">fetchURL</a> ⇒ <code>string</code></dt>
 <dd><p>Fetch and build an URL to open a note.</p>
 </dd>
+<dt><a href="#saveTimeSerie">saveTimeSerie</a></dt>
+<dd><p>Helper to save a time serie document.</p>
+</dd>
+<dt><a href="#fetchTimeSerieByIntervalAndSource">fetchTimeSerieByIntervalAndSource</a> ⇒ <code>object</code></dt>
+<dd><p>Helper to retrieve time series by their date interval and source.</p>
+<p>The starting date must be greater or equal while the ending date must
+be stricly less than the given startDate and endDate parameters.</p>
+</dd>
 <dt><a href="#triggerStates">triggerStates</a></dt>
 <dd><p>Trigger states come from /jobs/triggers</p>
 </dd>
@@ -2348,6 +2356,34 @@ Fetch and build an URL to open a note.
 | --- | --- | --- |
 | client | <code>object</code> | CozyClient instance |
 | file | <code>object</code> | io.cozy.file object |
+
+<a name="saveTimeSerie"></a>
+
+## saveTimeSerie
+Helper to save a time serie document.
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| client | <code>object</code> | The CozyClient instance |
+|  | <code>Object</code> | The time serie attributes |
+
+<a name="fetchTimeSerieByIntervalAndSource"></a>
+
+## fetchTimeSerieByIntervalAndSource ⇒ <code>object</code>
+Helper to retrieve time series by their date interval and source.
+
+The starting date must be greater or equal while the ending date must
+be stricly less than the given startDate and endDate parameters.
+
+**Kind**: global constant  
+**Returns**: <code>object</code> - The time series found by the query  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| client | <code>object</code> | The CozyClient instance |
+| The | <code>Object</code> | query params. |
 
 <a name="triggerStates"></a>
 
