@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [17.3.0](https://github.com/cozy/cozy-client/compare/v17.2.0...v17.3.0) (2021-02-23)
+
+
+### Features
+
+* Can use app_slug when creating a sharing ([29ecad0](https://github.com/cozy/cozy-client/commit/29ecad0c761e822f33cccbf944cbe38cd37f3c2f))
+
+
+
+
+
 ## [17.1.1](https://github.com/cozy/cozy-client/compare/v17.1.0...v17.1.1) (2021-02-16)
 
 
