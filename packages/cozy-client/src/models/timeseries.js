@@ -18,10 +18,18 @@ const validateTimeSerieFormat = timeserie => {
 }
 
 /**
- * Helper to save a time serie document.
+ * Helper to save a time series document.
  *
  * @param {object} client - The CozyClient instance
- * @param  {{dataType, serie, startDate, endDate, source, theme}} - The time serie attributes
+ *
+ * @typedef TimeSeries
+ * @attributes dataType {String} - The type of time series, e.g. 'electricity'
+ * @attributes startDate {date} - The starting date of the series
+ * @attributes endType {date} - The starting date of the series
+ * @attributes source {String} - The data source, e.g. 'enedis.fr'
+ * @attributes theme {String} - The theme used to group time series, e.g. 'energy'
+ * @attributes series {Array} - An array of objects representing the time series
+ * @param {TimeSeries}- The time series to save
  */
 export const saveTimeSerie = async (
   client,
@@ -49,7 +57,11 @@ export const saveTimeSerie = async (
  *
  * @param {object} client - The CozyClient instance
  * @param {{ startDate, endDate, dataType, source, limit }} The query params.
- * @returns {object} The time series found by the query
+ *
+ * @typedef TimeSeries
+ * @augments object
+ * @property data {Array<GeoJSON>}
+ * @returns {TimeSeries} The TimeSeries found by the query in JSON-API format
  */
 export const fetchTimeSerieByIntervalAndSource = async (
   client,

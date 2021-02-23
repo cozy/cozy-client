@@ -220,14 +220,6 @@ example.</p>
 <dt><a href="#fetchURL">fetchURL</a> ⇒ <code>string</code></dt>
 <dd><p>Fetch and build an URL to open a note.</p>
 </dd>
-<dt><a href="#saveTimeSerie">saveTimeSerie</a></dt>
-<dd><p>Helper to save a time serie document.</p>
-</dd>
-<dt><a href="#fetchTimeSerieByIntervalAndSource">fetchTimeSerieByIntervalAndSource</a> ⇒ <code>object</code></dt>
-<dd><p>Helper to retrieve time series by their date interval and source.</p>
-<p>The starting date must be greater or equal while the ending date must
-be stricly less than the given startDate and endDate parameters.</p>
-</dd>
 <dt><a href="#triggerStates">triggerStates</a></dt>
 <dd><p>Trigger states come from /jobs/triggers</p>
 </dd>
@@ -366,6 +358,14 @@ This is not always the case.</p>
 <p>This method is here to tell us if the shortcut&#39;s file is created
 on the recipient&#39;s cozy. It can be used to make an UI distinction between the
 both situation.</p>
+</dd>
+<dt><a href="#TimeSeries">TimeSeries</a></dt>
+<dd><p>Helper to save a time series document.</p>
+</dd>
+<dt><a href="#TimeSeries">TimeSeries</a> ⇒ <code><a href="#TimeSeries">TimeSeries</a></code></dt>
+<dd><p>Helper to retrieve time series by their date interval and source.</p>
+<p>The starting date must be greater or equal while the ending date must
+be stricly less than the given startDate and endDate parameters.</p>
 </dd>
 <dt><a href="#HydratedQueryState">HydratedQueryState</a> ⇒ <code><a href="#HydratedQueryState">HydratedQueryState</a></code></dt>
 <dd><p>Returns the query from the store with hydrated documents.</p>
@@ -2357,34 +2357,6 @@ Fetch and build an URL to open a note.
 | client | <code>object</code> | CozyClient instance |
 | file | <code>object</code> | io.cozy.file object |
 
-<a name="saveTimeSerie"></a>
-
-## saveTimeSerie
-Helper to save a time serie document.
-
-**Kind**: global constant  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| client | <code>object</code> | The CozyClient instance |
-|  | <code>Object</code> | The time serie attributes |
-
-<a name="fetchTimeSerieByIntervalAndSource"></a>
-
-## fetchTimeSerieByIntervalAndSource ⇒ <code>object</code>
-Helper to retrieve time series by their date interval and source.
-
-The starting date must be greater or equal while the ending date must
-be stricly less than the given startDate and endDate parameters.
-
-**Kind**: global constant  
-**Returns**: <code>object</code> - The time series found by the query  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| client | <code>object</code> | The CozyClient instance |
-| The | <code>Object</code> | query params. |
-
 <a name="triggerStates"></a>
 
 ## triggerStates
@@ -2975,6 +2947,47 @@ both situation.
 | --- | --- | --- |
 | data | <code>object</code> | Permission document |
 | included | <code>Array</code> | Member information from the sharing |
+
+<a name="TimeSeries"></a>
+
+## TimeSeries
+Helper to save a time series document.
+
+**Kind**: global typedef  
+**Attributes**: dataType {String} - The type of time series, e.g. 'electricity'  
+**Attributes**: startDate {date} - The starting date of the series  
+**Attributes**: endType {date} - The starting date of the series  
+**Attributes**: source {String} - The data source, e.g. 'enedis.fr'  
+**Attributes**: theme {String} - The theme used to group time series, e.g. 'energy'  
+**Attributes**: series {Array} - An array of objects representing the time series  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| client | <code>object</code> | The CozyClient instance |
+|  | [<code>TimeSeries</code>](#TimeSeries) | The time series to save |
+
+<a name="TimeSeries"></a>
+
+## TimeSeries ⇒ [<code>TimeSeries</code>](#TimeSeries)
+Helper to retrieve time series by their date interval and source.
+
+The starting date must be greater or equal while the ending date must
+be stricly less than the given startDate and endDate parameters.
+
+**Kind**: global typedef  
+**Extends**: <code>object</code>  
+**Returns**: [<code>TimeSeries</code>](#TimeSeries) - The TimeSeries found by the query in JSON-API format  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| client | <code>object</code> | The CozyClient instance |
+| The | <code>Object</code> | query params. |
+
+**Properties**
+
+| Name | Type |
+| --- | --- |
+| data | <code>Array.&lt;GeoJSON&gt;</code> | 
 
 <a name="HydratedQueryState"></a>
 
