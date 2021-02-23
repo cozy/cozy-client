@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [17.2.0](https://github.com/cozy/cozy-client/compare/v17.1.1...v17.2.0) (2021-02-23)
+
+
+### Features
+
+* Add method to deal with cordova ([afd28c4](https://github.com/cozy/cozy-client/commit/afd28c4c2adfe1719c8aa6ca97b6a81cd5dc0fe8))
+
+
+
+
+
 ## [17.1.1](https://github.com/cozy/cozy-client/compare/v17.1.0...v17.1.1) (2021-02-16)
 
 **Note:** Version bump only for package cozy-client
