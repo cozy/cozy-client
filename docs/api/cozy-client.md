@@ -362,7 +362,7 @@ both situation.</p>
 <dt><a href="#TimeSeries">TimeSeries</a></dt>
 <dd><p>Helper to save a time series document.</p>
 </dd>
-<dt><a href="#TimeSeries">TimeSeries</a> ⇒ <code><a href="#TimeSeries">TimeSeries</a></code></dt>
+<dt><a href="#TimeSeriesJSONAPI">TimeSeriesJSONAPI</a> ⇒ <code><a href="#TimeSeriesJSONAPI">TimeSeriesJSONAPI</a></code></dt>
 <dd><p>Helper to retrieve time series by their date interval and source.</p>
 <p>The starting date must be greater or equal while the ending date must
 be stricly less than the given startDate and endDate parameters.</p>
@@ -2966,17 +2966,16 @@ Helper to save a time series document.
 | client | <code>object</code> | The CozyClient instance |
 |  | [<code>TimeSeries</code>](#TimeSeries) | The time series to save |
 
-<a name="TimeSeries"></a>
+<a name="TimeSeriesJSONAPI"></a>
 
-## TimeSeries ⇒ [<code>TimeSeries</code>](#TimeSeries)
+## TimeSeriesJSONAPI ⇒ [<code>TimeSeriesJSONAPI</code>](#TimeSeriesJSONAPI)
 Helper to retrieve time series by their date interval and source.
 
 The starting date must be greater or equal while the ending date must
 be stricly less than the given startDate and endDate parameters.
 
 **Kind**: global typedef  
-**Extends**: <code>object</code>  
-**Returns**: [<code>TimeSeries</code>](#TimeSeries) - The TimeSeries found by the query in JSON-API format  
+**Returns**: [<code>TimeSeriesJSONAPI</code>](#TimeSeriesJSONAPI) - The TimeSeries found by the query in JSON-API format  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2985,9 +2984,9 @@ be stricly less than the given startDate and endDate parameters.
 
 **Properties**
 
-| Name | Type |
-| --- | --- |
-| data | <code>Array.&lt;GeoJSON&gt;</code> | 
+| Name | Type | Description |
+| --- | --- | --- |
+| data | [<code>Array.&lt;TimeSeries&gt;</code>](#TimeSeries) | The JSON-API data response |
 
 <a name="HydratedQueryState"></a>
 
