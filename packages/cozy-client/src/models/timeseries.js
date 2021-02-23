@@ -1,19 +1,19 @@
 import { Q } from '../queries/dsl'
 
-const validateTimeSerieFormat = timeserie => {
-  if (!timeserie.startDate || !timeserie.endDate) {
+const validateTimeSeriesFormat = timeseries => {
+  if (!timeseries.startDate || !timeseries.endDate) {
     throw new Error(
       'You must specify a startDate and endDate for the time serie'
     )
   }
-  if (!Date.parse(timeserie.startDate) || !Date.parse(timeserie.endDate)) {
+  if (!Date.parse(timeseries.startDate) || !Date.parse(timeseries.endDate)) {
     throw new Error('Invalid date format for the time serie')
   }
-  if (!timeserie.dataType) {
+  if (!timeseries.dataType) {
     throw new Error('You must specify a dataType for the time serie')
   }
-  if (!timeserie.serie || !Array.isArray(timeserie.serie)) {
-    throw new Error('You must specify a serie array for the time serie')
+  if (!timeseries.series || !Array.isArray(timeseries.series)) {
+    throw new Error('You must specify a series array for the time serie')
   }
 }
 
@@ -31,22 +31,22 @@ const validateTimeSerieFormat = timeserie => {
  * @attributes series {Array} - An array of objects representing the time series
  * @param {TimeSeries}- The time series to save
  */
-export const saveTimeSerie = async (
+export const saveTimeSeries = async (
   client,
-  { dataType, serie, startDate, endDate, source, theme }
+  { dataType, series, startDate, endDate, source, theme }
 ) => {
-  validateTimeSerieFormat({ dataType, serie, startDate, endDate, source })
+  validateTimeSeriesFormat({ dataType, series, startDate, endDate, source })
 
   const doctype = `io.cozy.timeseries.${dataType}`
-  const timeserie = {
+  const timeseries = {
     _type: doctype,
     startDate,
     endDate,
     source,
     theme,
-    serie
+    series
   }
-  return client.save(timeserie)
+  return client.save(timeseries)
 }
 
 /**
@@ -63,7 +63,7 @@ export const saveTimeSerie = async (
  * @property data {Array<GeoJSON>}
  * @returns {TimeSeries} The TimeSeries found by the query in JSON-API format
  */
-export const fetchTimeSerieByIntervalAndSource = async (
+export const fetchTimeSeriesByIntervalAndSource = async (
   client,
   { startDate, endDate, dataType, source, limit }
 ) => {
