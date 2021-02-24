@@ -1,5 +1,6 @@
-import { isAndroidApp, isIOS } from 'cozy-device-helper'
+import { isMobileApp, isAndroidApp, isIOS } from 'cozy-device-helper'
 
+import CozyClient from '../CozyClient'
 import logger from '../logger'
 
 const ERROR_GET_DIRECTORY = 'Error to get directory'
@@ -151,7 +152,7 @@ export const saveFileWithCordova = (fileData, fileName) =>
 /**
  * Save the document in the temporary folder
  *
- * @param {object} file io.cozy.files document
+ * @param {object} file - io.cozy.files document
  * @param {string} fileName - The file name
  */
 export const temporarySave = (file, fileName) =>
@@ -162,8 +163,8 @@ export const temporarySave = (file, fileName) =>
 /**
  * Save the document in the temporary folder and open it in an other app
  *
- * @param {Blob} blob Binary of the file
- * @param {object} file io.cozy.files document
+ * @param {Blob} blob - Binary of the file
+ * @param {object} file - io.cozy.files document
  */
 export const saveAndOpenWithCordova = (blob, file) => {
   return temporarySave(blob, file.name).then(entry =>
@@ -172,7 +173,7 @@ export const saveAndOpenWithCordova = (blob, file) => {
 }
 
 /**
- * @param {object} file io.cozy.files document
+ * @param {object} file - io.cozy.files document
  */
 export const getNativeFile = async file => {
   const entry = await getCozyEntry()
@@ -180,9 +181,42 @@ export const getNativeFile = async file => {
 }
 
 /**
- * @param {object} file io.cozy.files document
+ * @param {object} file - io.cozy.files document
  */
 export const openOfflineFile = async file => {
   const fileEntry = await getNativeFile(file)
   return openFileWithCordova(fileEntry.nativeURL, file.mime)
 }
+
+/**
+ * openFileWith - Opens a file on a mobile device
+ *
+ * @param {CozyClient} client - The CozyClient instance
+ * @param {object} file - io.cozy.files document
+ */
+export const openFileWith = async (client, file) => {
+  if (isMobileApp() && window.cordova.plugins.fileOpener2) {
+    let fileData
+    try {
+      fileData = await client
+        .collection('io.cozy.files')
+        .fetchFileContent(file.id)
+    } catch (e) {
+      throw e.status === 404 ? 'missing' : 'offline'
+    }
+    const blob = await fileData.blob()
+    try {
+      await fsnative.saveAndOpenWithCordova(blob, file)
+    } catch (e) {
+      throw 'noapp'
+    }
+  } else {
+    throw 'noapp'
+  }
+}
+
+const fsnative = {
+  saveAndOpenWithCordova
+}
+
+export default fsnative
