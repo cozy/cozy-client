@@ -400,7 +400,11 @@ class FileCollection extends DocumentCollection {
       const meta = await this.createFileMetadata(metadata)
       metadataId = meta.data.id
     }
-    const path = uri`/files/${dirId}?Name=${name}&Type=file&Executable=${executable}&MetadataID=${metadataId}`
+    let size = ''
+    if (options.contentLength) {
+      size = String(options.contentLength)
+    }
+    const path = uri`/files/${dirId}?Name=${name}&Type=file&Executable=${executable}&MetadataID=${metadataId}&Size=${size}`
     return this.doUpload(data, path, options)
   }
 
@@ -447,6 +451,11 @@ class FileCollection extends DocumentCollection {
       const meta = await this.createFileMetadata(metadata)
       metadataId = meta.data.id
       path = path + `&MetadataID=${metadataId}`
+    }
+    let size = ''
+    if (options.contentLength) {
+      size = String(options.contentLength)
+      path = path + `&Size=${size}`
     }
 
     return this.doUpload(data, path, options, 'PUT')
