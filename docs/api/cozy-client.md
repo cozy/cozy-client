@@ -246,6 +246,9 @@ example.</p>
 <dd></dd>
 <dt><a href="#openOfflineFile">openOfflineFile</a></dt>
 <dd></dd>
+<dt><a href="#openFileWith">openFileWith</a></dt>
+<dd><p>openFileWith - Opens a file on a mobile device</p>
+</dd>
 <dt><a href="#shouldDisplayOffers">shouldDisplayOffers</a></dt>
 <dd><p>Returns whether an instance is concerned by our offers</p>
 </dd>
@@ -2471,6 +2474,18 @@ Save the document in the temporary folder and open it in an other app
 
 | Param | Type | Description |
 | --- | --- | --- |
+| file | <code>object</code> | io.cozy.files document |
+
+<a name="openFileWith"></a>
+
+## openFileWith
+openFileWith - Opens a file on a mobile device
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| client | [<code>CozyClient</code>](#CozyClient) | The CozyClient instance |
 | file | <code>object</code> | io.cozy.files document |
 
 <a name="shouldDisplayOffers"></a>
