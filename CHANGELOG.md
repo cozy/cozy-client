@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [17.4.0](https://github.com/cozy/cozy-client/compare/v17.3.0...v17.4.0) (2021-02-24)
+
+
+### Features
+
+* Add TimeSerie helpers ([3b1a030](https://github.com/cozy/cozy-client/commit/3b1a030811e8f7a39f3399bd100c2d02f3665395))
+
+
+
+
+
 # [17.3.0](https://github.com/cozy/cozy-client/compare/v17.2.0...v17.3.0) (2021-02-23)
 
 
