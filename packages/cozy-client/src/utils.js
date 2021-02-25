@@ -1,10 +1,12 @@
 /**
+ * @typedef {Promise} CancelablePromise
+ * @property {Function} cancel - Cancel the promise
+ */
+
+/**
  * Wraps a promise so that it can be canceled
  *
  * Rejects with canceled: true as soon as cancel is called
- *
- * @typedef CancelablePromise {Promise}
- * @property {Function} [cancel] - Cancel the promise
  *
  * @param  {Promise} promise  - Promise
  * @returns {CancelablePromise} - Promise with .cancel method
@@ -13,7 +15,7 @@ const cancelable = promise => {
   let _reject
 
   /**
-   * @type {CancelablePromise}
+   * @type {Partial<CancelablePromise>}
    */
   const wrapped = new Promise((resolve, reject) => {
     _reject = reject
