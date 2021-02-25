@@ -166,9 +166,13 @@ const getSelectorFilterFn = queryDefinition => {
     })
     return sift(convert$gtNullSelectors(selectors))
   } else if (queryDefinition.id) {
-    return sift({ _id: queryDefinition.id })
+    /** @type {object} */
+    const siftQuery = { _id: queryDefinition.id }
+    return sift(siftQuery)
   } else if (queryDefinition.ids) {
-    return sift({ _id: { $in: queryDefinition.ids } })
+    /** @type {object} */
+    const siftQuery = { _id: { $in: queryDefinition.ids } }
+    return sift(siftQuery)
   } else {
     return null
   }
