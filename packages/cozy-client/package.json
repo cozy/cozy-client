@@ -33,7 +33,7 @@
     "build": "../../bin/build",
     "watch": "yarn run build --watch",
     "prepublishOnly": "yarn run build",
-    "typecheck": "yarn run tsc -p tsconfig.json --emitDeclarationOnly"
+    "typecheck": "yarn run tsc -p tsconfig.json --checkJs --emitDeclarationOnly --jsx react --esModuleInterop"
   },
   "devDependencies": {
     "@babel/cli": "7.12.8",

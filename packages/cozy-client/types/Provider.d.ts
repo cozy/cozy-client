@@ -1,15 +1,19 @@
-export default class CozyProvider extends Component<any, any, any> {
+export default class CozyProvider extends React.Component<any, any, any> {
     static propTypes: {
-        store: any;
-        client: any;
-        children: any;
+        store: PropTypes.Requireable<PropTypes.InferProps<{
+            subscribe: PropTypes.Validator<(...args: any[]) => any>;
+            dispatch: PropTypes.Validator<(...args: any[]) => any>;
+            getState: PropTypes.Validator<(...args: any[]) => any>;
+        }>>;
+        client: PropTypes.Validator<object>;
+        children: PropTypes.Validator<PropTypes.ReactElementLike>;
     };
     static childContextTypes: {
-        store: any;
-        client: any;
+        store: PropTypes.Requireable<object>;
+        client: PropTypes.Validator<object>;
     };
     static contextTypes: {
-        store: any;
+        store: PropTypes.Requireable<object>;
     };
     constructor(props: any, context: any);
     getChildContext(): {
@@ -17,4 +21,5 @@ export default class CozyProvider extends Component<any, any, any> {
         client: any;
     };
 }
-import { Component } from "react";
+import React from "react";
+import PropTypes from "prop-types";

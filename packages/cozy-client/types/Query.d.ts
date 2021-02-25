@@ -8,18 +8,19 @@ declare class Query extends Component<any, any, any> {
 }
 declare namespace Query {
     namespace contextTypes {
-        const client: any;
-        const store: any;
+        const client: PropTypes.Requireable<object>;
+        const store: PropTypes.Requireable<object>;
     }
     namespace propTypes {
-        const query: any;
-        const as: any;
-        const children: any;
-        const fetchPolicy: any;
+        const query: PropTypes.Validator<object>;
+        const as: PropTypes.Requireable<string>;
+        const children: PropTypes.Validator<(...args: any[]) => any>;
+        const fetchPolicy: PropTypes.Requireable<(...args: any[]) => any>;
     }
 }
 export default Query;
 import { Component } from "react";
+import PropTypes from "prop-types";
 /**
  * Get attributes that will be assigned to the instance of a Query
  */
