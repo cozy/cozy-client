@@ -5,5 +5,7 @@
         "allowJs": true,
         "outDir": "types",
         "declaration": true
-    }
+    },
+    "types": ["jest"],
+    "target": "es5"
 }

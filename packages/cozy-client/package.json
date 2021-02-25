@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@cozy/minilog": "1.0.0",
+    "@types/jest": "^26.0.20",
     "btoa": "^1.2.1",
     "cozy-device-helper": "^1.7.3",
     "cozy-logger": "^1.6.0",
