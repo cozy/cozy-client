@@ -649,7 +649,7 @@ client.query(Q('io.cozy.bills'))`)
    * relationship class associated to each reference list should support references, otherwise this
    * method will throw.
    *
-   * @returns {Mutation[]}  One or more mutation to execute
+   * @returns {Mutation[]|Mutation}  One or more mutation to execute
    */
   getDocumentSavePlan(document, referencesByName) {
     const isNewDoc = !document._rev
@@ -863,6 +863,7 @@ client.query(Q('io.cozy.bills'))`)
    *
    * @param  {object}    mutationDefinition - Describe the mutation
    * @param {object} [options] - Options
+   * @param  {string}    [options.as] - Mutation id
    * @param  {Function}    [options.update] - Function to update the document
    * @param  {Function}    [options.updateQueries] - Function to update queries
    * @returns {Promise}

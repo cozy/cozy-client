@@ -43,7 +43,7 @@
 
 /**
  * @typedef {Error} ClientError
- * @property {string} status
+ * @property {string} [status]
  */
 
 export default {}

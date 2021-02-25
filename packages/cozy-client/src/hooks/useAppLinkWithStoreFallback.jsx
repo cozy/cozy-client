@@ -9,7 +9,7 @@ import {
 const useAppLinkWithStoreFallback = (slug, client, path = '') => {
   const [fetchStatus, setFetchStatus] = useState('loading')
   const [isInstalled, setIsInstalled] = useState(true)
-  const [url, setURL] = useState()
+  const [url, setURL] = useState(null)
 
   useEffect(() => {
     const load = async () => {

@@ -1,4 +1,8 @@
 /**
+ * Creates and starts and HTTP server suitable for OAuth authentication
+ */
+export type DestroyableServer = any;
+/**
  * Creates a client with interactive authentication.
  *
  * - Will start an OAuth flow and open an authentication page
@@ -19,5 +23,5 @@
  * })
  * ```
  */
-export function createClientInteractive(clientOptions: object, serverOpts: any): Promise<any> | CozyClient;
+export function createClientInteractive(clientOptions: object, serverOpts: any): CozyClient | Promise<any>;
 import CozyClient from "../CozyClient";

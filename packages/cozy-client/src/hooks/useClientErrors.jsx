@@ -22,7 +22,7 @@ const byHttpStatus = {
  * @private
  * @param {object} props - Props
  * @param {Function} props.dismiss - remove the error from the stack to display
- * @returns {Function} React rendering
+ * @returns {React.ReactElement}
  */
 function QuotaError({ dismiss }) {
   return <QuotaAlert onClose={dismiss} />
@@ -31,12 +31,13 @@ function QuotaError({ dismiss }) {
 /**
  * Returns the handler for an error
  *
- * @param {ClientError} error -
+ * @param {ClientError} error - The error
  * @returns {Function|null} React Component
  */
 function getErrorComponent(error) {
   if (error instanceof Response || error instanceof FetchError) {
-    return byHttpStatus[error.status] || null
+    const status = error.status || ''
+    return byHttpStatus[status] || null
   }
   return null
 }
@@ -48,7 +49,7 @@ function getErrorComponent(error) {
  * @see ClientErrors
  * @param {ClientError[]} errorStack - array of errors/exceptions
  * @param {Function} setErrorStack - mutates the array of errors
- * @returns {Function} React rendering
+ * @returns {Array} React rendering
  */
 function renderErrors(errorStack, setErrorStack) {
   const errors = errorStack.map((error, key) => {
@@ -125,6 +126,9 @@ export default function useClientErrors({ handleExceptions = true } = {}) {
     }
   }, [client, handleError, handleExceptions])
 
+  /**
+   * @type {Function}
+   */
   const ClientErrors = useCallback(
     () => renderErrors(errorStack, setErrorStack),
     [errorStack, setErrorStack]

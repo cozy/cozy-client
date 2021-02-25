@@ -314,9 +314,9 @@ declare class CozyClient {
      * relationship class associated to each reference list should support references, otherwise this
      * method will throw.
      *
-     * @returns {Mutation[]}  One or more mutation to execute
+     * @returns {Mutation[]|Mutation}  One or more mutation to execute
      */
-    getDocumentSavePlan(document: object, referencesByName?: any): Mutation[];
+    getDocumentSavePlan(document: object, referencesByName?: any): Mutation[] | Mutation;
     triggerHook(name: any, document: any): void;
     /**
      * Destroys a document. {before,after}:destroy hooks will be fired.
@@ -363,11 +363,13 @@ declare class CozyClient {
      *
      * @param  {object}    mutationDefinition - Describe the mutation
      * @param {object} [options] - Options
+     * @param  {string}    [options.as] - Mutation id
      * @param  {Function}    [options.update] - Function to update the document
      * @param  {Function}    [options.updateQueries] - Function to update queries
      * @returns {Promise}
      */
     mutate(mutationDefinition: object, { update, updateQueries, ...options }?: {
+        as?: string;
         update?: Function;
         updateQueries?: Function;
     }): Promise<any>;
