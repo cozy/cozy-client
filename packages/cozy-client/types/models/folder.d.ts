@@ -6,6 +6,9 @@ export namespace MAGIC_FOLDERS {
     const NOTES: string;
     const HOME: string;
 }
-export function ensureMagicFolder(client: object, id: string, path: string): Promise<object>;
-export function createFolderWithReference(client: object, path: string, document: object): object;
-export function getReferencedFolder(client: object, document: object): any[];
+export function ensureMagicFolder(client: CozyClient, id: string, path: string): Promise<IOCozyFolder>;
+export function createFolderWithReference(client: CozyClient, path: string, document: Document): Promise<IOCozyFolder>;
+export function getReferencedFolder(client: CozyClient, document: CozyClientDocument): Promise<IOCozyFolder>;
+import CozyClient from "../CozyClient";
+import { IOCozyFolder } from "../types";
+import { CozyClientDocument } from "../types";

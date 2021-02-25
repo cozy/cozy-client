@@ -5,18 +5,8 @@ export default Association;
  * used by the client to automatically fetch relationship data.
  *
  * Hydrated documents used by components come with Association instances.
- */
-export type Association = any;
-/**
- * Associations are used by components to access related store documents that are
- * linked in a document. They are also responsible for building the `QueryDefinition` that is
- * used by the client to automatically fetch relationship data.
- *
- * Hydrated documents used by components come with Association instances.
  *
  * @interface
- *
- * @typedef Association
  *
  * @description
  * Example: The schema defines an `author` relationship :
@@ -87,7 +77,7 @@ declare class Association {
      *
      * @returns {QueryDefinition}
      */
-    static query(): any;
+    static query(): QueryDefinition;
     /**
      * @param  {object} target - Original object containing raw data
      * @param  {string} name - Attribute under which the association is stored
@@ -223,3 +213,4 @@ declare class Association {
      */
     get data(): void;
 }
+import { QueryDefinition } from "../queries/dsl";

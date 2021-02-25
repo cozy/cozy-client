@@ -1,11 +1,4 @@
 export default CozyClient;
-export type Link = any;
-export type Mutation = any;
-export type DocumentCollection = any;
-export type QueryResult = any;
-export type HydratedDocument = any;
-export type ReduxStore = any;
-export type QueryState = any;
 /**
  * A reference to a document (special case of a relationship used between photos and albums)
  * https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files/#references
@@ -20,6 +13,49 @@ export type Reference = {
      */
     _type: string;
 };
+export type ClientOptions = {
+    client?: object;
+    link?: object;
+    links?: object;
+    token?: Token;
+    uri?: string;
+    stackClient?: object;
+    warningForCustomHandlers?: boolean;
+    autoHydrate?: boolean;
+    oauth?: object;
+    onTokenRefresh?: Function;
+    /**
+     * - Schema description for each doctypes
+     */
+    schema?: object;
+    /**
+     * - Metadata about the application that will be used in ensureCozyMetadata
+     */
+    appMetadata?: object;
+};
+/**
+ * @interface EventEmitter
+ * @function
+ * @name EventEmitter#emit
+ */
+/**
+ * @typedef {object} ClientOptions
+ * @property {object} [client]
+ * @property {object} [link]
+ * @property {object} [links]
+ * @property {Token} [token]
+ * @property {string} [uri]
+ * @property {object} [stackClient]
+ * @property {boolean} [warningForCustomHandlers]
+ * @property {boolean} [autoHydrate]
+ * @property {object} [oauth]
+ * @property {Function} [onTokenRefresh]
+ * @property {Function} [onTokenRefresh]
+ * @property  {Link}         [options.link]   - Backward compatibility
+ * @property  {Array<Link>}  [options.links]  - List of links
+ * @property  {object}       [options.schema] - Schema description for each doctypes
+ * @property  {object}       [options.appMetadata] - Metadata about the application that will be used in ensureCozyMetadata
+ */
 /**
  * Responsible for
  *
@@ -27,6 +63,8 @@ export type Reference = {
  * - Hydration
  * - Creating plan for saving documents
  * - Associations
+ *
+ * @augments {EventEmitter}
  */
 declare class CozyClient {
     /**
@@ -74,11 +112,7 @@ declare class CozyClient {
      */
     static registerHook(doctype: string, name: string, fn: Function): void;
     /**
-     * @param  {object}       options - Options
-     * @param  {Link}         options.link   - Backward compatibility
-     * @param  {Array.Link}   options.links  - List of links
-     * @param  {object}       options.schema - Schema description for each doctypes
-     * @param  {object}       options.appMetadata - Metadata about the application that will be used in ensureCozyMetadata
+     * @param  {ClientOptions} rawOptions - Options
      *
      * @example
      * ```js
@@ -99,14 +133,18 @@ declare class CozyClient {
      *
      * Cozy-Client will automatically call `this.login()` if provided with a token and an uri
      */
-    constructor({ link, links, schema, appMetadata, ...options }?: {
-        link: Link;
-        links: any;
-        schema: object;
-        appMetadata: object;
-    });
+    constructor(rawOptions?: ClientOptions);
     appMetadata: any;
-    options: {};
+    options: {
+        client?: object;
+        token?: Token;
+        uri?: string;
+        stackClient?: object;
+        warningForCustomHandlers?: boolean;
+        autoHydrate?: boolean;
+        oauth?: object;
+        onTokenRefresh?: Function;
+    };
     idCounter: number;
     isLogged: boolean;
     instanceOptions: {};
@@ -179,13 +217,13 @@ declare class CozyClient {
      * - "beforeLogin" at the beginning, before links have been set up
      * - "login" when the client is fully logged in and links have been set up
      *
-     * @param  {object}   options - Options
+     * @param  {object}   [options] - Options
      * @param  {string}   options.token  - If passed, the token is set on the client
      * @param  {string}   options.uri  - If passed, the uri is set on the client
      * @returns {Promise} - Resolves when all links have been setup and client is fully logged in
      *
      */
-    login(options: {
+    login(options?: {
         token: string;
         uri: string;
     }): Promise<any>;
@@ -286,15 +324,15 @@ declare class CozyClient {
      * @param  {QueryDefinition} queryDefinition - Definition that will be executed
      * @param  {object} options - Options
      * @param  {string} options.as - Names the query so it can be reused (by multiple components for example)
-     * @param  {string} options.fetchPolicy - Fetch policy to bypass fetching based on what's already inside the state. See "Fetch policies"
+     * @param  {Function} options.fetchPolicy - Fetch policy to bypass fetching based on what's already inside the state. See "Fetch policies"
      * @param  {string} options.update - Does not seem to be used
-     * @returns {QueryResult}
+     * @returns {Promise<QueryResult>}
      */
     query(queryDefinition: QueryDefinition, { update, ...options }?: {
         as: string;
-        fetchPolicy: string;
+        fetchPolicy: Function;
         update: string;
-    }): QueryResult;
+    }): Promise<QueryResult>;
     /**
      * Will fetch all documents for a `queryDefinition`, automatically fetching more
      * documents if the total of documents is superior to the pagination limit. Can
@@ -302,21 +340,32 @@ declare class CozyClient {
      *
      * @param  {QueryDefinition} queryDefinition - Definition to be executed
      * @param  {object} options - Options to the query
-     * @returns {Array} All documents matching the query
+     * @returns {Promise<Array>} All documents matching the query
      */
-    queryAll(queryDefinition: QueryDefinition, options: object): any[];
+    queryAll(queryDefinition: QueryDefinition, options: object): Promise<any[]>;
     watchQuery(...args: any[]): ObservableQuery;
     makeObservableQuery(queryDefinition: any, options?: {}): ObservableQuery;
-    mutate(mutationDefinition: any, { update, updateQueries, ...options }?: {
-        update: any;
-        updateQueries: any;
+    /**
+     * Mutate a document
+     *
+     * @param  {object}    mutationDefinition - Describe the mutation
+     * @param {object} options - Options
+     * @param  {Function}    [options.update] - Function to update the document
+     * @param  {Function}    [options.updateQueries] - Function to update queries
+     * @param  {...MutationOptions} options.options
+     * @returns {Promise}
+     */
+    mutate(mutationDefinition: object, { update, updateQueries, ...options }?: {
+        update?: Function;
+        updateQueries?: Function;
+        options: MutationOptions[];
     }): Promise<any>;
     /**
      * Executes a query through links and fetches relationships
      *
      * @private
      * @param  {QueryDefinition} definition QueryDefinition to be executed
-     * @returns {Response}
+     * @returns {Promise<ClientResponse>}
      */
     private requestQuery;
     /**
@@ -338,21 +387,21 @@ declare class CozyClient {
      * Instead, the relationships will have null documents.
      *
      * @param  {string} doctype - Doctype of the documents being hydrated
-     * @param  {Array<Document>} documents - Documents to be hydrated
+     * @param  {Array<CozyClientDocument>} documents - Documents to be hydrated
      * @returns {Array<HydratedDocument>}
      */
-    hydrateDocuments(doctype: string, documents: Array<Document>): Array<HydratedDocument>;
+    hydrateDocuments(doctype: string, documents: Array<CozyClientDocument>): Array<HydratedDocument>;
     /**
      * Resolves relationships on a document.
      *
      * The original document is kept in the target attribute of
      * the relationship
      *
-     * @param  {Document} document for which relationships must be resolved
-     * @param  {Schema} schemaArg for the document doctype
+     * @param  {Document} document - for which relationships must be resolved
+     * @param  {Schema} [schemaArg] - Optional
      * @returns {HydratedDocument}
      */
-    hydrateDocument(document: Document, schemaArg: Schema): HydratedDocument;
+    hydrateDocument(document: Document, schemaArg?: Schema): HydratedDocument;
     hydrateRelationships(document: any, schemaRelationships: any): any;
     /**
      * Creates (locally) a new document for the given doctype.
@@ -426,9 +475,9 @@ declare class CozyClient {
      * Has a behavior close to <Query /> or useQuery
      *
      * @param {object} query - Query with definition and options
-     * @returns {QueryState} Query state
+     * @returns {Promise<QueryState>} Query state
      */
-    fetchQueryAndGetFromState: (query: object) => QueryState;
+    fetchQueryAndGetFromState: (query: object) => Promise<QueryState>;
     /**
      * Performs a complete OAuth flow using a Cordova webview for auth.
      * The `register` method's name has been chosen for compat reasons with the Authentication compo.
@@ -441,9 +490,9 @@ declare class CozyClient {
      * Performs a complete OAuth flow, including updating the internal token at the end.
      *
      * @param   {Function} openURLCallback Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
-     * @returns {object}   Contains the fetched token and the client information. These should be stored and used to restore the client.
+     * @returns {Promise<object>} Contains the fetched token and the client information. These should be stored and used to restore the client.
      */
-    startOAuthFlow(openURLCallback: Function): object;
+    startOAuthFlow(openURLCallback: Function): Promise<object>;
     authorize(openURLCallback: any): Promise<{
         token: any;
         infos: any;
@@ -475,11 +524,11 @@ declare class CozyClient {
      * ```
      *
      * @param {ReduxStore} store - A redux store
-     * @param {object} options - Options
-     * @param {boolean} options.force - Will deactivate throwing when client's store already exists
+     * @param {object} [options] - Options
+     * @param {boolean} [options.force] - Will deactivate throwing when client's store already exists
      */
     setStore(store: ReduxStore, { force }?: {
-        force: boolean;
+        force?: boolean;
     }): void;
     store: any;
     ensureStore(): void;
@@ -534,11 +583,21 @@ declare class CozyClient {
     toJSON(): SnapshotClient;
 }
 declare namespace CozyClient {
+    export const hooks: {};
     export { fetchPolicies };
     export const version: string;
 }
+import { Token } from "./types";
 import Schema from "./Schema";
+import { DocumentCollection } from "./types";
 import { QueryDefinition } from "./queries/dsl";
+import { Mutation } from "./types";
+import { QueryResult } from "./types";
 import ObservableQuery from "./ObservableQuery";
+import { MutationOptions } from "./types";
+import { CozyClientDocument } from "./types";
+import { HydratedDocument } from "./types";
+import { QueryState } from "./types";
+import { ReduxStore } from "./types";
 import { CozyClient as SnapshotClient } from "./testing/snapshots";
 import fetchPolicies from "./policies";

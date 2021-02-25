@@ -24,37 +24,20 @@ export function ensureFilePath(file: object, parent: object): object;
  * @returns {string|null} id of the parent folder, if any
  */
 export function getParentFolderId(file: object): string | null;
-export function splitFilename(file: object): object;
-export function isFile(file: File): boolean;
-export function isDirectory(file: File): boolean;
-export function isNote(file: File): boolean;
-export function isShortcut(file: File): boolean;
-export function getSharingShortcutStatus(file: object): string;
-export function getSharingShortcutTargetMime(file: object): string;
-export function getSharingShortcutTargetDoctype(file: object): string;
-export function isSharingShortcut(file: object): boolean;
-export function isSharingShorcut(file: object): boolean;
-export function isSharingShortcutNew(file: object): boolean;
+export function splitFilename(file: IOCozyFile): object;
+export function isFile(file: IOCozyFile): boolean;
+export function isDirectory(file: IOCozyFile): boolean;
+export function isNote(file: IOCozyFile): boolean;
+export function isShortcut(file: IOCozyFile): boolean;
+export function getSharingShortcutStatus(file: IOCozyFile): string;
+export function getSharingShortcutTargetMime(file: IOCozyFile): string;
+export function getSharingShortcutTargetDoctype(file: IOCozyFile): string;
+export function isSharingShortcut(file: IOCozyFile): boolean;
+export function isSharingShorcut(file: IOCozyFile): boolean;
+export function isSharingShortcutNew(file: IOCozyFile): boolean;
 export function isSharingShorcutNew(file: object): boolean;
-export function saveFileQualification(client: object, file: object, qualification: object): object;
+export function saveFileQualification(client: CozyClient, file: IOCozyFile, qualification: object): Promise<IOCozyFile>;
 export function fetchFilesByQualificationRules(client: object, docRules: object): Promise<QueryResult>;
-/**
- * - An io.cozy.files document
- */
-export type File = {
-    /**
-     * - Name of the file
-     */
-    name: string;
-    /**
-     * - Metadata of the file
-     */
-    metadata: object;
-    /**
-     * - Type of the file
-     */
-    type: object;
-};
 /**
  * - Result of a query
  */
@@ -62,5 +45,7 @@ export type QueryResult = {
     /**
      * - Data fetched in the query
      */
-    array: any;
+    data: any[];
 };
+import { IOCozyFile } from "../types";
+import CozyClient from "../CozyClient";

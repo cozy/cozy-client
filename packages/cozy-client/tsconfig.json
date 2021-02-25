@@ -4,8 +4,8 @@
     "compilerOptions": {
         "allowJs": true,
         "outDir": "types",
-        "declaration": true
+        "declaration": true,
+        "target": "es5"
     },
-    "types": ["jest"],
-    "target": "es5"
+    "types": ["jest"]
 }

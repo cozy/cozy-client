@@ -4,6 +4,8 @@ export default HasManyInPlace;
  * Used when related documents are stored directly under the attribute with
  * only the ids.
  *
+ * @property {Function} get
+ *
  * @description
  *
  * An example document representing a TODO. See as the related
@@ -41,7 +43,6 @@ export default HasManyInPlace;
  *
  */
 declare class HasManyInPlace extends Association {
-    static query(): any;
     constructor(target: any, name: string, doctype: string, options: {
         get: Function;
         query: Function;

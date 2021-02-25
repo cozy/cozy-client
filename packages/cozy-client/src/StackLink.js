@@ -1,7 +1,15 @@
 import { MutationTypes } from './queries/dsl'
 import CozyLink from './CozyLink'
 
+/**
+ *
+ */
 export default class StackLink extends CozyLink {
+  /**
+   * @param {object} [options] - Options
+   * @param  {object} [options.stackClient] - A StackClient
+   * @param  {object} [options.client] - A StackClient (deprecated)
+   */
   constructor({ client, stackClient } = {}) {
     super()
     if (client) {

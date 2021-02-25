@@ -6,47 +6,24 @@
  * and subjects.
  * A qualification can be customized accordingly to rules detailed in
  * the checkValueAttributes method.
+ 
+ * @property {string} [label] - The qualification label.
+ * @property {string} [purpose] - The document purpose.
+ * @property {string} [sourceCategory] - The activity field of the document source.
+ * @property {string} [sourceSubCategory] - The sub-activity field of the document source.
+ * @property {Array} [subjects] - On what is about the document.
  */
 export class Qualification {
-    /**
-     * @typedef {object} Qualification Qualification's object.
-     * @property {string} label - The qualification label.
-     * @property {string} purpose - The document purpose.
-     * @property {string} sourceCategory - The activity field of the document source.
-     * @property {string} sourceSubCategory - The sub-activity field of the document source.
-     * @property {Array} subjects - On what is about the document.
-     */
     /**
      * @param {string} label - The qualification label
      * @param {Qualification} attributes - Qualification's attributes
      */
-    constructor(label: string, attributes?: {
-        /**
-         * - The qualification label.
-         */
-        label: string;
-        /**
-         * - The document purpose.
-         */
-        purpose: string;
-        /**
-         * - The activity field of the document source.
-         */
-        sourceCategory: string;
-        /**
-         * - The sub-activity field of the document source.
-         */
-        sourceSubCategory: string;
-        /**
-         * - On what is about the document.
-         */
-        subjects: any[];
-    });
+    constructor(label: string, attributes?: Qualification);
     label: string;
     purpose: string;
     sourceCategory: string;
     sourceSubCategory: string;
-    subjects: any[];
+    subjects: string[];
     /**
      * Check the given qualification attributes respects the following rules:
      *   - For the given label, if a purpose, sourceCategory or sourceSubCategory
@@ -67,112 +44,28 @@ export class Qualification {
      * @param {Array} purpose - The purpose to set.
      * @returns {Qualification} The Qualification object.
      */
-    setPurpose(purpose: any[]): {
-        /**
-         * - The qualification label.
-         */
-        label: string;
-        /**
-         * - The document purpose.
-         */
-        purpose: string;
-        /**
-         * - The activity field of the document source.
-         */
-        sourceCategory: string;
-        /**
-         * - The sub-activity field of the document source.
-         */
-        sourceSubCategory: string;
-        /**
-         * - On what is about the document.
-         */
-        subjects: any[];
-    };
+    setPurpose(purpose: any[]): Qualification;
     /**
      * Set sourceCategory to the qualification.
      *
      * @param {Array} sourceCategory - The sourceCategory to set.
      * @returns {Qualification} The Qualification object.
      */
-    setSourceCategory(sourceCategory: any[]): {
-        /**
-         * - The qualification label.
-         */
-        label: string;
-        /**
-         * - The document purpose.
-         */
-        purpose: string;
-        /**
-         * - The activity field of the document source.
-         */
-        sourceCategory: string;
-        /**
-         * - The sub-activity field of the document source.
-         */
-        sourceSubCategory: string;
-        /**
-         * - On what is about the document.
-         */
-        subjects: any[];
-    };
+    setSourceCategory(sourceCategory: any[]): Qualification;
     /**
      * Set sourceSubCategory to the qualification.
      *
      * @param {Array} sourceSubCategory - The sourceSubCategory to set.
      * @returns {Qualification} The Qualification object.
      */
-    setSourceSubCategory(sourceSubCategory: any[]): {
-        /**
-         * - The qualification label.
-         */
-        label: string;
-        /**
-         * - The document purpose.
-         */
-        purpose: string;
-        /**
-         * - The activity field of the document source.
-         */
-        sourceCategory: string;
-        /**
-         * - The sub-activity field of the document source.
-         */
-        sourceSubCategory: string;
-        /**
-         * - On what is about the document.
-         */
-        subjects: any[];
-    };
+    setSourceSubCategory(sourceSubCategory: any[]): Qualification;
     /**
      * Set subjects to the qualification.
      *
      * @param {Array} subjects - The subjects to set.
      * @returns {Qualification} The Qualification object.
      */
-    setSubjects(subjects: any[]): {
-        /**
-         * - The qualification label.
-         */
-        label: string;
-        /**
-         * - The document purpose.
-         */
-        purpose: string;
-        /**
-         * - The activity field of the document source.
-         */
-        sourceCategory: string;
-        /**
-         * - The sub-activity field of the document source.
-         */
-        sourceSubCategory: string;
-        /**
-         * - On what is about the document.
-         */
-        subjects: any[];
-    };
+    setSubjects(subjects: any[]): Qualification;
     /**
      * Returns the qualification attributes
      *
@@ -181,70 +74,7 @@ export class Qualification {
     toQualification(): object;
 }
 export namespace Qualification {
-    function getByLabel(label: string): {
-        /**
-         * - The qualification label.
-         */
-        label: string;
-        /**
-         * - The document purpose.
-         */
-        purpose: string;
-        /**
-         * - The activity field of the document source.
-         */
-        sourceCategory: string;
-        /**
-         * - The sub-activity field of the document source.
-         */
-        sourceSubCategory: string;
-        /**
-         * - On what is about the document.
-         */
-        subjects: any[];
-    };
+    function getByLabel(label: string): Qualification;
 }
-export function setQualification(document: object, qualification: {
-    /**
-     * - The qualification label.
-     */
-    label: string;
-    /**
-     * - The document purpose.
-     */
-    purpose: string;
-    /**
-     * - The activity field of the document source.
-     */
-    sourceCategory: string;
-    /**
-     * - The sub-activity field of the document source.
-     */
-    sourceSubCategory: string;
-    /**
-     * - On what is about the document.
-     */
-    subjects: any[];
-}): object;
-export function getQualification(document: object): {
-    /**
-     * - The qualification label.
-     */
-    label: string;
-    /**
-     * - The document purpose.
-     */
-    purpose: string;
-    /**
-     * - The activity field of the document source.
-     */
-    sourceCategory: string;
-    /**
-     * - The sub-activity field of the document source.
-     */
-    sourceSubCategory: string;
-    /**
-     * - On what is about the document.
-     */
-    subjects: any[];
-};
+export function setQualification(document: object, qualification: Qualification): object;
+export function getQualification(document: object): Qualification;

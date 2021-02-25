@@ -1,4 +1,4 @@
-import { QueryDefinition } from '../dsl'
+import { QueryDefinition } from '../queries/dsl'
 
 /**
  * Associations are used by components to access related store documents that are
@@ -8,8 +8,6 @@ import { QueryDefinition } from '../dsl'
  * Hydrated documents used by components come with Association instances.
  *
  * @interface
- *
- * @typedef Association
  *
  * @description
  * Example: The schema defines an `author` relationship :

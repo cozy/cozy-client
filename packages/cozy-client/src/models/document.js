@@ -9,17 +9,14 @@ import * as qualificationModel from '../assets/qualifications.json'
  * and subjects.
  * A qualification can be customized accordingly to rules detailed in
  * the checkValueAttributes method.
+ 
+ * @property {string} [label] - The qualification label.
+ * @property {string} [purpose] - The document purpose.
+ * @property {string} [sourceCategory] - The activity field of the document source.
+ * @property {string} [sourceSubCategory] - The sub-activity field of the document source.
+ * @property {Array} [subjects] - On what is about the document.
  */
 export class Qualification {
-  /**
-   * @typedef {object} Qualification Qualification's object.
-   * @property {string} label - The qualification label.
-   * @property {string} purpose - The document purpose.
-   * @property {string} sourceCategory - The activity field of the document source.
-   * @property {string} sourceSubCategory - The sub-activity field of the document source.
-   * @property {Array} subjects - On what is about the document.
-   */
-
   /**
    * @param {string} label - The qualification label
    * @param {Qualification} attributes - Qualification's attributes
@@ -37,7 +34,7 @@ export class Qualification {
         attributes.sourceSubCategory || qualification.sourceSubCategory
       this.subjects = attributes.subjects || qualification.subjects
     } else {
-      throw new Error('No qualification found for the label ', label)
+      throw new Error(`No qualification found for the label ${label}`)
     }
   }
 

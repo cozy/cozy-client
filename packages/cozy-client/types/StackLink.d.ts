@@ -1,7 +1,15 @@
+/**
+ *
+ */
 export default class StackLink extends CozyLink {
+    /**
+     * @param {object} [options] - Options
+     * @param  {object} [options.stackClient] - A StackClient
+     * @param  {object} [options.client] - A StackClient (deprecated)
+     */
     constructor({ client, stackClient }?: {
-        client: any;
-        stackClient: any;
+        stackClient: object;
+        client: object;
     });
     stackClient: any;
     registerClient(client: any): void;
