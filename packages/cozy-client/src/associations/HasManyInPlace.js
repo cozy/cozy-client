@@ -89,9 +89,10 @@ class HasManyInPlace extends Association {
     return (this.raw || []).map(_id => this.get(doctype, _id))
   }
 
-  static query() {
-    if (this.raw && this.raw.length > 0) {
-      return Q(this.doctype).getByIds(this.raw)
+  static query(doc, client, relationship) {
+    const ids = doc[relationship.name]
+    if (ids && ids > 0) {
+      return Q(relationship.doctype).getByIds(ids)
     } else {
       return null
     }
