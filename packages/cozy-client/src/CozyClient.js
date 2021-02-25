@@ -51,9 +51,9 @@ import {
   HydratedDocument,
   ReduxStore,
   QueryState,
-  MutationOptions,
   Token,
-  ClientResponse
+  ClientResponse,
+  ReferenceMap
 } from './types'
 
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
@@ -77,15 +77,6 @@ const referencesUnsupportedError = relationshipClassName => {
     `The "${relationshipClassName}" relationship does not support references. If you need to add references to a document, its relationship class must have the methods {add,remove}References`
   )
 }
-
-/**
- * A reference to a document (special case of a relationship used between photos and albums)
- * https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files/#references
- *
- * @typedef {object} Reference
- * @property {string} _id - id of the document
- * @property {string} _type - doctype of the document
- */
 
 const DOC_CREATION = 'creation'
 const DOC_UPDATE = 'update'
@@ -532,7 +523,7 @@ client.query(Q('io.cozy.bills'))`)
    *
    * @param  {string} type - Doctype of the document
    * @param  {object} doc - Document to save
-   * @param  {Array.<Reference>} references - (Optional) References are a special kind of relationship
+   * @param  {ReferenceMap} [references] - References are a special kind of relationship
    * that is not stored inside the referencer document, they are used for example between a photo
    * and its album. You should not need to use it normally.
    * @param  {object} options - Mutation options
@@ -645,7 +636,7 @@ client.query(Q('io.cozy.bills'))`)
    *
    *
    * @param  {object} document - Document to create
-   * @param  {object.<string, Array<Reference>>} [referencesByName] - References to the created document. The
+   * @param  {ReferenceMap} [referencesByName] - References to the created document. The
    * relationship class associated to each reference list should support references, otherwise this
    * method will throw.
    *

@@ -1,18 +1,4 @@
 export default CozyClient;
-/**
- * A reference to a document (special case of a relationship used between photos and albums)
- * https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files/#references
- */
-export type Reference = {
-    /**
-     * - id of the document
-     */
-    _id: string;
-    /**
-     * - doctype of the document
-     */
-    _type: string;
-};
 export type ClientOptions = {
     client?: object;
     link?: object;
@@ -270,7 +256,7 @@ declare class CozyClient {
      *
      * @param  {string} type - Doctype of the document
      * @param  {object} doc - Document to save
-     * @param  {Array.<Reference>} references - (Optional) References are a special kind of relationship
+     * @param  {ReferenceMap} [references] - References are a special kind of relationship
      * that is not stored inside the referencer document, they are used for example between a photo
      * and its album. You should not need to use it normally.
      * @param  {object} options - Mutation options
@@ -289,7 +275,7 @@ declare class CozyClient {
      *
      * @returns {Promise}
      */
-    create(type: string, doc: object, references: Array<Reference>, options?: object): Promise<any>;
+    create(type: string, doc: object, references?: ReferenceMap, options?: object): Promise<any>;
     validate(document: any): Promise<{}>;
     save(document: any, mutationOptions?: {}): Promise<any>;
     ensureCozyMetadata(document: any, options?: {
@@ -310,13 +296,13 @@ declare class CozyClient {
      *
      *
      * @param  {object} document - Document to create
-     * @param  {object.<string, Array<Reference>>} [referencesByName] - References to the created document. The
+     * @param  {ReferenceMap} [referencesByName] - References to the created document. The
      * relationship class associated to each reference list should support references, otherwise this
      * method will throw.
      *
      * @returns {Mutation[]|Mutation}  One or more mutation to execute
      */
-    getDocumentSavePlan(document: object, referencesByName?: any): Mutation[] | Mutation;
+    getDocumentSavePlan(document: object, referencesByName?: ReferenceMap): Mutation[] | Mutation;
     triggerHook(name: any, document: any): void;
     /**
      * Destroys a document. {before,after}:destroy hooks will be fired.
@@ -609,6 +595,7 @@ import { Token } from "./types";
 import Schema from "./Schema";
 import { DocumentCollection } from "./types";
 import { QueryDefinition } from "./queries/dsl";
+import { ReferenceMap } from "./types";
 import { Mutation } from "./types";
 import { CozyClientDocument } from "./types";
 import { QueryResult } from "./types";

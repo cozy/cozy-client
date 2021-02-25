@@ -12,6 +12,19 @@
  */
 
 /**
+ * A reference to a document (special case of a relationship used between photos and albums)
+ * https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files/#references
+ *
+ * @typedef {object} Reference
+ * @property {string} _id - id of the document
+ * @property {string} _type - doctype of the document
+ */
+
+/**
+ * @typedef {Object.<string, Array<Reference>>} ReferenceMap
+ */
+
+/**
  * @typedef {object} MutationOptions
  * @property {string} [as]
  * @property {Function} [update]

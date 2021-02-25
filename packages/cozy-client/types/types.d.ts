@@ -10,6 +10,23 @@ export type QueryState = any;
 export type Token = any;
 export type ClientResponse = any;
 export type Manifest = any;
+/**
+ * A reference to a document (special case of a relationship used between photos and albums)
+ * https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files/#references
+ */
+export type Reference = {
+    /**
+     * - id of the document
+     */
+    _id: string;
+    /**
+     * - doctype of the document
+     */
+    _type: string;
+};
+export type ReferenceMap = {
+    [x: string]: Reference[];
+};
 export type MutationOptions = {
     as?: string;
     update?: Function;
