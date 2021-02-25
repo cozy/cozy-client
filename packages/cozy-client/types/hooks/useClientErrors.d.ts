@@ -27,4 +27,3 @@ export default function useClientErrors({ handleExceptions }?: {
 }): {
     ClientErrors: Function;
 };
-export type ClientError = Error;
