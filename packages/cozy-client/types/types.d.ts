@@ -7,9 +7,14 @@ export type QueryResult = any;
 export type HydratedDocument = any;
 export type ReduxStore = any;
 export type QueryState = any;
-export type MutationOptions = any;
 export type Token = any;
 export type ClientResponse = any;
+export type Manifest = any;
+export type MutationOptions = {
+    as?: string;
+    update?: Function;
+    updateQueries?: Function;
+};
 /**
  * - A document
  */
@@ -69,3 +74,4 @@ export type IOCozyFolder = {
      */
     type: object;
 };
+export type ClientError = Error;

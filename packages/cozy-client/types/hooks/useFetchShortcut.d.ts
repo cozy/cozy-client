@@ -1,6 +1,6 @@
 export default useFetchShortcut;
 declare function useFetchShortcut(client: any, id: any): {
-    shortcutInfos: undefined;
-    shortcutImg: undefined;
+    shortcutInfos: any;
+    shortcutImg: any;
     fetchStatus: string;
 };

@@ -19,5 +19,5 @@
  * })
  * ```
  */
-export function createClientInteractive(clientOptions: object, serverOpts: any): CozyClient | Promise<any>;
+export function createClientInteractive(clientOptions: object, serverOpts: any): Promise<any> | CozyClient;
 import CozyClient from "../CozyClient";

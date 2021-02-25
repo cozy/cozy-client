@@ -104,7 +104,6 @@ declare class HasMany extends Association {
     updateTargetRelationship(store: any, updateFn: any): void;
     updateRelationship(target: any, updateFn: any): any;
     updateRelationshipData: (getUpdatedRelationshipData: any) => (dispatch: any, getState: any) => void;
-    dehydrate(doc: any): any;
 }
 import Association from "./Association";
 import { QueryDefinition } from "../queries/dsl";

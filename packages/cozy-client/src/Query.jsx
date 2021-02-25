@@ -154,7 +154,10 @@ export default class Query extends Component {
   }
 
   render() {
-    const { children } = this.props
+    /**
+     * @type {Function}
+     */
+    const children = this.props.children
     return children(this.childrenArgs[0], this.childrenArgs[1])
   }
 }

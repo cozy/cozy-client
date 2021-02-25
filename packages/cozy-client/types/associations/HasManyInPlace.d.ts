@@ -54,6 +54,5 @@ declare class HasManyInPlace extends Association {
     removeById(id: any): void;
     existsById(id: any): boolean;
     getRelationship(): any;
-    dehydrate(doc: any): any;
 }
 import Association from "./Association";

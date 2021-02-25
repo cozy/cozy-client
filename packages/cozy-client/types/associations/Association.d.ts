@@ -212,5 +212,6 @@ declare class Association {
      * Derived `Association`s need to implement this method.
      */
     get data(): void;
+    dehydrate(doc: any): any;
 }
 import { QueryDefinition } from "../queries/dsl";

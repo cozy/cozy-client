@@ -16,7 +16,7 @@ global.btoa = require('btoa')
 /**
  * Creates and starts and HTTP server suitable for OAuth authentication
  *
- * @param  {Function} serverOptions - OAuth callback server options
+ * @param  {object} serverOptions - OAuth callback server options
  * @param  {Function} serverOptions.onAuthentication - Additional callback called
  * when the user authenticates
  * @param  {Function} serverOptions.route - Route used for authentication

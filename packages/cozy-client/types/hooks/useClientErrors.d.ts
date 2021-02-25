@@ -18,9 +18,13 @@
  * }
  * ```
  *
- * @param {boolean} handleExceptions - should cozy-client directly handle errors before forwarding them to the caller?
+ * @param {object} [props] - Props
+ * @param {boolean} [props.handleExceptions] - should cozy-client directly handle errors before forwarding them to the caller?
  * @returns {{ClientErrors: Function}} React component
  */
-export default function useClientErrors({ handleExceptions }?: boolean): {
+export default function useClientErrors({ handleExceptions }?: {
+    handleExceptions: boolean;
+}): {
     ClientErrors: Function;
 };
+export type ClientError = Error;

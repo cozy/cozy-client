@@ -19,8 +19,14 @@ export class Qualification {
      * @param {Qualification} attributes - Qualification's attributes
      */
     constructor(label: string, attributes?: Qualification);
-    label: string;
-    purpose: string;
+    /**
+     * @type {string?} - The qualification label.
+     */
+    label: string | null;
+    /**
+     * @type {string?} - The document purpose.
+     */
+    purpose: string | null;
     sourceCategory: string;
     sourceSubCategory: string;
     subjects: string[];

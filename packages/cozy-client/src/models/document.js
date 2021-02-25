@@ -26,7 +26,13 @@ export class Qualification {
       qualif => qualif.label === label
     )
     if (qualification) {
+      /**
+       * @type {string?} - The qualification label.
+       */
       this.label = qualification.label
+      /**
+       * @type {string?} - The document purpose.
+       */
       this.purpose = attributes.purpose || qualification.purpose
       this.sourceCategory =
         attributes.sourceCategory || qualification.sourceCategory

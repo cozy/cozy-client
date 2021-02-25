@@ -78,9 +78,9 @@ declare class CozyClient {
      *
      * Warning: unlike other instantiators, this one needs to be awaited.
      *
-     * @returns {CozyClient} An instance of a client, configured from the old client
+     * @returns {Promise<CozyClient>} An instance of a client, configured from the old client
      */
-    static fromOldOAuthClient(oldClient: any, options: any): CozyClient;
+    static fromOldOAuthClient(oldClient: any, options: any): Promise<CozyClient>;
     /** In konnector/service context, CozyClient can be instantiated from environment variables */
     static fromEnv(envArg: any, options?: {}): CozyClient;
     /**
@@ -160,6 +160,14 @@ declare class CozyClient {
      * @type {object}
      */
     storeAccesors: object;
+    /**
+     * Gets overrided by MicroEE.mixin
+     * This is here just so typescript does not scream
+     *
+     * TODO Find a better way to make TS understand that emit is
+     * a method from cozy-client
+     */
+    emit(...args: any[]): void;
     /**
      * A plugin is a class whose constructor receives the client as first argument.
      * The main mean of interaction with the client should be with events
@@ -300,8 +308,9 @@ declare class CozyClient {
      * client.getDocumentSavePlan(baseDoc, relationships)
      * ```
      *
+     *
      * @param  {object} document - Document to create
-     * @param  {object.<string, Array.<Reference>>} [referencesByName] - References to the created document. The
+     * @param  {object.<string, Array<Reference>>} [referencesByName] - References to the created document. The
      * relationship class associated to each reference list should support references, otherwise this
      * method will throw.
      *
@@ -326,16 +335,16 @@ declare class CozyClient {
      * executes its query when mounted if no fetch policy has been indicated.
      *
      * @param  {QueryDefinition} queryDefinition - Definition that will be executed
-     * @param  {object} options - Options
-     * @param  {string} options.as - Names the query so it can be reused (by multiple components for example)
-     * @param  {Function} options.fetchPolicy - Fetch policy to bypass fetching based on what's already inside the state. See "Fetch policies"
-     * @param  {string} options.update - Does not seem to be used
+     * @param  {object} [options] - Options
+     * @param  {string} [options.as] - Names the query so it can be reused (by multiple components for example)
+     * @param  {Function} [options.fetchPolicy] - Fetch policy to bypass fetching based on what's already inside the state. See "Fetch policies"
+     * @param  {string} [options.update] - Does not seem to be used
      * @returns {Promise<QueryResult>}
      */
     query(queryDefinition: QueryDefinition, { update, ...options }?: {
-        as: string;
-        fetchPolicy: Function;
-        update: string;
+        as?: string;
+        fetchPolicy?: Function;
+        update?: string;
     }): Promise<QueryResult>;
     /**
      * Will fetch all documents for a `queryDefinition`, automatically fetching more
@@ -353,16 +362,14 @@ declare class CozyClient {
      * Mutate a document
      *
      * @param  {object}    mutationDefinition - Describe the mutation
-     * @param {object} options - Options
+     * @param {object} [options] - Options
      * @param  {Function}    [options.update] - Function to update the document
      * @param  {Function}    [options.updateQueries] - Function to update queries
-     * @param  {...MutationOptions} options.options
      * @returns {Promise}
      */
     mutate(mutationDefinition: object, { update, updateQueries, ...options }?: {
         update?: Function;
         updateQueries?: Function;
-        options: MutationOptions[];
     }): Promise<any>;
     /**
      * Executes a query through links and fetches relationships
@@ -604,7 +611,6 @@ import { Mutation } from "./types";
 import { CozyClientDocument } from "./types";
 import { QueryResult } from "./types";
 import ObservableQuery from "./ObservableQuery";
-import { MutationOptions } from "./types";
 import { HydratedDocument } from "./types";
 import { QueryState } from "./types";
 import { ReduxStore } from "./types";

@@ -8,4 +8,5 @@ export function isPartnershipValid(partnership: any): boolean;
  * @param  {Manifest} manifest
  * @returns {Manifest}
  */
-export function sanitize(manifest: any): any;
+export function sanitize(manifest: Manifest): Manifest;
+import { Manifest } from "./types";

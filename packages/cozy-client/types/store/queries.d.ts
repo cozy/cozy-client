@@ -1,6 +1,6 @@
 export function isQueryAction(action: any): boolean;
 export function isReceivingData(action: any): boolean;
-export function convert$gtNullSelectors(selector: any): {};
+export function convert$gtNullSelectors(selector: any): object;
 export function mergeSelectorAndPartialIndex(queryDefinition: object): object;
 export function makeSorterFromDefinition(definition: any): (docs: any) => any;
 export default queries;
