@@ -223,6 +223,10 @@ class Association {
   static query() {
     throw new Error('A custom relationship must define its query() function')
   }
+
+  dehydrate(doc) {
+    return doc
+  }
 }
 
 export default Association
