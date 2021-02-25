@@ -3,7 +3,17 @@ import { createMockClient } from '../mock'
 import simpsonsFixture from '../testing/simpsons.json'
 import ClientProvider from '../Provider'
 import { Provider as ReduxProvider } from 'react-redux'
+import CozyClient from '../CozyClient'
 
+/**
+ * Setups a client suitable for testing
+ *
+ * @typedef {object} MockQueryOptions
+ *
+ * @param  {object} options - Options
+ * @param  {MockQueryOptions} [options.queries] - Additional queries to insert in the client
+ * @returns {CozyClient}
+ */
 const setupClient = ({ queries } = {}) => {
   const client = createMockClient({
     queries: {

@@ -125,6 +125,11 @@ const query = (state = queryInitialState, action, nextDocuments) => {
   }
 }
 
+/**
+ * Normalize sift selector
+ *
+ * @returns {object}
+ */
 export const convert$gtNullSelectors = selector => {
   const result = {}
   for (const [key, value] of Object.entries(selector)) {

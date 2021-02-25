@@ -87,7 +87,7 @@ class Registry {
    * @returns {Promise<Array<RegistryApp>>}
    */
   async fetchApps(params) {
-    const { channel, type, limit = 200 } = params
+    const { channel, type, limit = '200' } = params
     const searchParams = {
       limit,
       versionsChannel: channel,

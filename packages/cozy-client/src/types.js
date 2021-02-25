@@ -6,9 +6,16 @@
  * @typedef {object} HydratedDocument
  * @typedef {object} ReduxStore
  * @typedef {object} QueryState
- * @typedef {object} MutationOptions
  * @typedef {object} Token
  * @typedef {object} ClientResponse
+ * @typedef {object} Manifest
+ */
+
+/**
+ * @typedef {object} MutationOptions
+ * @property {string} [as]
+ * @property {Function} [update]
+ * @property {Function} [updateQueries]
  */
 
 /**
@@ -32,6 +39,11 @@
  * @property {string} name - Name of the folder
  * @property {object} metadata - Metadata of the folder
  * @property {object} type - Type of the folder
+ */
+
+/**
+ * @typedef {Error} ClientError
+ * @property {string} status
  */
 
 export default {}
