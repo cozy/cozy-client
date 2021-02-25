@@ -3,14 +3,18 @@
  *
  * Rejects with canceled: true as soon as cancel is called
  *
- * @typedef AugmentedPromise {Promise}
- * @property {Function} cancel - Cancel the promise
+ * @typedef CancelablePromise {Promise}
+ * @property {Function} [cancel] - Cancel the promise
  *
  * @param  {Promise} promise  - Promise
- * @returns {AugmentedPromise} - Promise with .cancel method
+ * @returns {CancelablePromise} - Promise with .cancel method
  */
 const cancelable = promise => {
   let _reject
+
+  /**
+   * @type {CancelablePromise}
+   */
   const wrapped = new Promise((resolve, reject) => {
     _reject = reject
     promise.then(resolve)

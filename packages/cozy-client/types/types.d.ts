@@ -26,7 +26,11 @@ export type CozyClientDocument = {
     /**
      * - Id of the folder
      */
-    _type: string;
+    _type?: string;
+    /**
+     * - Id of the folder
+     */
+    relationships?: string;
 };
 /**
  * - An io.cozy.files document

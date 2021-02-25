@@ -8,6 +8,7 @@ import logger from '../logger'
 import { isReceivingData } from './queries'
 import { MutationTypes } from '../queries/dsl'
 import { isReceivingMutationResult } from './mutations'
+import { CozyClientDocument } from '../types'
 
 import { properId } from './helpers'
 
@@ -48,6 +49,9 @@ export const mergeDocumentsWithRelationships = (
   prevDocument = {},
   nextDocument = {}
 ) => {
+  /**
+   * @type {CozyClientDocument}
+   */
   const merged = {
     ...prevDocument,
     ...nextDocument

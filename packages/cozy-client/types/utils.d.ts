@@ -3,21 +3,21 @@ export function hasQueryBeenLoaded(col: any): any;
 /**
  * {Promise}
  */
-export type AugmentedPromise = {
+export type CancelablePromise = {
     /**
      * - Cancel the promise
      */
-    cancel: Function;
+    cancel?: Function;
 };
 /**
  * Wraps a promise so that it can be canceled
  *
  * Rejects with canceled: true as soon as cancel is called
  *
- * @typedef AugmentedPromise {Promise}
- * @property {Function} cancel - Cancel the promise
+ * @typedef CancelablePromise {Promise}
+ * @property {Function} [cancel] - Cancel the promise
  *
  * @param  {Promise} promise  - Promise
- * @returns {AugmentedPromise} - Promise with .cancel method
+ * @returns {CancelablePromise} - Promise with .cancel method
  */
-export function cancelable(promise: Promise<any>): AugmentedPromise;
+export function cancelable(promise: Promise<any>): CancelablePromise;

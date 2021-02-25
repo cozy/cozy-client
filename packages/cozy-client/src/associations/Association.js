@@ -174,6 +174,8 @@ class Association {
    * ```
    *
    * Derived `Association`s need to implement this method.
+   *
+   * @returns {object}
    */
   get raw() {
     throw new Error('A relationship must define its raw getter')
@@ -210,6 +212,8 @@ class Association {
    * ```
    *
    * Derived `Association`s need to implement this method.
+   *
+   * @returns {object}
    */
   get data() {
     throw new Error('A relationship must define its data getter')

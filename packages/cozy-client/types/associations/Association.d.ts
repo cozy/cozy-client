@@ -177,8 +177,10 @@ declare class Association {
      * ```
      *
      * Derived `Association`s need to implement this method.
+     *
+     * @returns {object}
      */
-    get raw(): void;
+    get raw(): any;
     /**
      * Returns the document(s) from the store
      *
@@ -210,8 +212,10 @@ declare class Association {
      * ```
      *
      * Derived `Association`s need to implement this method.
+     *
+     * @returns {object}
      */
-    get data(): void;
+    get data(): any;
     dehydrate(doc: any): any;
 }
 import { QueryDefinition } from "../queries/dsl";
