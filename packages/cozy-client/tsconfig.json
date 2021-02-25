@@ -2,10 +2,15 @@
     "include": ["src/**/*"],
     "exclude": ["**/*.spec.*"],
     "compilerOptions": {
-        "allowJs": true,
-        "outDir": "types",
-        "declaration": true,
-        "target": "es5"
+      "allowJs": true,
+      "checkJs": true,
+      "emitDeclarationOnly": true,
+      "resolveJsonModule": true,
+      "esModuleInterop": true,
+      "jsx": "react",
+      "outDir": "types",
+      "declaration": true,
+      "target": "es5"
     },
     "types": ["jest"]
 }
