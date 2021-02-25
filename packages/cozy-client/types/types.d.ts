@@ -17,7 +17,7 @@ export type CozyClientDocument = {
     /**
      * - Id of the folder
      */
-    _id: string;
+    _id?: string;
     /**
      * - Id of the folder
      */

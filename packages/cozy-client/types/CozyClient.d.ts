@@ -157,6 +157,10 @@ declare class CozyClient {
     schema: Schema;
     plugins: {};
     /**
+     * @type {object}
+     */
+    storeAccesors: object;
+    /**
      * A plugin is a class whose constructor receives the client as first argument.
      * The main mean of interaction with the client should be with events
      * like "login"/"logout".
@@ -308,10 +312,10 @@ declare class CozyClient {
     /**
      * Destroys a document. {before,after}:destroy hooks will be fired.
      *
-     * @param  {Document} document - Document to be deleted
-     * @returns {Document} The document that has been deleted
+     * @param  {CozyClientDocument} document - Document to be deleted
+     * @returns {Promise<CozyClientDocument>} The document that has been deleted
      */
-    destroy(document: Document, mutationOptions?: {}): Document;
+    destroy(document: CozyClientDocument, mutationOptions?: {}): Promise<CozyClientDocument>;
     upload(file: any, dirPath: any, mutationOptions?: {}): Promise<any>;
     ensureQueryExists(queryId: any, queryDefinition: any): void;
     /**
@@ -397,11 +401,11 @@ declare class CozyClient {
      * The original document is kept in the target attribute of
      * the relationship
      *
-     * @param  {Document} document - for which relationships must be resolved
+     * @param  {CozyClientDocument} document - for which relationships must be resolved
      * @param  {Schema} [schemaArg] - Optional
      * @returns {HydratedDocument}
      */
-    hydrateDocument(document: Document, schemaArg?: Schema): HydratedDocument;
+    hydrateDocument(document: CozyClientDocument, schemaArg?: Schema): HydratedDocument;
     hydrateRelationships(document: any, schemaRelationships: any): any;
     /**
      * Creates (locally) a new document for the given doctype.
@@ -440,33 +444,33 @@ declare class CozyClient {
      *
      * @param {string} type - Doctype of the collection
      *
-     * @returns {Document[]} Array of documents or null if the collection does not exist.
+     * @returns {CozyClientDocument[]} Array of documents or null if the collection does not exist.
      */
-    getCollectionFromState(type: string): Document[];
+    getCollectionFromState(type: string): CozyClientDocument[];
     /**
      * Get a document from the internal store.
      *
      * @param {string} type - Doctype of the document
      * @param {string} id   - Id of the document
      *
-     * @returns {Document} Document or null if the object does not exist.
+     * @returns {CozyClientDocument} Document or null if the object does not exist.
      */
-    getDocumentFromState(type: string, id: string): Document;
+    getDocumentFromState(type: string, id: string): CozyClientDocument;
     /**
      * Get a query from the internal store.
      *
      * @param {string} id - Id of the query (set via Query.props.as)
      * @param {object} options - Options
-     * @param {boolean} options.hydrated - Whether documents should be returned already hydrated (default: false)
-     * @param  {object} options.singleDocData - If true, the "data" returned will be
+     * @param {boolean} [options.hydrated] - Whether documents should be returned already hydrated (default: false)
+     * @param  {object} [options.singleDocData] - If true, the "data" returned will be
      * a single doc instead of an array for single doc queries. Defaults to false for backward
      * compatibility but will be set to true in the future.
      *
      * @returns {QueryState} - Query state or null if it does not exist.
      */
     getQueryFromState(id: string, options?: {
-        hydrated: boolean;
-        singleDocData: object;
+        hydrated?: boolean;
+        singleDocData?: object;
     }): QueryState;
     /**
      * Executes a query and returns the results from internal store.
@@ -557,7 +561,12 @@ declare class CozyClient {
         queries: any;
     };
     dispatch(action: any): any;
-    generateId(): number;
+    /**
+     * Generates a random id for queries
+     *
+     * @returns {string}
+     */
+    generateId(): string;
     /**
      * getInstanceOptions - Returns current instance options, such as domain or app slug
      *
@@ -592,10 +601,10 @@ import Schema from "./Schema";
 import { DocumentCollection } from "./types";
 import { QueryDefinition } from "./queries/dsl";
 import { Mutation } from "./types";
+import { CozyClientDocument } from "./types";
 import { QueryResult } from "./types";
 import ObservableQuery from "./ObservableQuery";
 import { MutationOptions } from "./types";
-import { CozyClientDocument } from "./types";
 import { HydratedDocument } from "./types";
 import { QueryState } from "./types";
 import { ReduxStore } from "./types";

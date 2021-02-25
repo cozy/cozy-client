@@ -59,7 +59,7 @@ export const ensureMagicFolder = async (client, id, path) => {
  *
  * @param  {CozyClient}  client   cozy-client instance
  * @param  {string}  path     Folder path
- * @param  {Document}  document Document to make reference to. Any doctype.
+ * @param  {CozyClientDocument}  document Document to make reference to. Any doctype.
  * @returns {Promise<IOCozyFolder>}  Folder document
  */
 export const createFolderWithReference = async (client, path, document) => {

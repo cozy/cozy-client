@@ -195,6 +195,11 @@ class CozyClient {
     if (options.uri && options.token) {
       this.login()
     }
+
+    /**
+     * @type {object}
+     */
+    this.storeAccesors = null
   }
 
   /**
@@ -722,8 +727,8 @@ client.query(Q('io.cozy.bills'))`)
   /**
    * Destroys a document. {before,after}:destroy hooks will be fired.
    *
-   * @param  {Document} document - Document to be deleted
-   * @returns {Document} The document that has been deleted
+   * @param  {CozyClientDocument} document - Document to be deleted
+   * @returns {Promise<CozyClientDocument>} The document that has been deleted
    */
   async destroy(document, mutationOptions = {}) {
     await this.triggerHook('before:destroy', document)
@@ -1031,7 +1036,7 @@ client.query(Q('io.cozy.bills'))`)
    * The original document is kept in the target attribute of
    * the relationship
    *
-   * @param  {Document} document - for which relationships must be resolved
+   * @param  {CozyClientDocument} document - for which relationships must be resolved
    * @param  {Schema} [schemaArg] - Optional
    * @returns {HydratedDocument}
    */
@@ -1102,7 +1107,7 @@ client.query(Q('io.cozy.bills'))`)
    *
    * @param {string} type - Doctype of the collection
    *
-   * @returns {Document[]} Array of documents or null if the collection does not exist.
+   * @returns {CozyClientDocument[]} Array of documents or null if the collection does not exist.
    */
   getCollectionFromState(type) {
     try {
@@ -1119,7 +1124,7 @@ client.query(Q('io.cozy.bills'))`)
    * @param {string} type - Doctype of the document
    * @param {string} id   - Id of the document
    *
-   * @returns {Document} Document or null if the object does not exist.
+   * @returns {CozyClientDocument} Document or null if the object does not exist.
    */
   getDocumentFromState(type, id) {
     try {
@@ -1135,8 +1140,8 @@ client.query(Q('io.cozy.bills'))`)
    *
    * @param {string} id - Id of the query (set via Query.props.as)
    * @param {object} options - Options
-   * @param {boolean} options.hydrated - Whether documents should be returned already hydrated (default: false)
-   * @param  {object} options.singleDocData - If true, the "data" returned will be
+   * @param {boolean} [options.hydrated] - Whether documents should be returned already hydrated (default: false)
+   * @param  {object} [options.singleDocData] - If true, the "data" returned will be
    * a single doc instead of an array for single doc queries. Defaults to false for backward
    * compatibility but will be set to true in the future.
    *
@@ -1405,10 +1410,15 @@ instantiation of the client.`
     return this.store.dispatch(action)
   }
 
+  /**
+   * Generates a random id for queries
+   *
+   * @returns {string}
+   */
   generateId() {
     const id = this.idCounter
     this.idCounter++
-    return id
+    return id + ''
   }
 
   /**

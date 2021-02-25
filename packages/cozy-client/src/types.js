@@ -13,7 +13,7 @@
 
 /**
  * @typedef {object} CozyClientDocument - A document
- * @property {string} _id - Id of the folder
+ * @property {string} [_id] - Id of the folder
  * @property {string} _type - Id of the folder
  */
 

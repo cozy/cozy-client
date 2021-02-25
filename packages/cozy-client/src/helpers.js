@@ -37,12 +37,12 @@ const ensureFirstSlash = path => {
  * example.
  *
  * @param {object} options               Object of options
- * @param {string}   options.cozyUrl       Base URL of the cozy, eg. cozy.tools or test.mycozy.cloud
- * @param {Array}    [options.searchParams]  Array of search parameters as [key, value] arrays, eg. ['username', 'bob']
- * @param {string}   options.pathname      Path to a specific part of the app, eg. /public
+ * @param {string}   [options.cozyUrl]       Base URL of the cozy, eg. cozy.tools or test.mycozy.cloud
+ * @param {Array}    options.searchParams  Array of search parameters as [key, value] arrays, eg. ['username', 'bob']
+ * @param {string}   [options.pathname]      Path to a specific part of the app, eg. /public
  * @param {string}   [options.hash]          Path inside the app, eg. /files/test.jpg
- * @param {string}   options.slug          Slug of the app
- * @param {string}   options.subDomainType Whether the cozy is using flat or nested subdomains. Defaults to flat.
+ * @param {string}   [options.slug]          Slug of the app
+ * @param {string}   [options.subDomainType] Whether the cozy is using flat or nested subdomains. Defaults to flat.
  *
  * @returns {string} Generated URL
  */
