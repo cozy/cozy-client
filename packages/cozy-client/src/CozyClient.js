@@ -1430,6 +1430,9 @@ instantiation of the client.`
   loadInstanceOptionsFromDOM(selector = '[role=application]') {
     const root = document.querySelector(selector)
     if (!(root instanceof HTMLElement)) {
+      throw new Error(
+        'The selector that is passed does not return an HTMLElement'
+      )
       return
     }
     this.instanceOptions = root.dataset.cozy
