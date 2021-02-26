@@ -523,13 +523,48 @@ describe('FileCollection', () => {
         }
       })
     })
+
+    it('should send the file size via querystring and headers', async () => {
+      const data = new File([''], 'mydoc.epub')
+      const params = {
+        fileId: '59140416-b95f',
+        checksum: 'a6dabd99832b270468e254814df2ed20',
+        contentLength: 1234
+      }
+      const result = await collection.updateFile(data, params)
+      const expectedPath =
+        '/files/59140416-b95f?Name=mydoc.epub&Type=file&Executable=false&Size=1234'
+      const expectedOptions = {
+        headers: {
+          'Content-MD5': 'a6dabd99832b270468e254814df2ed20',
+          'Content-Type': 'application/epub+zip',
+          'Content-Length': '1234'
+        }
+      }
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'PUT',
+        expectedPath,
+        data,
+        expectedOptions
+      )
+      expect(result).toEqual({
+        data: {
+          id: '59140416-b95f',
+          _id: '59140416-b95f',
+          _type: 'io.cozy.files',
+          dir_id: '41686c35-9d8e'
+        }
+      })
+    })
   })
+
   describe('emptyTrash', () => {
     it('should empty the trash', async () => {
       await collection.emptyTrash()
       expect(client.fetchJSON).toHaveBeenCalledWith('DELETE', '/files/trash')
     })
   })
+
   describe('restore', () => {
     it('should restore a trashed file', async () => {
       const FILE_ID = 'd04ab491-2fc6'
@@ -634,6 +669,7 @@ describe('FileCollection', () => {
     const data = new File([''], 'mydoc.epub')
     const id = '59140416-b95f'
     const dirId = '41686c35-9d8e'
+    const contentLength = 1234
 
     beforeEach(() => {
       client.fetchJSON.mockReturnValue({
@@ -650,11 +686,9 @@ describe('FileCollection', () => {
     })
 
     it('should create a file without metadata', async () => {
-      const params = {
-        dirId: '41686c35-9d8e'
-      }
+      const params = { dirId }
       const result = await collection.createFile(data, params)
-      const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&MetadataID=`
+      const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&MetadataID=&Size=`
       const expectedOptions = {
         headers: {
           'Content-Type': 'application/epub+zip'
@@ -688,10 +722,38 @@ describe('FileCollection', () => {
         metadata: { type: 'bill' }
       }
       const result = await collection.createFile(data, params)
-      const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&MetadataID=${metadataId}`
+      const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&MetadataID=${metadataId}&Size=`
       const expectedOptions = {
         headers: {
           'Content-Type': 'application/epub+zip'
+        }
+      }
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        expectedPath,
+        data,
+        expectedOptions
+      )
+      expect(result).toEqual({
+        data: {
+          id: id,
+          _id: id,
+          _type: 'io.cozy.files',
+          dir_id: dirId
+        }
+      })
+    })
+
+    it('should send the file size via querystring and headers', async () => {
+      const params = { dirId, contentLength }
+      const result = await collection.createFile(data, params)
+      const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&MetadataID=&Size=${String(
+        contentLength
+      )}`
+      const expectedOptions = {
+        headers: {
+          'Content-Type': 'application/epub+zip',
+          'Content-Length': String(contentLength)
         }
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(

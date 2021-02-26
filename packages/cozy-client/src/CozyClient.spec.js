@@ -1511,14 +1511,18 @@ describe('file creation', () => {
       type: 'file',
       data: data,
       dirId: 'folder-id',
-      name: 'toto.pdf'
+      name: 'toto.pdf',
+      contentLength: data.length
     })
     expect(doc._id).toEqual('1337')
     expect(client.stackClient.fetchJSON).toHaveBeenCalledWith(
       'POST',
-      '/files/folder-id?Name=toto.pdf&Type=file&Executable=false&MetadataID=',
+      '/files/folder-id?Name=toto.pdf&Type=file&Executable=false&MetadataID=&Size=12',
       'file-content',
-      { headers: { 'Content-Type': 'text/plain' }, onUploadProgress: undefined }
+      {
+        headers: { 'Content-Type': 'text/plain', 'Content-Length': '12' },
+        onUploadProgress: undefined
+      }
     )
     expect(client.dispatch.mock.calls.map(x => x[0].type)).toEqual([
       'INIT_MUTATION',
