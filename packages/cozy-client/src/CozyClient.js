@@ -1433,7 +1433,6 @@ instantiation of the client.`
       throw new Error(
         'The selector that is passed does not return an HTMLElement'
       )
-      return
     }
     this.instanceOptions = root.dataset.cozy
       ? JSON.parse(root.dataset.cozy)
