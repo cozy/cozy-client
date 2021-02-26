@@ -9,3 +9,7 @@ yarn docs
 
 set +e # The following command relies on exit 1
 (git diff --exit-code -- docs && echo "Docs are up-to-date") || (echo "Docs are not up-to-date, please run yarn docs and repush" && false)
+set -e
+
+cd packages/cozy-client
+yarn typecheck
