@@ -3,7 +3,6 @@ export function client(implementations: any): {
     create: jest.Mock<any, any>;
     save: jest.Mock<any, any>;
     destroy: jest.Mock<any, any>;
-    getAssociation: jest.Mock<any, any>;
     makeObservableQuery: jest.Mock<any, any>;
     requestQuery: jest.Mock<any, any>;
     all: jest.Mock<any, any>;

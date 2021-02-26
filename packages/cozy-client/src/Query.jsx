@@ -24,7 +24,6 @@ const getQueryAttributes = (client, props) => {
   const createDocument = client.create.bind(client)
   const saveDocument = client.save.bind(client)
   const deleteDocument = client.destroy.bind(client)
-  const getAssociation = client.getAssociation.bind(client)
 
   // Methods on ObservableQuery
   const queryDefinition =
@@ -53,7 +52,6 @@ const getQueryAttributes = (client, props) => {
     createDocument,
     saveDocument,
     deleteDocument,
-    getAssociation,
     fetchMore,
     fetch,
     mutations
@@ -68,7 +66,6 @@ const computeChildrenArgs = queryAttributes => {
     createDocument,
     saveDocument,
     deleteDocument,
-    getAssociation,
     mutations
   } = queryAttributes
 
@@ -82,7 +79,6 @@ const computeChildrenArgs = queryAttributes => {
       createDocument: createDocument,
       saveDocument: saveDocument,
       deleteDocument: deleteDocument,
-      getAssociation: getAssociation,
       ...mutations
     }
   ]

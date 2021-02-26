@@ -409,10 +409,6 @@ declare class CozyClient {
      */
     makeNewDocument(doctype: any): any;
     /**
-     * Creates an association that is linked to the store.
-     */
-    getAssociation(document: any, associationName: any): any;
-    /**
      * Returns the accessors that are given to the relationships for them
      * to deal with the stores.
      *
