@@ -94,10 +94,6 @@ export default class Query extends Component {
       )
     }
 
-    Object.assign(this, getQueryAttributes(client, props))
-
-    this.recomputeChildrenArgs()
-
     /**
      * Current client
      *
@@ -116,6 +112,9 @@ export default class Query extends Component {
      * @type {Function}
      */
     this.queryUnsubscribe = null
+
+    Object.assign(this, getQueryAttributes(client, props))
+    this.recomputeChildrenArgs()
   }
 
   componentDidMount() {

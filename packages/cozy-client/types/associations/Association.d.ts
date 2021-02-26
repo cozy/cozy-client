@@ -216,6 +216,5 @@ declare class Association {
      * @returns {object}
      */
     get data(): any;
-    dehydrate(doc: any): any;
 }
 import { QueryDefinition } from "../queries/dsl";

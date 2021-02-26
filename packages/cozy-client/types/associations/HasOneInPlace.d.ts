@@ -11,6 +11,7 @@ export default class HasOneInPlace extends Association {
         save: Function;
         dispatch: Function;
     });
+    dehydrate(doc: any): any;
 }
 export const BelongsToInPlace: typeof HasOneInPlace;
 import Association from "./Association";

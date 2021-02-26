@@ -9,5 +9,6 @@ export default class HasOne extends Association {
     });
     set(doc: any): void;
     unset(): void;
+    dehydrate(doc: any): any;
 }
 import Association from "./Association";
