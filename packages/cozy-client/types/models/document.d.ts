@@ -1,4 +1,12 @@
 /**
+ * @typedef {object} QualificationAttributes
+ * @property {string} [label] - The qualification label.
+ * @property {string} [purpose] - The document purpose.
+ * @property {string} [sourceCategory] - The activity field of the document source.
+ * @property {string} [sourceSubCategory] - The sub-activity field of the document source.
+ * @property {Array<string>} [subjects] - On what is about the document.
+ */
+/**
  * This class is used to create document Qualification, i.e. metadata
  * attributes used to describe the document.
  * The qualifications model is stored in the assets, associating
@@ -6,19 +14,13 @@
  * and subjects.
  * A qualification can be customized accordingly to rules detailed in
  * the checkValueAttributes method.
- 
- * @property {string} [label] - The qualification label.
- * @property {string} [purpose] - The document purpose.
- * @property {string} [sourceCategory] - The activity field of the document source.
- * @property {string} [sourceSubCategory] - The sub-activity field of the document source.
- * @property {Array} [subjects] - On what is about the document.
  */
 export class Qualification {
     /**
      * @param {string} label - The qualification label
-     * @param {Qualification} attributes - Qualification's attributes
+     * @param {QualificationAttributes} attributes - Qualification's attributes
      */
-    constructor(label: string, attributes?: Qualification);
+    constructor(label: string, attributes?: QualificationAttributes);
     /**
      * @type {string?} - The qualification label.
      */
@@ -84,3 +86,25 @@ export namespace Qualification {
 }
 export function setQualification(document: object, qualification: Qualification): object;
 export function getQualification(document: object): Qualification;
+export type QualificationAttributes = {
+    /**
+     * - The qualification label.
+     */
+    label?: string;
+    /**
+     * - The document purpose.
+     */
+    purpose?: string;
+    /**
+     * - The activity field of the document source.
+     */
+    sourceCategory?: string;
+    /**
+     * - The sub-activity field of the document source.
+     */
+    sourceSubCategory?: string;
+    /**
+     * - On what is about the document.
+     */
+    subjects?: Array<string>;
+};

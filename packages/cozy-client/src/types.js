@@ -56,7 +56,7 @@
  */
 
 /**
- * @typedef {Error} ClientError
+ * @typedef {object} ClientError
  * @property {string} [status]
  */
 

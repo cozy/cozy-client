@@ -10,7 +10,8 @@
       "jsx": "react",
       "outDir": "types",
       "declaration": true,
-      "target": "es5"
+      "target": "es6",
+      "moduleResolution": "node"
     },
     "types": ["jest"]
 }

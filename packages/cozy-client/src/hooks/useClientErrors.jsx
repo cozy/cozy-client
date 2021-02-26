@@ -49,7 +49,7 @@ function getErrorComponent(error) {
  * @see ClientErrors
  * @param {ClientError[]} errorStack - array of errors/exceptions
  * @param {Function} setErrorStack - mutates the array of errors
- * @returns {Array} React rendering
+ * @returns {Array<React.ReactElement>} React rendering
  */
 function renderErrors(errorStack, setErrorStack) {
   const errors = errorStack.map((error, key) => {

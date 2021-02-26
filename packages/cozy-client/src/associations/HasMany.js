@@ -69,6 +69,9 @@ class HasMany extends Association {
     return this.getRelationship().data
   }
 
+  /**
+   * Returns store documents
+   */
   get data() {
     return this.getRelationship()
       .data.map(({ _id, _type }) => this.get(_type, _id))

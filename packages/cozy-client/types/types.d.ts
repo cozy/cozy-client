@@ -95,4 +95,6 @@ export type IOCozyFolder = {
      */
     type: object;
 };
-export type ClientError = Error;
+export type ClientError = {
+    status?: string;
+};
