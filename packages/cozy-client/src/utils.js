@@ -14,15 +14,13 @@
 const cancelable = promise => {
   let _reject
 
-  /**
-   * @type {Partial<CancelablePromise>}
-   */
   const wrapped = new Promise((resolve, reject) => {
     _reject = reject
     promise.then(resolve)
     promise.catch(reject)
   })
 
+  // @ts-ignore
   wrapped.cancel = () => {
     _reject({ canceled: true })
   }

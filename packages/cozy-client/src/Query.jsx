@@ -150,10 +150,8 @@ export default class Query extends Component {
   }
 
   render() {
-    /**
-     * @type {Function}
-     */
     const children = this.props.children
+    // @ts-ignore
     return children(this.childrenArgs[0], this.childrenArgs[1])
   }
 }

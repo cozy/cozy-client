@@ -15,9 +15,12 @@ import { useQueries } from './hooks/useQuery'
 export const withClient = WrappedComponent => {
   const Wrapped = props => {
     const client = useClient()
+    // @ts-ignore
     return <WrappedComponent {...props} client={client} />
   }
+  // @ts-ignore
   Wrapped.displayName = `withClient(${WrappedComponent.displayName ||
+    // @ts-ignore
     WrappedComponent.name})`
   return Wrapped
 }

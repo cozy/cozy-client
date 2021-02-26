@@ -16,6 +16,7 @@ import {
 /**
  * @type {WindowInterface}
  */
+// @ts-ignore
 const windowInterface = window
 
 const authenticateWithSafari = url => {

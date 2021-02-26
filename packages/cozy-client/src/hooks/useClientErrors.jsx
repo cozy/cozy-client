@@ -126,13 +126,12 @@ export default function useClientErrors({ handleExceptions = true } = {}) {
     }
   }, [client, handleError, handleExceptions])
 
-  /**
-   * @type {Function}
-   */
+  // @ts-ignore
   const ClientErrors = useCallback(
     () => renderErrors(errorStack, setErrorStack),
     [errorStack, setErrorStack]
   )
+  // @ts-ignore
   ClientErrors.displayName = 'ClientErrors'
   return { ClientErrors }
 }
