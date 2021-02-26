@@ -209,7 +209,12 @@ class DocumentCollection {
    * @private
    */
   async handleMissingIndex(selector, options) {
-    const { indexedFields, partialFilter } = options
+    let { indexedFields, partialFilter } = options
+
+    if (!indexedFields) {
+      indexedFields = getIndexFields({ sort: options.sort, selector })
+    }
+
     const existingIndex = await this.findExistingIndex(selector, options)
     const indexName = getIndexNameFromFields(indexedFields)
     if (!existingIndex) {

@@ -986,4 +986,41 @@ describe('DocumentCollection', () => {
       })
     })
   })
+
+  describe('handleMissingIndex', () => {
+    const collection = new DocumentCollection('io.cozy.triggers', client)
+    const selector = {
+      'message.account': 'ca7b7f1'
+    }
+    const response = {
+      rows: [
+        {
+          doc: {
+            _id: '123',
+            language: 'query',
+            views: {
+              123456: {
+                map: {
+                  fields: {
+                    'message.account': 'asc'
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      total_rows: 1
+    }
+
+    it('should work with undefined indexedFields', async () => {
+      client.fetchJSON.mockResolvedValue(response)
+      expect(
+        await collection.handleMissingIndex(selector, {
+          indexedFields: undefined,
+          sort: undefined
+        })
+      )
+    })
+  })
 })
