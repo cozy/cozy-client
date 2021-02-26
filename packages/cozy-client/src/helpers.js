@@ -6,7 +6,9 @@ export const dehydrate = document => {
       let document = documentArg
       if (!(value instanceof Association)) {
         document[key] = value
+        // @ts-ignore
       } else if (value.dehydrate) {
+        // @ts-ignore
         document = value.dehydrate(document)
       } else {
         throw new Error(
