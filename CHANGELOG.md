@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [17.5.0](https://github.com/cozy/cozy-client/compare/v17.4.0...v17.5.0) (2021-02-26)
+
+
+### Features
+
+* Add openFileWith in fsnative ([8196628](https://github.com/cozy/cozy-client/commit/819662801421a7fff185895d5ca46497baf3d35d))
+
+
+
+
+
 # [17.4.0](https://github.com/cozy/cozy-client/compare/v17.3.0...v17.4.0) (2021-02-24)
 
 
