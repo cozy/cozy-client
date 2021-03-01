@@ -22,11 +22,11 @@ export class Qualification {
      */
     constructor(label: string, attributes?: QualificationAttributes);
     /**
-     * @type {string?} - The qualification label.
+     * @type {string?}
      */
     label: string | null;
     /**
-     * @type {string?} - The document purpose.
+     * @type {string?}
      */
     purpose: string | null;
     sourceCategory: string;

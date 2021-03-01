@@ -30,11 +30,11 @@ export class Qualification {
     )
     if (qualification) {
       /**
-       * @type {string?} - The qualification label.
+       * @type {string?}
        */
       this.label = qualification.label
       /**
-       * @type {string?} - The document purpose.
+       * @type {string?}
        */
       this.purpose = attributes.purpose || qualification.purpose
       this.sourceCategory =

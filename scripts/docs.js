@@ -28,7 +28,10 @@ const main = async () => {
     }
     const pkgName = pkg.split('/')[1]
     const template = `{{>main}}`
-    const templateData = jsdoc2md.getTemplateDataSync({ files })
+    const templateData = jsdoc2md.getTemplateDataSync({
+      files,
+      configure: path.join(__dirname, '../', 'jsdoc.json')
+    })
     const output = jsdoc2md.renderSync({
       data: templateData,
       template: template
