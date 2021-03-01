@@ -4019,10 +4019,10 @@ comment-parser@^0.6.2:
   resolved "https://registry.yarnpkg.com/comment-parser/-/comment-parser-0.6.2.tgz#b71e8fcacad954bea616779391838150d0096dcb"
   integrity sha512-Wdms0Q8d4vvb2Yk72OwZjwNWtMklbC5Re7lD9cjCP/AG1fhocmc0TrxGBBAXPLy8fZQPrfHGgyygwI0lA7pbzA==
 
-commitlint-config-cozy@0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/commitlint-config-cozy/-/commitlint-config-cozy-0.5.0.tgz#54341a00acfb6cf2a8d624f0f87bc8cb782d8757"
-  integrity sha512-5cr3LgtKS+qxXeoepPAE5J00mPhY3RdqB6Hnq8/H4ZHkPGi3ETf317S+MogCntSrRSkSmeU70QHMQJ31Y27azQ==
+commitlint-config-cozy@0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/commitlint-config-cozy/-/commitlint-config-cozy-0.6.0.tgz#6203c1e91bc4324c6087164c9565c332e7558512"
+  integrity sha512-sIvOfcNu7ue5vCp5FwgHbCExmEcm7eAr6a15PyEORMzpZxXGWzwqdzHDThpQB7TZ2QAIT2uYKYpE6Auxnw5HRA==
   dependencies:
     "@commitlint/cli" "7.5.2"
 
