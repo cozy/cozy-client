@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [17.6.1](https://github.com/cozy/cozy-client/compare/v17.6.0...v17.6.1) (2021-03-01)
+
+
+### Bug Fixes
+
+* HandleMissingIndex can now deal with undefined indexedFields ([743d883](https://github.com/cozy/cozy-client/commit/743d8834b71682d7aaa2bcec1e8285a2af0d536d))
+
+
+
+
+
 # [17.6.0](https://github.com/cozy/cozy-client/compare/v17.5.0...v17.6.0) (2021-02-26)
 
 
