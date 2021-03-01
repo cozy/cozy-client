@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import get from 'lodash/get'
 import useClient from './useClient'
 import logger from '../logger'
+import { UseQueryReturnValue } from '../types'
 
 const resolveToValue = fnOrValue => {
   return typeof fnOrValue === 'function' ? fnOrValue() : fnOrValue
@@ -26,7 +27,7 @@ const generateFetchMoreQueryDefinition = queryResult => {
  * a single doc instead of an array for single doc queries. Defaults to false for backward
  * compatibility but will be set to true in the future.
  *
- * @returns {object}
+ * @returns {UseQueryReturnValue}
  */
 const useQuery = (queryDefinition, options) => {
   if (!useSelector) {

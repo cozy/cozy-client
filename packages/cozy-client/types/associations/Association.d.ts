@@ -75,9 +75,9 @@ declare class Association {
     /**
      * Derived `Association`s need to implement this method.
      *
-     * @returns {QueryDefinition}
+     * @returns {QueryDefinition | QueryState}
      */
-    static query(): QueryDefinition;
+    static query(): QueryDefinition | QueryState;
     /**
      * @param  {object} target - Original object containing raw data
      * @param  {string} name - Attribute under which the association is stored
@@ -218,3 +218,4 @@ declare class Association {
     get data(): any;
 }
 import { QueryDefinition } from "../queries/dsl";
+import { QueryState } from "../types";

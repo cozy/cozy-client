@@ -1,3 +1,4 @@
+import { QueryState } from '../types'
 import { QueryDefinition } from '../queries/dsl'
 
 /**
@@ -222,7 +223,7 @@ class Association {
   /**
    * Derived `Association`s need to implement this method.
    *
-   * @returns {QueryDefinition}
+   * @returns {QueryDefinition | QueryState}
    */
   static query() {
     throw new Error('A custom relationship must define its query() function')

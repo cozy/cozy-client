@@ -16,7 +16,7 @@ export default class HasOneInPlace extends Association {
   }
 
   /**
-   * @returns {QueryState|QueryDefinition}
+   * @returns {QueryState | QueryDefinition}
    */
   static query(doc, client, assoc) {
     const id = doc[assoc.name]

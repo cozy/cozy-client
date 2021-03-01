@@ -6,10 +6,26 @@ export type DocumentCollection = any;
 export type QueryResult = any;
 export type HydratedDocument = any;
 export type ReduxStore = any;
-export type QueryState = any;
 export type Token = any;
 export type ClientResponse = any;
 export type Manifest = any;
+export type QueryFetchStatus = "loading" | "loaded" | "pending" | "failed";
+export type QueryState = {
+    id: string;
+    definition: QueryDefinition;
+    fetchStatus: QueryFetchStatus;
+    lastFetch: number;
+    lastUpdate: number;
+    lastError: Error;
+    hasMore: boolean;
+    count: number;
+    data: object | any[];
+    bookmark: string;
+};
+export type FetchMoreAble = {
+    fetchMore: Function;
+};
+export type UseQueryReturnValue = QueryState & FetchMoreAble;
 /**
  * A reference to a document (special case of a relationship used between photos and albums)
  * https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files/#references
@@ -118,3 +134,4 @@ export type CordovaWindow = {
     resolveLocalFileSystemURL: Function;
     handleOpenURL: Function;
 };
+import { QueryDefinition } from "./queries/dsl";

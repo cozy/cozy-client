@@ -4,7 +4,7 @@
  */
 export default class HasOneInPlace extends Association {
     /**
-     * @returns {QueryState|QueryDefinition}
+     * @returns {QueryState | QueryDefinition}
      */
     static query(doc: any, client: any, assoc: any): QueryState | QueryDefinition;
     constructor(target: any, name: string, doctype: string, options: {

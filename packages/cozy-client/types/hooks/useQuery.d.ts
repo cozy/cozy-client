@@ -12,10 +12,11 @@ export default useQuery;
  * a single doc instead of an array for single doc queries. Defaults to false for backward
  * compatibility but will be set to true in the future.
  *
- * @returns {object}
+ * @returns {UseQueryReturnValue}
  */
 declare function useQuery(queryDefinition: object, options: {
     as: object;
     fetchPolicy: object;
     singleDocData: object;
-}): object;
+}): UseQueryReturnValue;
+import { UseQueryReturnValue } from "../types";

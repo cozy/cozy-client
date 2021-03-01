@@ -1,3 +1,5 @@
+import { QueryDefinition } from './queries/dsl'
+
 /**
  * @typedef {object} Link
  * @typedef {object} Mutation
@@ -5,10 +7,36 @@
  * @typedef {object} QueryResult
  * @typedef {object} HydratedDocument
  * @typedef {object} ReduxStore
- * @typedef {object} QueryState
  * @typedef {object} Token
  * @typedef {object} ClientResponse
  * @typedef {object} Manifest
+ */
+
+/**
+ * @typedef {"loading"|"loaded"|"pending"|"failed"} QueryFetchStatus
+ */
+
+/**
+ * @typedef {object} QueryState
+ * @property {string} id
+ * @property {QueryDefinition} definition
+ * @property {QueryFetchStatus} fetchStatus
+ * @property {number} lastFetch
+ * @property {number} lastUpdate
+ * @property {Error} lastError
+ * @property {boolean} hasMore
+ * @property {number} count
+ * @property {object|Array} data
+ * @property {string} bookmark
+ */
+
+/**
+ * @typedef {object} FetchMoreAble
+ * @property {Function} fetchMore
+ */
+
+/**
+ * @typedef {QueryState & FetchMoreAble} UseQueryReturnValue
  */
 
 /**
