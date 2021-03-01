@@ -11,4 +11,5 @@ import * as permission from "./permission";
 import * as utils from "./utils";
 import * as contact from "./contact";
 import * as document from "./document";
-export { trigger, instance, applications, file, folder, note, account, permission, utils, contact, document };
+import * as timeseries from "./timeseries";
+export { trigger, instance, applications, file, folder, note, account, permission, utils, contact, document, timeseries };
