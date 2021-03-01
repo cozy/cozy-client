@@ -52,9 +52,6 @@ export const saveTimeSeries = async (
 /**
  * Helper to retrieve time series by their date interval and source.
  *
- * The starting date must be greater or equal while the ending date must
- * be stricly less than the given startDate and endDate parameters.
- *
  * @param {object} client - The CozyClient instance
  * @param {{ startDate, endDate, dataType, source, limit }} The query params.
  *
@@ -74,7 +71,7 @@ export const fetchTimeSeriesByIntervalAndSource = async (
         $gte: startDate
       },
       endDate: {
-        $lt: endDate
+        $lte: endDate
       }
     })
     .indexFields(['source', 'startDate', 'endDate'])

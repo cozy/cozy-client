@@ -409,8 +409,6 @@ both situation.</p>
 </dd>
 <dt><a href="#TimeSeriesJSONAPI">TimeSeriesJSONAPI</a> ⇒ <code><a href="#TimeSeriesJSONAPI">TimeSeriesJSONAPI</a></code></dt>
 <dd><p>Helper to retrieve time series by their date interval and source.</p>
-<p>The starting date must be greater or equal while the ending date must
-be stricly less than the given startDate and endDate parameters.</p>
 </dd>
 <dt><a href="#HydratedQueryState">HydratedQueryState</a> ⇒ <code><a href="#HydratedQueryState">HydratedQueryState</a></code></dt>
 <dd><p>Returns the query from the store with hydrated documents.</p>
@@ -3174,9 +3172,6 @@ Helper to save a time series document.
 
 ## TimeSeriesJSONAPI ⇒ [<code>TimeSeriesJSONAPI</code>](#TimeSeriesJSONAPI)
 Helper to retrieve time series by their date interval and source.
-
-The starting date must be greater or equal while the ending date must
-be stricly less than the given startDate and endDate parameters.
 
 **Kind**: global typedef  
 **Returns**: [<code>TimeSeriesJSONAPI</code>](#TimeSeriesJSONAPI) - The TimeSeries found by the query in JSON-API format  
