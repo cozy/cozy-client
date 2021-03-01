@@ -2,7 +2,7 @@ import CozyClient from './CozyClient'
 import { receiveQueryResult, initQuery } from './store'
 import { normalizeDoc } from 'cozy-stack-client'
 
-import { Q } from 'cozy-client'
+import { Q } from './queries/dsl'
 
 const fillQueryInsideClient = (client, queryName, queryOptions) => {
   const { definition, doctype, data, ...queryResult } = queryOptions
