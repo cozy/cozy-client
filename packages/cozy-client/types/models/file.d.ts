@@ -38,14 +38,6 @@ export function isSharingShortcutNew(file: IOCozyFile): boolean;
 export function isSharingShorcutNew(file: object): boolean;
 export function saveFileQualification(client: CozyClient, file: IOCozyFile, qualification: object): Promise<IOCozyFile>;
 export function fetchFilesByQualificationRules(client: object, docRules: object): Promise<QueryResult>;
-/**
- * - Result of a query
- */
-export type QueryResult = {
-    /**
-     * - Data fetched in the query
-     */
-    data: any[];
-};
 import { IOCozyFile } from "../types";
 import CozyClient from "../CozyClient";
+import { QueryResult } from "../types";
