@@ -3,6 +3,74 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [17.6.1](https://github.com/cozy/cozy-client/compare/v17.6.0...v17.6.1) (2021-03-01)
+
+**Note:** Version bump only for package cozy-client
+
+
+
+
+
+# [17.6.0](https://github.com/cozy/cozy-client/compare/v17.5.0...v17.6.0) (2021-02-26)
+
+
+### Features
+
+* Send uploaded file size via query-string ([#882](https://github.com/cozy/cozy-client/issues/882)) ([2bb6eb9](https://github.com/cozy/cozy-client/commit/2bb6eb966c1fc0d7031757b5702ed17fa0d0e39c))
+
+
+
+
+
+# [17.5.0](https://github.com/cozy/cozy-client/compare/v17.4.0...v17.5.0) (2021-02-26)
+
+
+### Features
+
+* Add openFileWith in fsnative ([8196628](https://github.com/cozy/cozy-client/commit/819662801421a7fff185895d5ca46497baf3d35d))
+
+
+
+
+
+# [17.4.0](https://github.com/cozy/cozy-client/compare/v17.3.0...v17.4.0) (2021-02-24)
+
+
+### Features
+
+* Add TimeSerie helpers ([3b1a030](https://github.com/cozy/cozy-client/commit/3b1a030811e8f7a39f3399bd100c2d02f3665395))
+
+
+
+
+
+# [17.3.0](https://github.com/cozy/cozy-client/compare/v17.2.0...v17.3.0) (2021-02-23)
+
+**Note:** Version bump only for package cozy-client
+
+
+
+
+
+# [17.2.0](https://github.com/cozy/cozy-client/compare/v17.1.1...v17.2.0) (2021-02-23)
+
+
+### Features
+
+* Add method to deal with cordova ([afd28c4](https://github.com/cozy/cozy-client/commit/afd28c4c2adfe1719c8aa6ca97b6a81cd5dc0fe8))
+
+
+
+
+
+## [17.1.1](https://github.com/cozy/cozy-client/compare/v17.1.0...v17.1.1) (2021-02-16)
+
+**Note:** Version bump only for package cozy-client
+
+
+
+
+
 # [17.1.0](https://github.com/cozy/cozy-client/compare/v17.0.3...v17.1.0) (2021-02-15)
 
 **Note:** Version bump only for package cozy-client

@@ -55,6 +55,9 @@ through OAuth.</p>
 <dt><a href="#isIndexConflictError">isIndexConflictError</a> ⇒ <code>boolean</code></dt>
 <dd><p>Helper to identify an index conflict</p>
 </dd>
+<dt><a href="#isNoUsableIndexError">isNoUsableIndexError</a> ⇒ <code>boolean</code></dt>
+<dd><p>Helper to identify a no usable index error</p>
+</dd>
 <dt><a href="#isDocumentUpdateConflict">isDocumentUpdateConflict</a> ⇒ <code>boolean</code></dt>
 <dd><p>Helper to identify a document conflict</p>
 </dd>
@@ -1223,6 +1226,7 @@ Creates a new Sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#post-shar
 | [params.recipients] | [<code>Array.&lt;Recipient&gt;</code>](#Recipient) | Recipients to add to the sharings (will have the same permissions given by the rules defined by the sharing ) |
 | [params.readOnlyRecipients] | [<code>Array.&lt;Recipient&gt;</code>](#Recipient) | Recipients to add to the sharings with only read only access |
 | [params.openSharing] | <code>boolean</code> | If someone else than the owner can add a recipient to the sharing |
+| [params.appSlug] | <code>string</code> | Slug of the targeted app |
 
 <a name="SharingCollection+share"></a>
 
@@ -1428,6 +1432,18 @@ Helper to identify an index conflict
 | --- | --- |
 | error | <code>Error</code> | 
 
+<a name="isNoUsableIndexError"></a>
+
+## isNoUsableIndexError ⇒ <code>boolean</code>
+Helper to identify a no usable index error
+
+**Kind**: global constant  
+**Returns**: <code>boolean</code> - - Whether or not the error is a no usable index error  
+
+| Param | Type |
+| --- | --- |
+| error | <code>Error</code> | 
+
 <a name="isDocumentUpdateConflict"></a>
 
 ## isDocumentUpdateConflict ⇒ <code>boolean</code>
@@ -1464,7 +1480,7 @@ Get a matching index based on the given parameters
 | Param | Type | Description |
 | --- | --- | --- |
 | indexes | <code>Array</code> | The list of indexes to search |
-| fields | <code>object</code> | The index fields |
+| fields | <code>Array</code> | The index fields |
 | partialFilter | <code>object</code> | A partial filter selector |
 
 <a name="getPermissionsFor"></a>

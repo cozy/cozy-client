@@ -10,6 +10,7 @@ import Collection, {
   dontThrowNotFoundError,
   isIndexNotFoundError,
   isIndexConflictError,
+  isNoUsableIndexError,
   isDocumentUpdateConflict
 } from './Collection'
 import {
@@ -208,7 +209,12 @@ class DocumentCollection {
    * @private
    */
   async handleMissingIndex(selector, options) {
-    const { indexedFields, partialFilter } = options
+    let { indexedFields, partialFilter } = options
+
+    if (!indexedFields) {
+      indexedFields = getIndexFields({ sort: options.sort, selector })
+    }
+
     const existingIndex = await this.findExistingIndex(selector, options)
     const indexName = getIndexNameFromFields(indexedFields)
     if (!existingIndex) {
@@ -241,7 +247,7 @@ class DocumentCollection {
     try {
       resp = await this.fetchDocumentsWithMango(path, selector, options)
     } catch (error) {
-      if (!isIndexNotFoundError(error)) {
+      if (!isIndexNotFoundError(error) && !isNoUsableIndexError(error)) {
         throw error
       } else {
         await this.handleMissingIndex(selector, options)

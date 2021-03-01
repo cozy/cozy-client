@@ -213,7 +213,7 @@ example.</p>
 <dt><a href="#saveFileQualification">saveFileQualification</a> ⇒ <code><a href="#IOCozyFile">Promise.&lt;IOCozyFile&gt;</a></code></dt>
 <dd><p>Save the file with the given qualification</p>
 </dd>
-<dt><a href="#fetchFilesByQualificationRules">fetchFilesByQualificationRules</a> ⇒ <code><a href="#QueryResult">Promise.&lt;QueryResult&gt;</a></code></dt>
+<dt><a href="#fetchFilesByQualificationRules">fetchFilesByQualificationRules</a> ⇒ <code>Promise.&lt;QueryResult&gt;</code></dt>
 <dd><p>Helper to query files based on qualification rules</p>
 </dd>
 <dt><a href="#ensureMagicFolder">ensureMagicFolder</a> ⇒ <code><a href="#IOCozyFolder">Promise.&lt;IOCozyFolder&gt;</a></code></dt>
@@ -224,6 +224,49 @@ example.</p>
 </dd>
 <dt><a href="#getReferencedFolder">getReferencedFolder</a> ⇒ <code><a href="#IOCozyFolder">Promise.&lt;IOCozyFolder&gt;</a></code></dt>
 <dd><p>Returns the most recent folder referenced by the given document</p>
+</dd>
+<dt><a href="#getRootPath">getRootPath</a></dt>
+<dd><p>Get root path according the OS</p>
+</dd>
+<dt><a href="#getTemporaryRootPath">getTemporaryRootPath</a></dt>
+<dd><p>Get the temporary root path according to the OS</p>
+</dd>
+<dt><a href="#getCozyPath">getCozyPath</a></dt>
+<dd><p>Get Cozy path according to the OS</p>
+</dd>
+<dt><a href="#getEntry">getEntry</a></dt>
+<dd><p>Get entry of a path in the cordova.file location</p>
+</dd>
+<dt><a href="#getCozyEntry">getCozyEntry</a></dt>
+<dd><p>Get Cozy location on the device</p>
+</dd>
+<dt><a href="#createCozyPath">createCozyPath</a></dt>
+<dd><p>Create Cozy path on the device</p>
+</dd>
+<dt><a href="#getDirectory">getDirectory</a></dt>
+<dd><p>Get the directory according to its name</p>
+</dd>
+<dt><a href="#writeFile">writeFile</a></dt>
+<dd></dd>
+<dt><a href="#openFileWithCordova">openFileWithCordova</a></dt>
+<dd><p>Open a file in an other app</p>
+</dd>
+<dt><a href="#deleteOfflineFile">deleteOfflineFile</a></dt>
+<dd></dd>
+<dt><a href="#saveFileWithCordova">saveFileWithCordova</a></dt>
+<dd></dd>
+<dt><a href="#temporarySave">temporarySave</a></dt>
+<dd><p>Save the document in the temporary folder</p>
+</dd>
+<dt><a href="#saveAndOpenWithCordova">saveAndOpenWithCordova</a></dt>
+<dd><p>Save the document in the temporary folder and open it in an other app</p>
+</dd>
+<dt><a href="#getNativeFile">getNativeFile</a></dt>
+<dd></dd>
+<dt><a href="#openOfflineFile">openOfflineFile</a></dt>
+<dd></dd>
+<dt><a href="#openFileWith">openFileWith</a></dt>
+<dd><p>openFileWith - Opens a file on a mobile device</p>
 </dd>
 <dt><a href="#shouldDisplayOffers">shouldDisplayOffers</a></dt>
 <dd><p>Returns whether an instance is concerned by our offers</p>
@@ -273,6 +316,8 @@ is loading.</p>
 <dt><a href="#mutate">mutate()</a></dt>
 <dd><p>Performs a mutation on the relationship.</p>
 </dd>
+<dt><a href="#query">query()</a> ⇒ <code>QueryState</code> | <code><a href="#QueryDefinition">QueryDefinition</a></code></dt>
+<dd></dd>
 <dt><a href="#createClientInteractive">createClientInteractive(clientOptions)</a></dt>
 <dd><p>Creates a client with interactive authentication.</p>
 <ul>
@@ -326,6 +371,8 @@ if there are N queries, only 1 extra level of nesting is introduced.</p>
 <dt><a href="#getParentFolderId">getParentFolderId(file)</a> ⇒ <code>string</code> | <code>null</code></dt>
 <dd><p>Get the id of the parent folder (<code>null</code> for the root folder)</p>
 </dd>
+<dt><a href="#saveFile">saveFile(dirEntry, fileData, fileName)</a></dt>
+<dd></dd>
 <dt><a href="#fetchOwn">fetchOwn(client)</a> ⇒ <code>Promise.&lt;Array.&lt;PermissionItem&gt;&gt;</code></dt>
 <dd><p>Fetches the list of permissions blocks</p>
 </dd>
@@ -367,9 +414,6 @@ internal store updated.</p>
 <dd></dd>
 <dt><a href="#QualificationAttributes">QualificationAttributes</a> : <code>object</code></dt>
 <dd></dd>
-<dt><a href="#QueryResult">QueryResult</a> : <code>object</code></dt>
-<dd><p>TODO find if this type already exists</p>
-</dd>
 <dt><a href="#Document">Document</a> : <code>object</code></dt>
 <dd><p>Couchdb document like an io.cozy.files</p>
 </dd>
@@ -386,6 +430,14 @@ This is not always the case.</p>
 <p>This method is here to tell us if the shortcut&#39;s file is created
 on the recipient&#39;s cozy. It can be used to make an UI distinction between the
 both situation.</p>
+</dd>
+<dt><a href="#TimeSeries">TimeSeries</a></dt>
+<dd><p>Helper to save a time series document.</p>
+</dd>
+<dt><a href="#TimeSeriesJSONAPI">TimeSeriesJSONAPI</a> ⇒ <code><a href="#TimeSeriesJSONAPI">TimeSeriesJSONAPI</a></code></dt>
+<dd><p>Helper to retrieve time series by their date interval and source.</p>
+<p>The starting date must be greater or equal while the ending date must
+be stricly less than the given startDate and endDate parameters.</p>
 </dd>
 <dt><a href="#HydratedQueryState">HydratedQueryState</a> ⇒ <code><a href="#HydratedQueryState">HydratedQueryState</a></code></dt>
 <dd><p>Returns the query from the store with hydrated documents.</p>
@@ -858,7 +910,7 @@ Responsible for
         * [.create(type, doc, [references], options)](#CozyClient+create) ⇒ <code>Promise</code>
         * [.getDocumentSavePlan(document, [referencesByName])](#CozyClient+getDocumentSavePlan) ⇒ <code>Array.&lt;Mutation&gt;</code> \| <code>Mutation</code>
         * [.destroy(document)](#CozyClient+destroy) ⇒ [<code>Promise.&lt;CozyClientDocument&gt;</code>](#CozyClientDocument)
-        * [.query(queryDefinition, [options])](#CozyClient+query) ⇒ [<code>Promise.&lt;QueryResult&gt;</code>](#QueryResult)
+        * [.query(queryDefinition, [options])](#CozyClient+query) ⇒ <code>Promise.&lt;QueryResult&gt;</code>
         * [.queryAll(queryDefinition, options)](#CozyClient+queryAll) ⇒ <code>Promise.&lt;Array&gt;</code>
         * [.mutate(mutationDefinition, [options])](#CozyClient+mutate) ⇒ <code>Promise</code>
         * [.hydrateDocuments(doctype, documents)](#CozyClient+hydrateDocuments) ⇒ <code>Array.&lt;HydratedDocument&gt;</code>
@@ -1083,7 +1135,7 @@ Destroys a document. {before,after}:destroy hooks will be fired.
 
 <a name="CozyClient+query"></a>
 
-### cozyClient.query(queryDefinition, [options]) ⇒ [<code>Promise.&lt;QueryResult&gt;</code>](#QueryResult)
+### cozyClient.query(queryDefinition, [options]) ⇒ <code>Promise.&lt;QueryResult&gt;</code>
 Executes a query and returns its results.
 
 Results from the query will be saved internally and can be retrieved via
@@ -2402,11 +2454,11 @@ Save the file with the given qualification
 
 <a name="fetchFilesByQualificationRules"></a>
 
-## fetchFilesByQualificationRules ⇒ [<code>Promise.&lt;QueryResult&gt;</code>](#QueryResult)
+## fetchFilesByQualificationRules ⇒ <code>Promise.&lt;QueryResult&gt;</code>
 Helper to query files based on qualification rules
 
 **Kind**: global constant  
-**Returns**: [<code>Promise.&lt;QueryResult&gt;</code>](#QueryResult) - - The files found by the rules  
+**Returns**: <code>Promise.&lt;QueryResult&gt;</code> - - The files found by the rules  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2453,6 +2505,154 @@ Returns the most recent folder referenced by the given document
 | --- | --- | --- |
 | client | [<code>CozyClient</code>](#CozyClient) | cozy-client instance |
 | document | [<code>CozyClientDocument</code>](#CozyClientDocument) | Document to get references from |
+
+<a name="getRootPath"></a>
+
+## getRootPath
+Get root path according the OS
+
+**Kind**: global constant  
+<a name="getTemporaryRootPath"></a>
+
+## getTemporaryRootPath
+Get the temporary root path according to the OS
+
+**Kind**: global constant  
+<a name="getCozyPath"></a>
+
+## getCozyPath
+Get Cozy path according to the OS
+
+**Kind**: global constant  
+<a name="getEntry"></a>
+
+## getEntry
+Get entry of a path in the cordova.file location
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| path | <code>string</code> | Path wanting to be getted |
+
+<a name="getCozyEntry"></a>
+
+## getCozyEntry
+Get Cozy location on the device
+
+**Kind**: global constant  
+<a name="createCozyPath"></a>
+
+## createCozyPath
+Create Cozy path on the device
+
+**Kind**: global constant  
+<a name="getDirectory"></a>
+
+## getDirectory
+Get the directory according to its name
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| rootDirEntry | <code>object</code> | The root directory entry |
+| folderName | <code>string</code> | The folder's name |
+
+<a name="writeFile"></a>
+
+## writeFile
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| fileEntry | <code>object</code> | The file entry |
+| dataObj | <code>object</code> | The data to be written |
+
+<a name="openFileWithCordova"></a>
+
+## openFileWithCordova
+Open a file in an other app
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| URI | <code>\*</code> | URI to be opened |
+| mimetype | <code>\*</code> | Mimetype of the opened file |
+
+<a name="deleteOfflineFile"></a>
+
+## deleteOfflineFile
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| fileName | <code>string</code> | The file name |
+
+<a name="saveFileWithCordova"></a>
+
+## saveFileWithCordova
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| fileData | <code>object</code> | The file data |
+| fileName | <code>string</code> | The file name |
+
+<a name="temporarySave"></a>
+
+## temporarySave
+Save the document in the temporary folder
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | <code>object</code> | io.cozy.files document |
+| fileName | <code>string</code> | The file name |
+
+<a name="saveAndOpenWithCordova"></a>
+
+## saveAndOpenWithCordova
+Save the document in the temporary folder and open it in an other app
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| blob | <code>Blob</code> | Binary of the file |
+| file | <code>object</code> | io.cozy.files document |
+
+<a name="getNativeFile"></a>
+
+## getNativeFile
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | <code>object</code> | io.cozy.files document |
+
+<a name="openOfflineFile"></a>
+
+## openOfflineFile
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | <code>object</code> | io.cozy.files document |
+
+<a name="openFileWith"></a>
+
+## openFileWith
+openFileWith - Opens a file on a mobile device
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| client | [<code>CozyClient</code>](#CozyClient) | The CozyClient instance |
+| file | <code>object</code> | io.cozy.files document |
 
 <a name="shouldDisplayOffers"></a>
 
@@ -2650,6 +2850,10 @@ Performs a query to retrieve relationship documents.
 Performs a mutation on the relationship.
 
 **Kind**: global function  
+<a name="query"></a>
+
+## query() ⇒ <code>QueryState</code> \| [<code>QueryDefinition</code>](#QueryDefinition)
+**Kind**: global function  
 <a name="createClientInteractive"></a>
 
 ## createClientInteractive(clientOptions)
@@ -2826,6 +3030,17 @@ Get the id of the parent folder (`null` for the root folder)
 | --- | --- | --- |
 | file | <code>object</code> | io.cozy.files document |
 
+<a name="saveFile"></a>
+
+## saveFile(dirEntry, fileData, fileName)
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| dirEntry | <code>object</code> | The directory entry |
+| fileData | <code>object</code> | The file data |
+| fileName | <code>string</code> | The file name |
+
 <a name="fetchOwn"></a>
 
 ## fetchOwn(client) ⇒ <code>Promise.&lt;Array.&lt;PermissionItem&gt;&gt;</code>
@@ -2982,18 +3197,6 @@ HOC to provide mutations to components. Needs client in context or as prop.
 | [sourceSubCategory] | <code>string</code> | The sub-activity field of the document source. |
 | [subjects] | <code>Array.&lt;string&gt;</code> | On what is about the document. |
 
-<a name="QueryResult"></a>
-
-## QueryResult : <code>object</code>
-TODO find if this type already exists
-
-**Kind**: global typedef  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| data | <code>Array</code> | Data fetched in the query |
-
 <a name="Document"></a>
 
 ## Document : <code>object</code>
@@ -3052,6 +3255,46 @@ both situation.
 | --- | --- | --- |
 | data | <code>object</code> | Permission document |
 | included | <code>Array</code> | Member information from the sharing |
+
+<a name="TimeSeries"></a>
+
+## TimeSeries
+Helper to save a time series document.
+
+**Kind**: global typedef  
+**Attributes**: dataType {String} - The type of time series, e.g. 'electricity'  
+**Attributes**: startDate {date} - The starting date of the series  
+**Attributes**: endType {date} - The starting date of the series  
+**Attributes**: source {String} - The data source, e.g. 'enedis.fr'  
+**Attributes**: theme {String} - The theme used to group time series, e.g. 'energy'  
+**Attributes**: series {Array} - An array of objects representing the time series  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| client | <code>object</code> | The CozyClient instance |
+|  | [<code>TimeSeries</code>](#TimeSeries) | The time series to save |
+
+<a name="TimeSeriesJSONAPI"></a>
+
+## TimeSeriesJSONAPI ⇒ [<code>TimeSeriesJSONAPI</code>](#TimeSeriesJSONAPI)
+Helper to retrieve time series by their date interval and source.
+
+The starting date must be greater or equal while the ending date must
+be stricly less than the given startDate and endDate parameters.
+
+**Kind**: global typedef  
+**Returns**: [<code>TimeSeriesJSONAPI</code>](#TimeSeriesJSONAPI) - The TimeSeries found by the query in JSON-API format  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| client | <code>object</code> | The CozyClient instance |
+| The | <code>Object</code> | query params. |
+
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| data | [<code>Array.&lt;TimeSeries&gt;</code>](#TimeSeries) | The JSON-API data response |
 
 <a name="HydratedQueryState"></a>
 

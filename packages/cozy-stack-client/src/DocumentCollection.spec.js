@@ -512,6 +512,51 @@ describe('DocumentCollection', () => {
       expect(resp.data[0]).toHaveDocumentIdentity()
     })
 
+    it('should not throw an error if it is a missing index', async () => {
+      client.fetchJSON.mockRestore()
+      client.fetchJSON
+        .mockRejectedValueOnce(new Error('no_index'))
+        .mockResolvedValueOnce({ rows: [] })
+        .mockResolvedValueOnce({})
+        .mockResolvedValueOnce(FIND_RESPONSE_FIXTURE)
+        .mockResolvedValueOnce(FIND_RESPONSE_FIXTURE)
+      const collection = new DocumentCollection('io.cozy.todos', client)
+      await expect(
+        collection.findWithMango(
+          'fakepath',
+          { done: { $exists: true } },
+          { indexedFields: ['label'] }
+        )
+      ).resolves.toBe(FIND_RESPONSE_FIXTURE)
+      client.fetchJSON
+        .mockRejectedValueOnce(new Error('no_usable_index'))
+        .mockResolvedValueOnce({ rows: [] })
+        .mockResolvedValueOnce({})
+        .mockResolvedValueOnce(FIND_RESPONSE_FIXTURE)
+        .mockResolvedValueOnce(FIND_RESPONSE_FIXTURE)
+
+      await expect(
+        collection.findWithMango(
+          'fakepath',
+          { done: { $exists: true } },
+          { indexedFields: ['label'] }
+        )
+      ).resolves.toBe(FIND_RESPONSE_FIXTURE)
+    })
+
+    it('should throw an error if it is not a missing index', async () => {
+      client.fetchJSON.mockRestore()
+      client.fetchJSON.mockRejectedValueOnce(new Error('custom error'))
+      const collection = new DocumentCollection('io.cozy.todos', client)
+      await expect(
+        collection.findWithMango(
+          'fakepath',
+          { done: { $exists: true } },
+          { indexedFields: ['label'] }
+        )
+      ).rejects.toThrow()
+    })
+
     it('should index the specified fields when no index exists', async () => {
       client.fetchJSON.mockRestore()
       client.fetchJSON
@@ -666,7 +711,7 @@ describe('DocumentCollection', () => {
         skip: 0,
         selector: { done: { $exists: true } },
         sort: [{ label: 'desc' }, { done: 'desc' }],
-        use_index: 'by_done_and_label'
+        use_index: 'by_label_and_done'
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'POST',
@@ -683,7 +728,7 @@ describe('DocumentCollection', () => {
         'POST',
         '/data/io.cozy.todos/_design/123456/copy?rev=1-123',
         null,
-        { headers: { Destination: '_design/by_done_and_label' } }
+        { headers: { Destination: '_design/by_label_and_done' } }
       )
       expect(client.fetchJSON).toHaveBeenNthCalledWith(
         4,
@@ -939,6 +984,43 @@ describe('DocumentCollection', () => {
           { _id: '_design/view' }
         ]
       })
+    })
+  })
+
+  describe('handleMissingIndex', () => {
+    const collection = new DocumentCollection('io.cozy.triggers', client)
+    const selector = {
+      'message.account': 'ca7b7f1'
+    }
+    const response = {
+      rows: [
+        {
+          doc: {
+            _id: '123',
+            language: 'query',
+            views: {
+              123456: {
+                map: {
+                  fields: {
+                    'message.account': 'asc'
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      total_rows: 1
+    }
+
+    it('should work with undefined indexedFields', async () => {
+      client.fetchJSON.mockResolvedValue(response)
+      expect(
+        await collection.handleMissingIndex(selector, {
+          indexedFields: undefined,
+          sort: undefined
+        })
+      )
     })
   })
 })

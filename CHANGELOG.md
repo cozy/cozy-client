@@ -3,6 +3,89 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [17.6.1](https://github.com/cozy/cozy-client/compare/v17.6.0...v17.6.1) (2021-03-01)
+
+
+### Bug Fixes
+
+* HandleMissingIndex can now deal with undefined indexedFields ([743d883](https://github.com/cozy/cozy-client/commit/743d8834b71682d7aaa2bcec1e8285a2af0d536d))
+
+
+
+
+
+# [17.6.0](https://github.com/cozy/cozy-client/compare/v17.5.0...v17.6.0) (2021-02-26)
+
+
+### Features
+
+* Send uploaded file size via query-string ([#882](https://github.com/cozy/cozy-client/issues/882)) ([2bb6eb9](https://github.com/cozy/cozy-client/commit/2bb6eb966c1fc0d7031757b5702ed17fa0d0e39c))
+
+
+
+
+
+# [17.5.0](https://github.com/cozy/cozy-client/compare/v17.4.0...v17.5.0) (2021-02-26)
+
+
+### Features
+
+* Add openFileWith in fsnative ([8196628](https://github.com/cozy/cozy-client/commit/819662801421a7fff185895d5ca46497baf3d35d))
+
+
+
+
+
+# [17.4.0](https://github.com/cozy/cozy-client/compare/v17.3.0...v17.4.0) (2021-02-24)
+
+
+### Features
+
+* Add TimeSerie helpers ([3b1a030](https://github.com/cozy/cozy-client/commit/3b1a030811e8f7a39f3399bd100c2d02f3665395))
+
+
+
+
+
+# [17.3.0](https://github.com/cozy/cozy-client/compare/v17.2.0...v17.3.0) (2021-02-23)
+
+
+### Features
+
+* Can use app_slug when creating a sharing ([29ecad0](https://github.com/cozy/cozy-client/commit/29ecad0c761e822f33cccbf944cbe38cd37f3c2f))
+
+
+
+
+
+# [17.2.0](https://github.com/cozy/cozy-client/compare/v17.1.1...v17.2.0) (2021-02-23)
+
+
+### Features
+
+* Add method to deal with cordova ([afd28c4](https://github.com/cozy/cozy-client/commit/afd28c4c2adfe1719c8aa6ca97b6a81cd5dc0fe8))
+
+
+
+
+
+## [17.1.1](https://github.com/cozy/cozy-client/compare/v17.1.0...v17.1.1) (2021-02-16)
+
+
+### Bug Fixes
+
+* Copy fields before sort ([a880556](https://github.com/cozy/cozy-client/commit/a880556ddd8dfdc34579708ed1411409bbd0f2d1))
+* Do not throw no_usable_index error after find query ([22f7db6](https://github.com/cozy/cozy-client/commit/22f7db69c0fa702f6fa268cb63d4db059febc4bf))
+
+
+### Features
+
+* Add docs ([7ec48e6](https://github.com/cozy/cozy-client/commit/7ec48e6117a34ddace4f610d048333bbc50bbb21))
+
+
+
+
+
 # [17.1.0](https://github.com/cozy/cozy-client/compare/v17.0.3...v17.1.0) (2021-02-15)
 
 

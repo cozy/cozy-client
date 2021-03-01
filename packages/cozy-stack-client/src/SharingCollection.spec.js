@@ -339,6 +339,46 @@ describe('SharingCollection', () => {
         }
       })
     })
+    it('should creates a sharing with the appSlug', async () => {
+      const sharingDesc = 'foo'
+      const openSharing = true
+      const previewPath = '/preview'
+      const appSlug = 'mySlugApp'
+      await collection.create({
+        document: FILE,
+        recipients: [RECIPIENT],
+        openSharing,
+        previewPath,
+        description: sharingDesc,
+        appSlug
+      })
+
+      expect(client.fetchJSON).toHaveBeenCalledWith('POST', '/sharings/', {
+        data: {
+          attributes: {
+            description: sharingDesc,
+            open_sharing: openSharing,
+            preview_path: previewPath,
+            app_slug: appSlug,
+            rules: [
+              {
+                doctype: 'io.cozy.files',
+                remove: 'revoke',
+                title: FILE.name,
+                update: 'sync',
+                values: [FILE._id]
+              }
+            ]
+          },
+          relationships: {
+            recipients: {
+              data: [{ id: 'contact_1', type: 'io.cozy.contacts' }]
+            }
+          },
+          type: 'io.cozy.sharings'
+        }
+      })
+    })
   })
 
   describe('revokeAllRecipients', () => {

@@ -1,6 +1,6 @@
 {
   "name": "cozy-pouch-link",
-  "version": "17.1.0",
+  "version": "17.6.1",
   "license": "MIT",
   "main": "dist/index.js",
   "files": [
@@ -12,14 +12,14 @@
   },
   "dependencies": {
     "@cozy/minilog": "1.0.0",
-    "cozy-client": "^17.1.0",
+    "cozy-client": "^17.6.1",
     "cozy-device-helper": "^1.7.3",
     "pouchdb-browser": "^7.0.0",
     "pouchdb-find": "^7.0.0"
   },
   "devDependencies": {
     "@babel/cli": "7.12.8",
-    "jest-localstorage-mock": "2.4.3",
+    "jest-localstorage-mock": "2.4.7",
     "parcel": "1.12.4",
     "pouchdb-adapter-memory": "7.1.1",
     "react": "16.13.1",
