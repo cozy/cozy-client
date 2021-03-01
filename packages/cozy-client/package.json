@@ -4,6 +4,7 @@
   "license": "MIT",
   "main": "dist/node.js",
   "browser": "dist/index.js",
+  "types": "types/index.d.ts",
   "files": [
     "dist"
   ],
