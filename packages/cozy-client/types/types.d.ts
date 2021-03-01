@@ -98,3 +98,17 @@ export type IOCozyFolder = {
 export type ClientError = {
     status?: string;
 };
+export type FilePlugin = {
+    externalRootDirectory?: object;
+    cacheDirectory?: object;
+    externalCacheDirectory?: object;
+    dataDirectory?: object;
+};
+export type Cordova = {
+    file: FilePlugin;
+    plugins: object;
+};
+export type CordovaWindow = {
+    cordova: Cordova;
+    resolveLocalFileSystemURL: Function;
+};

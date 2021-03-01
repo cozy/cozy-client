@@ -1,6 +1,7 @@
 import { isMobileApp, isAndroidApp, isIOS } from 'cozy-device-helper'
 
 import CozyClient from '../CozyClient'
+import { CordovaWindow } from '../types'
 import logger from '../logger'
 
 const ERROR_GET_DIRECTORY = 'Error to get directory'
@@ -10,23 +11,38 @@ const COZY_PATH = 'Cozy'
 const COZY_FILES_PATH = isIOS() ? 'CozyDrive' : 'Cozy Drive'
 
 /**
- * Get root path according the OS
+ * @typedef {object} FilesystemEntry
  */
-export const getRootPath = () =>
-  isAndroidApp()
-    ? window.cordova.file.externalRootDirectory
-    : window.cordova.file.dataDirectory
+
+/**
+ * @type {CordovaWindow}
+ */
+// @ts-ignore
+const win = window
+
+/**
+ * Get root path according the OS
+ *
+ * @returns {string}
+ */
+export const getRootPath = () => {
+  return isAndroidApp()
+    ? win.cordova.file.externalRootDirectory
+    : win.cordova.file.dataDirectory
+}
 
 /**
  * Get the temporary root path according to the OS
  */
 export const getTemporaryRootPath = () =>
   isAndroidApp()
-    ? window.cordova.file.externalCacheDirectory
-    : window.cordova.file.cacheDirectory
+    ? win.cordova.file.externalCacheDirectory
+    : win.cordova.file.cacheDirectory
 
 /**
  * Get Cozy path according to the OS
+ *
+ * @returns {string}
  */
 export const getCozyPath = () => COZY_PATH + '/' + COZY_FILES_PATH + '/'
 
@@ -34,10 +50,11 @@ export const getCozyPath = () => COZY_PATH + '/' + COZY_FILES_PATH + '/'
  * Get entry of a path in the cordova.file location
  *
  * @param {string} path - Path wanting to be getted
+ * @returns {Promise<FilesystemEntry>}
  */
 export const getEntry = path =>
   new Promise((resolve, reject) => {
-    window.resolveLocalFileSystemURL(path, resolve, err => {
+    win.resolveLocalFileSystemURL(path, resolve, err => {
       logger.error(`${path} could not be resolved: ${err.message}`)
       reject(err)
     })
@@ -130,7 +147,7 @@ export const openFileWithCordova = (URI, mimetype) =>
       error: reject,
       success: resolve
     }
-    window.cordova.plugins.fileOpener2.open(URI, mimetype, callbacks)
+    win.cordova.plugins.fileOpener2.open(URI, mimetype, callbacks)
   })
 
 /**
@@ -195,7 +212,7 @@ export const openOfflineFile = async file => {
  * @param {object} file - io.cozy.files document
  */
 export const openFileWith = async (client, file) => {
-  if (isMobileApp() && window.cordova.plugins.fileOpener2) {
+  if (isMobileApp() && win.cordova.plugins.fileOpener2) {
     let fileData
     try {
       fileData = await client

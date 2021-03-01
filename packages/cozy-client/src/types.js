@@ -60,4 +60,24 @@
  * @property {string} [status]
  */
 
+/**
+ * @typedef FilePlugin
+ * @property {object} [externalRootDirectory]
+ * @property {object} [cacheDirectory]
+ * @property {object} [externalCacheDirectory]
+ * @property {object} [dataDirectory]
+ */
+
+/**
+ * @typedef Cordova
+ * @property {FilePlugin} file
+ * @property {object} plugins
+ */
+
+/**
+ * @typedef  CordovaWindow
+ * @property {Cordova} cordova
+ * @property {Function} resolveLocalFileSystemURL
+ */
+
 export default {}
