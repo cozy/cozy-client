@@ -1408,7 +1408,7 @@ instantiation of the client.`
   generateId() {
     const id = this.idCounter
     this.idCounter++
-    return id + ''
+    return id.toString()
   }
 
   /**
