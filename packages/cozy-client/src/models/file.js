@@ -2,20 +2,13 @@ import get from 'lodash/get'
 import isString from 'lodash/isString'
 import { setQualification } from './document'
 import { Q } from '../queries/dsl'
-import { IOCozyFile } from '../types'
+import { IOCozyFile, QueryResult } from '../types'
 import CozyClient from '../CozyClient'
 
 const FILE_TYPE = 'file'
 const DIR_TYPE = 'directory'
 
 const FILENAME_WITH_EXTENSION_REGEX = /(.+)(\..*)$/
-
-/**
- * TODO find if this type already exists
- *
- * @typedef {object} QueryResult - Result of a query
- * @property {Array} data - Data fetched in the query
- */
 
 /**
  * Returns base filename and extension
