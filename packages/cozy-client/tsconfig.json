@@ -8,10 +8,10 @@
       "resolveJsonModule": true,
       "esModuleInterop": true,
       "jsx": "react",
-      "outDir": "types",
       "declaration": true,
       "target": "es6",
       "moduleResolution": "node"
     },
+    "outDir": "types",
     "types": ["jest"]
 }
