@@ -25,7 +25,7 @@
     "open": "^7.0.2",
     "prop-types": "^15.6.2",
     "react-redux": "^7.2.0",
-    "redux": "4",
+    "redux": "3 || 4",
     "redux-thunk": "^2.3.0",
     "server-destroy": "^1.0.1",
     "sift": "^6.0.0",
