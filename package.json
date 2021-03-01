@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "babel-preset-cozy-app": "1.10.0",
+    "babel-preset-cozy-app": "1.11.0",
     "babel-preset-react": "6.24.1",
     "commitlint-config-cozy": "0.5.0",
     "enzyme": "3.11.0",
