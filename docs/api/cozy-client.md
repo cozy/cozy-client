@@ -45,7 +45,7 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 <li>Attribute validation</li>
 <li>Relationship access</li>
 </ul>
-<pre><code class="language-javascript">const schema = new Schema({
+<pre><code class="language-js">const schema = new Schema({
   todos: {
     attributes: {
       label: {
@@ -61,32 +61,12 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 </dd>
 </dl>
 
-## Members
-
-<dl>
-<dt><a href="#target">target</a> : <code>object</code></dt>
-<dd><p>The original document declaring the relationship</p>
-</dd>
-<dt><a href="#name">name</a> : <code>string</code></dt>
-<dd><p>The name of the relationship.</p>
-</dd>
-<dt><a href="#doctype">doctype</a> : <code>string</code></dt>
-<dd><p>Doctype of the relationship</p>
-</dd>
-<dt><a href="#get">get</a> : <code>function</code></dt>
-<dd><p>Returns the document from the store</p>
-</dd>
-<dt><a href="#save">save</a> : <code>function</code></dt>
-<dd><p>Saves the relationship in store.</p>
-</dd>
-<dt><a href="#dispatch">dispatch</a> : <code>function</code></dt>
-<dd><p>Dispatch an action on the store.</p>
-</dd>
-</dl>
-
 ## Constants
 
 <dl>
+<dt><a href="#setupConsoleToThrow">setupConsoleToThrow</a></dt>
+<dd><p>Override console.warn and error to throw</p>
+</dd>
 <dt><a href="#getHasManyItem">getHasManyItem</a></dt>
 <dd><p>Gets a relationship item with the relationship name and id</p>
 </dd>
@@ -99,7 +79,7 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 <dt><a href="#updateHasManyItem">updateHasManyItem</a></dt>
 <dd><p>Updates a relationship item with the relationship name and id</p>
 </dd>
-<dt><a href="#windowInterface">windowInterface</a> : <code><a href="#WindowInterface">WindowInterface</a></code></dt>
+<dt><a href="#win">win</a> : <code><a href="#CordovaWindow">CordovaWindow</a></code></dt>
 <dd></dd>
 <dt><a href="#generateWebLink">generateWebLink</a> ⇒ <code>string</code></dt>
 <dd><p>generateWebLink - Construct a link to a web app</p>
@@ -225,16 +205,18 @@ example.</p>
 <dt><a href="#getReferencedFolder">getReferencedFolder</a> ⇒ <code><a href="#IOCozyFolder">Promise.&lt;IOCozyFolder&gt;</a></code></dt>
 <dd><p>Returns the most recent folder referenced by the given document</p>
 </dd>
-<dt><a href="#getRootPath">getRootPath</a></dt>
+<dt><a href="#win">win</a> : <code><a href="#CordovaWindow">CordovaWindow</a></code></dt>
+<dd></dd>
+<dt><a href="#getRootPath">getRootPath</a> ⇒ <code>string</code></dt>
 <dd><p>Get root path according the OS</p>
 </dd>
 <dt><a href="#getTemporaryRootPath">getTemporaryRootPath</a></dt>
 <dd><p>Get the temporary root path according to the OS</p>
 </dd>
-<dt><a href="#getCozyPath">getCozyPath</a></dt>
+<dt><a href="#getCozyPath">getCozyPath</a> ⇒ <code>string</code></dt>
 <dd><p>Get Cozy path according to the OS</p>
 </dd>
-<dt><a href="#getEntry">getEntry</a></dt>
+<dt><a href="#getEntry">getEntry</a> ⇒ <code><a href="#FilesystemEntry">Promise.&lt;FilesystemEntry&gt;</a></code></dt>
 <dd><p>Get entry of a path in the cordova.file location</p>
 </dd>
 <dt><a href="#getCozyEntry">getCozyEntry</a></dt>
@@ -282,6 +264,9 @@ example.</p>
 <dt><a href="#fetchURL">fetchURL</a> ⇒ <code>Promise.&lt;string&gt;</code></dt>
 <dd><p>Fetch and build an URL to open a note.</p>
 </dd>
+<dt><a href="#saveTimeSeries">saveTimeSeries</a></dt>
+<dd><p>Helper to save a time series document.</p>
+</dd>
 <dt><a href="#triggerStates">triggerStates</a></dt>
 <dd><p>Trigger states come from /jobs/triggers</p>
 </dd>
@@ -310,13 +295,12 @@ is loading.</p>
 ## Functions
 
 <dl>
-<dt><a href="#query">query(queryDefinition)</a></dt>
-<dd><p>Performs a query to retrieve relationship documents.</p>
+<dt><a href="#withIgnoreConsole">withIgnoreConsole()</a></dt>
+<dd><p>Calls callback while ignoring console[type] calls</p>
+<p>Useful for tests that we know will use console[type] but we do not
+want to them to trigger an exception during tests.</p>
 </dd>
-<dt><a href="#mutate">mutate()</a></dt>
-<dd><p>Performs a mutation on the relationship.</p>
-</dd>
-<dt><a href="#query">query()</a> ⇒ <code>QueryState</code> | <code><a href="#QueryDefinition">QueryDefinition</a></code></dt>
+<dt><a href="#query">query()</a> ⇒ <code><a href="#QueryState">QueryState</a></code> | <code><a href="#QueryDefinition">QueryDefinition</a></code></dt>
 <dd></dd>
 <dt><a href="#createClientInteractive">createClientInteractive(clientOptions)</a></dt>
 <dd><p>Creates a client with interactive authentication.</p>
@@ -345,7 +329,7 @@ if there are N queries, only 1 extra level of nesting is introduced.</p>
 <p>Takes the same arguments as fetchJSON</p>
 <p>Returns an object with the same keys { data, fetchStatus, error } as useQuery</p>
 </dd>
-<dt><a href="#useQuery">useQuery(queryDefinition, options)</a> ⇒ <code>object</code></dt>
+<dt><a href="#useQuery">useQuery(queryDefinition, options)</a> ⇒ <code><a href="#UseQueryReturnValue">UseQueryReturnValue</a></code></dt>
 <dd><p>Fetches a queryDefinition and returns the queryState</p>
 </dd>
 <dt><a href="#sanitizeCategories">sanitizeCategories()</a></dt>
@@ -406,13 +390,13 @@ internal store updated.</p>
 <dd></dd>
 <dt><a href="#Relation">Relation</a> : <code>object</code></dt>
 <dd></dd>
-<dt><a href="#WindowInterface">WindowInterface</a> : <code>object</code></dt>
-<dd></dd>
 <dt><a href="#ClientOptions">ClientOptions</a> : <code>object</code></dt>
 <dd></dd>
 <dt><a href="#CozyAccount">CozyAccount</a> : <code>object</code></dt>
 <dd></dd>
 <dt><a href="#QualificationAttributes">QualificationAttributes</a> : <code>object</code></dt>
+<dd></dd>
+<dt><a href="#FilesystemEntry">FilesystemEntry</a> : <code>object</code></dt>
 <dd></dd>
 <dt><a href="#Document">Document</a> : <code>object</code></dt>
 <dd><p>Couchdb document like an io.cozy.files</p>
@@ -432,9 +416,8 @@ on the recipient&#39;s cozy. It can be used to make an UI distinction between th
 both situation.</p>
 </dd>
 <dt><a href="#TimeSeries">TimeSeries</a></dt>
-<dd><p>Helper to save a time series document.</p>
-</dd>
-<dt><a href="#TimeSeriesJSONAPI">TimeSeriesJSONAPI</a> ⇒ <code><a href="#TimeSeriesJSONAPI">TimeSeriesJSONAPI</a></code></dt>
+<dd></dd>
+<dt><a href="#TimeSeriesJSONAPI">TimeSeriesJSONAPI</a> ⇒ <code><a href="#TimeSeriesJSONAPI">Promise.&lt;TimeSeriesJSONAPI&gt;</a></code></dt>
 <dd><p>Helper to retrieve time series by their date interval and source.</p>
 <p>The starting date must be greater or equal while the ending date must
 be stricly less than the given startDate and endDate parameters.</p>
@@ -455,6 +438,14 @@ be stricly less than the given startDate and endDate parameters.</p>
 </dd>
 <dt><a href="#Manifest">Manifest</a> : <code>object</code></dt>
 <dd></dd>
+<dt><a href="#QueryFetchStatus">QueryFetchStatus</a> : <code>&quot;loading&quot;</code> | <code>&quot;loaded&quot;</code> | <code>&quot;pending&quot;</code> | <code>&quot;failed&quot;</code></dt>
+<dd></dd>
+<dt><a href="#QueryState">QueryState</a> : <code>object</code></dt>
+<dd></dd>
+<dt><a href="#FetchMoreAble">FetchMoreAble</a> : <code>object</code></dt>
+<dd></dd>
+<dt><a href="#UseQueryReturnValue">UseQueryReturnValue</a> : <code><a href="#QueryState">QueryState</a></code> | <code><a href="#FetchMoreAble">FetchMoreAble</a></code></dt>
+<dd></dd>
 <dt><a href="#Reference">Reference</a> : <code>object</code></dt>
 <dd><p>A reference to a document (special case of a relationship used between photos and albums)
 <a href="https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files/#references">https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files/#references</a></p>
@@ -474,6 +465,14 @@ be stricly less than the given startDate and endDate parameters.</p>
 </dd>
 <dt><a href="#ClientError">ClientError</a> : <code>object</code></dt>
 <dd></dd>
+<dt><a href="#FilePlugin">FilePlugin</a></dt>
+<dd></dd>
+<dt><a href="#InAppBrowser">InAppBrowser</a></dt>
+<dd></dd>
+<dt><a href="#Cordova">Cordova</a></dt>
+<dd></dd>
+<dt><a href="#CordovaWindow">CordovaWindow</a></dt>
+<dd></dd>
 <dt><a href="#CancelablePromise">CancelablePromise</a> : <code>Promise</code></dt>
 <dd></dd>
 <dt><a href="#Wrapper">Wrapper</a> ⇒ <code>function</code></dt>
@@ -485,7 +484,7 @@ be stricly less than the given startDate and endDate parameters.</p>
 <dl>
 <dt><a href="#Association">Association</a></dt>
 <dd><p>Example: The schema defines an <code>author</code> relationship :</p>
-<pre><code class="language-javascript">const BOOK_SCHEMA = {
+<pre><code class="language-js">const BOOK_SCHEMA = {
   relationships: {
      author: &#39;has-one&#39;
   }
@@ -493,7 +492,7 @@ be stricly less than the given startDate and endDate parameters.</p>
 </code></pre>
 <p>Hydrated <code>books</code> will have the <code>author</code> association instance under the <code>author</code> key.
 Accessing <code>hydratedBook.author.data</code> gives you the author from the store, for example :</p>
-<pre><code class="lang-json">{
+<pre><code class="language-json">{
   &quot;name&quot;: &quot;St-Exupery&quot;,
   &quot;firstName&quot;: &quot;Antoine&quot;,
   &quot;_id&quot;: &quot;antoine&quot;
@@ -503,7 +502,7 @@ Accessing <code>hydratedBook.author.data</code> gives you the author from the st
 For example, here since we use the default <code>has-one</code> relationship, the relationship data
 is stored in the <code>relationships</code> attribute of the original document (in our case here, our book
 would be</p>
-<pre><code class="lang-json">{
+<pre><code class="language-json">{
   &quot;title&quot;: &quot;Le petit prince&quot;,
   &quot;relationships&quot;: {
     &quot;author&quot;: {
@@ -517,7 +516,7 @@ would be</p>
 </code></pre>
 <p>In the case of an &quot;in-place&quot; relationship, the relationship data is stored directly under the attribute named
 by the relationship (in our case <code>author</code>). Our book would be</p>
-<pre><code class="lang-json">{
+<pre><code class="language-json">{
     &quot;title&quot;: &quot;Le petit prince&quot;,
     &quot;author&quot;: &quot;antoine&quot;
 }
@@ -616,11 +615,63 @@ the hydrated document (.data method). View components will access
 
 * [Association](#Association)
     * _instance_
+        * [.target](#Association+target) : <code>object</code>
+        * [.name](#Association+name) : <code>string</code>
+        * [.doctype](#Association+doctype) : <code>string</code>
+        * [.get](#Association+get) : <code>function</code>
+        * [.save](#Association+save) : <code>function</code>
+        * [.dispatch](#Association+dispatch) : <code>function</code>
         * [.raw](#Association+raw) ⇒ <code>object</code>
         * [.data](#Association+data) ⇒ <code>object</code>
+        * [.query(queryDefinition)](#Association+query)
+        * [.mutate()](#Association+mutate)
     * _static_
-        * [.query()](#Association.query) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
+        * [.query()](#Association.query) ⇒ [<code>QueryDefinition</code>](#QueryDefinition) \| [<code>QueryState</code>](#QueryState)
 
+<a name="Association+target"></a>
+
+### association.target : <code>object</code>
+The original document declaring the relationship
+
+**Kind**: instance property of [<code>Association</code>](#Association)  
+<a name="Association+name"></a>
+
+### association.name : <code>string</code>
+The name of the relationship.
+
+**Kind**: instance property of [<code>Association</code>](#Association)  
+**Example**  
+```js
+'author'
+```
+<a name="Association+doctype"></a>
+
+### association.doctype : <code>string</code>
+Doctype of the relationship
+
+**Kind**: instance property of [<code>Association</code>](#Association)  
+**Example**  
+```js
+'io.cozy.authors'
+```
+<a name="Association+get"></a>
+
+### association.get : <code>function</code>
+Returns the document from the store
+
+**Kind**: instance property of [<code>Association</code>](#Association)  
+<a name="Association+save"></a>
+
+### association.save : <code>function</code>
+Saves the relationship in store.
+
+**Kind**: instance property of [<code>Association</code>](#Association)  
+<a name="Association+dispatch"></a>
+
+### association.dispatch : <code>function</code>
+Dispatch an action on the store.
+
+**Kind**: instance property of [<code>Association</code>](#Association)  
 <a name="Association+raw"></a>
 
 ### association.raw ⇒ <code>object</code>
@@ -689,9 +740,26 @@ const book = {
 Derived `Association`s need to implement this method.
 
 **Kind**: instance property of [<code>Association</code>](#Association)  
+<a name="Association+query"></a>
+
+### association.query(queryDefinition)
+Performs a query to retrieve relationship documents.
+
+**Kind**: instance method of [<code>Association</code>](#Association)  
+
+| Param | Type |
+| --- | --- |
+| queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) | 
+
+<a name="Association+mutate"></a>
+
+### association.mutate()
+Performs a mutation on the relationship.
+
+**Kind**: instance method of [<code>Association</code>](#Association)  
 <a name="Association.query"></a>
 
-### Association.query() ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
+### Association.query() ⇒ [<code>QueryDefinition</code>](#QueryDefinition) \| [<code>QueryState</code>](#QueryState)
 Derived `Association`s need to implement this method.
 
 **Kind**: static method of [<code>Association</code>](#Association)  
@@ -901,7 +969,7 @@ Responsible for
     * [new CozyClient(rawOptions)](#new_CozyClient_new)
     * _instance_
         * [.storeAccesors](#CozyClient+storeAccesors) : <code>object</code>
-        * [.fetchQueryAndGetFromState](#CozyClient+fetchQueryAndGetFromState) ⇒ <code>Promise.&lt;QueryState&gt;</code>
+        * [.fetchQueryAndGetFromState](#CozyClient+fetchQueryAndGetFromState) ⇒ [<code>Promise.&lt;QueryState&gt;</code>](#QueryState)
         * [.emit()](#CozyClient+emit)
         * [.registerPlugin()](#CozyClient+registerPlugin)
         * [.login([options])](#CozyClient+login) ⇒ <code>Promise</code>
@@ -919,7 +987,7 @@ Responsible for
         * [.getRelationshipStoreAccessors()](#CozyClient+getRelationshipStoreAccessors)
         * [.getCollectionFromState(type)](#CozyClient+getCollectionFromState) ⇒ [<code>Array.&lt;CozyClientDocument&gt;</code>](#CozyClientDocument)
         * [.getDocumentFromState(type, id)](#CozyClient+getDocumentFromState) ⇒ [<code>CozyClientDocument</code>](#CozyClientDocument)
-        * [.getQueryFromState(id, options)](#CozyClient+getQueryFromState) ⇒ <code>QueryState</code>
+        * [.getQueryFromState(id, options)](#CozyClient+getQueryFromState) ⇒ [<code>QueryState</code>](#QueryState)
         * [.register(cozyURL)](#CozyClient+register) ⇒ <code>object</code>
         * [.startOAuthFlow(openURLCallback)](#CozyClient+startOAuthFlow) ⇒ <code>Promise.&lt;object&gt;</code>
         * [.renewAuthorization()](#CozyClient+renewAuthorization) ⇒ <code>object</code>
@@ -947,20 +1015,38 @@ Responsible for
 | --- | --- | --- |
 | rawOptions | [<code>ClientOptions</code>](#ClientOptions) | Options |
 
+**Example**  
+```js
+const client = new CozyClient({
+  schema: {
+    todos: {
+      doctype: 'io.cozy.todos',
+      relationships: {
+        authors: {
+          type: 'has-many',
+          doctype: 'io.cozy.persons'
+        }
+      }
+    }
+  }
+})
+```
+
+Cozy-Client will automatically call `this.login()` if provided with a token and an uri
 <a name="CozyClient+storeAccesors"></a>
 
 ### cozyClient.storeAccesors : <code>object</code>
 **Kind**: instance property of [<code>CozyClient</code>](#CozyClient)  
 <a name="CozyClient+fetchQueryAndGetFromState"></a>
 
-### cozyClient.fetchQueryAndGetFromState ⇒ <code>Promise.&lt;QueryState&gt;</code>
+### cozyClient.fetchQueryAndGetFromState ⇒ [<code>Promise.&lt;QueryState&gt;</code>](#QueryState)
 Executes a query and returns the results from internal store.
 
 Can be useful in pure JS context (without React)
 Has a behavior close to <Query /> or useQuery
 
 **Kind**: instance property of [<code>CozyClient</code>](#CozyClient)  
-**Returns**: <code>Promise.&lt;QueryState&gt;</code> - Query state  
+**Returns**: [<code>Promise.&lt;QueryState&gt;</code>](#QueryState) - Query state  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1257,11 +1343,11 @@ Get a document from the internal store.
 
 <a name="CozyClient+getQueryFromState"></a>
 
-### cozyClient.getQueryFromState(id, options) ⇒ <code>QueryState</code>
+### cozyClient.getQueryFromState(id, options) ⇒ [<code>QueryState</code>](#QueryState)
 Get a query from the internal store.
 
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
-**Returns**: <code>QueryState</code> - - Query state or null if it does not exist.  
+**Returns**: [<code>QueryState</code>](#QueryState) - - Query state or null if it does not exist.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1455,140 +1541,6 @@ CozyClient.registerHook('io.cozy.bank.accounts', 'before:destroy', () => {
   console.log('A io.cozy.bank.accounts is being destroyed')
 })
 ```
-<a name="Qualification"></a>
-
-## Qualification
-This class is used to create document Qualification, i.e. metadata
-attributes used to describe the document.
-The qualifications model is stored in the assets, associating
-labels to attributes, namely: purpose, sourceCategory, sourceSubCategory
-and subjects.
-A qualification can be customized accordingly to rules detailed in
-the checkValueAttributes method.
-
-**Kind**: global class  
-
-* [Qualification](#Qualification)
-    * [new exports.Qualification(label, attributes)](#new_Qualification_new)
-    * _instance_
-        * [.label](#Qualification+label) : <code>string</code>
-        * [.purpose](#Qualification+purpose) : <code>string</code>
-        * [.checkAttributes(attributes)](#Qualification+checkAttributes)
-        * [.setPurpose(purpose)](#Qualification+setPurpose) ⇒ [<code>Qualification</code>](#Qualification)
-        * [.setSourceCategory(sourceCategory)](#Qualification+setSourceCategory) ⇒ [<code>Qualification</code>](#Qualification)
-        * [.setSourceSubCategory(sourceSubCategory)](#Qualification+setSourceSubCategory) ⇒ [<code>Qualification</code>](#Qualification)
-        * [.setSubjects(subjects)](#Qualification+setSubjects) ⇒ [<code>Qualification</code>](#Qualification)
-        * [.toQualification()](#Qualification+toQualification) ⇒ <code>object</code>
-    * _static_
-        * [.getByLabel(label)](#Qualification.getByLabel) ⇒ [<code>Qualification</code>](#Qualification)
-
-<a name="new_Qualification_new"></a>
-
-### new exports.Qualification(label, attributes)
-
-| Param | Type | Description |
-| --- | --- | --- |
-| label | <code>string</code> | The qualification label |
-| attributes | [<code>QualificationAttributes</code>](#QualificationAttributes) | Qualification's attributes |
-
-<a name="Qualification+label"></a>
-
-### qualification.label : <code>string</code>
-- The qualification label.
-
-**Kind**: instance property of [<code>Qualification</code>](#Qualification)  
-<a name="Qualification+purpose"></a>
-
-### qualification.purpose : <code>string</code>
-- The document purpose.
-
-**Kind**: instance property of [<code>Qualification</code>](#Qualification)  
-<a name="Qualification+checkAttributes"></a>
-
-### qualification.checkAttributes(attributes)
-Check the given qualification attributes respects the following rules:
-  - For the given label, if a purpose, sourceCategory or sourceSubCategory
-    attribute is defined in the model, it must match the given qualification.
-  - If not defined in the model for the label, a custom purpose, sourceCategory or
-    sourceSubCategory value can be defined, if it exist in their respective
-    known values list.
-  - For the given label, if subjects are defined in the model, they must be included
-    in the given qualification.
-  - If extra subjects are set, they should exist in the known values.
-
-**Kind**: instance method of [<code>Qualification</code>](#Qualification)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| attributes | <code>object</code> | The qualification attributes to check |
-
-<a name="Qualification+setPurpose"></a>
-
-### qualification.setPurpose(purpose) ⇒ [<code>Qualification</code>](#Qualification)
-Set purpose to the qualification.
-
-**Kind**: instance method of [<code>Qualification</code>](#Qualification)  
-**Returns**: [<code>Qualification</code>](#Qualification) - The Qualification object.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| purpose | <code>Array</code> | The purpose to set. |
-
-<a name="Qualification+setSourceCategory"></a>
-
-### qualification.setSourceCategory(sourceCategory) ⇒ [<code>Qualification</code>](#Qualification)
-Set sourceCategory to the qualification.
-
-**Kind**: instance method of [<code>Qualification</code>](#Qualification)  
-**Returns**: [<code>Qualification</code>](#Qualification) - The Qualification object.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| sourceCategory | <code>Array</code> | The sourceCategory to set. |
-
-<a name="Qualification+setSourceSubCategory"></a>
-
-### qualification.setSourceSubCategory(sourceSubCategory) ⇒ [<code>Qualification</code>](#Qualification)
-Set sourceSubCategory to the qualification.
-
-**Kind**: instance method of [<code>Qualification</code>](#Qualification)  
-**Returns**: [<code>Qualification</code>](#Qualification) - The Qualification object.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| sourceSubCategory | <code>Array</code> | The sourceSubCategory to set. |
-
-<a name="Qualification+setSubjects"></a>
-
-### qualification.setSubjects(subjects) ⇒ [<code>Qualification</code>](#Qualification)
-Set subjects to the qualification.
-
-**Kind**: instance method of [<code>Qualification</code>](#Qualification)  
-**Returns**: [<code>Qualification</code>](#Qualification) - The Qualification object.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| subjects | <code>Array</code> | The subjects to set. |
-
-<a name="Qualification+toQualification"></a>
-
-### qualification.toQualification() ⇒ <code>object</code>
-Returns the qualification attributes
-
-**Kind**: instance method of [<code>Qualification</code>](#Qualification)  
-**Returns**: <code>object</code> - The qualification attributes  
-<a name="Qualification.getByLabel"></a>
-
-### Qualification.getByLabel(label) ⇒ [<code>Qualification</code>](#Qualification)
-Returns the qualification associated to a label.
-
-**Kind**: static method of [<code>Qualification</code>](#Qualification)  
-**Returns**: [<code>Qualification</code>](#Qualification) - - The qualification  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| label | <code>string</code> | The label to qualify |
-
 <a name="QueryDefinition"></a>
 
 ## QueryDefinition ⇐ <code>object</code>
@@ -1890,50 +1842,12 @@ Returns the relationship for a given doctype/name
 Validates a document considering the descriptions in schema.attributes.
 
 **Kind**: instance method of [<code>Schema</code>](#Schema)  
-<a name="target"></a>
+<a name="setupConsoleToThrow"></a>
 
-## target : <code>object</code>
-The original document declaring the relationship
+## setupConsoleToThrow
+Override console.warn and error to throw
 
-**Kind**: global variable  
-<a name="name"></a>
-
-## name : <code>string</code>
-The name of the relationship.
-
-**Kind**: global variable  
-**Example**  
-```js
-'author'
-```
-<a name="doctype"></a>
-
-## doctype : <code>string</code>
-Doctype of the relationship
-
-**Kind**: global variable  
-**Example**  
-```js
-'io.cozy.authors'
-```
-<a name="get"></a>
-
-## get : <code>function</code>
-Returns the document from the store
-
-**Kind**: global variable  
-<a name="save"></a>
-
-## save : <code>function</code>
-Saves the relationship in store.
-
-**Kind**: global variable  
-<a name="dispatch"></a>
-
-## dispatch : <code>function</code>
-Dispatch an action on the store.
-
-**Kind**: global variable  
+**Kind**: global constant  
 <a name="getHasManyItem"></a>
 
 ## getHasManyItem
@@ -1988,9 +1902,9 @@ Updates a relationship item with the relationship name and id
 | relItemId | <code>string</code> | Id of the relationship item |
 | updater | <code>function</code> | receives the current relationship item and should return an updated version. Merge should be used in the updater if previous relationship item fields are to be kept. |
 
-<a name="windowInterface"></a>
+<a name="win"></a>
 
-## windowInterface : [<code>WindowInterface</code>](#WindowInterface)
+## win : [<code>CordovaWindow</code>](#CordovaWindow)
 **Kind**: global constant  
 <a name="generateWebLink"></a>
 
@@ -2506,9 +2420,13 @@ Returns the most recent folder referenced by the given document
 | client | [<code>CozyClient</code>](#CozyClient) | cozy-client instance |
 | document | [<code>CozyClientDocument</code>](#CozyClientDocument) | Document to get references from |
 
+<a name="win"></a>
+
+## win : [<code>CordovaWindow</code>](#CordovaWindow)
+**Kind**: global constant  
 <a name="getRootPath"></a>
 
-## getRootPath
+## getRootPath ⇒ <code>string</code>
 Get root path according the OS
 
 **Kind**: global constant  
@@ -2520,13 +2438,13 @@ Get the temporary root path according to the OS
 **Kind**: global constant  
 <a name="getCozyPath"></a>
 
-## getCozyPath
+## getCozyPath ⇒ <code>string</code>
 Get Cozy path according to the OS
 
 **Kind**: global constant  
 <a name="getEntry"></a>
 
-## getEntry
+## getEntry ⇒ [<code>Promise.&lt;FilesystemEntry&gt;</code>](#FilesystemEntry)
 Get entry of a path in the cordova.file location
 
 **Kind**: global constant  
@@ -2716,6 +2634,18 @@ Fetch and build an URL to open a note.
 | client | <code>object</code> | CozyClient instance |
 | file | <code>object</code> | io.cozy.file object |
 
+<a name="saveTimeSeries"></a>
+
+## saveTimeSeries
+Helper to save a time series document.
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| client | <code>object</code> | The CozyClient instance |
+| timeseriesOption | [<code>TimeSeries</code>](#TimeSeries) | The time series to save |
+
 <a name="triggerStates"></a>
 
 ## triggerStates
@@ -2833,26 +2763,18 @@ is loading.
 Returns whether a query has been loaded at least once
 
 **Kind**: global constant  
-<a name="query"></a>
+<a name="withIgnoreConsole"></a>
 
-## query(queryDefinition)
-Performs a query to retrieve relationship documents.
+## withIgnoreConsole()
+Calls callback while ignoring console[type] calls
 
-**Kind**: global function  
-
-| Param | Type |
-| --- | --- |
-| queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) | 
-
-<a name="mutate"></a>
-
-## mutate()
-Performs a mutation on the relationship.
+Useful for tests that we know will use console[type] but we do not
+want to them to trigger an exception during tests.
 
 **Kind**: global function  
 <a name="query"></a>
 
-## query() ⇒ <code>QueryState</code> \| [<code>QueryDefinition</code>](#QueryDefinition)
+## query() ⇒ [<code>QueryState</code>](#QueryState) \| [<code>QueryDefinition</code>](#QueryDefinition)
 **Kind**: global function  
 <a name="createClientInteractive"></a>
 
@@ -2942,7 +2864,7 @@ Returns an object with the same keys { data, fetchStatus, error } as useQuery
 **Kind**: global function  
 <a name="useQuery"></a>
 
-## useQuery(queryDefinition, options) ⇒ <code>object</code>
+## useQuery(queryDefinition, options) ⇒ [<code>UseQueryReturnValue</code>](#UseQueryReturnValue)
 Fetches a queryDefinition and returns the queryState
 
 **Kind**: global function  
@@ -3143,18 +3065,6 @@ HOC to provide mutations to components. Needs client in context or as prop.
 | _id | <code>string</code> | id of the relation |
 | _type | <code>string</code> | doctype of the relation |
 
-<a name="WindowInterface"></a>
-
-## WindowInterface : <code>object</code>
-**Kind**: global typedef  
-**Properties**
-
-| Name | Type |
-| --- | --- |
-| SafariViewController | <code>object</code> | 
-| cordova | <code>object</code> | 
-| handleOpenURL | <code>function</code> | 
-
 <a name="ClientOptions"></a>
 
 ## ClientOptions : <code>object</code>
@@ -3197,6 +3107,10 @@ HOC to provide mutations to components. Needs client in context or as prop.
 | [sourceSubCategory] | <code>string</code> | The sub-activity field of the document source. |
 | [subjects] | <code>Array.&lt;string&gt;</code> | On what is about the document. |
 
+<a name="FilesystemEntry"></a>
+
+## FilesystemEntry : <code>object</code>
+**Kind**: global typedef  
 <a name="Document"></a>
 
 ## Document : <code>object</code>
@@ -3259,31 +3173,29 @@ both situation.
 <a name="TimeSeries"></a>
 
 ## TimeSeries
-Helper to save a time series document.
-
 **Kind**: global typedef  
-**Attributes**: dataType {String} - The type of time series, e.g. 'electricity'  
-**Attributes**: startDate {date} - The starting date of the series  
-**Attributes**: endType {date} - The starting date of the series  
-**Attributes**: source {String} - The data source, e.g. 'enedis.fr'  
-**Attributes**: theme {String} - The theme used to group time series, e.g. 'energy'  
-**Attributes**: series {Array} - An array of objects representing the time series  
+**Properties**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | --- | --- | --- |
-| client | <code>object</code> | The CozyClient instance |
-|  | [<code>TimeSeries</code>](#TimeSeries) | The time series to save |
+| dataType | <code>String</code> | The type of time series, e.g. 'electricity' |
+| startDate | <code>Date</code> | The starting date of the series |
+| endDate | <code>Date</code> | The end date of the series |
+| endType | <code>Date</code> | The starting date of the series |
+| source | <code>String</code> | The data source, e.g. 'enedis.fr' |
+| theme | <code>String</code> | The theme used to group time series, e.g. 'energy' |
+| series | <code>Array</code> | An array of objects representing the time series |
 
 <a name="TimeSeriesJSONAPI"></a>
 
-## TimeSeriesJSONAPI ⇒ [<code>TimeSeriesJSONAPI</code>](#TimeSeriesJSONAPI)
+## TimeSeriesJSONAPI ⇒ [<code>Promise.&lt;TimeSeriesJSONAPI&gt;</code>](#TimeSeriesJSONAPI)
 Helper to retrieve time series by their date interval and source.
 
 The starting date must be greater or equal while the ending date must
 be stricly less than the given startDate and endDate parameters.
 
 **Kind**: global typedef  
-**Returns**: [<code>TimeSeriesJSONAPI</code>](#TimeSeriesJSONAPI) - The TimeSeries found by the query in JSON-API format  
+**Returns**: [<code>Promise.&lt;TimeSeriesJSONAPI&gt;</code>](#TimeSeriesJSONAPI) - The TimeSeries found by the query in JSON-API format  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3349,6 +3261,43 @@ Setups a client suitable for testing
 <a name="Manifest"></a>
 
 ## Manifest : <code>object</code>
+**Kind**: global typedef  
+<a name="QueryFetchStatus"></a>
+
+## QueryFetchStatus : <code>&quot;loading&quot;</code> \| <code>&quot;loaded&quot;</code> \| <code>&quot;pending&quot;</code> \| <code>&quot;failed&quot;</code>
+**Kind**: global typedef  
+<a name="QueryState"></a>
+
+## QueryState : <code>object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type |
+| --- | --- |
+| id | <code>string</code> | 
+| definition | [<code>QueryDefinition</code>](#QueryDefinition) | 
+| fetchStatus | [<code>QueryFetchStatus</code>](#QueryFetchStatus) | 
+| lastFetch | <code>number</code> | 
+| lastUpdate | <code>number</code> | 
+| lastError | <code>Error</code> | 
+| hasMore | <code>boolean</code> | 
+| count | <code>number</code> | 
+| data | <code>object</code> \| <code>Array</code> | 
+| bookmark | <code>string</code> | 
+
+<a name="FetchMoreAble"></a>
+
+## FetchMoreAble : <code>object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type |
+| --- | --- |
+| fetchMore | <code>function</code> | 
+
+<a name="UseQueryReturnValue"></a>
+
+## UseQueryReturnValue : [<code>QueryState</code>](#QueryState) \| [<code>FetchMoreAble</code>](#FetchMoreAble)
 **Kind**: global typedef  
 <a name="Reference"></a>
 
@@ -3434,6 +3383,54 @@ An io.cozy.files document
 | Name | Type |
 | --- | --- |
 | [status] | <code>string</code> | 
+
+<a name="FilePlugin"></a>
+
+## FilePlugin
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type |
+| --- | --- |
+| [externalRootDirectory] | <code>object</code> | 
+| [cacheDirectory] | <code>object</code> | 
+| [externalCacheDirectory] | <code>object</code> | 
+| [dataDirectory] | <code>object</code> | 
+
+<a name="InAppBrowser"></a>
+
+## InAppBrowser
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type |
+| --- | --- |
+| open | <code>function</code> | 
+
+<a name="Cordova"></a>
+
+## Cordova
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type |
+| --- | --- |
+| file | [<code>FilePlugin</code>](#FilePlugin) | 
+| InAppBrowser | [<code>InAppBrowser</code>](#InAppBrowser) | 
+| plugins | <code>object</code> | 
+
+<a name="CordovaWindow"></a>
+
+## CordovaWindow
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type |
+| --- | --- |
+| cordova | [<code>Cordova</code>](#Cordova) | 
+| SafariViewController | <code>object</code> | 
+| resolveLocalFileSystemURL | <code>function</code> | 
+| handleOpenURL | <code>function</code> | 
 
 <a name="CancelablePromise"></a>
 
