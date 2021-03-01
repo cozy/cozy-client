@@ -35,7 +35,7 @@
     "build": "../../bin/build",
     "watch": "yarn run build --watch",
     "prepublishOnly": "yarn run build",
-    "typecheck": "yarn run tsc -p tsconfig.json --outDir types"
+    "typecheck": "tsc -p tsconfig.json"
   },
   "devDependencies": {
     "@babel/cli": "7.12.8",
