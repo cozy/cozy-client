@@ -104,11 +104,17 @@ export type FilePlugin = {
     externalCacheDirectory?: object;
     dataDirectory?: object;
 };
+export type InAppBrowser = {
+    open: Function;
+};
 export type Cordova = {
     file: FilePlugin;
+    InAppBrowser: InAppBrowser;
     plugins: object;
 };
 export type CordovaWindow = {
     cordova: Cordova;
+    SafariViewController: object;
     resolveLocalFileSystemURL: Function;
+    handleOpenURL: Function;
 };

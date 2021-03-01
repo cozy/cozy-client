@@ -5,23 +5,17 @@ import {
   hasSafariPlugin,
   isIOSApp
 } from 'cozy-device-helper'
+import { CordovaWindow } from '../types'
 
 /**
- * @typedef {object} WindowInterface
- * @property {object} SafariViewController
- * @property {object} cordova
- * @property {Function} handleOpenURL
- */
-
-/**
- * @type {WindowInterface}
+ * @type {CordovaWindow}
  */
 // @ts-ignore
-const windowInterface = window
+const win = window
 
 const authenticateWithSafari = url => {
   return new Promise((resolve, reject) => {
-    windowInterface.SafariViewController.show(
+    win.SafariViewController.show(
       {
         url: url,
         transition: 'curl' // (this only works in iOS 9.1/9.2 and lower) unless animated is false you can choose from: curl, flip, fade, slide (default)
@@ -42,12 +36,12 @@ const authenticateWithSafari = url => {
       }
     )
 
-    const handle = windowInterface.handleOpenURL
-    windowInterface.handleOpenURL = url => {
-      windowInterface.SafariViewController.hide()
+    const handle = win.handleOpenURL
+    win.handleOpenURL = url => {
+      win.SafariViewController.hide()
       resolve(url)
       if (handle) {
-        windowInterface.handleOpenURL = handle
+        win.handleOpenURL = handle
       }
     }
   })
@@ -57,11 +51,7 @@ const authenticateWithInAppBrowser = url => {
   return new Promise((resolve, reject) => {
     const target = '_blank'
     const options = 'clearcache=yes,zoom=no'
-    const inAppBrowser = windowInterface.cordova.InAppBrowser.open(
-      url,
-      target,
-      options
-    )
+    const inAppBrowser = win.cordova.InAppBrowser.open(url, target, options)
 
     const removeListener = () => {
       inAppBrowser.removeEventListener('loadstart', onLoadStart)

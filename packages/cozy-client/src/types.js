@@ -69,15 +69,23 @@
  */
 
 /**
+ * @typedef InAppBrowser
+ * @property {Function} open
+ */
+
+/**
  * @typedef Cordova
  * @property {FilePlugin} file
+ * @property {InAppBrowser} InAppBrowser
  * @property {object} plugins
  */
 
 /**
  * @typedef  CordovaWindow
  * @property {Cordova} cordova
+ * @property {object} SafariViewController
  * @property {Function} resolveLocalFileSystemURL
+ * @property {Function} handleOpenURL
  */
 
 export default {}
