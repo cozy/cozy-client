@@ -1,8 +1,9 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { useClient } from './'
 import QuotaAlert from 'cozy-ui/transpiled/react/QuotaAlert'
 import filter from 'lodash/filter'
 import { FetchError } from 'cozy-stack-client'
+import { useClient } from './'
+import { ClientError } from '../types'
 
 /**
  * Rendering functions for client fetch errors by status code
@@ -19,8 +20,9 @@ const byHttpStatus = {
  *
  * @see QuotaAlert
  * @private
- * @param {Function} dismiss - remove the error from the stack to display
- * @returns {Function} React rendering
+ * @param {object} props - Props
+ * @param {Function} props.dismiss - remove the error from the stack to display
+ * @returns {React.ReactElement}
  */
 function QuotaError({ dismiss }) {
   return <QuotaAlert onClose={dismiss} />
@@ -29,12 +31,13 @@ function QuotaError({ dismiss }) {
 /**
  * Returns the handler for an error
  *
- * @param {Error} error -
+ * @param {ClientError} error - The error
  * @returns {Function|null} React Component
  */
 function getErrorComponent(error) {
   if (error instanceof Response || error instanceof FetchError) {
-    return byHttpStatus[error.status] || null
+    const status = error.status || ''
+    return byHttpStatus[status] || null
   }
   return null
 }
@@ -44,9 +47,9 @@ function getErrorComponent(error) {
  *
  * @private
  * @see ClientErrors
- * @param {Error[]} errorStack - array of errors/exceptions
+ * @param {ClientError[]} errorStack - array of errors/exceptions
  * @param {Function} setErrorStack - mutates the array of errors
- * @returns {Function} React rendering
+ * @returns {Array<React.ReactElement>} React rendering
  */
 function renderErrors(errorStack, setErrorStack) {
   const errors = errorStack.map((error, key) => {
@@ -82,7 +85,8 @@ function renderErrors(errorStack, setErrorStack) {
  * }
  * ```
  *
- * @param {boolean} handleExceptions - should cozy-client directly handle errors before forwarding them to the caller?
+ * @param {object} [props] - Props
+ * @param {boolean} [props.handleExceptions] - should cozy-client directly handle errors before forwarding them to the caller?
  * @returns {{ClientErrors: Function}} React component
  */
 export default function useClientErrors({ handleExceptions = true } = {}) {
@@ -92,7 +96,7 @@ export default function useClientErrors({ handleExceptions = true } = {}) {
   /**
    * Handle client errors, add them to the error stack
    *
-   * @param {Error} error -
+   * @param {ClientError} error -
    * @returns {boolean} true if the error was manager, false otherwise
    */
   const handleError = useCallback(
@@ -122,10 +126,12 @@ export default function useClientErrors({ handleExceptions = true } = {}) {
     }
   }, [client, handleError, handleExceptions])
 
+  // @ts-ignore
   const ClientErrors = useCallback(
     () => renderErrors(errorStack, setErrorStack),
     [errorStack, setErrorStack]
   )
+  // @ts-ignore
   ClientErrors.displayName = 'ClientErrors'
   return { ClientErrors }
 }

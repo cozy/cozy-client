@@ -1,0 +1,35 @@
+export class StoreProxy {
+    constructor(state: any);
+    state: any;
+    readDocument(doctype: any, id: any): any;
+    writeDocument(document: any): void;
+    setState(updaterFn: any): void;
+    getState(): any;
+}
+export default combinedReducer;
+export function createStore(): import("redux").Store<import("redux").CombinedState<{
+    cozy: {
+        documents: any;
+        queries: any;
+    };
+}>, import("redux").AnyAction> & {
+    dispatch: any;
+};
+export function getStateRoot(state: any): any;
+export function getCollectionFromState(state: any, doctype: any): any[];
+export function getDocumentFromState(state: any, doctype: any, id: any): any;
+export function getQueryFromStore(store: any, queryId: any): any;
+export function getQueryFromState(state: any, queryId: any): any;
+export function getRawQueryFromState(state: any, queryId: any): any;
+declare function combinedReducer(state: {
+    documents: {};
+    queries: {};
+}, action: any): {
+    documents: any;
+    queries: any;
+};
+export function resetState(): {
+    type: string;
+};
+export { initQuery, loadQuery, receiveQueryResult, receiveQueryError } from "./queries";
+export { initMutation, receiveMutationResult, receiveMutationError } from "./mutations";

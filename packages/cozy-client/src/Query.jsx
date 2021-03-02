@@ -1,5 +1,7 @@
 import { Component } from 'react'
+import CozyClient from './CozyClient'
 import PropTypes from 'prop-types'
+import ObservableQuery from './ObservableQuery'
 
 const dummyState = {}
 
@@ -22,7 +24,6 @@ const getQueryAttributes = (client, props) => {
   const createDocument = client.create.bind(client)
   const saveDocument = client.save.bind(client)
   const deleteDocument = client.destroy.bind(client)
-  const getAssociation = client.getAssociation.bind(client)
 
   // Methods on ObservableQuery
   const queryDefinition =
@@ -51,7 +52,6 @@ const getQueryAttributes = (client, props) => {
     createDocument,
     saveDocument,
     deleteDocument,
-    getAssociation,
     fetchMore,
     fetch,
     mutations
@@ -66,7 +66,6 @@ const computeChildrenArgs = queryAttributes => {
     createDocument,
     saveDocument,
     deleteDocument,
-    getAssociation,
     mutations
   } = queryAttributes
 
@@ -80,7 +79,6 @@ const computeChildrenArgs = queryAttributes => {
       createDocument: createDocument,
       saveDocument: saveDocument,
       deleteDocument: deleteDocument,
-      getAssociation: getAssociation,
       ...mutations
     }
   ]
@@ -96,8 +94,26 @@ export default class Query extends Component {
       )
     }
 
-    Object.assign(this, getQueryAttributes(client, props))
+    /**
+     * Current client
+     *
+     * @type {CozyClient}
+     */
+    this.client = null
+    /**
+     * Observable query to connect store to query
+     *
+     * @type {ObservableQuery}
+     */
+    this.observableQuery = null
+    /**
+     * Callback to unsubscribe from observable query
+     *
+     * @type {Function}
+     */
+    this.queryUnsubscribe = null
 
+    Object.assign(this, getQueryAttributes(client, props))
     this.recomputeChildrenArgs()
   }
 
@@ -133,7 +149,8 @@ export default class Query extends Component {
   }
 
   render() {
-    const { children } = this.props
+    const children = this.props.children
+    // @ts-ignore
     return children(this.childrenArgs[0], this.childrenArgs[1])
   }
 }

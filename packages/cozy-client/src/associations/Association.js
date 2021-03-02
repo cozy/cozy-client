@@ -1,9 +1,14 @@
+import { QueryState } from '../types'
+import { QueryDefinition } from '../queries/dsl'
+
 /**
  * Associations are used by components to access related store documents that are
  * linked in a document. They are also responsible for building the `QueryDefinition` that is
  * used by the client to automatically fetch relationship data.
  *
  * Hydrated documents used by components come with Association instances.
+ *
+ * @interface
  *
  * @description
  * Example: The schema defines an `author` relationship :
@@ -73,7 +78,11 @@ class Association {
    * @param  {object} target - Original object containing raw data
    * @param  {string} name - Attribute under which the association is stored
    * @param  {string} doctype - Doctype of the documents managed by the association
-   * @param {string} options
+   * @param {object} options - Options passed from the client
+   * @param {Function} options.get - Get a document from the store
+   * @param {Function} options.query - Execute client query
+   * @param {Function} options.mutate - Execute client mutate
+   * @param {Function} options.save - Execute client save
    * @param  {Function} options.dispatch - Store's dispatch, comes from the client
    */
   constructor(target, name, doctype, options) {
@@ -166,6 +175,8 @@ class Association {
    * ```
    *
    * Derived `Association`s need to implement this method.
+   *
+   * @returns {object}
    */
   get raw() {
     throw new Error('A relationship must define its raw getter')
@@ -202,6 +213,8 @@ class Association {
    * ```
    *
    * Derived `Association`s need to implement this method.
+   *
+   * @returns {object}
    */
   get data() {
     throw new Error('A relationship must define its data getter')
@@ -210,7 +223,7 @@ class Association {
   /**
    * Derived `Association`s need to implement this method.
    *
-   * @returns {QueryDefinition}
+   * @returns {QueryDefinition | QueryState}
    */
   static query() {
     throw new Error('A custom relationship must define its query() function')

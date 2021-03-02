@@ -1,10 +1,12 @@
 import Association from './Association'
-import Query from '../queries/dsl'
+import { Q } from '../queries/dsl'
 
 /**
  *
  * Used when related documents are stored directly under the attribute with
  * only the ids.
+ *
+ * @property {Function} get
  *
  * @description
  *
@@ -43,6 +45,11 @@ import Query from '../queries/dsl'
  *
  */
 class HasManyInPlace extends Association {
+  /**
+   * Raw property
+   *
+   * @type {Array<string>}
+   */
   get raw() {
     return this.target[this.name]
   }
@@ -82,9 +89,10 @@ class HasManyInPlace extends Association {
     return (this.raw || []).map(_id => this.get(doctype, _id))
   }
 
-  static query() {
-    if (this.raw && this.raw.length > 0) {
-      return Query({ doctype: this.doctype, ids: this.raw })
+  static query(doc, client, relationship) {
+    const ids = doc[relationship.name]
+    if (ids && ids > 0) {
+      return Q(relationship.doctype).getByIds(ids)
     } else {
       return null
     }

@@ -4,7 +4,9 @@
   "license": "MIT",
   "main": "dist/node.js",
   "browser": "dist/index.js",
+  "types": "types/index.d.ts",
   "files": [
+    "types",
     "dist"
   ],
   "repository": {
@@ -13,6 +15,7 @@
   },
   "dependencies": {
     "@cozy/minilog": "1.0.0",
+    "@types/jest": "^26.0.20",
     "btoa": "^1.2.1",
     "cozy-device-helper": "^1.7.3",
     "cozy-logger": "^1.6.0",
@@ -23,7 +26,7 @@
     "open": "^7.0.2",
     "prop-types": "^15.6.2",
     "react-redux": "^7.2.0",
-    "redux": "^3.7.2",
+    "redux": "3 || 4",
     "redux-thunk": "^2.3.0",
     "server-destroy": "^1.0.1",
     "sift": "^6.0.0",
@@ -32,7 +35,8 @@
   "scripts": {
     "build": "../../bin/build",
     "watch": "yarn run build --watch",
-    "prepublishOnly": "yarn run build"
+    "prepublishOnly": "yarn run build",
+    "typecheck": "tsc -p tsconfig.json"
   },
   "devDependencies": {
     "@babel/cli": "7.12.8",
@@ -43,11 +47,13 @@
     "btoa": "1.2.1",
     "cozy-logger": "1.6.0",
     "cozy-ui": "^34.0.0",
+    "jsdoc-plugin-intersection": "^1.0.4",
     "mockdate": "^2.0.2",
     "react": "16.13.1",
     "react-redux": "^7.2.0",
     "react-test-renderer": "^16.12.0",
-    "server-destroy": "^1.0.1"
+    "server-destroy": "^1.0.1",
+    "typescript": "^4.1.5"
   },
   "peerDependencies": {
     "cozy-ui": "^34.0.0",

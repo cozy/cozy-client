@@ -67,7 +67,7 @@ describe('Query', () => {
       )
       const initQueryDispatch = {
         queryDefinition: { doctype: 'io.cozy.todos' },
-        queryId: 1,
+        queryId: '1',
         type: 'INIT_QUERY'
       }
       expect(spy).toHaveBeenNthCalledWith(1, initQueryDispatch)
@@ -170,7 +170,7 @@ describe('Query', () => {
           fetchMore: expect.any(Function),
           fetchStatus: 'loading',
           hasMore: false,
-          id: 1,
+          id: '1',
           lastError: null,
           lastFetch: null,
           lastUpdate: null

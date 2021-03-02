@@ -2,6 +2,8 @@ import get from 'lodash/get'
 import isString from 'lodash/isString'
 import { setQualification } from './document'
 import { Q } from '../queries/dsl'
+import { IOCozyFile, QueryResult } from '../types'
+import CozyClient from '../CozyClient'
 
 const FILE_TYPE = 'file'
 const DIR_TYPE = 'directory'
@@ -11,7 +13,7 @@ const FILENAME_WITH_EXTENSION_REGEX = /(.+)(\..*)$/
 /**
  * Returns base filename and extension
  *
- * @param {object} file An io.cozy.files
+ * @param {IOCozyFile} file An io.cozy.files
  * @returns {object}  {filename, extension}
  */
 export const splitFilename = file => {
@@ -28,17 +30,17 @@ export const splitFilename = file => {
 
 /**
  *
- * @param {File} file io.cozy.files
+ * @param {IOCozyFile} file io.cozy.files
  */
 export const isFile = file => file && file.type === FILE_TYPE
 /**
  *
- * @param {File} file io.cozy.files
+ * @param {IOCozyFile} file io.cozy.files
  */
 export const isDirectory = file => file && file.type === DIR_TYPE
 /**
  *
- * @param {File} file io.cozy.files
+ * @param {IOCozyFile} file io.cozy.files
  */
 export const isNote = file => {
   if (
@@ -58,7 +60,7 @@ export const isNote = file => {
 
 /**
  *
- * @param {File} file io.cozy.files
+ * @param {IOCozyFile} file io.cozy.files
  * @returns {boolean} true if the file is a shortcut
  */
 export const isShortcut = file => {
@@ -109,7 +111,7 @@ export function getParentFolderId(file) {
 /**
  * Returns the status of a sharing shortcut.
  *
- * @param {object} file  - io.cozy.files document
+ * @param {IOCozyFile} file  - io.cozy.files document
  *
  * @returns {string} A description of the status
  */
@@ -119,7 +121,7 @@ export const getSharingShortcutStatus = file =>
 /**
  * Returns the mime type of the target of the sharing shortcut, if it is a file.
  *
- * @param {object} file  - io.cozy.files document
+ * @param {IOCozyFile} file  - io.cozy.files document
  *
  * @returns {string} The mime-type of the target file, or an empty string is the target is not a file.
  */
@@ -129,7 +131,7 @@ export const getSharingShortcutTargetMime = file =>
 /**
  * Returns the doctype of the target of the sharing shortcut.
  *
- * @param {object} file  - io.cozy.files document
+ * @param {IOCozyFile} file  - io.cozy.files document
  *
  * @returns {string} A doctype
  */
@@ -139,7 +141,7 @@ export const getSharingShortcutTargetDoctype = file =>
 /**
  * Returns whether the file is a shortcut to a sharing
  *
- * @param {object} file  - io.cozy.files document
+ * @param {IOCozyFile} file  - io.cozy.files document
  *
  * @returns {boolean}
  */
@@ -149,7 +151,7 @@ export const isSharingShortcut = file => Boolean(getSharingShortcutStatus(file))
  * Returns whether the file is a shortcut to a sharing
  *
  * @deprecated Prefer to use isSharingShortcut.
- * @param {object} file  - io.cozy.files document
+ * @param {IOCozyFile} file  - io.cozy.files document
  *
  * @returns {boolean}
  */
@@ -163,7 +165,7 @@ export const isSharingShorcut = file => {
 /**
  * Returns whether the sharing shortcut is new
  *
- * @param {object} file  - io.cozy.files document
+ * @param {IOCozyFile} file  - io.cozy.files document
  *
  * @returns {boolean}
  */
@@ -188,10 +190,10 @@ export const isSharingShorcutNew = file => {
 /**
  * Save the file with the given qualification
  *
- * @param {object} client - The CozyClient instance
- * @param {object} file - The file to qualify
+ * @param {CozyClient} client - The CozyClient instance
+ * @param {IOCozyFile} file - The file to qualify
  * @param {object} qualification - The file qualification
- * @returns {object} - The saved file
+ * @returns {Promise<IOCozyFile>} - The saved file
  */
 export const saveFileQualification = async (client, file, qualification) => {
   const qualifiedFile = setQualification(file, qualification)
@@ -205,7 +207,7 @@ export const saveFileQualification = async (client, file, qualification) => {
  *
  * @param {object} client - The CozyClient instance
  * @param {object} docRules - the rules containing the searched qualification and the count
- * @returns {object} - The files found by the rules
+ * @returns {Promise<QueryResult>} - The files found by the rules
  */
 export const fetchFilesByQualificationRules = async (client, docRules) => {
   const { rules, count } = docRules

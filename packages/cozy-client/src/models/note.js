@@ -24,7 +24,7 @@ export const generateUrlForNote = (notesAppUrl, file) => {
  *
  * @param {object} client CozyClient instance
  * @param {object} file io.cozy.file object
- * @returns {string} url
+ * @returns {Promise<string>} url
  */
 export const fetchURL = async (client, file) => {
   const {

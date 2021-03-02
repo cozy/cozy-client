@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import compose from 'lodash/flowRight'
 import Query from './Query'
@@ -9,15 +9,19 @@ import { useQueries } from './hooks/useQuery'
  * @function
  * @description HOC to provide client from context as prop
  *
- * @param  {Component} Component - wrapped component
+ * @param  {Component} WrappedComponent - wrapped component
  * @returns {Function} - Component that will receive client as prop
  */
-export const withClient = Component => {
+export const withClient = WrappedComponent => {
   const Wrapped = props => {
     const client = useClient()
-    return <Component {...props} client={client} />
+    // @ts-ignore
+    return <WrappedComponent {...props} client={client} />
   }
-  Wrapped.displayName = `withClient(${Component.displayName || Component.name})`
+  // @ts-ignore
+  Wrapped.displayName = `withClient(${WrappedComponent.displayName ||
+    // @ts-ignore
+    WrappedComponent.name})`
   return Wrapped
 }
 

@@ -42,6 +42,19 @@ import { chain } from './CozyLink'
 import ObservableQuery from './ObservableQuery'
 import { CozyClient as SnapshotClient } from './testing/snapshots'
 import logger from './logger'
+import {
+  Link,
+  Mutation,
+  DocumentCollection,
+  QueryResult,
+  CozyClientDocument,
+  HydratedDocument,
+  ReduxStore,
+  QueryState,
+  Token,
+  ClientResponse,
+  ReferenceMap
+} from './types'
 
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
 
@@ -65,27 +78,33 @@ const referencesUnsupportedError = relationshipClassName => {
   )
 }
 
-/**
- * @typedef {object} Link
- * @typedef {object} Mutation
- * @typedef {object} DocumentCollection
- * @typedef {object} QueryResult
- * @typedef {object} HydratedDocument
- * @typedef {object} ReduxStore
- * @typedef {object} QueryState
- */
-
-/**
- * A reference to a document (special case of a relationship used between photos and albums)
- * https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files/#references
- *
- * @typedef {object} Reference
- * @property {string} _id - id of the document
- * @property {string} _type - doctype of the document
- */
-
 const DOC_CREATION = 'creation'
 const DOC_UPDATE = 'update'
+
+/**
+ * @interface EventEmitter
+ * @function
+ * @name EventEmitter#emit
+ */
+
+/**
+ * @typedef {object} ClientOptions
+ * @property {object} [client]
+ * @property {object} [link]
+ * @property {object} [links]
+ * @property {Token} [token]
+ * @property {string} [uri]
+ * @property {object} [stackClient]
+ * @property {boolean} [warningForCustomHandlers]
+ * @property {boolean} [autoHydrate]
+ * @property {object} [oauth]
+ * @property {Function} [onTokenRefresh]
+ * @property {Function} [onTokenRefresh]
+ * @property  {Link}         [options.link]   - Backward compatibility
+ * @property  {Array<Link>}  [options.links]  - List of links
+ * @property  {object}       [options.schema] - Schema description for each doctypes
+ * @property  {object}       [options.appMetadata] - Metadata about the application that will be used in ensureCozyMetadata
+ */
 
 /**
  * Responsible for
@@ -94,14 +113,12 @@ const DOC_UPDATE = 'update'
  * - Hydration
  * - Creating plan for saving documents
  * - Associations
+ *
+ * @augments {EventEmitter}
  */
 class CozyClient {
   /**
-   * @param  {object}       options - Options
-   * @param  {Link}         options.link   - Backward compatibility
-   * @param  {Array.Link}   options.links  - List of links
-   * @param  {object}       options.schema - Schema description for each doctypes
-   * @param  {object}       options.appMetadata - Metadata about the application that will be used in ensureCozyMetadata
+   * @param  {ClientOptions} rawOptions - Options
    *
    * @example
    * ```js
@@ -122,13 +139,22 @@ class CozyClient {
    *
    * Cozy-Client will automatically call `this.login()` if provided with a token and an uri
    */
-  constructor({ link, links, schema = {}, appMetadata = {}, ...options } = {}) {
+  constructor(rawOptions = {}) {
+    const {
+      link,
+      links,
+      schema = {},
+      appMetadata = {},
+      ...options
+    } = rawOptions
     if (link) {
       console.warn('`link` is deprecated, use `links`')
     }
 
     this.appMetadata = appMetadata
+
     this.options = options
+
     this.idCounter = 1
     this.isLogged = false
     this.instanceOptions = {}
@@ -160,7 +186,21 @@ class CozyClient {
     if (options.uri && options.token) {
       this.login()
     }
+
+    /**
+     * @type {object}
+     */
+    this.storeAccesors = null
   }
+
+  /**
+   * Gets overrided by MicroEE.mixin
+   * This is here just so typescript does not scream
+   *
+   * TODO Find a better way to make TS understand that emit is
+   * a method from cozy-client
+   */
+  emit(...args) {}
 
   /**
    * A plugin is a class whose constructor receives the client as first argument.
@@ -243,7 +283,7 @@ class CozyClient {
    *
    * Warning: unlike other instantiators, this one needs to be awaited.
    *
-   * @returns {CozyClient} An instance of a client, configured from the old client
+   * @returns {Promise<CozyClient>} An instance of a client, configured from the old client
    */
   static async fromOldOAuthClient(oldClient, options) {
     const hasOauthCreds = oldClient._oauth && oldClient._authcreds != null
@@ -288,6 +328,9 @@ class CozyClient {
    */
   static fromDOM(selector = '[role=application]', options = {}) {
     const root = document.querySelector(selector)
+    if (!(root instanceof HTMLElement)) {
+      return
+    }
     if (!root || !root.dataset) {
       throw new Error(`Found no data in ${selector} to instantiate cozyClient`)
     }
@@ -338,7 +381,7 @@ class CozyClient {
    * - "beforeLogin" at the beginning, before links have been set up
    * - "login" when the client is fully logged in and links have been set up
    *
-   * @param  {object}   options - Options
+   * @param  {object}   [options] - Options
    * @param  {string}   options.token  - If passed, the token is set on the client
    * @param  {string}   options.uri  - If passed, the uri is set on the client
    * @returns {Promise} - Resolves when all links have been setup and client is fully logged in
@@ -480,7 +523,7 @@ client.query(Q('io.cozy.bills'))`)
    *
    * @param  {string} type - Doctype of the document
    * @param  {object} doc - Document to save
-   * @param  {Array.<Reference>} references - (Optional) References are a special kind of relationship
+   * @param  {ReferenceMap} [references] - References are a special kind of relationship
    * that is not stored inside the referencer document, they are used for example between a photo
    * and its album. You should not need to use it normally.
    * @param  {object} options - Mutation options
@@ -591,12 +634,13 @@ client.query(Q('io.cozy.bills'))`)
    * client.getDocumentSavePlan(baseDoc, relationships)
    * ```
    *
+   *
    * @param  {object} document - Document to create
-   * @param  {object.<string, Array.<Reference>>} [referencesByName] - References to the created document. The
+   * @param  {ReferenceMap} [referencesByName] - References to the created document. The
    * relationship class associated to each reference list should support references, otherwise this
    * method will throw.
    *
-   * @returns {Mutation[]}  One or more mutation to execute
+   * @returns {Mutation[]|Mutation}  One or more mutation to execute
    */
   getDocumentSavePlan(document, referencesByName) {
     const isNewDoc = !document._rev
@@ -667,7 +711,6 @@ client.query(Q('io.cozy.bills'))`)
    * @param  {Function} fn      - Callback to be executed
    */
   static registerHook(doctype, name, fn) {
-    CozyClient.hooks = CozyClient.hooks || {}
     const hooks = (CozyClient.hooks[doctype] = CozyClient.hooks[doctype] || {})
     hooks[name] = hooks[name] || []
     hooks[name].push(fn)
@@ -685,8 +728,8 @@ client.query(Q('io.cozy.bills'))`)
   /**
    * Destroys a document. {before,after}:destroy hooks will be fired.
    *
-   * @param  {Document} document - Document to be deleted
-   * @returns {Document} The document that has been deleted
+   * @param  {CozyClientDocument} document - Document to be deleted
+   * @returns {Promise<CozyClientDocument>} The document that has been deleted
    */
   async destroy(document, mutationOptions = {}) {
     await this.triggerHook('before:destroy', document)
@@ -722,10 +765,11 @@ client.query(Q('io.cozy.bills'))`)
    * executes its query when mounted if no fetch policy has been indicated.
    *
    * @param  {QueryDefinition} queryDefinition - Definition that will be executed
-   * @param  {string} options - Options
-   * @param  {string} options.as - Names the query so it can be reused (by multiple components for example)
-   * @param  {string} options.fetchPolicy - Fetch policy to bypass fetching based on what's already inside the state. See "Fetch policies"
-   * @returns {QueryResult}
+   * @param  {object} [options] - Options
+   * @param  {string} [options.as] - Names the query so it can be reused (by multiple components for example)
+   * @param  {Function} [options.fetchPolicy] - Fetch policy to bypass fetching based on what's already inside the state. See "Fetch policies"
+   * @param  {string} [options.update] - Does not seem to be used
+   * @returns {Promise<QueryResult>}
    */
   async query(queryDefinition, { update, ...options } = {}) {
     this.ensureStore()
@@ -774,7 +818,7 @@ client.query(Q('io.cozy.bills'))`)
    *
    * @param  {QueryDefinition} queryDefinition - Definition to be executed
    * @param  {object} options - Options to the query
-   * @returns {Array} All documents matching the query
+   * @returns {Promise<Array>} All documents matching the query
    */
   async queryAll(queryDefinition, options) {
     const documents = []
@@ -805,6 +849,16 @@ client.query(Q('io.cozy.bills'))`)
     return new ObservableQuery(queryId, queryDefinition, this, options)
   }
 
+  /**
+   * Mutate a document
+   *
+   * @param  {object}    mutationDefinition - Describe the mutation
+   * @param {object} [options] - Options
+   * @param  {string}    [options.as] - Mutation id
+   * @param  {Function}    [options.update] - Function to update the document
+   * @param  {Function}    [options.updateQueries] - Function to update queries
+   * @returns {Promise}
+   */
   async mutate(mutationDefinition, { update, updateQueries, ...options } = {}) {
     this.ensureStore()
     const mutationId = options.as || this.generateId()
@@ -834,7 +888,7 @@ client.query(Q('io.cozy.bills'))`)
    *
    * @private
    * @param  {QueryDefinition} definition QueryDefinition to be executed
-   * @returns {Response}
+   * @returns {Promise<ClientResponse>}
    */
   async requestQuery(definition) {
     const mainResponse = await this.chain.request(definition)
@@ -961,7 +1015,7 @@ client.query(Q('io.cozy.bills'))`)
    * Instead, the relationships will have null documents.
    *
    * @param  {string} doctype - Doctype of the documents being hydrated
-   * @param  {Array<Document>} documents - Documents to be hydrated
+   * @param  {Array<CozyClientDocument>} documents - Documents to be hydrated
    * @returns {Array<HydratedDocument>}
    */
   hydrateDocuments(doctype, documents) {
@@ -983,8 +1037,8 @@ client.query(Q('io.cozy.bills'))`)
    * The original document is kept in the target attribute of
    * the relationship
    *
-   * @param  {Document} document for which relationships must be resolved
-   * @param  {Schema} schemaArg for the document doctype
+   * @param  {CozyClientDocument} document - for which relationships must be resolved
+   * @param  {Schema} [schemaArg] - Optional
    * @returns {HydratedDocument}
    */
   hydrateDocument(document, schemaArg) {
@@ -1018,17 +1072,6 @@ client.query(Q('io.cozy.bills'))`)
   }
 
   /**
-   * Creates an association that is linked to the store.
-   */
-  getAssociation(document, associationName) {
-    return createAssociation(
-      document,
-      this.schema.getAssociation(document._type, associationName),
-      this.getRelationshipStoreAccessors()
-    )
-  }
-
-  /**
    * Returns the accessors that are given to the relationships for them
    * to deal with the stores.
    *
@@ -1054,7 +1097,7 @@ client.query(Q('io.cozy.bills'))`)
    *
    * @param {string} type - Doctype of the collection
    *
-   * @returns {Document[]} Array of documents or null if the collection does not exist.
+   * @returns {CozyClientDocument[]} Array of documents or null if the collection does not exist.
    */
   getCollectionFromState(type) {
     try {
@@ -1071,7 +1114,7 @@ client.query(Q('io.cozy.bills'))`)
    * @param {string} type - Doctype of the document
    * @param {string} id   - Id of the document
    *
-   * @returns {Document} Document or null if the object does not exist.
+   * @returns {CozyClientDocument} Document or null if the object does not exist.
    */
   getDocumentFromState(type, id) {
     try {
@@ -1087,8 +1130,8 @@ client.query(Q('io.cozy.bills'))`)
    *
    * @param {string} id - Id of the query (set via Query.props.as)
    * @param {object} options - Options
-   * @param {boolean} options.hydrated - Whether documents should be returned already hydrated (default: false)
-   * @param  {object} options.singleDocData - If true, the "data" returned will be
+   * @param {boolean} [options.hydrated] - Whether documents should be returned already hydrated (default: false)
+   * @param  {object} [options.singleDocData] - If true, the "data" returned will be
    * a single doc instead of an array for single doc queries. Defaults to false for backward
    * compatibility but will be set to true in the future.
    *
@@ -1131,7 +1174,7 @@ client.query(Q('io.cozy.bills'))`)
    * Has a behavior close to <Query /> or useQuery
    *
    * @param {object} query - Query with definition and options
-   * @returns {QueryState} Query state
+   * @returns {Promise<QueryState>} Query state
    */
   fetchQueryAndGetFromState = async query => {
     try {
@@ -1159,7 +1202,7 @@ client.query(Q('io.cozy.bills'))`)
    * Performs a complete OAuth flow, including updating the internal token at the end.
    *
    * @param   {Function} openURLCallback Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
-   * @returns {object}   Contains the fetched token and the client information. These should be stored and used to restore the client.
+   * @returns {Promise<object>} Contains the fetched token and the client information. These should be stored and used to restore the client.
    */
   async startOAuthFlow(openURLCallback) {
     const stackClient = this.getStackClient()
@@ -1221,8 +1264,8 @@ client.query(Q('io.cozy.bills'))`)
    * ```
    *
    * @param {ReduxStore} store - A redux store
-   * @param {object} options - Options
-   * @param {boolean} options.force - Will deactivate throwing when client's store already exists
+   * @param {object} [options] - Options
+   * @param {boolean} [options.force] - Will deactivate throwing when client's store already exists
    */
   setStore(store, { force = false } = {}) {
     if (store === undefined) {
@@ -1357,10 +1400,15 @@ instantiation of the client.`
     return this.store.dispatch(action)
   }
 
+  /**
+   * Generates a random id for queries
+   *
+   * @returns {string}
+   */
   generateId() {
     const id = this.idCounter
     this.idCounter++
-    return id
+    return id.toString()
   }
 
   /**
@@ -1381,6 +1429,11 @@ instantiation of the client.`
    */
   loadInstanceOptionsFromDOM(selector = '[role=application]') {
     const root = document.querySelector(selector)
+    if (!(root instanceof HTMLElement)) {
+      throw new Error(
+        'The selector that is passed does not return an HTMLElement'
+      )
+    }
     this.instanceOptions = root.dataset.cozy
       ? JSON.parse(root.dataset.cozy)
       : { ...root.dataset } // convert from DOMStringMap to plain object
@@ -1404,6 +1457,9 @@ instantiation of the client.`
     return new SnapshotClient({ uri: this.options.uri })
   }
 }
+
+CozyClient.hooks = CozyClient.hooks || {}
+
 CozyClient.fetchPolicies = fetchPolicies
 //COZY_CLIENT_VERSION_PACKAGE in replaced by babel. See babel config
 CozyClient.version = 'COZY_CLIENT_VERSION_PACKAGE'

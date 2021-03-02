@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 
 const useFetchShortcut = (client, id) => {
-  const [shortcutInfos, setShortcutInfos] = useState()
-  const [shortcutImg, setShortcutImg] = useState()
+  const [shortcutInfos, setShortcutInfos] = useState(null)
+  const [shortcutImg, setShortcutImg] = useState(null)
   const [fetchStatus, setFetchStatus] = useState('idle')
   useEffect(() => {
     const fetchData = async () => {

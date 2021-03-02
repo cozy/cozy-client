@@ -54,6 +54,7 @@ to respond to queries and mutations.
 ### new PouchLink([opts])
 constructor - Initializes a new PouchLink
 
+**Returns**: <code>object</code> - The PouchLink instance  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |

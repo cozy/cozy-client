@@ -57,7 +57,7 @@ class PouchLink extends CozyLink {
    * @param {string[]} opts.doctypes Doctypes to replicate
    * @param {object[]} opts.doctypesReplicationOptions A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote")
    *
-   * @returns {object} The PouchLink instance
+   * @return {object} The PouchLink instance
    */
 
   constructor(opts = {}) {

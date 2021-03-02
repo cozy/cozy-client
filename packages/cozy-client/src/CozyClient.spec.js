@@ -156,7 +156,9 @@ describe('CozyClient initialization', () => {
 
   it('can be instantiated from dataset injected by the Stack in DOM', async () => {
     const options = { cozyDomain: 'cozy.tools', cozyToken: 'abc123' }
-    jest.spyOn(document, 'querySelector').mockReturnValue({ dataset: options })
+    const node = document.createElement('div')
+    Object.assign(node.dataset, options)
+    jest.spyOn(document, 'querySelector').mockReturnValue(node)
     const client = CozyClient.fromDOM()
     expect(client.stackClient.uri).toBe('http://cozy.tools')
     expect(client.stackClient.token.token).toBe('abc123')
@@ -168,13 +170,43 @@ describe('CozyClient initialization', () => {
       cozyDomain: 'cozy.tools',
       cozyToken: 'abc123'
     })
-    jest
-      .spyOn(document, 'querySelector')
-      .mockReturnValue({ dataset: { cozy: options } })
+    const node = document.createElement('div')
+    node.dataset.cozy = options
+    jest.spyOn(document, 'querySelector').mockReturnValue(node)
     const client = CozyClient.fromDOM()
     expect(client.stackClient.uri).toBe('http://cozy.tools')
     expect(client.stackClient.token.token).toBe('abc123')
     document.querySelector.mockRestore()
+  })
+
+  describe('Instance options', () => {
+    it('should expose options loaded via the DOM', () => {
+      const options = { cozyDomain: 'cozy.tools', cozyToken: 'abc123' }
+      const node = document.createElement('div')
+      Object.assign(node.dataset, options)
+      const globalQuerySelectorBefore = document.querySelector
+      document.querySelector = jest.fn().mockReturnValue(node)
+
+      const client = new CozyClient({})
+      client.loadInstanceOptionsFromDOM()
+      expect(client.getInstanceOptions()).toEqual(options)
+
+      document.querySelector = globalQuerySelectorBefore
+    })
+
+    it('should load the single DOM dataset', () => {
+      const options = { domain: 'cozy.tools', token: 'abc123' }
+      const node = document.createElement('div')
+      node.dataset.cozy = JSON.stringify(options)
+      const globalQuerySelectorBefore = document.querySelector
+      document.querySelector = jest.fn().mockReturnValue(node)
+
+      const client = new CozyClient({})
+      client.loadInstanceOptionsFromDOM()
+      expect(client.getInstanceOptions()).toEqual(options)
+
+      document.querySelector = globalQuerySelectorBefore
+    })
   })
 
   describe('plugins', () => {
@@ -653,7 +685,7 @@ describe('CozyClient', () => {
             }),
             mutationType: 'DELETE_DOCUMENT'
           },
-          mutationId: 1
+          mutationId: '1'
         })
       )
     })
@@ -1347,37 +1379,6 @@ describe('CozyClient', () => {
     })
   })
 
-  describe('Instance options', () => {
-    it('should expose options loaded via the DOM', () => {
-      const options = { cozyDomain: 'cozy.tools', cozyToken: 'abc123' }
-
-      const globalQuerySelectorBefore = document.querySelector
-      document.querySelector = jest.fn().mockReturnValue({ dataset: options })
-
-      const client = new CozyClient({})
-      client.loadInstanceOptionsFromDOM()
-      expect(client.getInstanceOptions()).toEqual(options)
-
-      document.querySelector = globalQuerySelectorBefore
-    })
-
-    it('should load the single DOM dataset', () => {
-      const options = { domain: 'cozy.tools', token: 'abc123' }
-      const dataset = {
-        cozy: JSON.stringify(options)
-      }
-
-      const globalQuerySelectorBefore = document.querySelector
-      document.querySelector = jest.fn().mockReturnValue({ dataset })
-
-      const client = new CozyClient({})
-      client.loadInstanceOptionsFromDOM()
-      expect(client.getInstanceOptions()).toEqual(options)
-
-      document.querySelector = globalQuerySelectorBefore
-    })
-  })
-
   describe('serialization', () => {
     it('should be snapshotted in a simplified format', () => {
       const client = new CozyClient({ uri: 'http://localhost:8080' })
@@ -1585,7 +1586,7 @@ describe('file update', () => {
     })
     const { data: doc } = await client.save({ ...FILE_1, label: 'edited' })
     expect(client.store.dispatch.mock.calls[0][0]).toMatchObject(
-      initMutation(1, {
+      initMutation('1', {
         mutationType: 'UPDATE_DOCUMENT',
         document: {
           ...FILE_1,

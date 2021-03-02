@@ -17,6 +17,11 @@
     "no-param-reassign": 2
   },
   "settings": {
+    "jsdoc": {
+      "preferredTypes": {
+        "object.<>": "Object.<>"
+      }
+    },
     "react": {
       "version": "16.2"
     }

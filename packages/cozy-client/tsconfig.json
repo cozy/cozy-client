@@ -1,0 +1,17 @@
+{
+    "include": ["src/**/*"],
+    "exclude": ["**/*.spec.*"],
+    "compilerOptions": {
+      "allowJs": true,
+      "checkJs": true,
+      "outDir": "types",
+      "emitDeclarationOnly": true,
+      "resolveJsonModule": true,
+      "esModuleInterop": true,
+      "jsx": "react",
+      "declaration": true,
+      "target": "es6",
+      "moduleResolution": "node"
+    },
+    "types": ["jest"]
+}

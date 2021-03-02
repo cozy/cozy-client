@@ -16,13 +16,18 @@ global.btoa = require('btoa')
 /**
  * Creates and starts and HTTP server suitable for OAuth authentication
  *
- * @param  {Function} serverOptions - OAuth callback server options
+ * @param  {object} serverOptions - OAuth callback server options
  * @param  {Function} serverOptions.onAuthentication - Additional callback called
  * when the user authenticates
- * @param  {Function} serverOptions.route - Route used for authentication
- * @param  {Function} serverOptions.route - Port on which the server will listen
+ * @param  {string} serverOptions.route - Route used for authentication
+ * @param  {number} serverOptions.port - Port on which the server will listen
  * @param  {Function} serverOptions.onListen - Callback called when the
  * server starts
+ *
+ * @typedef {object} DestroyableServer
+ * @function destroy
+ *
+ * @returns {DestroyableServer}
  *
  * @private
  */
@@ -57,7 +62,7 @@ const createCallbackServer = serverOptions => {
  * @param {number} serverOptions.port - Port used for the OAuth callback server
  * @param {Function} serverOptions.onAuthentication - Callback when the user authenticates
  * @param {Function} serverOptions.onListen - Callback called with the authentication URL
- * when the server starts
+ * @param {string} serverOptions.route - Route used for authentication
  * @param {boolean} serverOptions.shouldOpenAuthenticationPage - Whether the authentication
  * page should be automatically opened (default: true)
  *

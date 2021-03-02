@@ -1,3 +1,5 @@
+import { Manifest } from './types'
+
 const APP_CATEGORIES = [
   'banking',
   'cozy',

@@ -1,5 +1,7 @@
 import Association from './Association'
-import { Q } from '../queries/dsl'
+import { Q, QueryDefinition } from '../queries/dsl'
+import { QueryState } from '../types'
+
 /**
  * Here the id of the document is directly set in the attribute
  * of the document, not in the relationships attribute
@@ -13,6 +15,9 @@ export default class HasOneInPlace extends Association {
     return this.get(this.doctype, this.raw)
   }
 
+  /**
+   * @returns {QueryState | QueryDefinition}
+   */
   static query(doc, client, assoc) {
     const id = doc[assoc.name]
     return (
