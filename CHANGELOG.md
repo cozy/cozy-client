@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [18.0.0](https://github.com/cozy/cozy-client/compare/v17.6.1...v18.0.0) (2021-03-02)
+
+
+### Bug Fixes
+
+* Do not import recursively cozy-client ([ced357d](https://github.com/cozy/cozy-client/commit/ced357d0e5f87e4fb45d15e05a7827565bfa0fce)), closes [/github.com/microsoft/TypeScript/issues/14538#issuecomment-638989542](https://github.com//github.com/microsoft/TypeScript/issues/14538/issues/issuecomment-638989542)
+* HasManyInPlace used this instead of doc passed in argument ([8b56be3](https://github.com/cozy/cozy-client/commit/8b56be37b3a9952ffb1f611802ca88ec2feaea6e))
+* Move outDir out of compiler options ([110cb87](https://github.com/cozy/cozy-client/commit/110cb870dd5515fda9551c30efdc43b93c11d668))
+* Need plugin to convert & to | when generating doc through jsdoc ([856acf7](https://github.com/cozy/cozy-client/commit/856acf71c9ebfc430156bb55b0a9d7072b3aff79))
+* Remove old definition file ([c740ec4](https://github.com/cozy/cozy-client/commit/c740ec4a13d6d863dcecf8f16602fb5ad7487c50))
+
+
+### Features
+
+* Accept redux 3 or 4 in dependencies ([eb08719](https://github.com/cozy/cozy-client/commit/eb08719292bdeca1dfe05877ad91127934049716))
+* Add types for fsnative ([ab01b12](https://github.com/cozy/cozy-client/commit/ab01b128d2a1674d2ebd4c188a06bd8d249b0895))
+* Add types to package.json ([c65c3c5](https://github.com/cozy/cozy-client/commit/c65c3c5e2b4777319382ddf3172cb47de40fb27b))
+* Better typing for useQuery return value ([c0f0d05](https://github.com/cozy/cozy-client/commit/c0f0d05e1d24892ccaa01522bb70ef0e612c9ae4))
+* Explicitely add types to files that get pushed to npm ([5db845c](https://github.com/cozy/cozy-client/commit/5db845ca583d14e851be16b19a475862bb168683))
+* Improve typing for HasOneInPlace:query ([82692b5](https://github.com/cozy/cozy-client/commit/82692b508213970b7e7908ae3ff7d16ca6a7282e))
+* Re-add outDir types in CLI ([d40c39a](https://github.com/cozy/cozy-client/commit/d40c39a08ae46fdd2962986b6d6b8035060e88ca))
+* Remove getAssociation ([83e3ea2](https://github.com/cozy/cozy-client/commit/83e3ea2bff21cf095e838068568616995288196e))
+* Reuse QueryResult type definition ([25e8877](https://github.com/cozy/cozy-client/commit/25e8877922bc49ecb80cb3b858872af4e9a31f5f))
+* Revise typedefs for window ([0f771a2](https://github.com/cozy/cozy-client/commit/0f771a279baad4b6d6632b5c5db88f8950306f06))
+* Type corrections ([b8188c6](https://github.com/cozy/cozy-client/commit/b8188c6fba93560aa54774d0808f7894e82079d2))
+* Update jsdocs-to-markdown to version 6 ([c60f843](https://github.com/cozy/cozy-client/commit/c60f843a4f9fe826856e0fa2eea5b21726e4de13))
+
+
+### BREAKING CHANGES
+
+* This removes the getAssociation method from CozyClient and from the Query result
+This method did not work so it should not have
+a big impact ;)
+
+
+
+
+
 ## [17.6.1](https://github.com/cozy/cozy-client/compare/v17.6.0...v17.6.1) (2021-03-01)
 
 
