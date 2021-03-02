@@ -38,9 +38,6 @@ export type TimeSeries = {
 };
 /**
  * Helper to retrieve time series by their date interval and source.
- *
- * The starting date must be greater or equal while the ending date must
- * be stricly less than the given startDate and endDate parameters.
  */
 export type TimeSeriesJSONAPI = {
     /**
