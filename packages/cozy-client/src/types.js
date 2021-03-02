@@ -13,6 +13,14 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
+ * @typedef {object} OldCozyClient
+ */
+
+/**
+ * @typedef {object} NodeEnvironment
+ */
+
+/**
  * @typedef {"loading"|"loaded"|"pending"|"failed"} QueryFetchStatus
  */
 
