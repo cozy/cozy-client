@@ -1,6 +1,6 @@
 {
   "name": "cozy-pouch-link",
-  "version": "18.1.0",
+  "version": "18.1.1",
   "license": "MIT",
   "main": "dist/index.js",
   "files": [
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@cozy/minilog": "1.0.0",
-    "cozy-client": "^18.1.0",
+    "cozy-client": "^18.1.1",
     "cozy-device-helper": "^1.7.3",
     "pouchdb-browser": "^7.0.0",
     "pouchdb-find": "^7.0.0"
