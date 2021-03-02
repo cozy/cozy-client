@@ -9,7 +9,7 @@ export type ReduxStore = any;
 export type Token = any;
 export type ClientResponse = any;
 export type Manifest = any;
-export type QueryFetchStatus = "loading" | "loaded" | "failed" | "pending";
+export type QueryFetchStatus = "failed" | "loading" | "pending" | "loaded";
 export type QueryState = {
     id: string;
     definition: QueryDefinition;
