@@ -11,7 +11,7 @@ import { CordovaWindow } from '../types'
  * @type {CordovaWindow}
  */
 // @ts-ignore
-const win = window
+const win = typeof window !== 'undefined' ? window : null
 
 const authenticateWithSafari = url => {
   return new Promise((resolve, reject) => {
