@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [18.1.2](https://github.com/cozy/cozy-client/compare/v18.1.1...v18.1.2) (2021-03-02)
+
+
+### Bug Fixes
+
+* Do not assign window to win if window is not defined ([d0cd762](https://github.com/cozy/cozy-client/commit/d0cd76231cac91408dde94a18e3a49f49e538d10))
+
+
+
+
+
 ## [18.1.1](https://github.com/cozy/cozy-client/compare/v18.1.0...v18.1.1) (2021-03-02)
 
 **Note:** Version bump only for package cozy-client
