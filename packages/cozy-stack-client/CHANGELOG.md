@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [18.1.3](https://github.com/cozy/cozy-client/compare/v18.1.2...v18.1.3) (2021-03-05)
+
+
+### Bug Fixes
+
+* Upgrade cozy-flags to avoid error in node env ([825bce5](https://github.com/cozy/cozy-client/commit/825bce505af12c04adad7e937481decc37702495))
+
+
+
+
+
 # [18.0.0](https://github.com/cozy/cozy-client/compare/v17.6.1...v18.0.0) (2021-03-02)
 
 **Note:** Version bump only for package cozy-stack-client
