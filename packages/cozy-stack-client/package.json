@@ -11,7 +11,7 @@
     "url": "git+https://github.com/cozy/cozy-client.git"
   },
   "dependencies": {
-    "cozy-flags": "^2.5.0",
+    "cozy-flags": "^2.5.4",
     "detect-node": "^2.0.4",
     "mime": "^2.4.0",
     "qs": "^6.7.0"
