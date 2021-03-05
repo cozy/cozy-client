@@ -10,8 +10,8 @@ import logger from 'cozy-logger'
 
 const log = logger.namespace('create-cli-client')
 
-global.fetch = require('node-fetch')
-global.btoa = require('btoa')
+const nodeFetch = require('node-fetch')
+const btoa = require('btoa')
 
 /**
  * Creates and starts and HTTP server suitable for OAuth authentication
@@ -225,6 +225,9 @@ const createClientInteractive = (clientOptions, serverOpts) => {
 }
 
 const main = async () => {
+  global.fetch = nodeFetch
+  global.btoa = btoa
+
   const client = await createClientInteractive({
     scope: ['io.cozy.files'],
     uri: 'http://cozy.tools:8080',
