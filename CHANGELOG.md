@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [19.0.0](https://github.com/cozy/cozy-client/compare/v18.1.3...v19.0.0) (2021-03-05)
+
+
+### Features
+
+* Do not polyfill at the module level ([b8007ff](https://github.com/cozy/cozy-client/commit/b8007ffddf79b1a1741fab13a90f2d9c753ef7e6))
+
+
+### BREAKING CHANGES
+
+* Any application relying on this behavior (fetch being
+polyfilled by importing cozy-client) should instead polyfill fetch
+themself.
+
+
+
+
+
 ## [18.1.3](https://github.com/cozy/cozy-client/compare/v18.1.2...v18.1.3) (2021-03-05)
 
 
