@@ -11,7 +11,9 @@
       "jsx": "react",
       "declaration": true,
       "target": "es6",
-      "moduleResolution": "node"
+      "moduleResolution": "node",
+      "noImplicitReturns": true,
+      "noFallthroughCasesInSwitch": true
     },
     "types": ["jest"]
 }

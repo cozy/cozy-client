@@ -300,6 +300,10 @@ class CozyClient {
         token,
         ...options
       })
+    } else {
+      throw new Error(
+        'Old client does not have _oauth or _authcreds, cannot instantiate a new client, check if CozyClient.fromOldClient is more suitable'
+      )
     }
   }
 
