@@ -99,7 +99,7 @@ export default class Query extends Component {
      *
      * @type {CozyClient}
      */
-    this.client = null
+    this.client = client
     /**
      * Observable query to connect store to query
      *

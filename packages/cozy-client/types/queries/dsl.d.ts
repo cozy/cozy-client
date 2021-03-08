@@ -98,7 +98,7 @@ export class QueryDefinition {
      * @param {Array} [options.sort] - The sorting params.
      * @param {Array<string>} [options.includes] - The docs to include.
      * @param {string} [options.referenced] - The referenced document.
-     * @param {number} [options.limit] - The document's limit to return.
+     * @param {number|null} [options.limit] - The document's limit to return.
      * @param {number} [options.skip] - The number of docs to skip.
      * @param {Cursor} [options.cursor] - The cursor to paginate views.
      * @param {string} [options.bookmark] - The bookmark to paginate mango queries.
@@ -114,7 +114,7 @@ export class QueryDefinition {
         sort: any[];
         includes: Array<string>;
         referenced: string;
-        limit: number;
+        limit: number | null;
         skip: number;
         cursor: Cursor;
         bookmark: string;

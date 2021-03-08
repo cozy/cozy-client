@@ -11,7 +11,7 @@ export type ClientResponse = any;
 export type Manifest = any;
 export type OldCozyClient = any;
 export type NodeEnvironment = any;
-export type QueryFetchStatus = "loading" | "loaded" | "pending" | "failed";
+export type QueryFetchStatus = "loading" | "loaded" | "failed" | "pending";
 export type QueryState = {
     id: string;
     definition: QueryDefinition;
