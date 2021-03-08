@@ -1,4 +1,4 @@
-export function Q(doctype: any): QueryDefinition;
+export function Q(doctype: Doctype): QueryDefinition;
 export function createDocument(document: any): {
     mutationType: string;
     document: any;
@@ -64,6 +64,7 @@ export type PartialQueryDefinition = {
 };
 export type MangoSelector = any;
 export type Cursor = any[];
+import { Doctype } from "../types";
 /**
  * @typedef PartialQueryDefinition
  *

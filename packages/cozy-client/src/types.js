@@ -1,6 +1,17 @@
 import { QueryDefinition } from './queries/dsl'
 
 /**
+ * @typedef {"io.cozy.accounts"} AccountsDoctype
+ * @typedef {"io.cozy.triggers"} TriggersDoctype
+ * @typedef {"io.cozy.konnectors"} KonnectorsDoctype
+ * @typedef {"io.cozy.notes"} NotesDoctype
+ * @typedef {"io.cozy.apps"} AppsDoctype
+ * @typedef {"io.cozy.settings"} SettingsDoctype
+ * @typedef {AccountsDoctype|TriggersDoctype|KonnectorsDoctype|NotesDoctype|AppsDoctype|SettingsDoctype} KnownDoctype
+ * @typedef {KnownDoctype|string} Doctype
+ */
+
+/**
  * @typedef {object} Link
  * @typedef {object} Mutation
  * @typedef {object} DocumentCollection

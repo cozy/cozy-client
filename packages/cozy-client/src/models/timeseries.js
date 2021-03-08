@@ -1,4 +1,5 @@
 import { Q } from '../queries/dsl'
+import { Doctype } from '../types'
 
 const validateTimeSeriesFormat = timeseries => {
   if (!timeseries.startDate || !timeseries.endDate) {
@@ -73,6 +74,9 @@ export const fetchTimeSeriesByIntervalAndSource = async (
   client,
   { startDate, endDate, dataType, source, limit }
 ) => {
+  /**
+   * @type {Doctype}
+   */
   const doctype = `io.cozy.timeseries.${dataType}`
   const query = Q(doctype)
     .where({

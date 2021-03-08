@@ -1,5 +1,13 @@
 declare var _default: {};
 export default _default;
+export type AccountsDoctype = "io.cozy.accounts";
+export type TriggersDoctype = "io.cozy.triggers";
+export type KonnectorsDoctype = "io.cozy.konnectors";
+export type NotesDoctype = "io.cozy.notes";
+export type AppsDoctype = "io.cozy.apps";
+export type SettingsDoctype = "io.cozy.settings";
+export type KnownDoctype = "io.cozy.accounts" | "io.cozy.triggers" | "io.cozy.konnectors" | "io.cozy.notes" | "io.cozy.apps" | "io.cozy.settings";
+export type Doctype = string;
 export type Link = any;
 export type Mutation = any;
 export type DocumentCollection = any;
@@ -11,7 +19,7 @@ export type ClientResponse = any;
 export type Manifest = any;
 export type OldCozyClient = any;
 export type NodeEnvironment = any;
-export type QueryFetchStatus = "loading" | "loaded" | "failed" | "pending";
+export type QueryFetchStatus = "loading" | "loaded" | "pending" | "failed";
 export type QueryState = {
     id: string;
     definition: QueryDefinition;

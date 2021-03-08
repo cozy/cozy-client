@@ -1,5 +1,6 @@
 import isArray from 'lodash/isArray'
 import findKey from 'lodash/findKey'
+import { Doctype } from '../types'
 
 /**
  * @typedef PartialQueryDefinition
@@ -324,6 +325,8 @@ class QueryDefinition {
 /**
  * Helper to create a QueryDefinition. Recommended way to create
  * query definitions.
+ *
+ * @param {Doctype} doctype - Doctype of the query definition
  *
  * @example
  * ```
