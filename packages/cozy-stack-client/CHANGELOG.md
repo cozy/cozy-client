@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [19.1.0](https://github.com/cozy/cozy-client/compare/v19.0.0...v19.1.0) (2021-03-08)
+
+
+### Features
+
+* Upgrade cozy-flag to fix react import in node env ([fe18020](https://github.com/cozy/cozy-client/commit/fe180208e8ddce2d06a33aedbe00b182fe523920))
+
+
+
+
+
 # [19.0.0](https://github.com/cozy/cozy-client/compare/v18.1.3...v19.0.0) (2021-03-05)
 
 **Note:** Version bump only for package cozy-stack-client
