@@ -436,6 +436,10 @@ both situation.</p>
 </dd>
 <dt><a href="#Manifest">Manifest</a> : <code>object</code></dt>
 <dd></dd>
+<dt><a href="#OldCozyClient">OldCozyClient</a> : <code>object</code></dt>
+<dd></dd>
+<dt><a href="#NodeEnvironment">NodeEnvironment</a> : <code>object</code></dt>
+<dd></dd>
 <dt><a href="#QueryFetchStatus">QueryFetchStatus</a> : <code>&quot;loading&quot;</code> | <code>&quot;loaded&quot;</code> | <code>&quot;pending&quot;</code> | <code>&quot;failed&quot;</code></dt>
 <dd></dd>
 <dt><a href="#QueryState">QueryState</a> : <code>object</code></dt>
@@ -999,9 +1003,9 @@ Responsible for
         * [.loadInstanceOptionsFromDOM([selector])](#CozyClient+loadInstanceOptionsFromDOM) ⇒ <code>void</code>
         * [.setData(data)](#CozyClient+setData)
     * _static_
-        * [.fromOldClient()](#CozyClient.fromOldClient)
-        * [.fromOldOAuthClient()](#CozyClient.fromOldOAuthClient) ⇒ [<code>Promise.&lt;CozyClient&gt;</code>](#CozyClient)
-        * [.fromEnv()](#CozyClient.fromEnv)
+        * [.fromOldClient(oldClient)](#CozyClient.fromOldClient) ⇒ [<code>CozyClient</code>](#CozyClient)
+        * [.fromOldOAuthClient(oldClient)](#CozyClient.fromOldOAuthClient) ⇒ [<code>Promise.&lt;CozyClient&gt;</code>](#CozyClient)
+        * [.fromEnv([envArg], options)](#CozyClient.fromEnv) ⇒ [<code>CozyClient</code>](#CozyClient)
         * [.fromDOM(selector, options)](#CozyClient.fromDOM) ⇒ <code>object</code>
         * [.registerHook(doctype, name, fn)](#CozyClient.registerHook)
 
@@ -1481,14 +1485,19 @@ set some data in the store.
 
 <a name="CozyClient.fromOldClient"></a>
 
-### CozyClient.fromOldClient()
+### CozyClient.fromOldClient(oldClient) ⇒ [<code>CozyClient</code>](#CozyClient)
 To help with the transition from cozy-client-js to cozy-client, it is possible to instantiate
 a client with a cookie-based instance of cozy-client-js.
 
 **Kind**: static method of [<code>CozyClient</code>](#CozyClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| oldClient | [<code>OldCozyClient</code>](#OldCozyClient) | An instance of the deprecated cozy-client |
+
 <a name="CozyClient.fromOldOAuthClient"></a>
 
-### CozyClient.fromOldOAuthClient() ⇒ [<code>Promise.&lt;CozyClient&gt;</code>](#CozyClient)
+### CozyClient.fromOldOAuthClient(oldClient) ⇒ [<code>Promise.&lt;CozyClient&gt;</code>](#CozyClient)
 To help with the transition from cozy-client-js to cozy-client, it is possible to instantiate
 a client with an OAuth-based instance of cozy-client-js.
 
@@ -1496,12 +1505,24 @@ Warning: unlike other instantiators, this one needs to be awaited.
 
 **Kind**: static method of [<code>CozyClient</code>](#CozyClient)  
 **Returns**: [<code>Promise.&lt;CozyClient&gt;</code>](#CozyClient) - An instance of a client, configured from the old client  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| oldClient | [<code>OldCozyClient</code>](#OldCozyClient) | An instance of the deprecated cozy-client |
+
 <a name="CozyClient.fromEnv"></a>
 
-### CozyClient.fromEnv()
-In konnector/service context, CozyClient can be instantiated from environment variables
+### CozyClient.fromEnv([envArg], options) ⇒ [<code>CozyClient</code>](#CozyClient)
+In konnector/service context, CozyClient can be instantiated from
+environment variables
 
 **Kind**: static method of [<code>CozyClient</code>](#CozyClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [envArg] | [<code>NodeEnvironment</code>](#NodeEnvironment) | The environment |
+| options | <code>object</code> | Options |
+
 <a name="CozyClient.fromDOM"></a>
 
 ### CozyClient.fromDOM(selector, options) ⇒ <code>object</code>
@@ -3256,6 +3277,14 @@ Setups a client suitable for testing
 <a name="Manifest"></a>
 
 ## Manifest : <code>object</code>
+**Kind**: global typedef  
+<a name="OldCozyClient"></a>
+
+## OldCozyClient : <code>object</code>
+**Kind**: global typedef  
+<a name="NodeEnvironment"></a>
+
+## NodeEnvironment : <code>object</code>
 **Kind**: global typedef  
 <a name="QueryFetchStatus"></a>
 
