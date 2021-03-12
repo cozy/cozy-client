@@ -3,6 +3,12 @@ jest.mock('./CozyStackClient')
 import flag from 'cozy-flags'
 import CozyStackClient from './CozyStackClient'
 import DocumentCollection from './DocumentCollection'
+import { getMatchingIndex } from './mangoIndex'
+
+jest.mock('./mangoIndex', () => ({
+  ...jest.requireActual('./mangoIndex'),
+  getMatchingIndex: jest.fn()
+}))
 
 const ALL_RESPONSE_FIXTURE = {
   offset: 0,
@@ -675,6 +681,8 @@ describe('DocumentCollection', () => {
           }
         }
       }
+      getMatchingIndex.mockReturnValue(index.doc)
+
       client.fetchJSON.mockRestore()
       client.fetchJSON
         .mockRejectedValueOnce(new Error('no_index'))
@@ -992,34 +1000,116 @@ describe('DocumentCollection', () => {
     const selector = {
       'message.account': 'ca7b7f1'
     }
-    const response = {
-      rows: [
-        {
-          doc: {
-            _id: '123',
-            language: 'query',
-            views: {
-              123456: {
-                map: {
-                  fields: {
-                    'message.account': 'asc'
-                  }
-                }
-              }
-            }
-          }
-        }
-      ],
-      total_rows: 1
-    }
 
-    it('should work with undefined indexedFields', async () => {
-      client.fetchJSON.mockResolvedValue(response)
+    beforeEach(() => {
+      collection.findExistingIndex = jest.fn()
+      collection.migrateUnamedIndex = jest.fn()
+      collection.createIndex = jest.fn()
+    })
+
+    it('should not throw with undefined indexedFields', async () => {
+      client.fetchJSON.mockResolvedValue({ rows: [] })
       expect(
         await collection.handleMissingIndex(selector, {
           indexedFields: undefined,
           sort: undefined
         })
+      )
+    })
+
+    it('should migrate unamed index with or without indexedFields ', async () => {
+      const existingIndex = {
+        _id: '123'
+      }
+      collection.findExistingIndex.mockResolvedValue(existingIndex)
+      collection.migrateUnamedIndex.mockResolvedValue({})
+
+      await collection.handleMissingIndex(selector, {
+        indexedFields: undefined,
+        sort: undefined
+      })
+      expect(collection.migrateUnamedIndex).toHaveBeenCalledWith(
+        existingIndex,
+        'by_message.account'
+      )
+
+      await collection.handleMissingIndex(selector, {
+        indexedFields: ['message.account']
+      })
+      expect(collection.migrateUnamedIndex).toHaveBeenCalledWith(
+        existingIndex,
+        'by_message.account'
+      )
+    })
+
+    it('should create new index, with or without indexedFields', async () => {
+      collection.findExistingIndex.mockResolvedValue(null)
+      collection.createIndex.mockResolvedValue({})
+
+      await collection.handleMissingIndex(selector, {
+        indexedFields: undefined,
+        sort: undefined
+      })
+      expect(collection.createIndex).toHaveBeenCalledWith(['message.account'], {
+        indexName: 'by_message.account'
+      })
+
+      await collection.handleMissingIndex(selector, {
+        indexedFields: ['message.account']
+      })
+      expect(collection.createIndex).toHaveBeenCalledWith(['message.account'], {
+        indexName: 'by_message.account'
+      })
+    })
+  })
+
+  describe('findExistingIndex', () => {
+    const collection = new DocumentCollection('io.cozy.triggers', client)
+    const selector = {
+      'message.account': 'ca7b7f1'
+    }
+
+    beforeEach(() => {
+      collection.fetchAllMangoIndexes = jest.fn()
+    })
+    it('should not find anything if there no existing index', async () => {
+      collection.fetchAllMangoIndexes.mockResolvedValue([])
+      const res = await collection.findExistingIndex(selector, {
+        indexedFields: undefined,
+        sort: undefined
+      })
+      expect(res).toBe(null)
+    })
+
+    it('should get matching index with correct arguments with indexed field', async () => {
+      const index = {
+        _id: '123'
+      }
+      collection.fetchAllMangoIndexes.mockResolvedValue([index])
+
+      await collection.findExistingIndex(selector, {
+        indexedFields: ['message.account']
+      })
+      expect(getMatchingIndex).toHaveBeenCalledWith(
+        [index],
+        ['message.account'],
+        undefined
+      )
+    })
+
+    it('should get matching index with correct arguments without indexed field', async () => {
+      const index = {
+        _id: '123'
+      }
+      collection.fetchAllMangoIndexes.mockResolvedValue([index])
+
+      await collection.findExistingIndex(selector, {
+        sort: [{ 'cozyMetadata.createdAt': 'desc' }]
+      })
+      expect(getMatchingIndex).toHaveBeenCalledWith(
+        [index],
+        ['cozyMetadata.createdAt', 'message.account'],
+        undefined
       )
     })
   })
