@@ -1,6 +1,6 @@
 {
   "name": "cozy-client",
-  "version": "19.1.0",
+  "version": "19.1.1",
   "license": "MIT",
   "main": "dist/node.js",
   "browser": "dist/index.js",
@@ -19,7 +19,7 @@
     "btoa": "^1.2.1",
     "cozy-device-helper": "^1.7.3",
     "cozy-logger": "^1.6.0",
-    "cozy-stack-client": "^19.1.0",
+    "cozy-stack-client": "^19.1.1",
     "lodash": "^4.17.13",
     "microee": "^0.0.6",
     "node-fetch": "^2.6.1",
