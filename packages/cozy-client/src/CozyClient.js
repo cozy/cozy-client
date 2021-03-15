@@ -84,12 +84,6 @@ const DOC_CREATION = 'creation'
 const DOC_UPDATE = 'update'
 
 /**
- * @interface EventEmitter
- * @function
- * @name EventEmitter#emit
- */
-
-/**
  * @typedef {object} ClientOptions
  * @property {object} [client]
  * @property {object} [link]
@@ -115,8 +109,6 @@ const DOC_UPDATE = 'update'
  * - Hydration
  * - Creating plan for saving documents
  * - Associations
- *
- * @augments {EventEmitter}
  */
 class CozyClient {
   /**

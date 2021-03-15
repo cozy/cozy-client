@@ -20,11 +20,6 @@ export type ClientOptions = {
     appMetadata?: object;
 };
 /**
- * @interface EventEmitter
- * @function
- * @name EventEmitter#emit
- */
-/**
  * @typedef {object} ClientOptions
  * @property {object} [client]
  * @property {object} [link]
@@ -49,8 +44,6 @@ export type ClientOptions = {
  * - Hydration
  * - Creating plan for saving documents
  * - Associations
- *
- * @augments {EventEmitter}
  */
 declare class CozyClient {
     /**

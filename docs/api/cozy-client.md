@@ -17,7 +17,7 @@ only the ids.</p>
 <dt><a href="#HasManyTriggers">HasManyTriggers</a> ⇐ <code><a href="#HasMany">HasMany</a></code></dt>
 <dd><p>Association used for konnectors to retrieve all their related triggers.</p>
 </dd>
-<dt><a href="#CozyClient">CozyClient</a> ⇐ <code>EventEmitter</code></dt>
+<dt><a href="#CozyClient">CozyClient</a></dt>
 <dd><p>Responsible for</p>
 <ul>
 <li>Creating observable queries</li>
@@ -59,6 +59,13 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 }, cozyStackClient)
 </code></pre>
 </dd>
+</dl>
+
+## Members
+
+<dl>
+<dt><a href="#client">client</a> : <code><a href="#CozyClient">CozyClient</a></code></dt>
+<dd></dd>
 </dl>
 
 ## Constants
@@ -965,7 +972,7 @@ having for the 'konnector' worker, and then filter them based on their
 **Kind**: static method of [<code>HasManyTriggers</code>](#HasManyTriggers)  
 <a name="CozyClient"></a>
 
-## CozyClient ⇐ <code>EventEmitter</code>
+## CozyClient
 Responsible for
 
 - Creating observable queries
@@ -974,9 +981,8 @@ Responsible for
 - Associations
 
 **Kind**: global class  
-**Extends**: <code>EventEmitter</code>  
 
-* [CozyClient](#CozyClient) ⇐ <code>EventEmitter</code>
+* [CozyClient](#CozyClient)
     * [new CozyClient(rawOptions)](#new_CozyClient_new)
     * _instance_
         * [.storeAccesors](#CozyClient+storeAccesors) : <code>object</code>
@@ -1073,7 +1079,6 @@ TODO Find a better way to make TS understand that emit is
 a method from cozy-client
 
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
-**Overrides**: [<code>emit</code>](#EventEmitter+emit)  
 <a name="CozyClient+registerPlugin"></a>
 
 ### cozyClient.registerPlugin()
@@ -1870,6 +1875,10 @@ Returns the relationship for a given doctype/name
 Validates a document considering the descriptions in schema.attributes.
 
 **Kind**: instance method of [<code>Schema</code>](#Schema)  
+<a name="client"></a>
+
+## client : [<code>CozyClient</code>](#CozyClient)
+**Kind**: global variable  
 <a name="setupConsoleToThrow"></a>
 
 ## setupConsoleToThrow
@@ -2875,7 +2884,7 @@ if there are N queries, only 1 extra level of nesting is introduced.
 Returns the cozy client from the context
 
 **Kind**: global function  
-**Returns**: [<code>CozyClient</code>](#CozyClient) - [description]  
+**Returns**: [<code>CozyClient</code>](#CozyClient) - - Current cozy client  
 <a name="getErrorComponent"></a>
 
 ## getErrorComponent(error) ⇒ <code>function</code> \| <code>null</code>
