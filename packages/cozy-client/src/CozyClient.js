@@ -56,7 +56,8 @@ import {
   ReferenceMap,
   OldCozyClient,
   NodeEnvironment,
-  AppMetadata
+  AppMetadata,
+  ClientCapabilities
 } from './types'
 
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
@@ -101,6 +102,7 @@ const DOC_UPDATE = 'update'
  * @property  {Array<Link>}  [links]  - List of links
  * @property  {object}       [schema] - Schema description for each doctypes
  * @property  {AppMetadata}  [appMetadata] - Metadata about the application that will be used in ensureCozyMetadata
+ * @property  {ClientCapabilities} [capabilities] - Capabilities sent by the stack
  */
 
 /**
@@ -140,6 +142,7 @@ class CozyClient {
       links,
       schema = {},
       appMetadata = {},
+      capabilities,
       ...options
     } = rawOptions
     if (link) {
@@ -168,6 +171,11 @@ class CozyClient {
     this.chain = chain(this.links)
 
     this.schema = new Schema(schema, stackClient)
+
+    /**
+     * @type {ClientCapabilities}
+     */
+    this.capabilities = capabilities || null
 
     // Instances of plugins registered with registerPlugin
     this.plugins = {}

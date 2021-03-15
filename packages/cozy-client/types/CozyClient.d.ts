@@ -18,6 +18,10 @@ export type ClientOptions = {
      * - Metadata about the application that will be used in ensureCozyMetadata
      */
     appMetadata?: AppMetadata;
+    /**
+     * - Capabilities sent by the stack
+     */
+    capabilities?: ClientCapabilities;
 };
 /**
  * @typedef {object} ClientOptions
@@ -36,6 +40,7 @@ export type ClientOptions = {
  * @property  {Array<Link>}  [links]  - List of links
  * @property  {object}       [schema] - Schema description for each doctypes
  * @property  {AppMetadata}  [appMetadata] - Metadata about the application that will be used in ensureCozyMetadata
+ * @property  {ClientCapabilities} [capabilities] - Capabilities sent by the stack
  */
 /**
  * Responsible for
@@ -145,6 +150,10 @@ declare class CozyClient {
     links: any[];
     chain: any;
     schema: Schema;
+    /**
+     * @type {ClientCapabilities}
+     */
+    capabilities: ClientCapabilities;
     plugins: {};
     /**
      * @type {object}
@@ -595,6 +604,7 @@ declare namespace CozyClient {
 }
 import { Token } from "./types";
 import { AppMetadata } from "./types";
+import { ClientCapabilities } from "./types";
 import Schema from "./Schema";
 import { DocumentCollection } from "./types";
 import { QueryDefinition } from "./queries/dsl";
