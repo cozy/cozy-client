@@ -359,17 +359,22 @@ class CozyClient {
       ? JSON.parse(root.dataset.cozy)
       : { ...root.dataset }
 
-    const { cozyDomain, cozyToken } = data
+    let { domain, token } = data
+    if (!domain || !token) {
+      domain = domain || data.cozyDomain
+      token = token || data.cozyToken
+    }
 
-    if (!cozyDomain || !cozyToken) {
+    if (!domain || !token) {
       throw new Error(
         `Found no data in ${root.dataset} to instantiate cozyClient`
       )
     }
 
     return new CozyClient({
-      uri: `${window.location.protocol}//${cozyDomain}`,
-      token: cozyToken,
+      uri: `${window.location.protocol}//${domain}`,
+      token: token,
+      capabilities: data.capabilities,
       ...options
     })
   }
