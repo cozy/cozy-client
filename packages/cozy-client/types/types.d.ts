@@ -17,8 +17,11 @@ export type ReduxStore = any;
 export type Token = any;
 export type ClientResponse = any;
 export type Manifest = any;
+<<<<<<< HEAD
 export type OldCozyClient = any;
 export type NodeEnvironment = any;
+=======
+>>>>>>> f712c244 (fix: Correct types)
 export type QueryFetchStatus = "loading" | "loaded" | "pending" | "failed";
 export type QueryState = {
     id: string;
@@ -133,6 +136,7 @@ export type FilePlugin = {
 export type InAppBrowser = {
     open: Function;
 };
+export type AppMetadata = any;
 export type Cordova = {
     file: FilePlugin;
     InAppBrowser: InAppBrowser;

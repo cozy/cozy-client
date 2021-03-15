@@ -121,6 +121,10 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
+ * @typedef {object} AppMetadata
+ */
+
+/**
  * @typedef Cordova
  * @property {FilePlugin} file
  * @property {InAppBrowser} InAppBrowser

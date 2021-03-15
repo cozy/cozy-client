@@ -55,7 +55,8 @@ import {
   ClientResponse,
   ReferenceMap,
   OldCozyClient,
-  NodeEnvironment
+  NodeEnvironment,
+  AppMetadata
 } from './types'
 
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
@@ -96,10 +97,10 @@ const DOC_UPDATE = 'update'
  * @property {object} [oauth]
  * @property {Function} [onTokenRefresh]
  * @property {Function} [onTokenRefresh]
- * @property  {Link}         [options.link]   - Backward compatibility
- * @property  {Array<Link>}  [options.links]  - List of links
- * @property  {object}       [options.schema] - Schema description for each doctypes
- * @property  {object}       [options.appMetadata] - Metadata about the application that will be used in ensureCozyMetadata
+ * @property  {Link}         [link]   - Backward compatibility
+ * @property  {Array<Link>}  [links]  - List of links
+ * @property  {object}       [schema] - Schema description for each doctypes
+ * @property  {AppMetadata}  [appMetadata] - Metadata about the application that will be used in ensureCozyMetadata
  */
 
 /**
