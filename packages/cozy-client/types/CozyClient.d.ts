@@ -77,11 +77,11 @@ declare class CozyClient {
      * When used from an app, CozyClient can be instantiated from the data injected by the stack in
      * the DOM.
      *
-     * @param  {string}   selector - Options
      * @param  {object}   options  - CozyClient constructor options
+     * @param  {string}   selector - Options
      * @returns {object} - CozyClient instance
      */
-    static fromDOM(selector?: string, options?: object): object;
+    static fromDOM(options?: object, selector?: string): object;
     /**
      * Hooks are an observable system for events on documents.
      * There are at the moment only 2 hooks available.

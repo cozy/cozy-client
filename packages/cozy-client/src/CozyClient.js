@@ -334,11 +334,11 @@ class CozyClient {
    * When used from an app, CozyClient can be instantiated from the data injected by the stack in
    * the DOM.
    *
-   * @param  {string}   selector - Options
    * @param  {object}   options  - CozyClient constructor options
+   * @param  {string}   selector - Options
    * @returns {object} - CozyClient instance
    */
-  static fromDOM(selector = '[role=application]', options = {}) {
+  static fromDOM(options = {}, selector = '[role=application]') {
     const root = document.querySelector(selector)
     if (!(root instanceof HTMLElement)) {
       return
