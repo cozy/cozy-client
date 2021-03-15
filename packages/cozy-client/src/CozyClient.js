@@ -203,6 +203,8 @@ class CozyClient {
    * a method from cozy-client
    */
   emit(...args) {}
+  on(...args) {}
+  removeListener(...args) {}
 
   /**
    * A plugin is a class whose constructor receives the client as first argument.

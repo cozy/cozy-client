@@ -165,6 +165,8 @@ declare class CozyClient {
      * a method from cozy-client
      */
     emit(...args: any[]): void;
+    on(...args: any[]): void;
+    removeListener(...args: any[]): void;
     /**
      * A plugin is a class whose constructor receives the client as first argument.
      * The main mean of interaction with the client should be with events
