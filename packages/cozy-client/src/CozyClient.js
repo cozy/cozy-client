@@ -349,7 +349,7 @@ class CozyClient {
   static fromDOM(options = {}, selector = '[role=application]') {
     const root = document.querySelector(selector)
     if (!(root instanceof HTMLElement)) {
-      return
+      throw new Error(`Cannot find an HTMLElement corresponding to ${selector}`)
     }
     if (!root || !root.dataset) {
       throw new Error(`Found no data in ${selector} to instantiate cozyClient`)
