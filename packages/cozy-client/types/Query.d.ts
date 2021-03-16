@@ -50,6 +50,7 @@ export function getQueryAttributes(client: any, props: any): {
     createDocument: any;
     saveDocument: any;
     deleteDocument: any;
+    getAssociation: any;
     fetchMore: any;
     fetch: any;
     mutations: any;

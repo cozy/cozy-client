@@ -1097,6 +1097,17 @@ client.query(Q('io.cozy.bills'))`)
   }
 
   /**
+   * Creates an association that is linked to the store.
+   */
+  getAssociation(document, associationName) {
+    return createAssociation(
+      document,
+      this.schema.getAssociation(document._type, associationName),
+      this.getRelationshipStoreAccessors()
+    )
+  }
+
+  /**
    * Returns the accessors that are given to the relationships for them
    * to deal with the stores.
    *
