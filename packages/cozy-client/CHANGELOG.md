@@ -3,6 +3,43 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [20.0.0](https://github.com/cozy/cozy-client/compare/v19.1.1...v20.0.0) (2021-03-16)
+
+
+### Bug Fixes
+
+* Correct types ([8d7b6ed](https://github.com/cozy/cozy-client/commit/8d7b6ed5362af4f7706878bda36e207a85a94923))
+* Use correct method for getAssociation ([11ddd9e](https://github.com/cozy/cozy-client/commit/11ddd9e5d9e5b6961af2f301a43f33a8064d148b))
+
+
+### Features
+
+* Add capabilities to client DOM instantiation ([c823db2](https://github.com/cozy/cozy-client/commit/c823db2a04174b5a01c6f1a698c881d4a7471780))
+* Add on/removeListener methods to cozy client ([f7afbc5](https://github.com/cozy/cozy-client/commit/f7afbc52148625077a700a36f65d934aa1ab1e7e))
+* Better types ([f01577d](https://github.com/cozy/cozy-client/commit/f01577dabb8b931a2a2cc73a781705aa7cf0923a))
+* Doctype typing ([f1d05c1](https://github.com/cozy/cozy-client/commit/f1d05c143a42d7bb388a6f4cc2e884aa479dc12b))
+* Exchange order of arguments for fromDOM ([58524f4](https://github.com/cozy/cozy-client/commit/58524f413e9f50145dd044fe999f8f2cd1e4e827))
+* Improve types ([b57c3ab](https://github.com/cozy/cozy-client/commit/b57c3abe703ad571422a8ab95b803f444cccdb06))
+* Improve types for CozyClient.fromEnv ([0445dac](https://github.com/cozy/cozy-client/commit/0445dacd9f198ac3fe223fb8470c889e360a94d0))
+* Improve typing ([e95f3f0](https://github.com/cozy/cozy-client/commit/e95f3f02d5261ce94580de34b8e12bb7726aa75f))
+* Support for instantiating client fromDOM with {{.CozyData}} ([9e5ec4f](https://github.com/cozy/cozy-client/commit/9e5ec4fb93dc6bf2a524c90dd0b7f9b50bb19d52))
+* Type useClient return value ([534d934](https://github.com/cozy/cozy-client/commit/534d9342cfea08e740b0c5760ba262faa0f207c7))
+
+
+### Reverts
+
+* Revert "feat: Remove getAssociation" ([f823ea3](https://github.com/cozy/cozy-client/commit/f823ea3eced7e8efc0dcafd8712dbc1f8a1c0442))
+
+
+### BREAKING CHANGES
+
+* fromDOM order of arguments has changed, please use
+CozyClient.fromDOM(options) or CozyClient.fromDOM(options, nodeSelector)
+
+
+
+
+
 ## [19.1.1](https://github.com/cozy/cozy-client/compare/v19.1.0...v19.1.1) (2021-03-12)
 
 **Note:** Version bump only for package cozy-client
