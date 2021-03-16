@@ -1102,7 +1102,7 @@ client.query(Q('io.cozy.bills'))`)
   getAssociation(document, associationName) {
     return createAssociation(
       document,
-      this.schema.getAssociation(document._type, associationName),
+      this.schema.getRelationship(document._type, associationName),
       this.getRelationshipStoreAccessors()
     )
   }
