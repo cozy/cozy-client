@@ -17,7 +17,7 @@ only the ids.</p>
 <dt><a href="#HasManyTriggers">HasManyTriggers</a> ⇐ <code><a href="#HasMany">HasMany</a></code></dt>
 <dd><p>Association used for konnectors to retrieve all their related triggers.</p>
 </dd>
-<dt><a href="#CozyClient">CozyClient</a> ⇐ <code>EventEmitter</code></dt>
+<dt><a href="#CozyClient">CozyClient</a></dt>
 <dd><p>Responsible for</p>
 <ul>
 <li>Creating observable queries</li>
@@ -59,6 +59,13 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 }, cozyStackClient)
 </code></pre>
 </dd>
+</dl>
+
+## Members
+
+<dl>
+<dt><a href="#client">client</a> : <code><a href="#CozyClient">CozyClient</a></code></dt>
+<dd></dd>
 </dl>
 
 ## Constants
@@ -250,10 +257,10 @@ example.</p>
 <dt><a href="#openFileWith">openFileWith</a></dt>
 <dd><p>openFileWith - Opens a file on a mobile device</p>
 </dd>
-<dt><a href="#shouldDisplayOffers">shouldDisplayOffers</a></dt>
+<dt><a href="#shouldDisplayOffers">shouldDisplayOffers</a> ⇒ <code>boolean</code></dt>
 <dd><p>Returns whether an instance is concerned by our offers</p>
 </dd>
-<dt><a href="#hasAnOffer">hasAnOffer</a></dt>
+<dt><a href="#hasAnOffer">hasAnOffer</a> ⇒ <code>boolean</code></dt>
 <dd><p>Returns if an instance has subscribed to one of our offers</p>
 </dd>
 <dt><a href="#buildPremiumLink">buildPremiumLink</a></dt>
@@ -320,6 +327,9 @@ want to them to trigger an exception during tests.</p>
 <dd><p>HOC creator to connect component to several queries in a declarative manner
 The only difference with queryConnect is that it does not wrap the component in N component
 if there are N queries, only 1 extra level of nesting is introduced.</p>
+</dd>
+<dt><a href="#useClient">useClient()</a> ⇒ <code><a href="#CozyClient">CozyClient</a></code></dt>
+<dd><p>Returns the cozy client from the context</p>
 </dd>
 <dt><a href="#getErrorComponent">getErrorComponent(error)</a> ⇒ <code>function</code> | <code>null</code></dt>
 <dd><p>Returns the handler for an error</p>
@@ -398,6 +408,10 @@ internal store updated.</p>
 <dd></dd>
 <dt><a href="#FilesystemEntry">FilesystemEntry</a> : <code>object</code></dt>
 <dd></dd>
+<dt><a href="#DiskUsageInfo">DiskUsageInfo</a> : <code>object</code></dt>
+<dd></dd>
+<dt><a href="#SettingsInfo">SettingsInfo</a></dt>
+<dd></dd>
 <dt><a href="#Document">Document</a> : <code>object</code></dt>
 <dd><p>Couchdb document like an io.cozy.files</p>
 </dd>
@@ -434,7 +448,13 @@ both situation.</p>
 <dt><a href="#MockQueryOptions">MockQueryOptions</a> ⇒ <code><a href="#CozyClient">CozyClient</a></code></dt>
 <dd><p>Setups a client suitable for testing</p>
 </dd>
+<dt><a href="#Doctype">Doctype</a> : <code>&quot;io.cozy.accounts&quot;</code></dt>
+<dd></dd>
 <dt><a href="#Manifest">Manifest</a> : <code>object</code></dt>
+<dd></dd>
+<dt><a href="#OldCozyClient">OldCozyClient</a> : <code>object</code></dt>
+<dd></dd>
+<dt><a href="#NodeEnvironment">NodeEnvironment</a> : <code>object</code></dt>
 <dd></dd>
 <dt><a href="#QueryFetchStatus">QueryFetchStatus</a> : <code>&quot;loading&quot;</code> | <code>&quot;loaded&quot;</code> | <code>&quot;pending&quot;</code> | <code>&quot;failed&quot;</code></dt>
 <dd></dd>
@@ -952,7 +972,7 @@ having for the 'konnector' worker, and then filter them based on their
 **Kind**: static method of [<code>HasManyTriggers</code>](#HasManyTriggers)  
 <a name="CozyClient"></a>
 
-## CozyClient ⇐ <code>EventEmitter</code>
+## CozyClient
 Responsible for
 
 - Creating observable queries
@@ -961,9 +981,8 @@ Responsible for
 - Associations
 
 **Kind**: global class  
-**Extends**: <code>EventEmitter</code>  
 
-* [CozyClient](#CozyClient) ⇐ <code>EventEmitter</code>
+* [CozyClient](#CozyClient)
     * [new CozyClient(rawOptions)](#new_CozyClient_new)
     * _instance_
         * [.storeAccesors](#CozyClient+storeAccesors) : <code>object</code>
@@ -999,9 +1018,9 @@ Responsible for
         * [.loadInstanceOptionsFromDOM([selector])](#CozyClient+loadInstanceOptionsFromDOM) ⇒ <code>void</code>
         * [.setData(data)](#CozyClient+setData)
     * _static_
-        * [.fromOldClient()](#CozyClient.fromOldClient)
-        * [.fromOldOAuthClient()](#CozyClient.fromOldOAuthClient) ⇒ [<code>Promise.&lt;CozyClient&gt;</code>](#CozyClient)
-        * [.fromEnv()](#CozyClient.fromEnv)
+        * [.fromOldClient(oldClient)](#CozyClient.fromOldClient) ⇒ [<code>CozyClient</code>](#CozyClient)
+        * [.fromOldOAuthClient(oldClient)](#CozyClient.fromOldOAuthClient) ⇒ [<code>Promise.&lt;CozyClient&gt;</code>](#CozyClient)
+        * [.fromEnv([envArg], options)](#CozyClient.fromEnv) ⇒ [<code>CozyClient</code>](#CozyClient)
         * [.fromDOM(selector, options)](#CozyClient.fromDOM) ⇒ <code>object</code>
         * [.registerHook(doctype, name, fn)](#CozyClient.registerHook)
 
@@ -1060,7 +1079,6 @@ TODO Find a better way to make TS understand that emit is
 a method from cozy-client
 
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
-**Overrides**: [<code>emit</code>](#EventEmitter+emit)  
 <a name="CozyClient+registerPlugin"></a>
 
 ### cozyClient.registerPlugin()
@@ -1481,14 +1499,19 @@ set some data in the store.
 
 <a name="CozyClient.fromOldClient"></a>
 
-### CozyClient.fromOldClient()
+### CozyClient.fromOldClient(oldClient) ⇒ [<code>CozyClient</code>](#CozyClient)
 To help with the transition from cozy-client-js to cozy-client, it is possible to instantiate
 a client with a cookie-based instance of cozy-client-js.
 
 **Kind**: static method of [<code>CozyClient</code>](#CozyClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| oldClient | [<code>OldCozyClient</code>](#OldCozyClient) | An instance of the deprecated cozy-client |
+
 <a name="CozyClient.fromOldOAuthClient"></a>
 
-### CozyClient.fromOldOAuthClient() ⇒ [<code>Promise.&lt;CozyClient&gt;</code>](#CozyClient)
+### CozyClient.fromOldOAuthClient(oldClient) ⇒ [<code>Promise.&lt;CozyClient&gt;</code>](#CozyClient)
 To help with the transition from cozy-client-js to cozy-client, it is possible to instantiate
 a client with an OAuth-based instance of cozy-client-js.
 
@@ -1496,12 +1519,24 @@ Warning: unlike other instantiators, this one needs to be awaited.
 
 **Kind**: static method of [<code>CozyClient</code>](#CozyClient)  
 **Returns**: [<code>Promise.&lt;CozyClient&gt;</code>](#CozyClient) - An instance of a client, configured from the old client  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| oldClient | [<code>OldCozyClient</code>](#OldCozyClient) | An instance of the deprecated cozy-client |
+
 <a name="CozyClient.fromEnv"></a>
 
-### CozyClient.fromEnv()
-In konnector/service context, CozyClient can be instantiated from environment variables
+### CozyClient.fromEnv([envArg], options) ⇒ [<code>CozyClient</code>](#CozyClient)
+In konnector/service context, CozyClient can be instantiated from
+environment variables
 
 **Kind**: static method of [<code>CozyClient</code>](#CozyClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [envArg] | [<code>NodeEnvironment</code>](#NodeEnvironment) | The environment |
+| options | <code>object</code> | Options |
+
 <a name="CozyClient.fromDOM"></a>
 
 ### CozyClient.fromDOM(selector, options) ⇒ <code>object</code>
@@ -1583,7 +1618,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
 | [options.sort] | <code>Array</code> | The sorting params. |
 | [options.includes] | <code>Array.&lt;string&gt;</code> | The docs to include. |
 | [options.referenced] | <code>string</code> | The referenced document. |
-| [options.limit] | <code>number</code> | The document's limit to return. |
+| [options.limit] | <code>number</code> \| <code>null</code> | The document's limit to return. |
 | [options.skip] | <code>number</code> | The number of docs to skip. |
 | [options.cursor] | [<code>Cursor</code>](#Cursor) | The cursor to paginate views. |
 | [options.bookmark] | <code>string</code> | The bookmark to paginate mango queries. |
@@ -1840,6 +1875,10 @@ Returns the relationship for a given doctype/name
 Validates a document considering the descriptions in schema.attributes.
 
 **Kind**: instance method of [<code>Schema</code>](#Schema)  
+<a name="client"></a>
+
+## client : [<code>CozyClient</code>](#CozyClient)
+**Kind**: global variable  
 <a name="setupConsoleToThrow"></a>
 
 ## setupConsoleToThrow
@@ -1920,7 +1959,7 @@ example.
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>object</code> | Object of options |
-| [options.cozyUrl] | <code>string</code> | Base URL of the cozy, eg. cozy.tools or test.mycozy.cloud |
+| options.cozyUrl | <code>string</code> | Base URL of the cozy, eg. cozy.tools or test.mycozy.cloud |
 | [options.searchParams] | <code>Array</code> | Array of search parameters as [key, value] arrays, eg. ['username', 'bob'] |
 | [options.pathname] | <code>string</code> | Path to a specific part of the app, eg. /public |
 | [options.hash] | <code>string</code> | Path inside the app, eg. /files/test.jpg |
@@ -2572,31 +2611,27 @@ openFileWith - Opens a file on a mobile device
 
 <a name="shouldDisplayOffers"></a>
 
-## shouldDisplayOffers
+## shouldDisplayOffers ⇒ <code>boolean</code>
 Returns whether an instance is concerned by our offers
 
 **Kind**: global constant  
+**Returns**: <code>boolean</code> - Should we display offers  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| data | <code>object</code> | Object containing all the results from /settings/* |
-| data.context | <code>object</code> | Object returned by /settings/context |
-| data.instance | <code>object</code> | Object returned by /settings/instance |
-| data.diskUsage | <code>object</code> | Object returned by /settings/disk-usage |
+| data | [<code>SettingsInfo</code>](#SettingsInfo) | Object containing all the results from /settings/* |
 
 <a name="hasAnOffer"></a>
 
-## hasAnOffer
+## hasAnOffer ⇒ <code>boolean</code>
 Returns if an instance has subscribed to one of our offers
 
 **Kind**: global constant  
+**Returns**: <code>boolean</code> - Does the cozy have offers  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| data | <code>object</code> | Object containing all the results from /settings/* |
-| data.context | <code>object</code> | Object returned by /settings/context |
-| data.instance | <code>object</code> | Object returned by /settings/instance |
-| data.diskUsage | <code>object</code> | Object returned by /settings/disk-usage |
+| data | [<code>SettingsInfo</code>](#SettingsInfo) | Object containing all the results from /settings/* |
 
 <a name="buildPremiumLink"></a>
 
@@ -2605,9 +2640,9 @@ Returns the link to the Premium page on the Cozy's Manager
 
 **Kind**: global constant  
 
-| Param | Type |
-| --- | --- |
-| instanceInfo | <code>object</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| instanceInfo | <code>InstanceInfo</code> | Instance information |
 
 <a name="generatePrivateUrl"></a>
 
@@ -2724,6 +2759,11 @@ Helper to create a QueryDefinition. Recommended way to create
 query definitions.
 
 **Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doctype | [<code>Doctype</code>](#Doctype) | Doctype of the query definition |
+
 **Example**  
 ```
 import { Q } from 'cozy-client'
@@ -2838,6 +2878,13 @@ if there are N queries, only 1 extra level of nesting is introduced.
 | --- | --- | --- |
 | querySpecs | <code>object</code> | Definition of the queries |
 
+<a name="useClient"></a>
+
+## useClient() ⇒ [<code>CozyClient</code>](#CozyClient)
+Returns the cozy client from the context
+
+**Kind**: global function  
+**Returns**: [<code>CozyClient</code>](#CozyClient) - - Current cozy client  
 <a name="getErrorComponent"></a>
 
 ## getErrorComponent(error) ⇒ <code>function</code> \| <code>null</code>
@@ -3109,6 +3156,22 @@ HOC to provide mutations to components. Needs client in context or as prop.
 
 ## FilesystemEntry : <code>object</code>
 **Kind**: global typedef  
+<a name="DiskUsageInfo"></a>
+
+## DiskUsageInfo : <code>object</code>
+**Kind**: global typedef  
+<a name="SettingsInfo"></a>
+
+## SettingsInfo
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| context | <code>ContextInfo</code> | Object returned by /settings/context |
+| instance | <code>InstanceInfo</code> | Object returned by /settings/instance |
+| diskUsage | [<code>DiskUsageInfo</code>](#DiskUsageInfo) | Object returned by /settings/disk-usage |
+
 <a name="Document"></a>
 
 ## Document : <code>object</code>
@@ -3253,9 +3316,21 @@ Setups a client suitable for testing
 | options | <code>object</code> | Options |
 | [options.queries] | [<code>MockQueryOptions</code>](#MockQueryOptions) | Additional queries to insert in the client |
 
+<a name="Doctype"></a>
+
+## Doctype : <code>&quot;io.cozy.accounts&quot;</code>
+**Kind**: global typedef  
 <a name="Manifest"></a>
 
 ## Manifest : <code>object</code>
+**Kind**: global typedef  
+<a name="OldCozyClient"></a>
+
+## OldCozyClient : <code>object</code>
+**Kind**: global typedef  
+<a name="NodeEnvironment"></a>
+
+## NodeEnvironment : <code>object</code>
 **Kind**: global typedef  
 <a name="QueryFetchStatus"></a>
 

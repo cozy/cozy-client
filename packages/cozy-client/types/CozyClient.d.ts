@@ -20,11 +20,6 @@ export type ClientOptions = {
     appMetadata?: object;
 };
 /**
- * @interface EventEmitter
- * @function
- * @name EventEmitter#emit
- */
-/**
  * @typedef {object} ClientOptions
  * @property {object} [client]
  * @property {object} [link]
@@ -49,26 +44,35 @@ export type ClientOptions = {
  * - Hydration
  * - Creating plan for saving documents
  * - Associations
- *
- * @augments {EventEmitter}
  */
 declare class CozyClient {
     /**
      * To help with the transition from cozy-client-js to cozy-client, it is possible to instantiate
      * a client with a cookie-based instance of cozy-client-js.
+     *
+     * @param {OldCozyClient} oldClient - An instance of the deprecated cozy-client
+     * @returns {CozyClient}
      */
-    static fromOldClient(oldClient: any, options: any): CozyClient;
+    static fromOldClient(oldClient: OldCozyClient, options: any): CozyClient;
     /**
      * To help with the transition from cozy-client-js to cozy-client, it is possible to instantiate
      * a client with an OAuth-based instance of cozy-client-js.
      *
      * Warning: unlike other instantiators, this one needs to be awaited.
      *
+     * @param {OldCozyClient} oldClient - An instance of the deprecated cozy-client
      * @returns {Promise<CozyClient>} An instance of a client, configured from the old client
      */
-    static fromOldOAuthClient(oldClient: any, options: any): Promise<CozyClient>;
-    /** In konnector/service context, CozyClient can be instantiated from environment variables */
-    static fromEnv(envArg: any, options?: {}): CozyClient;
+    static fromOldOAuthClient(oldClient: OldCozyClient, options: any): Promise<CozyClient>;
+    /**
+     * In konnector/service context, CozyClient can be instantiated from
+     * environment variables
+     *
+     * @param  {NodeEnvironment} [envArg]  - The environment
+     * @param  {object} options - Options
+     * @returns {CozyClient}
+     */
+    static fromEnv(envArg?: NodeEnvironment, options?: object): CozyClient;
     /**
      * When used from an app, CozyClient can be instantiated from the data injected by the stack in
      * the DOM.
@@ -154,6 +158,8 @@ declare class CozyClient {
      * a method from cozy-client
      */
     emit(...args: any[]): void;
+    on(...args: any[]): void;
+    removeListener(...args: any[]): void;
     /**
      * A plugin is a class whose constructor receives the client as first argument.
      * The main mean of interaction with the client should be with events
@@ -600,4 +606,6 @@ import { HydratedDocument } from "./types";
 import { QueryState } from "./types";
 import { ReduxStore } from "./types";
 import { CozyClient as SnapshotClient } from "./testing/snapshots";
+import { OldCozyClient } from "./types";
+import { NodeEnvironment } from "./types";
 import fetchPolicies from "./policies";

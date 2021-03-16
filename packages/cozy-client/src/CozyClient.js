@@ -53,7 +53,9 @@ import {
   QueryState,
   Token,
   ClientResponse,
-  ReferenceMap
+  ReferenceMap,
+  OldCozyClient,
+  NodeEnvironment
 } from './types'
 
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
@@ -82,12 +84,6 @@ const DOC_CREATION = 'creation'
 const DOC_UPDATE = 'update'
 
 /**
- * @interface EventEmitter
- * @function
- * @name EventEmitter#emit
- */
-
-/**
  * @typedef {object} ClientOptions
  * @property {object} [client]
  * @property {object} [link]
@@ -113,8 +109,6 @@ const DOC_UPDATE = 'update'
  * - Hydration
  * - Creating plan for saving documents
  * - Associations
- *
- * @augments {EventEmitter}
  */
 class CozyClient {
   /**
@@ -201,6 +195,8 @@ class CozyClient {
    * a method from cozy-client
    */
   emit(...args) {}
+  on(...args) {}
+  removeListener(...args) {}
 
   /**
    * A plugin is a class whose constructor receives the client as first argument.
@@ -268,6 +264,9 @@ class CozyClient {
   /**
    * To help with the transition from cozy-client-js to cozy-client, it is possible to instantiate
    * a client with a cookie-based instance of cozy-client-js.
+   *
+   * @param {OldCozyClient} oldClient - An instance of the deprecated cozy-client
+   * @returns {CozyClient}
    */
   static fromOldClient(oldClient, options) {
     return new CozyClient({
@@ -283,6 +282,7 @@ class CozyClient {
    *
    * Warning: unlike other instantiators, this one needs to be awaited.
    *
+   * @param {OldCozyClient} oldClient - An instance of the deprecated cozy-client
    * @returns {Promise<CozyClient>} An instance of a client, configured from the old client
    */
   static async fromOldOAuthClient(oldClient, options) {
@@ -294,10 +294,21 @@ class CozyClient {
         token,
         ...options
       })
+    } else {
+      throw new Error(
+        'Old client does not have _oauth or _authcreds, cannot instantiate a new client, check if CozyClient.fromOldClient is more suitable'
+      )
     }
   }
 
-  /** In konnector/service context, CozyClient can be instantiated from environment variables */
+  /**
+   * In konnector/service context, CozyClient can be instantiated from
+   * environment variables
+   *
+   * @param  {NodeEnvironment} [envArg]  - The environment
+   * @param  {object} options - Options
+   * @returns {CozyClient}
+   */
   static fromEnv(envArg, options = {}) {
     const env = envArg || (typeof process !== 'undefined' ? process.env : {})
     const { COZY_URL, COZY_CREDENTIALS, NODE_ENV } = env

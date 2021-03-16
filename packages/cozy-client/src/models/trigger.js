@@ -43,11 +43,11 @@ const triggers = {
    *
    * @param {object} trigger io.cozy.triggers
    *
-   * @returns {string} A konnector slug
+   * @returns {string|void} A konnector slug
    */
   getKonnector: trigger => {
     if (!triggers.isKonnectorWorker(trigger)) {
-      return
+      return null
     }
     if (trigger.message && trigger.message.konnector) {
       return trigger.message.konnector

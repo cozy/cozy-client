@@ -123,6 +123,8 @@ export default function useClientErrors({ handleExceptions = true } = {}) {
     if (handleExceptions) {
       client.on('error', handleError)
       return () => client.removeListener('error', handleError)
+    } else {
+      return undefined
     }
   }, [client, handleError, handleExceptions])
 

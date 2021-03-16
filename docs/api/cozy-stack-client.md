@@ -162,7 +162,7 @@ document as data attribute
 | stackClient | [<code>CozyStackClient</code>](#CozyStackClient) | CozyStackClient |
 | endpoint | <code>string</code> | Stack endpoint |
 | options | <code>object</code> | Options of the collection |
-| options.normalize | <code>Func</code> | Callback to normalize response data (default `data => data`) |
+| options.normalize | <code>function</code> | Callback to normalize response data (default `data => data`) |
 | options.method | <code>string</code> | HTTP method (default `GET`) |
 
 <a name="CozyStackClient"></a>
@@ -1405,7 +1405,7 @@ found" error.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| error | <code>Error</code> |  |
+| error | <code>Error</code> | An error |
 | data | <code>Array</code> \| <code>object</code> | Data to return in case of "not found" error |
 
 <a name="isIndexNotFoundError"></a>
@@ -1416,9 +1416,9 @@ Helper to identify an index not found error
 **Kind**: global constant  
 **Returns**: <code>boolean</code> - - Whether or not the error is an index not found error  
 
-| Param | Type |
-| --- | --- |
-| error | <code>Error</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| error | <code>Error</code> | An error |
 
 <a name="isIndexConflictError"></a>
 
@@ -1428,9 +1428,9 @@ Helper to identify an index conflict
 **Kind**: global constant  
 **Returns**: <code>boolean</code> - - Whether or not the error is an index conflict error  
 
-| Param | Type |
-| --- | --- |
-| error | <code>Error</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| error | <code>Error</code> | An error |
 
 <a name="isNoUsableIndexError"></a>
 
@@ -1440,9 +1440,9 @@ Helper to identify a no usable index error
 **Kind**: global constant  
 **Returns**: <code>boolean</code> - - Whether or not the error is a no usable index error  
 
-| Param | Type |
-| --- | --- |
-| error | <code>Error</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| error | <code>Error</code> | An error |
 
 <a name="isDocumentUpdateConflict"></a>
 
@@ -1452,9 +1452,9 @@ Helper to identify a document conflict
 **Kind**: global constant  
 **Returns**: <code>boolean</code> - - Whether or not the error is a document conflict error  
 
-| Param | Type |
-| --- | --- |
-| error | <code>Error</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| error | <code>Error</code> | An error |
 
 <a name="getIndexFields"></a>
 

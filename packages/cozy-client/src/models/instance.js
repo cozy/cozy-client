@@ -2,6 +2,19 @@ import get from 'lodash/get'
 const GB = 1000 * 1000 * 1000
 const PREMIUM_QUOTA = 50 * GB
 
+/**
+ * @typedef {object} InstanceInfo
+ * @typedef {object} ContextInfo
+ * @typedef {object} DiskUsageInfo
+ */
+
+/**
+ * @typedef SettingsInfo
+ * @property {ContextInfo} context - Object returned by /settings/context
+ * @property {InstanceInfo} instance - Object returned by /settings/instance
+ * @property {DiskUsageInfo} diskUsage - Object returned by /settings/disk-usage
+ */
+
 // If manager URL is present, then the instance is not self-hosted
 export const isSelfHosted = instanceInfo => {
   return get(instanceInfo, 'context.data.attributes.manager_url') ? false : true
@@ -22,10 +35,8 @@ export const getUuid = instanceInfo => {
 /**
  * Returns whether an instance is concerned by our offers
  *
- * @param {object} data Object containing all the results from /settings/*
- * @param {object} data.context Object returned by /settings/context
- * @param {object} data.instance Object returned by /settings/instance
- * @param {object} data.diskUsage Object returned by /settings/disk-usage
+ * @param {SettingsInfo} data Object containing all the results from /settings/*
+ * @returns {boolean} Should we display offers
  */
 export const shouldDisplayOffers = data => {
   return (
@@ -38,11 +49,8 @@ export const shouldDisplayOffers = data => {
 /**
  * Returns if an instance has subscribed to one of our offers
  *
- * @param {object} data Object containing all the results from /settings/*
- * @param {object} data.context Object returned by /settings/context
- * @param {object} data.instance Object returned by /settings/instance
- * @param {object} data.diskUsage Object returned by /settings/disk-usage
- *
+ * @param {SettingsInfo} data Object containing all the results from /settings/*
+ * @returns {boolean} Does the cozy have offers
  */
 export const hasAnOffer = data => {
   return (
@@ -56,7 +64,7 @@ export const hasAnOffer = data => {
 /**
  * Returns the link to the Premium page on the Cozy's Manager
  *
- * @param {object} instanceInfo
+ * @param {InstanceInfo} instanceInfo - Instance information
  */
 export const buildPremiumLink = instanceInfo => {
   const managerUrl = get(
@@ -67,5 +75,7 @@ export const buildPremiumLink = instanceInfo => {
   const uuid = getUuid(instanceInfo)
   if (managerUrl && uuid) {
     return `${managerUrl}/cozy/instances/${uuid}/premium`
+  } else {
+    return null
   }
 }

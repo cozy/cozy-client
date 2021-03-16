@@ -7,7 +7,7 @@ export namespace triggerStates {
 }
 export namespace triggers {
     function isKonnectorWorker(trigger: any): boolean;
-    function getKonnector(trigger: any): string;
+    function getKonnector(trigger: any): string | void;
     function getAccountId(trigger: any): string;
     function isLatestErrorMuted(trigger: any, account: any): boolean;
     function hasActionableError(trigger: any): boolean;

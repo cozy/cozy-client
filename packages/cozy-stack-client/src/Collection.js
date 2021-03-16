@@ -1,7 +1,7 @@
 /**
  * Handler for error response which return a empty value for "not found" error
  *
- * @param  {Error}         error
+ * @param  {Error}         error - An error
  * @param  {Array|object}  data Data to return in case of "not found" error
  * @returns {object}        JsonAPI response with empty data in case of "not
  * found" error.
@@ -23,7 +23,7 @@ export const dontThrowNotFoundError = (error, data = []) => {
 /**
  * Helper to identify an index not found error
  *
- * @param {Error} error
+ * @param {Error} error - An error
  * @returns {boolean} - Whether or not the error is an index not found error
  */
 export const isIndexNotFoundError = error => {
@@ -33,7 +33,7 @@ export const isIndexNotFoundError = error => {
 /**
  * Helper to identify an index conflict
  *
- * @param {Error} error
+ * @param {Error} error - An error
  * @returns {boolean} - Whether or not the error is an index conflict error
  */
 export const isIndexConflictError = error => {
@@ -43,7 +43,7 @@ export const isIndexConflictError = error => {
 /**
  * Helper to identify a no usable index error
  *
- * @param {Error} error
+ * @param {Error} error - An error
  * @returns {boolean} - Whether or not the error is a no usable index error
  */
 export const isNoUsableIndexError = error => {
@@ -53,7 +53,7 @@ export const isNoUsableIndexError = error => {
 /**
  * Helper to identify a document conflict
  *
- * @param {Error} error
+ * @param {Error} error - An error
  * @returns {boolean} - Whether or not the error is a document conflict error
  */
 export const isDocumentUpdateConflict = error => {
@@ -71,7 +71,7 @@ export class Collection {
    * @param  {CozyStackClient}  stackClient - CozyStackClient
    * @param  {string}  endpoint - Stack endpoint
    * @param  {object}  options - Options of the collection
-   * @param  {Func}    options.normalize Callback to normalize response data
+   * @param  {Function}    options.normalize Callback to normalize response data
    * (default `data => data`)
    * @param  {string}  options.method    HTTP method (default `GET`)
    * @returns {object}  JsonAPI response containing normalized
