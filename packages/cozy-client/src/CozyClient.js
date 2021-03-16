@@ -55,7 +55,9 @@ import {
   ClientResponse,
   ReferenceMap,
   OldCozyClient,
-  NodeEnvironment
+  NodeEnvironment,
+  AppMetadata,
+  ClientCapabilities
 } from './types'
 
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
@@ -96,10 +98,11 @@ const DOC_UPDATE = 'update'
  * @property {object} [oauth]
  * @property {Function} [onTokenRefresh]
  * @property {Function} [onTokenRefresh]
- * @property  {Link}         [options.link]   - Backward compatibility
- * @property  {Array<Link>}  [options.links]  - List of links
- * @property  {object}       [options.schema] - Schema description for each doctypes
- * @property  {object}       [options.appMetadata] - Metadata about the application that will be used in ensureCozyMetadata
+ * @property  {Link}         [link]   - Backward compatibility
+ * @property  {Array<Link>}  [links]  - List of links
+ * @property  {object}       [schema] - Schema description for each doctypes
+ * @property  {AppMetadata}  [appMetadata] - Metadata about the application that will be used in ensureCozyMetadata
+ * @property  {ClientCapabilities} [capabilities] - Capabilities sent by the stack
  */
 
 /**
@@ -139,6 +142,7 @@ class CozyClient {
       links,
       schema = {},
       appMetadata = {},
+      capabilities,
       ...options
     } = rawOptions
     if (link) {
@@ -167,6 +171,11 @@ class CozyClient {
     this.chain = chain(this.links)
 
     this.schema = new Schema(schema, stackClient)
+
+    /**
+     * @type {ClientCapabilities}
+     */
+    this.capabilities = capabilities || null
 
     // Instances of plugins registered with registerPlugin
     this.plugins = {}
@@ -333,11 +342,11 @@ class CozyClient {
    * When used from an app, CozyClient can be instantiated from the data injected by the stack in
    * the DOM.
    *
-   * @param  {string}   selector - Options
    * @param  {object}   options  - CozyClient constructor options
+   * @param  {string}   selector - Options
    * @returns {object} - CozyClient instance
    */
-  static fromDOM(selector = '[role=application]', options = {}) {
+  static fromDOM(options = {}, selector = '[role=application]') {
     const root = document.querySelector(selector)
     if (!(root instanceof HTMLElement)) {
       return
@@ -350,17 +359,22 @@ class CozyClient {
       ? JSON.parse(root.dataset.cozy)
       : { ...root.dataset }
 
-    const { cozyDomain, cozyToken } = data
+    let { domain, token } = data
+    if (!domain || !token) {
+      domain = domain || data.cozyDomain
+      token = token || data.cozyToken
+    }
 
-    if (!cozyDomain || !cozyToken) {
+    if (!domain || !token) {
       throw new Error(
         `Found no data in ${root.dataset} to instantiate cozyClient`
       )
     }
 
     return new CozyClient({
-      uri: `${window.location.protocol}//${cozyDomain}`,
-      token: cozyToken,
+      uri: `${window.location.protocol}//${domain}`,
+      token: token,
+      capabilities: data.capabilities,
       ...options
     })
   }
@@ -1080,6 +1094,17 @@ client.query(Q('io.cozy.bills'))`)
       _type: doctype
     }
     return this.hydrateDocument(obj)
+  }
+
+  /**
+   * Creates an association that is linked to the store.
+   */
+  getAssociation(document, associationName) {
+    return createAssociation(
+      document,
+      this.schema.getRelationship(document._type, associationName),
+      this.getRelationshipStoreAccessors()
+    )
   }
 
   /**

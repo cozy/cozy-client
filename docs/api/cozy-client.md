@@ -487,6 +487,11 @@ both situation.</p>
 <dd></dd>
 <dt><a href="#InAppBrowser">InAppBrowser</a></dt>
 <dd></dd>
+<dt><a href="#AppMetadata">AppMetadata</a> : <code>object</code></dt>
+<dd></dd>
+<dt><a href="#ClientCapabilities">ClientCapabilities</a> : <code>object</code></dt>
+<dd><p>Read more about client capabilities here <a href="https://docs.cozy.io/en/cozy-stack/settings/#get-settingscapabilities">https://docs.cozy.io/en/cozy-stack/settings/#get-settingscapabilities</a>.</p>
+</dd>
 <dt><a href="#Cordova">Cordova</a></dt>
 <dd></dd>
 <dt><a href="#CordovaWindow">CordovaWindow</a></dt>
@@ -985,6 +990,7 @@ Responsible for
 * [CozyClient](#CozyClient)
     * [new CozyClient(rawOptions)](#new_CozyClient_new)
     * _instance_
+        * [.capabilities](#CozyClient+capabilities) : [<code>ClientCapabilities</code>](#ClientCapabilities)
         * [.storeAccesors](#CozyClient+storeAccesors) : <code>object</code>
         * [.fetchQueryAndGetFromState](#CozyClient+fetchQueryAndGetFromState) ⇒ [<code>Promise.&lt;QueryState&gt;</code>](#QueryState)
         * [.emit()](#CozyClient+emit)
@@ -1001,6 +1007,7 @@ Responsible for
         * [.hydrateDocuments(doctype, documents)](#CozyClient+hydrateDocuments) ⇒ <code>Array.&lt;HydratedDocument&gt;</code>
         * [.hydrateDocument(document, [schemaArg])](#CozyClient+hydrateDocument) ⇒ <code>HydratedDocument</code>
         * [.makeNewDocument()](#CozyClient+makeNewDocument)
+        * [.getAssociation()](#CozyClient+getAssociation)
         * [.getRelationshipStoreAccessors()](#CozyClient+getRelationshipStoreAccessors)
         * [.getCollectionFromState(type)](#CozyClient+getCollectionFromState) ⇒ [<code>Array.&lt;CozyClientDocument&gt;</code>](#CozyClientDocument)
         * [.getDocumentFromState(type, id)](#CozyClient+getDocumentFromState) ⇒ [<code>CozyClientDocument</code>](#CozyClientDocument)
@@ -1021,7 +1028,7 @@ Responsible for
         * [.fromOldClient(oldClient)](#CozyClient.fromOldClient) ⇒ [<code>CozyClient</code>](#CozyClient)
         * [.fromOldOAuthClient(oldClient)](#CozyClient.fromOldOAuthClient) ⇒ [<code>Promise.&lt;CozyClient&gt;</code>](#CozyClient)
         * [.fromEnv([envArg], options)](#CozyClient.fromEnv) ⇒ [<code>CozyClient</code>](#CozyClient)
-        * [.fromDOM(selector, options)](#CozyClient.fromDOM) ⇒ <code>object</code>
+        * [.fromDOM(options, selector)](#CozyClient.fromDOM) ⇒ <code>object</code>
         * [.registerHook(doctype, name, fn)](#CozyClient.registerHook)
 
 <a name="new_CozyClient_new"></a>
@@ -1050,6 +1057,10 @@ const client = new CozyClient({
 ```
 
 Cozy-Client will automatically call `this.login()` if provided with a token and an uri
+<a name="CozyClient+capabilities"></a>
+
+### cozyClient.capabilities : [<code>ClientCapabilities</code>](#ClientCapabilities)
+**Kind**: instance property of [<code>CozyClient</code>](#CozyClient)  
 <a name="CozyClient+storeAccesors"></a>
 
 ### cozyClient.storeAccesors : <code>object</code>
@@ -1321,6 +1332,12 @@ This document is hydrated : its relationships are there
 and working.
 
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+<a name="CozyClient+getAssociation"></a>
+
+### cozyClient.getAssociation()
+Creates an association that is linked to the store.
+
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 <a name="CozyClient+getRelationshipStoreAccessors"></a>
 
 ### cozyClient.getRelationshipStoreAccessors()
@@ -1539,7 +1556,7 @@ environment variables
 
 <a name="CozyClient.fromDOM"></a>
 
-### CozyClient.fromDOM(selector, options) ⇒ <code>object</code>
+### CozyClient.fromDOM(options, selector) ⇒ <code>object</code>
 When used from an app, CozyClient can be instantiated from the data injected by the stack in
 the DOM.
 
@@ -1548,8 +1565,8 @@ the DOM.
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| selector | <code>string</code> | <code>&quot;[role&#x3D;application]&quot;</code> | Options |
 | options | <code>object</code> |  | CozyClient constructor options |
+| selector | <code>string</code> | <code>&quot;[role&#x3D;application]&quot;</code> | Options |
 
 <a name="CozyClient.registerHook"></a>
 
@@ -3129,10 +3146,11 @@ HOC to provide mutations to components. Needs client in context or as prop.
 | [oauth] | <code>object</code> |  |
 | [onTokenRefresh] | <code>function</code> |  |
 | [onTokenRefresh] | <code>function</code> |  |
-| [options.link] | <code>Link</code> | Backward compatibility |
-| [options.links] | <code>Array.&lt;Link&gt;</code> | List of links |
-| [options.schema] | <code>object</code> | Schema description for each doctypes |
-| [options.appMetadata] | <code>object</code> | Metadata about the application that will be used in ensureCozyMetadata |
+| [link] | <code>Link</code> | Backward compatibility |
+| [links] | <code>Array.&lt;Link&gt;</code> | List of links |
+| [schema] | <code>object</code> | Schema description for each doctypes |
+| [appMetadata] | [<code>AppMetadata</code>](#AppMetadata) | Metadata about the application that will be used in ensureCozyMetadata |
+| [capabilities] | [<code>ClientCapabilities</code>](#ClientCapabilities) | Capabilities sent by the stack |
 
 <a name="CozyAccount"></a>
 
@@ -3476,6 +3494,25 @@ An io.cozy.files document
 | Name | Type |
 | --- | --- |
 | open | <code>function</code> | 
+
+<a name="AppMetadata"></a>
+
+## AppMetadata : <code>object</code>
+**Kind**: global typedef  
+<a name="ClientCapabilities"></a>
+
+## ClientCapabilities : <code>object</code>
+Read more about client capabilities here https://docs.cozy.io/en/cozy-stack/settings/#get-settingscapabilities.
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| can_auth_with_oidc | <code>boolean</code> | Whether OIDC login is possible with this Cozy |
+| can_auth_with_password | <code>boolean</code> | Whether  password login is possible with this Cozy |
+| file_versioning | <code>boolean</code> | Whether file versioning is active on this Cozy |
+| flat_subdomains | <code>boolean</code> | Whether the stack has been configured to use flat subdomains |
 
 <a name="Cordova"></a>
 

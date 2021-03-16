@@ -18,6 +18,7 @@ export const client = implementations => {
     create: jest.fn(),
     save: jest.fn(),
     destroy: jest.fn(),
+    getAssociation: jest.fn(),
     makeObservableQuery: jest.fn(),
     requestQuery: jest.fn(),
     all: jest.fn(),

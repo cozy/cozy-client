@@ -17,7 +17,11 @@ export type ClientOptions = {
     /**
      * - Metadata about the application that will be used in ensureCozyMetadata
      */
-    appMetadata?: object;
+    appMetadata?: AppMetadata;
+    /**
+     * - Capabilities sent by the stack
+     */
+    capabilities?: ClientCapabilities;
 };
 /**
  * @typedef {object} ClientOptions
@@ -32,10 +36,11 @@ export type ClientOptions = {
  * @property {object} [oauth]
  * @property {Function} [onTokenRefresh]
  * @property {Function} [onTokenRefresh]
- * @property  {Link}         [options.link]   - Backward compatibility
- * @property  {Array<Link>}  [options.links]  - List of links
- * @property  {object}       [options.schema] - Schema description for each doctypes
- * @property  {object}       [options.appMetadata] - Metadata about the application that will be used in ensureCozyMetadata
+ * @property  {Link}         [link]   - Backward compatibility
+ * @property  {Array<Link>}  [links]  - List of links
+ * @property  {object}       [schema] - Schema description for each doctypes
+ * @property  {AppMetadata}  [appMetadata] - Metadata about the application that will be used in ensureCozyMetadata
+ * @property  {ClientCapabilities} [capabilities] - Capabilities sent by the stack
  */
 /**
  * Responsible for
@@ -77,11 +82,11 @@ declare class CozyClient {
      * When used from an app, CozyClient can be instantiated from the data injected by the stack in
      * the DOM.
      *
-     * @param  {string}   selector - Options
      * @param  {object}   options  - CozyClient constructor options
+     * @param  {string}   selector - Options
      * @returns {object} - CozyClient instance
      */
-    static fromDOM(selector?: string, options?: object): object;
+    static fromDOM(options?: object, selector?: string): object;
     /**
      * Hooks are an observable system for events on documents.
      * There are at the moment only 2 hooks available.
@@ -145,6 +150,10 @@ declare class CozyClient {
     links: any[];
     chain: any;
     schema: Schema;
+    /**
+     * @type {ClientCapabilities}
+     */
+    capabilities: ClientCapabilities;
     plugins: {};
     /**
      * @type {object}
@@ -415,6 +424,10 @@ declare class CozyClient {
      */
     makeNewDocument(doctype: any): any;
     /**
+     * Creates an association that is linked to the store.
+     */
+    getAssociation(document: any, associationName: any): any;
+    /**
      * Returns the accessors that are given to the relationships for them
      * to deal with the stores.
      *
@@ -594,6 +607,8 @@ declare namespace CozyClient {
     export const version: string;
 }
 import { Token } from "./types";
+import { AppMetadata } from "./types";
+import { ClientCapabilities } from "./types";
 import Schema from "./Schema";
 import { DocumentCollection } from "./types";
 import { QueryDefinition } from "./queries/dsl";

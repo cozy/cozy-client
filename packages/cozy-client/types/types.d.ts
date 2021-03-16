@@ -133,6 +133,8 @@ export type FilePlugin = {
 export type InAppBrowser = {
     open: Function;
 };
+export type AppMetadata = any;
+export type ClientCapabilities = any;
 export type Cordova = {
     file: FilePlugin;
     InAppBrowser: InAppBrowser;
