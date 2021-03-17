@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [20.2.0](https://github.com/cozy/cozy-client/compare/v20.1.0...v20.2.0) (2021-03-17)
+
+
+### Features
+
+* Update cozy-device-helper ([75da334](https://github.com/cozy/cozy-client/commit/75da3341aa4f9f0042fd937b7079f81baab72a4d))
+
+
+
+
+
 # [20.1.0](https://github.com/cozy/cozy-client/compare/v20.0.0...v20.1.0) (2021-03-16)
 
 **Note:** Version bump only for package cozy-pouch-link
