@@ -4296,10 +4296,10 @@ cosmiconfig@^5.0.0, cosmiconfig@^5.1.0, cosmiconfig@^5.2.0:
     js-yaml "^3.13.1"
     parse-json "^4.0.0"
 
-cozy-device-helper@^1.7.3:
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/cozy-device-helper/-/cozy-device-helper-1.11.0.tgz#1dc9441b23c9bfd1f62b947f65334334a2f78cdc"
-  integrity sha512-Xw9Zah3ML8ORnKzOTFj8CPXVjLKOvFwwy1ue8KoHzrdkraHctyQ6pdm0Jm8qLuxV6oa0BexOilqnq849OR7ZdA==
+cozy-device-helper@^1.12.0:
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/cozy-device-helper/-/cozy-device-helper-1.12.0.tgz#619a24b0d3caf2d3f616a1524daef7c7b71eab7a"
+  integrity sha512-7pFbltgkD8rSO0PEf8pd6aBB37RUnNYH7fb3pkbcvo5rk4quCfSLREV94gZwXxowzP4vjZcAumTM09DfI42mJA==
   dependencies:
     lodash "^4.17.19"
 
