@@ -330,12 +330,34 @@ describe('DocumentCollection', () => {
         jest.resetAllMocks()
       })
 
-      it('should call the right route with the right payload', async () => {
+      it('should call the right routes with the right payload', async () => {
+        client.fetchJSON.mockResolvedValueOnce({
+          id: '_design/123456',
+          name: '123456'
+        })
+        client.fetchJSON.mockResolvedValueOnce({
+          data: []
+        })
         await collection.createIndex(['label', 'done'])
-        expect(client.fetchJSON).toHaveBeenCalledWith(
+        expect(client.fetchJSON).toHaveBeenNthCalledWith(
+          1,
           'POST',
           '/data/io.cozy.todos/_index',
           { index: { fields: ['label', 'done'] } }
+        )
+        expect(client.fetchJSON).toHaveBeenNthCalledWith(
+          2,
+          'POST',
+          '/data/io.cozy.todos/_find',
+          {
+            selector: {
+              label: { $gt: null },
+              done: { $gt: null }
+            },
+            limit: 1,
+            skip: 0,
+            use_index: '_design/123456'
+          }
         )
       })
 
@@ -683,7 +705,7 @@ describe('DocumentCollection', () => {
         }
       }
       getMatchingIndex.mockReturnValue(index.doc)
-      
+
       client.fetchJSON.mockRestore()
       client.fetchJSON
         .mockRejectedValueOnce(new Error('no_index'))

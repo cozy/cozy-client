@@ -448,7 +448,7 @@ class DocumentCollection {
 
     const opts = {
       selector,
-      use_index: indexId,
+      use_index: indexName,
       // TODO: type and class should not be necessary, it's just a temp fix for a stack bug
       fields: fields ? [...fields, '_id', '_type', 'class'] : undefined,
       limit,
@@ -537,7 +537,8 @@ class DocumentCollection {
     if (resp.result === 'exists') return indexResp
 
     // indexes might not be usable right after being created; so we delay the resolving until they are
-    const selector = { [fields[0]]: { $gt: null } }
+    const selector = {}
+    fields.forEach(f => (selector[f] = { $gt: null }))
     const options = { indexId: indexResp.id, limit: 1 }
 
     if (await attempt(this.find(selector, options))) return indexResp
