@@ -214,7 +214,6 @@ class DocumentCollection {
     if (!indexedFields) {
       indexedFields = getIndexFields({ sort: options.sort, selector })
     }
-
     const existingIndex = await this.findExistingIndex(selector, options)
     const indexName = getIndexNameFromFields(indexedFields)
     if (!existingIndex) {
@@ -431,8 +430,8 @@ class DocumentCollection {
     indexedFields = indexedFields
       ? indexedFields
       : getIndexFields({ sort, selector })
-    const indexId = options.indexId || getIndexNameFromFields(indexedFields)
-
+    const indexName =
+      options.indexId || `_design/${getIndexNameFromFields(indexedFields)}`
     if (sort) {
       const sortOrders = uniq(
         sort.map(sortOption => head(Object.values(sortOption)))

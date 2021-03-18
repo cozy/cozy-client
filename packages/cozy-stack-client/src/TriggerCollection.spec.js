@@ -218,7 +218,7 @@ describe('TriggerCollection', () => {
             worker: 'thumbnail'
           },
           skip: 0,
-          use_index: 'by_worker_and_message'
+          use_index: '_design/by_worker_and_message'
         }
       )
     })
