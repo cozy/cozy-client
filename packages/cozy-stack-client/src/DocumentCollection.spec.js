@@ -318,6 +318,7 @@ describe('DocumentCollection', () => {
 
     describe('existing index', () => {
       beforeAll(() => {
+        jest.resetAllMocks()
         jest.spyOn(client, 'fetchJSON').mockResolvedValue({
           id: '_design/123456',
           name: '123456',
@@ -401,7 +402,7 @@ describe('DocumentCollection', () => {
         {
           selector: { done: false },
           skip: 0,
-          use_index: 'by_done'
+          use_index: '_design/by_done'
         }
       )
     })
@@ -416,7 +417,7 @@ describe('DocumentCollection', () => {
           limit: 200,
           selector: { done: false },
           skip: 50,
-          use_index: 'by_done'
+          use_index: '_design/by_done'
         }
       )
     })
@@ -432,7 +433,7 @@ describe('DocumentCollection', () => {
           selector: { done: false },
           skip: 0,
           bookmark: 'himark',
-          use_index: 'by_done'
+          use_index: '_design/by_done'
         }
       )
     })
@@ -447,7 +448,7 @@ describe('DocumentCollection', () => {
           skip: 0,
           selector: { done: false },
           sort: [{ label: 'desc' }, { done: 'desc' }],
-          use_index: 'by_label_and_done'
+          use_index: '_design/by_label_and_done'
         }
       )
     })
@@ -462,7 +463,7 @@ describe('DocumentCollection', () => {
           skip: 0,
           selector: { done: false },
           sort: [{ label: 'asc' }, { done: 'asc' }],
-          use_index: 'by_label_and_done'
+          use_index: '_design/by_label_and_done'
         }
       )
       await collection.find({ done: false }, { sort: [{ label: 'desc' }] })
@@ -473,7 +474,7 @@ describe('DocumentCollection', () => {
           skip: 0,
           selector: { done: false },
           sort: [{ label: 'desc' }, { done: 'desc' }],
-          use_index: 'by_label_and_done'
+          use_index: '_design/by_label_and_done'
         }
       )
     })
@@ -501,7 +502,7 @@ describe('DocumentCollection', () => {
           skip: 0,
           selector: { done: false },
           sort: [{ label: 'desc' }, { _id: 'desc' }, { done: 'desc' }],
-          use_index: 'by_label_and__id_and_done'
+          use_index: '_design/by_label_and__id_and_done'
         }
       )
     })
@@ -591,7 +592,7 @@ describe('DocumentCollection', () => {
         skip: 0,
         selector: { done: { $exists: true } },
         sort: [{ label: 'desc' }],
-        use_index: 'by_label'
+        use_index: '_design/by_label'
       }
 
       expect(client.fetchJSON).toHaveBeenCalledWith(
@@ -634,7 +635,7 @@ describe('DocumentCollection', () => {
         skip: 0,
         selector: { done: { $exists: true } },
         sort: [{ label: 'desc' }],
-        use_index: 'by_label'
+        use_index: '_design/by_label'
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'POST',
@@ -682,7 +683,7 @@ describe('DocumentCollection', () => {
         }
       }
       getMatchingIndex.mockReturnValue(index.doc)
-
+      
       client.fetchJSON.mockRestore()
       client.fetchJSON
         .mockRejectedValueOnce(new Error('no_index'))
@@ -719,7 +720,7 @@ describe('DocumentCollection', () => {
         skip: 0,
         selector: { done: { $exists: true } },
         sort: [{ label: 'desc' }, { done: 'desc' }],
-        use_index: 'by_label_and_done'
+        use_index: '_design/by_label_and_done'
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'POST',
@@ -760,7 +761,7 @@ describe('DocumentCollection', () => {
         {
           selector: { done: false },
           skip: 0,
-          use_index: 'by_done',
+          use_index: '_design/by_done',
           execution_stats: true
         }
       )
