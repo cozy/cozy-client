@@ -17,7 +17,8 @@ import {
   getIndexNameFromFields,
   transformSort,
   getIndexFields,
-  getMatchingIndex,
+  isMatchingIndex,
+  isInconsistentIndex,
   normalizeDesignDoc
 } from './mangoIndex'
 import * as querystring from './querystring'
@@ -189,11 +190,14 @@ class DocumentCollection {
       await this.copyIndex(sourceIndex, targetIndexName)
       await this.destroyIndex(sourceIndex)
     } catch (error) {
-      // There might be a conflict error when 2 queries using the same index
-      // are run in parallel
+      // A conflict might occur for parallel queries on same index:
+      // we retry once
       if (!isDocumentUpdateConflict(error)) {
         throw error
       }
+      sleep(1000)
+      await this.copyIndex(sourceIndex, targetIndexName)
+      await this.destroyIndex(sourceIndex)
     }
   }
 
@@ -215,6 +219,7 @@ class DocumentCollection {
       indexedFields = getIndexFields({ sort: options.sort, selector })
     }
     const existingIndex = await this.findExistingIndex(selector, options)
+
     const indexName = getIndexNameFromFields(indexedFields)
     if (!existingIndex) {
       await this.createIndex(indexedFields, {
@@ -620,7 +625,16 @@ class DocumentCollection {
       ? indexedFields
       : getIndexFields({ sort, selector })
 
-    return getMatchingIndex(indexes, fieldsToIndex, partialFilter)
+    const existingIndex = indexes.find(index => {
+      return isMatchingIndex(index, fieldsToIndex, partialFilter)
+    })
+    for (const index of indexes) {
+      // This is a safeguard for potential inconsistent indexes
+      if (isInconsistentIndex(index)) {
+        await this.destroyIndex(index)
+      }
+    }
+    return existingIndex
   }
 
   /**

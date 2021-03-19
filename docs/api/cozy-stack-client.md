@@ -65,8 +65,12 @@ through OAuth.</p>
 <dd><p>Compute fields that should be indexed for a mango
 query to work</p>
 </dd>
-<dt><a href="#getMatchingIndex">getMatchingIndex</a> ⇒ <code>object</code></dt>
-<dd><p>Get a matching index based on the given parameters</p>
+<dt><a href="#isInconsistentIndex">isInconsistentIndex</a> ⇒ <code>boolean</code></dt>
+<dd><p>Check if an index is in an inconsistent state, i.e. its name
+contains the indexed attributes which are not in correct order.</p>
+</dd>
+<dt><a href="#isMatchingIndex">isMatchingIndex</a> ⇒ <code>boolean</code></dt>
+<dd><p>Check if an index is matching the given fields</p>
 </dd>
 <dt><a href="#getPermissionsFor">getPermissionsFor</a> ⇒ <code>object</code></dt>
 <dd><p>Build a permission set</p>
@@ -1469,19 +1473,32 @@ query to work
 | --- | --- | --- |
 | options | <code>object</code> | Mango query options |
 
-<a name="getMatchingIndex"></a>
+<a name="isInconsistentIndex"></a>
 
-## getMatchingIndex ⇒ <code>object</code>
-Get a matching index based on the given parameters
+## isInconsistentIndex ⇒ <code>boolean</code>
+Check if an index is in an inconsistent state, i.e. its name
+contains the indexed attributes which are not in correct order.
 
 **Kind**: global constant  
-**Returns**: <code>object</code> - A matching index  
+**Returns**: <code>boolean</code> - True if the index is inconsistent  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| indexes | <code>Array</code> | The list of indexes to search |
-| fields | <code>Array</code> | The index fields |
-| partialFilter | <code>object</code> | A partial filter selector |
+| index | <code>object</code> | The index to check |
+
+<a name="isMatchingIndex"></a>
+
+## isMatchingIndex ⇒ <code>boolean</code>
+Check if an index is matching the given fields
+
+**Kind**: global constant  
+**Returns**: <code>boolean</code> - True if the index is matches the given fields  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| index | <code>object</code> | The index to check |
+| fields | <code>Array</code> | The fields that the index must have |
+| partialFilter | <code>object</code> | An optional partial filter |
 
 <a name="getPermissionsFor"></a>
 

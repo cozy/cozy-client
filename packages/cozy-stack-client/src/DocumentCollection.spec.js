@@ -3,11 +3,11 @@ jest.mock('./CozyStackClient')
 import flag from 'cozy-flags'
 import CozyStackClient from './CozyStackClient'
 import DocumentCollection from './DocumentCollection'
-import { getMatchingIndex } from './mangoIndex'
+import { isMatchingIndex } from './mangoIndex'
 
 jest.mock('./mangoIndex', () => ({
   ...jest.requireActual('./mangoIndex'),
-  getMatchingIndex: jest.fn()
+  isMatchingIndex: jest.fn()
 }))
 
 const ALL_RESPONSE_FIXTURE = {
@@ -704,7 +704,7 @@ describe('DocumentCollection', () => {
           }
         }
       }
-      getMatchingIndex.mockReturnValue(index.doc)
+      isMatchingIndex.mockReturnValue(index.doc)
 
       client.fetchJSON.mockRestore()
       client.fetchJSON
@@ -1091,6 +1091,18 @@ describe('DocumentCollection', () => {
     const selector = {
       'message.account': 'ca7b7f1'
     }
+    const index = {
+      _id: '_design/123',
+      views: {
+        '123': {
+          map: {
+            fields: {
+              'cozyMetadata.createdAt': 'desc'
+            }
+          }
+        }
+      }
+    }
 
     beforeEach(() => {
       collection.fetchAllMangoIndexes = jest.fn()
@@ -1105,32 +1117,26 @@ describe('DocumentCollection', () => {
     })
 
     it('should get matching index with correct arguments with indexed field', async () => {
-      const index = {
-        _id: '123'
-      }
       collection.fetchAllMangoIndexes.mockResolvedValue([index])
 
       await collection.findExistingIndex(selector, {
         indexedFields: ['message.account']
       })
-      expect(getMatchingIndex).toHaveBeenCalledWith(
-        [index],
+      expect(isMatchingIndex).toHaveBeenCalledWith(
+        index,
         ['message.account'],
         undefined
       )
     })
 
     it('should get matching index with correct arguments without indexed field', async () => {
-      const index = {
-        _id: '123'
-      }
       collection.fetchAllMangoIndexes.mockResolvedValue([index])
 
       await collection.findExistingIndex(selector, {
         sort: [{ 'cozyMetadata.createdAt': 'desc' }]
       })
-      expect(getMatchingIndex).toHaveBeenCalledWith(
-        [index],
+      expect(isMatchingIndex).toHaveBeenCalledWith(
+        index,
         ['cozyMetadata.createdAt', 'message.account'],
         undefined
       )

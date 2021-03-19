@@ -43,31 +43,45 @@ export const getIndexFields = ({ selector, sort = [] }) => {
 }
 
 /**
- * Get a matching index based on the given parameters
+ * Check if an index is in an inconsistent state, i.e. its name
+ * contains the indexed attributes which are not in correct order.
  *
- * @param {Array} indexes - The list of indexes to search
- * @param {Array} fields  - The index fields
- * @param {object} partialFilter - A partial filter selector
- * @returns {object} A matching index
+ * @param {object} index - The index to check
+ * @returns {boolean} True if the index is inconsistent
  */
-export const getMatchingIndex = (indexes, fields, partialFilter) => {
-  return indexes.find(index => {
-    const viewId = Object.keys(get(index, `views`))[0]
-    const fieldsInIndex = get(index, `views.${viewId}.map.fields`)
-    const sortedFields = [...fields].sort()
-    const sortedFieldsInIndex = Object.keys(fieldsInIndex).sort()
-    if (isEqual(sortedFieldsInIndex, sortedFields)) {
-      if (!partialFilter) {
-        return true
-      }
-      const partialFilterInIndex = get(
-        index,
-        `views.${viewId}.map.partial_filter_selector`
-      )
-      if (isEqual(partialFilter, partialFilterInIndex)) {
-        return true
-      }
-    }
+export const isInconsistentIndex = index => {
+  const indexId = index._id
+  if (!indexId.startsWith('_design/by_')) {
     return false
-  })
+  }
+  const fieldsInName = indexId.split('_design/by_')[1].split('_and_')
+  const viewId = Object.keys(get(index, `views`))[0]
+  const fieldsInIndex = Object.keys(get(index, `views.${viewId}.map.fields`))
+  return !isEqual(fieldsInName, fieldsInIndex)
+}
+
+/**
+ * Check if an index is matching the given fields
+ *
+ * @param {object} index - The index to check
+ * @param {Array} fields - The fields that the index must have
+ * @param {object} partialFilter - An optional partial filter
+ * @returns {boolean} True if the index is matches the given fields
+ */
+export const isMatchingIndex = (index, fields, partialFilter) => {
+  const viewId = Object.keys(get(index, `views`))[0]
+  const fieldsInIndex = Object.keys(get(index, `views.${viewId}.map.fields`))
+  if (isEqual(fieldsInIndex, fields)) {
+    if (!partialFilter) {
+      return true
+    }
+    const partialFilterInIndex = get(
+      index,
+      `views.${viewId}.map.partial_filter_selector`
+    )
+    if (isEqual(partialFilter, partialFilterInIndex)) {
+      return true
+    }
+  }
+  return false
 }

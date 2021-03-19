@@ -1,7 +1,8 @@
-import { getMatchingIndex } from './mangoIndex'
+import { isMatchingIndex, isInconsistentIndex } from './mangoIndex'
 
-const buildDesignDoc = (fields, partialFilter = {}) => {
+const buildDesignDoc = (fields, { partialFilter, id } = {}) => {
   return {
+    _id: id,
     views: {
       123: {
         map: {
@@ -15,15 +16,26 @@ const buildDesignDoc = (fields, partialFilter = {}) => {
 
 describe('matching index', () => {
   it('should match index with same fields', () => {
-    const nonMatchingIndex = buildDesignDoc({ baz: 'asc' })
     const matchingIndex = buildDesignDoc({
       foo: 'asc',
       bar: 'asc'
     })
-    const indexes = [nonMatchingIndex, matchingIndex]
+    expect(isMatchingIndex(matchingIndex, ['foo', 'bar'])).toEqual(true)
+  })
 
-    expect(getMatchingIndex(indexes, ['foo', 'bar'])).toEqual(matchingIndex)
-    expect(getMatchingIndex(indexes, ['bar', 'foo'])).toEqual(matchingIndex)
+  it('should not match index with different fields', () => {
+    const nonMatchingIndex1 = buildDesignDoc({ baz: 'asc' })
+    const nonMatchingIndex2 = buildDesignDoc({
+      bar: 'asc',
+      foo: 'asc'
+    })
+    const nonMatchingIndex3 = buildDesignDoc({})
+    const nonMatchingIndex4 = buildDesignDoc({ foo: 'asc' })
+
+    expect(isMatchingIndex(nonMatchingIndex1, ['foo', 'bar'])).toEqual(false)
+    expect(isMatchingIndex(nonMatchingIndex2, ['foo', 'bar'])).toEqual(false)
+    expect(isMatchingIndex(nonMatchingIndex3, ['foo', 'bar'])).toEqual(false)
+    expect(isMatchingIndex(nonMatchingIndex4, ['foo', 'bar'])).toEqual(false)
   })
 
   it('should match index with same fields and same partial filter', () => {
@@ -37,27 +49,12 @@ describe('matching index', () => {
         foo: 'asc',
         bar: 'asc'
       },
-      partialFilter
+      { partialFilter }
     )
-    const indexes = [matchingIndex]
 
-    expect(getMatchingIndex(indexes, ['foo', 'bar'], partialFilter)).toEqual(
-      matchingIndex
-    )
-  })
-
-  it('should not match index with different fields ', () => {
-    const designDoc1 = buildDesignDoc({ foo: 'asc' })
-    const designDoc2 = buildDesignDoc({})
-    const designDoc3 = buildDesignDoc({
-      foo: 'asc',
-      bar: 'asc',
-      baz: 'asc'
-    })
-    const indexes = [designDoc1, designDoc2, designDoc3]
-    const fields = ['foo', 'bar']
-
-    expect(getMatchingIndex(indexes, fields)).toEqual(undefined)
+    expect(
+      isMatchingIndex(matchingIndex, ['foo', 'bar'], partialFilter)
+    ).toEqual(true)
   })
 
   it('should not match index with same fields and different partial filter', () => {
@@ -72,16 +69,37 @@ describe('matching index', () => {
         foo: 'asc',
         bar: 'asc'
       },
-      partialFilter
+      { partialFilter }
     )
-    const indexes = [matchingIndex]
-
     expect(
-      getMatchingIndex(indexes, ['foo', 'bar'], {
+      isMatchingIndex(matchingIndex, ['foo', 'bar'], {
         baz: {
           $ne: 'xyz'
         }
       })
-    ).toEqual(undefined)
+    ).toEqual(false)
+  })
+})
+
+describe('inconsistent index', () => {
+  it('should detect inconsistent index', () => {
+    const index = buildDesignDoc(
+      { foo: 'asc', bar: 'asc' },
+      { id: '_design/by_bar_and_foo' }
+    )
+    expect(isInconsistentIndex(index)).toBe(true)
+  })
+
+  it('should not detect consistent index', () => {
+    const index1 = buildDesignDoc(
+      { bar: 'asc', foo: 'asc' },
+      { id: '_design/by_bar_and_foo' }
+    )
+    const index2 = buildDesignDoc(
+      { foo: 'asc', bar: 'asc' },
+      { id: '/design/1234' }
+    )
+    expect(isInconsistentIndex(index1)).toBe(false)
+    expect(isInconsistentIndex(index2)).toBe(false)
   })
 })
