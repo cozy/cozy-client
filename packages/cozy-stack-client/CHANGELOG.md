@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [20.2.1](https://github.com/cozy/cozy-client/compare/v20.2.0...v20.2.1) (2021-03-22)
+
+
+### Bug Fixes
+
+* Detect and destroy inconsistent indexes ([0f54e1a](https://github.com/cozy/cozy-client/commit/0f54e1aca8d44dbf609f7f52199abbb7b995602a))
+* Pass the _design for index name ([7e4c3a6](https://github.com/cozy/cozy-client/commit/7e4c3a6f30fa05928b1c23eae07cb8d442239649))
+* Query the whole selector to avoid creating specific index ([3ba0b5b](https://github.com/cozy/cozy-client/commit/3ba0b5b8c247f5a464b691c49babf00cf71d3685))
+
+
+
+
+
 # [20.0.0](https://github.com/cozy/cozy-client/compare/v19.1.1...v20.0.0) (2021-03-16)
 
 **Note:** Version bump only for package cozy-stack-client

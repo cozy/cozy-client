@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [20.2.1](https://github.com/cozy/cozy-client/compare/v20.2.0...v20.2.1) (2021-03-22)
+
+
+### Bug Fixes
+
+* Detect and destroy inconsistent indexes ([0f54e1a](https://github.com/cozy/cozy-client/commit/0f54e1aca8d44dbf609f7f52199abbb7b995602a))
+
+
+
+
+
 # [20.2.0](https://github.com/cozy/cozy-client/compare/v20.1.0...v20.2.0) (2021-03-17)
 
 
