@@ -112,6 +112,9 @@ contains the indexed attributes which are not in correct order.</p>
 <dt><a href="#Stream">Stream</a> : <code>object</code></dt>
 <dd><p>Stream is not defined in a browser, but is on NodeJS environment</p>
 </dd>
+<dt><a href="#DesignDoc">DesignDoc</a> : <code>object</code></dt>
+<dd><p>Attributes representing a design doc</p>
+</dd>
 <dt><a href="#Permission">Permission</a> ⇒ <code><a href="#Permission">Permission</a></code></dt>
 <dd><p>async fetchOwnPermissions - Fetches permissions</p>
 </dd>
@@ -1484,7 +1487,7 @@ contains the indexed attributes which are not in correct order.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| index | <code>object</code> | The index to check |
+| index | [<code>DesignDoc</code>](#DesignDoc) | The index to check |
 
 <a name="isMatchingIndex"></a>
 
@@ -1496,7 +1499,7 @@ Check if an index is matching the given fields
 
 | Param | Type | Description |
 | --- | --- | --- |
-| index | <code>object</code> | The index to check |
+| index | [<code>DesignDoc</code>](#DesignDoc) | The index to check |
 | fields | <code>Array</code> | The fields that the index must have |
 | partialFilter | <code>object</code> | An optional partial filter |
 
@@ -1596,6 +1599,20 @@ Document representing a io.cozy.files
 Stream is not defined in a browser, but is on NodeJS environment
 
 **Kind**: global typedef  
+<a name="DesignDoc"></a>
+
+## DesignDoc : <code>object</code>
+Attributes representing a design doc
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| _id | <code>string</code> | Id of the design doc. Can be named, e.g. '_design/by_indexed_attribute' or not, e.g. '_design/12345' |
+| language | <code>string</code> | The index language. Can be 'query' for mango index or 'javascript' for views. |
+| views | <code>object</code> | Views definition, i.e. the index. |
+
 <a name="Permission"></a>
 
 ## Permission ⇒ [<code>Permission</code>](#Permission)
