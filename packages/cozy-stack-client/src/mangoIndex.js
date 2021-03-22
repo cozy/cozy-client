@@ -3,6 +3,15 @@ import head from 'lodash/head'
 import get from 'lodash/get'
 import isEqual from 'lodash/isEqual'
 
+/**
+ * Attributes representing a design doc
+ *
+ * @typedef {object} DesignDoc
+ * @property {string} _id - Id of the design doc. Can be named, e.g. '_design/by_indexed_attribute' or not, e.g. '_design/12345'
+ * @property {string} language - The index language. Can be 'query' for mango index or 'javascript' for views.
+ * @property {object} views - Views definition, i.e. the index.
+ */
+
 export const normalizeDesignDoc = designDoc => {
   const id = designDoc._id || designDoc.id
   return { id, _id: id, ...designDoc.doc }
@@ -46,7 +55,7 @@ export const getIndexFields = ({ selector, sort = [] }) => {
  * Check if an index is in an inconsistent state, i.e. its name
  * contains the indexed attributes which are not in correct order.
  *
- * @param {object} index - The index to check
+ * @param {DesignDoc} index - The index to check
  * @returns {boolean} True if the index is inconsistent
  */
 export const isInconsistentIndex = index => {
@@ -63,7 +72,7 @@ export const isInconsistentIndex = index => {
 /**
  * Check if an index is matching the given fields
  *
- * @param {object} index - The index to check
+ * @param {DesignDoc} index - The index to check
  * @param {Array} fields - The fields that the index must have
  * @param {object} partialFilter - An optional partial filter
  * @returns {boolean} True if the index is matches the given fields
