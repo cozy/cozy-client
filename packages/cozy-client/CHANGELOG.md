@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [20.3.0](https://github.com/cozy/cozy-client/compare/v20.2.1...v20.3.0) (2021-03-23)
+
+
+### Features
+
+* Use createSelector hook to remove need for ReduxProvider ([98ea8c5](https://github.com/cozy/cozy-client/commit/98ea8c5ccaed3776f204f3a5cba73fe484eb8b60))
+
+
+
+
+
 ## [20.2.1](https://github.com/cozy/cozy-client/compare/v20.2.0...v20.2.1) (2021-03-22)
 
 **Note:** Version bump only for package cozy-client
