@@ -1,9 +1,12 @@
 import { useEffect, useCallback } from 'react'
-import { useSelector } from 'react-redux'
+import { createSelectorHook } from 'react-redux'
 import get from 'lodash/get'
 import useClient from './useClient'
 import logger from '../logger'
 import { UseQueryReturnValue } from '../types'
+import { clientContext } from '../context'
+
+const useSelector = createSelectorHook(clientContext)
 
 const resolveToValue = fnOrValue => {
   return typeof fnOrValue === 'function' ? fnOrValue() : fnOrValue

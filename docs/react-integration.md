@@ -90,9 +90,48 @@ ReactDOM.render(<MyCozyApp />,
 
 ## 2. Usage
 
-### 2.a Requesting data with `<Query />`
+### 2.a Requesting data with `useQuery`
 
-To make it easy to fetch data and make it available to your component, we provide a Render Props component called `Query`. Basic example of usage:
+`useQuery` is the most straightforward to fetch data from the Cozy.
+Query results are cached and can be reused across components, you just
+have to name the query results ("checked-todos") below.
+
+```jsx
+import CozyClient, { Query, isQueryLoading, Q } from 'cozy-client'
+
+const client = CozyClient.fromDOM()
+client.ensureStore()
+const todos = 'io.cozy.todos'
+const checked = { checked: false }
+
+// Use the Q helper to build queries
+const query = Q(todos).where(checked)
+
+function TodoList(props) {
+  const queryResult = useQuery(query, {
+    as: 'checked-todos',
+    fetchPolicy: CozyClient.fetchPolicies.olderThan(30 * 1000)
+  })
+  return <>
+    {
+      queryResult => isQueryLoading(queryResult)
+        ? <h1>Loading...</h1>
+        : <ul>{queryResult.data.map(todo => <li>{todo.label}</li>)}</ul>
+    }
+  </>
+}
+
+function App() {
+  return <CozyProvider client={client}>
+    <TodoList />
+  </CozyProvider>
+}
+```
+
+
+### 2.b Requesting data with `<Query />`
+
+If you cannot use a hook, you can use the `Query` render-prop component. Basic example of usage:
 
 
 ```jsx
@@ -155,7 +194,7 @@ function TodoList() {
 
 Note: Your query will be bound when the `<Query/>` component mounts. Future changes in props will not modify the query.
 
-### 2.b Requesting data with the `queryConnect` HOC
+### 2.c Requesting data with the `queryConnect` HOC
 
 At your preference, you can use an higher-order component. `queryConnect` will take the name of the props field where it should send the result of the query and the actual query:
 
@@ -203,7 +242,7 @@ const queries = { checked, archived }
 const ConnectedTodoList = queryConnect(queries)(TodoList)
 ```
 
-### 2.c Using a fetch policy to decrease network requests
+### 2.d Using a fetch policy to decrease network requests
 
 When multiple components share the same data, you might want to share the data between the two
 components. In this case, you do not want to execute 2 network requests for the same data, the
@@ -252,7 +291,7 @@ queryConnect({
 See [CozyClient::fetchPolicies](../api/cozy-client/#fetchpolicies)
 for the API documentation.
 
-### 2.d Keeping data up to date in real time
+### 2.e Keeping data up to date in real time
 
 Sometimes the data you are displaying will be changed from other places than your app. Maybe the data is shared and someone else has updated it, or maybe it simply changes over time.
 
