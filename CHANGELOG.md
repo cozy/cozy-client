@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [21.0.0](https://github.com/cozy/cozy-client/compare/v20.3.0...v21.0.0) (2021-03-23)
+
+
+### Features
+
+* Remove useClientErrors from default export ([c62d396](https://github.com/cozy/cozy-client/commit/c62d396f944eb21855c6ed9768a61b8e5526c2ce))
+
+
+### BREAKING CHANGES
+
+* To use useClientErrors, you must import it directly:
+
+```patch
+import { useClientErrors } from 'cozy-client'
+import useClientErrors from 'cozy-client/dist/hooks/useClientErrors
+```
+
+
+
+
+
 # [20.3.0](https://github.com/cozy/cozy-client/compare/v20.2.1...v20.3.0) (2021-03-23)
 
 
