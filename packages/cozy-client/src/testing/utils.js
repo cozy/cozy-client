@@ -2,7 +2,6 @@ import React from 'react'
 import { createMockClient } from '../mock'
 import simpsonsFixture from '../testing/simpsons.json'
 import ClientProvider from '../Provider'
-import { Provider as ReduxProvider } from 'react-redux'
 import CozyClient from '../CozyClient'
 
 /**
@@ -42,9 +41,7 @@ const setupClient = ({ queries } = {}) => {
 
 const makeWrapper = client => {
   const Wrapper = ({ children }) => (
-    <ReduxProvider store={client.store}>
-      <ClientProvider client={client}>{children}</ClientProvider>
-    </ReduxProvider>
+    <ClientProvider client={client}>{children}</ClientProvider>
   )
   return Wrapper
 }
