@@ -92,8 +92,9 @@ ReactDOM.render(<MyCozyApp />,
 
 ### 2.a Requesting data with `useQuery`
 
-⚠️  You need to have a redux provider connected to the store of cozy-client for useQuery
-to work correctly.
+`useQuery` is the most straightforward to fetch data from the Cozy.
+Query results are cached and can be reused across components, you just
+have to name the query results ("checked-todos") below.
 
 ```jsx
 import CozyClient, { Query, isQueryLoading, Q } from 'cozy-client'
@@ -107,7 +108,10 @@ const checked = { checked: false }
 const query = Q(todos).where(checked)
 
 function TodoList(props) {
-  const queryResult = useQuery(query, { as: 'checked-todos' })
+  const queryResult = useQuery(query, {
+    as: 'checked-todos',
+    fetchPolicy: CozyClient.fetchPolicies.olderThan(30 * 1000)
+  })
   return <>
     {
       queryResult => isQueryLoading(queryResult)
@@ -119,9 +123,7 @@ function TodoList(props) {
 
 function App() {
   return <CozyProvider client={client}>
-    <ReduxProvider store={client.store}>
-      <TodoList />
-    </ReduxProvider>
+    <TodoList />
   </CozyProvider>
 }
 ```
