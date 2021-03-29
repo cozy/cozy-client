@@ -23,6 +23,7 @@ import ListItemText from 'cozy-ui/transpiled/react/ListItemText'
 import useClient from '../hooks/useClient'
 
 import { NavSecondaryAction, ListGridItem } from './common'
+import PanelContent from './PanelContent'
 
 /**
  * @type {Object.<string, React.CSSProperties>}
@@ -192,7 +193,10 @@ const QueryListItem = ({ name, selected, onClick }) => {
 const QueryPanels = () => {
   const queries = useSelector(state => state.cozy.queries)
   const sortedQueries = useMemo(() => {
-    return sortBy(Object.values(queries), queryState => queryState.lastUpdate)
+    return sortBy(
+      queries ? Object.values(queries) : [],
+      queryState => queryState.lastUpdate
+    )
       .map(queryState => queryState.id)
       .reverse()
   }, [queries])
@@ -212,6 +216,11 @@ const QueryPanels = () => {
             />
           )
         })}
+        {sortedQueries.length === 0 ? (
+          <PanelContent>
+            <Typography variant="body1">No queries yet.</Typography>
+          </PanelContent>
+        ) : null}
       </ListGridItem>
       <Box clone p={1}>
         <Grid item style={styles.panelRight}>
