@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [21.1.0](https://github.com/cozy/cozy-client/compare/v21.0.1...v21.1.0) (2021-03-29)
+
+
+### Bug Fixes
+
+* Remove two colliding dep and devDep warnings ([f03110a](https://github.com/cozy/cozy-client/commit/f03110a66ff2cd238708fcef5022878e73c068f6))
+
+
+### Features
+
+* Add devtools ([c2e8a74](https://github.com/cozy/cozy-client/commit/c2e8a74edc4216b49f983c4368f4f22b71ed45eb))
+* Add flag devtools panel ([fbac244](https://github.com/cozy/cozy-client/commit/fbac244ecc7992c6d3c5f651b7cdee0f314b5e64))
+* Add library version devtools panel ([a4a1d33](https://github.com/cozy/cozy-client/commit/a4a1d3360605b2a95444b4e094a1a17fc6d6570f))
+* Add query devtools panel ([55a59cc](https://github.com/cozy/cozy-client/commit/55a59cc458d07396a3bc7090ce5a1d48a351d37f))
+
+
+
+
+
 ## [21.0.1](https://github.com/cozy/cozy-client/compare/v21.0.0...v21.0.1) (2021-03-24)
 
 **Note:** Version bump only for package cozy-client
