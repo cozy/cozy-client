@@ -37,7 +37,8 @@ const styles = {
 
 const TableCell = withStyles({
   root: {
-    fontFamily: 'inherit'
+    fontFamily: 'inherit',
+    fontSize: 'small'
   }
 })(MuiTableCell)
 
@@ -109,7 +110,7 @@ const QueryData = ({ data, doctype }) => {
   const viewData = results || storeData
 
   return (
-    <>
+    <div className="u-pb-3">
       Table:{' '}
       <input type="checkbox" onClick={handleShowTable} checked={showTable} />
       <br />
@@ -127,7 +128,7 @@ const QueryData = ({ data, doctype }) => {
       ) : (
         <ObjectInspector data={viewData} />
       )}
-    </>
+    </div>
   )
 }
 
@@ -191,7 +192,15 @@ const QueryListItem = ({ name, selected, onClick }) => {
 
   return (
     <ListItem dense button selected={selected} onClick={onClick}>
-      <ListItemText primary={name} secondary={lastUpdate} />
+      <ListItemText
+        primary={name}
+        secondary={
+          <>
+            {lastUpdate} - {queryState.data.length} docs -
+            {queryState.definition.doctype}
+          </>
+        }
+      />
       <NavSecondaryAction />
     </ListItem>
   )
