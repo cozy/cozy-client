@@ -150,6 +150,12 @@ const QueryState = ({ name }) => {
               <TableCell>{queryState.definition.doctype}</TableCell>
             </TableRow>
             <TableRow>
+              <TableCell>definition</TableCell>
+              <TableCell>
+                <pre>{JSON.stringify(queryState.definition, null, 2)}</pre>
+              </TableCell>
+            </TableRow>
+            <TableRow>
               <TableCell>fetchStatus</TableCell>
               <TableCell>
                 <FetchStatus fetchStatus={queryState.fetchStatus} />
