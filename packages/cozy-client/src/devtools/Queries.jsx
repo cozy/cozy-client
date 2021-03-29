@@ -3,7 +3,7 @@ import sortBy from 'lodash/sortBy'
 import overEvery from 'lodash/overEvery'
 import get from 'lodash/get'
 import format from 'date-fns/format'
-import { useSelector } from 'react-redux'
+import { createSelectorHook } from 'react-redux'
 import { TableInspector, ObjectInspector } from 'react-inspector'
 
 import Grid from '@material-ui/core/Grid'
@@ -20,6 +20,7 @@ import Typography from 'cozy-ui/transpiled/react/Typography'
 import ListItem from 'cozy-ui/transpiled/react/MuiCozyTheme/ListItem'
 import ListItemText from 'cozy-ui/transpiled/react/ListItemText'
 
+import CozyContext from '../context'
 import useClient from '../hooks/useClient'
 
 import { NavSecondaryAction, ListGridItem } from './common'
@@ -81,10 +82,12 @@ const makeMatcher = search => {
   return overEvery(conditions)
 }
 
+const useCozySelector = createSelectorHook(CozyContext)
+
 const QueryData = ({ data, doctype }) => {
   const client = useClient()
   const [showTable, setShowTable] = useState(false)
-  const documents = useSelector(state => state.cozy.documents[doctype])
+  const documents = useCozySelector(state => state.cozy.documents[doctype])
 
   const storeData = useMemo(() => {
     return data.map(id => client.hydrateDocument(documents[id]))
@@ -133,7 +136,7 @@ const QueryData = ({ data, doctype }) => {
 }
 
 const QueryState = ({ name }) => {
-  const queryState = useSelector(state => state.cozy.queries[name])
+  const queryState = useCozySelector(state => state.cozy.queries[name])
   const { data } = queryState
   const { lastFetch, lastUpdate } = useMemo(() => {
     return {
@@ -184,7 +187,7 @@ const QueryState = ({ name }) => {
   )
 }
 const QueryListItem = ({ name, selected, onClick }) => {
-  const queryState = useSelector(state => state.cozy.queries[name])
+  const queryState = useCozySelector(state => state.cozy.queries[name])
   const lastUpdate = useMemo(
     () => format(new Date(queryState.lastUpdate), 'HH:mm:ss'),
     [queryState]
@@ -206,7 +209,7 @@ const QueryListItem = ({ name, selected, onClick }) => {
   )
 }
 const QueryPanels = () => {
-  const queries = useSelector(state => state.cozy.queries)
+  const queries = useCozySelector(state => state.cozy.queries)
   const sortedQueries = useMemo(() => {
     return sortBy(
       queries ? Object.values(queries) : [],
