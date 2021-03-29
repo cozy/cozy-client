@@ -15,6 +15,7 @@ import ListItemText from 'cozy-ui/transpiled/react/ListItemText'
 import GearIcon from 'cozy-ui/transpiled/react/Icons/Gear'
 import CrossIcon from 'cozy-ui/transpiled/react/Icons/Cross'
 
+import LibraryVersions from './LibraryVersions'
 import { NavSecondaryAction, ListGridItem } from './common'
 import useLocalState from './useLocalState'
 
@@ -32,6 +33,10 @@ const styles = {
 }
 
 const defaultPanels = [
+  {
+    id: 'library versions',
+    Component: LibraryVersions
+  }
 ]
 
 const DevToolsNavList = ({ selected, panels, onNav }) => {
