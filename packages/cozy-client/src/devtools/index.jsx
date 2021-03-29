@@ -21,13 +21,21 @@ import LibraryVersions from './LibraryVersions'
 import { NavSecondaryAction, ListGridItem } from './common'
 import useLocalState from './useLocalState'
 
+const ABOVE_ALL = 1000000
 /**
  * @type {Object.<string, React.CSSProperties>}
  * @private
  */
 const styles = {
-  fab: { position: 'fixed', left: '1rem', bottom: '1rem' },
-  panel: { position: 'fixed', bottom: 0, height: 300, left: 0, right: 0 },
+  fab: { position: 'fixed', left: '1rem', bottom: '1rem', zIndex: ABOVE_ALL },
+  panel: {
+    position: 'fixed',
+    bottom: 0,
+    height: 300,
+    left: 0,
+    right: 0,
+    zIndex: ABOVE_ALL
+  },
   closeIcon: { position: 'absolute', top: '0.5rem', right: '0.5rem' },
   panelContainer: { height: '100%', flexWrap: 'nowrap' },
   panelRight: { height: '100%', overflow: 'scroll', flexGrow: 1 },
