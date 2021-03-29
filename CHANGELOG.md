@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [21.1.1](https://github.com/cozy/cozy-client/compare/v21.1.0...v21.1.1) (2021-03-29)
+
+
+### Bug Fixes
+
+* Better peer dependency ([00807bb](https://github.com/cozy/cozy-client/commit/00807bb0c66b01d99ed8af171bdcc184897c18d0))
+
+
+
+
+
 # [21.1.0](https://github.com/cozy/cozy-client/compare/v21.0.1...v21.1.0) (2021-03-29)
 
 
