@@ -15,6 +15,7 @@ import ListItemText from 'cozy-ui/transpiled/react/ListItemText'
 import GearIcon from 'cozy-ui/transpiled/react/Icons/Gear'
 import CrossIcon from 'cozy-ui/transpiled/react/Icons/Cross'
 
+import Queries from './Queries'
 import Flags from './Flags'
 import LibraryVersions from './LibraryVersions'
 import { NavSecondaryAction, ListGridItem } from './common'
@@ -34,6 +35,10 @@ const styles = {
 }
 
 const defaultPanels = [
+  {
+    id: 'queries',
+    Component: Queries
+  },
   {
     id: 'flags',
     Component: Flags
