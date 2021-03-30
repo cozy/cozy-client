@@ -115,7 +115,7 @@ const QueryData = ({ data, doctype }) => {
   return (
     <div className="u-pb-3">
       Table:{' '}
-      <input type="checkbox" onClick={handleShowTable} checked={showTable} />
+      <input type="checkbox" onChange={handleShowTable} checked={showTable} />
       <br />
       Search:{' '}
       <input
