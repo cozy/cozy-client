@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [22.0.0](https://github.com/cozy/cozy-client/compare/v21.1.1...v22.0.0) (2021-03-30)
+
+
+### Bug Fixes
+
+* Devtools improvements ([e200fef](https://github.com/cozy/cozy-client/commit/e200fef7b0764b88ea9e2b189a4ccd0c989fb63b))
+
+
+### Features
+
+* Ability to use devtools without binding store to cozy-client ([77eeb0b](https://github.com/cozy/cozy-client/commit/77eeb0be713b912c63730966a5a2c80d8569b957))
+* Auto create store if options.store !== false ([6afda4e](https://github.com/cozy/cozy-client/commit/6afda4e893309f7dfacee4275760bcef14da5f35))
+* Improve Queries panels ([a7aa0eb](https://github.com/cozy/cozy-client/commit/a7aa0ebcb1aae53e3f1b9119c7bd820a1f24256f))
+* Put devtool panel above all ([4f22090](https://github.com/cozy/cozy-client/commit/4f22090be0be251f614dc041a87178b60564c6ec))
+* Show definition ([3c3e08b](https://github.com/cozy/cozy-client/commit/3c3e08b2018d7869188f45a4339faf3382bb76c7))
+
+
+### BREAKING CHANGES
+
+* If you want to use your own store with cozy-client,
+you need to pass `store: false` when instantiating CozyClient, otherwise
+a default redux store will be created for you.
+
+Fix https://github.com/cozy/cozy-client/issues/910
+
+
+
+
+
 ## [21.1.1](https://github.com/cozy/cozy-client/compare/v21.1.0...v21.1.1) (2021-03-29)
 
 
