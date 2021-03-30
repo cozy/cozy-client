@@ -144,6 +144,27 @@ const QueryData = ({ data, doctype }) => {
   )
 }
 
+const ObjectInspectorAndStringificator = ({ object }) => {
+  const [showStringify, setShowStringify] = useState(false)
+  const handleStringify = useCallback(() => setShowStringify(value => !value), [
+    setShowStringify
+  ])
+  return (
+    <>
+      Stringify:{' '}
+      <input
+        type="checkbox"
+        onChange={handleStringify}
+        checked={showStringify}
+      />
+      {showStringify ? (
+        <pre>{JSON.stringify(object, null, 2)}</pre>
+      ) : (
+        <ObjectInspector data={object} />
+      )}
+    </>
+  )
+}
 const QueryState = ({ name }) => {
   const queryState = useCozySelector(state => state.cozy.queries[name])
   const { data } = queryState
@@ -165,7 +186,9 @@ const QueryState = ({ name }) => {
             <TableRow>
               <TableCell>definition</TableCell>
               <TableCell>
-                <pre>{JSON.stringify(queryState.definition, null, 2)}</pre>
+                <ObjectInspectorAndStringificator
+                  object={queryState.definition}
+                />
               </TableCell>
             </TableRow>
             <TableRow>
@@ -191,7 +214,9 @@ const QueryState = ({ name }) => {
             <TableRow>
               <TableCell>Exec. time</TableCell>
               <TableCell>
-                <pre>{JSON.stringify(queryState.execution_stats, null, 2)}</pre>
+                <ObjectInspectorAndStringificator
+                  object={queryState.execution_stats}
+                />
               </TableCell>
             </TableRow>
           </TableBody>
