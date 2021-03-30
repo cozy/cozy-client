@@ -66,7 +66,7 @@ const DevToolsNavList = ({ selected, panels, onNav }) => {
       {panels.map(panel => {
         return (
           <ListItem
-            key={panel.name}
+            key={panel.id}
             selected={selected === panel.id}
             dense
             button
@@ -169,7 +169,7 @@ const DevToolsPanel = props => {
             </ListGridItem>
             {panels.map(panelOptions =>
               currentPanel === panelOptions.id ? (
-                <panelOptions.Component />
+                <panelOptions.Component key={panelOptions.id} />
               ) : null
             )}
           </Grid>
