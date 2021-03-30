@@ -18,7 +18,7 @@ import {
   attachRelationships
 } from './associations/helpers'
 import { dehydrate } from './helpers'
-import { QueryDefinition, Mutations, Q } from './queries/dsl'
+import { QueryDefinition, Mutations, Q, isAGetByIdQuery } from './queries/dsl'
 import { authenticateWithCordova } from './authentication/mobile'
 import optimizeQueryDefinitions from './queries/optimize'
 import {
@@ -803,7 +803,7 @@ client.query(Q('io.cozy.bills'))`)
    */
   async query(queryDefinition, { update, ...options } = {}) {
     this.ensureStore()
-    const queryId = options.as || this.generateId()
+    const queryId = options.as || this.generateId(queryDefinition)
     this.ensureQueryExists(queryId, queryDefinition)
 
     if (options.fetchPolicy) {
@@ -874,7 +874,7 @@ client.query(Q('io.cozy.bills'))`)
 
   makeObservableQuery(queryDefinition, options = {}) {
     this.ensureStore()
-    const queryId = options.as || this.generateId()
+    const queryId = options.as || this.generateId(queryDefinition)
     this.ensureQueryExists(queryId, queryDefinition)
     return new ObservableQuery(queryId, queryDefinition, this, options)
   }
@@ -891,7 +891,7 @@ client.query(Q('io.cozy.bills'))`)
    */
   async mutate(mutationDefinition, { update, updateQueries, ...options } = {}) {
     this.ensureStore()
-    const mutationId = options.as || this.generateId()
+    const mutationId = options.as || this.generateId(mutationDefinition)
     this.dispatch(initMutation(mutationId, mutationDefinition))
     try {
       const response = await this.requestMutation(mutationDefinition)
@@ -1442,16 +1442,31 @@ instantiation of the client.`
   }
 
   /**
-   * Generates a random id for queries
+   * Generates an id for queries
+   * If the query is a getById only query,
+   * we can generate a name for it.
    *
+   * If not, let's generate a random id
+   *
+   * @param {QueryDefinition} queryDefinition The query definition
    * @returns {string}
    */
-  generateId() {
+  generateId(queryDefinition) {
+    if (!isAGetByIdQuery(queryDefinition)) {
+      return this.generateRandomId()
+    } else {
+      const { id, doctype } = queryDefinition
+      return `${doctype}/${id}`
+    }
+  }
+  /**
+   * Generates a random id for unamed querie
+   */
+  generateRandomId() {
     const id = this.idCounter
     this.idCounter++
     return id.toString()
   }
-
   /**
    * getInstanceOptions - Returns current instance options, such as domain or app slug
    *

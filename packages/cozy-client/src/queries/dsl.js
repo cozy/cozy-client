@@ -337,6 +337,20 @@ class QueryDefinition {
  */
 export const Q = doctype => new QueryDefinition({ doctype })
 
+/**
+ * Check if the query is a getById() query
+ *
+ * @param {QueryDefinition} queryDefinition The query definition
+ *
+ * @returns {boolean}
+ */
+export const isAGetByIdQuery = queryDefinition => {
+  // 2 attrs because we check if id and doctype are not undefined
+  return (
+    Object.values(queryDefinition).filter(attr => attr !== undefined).length ===
+      2 && queryDefinition.id !== undefined
+  )
+}
 // Mutations
 const CREATE_DOCUMENT = 'CREATE_DOCUMENT'
 const UPDATE_DOCUMENT = 'UPDATE_DOCUMENT'
