@@ -7,17 +7,25 @@ import uniq from 'lodash/uniq'
 import orderBy from 'lodash/orderBy'
 import isArray from 'lodash/isArray'
 import isString from 'lodash/isString'
+import get from 'lodash/get'
+import sift from 'sift'
+
+import flag from 'cozy-flags'
 
 import { getDocumentFromSlice } from './documents'
 import { isReceivingMutationResult } from './mutations'
 import { properId } from './helpers'
-import sift from 'sift'
-import get from 'lodash/get'
 
 const INIT_QUERY = 'INIT_QUERY'
 const LOAD_QUERY = 'LOAD_QUERY'
 const RECEIVE_QUERY_RESULT = 'RECEIVE_QUERY_RESULT'
 const RECEIVE_QUERY_ERROR = 'RECEIVE_QUERY_ERROR'
+
+// Read if the devtools are open to store the execution time
+// This is done at runtime to not read the value everytime
+// we receive a result. So you have to refresh your page
+// in order to get the stats
+const executionStatsEnabled = flag('perfs.execution_stats')
 
 export const isQueryAction = action =>
   [INIT_QUERY, LOAD_QUERY, RECEIVE_QUERY_RESULT, RECEIVE_QUERY_ERROR].indexOf(
@@ -79,14 +87,19 @@ const query = (state = queryInitialState, action, nextDocuments) => {
       }
     case RECEIVE_QUERY_RESULT: {
       const response = action.response
-      const common = {
-        fetchStatus: 'loaded',
-        lastFetch: Date.now(),
-        lastUpdate: Date.now()
-      }
       if (!response.data) {
         return state
       }
+
+      const common = {
+        fetchStatus: 'loaded',
+        lastFetch: Date.now(),
+        lastUpdate: Date.now(),
+        ...(executionStatsEnabled && {
+          execution_stats: response.execution_stats
+        })
+      }
+
       if (!Array.isArray(response.data)) {
         return {
           ...state,
