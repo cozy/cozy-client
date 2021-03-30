@@ -103,6 +103,7 @@ const DOC_UPDATE = 'update'
  * @property  {object}       [schema] - Schema description for each doctypes
  * @property  {AppMetadata}  [appMetadata] - Metadata about the application that will be used in ensureCozyMetadata
  * @property  {ClientCapabilities} [capabilities] - Capabilities sent by the stack
+ * @property  {boolean} [store] - If set to false, the client will not instantiate a Redux store automatically. Use this if you want to merge cozy-client's store with your own redux store. See [here](https://docs.cozy.io/en/cozy-client/react-integration/#1b-use-your-own-redux-store) for more information.
  */
 
 /**
@@ -194,6 +195,10 @@ class CozyClient {
      * @type {object}
      */
     this.storeAccesors = null
+
+    if (options.store !== false) {
+      this.ensureStore()
+    }
   }
 
   /**

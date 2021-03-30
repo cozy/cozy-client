@@ -1,13 +1,13 @@
 import React from 'react'
 import Typography from 'cozy-ui/transpiled/react/Typography'
-import { FlagSwitcher } from 'cozy-flags'
+import flag from 'cozy-flags'
 import PanelContent from './PanelContent'
 
 const Flags = () => {
   return (
     <PanelContent>
       <Typography variant="subtitle1">Flags</Typography>
-      <FlagSwitcher.List />
+      <flag.FlagSwitcher.List />
     </PanelContent>
   )
 }

@@ -3,7 +3,7 @@ import sortBy from 'lodash/sortBy'
 import overEvery from 'lodash/overEvery'
 import get from 'lodash/get'
 import format from 'date-fns/format'
-import { useSelector } from 'react-redux'
+import { createSelectorHook } from 'react-redux'
 import { TableInspector, ObjectInspector } from 'react-inspector'
 
 import Grid from '@material-ui/core/Grid'
@@ -20,9 +20,11 @@ import Typography from 'cozy-ui/transpiled/react/Typography'
 import ListItem from 'cozy-ui/transpiled/react/MuiCozyTheme/ListItem'
 import ListItemText from 'cozy-ui/transpiled/react/ListItemText'
 
+import CozyContext from '../context'
 import useClient from '../hooks/useClient'
 
 import { NavSecondaryAction, ListGridItem } from './common'
+import PanelContent from './PanelContent'
 
 /**
  * @type {Object.<string, React.CSSProperties>}
@@ -36,7 +38,8 @@ const styles = {
 
 const TableCell = withStyles({
   root: {
-    fontFamily: 'inherit'
+    fontFamily: 'inherit',
+    fontSize: 'small'
   }
 })(MuiTableCell)
 
@@ -79,10 +82,12 @@ const makeMatcher = search => {
   return overEvery(conditions)
 }
 
+const useCozySelector = createSelectorHook(CozyContext)
+
 const QueryData = ({ data, doctype }) => {
   const client = useClient()
   const [showTable, setShowTable] = useState(false)
-  const documents = useSelector(state => state.cozy.documents[doctype])
+  const documents = useCozySelector(state => state.cozy.documents[doctype])
 
   const storeData = useMemo(() => {
     return data.map(id => client.hydrateDocument(documents[id]))
@@ -108,7 +113,7 @@ const QueryData = ({ data, doctype }) => {
   const viewData = results || storeData
 
   return (
-    <>
+    <div className="u-pb-3">
       Table:{' '}
       <input type="checkbox" onClick={handleShowTable} checked={showTable} />
       <br />
@@ -126,12 +131,12 @@ const QueryData = ({ data, doctype }) => {
       ) : (
         <ObjectInspector data={viewData} />
       )}
-    </>
+    </div>
   )
 }
 
 const QueryState = ({ name }) => {
-  const queryState = useSelector(state => state.cozy.queries[name])
+  const queryState = useCozySelector(state => state.cozy.queries[name])
   const { data } = queryState
   const { lastFetch, lastUpdate } = useMemo(() => {
     return {
@@ -147,6 +152,12 @@ const QueryState = ({ name }) => {
             <TableRow>
               <TableCell>doctype</TableCell>
               <TableCell>{queryState.definition.doctype}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>definition</TableCell>
+              <TableCell>
+                <pre>{JSON.stringify(queryState.definition, null, 2)}</pre>
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell>fetchStatus</TableCell>
@@ -176,7 +187,7 @@ const QueryState = ({ name }) => {
   )
 }
 const QueryListItem = ({ name, selected, onClick }) => {
-  const queryState = useSelector(state => state.cozy.queries[name])
+  const queryState = useCozySelector(state => state.cozy.queries[name])
   const lastUpdate = useMemo(
     () => format(new Date(queryState.lastUpdate), 'HH:mm:ss'),
     [queryState]
@@ -184,15 +195,26 @@ const QueryListItem = ({ name, selected, onClick }) => {
 
   return (
     <ListItem dense button selected={selected} onClick={onClick}>
-      <ListItemText primary={name} secondary={lastUpdate} />
+      <ListItemText
+        primary={name}
+        secondary={
+          <>
+            {lastUpdate} - {queryState.data.length} docs -
+            {queryState.definition.doctype}
+          </>
+        }
+      />
       <NavSecondaryAction />
     </ListItem>
   )
 }
 const QueryPanels = () => {
-  const queries = useSelector(state => state.cozy.queries)
+  const queries = useCozySelector(state => state.cozy.queries)
   const sortedQueries = useMemo(() => {
-    return sortBy(Object.values(queries), queryState => queryState.lastUpdate)
+    return sortBy(
+      queries ? Object.values(queries) : [],
+      queryState => queryState.lastUpdate
+    )
       .map(queryState => queryState.id)
       .reverse()
   }, [queries])
@@ -212,6 +234,11 @@ const QueryPanels = () => {
             />
           )
         })}
+        {sortedQueries.length === 0 ? (
+          <PanelContent>
+            <Typography variant="body1">No queries yet.</Typography>
+          </PanelContent>
+        ) : null}
       </ListGridItem>
       <Box clone p={1}>
         <Grid item style={styles.panelRight}>

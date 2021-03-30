@@ -3151,6 +3151,7 @@ HOC to provide mutations to components. Needs client in context or as prop.
 | [schema] | <code>object</code> | Schema description for each doctypes |
 | [appMetadata] | [<code>AppMetadata</code>](#AppMetadata) | Metadata about the application that will be used in ensureCozyMetadata |
 | [capabilities] | [<code>ClientCapabilities</code>](#ClientCapabilities) | Capabilities sent by the stack |
+| [store] | <code>boolean</code> | If set to false, the client will not instantiate a Redux store automatically. Use this if you want to merge cozy-client's store with your own redux store. See [here](https://docs.cozy.io/en/cozy-client/react-integration/#1b-use-your-own-redux-store) for more information. |
 
 <a name="CozyAccount"></a>
 

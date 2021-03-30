@@ -23,5 +23,5 @@ export type DestroyableServer = any;
  * })
  * ```
  */
-export function createClientInteractive(clientOptions: object, serverOpts: any): Promise<any> | CozyClient;
+export function createClientInteractive(clientOptions: object, serverOpts: any): CozyClient | Promise<any>;
 import CozyClient from "../CozyClient";

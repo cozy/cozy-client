@@ -25,8 +25,15 @@ Once connected, your components will receive the requesting data and a fetch sta
 
 The following procedure requires you to already know how to initialize a CozyClient instance and create a query to fetch documents.
 
-### 1.a Initialize a CozyClient provider
+⚠️  The fromDOM instantiation method assumes the page you use is served by the
+Cozy Stack, and that there is a DOM node with the stack info. See 
+[how the application works](https://docs.cozy.io/en/tutorials/app/#how-the-application-works) for more information.
 
+```
+<div role='application' data-cozy='{{ .CozyData }}' />
+```
+
+### 1.a Initialize a CozyClient provider
 
 Import `CozyClient` and `CozyProvider`
 
@@ -37,10 +44,7 @@ import CozyClient, { CozyProvider } from 'cozy-client'
 Initialize a CozyClient instance (see the `CozyClient()` documentation for additional parameters, for example to provide a schema)
 
 ```javascript
-const client = new CozyClient({
-  uri: 'http://cozy.tools:8080',
-  token: '...'
-})
+const client = CozyClient.fromDOM()
 ```
 
 Then wrap you React application inside a CozyProvider component with your newly instance of CozyClient in its props as `client`.
@@ -67,9 +71,8 @@ The CozyClient will be available for consumption to all components inside your w
 import CozyClient, { CozyProvider } from 'cozy-client'
 import { combineReducers, createStore, applyMiddleware } from 'redux'
 
-const client = new CozyClient({
-  uri: 'http://cozy.tools:8080',
-  token: '...'
+const client = CozyClient.fromDOM({
+  store: false // Important, otherwise a default store is created
 })
 
 const store = createStore(
