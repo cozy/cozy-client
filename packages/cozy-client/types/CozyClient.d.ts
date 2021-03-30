@@ -581,11 +581,20 @@ declare class CozyClient {
     };
     dispatch(action: any): any;
     /**
-     * Generates a random id for queries
+     * Generates an id for queries
+     * If the query is a getById only query,
+     * we can generate a name for it.
      *
+     * If not, let's generate a random id
+     *
+     * @param {QueryDefinition} queryDefinition The query definition
      * @returns {string}
      */
-    generateId(): string;
+    generateId(queryDefinition: QueryDefinition): string;
+    /**
+     * Generates a random id for unamed querie
+     */
+    generateRandomId(): string;
     /**
      * getInstanceOptions - Returns current instance options, such as domain or app slug
      *

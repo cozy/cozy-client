@@ -1,4 +1,5 @@
 export function Q(doctype: Doctype): QueryDefinition;
+export function isAGetByIdQuery(queryDefinition: QueryDefinition): boolean;
 export function createDocument(document: any): {
     mutationType: string;
     document: any;

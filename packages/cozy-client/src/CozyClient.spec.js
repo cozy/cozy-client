@@ -1095,6 +1095,34 @@ describe('CozyClient', () => {
       })
     })
 
+    it('should set the correct name to the query', async () => {
+      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
+      const getById = Q('io.cozy.files').getById('1')
+      await client.query(getById)
+      expect(client.store.dispatch.mock.calls[0][0]).toEqual(
+        expect.objectContaining({
+          queryId: 'io.cozy.files/1'
+        })
+      )
+    })
+    it('should use the name passed as an argument', async () => {
+      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
+      const getById = Q('io.cozy.files').getById('1')
+      await client.query(getById, { as: 'toto' })
+      expect(client.store.dispatch.mock.calls[0][0]).toEqual(
+        expect.objectContaining({
+          queryId: 'toto'
+        })
+      )
+    })
+    it('should name corretly the query', async () => {
+      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
+      await client.query(query, { as: 'allTodos' })
+      expect(client.store.dispatch.mock.calls[0][0]).toEqual(
+        initQuery('allTodos', { doctype: 'io.cozy.todos' })
+      )
+    })
+
     describe('relationship with query failure', () => {
       beforeEach(() => {
         jest.spyOn(HasManyFiles, 'query').mockImplementation(() => {
