@@ -43,6 +43,15 @@ const TableCell = withStyles({
   }
 })(MuiTableCell)
 
+const getClassNameForExecutedTimesQuery = time => {
+  if (time <= 100) {
+    return 'u-valid u-success'
+  } else if (time > 100 && time < 500) {
+    return 'u-warn u-warning'
+  } else {
+    return 'u-danger u-error'
+  }
+}
 const FetchStatus = ({ fetchStatus }) => {
   return (
     <span
@@ -179,6 +188,12 @@ const QueryState = ({ name }) => {
                 {data && data.length !== undefined ? data.length : data ? 1 : 0}
               </TableCell>
             </TableRow>
+            <TableRow>
+              <TableCell>Exec. time</TableCell>
+              <TableCell>
+                <pre>{JSON.stringify(queryState.execution_stats, null, 2)}</pre>
+              </TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
@@ -199,13 +214,30 @@ const QueryListItem = ({ name, selected, onClick }) => {
         primary={name}
         secondary={
           <>
-            {lastUpdate} - {queryState.data.length} docs -
-            {queryState.definition.doctype}
+            {lastUpdate} - {queryState.data.length} docs
+            {queryState.execution_stats && (
+              <ExecutionTime queryState={queryState} />
+            )}
           </>
         }
       />
       <NavSecondaryAction />
     </ListItem>
+  )
+}
+
+const ExecutionTime = ({ queryState }) => {
+  if (!queryState.execution_stats) return null
+  const classCSS = getClassNameForExecutedTimesQuery(
+    queryState.execution_stats.execution_time_ms
+  )
+  return (
+    <>
+      {' - '}
+      <span className={classCSS}>
+        {queryState.execution_stats.execution_time_ms} ms
+      </span>
+    </>
   )
 }
 const QueryPanels = () => {
