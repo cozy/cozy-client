@@ -13,7 +13,7 @@
     "eslint-plugin-jsdoc": "^15.11.1",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "7.18.3",
-    "husky": "0.14.3",
+    "husky": "6.0.0",
     "jest": "24.9.0",
     "jest-environment-jsdom-sixteen": "^1.0.3",
     "jest-fetch-mock": "3.0.3",
