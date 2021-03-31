@@ -284,6 +284,9 @@ example.</p>
 <dd><p>Helper to create a QueryDefinition. Recommended way to create
 query definitions.</p>
 </dd>
+<dt><a href="#isAGetByIdQuery">isAGetByIdQuery</a> ⇒ <code>boolean</code></dt>
+<dd><p>Check if the query is a getById() query</p>
+</dd>
 <dt><a href="#convert$gtNullSelectors">convert$gtNullSelectors</a> ⇒ <code>object</code></dt>
 <dd><p>Normalize sift selector</p>
 </dd>
@@ -379,6 +382,9 @@ we have in the store.</p>
 </dd>
 <dt><a href="#getQueryAttributes">getQueryAttributes()</a></dt>
 <dd><p>Get attributes that will be assigned to the instance of a Query</p>
+</dd>
+<dt><a href="#dispatchChange">dispatchChange(client, document, mutationDefinitionCreator)</a></dt>
+<dd><p>DispatchChange</p>
 </dd>
 <dt><a href="#RealTimeQueries">RealTimeQueries(options)</a> ⇒ <code>null</code></dt>
 <dd><p>Component that subscribes to a doctype changes and keep the
@@ -1020,7 +1026,8 @@ Responsible for
         * [.handleRevocationChange()](#CozyClient+handleRevocationChange)
         * [.handleTokenRefresh()](#CozyClient+handleTokenRefresh)
         * [.createClient()](#CozyClient+createClient)
-        * [.generateId()](#CozyClient+generateId) ⇒ <code>string</code>
+        * [.generateId(queryDefinition)](#CozyClient+generateId) ⇒ <code>string</code>
+        * [.generateRandomId()](#CozyClient+generateRandomId)
         * [.getInstanceOptions()](#CozyClient+getInstanceOptions) ⇒ <code>object</code>
         * [.loadInstanceOptionsFromDOM([selector])](#CozyClient+loadInstanceOptionsFromDOM) ⇒ <code>void</code>
         * [.setData(data)](#CozyClient+setData)
@@ -1480,8 +1487,23 @@ If `oauth` options are passed, stackClient is an OAuthStackClient.
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 <a name="CozyClient+generateId"></a>
 
-### cozyClient.generateId() ⇒ <code>string</code>
-Generates a random id for queries
+### cozyClient.generateId(queryDefinition) ⇒ <code>string</code>
+Generates an id for queries
+If the query is a getById only query,
+we can generate a name for it.
+
+If not, let's generate a random id
+
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) | The query definition |
+
+<a name="CozyClient+generateRandomId"></a>
+
+### cozyClient.generateRandomId()
+Generates a random id for unamed querie
 
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 <a name="CozyClient+getInstanceOptions"></a>
@@ -2787,6 +2809,17 @@ import { Q } from 'cozy-client'
 
 const qDef = Q('io.cozy.todos').where({ _id: '1234' })
 ```
+<a name="isAGetByIdQuery"></a>
+
+## isAGetByIdQuery ⇒ <code>boolean</code>
+Check if the query is a getById() query
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) | The query definition |
+
 <a name="convert$gtNullSelectors"></a>
 
 ## convert$gtNullSelectors ⇒ <code>object</code>
@@ -3062,6 +3095,19 @@ we have in the store.
 Get attributes that will be assigned to the instance of a Query
 
 **Kind**: global function  
+<a name="dispatchChange"></a>
+
+## dispatchChange(client, document, mutationDefinitionCreator)
+DispatchChange
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| client | [<code>CozyClient</code>](#CozyClient) | CozyClient instane |
+| document | [<code>CozyClientDocument</code>](#CozyClientDocument) | Document to update |
+| mutationDefinitionCreator | <code>Mutation</code> | Mutation to apply |
+
 <a name="RealTimeQueries"></a>
 
 ## RealTimeQueries(options) ⇒ <code>null</code>
