@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [22.1.0](https://github.com/cozy/cozy-client/compare/v22.0.0...v22.1.0) (2021-03-31)
+
+
+### Bug Fixes
+
+* Defensive code. Check if there is attributes ([87982ea](https://github.com/cozy/cozy-client/commit/87982eac7dd66ecfea3e15063af7b251d38f98bf))
+* Use the correct method to be "type" compatible and add Types ([43c663f](https://github.com/cozy/cozy-client/commit/43c663f8b553ae9609fa191f6f4b7636d48d623f))
+
+
+### Features
+
+* Autoname getById() query ([dfefe59](https://github.com/cozy/cozy-client/commit/dfefe59e7ac122a5485e3291a7d03106efe04a57))
+
+
+
+
+
 # [22.0.0](https://github.com/cozy/cozy-client/compare/v21.1.1...v22.0.0) (2021-03-30)
 
 

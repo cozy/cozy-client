@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [22.1.0](https://github.com/cozy/cozy-client/compare/v22.0.0...v22.1.0) (2021-03-31)
+
+
+### Bug Fixes
+
+* Move returns line makes the doc generation OK ([6a18ebf](https://github.com/cozy/cozy-client/commit/6a18ebf9b53a0e6c64e5e49323ce4ecdc96a059e))
+
+
+
+
+
 # [22.0.0](https://github.com/cozy/cozy-client/compare/v21.1.1...v22.0.0) (2021-03-30)
 
 **Note:** Version bump only for package cozy-pouch-link
