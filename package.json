@@ -19,8 +19,8 @@
     "jest-fetch-mock": "3.0.3",
     "jsdoc-to-markdown": "6",
     "lerna": "3.20.2",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
+    "react": "16.14.0",
+    "react-dom": "16.14.0",
     "redux-mock-store": "1.5.4",
     "whatwg-fetch": "^3.0.0"
   },
