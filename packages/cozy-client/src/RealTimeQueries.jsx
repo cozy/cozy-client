@@ -3,7 +3,16 @@ import useClient from './hooks/useClient'
 import { file as fileModel } from './models'
 import { Mutations } from './queries/dsl'
 import { receiveMutationResult } from './store'
+import CozyClient from './CozyClient'
+import { CozyClientDocument, Mutation } from './types'
 
+/**
+ * DispatchChange
+ *
+ * @param {CozyClient} client CozyClient instane
+ * @param {CozyClientDocument} document Document to update
+ * @param {Mutation} mutationDefinitionCreator Mutation to apply
+ */
 const dispatchChange = (client, document, mutationDefinitionCreator) => {
   const response = {
     data: fileModel.normalize(document)
@@ -12,7 +21,7 @@ const dispatchChange = (client, document, mutationDefinitionCreator) => {
   const options = {}
   client.dispatch(
     receiveMutationResult(
-      client.generateId(),
+      client.generateRandomId(),
       response,
       options,
       mutationDefinitionCreator(document)

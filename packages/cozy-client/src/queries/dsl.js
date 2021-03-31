@@ -345,10 +345,12 @@ export const Q = doctype => new QueryDefinition({ doctype })
  * @returns {boolean}
  */
 export const isAGetByIdQuery = queryDefinition => {
+  const attributes = Object.values(queryDefinition)
+  if (attributes.length === 0) return false
   // 2 attrs because we check if id and doctype are not undefined
   return (
-    Object.values(queryDefinition).filter(attr => attr !== undefined).length ===
-      2 && queryDefinition.id !== undefined
+    attributes.filter(attr => attr !== undefined).length === 2 &&
+    queryDefinition.id !== undefined
   )
 }
 // Mutations
