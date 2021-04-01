@@ -1,10 +1,11 @@
-import React, { useState, useCallback, useMemo } from 'react'
+import React, { useState, useCallback, useMemo, useRef } from 'react'
 
 import Fab from '@material-ui/core/Fab'
 import Paper from '@material-ui/core/Paper'
 import IconButton from '@material-ui/core/IconButton'
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
+import { useTheme, makeStyles } from '@material-ui/core/styles'
 
 import CozyTheme from 'cozy-ui/transpiled/react/CozyTheme'
 import Icon from 'cozy-ui/transpiled/react/Icon'
@@ -22,6 +23,8 @@ import { NavSecondaryAction, ListGridItem } from './common'
 import useLocalState from './useLocalState'
 
 const ABOVE_ALL = 1000000
+const DEFAULT_PANEL_HEIGHT = 300
+
 /**
  * @type {Object.<string, React.CSSProperties>}
  * @private
@@ -31,7 +34,6 @@ const styles = {
   panel: {
     position: 'fixed',
     bottom: 0,
-    height: 300,
     left: 0,
     right: 0,
     zIndex: ABOVE_ALL
@@ -78,6 +80,21 @@ const DevToolsNavList = ({ selected, panels, onNav }) => {
   )
 }
 
+const useResizeStyles = makeStyles(theme => ({
+  root: {
+    height: 3,
+    width: '100%',
+    background: theme.palette.primary.main,
+    cursor: 'row-resize'
+  }
+}))
+
+const ResizeBar = ({ ...props }) => {
+  const theme = useTheme()
+  const classes = useResizeStyles(theme)
+  return <div className={classes.root} {...props} />
+}
+
 const DevToolsPanel = props => {
   const panels = useMemo(() => {
     if (props.panels) {
@@ -86,8 +103,52 @@ const DevToolsPanel = props => {
     return defaultPanels
   }, [props.panels])
   const [currentPanel, setCurrentPanel] = useState('queries')
+  const ref = useRef()
+
+  const [panelHeight, setPanelHeight] = useLocalState(
+    'cozydevtools__height',
+    DEFAULT_PANEL_HEIGHT
+  )
+  /**
+   * Copied/adapted from react-query
+   * https://github.com/tannerlinsley/react-query/blob/master/src/devtools/devtools.tsx
+   */
+  const handleDragStart = startEvent => {
+    if (startEvent.button !== 0) return // Only allow left click for drag
+
+    const node = ref.current
+    if (node === undefined) {
+      return
+    }
+
+    const dragInfo = {
+      originalHeight: node.getBoundingClientRect().height,
+      pageY: startEvent.pageY
+    }
+
+    const run = moveEvent => {
+      const delta = dragInfo.pageY - moveEvent.pageY
+      const newHeight = dragInfo.originalHeight + delta
+
+      setPanelHeight(newHeight)
+    }
+
+    const unsub = () => {
+      document.removeEventListener('mousemove', run)
+      document.removeEventListener('mouseUp', unsub)
+    }
+
+    document.addEventListener('mousemove', run)
+    document.addEventListener('mouseup', unsub)
+  }
+
   return (
-    <Paper elevation={12} {...props}>
+    <Paper
+      elevation={12}
+      ref={ref}
+      style={{ ...props.style, height: panelHeight }}
+    >
+      <ResizeBar onMouseDown={handleDragStart} />
       <IconButton style={styles.closeIcon} onClick={props.onClose}>
         <Icon icon={CrossIcon} size={12} />
       </IconButton>
