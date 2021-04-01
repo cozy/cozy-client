@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper'
 import IconButton from '@material-ui/core/IconButton'
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
+import Slide from '@material-ui/core/Slide'
 import { useTheme, makeStyles } from '@material-ui/core/styles'
 
 import CozyTheme from 'cozy-ui/transpiled/react/CozyTheme'
@@ -14,7 +15,7 @@ import Typography from 'cozy-ui/transpiled/react/Typography'
 import ListItem from 'cozy-ui/transpiled/react/MuiCozyTheme/ListItem'
 import ListItemText from 'cozy-ui/transpiled/react/ListItemText'
 import GearIcon from 'cozy-ui/transpiled/react/Icons/Gear'
-import CrossIcon from 'cozy-ui/transpiled/react/Icons/Cross'
+import CrossMedium from 'cozy-ui/transpiled/react/Icons/CrossMedium'
 
 import Queries from './Queries'
 import Flags from './Flags'
@@ -96,12 +97,13 @@ const ResizeBar = ({ ...props }) => {
 }
 
 const DevToolsPanel = props => {
+  const { panels: userPanels, open } = props
   const panels = useMemo(() => {
-    if (props.panels) {
-      return [...defaultPanels, ...props.panels]
+    if (userPanels) {
+      return [...defaultPanels, ...userPanels]
     }
     return defaultPanels
-  }, [props.panels])
+  }, [userPanels])
   const [currentPanel, setCurrentPanel] = useState('queries')
   const ref = useRef()
 
@@ -143,31 +145,37 @@ const DevToolsPanel = props => {
   }
 
   return (
-    <Paper
-      elevation={12}
-      ref={ref}
-      style={{ ...props.style, height: panelHeight }}
-    >
-      <ResizeBar onMouseDown={handleDragStart} />
-      <IconButton style={styles.closeIcon} onClick={props.onClose}>
-        <Icon icon={CrossIcon} size={12} />
-      </IconButton>
-      <Grid container style={styles.panelContainer}>
-        <ListGridItem>
-          <Box p={1}>
-            <Typography variant="subtitle1">Cozy Devtools</Typography>
-          </Box>
-          <DevToolsNavList
-            panels={panels}
-            selected={currentPanel}
-            onNav={setCurrentPanel}
-          />
-        </ListGridItem>
-        {panels.map(panelOptions =>
-          currentPanel === panelOptions.id ? <panelOptions.Component /> : null
-        )}
-      </Grid>
-    </Paper>
+    <CozyTheme variant="normal">
+      <Slide direction="up" in={open} mountOnEnter unmountOnExit>
+        <Paper
+          elevation={12}
+          ref={ref}
+          style={{ ...props.style, height: panelHeight }}
+        >
+          <ResizeBar onMouseDown={handleDragStart} />
+          <IconButton style={styles.closeIcon} onClick={props.onClose}>
+            <Icon icon={CrossMedium} size={12} />
+          </IconButton>
+          <Grid container style={styles.panelContainer}>
+            <ListGridItem>
+              <Box p={1}>
+                <Typography variant="subtitle1">Cozy Devtools</Typography>
+              </Box>
+              <DevToolsNavList
+                panels={panels}
+                selected={currentPanel}
+                onNav={setCurrentPanel}
+              />
+            </ListGridItem>
+            {panels.map(panelOptions =>
+              currentPanel === panelOptions.id ? (
+                <panelOptions.Component />
+              ) : null
+            )}
+          </Grid>
+        </Paper>
+      </Slide>
+    </CozyTheme>
   )
 }
 
@@ -179,15 +187,13 @@ const DevTools = ({ panels }) => {
       <Fab color="primary" onClick={handleToggle} style={styles.fab}>
         <Icon icon={GearIcon} />
       </Fab>
-      {open ? (
-        <CozyTheme variant="normal">
-          <DevToolsPanel
-            style={styles.panel}
-            onClose={handleToggle}
-            panels={panels}
-          />
-        </CozyTheme>
-      ) : null}
+
+      <DevToolsPanel
+        open={open}
+        style={styles.panel}
+        onClose={handleToggle}
+        panels={panels}
+      />
     </>
   )
 }
