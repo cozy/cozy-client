@@ -1,6 +1,7 @@
 import { MutationTypes, CozyLink, getDoctypeFromOperation } from 'cozy-client'
 import PouchDB from 'pouchdb-browser'
 import PouchDBFind from 'pouchdb-find'
+import PouchDBDebug from 'pouchdb-debug'
 import omit from 'lodash/omit'
 import defaults from 'lodash/defaults'
 import mapValues from 'lodash/mapValues'
@@ -10,8 +11,10 @@ import { getIndexNameFromFields, getIndexFields } from './mango'
 import * as jsonapi from './jsonapi'
 import PouchManager from './PouchManager'
 import logger from './logger'
+import { humanTimeDelta } from './startReplication'
 
-PouchDB.plugin(PouchDBFind)
+PouchDB.plugin(PouchDBFind).plugin(PouchDBDebug)
+PouchDB.debug.enable('*')
 
 const { find, allDocs, withoutDesignDocuments } = helpers
 
@@ -138,7 +141,6 @@ class PouchLink extends CozyLink {
       prefix,
       executeQuery: this.executeQuery.bind(this)
     })
-
     if (this.client && this.options.initialSync) {
       this.startReplication()
     }
@@ -259,7 +261,6 @@ class PouchLink extends CozyLink {
 
       return forward(operation)
     }
-
     if (!this.pouches.isSynced(doctype)) {
       if (process.env.NODE_ENV !== 'production') {
         logger.info(
@@ -342,10 +343,8 @@ class PouchLink extends CozyLink {
     if (this.indexes[absName]) {
       return this.indexes[absName]
     } else {
-      const index = await db.createIndex({
-        index: {
-          fields
-        }
+      const index = await helpers.createIndex(db, {
+        index: { fields }
       })
       this.indexes[absName] = index
       return index
@@ -391,12 +390,29 @@ class PouchLink extends CozyLink {
         limit,
         skip
       }
+      const startIdx = new Date()
       const index = await this.ensureIndex(doctype, {
         ...findOpts,
         indexedFields
       })
+      const endIdx = new Date()
+      console.log(
+        `PouchLink: index took ${humanTimeDelta(
+          endIdx - startIdx
+        )} for index ${JSON.stringify(
+          index
+        )} and indexedFields : ${indexedFields} `
+      )
       findOpts.use_index = index.id
+
+      const startFind = new Date()
       res = await find(db, findOpts)
+      const endFind = new Date()
+      console.log(
+        `PouchLink: find took ${humanTimeDelta(endFind - startFind)} for ${
+          res.docs.length
+        } docs on query ${JSON.stringify(findOpts)}`
+      )
       res.offset = skip
       res.limit = limit
       withRows = true

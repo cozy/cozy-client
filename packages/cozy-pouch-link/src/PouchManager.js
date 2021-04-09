@@ -7,8 +7,9 @@ import zip from 'lodash/zip'
 import Loop from './loop'
 import { isMobileApp } from 'cozy-device-helper'
 import logger from './logger'
-import { startReplication } from './startReplication'
-const DEFAULT_DELAY = 30 * 1000
+
+import { startReplication, humanTimeDelta } from './startReplication'
+const DEFAULT_DELAY = 30 * 1000000
 
 export const LOCALSTORAGE_SYNCED_KEY = 'cozy-client-pouch-link-synced'
 export const LOCALSTORAGE_WARMUPEDQUERIES_KEY =
@@ -33,6 +34,7 @@ class PouchManager {
     this.options = options
     const pouchPlugins = get(options, 'pouch.plugins', [])
     const pouchOptions = get(options, 'pouch.options', {})
+
     forEach(pouchPlugins, plugin => PouchDB.plugin(plugin))
     this.pouches = fromPairs(
       doctypes.map(doctype => [
@@ -277,6 +279,7 @@ class PouchManager {
   async warmupQueries(doctype, queries) {
     if (!this.warmedUpQueries[doctype]) this.warmedUpQueries[doctype] = []
     try {
+      let start = new Date()
       await Promise.all(
         queries.map(async query => {
           const def = getQueryAlias(query)
@@ -285,6 +288,10 @@ class PouchManager {
             this.warmedUpQueries[doctype].push(def)
           }
         })
+      )
+      let end = new Date()
+      console.log(
+        `PouchManager: warmup queries took ${humanTimeDelta(end - start)}`
       )
       this.persistWarmedUpQueries()
       logger.log('PouchManager: warmupQueries for ' + doctype + ' are done')

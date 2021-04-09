@@ -2,7 +2,7 @@ import { default as helpers } from './helpers'
 import logger from './logger'
 
 const { isDesignDocument, isDeletedDocument } = helpers
-const humanTimeDelta = timeMs => {
+export const humanTimeDelta = timeMs => {
   let cur = timeMs
   let unitIndex = 0
   let str = ''
@@ -49,6 +49,7 @@ export const startReplication = (
       batch_size: 1000, // we have mostly small documents
       ...customReplicationOptions
     }
+    console.log('start replication with opts ', replicationOptions)
     let replication
     if (strategy === 'fromRemote')
       replication = pouch.replicate.from(url, options)
@@ -56,7 +57,6 @@ export const startReplication = (
       replication = pouch.replicate.to(url, options)
     else replication = pouch.sync(url, options)
 
-    // console.log('replication', replication)
     const docs = {}
 
     replication.on('change', infos => {
@@ -66,7 +66,7 @@ export const startReplication = (
       // See https://pouchdb.com/api.html#replication
       // and https://pouchdb.com/api.html#sync (see example response)
       const change = infos.change ? infos.change : infos
-
+      console.log('change : ', change)
       if (change.docs) {
         change.docs
           .filter(doc => !isDesignDocument(doc) && !isDeletedDocument(doc))
@@ -75,8 +75,13 @@ export const startReplication = (
           })
       }
     })
-    replication.on('error', reject).on('complete', () => {
+    replication.on('error', reject).on('complete', infos => {
       const end = new Date()
+      console.log(
+        `PouchManager: replication console for ${url} took ${humanTimeDelta(
+          end - start
+        )} for ${docs.length} docs`
+      )
       if (process.env.NODE_ENV !== 'production') {
         logger.info(
           `PouchManager: replication for ${url} took ${humanTimeDelta(
