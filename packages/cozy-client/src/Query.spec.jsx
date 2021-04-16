@@ -168,7 +168,7 @@ describe('Query', () => {
           definition: { doctype: 'io.cozy.todos' },
           fetch: expect.any(Function),
           fetchMore: expect.any(Function),
-          fetchStatus: 'loading',
+          fetchStatus: 'pending',
           hasMore: false,
           id: '1',
           lastError: null,

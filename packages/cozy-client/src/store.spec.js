@@ -329,11 +329,11 @@ describe('Store', () => {
       })
     })
 
-    it('should have a `loading` status when the query has been initiated', async () => {
+    it('should have a `pending` status when the query has been initiated', async () => {
       const queryDef = { doctype: 'io.cozy.todos' }
       await store.dispatch(initQuery('allTodos', queryDef))
       const query = getQueryFromStore(store, 'allTodos')
-      expect(query.fetchStatus).toBe('loading')
+      expect(query.fetchStatus).toBe('pending')
     })
 
     it('should have a `failed` status when an error occur', async () => {

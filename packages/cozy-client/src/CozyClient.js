@@ -804,7 +804,7 @@ client.query(Q('io.cozy.bills'))`)
   async query(queryDefinition, { update, ...options } = {}) {
     this.ensureStore()
     const queryId = options.as || this.generateId(queryDefinition)
-    this.ensureQueryExists(queryId, queryDefinition)
+    const existingQuery = this.getQueryFromState(queryId)
 
     if (options.fetchPolicy) {
       if (!options.as) {
@@ -812,13 +812,20 @@ client.query(Q('io.cozy.bills'))`)
           'Cannot use `fetchPolicy` without naming the query, please use `as` to name the query'
         )
       }
-
-      const existingQuery = this.getQueryFromState(queryId)
       const shouldFetch = options.fetchPolicy(existingQuery)
       if (!shouldFetch) {
         return
       }
     }
+    // If we already have the same query in loading state, no
+    // need to refrech it
+    if (existingQuery && Object.keys(existingQuery).length > 0) {
+      if (existingQuery.fetchStatus === 'loading') {
+        return
+      }
+    }
+    this.ensureQueryExists(queryId, queryDefinition)
+
     try {
       this.dispatch(loadQuery(queryId))
       const response = await this.requestQuery(queryDefinition)
