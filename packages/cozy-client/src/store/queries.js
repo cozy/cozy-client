@@ -20,7 +20,7 @@ const RECEIVE_QUERY_RESULT = 'RECEIVE_QUERY_RESULT'
 const RECEIVE_QUERY_ERROR = 'RECEIVE_QUERY_ERROR'
 
 export const isQueryAction = action =>
-  [INIT_QUERY, RECEIVE_QUERY_RESULT, RECEIVE_QUERY_ERROR].indexOf(
+  [INIT_QUERY, LOAD_QUERY, RECEIVE_QUERY_RESULT, RECEIVE_QUERY_ERROR].indexOf(
     action.type
   ) !== -1
 
@@ -67,12 +67,7 @@ const query = (state = queryInitialState, action, nextDocuments) => {
         ...state,
         id: action.queryId,
         definition: action.queryDefinition,
-
-        // When the query is new, we set "fetchStatus" to "loading"
-        // directly since we know it will be loaded right away.
-        // This way, the loadQuery action will have no effect, and
-        // we save an additional render.
-        fetchStatus: state.lastUpdate ? state.fetchStatus : 'loading'
+        fetchStatus: state.lastUpdate ? state.fetchStatus : 'pending'
       }
     case LOAD_QUERY:
       if (state.fetchStatus === 'loading') {

@@ -1180,6 +1180,15 @@ describe('CozyClient', () => {
       expect(client.requestQuery).not.toHaveBeenCalled()
     })
 
+    it('should do nothing if the request is already in a loading status', async () => {
+      jest.spyOn(client, 'requestQuery')
+      getQueryFromState.mockReturnValueOnce({
+        fetchStatus: 'loading'
+      })
+      await client.query(query, { as: 'allTodos' })
+      expect(client.requestQuery).not.toHaveBeenCalled()
+    })
+
     it('should dispatch a INIT_QUERY action if status is not loaded', async () => {
       requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
       getQueryFromState.mockReturnValueOnce({
