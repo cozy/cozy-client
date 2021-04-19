@@ -20,5 +20,16 @@ else
 fi
 set -e
 
+set +e # The following command relies on exit 1
 cd packages/cozy-client
 yarn typecheck
+git diff --exit-code
+types_status=$?
+set -e
+if [[ $types_status == 0 ]]; then
+  echo "Types are up to date"
+else
+  echo "Types are not up-to-date, please run cd packages/cozy-client && yarn typecheck and repush"
+  exit 1
+fi
+set -e
