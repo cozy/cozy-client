@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [22.2.0](https://github.com/cozy/cozy-client/compare/v22.1.0...v22.2.0) (2021-04-19)
+
+
+### Bug Fixes
+
+* Type ([033d019](https://github.com/cozy/cozy-client/commit/033d0197acc25b327f90de9432983f708b5080f8))
+
+
+### Features
+
+* Add devtools panel resize ([a07d47e](https://github.com/cozy/cozy-client/commit/a07d47ec684a7046aa445aab5cdf585122339dd8))
+* Do not fetch the same query is she is already loading ([9396f32](https://github.com/cozy/cozy-client/commit/9396f3279aafaf27e30853233614913c68d892d3))
+* Wrap devtools in a slide component ([60b0ccf](https://github.com/cozy/cozy-client/commit/60b0ccf7255729761937d4847b11a23f2a107578))
+
+
+
+
+
 # [22.1.0](https://github.com/cozy/cozy-client/compare/v22.0.0...v22.1.0) (2021-03-31)
 
 
