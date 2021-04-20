@@ -27,7 +27,7 @@ import { NavSecondaryAction, ListGridItem } from './common'
 import PanelContent from './PanelContent'
 
 /**
- * @type {Object.<string, React.CSSProperties>}
+ * @type {object.<string, React.CSSProperties>}
  * @private
  */
 const styles = {
@@ -239,10 +239,10 @@ const QueryListItem = ({ name, selected, onClick }) => {
         primary={name}
         secondary={
           <>
-            {lastUpdate} - {queryState.data.length} docs
             {queryState.execution_stats && (
               <ExecutionTime queryState={queryState} />
             )}
+            {lastUpdate} - {queryState.data.length} docs
           </>
         }
       />
