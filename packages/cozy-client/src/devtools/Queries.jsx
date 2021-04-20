@@ -46,7 +46,7 @@ const TableCell = withStyles({
 const getClassNameForExecutedTimesQuery = time => {
   if (time <= 100) {
     return 'u-valid u-success'
-  } else if (time > 100 && time < 500) {
+  } else if (time > 100 && time < 250) {
     return 'u-warn u-warning'
   } else {
     return 'u-danger u-error'
