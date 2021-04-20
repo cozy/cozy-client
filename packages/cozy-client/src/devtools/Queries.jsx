@@ -260,7 +260,7 @@ const ExecutionTime = ({ queryState }) => {
     <>
       {' - '}
       <span className={classCSS}>
-        {queryState.execution_stats.execution_time_ms} ms
+        {Math.round(queryState.execution_stats.execution_time_ms)} ms
       </span>
     </>
   )
