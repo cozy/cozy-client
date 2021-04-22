@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [22.3.0](https://github.com/cozy/cozy-client/compare/v22.2.0...v22.3.0) (2021-04-22)
+
+
+### Bug Fixes
+
+* Better error handling on travis for type check ([4146fba](https://github.com/cozy/cozy-client/commit/4146fbacdabe10999695eab43b6042bdb564c821))
+* Remove warnings ([290d118](https://github.com/cozy/cozy-client/commit/290d1189fbd365c2b78008916366dfa2faecdfe4))
+* Upgrade cozy-flags to fix errors in test ([3d557e4](https://github.com/cozy/cozy-client/commit/3d557e4afbb12718e544e46b6ceed7e2e6d9da3f))
+
+
+### Features
+
+* Add execution time in Queries ([829389c](https://github.com/cozy/cozy-client/commit/829389c5d3b2e71d4009ffa78b15f569dd58ae48))
+* DevTools display exec time first ([3207153](https://github.com/cozy/cozy-client/commit/3207153cc184187b45916fe554ca0c6aded86f72))
+* DevTools Math round exec time ([cd79fca](https://github.com/cozy/cozy-client/commit/cd79fca8d6fa0ba2428f2105e92ed18cbb9bb9d3))
+* DevTools warning for < 250ms ([cc0525a](https://github.com/cozy/cozy-client/commit/cc0525a4305d3df489cf03eb94fbf744f00cc1a0))
+* Use ObjectInspector by default on queryDef and exec_time ([ff96599](https://github.com/cozy/cozy-client/commit/ff965993596fce5e8b4c1a41f2f93fb74f3ca820))
+
+
+
+
+
 # [22.2.0](https://github.com/cozy/cozy-client/compare/v22.1.0...v22.2.0) (2021-04-19)
 
 

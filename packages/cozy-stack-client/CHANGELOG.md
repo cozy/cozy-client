@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [22.3.0](https://github.com/cozy/cozy-client/compare/v22.2.0...v22.3.0) (2021-04-22)
+
+
+### Bug Fixes
+
+* Upgrade cozy-flags to fix errors in test ([3d557e4](https://github.com/cozy/cozy-client/commit/3d557e4afbb12718e544e46b6ceed7e2e6d9da3f))
+
+
+
+
+
 # [22.0.0](https://github.com/cozy/cozy-client/compare/v21.1.1...v22.0.0) (2021-03-30)
 
 **Note:** Version bump only for package cozy-stack-client
