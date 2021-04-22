@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [23.0.0](https://github.com/cozy/cozy-client/compare/v22.3.0...v23.0.0) (2021-04-22)
+
+
+### Features
+
+* Change files storage location on Android ([f45aacb](https://github.com/cozy/cozy-client/commit/f45aacbc5e2fe08e8c1cf8b3da6b49e08a3c0fe6))
+
+
+### BREAKING CHANGES
+
+* Due to Android 11 release, we have to change
+the files storage location.
+
+
+
+
+
 # [22.3.0](https://github.com/cozy/cozy-client/compare/v22.2.0...v22.3.0) (2021-04-22)
 
 
