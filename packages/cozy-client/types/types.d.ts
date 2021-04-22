@@ -125,7 +125,7 @@ export type ClientError = {
     status?: string;
 };
 export type FilePlugin = {
-    externalRootDirectory?: object;
+    externalDataDirectory?: object;
     cacheDirectory?: object;
     externalCacheDirectory?: object;
     dataDirectory?: object;

@@ -109,7 +109,7 @@ import { QueryDefinition } from './queries/dsl'
 
 /**
  * @typedef FilePlugin
- * @property {object} [externalRootDirectory]
+ * @property {object} [externalDataDirectory]
  * @property {object} [cacheDirectory]
  * @property {object} [externalCacheDirectory]
  * @property {object} [dataDirectory]

@@ -35,7 +35,8 @@
     "build": "lerna run build --parallel",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "clean": "rm -rf packages/*/dist",
-    "docs": "node scripts/docs.js"
+    "docs": "node scripts/docs.js",
+    "types": "cd packages/cozy-client && yarn typecheck"
   },
   "commitlint": {
     "extends": [
