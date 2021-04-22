@@ -27,7 +27,7 @@ const win = window
  */
 export const getRootPath = () => {
   return isAndroidApp()
-    ? win.cordova.file.externalRootDirectory
+    ? win.cordova.file.externalDataDirectory
     : win.cordova.file.dataDirectory
 }
 

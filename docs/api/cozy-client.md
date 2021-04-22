@@ -3527,7 +3527,7 @@ An io.cozy.files document
 
 | Name | Type |
 | --- | --- |
-| [externalRootDirectory] | <code>object</code> | 
+| [externalDataDirectory] | <code>object</code> | 
 | [cacheDirectory] | <code>object</code> | 
 | [externalCacheDirectory] | <code>object</code> | 
 | [dataDirectory] | <code>object</code> | 

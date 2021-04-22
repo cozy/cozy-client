@@ -17,7 +17,7 @@ jest.mock('cozy-ui/transpiled/react/Alerter', () => ({
   info: jest.fn()
 }))
 
-const ANDROID_ROOT_DIRECTORY = 'externalRootDirectory'
+const ANDROID_ROOT_DIRECTORY = 'externalDataDirectory'
 const IOS_ROOT_DIRECTORY = 'dataDirectory'
 const EXTERNAL_CACHE_DIRECTORY = 'externalCacheDirectory'
 const CACHE_DIRECTORY = 'cacheDirectory'
@@ -28,7 +28,7 @@ describe('getRootPath', () => {
   beforeEach(() => {
     window.cordova = {
       file: {
-        externalRootDirectory: ANDROID_ROOT_DIRECTORY,
+        externalDataDirectory: ANDROID_ROOT_DIRECTORY,
         dataDirectory: IOS_ROOT_DIRECTORY
       },
       platformId: ANDROID
