@@ -1,7 +1,11 @@
 import { default as helpers } from './helpers'
+import startsWith from 'lodash/startsWith'
 import logger from './logger'
-
+import { fetchRemoteInstance } from './remote'
 const { isDesignDocument, isDeletedDocument } = helpers
+
+const BATCH_SIZE = 1000 // we have mostly small documents
+
 const humanTimeDelta = timeMs => {
   let cur = timeMs
   let unitIndex = 0
@@ -36,28 +40,39 @@ export const startReplication = (
   replicationOptions,
   getReplicationURL
 ) => {
+  console.debug('start replication begin')
   let replication
+  let docs = {}
   const start = new Date()
   const promise = new Promise((resolve, reject) => {
     const url = getReplicationURL()
     const {
       strategy,
+      initialReplication,
       warmupQueries,
       ...customReplicationOptions
     } = replicationOptions
     const options = {
-      batch_size: 1000, // we have mostly small documents
+      batch_size: BATCH_SIZE,
       ...customReplicationOptions
     }
     let replication
-    if (strategy === 'fromRemote')
+    if (initialReplication && strategy !== 'toRemote') {
+      ;(async () => {
+        // For the first remote->local replication, we manually replicate all docs
+        // as it avoids to replicate all revs history, which can lead to
+        // performances issues
+        docs = await replicateAllDocs(pouch, url)
+        return resolve(docs)
+      })()
+    }
+    if (strategy === 'fromRemote') {
       replication = pouch.replicate.from(url, options)
-    else if (strategy === 'toRemote')
+    } else if (strategy === 'toRemote') {
       replication = pouch.replicate.to(url, options)
-    else replication = pouch.sync(url, options)
-
-    // console.log('replication', replication)
-    const docs = {}
+    } else {
+      replication = pouch.sync(url, options)
+    }
 
     replication.on('change', infos => {
       //! Since we introduced the concept of strategy we can use
@@ -66,7 +81,6 @@ export const startReplication = (
       // See https://pouchdb.com/api.html#replication
       // and https://pouchdb.com/api.html#sync (see example response)
       const change = infos.change ? infos.change : infos
-
       if (change.docs) {
         change.docs
           .filter(doc => !isDesignDocument(doc) && !isDeletedDocument(doc))
@@ -75,7 +89,7 @@ export const startReplication = (
           })
       }
     })
-    replication.on('error', reject).on('complete', () => {
+    replication.on('error', reject).on('complete', infos => {
       const end = new Date()
       if (process.env.NODE_ENV !== 'production') {
         logger.info(
@@ -96,4 +110,60 @@ export const startReplication = (
 
   promise.cancel = cancel
   return promise
+}
+
+const filterDocs = docs => {
+  return docs
+    .map(doc => doc.doc)
+    .filter(doc => !doc._deleted && !startsWith(doc._id, '_design'))
+}
+
+export const replicateAllDocs = async (db, baseUrl) => {
+  const remoteUrl = new URL(`${baseUrl}/_all_docs`)
+  const batchSize = BATCH_SIZE
+  let hasMore = true
+  let startDocId
+  let docs
+
+  while (hasMore) {
+    if (!startDocId) {
+      // first run
+      const res = await fetchRemoteInstance(remoteUrl, {
+        limit: batchSize,
+        include_docs: true
+      })
+      docs = filterDocs(res.rows)
+      if (docs.length === 0) {
+        hasMore = false
+      } else {
+        startDocId = docs[docs.length - 1]._id
+        if (docs.length < batchSize) {
+          hasMore = false
+        }
+        await insertDocsBatch(db, docs)
+      }
+    } else {
+      const res = await fetchRemoteInstance(remoteUrl, {
+        include_docs: true,
+        limit: batchSize,
+        startkey_docid: startDocId
+      })
+      const filteredDocs = filterDocs(res.rows)
+      if (filteredDocs.length < 2) {
+        return docs
+      }
+      filteredDocs.shift() // Remove first element, already included in previous request
+      startDocId = filteredDocs[filteredDocs.length - 1]._id
+      await insertDocsBatch(db, filteredDocs)
+      docs = docs.concat(filteredDocs)
+      if (res.rows.length < batchSize) {
+        hasMore = false
+      }
+    }
+  }
+  return docs
+}
+
+const insertDocsBatch = async (db, docs) => {
+  return db.bulkDocs(docs, { new_edits: false })
 }

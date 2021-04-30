@@ -4,15 +4,19 @@ import forEach from 'lodash/forEach'
 import get from 'lodash/get'
 import map from 'lodash/map'
 import zip from 'lodash/zip'
+import startsWith from 'lodash/startsWith'
 import Loop from './loop'
 import { isMobileApp } from 'cozy-device-helper'
 import logger from './logger'
+import { fetchRemoteLastSequence } from './remote'
 import { startReplication } from './startReplication'
 const DEFAULT_DELAY = 30 * 1000
 
 export const LOCALSTORAGE_SYNCED_KEY = 'cozy-client-pouch-link-synced'
 export const LOCALSTORAGE_WARMUPEDQUERIES_KEY =
   'cozy-client-pouch-link-warmupedqueries'
+export const LOCALSTORAGE_LASTSEQUENCES_KEY =
+  'cozy-client-pouch-link-nextreplicationsequence'
 
 /**
  * @param {QueryDefinition} query
@@ -33,6 +37,7 @@ class PouchManager {
     this.options = options
     const pouchPlugins = get(options, 'pouch.plugins', [])
     const pouchOptions = get(options, 'pouch.options', {})
+
     forEach(pouchPlugins, plugin => PouchDB.plugin(plugin))
     this.pouches = fromPairs(
       doctypes.map(doctype => [
@@ -40,6 +45,7 @@ class PouchManager {
         new PouchDB(this.getDatabaseName(doctype), pouchOptions)
       ])
     )
+    window.pouch = this.pouches
     this.syncedDoctypes = this.getPersistedSyncedDoctypes()
     this.warmedUpQueries = this.getPersistedWarmedUpQueries()
     this.getReplicationURL = options.getReplicationURL
@@ -161,25 +167,52 @@ class PouchManager {
     logger.info('PouchManager: Starting replication iteration')
 
     // Creating each replication
-    this.replications = map(this.pouches, (pouch, doctype) => {
+    this.replications = map(this.pouches, async (pouch, doctype) => {
       logger.info('PouchManager: Starting replication for ' + doctype)
 
       const getReplicationURL = () => this.getReplicationURL(doctype)
+
+      const initialReplication = !this.isSynced(doctype)
+      const replicationFilter = doc => {
+        return !startsWith(doc._id, '_design')
+      }
+      let seq = ''
+      if (initialReplication) {
+        // Before the first replication, get the last remote sequence,
+        // which will be used as a checkpoint for the next replication
+        const lastSeq = await fetchRemoteLastSequence(getReplicationURL())
+        this.persistDoctypeLastSequence(doctype, lastSeq)
+      } else {
+        seq = this.getDoctypeLastSequence(doctype)
+      }
+
       const replicationOptions = get(
         this.doctypesReplicationOptions,
         doctype,
         {}
       )
-      return startReplication(
+      replicationOptions.initialReplication = initialReplication
+      replicationOptions.filter = replicationFilter
+      replicationOptions.since = seq
+
+      const res = await startReplication(
         pouch,
         replicationOptions,
         getReplicationURL
-      ).then(res => {
-        this.addSyncedDoctype(doctype)
-        logger.log('PouchManager: Replication for ' + doctype + ' ended', res)
-        this.checkToWarmupDoctype(doctype, replicationOptions)
-        return res
-      })
+      )
+      if (seq) {
+        // We only need the sequence for the second replication, as PouchDB
+        // will use a local checkpoint for the next runs.
+        this.destroyDoctypeLastSequence(doctype)
+      }
+
+      console.log(
+        'PouchManager: Replication for ' + doctype + ' ended with: ',
+        res.length
+      )
+      this.addSyncedDoctype(doctype)
+      this.checkToWarmupDoctype(doctype, replicationOptions)
+      return res
     })
 
     // Waiting on each replication
@@ -270,6 +303,35 @@ class PouchManager {
     window.localStorage.removeItem(LOCALSTORAGE_SYNCED_KEY)
   }
 
+  persistDoctypeLastSequence(doctype, sequence) {
+    const seqs = this.getAllLastSequences()
+    seqs[doctype] = sequence
+
+    window.localStorage.setItem(
+      LOCALSTORAGE_LASTSEQUENCES_KEY,
+      JSON.stringify(seqs)
+    )
+  }
+
+  getAllLastSequences() {
+    const item = window.localStorage.getItem(LOCALSTORAGE_LASTSEQUENCES_KEY)
+    return item ? JSON.parse(item) : {}
+  }
+
+  getDoctypeLastSequence(doctype) {
+    const seqs = this.getAllLastSequences()
+    return seqs[doctype]
+  }
+
+  destroyDoctypeLastSequence(doctype) {
+    const seqs = this.getAllLastSequences()
+    delete seqs[doctype]
+    window.localStorage.setItem(
+      LOCALSTORAGE_LASTSEQUENCES_KEY,
+      JSON.stringify(seqs)
+    )
+  }
+
   getDatabaseName(doctype) {
     return `${this.options.prefix}_${doctype}`
   }
@@ -287,8 +349,9 @@ class PouchManager {
         })
       )
       this.persistWarmedUpQueries()
+      console.log('ok warmup')
       logger.log('PouchManager: warmupQueries for ' + doctype + ' are done')
-    } catch {
+    } catch (err) {
       delete this.warmedUpQueries[doctype]
     }
   }
