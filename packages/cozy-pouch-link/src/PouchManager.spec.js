@@ -16,6 +16,10 @@ import { isMobileApp } from 'cozy-device-helper'
 
 jest.mock('pouchdb-browser')
 jest.mock('cozy-device-helper')
+jest.mock('./remote', () => ({
+  fetchRemoteLastSequence: jest.fn(),
+  fetchRemoteInstance: jest.fn()
+}))
 
 import * as rep from './startReplication'
 
@@ -62,7 +66,7 @@ describe('PouchManager', () => {
     onSync = jest.fn()
 
   beforeEach(() => {
-    getReplicationURL = () => 'replicationURL'
+    getReplicationURL = () => 'http://replicationURL.local'
     managerOptions = {
       replicationDelay: 16,
       getReplicationURL: () => getReplicationURL(),
@@ -84,6 +88,8 @@ describe('PouchManager', () => {
     pouch.info = jest.fn().mockImplementation(() => Promise.resolve())
     PouchDB.mockReset()
     PouchDB.plugin.mockReset()
+    fetchRemoteLastSequence.mockResolvedValue('10-xyz')
+    fetchRemoteInstance.mockResolvedValue({ rows: [{ doc: { _id: '123' } }] })
   })
 
   afterEach(() => {
@@ -92,6 +98,15 @@ describe('PouchManager', () => {
 
   it('should create pouches', () => {
     expect(Object.values(manager.pouches).length).toBe(1)
+  })
+
+  it('should first replicate through _all_docs and then through replication protocol', async () => {
+    manager.startReplicationLoop()
+    await sleep(1000)
+    expect(fetchRemoteInstance).toHaveBeenCalledTimes(1)
+    const pouch = manager.getPouch('io.cozy.todos')
+    expect(pouch.info).toHaveBeenCalledTimes(1)
+    expect(pouch.sync).toHaveBeenCalled()
   })
 
   it('should call info() on all pouches before starting replication', async () => {
@@ -111,6 +126,24 @@ describe('PouchManager', () => {
     await sleep(1000)
     const pouch = manager.getPouch('io.cozy.todos')
     expect(pouch.sync.mock.calls.length).toBeGreaterThan(5)
+  })
+
+  it('should not start remote replication for first replication', async () => {
+    manager = new PouchManager(['io.cozy.todos', 'io.cozy.readonly'], {
+      ...managerOptions,
+      doctypesReplicationOptions: {
+        'io.cozy.readonly': { strategy: 'fromRemote' }
+      }
+    })
+    const normalPouch = manager.getPouch('io.cozy.todos')
+    const readOnlyPouch = manager.getPouch('io.cozy.readonly')
+    readOnlyPouch.replicate = {}
+    readOnlyPouch.replicate.from = jest.fn()
+    manager.startReplicationLoop()
+    await sleep(1000)
+    expect(fetchRemoteLastSequence).toHaveBeenCalled()
+    expect(normalPouch.sync).toHaveBeenCalledTimes(1)
+    expect(readOnlyPouch.replicate.from).toHaveBeenCalledTimes(1)
   })
 
   it('should only replicate from the remote for some doctypes', async () => {
