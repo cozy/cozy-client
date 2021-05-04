@@ -35,6 +35,10 @@ and subjects.
 A qualification can be customized accordingly to rules detailed in
 the checkValueAttributes method.</p>
 </dd>
+<dt><a href="#PromiseCache">PromiseCache</a></dt>
+<dd><p>Caches promises while they are pending
+Serves to dedupe equal queries requested at the same time</p>
+</dd>
 <dt><a href="#QueryDefinition">QueryDefinition</a> ⇐ <code>object</code></dt>
 <dd><p>Chainable API to create query definitions to retrieve documents
 from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
@@ -1717,6 +1721,38 @@ CozyClient.registerHook('io.cozy.bank.accounts', 'before:destroy', () => {
   console.log('A io.cozy.bank.accounts is being destroyed')
 })
 ```
+<a name="PromiseCache"></a>
+
+## PromiseCache
+Caches promises while they are pending
+Serves to dedupe equal queries requested at the same time
+
+**Kind**: global class  
+
+* [PromiseCache](#PromiseCache)
+    * [.pending](#PromiseCache+pending) : <code>object.&lt;string, Promise&gt;</code>
+    * [.exec(promiseFunc, keyFunc)](#PromiseCache+exec) ⇒ <code>Promise.&lt;T&gt;</code>
+
+<a name="PromiseCache+pending"></a>
+
+### promiseCache.pending : <code>object.&lt;string, Promise&gt;</code>
+Holds pending promises
+
+**Kind**: instance property of [<code>PromiseCache</code>](#PromiseCache)  
+<a name="PromiseCache+exec"></a>
+
+### promiseCache.exec(promiseFunc, keyFunc) ⇒ <code>Promise.&lt;T&gt;</code>
+Tries to find a pending promise corresponding to the result of keyFunc
+- If not found, promiseFunc is executed and the resulting promise is stored while it's pending
+- If found, it is immediately returned
+
+**Kind**: instance method of [<code>PromiseCache</code>](#PromiseCache)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| promiseFunc | <code>function</code> | Not executed only if an "equal" promise is already pending. |
+| keyFunc | <code>function</code> | Returns a key to find in cache to find a pending promise. |
+
 <a name="QueryDefinition"></a>
 
 ## QueryDefinition ⇐ <code>object</code>

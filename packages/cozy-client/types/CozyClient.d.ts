@@ -169,6 +169,13 @@ declare class CozyClient {
      */
     storeAccesors: object;
     /**
+     * Holds in-flight promises for deduplication purpose
+     *
+     * @private
+     * @type {PromiseCache}
+     */
+    private _promiseCache;
+    /**
      * Gets overrided by MicroEE.mixin
      * This is here just so typescript does not scream
      *
