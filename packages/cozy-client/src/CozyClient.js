@@ -61,6 +61,8 @@ import {
   Token
 } from './types'
 import { QueryIDGenerator } from './store/queries'
+import stringify from 'json-stable-stringify'
+import PromiseCache from './promise-cache'
 
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
 
@@ -201,6 +203,14 @@ class CozyClient {
     if (options.store !== false) {
       this.ensureStore()
     }
+
+    /**
+     * Holds in-flight promises for deduplication purpose
+     *
+     * @private
+     * @type {PromiseCache}
+     */
+    this._promiseCache = new PromiseCache()
   }
 
   /**
@@ -824,18 +834,16 @@ client.query(Q('io.cozy.bills'))`)
         return
       }
     }
-    // If we already have the same query in loading state, no
-    // need to refetch it
-    if (existingQuery && Object.keys(existingQuery).length > 0) {
-      if (existingQuery.fetchStatus === 'loading') {
-        return
-      }
-    }
     this.ensureQueryExists(queryId, queryDefinition, options)
 
     try {
       this.dispatch(loadQuery(queryId))
-      const response = await this.requestQuery(queryDefinition)
+
+      const response = await this._promiseCache.exec(
+        () => this.requestQuery(queryDefinition),
+        () => stringify(queryDefinition)
+      )
+
       this.dispatch(
         receiveQueryResult(queryId, response, {
           update
