@@ -26,6 +26,23 @@ and on demand immediately.</p>
 </dd>
 </dl>
 
+## Constants
+
+<dl>
+<dt><a href="#fetchRemoteInstance">fetchRemoteInstance</a> ⇒ <code>object</code></dt>
+<dd><p>Fetch remote instance</p>
+</dd>
+<dt><a href="#fetchRemoteLastSequence">fetchRemoteLastSequence</a> ⇒ <code>string</code></dt>
+<dd><p>Fetch last sequence from remote instance</p>
+</dd>
+<dt><a href="#replicateAllDocs">replicateAllDocs</a> ⇒ <code>Array</code></dt>
+<dd><p>Replicate all docs locally from a remote URL.</p>
+<p>It uses the _all_docs view, and bulk insert the docs.
+Note it saves the last replicated _id for each run and
+starts from there in case the process stops before the end.</p>
+</dd>
+</dl>
+
 ## Functions
 
 <dl>
@@ -229,6 +246,48 @@ immediately
 Starts replication
 
 **Kind**: instance method of [<code>PouchManager</code>](#PouchManager)  
+<a name="fetchRemoteInstance"></a>
+
+## fetchRemoteInstance ⇒ <code>object</code>
+Fetch remote instance
+
+**Kind**: global constant  
+**Returns**: <code>object</code> - The instance response  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| url | <code>URL</code> | The remote instance URL, including the credentials |
+| params | <code>object</code> | The params to query the remote instance |
+
+<a name="fetchRemoteLastSequence"></a>
+
+## fetchRemoteLastSequence ⇒ <code>string</code>
+Fetch last sequence from remote instance
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - The last sequence  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| baseUrl | <code>string</code> | The base URL of the remote instance |
+
+<a name="replicateAllDocs"></a>
+
+## replicateAllDocs ⇒ <code>Array</code>
+Replicate all docs locally from a remote URL.
+
+It uses the _all_docs view, and bulk insert the docs.
+Note it saves the last replicated _id for each run and
+starts from there in case the process stops before the end.
+
+**Kind**: global constant  
+**Returns**: <code>Array</code> - The retrieved documents  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| db | <code>object</code> | Pouch instance |
+| baseUrl | <code>string</code> | The remote instance |
+
 <a name="getQueryAlias"></a>
 
 ## getQueryAlias(query) ⇒ <code>string</code>
