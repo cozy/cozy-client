@@ -331,6 +331,9 @@ want to them to trigger an exception during tests.</p>
 The only difference with queryConnect is that it does not wrap the component in N component
 if there are N queries, only 1 extra level of nesting is introduced.</p>
 </dd>
+<dt><a href="#useAppsInMaintenance">useAppsInMaintenance(client)</a> ⇒ <code>Array.&lt;AppsDoctype&gt;</code></dt>
+<dd><p>Returns all apps in maintenance</p>
+</dd>
 <dt><a href="#useClient">useClient()</a> ⇒ <code><a href="#CozyClient">CozyClient</a></code></dt>
 <dd><p>Returns the cozy client from the context</p>
 </dd>
@@ -2927,6 +2930,18 @@ if there are N queries, only 1 extra level of nesting is introduced.
 | Param | Type | Description |
 | --- | --- | --- |
 | querySpecs | <code>object</code> | Definition of the queries |
+
+<a name="useAppsInMaintenance"></a>
+
+## useAppsInMaintenance(client) ⇒ <code>Array.&lt;AppsDoctype&gt;</code>
+Returns all apps in maintenance
+
+**Kind**: global function  
+**Returns**: <code>Array.&lt;AppsDoctype&gt;</code> - An array with all apps in maintenance  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| client | [<code>CozyClient</code>](#CozyClient) | CozyClient instance |
 
 <a name="useClient"></a>
 
