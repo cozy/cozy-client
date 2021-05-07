@@ -10,13 +10,9 @@ import { isMobileApp } from 'cozy-device-helper'
 import logger from './logger'
 import { fetchRemoteLastSequence } from './remote'
 import { startReplication } from './startReplication'
-const DEFAULT_DELAY = 30 * 1000
+import * as localStorage from './localStorage'
 
-export const LOCALSTORAGE_SYNCED_KEY = 'cozy-client-pouch-link-synced'
-export const LOCALSTORAGE_WARMUPEDQUERIES_KEY =
-  'cozy-client-pouch-link-warmupedqueries'
-export const LOCALSTORAGE_LASTSEQUENCES_KEY =
-  'cozy-client-pouch-link-nextreplicationsequence'
+const DEFAULT_DELAY = 30 * 1000
 
 /**
  * @param {QueryDefinition} query
@@ -46,8 +42,8 @@ class PouchManager {
       ])
     )
     window.pouch = this.pouches
-    this.syncedDoctypes = this.getPersistedSyncedDoctypes()
-    this.warmedUpQueries = this.getPersistedWarmedUpQueries()
+    this.syncedDoctypes = localStorage.getPersistedSyncedDoctypes()
+    this.warmedUpQueries = localStorage.getPersistedWarmedUpQueries()
     this.getReplicationURL = options.getReplicationURL
     this.doctypesReplicationOptions = options.doctypesReplicationOptions || {}
     this.listenerLaunched = false
@@ -89,8 +85,10 @@ class PouchManager {
   destroy() {
     this.stopReplicationLoop()
     this.removeListeners()
-    this.destroySyncedDoctypes()
+    this.clearSyncedDoctypes()
     this.clearWarmedUpQueries()
+    localStorage.destroyDoctypeLastSequence()
+    localStorage.destroyLastReplicatedDocID()
 
     return Promise.all(
       Object.values(this.pouches).map(pouch => pouch.destroy())
@@ -181,9 +179,9 @@ class PouchManager {
         // Before the first replication, get the last remote sequence,
         // which will be used as a checkpoint for the next replication
         const lastSeq = await fetchRemoteLastSequence(getReplicationURL())
-        this.persistDoctypeLastSequence(doctype, lastSeq)
+        localStorage.persistDoctypeLastSequence(doctype, lastSeq)
       } else {
-        seq = this.getDoctypeLastSequence(doctype)
+        seq = localStorage.getDoctypeLastSequence(doctype)
       }
 
       const replicationOptions = get(
@@ -203,7 +201,7 @@ class PouchManager {
       if (seq) {
         // We only need the sequence for the second replication, as PouchDB
         // will use a local checkpoint for the next runs.
-        this.destroyDoctypeLastSequence(doctype)
+        localStorage.destroyDoctypeLastSequence(doctype)
       }
 
       console.log(
@@ -269,28 +267,10 @@ class PouchManager {
     return this.pouches[doctype]
   }
 
-  getPersistedSyncedDoctypes() {
-    const item = window.localStorage.getItem(LOCALSTORAGE_SYNCED_KEY)
-
-    // We check if the item in local storage is an array because we previously stored a boolean
-    if (!item || !Array.isArray(JSON.parse(item))) {
-      return []
-    }
-
-    return JSON.parse(item)
-  }
-
-  persistSyncedDoctypes() {
-    window.localStorage.setItem(
-      LOCALSTORAGE_SYNCED_KEY,
-      JSON.stringify(this.syncedDoctypes)
-    )
-  }
-
   addSyncedDoctype(doctype) {
     if (!this.isSynced(doctype)) {
       this.syncedDoctypes.push(doctype)
-      this.persistSyncedDoctypes()
+      localStorage.persistSyncedDoctypes(this.syncedDoctypes)
     }
   }
 
@@ -298,42 +278,13 @@ class PouchManager {
     return this.syncedDoctypes.includes(doctype)
   }
 
-  destroySyncedDoctypes() {
-    this.syncedDoctypes = []
-    window.localStorage.removeItem(LOCALSTORAGE_SYNCED_KEY)
-  }
-
-  persistDoctypeLastSequence(doctype, sequence) {
-    const seqs = this.getAllLastSequences()
-    seqs[doctype] = sequence
-
-    window.localStorage.setItem(
-      LOCALSTORAGE_LASTSEQUENCES_KEY,
-      JSON.stringify(seqs)
-    )
-  }
-
-  getAllLastSequences() {
-    const item = window.localStorage.getItem(LOCALSTORAGE_LASTSEQUENCES_KEY)
-    return item ? JSON.parse(item) : {}
-  }
-
-  getDoctypeLastSequence(doctype) {
-    const seqs = this.getAllLastSequences()
-    return seqs[doctype]
-  }
-
-  destroyDoctypeLastSequence(doctype) {
-    const seqs = this.getAllLastSequences()
-    delete seqs[doctype]
-    window.localStorage.setItem(
-      LOCALSTORAGE_LASTSEQUENCES_KEY,
-      JSON.stringify(seqs)
-    )
-  }
-
   getDatabaseName(doctype) {
     return `${this.options.prefix}_${doctype}`
+  }
+
+  clearSyncedDoctypes() {
+    this.syncedDoctypes = []
+    localStorage.destroySyncedDoctypes()
   }
 
   async warmupQueries(doctype, queries) {
@@ -348,8 +299,7 @@ class PouchManager {
           }
         })
       )
-      this.persistWarmedUpQueries()
-      console.log('ok warmup')
+      localStorage.persistWarmedUpQueries(this.warmedUpQueries)
       logger.log('PouchManager: warmupQueries for ' + doctype + ' are done')
     } catch (err) {
       delete this.warmedUpQueries[doctype]
@@ -365,15 +315,8 @@ class PouchManager {
     }
   }
 
-  persistWarmedUpQueries() {
-    window.localStorage.setItem(
-      LOCALSTORAGE_WARMUPEDQUERIES_KEY,
-      JSON.stringify(this.warmedUpQueries)
-    )
-  }
-
   areQueriesWarmedUp(doctype, queries) {
-    const persistWarmedUpQueries = this.getPersistedWarmedUpQueries()
+    const persistWarmedUpQueries = localStorage.getPersistedWarmedUpQueries()
     return queries.every(
       query =>
         persistWarmedUpQueries[doctype] &&
@@ -381,17 +324,9 @@ class PouchManager {
     )
   }
 
-  getPersistedWarmedUpQueries() {
-    const item = window.localStorage.getItem(LOCALSTORAGE_WARMUPEDQUERIES_KEY)
-    if (!item) {
-      return {}
-    }
-    return JSON.parse(item)
-  }
-
   clearWarmedUpQueries() {
     this.warmedUpQueries = {}
-    window.localStorage.removeItem(LOCALSTORAGE_WARMUPEDQUERIES_KEY)
+    localStorage.destroyWarmedUpQueries()
   }
 }
 
