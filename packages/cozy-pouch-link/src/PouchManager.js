@@ -41,7 +41,6 @@ class PouchManager {
         new PouchDB(this.getDatabaseName(doctype), pouchOptions)
       ])
     )
-    window.pouch = this.pouches
     this.syncedDoctypes = localStorage.getPersistedSyncedDoctypes()
     this.warmedUpQueries = localStorage.getPersistedWarmedUpQueries()
     this.getReplicationURL = options.getReplicationURL

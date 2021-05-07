@@ -45,7 +45,6 @@ export const startReplication = (
   replicationOptions,
   getReplicationURL
 ) => {
-  console.debug('start replication begin')
   let replication
   let docs = {}
   const start = new Date()
