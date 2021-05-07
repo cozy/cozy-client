@@ -4,12 +4,8 @@
 // See https://github.com/cozy/cozy-client/pull/239 for example
 // on how to use fake timers with setTimeout created in promises.
 
-import PouchManager, {
-  LOCALSTORAGE_SYNCED_KEY,
-  LOCALSTORAGE_WARMUPEDQUERIES_KEY
-} from './PouchManager'
+import PouchManager from './PouchManager'
 import * as mocks from './__tests__/mocks'
-
 import { Q } from 'cozy-client'
 
 import { isMobileApp } from 'cozy-device-helper'
@@ -22,8 +18,10 @@ jest.mock('./remote', () => ({
 }))
 
 import * as rep from './startReplication'
-
 import PouchDB from 'pouchdb-browser'
+import * as ls from './localStorage'
+
+import { fetchRemoteLastSequence, fetchRemoteInstance } from './remote'
 
 const sleep = delay => {
   return new Promise(resolve => {
@@ -249,28 +247,20 @@ describe('PouchManager', () => {
 
   describe('getPersistedSyncedDoctypes', () => {
     it('Should return an empty array if local storage is empty', () => {
-      const manager = new PouchManager(['io.cozy.todos'], managerOptions)
-
-      expect(manager.getPersistedSyncedDoctypes()).toEqual([])
+      expect(ls.getPersistedSyncedDoctypes()).toEqual([])
     })
 
     it('Should return an empty array if local storage contains something that is not an array', () => {
-      localStorage.__STORE__[LOCALSTORAGE_SYNCED_KEY] = 'true'
-      const manager = new PouchManager(['io.cozy.todos'], managerOptions)
-
-      expect(manager.getPersistedSyncedDoctypes()).toEqual([])
+      localStorage.__STORE__[ls.LOCALSTORAGE_SYNCED_KEY] = 'true'
+      expect(ls.getPersistedSyncedDoctypes()).toEqual([])
     })
 
     it('Should return the list of doctypes if local storage contains one', () => {
       const persistedSyncedDoctypes = ['io.cozy.todos']
-      localStorage.__STORE__[LOCALSTORAGE_SYNCED_KEY] = JSON.stringify(
+      localStorage.__STORE__[ls.LOCALSTORAGE_SYNCED_KEY] = JSON.stringify(
         persistedSyncedDoctypes
       )
-      const manager = new PouchManager(['io.cozy.todos'], managerOptions)
-
-      expect(manager.getPersistedSyncedDoctypes()).toEqual(
-        persistedSyncedDoctypes
-      )
+      expect(ls.getPersistedSyncedDoctypes()).toEqual(persistedSyncedDoctypes)
     })
   })
 
@@ -278,9 +268,9 @@ describe('PouchManager', () => {
     it('Should put the list of synced doctypes in localStorage', () => {
       const manager = new PouchManager(['io.cozy.todos'], managerOptions)
       manager.syncedDoctypes = ['io.cozy.todos']
-      manager.persistSyncedDoctypes()
+      ls.persistSyncedDoctypes(manager.syncedDoctypes)
 
-      expect(localStorage.__STORE__[LOCALSTORAGE_SYNCED_KEY]).toEqual(
+      expect(localStorage.__STORE__[ls.LOCALSTORAGE_SYNCED_KEY]).toEqual(
         JSON.stringify(manager.syncedDoctypes)
       )
     })
@@ -296,10 +286,10 @@ describe('PouchManager', () => {
 
     it('Should persist the new synced doctypes list', () => {
       const manager = new PouchManager(['io.cozy.todos'], managerOptions)
-      manager.persistSyncedDoctypes = jest.fn()
       manager.addSyncedDoctype('io.cozy.todos')
-
-      expect(manager.persistSyncedDoctypes).toHaveBeenCalledTimes(1)
+      expect(localStorage.__STORE__[ls.LOCALSTORAGE_SYNCED_KEY]).toEqual(
+        JSON.stringify(['io.cozy.todos'])
+      )
     })
   })
 
@@ -323,34 +313,30 @@ describe('PouchManager', () => {
 
   describe('destroySyncedDoctypes', () => {
     it('Should destroy the local storage item', () => {
-      manager.destroySyncedDoctypes()
+      ls.destroySyncedDoctypes()
 
       expect(localStorage.removeItem).toHaveBeenLastCalledWith(
-        LOCALSTORAGE_SYNCED_KEY
+        ls.LOCALSTORAGE_SYNCED_KEY
       )
     })
     it('Should reset syncedDoctypes', () => {
       manager.syncedDoctypes = ['io.cozy.todos']
-      manager.destroySyncedDoctypes()
+      manager.clearSyncedDoctypes()
       expect(manager.syncedDoctypes).toEqual([])
     })
   })
 
   describe('getPersistedWarmedUpQueriess', () => {
     it('Should return an empty object if local storage is empty', () => {
-      const manager = new PouchManager(['io.cozy.todos'], managerOptions)
-
-      expect(manager.getPersistedWarmedUpQueries()).toEqual({})
+      expect(ls.getPersistedWarmedUpQueries()).toEqual({})
     })
 
     it('Should return the list of queries if local storage contains ones', () => {
       const persistedQueries = [query().options.as]
-      localStorage.__STORE__[LOCALSTORAGE_WARMUPEDQUERIES_KEY] = JSON.stringify(
-        persistedQueries
-      )
-      const manager = new PouchManager(['io.cozy.todos'], managerOptions)
-
-      expect(manager.getPersistedWarmedUpQueries()).toEqual(persistedQueries)
+      localStorage.__STORE__[
+        ls.LOCALSTORAGE_WARMUPEDQUERIES_KEY
+      ] = JSON.stringify(persistedQueries)
+      expect(ls.getPersistedWarmedUpQueries()).toEqual(persistedQueries)
     })
   })
 
@@ -358,11 +344,11 @@ describe('PouchManager', () => {
     it('Should put the list of warmedUpQueries in localStorage', () => {
       const manager = new PouchManager(['io.cozy.todos'], managerOptions)
       manager.warmedUpQueries = { 'io.cozy.todos': ['query1', 'query2'] }
-      manager.persistWarmedUpQueries()
+      ls.persistWarmedUpQueries(manager.warmedUpQueries)
 
-      expect(localStorage.__STORE__[LOCALSTORAGE_WARMUPEDQUERIES_KEY]).toEqual(
-        JSON.stringify(manager.warmedUpQueries)
-      )
+      expect(
+        localStorage.__STORE__[ls.LOCALSTORAGE_WARMUPEDQUERIES_KEY]
+      ).toEqual(JSON.stringify(manager.warmedUpQueries))
     })
   })
 
@@ -377,7 +363,7 @@ describe('PouchManager', () => {
       manager.warmedUpQueries = {
         'io.cozy.todos': [query1().options.as, query2().options.as]
       }
-      manager.persistWarmedUpQueries()
+      ls.persistWarmedUpQueries(manager.warmedUpQueries)
 
       expect(
         manager.areQueriesWarmedUp('io.cozy.todos', [query1(), query2()])
@@ -388,7 +374,7 @@ describe('PouchManager', () => {
       manager.warmedUpQueries = {
         'io.cozy.todos': [query2().options.as]
       }
-      manager.persistWarmedUpQueries()
+      ls.persistWarmedUpQueries()
 
       expect(
         manager.areQueriesWarmedUp('io.cozy.todos', [query1(), query2()])
@@ -407,7 +393,7 @@ describe('PouchManager', () => {
       manager.clearWarmedUpQueries()
 
       expect(localStorage.removeItem).toHaveBeenLastCalledWith(
-        LOCALSTORAGE_WARMUPEDQUERIES_KEY
+        ls.LOCALSTORAGE_WARMUPEDQUERIES_KEY
       )
     })
     it('Should reset warmedupQueries', () => {
@@ -525,7 +511,7 @@ describe('PouchManager', () => {
           .definition()
           .toDefinition()
       )
-      expect(manager.getPersistedWarmedUpQueries()).toEqual({
+      expect(ls.getPersistedWarmedUpQueries()).toEqual({
         'io.cozy.todos': ['query1', 'query2']
       })
       //Simulation of a loop. Let's replicate again
@@ -542,7 +528,7 @@ describe('PouchManager', () => {
 
       await manager.replicateOnce()
       await sleep(10)
-      expect(manager.getPersistedWarmedUpQueries()).toEqual({})
+      expect(ls.getPersistedWarmedUpQueries()).toEqual({})
       expect(manager.warmedUpQueries['io.cozy.todos']).toBeUndefined()
     })
   })

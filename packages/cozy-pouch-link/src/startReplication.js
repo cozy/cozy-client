@@ -31,6 +31,7 @@ const TIME_UNITS = [['ms', 1000], ['s', 60], ['m', 60], ['h', 24]]
  * @param {object} pouch                 Pouch database instance
  * @param {object} replicationOptions Any option supported by the Pouch replication API (https://pouchdb.com/api.html#replication)
  * @param {string} replicationOptions.strategy The direction of the replication. Can be "fromRemote",  "toRemote" or "sync"
+ * @param {boolean} replicationOptions.initialReplication Whether or not this is an initial replication
  * @param {Function} getReplicationURL A function that should return the remote replication URL
  *
  * @returns {Promise} A cancelable promise that resolves at the end of the replication
@@ -63,6 +64,14 @@ export const startReplication = (
         // as it avoids to replicate all revs history, which can lead to
         // performances issues
         docs = await replicateAllDocs(pouch, url)
+        const end = new Date()
+        if (process.env.NODE_ENV !== 'production') {
+          logger.info(
+            `PouchManager: initial replication with all_docs for ${url} took ${humanTimeDelta(
+              end - start
+            )}`
+          )
+        }
         return resolve(docs)
       })()
     }
