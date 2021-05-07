@@ -57,4 +57,8 @@ helpers.isDesignDocument = doc => startsWith(doc._id, '_design')
 
 helpers.isDeletedDocument = doc => doc._deleted
 
+helpers.insertBulkDocs = async (db, docs) => {
+  return db.bulkDocs(docs, { new_edits: false })
+}
+
 export default helpers

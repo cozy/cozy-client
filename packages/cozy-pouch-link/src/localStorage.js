@@ -11,7 +11,6 @@ export const persistLastReplicatedDocID = id => {
 }
 
 export const getLastReplicatedDocID = () => {
-  console.log('enter get last')
   return window.localStorage.getItem(LOCALSTORAGE_LASTREPLICATEDDOCID_KEY)
 }
 
