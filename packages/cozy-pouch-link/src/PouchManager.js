@@ -204,10 +204,6 @@ class PouchManager {
         localStorage.destroyDoctypeLastSequence(doctype)
       }
 
-      console.log(
-        'PouchManager: Replication for ' + doctype + ' ended with: ',
-        res.length
-      )
       this.addSyncedDoctype(doctype)
       this.checkToWarmupDoctype(doctype, replicationOptions)
       return res

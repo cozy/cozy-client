@@ -2,6 +2,10 @@ import { default as helpers } from './helpers'
 import startsWith from 'lodash/startsWith'
 import logger from './logger'
 import { fetchRemoteInstance } from './remote'
+import {
+  getLastReplicatedDocID,
+  persistLastReplicatedDocID
+} from './localStorage'
 const { isDesignDocument, isDeletedDocument } = helpers
 
 const BATCH_SIZE = 1000 // we have mostly small documents
@@ -98,7 +102,7 @@ export const startReplication = (
           })
       }
     })
-    replication.on('error', reject).on('complete', infos => {
+    replication.on('error', reject).on('complete', () => {
       const end = new Date()
       if (process.env.NODE_ENV !== 'production') {
         logger.info(
@@ -120,24 +124,34 @@ export const startReplication = (
   promise.cancel = cancel
   return promise
 }
-
 const filterDocs = docs => {
   return docs
     .map(doc => doc.doc)
     .filter(doc => !doc._deleted && !startsWith(doc._id, '_design'))
 }
 
+/**
+ * Replicate all docs locally from a remote URL.
+ *
+ * It uses the _all_docs view, and bulk insert the docs.
+ * Note it saves the last replicated _id for each run and
+ * starts from there in case the process stops before the end.
+ *
+ * @param {object} db - Pouch instance
+ * @param {string} baseUrl - The remote instance
+ * @returns {Array} The retrieved documents
+ */
 export const replicateAllDocs = async (db, baseUrl) => {
-  const remoteUrl = new URL(`${baseUrl}/_all_docs`)
+  const remoteUrlAllDocs = new URL(`${baseUrl}/_all_docs`)
   const batchSize = BATCH_SIZE
   let hasMore = true
-  let startDocId
-  let docs
+  let startDocId = getLastReplicatedDocID() // Get last replicated _id in localStorage
+  let docs = []
 
   while (hasMore) {
     if (!startDocId) {
-      // first run
-      const res = await fetchRemoteInstance(remoteUrl, {
+      // No startDocId set: this is the first time we replicate
+      const res = await fetchRemoteInstance(remoteUrlAllDocs, {
         limit: batchSize,
         include_docs: true
       })
@@ -149,10 +163,11 @@ export const replicateAllDocs = async (db, baseUrl) => {
         if (docs.length < batchSize) {
           hasMore = false
         }
-        await insertDocsBatch(db, docs)
+        await helpers.insertBulkDocs(db, docs)
+        persistLastReplicatedDocID(startDocId)
       }
     } else {
-      const res = await fetchRemoteInstance(remoteUrl, {
+      const res = await fetchRemoteInstance(remoteUrlAllDocs, {
         include_docs: true,
         limit: batchSize,
         startkey_docid: startDocId
@@ -163,16 +178,14 @@ export const replicateAllDocs = async (db, baseUrl) => {
       }
       filteredDocs.shift() // Remove first element, already included in previous request
       startDocId = filteredDocs[filteredDocs.length - 1]._id
-      await insertDocsBatch(db, filteredDocs)
+      await helpers.insertBulkDocs(db, filteredDocs)
+      persistLastReplicatedDocID(startDocId)
       docs = docs.concat(filteredDocs)
+
       if (res.rows.length < batchSize) {
         hasMore = false
       }
     }
   }
   return docs
-}
-
-const insertDocsBatch = async (db, docs) => {
-  return db.bulkDocs(docs, { new_edits: false })
 }
