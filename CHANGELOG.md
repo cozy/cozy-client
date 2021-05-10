@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [23.1.0](https://github.com/cozy/cozy-client/compare/v23.0.0...v23.1.0) (2021-05-10)
+
+
+### Features
+
+* Add useAppsInMaintenance ([a3802f5](https://github.com/cozy/cozy-client/commit/a3802f5f3d43dd067e31f9d3b755627ef4cfdc9c))
+
+
+
+
+
 # [23.0.0](https://github.com/cozy/cozy-client/compare/v22.3.0...v23.0.0) (2021-04-22)
 
 
