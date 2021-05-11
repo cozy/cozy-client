@@ -29,6 +29,45 @@ and on demand immediately.</p>
 ## Constants
 
 <dl>
+<dt><a href="#persistLastReplicatedDocID">persistLastReplicatedDocID</a></dt>
+<dd><p>Persist the last replicated doc id for a doctype</p>
+</dd>
+<dt><a href="#getLastReplicatedDocID">getLastReplicatedDocID</a> ⇒ <code>string</code></dt>
+<dd><p>Get the last replicated doc id for a doctype</p>
+</dd>
+<dt><a href="#destroyAllLastReplicatedDocID">destroyAllLastReplicatedDocID</a></dt>
+<dd><p>Destroy all the replicated doc id</p>
+</dd>
+<dt><a href="#persistSyncedDoctypes">persistSyncedDoctypes</a></dt>
+<dd><p>Persist the synchronized doctypes</p>
+</dd>
+<dt><a href="#getPersistedSyncedDoctypes">getPersistedSyncedDoctypes</a> ⇒ <code>object</code></dt>
+<dd><p>Get the persisted doctypes</p>
+</dd>
+<dt><a href="#destroySyncedDoctypes">destroySyncedDoctypes</a></dt>
+<dd><p>Destroy the synced doctypes</p>
+</dd>
+<dt><a href="#persistDoctypeLastSequence">persistDoctypeLastSequence</a></dt>
+<dd><p>Persist the last CouchDB sequence for a synced doctype</p>
+</dd>
+<dt><a href="#getDoctypeLastSequence">getDoctypeLastSequence</a> ⇒ <code>string</code></dt>
+<dd><p>Get the last CouchDB sequence for a doctype</p>
+</dd>
+<dt><a href="#destroyAllDoctypeLastSequence">destroyAllDoctypeLastSequence</a></dt>
+<dd><p>Destroy all the last sequence</p>
+</dd>
+<dt><a href="#destroyDoctypeLastSequence">destroyDoctypeLastSequence</a></dt>
+<dd><p>Destroy the last sequence for a doctype</p>
+</dd>
+<dt><a href="#persistWarmedUpQueries">persistWarmedUpQueries</a></dt>
+<dd><p>Persist the warmed up queries</p>
+</dd>
+<dt><a href="#getPersistedWarmedUpQueries">getPersistedWarmedUpQueries</a> ⇒ <code>object</code></dt>
+<dd><p>Get the warmed up queries</p>
+</dd>
+<dt><a href="#destroyWarmedUpQueries">destroyWarmedUpQueries</a></dt>
+<dd><p>Destroy the warmed queries</p>
+</dd>
 <dt><a href="#fetchRemoteInstance">fetchRemoteInstance</a> ⇒ <code>object</code></dt>
 <dd><p>Fetch remote instance</p>
 </dd>
@@ -246,6 +285,125 @@ immediately
 Starts replication
 
 **Kind**: instance method of [<code>PouchManager</code>](#PouchManager)  
+<a name="persistLastReplicatedDocID"></a>
+
+## persistLastReplicatedDocID
+Persist the last replicated doc id for a doctype
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doctype | <code>string</code> | The replicated doctype |
+| id | <code>string</code> | The docid |
+
+<a name="getLastReplicatedDocID"></a>
+
+## getLastReplicatedDocID ⇒ <code>string</code>
+Get the last replicated doc id for a doctype
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - The last replicated docid  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doctype | <code>string</code> | The doctype |
+
+<a name="destroyAllLastReplicatedDocID"></a>
+
+## destroyAllLastReplicatedDocID
+Destroy all the replicated doc id
+
+**Kind**: global constant  
+<a name="persistSyncedDoctypes"></a>
+
+## persistSyncedDoctypes
+Persist the synchronized doctypes
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| syncedDoctypes | <code>object</code> | The sync doctypes |
+
+<a name="getPersistedSyncedDoctypes"></a>
+
+## getPersistedSyncedDoctypes ⇒ <code>object</code>
+Get the persisted doctypes
+
+**Kind**: global constant  
+**Returns**: <code>object</code> - The synced doctypes  
+<a name="destroySyncedDoctypes"></a>
+
+## destroySyncedDoctypes
+Destroy the synced doctypes
+
+**Kind**: global constant  
+<a name="persistDoctypeLastSequence"></a>
+
+## persistDoctypeLastSequence
+Persist the last CouchDB sequence for a synced doctype
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doctype | <code>string</code> | The synced doctype |
+| sequence | <code>string</code> | The sequence hash |
+
+<a name="getDoctypeLastSequence"></a>
+
+## getDoctypeLastSequence ⇒ <code>string</code>
+Get the last CouchDB sequence for a doctype
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - the last sequence  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doctype | <code>string</code> | The doctype |
+
+<a name="destroyAllDoctypeLastSequence"></a>
+
+## destroyAllDoctypeLastSequence
+Destroy all the last sequence
+
+**Kind**: global constant  
+<a name="destroyDoctypeLastSequence"></a>
+
+## destroyDoctypeLastSequence
+Destroy the last sequence for a doctype
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doctype | <code>string</code> | The doctype |
+
+<a name="persistWarmedUpQueries"></a>
+
+## persistWarmedUpQueries
+Persist the warmed up queries
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| warmedUpQueries | <code>object</code> | The warmedup queries |
+
+<a name="getPersistedWarmedUpQueries"></a>
+
+## getPersistedWarmedUpQueries ⇒ <code>object</code>
+Get the warmed up queries
+
+**Kind**: global constant  
+**Returns**: <code>object</code> - the warmed up queries  
+<a name="destroyWarmedUpQueries"></a>
+
+## destroyWarmedUpQueries
+Destroy the warmed queries
+
+**Kind**: global constant  
 <a name="fetchRemoteInstance"></a>
 
 ## fetchRemoteInstance ⇒ <code>object</code>
@@ -287,6 +445,7 @@ starts from there in case the process stops before the end.
 | --- | --- | --- |
 | db | <code>object</code> | Pouch instance |
 | baseUrl | <code>string</code> | The remote instance |
+| doctype | <code>string</code> | The doctype to replicate |
 
 <a name="getQueryAlias"></a>
 
