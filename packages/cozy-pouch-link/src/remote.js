@@ -1,3 +1,5 @@
+import AccessToken from './AccessToken'
+
 /**
  * Fetch remote instance
  *
@@ -6,8 +8,7 @@
  * @returns {object} The instance response
  */
 export const fetchRemoteInstance = async (url, params = {}) => {
-  const username = url.username
-  const password = url.password
+  const access = new AccessToken({ accessToken: url.password })
 
   Object.keys(params).forEach(key => {
     url.searchParams.set(key, params[key])
@@ -18,7 +19,7 @@ export const fetchRemoteInstance = async (url, params = {}) => {
   const headers = new Headers()
   headers.append('Accept', 'application/json')
   headers.append('Content-Type', 'application/json')
-  headers.append('Authorization', 'Basic ' + btoa(username + ':' + password))
+  headers.append('Authorization', access.toAuthHeader())
   const resp = await fetch(fetchUrl, { headers })
   const data = await resp.json()
   if (resp.ok) {
