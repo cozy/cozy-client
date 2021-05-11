@@ -86,8 +86,8 @@ class PouchManager {
     this.removeListeners()
     this.clearSyncedDoctypes()
     this.clearWarmedUpQueries()
-    localStorage.destroyDoctypeLastSequence()
-    localStorage.destroyLastReplicatedDocID()
+    localStorage.destroyAllDoctypeLastSequence()
+    localStorage.destroyAllLastReplicatedDocID()
 
     return Promise.all(
       Object.values(this.pouches).map(pouch => pouch.destroy())
@@ -191,6 +191,7 @@ class PouchManager {
       replicationOptions.initialReplication = initialReplication
       replicationOptions.filter = replicationFilter
       replicationOptions.since = seq
+      replicationOptions.doctype = doctype
 
       const res = await startReplication(
         pouch,

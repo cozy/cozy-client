@@ -36,6 +36,7 @@ const TIME_UNITS = [['ms', 1000], ['s', 60], ['m', 60], ['h', 24]]
  * @param {object} replicationOptions Any option supported by the Pouch replication API (https://pouchdb.com/api.html#replication)
  * @param {string} replicationOptions.strategy The direction of the replication. Can be "fromRemote",  "toRemote" or "sync"
  * @param {boolean} replicationOptions.initialReplication Whether or not this is an initial replication
+ * @param {string} replicationOptions.doctype The doctype to replicate
  * @param {Function} getReplicationURL A function that should return the remote replication URL
  *
  * @returns {Promise} A cancelable promise that resolves at the end of the replication
@@ -54,6 +55,7 @@ export const startReplication = (
       strategy,
       initialReplication,
       warmupQueries,
+      doctype,
       ...customReplicationOptions
     } = replicationOptions
     const options = {
@@ -66,7 +68,7 @@ export const startReplication = (
         // For the first remote->local replication, we manually replicate all docs
         // as it avoids to replicate all revs history, which can lead to
         // performances issues
-        docs = await replicateAllDocs(pouch, url)
+        docs = await replicateAllDocs(pouch, url, doctype)
         const end = new Date()
         if (process.env.NODE_ENV !== 'production') {
           logger.info(
@@ -138,13 +140,14 @@ const filterDocs = docs => {
  *
  * @param {object} db - Pouch instance
  * @param {string} baseUrl - The remote instance
+ * @param {string} doctype - The doctype to replicate
  * @returns {Array} The retrieved documents
  */
-export const replicateAllDocs = async (db, baseUrl) => {
+export const replicateAllDocs = async (db, baseUrl, doctype) => {
   const remoteUrlAllDocs = new URL(`${baseUrl}/_all_docs`)
   const batchSize = BATCH_SIZE
   let hasMore = true
-  let startDocId = getLastReplicatedDocID() // Get last replicated _id in localStorage
+  let startDocId = getLastReplicatedDocID(doctype) // Get last replicated _id in localStorage
   let docs = []
 
   while (hasMore) {
@@ -163,7 +166,7 @@ export const replicateAllDocs = async (db, baseUrl) => {
           hasMore = false
         }
         await helpers.insertBulkDocs(db, docs)
-        persistLastReplicatedDocID(startDocId)
+        persistLastReplicatedDocID(doctype, startDocId)
       }
     } else {
       const res = await fetchRemoteInstance(remoteUrlAllDocs, {
@@ -178,7 +181,7 @@ export const replicateAllDocs = async (db, baseUrl) => {
       filteredDocs.shift() // Remove first element, already included in previous request
       startDocId = filteredDocs[filteredDocs.length - 1]._id
       await helpers.insertBulkDocs(db, filteredDocs)
-      persistLastReplicatedDocID(startDocId)
+      persistLastReplicatedDocID(doctype, startDocId)
       docs = docs.concat(filteredDocs)
 
       if (res.rows.length < batchSize) {
