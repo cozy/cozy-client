@@ -6,15 +6,33 @@ export const LOCALSTORAGE_LASTSEQUENCES_KEY =
 export const LOCALSTORAGE_LASTREPLICATEDDOCID_KEY =
   'cozy-client-pouch-link-lastreplicateddocid'
 
-export const persistLastReplicatedDocID = id => {
-  window.localStorage.setItem(LOCALSTORAGE_LASTREPLICATEDDOCID_KEY, id)
+/**
+ * Persist the last replicated doc id
+ *
+ * @param {string} doctype - The replicated doctype
+ * @param {string} id - The docid
+ */
+export const persistLastReplicatedDocID = (doctype, id) => {
+  const docids = getAllLastReplicatedDocID()
+  docids[doctype] = id
+
+  window.localStorage.setItem(
+    LOCALSTORAGE_LASTREPLICATEDDOCID_KEY,
+    JSON.stringify(docids)
+  )
 }
 
-export const getLastReplicatedDocID = () => {
-  return window.localStorage.getItem(LOCALSTORAGE_LASTREPLICATEDDOCID_KEY)
+export const getAllLastReplicatedDocID = () => {
+  const item = window.localStorage.getItem(LOCALSTORAGE_LASTREPLICATEDDOCID_KEY)
+  return item ? JSON.parse(item) : {}
 }
 
-export const destroyLastReplicatedDocID = () => {
+export const getLastReplicatedDocID = doctype => {
+  const docids = getAllLastSequences()
+  return docids[doctype]
+}
+
+export const destroyAllLastReplicatedDocID = () => {
   window.localStorage.removeItem(LOCALSTORAGE_LASTREPLICATEDDOCID_KEY)
 }
 
@@ -58,6 +76,10 @@ export const getAllLastSequences = () => {
 export const getDoctypeLastSequence = doctype => {
   const seqs = getAllLastSequences()
   return seqs[doctype]
+}
+
+export const destroyAllDoctypeLastSequence = () => {
+  window.localStorage.removeItem(LOCALSTORAGE_LASTSEQUENCES_KEY)
 }
 
 export const destroyDoctypeLastSequence = doctype => {
