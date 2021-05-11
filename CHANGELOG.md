@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [23.1.2](https://github.com/cozy/cozy-client/compare/v23.1.1...v23.1.2) (2021-05-11)
+
+
+### Bug Fixes
+
+* Add missing export to useAppsInMaintenance ([6cdeb12](https://github.com/cozy/cozy-client/commit/6cdeb12dbc17569855a62d1e90ec8ea9da2235bb))
+
+
+
+
+
 ## [23.1.1](https://github.com/cozy/cozy-client/compare/v23.1.0...v23.1.1) (2021-05-11)
 
 **Note:** Version bump only for package cozy-client
