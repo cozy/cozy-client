@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [23.2.0](https://github.com/cozy/cozy-client/compare/v23.1.2...v23.2.0) (2021-05-12)
+
+
+### Bug Fixes
+
+* Persist last replicated docid per doctype ([a808320](https://github.com/cozy/cozy-client/commit/a808320d962ab5a69bb67adbba2bf587e110aad9))
+
+
+### Features
+
+* Initiate replication with _all_docs + bulk insert ([decaeb7](https://github.com/cozy/cozy-client/commit/decaeb7f74a2b14ac5581aedb2b2cbed9858aec8))
+* Save last document _id when replicating with all_docs ([4434120](https://github.com/cozy/cozy-client/commit/4434120ad62f4014cb41e5fac5fb444af3608313))
+* Upgrade pouchdb-find to benefit from indexeddb ([1bdd848](https://github.com/cozy/cozy-client/commit/1bdd8483ceb2d9c8fdf6e3d45e54f73a5c98fdd7))
+
+
+
+
+
 ## [23.1.2](https://github.com/cozy/cozy-client/compare/v23.1.1...v23.1.2) (2021-05-11)
 
 **Note:** Version bump only for package cozy-pouch-link
