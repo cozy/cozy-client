@@ -63,22 +63,22 @@ export type MutationOptions = {
  */
 export type CozyClientDocument = {
     /**
-     * - Id of the folder
+     * - Id of the document
      */
     _id?: string;
     /**
-     * - Id of the folder
+     * - Type of the document
      */
     _type?: string;
     /**
-     * - Id of the folder
+     * - Relationships of the document
      */
-    relationships?: string;
+    relationships?: object;
 };
 /**
  * - An io.cozy.files document
  */
-export type IOCozyFile = {
+export type FileDocument = {
     /**
      * - Id of the file
      */
@@ -103,7 +103,11 @@ export type IOCozyFile = {
 /**
  * - An io.cozy.files document
  */
-export type IOCozyFolder = {
+export type IOCozyFile = CozyClientDocument & FileDocument;
+/**
+ * - An io.cozy.files document
+ */
+export type FolderDocument = {
     /**
      * - Id of the folder
      */
@@ -121,6 +125,10 @@ export type IOCozyFolder = {
      */
     type: object;
 };
+/**
+ * - An io.cozy.files document
+ */
+export type IOCozyFolder = CozyClientDocument & FileDocument;
 export type ClientError = {
     status?: string;
 };
