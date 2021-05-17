@@ -18,8 +18,8 @@ import {
   attachRelationships
 } from './associations/helpers'
 import { dehydrate } from './helpers'
-import { QueryDefinition, Mutations, Q } from './queries/dsl'
-import { authenticateWithCordova } from './authentication/mobile'
+import { QueryDefinition, Mutations, Q, isAGetByIdQuery } from './queries/dsl'
+import { authFunction } from './authentication/mobile'
 import optimizeQueryDefinitions from './queries/optimize'
 import {
   default as reducer,
@@ -1240,7 +1240,8 @@ client.query(Q('io.cozy.bills'))`)
   }
 
   /**
-   * Performs a complete OAuth flow using a Cordova webview for auth.
+   * Performs a complete OAuth flow using a Cordova webview
+   * or React Native WebView for auth.
    * The `register` method's name has been chosen for compat reasons with the Authentication compo.
    *
    * @param   {string} cozyURL Receives the URL of the cozy instance.
@@ -1249,7 +1250,11 @@ client.query(Q('io.cozy.bills'))`)
   register(cozyURL) {
     const stackClient = this.getStackClient()
     stackClient.setUri(cozyURL)
-    return this.startOAuthFlow(authenticateWithCordova)
+    return this.startOAuthFlow(authFunction)
+  }
+
+  isReactNative() {
+    return typeof navigator != 'undefined' && navigator.product == 'ReactNative'
   }
 
   /**
@@ -1296,7 +1301,7 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {object}   Contains the fetched token and the client information.
    */
   renewAuthorization() {
-    return this.authorize(authenticateWithCordova)
+    return this.authorize(authFunction)
   }
 
   /**

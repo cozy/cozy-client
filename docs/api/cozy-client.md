@@ -1473,7 +1473,8 @@ Get a query from the internal store.
 <a name="CozyClient+register"></a>
 
 ### cozyClient.register(cozyURL) ⇒ <code>object</code>
-Performs a complete OAuth flow using a Cordova webview for auth.
+Performs a complete OAuth flow using a Cordova webview
+or React Native WebView for auth.
 The `register` method's name has been chosen for compat reasons with the Authentication compo.
 
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
