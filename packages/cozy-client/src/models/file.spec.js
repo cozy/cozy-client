@@ -32,7 +32,7 @@ describe('File Model', () => {
     expect(file.isNote(note2)).toBe(true)
   })
 
-  it('test if a file is a shortcut or not', () => {
+  it('should test if a file is a shortcut or not', () => {
     const shortcut = {
       type: 'file',
       class: 'shortcut'
@@ -45,6 +45,87 @@ describe('File Model', () => {
 
     expect(file.isShortcut(shortcut)).toBe(true)
     expect(file.isShortcut(image)).toBe(false)
+  })
+
+  it('should test if a file is an onlyoffice file or not', () => {
+    const directory = {
+      type: 'directory'
+    }
+
+    const shortcut = {
+      type: 'file',
+      class: 'shortcut'
+    }
+
+    const image = {
+      type: 'file',
+      class: 'image'
+    }
+
+    const note = {
+      type: 'file',
+      name: 'test.cozy-note',
+      metadata: {
+        content: 'content',
+        schema: [],
+        title: 'title',
+        version: 1
+      }
+    }
+
+    const text = {
+      type: 'file',
+      class: 'text'
+    }
+
+    const slide = {
+      type: 'file',
+      class: 'slide'
+    }
+
+    const spreadsheet = {
+      type: 'file',
+      class: 'spreadsheet'
+    }
+
+    expect(file.isOnlyOfficeFile(text)).toBe(true)
+    expect(file.isOnlyOfficeFile(slide)).toBe(true)
+    expect(file.isOnlyOfficeFile(spreadsheet)).toBe(true)
+    expect(file.isOnlyOfficeFile(directory)).toBe(false)
+    expect(file.isOnlyOfficeFile(shortcut)).toBe(false)
+    expect(file.isOnlyOfficeFile(image)).toBe(false)
+    expect(file.isOnlyOfficeFile(note)).toBe(false)
+  })
+
+  it('should test if a file should be opened by only office', () => {
+    const docxFile = {
+      type: 'file',
+      class: 'text',
+      name: 'test.docx'
+    }
+
+    const txtFile = { ...docxFile, name: 'test.txt' }
+
+    const mdFile = { ...docxFile, name: 'test.md' }
+
+    expect(file.shouldBeOpenedByOnlyOffice(docxFile)).toBe(true)
+    expect(file.shouldBeOpenedByOnlyOffice(txtFile)).toBe(false)
+    expect(file.shouldBeOpenedByOnlyOffice(mdFile)).toBe(false)
+  })
+
+  it('should test if a file has a specific metadata', () => {
+    const doc = {
+      metadata: {
+        carbonCopy: true
+      }
+    }
+
+    expect(
+      file.hasMetadataAttribute({ file: doc, attribute: 'carbonCopy' })
+    ).toBe(true)
+    expect(
+      file.hasMetadataAttribute({ file: doc, attribute: 'electronicSafe' })
+    ).toBe(false)
   })
 
   describe('normalizeFile', () => {

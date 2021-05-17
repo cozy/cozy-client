@@ -174,6 +174,14 @@ example.</p>
 <dd></dd>
 <dt><a href="#isNote">isNote</a></dt>
 <dd></dd>
+<dt><a href="#isOnlyOfficeFile">isOnlyOfficeFile</a> ⇒ <code>boolean</code></dt>
+<dd><p>Whether the file is supported by Only Office</p>
+</dd>
+<dt><a href="#shouldBeOpenedByOnlyOffice">shouldBeOpenedByOnlyOffice</a> ⇒ <code>boolean</code></dt>
+<dd><p>Whether the file should be opened by only office
+We want to be consistent with the stack so we check the class attributes
+But we want to exclude .txt and .md because the CozyUI Viewer can already show them</p>
+</dd>
 <dt><a href="#isShortcut">isShortcut</a> ⇒ <code>boolean</code></dt>
 <dd></dd>
 <dt><a href="#getSharingShortcutStatus">getSharingShortcutStatus</a> ⇒ <code>string</code></dt>
@@ -202,6 +210,12 @@ example.</p>
 </dd>
 <dt><a href="#fetchFilesByQualificationRules">fetchFilesByQualificationRules</a> ⇒ <code>Promise.&lt;QueryResult&gt;</code></dt>
 <dd><p>Helper to query files based on qualification rules</p>
+</dd>
+<dt><a href="#isReferencedByAlbum">isReferencedByAlbum</a> ⇒ <code>boolean</code></dt>
+<dd><p>Whether the file is referenced by an album</p>
+</dd>
+<dt><a href="#hasMetadataAttribute">hasMetadataAttribute</a> ⇒ <code>boolean</code></dt>
+<dd><p>Whether the file&#39;s metadata attribute exists</p>
 </dd>
 <dt><a href="#ensureMagicFolder">ensureMagicFolder</a> ⇒ <code><a href="#IOCozyFolder">Promise.&lt;IOCozyFolder&gt;</a></code></dt>
 <dd><p>Returns a &quot;Magic Folder&quot;, given its id. See <a href="https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.apps/#special-iocozyapps-doctypes">https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.apps/#special-iocozyapps-doctypes</a></p>
@@ -2337,6 +2351,30 @@ Returns base filename and extension
 | --- | --- | --- |
 | file | [<code>IOCozyFile</code>](#IOCozyFile) | io.cozy.files |
 
+<a name="isOnlyOfficeFile"></a>
+
+## isOnlyOfficeFile ⇒ <code>boolean</code>
+Whether the file is supported by Only Office
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | [<code>IOCozyFile</code>](#IOCozyFile) | io.cozy.file document |
+
+<a name="shouldBeOpenedByOnlyOffice"></a>
+
+## shouldBeOpenedByOnlyOffice ⇒ <code>boolean</code>
+Whether the file should be opened by only office
+We want to be consistent with the stack so we check the class attributes
+But we want to exclude .txt and .md because the CozyUI Viewer can already show them
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | [<code>IOCozyFile</code>](#IOCozyFile) | io.cozy.file document |
+
 <a name="isShortcut"></a>
 
 ## isShortcut ⇒ <code>boolean</code>
@@ -2457,6 +2495,30 @@ Helper to query files based on qualification rules
 | --- | --- | --- |
 | client | <code>object</code> | The CozyClient instance |
 | docRules | <code>object</code> | the rules containing the searched qualification and the count |
+
+<a name="isReferencedByAlbum"></a>
+
+## isReferencedByAlbum ⇒ <code>boolean</code>
+Whether the file is referenced by an album
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| file | [<code>IOCozyFile</code>](#IOCozyFile) | An io.cozy.files document |
+
+<a name="hasMetadataAttribute"></a>
+
+## hasMetadataAttribute ⇒ <code>boolean</code>
+Whether the file's metadata attribute exists
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>object</code> | Param |
+| params.file | [<code>IOCozyFile</code>](#IOCozyFile) | An io.cozy.files document |
+| params.attribute | <code>string</code> | Metadata attribute to check |
 
 <a name="ensureMagicFolder"></a>
 
@@ -3489,9 +3551,9 @@ A document
 
 | Name | Type | Description |
 | --- | --- | --- |
-| [_id] | <code>string</code> | Id of the folder |
-| [_type] | <code>string</code> | Id of the folder |
-| [relationships] | <code>string</code> | Id of the folder |
+| [_id] | <code>string</code> | Id of the document |
+| [_type] | <code>string</code> | Type of the document |
+| [relationships] | <code>object</code> | Relationships of the document |
 
 <a name="IOCozyFile"></a>
 
