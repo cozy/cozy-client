@@ -17,6 +17,14 @@ import { Linking } from 'react-native'
 // @ts-ignore
 const win = typeof window !== 'undefined' ? window : null
 
+/**
+ * Open a SafariView Controller
+ * and resolve with the URL containing
+ * the token
+ *
+ * @param {string} url
+ * @returns {Promise}
+ */
 const authenticateWithSafari = url => {
   return new Promise((resolve, reject) => {
     win.SafariViewController.show(
@@ -50,7 +58,14 @@ const authenticateWithSafari = url => {
     }
   })
 }
-
+/**
+ * Open an inAppBrowsr
+ * and resolve with the URL containing
+ * the token
+ *
+ * @param {string} url
+ * @returns {Promise}
+ */
 const authenticateWithInAppBrowser = url => {
   return new Promise((resolve, reject) => {
     const target = '_blank'
@@ -83,6 +98,15 @@ const authenticateWithInAppBrowser = url => {
     inAppBrowser.addEventListener('exit', onExit)
   })
 }
+
+/**
+ * Open a RactNative InAppBrowsr
+ * and resolve with the URL containing
+ * the token
+ *
+ * @param {string} url
+ * @returns {Promise}
+ */
 
 export const authenticateWithReactNativeInAppBrowser = url => {
   return new Promise((resolve, reject) => {
@@ -158,7 +182,10 @@ export const authenticateWithCordova = async url => {
 const isReactNative = () => {
   return typeof navigator != 'undefined' && navigator.product == 'ReactNative'
 }
-
+/**
+ * Return the method to use for
+ * authentication based on the
+ */
 export const authFunction = isReactNative()
   ? authenticateWithReactNativeInAppBrowser
   : authenticateWithCordova
