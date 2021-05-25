@@ -25,7 +25,7 @@ const RECEIVE_QUERY_ERROR = 'RECEIVE_QUERY_ERROR'
 // This is done at runtime to not read the value everytime
 // we receive a result. So you have to refresh your page
 // in order to get the stats
-const executionStatsEnabled = flag('perfs.execution_stats')
+const executionStatsEnabled = flag('debug')
 
 export const isQueryAction = action =>
   [INIT_QUERY, LOAD_QUERY, RECEIVE_QUERY_RESULT, RECEIVE_QUERY_ERROR].indexOf(

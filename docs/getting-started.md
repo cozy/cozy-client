@@ -114,11 +114,7 @@ to connect your components to cozy-client queries][react-integration].
 ℹ️ Check out our dedicated [query documentation](https://docs.cozy.io/en/tutorials/data/queries/) to 
 know more about querying with cozy-client and avoid common traps that can dramatically impact your app performances.
 
-🚀 Audit your queries performance by setting the `{ perfs.execution_stats: true }` flag ([how to set flag ?][cozy-flags]). It adds a log in the browser's
-development tools console for each query, providing insights such as the query execution time taken on the database or
-the number of  documents scanned. All the available stats are described [here](https://docs.couchdb.org/en/2.3.1/api/database/find.html#execution-statistics).
-
-See [cozy-flags][] to know how to set flags.
+🚀 Cozy-client's [devtool](./devtools.md) allows to monitor your queries data and performance.
 
 ## Mutate the data
 

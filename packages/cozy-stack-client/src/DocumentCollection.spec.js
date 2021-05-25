@@ -775,7 +775,7 @@ describe('DocumentCollection', () => {
 
     it('should set executions stats if flag is enabled', async () => {
       const collection = new DocumentCollection('io.cozy.todos', client)
-      flag('perfs.execution_stats', true)
+      flag('debug', true)
       await collection.find({ done: false })
       expect(client.fetchJSON).toHaveBeenLastCalledWith(
         'POST',

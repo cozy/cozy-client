@@ -460,7 +460,7 @@ class DocumentCollection {
       skip,
       bookmark: options.bookmark || bookmark,
       sort,
-      execution_stats: flag('perfs.execution_stats') ? true : undefined
+      execution_stats: flag('debug') ? true : undefined
     }
     return opts
   }
