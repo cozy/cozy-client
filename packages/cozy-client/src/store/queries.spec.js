@@ -5,7 +5,7 @@ import queries, {
   makeSorterFromDefinition,
   mergeSelectorAndPartialIndex
 } from './queries'
-import { QueryDefinition, Q } from '../queries/dsl'
+import { Q } from '../queries/dsl'
 import { TODO_1, TODO_2, TODO_3 } from '../__tests__/fixtures'
 
 describe('queries reducer', () => {
@@ -23,17 +23,13 @@ describe('queries reducer', () => {
   })
 
   it('should init correctly', () => {
-    const qdef = new QueryDefinition({
-      doctype: 'io.cozy.todos'
-    })
+    const qdef = Q('io.cozy.todos')
     applyAction(initQuery('a', qdef))
     expect(state).toMatchSnapshot()
   })
 
   test('init should have no effect after receiveQueryResult', () => {
-    const qdef = new QueryDefinition({
-      doctype: 'io.cozy.todos'
-    })
+    const qdef = Q('io.cozy.todos')
     applyAction(initQuery('a', qdef))
     applyAction(
       receiveQueryResult('a', {
@@ -46,9 +42,7 @@ describe('queries reducer', () => {
   })
 
   test('init should not set status to loading after receiveQueryResult', () => {
-    const qdef = new QueryDefinition({
-      doctype: 'io.cozy.todos'
-    })
+    const qdef = Q('io.cozy.todos')
     applyAction(initQuery('a', qdef))
     applyAction(
       receiveQueryResult('a', {
@@ -61,14 +55,7 @@ describe('queries reducer', () => {
 
   describe('updates', () => {
     beforeEach(() => {
-      applyAction(
-        initQuery(
-          'a',
-          new QueryDefinition({
-            doctype: 'io.cozy.todos'
-          })
-        )
-      )
+      applyAction(initQuery('a', Q('io.cozy.todos')))
     })
 
     it('should correctly update', () => {
@@ -88,14 +75,7 @@ describe('queries reducer', () => {
     })
 
     it('should correctly update two queries', () => {
-      applyAction(
-        initQuery(
-          'b',
-          new QueryDefinition({
-            doctype: 'io.cozy.todos'
-          })
-        )
-      )
+      applyAction(initQuery('b', Q('io.cozy.todos')))
       applyAction(
         receiveQueryResult('a', {
           data: [TODO_1, TODO_2]
@@ -105,9 +85,7 @@ describe('queries reducer', () => {
     })
 
     it('should correctly update a query with a selector', () => {
-      const query = new QueryDefinition({
-        doctype: 'io.cozy.todos'
-      })
+      const query = Q('io.cozy.todos')
       applyAction(initQuery('b', query.where({ done: true })))
       applyAction(
         receiveQueryResult('a', {
@@ -118,9 +96,7 @@ describe('queries reducer', () => {
     })
 
     it('should correctly update a query with several ids', () => {
-      const query = new QueryDefinition({
-        doctype: 'io.cozy.todos'
-      })
+      const query = Q('io.cozy.todos')
       applyAction(initQuery('b', query.getByIds([TODO_1._id, TODO_2._id])))
       applyAction(
         receiveQueryResult('b', {
@@ -137,9 +113,7 @@ describe('queries reducer', () => {
     })
 
     it('should correctly update a query with a $gt: null selector', () => {
-      const query = new QueryDefinition({
-        doctype: 'io.cozy.todos'
-      })
+      const query = Q('io.cozy.todos')
       applyAction(
         initQuery(
           'b',
@@ -160,9 +134,7 @@ describe('queries reducer', () => {
     })
 
     it('should not update a query not concerned even with a selector', () => {
-      const query = new QueryDefinition({
-        doctype: 'io.cozy.todos'
-      })
+      const query = Q('io.cozy.todos')
       applyAction(initQuery('b', query.where({ done: false })))
       applyAction(
         receiveQueryResult('a', {
@@ -173,10 +145,7 @@ describe('queries reducer', () => {
     })
 
     it('should not crash if data is null', () => {
-      const query = new QueryDefinition({
-        doctype: 'io.cozy.todos',
-        id: 'not-existing-doc'
-      })
+      const query = Q('io.cozy.todos').getById('not-existing-doc')
       applyAction(initQuery('b', query))
       applyAction(
         receiveQueryResult('b', {
@@ -187,10 +156,7 @@ describe('queries reducer', () => {
     })
 
     it('should only update queries with the right id selector', () => {
-      const query = new QueryDefinition({
-        doctype: 'io.cozy.todos',
-        id: TODO_3._id
-      })
+      const query = Q('io.cozy.todos').getById(TODO_3._id)
       applyAction(initQuery('b', query))
       applyAction(
         receiveQueryResult('a', {
