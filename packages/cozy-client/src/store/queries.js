@@ -192,11 +192,9 @@ const getQueryDocumentsChecker = query => {
   return datum => {
     const ddoctype = datum._type
     if (ddoctype !== qdoctype) return false
-    if (selectorFilterFn && !selectorFilterFn(datum)) {
-      return false
-    }
     if (datum._deleted) return false
-    return true
+    if (!selectorFilterFn) return true
+    return selectorFilterFn(datum)
   }
 }
 
