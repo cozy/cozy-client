@@ -36,7 +36,9 @@ const App = () => {
 #### Queries
 
 Shows current queries inside cozy-client cache. Allows to see the data of
-the query.
+the query. The execution time is also shown, and is very valuable to track
+down performance issues. It uses the execution statistics collected
+from CouchDB.
 
 #### Flags
 

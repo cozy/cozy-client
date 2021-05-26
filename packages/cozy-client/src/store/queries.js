@@ -25,7 +25,7 @@ const RECEIVE_QUERY_ERROR = 'RECEIVE_QUERY_ERROR'
 // This is done at runtime to not read the value everytime
 // we receive a result. So you have to refresh your page
 // in order to get the stats
-const executionStatsEnabled = flag('perfs.execution_stats')
+const executionStatsEnabled = flag('debug')
 
 export const isQueryAction = action =>
   [INIT_QUERY, LOAD_QUERY, RECEIVE_QUERY_RESULT, RECEIVE_QUERY_ERROR].indexOf(
@@ -192,11 +192,9 @@ const getQueryDocumentsChecker = query => {
   return datum => {
     const ddoctype = datum._type
     if (ddoctype !== qdoctype) return false
-    if (selectorFilterFn && !selectorFilterFn(datum)) {
-      return false
-    }
     if (datum._deleted) return false
-    return true
+    if (!selectorFilterFn) return true
+    return selectorFilterFn(datum)
   }
 }
 
