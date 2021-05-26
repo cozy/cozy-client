@@ -60,7 +60,7 @@ const FetchStatus = ({ fetchStatus }) => {
           ? 'u-valid'
           : fetchStatus === 'pending'
           ? 'u-warn'
-          : fetchStatus === 'error'
+          : fetchStatus === 'failed'
           ? 'u-error'
           : ''
       }
@@ -239,10 +239,12 @@ const QueryListItem = ({ name, selected, onClick }) => {
         primary={name}
         secondary={
           <>
+	    {queryState.fetchStatus === 'failed' ?
+		<><span className='u-error'>failed</span> - </> : null }
             {queryState.execution_stats && (
-              <ExecutionTime queryState={queryState} />
+              <><ExecutionTime queryState={queryState} /> - </>
             )}
-            {lastUpdate} - {queryState.data.length} docs
+            {lastUpdate ? <>{lastUpdate} -</>: null}{queryState.data.length} docs
           </>
         }
       />
@@ -257,12 +259,9 @@ const ExecutionTime = ({ queryState }) => {
     queryState.execution_stats.execution_time_ms
   )
   return (
-    <>
-      {' - '}
-      <span className={classCSS}>
-        {Math.round(queryState.execution_stats.execution_time_ms)} ms
-      </span>
-    </>
+    <span className={classCSS}>
+      {Math.round(queryState.execution_stats.execution_time_ms)} ms
+    </span>
   )
 }
 const QueryPanels = () => {
