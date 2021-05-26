@@ -219,15 +219,16 @@ class DocumentCollection {
       indexedFields = getIndexFields({ sort: options.sort, selector })
     }
     const existingIndex = await this.findExistingIndex(selector, options)
-
     const indexName = getIndexNameFromFields(indexedFields)
     if (!existingIndex) {
       await this.createIndex(indexedFields, {
         partialFilter,
         indexName
       })
-    } else {
+    } else if (existingIndex._id !== `_design/${indexName}`) {
       await this.migrateUnamedIndex(existingIndex, indexName)
+    } else {
+      throw new Error(`Index unusable for query, index used: ${indexName}`)
     }
   }
 
