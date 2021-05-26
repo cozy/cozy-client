@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [23.4.0](https://github.com/cozy/cozy-client/compare/v23.3.0...v23.4.0) (2021-05-26)
+
+
+### Bug Fixes
+
+* Move devtools doc at the right place ([1733bd6](https://github.com/cozy/cozy-client/commit/1733bd67a10fb3b4a632a04a58b6407de075e120))
+
+
+### Features
+
+* Debug flag activates execution statistics ([083ec05](https://github.com/cozy/cozy-client/commit/083ec059798f123a3be20b35d0ce3427498b2506))
+* Reorganize a bit the docs tree structure ([10e7a10](https://github.com/cozy/cozy-client/commit/10e7a1089e4633b2d10816edd9dc164b967cda74))
+
+
+
+
+
 # [23.3.0](https://github.com/cozy/cozy-client/compare/v23.2.0...v23.3.0) (2021-05-18)
 
 
