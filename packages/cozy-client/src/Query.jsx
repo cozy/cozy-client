@@ -123,6 +123,12 @@ export default class Query extends Component {
 
   componentDidMount() {
     this.queryUnsubscribe = this.observableQuery.subscribe(this.onQueryChange)
+    if (this.props.enabled !== false) {
+      this.executeQueryRespectingFetchPolicy()
+    }
+  }
+
+  executeQueryRespectingFetchPolicy() {
     if (this.props.fetchPolicy) {
       const queryState = this.client.getQueryFromState(this.props.as)
       if (
@@ -134,6 +140,12 @@ export default class Query extends Component {
       }
     } else {
       fetchQuery(this.client, this.observableQuery)
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.enabled === false && this.props.enabled !== false) {
+      this.executeQueryRespectingFetchPolicy()
     }
   }
 
@@ -169,6 +181,8 @@ const queryPropType = PropTypes.object
 Query.propTypes = {
   /** Query definition that will be executed and observed */
   query: PropTypes.oneOfType([PropTypes.func, queryPropType]).isRequired,
+  /** If set to false, query won't be executed */
+  enabled: PropTypes.bool,
   /** Name of the query */
   as: PropTypes.string,
   /** Function called with the data from the query */
@@ -189,6 +203,10 @@ Query.propTypes = {
    * ```
    */
   fetchPolicy: PropTypes.func
+}
+
+Query.defaultProps = {
+  enabled: true
 }
 
 export { getQueryAttributes, computeChildrenArgs }

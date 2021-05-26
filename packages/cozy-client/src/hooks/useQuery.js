@@ -25,6 +25,7 @@ const generateFetchMoreQueryDefinition = queryResult => {
  *
  * @param  {object} options - Options
  * @param  {object} options.as - Name for the query [required]
+ * @param  {boolean} options.enabled - If set to false, the query won't be executed
  * @param  {object} options.fetchPolicy - Fetch policy
  * @param  {object} options.singleDocData - If true, the "data" returned will be
  * a single doc instead of an array for single doc queries. Defaults to false for backward
@@ -45,7 +46,7 @@ const useQuery = (queryDefinition, options) => {
   }
 
   const definition = resolveToValue(queryDefinition)
-  const as = options.as
+  const { as, enabled = true } = options
 
   if (!as) {
     throw new Error('You must specify options.as when using useQuery')
@@ -67,10 +68,13 @@ const useQuery = (queryDefinition, options) => {
 
   useEffect(
     () => {
+      if (enabled === false) {
+        return
+      }
       client.query(definition, options)
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [as]
+    [as, enabled]
   )
 
   const fetchMore = useCallback(() => {

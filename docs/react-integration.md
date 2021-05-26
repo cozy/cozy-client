@@ -131,6 +131,10 @@ function App() {
 }
 ```
 
+`useQuery` also supports a "disabled" parameter: if set to `false` the query won't
+be sent. This is useful when you have dependent queries that rely on the results
+of another query to be sent.
+
 
 ### 2.b Requesting data with `<Query />`
 
