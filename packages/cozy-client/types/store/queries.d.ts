@@ -2,12 +2,13 @@ export function isQueryAction(action: any): boolean;
 export function isReceivingData(action: any): boolean;
 export function convert$gtNullSelectors(selector: any): object;
 export function mergeSelectorAndPartialIndex(queryDefinition: object): object;
-export function makeSorterFromDefinition(definition: any): (docs: any) => any;
+export function makeSorterFromDefinition(definition: QueryDefinition): (arg0: Array<CozyClientDocument>) => Array<CozyClientDocument>;
 export default queries;
-export function initQuery(queryId: any, queryDefinition: any): {
+export function initQuery(queryId: string, queryDefinition: QueryDefinition, options?: QueryOptions): {
     type: string;
-    queryId: any;
-    queryDefinition: any;
+    queryId: string;
+    queryDefinition: QueryDefinition;
+    options: QueryOptions;
 };
 export function loadQuery(queryId: any): {
     type: string;
@@ -46,3 +47,4 @@ export class QueryIDGenerator {
 export namespace QueryIDGenerator {
     const UNNAMED: string;
 }
+import { QueryOptions } from "../types";

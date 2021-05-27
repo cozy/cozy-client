@@ -19,7 +19,7 @@ export type ClientResponse = any;
 export type Manifest = any;
 export type OldCozyClient = any;
 export type NodeEnvironment = any;
-export type QueryFetchStatus = "failed" | "loading" | "pending" | "loaded";
+export type QueryFetchStatus = "loading" | "loaded" | "pending" | "failed";
 export type QueryState = {
     id: string;
     definition: QueryDefinition;
@@ -31,6 +31,26 @@ export type QueryState = {
     count: number;
     data: object | any[];
     bookmark: string;
+    options: QueryOptions;
+};
+export type AutoUpdateOptions = any;
+export type QueryOptions = {
+    /**
+     * - Name of the query
+     */
+    as?: string;
+    /**
+     * - Fetch policy to bypass fetching based on what's already inside the state. See "Fetch policies"
+     */
+    fetchPolicy?: Function;
+    /**
+     * - Options for the query auto update
+     */
+    autoUpdate?: AutoUpdateOptions;
+    /**
+     * - Does not seem to be used
+     */
+    update?: string;
 };
 export type FetchMoreAble = {
     fetchMore: Function;
@@ -70,6 +90,10 @@ export type CozyClientDocument = {
      * - Type of the document
      */
     _type?: string;
+    /**
+     * - When the document has been deleted
+     */
+    _deleted?: string;
     /**
      * - Relationships of the document
      */

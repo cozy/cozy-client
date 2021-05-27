@@ -336,7 +336,13 @@ declare class CozyClient {
      */
     destroy(document: CozyClientDocument, mutationOptions?: {}): Promise<CozyClientDocument>;
     upload(file: any, dirPath: any, mutationOptions?: {}): Promise<any>;
-    ensureQueryExists(queryId: any, queryDefinition: any): void;
+    /**
+     * Makes sure that the query exists in the store
+     * @param  {string} queryId - Id of the query
+     * @param  {QueryDefinition} queryDefinition - Definition of the query
+     * @param  {QueryOptions} [options] - Additional options
+     */
+    ensureQueryExists(queryId: string, queryDefinition: QueryDefinition, options?: QueryOptions): void;
     /**
      * Executes a query and returns its results.
      *
@@ -345,17 +351,10 @@ declare class CozyClient {
      * executes its query when mounted if no fetch policy has been indicated.
      *
      * @param  {QueryDefinition} queryDefinition - Definition that will be executed
-     * @param  {object} [options] - Options
-     * @param  {string} [options.as] - Names the query so it can be reused (by multiple components for example)
-     * @param  {Function} [options.fetchPolicy] - Fetch policy to bypass fetching based on what's already inside the state. See "Fetch policies"
-     * @param  {string} [options.update] - Does not seem to be used
+     * @param  {QueryOptions} [options] - Options
      * @returns {Promise<QueryResult>}
      */
-    query(queryDefinition: QueryDefinition, { update, ...options }?: {
-        as?: string;
-        fetchPolicy?: Function;
-        update?: string;
-    }): Promise<QueryResult>;
+    query(queryDefinition: QueryDefinition, { update, ...options }?: QueryOptions): Promise<QueryResult>;
     /**
      * Will fetch all documents for a `queryDefinition`, automatically fetching more
      * documents if the total of documents is superior to the pagination limit. Can
@@ -622,6 +621,7 @@ import { QueryDefinition } from "./queries/dsl";
 import { ReferenceMap } from "./types";
 import { Mutation } from "./types";
 import { CozyClientDocument } from "./types";
+import { QueryOptions } from "./types";
 import { QueryResult } from "./types";
 import ObservableQuery from "./ObservableQuery";
 import { HydratedDocument } from "./types";

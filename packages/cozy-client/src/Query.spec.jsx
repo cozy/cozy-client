@@ -66,12 +66,17 @@ describe('Query', () => {
         </CozyProvider>
       )
       const initQueryDispatch = {
+        options: { as: '1' },
         queryDefinition: { doctype: 'io.cozy.todos' },
         queryId: '1',
         type: 'INIT_QUERY'
       }
-      expect(spy).toHaveBeenNthCalledWith(1, initQueryDispatch)
+
+      // First call because of the getQueryFromState
+      expect(spy).toHaveBeenNthCalledWith(1, { ...initQueryDispatch, options: null })
+      // Then because of the fetch
       expect(spy).toHaveBeenNthCalledWith(2, initQueryDispatch)
+      // Then it is the load event
       expect(spy).toHaveBeenCalledTimes(3)
     })
   })
@@ -173,7 +178,8 @@ describe('Query', () => {
           id: '1',
           lastError: null,
           lastFetch: null,
-          lastUpdate: null
+          lastUpdate: null,
+          options: null
         },
         expect.any(Object)
       )

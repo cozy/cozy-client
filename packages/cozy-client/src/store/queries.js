@@ -1,4 +1,5 @@
 import mapValues from 'lodash/mapValues'
+import groupBy from 'lodash/groupBy'
 import difference from 'lodash/difference'
 import intersection from 'lodash/intersection'
 import concat from 'lodash/concat'
@@ -16,12 +17,7 @@ import { getDocumentFromSlice } from './documents'
 import { isReceivingMutationResult } from './mutations'
 import { properId } from './helpers'
 import { isAGetByIdQuery, QueryDefinition } from '../queries/dsl'
-import { QueryState, CozyClientDocument } from '../types'
-
-/**
- * @typedef {object} InitQueryOptions
- * @param {boolean} autoUpdate - Should the query auto update (true by default)
- */
+import { QueryState, CozyClientDocument, QueryOptions } from '../types'
 
 const INIT_QUERY = 'INIT_QUERY'
 const LOAD_QUERY = 'LOAD_QUERY'
@@ -82,6 +78,7 @@ const query = (state = queryInitialState, action, nextDocuments) => {
         ...state,
         id: action.queryId,
         definition: action.queryDefinition,
+        options: action.options,
         fetchStatus: state.lastUpdate ? state.fetchStatus : 'pending'
       }
     case LOAD_QUERY:
@@ -261,13 +258,19 @@ export const makeSorterFromDefinition = definition => {
  * @return {QueryState} - Updated query state               
  */
 const updateData = (query, newData, nextDocuments) => {
-  const isFulfilled = getQueryDocumentsChecker(query)
-  const matchedIds = newData.filter(doc => isFulfilled(doc)).map(properId)
-  const unmatchedIds = newData.filter(doc => !isFulfilled(doc)).map(properId)
+  const belongsToQuery = getQueryDocumentsChecker(query)
+  const res = mapValues(groupBy(newData, belongsToQuery), docs => docs.map(properId))
+  const { true: matchedIds = [], false: unmatchedIds = []} = res
   const originalIds = query.data
-  const toRemove = intersection(originalIds, unmatchedIds)
-  const toAdd = difference(matchedIds, originalIds)
-  const toUpdate = intersection(originalIds, matchedIds)
+
+  const autoUpdate = query.options && query.options.autoUpdate
+  const shouldRemove = !autoUpdate || autoUpdate.remove !== false
+  const shouldAdd = !autoUpdate || autoUpdate.add !== false
+  const shouldUpdate = !autoUpdate || autoUpdate.update !== false
+
+  const toRemove = shouldRemove ? intersection(originalIds, unmatchedIds) : []
+  const toAdd = shouldAdd ? difference(matchedIds, originalIds) : []
+  const toUpdate = shouldUpdate ? intersection(originalIds, matchedIds) : []
 
   const changed = toRemove.length || toAdd.length || toUpdate.length
 
@@ -371,15 +374,23 @@ const queries = (
 }
 export default queries
 
-// actions
-export const initQuery = (queryId, queryDefinition) => {
+/**
+ * Create the query states in the store. Queries are indexed
+ * in the store by queryId
+ * 
+ * @param  {string} queryId  Name/id of the query
+ * @param  {QueryDefinition} queryDefinition 
+ * @param  {QueryOptions} [options]
+ */
+export const initQuery = (queryId, queryDefinition, options = null) => {
   if (!queryDefinition.doctype) {
     throw new Error('Cannot init query with no doctype')
   }
   return {
     type: INIT_QUERY,
     queryId,
-    queryDefinition
+    queryDefinition,
+    options
   }
 }
 

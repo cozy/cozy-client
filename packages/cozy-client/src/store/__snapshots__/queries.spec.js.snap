@@ -28,6 +28,7 @@ Object {
     "lastError": null,
     "lastFetch": null,
     "lastUpdate": null,
+    "options": null,
   },
 }
 `;
@@ -63,6 +64,7 @@ Object {
     "lastError": null,
     "lastFetch": 1337,
     "lastUpdate": 1337,
+    "options": null,
   },
 }
 `;
@@ -97,6 +99,7 @@ Object {
     "lastError": null,
     "lastFetch": 1337,
     "lastUpdate": 1337,
+    "options": null,
   },
   "b": Object {
     "bookmark": null,
@@ -131,6 +134,7 @@ Object {
     "lastError": null,
     "lastFetch": null,
     "lastUpdate": 1337,
+    "options": null,
   },
 }
 `;
@@ -165,6 +169,7 @@ Object {
     "lastError": null,
     "lastFetch": 1337,
     "lastUpdate": 1337,
+    "options": null,
   },
   "b": Object {
     "bookmark": null,
@@ -196,6 +201,7 @@ Object {
     "lastError": null,
     "lastFetch": null,
     "lastUpdate": 1337,
+    "options": null,
   },
 }
 `;
@@ -231,6 +237,7 @@ Object {
     "lastError": null,
     "lastFetch": 1337,
     "lastUpdate": 1337,
+    "options": null,
   },
   "b": Object {
     "bookmark": null,
@@ -261,6 +268,7 @@ Object {
     "lastError": null,
     "lastFetch": null,
     "lastUpdate": 1337,
+    "options": null,
   },
 }
 `;
@@ -293,6 +301,7 @@ Object {
     "lastError": null,
     "lastFetch": null,
     "lastUpdate": null,
+    "options": null,
   },
   "b": Object {
     "bookmark": null,
@@ -320,6 +329,7 @@ Object {
     "lastError": null,
     "lastFetch": null,
     "lastUpdate": null,
+    "options": null,
   },
 }
 `;
@@ -354,6 +364,7 @@ Object {
     "lastError": null,
     "lastFetch": 1337,
     "lastUpdate": 1337,
+    "options": null,
   },
   "b": Object {
     "bookmark": null,
@@ -383,6 +394,7 @@ Object {
     "lastError": null,
     "lastFetch": null,
     "lastUpdate": null,
+    "options": null,
   },
 }
 `;

@@ -47,7 +47,25 @@ import { QueryDefinition } from './queries/dsl'
  * @property {number} count
  * @property {object|Array} data
  * @property {string} bookmark
+ * @property {QueryOptions} options
  */
+
+/**
+ * @typedef {object} AutoUpdateOptions
+ * @param {boolean} update - Should documents be updated in the query (default: true)
+ * @param {boolean} add - Should documents be added to the query (default: true)
+ * @param {boolean} remove - Should documents be added to the query (default: true)
+ */
+
+
+/**
+ * @typedef {object} QueryOptions
+ * @property {string} [as] - Name of the query
+ * @property {Function} [fetchPolicy] - Fetch policy to bypass fetching based on what's already inside the state. See "Fetch policies"
+ * @property {AutoUpdateOptions} [autoUpdate] - Options for the query auto update
+ * @property {string} [options.update] - Does not seem to be used
+ */
+
 
 /**
  * @typedef {object} FetchMoreAble
@@ -82,6 +100,7 @@ import { QueryDefinition } from './queries/dsl'
  * @typedef {object} CozyClientDocument - A document
  * @property {string} [_id] - Id of the document
  * @property {string} [_type] - Type of the document
+ * @property {string} [_deleted] - When the document has been deleted
  * @property {object} [relationships] - Relationships of the document
  */
 

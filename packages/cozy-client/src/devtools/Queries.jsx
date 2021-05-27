@@ -167,7 +167,7 @@ const ObjectInspectorAndStringificator = ({ object }) => {
 }
 const QueryState = ({ name }) => {
   const queryState = useCozySelector(state => state.cozy.queries[name])
-  const { data } = queryState
+  const { data, options } = queryState
   const { lastFetch, lastUpdate } = useMemo(() => {
     return {
       lastFetch: new Date(queryState.lastFetch),
@@ -209,6 +209,12 @@ const QueryState = ({ name }) => {
               <TableCell>documents</TableCell>
               <TableCell>
                 {data && data.length !== undefined ? data.length : data ? 1 : 0}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>autoUpdate</TableCell>
+              <TableCell>
+                {options && options.autoUpdate ? options.autoUpdate + '' : 'true'}
               </TableCell>
             </TableRow>
             <TableRow>

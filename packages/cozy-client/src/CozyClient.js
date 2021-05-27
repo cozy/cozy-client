@@ -43,21 +43,22 @@ import ObservableQuery from './ObservableQuery'
 import { CozyClient as SnapshotClient } from './testing/snapshots'
 import logger from './logger'
 import {
+  AppMetadata,
+  ClientCapabilities,
+  ClientResponse,
+  CozyClientDocument,
+  DocumentCollection,
+  HydratedDocument,
   Link,
   Mutation,
-  DocumentCollection,
-  QueryResult,
-  CozyClientDocument,
-  HydratedDocument,
-  ReduxStore,
-  QueryState,
-  Token,
-  ClientResponse,
-  ReferenceMap,
-  OldCozyClient,
   NodeEnvironment,
-  AppMetadata,
-  ClientCapabilities
+  OldCozyClient,
+  QueryOptions,
+  QueryResult,
+  QueryState,
+  ReduxStore,
+  ReferenceMap,
+  Token
 } from './types'
 import { QueryIDGenerator } from './store/queries'
 
@@ -776,7 +777,13 @@ client.query(Q('io.cozy.bills'))`)
     return this.mutate(Mutations.uploadFile(file, dirPath), mutationOptions)
   }
 
-  ensureQueryExists(queryId, queryDefinition) {
+  /**
+   * Makes sure that the query exists in the store
+   * @param  {string} queryId - Id of the query
+   * @param  {QueryDefinition} queryDefinition - Definition of the query 
+   * @param  {QueryOptions} [options] - Additional options
+   */
+  ensureQueryExists(queryId, queryDefinition, options) {
     this.ensureStore()
     const existingQuery = getQueryFromState(this.store.getState(), queryId)
     // Don't trigger the INIT_QUERY for fetchMore() calls
@@ -784,7 +791,7 @@ client.query(Q('io.cozy.bills'))`)
       existingQuery.fetchStatus !== 'loaded' ||
       (!queryDefinition.skip && !queryDefinition.bookmark)
     ) {
-      this.dispatch(initQuery(queryId, queryDefinition))
+      this.dispatch(initQuery(queryId, queryDefinition, options))
     }
   }
 
@@ -796,10 +803,7 @@ client.query(Q('io.cozy.bills'))`)
    * executes its query when mounted if no fetch policy has been indicated.
    *
    * @param  {QueryDefinition} queryDefinition - Definition that will be executed
-   * @param  {object} [options] - Options
-   * @param  {string} [options.as] - Names the query so it can be reused (by multiple components for example)
-   * @param  {Function} [options.fetchPolicy] - Fetch policy to bypass fetching based on what's already inside the state. See "Fetch policies"
-   * @param  {string} [options.update] - Does not seem to be used
+   * @param  {QueryOptions} [options] - Options
    * @returns {Promise<QueryResult>}
    */
   async query(queryDefinition, { update, ...options } = {}) {
@@ -825,7 +829,7 @@ client.query(Q('io.cozy.bills'))`)
         return
       }
     }
-    this.ensureQueryExists(queryId, queryDefinition)
+    this.ensureQueryExists(queryId, queryDefinition, options)
 
     try {
       this.dispatch(loadQuery(queryId))
