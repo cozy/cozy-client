@@ -149,7 +149,7 @@ declare class CozyClient {
          */
         store?: boolean;
     };
-    idCounter: number;
+    queryIdGenerator: QueryIDGenerator;
     isLogged: boolean;
     instanceOptions: {};
     /** Sets public attribute and emits event related to revocation */
@@ -432,6 +432,7 @@ declare class CozyClient {
      * and working.
      */
     makeNewDocument(doctype: any): any;
+    generateRandomId(): string;
     /**
      * Creates an association that is linked to the store.
      */
@@ -581,21 +582,6 @@ declare class CozyClient {
     };
     dispatch(action: any): any;
     /**
-     * Generates an id for queries
-     * If the query is a getById only query,
-     * we can generate a name for it.
-     *
-     * If not, let's generate a random id
-     *
-     * @param {QueryDefinition} queryDefinition The query definition
-     * @returns {string}
-     */
-    generateId(queryDefinition: QueryDefinition): string;
-    /**
-     * Generates a random id for unamed querie
-     */
-    generateRandomId(): string;
-    /**
      * getInstanceOptions - Returns current instance options, such as domain or app slug
      *
      * @returns {object}
@@ -627,6 +613,7 @@ declare namespace CozyClient {
 import { Token } from "./types";
 import { AppMetadata } from "./types";
 import { ClientCapabilities } from "./types";
+import { QueryIDGenerator } from "./store/queries";
 import Schema from "./Schema";
 import { DocumentCollection } from "./types";
 import { QueryDefinition } from "./queries/dsl";

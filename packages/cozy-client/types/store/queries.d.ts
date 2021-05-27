@@ -25,3 +25,24 @@ export function receiveQueryError(queryId: any, error: any): {
 };
 export function getQueryFromSlice(state: any, queryId: any, documents: any): any;
 declare function queries(state: {}, action: any, nextDocuments?: {}, haveDocumentsChanged?: boolean): any;
+export class QueryIDGenerator {
+    idCounter: number;
+    /**
+     * Generates a random id for unamed queries
+     */
+    generateRandomId(): string;
+    /**
+     * Generates an id for queries
+     * If the query is a getById only query,
+     * we can generate a name for it.
+     *
+     * If not, let's generate a random id
+     *
+     * @param {QueryDefinition} queryDefinition The query definition
+     * @returns {string}
+     */
+    generateId(queryDefinition: QueryDefinition): string;
+}
+export namespace QueryIDGenerator {
+    const UNNAMED: string;
+}

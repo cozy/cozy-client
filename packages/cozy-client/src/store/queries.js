@@ -15,6 +15,13 @@ import flag from 'cozy-flags'
 import { getDocumentFromSlice } from './documents'
 import { isReceivingMutationResult } from './mutations'
 import { properId } from './helpers'
+import { isAGetByIdQuery, QueryDefinition } from '../queries/dsl'
+import { QueryState  } from '../types'
+
+/**
+ * @typedef {object} InitQueryOptions
+ * @param {boolean} autoUpdate - Should the query auto update (true by default)
+ */
 
 const INIT_QUERY = 'INIT_QUERY'
 const LOAD_QUERY = 'LOAD_QUERY'
@@ -389,3 +396,39 @@ export const getQueryFromSlice = (state, queryId, documents) => {
       }
     : query
 }
+
+export class QueryIDGenerator {
+  constructor() {
+    this.idCounter = 1
+  }
+
+  /**
+   * Generates a random id for unamed queries
+   */
+  generateRandomId() {
+    const id = this.idCounter
+    this.idCounter++
+    return id.toString() 
+  }
+
+  /**
+   * Generates an id for queries
+   * If the query is a getById only query,
+   * we can generate a name for it.
+   *
+   * If not, let's generate a random id
+   *
+   * @param {QueryDefinition} queryDefinition The query definition
+   * @returns {string}
+   */
+  generateId(queryDefinition) {
+    if (!isAGetByIdQuery(queryDefinition)) {
+      return this.generateRandomId()
+    } else {
+      const { id, doctype } = queryDefinition
+      return `${doctype}/${id}`
+    }
+  }
+}
+
+QueryIDGenerator.UNNAMED = 'unnamed'
