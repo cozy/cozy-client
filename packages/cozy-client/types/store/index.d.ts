@@ -10,7 +10,9 @@ export default combinedReducer;
 export function createStore(): import("redux").Store<import("redux").CombinedState<{
     cozy: {
         documents: any;
-        queries: any;
+        queries: {
+            [x: string]: any;
+        };
     };
 }>, import("redux").AnyAction> & {
     dispatch: any;
@@ -26,7 +28,9 @@ declare function combinedReducer(state: {
     queries: {};
 }, action: any): {
     documents: any;
-    queries: any;
+    queries: {
+        [x: string]: any;
+    };
 };
 export function resetState(): {
     type: string;

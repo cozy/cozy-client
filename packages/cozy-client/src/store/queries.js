@@ -335,6 +335,16 @@ const manualQueryUpdater = (action, documents) => query => {
   }
 }
 
+/**
+ * @typedef {Record<string, QueryState>} QueryStates
+ */
+
+/**
+ * @param  {QueryStates}  state - Redux slice containing all the query states indexed by name
+ * @param  {object}  action - Income redux action
+ * @param  {Object}  nextDocuments
+ * @param  {Boolean} haveDocumentsChanged
+ */
 const queries = (
   state = {},
   action,

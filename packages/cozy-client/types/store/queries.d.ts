@@ -25,7 +25,6 @@ export function receiveQueryError(queryId: any, error: any): {
     error: any;
 };
 export function getQueryFromSlice(state: any, queryId: any, documents: any): any;
-declare function queries(state: {}, action: any, nextDocuments?: {}, haveDocumentsChanged?: boolean): any;
 export class QueryIDGenerator {
     idCounter: number;
     /**
@@ -47,4 +46,22 @@ export class QueryIDGenerator {
 export namespace QueryIDGenerator {
     const UNNAMED: string;
 }
+export type QueryStates = {
+    [x: string]: QueryState;
+};
+import { QueryDefinition } from "../queries/dsl";
+import { CozyClientDocument } from "../types";
+/**
+ * @typedef {Record<string, QueryState>} QueryStates
+ */
+/**
+ * @param  {QueryStates}  state - Redux slice containing all the query states indexed by name
+ * @param  {object}  action - Income redux action
+ * @param  {Object}  nextDocuments
+ * @param  {Boolean} haveDocumentsChanged
+ */
+declare function queries(state: QueryStates, action: object, nextDocuments?: any, haveDocumentsChanged?: boolean): {
+    [x: string]: any;
+};
 import { QueryOptions } from "../types";
+import { QueryState } from "../types";

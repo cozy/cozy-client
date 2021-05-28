@@ -579,7 +579,9 @@ declare class CozyClient {
         queries: {};
     }, action: any) => {
         documents: any;
-        queries: any;
+        queries: {
+            [x: string]: any;
+        };
     };
     dispatch(action: any): any;
     /**
