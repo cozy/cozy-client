@@ -27,7 +27,7 @@ import { NavSecondaryAction, ListGridItem } from './common'
 import PanelContent from './PanelContent'
 
 /**
- * @type {object.<string, React.CSSProperties>}
+ * @type {Object.<string, React.CSSProperties>}
  * @private
  */
 const styles = {

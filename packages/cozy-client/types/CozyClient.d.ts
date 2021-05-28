@@ -403,7 +403,7 @@ declare class CozyClient {
      */
     private fetchRelationships;
     requestMutation(definition: any): any;
-    getIncludesRelationships(queryDefinition: any): any;
+    getIncludesRelationships(queryDefinition: any): import("lodash").Dictionary<any>;
     /**
      * Returns documents with their relationships resolved according to their schema.
      * If related documents are not in the store, they will not be fetched automatically.
@@ -425,7 +425,9 @@ declare class CozyClient {
      * @returns {HydratedDocument}
      */
     hydrateDocument(document: CozyClientDocument, schemaArg?: Schema): HydratedDocument;
-    hydrateRelationships(document: any, schemaRelationships: any): any;
+    hydrateRelationships(document: any, schemaRelationships: any): {
+        [x: string]: any;
+    };
     /**
      * Creates (locally) a new document for the given doctype.
      * This document is hydrated : its relationships are there

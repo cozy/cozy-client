@@ -16,7 +16,7 @@ import { getDocumentFromSlice } from './documents'
 import { isReceivingMutationResult } from './mutations'
 import { properId } from './helpers'
 import { isAGetByIdQuery, QueryDefinition } from '../queries/dsl'
-import { QueryState  } from '../types'
+import { QueryState, CozyClientDocument } from '../types'
 
 /**
  * @typedef {object} InitQueryOptions
@@ -170,6 +170,10 @@ export const mergeSelectorAndPartialIndex = queryDefinition => ({
   ...get(queryDefinition, 'partialFilter')
 })
 
+/**
+ * @param  {QueryDefinition} queryDefinition
+ * @return {function(CozyClientDocument): Boolean}
+ */
 const getSelectorFilterFn = queryDefinition => {
   if (queryDefinition.selector) {
     const selectors = mergeSelectorAndPartialIndex(queryDefinition)
@@ -193,6 +197,14 @@ const getSelectorFilterFn = queryDefinition => {
   }
 }
 
+/**
+ *
+ * Returns a predicate function that checks if a document should be
+ * included in the result of the query.
+ * 
+ * @param  {QueryState} query - Definition of the query
+ * @return {function(CozyClientDocument): Boolean} Predicate function
+ */
 const getQueryDocumentsChecker = query => {
   const qdoctype = query.definition.doctype
   const selectorFilterFn = getSelectorFilterFn(query.definition)
@@ -201,7 +213,7 @@ const getQueryDocumentsChecker = query => {
     if (ddoctype !== qdoctype) return false
     if (datum._deleted) return false
     if (!selectorFilterFn) return true
-    return selectorFilterFn(datum)
+    return !!selectorFilterFn(datum)
   }
 }
 
@@ -215,6 +227,9 @@ const makeCaseInsensitiveStringSorter = attrName => item => {
  *
  * Used to sort query results inside the store when creating a file or
  * receiving updates.
+ *
+ * @param {QueryDefinition} definition
+ * @returns {function(Array<CozyClientDocument>): Array<CozyClientDocument>}
  *
  * @private
  */
@@ -237,6 +252,14 @@ export const makeSorterFromDefinition = definition => {
   }
 }
 
+/**
+ * Updates query state when new data comes in
+ * 
+ * @param  {QueryState} query - Current query state
+ * @param  {Array<CozyClientDocument>} newData - New documents (in most case from the server)
+ * @param  {Array<CozyClientDocument>} nextDocuments 
+ * @return {QueryState} - Updated query state               
+ */
 const updateData = (query, newData, nextDocuments) => {
   const isFulfilled = getQueryDocumentsChecker(query)
   const matchedIds = newData.filter(doc => isFulfilled(doc)).map(properId)
