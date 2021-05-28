@@ -57,10 +57,10 @@ import { CozyClientDocument } from "../types";
 /**
  * @param  {QueryStates}  state - Redux slice containing all the query states indexed by name
  * @param  {object}  action - Income redux action
- * @param  {Object}  nextDocuments
- * @param  {Boolean} haveDocumentsChanged
+ * @param  {object}  nextDocuments
+ * @param  {boolean} haveDocumentsChanged
  */
-declare function queries(state: QueryStates, action: object, nextDocuments?: any, haveDocumentsChanged?: boolean): {
+declare function queries(state: QueryStates, action: object, nextDocuments?: object, haveDocumentsChanged?: boolean): {
     [x: string]: any;
 };
 import { QueryOptions } from "../types";

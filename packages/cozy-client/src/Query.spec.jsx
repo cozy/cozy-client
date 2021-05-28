@@ -73,7 +73,10 @@ describe('Query', () => {
       }
 
       // First call because of the getQueryFromState
-      expect(spy).toHaveBeenNthCalledWith(1, { ...initQueryDispatch, options: null })
+      expect(spy).toHaveBeenNthCalledWith(1, {
+        ...initQueryDispatch,
+        options: null
+      })
       // Then because of the fetch
       expect(spy).toHaveBeenNthCalledWith(2, initQueryDispatch)
       // Then it is the load event

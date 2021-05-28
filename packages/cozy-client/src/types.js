@@ -58,7 +58,6 @@ import { QueryDefinition } from './queries/dsl'
  * @param {boolean} remove - Should documents be added to the query (default: true)
  */
 
-
 /**
  * @typedef {object} QueryOptions
  * @property {string} [as] - Name of the query
@@ -66,7 +65,6 @@ import { QueryDefinition } from './queries/dsl'
  * @property {AutoUpdateOptions} [autoUpdate] - Options for the query auto update
  * @property {string} [options.update] - Does not seem to be used
  */
-
 
 /**
  * @typedef {object} FetchMoreAble

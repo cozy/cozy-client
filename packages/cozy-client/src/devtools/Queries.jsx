@@ -218,7 +218,9 @@ const QueryStateView = ({ name }) => {
             <TableRow>
               <TableCell>autoUpdate</TableCell>
               <TableCell>
-                {options && options.autoUpdate ? JSON.stringify(options.autoUpdate) : 'null'}
+                {options && options.autoUpdate
+                  ? JSON.stringify(options.autoUpdate)
+                  : 'null'}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -249,12 +251,18 @@ const QueryListItem = ({ name, selected, onClick }) => {
         primary={name}
         secondary={
           <>
-	    {queryState.fetchStatus === 'failed' ?
-		<><span className='u-error'>failed</span> - </> : null }
+            {queryState.fetchStatus === 'failed' ? (
+              <>
+                <span className="u-error">failed</span> -{' '}
+              </>
+            ) : null}
             {queryState.execution_stats && (
-              <><ExecutionTime queryState={queryState} /> - </>
+              <>
+                <ExecutionTime queryState={queryState} /> -{' '}
+              </>
             )}
-            {lastUpdate ? <>{lastUpdate} -</>: null}{queryState.data.length} docs
+            {lastUpdate ? <>{lastUpdate} -</> : null}
+            {queryState.data.length} docs
           </>
         }
       />

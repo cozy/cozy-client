@@ -169,7 +169,7 @@ export const mergeSelectorAndPartialIndex = queryDefinition => ({
 
 /**
  * @param  {QueryDefinition} queryDefinition
- * @return {function(CozyClientDocument): Boolean}
+ * @returns {function(CozyClientDocument): boolean}
  */
 const getSelectorFilterFn = queryDefinition => {
   if (queryDefinition.selector) {
@@ -198,9 +198,9 @@ const getSelectorFilterFn = queryDefinition => {
  *
  * Returns a predicate function that checks if a document should be
  * included in the result of the query.
- * 
+ *
  * @param  {QueryState} query - Definition of the query
- * @return {function(CozyClientDocument): Boolean} Predicate function
+ * @returns {function(CozyClientDocument): boolean} Predicate function
  */
 const getQueryDocumentsChecker = query => {
   const qdoctype = query.definition.doctype
@@ -251,16 +251,18 @@ export const makeSorterFromDefinition = definition => {
 
 /**
  * Updates query state when new data comes in
- * 
+ *
  * @param  {QueryState} query - Current query state
  * @param  {Array<CozyClientDocument>} newData - New documents (in most case from the server)
- * @param  {Array<CozyClientDocument>} nextDocuments 
- * @return {QueryState} - Updated query state               
+ * @param  {Array<CozyClientDocument>} nextDocuments
+ * @returns {QueryState} - Updated query state
  */
 const updateData = (query, newData, nextDocuments) => {
   const belongsToQuery = getQueryDocumentsChecker(query)
-  const res = mapValues(groupBy(newData, belongsToQuery), docs => docs.map(properId))
-  const { true: matchedIds = [], false: unmatchedIds = []} = res
+  const res = mapValues(groupBy(newData, belongsToQuery), docs =>
+    docs.map(properId)
+  )
+  const { true: matchedIds = [], false: unmatchedIds = [] } = res
   const originalIds = query.data
 
   const autoUpdate = query.options && query.options.autoUpdate
@@ -342,8 +344,8 @@ const manualQueryUpdater = (action, documents) => query => {
 /**
  * @param  {QueryStates}  state - Redux slice containing all the query states indexed by name
  * @param  {object}  action - Income redux action
- * @param  {Object}  nextDocuments
- * @param  {Boolean} haveDocumentsChanged
+ * @param  {object}  nextDocuments
+ * @param  {boolean} haveDocumentsChanged
  */
 const queries = (
   state = {},
@@ -387,9 +389,9 @@ export default queries
 /**
  * Create the query states in the store. Queries are indexed
  * in the store by queryId
- * 
+ *
  * @param  {string} queryId  Name/id of the query
- * @param  {QueryDefinition} queryDefinition 
+ * @param  {QueryDefinition} queryDefinition
  * @param  {QueryOptions} [options]
  */
 export const initQuery = (queryId, queryDefinition, options = null) => {
@@ -452,7 +454,7 @@ export class QueryIDGenerator {
   generateRandomId() {
     const id = this.idCounter
     this.idCounter++
-    return id.toString() 
+    return id.toString()
   }
 
   /**

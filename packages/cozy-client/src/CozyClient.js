@@ -779,8 +779,9 @@ client.query(Q('io.cozy.bills'))`)
 
   /**
    * Makes sure that the query exists in the store
+   *
    * @param  {string} queryId - Id of the query
-   * @param  {QueryDefinition} queryDefinition - Definition of the query 
+   * @param  {QueryDefinition} queryDefinition - Definition of the query
    * @param  {QueryOptions} [options] - Additional options
    */
   ensureQueryExists(queryId, queryDefinition, options) {
@@ -808,7 +809,8 @@ client.query(Q('io.cozy.bills'))`)
    */
   async query(queryDefinition, { update, ...options } = {}) {
     this.ensureStore()
-    const queryId = options.as || this.queryIdGenerator.generateId(queryDefinition)
+    const queryId =
+      options.as || this.queryIdGenerator.generateId(queryDefinition)
     const existingQuery = this.getQueryFromState(queryId)
 
     if (options.fetchPolicy) {
@@ -879,7 +881,8 @@ client.query(Q('io.cozy.bills'))`)
 
   makeObservableQuery(queryDefinition, options = {}) {
     this.ensureStore()
-    const queryId = options.as || this.queryIdGenerator.generateId(queryDefinition)
+    const queryId =
+      options.as || this.queryIdGenerator.generateId(queryDefinition)
     this.ensureQueryExists(queryId, queryDefinition)
     return new ObservableQuery(queryId, queryDefinition, this, options)
   }
@@ -896,7 +899,8 @@ client.query(Q('io.cozy.bills'))`)
    */
   async mutate(mutationDefinition, { update, updateQueries, ...options } = {}) {
     this.ensureStore()
-    const mutationId = options.as || this.queryIdGenerator.generateId(mutationDefinition)
+    const mutationId =
+      options.as || this.queryIdGenerator.generateId(mutationDefinition)
     this.dispatch(initMutation(mutationId, mutationDefinition))
     try {
       const response = await this.requestMutation(mutationDefinition)
@@ -1449,7 +1453,6 @@ instantiation of the client.`
   dispatch(action) {
     return this.store.dispatch(action)
   }
-
 
   /**
    * getInstanceOptions - Returns current instance options, such as domain or app slug

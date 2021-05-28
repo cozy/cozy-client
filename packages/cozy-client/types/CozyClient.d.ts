@@ -338,6 +338,7 @@ declare class CozyClient {
     upload(file: any, dirPath: any, mutationOptions?: {}): Promise<any>;
     /**
      * Makes sure that the query exists in the store
+     *
      * @param  {string} queryId - Id of the query
      * @param  {QueryDefinition} queryDefinition - Definition of the query
      * @param  {QueryOptions} [options] - Additional options

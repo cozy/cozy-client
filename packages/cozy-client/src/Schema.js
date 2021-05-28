@@ -138,7 +138,7 @@ class Schema {
 
   /**
    * Returns the relationship for a given doctype/name
-   * 
+   *
    * @param {string} doctype - Doctype
    * @param {string} relationshipName - Relationship name
    */
