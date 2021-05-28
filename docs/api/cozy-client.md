@@ -307,6 +307,10 @@ query definitions.</p>
 <dt><a href="#mergeSelectorAndPartialIndex">mergeSelectorAndPartialIndex</a> ⇒ <code>object</code></dt>
 <dd><p>Merges query selectors with query partial indexes</p>
 </dd>
+<dt><a href="#initQuery">initQuery</a></dt>
+<dd><p>Create the query states in the store. Queries are indexed
+in the store by queryId</p>
+</dd>
 <dt><a href="#isQueryLoading">isQueryLoading</a></dt>
 <dd><p>Returns whether the result of a query (given via queryConnect or Query)
 is loading.</p>
@@ -407,6 +411,25 @@ we have in the store.</p>
 <dd><p>Component that subscribes to a doctype changes and keep the
 internal store updated.</p>
 </dd>
+<dt><a href="#getSelectorFilterFn">getSelectorFilterFn(queryDefinition)</a> ⇒ <code>function</code></dt>
+<dd></dd>
+<dt><a href="#getQueryDocumentsChecker">getQueryDocumentsChecker(query)</a> ⇒ <code>function</code></dt>
+<dd><p>Returns a predicate function that checks if a document should be
+included in the result of the query.</p>
+</dd>
+<dt><a href="#updateData">updateData(query, newData, documents)</a> ⇒ <code><a href="#QueryState">QueryState</a></code></dt>
+<dd><p>Updates query state when new data comes in</p>
+</dd>
+<dt><a href="#autoQueryUpdater">autoQueryUpdater(action, documents)</a> ⇒ <code>function</code></dt>
+<dd><p>Creates a function that returns an updated query state
+from an action</p>
+</dd>
+<dt><a href="#manualQueryUpdater">manualQueryUpdater(action, documents)</a> ⇒ <code>function</code></dt>
+<dd><p>Creates a function that returns an updated query state
+from an action</p>
+</dd>
+<dt><a href="#queries">queries(state, action, documents, haveDocumentsChanged)</a></dt>
+<dd></dd>
 <dt><a href="#cancelable">cancelable(promise)</a> ⇒ <code><a href="#CancelablePromise">CancelablePromise</a></code></dt>
 <dd><p>Wraps a promise so that it can be canceled</p>
 <p>Rejects with canceled: true as soon as cancel is called</p>
@@ -466,7 +489,13 @@ both situation.</p>
 <dd></dd>
 <dt><a href="#Cursor">Cursor</a> : <code>Array</code></dt>
 <dd></dd>
+<dt><a href="#WhereOptions">WhereOptions</a> : <code>object</code></dt>
+<dd></dd>
 <dt><a href="#RegistryApp">RegistryApp</a> : <code>object</code></dt>
+<dd></dd>
+<dt><a href="#DoctypeSchema">DoctypeSchema</a> : <code>object</code></dt>
+<dd></dd>
+<dt><a href="#SchemaDefinition">SchemaDefinition</a> : <code>Record.&lt;string, DoctypeSchema&gt;</code></dt>
 <dd></dd>
 <dt><a href="#MockQueryOptions">MockQueryOptions</a> ⇒ <code><a href="#CozyClient">CozyClient</a></code></dt>
 <dd><p>Setups a client suitable for testing</p>
@@ -481,7 +510,17 @@ both situation.</p>
 <dd></dd>
 <dt><a href="#QueryFetchStatus">QueryFetchStatus</a> : <code>&quot;loading&quot;</code> | <code>&quot;loaded&quot;</code> | <code>&quot;pending&quot;</code> | <code>&quot;failed&quot;</code></dt>
 <dd></dd>
+<dt><a href="#QueriesStateSlice">QueriesStateSlice</a> : <code>Record.&lt;Doctype, QueryState&gt;</code></dt>
+<dd></dd>
+<dt><a href="#IndexedDocuments">IndexedDocuments</a> : <code>Record.&lt;string, CozyClientDocument&gt;</code></dt>
+<dd></dd>
+<dt><a href="#DocumentsStateSlice">DocumentsStateSlice</a> : <code>Record.&lt;Doctype, IndexedDocuments&gt;</code></dt>
+<dd></dd>
 <dt><a href="#QueryState">QueryState</a> : <code>object</code></dt>
+<dd></dd>
+<dt><a href="#AutoUpdateOptions">AutoUpdateOptions</a> : <code>object</code></dt>
+<dd></dd>
+<dt><a href="#QueryOptions">QueryOptions</a> : <code>object</code></dt>
 <dd></dd>
 <dt><a href="#FetchMoreAble">FetchMoreAble</a> : <code>object</code></dt>
 <dd></dd>
@@ -1024,6 +1063,7 @@ Responsible for
         * [.create(type, doc, [references], options)](#CozyClient+create) ⇒ <code>Promise</code>
         * [.getDocumentSavePlan(document, [referencesByName])](#CozyClient+getDocumentSavePlan) ⇒ <code>Array.&lt;Mutation&gt;</code> \| <code>Mutation</code>
         * [.destroy(document)](#CozyClient+destroy) ⇒ [<code>Promise.&lt;CozyClientDocument&gt;</code>](#CozyClientDocument)
+        * [.ensureQueryExists(queryId, queryDefinition, [options])](#CozyClient+ensureQueryExists)
         * [.query(queryDefinition, [options])](#CozyClient+query) ⇒ <code>Promise.&lt;QueryResult&gt;</code>
         * [.queryAll(queryDefinition, options)](#CozyClient+queryAll) ⇒ <code>Promise.&lt;Array&gt;</code>
         * [.mutate(mutationDefinition, [options])](#CozyClient+mutate) ⇒ <code>Promise</code>
@@ -1043,8 +1083,6 @@ Responsible for
         * [.handleRevocationChange()](#CozyClient+handleRevocationChange)
         * [.handleTokenRefresh()](#CozyClient+handleTokenRefresh)
         * [.createClient()](#CozyClient+createClient)
-        * [.generateId(queryDefinition)](#CozyClient+generateId) ⇒ <code>string</code>
-        * [.generateRandomId()](#CozyClient+generateRandomId)
         * [.getInstanceOptions()](#CozyClient+getInstanceOptions) ⇒ <code>object</code>
         * [.loadInstanceOptionsFromDOM([selector])](#CozyClient+loadInstanceOptionsFromDOM) ⇒ <code>void</code>
         * [.setData(data)](#CozyClient+setData)
@@ -1270,6 +1308,19 @@ Destroys a document. {before,after}:destroy hooks will be fired.
 | --- | --- | --- |
 | document | [<code>CozyClientDocument</code>](#CozyClientDocument) | Document to be deleted |
 
+<a name="CozyClient+ensureQueryExists"></a>
+
+### cozyClient.ensureQueryExists(queryId, queryDefinition, [options])
+Makes sure that the query exists in the store
+
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| queryId | <code>string</code> | Id of the query |
+| queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) | Definition of the query |
+| [options] | [<code>QueryOptions</code>](#QueryOptions) | Additional options |
+
 <a name="CozyClient+query"></a>
 
 ### cozyClient.query(queryDefinition, [options]) ⇒ <code>Promise.&lt;QueryResult&gt;</code>
@@ -1284,10 +1335,7 @@ executes its query when mounted if no fetch policy has been indicated.
 | Param | Type | Description |
 | --- | --- | --- |
 | queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) | Definition that will be executed |
-| [options] | <code>object</code> | Options |
-| [options.as] | <code>string</code> | Names the query so it can be reused (by multiple components for example) |
-| [options.fetchPolicy] | <code>function</code> | Fetch policy to bypass fetching based on what's already inside the state. See "Fetch policies" |
-| [options.update] | <code>string</code> | Does not seem to be used |
+| [options] | [<code>QueryOptions</code>](#QueryOptions) | Options |
 
 <a name="CozyClient+queryAll"></a>
 
@@ -1502,27 +1550,6 @@ revocation and token refresh.
 If `oauth` options are passed, stackClient is an OAuthStackClient.
 
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
-<a name="CozyClient+generateId"></a>
-
-### cozyClient.generateId(queryDefinition) ⇒ <code>string</code>
-Generates an id for queries
-If the query is a getById only query,
-we can generate a name for it.
-
-If not, let's generate a random id
-
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) | The query definition |
-
-<a name="CozyClient+generateRandomId"></a>
-
-### cozyClient.generateRandomId()
-Generates a random id for unamed querie
-
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 <a name="CozyClient+getInstanceOptions"></a>
 
 ### cozyClient.getInstanceOptions() ⇒ <code>object</code>
@@ -1645,7 +1672,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
     * [.checkSelector(selector)](#QueryDefinition+checkSelector) ⇒ <code>void</code>
     * [.getById(id)](#QueryDefinition+getById) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.getByIds(ids)](#QueryDefinition+getByIds) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
-    * [.where(selector)](#QueryDefinition+where) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
+    * [.where(selector, options)](#QueryDefinition+where) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.select(fields)](#QueryDefinition+select) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.indexFields(indexedFields)](#QueryDefinition+indexFields) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.partialIndex(partialFilter)](#QueryDefinition+partialIndex)
@@ -1735,7 +1762,7 @@ Query several documents on their ids.
 
 <a name="QueryDefinition+where"></a>
 
-### queryDefinition.where(selector) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
+### queryDefinition.where(selector, options) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
 Query documents with a [mango selector](http://docs.couchdb.org/en/latest/api/database/find.html#find-selectors).
 Each field passed in the selector will be indexed, except if the indexField option is used.
 
@@ -1745,6 +1772,7 @@ Each field passed in the selector will be indexed, except if the indexField opti
 | Param | Type | Description |
 | --- | --- | --- |
 | selector | [<code>MangoSelector</code>](#MangoSelector) | The Mango selector. |
+| options | [<code>WhereOptions</code>](#WhereOptions) | Options for where |
 
 <a name="QueryDefinition+select"></a>
 
@@ -1907,24 +1935,55 @@ const schema = new Schema({
 **Kind**: global class  
 
 * [Schema](#Schema)
-    * [.getDoctypeSchema()](#Schema+getDoctypeSchema)
-    * [.getRelationship()](#Schema+getRelationship)
+    * [new Schema(schemaDefinition, client)](#new_Schema_new)
+    * [.add(schemaDefinition)](#Schema+add)
+    * [.getDoctypeSchema(doctype)](#Schema+getDoctypeSchema)
+    * [.getRelationship(doctype, relationshipName)](#Schema+getRelationship)
     * [.validate()](#Schema+validate)
+
+<a name="new_Schema_new"></a>
+
+### new Schema(schemaDefinition, client)
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| schemaDefinition | [<code>SchemaDefinition</code>](#SchemaDefinition) |  | Schema for the application documents |
+| client | <code>object</code> | <code></code> | An instance of cozy client (optional) |
+
+<a name="Schema+add"></a>
+
+### schema.add(schemaDefinition)
+**Kind**: instance method of [<code>Schema</code>](#Schema)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| schemaDefinition | [<code>SchemaDefinition</code>](#SchemaDefinition) | Additional schema to merge to current schema |
 
 <a name="Schema+getDoctypeSchema"></a>
 
-### schema.getDoctypeSchema()
+### schema.getDoctypeSchema(doctype)
 Returns the schema for a doctype
 
 Creates an empty schema implicitly if it does not exist
 
 **Kind**: instance method of [<code>Schema</code>](#Schema)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doctype | <code>string</code> | Doctype |
+
 <a name="Schema+getRelationship"></a>
 
-### schema.getRelationship()
+### schema.getRelationship(doctype, relationshipName)
 Returns the relationship for a given doctype/name
 
 **Kind**: instance method of [<code>Schema</code>](#Schema)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doctype | <code>string</code> | Doctype |
+| relationshipName | <code>string</code> | Relationship name |
+
 <a name="Schema+validate"></a>
 
 ### schema.validate()
@@ -2903,6 +2962,20 @@ Merges query selectors with query partial indexes
 | --- | --- | --- |
 | queryDefinition | <code>object</code> | A query definition |
 
+<a name="initQuery"></a>
+
+## initQuery
+Create the query states in the store. Queries are indexed
+in the store by queryId
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| queryId | <code>string</code> | Name/id of the query |
+| queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) | Definition of the created query |
+| [options] | [<code>QueryOptions</code>](#QueryOptions) | Options for the created query |
+
 <a name="isQueryLoading"></a>
 
 ## isQueryLoading
@@ -3046,6 +3119,7 @@ Fetches a queryDefinition and returns the queryState
 | queryDefinition | <code>object</code> | Definition created with Q() |
 | options | <code>object</code> | Options |
 | options.as | <code>object</code> | Name for the query [required] |
+| options.enabled | <code>boolean</code> | If set to false, the query won't be executed |
 | options.fetchPolicy | <code>object</code> | Fetch policy |
 | options.singleDocData | <code>object</code> | If true, the "data" returned will be a single doc instead of an array for single doc queries. Defaults to false for backward compatibility but will be set to true in the future. |
 
@@ -3198,6 +3272,95 @@ internal store updated.
 | --- | --- | --- |
 | options | <code>object</code> | Options |
 | options.doctype | <code>string</code> | The doctype to watch |
+
+<a name="getSelectorFilterFn"></a>
+
+## getSelectorFilterFn(queryDefinition) ⇒ <code>function</code>
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) | A query definition |
+
+
+* [getSelectorFilterFn(queryDefinition)](#getSelectorFilterFn) ⇒ <code>function</code>
+    * [~siftQuery](#getSelectorFilterFn..siftQuery) : <code>object</code>
+    * [~siftQuery](#getSelectorFilterFn..siftQuery) : <code>object</code>
+
+<a name="getSelectorFilterFn..siftQuery"></a>
+
+### getSelectorFilterFn~siftQuery : <code>object</code>
+**Kind**: inner constant of [<code>getSelectorFilterFn</code>](#getSelectorFilterFn)  
+<a name="getSelectorFilterFn..siftQuery"></a>
+
+### getSelectorFilterFn~siftQuery : <code>object</code>
+**Kind**: inner constant of [<code>getSelectorFilterFn</code>](#getSelectorFilterFn)  
+<a name="getQueryDocumentsChecker"></a>
+
+## getQueryDocumentsChecker(query) ⇒ <code>function</code>
+Returns a predicate function that checks if a document should be
+included in the result of the query.
+
+**Kind**: global function  
+**Returns**: <code>function</code> - Predicate function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| query | [<code>QueryState</code>](#QueryState) | Definition of the query |
+
+<a name="updateData"></a>
+
+## updateData(query, newData, documents) ⇒ [<code>QueryState</code>](#QueryState)
+Updates query state when new data comes in
+
+**Kind**: global function  
+**Returns**: [<code>QueryState</code>](#QueryState) - - Updated query state  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| query | [<code>QueryState</code>](#QueryState) | Current query state |
+| newData | [<code>Array.&lt;CozyClientDocument&gt;</code>](#CozyClientDocument) | New documents (in most case from the server) |
+| documents | [<code>DocumentsStateSlice</code>](#DocumentsStateSlice) | A reference to the documents slice |
+
+<a name="autoQueryUpdater"></a>
+
+## autoQueryUpdater(action, documents) ⇒ <code>function</code>
+Creates a function that returns an updated query state
+from an action
+
+**Kind**: global function  
+**Returns**: <code>function</code> - - Updater query state  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| action | <code>object</code> | A redux action |
+| documents | [<code>DocumentsStateSlice</code>](#DocumentsStateSlice) | Reference to documents slice |
+
+<a name="manualQueryUpdater"></a>
+
+## manualQueryUpdater(action, documents) ⇒ <code>function</code>
+Creates a function that returns an updated query state
+from an action
+
+**Kind**: global function  
+**Returns**: <code>function</code> - - Updater query state  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| action | <code>object</code> | A redux action |
+| documents | [<code>DocumentsStateSlice</code>](#DocumentsStateSlice) | Reference to documents slice |
+
+<a name="queries"></a>
+
+## queries(state, action, documents, haveDocumentsChanged)
+**Kind**: global function  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| state | [<code>QueriesStateSlice</code>](#QueriesStateSlice) |  | Redux slice containing all the query states indexed by name |
+| action | <code>object</code> |  | Income redux action |
+| documents | [<code>DocumentsStateSlice</code>](#DocumentsStateSlice) |  | Reference to documents slice |
+| haveDocumentsChanged | <code>boolean</code> | <code>true</code> | Has the document slice changed with current action |
 
 <a name="cancelable"></a>
 
@@ -3434,6 +3597,15 @@ Returns the query from the store with hydrated documents.
 
 ## Cursor : <code>Array</code>
 **Kind**: global typedef  
+<a name="WhereOptions"></a>
+
+## WhereOptions : <code>object</code>
+**Kind**: global typedef  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| merge | <code>boolean</code> | Should selector be merged with existing selector |
+
 <a name="RegistryApp"></a>
 
 ## RegistryApp : <code>object</code>
@@ -3446,6 +3618,14 @@ Returns the query from the store with hydrated documents.
 | terms | <code>object</code> | 
 | installed | <code>boolean</code> | 
 
+<a name="DoctypeSchema"></a>
+
+## DoctypeSchema : <code>object</code>
+**Kind**: global typedef  
+<a name="SchemaDefinition"></a>
+
+## SchemaDefinition : <code>Record.&lt;string, DoctypeSchema&gt;</code>
+**Kind**: global typedef  
 <a name="MockQueryOptions"></a>
 
 ## MockQueryOptions ⇒ [<code>CozyClient</code>](#CozyClient)
@@ -3478,6 +3658,18 @@ Setups a client suitable for testing
 
 ## QueryFetchStatus : <code>&quot;loading&quot;</code> \| <code>&quot;loaded&quot;</code> \| <code>&quot;pending&quot;</code> \| <code>&quot;failed&quot;</code>
 **Kind**: global typedef  
+<a name="QueriesStateSlice"></a>
+
+## QueriesStateSlice : <code>Record.&lt;Doctype, QueryState&gt;</code>
+**Kind**: global typedef  
+<a name="IndexedDocuments"></a>
+
+## IndexedDocuments : <code>Record.&lt;string, CozyClientDocument&gt;</code>
+**Kind**: global typedef  
+<a name="DocumentsStateSlice"></a>
+
+## DocumentsStateSlice : <code>Record.&lt;Doctype, IndexedDocuments&gt;</code>
+**Kind**: global typedef  
 <a name="QueryState"></a>
 
 ## QueryState : <code>object</code>
@@ -3496,6 +3688,32 @@ Setups a client suitable for testing
 | count | <code>number</code> | 
 | data | <code>object</code> \| <code>Array</code> | 
 | bookmark | <code>string</code> | 
+| execution_stats | <code>object</code> | 
+| options | [<code>QueryOptions</code>](#QueryOptions) | 
+
+<a name="AutoUpdateOptions"></a>
+
+## AutoUpdateOptions : <code>object</code>
+**Kind**: global typedef  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| update | <code>boolean</code> | Should documents be updated in the query (default: true) |
+| add | <code>boolean</code> | Should documents be added to the query (default: true) |
+| remove | <code>boolean</code> | Should documents be added to the query (default: true) |
+
+<a name="QueryOptions"></a>
+
+## QueryOptions : <code>object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| [as] | <code>string</code> | Name of the query |
+| [fetchPolicy] | <code>function</code> | Fetch policy to bypass fetching based on what's already inside the state. See "Fetch policies" |
+| [autoUpdate] | [<code>AutoUpdateOptions</code>](#AutoUpdateOptions) | Options for the query auto update |
+| [options.update] | <code>string</code> | Does not seem to be used |
 
 <a name="FetchMoreAble"></a>
 
@@ -3553,6 +3771,7 @@ A document
 | --- | --- | --- |
 | [_id] | <code>string</code> | Id of the document |
 | [_type] | <code>string</code> | Type of the document |
+| [_deleted] | <code>string</code> | When the document has been deleted |
 | [relationships] | <code>object</code> | Relationships of the document |
 
 <a name="IOCozyFile"></a>
