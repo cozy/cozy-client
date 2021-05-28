@@ -10,6 +10,8 @@
         "ignoreRestSiblings": true
       }
     ],
+    "jsdoc/check-types": 0, // Types are checked via typescript
+    "jsdoc/valid-types": 0, // Types are checked via typescript
     "jsdoc/require-jsdoc": 0, // --fix adds empty jsdocs 
     "jsdoc/require-param": 0, // --fix breaks docstrings without params
     "jsdoc/require-returns": 0, // too much warnings for now
@@ -19,7 +21,8 @@
   "settings": {
     "jsdoc": {
       "preferredTypes": {
-        "object.<>": "Object.<>"
+        "object.<>": "Object.<>", // For Typescript compatibility
+	"Record": "Record" // So that TS Record is configured as defined by linter
       }
     },
     "react": {

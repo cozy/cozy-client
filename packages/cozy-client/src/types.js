@@ -36,6 +36,18 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
+ * @typedef {Record<Doctype, QueryState>} QueriesStateSlice
+ */
+
+/**
+ * @typedef {Record<string, CozyClientDocument>} IndexedDocuments
+ */
+
+/**
+ * @typedef {Record<Doctype, IndexedDocuments>} DocumentsStateSlice
+ */
+
+/**
  * @typedef {object} QueryState
  * @property {string} id
  * @property {QueryDefinition} definition

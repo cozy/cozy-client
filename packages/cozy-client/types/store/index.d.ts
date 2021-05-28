@@ -11,7 +11,30 @@ export function createStore(): import("redux").Store<import("redux").CombinedSta
     cozy: {
         documents: any;
         queries: {
-            [x: string]: any;
+            [x: string]: import("../types").QueryState | {
+                id: any;
+                definition: any;
+                fetchStatus: string;
+                lastFetch: any;
+                lastUpdate: any;
+                lastError: any;
+                hasMore: boolean;
+                count: number;
+                data: any[];
+                bookmark: any;
+            } | {
+                bookmark: any;
+                hasMore: any;
+                count: any;
+                data: any[];
+                execution_stats: any;
+                fetchStatus: string;
+                lastFetch: number;
+                lastUpdate: number;
+                id: any;
+                definition: any;
+                lastError: any;
+            };
         };
     };
 }>, import("redux").AnyAction> & {
@@ -29,7 +52,30 @@ declare function combinedReducer(state: {
 }, action: any): {
     documents: any;
     queries: {
-        [x: string]: any;
+        [x: string]: import("../types").QueryState | {
+            id: any;
+            definition: any;
+            fetchStatus: string;
+            lastFetch: any;
+            lastUpdate: any;
+            lastError: any;
+            hasMore: boolean;
+            count: number;
+            data: any[];
+            bookmark: any;
+        } | {
+            bookmark: any;
+            hasMore: any;
+            count: any;
+            data: any[];
+            execution_stats: any;
+            fetchStatus: string;
+            lastFetch: number;
+            lastUpdate: number;
+            id: any;
+            definition: any;
+            lastError: any;
+        };
     };
 };
 export function resetState(): {

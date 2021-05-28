@@ -88,8 +88,8 @@ const ensureCanBeAdded = (newSchemas, existingSchemas) => {
  */
 class Schema {
   /**
-   * @param  {SchemaDefinition} schemaDefinition
-   * @param  {object} client
+   * @param  {SchemaDefinition} schemaDefinition - Schema for the application documents
+   * @param  {object} client - An instance of cozy client (optional)
    */
   constructor(schemaDefinition = {}, client = null) {
     this.byDoctype = {}

@@ -17,7 +17,13 @@ import { getDocumentFromSlice } from './documents'
 import { isReceivingMutationResult } from './mutations'
 import { properId } from './helpers'
 import { isAGetByIdQuery, QueryDefinition } from '../queries/dsl'
-import { QueryState, CozyClientDocument, QueryOptions } from '../types'
+import {
+  QueryState,
+  QueriesStateSlice,
+  DocumentsStateSlice,
+  CozyClientDocument,
+  QueryOptions
+} from '../types'
 
 const INIT_QUERY = 'INIT_QUERY'
 const LOAD_QUERY = 'LOAD_QUERY'
@@ -51,12 +57,12 @@ const queryInitialState = {
   bookmark: null
 }
 
-const updateQueryDataFromResponse = (queryState, response, nextDocuments) => {
+const updateQueryDataFromResponse = (queryState, response, documents) => {
   let updatedIds = uniq([...queryState.data, ...response.data.map(properId)])
   if (queryState.definition.sort) {
     const sorter = makeSorterFromDefinition(queryState.definition)
     const doctype = queryState.definition.doctype
-    const allDocs = nextDocuments[doctype]
+    const allDocs = documents[doctype]
     const docs = updatedIds.map(_id => allDocs[_id])
     const sortedDocs = sorter(docs)
     updatedIds = sortedDocs.map(properId)
@@ -64,7 +70,7 @@ const updateQueryDataFromResponse = (queryState, response, nextDocuments) => {
   return updatedIds
 }
 
-const query = (state = queryInitialState, action, nextDocuments) => {
+const query = (state = queryInitialState, action, documents) => {
   switch (action.type) {
     case INIT_QUERY:
       if (
@@ -122,7 +128,7 @@ const query = (state = queryInitialState, action, nextDocuments) => {
           response.meta && response.meta.count
             ? response.meta.count
             : response.data.length,
-        data: updateQueryDataFromResponse(state, response, nextDocuments)
+        data: updateQueryDataFromResponse(state, response, documents)
       }
     }
     case RECEIVE_QUERY_ERROR:
@@ -168,7 +174,7 @@ export const mergeSelectorAndPartialIndex = queryDefinition => ({
 })
 
 /**
- * @param  {QueryDefinition} queryDefinition
+ * @param  {QueryDefinition} queryDefinition - A query definition
  * @returns {function(CozyClientDocument): boolean}
  */
 const getSelectorFilterFn = queryDefinition => {
@@ -225,7 +231,7 @@ const makeCaseInsensitiveStringSorter = attrName => item => {
  * Used to sort query results inside the store when creating a file or
  * receiving updates.
  *
- * @param {QueryDefinition} definition
+ * @param {QueryDefinition} definition - A query definition
  * @returns {function(Array<CozyClientDocument>): Array<CozyClientDocument>}
  *
  * @private
@@ -254,10 +260,10 @@ export const makeSorterFromDefinition = definition => {
  *
  * @param  {QueryState} query - Current query state
  * @param  {Array<CozyClientDocument>} newData - New documents (in most case from the server)
- * @param  {Array<CozyClientDocument>} nextDocuments
+ * @param  {DocumentsStateSlice} documents - A reference to the documents slice
  * @returns {QueryState} - Updated query state
  */
-const updateData = (query, newData, nextDocuments) => {
+const updateData = (query, newData, documents) => {
   const belongsToQuery = getQueryDocumentsChecker(query)
   const res = mapValues(groupBy(newData, belongsToQuery), docs =>
     docs.map(properId)
@@ -281,9 +287,9 @@ const updateData = (query, newData, nextDocuments) => {
   // It is also faster than union.
   let updatedData = difference(concat(originalIds, toAdd), toRemove)
 
-  if (query.definition.sort && nextDocuments) {
+  if (query.definition.sort && documents) {
     const sorter = makeSorterFromDefinition(query.definition)
-    const allDocs = nextDocuments[query.definition.doctype]
+    const allDocs = documents[query.definition.doctype]
     const docs = updatedData.map(_id => allDocs[_id])
     const sortedDocs = sorter(docs)
     updatedData = sortedDocs.map(properId)
@@ -297,7 +303,15 @@ const updateData = (query, newData, nextDocuments) => {
   }
 }
 
-const autoQueryUpdater = (action, nextDocuments) => query => {
+/**
+ * Creates a function that returns an updated query state
+ * from an action
+ *
+ * @param  {object} action - A redux action
+ * @param  {DocumentsStateSlice} documents - Reference to documents slice
+ * @returns {function(QueryState): QueryState} - Updater query state
+ */
+const autoQueryUpdater = (action, documents) => query => {
   let data = get(action, 'response.data') || get(action, 'definition.document')
 
   if (!data) return query
@@ -313,9 +327,17 @@ const autoQueryUpdater = (action, nextDocuments) => query => {
     return query
   }
 
-  return updateData(query, data, nextDocuments)
+  return updateData(query, data, documents)
 }
 
+/**
+ * Creates a function that returns an updated query state
+ * from an action
+ *
+ * @param  {object} action - A redux action
+ * @param  {DocumentsStateSlice} documents - Reference to documents slice
+ * @returns {function(QueryState): QueryState} - Updater query state
+ */
 const manualQueryUpdater = (action, documents) => query => {
   const updateQueries = action.updateQueries
   const response = action.response
@@ -338,19 +360,15 @@ const manualQueryUpdater = (action, documents) => query => {
 }
 
 /**
- * @typedef {Record<string, QueryState>} QueryStates
- */
-
-/**
- * @param  {QueryStates}  state - Redux slice containing all the query states indexed by name
+ * @param  {QueriesStateSlice}  state - Redux slice containing all the query states indexed by name
  * @param  {object}  action - Income redux action
- * @param  {object}  nextDocuments
- * @param  {boolean} haveDocumentsChanged
+ * @param  {DocumentsStateSlice}  documents - Reference to documents slice
+ * @param  {boolean} haveDocumentsChanged - Has the document slice changed with current action
  */
 const queries = (
   state = {},
   action,
-  nextDocuments = {},
+  documents = {},
   haveDocumentsChanged = true
 ) => {
   if (action.type == INIT_QUERY) {
@@ -365,10 +383,10 @@ const queries = (
     }
   }
   if (isQueryAction(action)) {
-    const updater = autoQueryUpdater(action, nextDocuments)
+    const updater = autoQueryUpdater(action, documents)
     return mapValues(state, queryState => {
       if (queryState.id == action.queryId) {
-        return query(queryState, action, nextDocuments)
+        return query(queryState, action, documents)
       } else if (haveDocumentsChanged) {
         return updater(queryState)
       } else {
@@ -378,8 +396,8 @@ const queries = (
   }
   if (isReceivingMutationResult(action)) {
     const updater = action.updateQueries
-      ? manualQueryUpdater(action, nextDocuments)
-      : autoQueryUpdater(action, nextDocuments)
+      ? manualQueryUpdater(action, documents)
+      : autoQueryUpdater(action, documents)
     return mapValues(state, updater)
   }
   return state
@@ -391,8 +409,8 @@ export default queries
  * in the store by queryId
  *
  * @param  {string} queryId  Name/id of the query
- * @param  {QueryDefinition} queryDefinition
- * @param  {QueryOptions} [options]
+ * @param  {QueryDefinition} queryDefinition - Definition of the created query
+ * @param  {QueryOptions} [options] - Options for the created query
  */
 export const initQuery = (queryId, queryDefinition, options = null) => {
   if (!queryDefinition.doctype) {

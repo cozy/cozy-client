@@ -19,7 +19,16 @@ export type ClientResponse = any;
 export type Manifest = any;
 export type OldCozyClient = any;
 export type NodeEnvironment = any;
-export type QueryFetchStatus = "loading" | "loaded" | "pending" | "failed";
+export type QueryFetchStatus = "failed" | "loading" | "pending" | "loaded";
+export type QueriesStateSlice = {
+    [x: string]: QueryState;
+};
+export type IndexedDocuments = {
+    [x: string]: CozyClientDocument;
+};
+export type DocumentsStateSlice = {
+    [x: string]: Record<string, CozyClientDocument>;
+};
 export type QueryState = {
     id: string;
     definition: QueryDefinition;

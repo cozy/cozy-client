@@ -46,22 +46,41 @@ export class QueryIDGenerator {
 export namespace QueryIDGenerator {
     const UNNAMED: string;
 }
-export type QueryStates = {
-    [x: string]: QueryState;
-};
 import { QueryDefinition } from "../queries/dsl";
 import { CozyClientDocument } from "../types";
 /**
- * @typedef {Record<string, QueryState>} QueryStates
- */
-/**
- * @param  {QueryStates}  state - Redux slice containing all the query states indexed by name
+ * @param  {QueriesStateSlice}  state - Redux slice containing all the query states indexed by name
  * @param  {object}  action - Income redux action
- * @param  {object}  nextDocuments
- * @param  {boolean} haveDocumentsChanged
+ * @param  {DocumentsStateSlice}  documents - Reference to documents slice
+ * @param  {boolean} haveDocumentsChanged - Has the document slice changed with current action
  */
-declare function queries(state: QueryStates, action: object, nextDocuments?: object, haveDocumentsChanged?: boolean): {
-    [x: string]: any;
+declare function queries(state: QueriesStateSlice, action: object, documents?: DocumentsStateSlice, haveDocumentsChanged?: boolean): {
+    [x: string]: QueryState | {
+        id: any;
+        definition: any;
+        fetchStatus: string;
+        lastFetch: any;
+        lastUpdate: any;
+        lastError: any;
+        hasMore: boolean;
+        count: number;
+        data: any[];
+        bookmark: any;
+    } | {
+        bookmark: any;
+        hasMore: any;
+        count: any;
+        data: any[];
+        execution_stats: any;
+        fetchStatus: string;
+        lastFetch: number;
+        lastUpdate: number;
+        id: any;
+        definition: any;
+        lastError: any;
+    };
 };
 import { QueryOptions } from "../types";
+import { QueriesStateSlice } from "../types";
+import { DocumentsStateSlice } from "../types";
 import { QueryState } from "../types";
