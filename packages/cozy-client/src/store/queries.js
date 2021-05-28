@@ -175,7 +175,7 @@ const getSelectorFilterFn = queryDefinition => {
     const selectors = mergeSelectorAndPartialIndex(queryDefinition)
     // sift does not work like couchdb when using { $gt: null } as a selector, so we use a custom operator
     sift.use({
-      $gtnull: (selectorValue, actualValue) => {
+      $gtnull: (_selectorValue, actualValue) => {
         return !!actualValue
       }
     })
