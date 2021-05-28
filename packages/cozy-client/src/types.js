@@ -47,6 +47,7 @@ import { QueryDefinition } from './queries/dsl'
  * @property {number} count
  * @property {object|Array} data
  * @property {string} bookmark
+ * @property {object} execution_stats
  * @property {QueryOptions} options
  */
 

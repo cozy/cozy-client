@@ -23,6 +23,7 @@ import ListItemText from 'cozy-ui/transpiled/react/ListItemText'
 import CozyContext from '../context'
 import useClient from '../hooks/useClient'
 
+import { QueryState } from '../types'
 import { NavSecondaryAction, ListGridItem } from './common'
 import PanelContent from './PanelContent'
 
@@ -165,7 +166,10 @@ const ObjectInspectorAndStringificator = ({ object }) => {
     </>
   )
 }
-const QueryState = ({ name }) => {
+const QueryStateView = ({ name }) => {
+  /**
+   * @type {QueryState}
+   */
   const queryState = useCozySelector(state => state.cozy.queries[name])
   const { data, options } = queryState
   const { lastFetch, lastUpdate } = useMemo(() => {
@@ -214,7 +218,7 @@ const QueryState = ({ name }) => {
             <TableRow>
               <TableCell>autoUpdate</TableCell>
               <TableCell>
-                {options && options.autoUpdate ? options.autoUpdate + '' : 'true'}
+                {options && options.autoUpdate ? JSON.stringify(options.autoUpdate) : 'null'}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -305,7 +309,7 @@ const QueryPanels = () => {
       <Box clone p={1}>
         <Grid item style={styles.panelRight}>
           <Typography variant="subtitle1">{selectedQuery}</Typography>
-          {selectedQuery ? <QueryState name={selectedQuery} /> : null}
+          {selectedQuery ? <QueryStateView name={selectedQuery} /> : null}
         </Grid>
       </Box>
     </>

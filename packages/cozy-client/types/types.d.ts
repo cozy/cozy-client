@@ -31,6 +31,7 @@ export type QueryState = {
     count: number;
     data: object | any[];
     bookmark: string;
+    execution_stats: object;
     options: QueryOptions;
 };
 export type AutoUpdateOptions = any;
