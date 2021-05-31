@@ -54,7 +54,7 @@
     "mockdate": "^2.0.2",
     "react": "16.14.0",
     "react-inspector": "5.1.0",
-    "react-redux": "^7.2.0",
+    "react-redux": "7.2.4",
     "react-test-renderer": "^16.12.0",
     "server-destroy": "^1.0.1",
     "typescript": "^4.1.5"
