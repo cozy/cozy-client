@@ -338,6 +338,12 @@ want to them to trigger an exception during tests.</p>
 <li>Resolves with the client after user authentication</li>
 </ul>
 </dd>
+<dt><a href="#FetchStatus">FetchStatus(props)</a></dt>
+<dd></dd>
+<dt><a href="#IndexedFields">IndexedFields(props)</a></dt>
+<dd></dd>
+<dt><a href="#makeMatcher">makeMatcher(search)</a> ⇒ <code>function</code></dt>
+<dd></dd>
 <dt><a href="#withClient">withClient(WrappedComponent)</a> ⇒ <code>function</code></dt>
 <dd><p>HOC to provide client from context as prop</p>
 </dd>
@@ -488,8 +494,6 @@ both situation.</p>
 <dt><a href="#MangoSelector">MangoSelector</a> : <code>object</code></dt>
 <dd></dd>
 <dt><a href="#Cursor">Cursor</a> : <code>Array</code></dt>
-<dd></dd>
-<dt><a href="#WhereOptions">WhereOptions</a> : <code>object</code></dt>
 <dd></dd>
 <dt><a href="#RegistryApp">RegistryApp</a> : <code>object</code></dt>
 <dd></dd>
@@ -1672,7 +1676,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
     * [.checkSelector(selector)](#QueryDefinition+checkSelector) ⇒ <code>void</code>
     * [.getById(id)](#QueryDefinition+getById) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.getByIds(ids)](#QueryDefinition+getByIds) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
-    * [.where(selector, options)](#QueryDefinition+where) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
+    * [.where(selector)](#QueryDefinition+where) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.select(fields)](#QueryDefinition+select) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.indexFields(indexedFields)](#QueryDefinition+indexFields) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
     * [.partialIndex(partialFilter)](#QueryDefinition+partialIndex)
@@ -1762,7 +1766,7 @@ Query several documents on their ids.
 
 <a name="QueryDefinition+where"></a>
 
-### queryDefinition.where(selector, options) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
+### queryDefinition.where(selector) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
 Query documents with a [mango selector](http://docs.couchdb.org/en/latest/api/database/find.html#find-selectors).
 Each field passed in the selector will be indexed, except if the indexField option is used.
 
@@ -1772,7 +1776,6 @@ Each field passed in the selector will be indexed, except if the indexField opti
 | Param | Type | Description |
 | --- | --- | --- |
 | selector | [<code>MangoSelector</code>](#MangoSelector) | The Mango selector. |
-| options | [<code>WhereOptions</code>](#WhereOptions) | Options for where |
 
 <a name="QueryDefinition+select"></a>
 
@@ -3028,6 +3031,33 @@ await createClientInteractive({
   }
 })
 ```
+<a name="FetchStatus"></a>
+
+## FetchStatus(props)
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| props | <code>Object</code> | 
+
+<a name="IndexedFields"></a>
+
+## IndexedFields(props)
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| props | <code>Object</code> | 
+
+<a name="makeMatcher"></a>
+
+## makeMatcher(search) ⇒ <code>function</code>
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| search | <code>string</code> | Search string |
+
 <a name="withClient"></a>
 
 ## withClient(WrappedComponent) ⇒ <code>function</code>
@@ -3597,15 +3627,6 @@ Returns the query from the store with hydrated documents.
 
 ## Cursor : <code>Array</code>
 **Kind**: global typedef  
-<a name="WhereOptions"></a>
-
-## WhereOptions : <code>object</code>
-**Kind**: global typedef  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| merge | <code>boolean</code> | Should selector be merged with existing selector |
-
 <a name="RegistryApp"></a>
 
 ## RegistryApp : <code>object</code>
@@ -3683,6 +3704,7 @@ Setups a client suitable for testing
 | fetchStatus | [<code>QueryFetchStatus</code>](#QueryFetchStatus) | 
 | lastFetch | <code>number</code> | 
 | lastUpdate | <code>number</code> | 
+| lastErrorUpdate | <code>number</code> | 
 | lastError | <code>Error</code> | 
 | hasMore | <code>boolean</code> | 
 | count | <code>number</code> | 
