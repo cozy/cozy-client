@@ -323,6 +323,7 @@ describe('Store', () => {
         lastFetch: null,
         lastUpdate: null,
         lastError: null,
+        lastErrorUpdate: null,
         hasMore: false,
         count: 0,
         data: null

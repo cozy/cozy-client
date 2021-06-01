@@ -182,6 +182,7 @@ describe('Query', () => {
           lastError: null,
           lastFetch: null,
           lastUpdate: null,
+          lastErrorUpdate: null,
           options: null
         },
         expect.any(Object)

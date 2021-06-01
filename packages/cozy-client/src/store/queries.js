@@ -50,6 +50,7 @@ const queryInitialState = {
   fetchStatus: 'pending',
   lastFetch: null,
   lastUpdate: null,
+  lastErrorUpdate: null,
   lastError: null,
   hasMore: false,
   count: 0,
@@ -136,7 +137,8 @@ const query = (state = queryInitialState, action, documents) => {
         ...state,
         id: action.queryId,
         fetchStatus: 'failed',
-        lastError: action.error
+        lastError: action.error,
+        lastErrorUpdate: new Date()
       }
     default:
       return state

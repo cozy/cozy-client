@@ -54,6 +54,7 @@ import { QueryDefinition } from './queries/dsl'
  * @property {QueryFetchStatus} fetchStatus
  * @property {number} lastFetch
  * @property {number} lastUpdate
+ * @property {number} lastErrorUpdate
  * @property {Error} lastError
  * @property {boolean} hasMore
  * @property {number} count

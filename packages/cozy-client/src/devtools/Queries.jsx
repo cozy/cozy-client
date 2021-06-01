@@ -285,9 +285,11 @@ const ExecutionTime = ({ queryState }) => {
 const QueryPanels = () => {
   const queries = useCozySelector(state => state.cozy.queries)
   const sortedQueries = useMemo(() => {
-    return sortBy(
-      queries ? Object.values(queries) : [],
-      queryState => queryState.lastUpdate
+    return sortBy(queries ? Object.values(queries) : [], queryState =>
+      Math.max(
+        queryState.lastUpdate || -Infinity,
+        queryState.lastErrorUpdate || -Infinity
+      )
     )
       .map(queryState => queryState.id)
       .reverse()
