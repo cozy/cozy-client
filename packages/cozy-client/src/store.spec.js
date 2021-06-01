@@ -318,7 +318,7 @@ describe('Store', () => {
       expect(getQueryFromStore(store, 'allTodos')).toEqual({
         bookmark: null,
         definition: null,
-        id: null,
+        id: 'allTodos',
         fetchStatus: 'pending',
         lastFetch: null,
         lastUpdate: null,

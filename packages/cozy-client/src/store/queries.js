@@ -452,7 +452,7 @@ const mapIdsToDocuments = (documents, doctype, ids) =>
 
 export const getQueryFromSlice = (state, queryId, documents) => {
   if (!state || !state[queryId]) {
-    return { ...queryInitialState, data: null }
+    return { ...queryInitialState, id: queryId, data: null }
   }
   const query = state[queryId]
   return documents
