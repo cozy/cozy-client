@@ -53,7 +53,13 @@ const getClassNameForExecutedTimesQuery = time => {
     return 'u-danger u-error'
   }
 }
-const FetchStatus = ({ fetchStatus }) => {
+
+/**
+ * @param  {{ queryState: QueryState }} props
+ */
+const FetchStatus = props => {
+  const { queryState } = props
+  const { fetchStatus, lastError } = queryState
   return (
     <span
       className={
@@ -67,6 +73,20 @@ const FetchStatus = ({ fetchStatus }) => {
       }
     >
       {fetchStatus}
+      {fetchStatus === 'failed' ? ` - ${lastError}` : null}
+    </span>
+  )
+}
+
+/**
+ * @param  {{ queryState: QueryState }} props
+ */
+const IndexedFields = props => {
+  const { queryState } = props
+  const { indexedFields } = queryState.definition
+  return (
+    <span className="u-primaryColor">
+      {indexedFields ? indexedFields.join(', ') : null}
     </span>
   )
 }
@@ -200,9 +220,15 @@ const QueryStateView = ({ name }) => {
               </TableCell>
             </TableRow>
             <TableRow>
+              <TableCell>indexFields</TableCell>
+              <TableCell>
+                <IndexedFields queryState={queryState} />
+              </TableCell>
+            </TableRow>
+            <TableRow>
               <TableCell>fetchStatus</TableCell>
               <TableCell>
-                <FetchStatus fetchStatus={queryState.fetchStatus} />
+                <FetchStatus queryState={queryState} />
               </TableCell>
             </TableRow>
             <TableRow>
