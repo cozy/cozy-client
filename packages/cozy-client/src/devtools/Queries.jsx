@@ -23,7 +23,7 @@ import ListItemText from 'cozy-ui/transpiled/react/ListItemText'
 import CozyContext from '../context'
 import useClient from '../hooks/useClient'
 
-import { QueryState } from '../types'
+import { QueryState, CozyClientDocument } from '../types'
 import { NavSecondaryAction, ListGridItem } from './common'
 import PanelContent from './PanelContent'
 
@@ -71,6 +71,10 @@ const FetchStatus = ({ fetchStatus }) => {
   )
 }
 
+/**
+ * @param  {string} search - Search string
+ * @returns {function(CozyClientDocument): Boolean}
+ */
 const makeMatcher = search => {
   const specs = search.split(';')
   const conditions = specs.map(spec => {
