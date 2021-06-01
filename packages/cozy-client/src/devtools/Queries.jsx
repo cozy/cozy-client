@@ -254,7 +254,7 @@ const QueryStateView = ({ name }) => {
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell>Exec. time</TableCell>
+              <TableCell>execution stats</TableCell>
               <TableCell>
                 <ObjectInspectorAndStringificator
                   object={queryState.execution_stats}
