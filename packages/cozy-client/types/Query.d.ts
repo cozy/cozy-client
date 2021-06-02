@@ -19,6 +19,7 @@ declare class Query extends Component<any, any, any> {
      * @type {Function}
      */
     queryUnsubscribe: Function;
+    executeQueryRespectingFetchPolicy(): void;
     onQueryChange: () => void;
     recomputeChildrenArgs(): void;
     childrenArgs: any[];
@@ -30,9 +31,14 @@ declare namespace Query {
     }
     namespace propTypes {
         const query: PropTypes.Validator<object>;
+        const enabled: PropTypes.Requireable<boolean>;
         const as: PropTypes.Requireable<string>;
         const children: PropTypes.Validator<(...args: any[]) => any>;
         const fetchPolicy: PropTypes.Requireable<(...args: any[]) => any>;
+    }
+    namespace defaultProps {
+        const enabled_1: boolean;
+        export { enabled_1 as enabled };
     }
 }
 export default Query;

@@ -149,7 +149,7 @@ declare class CozyClient {
          */
         store?: boolean;
     };
-    idCounter: number;
+    queryIdGenerator: QueryIDGenerator;
     isLogged: boolean;
     instanceOptions: {};
     /** Sets public attribute and emits event related to revocation */
@@ -336,7 +336,14 @@ declare class CozyClient {
      */
     destroy(document: CozyClientDocument, mutationOptions?: {}): Promise<CozyClientDocument>;
     upload(file: any, dirPath: any, mutationOptions?: {}): Promise<any>;
-    ensureQueryExists(queryId: any, queryDefinition: any): void;
+    /**
+     * Makes sure that the query exists in the store
+     *
+     * @param  {string} queryId - Id of the query
+     * @param  {QueryDefinition} queryDefinition - Definition of the query
+     * @param  {QueryOptions} [options] - Additional options
+     */
+    ensureQueryExists(queryId: string, queryDefinition: QueryDefinition, options?: QueryOptions): void;
     /**
      * Executes a query and returns its results.
      *
@@ -345,17 +352,10 @@ declare class CozyClient {
      * executes its query when mounted if no fetch policy has been indicated.
      *
      * @param  {QueryDefinition} queryDefinition - Definition that will be executed
-     * @param  {object} [options] - Options
-     * @param  {string} [options.as] - Names the query so it can be reused (by multiple components for example)
-     * @param  {Function} [options.fetchPolicy] - Fetch policy to bypass fetching based on what's already inside the state. See "Fetch policies"
-     * @param  {string} [options.update] - Does not seem to be used
+     * @param  {QueryOptions} [options] - Options
      * @returns {Promise<QueryResult>}
      */
-    query(queryDefinition: QueryDefinition, { update, ...options }?: {
-        as?: string;
-        fetchPolicy?: Function;
-        update?: string;
-    }): Promise<QueryResult>;
+    query(queryDefinition: QueryDefinition, { update, ...options }?: QueryOptions): Promise<QueryResult>;
     /**
      * Will fetch all documents for a `queryDefinition`, automatically fetching more
      * documents if the total of documents is superior to the pagination limit. Can
@@ -403,7 +403,7 @@ declare class CozyClient {
      */
     private fetchRelationships;
     requestMutation(definition: any): any;
-    getIncludesRelationships(queryDefinition: any): any;
+    getIncludesRelationships(queryDefinition: any): import("lodash").Dictionary<any>;
     /**
      * Returns documents with their relationships resolved according to their schema.
      * If related documents are not in the store, they will not be fetched automatically.
@@ -425,13 +425,16 @@ declare class CozyClient {
      * @returns {HydratedDocument}
      */
     hydrateDocument(document: CozyClientDocument, schemaArg?: Schema): HydratedDocument;
-    hydrateRelationships(document: any, schemaRelationships: any): any;
+    hydrateRelationships(document: any, schemaRelationships: any): {
+        [x: string]: any;
+    };
     /**
      * Creates (locally) a new document for the given doctype.
      * This document is hydrated : its relationships are there
      * and working.
      */
     makeNewDocument(doctype: any): any;
+    generateRandomId(): string;
     /**
      * Creates an association that is linked to the store.
      */
@@ -577,24 +580,9 @@ declare class CozyClient {
         queries: {};
     }, action: any) => {
         documents: any;
-        queries: any;
+        queries: Record<string, QueryState>;
     };
     dispatch(action: any): any;
-    /**
-     * Generates an id for queries
-     * If the query is a getById only query,
-     * we can generate a name for it.
-     *
-     * If not, let's generate a random id
-     *
-     * @param {QueryDefinition} queryDefinition The query definition
-     * @returns {string}
-     */
-    generateId(queryDefinition: QueryDefinition): string;
-    /**
-     * Generates a random id for unamed querie
-     */
-    generateRandomId(): string;
     /**
      * getInstanceOptions - Returns current instance options, such as domain or app slug
      *
@@ -627,12 +615,14 @@ declare namespace CozyClient {
 import { Token } from "./types";
 import { AppMetadata } from "./types";
 import { ClientCapabilities } from "./types";
+import { QueryIDGenerator } from "./store/queries";
 import Schema from "./Schema";
 import { DocumentCollection } from "./types";
 import { QueryDefinition } from "./queries/dsl";
 import { ReferenceMap } from "./types";
 import { Mutation } from "./types";
 import { CozyClientDocument } from "./types";
+import { QueryOptions } from "./types";
 import { QueryResult } from "./types";
 import ObservableQuery from "./ObservableQuery";
 import { HydratedDocument } from "./types";

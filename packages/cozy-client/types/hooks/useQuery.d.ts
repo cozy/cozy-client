@@ -7,6 +7,7 @@ export default useQuery;
  *
  * @param  {object} options - Options
  * @param  {object} options.as - Name for the query [required]
+ * @param  {boolean} options.enabled - If set to false, the query won't be executed
  * @param  {object} options.fetchPolicy - Fetch policy
  * @param  {object} options.singleDocData - If true, the "data" returned will be
  * a single doc instead of an array for single doc queries. Defaults to false for backward
@@ -16,6 +17,7 @@ export default useQuery;
  */
 declare function useQuery(queryDefinition: object, options: {
     as: object;
+    enabled: boolean;
     fetchPolicy: object;
     singleDocData: object;
 }): UseQueryReturnValue;

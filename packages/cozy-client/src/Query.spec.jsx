@@ -40,6 +40,18 @@ describe('Query', () => {
       expect(observableQuery.fetch).toHaveBeenCalled()
     })
 
+    it('should not fire a query fetch when mounted if enabled is set to false', () => {
+      mount(
+        <Query query={queryDef} enabled={false}>
+          {() => null}
+        </Query>,
+        {
+          context
+        }
+      )
+      expect(observableQuery.fetch).not.toHaveBeenCalled()
+    })
+
     it('should not fire a query fetch when mounted when fetchPolicy returns false', () => {
       const queryState = { lastUpdate: Date.now() }
       client.getQueryFromState = jest.fn().mockReturnValue(queryState)
@@ -66,12 +78,20 @@ describe('Query', () => {
         </CozyProvider>
       )
       const initQueryDispatch = {
+        options: { as: '1' },
         queryDefinition: { doctype: 'io.cozy.todos' },
         queryId: '1',
         type: 'INIT_QUERY'
       }
-      expect(spy).toHaveBeenNthCalledWith(1, initQueryDispatch)
+
+      // First call because of the getQueryFromState
+      expect(spy).toHaveBeenNthCalledWith(1, {
+        ...initQueryDispatch,
+        options: null
+      })
+      // Then because of the fetch
       expect(spy).toHaveBeenNthCalledWith(2, initQueryDispatch)
+      // Then it is the load event
       expect(spy).toHaveBeenCalledTimes(3)
     })
   })
@@ -173,7 +193,9 @@ describe('Query', () => {
           id: '1',
           lastError: null,
           lastFetch: null,
-          lastUpdate: null
+          lastUpdate: null,
+          lastErrorUpdate: null,
+          options: null
         },
         expect.any(Object)
       )

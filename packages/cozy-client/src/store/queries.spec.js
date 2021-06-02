@@ -144,6 +144,43 @@ describe('queries reducer', () => {
       expect(state).toMatchSnapshot()
     })
 
+    it('should not add documents to another query if autoUpdate.add was set to false', () => {
+      const query = Q('io.cozy.todos')
+      applyAction(
+        initQuery('b', query.where({ done: true }), {
+          autoUpdate: { add: false }
+        })
+      )
+      applyAction(
+        receiveQueryResult('a', {
+          data: [TODO_3]
+        })
+      )
+      expect(state.b.data.length).toBe(0)
+      expect(state).toMatchSnapshot()
+    })
+
+    it('should not remove documents from another query if autoUpdate.remove was set to false', () => {
+      const query = Q('io.cozy.todos')
+      applyAction(
+        initQuery('b', query.where({ done: true }), {
+          autoUpdate: { remove: false }
+        })
+      )
+      applyAction(
+        receiveQueryResult('a', {
+          data: [TODO_3]
+        })
+      )
+      applyAction(
+        receiveQueryResult('a', {
+          data: [{ ...TODO_3, done: false }]
+        })
+      )
+      expect(state.b.data.length).toBe(1)
+      expect(state).toMatchSnapshot()
+    })
+
     it('should not crash if data is null', () => {
       const query = Q('io.cozy.todos').getById('not-existing-doc')
       applyAction(initQuery('b', query))

@@ -10,7 +10,7 @@ export default combinedReducer;
 export function createStore(): import("redux").Store<import("redux").CombinedState<{
     cozy: {
         documents: any;
-        queries: any;
+        queries: Record<string, import("../types").QueryState>;
     };
 }>, import("redux").AnyAction> & {
     dispatch: any;
@@ -26,7 +26,7 @@ declare function combinedReducer(state: {
     queries: {};
 }, action: any): {
     documents: any;
-    queries: any;
+    queries: Record<string, import("../types").QueryState>;
 };
 export function resetState(): {
     type: string;

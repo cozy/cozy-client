@@ -39,6 +39,11 @@ const setupClient = ({ queries } = {}) => {
   return client
 }
 
+/**
+ * @private
+ * @param  {CozyClient} client - A client
+ * @returns {any}
+ */
 const makeWrapper = client => {
   const Wrapper = ({ children }) => (
     <ClientProvider client={client}>{children}</ClientProvider>

@@ -45,6 +45,27 @@ describe('use query', () => {
     })
   })
 
+  it('should query through the client in context', () => {
+    const { client } = setupQuery({
+      queryOptions: {
+        as: 'simpsons'
+      },
+      queryDefinition: () => Q('io.cozy.simpsons')
+    })
+    expect(client.query).toHaveBeenCalled()
+  })
+
+  it('should not query through the client in context if enabled is set to false', () => {
+    const { client } = setupQuery({
+      queryOptions: {
+        as: 'simpsons',
+        enabled: false
+      },
+      queryDefinition: () => Q('io.cozy.simpsons')
+    })
+    expect(client.query).not.toHaveBeenCalled()
+  })
+
   it('should return a single doc data for a single doc query if singleDocData is provided', () => {
     const {
       hookResult: {

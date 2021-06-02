@@ -6,6 +6,14 @@ import intersectionBy from 'lodash/intersectionBy'
 import { resolveClass as resolveAssociationClass } from './associations'
 
 /**
+ * @typedef {object} DoctypeSchema
+ */
+
+/**
+ * @typedef {Record<string, DoctypeSchema>} SchemaDefinition
+ */
+
+/**
  * Returns a normalized schema object from the schema definition.
  *
  * - Relationships are resolved to classes if needed
@@ -79,12 +87,19 @@ const ensureCanBeAdded = (newSchemas, existingSchemas) => {
  * ```
  */
 class Schema {
+  /**
+   * @param  {SchemaDefinition} schemaDefinition - Schema for the application documents
+   * @param  {object} client - An instance of cozy client (optional)
+   */
   constructor(schemaDefinition = {}, client = null) {
     this.byDoctype = {}
     this.add(schemaDefinition)
     this.client = client
   }
 
+  /**
+   * @param {SchemaDefinition} schemaDefinition - Additional schema to merge to current schema
+   */
   add(schemaDefinition = {}) {
     const normalizedSchemaDefinition = mapValues(
       schemaDefinition,
@@ -106,6 +121,8 @@ class Schema {
    * Returns the schema for a doctype
    *
    * Creates an empty schema implicitly if it does not exist
+   *
+   * @param {string} doctype - Doctype
    */
   getDoctypeSchema(doctype) {
     let schema = this.byDoctype[doctype]
@@ -121,6 +138,9 @@ class Schema {
 
   /**
    * Returns the relationship for a given doctype/name
+   *
+   * @param {string} doctype - Doctype
+   * @param {string} relationshipName - Relationship name
    */
   getRelationship(doctype, relationshipName) {
     if (!doctype) {

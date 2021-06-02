@@ -23,11 +23,12 @@ import ListItemText from 'cozy-ui/transpiled/react/ListItemText'
 import CozyContext from '../context'
 import useClient from '../hooks/useClient'
 
+import { QueryState, CozyClientDocument } from '../types'
 import { NavSecondaryAction, ListGridItem } from './common'
 import PanelContent from './PanelContent'
 
 /**
- * @type {object.<string, React.CSSProperties>}
+ * @type {Object.<string, React.CSSProperties>}
  * @private
  */
 const styles = {
@@ -52,7 +53,13 @@ const getClassNameForExecutedTimesQuery = time => {
     return 'u-danger u-error'
   }
 }
-const FetchStatus = ({ fetchStatus }) => {
+
+/**
+ * @param  {{ queryState: QueryState }} props
+ */
+const FetchStatus = props => {
+  const { queryState } = props
+  const { fetchStatus, lastError } = queryState
   return (
     <span
       className={
@@ -60,16 +67,34 @@ const FetchStatus = ({ fetchStatus }) => {
           ? 'u-valid'
           : fetchStatus === 'pending'
           ? 'u-warn'
-          : fetchStatus === 'error'
+          : fetchStatus === 'failed'
           ? 'u-error'
           : ''
       }
     >
       {fetchStatus}
+      {fetchStatus === 'failed' ? ` - ${lastError}` : null}
     </span>
   )
 }
 
+/**
+ * @param  {{ queryState: QueryState }} props
+ */
+const IndexedFields = props => {
+  const { queryState } = props
+  const { indexedFields } = queryState.definition
+  return (
+    <span className="u-primaryColor">
+      {indexedFields ? indexedFields.join(', ') : null}
+    </span>
+  )
+}
+
+/**
+ * @param  {string} search - Search string
+ * @returns {function(CozyClientDocument): Boolean}
+ */
 const makeMatcher = search => {
   const specs = search.split(';')
   const conditions = specs.map(spec => {
@@ -165,9 +190,12 @@ const ObjectInspectorAndStringificator = ({ object }) => {
     </>
   )
 }
-const QueryState = ({ name }) => {
+const QueryStateView = ({ name }) => {
+  /**
+   * @type {QueryState}
+   */
   const queryState = useCozySelector(state => state.cozy.queries[name])
-  const { data } = queryState
+  const { data, options } = queryState
   const { lastFetch, lastUpdate } = useMemo(() => {
     return {
       lastFetch: new Date(queryState.lastFetch),
@@ -192,9 +220,15 @@ const QueryState = ({ name }) => {
               </TableCell>
             </TableRow>
             <TableRow>
+              <TableCell>indexFields</TableCell>
+              <TableCell>
+                <IndexedFields queryState={queryState} />
+              </TableCell>
+            </TableRow>
+            <TableRow>
               <TableCell>fetchStatus</TableCell>
               <TableCell>
-                <FetchStatus fetchStatus={queryState.fetchStatus} />
+                <FetchStatus queryState={queryState} />
               </TableCell>
             </TableRow>
             <TableRow>
@@ -212,7 +246,15 @@ const QueryState = ({ name }) => {
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell>Exec. time</TableCell>
+              <TableCell>autoUpdate</TableCell>
+              <TableCell>
+                {options && options.autoUpdate
+                  ? JSON.stringify(options.autoUpdate)
+                  : 'null'}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>execution stats</TableCell>
               <TableCell>
                 <ObjectInspectorAndStringificator
                   object={queryState.execution_stats}
@@ -239,10 +281,18 @@ const QueryListItem = ({ name, selected, onClick }) => {
         primary={name}
         secondary={
           <>
+            {queryState.fetchStatus === 'failed' ? (
+              <>
+                <span className="u-error">failed</span> -{' '}
+              </>
+            ) : null}
             {queryState.execution_stats && (
-              <ExecutionTime queryState={queryState} />
+              <>
+                <ExecutionTime queryState={queryState} /> -{' '}
+              </>
             )}
-            {lastUpdate} - {queryState.data.length} docs
+            {lastUpdate ? <>{lastUpdate} -</> : null}
+            {queryState.data.length} docs
           </>
         }
       />
@@ -257,20 +307,19 @@ const ExecutionTime = ({ queryState }) => {
     queryState.execution_stats.execution_time_ms
   )
   return (
-    <>
-      {' - '}
-      <span className={classCSS}>
-        {Math.round(queryState.execution_stats.execution_time_ms)} ms
-      </span>
-    </>
+    <span className={classCSS}>
+      {Math.round(queryState.execution_stats.execution_time_ms)} ms
+    </span>
   )
 }
 const QueryPanels = () => {
   const queries = useCozySelector(state => state.cozy.queries)
   const sortedQueries = useMemo(() => {
-    return sortBy(
-      queries ? Object.values(queries) : [],
-      queryState => queryState.lastUpdate
+    return sortBy(queries ? Object.values(queries) : [], queryState =>
+      Math.max(
+        queryState.lastUpdate || -Infinity,
+        queryState.lastErrorUpdate || -Infinity
+      )
     )
       .map(queryState => queryState.id)
       .reverse()
@@ -300,7 +349,7 @@ const QueryPanels = () => {
       <Box clone p={1}>
         <Grid item style={styles.panelRight}>
           <Typography variant="subtitle1">{selectedQuery}</Typography>
-          {selectedQuery ? <QueryState name={selectedQuery} /> : null}
+          {selectedQuery ? <QueryStateView name={selectedQuery} /> : null}
         </Grid>
       </Box>
     </>

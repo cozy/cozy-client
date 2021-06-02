@@ -14,7 +14,10 @@ export type MockQueryOptions = any;
 export function setupClient({ queries }?: {
     queries: MockQueryOptions;
 }): CozyClient;
-export function makeWrapper(client: any): ({ children }: {
-    children: any;
-}) => JSX.Element;
+/**
+ * @private
+ * @param  {CozyClient} client - A client
+ * @returns {any}
+ */
+export function makeWrapper(client: CozyClient): any;
 import CozyClient from "../CozyClient";

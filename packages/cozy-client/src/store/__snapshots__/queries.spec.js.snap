@@ -26,8 +26,10 @@ Object {
     "hasMore": false,
     "id": "a",
     "lastError": null,
+    "lastErrorUpdate": null,
     "lastFetch": null,
     "lastUpdate": null,
+    "options": null,
   },
 }
 `;
@@ -61,8 +63,10 @@ Object {
     "hasMore": false,
     "id": "a",
     "lastError": null,
+    "lastErrorUpdate": null,
     "lastFetch": 1337,
     "lastUpdate": 1337,
+    "options": null,
   },
 }
 `;
@@ -95,8 +99,10 @@ Object {
     "hasMore": false,
     "id": "a",
     "lastError": null,
+    "lastErrorUpdate": null,
     "lastFetch": 1337,
     "lastUpdate": 1337,
+    "options": null,
   },
   "b": Object {
     "bookmark": null,
@@ -129,8 +135,10 @@ Object {
     "hasMore": false,
     "id": "b",
     "lastError": null,
+    "lastErrorUpdate": null,
     "lastFetch": null,
     "lastUpdate": 1337,
+    "options": null,
   },
 }
 `;
@@ -163,8 +171,10 @@ Object {
     "hasMore": false,
     "id": "a",
     "lastError": null,
+    "lastErrorUpdate": null,
     "lastFetch": 1337,
     "lastUpdate": 1337,
+    "options": null,
   },
   "b": Object {
     "bookmark": null,
@@ -194,8 +204,10 @@ Object {
     "hasMore": false,
     "id": "b",
     "lastError": null,
+    "lastErrorUpdate": null,
     "lastFetch": null,
     "lastUpdate": 1337,
+    "options": null,
   },
 }
 `;
@@ -229,8 +241,10 @@ Object {
     "hasMore": false,
     "id": "a",
     "lastError": null,
+    "lastErrorUpdate": null,
     "lastFetch": 1337,
     "lastUpdate": 1337,
+    "options": null,
   },
   "b": Object {
     "bookmark": null,
@@ -259,8 +273,81 @@ Object {
     "hasMore": false,
     "id": "b",
     "lastError": null,
+    "lastErrorUpdate": null,
     "lastFetch": null,
     "lastUpdate": 1337,
+    "options": null,
+  },
+}
+`;
+
+exports[`queries reducer updates should not add documents to another query if autoUpdate.add was set to false 1`] = `
+Object {
+  "a": Object {
+    "bookmark": null,
+    "count": 1,
+    "data": Array [
+      "todo_3",
+    ],
+    "definition": QueryDefinition {
+      "bookmark": undefined,
+      "cursor": undefined,
+      "doctype": "io.cozy.todos",
+      "fields": undefined,
+      "id": undefined,
+      "ids": undefined,
+      "includes": undefined,
+      "indexedFields": undefined,
+      "limit": undefined,
+      "partialFilter": undefined,
+      "referenced": undefined,
+      "selector": undefined,
+      "skip": undefined,
+      "sort": undefined,
+    },
+    "fetchStatus": "loaded",
+    "hasMore": false,
+    "id": "a",
+    "lastError": null,
+    "lastErrorUpdate": null,
+    "lastFetch": 1337,
+    "lastUpdate": 1337,
+    "options": null,
+  },
+  "b": Object {
+    "bookmark": null,
+    "count": 0,
+    "data": Array [],
+    "definition": QueryDefinition {
+      "bookmark": undefined,
+      "cursor": undefined,
+      "doctype": "io.cozy.todos",
+      "fields": undefined,
+      "id": undefined,
+      "ids": undefined,
+      "includes": undefined,
+      "indexedFields": undefined,
+      "limit": undefined,
+      "partialFilter": undefined,
+      "referenced": undefined,
+      "selector": Object {
+        "done": true,
+      },
+      "skip": undefined,
+      "sort": undefined,
+    },
+    "fetchStatus": "pending",
+    "hasMore": false,
+    "id": "b",
+    "lastError": null,
+    "lastErrorUpdate": null,
+    "lastFetch": null,
+    "lastUpdate": null,
+    "options": Object {
+      "autoUpdate": Object {
+        "add": false,
+      },
+    },
   },
 }
 `;
@@ -291,8 +378,10 @@ Object {
     "hasMore": false,
     "id": "a",
     "lastError": null,
+    "lastErrorUpdate": null,
     "lastFetch": null,
     "lastUpdate": null,
+    "options": null,
   },
   "b": Object {
     "bookmark": null,
@@ -318,8 +407,83 @@ Object {
     "hasMore": false,
     "id": "b",
     "lastError": null,
+    "lastErrorUpdate": null,
     "lastFetch": null,
     "lastUpdate": null,
+    "options": null,
+  },
+}
+`;
+
+exports[`queries reducer updates should not remove documents from another query if autoUpdate.remove was set to false 1`] = `
+Object {
+  "a": Object {
+    "bookmark": null,
+    "count": 1,
+    "data": Array [
+      "todo_3",
+    ],
+    "definition": QueryDefinition {
+      "bookmark": undefined,
+      "cursor": undefined,
+      "doctype": "io.cozy.todos",
+      "fields": undefined,
+      "id": undefined,
+      "ids": undefined,
+      "includes": undefined,
+      "indexedFields": undefined,
+      "limit": undefined,
+      "partialFilter": undefined,
+      "referenced": undefined,
+      "selector": undefined,
+      "skip": undefined,
+      "sort": undefined,
+    },
+    "fetchStatus": "loaded",
+    "hasMore": false,
+    "id": "a",
+    "lastError": null,
+    "lastErrorUpdate": null,
+    "lastFetch": 1337,
+    "lastUpdate": 1337,
+    "options": null,
+  },
+  "b": Object {
+    "bookmark": null,
+    "count": 1,
+    "data": Array [
+      "todo_3",
+    ],
+    "definition": QueryDefinition {
+      "bookmark": undefined,
+      "cursor": undefined,
+      "doctype": "io.cozy.todos",
+      "fields": undefined,
+      "id": undefined,
+      "ids": undefined,
+      "includes": undefined,
+      "indexedFields": undefined,
+      "limit": undefined,
+      "partialFilter": undefined,
+      "referenced": undefined,
+      "selector": Object {
+        "done": true,
+      },
+      "skip": undefined,
+      "sort": undefined,
+    },
+    "fetchStatus": "pending",
+    "hasMore": false,
+    "id": "b",
+    "lastError": null,
+    "lastErrorUpdate": null,
+    "lastFetch": null,
+    "lastUpdate": 1337,
+    "options": Object {
+      "autoUpdate": Object {
+        "remove": false,
+      },
+    },
   },
 }
 `;
@@ -352,8 +516,10 @@ Object {
     "hasMore": false,
     "id": "a",
     "lastError": null,
+    "lastErrorUpdate": null,
     "lastFetch": 1337,
     "lastUpdate": 1337,
+    "options": null,
   },
   "b": Object {
     "bookmark": null,
@@ -381,8 +547,10 @@ Object {
     "hasMore": false,
     "id": "b",
     "lastError": null,
+    "lastErrorUpdate": null,
     "lastFetch": null,
     "lastUpdate": null,
+    "options": null,
   },
 }
 `;

@@ -18,7 +18,7 @@ import {
   attachRelationships
 } from './associations/helpers'
 import { dehydrate } from './helpers'
-import { QueryDefinition, Mutations, Q, isAGetByIdQuery } from './queries/dsl'
+import { QueryDefinition, Mutations, Q } from './queries/dsl'
 import { authenticateWithCordova } from './authentication/mobile'
 import optimizeQueryDefinitions from './queries/optimize'
 import {
@@ -43,22 +43,24 @@ import ObservableQuery from './ObservableQuery'
 import { CozyClient as SnapshotClient } from './testing/snapshots'
 import logger from './logger'
 import {
+  AppMetadata,
+  ClientCapabilities,
+  ClientResponse,
+  CozyClientDocument,
+  DocumentCollection,
+  HydratedDocument,
   Link,
   Mutation,
-  DocumentCollection,
-  QueryResult,
-  CozyClientDocument,
-  HydratedDocument,
-  ReduxStore,
-  QueryState,
-  Token,
-  ClientResponse,
-  ReferenceMap,
-  OldCozyClient,
   NodeEnvironment,
-  AppMetadata,
-  ClientCapabilities
+  OldCozyClient,
+  QueryOptions,
+  QueryResult,
+  QueryState,
+  ReduxStore,
+  ReferenceMap,
+  Token
 } from './types'
+import { QueryIDGenerator } from './store/queries'
 
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
 
@@ -154,7 +156,7 @@ class CozyClient {
 
     this.options = options
 
-    this.idCounter = 1
+    this.queryIdGenerator = new QueryIDGenerator()
     this.isLogged = false
     this.instanceOptions = {}
 
@@ -775,7 +777,14 @@ client.query(Q('io.cozy.bills'))`)
     return this.mutate(Mutations.uploadFile(file, dirPath), mutationOptions)
   }
 
-  ensureQueryExists(queryId, queryDefinition) {
+  /**
+   * Makes sure that the query exists in the store
+   *
+   * @param  {string} queryId - Id of the query
+   * @param  {QueryDefinition} queryDefinition - Definition of the query
+   * @param  {QueryOptions} [options] - Additional options
+   */
+  ensureQueryExists(queryId, queryDefinition, options) {
     this.ensureStore()
     const existingQuery = getQueryFromState(this.store.getState(), queryId)
     // Don't trigger the INIT_QUERY for fetchMore() calls
@@ -783,7 +792,7 @@ client.query(Q('io.cozy.bills'))`)
       existingQuery.fetchStatus !== 'loaded' ||
       (!queryDefinition.skip && !queryDefinition.bookmark)
     ) {
-      this.dispatch(initQuery(queryId, queryDefinition))
+      this.dispatch(initQuery(queryId, queryDefinition, options))
     }
   }
 
@@ -795,15 +804,13 @@ client.query(Q('io.cozy.bills'))`)
    * executes its query when mounted if no fetch policy has been indicated.
    *
    * @param  {QueryDefinition} queryDefinition - Definition that will be executed
-   * @param  {object} [options] - Options
-   * @param  {string} [options.as] - Names the query so it can be reused (by multiple components for example)
-   * @param  {Function} [options.fetchPolicy] - Fetch policy to bypass fetching based on what's already inside the state. See "Fetch policies"
-   * @param  {string} [options.update] - Does not seem to be used
+   * @param  {QueryOptions} [options] - Options
    * @returns {Promise<QueryResult>}
    */
   async query(queryDefinition, { update, ...options } = {}) {
     this.ensureStore()
-    const queryId = options.as || this.generateId(queryDefinition)
+    const queryId =
+      options.as || this.queryIdGenerator.generateId(queryDefinition)
     const existingQuery = this.getQueryFromState(queryId)
 
     if (options.fetchPolicy) {
@@ -818,13 +825,13 @@ client.query(Q('io.cozy.bills'))`)
       }
     }
     // If we already have the same query in loading state, no
-    // need to refrech it
+    // need to refetch it
     if (existingQuery && Object.keys(existingQuery).length > 0) {
       if (existingQuery.fetchStatus === 'loading') {
         return
       }
     }
-    this.ensureQueryExists(queryId, queryDefinition)
+    this.ensureQueryExists(queryId, queryDefinition, options)
 
     try {
       this.dispatch(loadQuery(queryId))
@@ -874,7 +881,8 @@ client.query(Q('io.cozy.bills'))`)
 
   makeObservableQuery(queryDefinition, options = {}) {
     this.ensureStore()
-    const queryId = options.as || this.generateId(queryDefinition)
+    const queryId =
+      options.as || this.queryIdGenerator.generateId(queryDefinition)
     this.ensureQueryExists(queryId, queryDefinition)
     return new ObservableQuery(queryId, queryDefinition, this, options)
   }
@@ -891,7 +899,8 @@ client.query(Q('io.cozy.bills'))`)
    */
   async mutate(mutationDefinition, { update, updateQueries, ...options } = {}) {
     this.ensureStore()
-    const mutationId = options.as || this.generateId(mutationDefinition)
+    const mutationId =
+      options.as || this.queryIdGenerator.generateId(mutationDefinition)
     this.dispatch(initMutation(mutationId, mutationDefinition))
     try {
       const response = await this.requestMutation(mutationDefinition)
@@ -1099,6 +1108,10 @@ client.query(Q('io.cozy.bills'))`)
       _type: doctype
     }
     return this.hydrateDocument(obj)
+  }
+
+  generateRandomId() {
+    return this.queryIdGenerator.generateRandomId()
   }
 
   /**
@@ -1441,32 +1454,6 @@ instantiation of the client.`
     return this.store.dispatch(action)
   }
 
-  /**
-   * Generates an id for queries
-   * If the query is a getById only query,
-   * we can generate a name for it.
-   *
-   * If not, let's generate a random id
-   *
-   * @param {QueryDefinition} queryDefinition The query definition
-   * @returns {string}
-   */
-  generateId(queryDefinition) {
-    if (!isAGetByIdQuery(queryDefinition)) {
-      return this.generateRandomId()
-    } else {
-      const { id, doctype } = queryDefinition
-      return `${doctype}/${id}`
-    }
-  }
-  /**
-   * Generates a random id for unamed querie
-   */
-  generateRandomId() {
-    const id = this.idCounter
-    this.idCounter++
-    return id.toString()
-  }
   /**
    * getInstanceOptions - Returns current instance options, such as domain or app slug
    *

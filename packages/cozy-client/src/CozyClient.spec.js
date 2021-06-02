@@ -993,7 +993,7 @@ describe('CozyClient', () => {
       requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
       await client.query(query, { as: 'allTodos' })
       expect(client.store.dispatch.mock.calls[0][0]).toEqual(
-        initQuery('allTodos', { doctype: 'io.cozy.todos' })
+        initQuery('allTodos', { doctype: 'io.cozy.todos' }, { as: 'allTodos' })
       )
     })
 
@@ -1115,11 +1115,11 @@ describe('CozyClient', () => {
         })
       )
     })
-    it('should name corretly the query', async () => {
+    it('should name the query correctly', async () => {
       requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
       await client.query(query, { as: 'allTodos' })
       expect(client.store.dispatch.mock.calls[0][0]).toEqual(
-        initQuery('allTodos', { doctype: 'io.cozy.todos' })
+        initQuery('allTodos', { doctype: 'io.cozy.todos' }, { as: 'allTodos' })
       )
     })
 
@@ -1196,7 +1196,7 @@ describe('CozyClient', () => {
       })
       await client.query(query, { as: 'allTodos' })
       expect(client.store.dispatch.mock.calls[0][0]).toEqual(
-        initQuery('allTodos', { doctype: 'io.cozy.todos' })
+        initQuery('allTodos', { doctype: 'io.cozy.todos' }, { as: 'allTodos' })
       )
     })
 
@@ -1207,7 +1207,7 @@ describe('CozyClient', () => {
       })
       await client.query(query, { as: 'allTodos' })
       expect(client.store.dispatch.mock.calls[0][0]).toEqual(
-        initQuery('allTodos', { doctype: 'io.cozy.todos' })
+        initQuery('allTodos', { doctype: 'io.cozy.todos' }, { as: 'allTodos' })
       )
     })
 
