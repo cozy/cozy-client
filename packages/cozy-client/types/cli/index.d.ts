@@ -22,6 +22,8 @@ export type DestroyableServer = any;
  *   }
  * })
  * ```
+ *
+ * @returns {Promise<CozyClient>} - A client that is ready with a token
  */
-export function createClientInteractive(clientOptions: object, serverOpts: any): Promise<any> | CozyClient;
+export function createClientInteractive(clientOptions: object, serverOpts: any): Promise<CozyClient>;
 import CozyClient from "../CozyClient";

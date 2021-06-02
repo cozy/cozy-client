@@ -332,7 +332,7 @@ want to them to trigger an exception during tests.</p>
 </dd>
 <dt><a href="#query">query()</a> ⇒ <code><a href="#QueryState">QueryState</a></code> | <code><a href="#QueryDefinition">QueryDefinition</a></code></dt>
 <dd></dd>
-<dt><a href="#createClientInteractive">createClientInteractive(clientOptions)</a></dt>
+<dt><a href="#createClientInteractive">createClientInteractive(clientOptions)</a> ⇒ <code><a href="#CozyClient">Promise.&lt;CozyClient&gt;</a></code></dt>
 <dd><p>Creates a client with interactive authentication.</p>
 <ul>
 <li>Will start an OAuth flow and open an authentication page</li>
@@ -3020,7 +3020,7 @@ want to them to trigger an exception during tests.
 **Kind**: inner constant of [<code>query</code>](#query)  
 <a name="createClientInteractive"></a>
 
-## createClientInteractive(clientOptions)
+## createClientInteractive(clientOptions) ⇒ [<code>Promise.&lt;CozyClient&gt;</code>](#CozyClient)
 Creates a client with interactive authentication.
 
 - Will start an OAuth flow and open an authentication page
@@ -3028,6 +3028,7 @@ Creates a client with interactive authentication.
 - Resolves with the client after user authentication
 
 **Kind**: global function  
+**Returns**: [<code>Promise.&lt;CozyClient&gt;</code>](#CozyClient) - - A client that is ready with a token  
 
 | Param | Type | Description |
 | --- | --- | --- |

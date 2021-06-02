@@ -177,6 +177,8 @@ const readJSON = (fs, filename) => {
  *   }
  * })
  * ```
+ *
+ * @returns {Promise<CozyClient>} - A client that is ready with a token
  */
 const createClientInteractive = (clientOptions, serverOpts) => {
   const serverOptions = merge(DEFAULT_SERVER_OPTIONS, serverOpts)
@@ -199,28 +201,27 @@ const createClientInteractive = (clientOptions, serverOpts) => {
   const getSavedCredentials = serverOptions.getSavedCredentials
   const savedCredentialsFilename = getSavedCredentials(mergedClientOptions)
   const savedCredentials = readJSON(createClientFS, savedCredentialsFilename)
-  const client = new CozyClient(mergedClientOptions)
-
-  if (savedCredentials) {
-    log('debug', `Using saved credentials in ${savedCredentialsFilename}`)
-    client.stackClient.setToken(savedCredentials.token)
-    client.stackClient.setOAuthOptions(savedCredentials.oauthOptions)
-    return client
-  }
 
   log('debug', `Starting OAuth flow`)
   return new Promise(async (resolve, reject) => {
-    const resolveWithClient = () => {
-      resolve(client)
-      log('debug', `Saving credentials to ${savedCredentialsFilename}`)
+    const client = new CozyClient(mergedClientOptions)
 
-      writeJSON(createClientFS, savedCredentialsFilename, {
-        oauthOptions: client.stackClient.oauthOptions,
-        token: client.stackClient.token
-      })
+    if (savedCredentials) {
+      log('debug', `Using saved credentials in ${savedCredentialsFilename}`)
+      client.stackClient.setToken(savedCredentials.token)
+      client.stackClient.setOAuthOptions(savedCredentials.oauthOptions)
+      resolve(client)
+      return
     }
+
     await client.startOAuthFlow(mkServerFlowCallback(serverOptions))
-    resolveWithClient()
+    resolve(client)
+    log('debug', `Saving credentials to ${savedCredentialsFilename}`)
+
+    writeJSON(createClientFS, savedCredentialsFilename, {
+      oauthOptions: client.stackClient.oauthOptions,
+      token: client.stackClient.token
+    })
   })
 }
 
