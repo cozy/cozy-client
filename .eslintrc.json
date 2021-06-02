@@ -20,9 +20,32 @@
   },
   "settings": {
     "jsdoc": {
+      "mode": "typescript",
       "preferredTypes": {
         "object.<>": "Object.<>", // For Typescript compatibility
-	"Record": "Record" // So that TS Record is configured as defined by linter
+	    
+        // Typescript utility types are defined here so that the plugin
+        // does not consider them as undefined
+        "Partial": "Partial",
+        "Required": "Required",
+        "Readonly": "Readonly",
+        "Record": "Record",
+        "Pick": "Pick",
+        "Omit": "Omit",
+        "Exclude": "Exclude",
+        "Extract": "Extract",
+        "NonNullable": "NonNullable",
+        "Parameters": "Parameters",
+        "ConstructorParameters": "ConstructorParameters",
+        "ReturnType": "ReturnType",
+        "InstanceType": "InstanceType",
+        "ThisParameterType": "ThisParameterType",
+        "OmitThisParameter": "OmitThisParameter",
+        "ThisType": "ThisType",
+        "Uppercase": "Uppercase",
+        "Lowercase": "Lowercase",
+        "Capitalize": "Capitalize",
+        "Uncapitalize": "Uncapitalize"
       }
     },
     "react": {

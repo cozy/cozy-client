@@ -301,6 +301,8 @@ query definitions.</p>
 <dt><a href="#isAGetByIdQuery">isAGetByIdQuery</a> ⇒ <code>boolean</code></dt>
 <dd><p>Check if the query is a getById() query</p>
 </dd>
+<dt><a href="#queryInitialState">queryInitialState</a> : <code><a href="#QueryState">QueryState</a></code></dt>
+<dd></dd>
 <dt><a href="#convert$gtNullSelectors">convert$gtNullSelectors</a> ⇒ <code>object</code></dt>
 <dd><p>Normalize sift selector</p>
 </dd>
@@ -417,6 +419,9 @@ we have in the store.</p>
 <dd><p>Component that subscribes to a doctype changes and keep the
 internal store updated.</p>
 </dd>
+<dt><a href="#query">query(state, action, documents)</a> ⇒ <code><a href="#QueryState">QueryState</a></code></dt>
+<dd><p>Reducer for a query slice</p>
+</dd>
 <dt><a href="#getSelectorFilterFn">getSelectorFilterFn(queryDefinition)</a> ⇒ <code>function</code></dt>
 <dd></dd>
 <dt><a href="#getQueryDocumentsChecker">getQueryDocumentsChecker(query)</a> ⇒ <code>function</code></dt>
@@ -434,7 +439,7 @@ from an action</p>
 <dd><p>Creates a function that returns an updated query state
 from an action</p>
 </dd>
-<dt><a href="#queries">queries(state, action, documents, haveDocumentsChanged)</a></dt>
+<dt><a href="#queries">queries(state, action, documents, haveDocumentsChanged)</a> ⇒ <code><a href="#QueriesStateSlice">QueriesStateSlice</a></code></dt>
 <dd></dd>
 <dt><a href="#cancelable">cancelable(promise)</a> ⇒ <code><a href="#CancelablePromise">CancelablePromise</a></code></dt>
 <dd><p>Wraps a promise so that it can be canceled</p>
@@ -2947,6 +2952,10 @@ Check if the query is a getById() query
 | --- | --- | --- |
 | queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) | The query definition |
 
+<a name="queryInitialState"></a>
+
+## queryInitialState : [<code>QueryState</code>](#QueryState)
+**Kind**: global constant  
 <a name="convert$gtNullSelectors"></a>
 
 ## convert$gtNullSelectors ⇒ <code>object</code>
@@ -3005,6 +3014,10 @@ want to them to trigger an exception during tests.
 
 ## query() ⇒ [<code>QueryState</code>](#QueryState) \| [<code>QueryDefinition</code>](#QueryDefinition)
 **Kind**: global function  
+<a name="query..common"></a>
+
+### query~common : [<code>Partial.&lt;QueryState&gt;</code>](#QueryState)
+**Kind**: inner constant of [<code>query</code>](#query)  
 <a name="createClientInteractive"></a>
 
 ## createClientInteractive(clientOptions)
@@ -3303,6 +3316,24 @@ internal store updated.
 | options | <code>object</code> | Options |
 | options.doctype | <code>string</code> | The doctype to watch |
 
+<a name="query"></a>
+
+## query(state, action, documents) ⇒ [<code>QueryState</code>](#QueryState)
+Reducer for a query slice
+
+**Kind**: global function  
+**Returns**: [<code>QueryState</code>](#QueryState) - - Next state  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| state | [<code>QueryState</code>](#QueryState) | Current state |
+| action | <code>any</code> | Redux action |
+| documents | [<code>DocumentsStateSlice</code>](#DocumentsStateSlice) | Reference to the next documents slice |
+
+<a name="query..common"></a>
+
+### query~common : [<code>Partial.&lt;QueryState&gt;</code>](#QueryState)
+**Kind**: inner constant of [<code>query</code>](#query)  
 <a name="getSelectorFilterFn"></a>
 
 ## getSelectorFilterFn(queryDefinition) ⇒ <code>function</code>
@@ -3382,7 +3413,7 @@ from an action
 
 <a name="queries"></a>
 
-## queries(state, action, documents, haveDocumentsChanged)
+## queries(state, action, documents, haveDocumentsChanged) ⇒ [<code>QueriesStateSlice</code>](#QueriesStateSlice)
 **Kind**: global function  
 
 | Param | Type | Default | Description |
@@ -3710,8 +3741,8 @@ Setups a client suitable for testing
 | count | <code>number</code> | 
 | data | <code>object</code> \| <code>Array</code> | 
 | bookmark | <code>string</code> | 
-| execution_stats | <code>object</code> | 
-| options | [<code>QueryOptions</code>](#QueryOptions) | 
+| [execution_stats] | <code>object</code> | 
+| [options] | [<code>QueryOptions</code>](#QueryOptions) | 
 
 <a name="AutoUpdateOptions"></a>
 

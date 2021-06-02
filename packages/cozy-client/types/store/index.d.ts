@@ -10,32 +10,7 @@ export default combinedReducer;
 export function createStore(): import("redux").Store<import("redux").CombinedState<{
     cozy: {
         documents: any;
-        queries: {
-            [x: string]: import("../types").QueryState | {
-                id: any;
-                definition: any;
-                fetchStatus: string;
-                lastFetch: any;
-                lastUpdate: any;
-                lastError: any;
-                hasMore: boolean;
-                count: number;
-                data: any[];
-                bookmark: any;
-            } | {
-                bookmark: any;
-                hasMore: any;
-                count: any;
-                data: any[];
-                execution_stats: any;
-                fetchStatus: string;
-                lastFetch: number;
-                lastUpdate: number;
-                id: any;
-                definition: any;
-                lastError: any;
-            };
-        };
+        queries: Record<string, import("../types").QueryState>;
     };
 }>, import("redux").AnyAction> & {
     dispatch: any;
@@ -51,32 +26,7 @@ declare function combinedReducer(state: {
     queries: {};
 }, action: any): {
     documents: any;
-    queries: {
-        [x: string]: import("../types").QueryState | {
-            id: any;
-            definition: any;
-            fetchStatus: string;
-            lastFetch: any;
-            lastUpdate: any;
-            lastError: any;
-            hasMore: boolean;
-            count: number;
-            data: any[];
-            bookmark: any;
-        } | {
-            bookmark: any;
-            hasMore: any;
-            count: any;
-            data: any[];
-            execution_stats: any;
-            fetchStatus: string;
-            lastFetch: number;
-            lastUpdate: number;
-            id: any;
-            definition: any;
-            lastError: any;
-        };
-    };
+    queries: Record<string, import("../types").QueryState>;
 };
 export function resetState(): {
     type: string;

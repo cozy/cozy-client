@@ -53,34 +53,9 @@ import { CozyClientDocument } from "../types";
  * @param  {object}  action - Income redux action
  * @param  {DocumentsStateSlice}  documents - Reference to documents slice
  * @param  {boolean} haveDocumentsChanged - Has the document slice changed with current action
+ * @returns {QueriesStateSlice}
  */
-declare function queries(state: QueriesStateSlice, action: object, documents?: DocumentsStateSlice, haveDocumentsChanged?: boolean): {
-    [x: string]: QueryState | {
-        id: any;
-        definition: any;
-        fetchStatus: string;
-        lastFetch: any;
-        lastUpdate: any;
-        lastError: any;
-        hasMore: boolean;
-        count: number;
-        data: any[];
-        bookmark: any;
-    } | {
-        bookmark: any;
-        hasMore: any;
-        count: any;
-        data: any[];
-        execution_stats: any;
-        fetchStatus: string;
-        lastFetch: number;
-        lastUpdate: number;
-        id: any;
-        definition: any;
-        lastError: any;
-    };
-};
+declare function queries(state: QueriesStateSlice, action: object, documents?: DocumentsStateSlice, haveDocumentsChanged?: boolean): QueriesStateSlice;
 import { QueryOptions } from "../types";
 import { QueriesStateSlice } from "../types";
 import { DocumentsStateSlice } from "../types";
-import { QueryState } from "../types";

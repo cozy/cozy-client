@@ -19,7 +19,7 @@ export type ClientResponse = any;
 export type Manifest = any;
 export type OldCozyClient = any;
 export type NodeEnvironment = any;
-export type QueryFetchStatus = "failed" | "loading" | "pending" | "loaded";
+export type QueryFetchStatus = "loading" | "loaded" | "pending" | "failed";
 export type QueriesStateSlice = {
     [x: string]: QueryState;
 };
@@ -35,13 +35,14 @@ export type QueryState = {
     fetchStatus: QueryFetchStatus;
     lastFetch: number;
     lastUpdate: number;
+    lastErrorUpdate: number;
     lastError: Error;
     hasMore: boolean;
     count: number;
     data: object | any[];
     bookmark: string;
-    execution_stats: object;
-    options: QueryOptions;
+    execution_stats?: object;
+    options?: QueryOptions;
 };
 export type AutoUpdateOptions = any;
 export type QueryOptions = {

@@ -43,7 +43,7 @@ export const isQueryAction = action =>
 
 export const isReceivingData = action => action.type === RECEIVE_QUERY_RESULT
 
-// reducers
+/** @type {QueryState} */
 const queryInitialState = {
   id: null,
   definition: null,
@@ -71,6 +71,14 @@ const updateQueryDataFromResponse = (queryState, response, documents) => {
   return updatedIds
 }
 
+/**
+ * Reducer for a query slice
+ *
+ * @param  {QueryState} state - Current state
+ * @param  {any} action - Redux action
+ * @param  {DocumentsStateSlice} documents - Reference to the next documents slice
+ * @returns {QueryState} - Next state
+ */
 const query = (state = queryInitialState, action, documents) => {
   switch (action.type) {
     case INIT_QUERY:
@@ -102,6 +110,7 @@ const query = (state = queryInitialState, action, documents) => {
         return state
       }
 
+      /** @type {Partial<QueryState>} */
       const common = {
         fetchStatus: 'loaded',
         lastFetch: Date.now(),
@@ -138,7 +147,7 @@ const query = (state = queryInitialState, action, documents) => {
         id: action.queryId,
         fetchStatus: 'failed',
         lastError: action.error,
-        lastErrorUpdate: new Date()
+        lastErrorUpdate: Date.now()
       }
     default:
       return state
@@ -366,6 +375,7 @@ const manualQueryUpdater = (action, documents) => query => {
  * @param  {object}  action - Income redux action
  * @param  {DocumentsStateSlice}  documents - Reference to documents slice
  * @param  {boolean} haveDocumentsChanged - Has the document slice changed with current action
+ * @returns {QueriesStateSlice}
  */
 const queries = (
   state = {},
@@ -374,7 +384,7 @@ const queries = (
   haveDocumentsChanged = true
 ) => {
   if (action.type == INIT_QUERY) {
-    const newQueryState = query(state[action.queryId], action)
+    const newQueryState = query(state[action.queryId], action, documents)
     // Do not create new object unnecessarily
     if (newQueryState === state[action.queryId]) {
       return state
