@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [23.5.0](https://github.com/cozy/cozy-client/compare/v23.4.0...v23.5.0) (2021-06-02)
+
+
+### Bug Fixes
+
+* Do not try to COPY index if it is already the right one ([5319f6b](https://github.com/cozy/cozy-client/commit/5319f6b9a479ff42d49f7e661bcac8949e10eff6))
+* Queries in error are correctly sorted ([b486081](https://github.com/cozy/cozy-client/commit/b486081b6da4b1afa10a4f6ab9e3d93f4e0cfe9c))
+* When returning default query, return it with the requested id ([4d1072f](https://github.com/cozy/cozy-client/commit/4d1072f7566a14aa378ba73b7f0b1c46aa4b37c8))
+
+
+### Features
+
+* Add tests for autoUpdate strategies ([8f1b5e6](https://github.com/cozy/cozy-client/commit/8f1b5e6ddd592e61bf8610dede3d87e7bd14eae8))
+* Add types for redux slices ([740d31b](https://github.com/cozy/cozy-client/commit/740d31bb0317e05172ef1948bab543fbb1c1e5f0))
+* Add types to schema ([132b561](https://github.com/cozy/cozy-client/commit/132b561a085c7f59f8b91bcf9409eb7e1bfecdb0))
+* Better types for queries state slice ([7513489](https://github.com/cozy/cozy-client/commit/7513489a5ab50f9c8c716fecbb675078494d6be0))
+* Highlight failed queries in query list ([3ece710](https://github.com/cozy/cozy-client/commit/3ece71068c12c1dde9fbd3abceb38a7def15186a))
+* Ignore tslint warning ([4a0fc58](https://github.com/cozy/cozy-client/commit/4a0fc58763760bbbcce5cf98b75e564c8ddfb552))
+* Queries can choose not to be auto updated ([dd76114](https://github.com/cozy/cozy-client/commit/dd761142cb75b2d8f8acdd2ae4e84a38b6ce52bb))
+* Show indexedFields in the Query devtool ([c1debce](https://github.com/cozy/cozy-client/commit/c1debce2ce0dca7959ce0ce493fa2cbc4de62621))
+* Type query state ([a3bc450](https://github.com/cozy/cozy-client/commit/a3bc450aabad76c341dea7338db386717fdf590d))
+* Type query state in devtools ([7427fa3](https://github.com/cozy/cozy-client/commit/7427fa38b00d76aaa8654861d56bd262492538b1))
+* Use lowercase text to have for coherence with other labels ([1c3028b](https://github.com/cozy/cozy-client/commit/1c3028b6a6e0ea77e32cc4957f1585e9cb1dd9ba))
+* useQuery/Query support an enabled parameter ([6faede4](https://github.com/cozy/cozy-client/commit/6faede4f590ef2a9f2e5fb53603d6beb035f71f9))
+
+
+
+
+
 # [23.4.0](https://github.com/cozy/cozy-client/compare/v23.3.0...v23.4.0) (2021-05-26)
 
 

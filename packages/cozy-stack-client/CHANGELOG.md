@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [23.5.0](https://github.com/cozy/cozy-client/compare/v23.4.0...v23.5.0) (2021-06-02)
+
+
+### Bug Fixes
+
+* Do not try to COPY index if it is already the right one ([5319f6b](https://github.com/cozy/cozy-client/commit/5319f6b9a479ff42d49f7e661bcac8949e10eff6))
+
+
+
+
+
 # [23.4.0](https://github.com/cozy/cozy-client/compare/v23.3.0...v23.4.0) (2021-05-26)
 
 
