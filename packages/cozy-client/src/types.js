@@ -68,7 +68,7 @@ import { QueryDefinition } from './queries/dsl'
  * @typedef {object} AutoUpdateOptions
  * @param {boolean} update - Should documents be updated in the query (default: true)
  * @param {boolean} add - Should documents be added to the query (default: true)
- * @param {boolean} remove - Should documents be added to the query (default: true)
+ * @param {boolean} remove - Should documents be removed from the query (default: true)
  */
 
 /**

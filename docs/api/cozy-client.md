@@ -3753,7 +3753,7 @@ Setups a client suitable for testing
 | --- | --- | --- |
 | update | <code>boolean</code> | Should documents be updated in the query (default: true) |
 | add | <code>boolean</code> | Should documents be added to the query (default: true) |
-| remove | <code>boolean</code> | Should documents be added to the query (default: true) |
+| remove | <code>boolean</code> | Should documents be removed from the query (default: true) |
 
 <a name="QueryOptions"></a>
 
