@@ -146,7 +146,11 @@ describe('queries reducer', () => {
 
     it('should not add documents to another query if autoUpdate.add was set to false', () => {
       const query = Q('io.cozy.todos')
-      applyAction(initQuery('b', query.where({ done: true }), { autoUpdate: { add: false } }))
+      applyAction(
+        initQuery('b', query.where({ done: true }), {
+          autoUpdate: { add: false }
+        })
+      )
       applyAction(
         receiveQueryResult('a', {
           data: [TODO_3]
@@ -158,7 +162,11 @@ describe('queries reducer', () => {
 
     it('should not remove documents from another query if autoUpdate.remove was set to false', () => {
       const query = Q('io.cozy.todos')
-      applyAction(initQuery('b', query.where({ done: true }), { autoUpdate: { remove: false } }))
+      applyAction(
+        initQuery('b', query.where({ done: true }), {
+          autoUpdate: { remove: false }
+        })
+      )
       applyAction(
         receiveQueryResult('a', {
           data: [TODO_3]

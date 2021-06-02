@@ -40,6 +40,18 @@ describe('Query', () => {
       expect(observableQuery.fetch).toHaveBeenCalled()
     })
 
+    it('should not fire a query fetch when mounted if enabled is set to false', () => {
+      mount(
+        <Query query={queryDef} enabled={false}>
+          {() => null}
+        </Query>,
+        {
+          context
+        }
+      )
+      expect(observableQuery.fetch).not.toHaveBeenCalled()
+    })
+
     it('should not fire a query fetch when mounted when fetchPolicy returns false', () => {
       const queryState = { lastUpdate: Date.now() }
       client.getQueryFromState = jest.fn().mockReturnValue(queryState)
