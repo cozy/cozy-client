@@ -15,6 +15,46 @@ Array [
 ]
 `;
 
+exports[`FileCollection findNotSynchronizedDirectories should accept an \`includeFiles\` param to fetch whole directory objects 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "GET",
+      "/data/io.cozy.oauth.clients/123/relationships/not_synchronizing?include=files&sort=id",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "data": Array [],
+        "meta": Object {},
+      },
+    },
+  ],
+}
+`;
+
+exports[`FileCollection findNotSynchronizedDirectories should pass all the filters 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "GET",
+      "/data/io.cozy.oauth.clients/123/relationships/not_synchronizing?sort=id",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "data": Array [],
+        "meta": Object {},
+      },
+    },
+  ],
+}
+`;
+
 exports[`FileCollection findReferencedBy should pass all the filters 1`] = `
 [MockFunction] {
   "calls": Array [
@@ -71,6 +111,56 @@ exports[`FileCollection referencedBy should remove a reference 1`] = `
           Object {
             "id": "456",
             "type": "io.cozy.photos.albums",
+          },
+        ],
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`FileCollection synchronization directories exclusions should add a directory exclusion 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "POST",
+      "/data/io.cozy.oauth.clients/123/relationships/not_synchronizing",
+      Object {
+        "data": Array [
+          Object {
+            "id": "456",
+            "type": "io.cozy.files",
+          },
+        ],
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`FileCollection synchronization directories exclusions should remove a directory exclusion 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "DELETE",
+      "/data/io.cozy.oauth.clients/123/relationships/not_synchronizing",
+      Object {
+        "data": Array [
+          Object {
+            "id": "456",
+            "type": "io.cozy.files",
           },
         ],
       },

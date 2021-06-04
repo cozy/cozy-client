@@ -876,4 +876,107 @@ describe('FileCollection', () => {
       )
     })
   })
+
+  describe('findNotSynchronizedDirectories', () => {
+    const client = new CozyStackClient()
+    const collection = new FileCollection('io.cozy.files', client)
+
+    const spy = jest.spyOn(client, 'fetchJSON')
+
+    beforeEach(() => {
+      spy.mockClear()
+    })
+
+    const oauthClient = {
+      _type: 'io.cozy.oauth.clients',
+      _id: '123'
+    }
+
+    it('should pass all the filters', () => {
+      spy.mockReturnValue({
+        data: [],
+        meta: {}
+      })
+      collection.findNotSynchronizedDirectories(oauthClient)
+      expect(spy).toMatchSnapshot()
+    })
+
+    it('should accept an `includeFiles` param to fetch whole directory objects', async () => {
+      spy.mockReturnValue({
+        data: [],
+        meta: {}
+      })
+      collection.findNotSynchronizedDirectories(oauthClient, {
+        includeFiles: true
+      })
+      expect(spy).toMatchSnapshot()
+    })
+
+    it('should detect a next page', async () => {
+      spy.mockReturnValue({
+        data: [],
+        links: {
+          next: 'http://example.com/next'
+        },
+        meta: {}
+      })
+      const result = await collection.findNotSynchronizedDirectories(
+        oauthClient
+      )
+      expect(result.next).toBe(true)
+    })
+
+    it('should detect the abscence of a next page', async () => {
+      spy.mockReturnValue({
+        data: [],
+        links: {},
+        meta: {}
+      })
+      const result = await collection.findNotSynchronizedDirectories(
+        oauthClient
+      )
+      expect(result.next).toBe(false)
+    })
+  })
+
+  describe('synchronization directories exclusions', () => {
+    const client = new CozyStackClient()
+    const collection = new FileCollection('io.cozy.files', client)
+
+    const spy = jest.spyOn(client, 'fetchJSON')
+
+    beforeEach(() => {
+      spy.mockClear()
+    })
+
+    const oauthClient = {
+      _type: 'io.cozy.oauth.clients',
+      _id: '123'
+    }
+
+    it('should add a directory exclusion', async () => {
+      const directories = [
+        {
+          _id: '456',
+          _type: 'io.cozy.files'
+        }
+      ]
+      await collection.addNotSynchronizedDirectories(oauthClient, directories)
+      expect(spy).toMatchSnapshot()
+    })
+
+    it('should remove a directory exclusion', async () => {
+      const directories = [
+        {
+          _id: '456',
+          _type: 'io.cozy.files'
+        }
+      ]
+      await collection.removeNotSynchronizedDirectories(
+        oauthClient,
+        directories
+      )
+      expect(spy).toMatchSnapshot()
+    })
+  })
 })
