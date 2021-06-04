@@ -40,6 +40,14 @@ import { dontThrowNotFoundError } from './Collection'
  * @typedef {object} Stream
  */
 
+/**
+ * Document representing a io.cozy.oauth.clients
+ *
+ * @typedef {object} OAuthClient
+ * @property {string} _id - Id of the client
+ * @property {string} _type - Doctype of the client (i.e. io.cozy.oauth.clients)
+ */
+
 const ROOT_DIR_ID = 'io.cozy.files.root-dir'
 const CONTENT_TYPE_OCTET_STREAM = 'application/octet-stream'
 
@@ -890,6 +898,81 @@ class FileCollection extends DocumentCollection {
     return {
       data: normalizeFile(resp.data)
     }
+  }
+
+  /**
+   * async findNotSynchronizedDirectories - Returns the list of directories not synchronized on the given OAuth client (mainly Cozy Desktop clients) — see https://docs.cozy.io/en/cozy-stack/not-synchronized-vfs/#get-datatypedoc-idrelationshipsnot_synchronizing
+   *
+   * @param  {OAuthClient} oauthClient  A JSON representing an OAuth client, with at least a `_type` and `_id` field.
+   * @param  {object}   options               Additional options
+   * @param  {number}   options.skip          For skip-based pagination, the number of referenced files to skip.
+   * @param  {number}   options.limit         For pagination, the number of results to return.
+   * @param  {object}   options.cursor        For cursor-based pagination, the index cursor.
+   * @param  {boolean}  options.includeFiles  Include the whole file documents in the results list
+   * @returns {Array<object|IOCozyFolder>}    The JSON API conformant response.
+   */
+  async findNotSynchronizedDirectories(
+    oauthClient,
+    { skip = 0, limit, cursor, includeFiles = false } = {}
+  ) {
+    const params = {
+      include: includeFiles ? 'files' : undefined,
+      'page[limit]': limit,
+      'page[cursor]': cursor,
+      sort: 'id'
+    }
+    const url = uri`/data/${oauthClient._type}/${oauthClient._id}/relationships/not_synchronizing`
+    const path = querystring.buildURL(url, params)
+    const resp = await this.stackClient.fetchJSON('GET', path)
+    return {
+      data: resp.data.map(f => normalizeFile(f)),
+      included: resp.included ? resp.included.map(f => normalizeFile(f)) : [],
+      next: has(resp, 'links.next'),
+      meta: resp.meta,
+      skip
+    }
+  }
+
+  /**
+   *  Add directory synchronization exclusions to an OAuth client — see https://docs.cozy.io/en/cozy-stack/not-synchronized-vfs/#post-datatypedoc-idrelationshipsnot_synchronizing
+   *
+   *  For example, to exclude directory `/Photos` from `My Computer`'s desktop synchronization:
+   * ```
+   * addNotSynchronizedDirectories({_id: 123, _type: "io.cozy.oauth.clients", clientName: "Cozy Drive (My Computer)", clientKind: "desktop"}, [{_id: 456, _type: "io.cozy.files", name: "Photos", path: "/Photos"}])
+   * ```
+   *
+   * @param  {OAuthClient} oauthClient  A JSON representing the OAuth client
+   * @param  {Array}  directories       An array of JSON documents having a `_type` and `_id` fields and representing directories.
+   * @returns 204 No Content
+   */
+  addNotSynchronizedDirectories(oauthClient, directories) {
+    const refs = directories.map(d => ({ id: d._id, type: d._type }))
+    return this.stackClient.fetchJSON(
+      'POST',
+      uri`/data/${oauthClient._type}/${oauthClient._id}/relationships/not_synchronizing`,
+      { data: refs }
+    )
+  }
+
+  /**
+   *  Remove directory synchronization exclusions from an OAuth client — see https://docs.cozy.io/en/cozy-stack/not-synchronized-vfs/#delete-datatypedoc-idrelationshipsnot_synchronizing
+   *
+   *  For example, to re-include directory `/Photos` into `My Computer`'s desktop synchronization:
+   * ```
+   *  removeNotSynchronizedDirectories({_id: 123, _type: "io.cozy.oauth.clients", clientName: "Cozy Drive (My Computer)", clientKind: "desktop"}, [{_id: 456, _type: "io.cozy.files", name: "Photos", path: "/Photos"}])
+   * ```
+   *
+   * @param  {OAuthClient} oauthClient  A JSON representing the OAuth client
+   * @param  {Array}  directories       An array of JSON documents having a `_type` and `_id` field and representing directories.
+   * @returns 204 No Content
+   */
+  removeNotSynchronizedDirectories(oauthClient, directories) {
+    const refs = directories.map(d => ({ id: d._id, type: d._type }))
+    return this.stackClient.fetchJSON(
+      'DELETE',
+      uri`/data/${oauthClient._type}/${oauthClient._id}/relationships/not_synchronizing`,
+      { data: refs }
+    )
   }
 }
 
