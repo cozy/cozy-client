@@ -112,6 +112,9 @@ contains the indexed attributes which are not in correct order.</p>
 <dt><a href="#Stream">Stream</a> : <code>object</code></dt>
 <dd><p>Stream is not defined in a browser, but is on NodeJS environment</p>
 </dd>
+<dt><a href="#OAuthClient">OAuthClient</a> : <code>object</code></dt>
+<dd><p>Document representing a io.cozy.oauth.clients</p>
+</dd>
 <dt><a href="#JobDocument">JobDocument</a> : <code>object</code></dt>
 <dd><p>Document representing a io.cozy.jobs</p>
 </dd>
@@ -489,6 +492,9 @@ files associated to a specific document
     * [.createFileMetadata(attributes)](#FileCollection+createFileMetadata) ⇒ <code>object</code>
     * [.updateMetadataAttribute(id, metadata)](#FileCollection+updateMetadataAttribute) ⇒ <code>object</code>
     * [.doUpload(dataArg, path, options, method)](#FileCollection+doUpload)
+    * [.findNotSynchronizedDirectories(oauthClient, options)](#FileCollection+findNotSynchronizedDirectories) ⇒ <code>Array.&lt;(object\|IOCozyFolder)&gt;</code>
+    * [.addNotSynchronizedDirectories(oauthClient, directories)](#FileCollection+addNotSynchronizedDirectories) ⇒
+    * [.removeNotSynchronizedDirectories(oauthClient, directories)](#FileCollection+removeNotSynchronizedDirectories) ⇒
 
 <a name="FileCollection+get"></a>
 
@@ -825,6 +831,59 @@ You should use `createFile`
 | path | <code>string</code> |  | Uri to call the stack from. Something like `/files/${dirId}?Name=${name}&Type=file&Executable=${executable}&MetadataID=${metadataId}` |
 | options | <code>object</code> |  | Additional headers |
 | method | <code>string</code> | <code>&quot;POST&quot;</code> | POST / PUT / PATCH |
+
+<a name="FileCollection+findNotSynchronizedDirectories"></a>
+
+### fileCollection.findNotSynchronizedDirectories(oauthClient, options) ⇒ <code>Array.&lt;(object\|IOCozyFolder)&gt;</code>
+async findNotSynchronizedDirectories - Returns the list of directories not synchronized on the given OAuth client (mainly Cozy Desktop clients) — see https://docs.cozy.io/en/cozy-stack/not-synchronized-vfs/#get-datatypedoc-idrelationshipsnot_synchronizing
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+**Returns**: <code>Array.&lt;(object\|IOCozyFolder)&gt;</code> - The JSON API conformant response.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| oauthClient | [<code>OAuthClient</code>](#OAuthClient) | A JSON representing an OAuth client, with at least a `_type` and `_id` field. |
+| options | <code>object</code> | Additional options |
+| options.skip | <code>number</code> | For skip-based pagination, the number of referenced files to skip. |
+| options.limit | <code>number</code> | For pagination, the number of results to return. |
+| options.cursor | <code>object</code> | For cursor-based pagination, the index cursor. |
+| options.includeFiles | <code>boolean</code> | Include the whole file documents in the results list |
+
+<a name="FileCollection+addNotSynchronizedDirectories"></a>
+
+### fileCollection.addNotSynchronizedDirectories(oauthClient, directories) ⇒
+Add directory synchronization exclusions to an OAuth client — see https://docs.cozy.io/en/cozy-stack/not-synchronized-vfs/#post-datatypedoc-idrelationshipsnot_synchronizing
+
+ For example, to exclude directory `/Photos` from `My Computer`'s desktop synchronization:
+```
+addNotSynchronizedDirectories({_id: 123, _type: "io.cozy.oauth.clients", clientName: "Cozy Drive (My Computer)", clientKind: "desktop"}, [{_id: 456, _type: "io.cozy.files", name: "Photos", path: "/Photos"}])
+```
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+**Returns**: 204 No Content  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| oauthClient | [<code>OAuthClient</code>](#OAuthClient) | A JSON representing the OAuth client |
+| directories | <code>Array</code> | An array of JSON documents having a `_type` and `_id` fields and representing directories. |
+
+<a name="FileCollection+removeNotSynchronizedDirectories"></a>
+
+### fileCollection.removeNotSynchronizedDirectories(oauthClient, directories) ⇒
+Remove directory synchronization exclusions from an OAuth client — see https://docs.cozy.io/en/cozy-stack/not-synchronized-vfs/#delete-datatypedoc-idrelationshipsnot_synchronizing
+
+ For example, to re-include directory `/Photos` into `My Computer`'s desktop synchronization:
+```
+ removeNotSynchronizedDirectories({_id: 123, _type: "io.cozy.oauth.clients", clientName: "Cozy Drive (My Computer)", clientKind: "desktop"}, [{_id: 456, _type: "io.cozy.files", name: "Photos", path: "/Photos"}])
+```
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+**Returns**: 204 No Content  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| oauthClient | [<code>OAuthClient</code>](#OAuthClient) | A JSON representing the OAuth client |
+| directories | <code>Array</code> | An array of JSON documents having a `_type` and `_id` field and representing directories. |
 
 <a name="NotesCollection"></a>
 
@@ -1602,6 +1661,188 @@ Document representing a io.cozy.files
 Stream is not defined in a browser, but is on NodeJS environment
 
 **Kind**: global typedef  
+<a name="OAuthClient"></a>
+
+## OAuthClient : <code>object</code>
+Document representing a io.cozy.oauth.clients
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| _id | <code>string</code> | Id of the client |
+| _type | <code>string</code> | Doctype of the client (i.e. io.cozy.oauth.clients) |
+
+
+* [OAuthClient](#OAuthClient) : <code>object</code>
+    * [.doRegistration()](#OAuthClient+doRegistration)
+    * [.register()](#OAuthClient+register) ⇒ <code>Promise</code>
+    * [.unregister()](#OAuthClient+unregister) ⇒ <code>Promise</code>
+    * [.fetchInformation()](#OAuthClient+fetchInformation) ⇒ <code>Promise</code>
+    * [.updateInformation(information, resetSecret)](#OAuthClient+updateInformation) ⇒ <code>Promise</code>
+    * [.generateStateCode()](#OAuthClient+generateStateCode) ⇒ <code>string</code>
+    * [.getAuthCodeURL(stateCode, scopes)](#OAuthClient+getAuthCodeURL) ⇒ <code>string</code>
+    * [.getAccessCodeFromURL(pageURL, stateCode)](#OAuthClient+getAccessCodeFromURL) ⇒ <code>string</code>
+    * [.fetchAccessToken(accessCode, oauthOptionsArg, uri)](#OAuthClient+fetchAccessToken) ⇒ <code>Promise</code>
+    * [.refreshToken()](#OAuthClient+refreshToken) ⇒ <code>Promise</code>
+    * [.setToken(token)](#OAuthClient+setToken)
+    * [.setOAuthOptions(options)](#OAuthClient+setOAuthOptions)
+    * [.resetClient()](#OAuthClient+resetClient)
+
+<a name="OAuthClient+doRegistration"></a>
+
+### oAuthClient.doRegistration()
+Performs the HTTP call to register the client to the server
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+<a name="OAuthClient+register"></a>
+
+### oAuthClient.register() ⇒ <code>Promise</code>
+Registers the currenly configured client with the OAuth server and
+sets internal information from the server response
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+**Returns**: <code>Promise</code> - A promise that resolves with a complete list of client information, including client ID and client secret.  
+**Throws**:
+
+- <code>Error</code> When the client is already registered
+
+<a name="OAuthClient+unregister"></a>
+
+### oAuthClient.unregister() ⇒ <code>Promise</code>
+Unregisters the currenly configured client with the OAuth server.
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+**Throws**:
+
+- <code>NotRegisteredException</code> When the client doesn't have it's registration information
+
+<a name="OAuthClient+fetchInformation"></a>
+
+### oAuthClient.fetchInformation() ⇒ <code>Promise</code>
+Fetches the complete set of client information from the server after it has been registered.
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+**Throws**:
+
+- <code>NotRegisteredException</code> When the client doesn't have it's registration information
+
+<a name="OAuthClient+updateInformation"></a>
+
+### oAuthClient.updateInformation(information, resetSecret) ⇒ <code>Promise</code>
+Overwrites the client own information. This method will update both the local information and the remote information on the OAuth server.
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+**Returns**: <code>Promise</code> - Resolves to a complete, updated list of client information  
+**Throws**:
+
+- <code>NotRegisteredException</code> When the client doesn't have it's registration information
+
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| information | <code>object</code> |  | Set of information to update. Note that some fields such as `clientID` can't be updated. |
+| resetSecret | <code>boolean</code> | <code>false</code> | = false Optionnal, whether to reset the client secret or not |
+
+<a name="OAuthClient+generateStateCode"></a>
+
+### oAuthClient.generateStateCode() ⇒ <code>string</code>
+Generates a random state code to be used during the OAuth process
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+<a name="OAuthClient+getAuthCodeURL"></a>
+
+### oAuthClient.getAuthCodeURL(stateCode, scopes) ⇒ <code>string</code>
+Generates the URL that the user should be sent to in order to accept the app's permissions.
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+**Returns**: <code>string</code> - The URL  
+**Throws**:
+
+- <code>NotRegisteredException</code> When the client doesn't have it's registration information
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| stateCode | <code>string</code> | A random code to be included in the URl for security. Can be generated with `client.generateStateCode()` |
+| scopes | <code>Array</code> | = [] An array of permission scopes for the token. |
+
+<a name="OAuthClient+getAccessCodeFromURL"></a>
+
+### oAuthClient.getAccessCodeFromURL(pageURL, stateCode) ⇒ <code>string</code>
+Retrieves the access code contained in the URL to which the user is redirected after accepting the app's permissions (the `redirectURI`).
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+**Returns**: <code>string</code> - The access code  
+**Throws**:
+
+- <code>Error</code> The URL should contain the same state code as the one generated with `client.getAuthCodeURL()`. If not, it will throw an error
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| pageURL | <code>string</code> | The redirected page URL, containing the state code and the access code |
+| stateCode | <code>string</code> | The state code that was contained in the original URL the user was sent to (see `client.getAuthCodeURL()`) |
+
+<a name="OAuthClient+fetchAccessToken"></a>
+
+### oAuthClient.fetchAccessToken(accessCode, oauthOptionsArg, uri) ⇒ <code>Promise</code>
+Exchanges an access code for an access token. This function does **not** update the client's token.
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+**Returns**: <code>Promise</code> - A promise that resolves with an AccessToken object.  
+**Throws**:
+
+- <code>NotRegisteredException</code> When the client doesn't have it's registration information
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| accessCode | <code>string</code> | The access code contained in the redirection URL — see `client.getAccessCodeFromURL()` |
+| oauthOptionsArg | <code>object</code> | — To use when OAuthClient is not yet registered (during login process) |
+| uri | <code>string</code> | — To use when OAuthClient is not yet registered (during login process) |
+
+<a name="OAuthClient+refreshToken"></a>
+
+### oAuthClient.refreshToken() ⇒ <code>Promise</code>
+Retrieves a new access token by refreshing the currently used token.
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+**Returns**: <code>Promise</code> - A promise that resolves with a new AccessToken object  
+**Throws**:
+
+- <code>NotRegisteredException</code> When the client doesn't have it's registration information
+- <code>Error</code> The client should already have an access token to use this function
+
+<a name="OAuthClient+setToken"></a>
+
+### oAuthClient.setToken(token)
+Updates the client's stored token
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| token | <code>string</code> | = null The new token to use — can be a string, a json object or an AccessToken instance. |
+
+<a name="OAuthClient+setOAuthOptions"></a>
+
+### oAuthClient.setOAuthOptions(options)
+Updates the OAuth informations
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>object</code> | Map of OAuth options |
+
+<a name="OAuthClient+resetClient"></a>
+
+### oAuthClient.resetClient()
+Reset the current OAuth client
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
 <a name="JobDocument"></a>
 
 ## JobDocument : <code>object</code>
