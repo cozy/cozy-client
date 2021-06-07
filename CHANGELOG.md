@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [23.6.0](https://github.com/cozy/cozy-client/compare/v23.5.0...v23.6.0) (2021-06-07)
+
+
+### Bug Fixes
+
+* Better docs ([d7b30c5](https://github.com/cozy/cozy-client/commit/d7b30c5ffd257b256f8e80030657c64de5275881))
+* Typos ([02491cd](https://github.com/cozy/cozy-client/commit/02491cd66a7a6b4e396256a8fb6dfc393c0440fb))
+
+
+### Features
+
+* Add react-native authentication ([ce2fa57](https://github.com/cozy/cozy-client/commit/ce2fa571427ed77f3be18095b3eb3345b3634b0c))
+
+
+
+
+
 # [23.5.0](https://github.com/cozy/cozy-client/compare/v23.4.0...v23.5.0) (2021-06-02)
 
 
