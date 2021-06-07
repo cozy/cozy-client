@@ -18,6 +18,15 @@ export const hasJobFinished = job => {
   return job.state === 'done' || job.state === 'errored'
 }
 
+/**
+ * Document representing a io.cozy.jobs
+ *
+ * @typedef {object} JobDocument
+ * @property {string} _id - Id of the job
+ * @property {string} attributes.state - state of the job. Can be 'errored', 'running', 'queued', 'done'
+ * @property {string} attributes.error - Error message of the job if any
+ */
+
 class JobCollection {
   constructor(stackClient) {
     this.stackClient = stackClient
@@ -31,7 +40,7 @@ class JobCollection {
    *
    * @param  {string} workerType - Ex: "konnector"
    * @param  {object} args - Ex: {"slug": "my-konnector", "trigger": "trigger-id"}
-   * @param  {object} options
+   * @param  {object} options - creation options
    * @returns {object} createdJob
    */
   create(workerType, args, options) {
@@ -48,10 +57,39 @@ class JobCollection {
 
   /**
    * Return a normalized job, given its id
+   *
+   * @param {string} id - id of the job
+   *
+   * @returns {JobDocument}
    */
   async get(id) {
     return Collection.get(this.stackClient, uri`/jobs/${id}`, {
       normalize: normalizeJob
+    })
+  }
+
+  /**
+   * Update the job's state
+   * This does work only for jobs comming from @client triggers
+   *
+   * @param {JobDocument} job - io.cozy.jobs document
+   */
+  async update(job) {
+    if (job.worker !== 'client') {
+      throw new Error(
+        `JobCollection.update only works for client workers. ${job.worker} given`
+      )
+    }
+
+    return this.stackClient.fetchJSON('PATCH', `/jobs/${job._id}`, {
+      data: {
+        type: JOBS_DOCTYPE,
+        id: job._id,
+        attributes: {
+          state: job.attributes.state,
+          error: job.attributes.error
+        }
+      }
     })
   }
 

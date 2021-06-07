@@ -112,6 +112,9 @@ contains the indexed attributes which are not in correct order.</p>
 <dt><a href="#Stream">Stream</a> : <code>object</code></dt>
 <dd><p>Stream is not defined in a browser, but is on NodeJS environment</p>
 </dd>
+<dt><a href="#JobDocument">JobDocument</a> : <code>object</code></dt>
+<dd><p>Document representing a io.cozy.jobs</p>
+</dd>
 <dt><a href="#DesignDoc">DesignDoc</a> : <code>object</code></dt>
 <dd><p>Attributes representing a design doc</p>
 </dd>
@@ -1599,6 +1602,20 @@ Document representing a io.cozy.files
 Stream is not defined in a browser, but is on NodeJS environment
 
 **Kind**: global typedef  
+<a name="JobDocument"></a>
+
+## JobDocument : <code>object</code>
+Document representing a io.cozy.jobs
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| _id | <code>string</code> | Id of the job |
+| attributes.state | <code>string</code> | state of the job. Can be 'errored', 'running', 'queued', 'done' |
+| attributes.error | <code>string</code> | Error message of the job if any |
+
 <a name="DesignDoc"></a>
 
 ## DesignDoc : <code>object</code>
