@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [23.7.0](https://github.com/cozy/cozy-client/compare/v23.6.0...v23.7.0) (2021-06-07)
+
+
+### Bug Fixes
+
+* Better error message ([99d285d](https://github.com/cozy/cozy-client/commit/99d285dbb4311a533404e14a590739f3881472de))
+* Changed setState method to update ([fa75fc4](https://github.com/cozy/cozy-client/commit/fa75fc412a2bb4983d306300cd7d54717a5b3fd3))
+* Throw when the worker is not a client one ([f6fb779](https://github.com/cozy/cozy-client/commit/f6fb779f1d1662c51b47ad9f160843d53ef1f7d2))
+
+
+### Features
+
+* Add job setState ([2861501](https://github.com/cozy/cozy-client/commit/2861501df40a78f3af076f4505dbebe01f043bb3))
+
+
+
+
+
 # [23.6.0](https://github.com/cozy/cozy-client/compare/v23.5.0...v23.6.0) (2021-06-07)
 
 
