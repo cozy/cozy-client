@@ -6,10 +6,6 @@ import {
   isIOSApp
 } from 'cozy-device-helper'
 import { CordovaWindow } from '../types'
-//@ts-ignore
-import { InAppBrowser } from 'react-native-inappbrowser-reborn'
-//@ts-ignore
-import { Linking } from 'react-native'
 
 /**
  * @type {CordovaWindow}
@@ -104,7 +100,12 @@ const authenticateWithInAppBrowser = url => {
  * @returns {Promise}
  */
 
-export const authenticateWithReactNativeInAppBrowser = url => {
+export const authenticateWithReactNativeInAppBrowser = async url => {
+  //@ts-ignore
+  const { InAppBrowser } = await import('react-native-inappbrowser-reborn')
+  //@ts-ignore
+  const { Linking } = await import('react-native')
+
   return new Promise((resolve, reject) => {
     InAppBrowser.open(url, {
       // iOS Properties
