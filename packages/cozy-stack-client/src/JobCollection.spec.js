@@ -83,6 +83,69 @@ describe('job collection', () => {
     })
   })
 
+  describe('setState', () => {
+    beforeEach(() => {
+      jest.spyOn(stackClient, 'fetchJSON').mockResolvedValue({
+        data: {
+          type: 'io.cozy.jobs',
+          id: '5396fc6299dd437d8d30fecd44745745',
+          attributes: {
+            domain: 'me.cozy.tools',
+            worker: 'konnector',
+            state: 'done',
+            queued_at: '2016-09-19T12:35:08Z',
+            started_at: '2016-09-19T12:35:08Z',
+            error: ''
+          },
+          links: {
+            self: '/jobs/5396fc6299dd437d8d30fecd44745745'
+          }
+        }
+      })
+    })
+
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it('should call the expected stack endpoint when ok job', async () => {
+      const jobId = '5396fc6299dd437d8d30fecd44745745'
+      await col.setState(jobId, true)
+      expect(stackClient.fetchJSON).toHaveBeenCalledWith(
+        'PATCH',
+        '/jobs/' + jobId,
+        {
+          data: {
+            type: 'io.cozy.jobs',
+            id: jobId,
+            attributes: {
+              state: 'done'
+            }
+          }
+        }
+      )
+    })
+
+    it('should call the expected stack endpoint when error job', async () => {
+      const jobId = '5396fc6299dd437d8d30fecd44745745'
+      await col.setState(jobId, false, 'LOGIN_FAILED')
+      expect(stackClient.fetchJSON).toHaveBeenCalledWith(
+        'PATCH',
+        '/jobs/' + jobId,
+        {
+          data: {
+            type: 'io.cozy.jobs',
+            id: jobId,
+            attributes: {
+              state: 'errored',
+              error: 'LOGIN_FAILED'
+            }
+          }
+        }
+      )
+    })
+  })
+
   describe('waitFor', () => {
     it('should work', async () => {
       let i = 0

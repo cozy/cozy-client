@@ -56,6 +56,28 @@ class JobCollection {
   }
 
   /**
+   * Set the job's state
+   *
+   * @param {string} id: job's id
+   * @param {boolean} result: job's result
+   * @param {string} error: error message if any
+   *
+   * This does work only for jobs comming from @client triggers
+   */
+  async setState(id, result, error) {
+    return this.stackClient.fetchJSON('PATCH', `/jobs/${id}`, {
+      data: {
+        type: JOBS_DOCTYPE,
+        id,
+        attributes: {
+          state: result ? 'done' : 'errored',
+          error
+        }
+      }
+    })
+  }
+
+  /**
    * Polls a job state until it is finished
    *
    * `options.until` can be used to tweak when to stop waiting. It will be
