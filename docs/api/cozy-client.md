@@ -88,6 +88,15 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 </dd>
 <dt><a href="#win">win</a> : <code><a href="#CordovaWindow">CordovaWindow</a></code></dt>
 <dd></dd>
+<dt><a href="#authenticateWithReactNativeInAppBrowser">authenticateWithReactNativeInAppBrowser</a> ⇒ <code>Promise</code></dt>
+<dd><p>Opens a ReactNative InAppBrowsr
+and resolves with the URL containing
+the token</p>
+</dd>
+<dt><a href="#authFunction">authFunction</a></dt>
+<dd><p>Return the method to use for
+authentication based on the</p>
+</dd>
 <dt><a href="#generateWebLink">generateWebLink</a> ⇒ <code>string</code></dt>
 <dd><p>generateWebLink - Construct a link to a web app</p>
 <p>This function does not get its cozy url from a CozyClient instance so it can
@@ -332,6 +341,12 @@ want to them to trigger an exception during tests.</p>
 </dd>
 <dt><a href="#query">query()</a> ⇒ <code><a href="#QueryState">QueryState</a></code> | <code><a href="#QueryDefinition">QueryDefinition</a></code></dt>
 <dd></dd>
+<dt><a href="#authenticateWithSafari">authenticateWithSafari(url)</a> ⇒ <code>Promise</code></dt>
+<dd><p>Open a SafariView Controller and resolve with the URL containing the token</p>
+</dd>
+<dt><a href="#authenticateWithInAppBrowser">authenticateWithInAppBrowser(url)</a> ⇒ <code>Promise</code></dt>
+<dd><p>Opens an InAppBrowser and resolves with the URL containing the token</p>
+</dd>
 <dt><a href="#createClientInteractive">createClientInteractive(clientOptions)</a> ⇒ <code><a href="#CozyClient">Promise.&lt;CozyClient&gt;</a></code></dt>
 <dd><p>Creates a client with interactive authentication.</p>
 <ul>
@@ -1473,7 +1488,8 @@ Get a query from the internal store.
 <a name="CozyClient+register"></a>
 
 ### cozyClient.register(cozyURL) ⇒ <code>object</code>
-Performs a complete OAuth flow using a Cordova webview for auth.
+Performs a complete OAuth flow using a Cordova webview
+or React Native WebView for auth.
 The `register` method's name has been chosen for compat reasons with the Authentication compo.
 
 **Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
@@ -2065,6 +2081,26 @@ Updates a relationship item with the relationship name and id
 <a name="win"></a>
 
 ## win : [<code>CordovaWindow</code>](#CordovaWindow)
+**Kind**: global constant  
+<a name="authenticateWithReactNativeInAppBrowser"></a>
+
+## authenticateWithReactNativeInAppBrowser ⇒ <code>Promise</code>
+Opens a ReactNative InAppBrowsr
+and resolves with the URL containing
+the token
+
+**Kind**: global constant  
+
+| Param | Type |
+| --- | --- |
+| url | <code>string</code> | 
+
+<a name="authFunction"></a>
+
+## authFunction
+Return the method to use for
+authentication based on the
+
 **Kind**: global constant  
 <a name="generateWebLink"></a>
 
@@ -3018,6 +3054,28 @@ want to them to trigger an exception during tests.
 
 ### query~common : [<code>Partial.&lt;QueryState&gt;</code>](#QueryState)
 **Kind**: inner constant of [<code>query</code>](#query)  
+<a name="authenticateWithSafari"></a>
+
+## authenticateWithSafari(url) ⇒ <code>Promise</code>
+Open a SafariView Controller and resolve with the URL containing the token
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| url | <code>string</code> | 
+
+<a name="authenticateWithInAppBrowser"></a>
+
+## authenticateWithInAppBrowser(url) ⇒ <code>Promise</code>
+Opens an InAppBrowser and resolves with the URL containing the token
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| url | <code>string</code> | 
+
 <a name="createClientInteractive"></a>
 
 ## createClientInteractive(clientOptions) ⇒ [<code>Promise.&lt;CozyClient&gt;</code>](#CozyClient)

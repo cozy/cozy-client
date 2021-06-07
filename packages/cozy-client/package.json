@@ -62,7 +62,9 @@
   },
   "peerDependencies": {
     "cozy-ui": ">34.0.0",
-    "react": "^16.7.0"
+    "react": "^16.7.0",
+    "react-native": "^0.64.1",
+    "react-native-inappbrowser-reborn": "^3.5.1"
   },
   "sideEffects": false
 }
