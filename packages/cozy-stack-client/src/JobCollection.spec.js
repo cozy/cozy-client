@@ -159,8 +159,9 @@ describe('job collection', () => {
     })
 
     it('should throw when the job is not a client worker', async () => {
+      expect.assertions(1)
       const jobId = '5396fc6299dd437d8d30fecd44745745'
-      expect(async () => {
+      try {
         await col.update({
           _id: jobId,
           worker: 'notclient',
@@ -169,7 +170,11 @@ describe('job collection', () => {
             error: 'LOGIN_FAILED'
           }
         })
-      }).toThrow()
+      } catch (err) {
+        expect(err.message).toEqual(
+          `JobCollection.update only works for client workers. notclient given`
+        )
+      }
     })
   })
 

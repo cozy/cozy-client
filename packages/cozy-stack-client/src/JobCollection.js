@@ -76,7 +76,9 @@ class JobCollection {
    */
   async update(job) {
     if (job.worker !== 'client') {
-      throw new Error('JobCollection.update only works for client workers')
+      throw new Error(
+        `JobCollection.update only works for client workers. ${job.worker} given`
+      )
     }
 
     return this.stackClient.fetchJSON('PATCH', `/jobs/${job._id}`, {
