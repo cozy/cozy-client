@@ -83,7 +83,7 @@ describe('job collection', () => {
     })
   })
 
-  describe('setState', () => {
+  describe('update', () => {
     beforeEach(() => {
       jest.spyOn(stackClient, 'fetchJSON').mockResolvedValue({
         data: {
@@ -110,7 +110,12 @@ describe('job collection', () => {
 
     it('should call the expected stack endpoint when ok job', async () => {
       const jobId = '5396fc6299dd437d8d30fecd44745745'
-      await col.setState(jobId, true)
+      await col.update({
+        _id: jobId,
+        attributes: {
+          state: 'done'
+        }
+      })
       expect(stackClient.fetchJSON).toHaveBeenCalledWith(
         'PATCH',
         '/jobs/' + jobId,
@@ -128,7 +133,13 @@ describe('job collection', () => {
 
     it('should call the expected stack endpoint when error job', async () => {
       const jobId = '5396fc6299dd437d8d30fecd44745745'
-      await col.setState(jobId, false, 'LOGIN_FAILED')
+      await col.update({
+        _id: jobId,
+        attributes: {
+          state: 'errored',
+          error: 'LOGIN_FAILED'
+        }
+      })
       expect(stackClient.fetchJSON).toHaveBeenCalledWith(
         'PATCH',
         '/jobs/' + jobId,
