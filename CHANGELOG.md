@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [23.8.0](https://github.com/cozy/cozy-client/compare/v23.7.0...v23.8.0) (2021-06-07)
+
+
+### Features
+
+* Add synchronization exclusions methods ([f1b9193](https://github.com/cozy/cozy-client/commit/f1b91936be78ab5eec796817cd17d686a9494086))
+
+
+
+
+
 # [23.7.0](https://github.com/cozy/cozy-client/compare/v23.6.0...v23.7.0) (2021-06-07)
 
 
