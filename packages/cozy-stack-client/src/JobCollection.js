@@ -75,6 +75,10 @@ class JobCollection {
    * @param {JobDocument} job - io.cozy.jobs document
    */
   async update(job) {
+    if (job.worker !== 'client') {
+      throw new Error('JobCollection.update only works for client workers')
+    }
+
     return this.stackClient.fetchJSON('PATCH', `/jobs/${job._id}`, {
       data: {
         type: JOBS_DOCTYPE,

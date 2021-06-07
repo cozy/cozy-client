@@ -112,6 +112,7 @@ describe('job collection', () => {
       const jobId = '5396fc6299dd437d8d30fecd44745745'
       await col.update({
         _id: jobId,
+        worker: 'client',
         attributes: {
           state: 'done'
         }
@@ -135,6 +136,7 @@ describe('job collection', () => {
       const jobId = '5396fc6299dd437d8d30fecd44745745'
       await col.update({
         _id: jobId,
+        worker: 'client',
         attributes: {
           state: 'errored',
           error: 'LOGIN_FAILED'
@@ -154,6 +156,20 @@ describe('job collection', () => {
           }
         }
       )
+    })
+
+    it('should throw when the job is not a client worker', async () => {
+      const jobId = '5396fc6299dd437d8d30fecd44745745'
+      expect(async () => {
+        await col.update({
+          _id: jobId,
+          worker: 'notclient',
+          attributes: {
+            state: 'errored',
+            error: 'LOGIN_FAILED'
+          }
+        })
+      }).toThrow()
     })
   })
 
