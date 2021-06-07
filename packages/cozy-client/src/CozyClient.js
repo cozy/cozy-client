@@ -18,7 +18,7 @@ import {
   attachRelationships
 } from './associations/helpers'
 import { dehydrate } from './helpers'
-import { QueryDefinition, Mutations, Q, isAGetByIdQuery } from './queries/dsl'
+import { QueryDefinition, Mutations, Q } from './queries/dsl'
 import { authFunction } from './authentication/mobile'
 import optimizeQueryDefinitions from './queries/optimize'
 import {

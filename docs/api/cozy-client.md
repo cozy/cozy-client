@@ -89,8 +89,8 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 <dt><a href="#win">win</a> : <code><a href="#CordovaWindow">CordovaWindow</a></code></dt>
 <dd></dd>
 <dt><a href="#authenticateWithReactNativeInAppBrowser">authenticateWithReactNativeInAppBrowser</a> ⇒ <code>Promise</code></dt>
-<dd><p>Open a RactNative InAppBrowsr
-and resolve with the URL containing
+<dd><p>Opens a ReactNative InAppBrowsr
+and resolves with the URL containing
 the token</p>
 </dd>
 <dt><a href="#authFunction">authFunction</a></dt>
@@ -341,6 +341,12 @@ want to them to trigger an exception during tests.</p>
 </dd>
 <dt><a href="#query">query()</a> ⇒ <code><a href="#QueryState">QueryState</a></code> | <code><a href="#QueryDefinition">QueryDefinition</a></code></dt>
 <dd></dd>
+<dt><a href="#authenticateWithSafari">authenticateWithSafari(url)</a> ⇒ <code>Promise</code></dt>
+<dd><p>Open a SafariView Controller and resolve with the URL containing the token</p>
+</dd>
+<dt><a href="#authenticateWithInAppBrowser">authenticateWithInAppBrowser(url)</a> ⇒ <code>Promise</code></dt>
+<dd><p>Opens an InAppBrowser and resolves with the URL containing the token</p>
+</dd>
 <dt><a href="#createClientInteractive">createClientInteractive(clientOptions)</a> ⇒ <code><a href="#CozyClient">Promise.&lt;CozyClient&gt;</a></code></dt>
 <dd><p>Creates a client with interactive authentication.</p>
 <ul>
@@ -701,7 +707,7 @@ the hydrated document (.data method). View components will access
 `hydratedDoc[relationshipName].data`.
 - `get query`: how to build the query to fetch related documents
 
-**Kind**: global interface
+**Kind**: global interface  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -736,14 +742,14 @@ the hydrated document (.data method). View components will access
 ### association.target : <code>object</code>
 The original document declaring the relationship
 
-**Kind**: instance property of [<code>Association</code>](#Association)
+**Kind**: instance property of [<code>Association</code>](#Association)  
 <a name="Association+name"></a>
 
 ### association.name : <code>string</code>
 The name of the relationship.
 
-**Kind**: instance property of [<code>Association</code>](#Association)
-**Example**
+**Kind**: instance property of [<code>Association</code>](#Association)  
+**Example**  
 ```js
 'author'
 ```
@@ -752,8 +758,8 @@ The name of the relationship.
 ### association.doctype : <code>string</code>
 Doctype of the relationship
 
-**Kind**: instance property of [<code>Association</code>](#Association)
-**Example**
+**Kind**: instance property of [<code>Association</code>](#Association)  
+**Example**  
 ```js
 'io.cozy.authors'
 ```
@@ -762,19 +768,19 @@ Doctype of the relationship
 ### association.get : <code>function</code>
 Returns the document from the store
 
-**Kind**: instance property of [<code>Association</code>](#Association)
+**Kind**: instance property of [<code>Association</code>](#Association)  
 <a name="Association+save"></a>
 
 ### association.save : <code>function</code>
 Saves the relationship in store.
 
-**Kind**: instance property of [<code>Association</code>](#Association)
+**Kind**: instance property of [<code>Association</code>](#Association)  
 <a name="Association+dispatch"></a>
 
 ### association.dispatch : <code>function</code>
 Dispatch an action on the store.
 
-**Kind**: instance property of [<code>Association</code>](#Association)
+**Kind**: instance property of [<code>Association</code>](#Association)  
 <a name="Association+raw"></a>
 
 ### association.raw ⇒ <code>object</code>
@@ -807,7 +813,7 @@ Raw value will be
 
 Derived `Association`s need to implement this method.
 
-**Kind**: instance property of [<code>Association</code>](#Association)
+**Kind**: instance property of [<code>Association</code>](#Association)  
 <a name="Association+data"></a>
 
 ### association.data ⇒ <code>object</code>
@@ -842,30 +848,30 @@ const book = {
 
 Derived `Association`s need to implement this method.
 
-**Kind**: instance property of [<code>Association</code>](#Association)
+**Kind**: instance property of [<code>Association</code>](#Association)  
 <a name="Association+query"></a>
 
 ### association.query(queryDefinition)
 Performs a query to retrieve relationship documents.
 
-**Kind**: instance method of [<code>Association</code>](#Association)
+**Kind**: instance method of [<code>Association</code>](#Association)  
 
 | Param | Type |
 | --- | --- |
-| queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) |
+| queryDefinition | [<code>QueryDefinition</code>](#QueryDefinition) | 
 
 <a name="Association+mutate"></a>
 
 ### association.mutate()
 Performs a mutation on the relationship.
 
-**Kind**: instance method of [<code>Association</code>](#Association)
+**Kind**: instance method of [<code>Association</code>](#Association)  
 <a name="Association.query"></a>
 
 ### Association.query() ⇒ [<code>QueryDefinition</code>](#QueryDefinition) \| [<code>QueryState</code>](#QueryState)
 Derived `Association`s need to implement this method.
 
-**Kind**: static method of [<code>Association</code>](#Association)
+**Kind**: static method of [<code>Association</code>](#Association)  
 <a name="HasMany"></a>
 
 ## HasMany
@@ -877,7 +883,7 @@ Responsible for
 - Creating relationships
 - Removing relationships
 
-**Kind**: global class
+**Kind**: global class  
 
 * [HasMany](#HasMany)
     * [new HasMany()](#new_HasMany_new)
@@ -919,7 +925,7 @@ const todo = {
 ### hasMany.data
 Returns store documents
 
-**Kind**: instance property of [<code>HasMany</code>](#HasMany)
+**Kind**: instance property of [<code>HasMany</code>](#HasMany)  
 <a name="HasMany+count"></a>
 
 ### hasMany.count ⇒ <code>number</code>
@@ -927,15 +933,15 @@ Returns the total number of documents in the relationship.
 Does not handle documents absent from the store. If you want
 to do that, you can use .data.length.
 
-**Kind**: instance property of [<code>HasMany</code>](#HasMany)
-**Returns**: <code>number</code> - - Total number of documents in the relationships
+**Kind**: instance property of [<code>HasMany</code>](#HasMany)  
+**Returns**: <code>number</code> - - Total number of documents in the relationships  
 <a name="HasMany+addById"></a>
 
 ### hasMany.addById()
 Add a referenced document by id. You need to call save()
 in order to synchronize your document with the store.
 
-**Kind**: instance method of [<code>HasMany</code>](#HasMany)
+**Kind**: instance method of [<code>HasMany</code>](#HasMany)  
 **Todo**
 
 - [ ] We shouldn't create the array of relationship manually since
@@ -948,12 +954,12 @@ We certainly should use something like `updateRelationship`
 Used when related documents are stored directly under the attribute with
 only the ids.
 
-**Kind**: global class
+**Kind**: global class  
 **Properties**
 
 | Name | Type |
 | --- | --- |
-| get | <code>function</code> |
+| get | <code>function</code> | 
 
 
 * [HasManyInPlace](#HasManyInPlace)
@@ -1001,14 +1007,14 @@ const todo = {
 ### hasManyInPlace.raw : <code>Array.&lt;string&gt;</code>
 Raw property
 
-**Kind**: instance property of [<code>HasManyInPlace</code>](#HasManyInPlace)
+**Kind**: instance property of [<code>HasManyInPlace</code>](#HasManyInPlace)  
 <a name="HasManyTriggers"></a>
 
 ## HasManyTriggers ⇐ [<code>HasMany</code>](#HasMany)
 Association used for konnectors to retrieve all their related triggers.
 
-**Kind**: global class
-**Extends**: [<code>HasMany</code>](#HasMany)
+**Kind**: global class  
+**Extends**: [<code>HasMany</code>](#HasMany)  
 
 * [HasManyTriggers](#HasManyTriggers) ⇐ [<code>HasMany</code>](#HasMany)
     * _instance_
@@ -1023,8 +1029,8 @@ Association used for konnectors to retrieve all their related triggers.
 ### hasManyTriggers.data
 Returns store documents
 
-**Kind**: instance property of [<code>HasManyTriggers</code>](#HasManyTriggers)
-**Overrides**: [<code>data</code>](#HasMany+data)
+**Kind**: instance property of [<code>HasManyTriggers</code>](#HasManyTriggers)  
+**Overrides**: [<code>data</code>](#HasMany+data)  
 <a name="HasMany+count"></a>
 
 ### hasManyTriggers.count ⇒ <code>number</code>
@@ -1032,15 +1038,15 @@ Returns the total number of documents in the relationship.
 Does not handle documents absent from the store. If you want
 to do that, you can use .data.length.
 
-**Kind**: instance property of [<code>HasManyTriggers</code>](#HasManyTriggers)
-**Returns**: <code>number</code> - - Total number of documents in the relationships
+**Kind**: instance property of [<code>HasManyTriggers</code>](#HasManyTriggers)  
+**Returns**: <code>number</code> - - Total number of documents in the relationships  
 <a name="HasMany+addById"></a>
 
 ### hasManyTriggers.addById()
 Add a referenced document by id. You need to call save()
 in order to synchronize your document with the store.
 
-**Kind**: instance method of [<code>HasManyTriggers</code>](#HasManyTriggers)
+**Kind**: instance method of [<code>HasManyTriggers</code>](#HasManyTriggers)  
 **Todo**
 
 - [ ] We shouldn't create the array of relationship manually since
@@ -1054,7 +1060,7 @@ In this association the query is special, we need to fetch all the triggers
 having for the 'konnector' worker, and then filter them based on their
 `message.konnector` attribute
 
-**Kind**: static method of [<code>HasManyTriggers</code>](#HasManyTriggers)
+**Kind**: static method of [<code>HasManyTriggers</code>](#HasManyTriggers)  
 <a name="CozyClient"></a>
 
 ## CozyClient
@@ -1065,7 +1071,7 @@ Responsible for
 - Creating plan for saving documents
 - Associations
 
-**Kind**: global class
+**Kind**: global class  
 
 * [CozyClient](#CozyClient)
     * [new CozyClient(rawOptions)](#new_CozyClient_new)
@@ -1119,7 +1125,7 @@ Responsible for
 | --- | --- | --- |
 | rawOptions | [<code>ClientOptions</code>](#ClientOptions) | Options |
 
-**Example**
+**Example**  
 ```js
 const client = new CozyClient({
   schema: {
@@ -1140,11 +1146,11 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 <a name="CozyClient+capabilities"></a>
 
 ### cozyClient.capabilities : [<code>ClientCapabilities</code>](#ClientCapabilities)
-**Kind**: instance property of [<code>CozyClient</code>](#CozyClient)
+**Kind**: instance property of [<code>CozyClient</code>](#CozyClient)  
 <a name="CozyClient+storeAccesors"></a>
 
 ### cozyClient.storeAccesors : <code>object</code>
-**Kind**: instance property of [<code>CozyClient</code>](#CozyClient)
+**Kind**: instance property of [<code>CozyClient</code>](#CozyClient)  
 <a name="CozyClient+fetchQueryAndGetFromState"></a>
 
 ### cozyClient.fetchQueryAndGetFromState ⇒ [<code>Promise.&lt;QueryState&gt;</code>](#QueryState)
@@ -1153,8 +1159,8 @@ Executes a query and returns the results from internal store.
 Can be useful in pure JS context (without React)
 Has a behavior close to <Query /> or useQuery
 
-**Kind**: instance property of [<code>CozyClient</code>](#CozyClient)
-**Returns**: [<code>Promise.&lt;QueryState&gt;</code>](#QueryState) - Query state
+**Kind**: instance property of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: [<code>Promise.&lt;QueryState&gt;</code>](#QueryState) - Query state  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1169,7 +1175,7 @@ This is here just so typescript does not scream
 TODO Find a better way to make TS understand that emit is
 a method from cozy-client
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 <a name="CozyClient+registerPlugin"></a>
 
 ### cozyClient.registerPlugin()
@@ -1187,8 +1193,8 @@ and can be accessed via this mean. A plugin class must have the attribute
 
 Two plugins with the same `pluginName` cannot co-exist.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
-**Example**
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Example**  
 ```js
 class AlertPlugin {
   constructor(client, options) {
@@ -1232,8 +1238,8 @@ Emits
 - "beforeLogin" at the beginning, before links have been set up
 - "login" when the client is fully logged in and links have been set up
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
-**Returns**: <code>Promise</code> - - Resolves when all links have been setup and client is fully logged in
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: <code>Promise</code> - - Resolves when all links have been setup and client is fully logged in  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1251,16 +1257,16 @@ Emits
 - "beforeLogout" at the beginning, before links have been reset
 - "login" when the client is fully logged out and links have been reset
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
-**Returns**: <code>Promise</code> - - Resolves when all links have been reset and client is fully logged out
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: <code>Promise</code> - - Resolves when all links have been reset and client is fully logged out  
 <a name="CozyClient+collection"></a>
 
 ### cozyClient.collection(doctype) ⇒ <code>DocumentCollection</code>
 Forwards to a stack client instance and returns
 a [DocumentCollection](https://docs.cozy.io/en/cozy-client/api/cozy-stack-client/#DocumentCollection) instance.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
-**Returns**: <code>DocumentCollection</code> - Collection corresponding to the doctype
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: <code>DocumentCollection</code> - Collection corresponding to the doctype  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1271,7 +1277,7 @@ a [DocumentCollection](https://docs.cozy.io/en/cozy-client/api/cozy-stack-client
 ### cozyClient.create(type, doc, [references], options) ⇒ <code>Promise</code>
 Creates a document and saves it on the server
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1280,7 +1286,7 @@ Creates a document and saves it on the server
 | [references] | [<code>ReferenceMap</code>](#ReferenceMap) | References are a special kind of relationship that is not stored inside the referencer document, they are used for example between a photo and its album. You should not need to use it normally. |
 | options | <code>object</code> | Mutation options |
 
-**Example**
+**Example**  
 ```js
 await client.create('io.cozy.todos', {
   label: 'My todo',
@@ -1306,8 +1312,8 @@ const relationships = {
 client.getDocumentSavePlan(baseDoc, relationships)
 ```
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
-**Returns**: <code>Array.&lt;Mutation&gt;</code> \| <code>Mutation</code> - One or more mutation to execute
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: <code>Array.&lt;Mutation&gt;</code> \| <code>Mutation</code> - One or more mutation to execute  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1319,8 +1325,8 @@ client.getDocumentSavePlan(baseDoc, relationships)
 ### cozyClient.destroy(document) ⇒ [<code>Promise.&lt;CozyClientDocument&gt;</code>](#CozyClientDocument)
 Destroys a document. {before,after}:destroy hooks will be fired.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
-**Returns**: [<code>Promise.&lt;CozyClientDocument&gt;</code>](#CozyClientDocument) - The document that has been deleted
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: [<code>Promise.&lt;CozyClientDocument&gt;</code>](#CozyClientDocument) - The document that has been deleted  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1331,7 +1337,7 @@ Destroys a document. {before,after}:destroy hooks will be fired.
 ### cozyClient.ensureQueryExists(queryId, queryDefinition, [options])
 Makes sure that the query exists in the store
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1348,7 +1354,7 @@ Results from the query will be saved internally and can be retrieved via
 `getQueryFromState` or directly using `<Query />`. `<Query />` automatically
 executes its query when mounted if no fetch policy has been indicated.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1362,8 +1368,8 @@ Will fetch all documents for a `queryDefinition`, automatically fetching more
 documents if the total of documents is superior to the pagination limit. Can
 result in a lot of network requests.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
-**Returns**: <code>Promise.&lt;Array&gt;</code> - All documents matching the query
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: <code>Promise.&lt;Array&gt;</code> - All documents matching the query  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1375,7 +1381,7 @@ result in a lot of network requests.
 ### cozyClient.mutate(mutationDefinition, [options]) ⇒ <code>Promise</code>
 Mutate a document
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1392,7 +1398,7 @@ Returns documents with their relationships resolved according to their schema.
 If related documents are not in the store, they will not be fetched automatically.
 Instead, the relationships will have null documents.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1407,7 +1413,7 @@ Resolves relationships on a document.
 The original document is kept in the target attribute of
 the relationship
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1421,13 +1427,13 @@ Creates (locally) a new document for the given doctype.
 This document is hydrated : its relationships are there
 and working.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 <a name="CozyClient+getAssociation"></a>
 
 ### cozyClient.getAssociation()
 Creates an association that is linked to the store.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 <a name="CozyClient+getRelationshipStoreAccessors"></a>
 
 ### cozyClient.getRelationshipStoreAccessors()
@@ -1438,14 +1444,14 @@ Relationships need to have access to the store to ping it when
 a modification (addById/removeById etc...) has been done. This wakes
 the store up, which in turn will update the `<Query>`s and re-render the data.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 <a name="CozyClient+getCollectionFromState"></a>
 
 ### cozyClient.getCollectionFromState(type) ⇒ [<code>Array.&lt;CozyClientDocument&gt;</code>](#CozyClientDocument)
 Get a collection of documents from the internal store.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
-**Returns**: [<code>Array.&lt;CozyClientDocument&gt;</code>](#CozyClientDocument) - Array of documents or null if the collection does not exist.
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: [<code>Array.&lt;CozyClientDocument&gt;</code>](#CozyClientDocument) - Array of documents or null if the collection does not exist.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1456,8 +1462,8 @@ Get a collection of documents from the internal store.
 ### cozyClient.getDocumentFromState(type, id) ⇒ [<code>CozyClientDocument</code>](#CozyClientDocument)
 Get a document from the internal store.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
-**Returns**: [<code>CozyClientDocument</code>](#CozyClientDocument) - Document or null if the object does not exist.
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: [<code>CozyClientDocument</code>](#CozyClientDocument) - Document or null if the object does not exist.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1469,8 +1475,8 @@ Get a document from the internal store.
 ### cozyClient.getQueryFromState(id, options) ⇒ [<code>QueryState</code>](#QueryState)
 Get a query from the internal store.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
-**Returns**: [<code>QueryState</code>](#QueryState) - - Query state or null if it does not exist.
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: [<code>QueryState</code>](#QueryState) - - Query state or null if it does not exist.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1486,8 +1492,8 @@ Performs a complete OAuth flow using a Cordova webview
 or React Native WebView for auth.
 The `register` method's name has been chosen for compat reasons with the Authentication compo.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
-**Returns**: <code>object</code> - Contains the fetched token and the client information.
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: <code>object</code> - Contains the fetched token and the client information.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1498,8 +1504,8 @@ The `register` method's name has been chosen for compat reasons with the Authent
 ### cozyClient.startOAuthFlow(openURLCallback) ⇒ <code>Promise.&lt;object&gt;</code>
 Performs a complete OAuth flow, including updating the internal token at the end.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
-**Returns**: <code>Promise.&lt;object&gt;</code> - Contains the fetched token and the client information. These should be stored and used to restore the client.
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: <code>Promise.&lt;object&gt;</code> - Contains the fetched token and the client information. These should be stored and used to restore the client.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1511,8 +1517,8 @@ Performs a complete OAuth flow, including updating the internal token at the end
 Renews the token if, for instance, new permissions are required or token
 has expired.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
-**Returns**: <code>object</code> - Contains the fetched token and the client information.
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: <code>object</code> - Contains the fetched token and the client information.  
 <a name="CozyClient+setStore"></a>
 
 ### cozyClient.setStore(store, [options])
@@ -1523,7 +1529,7 @@ Typically, you would need to do this only once in your application, this is why
 setStore throws if you do it twice. If you really need to set the store again,
 use options.force = true.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1531,7 +1537,7 @@ use options.force = true.
 | [options] | <code>object</code> | Options |
 | [options.force] | <code>boolean</code> | Will deactivate throwing when client's store already exists |
 
-**Example**
+**Example**  
 ```
 const client = new CozyClient()
 const store = createStore(combineReducers({
@@ -1545,19 +1551,19 @@ client.setStore(store)
 ### cozyClient.checkForRevocation()
 Returns whether the client has been revoked on the server
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 <a name="CozyClient+handleRevocationChange"></a>
 
 ### cozyClient.handleRevocationChange()
 Sets public attribute and emits event related to revocation
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 <a name="CozyClient+handleTokenRefresh"></a>
 
 ### cozyClient.handleTokenRefresh()
 Emits event when token is refreshed
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 <a name="CozyClient+createClient"></a>
 
 ### cozyClient.createClient()
@@ -1568,19 +1574,19 @@ revocation and token refresh.
 
 If `oauth` options are passed, stackClient is an OAuthStackClient.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 <a name="CozyClient+getInstanceOptions"></a>
 
 ### cozyClient.getInstanceOptions() ⇒ <code>object</code>
 getInstanceOptions - Returns current instance options, such as domain or app slug
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 <a name="CozyClient+loadInstanceOptionsFromDOM"></a>
 
 ### cozyClient.loadInstanceOptionsFromDOM([selector]) ⇒ <code>void</code>
 loadInstanceOptionsFromDOM - Loads the dataset injected by the Stack in web pages and exposes it through getInstanceOptions
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -1593,7 +1599,7 @@ Directly set the data in the store, without using a query
 This is useful for cases like Pouch replication, which wants to
 set some data in the store.
 
-**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)
+**Kind**: instance method of [<code>CozyClient</code>](#CozyClient)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1605,7 +1611,7 @@ set some data in the store.
 To help with the transition from cozy-client-js to cozy-client, it is possible to instantiate
 a client with a cookie-based instance of cozy-client-js.
 
-**Kind**: static method of [<code>CozyClient</code>](#CozyClient)
+**Kind**: static method of [<code>CozyClient</code>](#CozyClient)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1619,8 +1625,8 @@ a client with an OAuth-based instance of cozy-client-js.
 
 Warning: unlike other instantiators, this one needs to be awaited.
 
-**Kind**: static method of [<code>CozyClient</code>](#CozyClient)
-**Returns**: [<code>Promise.&lt;CozyClient&gt;</code>](#CozyClient) - An instance of a client, configured from the old client
+**Kind**: static method of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: [<code>Promise.&lt;CozyClient&gt;</code>](#CozyClient) - An instance of a client, configured from the old client  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1632,7 +1638,7 @@ Warning: unlike other instantiators, this one needs to be awaited.
 In konnector/service context, CozyClient can be instantiated from
 environment variables
 
-**Kind**: static method of [<code>CozyClient</code>](#CozyClient)
+**Kind**: static method of [<code>CozyClient</code>](#CozyClient)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1645,8 +1651,8 @@ environment variables
 When used from an app, CozyClient can be instantiated from the data injected by the stack in
 the DOM.
 
-**Kind**: static method of [<code>CozyClient</code>](#CozyClient)
-**Returns**: <code>object</code> - - CozyClient instance
+**Kind**: static method of [<code>CozyClient</code>](#CozyClient)  
+**Returns**: <code>object</code> - - CozyClient instance  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -1662,7 +1668,7 @@ There are at the moment only 2 hooks available.
 - before:destroy, called just before a document is destroyed via CozyClient::destroy
 - after:destroy, called after a document is destroyed via CozyClient::destroy
 
-**Kind**: static method of [<code>CozyClient</code>](#CozyClient)
+**Kind**: static method of [<code>CozyClient</code>](#CozyClient)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1670,7 +1676,7 @@ There are at the moment only 2 hooks available.
 | name | <code>string</code> | Name of the hook |
 | fn | <code>function</code> | Callback to be executed |
 
-**Example**
+**Example**  
 ```
 CozyClient.registerHook('io.cozy.bank.accounts', 'before:destroy', () => {
   console.log('A io.cozy.bank.accounts is being destroyed')
@@ -1682,8 +1688,8 @@ CozyClient.registerHook('io.cozy.bank.accounts', 'before:destroy', () => {
 Chainable API to create query definitions to retrieve documents
 from a Cozy. `QueryDefinition`s are sent to links.
 
-**Kind**: global class
-**Extends**: <code>object</code>
+**Kind**: global class  
+**Extends**: <code>object</code>  
 
 * [QueryDefinition](#QueryDefinition) ⇐ <code>object</code>
     * [new QueryDefinition(options)](#new_QueryDefinition_new)
@@ -1736,7 +1742,7 @@ When sorting with CouchDB, it is required to:
 
 See https://docs.cozy.io/en/tutorials/data/queries/#sort-data-with-mango
 
-**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1749,7 +1755,7 @@ Checks the selector predicates.
 
 It is useful to warn the developer when a partial index might be used.
 
-**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1760,8 +1766,8 @@ It is useful to warn the developer when a partial index might be used.
 ### queryDefinition.getById(id) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
 Query a single document on its id.
 
-**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)
-**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
+**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1772,8 +1778,8 @@ Query a single document on its id.
 ### queryDefinition.getByIds(ids) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
 Query several documents on their ids.
 
-**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)
-**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
+**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1785,8 +1791,8 @@ Query several documents on their ids.
 Query documents with a [mango selector](http://docs.couchdb.org/en/latest/api/database/find.html#find-selectors).
 Each field passed in the selector will be indexed, except if the indexField option is used.
 
-**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)
-**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
+**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1797,8 +1803,8 @@ Each field passed in the selector will be indexed, except if the indexField opti
 ### queryDefinition.select(fields) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
 Specify which fields of each object should be returned. If it is omitted, the entire object is returned.
 
-**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)
-**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
+**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1809,8 +1815,8 @@ Specify which fields of each object should be returned. If it is omitted, the en
 ### queryDefinition.indexFields(indexedFields) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
 Specify which fields should be indexed. This prevent the automatic indexing of the mango fields.
 
-**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)
-**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
+**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1825,7 +1831,7 @@ The filter must follow the same syntax than the selector.
 A partial index includes a filter, used to select documents before the indexing.
 You can find more information about partial indexes [here](https://docs.cozy.io/en/tutorials/data/advanced/#partial-indexes)
 
-**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1836,8 +1842,8 @@ You can find more information about partial indexes [here](https://docs.cozy.io/
 ### queryDefinition.sortBy(sort) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
 Specify how to sort documents, following the [sort syntax](http://docs.couchdb.org/en/latest/api/database/find.html#find-sort)
 
-**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)
-**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
+**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1849,8 +1855,8 @@ Specify how to sort documents, following the [sort syntax](http://docs.couchdb.o
 Includes documents having a relationships with the ones queried.
 For example, query albums including the photos.
 
-**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)
-**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
+**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1861,8 +1867,8 @@ For example, query albums including the photos.
 ### queryDefinition.limitBy(limit) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
 Maximum number of documents returned, useful for pagination. Default is 100.
 
-**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)
-**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
+**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1876,8 +1882,8 @@ Skip the first ‘n’ documents, where ‘n’ is the value specified.
 Beware, this [performs badly](http://docs.couchdb.org/en/stable/ddocs/views/pagination.html#paging-alternate-method) on view's index.
  Prefer cursor-based pagination in such situation.
 
-**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)
-**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
+**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1893,8 +1899,8 @@ e.g. ["io.cozy.photos.albums", "album-id"] and startkey_docid is the id of
 the starting document of the query, e.g. "file-id".
 Use the last docid of each query as startkey_docid to paginate or leave blank for the first query.
 
-**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)
-**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
+**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1908,8 +1914,8 @@ Note this only applies for mango-queries (not views) and is way more efficient t
 The bookmark is a string returned by the _find response and can be seen as a pointer in
 the index for the next query.
 
-**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)
-**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
+**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1920,8 +1926,8 @@ the index for the next query.
 ### queryDefinition.referencedBy(document) ⇒ [<code>QueryDefinition</code>](#QueryDefinition)
 Use the [file reference system](https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/)
 
-**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)
-**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.
+**Kind**: instance method of [<code>QueryDefinition</code>](#QueryDefinition)  
+**Returns**: [<code>QueryDefinition</code>](#QueryDefinition) - The QueryDefinition object.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1950,7 +1956,7 @@ const schema = new Schema({
 }, cozyStackClient)
 ```
 
-**Kind**: global class
+**Kind**: global class  
 
 * [Schema](#Schema)
     * [new Schema(schemaDefinition, client)](#new_Schema_new)
@@ -1971,7 +1977,7 @@ const schema = new Schema({
 <a name="Schema+add"></a>
 
 ### schema.add(schemaDefinition)
-**Kind**: instance method of [<code>Schema</code>](#Schema)
+**Kind**: instance method of [<code>Schema</code>](#Schema)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1984,7 +1990,7 @@ Returns the schema for a doctype
 
 Creates an empty schema implicitly if it does not exist
 
-**Kind**: instance method of [<code>Schema</code>](#Schema)
+**Kind**: instance method of [<code>Schema</code>](#Schema)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1995,7 +2001,7 @@ Creates an empty schema implicitly if it does not exist
 ### schema.getRelationship(doctype, relationshipName)
 Returns the relationship for a given doctype/name
 
-**Kind**: instance method of [<code>Schema</code>](#Schema)
+**Kind**: instance method of [<code>Schema</code>](#Schema)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2007,23 +2013,23 @@ Returns the relationship for a given doctype/name
 ### schema.validate()
 Validates a document considering the descriptions in schema.attributes.
 
-**Kind**: instance method of [<code>Schema</code>](#Schema)
+**Kind**: instance method of [<code>Schema</code>](#Schema)  
 <a name="client"></a>
 
 ## client : [<code>CozyClient</code>](#CozyClient)
-**Kind**: global variable
+**Kind**: global variable  
 <a name="setupConsoleToThrow"></a>
 
 ## setupConsoleToThrow
 Override console.warn and error to throw
 
-**Kind**: global constant
+**Kind**: global constant  
 <a name="getHasManyItem"></a>
 
 ## getHasManyItem
 Gets a relationship item with the relationship name and id
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2036,7 +2042,7 @@ Gets a relationship item with the relationship name and id
 ## setHasManyItem
 Sets a relationship item with the relationship name and id
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2050,7 +2056,7 @@ Sets a relationship item with the relationship name and id
 ## removeHasManyItem
 Remove one relationship item
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2063,7 +2069,7 @@ Remove one relationship item
 ## updateHasManyItem
 Updates a relationship item with the relationship name and id
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2075,19 +2081,19 @@ Updates a relationship item with the relationship name and id
 <a name="win"></a>
 
 ## win : [<code>CordovaWindow</code>](#CordovaWindow)
-**Kind**: global constant
+**Kind**: global constant  
 <a name="authenticateWithReactNativeInAppBrowser"></a>
 
 ## authenticateWithReactNativeInAppBrowser ⇒ <code>Promise</code>
-Open a RactNative InAppBrowsr
-and resolve with the URL containing
+Opens a ReactNative InAppBrowsr
+and resolves with the URL containing
 the token
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type |
 | --- | --- |
-| url | <code>string</code> |
+| url | <code>string</code> | 
 
 <a name="authFunction"></a>
 
@@ -2095,7 +2101,7 @@ the token
 Return the method to use for
 authentication based on the
 
-**Kind**: global constant
+**Kind**: global constant  
 <a name="generateWebLink"></a>
 
 ## generateWebLink ⇒ <code>string</code>
@@ -2106,8 +2112,8 @@ be used to build urls that point to other Cozies than the user's own Cozy.
 This is useful when pointing to the Cozy of the owner of a shared note for
 example.
 
-**Kind**: global constant
-**Returns**: <code>string</code> - Generated URL
+**Kind**: global constant  
+**Returns**: <code>string</code> - Generated URL  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2124,8 +2130,8 @@ example.
 ## getMutedErrors ⇒ <code>Array</code>
 getMutedErrors - Returns the list of errors that have been muted for the given account
 
-**Kind**: global constant
-**Returns**: <code>Array</code> - An array of errors with a `type` and `mutedAt` field
+**Kind**: global constant  
+**Returns**: <code>Array</code> - An array of errors with a `type` and `mutedAt` field  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2136,8 +2142,8 @@ getMutedErrors - Returns the list of errors that have been muted for the given a
 ## muteError ⇒ [<code>CozyAccount</code>](#CozyAccount)
 muteError - Adds an error to the list of muted errors for the given account
 
-**Kind**: global constant
-**Returns**: [<code>CozyAccount</code>](#CozyAccount) - An updated io.cozy.accounts
+**Kind**: global constant  
+**Returns**: [<code>CozyAccount</code>](#CozyAccount) - An updated io.cozy.accounts  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2149,7 +2155,7 @@ muteError - Adds an error to the list of muted errors for the given account
 ## getContractSyncStatusFromAccount
 Returns whether a contract is synced from account relationship
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2160,7 +2166,7 @@ Returns whether a contract is synced from account relationship
 ## setContractSyncStatusInAccount
 Sets contract sync status into account relationship
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2171,8 +2177,8 @@ Sets contract sync status into account relationship
 ## getStoreURL ⇒ <code>string</code>
 Returns the store URL of an app/konnector
 
-**Kind**: global constant
-**Returns**: <code>string</code> - URL as string
+**Kind**: global constant  
+**Returns**: <code>string</code> - URL as string  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -2184,8 +2190,8 @@ Returns the store URL of an app/konnector
 ## getStoreInstallationURL ⇒ <code>string</code>
 Returns the store URL to install/update an app/konnector
 
-**Kind**: global constant
-**Returns**: <code>string</code> - URL as string
+**Kind**: global constant  
+**Returns**: <code>string</code> - URL as string  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -2195,8 +2201,8 @@ Returns the store URL to install/update an app/konnector
 <a name="isInstalled"></a>
 
 ## isInstalled ⇒ <code>object</code>
-**Kind**: global constant
-**Returns**: <code>object</code> - The io.cozy.app is installed or undefined if not
+**Kind**: global constant  
+**Returns**: <code>object</code> - The io.cozy.app is installed or undefined if not  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2206,8 +2212,8 @@ Returns the store URL to install/update an app/konnector
 <a name="getUrl"></a>
 
 ## getUrl ⇒ <code>string</code>
-**Kind**: global constant
-**Returns**: <code>string</code> - url to the app
+**Kind**: global constant  
+**Returns**: <code>string</code> - url to the app  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2218,8 +2224,8 @@ Returns the store URL to install/update an app/konnector
 ## getAppDisplayName ⇒ <code>string</code>
 getAppDisplayName - Combines the translated prefix and name of the app into a single string.
 
-**Kind**: global constant
-**Returns**: <code>string</code> - Name of the app suitable for display
+**Kind**: global constant  
+**Returns**: <code>string</code> - Name of the app suitable for display  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2231,8 +2237,8 @@ getAppDisplayName - Combines the translated prefix and name of the app into a si
 ## getInitials ⇒ <code>string</code>
 Returns the initials of the contact.
 
-**Kind**: global constant
-**Returns**: <code>string</code> - - the contact's initials
+**Kind**: global constant  
+**Returns**: <code>string</code> - - the contact's initials  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2243,8 +2249,8 @@ Returns the initials of the contact.
 ## getPrimaryEmail ⇒ <code>string</code>
 Returns the contact's main email
 
-**Kind**: global constant
-**Returns**: <code>string</code> - - The contact's main email
+**Kind**: global constant  
+**Returns**: <code>string</code> - - The contact's main email  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2255,8 +2261,8 @@ Returns the contact's main email
 ## getPrimaryCozy ⇒ <code>string</code>
 Returns the contact's main cozy
 
-**Kind**: global constant
-**Returns**: <code>string</code> - - The contact's main cozy
+**Kind**: global constant  
+**Returns**: <code>string</code> - - The contact's main cozy  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2267,8 +2273,8 @@ Returns the contact's main cozy
 ## getPrimaryCozyDomain ⇒ <code>string</code>
 Returns the contact's main cozy url without protocol
 
-**Kind**: global constant
-**Returns**: <code>string</code> - - The contact's main cozy url
+**Kind**: global constant  
+**Returns**: <code>string</code> - - The contact's main cozy url  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2279,8 +2285,8 @@ Returns the contact's main cozy url without protocol
 ## getPrimaryPhone ⇒ <code>string</code>
 Returns the contact's main phone number
 
-**Kind**: global constant
-**Returns**: <code>string</code> - - The contact's main phone number
+**Kind**: global constant  
+**Returns**: <code>string</code> - - The contact's main phone number  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2291,8 +2297,8 @@ Returns the contact's main phone number
 ## getPrimaryAddress ⇒ <code>string</code>
 Returns the contact's main address
 
-**Kind**: global constant
-**Returns**: <code>string</code> - - The contact's main address
+**Kind**: global constant  
+**Returns**: <code>string</code> - - The contact's main address  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2303,8 +2309,8 @@ Returns the contact's main address
 ## makeFullname ⇒ <code>string</code>
 Makes fullname from contact name
 
-**Kind**: global constant
-**Returns**: <code>string</code> - - The contact's fullname
+**Kind**: global constant  
+**Returns**: <code>string</code> - - The contact's fullname  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2315,8 +2321,8 @@ Makes fullname from contact name
 ## getFullname ⇒ <code>string</code>
 Returns the contact's fullname
 
-**Kind**: global constant
-**Returns**: <code>string</code> - - The contact's fullname
+**Kind**: global constant  
+**Returns**: <code>string</code> - - The contact's fullname  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2327,8 +2333,8 @@ Returns the contact's fullname
 ## makeDisplayName ⇒ <code>string</code>
 Makes displayName from contact data
 
-**Kind**: global constant
-**Returns**: <code>string</code> - - The contact's displayName
+**Kind**: global constant  
+**Returns**: <code>string</code> - - The contact's displayName  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2339,8 +2345,8 @@ Makes displayName from contact data
 ## getDisplayName ⇒ <code>string</code>
 Returns a display name for the contact
 
-**Kind**: global constant
-**Returns**: <code>string</code> - - the contact's display name
+**Kind**: global constant  
+**Returns**: <code>string</code> - - the contact's display name  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2351,8 +2357,8 @@ Returns a display name for the contact
 ## makeDefaultSortIndexValue ⇒ <code>string</code>
 Makes 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
 
-**Kind**: global constant
-**Returns**: <code>string</code> - - the contact's 'byFamilyNameGivenNameEmailCozyUrl' index
+**Kind**: global constant  
+**Returns**: <code>string</code> - - the contact's 'byFamilyNameGivenNameEmailCozyUrl' index  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2363,8 +2369,8 @@ Makes 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
 ## getDefaultSortIndexValue ⇒ <code>string</code>
 Returns 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
 
-**Kind**: global constant
-**Returns**: <code>string</code> - - the contact's 'byFamilyNameGivenNameEmailCozyUrl' index
+**Kind**: global constant  
+**Returns**: <code>string</code> - - the contact's 'byFamilyNameGivenNameEmailCozyUrl' index  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2377,8 +2383,8 @@ Returns 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
 
 Returns 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
 
-**Kind**: global constant
-**Returns**: <code>string</code> - - the contact's 'byFamilyNameGivenNameEmailCozyUrl' index
+**Kind**: global constant  
+**Returns**: <code>string</code> - - the contact's 'byFamilyNameGivenNameEmailCozyUrl' index  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2389,8 +2395,8 @@ Returns 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
 ## setQualification ⇒ <code>object</code>
 Set the qualification to the document metadata
 
-**Kind**: global constant
-**Returns**: <code>object</code> - - The qualified document
+**Kind**: global constant  
+**Returns**: <code>object</code> - - The qualified document  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2402,8 +2408,8 @@ Set the qualification to the document metadata
 ## getQualification ⇒ [<code>Qualification</code>](#Qualification)
 Helper to get the qualification from a document
 
-**Kind**: global constant
-**Returns**: [<code>Qualification</code>](#Qualification) - - The document qualification
+**Kind**: global constant  
+**Returns**: [<code>Qualification</code>](#Qualification) - - The document qualification  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2414,8 +2420,8 @@ Helper to get the qualification from a document
 ## splitFilename ⇒ <code>object</code>
 Returns base filename and extension
 
-**Kind**: global constant
-**Returns**: <code>object</code> - {filename, extension}
+**Kind**: global constant  
+**Returns**: <code>object</code> - {filename, extension}  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2424,7 +2430,7 @@ Returns base filename and extension
 <a name="isFile"></a>
 
 ## isFile
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2433,7 +2439,7 @@ Returns base filename and extension
 <a name="isDirectory"></a>
 
 ## isDirectory
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2442,7 +2448,7 @@ Returns base filename and extension
 <a name="isNote"></a>
 
 ## isNote
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2453,7 +2459,7 @@ Returns base filename and extension
 ## isOnlyOfficeFile ⇒ <code>boolean</code>
 Whether the file is supported by Only Office
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2466,7 +2472,7 @@ Whether the file should be opened by only office
 We want to be consistent with the stack so we check the class attributes
 But we want to exclude .txt and .md because the CozyUI Viewer can already show them
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2475,8 +2481,8 @@ But we want to exclude .txt and .md because the CozyUI Viewer can already show t
 <a name="isShortcut"></a>
 
 ## isShortcut ⇒ <code>boolean</code>
-**Kind**: global constant
-**Returns**: <code>boolean</code> - true if the file is a shortcut
+**Kind**: global constant  
+**Returns**: <code>boolean</code> - true if the file is a shortcut  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2487,8 +2493,8 @@ But we want to exclude .txt and .md because the CozyUI Viewer can already show t
 ## getSharingShortcutStatus ⇒ <code>string</code>
 Returns the status of a sharing shortcut.
 
-**Kind**: global constant
-**Returns**: <code>string</code> - A description of the status
+**Kind**: global constant  
+**Returns**: <code>string</code> - A description of the status  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2499,8 +2505,8 @@ Returns the status of a sharing shortcut.
 ## getSharingShortcutTargetMime ⇒ <code>string</code>
 Returns the mime type of the target of the sharing shortcut, if it is a file.
 
-**Kind**: global constant
-**Returns**: <code>string</code> - The mime-type of the target file, or an empty string is the target is not a file.
+**Kind**: global constant  
+**Returns**: <code>string</code> - The mime-type of the target file, or an empty string is the target is not a file.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2511,8 +2517,8 @@ Returns the mime type of the target of the sharing shortcut, if it is a file.
 ## getSharingShortcutTargetDoctype ⇒ <code>string</code>
 Returns the doctype of the target of the sharing shortcut.
 
-**Kind**: global constant
-**Returns**: <code>string</code> - A doctype
+**Kind**: global constant  
+**Returns**: <code>string</code> - A doctype  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2523,7 +2529,7 @@ Returns the doctype of the target of the sharing shortcut.
 ## isSharingShortcut ⇒ <code>boolean</code>
 Returns whether the file is a shortcut to a sharing
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2536,7 +2542,7 @@ Returns whether the file is a shortcut to a sharing
 
 Returns whether the file is a shortcut to a sharing
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2547,7 +2553,7 @@ Returns whether the file is a shortcut to a sharing
 ## isSharingShortcutNew ⇒ <code>boolean</code>
 Returns whether the sharing shortcut is new
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2560,7 +2566,7 @@ Returns whether the sharing shortcut is new
 
 Returns whether the sharing shortcut is new
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2571,8 +2577,8 @@ Returns whether the sharing shortcut is new
 ## saveFileQualification ⇒ [<code>Promise.&lt;IOCozyFile&gt;</code>](#IOCozyFile)
 Save the file with the given qualification
 
-**Kind**: global constant
-**Returns**: [<code>Promise.&lt;IOCozyFile&gt;</code>](#IOCozyFile) - - The saved file
+**Kind**: global constant  
+**Returns**: [<code>Promise.&lt;IOCozyFile&gt;</code>](#IOCozyFile) - - The saved file  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2585,8 +2591,8 @@ Save the file with the given qualification
 ## fetchFilesByQualificationRules ⇒ <code>Promise.&lt;QueryResult&gt;</code>
 Helper to query files based on qualification rules
 
-**Kind**: global constant
-**Returns**: <code>Promise.&lt;QueryResult&gt;</code> - - The files found by the rules
+**Kind**: global constant  
+**Returns**: <code>Promise.&lt;QueryResult&gt;</code> - - The files found by the rules  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2598,7 +2604,7 @@ Helper to query files based on qualification rules
 ## isReferencedByAlbum ⇒ <code>boolean</code>
 Whether the file is referenced by an album
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2609,7 +2615,7 @@ Whether the file is referenced by an album
 ## hasMetadataAttribute ⇒ <code>boolean</code>
 Whether the file's metadata attribute exists
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2622,8 +2628,8 @@ Whether the file's metadata attribute exists
 ## ensureMagicFolder ⇒ [<code>Promise.&lt;IOCozyFolder&gt;</code>](#IOCozyFolder)
 Returns a "Magic Folder", given its id. See https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.apps/#special-iocozyapps-doctypes
 
-**Kind**: global constant
-**Returns**: [<code>Promise.&lt;IOCozyFolder&gt;</code>](#IOCozyFolder) - Folder document
+**Kind**: global constant  
+**Returns**: [<code>Promise.&lt;IOCozyFolder&gt;</code>](#IOCozyFolder) - Folder document  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2636,8 +2642,8 @@ Returns a "Magic Folder", given its id. See https://docs.cozy.io/en/cozy-doctype
 ## createFolderWithReference ⇒ [<code>Promise.&lt;IOCozyFolder&gt;</code>](#IOCozyFolder)
 Create a folder with a reference to the given document
 
-**Kind**: global constant
-**Returns**: [<code>Promise.&lt;IOCozyFolder&gt;</code>](#IOCozyFolder) - Folder document
+**Kind**: global constant  
+**Returns**: [<code>Promise.&lt;IOCozyFolder&gt;</code>](#IOCozyFolder) - Folder document  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2650,8 +2656,8 @@ Create a folder with a reference to the given document
 ## getReferencedFolder ⇒ [<code>Promise.&lt;IOCozyFolder&gt;</code>](#IOCozyFolder)
 Returns the most recent folder referenced by the given document
 
-**Kind**: global constant
-**Returns**: [<code>Promise.&lt;IOCozyFolder&gt;</code>](#IOCozyFolder) - Folder referenced by the given document
+**Kind**: global constant  
+**Returns**: [<code>Promise.&lt;IOCozyFolder&gt;</code>](#IOCozyFolder) - Folder referenced by the given document  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2661,31 +2667,31 @@ Returns the most recent folder referenced by the given document
 <a name="win"></a>
 
 ## win : [<code>CordovaWindow</code>](#CordovaWindow)
-**Kind**: global constant
+**Kind**: global constant  
 <a name="getRootPath"></a>
 
 ## getRootPath ⇒ <code>string</code>
 Get root path according the OS
 
-**Kind**: global constant
+**Kind**: global constant  
 <a name="getTemporaryRootPath"></a>
 
 ## getTemporaryRootPath
 Get the temporary root path according to the OS
 
-**Kind**: global constant
+**Kind**: global constant  
 <a name="getCozyPath"></a>
 
 ## getCozyPath ⇒ <code>string</code>
 Get Cozy path according to the OS
 
-**Kind**: global constant
+**Kind**: global constant  
 <a name="getEntry"></a>
 
 ## getEntry ⇒ [<code>Promise.&lt;FilesystemEntry&gt;</code>](#FilesystemEntry)
 Get entry of a path in the cordova.file location
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2696,19 +2702,19 @@ Get entry of a path in the cordova.file location
 ## getCozyEntry
 Get Cozy location on the device
 
-**Kind**: global constant
+**Kind**: global constant  
 <a name="createCozyPath"></a>
 
 ## createCozyPath
 Create Cozy path on the device
 
-**Kind**: global constant
+**Kind**: global constant  
 <a name="getDirectory"></a>
 
 ## getDirectory
 Get the directory according to its name
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2718,7 +2724,7 @@ Get the directory according to its name
 <a name="writeFile"></a>
 
 ## writeFile
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2730,7 +2736,7 @@ Get the directory according to its name
 ## openFileWithCordova
 Open a file in an other app
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2740,7 +2746,7 @@ Open a file in an other app
 <a name="deleteOfflineFile"></a>
 
 ## deleteOfflineFile
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2749,7 +2755,7 @@ Open a file in an other app
 <a name="saveFileWithCordova"></a>
 
 ## saveFileWithCordova
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2761,7 +2767,7 @@ Open a file in an other app
 ## temporarySave
 Save the document in the temporary folder
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2773,7 +2779,7 @@ Save the document in the temporary folder
 ## saveAndOpenWithCordova
 Save the document in the temporary folder and open it in an other app
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2783,7 +2789,7 @@ Save the document in the temporary folder and open it in an other app
 <a name="getNativeFile"></a>
 
 ## getNativeFile
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2792,7 +2798,7 @@ Save the document in the temporary folder and open it in an other app
 <a name="openOfflineFile"></a>
 
 ## openOfflineFile
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2803,7 +2809,7 @@ Save the document in the temporary folder and open it in an other app
 ## openFileWith
 openFileWith - Opens a file on a mobile device
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2815,8 +2821,8 @@ openFileWith - Opens a file on a mobile device
 ## shouldDisplayOffers ⇒ <code>boolean</code>
 Returns whether an instance is concerned by our offers
 
-**Kind**: global constant
-**Returns**: <code>boolean</code> - Should we display offers
+**Kind**: global constant  
+**Returns**: <code>boolean</code> - Should we display offers  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2827,8 +2833,8 @@ Returns whether an instance is concerned by our offers
 ## hasAnOffer ⇒ <code>boolean</code>
 Returns if an instance has subscribed to one of our offers
 
-**Kind**: global constant
-**Returns**: <code>boolean</code> - Does the cozy have offers
+**Kind**: global constant  
+**Returns**: <code>boolean</code> - Does the cozy have offers  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2839,7 +2845,7 @@ Returns if an instance has subscribed to one of our offers
 ## buildPremiumLink
 Returns the link to the Premium page on the Cozy's Manager
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2848,7 +2854,7 @@ Returns the link to the Premium page on the Cozy's Manager
 <a name="generatePrivateUrl"></a>
 
 ## generatePrivateUrl
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2860,8 +2866,8 @@ Returns the link to the Premium page on the Cozy's Manager
 ## fetchURL ⇒ <code>Promise.&lt;string&gt;</code>
 Fetch and build an URL to open a note.
 
-**Kind**: global constant
-**Returns**: <code>Promise.&lt;string&gt;</code> - url
+**Kind**: global constant  
+**Returns**: <code>Promise.&lt;string&gt;</code> - url  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2873,7 +2879,7 @@ Fetch and build an URL to open a note.
 ## saveTimeSeries
 Helper to save a time series document.
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2885,7 +2891,7 @@ Helper to save a time series document.
 ## triggerStates
 Trigger states come from /jobs/triggers
 
-**Kind**: global constant
+**Kind**: global constant  
 
 * [triggerStates](#triggerStates)
     * [.getLastExecution()](#triggerStates.getLastExecution)
@@ -2898,32 +2904,32 @@ Trigger states come from /jobs/triggers
 ### triggerStates.getLastExecution()
 Returns when the trigger was last executed. Need a trigger
 
-**Kind**: static method of [<code>triggerStates</code>](#triggerStates)
+**Kind**: static method of [<code>triggerStates</code>](#triggerStates)  
 <a name="triggerStates.getLastSuccess"></a>
 
 ### triggerStates.getLastSuccess()
 Returns when the trigger was last successfully executed.
 
-**Kind**: static method of [<code>triggerStates</code>](#triggerStates)
+**Kind**: static method of [<code>triggerStates</code>](#triggerStates)  
 <a name="triggerStates.isErrored"></a>
 
 ### triggerStates.isErrored()
 Returns whether last job failed
 
-**Kind**: static method of [<code>triggerStates</code>](#triggerStates)
+**Kind**: static method of [<code>triggerStates</code>](#triggerStates)  
 <a name="triggerStates.getLastErrorType"></a>
 
 ### triggerStates.getLastErrorType()
 Returns the type of the last error to occur
 
-**Kind**: static method of [<code>triggerStates</code>](#triggerStates)
+**Kind**: static method of [<code>triggerStates</code>](#triggerStates)  
 <a name="fetchPolicies"></a>
 
 ## fetchPolicies
 Use those fetch policies with `<Query />` to limit the number of re-fetch.
 
-**Kind**: global constant
-**Example**
+**Kind**: global constant  
+**Example**  
 ```
 import { fetchPolicies } from 'cozy-client'
 const olderThan30s = fetchPolicies.olderThan(30 * 1000)
@@ -2940,8 +2946,8 @@ const olderThan30s = fetchPolicies.olderThan(30 * 1000)
 Returns a fetchPolicy that will only re-fetch queries that are older
 than `<delay>` ms.
 
-**Kind**: static method of [<code>fetchPolicies</code>](#fetchPolicies)
-**Returns**: <code>function</code> - Fetch policy to be used with `<Query />`
+**Kind**: static method of [<code>fetchPolicies</code>](#fetchPolicies)  
+**Returns**: <code>function</code> - Fetch policy to be used with `<Query />`  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2952,20 +2958,20 @@ than `<delay>` ms.
 ### fetchPolicies.noFetch()
 Fetch policy that deactivates any fetching.
 
-**Kind**: static method of [<code>fetchPolicies</code>](#fetchPolicies)
+**Kind**: static method of [<code>fetchPolicies</code>](#fetchPolicies)  
 <a name="Q"></a>
 
 ## Q
 Helper to create a QueryDefinition. Recommended way to create
 query definitions.
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | doctype | [<code>Doctype</code>](#Doctype) | Doctype of the query definition |
 
-**Example**
+**Example**  
 ```
 import { Q } from 'cozy-client'
 
@@ -2976,7 +2982,7 @@ const qDef = Q('io.cozy.todos').where({ _id: '1234' })
 ## isAGetByIdQuery ⇒ <code>boolean</code>
 Check if the query is a getById() query
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2985,20 +2991,20 @@ Check if the query is a getById() query
 <a name="queryInitialState"></a>
 
 ## queryInitialState : [<code>QueryState</code>](#QueryState)
-**Kind**: global constant
+**Kind**: global constant  
 <a name="convert$gtNullSelectors"></a>
 
 ## convert$gtNullSelectors ⇒ <code>object</code>
 Normalize sift selector
 
-**Kind**: global constant
+**Kind**: global constant  
 <a name="mergeSelectorAndPartialIndex"></a>
 
 ## mergeSelectorAndPartialIndex ⇒ <code>object</code>
 Merges query selectors with query partial indexes
 
-**Kind**: global constant
-**Returns**: <code>object</code> - A query definition selector
+**Kind**: global constant  
+**Returns**: <code>object</code> - A query definition selector  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3010,7 +3016,7 @@ Merges query selectors with query partial indexes
 Create the query states in the store. Queries are indexed
 in the store by queryId
 
-**Kind**: global constant
+**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3024,13 +3030,13 @@ in the store by queryId
 Returns whether the result of a query (given via queryConnect or Query)
 is loading.
 
-**Kind**: global constant
+**Kind**: global constant  
 <a name="hasQueryBeenLoaded"></a>
 
 ## hasQueryBeenLoaded
 Returns whether a query has been loaded at least once
 
-**Kind**: global constant
+**Kind**: global constant  
 <a name="withIgnoreConsole"></a>
 
 ## withIgnoreConsole()
@@ -3039,36 +3045,36 @@ Calls callback while ignoring console[type] calls
 Useful for tests that we know will use console[type] but we do not
 want to them to trigger an exception during tests.
 
-**Kind**: global function
+**Kind**: global function  
 <a name="query"></a>
 
 ## query() ⇒ [<code>QueryState</code>](#QueryState) \| [<code>QueryDefinition</code>](#QueryDefinition)
-**Kind**: global function
+**Kind**: global function  
+<a name="query..common"></a>
+
+### query~common : [<code>Partial.&lt;QueryState&gt;</code>](#QueryState)
+**Kind**: inner constant of [<code>query</code>](#query)  
 <a name="authenticateWithSafari"></a>
 
 ## authenticateWithSafari(url) ⇒ <code>Promise</code>
-Open a SafariView Controller
-and resolve with the URL containing
-the token
+Open a SafariView Controller and resolve with the URL containing the token
 
-**Kind**: global function
+**Kind**: global function  
 
 | Param | Type |
 | --- | --- |
-| url | <code>string</code> |
+| url | <code>string</code> | 
 
 <a name="authenticateWithInAppBrowser"></a>
 
 ## authenticateWithInAppBrowser(url) ⇒ <code>Promise</code>
-Open an inAppBrowsr
-and resolve with the URL containing
-the token
+Opens an InAppBrowser and resolves with the URL containing the token
 
-**Kind**: global function
+**Kind**: global function  
 
 | Param | Type |
 | --- | --- |
-| url | <code>string</code> |
+| url | <code>string</code> | 
 
 <a name="createClientInteractive"></a>
 
@@ -3079,14 +3085,14 @@ Creates a client with interactive authentication.
 - Starts a local server to listen for the oauth callback
 - Resolves with the client after user authentication
 
-**Kind**: global function
-**Returns**: [<code>Promise.&lt;CozyClient&gt;</code>](#CozyClient) - - A client that is ready with a token
+**Kind**: global function  
+**Returns**: [<code>Promise.&lt;CozyClient&gt;</code>](#CozyClient) - - A client that is ready with a token  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | clientOptions | <code>object</code> | Same as CozyClient::constructor. |
 
-**Example**
+**Example**  
 ```
 import { createClientInteractive } from 'cozy-client/dist/cli'
 await createClientInteractive({
@@ -3100,25 +3106,25 @@ await createClientInteractive({
 <a name="FetchStatus"></a>
 
 ## FetchStatus(props)
-**Kind**: global function
+**Kind**: global function  
 
 | Param | Type |
 | --- | --- |
-| props | <code>Object</code> |
+| props | <code>Object</code> | 
 
 <a name="IndexedFields"></a>
 
 ## IndexedFields(props)
-**Kind**: global function
+**Kind**: global function  
 
 | Param | Type |
 | --- | --- |
-| props | <code>Object</code> |
+| props | <code>Object</code> | 
 
 <a name="makeMatcher"></a>
 
 ## makeMatcher(search) ⇒ <code>function</code>
-**Kind**: global function
+**Kind**: global function  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3129,8 +3135,8 @@ await createClientInteractive({
 ## withClient(WrappedComponent) ⇒ <code>function</code>
 HOC to provide client from context as prop
 
-**Kind**: global function
-**Returns**: <code>function</code> - - Component that will receive client as prop
+**Kind**: global function  
+**Returns**: <code>function</code> - - Component that will receive client as prop  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3141,8 +3147,8 @@ HOC to provide client from context as prop
 ## queryConnect(querySpecs) ⇒ <code>function</code>
 HOC creator to connect component to several queries in a declarative manner
 
-**Kind**: global function
-**Returns**: <code>function</code> - - HOC to apply to a component
+**Kind**: global function  
+**Returns**: <code>function</code> - - HOC to apply to a component  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3155,8 +3161,8 @@ HOC creator to connect component to several queries in a declarative manner
 The only difference with queryConnect is that it does not wrap the component in N component
 if there are N queries, only 1 extra level of nesting is introduced.
 
-**Kind**: global function
-**Returns**: <code>function</code> - - HOC to apply to a component
+**Kind**: global function  
+**Returns**: <code>function</code> - - HOC to apply to a component  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3167,8 +3173,8 @@ if there are N queries, only 1 extra level of nesting is introduced.
 ## useAppsInMaintenance(client) ⇒ <code>Array.&lt;AppsDoctype&gt;</code>
 Returns all apps in maintenance
 
-**Kind**: global function
-**Returns**: <code>Array.&lt;AppsDoctype&gt;</code> - An array with all apps in maintenance
+**Kind**: global function  
+**Returns**: <code>Array.&lt;AppsDoctype&gt;</code> - An array with all apps in maintenance  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3179,15 +3185,15 @@ Returns all apps in maintenance
 ## useClient() ⇒ [<code>CozyClient</code>](#CozyClient)
 Returns the cozy client from the context
 
-**Kind**: global function
-**Returns**: [<code>CozyClient</code>](#CozyClient) - - Current cozy client
+**Kind**: global function  
+**Returns**: [<code>CozyClient</code>](#CozyClient) - - Current cozy client  
 <a name="getErrorComponent"></a>
 
 ## getErrorComponent(error) ⇒ <code>function</code> \| <code>null</code>
 Returns the handler for an error
 
-**Kind**: global function
-**Returns**: <code>function</code> \| <code>null</code> - React Component
+**Kind**: global function  
+**Returns**: <code>function</code> \| <code>null</code> - React Component  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3202,13 +3208,13 @@ Takes the same arguments as fetchJSON
 
 Returns an object with the same keys { data, fetchStatus, error } as useQuery
 
-**Kind**: global function
+**Kind**: global function  
 <a name="useQuery"></a>
 
 ## useQuery(queryDefinition, options) ⇒ [<code>UseQueryReturnValue</code>](#UseQueryReturnValue)
 Fetches a queryDefinition and returns the queryState
 
-**Kind**: global function
+**Kind**: global function  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3224,17 +3230,17 @@ Fetches a queryDefinition and returns the queryState
 ## sanitizeCategories()
 Filters unauthorized categories. Defaults to ['others'] if no suitable category.
 
-**Kind**: global function
+**Kind**: global function  
 <a name="sanitize"></a>
 
 ## sanitize(manifest) ⇒ [<code>Manifest</code>](#Manifest)
 Normalize app manifest, retrocompatibility for old manifests
 
-**Kind**: global function
+**Kind**: global function  
 
 | Param | Type |
 | --- | --- |
-| manifest | [<code>Manifest</code>](#Manifest) |
+| manifest | [<code>Manifest</code>](#Manifest) | 
 
 <a name="createMockClient"></a>
 
@@ -3244,7 +3250,7 @@ Creates a client suitable for use in tests
 - client.{query,save} are mocked
 - client.stackClient.fetchJSON is mocked
 
-**Kind**: global function
+**Kind**: global function  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3260,9 +3266,9 @@ Normalizes an object representing a io.cozy.files object
 
 Ensures existence of `_id` and `_type`
 
-**Kind**: global function
-**Returns**: <code>object</code> - full normalized object
-**Access**: public
+**Kind**: global function  
+**Returns**: <code>object</code> - full normalized object  
+**Access**: public  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3273,9 +3279,9 @@ Ensures existence of `_id` and `_type`
 ## ensureFilePath(file, parent) ⇒ <code>object</code>
 Ensure the file has a `path` attribute, or build it
 
-**Kind**: global function
-**Returns**: <code>object</code> - file object with path attribute
-**Access**: public
+**Kind**: global function  
+**Returns**: <code>object</code> - file object with path attribute  
+**Access**: public  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3287,8 +3293,8 @@ Ensure the file has a `path` attribute, or build it
 ## getParentFolderId(file) ⇒ <code>string</code> \| <code>null</code>
 Get the id of the parent folder (`null` for the root folder)
 
-**Kind**: global function
-**Returns**: <code>string</code> \| <code>null</code> - id of the parent folder, if any
+**Kind**: global function  
+**Returns**: <code>string</code> \| <code>null</code> - id of the parent folder, if any  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3297,7 +3303,7 @@ Get the id of the parent folder (`null` for the root folder)
 <a name="saveFile"></a>
 
 ## saveFile(dirEntry, fileData, fileName)
-**Kind**: global function
+**Kind**: global function  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3310,8 +3316,8 @@ Get the id of the parent folder (`null` for the root folder)
 ## fetchOwn(client) ⇒ <code>Promise.&lt;Array.&lt;PermissionItem&gt;&gt;</code>
 Fetches the list of permissions blocks
 
-**Kind**: global function
-**Returns**: <code>Promise.&lt;Array.&lt;PermissionItem&gt;&gt;</code> - list of permissions
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;Array.&lt;PermissionItem&gt;&gt;</code> - list of permissions  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3322,7 +3328,7 @@ Fetches the list of permissions blocks
 ## isForType(permission, type)
 Checks if the permission item is about a specific doctype
 
-**Kind**: global function
+**Kind**: global function  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3335,19 +3341,19 @@ Checks if the permission item is about a specific doctype
 Generates and executes a query that is offsetted by the number of documents
 we have in the store.
 
-**Kind**: global function
+**Kind**: global function  
 <a name="getQueryAttributes"></a>
 
 ## getQueryAttributes()
 Get attributes that will be assigned to the instance of a Query
 
-**Kind**: global function
+**Kind**: global function  
 <a name="dispatchChange"></a>
 
 ## dispatchChange(client, document, mutationDefinitionCreator)
 DispatchChange
 
-**Kind**: global function
+**Kind**: global function  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3361,8 +3367,8 @@ DispatchChange
 Component that subscribes to a doctype changes and keep the
 internal store updated.
 
-**Kind**: global function
-**Returns**: <code>null</code> - The component does not display anything.
+**Kind**: global function  
+**Returns**: <code>null</code> - The component does not display anything.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3374,8 +3380,8 @@ internal store updated.
 ## query(state, action, documents) ⇒ [<code>QueryState</code>](#QueryState)
 Reducer for a query slice
 
-**Kind**: global function
-**Returns**: [<code>QueryState</code>](#QueryState) - - Next state
+**Kind**: global function  
+**Returns**: [<code>QueryState</code>](#QueryState) - - Next state  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3386,11 +3392,11 @@ Reducer for a query slice
 <a name="query..common"></a>
 
 ### query~common : [<code>Partial.&lt;QueryState&gt;</code>](#QueryState)
-**Kind**: inner constant of [<code>query</code>](#query)
+**Kind**: inner constant of [<code>query</code>](#query)  
 <a name="getSelectorFilterFn"></a>
 
 ## getSelectorFilterFn(queryDefinition) ⇒ <code>function</code>
-**Kind**: global function
+**Kind**: global function  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3404,19 +3410,19 @@ Reducer for a query slice
 <a name="getSelectorFilterFn..siftQuery"></a>
 
 ### getSelectorFilterFn~siftQuery : <code>object</code>
-**Kind**: inner constant of [<code>getSelectorFilterFn</code>](#getSelectorFilterFn)
+**Kind**: inner constant of [<code>getSelectorFilterFn</code>](#getSelectorFilterFn)  
 <a name="getSelectorFilterFn..siftQuery"></a>
 
 ### getSelectorFilterFn~siftQuery : <code>object</code>
-**Kind**: inner constant of [<code>getSelectorFilterFn</code>](#getSelectorFilterFn)
+**Kind**: inner constant of [<code>getSelectorFilterFn</code>](#getSelectorFilterFn)  
 <a name="getQueryDocumentsChecker"></a>
 
 ## getQueryDocumentsChecker(query) ⇒ <code>function</code>
 Returns a predicate function that checks if a document should be
 included in the result of the query.
 
-**Kind**: global function
-**Returns**: <code>function</code> - Predicate function
+**Kind**: global function  
+**Returns**: <code>function</code> - Predicate function  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3427,8 +3433,8 @@ included in the result of the query.
 ## updateData(query, newData, documents) ⇒ [<code>QueryState</code>](#QueryState)
 Updates query state when new data comes in
 
-**Kind**: global function
-**Returns**: [<code>QueryState</code>](#QueryState) - - Updated query state
+**Kind**: global function  
+**Returns**: [<code>QueryState</code>](#QueryState) - - Updated query state  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3442,8 +3448,8 @@ Updates query state when new data comes in
 Creates a function that returns an updated query state
 from an action
 
-**Kind**: global function
-**Returns**: <code>function</code> - - Updater query state
+**Kind**: global function  
+**Returns**: <code>function</code> - - Updater query state  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3456,8 +3462,8 @@ from an action
 Creates a function that returns an updated query state
 from an action
 
-**Kind**: global function
-**Returns**: <code>function</code> - - Updater query state
+**Kind**: global function  
+**Returns**: <code>function</code> - - Updater query state  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3467,7 +3473,7 @@ from an action
 <a name="queries"></a>
 
 ## queries(state, action, documents, haveDocumentsChanged) ⇒ [<code>QueriesStateSlice</code>](#QueriesStateSlice)
-**Kind**: global function
+**Kind**: global function  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -3483,8 +3489,8 @@ Wraps a promise so that it can be canceled
 
 Rejects with canceled: true as soon as cancel is called
 
-**Kind**: global function
-**Returns**: [<code>CancelablePromise</code>](#CancelablePromise) - - Promise with .cancel method
+**Kind**: global function  
+**Returns**: [<code>CancelablePromise</code>](#CancelablePromise) - - Promise with .cancel method  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3497,8 +3503,8 @@ Rejects with canceled: true as soon as cancel is called
 
 HOC to provide mutations to components. Needs client in context or as prop.
 
-**Kind**: global function
-**Returns**: <code>function</code> - - Component that will receive mutations as props
+**Kind**: global function  
+**Returns**: <code>function</code> - - Component that will receive mutations as props  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3507,7 +3513,7 @@ HOC to provide mutations to components. Needs client in context or as prop.
 <a name="Relationship"></a>
 
 ## Relationship : <code>object</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
@@ -3519,7 +3525,7 @@ HOC to provide mutations to components. Needs client in context or as prop.
 <a name="Relation"></a>
 
 ## Relation : <code>object</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
@@ -3530,7 +3536,7 @@ HOC to provide mutations to components. Needs client in context or as prop.
 <a name="ClientOptions"></a>
 
 ## ClientOptions : <code>object</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
@@ -3556,11 +3562,11 @@ HOC to provide mutations to components. Needs client in context or as prop.
 <a name="CozyAccount"></a>
 
 ## CozyAccount : <code>object</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 <a name="QualificationAttributes"></a>
 
 ## QualificationAttributes : <code>object</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
@@ -3574,15 +3580,15 @@ HOC to provide mutations to components. Needs client in context or as prop.
 <a name="FilesystemEntry"></a>
 
 ## FilesystemEntry : <code>object</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 <a name="DiskUsageInfo"></a>
 
 ## DiskUsageInfo : <code>object</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 <a name="SettingsInfo"></a>
 
 ## SettingsInfo
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
@@ -3596,24 +3602,24 @@ HOC to provide mutations to components. Needs client in context or as prop.
 ## Document : <code>object</code>
 Couchdb document like an io.cozy.files
 
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type |
 | --- | --- |
-| _id | <code>string</code> |
-| id | <code>string</code> |
-| _type | <code>string</code> |
-| type | <code>string</code> |
+| _id | <code>string</code> | 
+| id | <code>string</code> | 
+| _type | <code>string</code> | 
+| type | <code>string</code> | 
 
 <a name="PermissionVerb"></a>
 
 ## PermissionVerb : <code>&#x27;ALL&#x27;</code> \| <code>&#x27;GET&#x27;</code> \| <code>&#x27;PATCH&#x27;</code> \| <code>&#x27;POST&#x27;</code> \| <code>&#x27;PUT&#x27;</code> \| <code>&#x27;DELETE&#x27;</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 <a name="PermissionItem"></a>
 
 ## PermissionItem : <code>object</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
@@ -3637,7 +3643,7 @@ This method is here to tell us if the shortcut's file is created
 on the recipient's cozy. It can be used to make an UI distinction between the
 both situation.
 
-**Kind**: global typedef
+**Kind**: global typedef  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3653,7 +3659,7 @@ both situation.
 <a name="TimeSeries"></a>
 
 ## TimeSeries
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
@@ -3671,8 +3677,8 @@ both situation.
 ## TimeSeriesJSONAPI ⇒ [<code>Promise.&lt;TimeSeriesJSONAPI&gt;</code>](#TimeSeriesJSONAPI)
 Helper to retrieve time series by their date interval and source.
 
-**Kind**: global typedef
-**Returns**: [<code>Promise.&lt;TimeSeriesJSONAPI&gt;</code>](#TimeSeriesJSONAPI) - The TimeSeries found by the query in JSON-API format
+**Kind**: global typedef  
+**Returns**: [<code>Promise.&lt;TimeSeriesJSONAPI&gt;</code>](#TimeSeriesJSONAPI) - The TimeSeries found by the query in JSON-API format  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3690,53 +3696,53 @@ Helper to retrieve time series by their date interval and source.
 ## HydratedQueryState ⇒ [<code>HydratedQueryState</code>](#HydratedQueryState)
 Returns the query from the store with hydrated documents.
 
-**Kind**: global typedef
+**Kind**: global typedef  
 <a name="PartialQueryDefinition"></a>
 
 ## PartialQueryDefinition
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type |
 | --- | --- |
-| [indexedFields] | <code>Array</code> |
-| [sort] | <code>Array</code> |
-| [selector] | <code>object</code> |
+| [indexedFields] | <code>Array</code> | 
+| [sort] | <code>Array</code> | 
+| [selector] | <code>object</code> | 
 
 <a name="MangoSelector"></a>
 
 ## MangoSelector : <code>object</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 <a name="Cursor"></a>
 
 ## Cursor : <code>Array</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 <a name="RegistryApp"></a>
 
 ## RegistryApp : <code>object</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type |
 | --- | --- |
-| slug | <code>string</code> |
-| terms | <code>object</code> |
-| installed | <code>boolean</code> |
+| slug | <code>string</code> | 
+| terms | <code>object</code> | 
+| installed | <code>boolean</code> | 
 
 <a name="DoctypeSchema"></a>
 
 ## DoctypeSchema : <code>object</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 <a name="SchemaDefinition"></a>
 
 ## SchemaDefinition : <code>Record.&lt;string, DoctypeSchema&gt;</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 <a name="MockQueryOptions"></a>
 
 ## MockQueryOptions ⇒ [<code>CozyClient</code>](#CozyClient)
 Setups a client suitable for testing
 
-**Kind**: global typedef
+**Kind**: global typedef  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3746,61 +3752,61 @@ Setups a client suitable for testing
 <a name="Doctype"></a>
 
 ## Doctype : <code>&quot;io.cozy.accounts&quot;</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 <a name="Manifest"></a>
 
 ## Manifest : <code>object</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 <a name="OldCozyClient"></a>
 
 ## OldCozyClient : <code>object</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 <a name="NodeEnvironment"></a>
 
 ## NodeEnvironment : <code>object</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 <a name="QueryFetchStatus"></a>
 
 ## QueryFetchStatus : <code>&quot;loading&quot;</code> \| <code>&quot;loaded&quot;</code> \| <code>&quot;pending&quot;</code> \| <code>&quot;failed&quot;</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 <a name="QueriesStateSlice"></a>
 
 ## QueriesStateSlice : <code>Record.&lt;Doctype, QueryState&gt;</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 <a name="IndexedDocuments"></a>
 
 ## IndexedDocuments : <code>Record.&lt;string, CozyClientDocument&gt;</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 <a name="DocumentsStateSlice"></a>
 
 ## DocumentsStateSlice : <code>Record.&lt;Doctype, IndexedDocuments&gt;</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 <a name="QueryState"></a>
 
 ## QueryState : <code>object</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type |
 | --- | --- |
-| id | <code>string</code> |
-| definition | [<code>QueryDefinition</code>](#QueryDefinition) |
-| fetchStatus | [<code>QueryFetchStatus</code>](#QueryFetchStatus) |
-| lastFetch | <code>number</code> |
-| lastUpdate | <code>number</code> |
-| lastErrorUpdate | <code>number</code> |
-| lastError | <code>Error</code> |
-| hasMore | <code>boolean</code> |
-| count | <code>number</code> |
-| data | <code>object</code> \| <code>Array</code> |
-| bookmark | <code>string</code> |
-| [execution_stats] | <code>object</code> |
-| [options] | [<code>QueryOptions</code>](#QueryOptions) |
+| id | <code>string</code> | 
+| definition | [<code>QueryDefinition</code>](#QueryDefinition) | 
+| fetchStatus | [<code>QueryFetchStatus</code>](#QueryFetchStatus) | 
+| lastFetch | <code>number</code> | 
+| lastUpdate | <code>number</code> | 
+| lastErrorUpdate | <code>number</code> | 
+| lastError | <code>Error</code> | 
+| hasMore | <code>boolean</code> | 
+| count | <code>number</code> | 
+| data | <code>object</code> \| <code>Array</code> | 
+| bookmark | <code>string</code> | 
+| [execution_stats] | <code>object</code> | 
+| [options] | [<code>QueryOptions</code>](#QueryOptions) | 
 
 <a name="AutoUpdateOptions"></a>
 
 ## AutoUpdateOptions : <code>object</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3811,7 +3817,7 @@ Setups a client suitable for testing
 <a name="QueryOptions"></a>
 
 ## QueryOptions : <code>object</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
@@ -3824,24 +3830,24 @@ Setups a client suitable for testing
 <a name="FetchMoreAble"></a>
 
 ## FetchMoreAble : <code>object</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type |
 | --- | --- |
-| fetchMore | <code>function</code> |
+| fetchMore | <code>function</code> | 
 
 <a name="UseQueryReturnValue"></a>
 
 ## UseQueryReturnValue : [<code>QueryState</code>](#QueryState) \| [<code>FetchMoreAble</code>](#FetchMoreAble)
-**Kind**: global typedef
+**Kind**: global typedef  
 <a name="Reference"></a>
 
 ## Reference : <code>object</code>
 A reference to a document (special case of a relationship used between photos and albums)
 https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files/#references
 
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
@@ -3852,25 +3858,25 @@ https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files/#references
 <a name="ReferenceMap"></a>
 
 ## ReferenceMap : <code>Object.&lt;string, Array.&lt;Reference&gt;&gt;</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 <a name="MutationOptions"></a>
 
 ## MutationOptions : <code>object</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type |
 | --- | --- |
-| [as] | <code>string</code> |
-| [update] | <code>function</code> |
-| [updateQueries] | <code>function</code> |
+| [as] | <code>string</code> | 
+| [update] | <code>function</code> | 
+| [updateQueries] | <code>function</code> | 
 
 <a name="CozyClientDocument"></a>
 
 ## CozyClientDocument : <code>object</code>
 A document
 
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
@@ -3885,7 +3891,7 @@ A document
 ## IOCozyFile : <code>object</code>
 An io.cozy.files document
 
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
@@ -3901,7 +3907,7 @@ An io.cozy.files document
 ## IOCozyFolder : <code>object</code>
 An io.cozy.files document
 
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
@@ -3914,46 +3920,46 @@ An io.cozy.files document
 <a name="ClientError"></a>
 
 ## ClientError : <code>object</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type |
 | --- | --- |
-| [status] | <code>string</code> |
+| [status] | <code>string</code> | 
 
 <a name="FilePlugin"></a>
 
 ## FilePlugin
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type |
 | --- | --- |
-| [externalDataDirectory] | <code>object</code> |
-| [cacheDirectory] | <code>object</code> |
-| [externalCacheDirectory] | <code>object</code> |
-| [dataDirectory] | <code>object</code> |
+| [externalDataDirectory] | <code>object</code> | 
+| [cacheDirectory] | <code>object</code> | 
+| [externalCacheDirectory] | <code>object</code> | 
+| [dataDirectory] | <code>object</code> | 
 
 <a name="InAppBrowser"></a>
 
 ## InAppBrowser
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type |
 | --- | --- |
-| open | <code>function</code> |
+| open | <code>function</code> | 
 
 <a name="AppMetadata"></a>
 
 ## AppMetadata : <code>object</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 <a name="ClientCapabilities"></a>
 
 ## ClientCapabilities : <code>object</code>
 Read more about client capabilities here https://docs.cozy.io/en/cozy-stack/settings/#get-settingscapabilities.
 
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
@@ -3966,32 +3972,32 @@ Read more about client capabilities here https://docs.cozy.io/en/cozy-stack/sett
 <a name="Cordova"></a>
 
 ## Cordova
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type |
 | --- | --- |
-| file | [<code>FilePlugin</code>](#FilePlugin) |
-| InAppBrowser | [<code>InAppBrowser</code>](#InAppBrowser) |
-| plugins | <code>object</code> |
+| file | [<code>FilePlugin</code>](#FilePlugin) | 
+| InAppBrowser | [<code>InAppBrowser</code>](#InAppBrowser) | 
+| plugins | <code>object</code> | 
 
 <a name="CordovaWindow"></a>
 
 ## CordovaWindow
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type |
 | --- | --- |
-| cordova | [<code>Cordova</code>](#Cordova) |
-| SafariViewController | <code>object</code> |
-| resolveLocalFileSystemURL | <code>function</code> |
-| handleOpenURL | <code>function</code> |
+| cordova | [<code>Cordova</code>](#Cordova) | 
+| SafariViewController | <code>object</code> | 
+| resolveLocalFileSystemURL | <code>function</code> | 
+| handleOpenURL | <code>function</code> | 
 
 <a name="CancelablePromise"></a>
 
 ## CancelablePromise : <code>Promise</code>
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
@@ -4001,4 +4007,4 @@ Read more about client capabilities here https://docs.cozy.io/en/cozy-stack/sett
 <a name="Wrapper"></a>
 
 ## Wrapper ⇒ <code>function</code>
-**Kind**: global typedef
+**Kind**: global typedef  

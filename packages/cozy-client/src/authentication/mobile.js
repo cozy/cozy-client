@@ -18,9 +18,7 @@ import { Linking } from 'react-native'
 const win = typeof window !== 'undefined' ? window : null
 
 /**
- * Open a SafariView Controller
- * and resolve with the URL containing
- * the token
+ * Open a SafariView Controller and resolve with the URL containing the token
  *
  * @param {string} url
  * @returns {Promise}
@@ -59,9 +57,7 @@ const authenticateWithSafari = url => {
   })
 }
 /**
- * Open an inAppBrowsr
- * and resolve with the URL containing
- * the token
+ * Opens an InAppBrowser and resolves with the URL containing the token
  *
  * @param {string} url
  * @returns {Promise}
@@ -100,8 +96,8 @@ const authenticateWithInAppBrowser = url => {
 }
 
 /**
- * Open a RactNative InAppBrowsr
- * and resolve with the URL containing
+ * Opens a ReactNative InAppBrowsr
+ * and resolves with the URL containing
  * the token
  *
  * @param {string} url
