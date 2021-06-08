@@ -1,4 +1,6 @@
+//@ts-ignore
 import { InAppBrowser } from 'react-native-inappbrowser-reborn'
+//@ts-ignore
 import { Linking } from 'react-native'
 
 /**
