@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [23.9.0](https://github.com/cozy/cozy-client/compare/v23.8.0...v23.9.0) (2021-06-08)
+
+
+### Bug Fixes
+
+* Remove obsolete comment ([9b5d1e1](https://github.com/cozy/cozy-client/commit/9b5d1e10480d1a887674ce864f1dd233712424b6))
+* Types ([b19de82](https://github.com/cozy/cozy-client/commit/b19de82a0e3f6172f5b1cec45aa032632fb5b8d4))
+
+
+### Features
+
+* Use native.js file to make react native really optionnal ([390f46d](https://github.com/cozy/cozy-client/commit/390f46d47c8c80917c93d518ac201a1b40868329))
+
+
+
+
+
 # [23.8.0](https://github.com/cozy/cozy-client/compare/v23.7.0...v23.8.0) (2021-06-07)
 
 
