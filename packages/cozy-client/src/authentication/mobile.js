@@ -116,8 +116,4 @@ export const authenticateWithCordova = async url => {
   }
 }
 
-/**
- * Return the method to use for
- * authentication based on the
- */
 export const authFunction = authenticateWithCordova

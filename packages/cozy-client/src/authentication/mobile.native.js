@@ -55,8 +55,4 @@ export const authenticateWithReactNativeInAppBrowser = async url => {
   })
 }
 
-/**
- * Return the method to use for
- * authentication based on the
- */
 export const authFunction = authenticateWithReactNativeInAppBrowser
