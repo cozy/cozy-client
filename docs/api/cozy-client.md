@@ -89,13 +89,9 @@ from a Cozy. <code>QueryDefinition</code>s are sent to links.</p>
 <dt><a href="#win">win</a> : <code><a href="#CordovaWindow">CordovaWindow</a></code></dt>
 <dd></dd>
 <dt><a href="#authenticateWithReactNativeInAppBrowser">authenticateWithReactNativeInAppBrowser</a> ⇒ <code>Promise</code></dt>
-<dd><p>Opens a ReactNative InAppBrowsr
+<dd><p>Opens a ReactNative InAppBrowser
 and resolves with the URL containing
 the token</p>
-</dd>
-<dt><a href="#authFunction">authFunction</a></dt>
-<dd><p>Return the method to use for
-authentication based on the</p>
 </dd>
 <dt><a href="#generateWebLink">generateWebLink</a> ⇒ <code>string</code></dt>
 <dd><p>generateWebLink - Construct a link to a web app</p>
@@ -2085,7 +2081,7 @@ Updates a relationship item with the relationship name and id
 <a name="authenticateWithReactNativeInAppBrowser"></a>
 
 ## authenticateWithReactNativeInAppBrowser ⇒ <code>Promise</code>
-Opens a ReactNative InAppBrowsr
+Opens a ReactNative InAppBrowser
 and resolves with the URL containing
 the token
 
@@ -2095,13 +2091,6 @@ the token
 | --- | --- |
 | url | <code>string</code> | 
 
-<a name="authFunction"></a>
-
-## authFunction
-Return the method to use for
-authentication based on the
-
-**Kind**: global constant  
 <a name="generateWebLink"></a>
 
 ## generateWebLink ⇒ <code>string</code>
