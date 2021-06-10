@@ -81,16 +81,22 @@ class JobCollection {
       )
     }
 
-    return this.stackClient.fetchJSON('PATCH', `/jobs/${job._id}`, {
-      data: {
-        type: JOBS_DOCTYPE,
-        id: job._id,
-        attributes: {
-          state: job.attributes.state,
-          error: job.attributes.error
+    const jobResult = await this.stackClient.fetchJSON(
+      'PATCH',
+      `/jobs/${job._id}`,
+      {
+        data: {
+          type: JOBS_DOCTYPE,
+          id: job._id,
+          attributes: {
+            state: job.attributes.state,
+            error: job.attributes.error
+          }
         }
       }
-    })
+    )
+
+    return normalizeJob(jobResult.data);
   }
 
   /**
