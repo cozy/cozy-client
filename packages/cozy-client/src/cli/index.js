@@ -183,7 +183,7 @@ const readJSON = (fs, filename) => {
 const createClientInteractive = (clientOptions, serverOpts) => {
   global.fetch = nodeFetch
   global.btoa = btoa
-  
+
   const serverOptions = merge(DEFAULT_SERVER_OPTIONS, serverOpts)
   const createClientFS = serverOptions.fs || fs
 
