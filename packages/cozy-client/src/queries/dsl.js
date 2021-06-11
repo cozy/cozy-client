@@ -345,6 +345,7 @@ export const Q = doctype => new QueryDefinition({ doctype })
  * @returns {boolean}
  */
 export const isAGetByIdQuery = queryDefinition => {
+  if (!queryDefinition) return false
   const attributes = Object.values(queryDefinition)
   if (attributes.length === 0) return false
   // 2 attrs because we check if id and doctype are not undefined
