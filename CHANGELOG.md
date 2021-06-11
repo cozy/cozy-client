@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [23.9.1](https://github.com/cozy/cozy-client/compare/v23.9.0...v23.9.1) (2021-06-11)
+
+
+### Bug Fixes
+
+* Add normalization to jobCollection.update ([5989dd5](https://github.com/cozy/cozy-client/commit/5989dd5a86da5ef8b892a6755426b7590b829c00))
+* Lint ([656c523](https://github.com/cozy/cozy-client/commit/656c523e944fd3cc72281b5a0eb66d00eabf9fe3))
+
+
+
+
+
 # [23.9.0](https://github.com/cozy/cozy-client/compare/v23.8.0...v23.9.0) (2021-06-08)
 
 
