@@ -96,7 +96,7 @@ class JobCollection {
       }
     )
 
-    return normalizeJob(jobResult.data);
+    return normalizeJob(jobResult.data)
   }
 
   /**

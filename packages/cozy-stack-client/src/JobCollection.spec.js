@@ -108,7 +108,7 @@ describe('job collection', () => {
       jest.clearAllMocks()
     })
 
-		it('should return a normalized jobs', async () => {
+    it('should return a normalized jobs', async () => {
       const jobId = '5396fc6299dd437d8d30fecd44745745'
       const job = await col.update({
         _id: jobId,
@@ -116,12 +116,14 @@ describe('job collection', () => {
         attributes: {
           state: 'done'
         }
-      })}
-      expect(job).toEqual(expect.objectContaining({
-       _type: 'io.cozy.jobs',
-       state: 'done',
-       _id: jobId
-      }))
+      })
+      expect(job).toEqual(
+        expect.objectContaining({
+          _type: 'io.cozy.jobs',
+          state: 'done',
+          _id: jobId
+        })
+      )
     })
     it('should call the expected stack endpoint when ok job', async () => {
       const jobId = '5396fc6299dd437d8d30fecd44745745'
