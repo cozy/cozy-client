@@ -1730,12 +1730,12 @@ Serves to dedupe equal queries requested at the same time
 **Kind**: global class  
 
 * [PromiseCache](#PromiseCache)
-    * [.pending](#PromiseCache+pending) : <code>object.&lt;string, Promise&gt;</code>
+    * [.pending](#PromiseCache+pending) : <code>Object.&lt;string, Promise&gt;</code>
     * [.exec(promiseFunc, keyFunc)](#PromiseCache+exec) ⇒ <code>Promise.&lt;T&gt;</code>
 
 <a name="PromiseCache+pending"></a>
 
-### promiseCache.pending : <code>object.&lt;string, Promise&gt;</code>
+### promiseCache.pending : <code>Object.&lt;string, Promise&gt;</code>
 Holds pending promises
 
 **Kind**: instance property of [<code>PromiseCache</code>](#PromiseCache)  
