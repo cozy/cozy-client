@@ -31,7 +31,11 @@ const buildParamsUrl = (worker, type) => {
   const urlParams = new URLSearchParams()
 
   if (worker) {
-    urlParams.set('Worker', worker)
+    if (Array.isArray(worker.$in)) {
+      urlParams.set('Worker', worker.$in.join(','))
+    } else {
+      urlParams.set('Worker', worker)
+    }
   }
   if (type) {
     if (Array.isArray(type.$in)) {

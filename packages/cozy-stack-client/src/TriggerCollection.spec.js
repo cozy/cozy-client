@@ -182,6 +182,14 @@ describe('TriggerCollection', () => {
       )
     })
 
+    it('should call /jobs/triggers route if only worker selector is passed with multiple values', async () => {
+      await collection.find({ worker: { $in: ['client', 'konnector'] } })
+      expect(stackClient.fetchJSON).toHaveBeenLastCalledWith(
+        'GET',
+        '/jobs/triggers?Worker=client%2Ckonnector'
+      )
+    })
+
     it('should call /jobs/triggers route if only Worker and type selector is passed', async () => {
       await collection.find({ worker: 'thumbnail', type: '@cron' })
       expect(stackClient.fetchJSON).toHaveBeenLastCalledWith(
@@ -198,6 +206,17 @@ describe('TriggerCollection', () => {
       expect(stackClient.fetchJSON).toHaveBeenLastCalledWith(
         'GET',
         '/jobs/triggers?Worker=thumbnail&Type=%40cron%2C%40webhook'
+      )
+    })
+
+    it('should call /jobs/triggers route if only Worker and type selector is passed with multiple Worker values', async () => {
+      await collection.find({
+        worker: { $in: ['client', 'konnector'] },
+        type: '@cron'
+      })
+      expect(stackClient.fetchJSON).toHaveBeenLastCalledWith(
+        'GET',
+        '/jobs/triggers?Worker=client%2Ckonnector&Type=%40cron'
       )
     })
 
