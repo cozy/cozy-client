@@ -9,7 +9,7 @@ const fillQueryInsideClient = (client, queryName, queryOptions) => {
   client.store.dispatch(initQuery(queryName, definition || Q(doctype)))
   client.store.dispatch(
     receiveQueryResult(queryName, {
-      data: data.map(doc => normalizeDoc(doc, doctype)),
+      data: data ? data.map(doc => normalizeDoc(doc, doctype)) : data,
       ...queryResult
     })
   )
