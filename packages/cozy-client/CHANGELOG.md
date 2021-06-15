@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [23.11.0](https://github.com/cozy/cozy-client/compare/v23.10.0...v23.11.0) (2021-06-15)
+
+
+### Features
+
+* Allow to pass null to instantiate a query ([eca6e03](https://github.com/cozy/cozy-client/commit/eca6e03b69ae4b45820675af05c69d112a964a6a))
+
+
+
+
+
 # [23.10.0](https://github.com/cozy/cozy-client/compare/v23.9.1...v23.10.0) (2021-06-15)
 
 **Note:** Version bump only for package cozy-client
