@@ -77,7 +77,7 @@ declare class Association {
      *
      * @returns {QueryDefinition | QueryState}
      */
-    static query(): QueryDefinition | QueryState;
+    static query(document: any, client: any, assoc: any): QueryDefinition | QueryState;
     /**
      * @param  {object} target - Original object containing raw data
      * @param  {string} name - Attribute under which the association is stored
