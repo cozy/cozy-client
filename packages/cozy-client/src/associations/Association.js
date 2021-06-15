@@ -225,7 +225,7 @@ class Association {
    *
    * @returns {QueryDefinition | QueryState}
    */
-  static query() {
+  static query(document, client, assoc) {
     throw new Error('A custom relationship must define its query() function')
   }
 }
