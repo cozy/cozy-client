@@ -1,5 +1,4 @@
 export default class HasOne extends Association {
-    static query(doc: any, client: any, assoc: any): import("../queries/dsl").QueryDefinition;
     constructor(target: any, name: string, doctype: string, options: {
         get: Function;
         query: Function;

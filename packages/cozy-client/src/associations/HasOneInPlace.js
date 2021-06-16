@@ -1,6 +1,7 @@
 import Association from './Association'
+import CozyClient from '../CozyClient'
 import { Q, QueryDefinition } from '../queries/dsl'
-import { QueryState } from '../types'
+import { CozyClientDocument } from '../types'
 
 /**
  * Here the id of the document is directly set in the attribute
@@ -16,10 +17,14 @@ export default class HasOneInPlace extends Association {
   }
 
   /**
-   * @returns {QueryState | QueryDefinition}
+   * @param {CozyClientDocument} document - Document to query
+   * @param {CozyClient} client - The CozyClient instance
+   * @param {Association} assoc - The query params
+   *
+   * @returns {CozyClientDocument | QueryDefinition}
    */
-  static query(doc, client, assoc) {
-    const id = doc[assoc.name]
+  static query(document, client, assoc) {
+    const id = document[assoc.name]
     return (
       client.getDocumentFromState(assoc.doctype, id) ||
       Q(assoc.doctype).getById(id)

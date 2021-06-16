@@ -75,9 +75,13 @@ declare class Association {
     /**
      * Derived `Association`s need to implement this method.
      *
-     * @returns {QueryDefinition | QueryState}
+     * @param {CozyClientDocument} document - Document to query
+     * @param {CozyClient} client - The CozyClient instance
+     * @param {Association} assoc - Association containing info on how to build the query to fetch related documents
+     *
+     * @returns {CozyClientDocument | QueryDefinition }
      */
-    static query(document: any, client: any, assoc: any): QueryDefinition | QueryState;
+    static query(document: CozyClientDocument, client: CozyClient, assoc: Association): CozyClientDocument | QueryDefinition;
     /**
      * @param  {object} target - Original object containing raw data
      * @param  {string} name - Attribute under which the association is stored
@@ -217,5 +221,6 @@ declare class Association {
      */
     get data(): any;
 }
+import { CozyClientDocument } from "../types";
+import CozyClient from "../CozyClient";
 import { QueryDefinition } from "../queries/dsl";
-import { QueryState } from "../types";

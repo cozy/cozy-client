@@ -335,7 +335,11 @@ is loading.</p>
 <p>Useful for tests that we know will use console[type] but we do not
 want to them to trigger an exception during tests.</p>
 </dd>
-<dt><a href="#query">query()</a> ⇒ <code><a href="#QueryState">QueryState</a></code> | <code><a href="#QueryDefinition">QueryDefinition</a></code></dt>
+<dt><a href="#query">query(document, client, assoc)</a> ⇒ <code><a href="#CozyClientDocument">CozyClientDocument</a></code> | <code><a href="#QueryDefinition">QueryDefinition</a></code></dt>
+<dd></dd>
+<dt><a href="#query">query(document, client, assoc)</a> ⇒ <code><a href="#CozyClientDocument">CozyClientDocument</a></code> | <code><a href="#QueryDefinition">QueryDefinition</a></code></dt>
+<dd></dd>
+<dt><a href="#query">query(document, client, assoc)</a> ⇒ <code><a href="#CozyClientDocument">CozyClientDocument</a></code> | <code><a href="#QueryDefinition">QueryDefinition</a></code></dt>
 <dd></dd>
 <dt><a href="#authenticateWithSafari">authenticateWithSafari(url)</a> ⇒ <code>Promise</code></dt>
 <dd><p>Open a SafariView Controller and resolve with the URL containing the token</p>
@@ -731,7 +735,7 @@ the hydrated document (.data method). View components will access
         * [.query(queryDefinition)](#Association+query)
         * [.mutate()](#Association+mutate)
     * _static_
-        * [.query()](#Association.query) ⇒ [<code>QueryDefinition</code>](#QueryDefinition) \| [<code>QueryState</code>](#QueryState)
+        * [.query(document, client, assoc)](#Association.query) ⇒ [<code>CozyClientDocument</code>](#CozyClientDocument) \| [<code>QueryDefinition</code>](#QueryDefinition)
 
 <a name="Association+target"></a>
 
@@ -864,10 +868,17 @@ Performs a mutation on the relationship.
 **Kind**: instance method of [<code>Association</code>](#Association)  
 <a name="Association.query"></a>
 
-### Association.query() ⇒ [<code>QueryDefinition</code>](#QueryDefinition) \| [<code>QueryState</code>](#QueryState)
+### Association.query(document, client, assoc) ⇒ [<code>CozyClientDocument</code>](#CozyClientDocument) \| [<code>QueryDefinition</code>](#QueryDefinition)
 Derived `Association`s need to implement this method.
 
 **Kind**: static method of [<code>Association</code>](#Association)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | [<code>CozyClientDocument</code>](#CozyClientDocument) | Document to query |
+| client | [<code>CozyClient</code>](#CozyClient) | The CozyClient instance |
+| assoc | [<code>Association</code>](#Association) | Association containing info on how to build the query to fetch related documents |
+
 <a name="HasMany"></a>
 
 ## HasMany
@@ -883,9 +894,12 @@ Responsible for
 
 * [HasMany](#HasMany)
     * [new HasMany()](#new_HasMany_new)
-    * [.data](#HasMany+data)
-    * [.count](#HasMany+count) ⇒ <code>number</code>
-    * [.addById()](#HasMany+addById)
+    * _instance_
+        * [.data](#HasMany+data)
+        * [.count](#HasMany+count) ⇒ <code>number</code>
+        * [.addById()](#HasMany+addById)
+    * _static_
+        * [.query(document, client, assoc)](#HasMany.query) ⇒ [<code>CozyClientDocument</code>](#CozyClientDocument) \| [<code>QueryDefinition</code>](#QueryDefinition)
 
 <a name="new_HasMany_new"></a>
 
@@ -944,6 +958,17 @@ in order to synchronize your document with the store.
 it'll not be present in the store as well.
 We certainly should use something like `updateRelationship`
 
+<a name="HasMany.query"></a>
+
+### HasMany.query(document, client, assoc) ⇒ [<code>CozyClientDocument</code>](#CozyClientDocument) \| [<code>QueryDefinition</code>](#QueryDefinition)
+**Kind**: static method of [<code>HasMany</code>](#HasMany)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | [<code>CozyClientDocument</code>](#CozyClientDocument) | Document to query |
+| client | [<code>CozyClient</code>](#CozyClient) | The CozyClient instance |
+| assoc | [<code>Association</code>](#Association) | The query params |
+
 <a name="HasManyInPlace"></a>
 
 ## HasManyInPlace
@@ -960,7 +985,10 @@ only the ids.
 
 * [HasManyInPlace](#HasManyInPlace)
     * [new HasManyInPlace()](#new_HasManyInPlace_new)
-    * [.raw](#HasManyInPlace+raw) : <code>Array.&lt;string&gt;</code>
+    * _instance_
+        * [.raw](#HasManyInPlace+raw) : <code>Array.&lt;string&gt;</code>
+    * _static_
+        * [.query(document, client, assoc)](#HasManyInPlace.query) ⇒ [<code>CozyClientDocument</code>](#CozyClientDocument) \| [<code>QueryDefinition</code>](#QueryDefinition)
 
 <a name="new_HasManyInPlace_new"></a>
 
@@ -1004,6 +1032,17 @@ const todo = {
 Raw property
 
 **Kind**: instance property of [<code>HasManyInPlace</code>](#HasManyInPlace)  
+<a name="HasManyInPlace.query"></a>
+
+### HasManyInPlace.query(document, client, assoc) ⇒ [<code>CozyClientDocument</code>](#CozyClientDocument) \| [<code>QueryDefinition</code>](#QueryDefinition)
+**Kind**: static method of [<code>HasManyInPlace</code>](#HasManyInPlace)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | [<code>CozyClientDocument</code>](#CozyClientDocument) | Document to query |
+| client | [<code>CozyClient</code>](#CozyClient) | The CozyClient instance |
+| assoc | [<code>Association</code>](#Association) | The query params |
+
 <a name="HasManyTriggers"></a>
 
 ## HasManyTriggers ⇐ [<code>HasMany</code>](#HasMany)
@@ -3037,8 +3076,45 @@ want to them to trigger an exception during tests.
 **Kind**: global function  
 <a name="query"></a>
 
-## query() ⇒ [<code>QueryState</code>](#QueryState) \| [<code>QueryDefinition</code>](#QueryDefinition)
+## query(document, client, assoc) ⇒ [<code>CozyClientDocument</code>](#CozyClientDocument) \| [<code>QueryDefinition</code>](#QueryDefinition)
 **Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | [<code>CozyClientDocument</code>](#CozyClientDocument) | Document to query |
+| client | [<code>CozyClient</code>](#CozyClient) | The CozyClient instance |
+| assoc | [<code>Association</code>](#Association) | The query params |
+
+<a name="query..common"></a>
+
+### query~common : [<code>Partial.&lt;QueryState&gt;</code>](#QueryState)
+**Kind**: inner constant of [<code>query</code>](#query)  
+<a name="query"></a>
+
+## query(document, client, assoc) ⇒ [<code>CozyClientDocument</code>](#CozyClientDocument) \| [<code>QueryDefinition</code>](#QueryDefinition)
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | [<code>CozyClientDocument</code>](#CozyClientDocument) | Document to query |
+| client | [<code>CozyClient</code>](#CozyClient) | The CozyClient instance |
+| assoc | [<code>Association</code>](#Association) | The query params |
+
+<a name="query..common"></a>
+
+### query~common : [<code>Partial.&lt;QueryState&gt;</code>](#QueryState)
+**Kind**: inner constant of [<code>query</code>](#query)  
+<a name="query"></a>
+
+## query(document, client, assoc) ⇒ [<code>CozyClientDocument</code>](#CozyClientDocument) \| [<code>QueryDefinition</code>](#QueryDefinition)
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | [<code>CozyClientDocument</code>](#CozyClientDocument) | Document to query |
+| client | [<code>CozyClient</code>](#CozyClient) | The CozyClient instance |
+| assoc | [<code>Association</code>](#Association) | The query params |
+
 <a name="query..common"></a>
 
 ### query~common : [<code>Partial.&lt;QueryState&gt;</code>](#QueryState)

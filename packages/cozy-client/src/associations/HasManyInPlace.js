@@ -1,5 +1,7 @@
+import CozyClient from '../CozyClient'
+import { Q, QueryDefinition } from '../queries/dsl'
+import { CozyClientDocument } from '../types'
 import Association from './Association'
-import { Q } from '../queries/dsl'
 
 /**
  *
@@ -89,10 +91,17 @@ class HasManyInPlace extends Association {
     return (this.raw || []).map(_id => this.get(doctype, _id))
   }
 
-  static query(doc, client, relationship) {
-    const ids = doc[relationship.name]
+  /**
+   * @param {CozyClientDocument} document - Document to query
+   * @param {CozyClient} client - The CozyClient instance
+   * @param {Association} assoc - The query params
+   *
+   * @returns {CozyClientDocument | QueryDefinition}
+   */
+  static query(document, client, assoc) {
+    const ids = document[assoc.name]
     if (ids && ids > 0) {
-      return Q(relationship.doctype).getByIds(ids)
+      return Q(assoc.doctype).getByIds(ids)
     } else {
       return null
     }
