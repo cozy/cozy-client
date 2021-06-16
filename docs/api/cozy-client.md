@@ -3672,7 +3672,12 @@ Helper to retrieve time series by their date interval and source.
 | Param | Type | Description |
 | --- | --- | --- |
 | client | <code>object</code> | The CozyClient instance |
-| The | <code>Object</code> | query params. |
+| params | <code>object</code> | The query params |
+| params.startDate | <code>Date</code> | The starting date of the series |
+| params.endDate | <code>Date</code> | The end date of the series |
+| params.dataType | <code>String</code> | The type of time series, e.g. 'electricity' |
+| params.source | <code>String</code> | The data source, e.g. 'enedis.fr' |
+| params.limit | <code>number</code> | Number of serie items to retrieve |
 
 **Properties**
 
