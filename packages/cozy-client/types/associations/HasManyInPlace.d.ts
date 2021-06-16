@@ -43,7 +43,6 @@ export default HasManyInPlace;
  *
  */
 declare class HasManyInPlace extends Association {
-    static query(doc: any, client: any, relationship: any): import("../queries/dsl").QueryDefinition;
     constructor(target: any, name: string, doctype: string, options: {
         get: Function;
         query: Function;

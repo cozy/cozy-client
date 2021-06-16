@@ -1,8 +1,10 @@
 import get from 'lodash/get'
 import merge from 'lodash/merge'
-import Association from './Association'
+import CozyClient from '../CozyClient'
 import { QueryDefinition } from '../queries/dsl'
-import { receiveQueryResult, getDocumentFromState } from '../store'
+import { getDocumentFromState, receiveQueryResult } from '../store'
+import { CozyClientDocument } from '../types'
+import Association from './Association'
 
 /**
  * @typedef {object} Relationship
@@ -225,6 +227,13 @@ class HasMany extends Association {
     }
   }
 
+  /**
+   * @param {CozyClientDocument} document - Document to query
+   * @param {CozyClient} client - The CozyClient instance
+   * @param {Association} assoc - The query params
+   *
+   * @returns {CozyClientDocument | QueryDefinition}
+   */
   static query(document, client, assoc) {
     const relationships = get(document, `relationships.${assoc.name}.data`, [])
     const ids = relationships.map(assoc => assoc._id)

@@ -67,7 +67,6 @@ export type Relation = {
  * ```
  */
 declare class HasMany extends Association {
-    static query(document: any, client: any, assoc: any): QueryDefinition;
     constructor(target: any, name: string, doctype: string, options: {
         get: Function;
         query: Function;
@@ -107,4 +106,3 @@ declare class HasMany extends Association {
     dehydrate(doc: any): any;
 }
 import Association from "./Association";
-import { QueryDefinition } from "../queries/dsl";

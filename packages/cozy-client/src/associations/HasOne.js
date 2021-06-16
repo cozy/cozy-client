@@ -1,7 +1,9 @@
 import get from 'lodash/get'
 import set from 'lodash/set'
+import CozyClient from '../CozyClient'
+import { Q, QueryDefinition } from '../queries/dsl'
+import { CozyClientDocument } from '../types'
 import Association from './Association'
-import { Q } from '../queries/dsl'
 
 export default class HasOne extends Association {
   get raw() {
@@ -16,8 +18,15 @@ export default class HasOne extends Association {
     return this.get(this.doctype, this.raw._id)
   }
 
-  static query(doc, client, assoc) {
-    const relationship = get(doc, `relationships.${assoc.name}.data`, {})
+  /**
+   * @param {CozyClientDocument} document - Document to query
+   * @param {CozyClient} client - The CozyClient instance
+   * @param {Association} assoc - The query params
+   *
+   * @returns {CozyClientDocument | QueryDefinition}
+   */
+  static query(document, client, assoc) {
+    const relationship = get(document, `relationships.${assoc.name}.data`, {})
     if (!relationship || !relationship._id) {
       return null
     }

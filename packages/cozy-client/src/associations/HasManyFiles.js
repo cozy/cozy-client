@@ -1,7 +1,10 @@
 import omit from 'lodash/omit'
-import HasMany from './HasMany'
-import { QueryDefinition, Mutations, Q } from '../queries/dsl'
+import CozyClient from '../CozyClient'
+import { Mutations, Q, QueryDefinition } from '../queries/dsl'
 import { getDocumentFromState } from '../store'
+import { CozyClientDocument } from '../types'
+import Association from './Association'
+import HasMany from './HasMany'
 
 /**
  *  This class is only used for photos albums relationships.
@@ -92,6 +95,13 @@ export default class HasManyFiles extends HasMany {
     return omit(doc, [this.name, `relationships.${this.name}`])
   }
 
+  /**
+   * @param {CozyClientDocument} document - Document to query
+   * @param {CozyClient} client - The CozyClient instance
+   * @param {Association} assoc - The query params
+   *
+   * @returns {CozyClientDocument | QueryDefinition}
+   */
   static query(document, client, assoc) {
     const key = [document._type, document._id]
     const cursor = [key, '']
