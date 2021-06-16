@@ -64,7 +64,12 @@ export const saveTimeSeries = async (client, timeseriesOption) => {
  * Helper to retrieve time series by their date interval and source.
  *
  * @param {object} client - The CozyClient instance
- * @param {{ startDate, endDate, dataType, source, limit }} The query params.
+ * @param {object} params - The query params
+ * @param {Date} params.startDate - The starting date of the series
+ * @param {Date} params.endDate - The end date of the series
+ * @param {String} params.dataType - The type of time series, e.g. 'electricity'
+ * @param {String} params.source - The data source, e.g. 'enedis.fr'
+ * @param {number} params.limit - Number of serie items to retrieve
  *
  * @typedef TimeSeriesJSONAPI
  * @property data {Array<TimeSeries>} - The JSON-API data response

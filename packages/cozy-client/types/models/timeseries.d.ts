@@ -1,10 +1,10 @@
 export function saveTimeSeries(client: object, timeseriesOption: TimeSeries): Promise<any>;
 export function fetchTimeSeriesByIntervalAndSource(client: object, { startDate, endDate, dataType, source, limit }: {
-    startDate;
-    endDate;
-    dataType;
-    source;
-    limit;
+    startDate: Date;
+    endDate: Date;
+    dataType: string;
+    source: string;
+    limit: number;
 }): Promise<TimeSeriesJSONAPI>;
 export type TimeSeries = {
     /**
