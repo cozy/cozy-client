@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [23.12.0](https://github.com/cozy/cozy-client/compare/v23.11.1...v23.12.0) (2021-06-17)
+
+
+### Features
+
+* Instanciating new CozyClient now add capabilities to it ([324a6d2](https://github.com/cozy/cozy-client/commit/324a6d22687c915d28fd8a20239aa56790aa4f93))
+
+
+
+
+
 ## [23.11.1](https://github.com/cozy/cozy-client/compare/v23.11.0...v23.11.1) (2021-06-15)
 
 **Note:** Version bump only for package cozy-client
