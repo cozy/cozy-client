@@ -1482,9 +1482,12 @@ instantiation of the client.`
         'The selector that is passed does not return an HTMLElement'
       )
     }
+
     this.instanceOptions = root.dataset.cozy
       ? JSON.parse(root.dataset.cozy)
       : { ...root.dataset } // convert from DOMStringMap to plain object
+
+    this.capabilities = this.instanceOptions.capabilities || null
   }
 
   /**
