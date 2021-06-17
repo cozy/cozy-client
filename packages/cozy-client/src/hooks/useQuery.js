@@ -40,21 +40,22 @@ const useQuery = (queryDefinition, options) => {
     )
   }
 
-  if (!queryDefinition) {
+  const { as, enabled = true } = options
+
+  if (enabled && !queryDefinition) {
     logger.warn('Bad query', queryDefinition)
     throw new Error('Bad query')
   }
 
   const definition = resolveToValue(queryDefinition)
-  const { as, enabled = true } = options
 
-  if (!as) {
+  if (enabled && !as) {
     throw new Error('You must specify options.as when using useQuery')
   }
 
   const client = useClient()
   const queryState = useSelector(() => {
-    if (options.singleDocData === undefined && queryDefinition.id) {
+    if (enabled && options.singleDocData === undefined && queryDefinition.id) {
       logger.warn(
         'useQuery options.singleDocData will pass to true in a next version of cozy-client, please add it now to prevent any problem in the future.'
       )
@@ -79,7 +80,7 @@ const useQuery = (queryDefinition, options) => {
     return client.query(generateFetchMoreQueryDefinition(queryState), { as })
   }, [as, client])
 
-  return { ...queryState, fetchMore: fetchMore }
+  return { ...queryState, fetchMore }
 }
 
 export const useQueries = querySpecs => {

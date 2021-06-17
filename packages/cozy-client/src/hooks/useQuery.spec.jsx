@@ -66,6 +66,24 @@ describe('use query', () => {
     expect(client.query).not.toHaveBeenCalled()
   })
 
+  it('should work without query definition nor as if enabled is set to false', () => {
+    const {
+      hookResult: {
+        result: { current }
+      }
+    } = setupQuery({
+      queryDefinition: null,
+      queryOptions: {
+        enabled: false
+      }
+    })
+
+    expect(current).toMatchObject({
+      data: null,
+      fetchStatus: 'pending'
+    })
+  })
+
   it('should return a single doc data for a single doc query if singleDocData is provided', () => {
     const {
       hookResult: {
