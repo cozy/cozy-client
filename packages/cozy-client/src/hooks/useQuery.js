@@ -68,10 +68,7 @@ const useQuery = (queryDefinition, options) => {
 
   useEffect(
     () => {
-      if (enabled === false) {
-        return
-      }
-      client.query(definition, options)
+      enabled && client.query(definition, options)
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [as, enabled]
