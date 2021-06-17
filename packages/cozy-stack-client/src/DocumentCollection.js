@@ -639,46 +639,86 @@ class DocumentCollection {
   }
 
   /**
-   * Use Couch _changes API
+   * Calls _changes route from CouchDB
+   * No further treatment is done contrary to fetchchanges
    *
-   * @param  {object} couchOptions Couch options for changes https://kutt.it/5r7MNQ
-   * @param  {object} options      { includeDesign: false, includeDeleted: false }
+   * @typedef {object} CouchOptionsRaw
+   * @param {string} since - Bookmark telling CouchDB from which point in time should changes be returned
+   * @param {Array<string>} doc_ids - Only return changes for a subset of documents
+   * @param {boolean} includeDocs - Includes full documents as part of results
+   *
+   * @param  {CouchOptionsRaw} couchOptions - Couch options for changes https://kutt.it/5r7MNQ
+   *
+   * @see https://docs.couchdb.org/en/stable/api/database/changes.html
+   */
+  async fetchChangesRaw(couchOptions) {
+    const hasDocIds = couchOptions.doc_ids && couchOptions.doc_ids.length > 0
+    const urlParams = `?${[
+      qs.stringify({
+        ...omit(couchOptions, ['doc_ids', 'includeDocs']),
+        include_docs: couchOptions.includeDocs
+      }),
+      hasDocIds && couchOptions.filter === undefined
+        ? 'filter=_doc_ids'
+        : undefined
+    ]
+      .filter(Boolean)
+      .join('&')}`
+
+    const method = hasDocIds ? 'POST' : 'GET'
+    const endpoint = `/data/${this.doctype}/_changes${urlParams}`
+    const params = hasDocIds ? { doc_ids: couchOptions.doc_ids } : undefined
+    const result = await this.stackClient.fetchJSON(method, endpoint, params)
+    return result
+  }
+
+  /**
+   * Use Couch _changes API
+   * Deleted and design docs are filtered by default, thus documents are retrieved in the response
+   * (include_docs is set to true in the parameters of _changes).
+   *
+   * You should use fetchChangesRaw to have low level control on _changes parameters.
+   *
+   * @typedef {object} CouchOptions
+   * @param {string} since - Bookmark telling CouchDB from which point in time should changes be returned
+   * @param {Array<string>} doc_ids - Only return changes for a subset of documents
+   *
+   * @typedef {object} FetchChangesOptions
+   * @property {boolean} includeDesign - Whether to include changes from design docs (needs include_docs to be true)
+   * @property {boolean} includeDeleted - Whether to include changes for deleted documents (needs include_docs to be true)
+   *
+   * @param  {CouchOptions} couchOptions - Couch options for changes
+   * @param  {FetchChangesOptions} options - Further options on the returned documents. By default, it is set to
+   *                                         { includeDesign: false, includeDeleted: false }
+   *
+   * @typedef {object} FetchChangesReturnValue
+   * @property {string} newLastSeq
+   * @property {Array<object>} documents
+   * @returns {FetchChangesReturnValue}
    */
   async fetchChanges(couchOptions = {}, options = {}) {
-    const haveDocsIds = couchOptions.doc_ids && couchOptions.doc_ids.length > 0
-    let urlParams = ''
+    let opts = {
+      // Necessary since we deal with deleted and design docs later
+      includeDocs: true
+    }
     if (typeof couchOptions !== 'object') {
-      urlParams = `?include_docs=true&since=${couchOptions}`
+      opts.since = couchOptions
       console.warn(
-        `fetchChanges use couchOptions as Object not a string, since is deprecated, please use fetchChanges({include_docs: true, since: "${couchOptions}"}).`
+        `fetchChanges use couchOptions as Object not a string, since is deprecated, please use fetchChanges({since: "${couchOptions}"}).`
       )
     } else if (Object.keys(couchOptions).length > 0) {
-      urlParams = `?${[
-        qs.stringify(omit(couchOptions, 'doc_ids')),
-        haveDocsIds && couchOptions.filter === undefined
-          ? 'filter=_doc_ids'
-          : undefined
-      ]
-        .filter(Boolean)
-        .join('&')}`
+      Object.assign(opts, couchOptions)
     }
-
-    const method = haveDocsIds ? 'POST' : 'GET'
-    const endpoint = `/data/${this.doctype}/_changes${urlParams}`
-    const params = haveDocsIds ? { doc_ids: couchOptions.doc_ids } : undefined
-    const result = await this.stackClient.fetchJSON(method, endpoint, params)
-
+    const result = await this.fetchChangesRaw(opts)
     const newLastSeq = result.last_seq
-    let docs = result.results.map(x => x.doc).filter(Boolean)
 
+    let docs = result.results.map(x => x.doc).filter(Boolean)
     if (!options.includeDesign) {
       docs = docs.filter(doc => doc._id.indexOf('_design') !== 0)
     }
-
     if (!options.includeDeleted) {
       docs = docs.filter(doc => !doc._deleted)
     }
-
     return { newLastSeq, documents: docs }
   }
 }
