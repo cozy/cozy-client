@@ -1,6 +1,5 @@
 import get from 'lodash/get'
 import set from 'lodash/set'
-import CozyClient from '../CozyClient'
 import { Q, QueryDefinition } from '../queries/dsl'
 import { CozyClientDocument } from '../types'
 import Association from './Association'
@@ -20,7 +19,7 @@ export default class HasOne extends Association {
 
   /**
    * @param {CozyClientDocument} document - Document to query
-   * @param {CozyClient} client - The CozyClient instance
+   * @param {object} client - The CozyClient instance
    * @param {Association} assoc - The query params
    *
    * @returns {CozyClientDocument | QueryDefinition}
