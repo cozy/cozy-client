@@ -61,10 +61,12 @@ const useQuery = (queryDefinition, options) => {
       )
     }
 
-    return client.getQueryFromState(as, {
-      hydrated: get(options, 'hydrated', true),
-      singleDocData: get(options, 'singleDocData', false)
-    })
+    return enabled
+      ? client.getQueryFromState(as, {
+          hydrated: get(options, 'hydrated', true),
+          singleDocData: get(options, 'singleDocData', false)
+        })
+      : { data: null, fetchStatus: 'loaded' }
   })
 
   useEffect(

@@ -80,7 +80,7 @@ describe('use query', () => {
 
     expect(current).toMatchObject({
       data: null,
-      fetchStatus: 'pending'
+      fetchStatus: 'loaded'
     })
   })
 
