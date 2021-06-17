@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [23.13.0](https://github.com/cozy/cozy-client/compare/v23.12.0...v23.13.0) (2021-06-17)
+
+
+### Bug Fixes
+
+* Add parameters to query() in Association ([0aa559e](https://github.com/cozy/cozy-client/commit/0aa559e6074a71233595914cda816ceec2e733e2))
+* Remove ref to CozyClient as it breaks tests (circular dependency) ([3872bb4](https://github.com/cozy/cozy-client/commit/3872bb4981ead5ba7775c7b72cff1bf47bcdeed7))
+
+
+### Features
+
+* Improve type documentation for Association.js ([e33702e](https://github.com/cozy/cozy-client/commit/e33702e403cc150a3fa785cca48b4becfbe3a059))
+* Improve type documentation for timeseries.js ([4c19bb0](https://github.com/cozy/cozy-client/commit/4c19bb0660dc07312c7d797de0d1f48e014afe9c))
+
+
+
+
+
 # [23.12.0](https://github.com/cozy/cozy-client/compare/v23.11.1...v23.12.0) (2021-06-17)
 
 
