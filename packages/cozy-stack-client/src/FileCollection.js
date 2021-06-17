@@ -58,6 +58,18 @@ const normalizeFile = file => ({
 
 const sanitizeFileName = name => name && name.trim()
 
+/**
+ * Sanitize Attribute for an io.cozy.files
+ *
+ * Currently juste the name
+ *
+ * @param {FileAttributes|DirectoryAttributes} attributes - Attributes of the created file/directory
+ * @returns {FileAttributes|DirectoryAttributes}
+ */
+const sanitizeAttributes = attributes => {
+  if (attributes.name) attributes.name = sanitizeFileName(attributes.name)
+  return attributes
+}
 const getFileTypeFromName = name =>
   mime.getType(name) || CONTENT_TYPE_OCTET_STREAM
 
@@ -753,11 +765,13 @@ class FileCollection extends DocumentCollection {
    * @returns {object}            Updated document
    */
   async updateAttributes(id, attributes) {
+    let attributesToSanitize = { ...attributes }
+    const sanitizedAttributes = sanitizeAttributes(attributesToSanitize)
     const resp = await this.stackClient.fetchJSON('PATCH', uri`/files/${id}`, {
       data: {
         type: 'io.cozy.files',
         id,
-        attributes
+        attributes: sanitizedAttributes
       }
     })
     return {

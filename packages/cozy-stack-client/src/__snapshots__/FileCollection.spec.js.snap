@@ -191,6 +191,23 @@ Array [
 ]
 `;
 
+exports[`FileCollection updateAttributes should sanitize the filename 1`] = `
+Array [
+  "PATCH",
+  "/files/42",
+  Object {
+    "data": Object {
+      "attributes": Object {
+        "dir_id": "123",
+        "name": "Name",
+      },
+      "id": "42",
+      "type": "io.cozy.files",
+    },
+  },
+]
+`;
+
 exports[`FileCollection updateMetadataAttribute should call the right route 1`] = `
 Array [
   "POST",

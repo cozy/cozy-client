@@ -86,6 +86,10 @@ contains the indexed attributes which are not in correct order.</p>
 <dt><a href="#getAccessToken">getAccessToken()</a> ⇒ <code>string</code></dt>
 <dd><p>Get the app token string</p>
 </dd>
+<dt><a href="#sanitizeAttributes">sanitizeAttributes(attributes)</a> ⇒ <code><a href="#FileAttributes">FileAttributes</a></code> | <code><a href="#DirectoryAttributes">DirectoryAttributes</a></code></dt>
+<dd><p>Sanitize Attribute for an io.cozy.files</p>
+<p>Currently juste the name</p>
+</dd>
 <dt><a href="#garbageCollect">garbageCollect()</a></dt>
 <dd><p>Delete outdated results from cache</p>
 </dd>
@@ -1596,6 +1600,19 @@ Get the app token string
 **Kind**: global function  
 **Returns**: <code>string</code> - token  
 **See**: CozyStackClient.getAccessToken  
+<a name="sanitizeAttributes"></a>
+
+## sanitizeAttributes(attributes) ⇒ [<code>FileAttributes</code>](#FileAttributes) \| [<code>DirectoryAttributes</code>](#DirectoryAttributes)
+Sanitize Attribute for an io.cozy.files
+
+Currently juste the name
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| attributes | [<code>FileAttributes</code>](#FileAttributes) \| [<code>DirectoryAttributes</code>](#DirectoryAttributes) | Attributes of the created file/directory |
+
 <a name="garbageCollect"></a>
 
 ## garbageCollect()
