@@ -925,7 +925,7 @@ describe('DocumentCollection', () => {
 
   describe('changes', () => {
     const collection = new DocumentCollection('io.cozy.todos', client)
-    const defaultCouchOptions = { include_docs: true, since: 'my-seq' }
+    const defaultCouchOptions = { since: 'my-seq' }
     beforeEach(() => {
       client.fetchJSON.mockReturnValueOnce(
         Promise.resolve({
@@ -944,7 +944,7 @@ describe('DocumentCollection', () => {
       await collection.fetchChanges()
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
-        '/data/io.cozy.todos/_changes',
+        '/data/io.cozy.todos/_changes?include_docs=true',
         undefined
       )
     })
@@ -955,7 +955,7 @@ describe('DocumentCollection', () => {
       console.warn.mockRestore()
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
-        '/data/io.cozy.todos/_changes?include_docs=true&since=my-seq',
+        '/data/io.cozy.todos/_changes?since=my-seq&include_docs=true',
         undefined
       )
     })
@@ -964,7 +964,7 @@ describe('DocumentCollection', () => {
       await collection.fetchChanges({ limit: 100 })
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
-        '/data/io.cozy.todos/_changes?limit=100',
+        '/data/io.cozy.todos/_changes?limit=100&include_docs=true',
         undefined
       )
     })
@@ -973,16 +973,109 @@ describe('DocumentCollection', () => {
       await collection.fetchChanges({ doc_ids: [1, 2, 3] })
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'POST',
-        '/data/io.cozy.todos/_changes?filter=_doc_ids',
+        '/data/io.cozy.todos/_changes?include_docs=true&filter=_doc_ids',
         { doc_ids: [1, 2, 3] }
       )
+    })
+
+    it('should  be possible to call fetchChangesRaw with include_docs false', async () => {
+      client.fetchJSON = jest.fn().mockReturnValue({
+        last_seq:
+          '5-g1AAAAIreJyVkEsKwjAURZ-toI5cgq5A0sQ0OrI70XyppcaRY92J7kR3ojupaSPUUgotgRd4yTlwbw4A0zRUMLdnpaMkwmyF3Ily9xBwEIuiKLI05KOTW0wkV4rruP29UyGWbordzwKVxWBNOGMKZhertDlarbr5pOT3DV4gudUC9-MPJX9tpEAYx4TQASns2E24ucuJ7rXJSL1BbEgf3vTwpmedCZkYa7Pulck7Xt7x_usFU2aIHOD4eEfVTVA5KMGUkqhNZV-8_o5i',
+        pending: 0,
+        results: [
+          {
+            changes: [
+              {
+                rev: '2-7051cbe5c8faecd085a3fa619e6e6337'
+              }
+            ],
+            id: '6478c2ae800dfc387396d14e1fc39626',
+            seq:
+              '3-g1AAAAG3eJzLYWBg4MhgTmHgz8tPSTV0MDQy1zMAQsMcoARTIkOS_P___7MSGXAqSVIAkkn2IFUZzIkMuUAee5pRqnGiuXkKA2dpXkpqWmZeagpu_Q4g_fGEbEkAqaqH2sIItsXAyMjM2NgUUwdOU_JYgCRDA5ACGjQfn30QlQsgKvcjfGaQZmaUmmZClM8gZhyAmHGfsG0PICrBPmQC22ZqbGRqamyIqSsLAAArcXo'
+          },
+          {
+            changes: [
+              {
+                rev: '3-7379b9e515b161226c6559d90c4dc49f'
+              }
+            ],
+            deleted: true,
+            id: '5bbc9ca465f1b0fcd62362168a7c8831',
+            seq:
+              '4-g1AAAAHXeJzLYWBg4MhgTmHgz8tPSTV0MDQy1zMAQsMcoARTIkOS_P___7MymBMZc4EC7MmJKSmJqWaYynEakaQAJJPsoaYwgE1JM0o1TjQ3T2HgLM1LSU3LzEtNwa3fAaQ_HqQ_kQG3qgSQqnoUtxoYGZkZG5uS4NY8FiDJ0ACkgAbNx2cfROUCiMr9CJ8ZpJkZpaaZEOUziBkHIGbcJ2zbA4hKsA-ZwLaZGhuZmhobYurKAgCz33kh'
+          },
+          {
+            changes: [
+              {
+                rev: '6-460637e73a6288cb24d532bf91f32969'
+              },
+              {
+                rev: '5-eeaa298781f60b7bcae0c91bdedd1b87'
+              }
+            ],
+            id: '729eb57437745e506b333068fff665ae',
+            seq:
+              '5-g1AAAAIReJyVkE0OgjAQRkcwUVceQU9g-mOpruQm2tI2SLCuXOtN9CZ6E70JFmpCCCFCmkyTdt6bfJMDwDQNFcztWWkcY8JXyB2cu49AgFwURZGloRid3MMkEUoJHbXbOxVy6arc_SxQWQzRVHCuYHaxSpuj1aqbj0t-3-AlSrZakn78oeSvjRSIkIhSNiCFHbsKN3c50b02mURvEB-yD296eNOzzoRMRLRZ98rkHS_veGcC_nR-fGe1gaCaxihhjOI2lX0BhniHaA'
+          }
+        ]
+      })
+      const changes = await collection.fetchChangesRaw({ includeDocs: false })
+
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/data/io.cozy.todos/_changes?include_docs=false',
+        undefined
+      )
+
+      expect(changes).toEqual({
+        pending: 0,
+        last_seq:
+          '5-g1AAAAIreJyVkEsKwjAURZ-toI5cgq5A0sQ0OrI70XyppcaRY92J7kR3ojupaSPUUgotgRd4yTlwbw4A0zRUMLdnpaMkwmyF3Ily9xBwEIuiKLI05KOTW0wkV4rruP29UyGWbordzwKVxWBNOGMKZhertDlarbr5pOT3DV4gudUC9-MPJX9tpEAYx4TQASns2E24ucuJ7rXJSL1BbEgf3vTwpmedCZkYa7Pulck7Xt7x_usFU2aIHOD4eEfVTVA5KMGUkqhNZV-8_o5i',
+        results: [
+          {
+            changes: [
+              {
+                rev: '2-7051cbe5c8faecd085a3fa619e6e6337'
+              }
+            ],
+            id: '6478c2ae800dfc387396d14e1fc39626',
+            seq:
+              '3-g1AAAAG3eJzLYWBg4MhgTmHgz8tPSTV0MDQy1zMAQsMcoARTIkOS_P___7MSGXAqSVIAkkn2IFUZzIkMuUAee5pRqnGiuXkKA2dpXkpqWmZeagpu_Q4g_fGEbEkAqaqH2sIItsXAyMjM2NgUUwdOU_JYgCRDA5ACGjQfn30QlQsgKvcjfGaQZmaUmmZClM8gZhyAmHGfsG0PICrBPmQC22ZqbGRqamyIqSsLAAArcXo'
+          },
+          {
+            changes: [
+              {
+                rev: '3-7379b9e515b161226c6559d90c4dc49f'
+              }
+            ],
+            deleted: true,
+            id: '5bbc9ca465f1b0fcd62362168a7c8831',
+            seq:
+              '4-g1AAAAHXeJzLYWBg4MhgTmHgz8tPSTV0MDQy1zMAQsMcoARTIkOS_P___7MymBMZc4EC7MmJKSmJqWaYynEakaQAJJPsoaYwgE1JM0o1TjQ3T2HgLM1LSU3LzEtNwa3fAaQ_HqQ_kQG3qgSQqnoUtxoYGZkZG5uS4NY8FiDJ0ACkgAbNx2cfROUCiMr9CJ8ZpJkZpaaZEOUziBkHIGbcJ2zbA4hKsA-ZwLaZGhuZmhobYurKAgCz33kh'
+          },
+          {
+            changes: [
+              {
+                rev: '6-460637e73a6288cb24d532bf91f32969'
+              },
+              {
+                rev: '5-eeaa298781f60b7bcae0c91bdedd1b87'
+              }
+            ],
+            id: '729eb57437745e506b333068fff665ae',
+            seq:
+              '5-g1AAAAIReJyVkE0OgjAQRkcwUVceQU9g-mOpruQm2tI2SLCuXOtN9CZ6E70JFmpCCCFCmkyTdt6bfJMDwDQNFcztWWkcY8JXyB2cu49AgFwURZGloRid3MMkEUoJHbXbOxVy6arc_SxQWQzRVHCuYHaxSpuj1aqbj0t-3-AlSrZakn78oeSvjRSIkIhSNiCFHbsKN3c50b02mURvEB-yD296eNOzzoRMRLRZ98rkHS_veGcC_nR-fGe1gaCaxihhjOI2lX0BhniHaA'
+          }
+        ]
+      })
     })
 
     it('should call the right route', async () => {
       const changes = await collection.fetchChanges(defaultCouchOptions)
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
-        '/data/io.cozy.todos/_changes?include_docs=true&since=my-seq',
+        '/data/io.cozy.todos/_changes?since=my-seq&include_docs=true',
         undefined
       )
       expect(changes).toEqual({

@@ -104,6 +104,16 @@ contains the indexed attributes which are not in correct order.</p>
 ## Typedefs
 
 <dl>
+<dt><a href="#CouchOptionsRaw">CouchOptionsRaw</a> : <code>object</code></dt>
+<dd><p>Calls _changes route from CouchDB
+No further treatment is done contrary to fetchchanges</p>
+</dd>
+<dt><a href="#FetchChangesReturnValue">FetchChangesReturnValue</a> ⇒ <code><a href="#FetchChangesReturnValue">FetchChangesReturnValue</a></code></dt>
+<dd><p>Use Couch _changes API
+Deleted and design docs are filtered by default, thus documents are retrieved in the response
+(include_docs is set to true in the parameters of _changes).</p>
+<p>You should use fetchChangesRaw to have low level control on _changes parameters.</p>
+</dd>
 <dt><a href="#DirectoryAttributes">DirectoryAttributes</a> : <code>object</code></dt>
 <dd><p>Attributes used for directory creation</p>
 </dd>
@@ -301,7 +311,6 @@ Abstracts a collection of documents of the same doctype, providing CRUD methods 
     * [.fetchAllMangoIndexes()](#DocumentCollection+fetchAllMangoIndexes) ⇒ <code>Array</code>
     * [.destroyIndex(index)](#DocumentCollection+destroyIndex) ⇒ <code>object</code>
     * [.copyIndex(existingIndex, newIndexName)](#DocumentCollection+copyIndex) ⇒ <code>object</code>
-    * [.fetchChanges(couchOptions, options)](#DocumentCollection+fetchChanges)
 
 <a name="DocumentCollection+all"></a>
 
@@ -447,18 +456,6 @@ having to recompute the existing index.
 | --- | --- | --- |
 | existingIndex | <code>object</code> | The design doc to copy |
 | newIndexName | <code>string</code> | The name of the copy |
-
-<a name="DocumentCollection+fetchChanges"></a>
-
-### documentCollection.fetchChanges(couchOptions, options)
-Use Couch _changes API
-
-**Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| couchOptions | <code>object</code> | Couch options for changes https://kutt.it/5r7MNQ |
-| options | <code>object</code> | { includeDesign: false, includeDeleted: false } |
 
 <a name="FileCollection"></a>
 
@@ -1631,6 +1628,49 @@ Memoize with maxDuration and custom key
 Get a uniform formatted URL and SSL information according to a provided URL
 
 **Kind**: global function  
+<a name="CouchOptionsRaw"></a>
+
+## CouchOptionsRaw : <code>object</code>
+Calls _changes route from CouchDB
+No further treatment is done contrary to fetchchanges
+
+**Kind**: global typedef  
+**See**: https://docs.couchdb.org/en/stable/api/database/changes.html  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| since | <code>string</code> | Bookmark telling CouchDB from which point in time should changes be returned |
+| doc_ids | <code>Array.&lt;string&gt;</code> | Only return changes for a subset of documents |
+| includeDocs | <code>boolean</code> | Includes full documents as part of results |
+| couchOptions | [<code>CouchOptionsRaw</code>](#CouchOptionsRaw) | Couch options for changes https://kutt.it/5r7MNQ |
+
+<a name="FetchChangesReturnValue"></a>
+
+## FetchChangesReturnValue ⇒ [<code>FetchChangesReturnValue</code>](#FetchChangesReturnValue)
+Use Couch _changes API
+Deleted and design docs are filtered by default, thus documents are retrieved in the response
+(include_docs is set to true in the parameters of _changes).
+
+You should use fetchChangesRaw to have low level control on _changes parameters.
+
+**Kind**: global typedef  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| since | <code>string</code> | Bookmark telling CouchDB from which point in time should changes be returned |
+| doc_ids | <code>Array.&lt;string&gt;</code> | Only return changes for a subset of documents |
+| couchOptions | <code>CouchOptions</code> | Couch options for changes |
+| options | <code>FetchChangesOptions</code> | Further options on the returned documents. By default, it is set to                                         { includeDesign: false, includeDeleted: false } |
+
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| includeDesign | <code>boolean</code> | Whether to include changes from design docs (needs include_docs to be true) |
+| includeDeleted | <code>boolean</code> | Whether to include changes for deleted documents (needs include_docs to be true) |
+| newLastSeq | <code>string</code> |  |
+| documents | <code>Array.&lt;object&gt;</code> |  |
+
 <a name="DirectoryAttributes"></a>
 
 ## DirectoryAttributes : <code>object</code>
