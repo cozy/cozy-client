@@ -399,6 +399,16 @@ describe('FileCollection', () => {
         client.fetchJSON.mock.calls[client.fetchJSON.mock.calls.length - 1]
       ).toMatchSnapshot()
     })
+
+    it('should sanitize the filename', async () => {
+      await collection.updateAttributes('42', {
+        dir_id: '123',
+        name: 'Name '
+      })
+      expect(
+        client.fetchJSON.mock.calls[client.fetchJSON.mock.calls.length - 1]
+      ).toMatchSnapshot()
+    })
   })
 
   describe('updateMetadataAttribute', () => {
