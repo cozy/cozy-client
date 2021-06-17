@@ -1,6 +1,5 @@
 import get from 'lodash/get'
 import merge from 'lodash/merge'
-import CozyClient from '../CozyClient'
 import { QueryDefinition } from '../queries/dsl'
 import { getDocumentFromState, receiveQueryResult } from '../store'
 import { CozyClientDocument } from '../types'
@@ -229,7 +228,7 @@ class HasMany extends Association {
 
   /**
    * @param {CozyClientDocument} document - Document to query
-   * @param {CozyClient} client - The CozyClient instance
+   * @param {object} client - The CozyClient instance
    * @param {Association} assoc - The query params
    *
    * @returns {CozyClientDocument | QueryDefinition}

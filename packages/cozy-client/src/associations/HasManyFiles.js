@@ -1,5 +1,4 @@
 import omit from 'lodash/omit'
-import CozyClient from '../CozyClient'
 import { Mutations, Q, QueryDefinition } from '../queries/dsl'
 import { getDocumentFromState } from '../store'
 import { CozyClientDocument } from '../types'
@@ -97,7 +96,7 @@ export default class HasManyFiles extends HasMany {
 
   /**
    * @param {CozyClientDocument} document - Document to query
-   * @param {CozyClient} client - The CozyClient instance
+   * @param {object} client - The CozyClient instance
    * @param {Association} assoc - The query params
    *
    * @returns {CozyClientDocument | QueryDefinition}

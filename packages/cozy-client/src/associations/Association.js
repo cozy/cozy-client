@@ -1,4 +1,3 @@
-import CozyClient from '../CozyClient'
 import { CozyClientDocument } from '../types'
 import { QueryDefinition } from '../queries/dsl'
 
@@ -225,7 +224,7 @@ class Association {
    * Derived `Association`s need to implement this method.
    *
    * @param {CozyClientDocument} document - Document to query
-   * @param {CozyClient} client - The CozyClient instance
+   * @param {object} client - The CozyClient instance
    * @param {Association} assoc - Association containing info on how to build the query to fetch related documents
    *
    * @returns {CozyClientDocument | QueryDefinition }

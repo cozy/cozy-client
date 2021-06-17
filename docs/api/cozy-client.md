@@ -876,7 +876,7 @@ Derived `Association`s need to implement this method.
 | Param | Type | Description |
 | --- | --- | --- |
 | document | [<code>CozyClientDocument</code>](#CozyClientDocument) | Document to query |
-| client | [<code>CozyClient</code>](#CozyClient) | The CozyClient instance |
+| client | <code>object</code> | The CozyClient instance |
 | assoc | [<code>Association</code>](#Association) | Association containing info on how to build the query to fetch related documents |
 
 <a name="HasMany"></a>
@@ -966,7 +966,7 @@ We certainly should use something like `updateRelationship`
 | Param | Type | Description |
 | --- | --- | --- |
 | document | [<code>CozyClientDocument</code>](#CozyClientDocument) | Document to query |
-| client | [<code>CozyClient</code>](#CozyClient) | The CozyClient instance |
+| client | <code>object</code> | The CozyClient instance |
 | assoc | [<code>Association</code>](#Association) | The query params |
 
 <a name="HasManyInPlace"></a>
@@ -1040,7 +1040,7 @@ Raw property
 | Param | Type | Description |
 | --- | --- | --- |
 | document | [<code>CozyClientDocument</code>](#CozyClientDocument) | Document to query |
-| client | [<code>CozyClient</code>](#CozyClient) | The CozyClient instance |
+| client | <code>object</code> | The CozyClient instance |
 | assoc | [<code>Association</code>](#Association) | The query params |
 
 <a name="HasManyTriggers"></a>
@@ -3082,7 +3082,7 @@ want to them to trigger an exception during tests.
 | Param | Type | Description |
 | --- | --- | --- |
 | document | [<code>CozyClientDocument</code>](#CozyClientDocument) | Document to query |
-| client | [<code>CozyClient</code>](#CozyClient) | The CozyClient instance |
+| client | <code>object</code> | The CozyClient instance |
 | assoc | [<code>Association</code>](#Association) | The query params |
 
 <a name="query..common"></a>
@@ -3097,7 +3097,7 @@ want to them to trigger an exception during tests.
 | Param | Type | Description |
 | --- | --- | --- |
 | document | [<code>CozyClientDocument</code>](#CozyClientDocument) | Document to query |
-| client | [<code>CozyClient</code>](#CozyClient) | The CozyClient instance |
+| client | <code>object</code> | The CozyClient instance |
 | assoc | [<code>Association</code>](#Association) | The query params |
 
 <a name="query..common"></a>
@@ -3112,7 +3112,7 @@ want to them to trigger an exception during tests.
 | Param | Type | Description |
 | --- | --- | --- |
 | document | [<code>CozyClientDocument</code>](#CozyClientDocument) | Document to query |
-| client | [<code>CozyClient</code>](#CozyClient) | The CozyClient instance |
+| client | <code>object</code> | The CozyClient instance |
 | assoc | [<code>Association</code>](#Association) | The query params |
 
 <a name="query..common"></a>
