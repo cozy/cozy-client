@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [23.13.1](https://github.com/cozy/cozy-client/compare/v23.13.0...v23.13.1) (2021-06-18)
+
+
+### Bug Fixes
+
+* Updating a file also sanitize its name ([03bdd7e](https://github.com/cozy/cozy-client/commit/03bdd7e0687d69443d037d4b7bc32fd2b6d2a65a))
+
+
+
+
+
 # [23.10.0](https://github.com/cozy/cozy-client/compare/v23.9.1...v23.10.0) (2021-06-15)
 
 
