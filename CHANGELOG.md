@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [23.14.0](https://github.com/cozy/cozy-client/compare/v23.13.1...v23.14.0) (2021-06-22)
+
+
+### Bug Fixes
+
+* Defensive code to not throw an error if there is no Qd. ([bd61235](https://github.com/cozy/cozy-client/commit/bd6123591e8ba8ef59648c62075ef34d37a5ab00))
+* Set fetchStatus to loading by default ([6a80e38](https://github.com/cozy/cozy-client/commit/6a80e384136afb7e77851f77e6793e5df1637720)), closes [#925](https://github.com/cozy/cozy-client/issues/925)
+
+
+### Features
+
+* Dedupes equal queries fired at the same time ([b13d463](https://github.com/cozy/cozy-client/commit/b13d463e222cdb629cf43ea4cf759e2264ebe467))
+
+
+
+
+
 ## [23.13.1](https://github.com/cozy/cozy-client/compare/v23.13.0...v23.13.1) (2021-06-18)
 
 
