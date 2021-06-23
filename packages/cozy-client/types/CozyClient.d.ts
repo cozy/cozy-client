@@ -89,9 +89,9 @@ declare class CozyClient {
      *
      * @param  {object}   options  - CozyClient constructor options
      * @param  {string}   selector - Options
-     * @returns {object} - CozyClient instance
+     * @returns {CozyClient} - CozyClient instance
      */
-    static fromDOM(options?: object, selector?: string): object;
+    static fromDOM(options?: object, selector?: string): CozyClient;
     /**
      * Hooks are an observable system for events on documents.
      * There are at the moment only 2 hooks available.

@@ -1153,7 +1153,7 @@ Responsible for
         * [.fromOldClient(oldClient)](#CozyClient.fromOldClient) ⇒ [<code>CozyClient</code>](#CozyClient)
         * [.fromOldOAuthClient(oldClient)](#CozyClient.fromOldOAuthClient) ⇒ [<code>Promise.&lt;CozyClient&gt;</code>](#CozyClient)
         * [.fromEnv([envArg], options)](#CozyClient.fromEnv) ⇒ [<code>CozyClient</code>](#CozyClient)
-        * [.fromDOM(options, selector)](#CozyClient.fromDOM) ⇒ <code>object</code>
+        * [.fromDOM(options, selector)](#CozyClient.fromDOM) ⇒ [<code>CozyClient</code>](#CozyClient)
         * [.registerHook(doctype, name, fn)](#CozyClient.registerHook)
 
 <a name="new_CozyClient_new"></a>
@@ -1686,12 +1686,12 @@ environment variables
 
 <a name="CozyClient.fromDOM"></a>
 
-### CozyClient.fromDOM(options, selector) ⇒ <code>object</code>
+### CozyClient.fromDOM(options, selector) ⇒ [<code>CozyClient</code>](#CozyClient)
 When used from an app, CozyClient can be instantiated from the data injected by the stack in
 the DOM.
 
 **Kind**: static method of [<code>CozyClient</code>](#CozyClient)  
-**Returns**: <code>object</code> - - CozyClient instance  
+**Returns**: [<code>CozyClient</code>](#CozyClient) - - CozyClient instance  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |

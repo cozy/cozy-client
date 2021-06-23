@@ -361,7 +361,7 @@ class CozyClient {
    *
    * @param  {object}   options  - CozyClient constructor options
    * @param  {string}   selector - Options
-   * @returns {object} - CozyClient instance
+   * @returns {CozyClient} - CozyClient instance
    */
   static fromDOM(options = {}, selector = '[role=application]') {
     const root = document.querySelector(selector)
