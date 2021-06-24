@@ -95,6 +95,26 @@ describe('queries reducer', () => {
       expect(state).toMatchSnapshot()
     })
 
+    it('should correctly update a sorted query with a deleted document', () => {
+      const query = Q('io.cozy.todos')
+      applyAction(
+        initQuery(
+          'a',
+          query
+            .indexFields(['date'])
+            .sortBy([{ date: 'asc' }])
+            .where({ done: false })
+        )
+      )
+      applyAction(initQuery('b', query.where({ done: true })))
+      applyAction(
+        receiveQueryResult('a', {
+          data: [{ ...TODO_3, _deleted: true }]
+        })
+      )
+      expect(state).toMatchSnapshot()
+    })
+
     it('should correctly update a query with several ids', () => {
       const query = Q('io.cozy.todos')
       applyAction(initQuery('b', query.getByIds([TODO_1._id, TODO_2._id])))
