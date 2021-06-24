@@ -20,6 +20,9 @@ const main = async () => {
   const packages = await globPromise('packages/*')
   await fs.mkdirp(path.resolve(docsFolder, 'api'))
   for (let pkg of packages) {
+    if (pkg === 'cozy-client') {
+       continue // documentation for cozy-client is made via typedoc
+    }
     const files = await globPromise(`${pkg}/src/**/*.js*`, {
       ignore: ['*.spec.js']
     })

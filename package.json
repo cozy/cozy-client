@@ -22,6 +22,12 @@
     "react": "16.14.0",
     "react-dom": "16.14.0",
     "redux-mock-store": "1.5.4",
+    "remark-cli": "^9.0.0",
+    "typedoc": "^0.21.0",
+    "typedoc-plugin-markdown": "^3.10.1",
+    "typedoc-plugin-rename-defaults": "^0.1.0",
+    "unist-util-find": "^1.0.2",
+    "unist-util-visit": "^3.1.0",
     "whatwg-fetch": "^3.0.0"
   },
   "private": true,
@@ -35,7 +41,8 @@
     "build": "lerna run build --parallel",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "clean": "rm -rf packages/*/dist",
-    "docs": "node scripts/docs.js",
+    "docs": "node scripts/docs.js && yarn docs:cozy-client",
+    "docs:cozy-client": "yarn typedoc --hideInPageTOC --excludeExternals --excludePrivate --tsconfig packages/cozy-client/tsconfig.json packages/cozy-client/src/index.js --out docs/api/cozy-client --gitRevision master && yarn remark -o -u ./scripts/strip-typedoc-headings.mjs docs/api/cozy-client/",
     "types": "cd packages/cozy-client && yarn typecheck"
   },
   "commitlint": {
