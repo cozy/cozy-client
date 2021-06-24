@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [23.14.1](https://github.com/cozy/cozy-client/compare/v23.14.0...v23.14.1) (2021-06-24)
+
+
+### Bug Fixes
+
+* Remove docs ids that have been removed from docs slice ([9804ccd](https://github.com/cozy/cozy-client/commit/9804ccd2352089b039f2cfd5ae7bb34ca36ceb91))
+
+
+
+
+
 # [23.14.0](https://github.com/cozy/cozy-client/compare/v23.13.1...v23.14.0) (2021-06-22)
 
 
