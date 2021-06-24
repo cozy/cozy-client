@@ -212,6 +212,79 @@ Object {
 }
 `;
 
+exports[`queries reducer updates should correctly update a sorted query with a deleted document 1`] = `
+Object {
+  "a": Object {
+    "bookmark": null,
+    "count": 1,
+    "data": Array [],
+    "definition": QueryDefinition {
+      "bookmark": undefined,
+      "cursor": undefined,
+      "doctype": "io.cozy.todos",
+      "fields": undefined,
+      "id": undefined,
+      "ids": undefined,
+      "includes": undefined,
+      "indexedFields": Array [
+        "date",
+      ],
+      "limit": undefined,
+      "partialFilter": undefined,
+      "referenced": undefined,
+      "selector": Object {
+        "done": false,
+      },
+      "skip": undefined,
+      "sort": Array [
+        Object {
+          "date": "asc",
+        },
+      ],
+    },
+    "fetchStatus": "loaded",
+    "hasMore": false,
+    "id": "a",
+    "lastError": null,
+    "lastErrorUpdate": null,
+    "lastFetch": 1337,
+    "lastUpdate": 1337,
+    "options": null,
+  },
+  "b": Object {
+    "bookmark": null,
+    "count": 0,
+    "data": Array [],
+    "definition": QueryDefinition {
+      "bookmark": undefined,
+      "cursor": undefined,
+      "doctype": "io.cozy.todos",
+      "fields": undefined,
+      "id": undefined,
+      "ids": undefined,
+      "includes": undefined,
+      "indexedFields": undefined,
+      "limit": undefined,
+      "partialFilter": undefined,
+      "referenced": undefined,
+      "selector": Object {
+        "done": true,
+      },
+      "skip": undefined,
+      "sort": undefined,
+    },
+    "fetchStatus": "loading",
+    "hasMore": false,
+    "id": "b",
+    "lastError": null,
+    "lastErrorUpdate": null,
+    "lastFetch": null,
+    "lastUpdate": null,
+    "options": null,
+  },
+}
+`;
+
 exports[`queries reducer updates should correctly update two queries 1`] = `
 Object {
   "a": Object {

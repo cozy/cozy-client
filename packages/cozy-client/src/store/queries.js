@@ -64,7 +64,9 @@ const updateQueryDataFromResponse = (queryState, response, documents) => {
     const sorter = makeSorterFromDefinition(queryState.definition)
     const doctype = queryState.definition.doctype
     const allDocs = documents[doctype]
-    const docs = updatedIds.map(_id => allDocs[_id])
+    const docs = allDocs
+      ? updatedIds.map(_id => allDocs[_id]).filter(Boolean)
+      : []
     const sortedDocs = sorter(docs)
     updatedIds = sortedDocs.map(properId)
   }
