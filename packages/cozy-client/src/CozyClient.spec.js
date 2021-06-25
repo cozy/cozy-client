@@ -236,39 +236,41 @@ describe('CozyClient initialization', () => {
       document.querySelector = globalQuerySelectorBefore
     })
 
-    it('should instanciate Client with capabilities', () => {
-      const options = {
-        domain: 'cozy.tools',
-        token: 'abc123',
-        capabilities: {
-          can_auth_with_oidc: false
+    describe('capabilities', () => {
+      it('should instanciate Client with capabilities', () => {
+        const options = {
+          domain: 'cozy.tools',
+          token: 'abc123',
+          capabilities: {
+            can_auth_with_oidc: false
+          }
         }
-      }
-      const node = document.createElement('div')
-      node.dataset.cozy = JSON.stringify(options)
-      const globalQuerySelectorBefore = document.querySelector
-      document.querySelector = jest.fn().mockReturnValue(node)
+        const node = document.createElement('div')
+        node.dataset.cozy = JSON.stringify(options)
+        const globalQuerySelectorBefore = document.querySelector
+        document.querySelector = jest.fn().mockReturnValue(node)
 
-      const client = new CozyClient({})
-      expect(client.capabilities).toEqual(options.capabilities)
+        const client = new CozyClient({})
+        expect(client.capabilities).toEqual(options.capabilities)
 
-      document.querySelector = globalQuerySelectorBefore
-    })
+        document.querySelector = globalQuerySelectorBefore
+      })
 
-    it('should instanciate Client with null capabilities', () => {
-      const options = {
-        domain: 'cozy.tools',
-        token: 'abc123'
-      }
-      const node = document.createElement('div')
-      node.dataset.cozy = JSON.stringify(options)
-      const globalQuerySelectorBefore = document.querySelector
-      document.querySelector = jest.fn().mockReturnValue(node)
+      it('should instanciate Client with null capabilities', () => {
+        const options = {
+          domain: 'cozy.tools',
+          token: 'abc123'
+        }
+        const node = document.createElement('div')
+        node.dataset.cozy = JSON.stringify(options)
+        const globalQuerySelectorBefore = document.querySelector
+        document.querySelector = jest.fn().mockReturnValue(node)
 
-      const client = new CozyClient({})
-      expect(client.capabilities).toBe(null)
+        const client = new CozyClient({})
+        expect(client.capabilities).toBe(null)
 
-      document.querySelector = globalQuerySelectorBefore
+        document.querySelector = globalQuerySelectorBefore
+      })
     })
   })
 
