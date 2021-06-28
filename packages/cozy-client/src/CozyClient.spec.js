@@ -208,6 +208,34 @@ describe('CozyClient initialization', () => {
       document.querySelector = globalQuerySelectorBefore
     })
 
+    it('should load the single DOM dataset and the other exposed options', () => {
+      const singleOptions = {
+        domain: 'cozy.tools',
+        token: 'abc123'
+      }
+      const cozyOptions = {
+        cozyDomain: 'cozy.tools',
+        cozyDefaultWallpaper: 'wallpaper.jpg'
+      }
+
+      const node = document.createElement('div')
+      node.dataset.cozy = JSON.stringify(singleOptions)
+      Object.assign(node.dataset, cozyOptions)
+
+      const globalQuerySelectorBefore = document.querySelector
+      document.querySelector = jest.fn().mockReturnValue(node)
+
+      const client = new CozyClient({})
+      expect(client.getInstanceOptions()).toMatchObject({
+        domain: 'cozy.tools',
+        token: 'abc123',
+        cozyDomain: 'cozy.tools',
+        cozyDefaultWallpaper: 'wallpaper.jpg'
+      })
+
+      document.querySelector = globalQuerySelectorBefore
+    })
+
     it('should instanciate Client with capabilities', () => {
       const options = {
         domain: 'cozy.tools',
