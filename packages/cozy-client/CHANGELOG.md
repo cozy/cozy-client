@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [23.15.1](https://github.com/cozy/cozy-client/compare/v23.15.0...v23.15.1) (2021-06-28)
+
+
+### Bug Fixes
+
+* LoadInstanceOptionsFromDOM add root datas and cozy datas ([12b3d6a](https://github.com/cozy/cozy-client/commit/12b3d6a4ec83ec30d93b9383bb4f6214c00e581c))
+* Remove useless omit import ([f8d43b7](https://github.com/cozy/cozy-client/commit/f8d43b70956006806e2e7b7c276a85ef12bfac43))
+
+
+
+
+
 # [23.15.0](https://github.com/cozy/cozy-client/compare/v23.14.1...v23.15.0) (2021-06-24)
 
 
