@@ -5,7 +5,6 @@ import uniqBy from 'lodash/uniqBy'
 import zip from 'lodash/zip'
 import forEach from 'lodash/forEach'
 import get from 'lodash/get'
-import omit from 'lodash/omit'
 import MicroEE from 'microee'
 
 import CozyStackClient, { OAuthClient } from 'cozy-stack-client'
