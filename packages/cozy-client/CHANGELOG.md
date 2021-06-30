@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [23.16.0](https://github.com/cozy/cozy-client/compare/v23.15.2...v23.16.0) (2021-06-30)
+
+
+### Features
+
+* Pass readme none to typedocs ([1fbf7f7](https://github.com/cozy/cozy-client/commit/1fbf7f78e060026aa991c6be44d055a05e74d9a8))
+
+
+
+
+
 ## [23.15.2](https://github.com/cozy/cozy-client/compare/v23.15.1...v23.15.2) (2021-06-30)
 
 **Note:** Version bump only for package cozy-client
