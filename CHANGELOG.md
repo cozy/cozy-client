@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [23.15.2](https://github.com/cozy/cozy-client/compare/v23.15.1...v23.15.2) (2021-06-30)
+
+
+### Bug Fixes
+
+* Typo, don't generate docs from cozy-client with jsdocs ([19d557a](https://github.com/cozy/cozy-client/commit/19d557a7b71273fe78b0a2d9e2f00ea7af7d9002))
+
+
+### Features
+
+* Bump node js version to 12 on CI to support typedoc ([ef50252](https://github.com/cozy/cozy-client/commit/ef5025237839b61929d1e78df208270f26226a94))
+
+
+
+
+
 ## [23.15.1](https://github.com/cozy/cozy-client/compare/v23.15.0...v23.15.1) (2021-06-28)
 
 
