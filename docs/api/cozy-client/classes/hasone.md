@@ -1,4 +1,4 @@
-[cozy-client](../README.md) / [Exports](../modules.md) / HasOne
+[cozy-client](../README.md) / HasOne
 
 # Class: HasOne
 

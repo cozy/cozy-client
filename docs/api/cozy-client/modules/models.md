@@ -1,4 +1,4 @@
-[cozy-client](../README.md) / [Exports](../modules.md) / models
+[cozy-client](../README.md) / models
 
 # Namespace: models
 

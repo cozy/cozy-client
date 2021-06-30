@@ -1,4 +1,4 @@
-[cozy-client](../README.md) / [Exports](../modules.md) / CozyProvider
+[cozy-client](../README.md) / CozyProvider
 
 # Class: CozyProvider
 

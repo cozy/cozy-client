@@ -1,4 +1,4 @@
-[cozy-client](../README.md) / [Exports](../modules.md) / [models](../modules/models.md) / [document](../modules/models.document.md) / Qualification
+[cozy-client](../README.md) / [models](../modules/models.md) / [document](../modules/models.document.md) / Qualification
 
 # Class: Qualification
 

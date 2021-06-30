@@ -1,4 +1,4 @@
-[cozy-client](../README.md) / [Exports](../modules.md) / Association
+[cozy-client](../README.md) / Association
 
 # Class: Association
 

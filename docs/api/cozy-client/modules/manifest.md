@@ -1,4 +1,4 @@
-[cozy-client](../README.md) / [Exports](../modules.md) / manifest
+[cozy-client](../README.md) / manifest
 
 # Namespace: manifest
 

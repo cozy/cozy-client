@@ -1,4 +1,4 @@
-[cozy-client](../README.md) / [Exports](../modules.md) / [models](../modules/models.md) / [timeseries](../modules/models.timeseries.md) / TimeSeriesJSONAPI
+[cozy-client](../README.md) / [models](../modules/models.md) / [timeseries](../modules/models.timeseries.md) / TimeSeriesJSONAPI
 
 # Interface: TimeSeriesJSONAPI<>
 

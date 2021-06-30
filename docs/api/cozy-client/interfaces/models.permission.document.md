@@ -1,4 +1,4 @@
-[cozy-client](../README.md) / [Exports](../modules.md) / [models](../modules/models.md) / [permission](../modules/models.permission.md) / Document
+[cozy-client](../README.md) / [models](../modules/models.md) / [permission](../modules/models.permission.md) / Document
 
 # Interface: Document<>
 

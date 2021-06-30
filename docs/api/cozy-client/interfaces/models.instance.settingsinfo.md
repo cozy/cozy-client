@@ -1,4 +1,4 @@
-[cozy-client](../README.md) / [Exports](../modules.md) / [models](../modules/models.md) / [instance](../modules/models.instance.md) / SettingsInfo
+[cozy-client](../README.md) / [models](../modules/models.md) / [instance](../modules/models.instance.md) / SettingsInfo
 
 # Interface: SettingsInfo<>
 

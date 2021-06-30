@@ -1,4 +1,4 @@
-[cozy-client](../README.md) / [Exports](../modules.md) / StackLink
+[cozy-client](../README.md) / StackLink
 
 # Class: StackLink
 

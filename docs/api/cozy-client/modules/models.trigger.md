@@ -1,4 +1,4 @@
-[cozy-client](../README.md) / [Exports](../modules.md) / [models](models.md) / trigger
+[cozy-client](../README.md) / [models](models.md) / trigger
 
 # Namespace: trigger
 

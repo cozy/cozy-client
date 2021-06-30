@@ -1,4 +1,4 @@
-[cozy-client](../README.md) / [Exports](../modules.md) / Query
+[cozy-client](../README.md) / Query
 
 # Class: Query
 

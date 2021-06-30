@@ -1,4 +1,4 @@
-[cozy-client](../README.md) / [Exports](../modules.md) / Registry
+[cozy-client](../README.md) / Registry
 
 # Class: Registry
 

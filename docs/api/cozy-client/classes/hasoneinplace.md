@@ -1,4 +1,4 @@
-[cozy-client](../README.md) / [Exports](../modules.md) / HasOneInPlace
+[cozy-client](../README.md) / HasOneInPlace
 
 # Class: HasOneInPlace
 

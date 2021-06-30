@@ -1,4 +1,4 @@
-[cozy-client](../README.md) / [Exports](../modules.md) / HasManyTriggers
+[cozy-client](../README.md) / HasManyTriggers
 
 # Class: HasManyTriggers
 
