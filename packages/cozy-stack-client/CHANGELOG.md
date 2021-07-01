@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [23.17.0](https://github.com/cozy/cozy-client/compare/v23.16.0...v23.17.0) (2021-07-01)
+
+
+### Features
+
+* Include_docs is done by default by fetchChanges ([2f7c8a3](https://github.com/cozy/cozy-client/commit/2f7c8a35ec589f44b8b2bd5e667242dfbeae2248))
+
+
+
+
+
 ## [23.13.1](https://github.com/cozy/cozy-client/compare/v23.13.0...v23.13.1) (2021-06-18)
 
 
