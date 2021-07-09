@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [23.17.1](https://github.com/cozy/cozy-client/compare/v23.17.0...v23.17.1) (2021-07-09)
+
+
+### Bug Fixes
+
+* Restore the log URL for mobile authentication ([63b8eb4](https://github.com/cozy/cozy-client/commit/63b8eb44ab0f7ca3661f6dee887fcde4f80edb87)), closes [unified#diff-e879aaa33e459b749f1f68b01b84a2faf1fccd65cc819c96e7afc6c8bcbb2c36L168](https://github.com/unified/issues/diff-e879aaa33e459b749f1f68b01b84a2faf1fccd65cc819c96e7afc6c8bcbb2c36L168)
+
+
+
+
+
 # [23.17.0](https://github.com/cozy/cozy-client/compare/v23.16.0...v23.17.0) (2021-07-01)
 
 **Note:** Version bump only for package cozy-client
