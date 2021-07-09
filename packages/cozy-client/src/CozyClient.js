@@ -599,10 +599,10 @@ client.query(Q('io.cozy.bills'))`)
     return this.schema.validate(document)
   }
 
-  async save(document, mutationOptions = {}) {
-    const ret = await this.schema.validate(document)
+  async save(doc, mutationOptions = {}) {
+    const ret = await this.schema.validate(doc)
     if (ret !== true) throw new Error('Validation failed')
-    return this.mutate(this.getDocumentSavePlan(document), mutationOptions)
+    return this.mutate(this.getDocumentSavePlan(doc), mutationOptions)
   }
 
   ensureCozyMetadata(
@@ -725,9 +725,9 @@ client.query(Q('io.cozy.bills'))`)
     return [
       saveMutation,
       response => {
-        const document = this.hydrateDocument(response.data)
+        const doc = this.hydrateDocument(response.data)
         return Object.entries(referencesByName).map(([relName, references]) => {
-          const relationship = document[relName]
+          const relationship = doc[relName]
           return relationship.addReferences(references)
         })
       }

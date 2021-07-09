@@ -1467,13 +1467,13 @@ Contains the fetched token and the client information.
 
 ### save
 
-▸ **save**(`document`, `mutationOptions?`): `Promise`<`any`>
+▸ **save**(`doc`, `mutationOptions?`): `Promise`<`any`>
 
 *Parameters*
 
 | Name | Type |
 | :------ | :------ |
-| `document` | `any` |
+| `doc` | `any` |
 | `mutationOptions` | `Object` |
 
 *Returns*
