@@ -1188,6 +1188,28 @@ describe('CozyClient', () => {
       )
     })
 
+    it('should do nothing if the request is already in a loading status', async () => {
+      jest.spyOn(client, 'requestQuery')
+      jest.spyOn(client, 'dispatch')
+      getQueryFromState.mockReturnValueOnce({
+        fetchStatus: 'loading'
+      })
+      await client.query(query, { as: 'allTodos' })
+      expect(client.requestQuery).not.toHaveBeenCalled()
+      expect(client.dispatch).not.toHaveBeenCalled()
+    })
+
+    it('should return the same result if the query is run while she is already in loading status whithout requesting the query twice', async () => {
+      jest.spyOn(client, 'requestQuery')
+
+      const [resp, resp2] = await Promise.all([
+        client.query(query, { as: 'allTodos' }),
+        client.query(query, { as: 'allTodos' })
+      ])
+      expect(resp).toStrictEqual(resp2)
+      expect(client.requestQuery).toHaveBeenCalledTimes(1)
+    })
+
     describe('relationship with query failure', () => {
       beforeEach(() => {
         jest.spyOn(HasManyFiles, 'query').mockImplementation(() => {

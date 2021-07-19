@@ -23,4 +23,25 @@ describe('PromiseCache', () => {
     expect(r2).toEqual(1)
     expect(r3).toEqual(2)
   })
+
+  it('should return the pending promise if present', () => {
+    const cache = new PromiseCache()
+    const keyFunc1 = () => 'a'
+
+    const promiseFunc = async () => {
+      await sleep(5)
+      return 5
+    }
+    const p1 = cache.exec(promiseFunc, keyFunc1)
+    const get = cache.get(keyFunc1)
+    expect(p1).toStrictEqual(get)
+  })
+
+  it('should return null if there is no pending promise with the key', () => {
+    const cache = new PromiseCache()
+    const keyFunc1 = () => 'a'
+
+    const get = cache.get(keyFunc1)
+    expect(get).toEqual(null)
+  })
 })

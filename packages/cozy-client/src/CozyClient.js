@@ -834,6 +834,14 @@ client.query(Q('io.cozy.bills'))`)
         return
       }
     }
+    // If we already have the same query in loading state, no
+    // need to refetch it. We return the promise we already
+    // have in the promiseCache
+    if (existingQuery && Object.keys(existingQuery).length > 0) {
+      if (existingQuery.fetchStatus === 'loading') {
+        return this._promiseCache.get(() => stringify(queryDefinition))
+      }
+    }
     this.ensureQueryExists(queryId, queryDefinition, options)
 
     try {

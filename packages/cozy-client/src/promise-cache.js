@@ -41,6 +41,17 @@ class PromiseCache {
       this.pending[key] = null
     }
   }
+  /**
+   *
+   * @param {function(): string} keyFunc - Returns a key to find in cache to find a pending promise.
+   * @returns {Promise | null}
+   */
+  get(keyFunc) {
+    const key = keyFunc()
+    const already = this.pending[key]
+    if (already) return already
+    return null
+  }
 }
 
 export default PromiseCache
