@@ -23,4 +23,10 @@ declare class PromiseCache {
      * @returns {Promise<T>}
      */
     exec<T>(promiseFunc: () => Promise<T>, keyFunc: () => string): Promise<T>;
+    /**
+     *
+     * @param {function(): string} keyFunc - Returns a key to find in cache to find a pending promise.
+     * @returns {Promise | null}
+     */
+    get(keyFunc: () => string): Promise<any> | null;
 }
