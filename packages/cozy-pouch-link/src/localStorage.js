@@ -5,6 +5,7 @@ export const LOCALSTORAGE_LASTSEQUENCES_KEY =
   'cozy-client-pouch-link-lastreplicationsequence'
 export const LOCALSTORAGE_LASTREPLICATEDDOCID_KEY =
   'cozy-client-pouch-link-lastreplicateddocid'
+export const LOCALSTORAGE_ADAPTERNAME = 'cozy-client-pouch-link-adaptername'
 
 /**
  * Persist the last replicated doc id for a doctype
@@ -165,4 +166,22 @@ export const getPersistedWarmedUpQueries = () => {
  */
 export const destroyWarmedUpQueries = () => {
   window.localStorage.removeItem(LOCALSTORAGE_WARMUPEDQUERIES_KEY)
+}
+
+/**
+ * Get the adapter name
+ *
+ * @returns {string} The adapter name
+ */
+export const getAdapterName = () => {
+  return window.localStorage.getItem(LOCALSTORAGE_ADAPTERNAME)
+}
+
+/**
+ * Persist the adapter name
+ *
+ * @param {string} adapter - The adapter name
+ */
+export const persistAdapterName = adapter => {
+  window.localStorage.setItem(LOCALSTORAGE_ADAPTERNAME, adapter)
 }
