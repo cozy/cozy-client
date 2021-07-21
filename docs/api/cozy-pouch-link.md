@@ -68,6 +68,15 @@ and on demand immediately.</p>
 <dt><a href="#destroyWarmedUpQueries">destroyWarmedUpQueries</a></dt>
 <dd><p>Destroy the warmed queries</p>
 </dd>
+<dt><a href="#getAdapterName">getAdapterName</a> ⇒ <code>string</code></dt>
+<dd><p>Get the adapter name</p>
+</dd>
+<dt><a href="#persistAdapterName">persistAdapterName</a></dt>
+<dd><p>Persist the adapter name</p>
+</dd>
+<dt><a href="#migratePouch">migratePouch</a> ⇒ <code>object</code></dt>
+<dd><p>Migrate a PouchDB database to a new adapter.</p>
+</dd>
 <dt><a href="#fetchRemoteInstance">fetchRemoteInstance</a> ⇒ <code>object</code></dt>
 <dd><p>Fetch remote instance</p>
 </dd>
@@ -79,6 +88,12 @@ and on demand immediately.</p>
 <p>It uses the _all_docs view, and bulk insert the docs.
 Note it saves the last replicated _id for each run and
 starts from there in case the process stops before the end.</p>
+</dd>
+<dt><a href="#getDatabaseName">getDatabaseName</a> ⇒ <code>string</code></dt>
+<dd><p>Get the database name based on prefix and doctype</p>
+</dd>
+<dt><a href="#getPrefix">getPrefix</a> ⇒ <code>string</code></dt>
+<dd><p>Get the URI prefix</p>
 </dd>
 </dl>
 
@@ -404,6 +419,37 @@ Get the warmed up queries
 Destroy the warmed queries
 
 **Kind**: global constant  
+<a name="getAdapterName"></a>
+
+## getAdapterName ⇒ <code>string</code>
+Get the adapter name
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - The adapter name  
+<a name="persistAdapterName"></a>
+
+## persistAdapterName
+Persist the adapter name
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| adapter | <code>string</code> | The adapter name |
+
+<a name="migratePouch"></a>
+
+## migratePouch ⇒ <code>object</code>
+Migrate a PouchDB database to a new adapter.
+
+**Kind**: global constant  
+**Returns**: <code>object</code> - - The migrated pouch  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| oldPouch | <code>object</code> | The pouch to migrate |
+| toAdapter | <code>string</code> | The target adapter name |
+
 <a name="fetchRemoteInstance"></a>
 
 ## fetchRemoteInstance ⇒ <code>object</code>
@@ -446,6 +492,31 @@ starts from there in case the process stops before the end.
 | db | <code>object</code> | Pouch instance |
 | baseUrl | <code>string</code> | The remote instance |
 | doctype | <code>string</code> | The doctype to replicate |
+
+<a name="getDatabaseName"></a>
+
+## getDatabaseName ⇒ <code>string</code>
+Get the database name based on prefix and doctype
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - The database name  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| } | <code>string</code> | prefix - The URL prefix |
+| doctype | <code>string</code> | The database doctype |
+
+<a name="getPrefix"></a>
+
+## getPrefix ⇒ <code>string</code>
+Get the URI prefix
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - The URI prefix  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| uri | <code>string</code> | The Cozy URI |
 
 <a name="getQueryAlias"></a>
 
