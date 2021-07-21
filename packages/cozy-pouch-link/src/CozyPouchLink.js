@@ -114,6 +114,11 @@ class PouchLink extends CozyLink {
     this.client = client
   }
 
+  /**
+   * Migrate the current adapter
+   *
+   * @param {{fromAdapter, toAdapter, url, plugins}} - The migration params
+   */
   async migrateAdapter({ fromAdapter, toAdapter, url, plugins }) {
     try {
       for (const plugin of plugins) {
