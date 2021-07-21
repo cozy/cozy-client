@@ -10,12 +10,20 @@ import omit from 'lodash/omit'
 import defaults from 'lodash/defaults'
 import mapValues from 'lodash/mapValues'
 import zipWith from 'lodash/zipWith'
+import get from 'lodash/get'
 
 import { default as helpers } from './helpers'
 import { getIndexNameFromFields, getIndexFields } from './mango'
 import * as jsonapi from './jsonapi'
 import PouchManager from './PouchManager'
 import logger from './logger'
+import { migratePouch } from './migrations/adapter'
+import { getDatabaseName, getPrefix } from './utils'
+import {
+  getPersistedSyncedDoctypes,
+  persistAdapterName,
+  getAdapterName
+} from './localStorage'
 
 PouchDB.plugin(PouchDBFind)
 
@@ -106,13 +114,38 @@ class PouchLink extends CozyLink {
     this.client = client
   }
 
+  async migrateAdapter({ fromAdapter, toAdapter, url, plugins }) {
+    try {
+      for (const plugin of plugins) {
+        PouchDB.plugin(plugin)
+      }
+      const doctypes = getPersistedSyncedDoctypes()
+      for (const doctype of doctypes) {
+        const prefix = getPrefix(url)
+        const dbName = getDatabaseName(prefix, doctype)
+        const oldPouch = new PouchDB(dbName, {
+          adapter: fromAdapter,
+          location: 'default'
+        })
+        await migratePouch(oldPouch, toAdapter)
+        await oldPouch.close()
+        await oldPouch.destroy()
+      }
+      persistAdapterName('indexeddb')
+      // Reload page to benefit from new adapter
+      window.location.reload()
+    } catch (err) {
+      console.error('PouchLink: PouchDB migration failed. ', err)
+    }
+  }
+
   async onLogin() {
     if (!this.client) {
       logger.warn("PouchLink: no client registered, can't login")
       return
     }
 
-    const prefix = this.client.stackClient.uri.replace(/^https?:\/\//, '')
+    const prefix = getPrefix(this.client.stackClient.uri)
 
     const shouldDestroyDatabases =
       this.pouches &&
@@ -136,6 +169,11 @@ class PouchLink extends CozyLink {
 
     if (process.env.NODE_ENV !== 'production') {
       logger.log('Create pouches with ' + prefix + ' prefix')
+    }
+
+    if (!getAdapterName()) {
+      const adapter = get(this.options, 'pouch.options.adapter')
+      persistAdapterName(adapter)
     }
 
     this.pouches = new PouchManager(this.doctypes, {

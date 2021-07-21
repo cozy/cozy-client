@@ -11,6 +11,7 @@ import logger from './logger'
 import { fetchRemoteLastSequence } from './remote'
 import { startReplication } from './startReplication'
 import * as localStorage from './localStorage'
+import { getDatabaseName } from './utils'
 
 const DEFAULT_DELAY = 30 * 1000
 
@@ -38,7 +39,7 @@ class PouchManager {
     this.pouches = fromPairs(
       doctypes.map(doctype => [
         doctype,
-        new PouchDB(this.getDatabaseName(doctype), pouchOptions)
+        new PouchDB(getDatabaseName(options.prefix, doctype), pouchOptions)
       ])
     )
     this.syncedDoctypes = localStorage.getPersistedSyncedDoctypes()
@@ -272,10 +273,6 @@ class PouchManager {
 
   isSynced(doctype) {
     return this.syncedDoctypes.includes(doctype)
-  }
-
-  getDatabaseName(doctype) {
-    return `${this.options.prefix}_${doctype}`
   }
 
   clearSyncedDoctypes() {
