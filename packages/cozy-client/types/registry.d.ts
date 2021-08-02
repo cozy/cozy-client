@@ -6,11 +6,15 @@ export type RegistryApp = {
     terms: object;
     installed: boolean;
 };
+export type RegistryAppChannel = "stable" | "dev" | "beta";
 /**
  * @typedef {object} RegistryApp
  * @property {string} slug
  * @property {object} terms
  * @property {boolean} installed
+ */
+/**
+ * @typedef {"dev"|"beta"|"stable"} RegistryAppChannel
  */
 declare class Registry {
     constructor(options: any);
@@ -63,12 +67,12 @@ declare class Registry {
      *
      * @param  {object} params - Fetching parameters
      * @param  {string} params.slug - The slug of the app to fetch
-     * @param  {string} params.channel - The channel of the app to fetch
+     * @param  {RegistryAppChannel} params.channel - The channel of the app to fetch
      *
      * @returns {RegistryApp}
      */
     fetchAppLatestVersion(params: {
         slug: string;
-        channel: string;
+        channel: RegistryAppChannel;
     }): RegistryApp;
 }
