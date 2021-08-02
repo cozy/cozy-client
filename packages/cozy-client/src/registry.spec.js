@@ -121,6 +121,16 @@ describe('registry api', () => {
       )
     })
   })
+
+  describe('fetchAppLatestVersion', () => {
+    it('should call the correct route', async () => {
+      await api.fetchAppLatestVersion({ channel: 'stable', slug: 'ameli' })
+      expect(fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/registry/ameli/stable/latest'
+      )
+    })
+  })
 })
 
 describe('transformRegistryFormatToStackFormat', () => {

@@ -125,6 +125,23 @@ class Registry {
   fetchApp(slug) {
     return this.client.stackClient.fetchJSON('GET', `/registry/${slug}`)
   }
+
+  /**
+   * Fetch the latest version of an app for the given channel and slug
+   *
+   * @param  {object} params - Fetching parameters
+   * @param  {string} params.slug - The slug of the app to fetch
+   * @param  {string} params.channel - The channel of the app to fetch
+   *
+   * @returns {RegistryApp}
+   */
+  fetchAppLatestVersion(params) {
+    const { slug, channel } = params
+    return this.client.stackClient.fetchJSON(
+      'GET',
+      `/registry/${slug}/${channel}/latest`
+    )
+  }
 }
 
 export default Registry
