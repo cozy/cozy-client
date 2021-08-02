@@ -32,6 +32,10 @@ const getBaseRoute = app => {
  * @property {boolean} installed
  */
 
+/**
+ * @typedef {"dev"|"beta"|"stable"} RegistryAppChannel
+ */
+
 class Registry {
   constructor(options) {
     if (!options.client) {
@@ -131,7 +135,7 @@ class Registry {
    *
    * @param  {object} params - Fetching parameters
    * @param  {string} params.slug - The slug of the app to fetch
-   * @param  {string} params.channel - The channel of the app to fetch
+   * @param  {RegistryAppChannel} params.channel - The channel of the app to fetch
    *
    * @returns {RegistryApp}
    */
