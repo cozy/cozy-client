@@ -58,6 +58,30 @@ Fetch the status of a single app on the registry
 
 ***
 
+### fetchAppLatestVersion
+
+▸ **fetchAppLatestVersion**(`params`): `RegistryApp`
+
+Fetch the latest version of an app for the given channel and slug
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `params` | `Object` | Fetching parameters |
+| `params.channel` | `string` | The channel of the app to fetch |
+| `params.slug` | `string` | The slug of the app to fetch |
+
+*Returns*
+
+`RegistryApp`
+
+*Defined in*
+
+[packages/cozy-client/src/registry.js:138](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/registry.js#L138)
+
+***
+
 ### fetchApps
 
 ▸ **fetchApps**(`params`): `Promise`<`RegistryApp`\[]>
