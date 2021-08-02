@@ -75,6 +75,10 @@ contains the indexed attributes which are not in correct order.</p>
 <dt><a href="#getPermissionsFor">getPermissionsFor</a> ⇒ <code>object</code></dt>
 <dd><p>Build a permission set</p>
 </dd>
+<dt><a href="#getSharingRules">getSharingRules</a> ⇒ <code><a href="#Rule">Array.&lt;Rule&gt;</a></code></dt>
+<dd><p>Rules determine the behavior of the sharing when changes are made to the shared document
+See <a href="https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing">https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing</a></p>
+</dd>
 </dl>
 
 ## Functions
@@ -95,6 +99,24 @@ contains the indexed attributes which are not in correct order.</p>
 </dd>
 <dt><a href="#memoize">memoize()</a></dt>
 <dd><p>Memoize with maxDuration and custom key</p>
+</dd>
+<dt><a href="#getSharingRulesForPhotosAlbum">getSharingRulesForPhotosAlbum(document, sharingType)</a> ⇒ <code><a href="#Rule">Array.&lt;Rule&gt;</a></code></dt>
+<dd><p>Compute the rules that define how to share a Photo Album. See <a href="https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing">https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing</a></p>
+</dd>
+<dt><a href="#getSharingPolicyForReferencedFiles">getSharingPolicyForReferencedFiles(sharingType)</a> ⇒ <code><a href="#SharingPolicy">SharingPolicy</a></code></dt>
+<dd><p>Compute the sharing policy for a ReferencedFile based on its sharing type</p>
+</dd>
+<dt><a href="#getSharingPolicyForAlbum">getSharingPolicyForAlbum(sharingType)</a> ⇒ <code><a href="#Rule">Array.&lt;Rule&gt;</a></code></dt>
+<dd><p>Compute the sharing policy for an Album based on its sharing type</p>
+</dd>
+<dt><a href="#getSharingRulesForFile">getSharingRulesForFile(document, sharingType)</a> ⇒ <code><a href="#Rule">Array.&lt;Rule&gt;</a></code></dt>
+<dd><p>Compute the rules that define how to share a File. See <a href="https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing">https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing</a></p>
+</dd>
+<dt><a href="#getSharingPolicyForFile">getSharingPolicyForFile(document, sharingType)</a> ⇒ <code><a href="#SharingPolicy">SharingPolicy</a></code></dt>
+<dd><p>Compute the sharing policy for a File based on its sharing type</p>
+</dd>
+<dt><a href="#toRelationshipItem">toRelationshipItem(item)</a> ⇒ <code><a href="#RelationshipItem">RelationshipItem</a></code></dt>
+<dd><p>Compute the RelationshipItem that can be referenced as a sharing recipient</p>
 </dd>
 <dt><a href="#getCozyURL">getCozyURL()</a></dt>
 <dd><p>Get a uniform formatted URL and SSL information according to a provided URL</p>
@@ -146,6 +168,15 @@ Deleted and design docs are filtered by default, thus documents are retrieved in
 </dd>
 <dt><a href="#Sharing">Sharing</a> : <code>object</code></dt>
 <dd><p>An io.cozy.sharings document</p>
+</dd>
+<dt><a href="#SharingPolicy">SharingPolicy</a> : <code>object</code></dt>
+<dd><p>Define the add/update/remove policies for a sharing</p>
+</dd>
+<dt><a href="#SharingType">SharingType</a> : <code>undefined</code> | <code>&#x27;one-way&#x27;</code> | <code>&#x27;two-way&#x27;</code></dt>
+<dd><p>Define how a document is synced between sharing&#39;s owner and receivers.</p>
+</dd>
+<dt><a href="#RelationshipItem">RelationshipItem</a> : <code>object</code></dt>
+<dd><p>Define a recipient that can be used as target of a sharing</p>
 </dd>
 </dl>
 
@@ -1581,6 +1612,20 @@ Build a permission set
 | options | <code>object</code> | options |
 | options.verbs | <code>Array.&lt;string&gt;</code> | explicit permissions to use |
 
+<a name="getSharingRules"></a>
+
+## getSharingRules ⇒ [<code>Array.&lt;Rule&gt;</code>](#Rule)
+Rules determine the behavior of the sharing when changes are made to the shared document
+See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing
+
+**Kind**: global constant  
+**Returns**: [<code>Array.&lt;Rule&gt;</code>](#Rule) - The rules that define how to share the document  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | [<code>Sharing</code>](#Sharing) | The document to share. Should have and _id and a name |
+| sharingType | [<code>SharingType</code>](#SharingType) | The type of the sharing |
+
 <a name="getAccessToken"></a>
 
 ## getAccessToken() ⇒ <code>string</code>
@@ -1622,6 +1667,81 @@ Delete outdated results from cache
 Memoize with maxDuration and custom key
 
 **Kind**: global function  
+<a name="getSharingRulesForPhotosAlbum"></a>
+
+## getSharingRulesForPhotosAlbum(document, sharingType) ⇒ [<code>Array.&lt;Rule&gt;</code>](#Rule)
+Compute the rules that define how to share a Photo Album. See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing
+
+**Kind**: global function  
+**Returns**: [<code>Array.&lt;Rule&gt;</code>](#Rule) - The rules that define how to share a Photo Album  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | [<code>Sharing</code>](#Sharing) | The document to share. Should have and _id and a name |
+| sharingType | [<code>SharingType</code>](#SharingType) | The type of the sharing |
+
+<a name="getSharingPolicyForReferencedFiles"></a>
+
+## getSharingPolicyForReferencedFiles(sharingType) ⇒ [<code>SharingPolicy</code>](#SharingPolicy)
+Compute the sharing policy for a ReferencedFile based on its sharing type
+
+**Kind**: global function  
+**Returns**: [<code>SharingPolicy</code>](#SharingPolicy) - The sharing policy for the ReferencedFile  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| sharingType | [<code>SharingType</code>](#SharingType) | The type of the sharing |
+
+<a name="getSharingPolicyForAlbum"></a>
+
+## getSharingPolicyForAlbum(sharingType) ⇒ [<code>Array.&lt;Rule&gt;</code>](#Rule)
+Compute the sharing policy for an Album based on its sharing type
+
+**Kind**: global function  
+**Returns**: [<code>Array.&lt;Rule&gt;</code>](#Rule) - The sharing policy for the Album  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| sharingType | [<code>SharingType</code>](#SharingType) | The type of the sharing |
+
+<a name="getSharingRulesForFile"></a>
+
+## getSharingRulesForFile(document, sharingType) ⇒ [<code>Array.&lt;Rule&gt;</code>](#Rule)
+Compute the rules that define how to share a File. See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing
+
+**Kind**: global function  
+**Returns**: [<code>Array.&lt;Rule&gt;</code>](#Rule) - The rules that define how to share a File  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | [<code>Sharing</code>](#Sharing) | The document to share. Should have and _id and a name |
+| sharingType | [<code>SharingType</code>](#SharingType) | The type of the sharing |
+
+<a name="getSharingPolicyForFile"></a>
+
+## getSharingPolicyForFile(document, sharingType) ⇒ [<code>SharingPolicy</code>](#SharingPolicy)
+Compute the sharing policy for a File based on its sharing type
+
+**Kind**: global function  
+**Returns**: [<code>SharingPolicy</code>](#SharingPolicy) - The sharing policy for the File  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | [<code>Sharing</code>](#Sharing) | The document to share. Should have and _id and a name |
+| sharingType | [<code>SharingType</code>](#SharingType) | The type of the sharing |
+
+<a name="toRelationshipItem"></a>
+
+## toRelationshipItem(item) ⇒ [<code>RelationshipItem</code>](#RelationshipItem)
+Compute the RelationshipItem that can be referenced as a sharing recipient
+
+**Kind**: global function  
+**Returns**: [<code>RelationshipItem</code>](#RelationshipItem) - The RelationshipItem that can be referenced as a sharing recipient  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| item | [<code>Recipient</code>](#Recipient) | The recipient of a sharing |
+
 <a name="getCozyURL"></a>
 
 ## getCozyURL()
@@ -1964,3 +2084,36 @@ An io.cozy.contact
 An io.cozy.sharings document
 
 **Kind**: global typedef  
+<a name="SharingPolicy"></a>
+
+## SharingPolicy : <code>object</code>
+Define the add/update/remove policies for a sharing
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type |
+| --- | --- |
+| add | <code>string</code> | 
+| update | <code>string</code> | 
+| remove | <code>string</code> | 
+
+<a name="SharingType"></a>
+
+## SharingType : <code>undefined</code> \| <code>&#x27;one-way&#x27;</code> \| <code>&#x27;two-way&#x27;</code>
+Define how a document is synced between sharing's owner and receivers.
+
+**Kind**: global typedef  
+<a name="RelationshipItem"></a>
+
+## RelationshipItem : <code>object</code>
+Define a recipient that can be used as target of a sharing
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | Recipient's ID |
+| type | <code>string</code> | Reciptient's type (should be 'io.cozy.contacts') |
+

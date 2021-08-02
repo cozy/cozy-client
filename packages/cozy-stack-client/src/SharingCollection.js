@@ -20,6 +20,20 @@ const normalizeSharing = sharing => normalizeDoc(sharing, SHARING_DOCTYPE)
 /**
  * @typedef {object} Sharing An io.cozy.sharings document
  */
+/**
+ * @typedef {object} SharingPolicy Define the add/update/remove policies for a sharing
+ * @property {string} add
+ * @property {string} update
+ * @property {string} remove
+ */
+/**
+ * @typedef {(undefined|'one-way'|'two-way')} SharingType Define how a document is synced between sharing's owner and receivers.
+ */
+/**
+ * @typedef {object} RelationshipItem Define a recipient that can be used as target of a sharing
+ * @property {string} id - Recipient's ID
+ * @property {string} type - Reciptient's type (should be 'io.cozy.contacts')
+ */
 
 /**
  * Implements the `DocumentCollection` API along with specific methods for
@@ -223,8 +237,15 @@ class SharingCollection extends DocumentCollection {
 
 SharingCollection.normalizeDoctype = DocumentCollection.normalizeDoctypeJsonApi
 
-// Rules determine the behavior of the sharing when changes are made to the shared document
-// See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing
+/**
+ * Rules determine the behavior of the sharing when changes are made to the shared document
+ * See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing
+ *
+ * @param {Sharing} document - The document to share. Should have and _id and a name
+ * @param  {SharingType} sharingType - The type of the sharing
+ *
+ * @returns {Array<Rule>=} The rules that define how to share the document
+ */
 export const getSharingRules = (document, sharingType) => {
   if (sharingType) {
     console.warn(
@@ -242,6 +263,14 @@ export const getSharingRules = (document, sharingType) => {
     : getSharingRulesForPhotosAlbum(document, sharingType)
 }
 
+/**
+ * Compute the rules that define how to share a Photo Album. See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing
+ *
+ * @param {Sharing} document - The document to share. Should have and _id and a name
+ * @param  {SharingType} sharingType - The type of the sharing
+ *
+ * @returns {Array<Rule>=} The rules that define how to share a Photo Album
+ */
 const getSharingRulesForPhotosAlbum = (document, sharingType) => {
   const { _id, _type } = document
   return [
@@ -261,17 +290,41 @@ const getSharingRulesForPhotosAlbum = (document, sharingType) => {
   ]
 }
 
+/**
+ * Compute the sharing policy for a ReferencedFile based on its sharing type
+ *
+ * @param  {SharingType} sharingType - The type of the sharing
+ *
+ * @returns {SharingPolicy} The sharing policy for the ReferencedFile
+ */
 const getSharingPolicyForReferencedFiles = sharingType => {
   return sharingType === 'two-way'
     ? { add: 'sync', update: 'sync', remove: 'sync' }
     : { add: 'push', update: 'none', remove: 'push' }
 }
+
+/**
+ * Compute the sharing policy for an Album based on its sharing type
+ *
+ * @param  {SharingType} sharingType - The type of the sharing
+ *
+ * @returns {Array<Rule>=} The sharing policy for the Album
+ */
 const getSharingPolicyForAlbum = sharingType => {
   if (!sharingType) return { update: 'sync', remove: 'revoke' }
   return sharingType === 'two-way'
     ? { update: 'sync', remove: 'revoke' }
     : { update: 'push', remove: 'revoke' }
 }
+
+/**
+ * Compute the rules that define how to share a File. See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing
+ *
+ * @param {Sharing} document - The document to share. Should have and _id and a name
+ * @param  {SharingType} sharingType - The type of the sharing
+ *
+ * @returns {Array<Rule>=} The rules that define how to share a File
+ */
 const getSharingRulesForFile = (document, sharingType) => {
   const { _id, name } = document
   return [
@@ -283,6 +336,15 @@ const getSharingRulesForFile = (document, sharingType) => {
     }
   ]
 }
+
+/**
+ * Compute the sharing policy for a File based on its sharing type
+ *
+ * @param {Sharing} document - The document to share. Should have and _id and a name
+ * @param {SharingType} sharingType - The type of the sharing
+ *
+ * @returns {SharingPolicy} The sharing policy for the File
+ */
 const getSharingPolicyForFile = (document, sharingType) => {
   if (isDirectory(document)) {
     if (!sharingType) return { add: 'sync', update: 'sync', remove: 'sync' }
@@ -296,6 +358,13 @@ const getSharingPolicyForFile = (document, sharingType) => {
     : { update: 'push', remove: 'revoke' }
 }
 
+/**
+ * Compute the RelationshipItem that can be referenced as a sharing recipient
+ *
+ * @param {Recipient} item The recipient of a sharing
+ *
+ * @returns {RelationshipItem} The RelationshipItem that can be referenced as a sharing recipient
+ */
 const toRelationshipItem = item => {
   return {
     id: item._id,
