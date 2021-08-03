@@ -30,7 +30,7 @@ Transfers queries and mutations to a remote stack
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:25](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L25)
+[packages/cozy-client/src/StackLink.js:38](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L38)
 
 ## Properties
 
@@ -40,7 +40,7 @@ Transfers queries and mutations to a remote stack
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:37](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L37)
+[packages/cozy-client/src/StackLink.js:50](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L50)
 
 ## Methods
 
@@ -62,7 +62,7 @@ Transfers queries and mutations to a remote stack
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:77](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L77)
+[packages/cozy-client/src/StackLink.js:90](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L90)
 
 ***
 
@@ -82,7 +82,7 @@ Transfers queries and mutations to a remote stack
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:56](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L56)
+[packages/cozy-client/src/StackLink.js:69](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L69)
 
 ***
 
@@ -102,7 +102,7 @@ Transfers queries and mutations to a remote stack
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:41](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L41)
+[packages/cozy-client/src/StackLink.js:54](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L54)
 
 ***
 
@@ -128,7 +128,7 @@ Transfers queries and mutations to a remote stack
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:49](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L49)
+[packages/cozy-client/src/StackLink.js:62](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L62)
 
 ***
 
@@ -142,4 +142,4 @@ Transfers queries and mutations to a remote stack
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:45](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L45)
+[packages/cozy-client/src/StackLink.js:58](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L58)
