@@ -4,6 +4,7 @@ import flatten from 'lodash/flatten'
 import uniqBy from 'lodash/uniqBy'
 import zip from 'lodash/zip'
 import forEach from 'lodash/forEach'
+import every from 'lodash/every'
 import get from 'lodash/get'
 import MicroEE from 'microee'
 
@@ -605,6 +606,28 @@ client.query(Q('io.cozy.bills'))`)
     return this.mutate(this.getDocumentSavePlan(doc), mutationOptions)
   }
 
+  /**
+   * Saves multiple documents in one batch
+   * - Can only be called with documents from the same doctype
+   * - Does not support automatic creation of references
+   *
+   * @param  {CozyClientDocument[]} docs
+   * @param  {Object} mutationOptions
+   * @returns {Promise<void>}
+   */
+  async saveAll(docs, mutationOptions = {}) {
+    const doctypes = Array.from(new Set(docs.map(x => x._type)))
+    if (doctypes.length !== 1) {
+      throw new Error('saveAll can only save documents with the same doctype')
+    }
+    const ret = every(await Promise.all(docs.map(d => this.schema.validate(d))))
+    if (ret !== true) throw new Error('Validation failed for at least one doc')
+
+    const toSaveDocs = docs.map(d => this.prepareDocumentForSave(d))
+    const mutation = Mutations.updateDocuments(toSaveDocs)
+    return this.mutate(mutation, mutationOptions)
+  }
+
   ensureCozyMetadata(
     document,
     options = {
@@ -664,6 +687,20 @@ client.query(Q('io.cozy.bills'))`)
   }
 
   /**
+   * Dehydrates and adds metadata before saving a document
+   *
+   * @param  {CozyClientDocument} doc - Document that will be saved
+   * @returns {CozyClientDocument}
+   */
+  prepareDocumentForSave(doc) {
+    const isNewDoc = !doc._rev
+    const dehydratedDoc = this.ensureCozyMetadata(dehydrate(doc), {
+      event: isNewDoc ? DOC_CREATION : DOC_UPDATE
+    })
+    return dehydratedDoc
+  }
+
+  /**
    * Creates a list of mutations to execute to create a document and its relationships.
    *
    * ```js
@@ -686,13 +723,11 @@ client.query(Q('io.cozy.bills'))`)
    */
   getDocumentSavePlan(document, referencesByName) {
     const isNewDoc = !document._rev
-    const dehydratedDoc = this.ensureCozyMetadata(dehydrate(document), {
-      event: isNewDoc ? DOC_CREATION : DOC_UPDATE
-    })
+    const docToSave = this.prepareDocumentForSave(document)
 
     const saveMutation = isNewDoc
-      ? Mutations.createDocument(dehydratedDoc)
-      : Mutations.updateDocument(dehydratedDoc)
+      ? Mutations.createDocument(docToSave)
+      : Mutations.updateDocument(docToSave)
 
     const hasReferences =
       referencesByName &&

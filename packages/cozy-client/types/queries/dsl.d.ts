@@ -8,6 +8,10 @@ export function updateDocument(document: any): {
     mutationType: string;
     document: any;
 };
+export function updateDocuments(documents: any): {
+    mutationType: string;
+    documents: any;
+};
 export function deleteDocument(document: any): {
     mutationType: string;
     document: any;
@@ -41,6 +45,7 @@ export function getDoctypeFromOperation(operation: any): any;
 export namespace Mutations {
     export { createDocument };
     export { updateDocument };
+    export { updateDocuments };
     export { deleteDocument };
     export { addReferencesTo };
     export { removeReferencesTo };
@@ -51,6 +56,7 @@ export namespace Mutations {
 export namespace MutationTypes {
     export { CREATE_DOCUMENT };
     export { UPDATE_DOCUMENT };
+    export { UPDATE_DOCUMENTS };
     export { DELETE_DOCUMENT };
     export { ADD_REFERENCES_TO };
     export { REMOVE_REFERENCES_TO };
@@ -283,6 +289,7 @@ export class QueryDefinition {
 }
 declare const CREATE_DOCUMENT: "CREATE_DOCUMENT";
 declare const UPDATE_DOCUMENT: "UPDATE_DOCUMENT";
+declare const UPDATE_DOCUMENTS: "UPDATE_DOCUMENTS";
 declare const DELETE_DOCUMENT: "DELETE_DOCUMENT";
 declare const ADD_REFERENCES_TO: "ADD_REFERENCES_TO";
 declare const REMOVE_REFERENCES_TO: "REMOVE_REFERENCES_TO";

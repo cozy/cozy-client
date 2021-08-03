@@ -1,5 +1,5 @@
 /**
- *
+ * Transfers queries and mutations to a remote stack
  */
 export default class StackLink extends CozyLink {
     /**
@@ -15,6 +15,6 @@ export default class StackLink extends CozyLink {
     registerClient(client: any): void;
     reset(): void;
     executeQuery(query: any): any;
-    executeMutation(mutation: any, result: any, forward: any): any;
+    executeMutation(mutation: any, result: any, forward: any): Promise<any>;
 }
 import CozyLink from "./CozyLink";

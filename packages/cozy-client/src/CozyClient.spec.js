@@ -734,6 +734,55 @@ describe('CozyClient', () => {
     })
   })
 
+  describe('saveAll', () => {
+    it('should not work with docs of different doctypes', async () => {
+      const client = new CozyClient()
+      await expect(
+        client.saveAll([
+          { _type: 'io.cozy.todos', label: 'Buy milk', done: false },
+          { _type: 'io.czoy.simpsons', name: 'Homer' }
+        ])
+      ).rejects.toEqual(
+        new Error('saveAll can only save documents with the same doctype')
+      )
+    })
+    it('should call work with the default stack client', async () => {
+      const client = new CozyClient()
+      client.ensureStore()
+      jest.spyOn(client.store, 'dispatch')
+      client.stackClient.fetchJSON = jest.fn().mockImplementation((...args) => {
+        console.log(...args)
+      })
+      client.stackClient.collection = () => {
+        return {
+          updateAll: jest.fn().mockImplementation(documents => {
+            return documents.map((d, i) => ({
+              ok: true,
+              id: d._id,
+              rev: `1-deadbeef-${i}`
+            }))
+          })
+        }
+      }
+      const docs = [TODO_1, TODO_2, TODO_3]
+      client.store.dispatch.mockReset()
+      const res = await client.saveAll(docs)
+      expect(client.store.dispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: 'RECEIVE_MUTATION_RESULT',
+          response: expect.objectContaining({
+            data: expect.any(Array)
+          })
+        })
+      )
+      expect(res.data).toEqual([
+        expect.objectContaining({ _rev: '1-deadbeef-0' }),
+        expect.objectContaining({ _rev: '1-deadbeef-1' }),
+        expect.objectContaining({ _rev: '1-deadbeef-2' })
+      ])
+    })
+  })
+
   describe('destroy', () => {
     let doc
     beforeEach(() => {

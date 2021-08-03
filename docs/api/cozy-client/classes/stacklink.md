@@ -2,6 +2,8 @@
 
 # Class: StackLink
 
+Transfers queries and mutations to a remote stack
+
 ## Hierarchy
 
 *   [`CozyLink`](cozylink.md)
@@ -28,7 +30,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:7](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L7)
+[packages/cozy-client/src/StackLink.js:25](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L25)
 
 ## Properties
 
@@ -38,13 +40,13 @@
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:19](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L19)
+[packages/cozy-client/src/StackLink.js:37](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L37)
 
 ## Methods
 
 ### executeMutation
 
-▸ **executeMutation**(`mutation`, `result`, `forward`): `any`
+▸ **executeMutation**(`mutation`, `result`, `forward`): `Promise`<`any`>
 
 *Parameters*
 
@@ -56,11 +58,11 @@
 
 *Returns*
 
-`any`
+`Promise`<`any`>
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:59](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L59)
+[packages/cozy-client/src/StackLink.js:77](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L77)
 
 ***
 
@@ -80,7 +82,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:38](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L38)
+[packages/cozy-client/src/StackLink.js:56](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L56)
 
 ***
 
@@ -100,7 +102,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:23](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L23)
+[packages/cozy-client/src/StackLink.js:41](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L41)
 
 ***
 
@@ -126,7 +128,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:31](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L31)
+[packages/cozy-client/src/StackLink.js:49](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L49)
 
 ***
 
@@ -140,4 +142,4 @@
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:27](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L27)
+[packages/cozy-client/src/StackLink.js:45](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L45)
