@@ -416,6 +416,9 @@ class PouchLink extends CozyLink {
       case MutationTypes.UPDATE_DOCUMENT:
         pouchRes = await this.updateDocument(mutation)
         break
+      case MutationTypes.UPDATE_DOCUMENTS:
+        pouchRes = await this.updateDocuments(mutation)
+        break
       case MutationTypes.DELETE_DOCUMENT:
         pouchRes = await this.deleteDocument(mutation)
         break
@@ -425,6 +428,7 @@ class PouchLink extends CozyLink {
       default:
         return forward(mutation, result)
     }
+
     return jsonapi.fromPouchResult(
       pouchRes,
       false,
@@ -442,6 +446,21 @@ class PouchLink extends CozyLink {
     return parseMutationResult(mutation.document, res)
   }
 
+  async updateDocuments(mutation) {
+    const docs = mutation.documents
+    const res = await this.dbMethod('bulkDocs', mutation)
+    const badResults = res.filter(x => !x.ok)
+    if (badResults.length > 0) {
+      console.warn('Error while bulk saving, bad results', badResults)
+      throw new Error('Error while bulk saving, see above for errors')
+    }
+    return res.map((bulkResult, i) => ({
+      ...docs[i],
+      _id: bulkResult.id,
+      _rev: bulkResult.rev
+    }))
+  }
+
   async deleteDocument(mutation) {
     const res = await this.dbMethod('remove', mutation)
     return parseMutationResult(mutation.document, res)
@@ -449,12 +468,20 @@ class PouchLink extends CozyLink {
 
   async dbMethod(method, mutation) {
     const doctype = getDoctypeFromOperation(mutation)
-    const { document: doc } = mutation
+    const { document: doc, documents: docs } = mutation
     const db = this.getPouch(doctype)
     let res
 
     try {
-      res = await db[method](sanitized(doc))
+      if (docs) {
+        res = await db[method](docs.map(doc => sanitized(doc)))
+      } else if (doc) {
+        res = await db[method](sanitized(doc))
+      } else {
+        throw new Error(
+          'A mutation should either have document or documents member.'
+        )
+      }
       return res
     } catch (e) {
       throw new Error(`Coud not apply mutation: ${e.message}`)

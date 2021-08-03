@@ -32,6 +32,9 @@ const TODO_DOCTYPE = SCHEMA.todos.doctype
 let client, link
 
 async function setup(linkOpts = {}) {
+  jest.spyOn(CozyPouchLink.prototype, 'executeMutation')
+  jest.spyOn(CozyPouchLink.prototype, 'executeQuery')
+
   link = new CozyPouchLink({ doctypes: [TODO_DOCTYPE], ...linkOpts })
 
   client = new CozyClient({
@@ -44,6 +47,7 @@ async function setup(linkOpts = {}) {
   })
   client.emit = jest.fn()
   await link.onLogin()
+
   client.setData = jest.fn()
 }
 
@@ -322,6 +326,7 @@ describe('CozyPouchLink', () => {
       const { _id, ...NEW_TODO } = TODO_3
       const mutation = client.getDocumentSavePlan(NEW_TODO)
       const res = await link.request(mutation)
+      expect(link.executeMutation).toHaveBeenCalled()
       expect(res).toMatchObject({
         data: {
           id: expect.any(String),
@@ -330,6 +335,30 @@ describe('CozyPouchLink', () => {
           label: 'Build stuff',
           _type: TODO_DOCTYPE
         }
+      })
+    })
+
+    it('should be possible to save multiple documents', async () => {
+      await setup()
+      link.pouches.isSynced = jest.fn().mockReturnValue(true)
+      const { _id, ...NEW_TODO } = TODO_3
+      const res = await client.saveAll([TODO_3, TODO_4, NEW_TODO])
+      expect(link.executeMutation).toHaveBeenCalled()
+      expect(res).toMatchObject({
+        data: [
+          expect.objectContaining({
+            label: 'Build stuff',
+            _rev: expect.any(String)
+          }),
+          expect.objectContaining({
+            label: 'Run a semi-marathon',
+            _rev: expect.any(String)
+          }),
+          expect.objectContaining({
+            label: 'Build stuff',
+            _rev: expect.any(String)
+          })
+        ]
       })
     })
 
