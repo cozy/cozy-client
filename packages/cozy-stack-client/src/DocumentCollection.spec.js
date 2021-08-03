@@ -904,6 +904,19 @@ describe('DocumentCollection', () => {
       expect(res.map(doc => doc.id)).toEqual([1, 2])
     })
 
+    it('should remove special _type member from docs before updating', async () => {
+      const { client, collection } = setup()
+      await collection.updateAll([
+        { _id: 1, _type: 'io.cozy.simpsons', name: 'Marge' },
+        { _id: 2, _type: 'io.cozy.simpsons', name: 'Homer' }
+      ])
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/data/io.cozy.simpsons/_bulk_docs',
+        { docs: [{ _id: 1, name: 'Marge' }, { _id: 2, name: 'Homer' }] }
+      )
+    })
+
     it('should do bulk delete', async () => {
       const { collection, client } = setup()
       await collection.destroyAll([
