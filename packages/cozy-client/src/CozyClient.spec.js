@@ -684,8 +684,14 @@ describe('CozyClient', () => {
       client.store.dispatch.mockReset()
       await client.save(doc)
       const dispatchCalls = client.store.dispatch.mock.calls
-      expect(dispatchCalls.slice(-2)[0][0].definition.document).toMatchObject({
-        label: 'Buy croissants'
+      expect(dispatchCalls.slice(-2)[0][0]).toMatchObject({
+        definition: expect.objectContaining({
+          document: expect.objectContaining({
+            label: 'Buy croissants',
+            done: false
+          }),
+          mutationType: 'UPDATE_DOCUMENT'
+        })
       })
     })
 
