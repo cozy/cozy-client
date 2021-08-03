@@ -34,7 +34,9 @@ export const fromPouchResult = (res, withRows, doctype) => {
     }
   } else {
     return {
-      data: normalizeDoc(res, doctype)
+      data: Array.isArray(res)
+        ? res.map(doc => normalizeDoc(doc, doctype))
+        : normalizeDoc(res, doctype)
     }
   }
 }
