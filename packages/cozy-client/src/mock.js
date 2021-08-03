@@ -51,6 +51,7 @@ const createMockClient = ({ queries, remote, clientOptions }) => {
     .mockImplementation(mockedQueryFromMockedRemoteData(remote))
 
   client.save = jest.fn()
+  client.saveAll = jest.fn()
   client.stackClient.fetchJSON = jest.fn()
 
   return client
