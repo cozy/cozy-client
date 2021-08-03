@@ -357,6 +357,7 @@ export const isAGetByIdQuery = queryDefinition => {
 // Mutations
 const CREATE_DOCUMENT = 'CREATE_DOCUMENT'
 const UPDATE_DOCUMENT = 'UPDATE_DOCUMENT'
+const UPDATE_DOCUMENTS = 'UPDATE_DOCUMENTS'
 const DELETE_DOCUMENT = 'DELETE_DOCUMENT'
 const ADD_REFERENCES_TO = 'ADD_REFERENCES_TO'
 const REMOVE_REFERENCES_TO = 'REMOVE_REFERENCES_TO'
@@ -372,6 +373,11 @@ export const createDocument = document => ({
 export const updateDocument = document => ({
   mutationType: MutationTypes.UPDATE_DOCUMENT,
   document
+})
+
+export const updateDocuments = documents => ({
+  mutationType: MutationTypes.UPDATE_DOCUMENTS,
+  documents
 })
 
 export const deleteDocument = document => ({
@@ -417,6 +423,8 @@ export const getDoctypeFromOperation = operation => {
         return operation.document._type
       case UPDATE_DOCUMENT:
         return operation.document._type
+      case UPDATE_DOCUMENTS:
+        return operation.documents[0]._type
       case DELETE_DOCUMENT:
         return operation.document._type
       case ADD_REFERENCES_TO:
@@ -434,6 +442,7 @@ export const getDoctypeFromOperation = operation => {
 export const Mutations = {
   createDocument,
   updateDocument,
+  updateDocuments,
   deleteDocument,
   addReferencesTo,
   removeReferencesTo,
@@ -445,6 +454,7 @@ export const Mutations = {
 export const MutationTypes = {
   CREATE_DOCUMENT,
   UPDATE_DOCUMENT,
+  UPDATE_DOCUMENTS,
   DELETE_DOCUMENT,
   ADD_REFERENCES_TO,
   REMOVE_REFERENCES_TO,

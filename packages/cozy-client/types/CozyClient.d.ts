@@ -308,10 +308,27 @@ declare class CozyClient {
      */
     create(type: string, doc: object, references?: ReferenceMap, options?: object): Promise<any>;
     validate(document: any): Promise<{}>;
-    save(document: any, mutationOptions?: {}): Promise<any>;
+    save(doc: any, mutationOptions?: {}): Promise<any>;
+    /**
+     * Saves multiple documents in one batch
+     * - Can only be called with documents from the same doctype
+     * - Does not support automatic creation of references
+     *
+     * @param  {CozyClientDocument[]} docs
+     * @param  {Object} mutationOptions
+     * @returns {Promise<void>}
+     */
+    saveAll(docs: CozyClientDocument[], mutationOptions?: any): Promise<void>;
     ensureCozyMetadata(document: any, options?: {
         event: string;
     }): any;
+    /**
+     * Dehydrates and adds metadata before saving a document
+     *
+     * @param  {CozyClientDocument} doc - Document that will be saved
+     * @returns {CozyClientDocument}
+     */
+    prepareDocumentForSave(doc: CozyClientDocument): CozyClientDocument;
     /**
      * Creates a list of mutations to execute to create a document and its relationships.
      *
@@ -629,8 +646,8 @@ import Schema from "./Schema";
 import { DocumentCollection } from "./types";
 import { QueryDefinition } from "./queries/dsl";
 import { ReferenceMap } from "./types";
-import { Mutation } from "./types";
 import { CozyClientDocument } from "./types";
+import { Mutation } from "./types";
 import { QueryOptions } from "./types";
 import { QueryResult } from "./types";
 import ObservableQuery from "./ObservableQuery";

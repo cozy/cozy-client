@@ -1,8 +1,26 @@
 import { MutationTypes } from './queries/dsl'
 import CozyLink from './CozyLink'
+import { CozyClientDocument } from './types'
 
 /**
+ * Returns full documents after a bulk update
  *
+ * @param  {{ ok: boolean, id: string, rev: string }[]} updateAllResponse - Response from bulk docs
+ * @param  {CozyClientDocument[]} originalDocuments - Documents that were updated
+ * @returns {{ data: CozyClientDocument[] }} - Full documents with updated _id and _rev
+ */
+const transformBulkDocsResponse = (updateAllResponse, originalDocuments) => {
+  return {
+    data: originalDocuments.map((od, i) => ({
+      ...od,
+      _id: updateAllResponse[i].id,
+      _rev: updateAllResponse[i].rev
+    }))
+  }
+}
+
+/**
+ * Transfers queries and mutations to a remote stack
  */
 export default class StackLink extends CozyLink {
   /**
@@ -56,11 +74,17 @@ export default class StackLink extends CozyLink {
       : collection.find(selector, options)
   }
 
-  executeMutation(mutation, result, forward) {
-    const { mutationType, ...props } = mutation
+  async executeMutation(mutation, result, forward) {
+    const { mutationType, document: doc, documents: docs, ...props } = mutation
     switch (mutationType) {
       case MutationTypes.CREATE_DOCUMENT:
         return this.stackClient.collection(doc._type).create(doc)
+      case MutationTypes.UPDATE_DOCUMENTS: {
+        const updateAllResp = await this.stackClient
+          .collection(docs[0]._type)
+          .updateAll(docs)
+        return transformBulkDocsResponse(updateAllResp, docs)
+      }
       case MutationTypes.UPDATE_DOCUMENT:
         return this.stackClient.collection(doc._type).update(doc)
       case MutationTypes.DELETE_DOCUMENT:

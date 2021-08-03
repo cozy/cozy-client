@@ -102,6 +102,10 @@ export type CozyClientDocument = {
      */
     _type?: string;
     /**
+     * - Current revision of the document
+     */
+    _rev?: string;
+    /**
      * - When the document has been deleted
      */
     _deleted?: string;

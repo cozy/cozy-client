@@ -46,11 +46,12 @@ cozy-client
 | `REMOVE_REFERENCED_BY` | `string` |
 | `REMOVE_REFERENCES_TO` | `string` |
 | `UPDATE_DOCUMENT` | `string` |
+| `UPDATE_DOCUMENTS` | `string` |
 | `UPLOAD_FILE` | `string` |
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:445](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L445)
+[packages/cozy-client/src/queries/dsl.js:454](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L454)
 
 ***
 
@@ -69,11 +70,12 @@ cozy-client
 | `removeReferencedBy` | (`document`: `any`, `referencedDocuments`: `any`) => { `document`: `any` ; `mutationType`: `string` ; `referencedDocuments`: `any`  } |
 | `removeReferencesTo` | (`document`: `any`, `referencedDocuments`: `any`) => { `document`: `any` ; `mutationType`: `string` ; `referencedDocuments`: `any`  } |
 | `updateDocument` | (`document`: `any`) => { `document`: `any` ; `mutationType`: `string`  } |
+| `updateDocuments` | (`documents`: `any`) => { `documents`: `any` ; `mutationType`: `string`  } |
 | `uploadFile` | (`file`: `any`, `dirPath`: `any`) => { `dirPath`: `any` ; `file`: `any` ; `mutationType`: `string`  } |
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:434](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L434)
+[packages/cozy-client/src/queries/dsl.js:442](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L442)
 
 ***
 
@@ -256,7 +258,7 @@ Generated URL
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:412](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L412)
+[packages/cozy-client/src/queries/dsl.js:418](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L418)
 
 ***
 

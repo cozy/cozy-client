@@ -7,6 +7,7 @@ export class OAuthClient extends OAuthClient_base {
         find: jest.Mock<Promise<void>, []>;
         create: jest.Mock<Promise<void>, []>;
         update: jest.Mock<Promise<void>, []>;
+        updateAll: jest.Mock<Promise<void>, []>;
         destroy: jest.Mock<Promise<void>, []>;
         findReferencedBy: jest.Mock<Promise<void>, []>;
     }, []>;
@@ -21,6 +22,7 @@ declare class MockedStackClient extends MockedStackClient_base {
         find: jest.Mock<Promise<void>, []>;
         create: jest.Mock<Promise<void>, []>;
         update: jest.Mock<Promise<void>, []>;
+        updateAll: jest.Mock<Promise<void>, []>;
         destroy: jest.Mock<Promise<void>, []>;
         findReferencedBy: jest.Mock<Promise<void>, []>;
     }, []>;

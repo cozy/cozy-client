@@ -10,6 +10,7 @@ const collectionMock = {
   find: jest.fn(() => Promise.resolve()),
   create: jest.fn(() => Promise.resolve()),
   update: jest.fn(() => Promise.resolve()),
+  updateAll: jest.fn(() => Promise.resolve()),
   destroy: jest.fn(() => Promise.resolve()),
   findReferencedBy: jest.fn(() => Promise.resolve())
 }
