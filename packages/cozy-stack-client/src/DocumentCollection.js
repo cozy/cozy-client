@@ -387,8 +387,9 @@ class DocumentCollection {
    *
    * @param  {Document[]} docs Documents to be updated
    */
-  async updateAll(docs) {
+  async updateAll(rawDocs) {
     const stackClient = this.stackClient
+    const docs = rawDocs ? rawDocs.map(d => omit(d, '_type')) : rawDocs
 
     if (!docs || !docs.length) {
       return Promise.resolve([])
