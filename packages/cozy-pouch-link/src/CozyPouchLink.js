@@ -16,6 +16,9 @@ PouchDB.plugin(PouchDBFind)
 const { find, allDocs, withoutDesignDocuments } = helpers
 
 const parseMutationResult = (original, res) => {
+  if (!res.ok) {
+    throw new Error('Pouch response is not OK')
+  }
   return { ...original, ...omit(res, 'ok') }
 }
 
@@ -429,27 +432,32 @@ class PouchLink extends CozyLink {
     )
   }
 
-  createDocument(mutation) {
-    return this.dbMethod('post', mutation)
+  async createDocument(mutation) {
+    const res = await this.dbMethod('post', mutation)
+    return parseMutationResult(mutation.document, res)
   }
 
   async updateDocument(mutation) {
-    return this.dbMethod('put', mutation)
+    const res = await this.dbMethod('put', mutation)
+    return parseMutationResult(mutation.document, res)
   }
 
   async deleteDocument(mutation) {
-    return this.dbMethod('remove', mutation)
+    const res = await this.dbMethod('remove', mutation)
+    return parseMutationResult(mutation.document, res)
   }
 
   async dbMethod(method, mutation) {
     const doctype = getDoctypeFromOperation(mutation)
-    const { document } = mutation
+    const { document: doc } = mutation
     const db = this.getPouch(doctype)
-    const res = await db[method](sanitized(document))
-    if (res.ok) {
-      return parseMutationResult(document, res)
-    } else {
-      throw new Error('Coud not apply mutation')
+    let res
+
+    try {
+      res = await db[method](sanitized(doc))
+      return res
+    } catch (e) {
+      throw new Error(`Coud not apply mutation: ${e.message}`)
     }
   }
 
