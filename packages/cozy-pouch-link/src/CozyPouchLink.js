@@ -15,6 +15,14 @@ PouchDB.plugin(PouchDBFind)
 
 const { find, allDocs, withoutDesignDocuments } = helpers
 
+class BulkEditError extends Error {
+  constructor(docs) {
+    super('Error while bulk saving')
+    this.name = 'BulkEditError'
+    this.docs = docs
+  }
+}
+
 const parseMutationResult = (original, res) => {
   if (!res.ok) {
     throw new Error('Pouch response is not OK')
@@ -452,7 +460,7 @@ class PouchLink extends CozyLink {
     const badResults = res.filter(x => !x.ok)
     if (badResults.length > 0) {
       console.warn('Error while bulk saving, bad results', badResults)
-      throw new Error('Error while bulk saving, see above for errors')
+      throw new BulkEditError(badResults)
     }
     return res.map((bulkResult, i) => ({
       ...docs[i],
