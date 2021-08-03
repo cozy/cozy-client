@@ -60,38 +60,32 @@ export default class StackLink extends CozyLink {
     const { mutationType, ...props } = mutation
     switch (mutationType) {
       case MutationTypes.CREATE_DOCUMENT:
-        return this.stackClient
-          .collection(props.document._type)
-          .create(props.document)
+        return this.stackClient.collection(doc._type).create(doc)
       case MutationTypes.UPDATE_DOCUMENT:
-        return this.stackClient
-          .collection(props.document._type)
-          .update(props.document)
+        return this.stackClient.collection(doc._type).update(doc)
       case MutationTypes.DELETE_DOCUMENT:
-        return this.stackClient
-          .collection(props.document._type)
-          .destroy(props.document)
+        return this.stackClient.collection(doc._type).destroy(doc)
       case MutationTypes.ADD_REFERENCES_TO:
         return this.stackClient
           .collection(props.referencedDocuments[0]._type)
-          .addReferencesTo(props.document, props.referencedDocuments)
+          .addReferencesTo(doc, props.referencedDocuments)
       case MutationTypes.REMOVE_REFERENCES_TO:
         return this.stackClient
           .collection(props.referencedDocuments[0]._type)
-          .removeReferencesTo(props.document, props.referencedDocuments)
+          .removeReferencesTo(doc, props.referencedDocuments)
       case MutationTypes.ADD_REFERENCED_BY:
-        if (props.document._type === 'io.cozy.files') {
+        if (doc._type === 'io.cozy.files') {
           return this.stackClient
             .collection('io.cozy.files')
-            .addReferencedBy(props.document, props.referencedDocuments)
+            .addReferencedBy(doc, props.referencedDocuments)
         } else {
           throw new Error('The document type should be io.cozy.files')
         }
       case MutationTypes.REMOVE_REFERENCED_BY:
-        if (props.document._type === 'io.cozy.files') {
+        if (doc._type === 'io.cozy.files') {
           return this.stackClient
             .collection('io.cozy.files')
-            .removeReferencedBy(props.document, props.referencedDocuments)
+            .removeReferencedBy(doc, props.referencedDocuments)
         } else {
           throw new Error('The document type should be io.cozy.files')
         }
