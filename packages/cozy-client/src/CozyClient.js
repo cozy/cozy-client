@@ -4,7 +4,6 @@ import flatten from 'lodash/flatten'
 import uniqBy from 'lodash/uniqBy'
 import zip from 'lodash/zip'
 import forEach from 'lodash/forEach'
-import every from 'lodash/every'
 import get from 'lodash/get'
 import MicroEE from 'microee'
 
@@ -620,8 +619,17 @@ client.query(Q('io.cozy.bills'))`)
     if (doctypes.length !== 1) {
       throw new Error('saveAll can only save documents with the same doctype')
     }
-    const ret = every(await Promise.all(docs.map(d => this.schema.validate(d))))
-    if (ret !== true) throw new Error('Validation failed for at least one doc')
+    const validations = await Promise.all(
+      docs.map(d => this.schema.validate(d))
+    )
+    const errors = validations.filter(validation => validation !== true)
+    if (errors.length > 0) {
+      console.warn(
+        'There has been some validation errors while bulk saving',
+        errors
+      )
+      throw new Error('Validation failed for at least one doc')
+    }
 
     const toSaveDocs = docs.map(d => this.prepareDocumentForSave(d))
     const mutation = Mutations.updateDocuments(toSaveDocs)
