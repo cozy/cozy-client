@@ -746,7 +746,8 @@ describe('CozyClient', () => {
         new Error('saveAll can only save documents with the same doctype')
       )
     })
-    it('should call work with the default stack client', async () => {
+
+    it('should work with the default stack client', async () => {
       const client = new CozyClient()
       client.ensureStore()
       jest.spyOn(client.store, 'dispatch')
