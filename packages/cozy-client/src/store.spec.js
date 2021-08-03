@@ -188,7 +188,7 @@ describe('Store', () => {
       spy.mockRestore()
     })
 
-    it('should return a newly created doc received in a mutation result', () => {
+    it('should store a new doc received in a mutation result', () => {
       store.dispatch(
         receiveMutationResult('foo', {
           data: [TODO_1]
@@ -199,7 +199,7 @@ describe('Store', () => {
       ).toEqual(TODO_1)
     })
 
-    it('should return an updated rev of a doc received in a mutation result', () => {
+    it('should store an updated doc received in a mutation result', () => {
       store.dispatch(
         receiveMutationResult('foo', {
           data: [TODO_1]
