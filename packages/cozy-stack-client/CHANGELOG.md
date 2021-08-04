@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [23.18.0](https://github.com/cozy/cozy-client/compare/v23.17.3...v23.18.0) (2021-08-04)
+
+
+### Features
+
+* Update all automatically removes special member _type from docs ([54d96e1](https://github.com/cozy/cozy-client/commit/54d96e133b47be93c59de83fbfa1641ff83159a7)), closes [#758](https://github.com/cozy/cozy-client/issues/758)
+
+
+
+
+
 # [23.17.0](https://github.com/cozy/cozy-client/compare/v23.16.0...v23.17.0) (2021-07-01)
 
 

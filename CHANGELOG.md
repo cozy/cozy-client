@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [23.18.0](https://github.com/cozy/cozy-client/compare/v23.17.3...v23.18.0) (2021-08-04)
+
+
+### Features
+
+* Ability to saveAll through StackLink ([b763de4](https://github.com/cozy/cozy-client/commit/b763de4232375d6f971d6dc35ebbf8c162aa07c9))
+* Attach bad documents to the error ([e570918](https://github.com/cozy/cozy-client/commit/e57091877cbc76465d837df2803520cee49c8f79))
+* BulkEditError provides a way to get updated documents and errors ([bdf6b47](https://github.com/cozy/cozy-client/commit/bdf6b478cab7d11f8a4ab81d286cd8a2cbadd7f1))
+* Improve validation errors while bulk saving ([ff7811a](https://github.com/cozy/cozy-client/commit/ff7811ae733cfb5ae50af565c23f9b6cdd9054db))
+* Mock saveAll in mock client ([a1cf7d0](https://github.com/cozy/cozy-client/commit/a1cf7d09604ce25a3e6ae562d1dc197cdade246b))
+* PouchLink supports saveAll ([4dcf35f](https://github.com/cozy/cozy-client/commit/4dcf35f630250f32d12f8d65cdf2108f01caee64)), closes [#694](https://github.com/cozy/cozy-client/issues/694)
+* Update all automatically removes special member _type from docs ([54d96e1](https://github.com/cozy/cozy-client/commit/54d96e133b47be93c59de83fbfa1641ff83159a7)), closes [#758](https://github.com/cozy/cozy-client/issues/758)
+
+
+
+
+
 ## [23.17.3](https://github.com/cozy/cozy-client/compare/v23.17.2...v23.17.3) (2021-07-19)
 
 
