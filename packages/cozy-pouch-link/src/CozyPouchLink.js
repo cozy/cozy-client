@@ -1,9 +1,15 @@
-import { MutationTypes, CozyLink, getDoctypeFromOperation } from 'cozy-client'
+import {
+  MutationTypes,
+  CozyLink,
+  getDoctypeFromOperation,
+  BulkEditError
+} from 'cozy-client'
 import PouchDB from 'pouchdb-browser'
 import PouchDBFind from 'pouchdb-find'
 import omit from 'lodash/omit'
 import defaults from 'lodash/defaults'
 import mapValues from 'lodash/mapValues'
+import zipWith from 'lodash/zipWith'
 
 import { default as helpers } from './helpers'
 import { getIndexNameFromFields, getIndexFields } from './mango'
@@ -14,14 +20,6 @@ import logger from './logger'
 PouchDB.plugin(PouchDBFind)
 
 const { find, allDocs, withoutDesignDocuments } = helpers
-
-class BulkEditError extends Error {
-  constructor(docs) {
-    super('Error while bulk saving')
-    this.name = 'BulkEditError'
-    this.docs = docs
-  }
-}
 
 const parseMutationResult = (original, res) => {
   if (!res.ok) {
@@ -456,17 +454,20 @@ class PouchLink extends CozyLink {
 
   async updateDocuments(mutation) {
     const docs = mutation.documents
-    const res = await this.dbMethod('bulkDocs', mutation)
-    const badResults = res.filter(x => !x.ok)
-    if (badResults.length > 0) {
-      console.warn('Error while bulk saving, bad results', badResults)
-      throw new BulkEditError(badResults)
+    const bulkResponse = await this.dbMethod('bulkDocs', mutation)
+    const updatedDocs = zipWith(
+      bulkResponse,
+      docs,
+      (bulkResult, originalDoc) => ({
+        ...originalDoc,
+        _id: bulkResult.id,
+        _rev: bulkResult.rev
+      })
+    )
+    if (bulkResponse.find(x => !x.ok)) {
+      throw new BulkEditError(bulkResponse, updatedDocs)
     }
-    return res.map((bulkResult, i) => ({
-      ...docs[i],
-      _id: bulkResult.id,
-      _rev: bulkResult.rev
-    }))
+    return updatedDocs
   }
 
   async deleteDocument(mutation) {

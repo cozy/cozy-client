@@ -193,4 +193,20 @@ export type CordovaWindow = {
     resolveLocalFileSystemURL: Function;
     handleOpenURL: Function;
 };
+/**
+ * - An item of the CouchDB bulk docs response
+ */
+export type CouchDBBulkResult = {
+    ok: boolean;
+    id: string;
+    rev: string;
+    /**
+     * ?
+     */
+    error: string | null;
+    /**
+     * ?
+     */
+    reason: string | null;
+};
 import { QueryDefinition } from "./queries/dsl";

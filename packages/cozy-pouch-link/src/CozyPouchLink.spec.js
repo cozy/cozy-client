@@ -362,6 +362,34 @@ describe('CozyPouchLink', () => {
       })
     })
 
+    it('should throw with BulkEditError in case of partial success when saving multiple documents', async () => {
+      await setup()
+      link.dbMethod = method => {
+        if (method !== 'bulkDocs') {
+          throw new Error('Only bulkDocs is overrided in the test')
+        }
+        return [
+          { error: 'conflict', id: TODO_3._id },
+          { ok: true, id: TODO_4._id, rev: '2-gabedead' },
+          { ok: true, id: '3', rev: '1-cffeebabe' }
+        ]
+      }
+      link.pouches.isSynced = jest.fn().mockReturnValue(true)
+      const { _id, ...NEW_TODO } = TODO_3
+      let err
+      try {
+        await client.saveAll([TODO_3, TODO_4, NEW_TODO])
+      } catch (e) {
+        err = e
+      }
+      expect(link.executeMutation).toHaveBeenCalled()
+      expect(err.message).toEqual('Error while bulk saving')
+      const errors = err.getErrors()
+      expect(errors.length).toBe(1)
+      expect(errors[0].error).toEqual('conflict')
+      expect(errors[0].doc._id).toEqual(TODO_3._id)
+    })
+
     it('should be possible to update a document', async () => {
       await setup()
       link.pouches.isSynced = jest.fn().mockReturnValue(true)

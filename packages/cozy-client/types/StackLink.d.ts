@@ -1,3 +1,6 @@
+export function transformBulkDocsResponse(bulkResponse: CouchDBBulkResult[], originalDocuments: CozyClientDocument[]): {
+    data: CozyClientDocument[];
+};
 /**
  * Transfers queries and mutations to a remote stack
  */
@@ -17,4 +20,6 @@ export default class StackLink extends CozyLink {
     executeQuery(query: any): any;
     executeMutation(mutation: any, result: any, forward: any): Promise<any>;
 }
+import { CouchDBBulkResult } from "./types";
+import { CozyClientDocument } from "./types";
 import CozyLink from "./CozyLink";
