@@ -143,6 +143,17 @@ Both `create()` and `save()` will return a Promise with a `data` attribute conta
 ℹ️ When mutating data, queries that depend on the mutated document(s) will automatically be refreshed : components
 that depend on these queries will be re-rendered.
 
+## Mutate several documents in batch
+
+The `saveAll` method can be used to save multiple documents in one request.
+
+```javascript
+const { data: updatedDocs } = await client.saveAll([
+  { _type: 'io.cozy.todos', checked: true, label: 'Buy milk' },
+  { _type: 'io.cozy.todos', checked: false, label: 'Make dinner' }
+])
+```
+
 [cozy-flags]: https://docs.cozy.io/en/cozy-flags/
 [cozy-relationships]: https://docs.cozy.io/en/cozy-doctypes/docs/#relationships
 [react-integration]: ./react-integration.md
