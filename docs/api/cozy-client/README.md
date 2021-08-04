@@ -10,6 +10,7 @@ cozy-client
 ## Classes
 
 *   [Association](classes/association.md)
+*   [BulkEditError](classes/bulkediterror.md)
 *   [CozyClient](classes/cozyclient.md)
 *   [CozyLink](classes/cozylink.md)
 *   [CozyProvider](classes/cozyprovider.md)

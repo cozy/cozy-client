@@ -184,4 +184,13 @@ import { QueryDefinition } from './queries/dsl'
  * @property {Function} handleOpenURL
  */
 
+/**
+ * @typedef {object} CouchDBBulkResult - An item of the CouchDB bulk docs response
+ * @property {boolean} ok
+ * @property {string} id
+ * @property {string} rev
+ * @property {string?} error?
+ * @property {string?} reason?
+ */
+
 export default {}

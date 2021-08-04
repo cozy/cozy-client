@@ -1,7 +1,6 @@
-import { Q } from 'cozy-client'
-
+import { Q } from './queries/dsl'
 import CozyClient from './CozyClient'
-import StackLink from './StackLink'
+import StackLink, { transformBulkDocsResponse } from './StackLink'
 import { SCHEMA } from './__tests__/fixtures'
 
 describe('StackLink', () => {
@@ -54,6 +53,56 @@ describe('StackLink', () => {
       expect(link.stackClient).not.toBeNull()
       await link.reset()
       expect(link.stackClient).toBeNull()
+    })
+  })
+
+  describe('transformBulkDocsResponse', () => {
+    it('should return a data object with _id and _rev updated', () => {
+      const updateAllResponse = [
+        { ok: true, rev: '2-deadbeef', id: '1' },
+        { ok: true, rev: '2-cffeebabe', id: '2' }
+      ]
+      const originalDocuments = [
+        { _rev: '1-abcdef', label: 'Fish stew', _id: '1' },
+        { _rev: '1-abcdgg', label: 'Lamb stew', _id: '2' }
+      ]
+      const resp = transformBulkDocsResponse(
+        updateAllResponse,
+        originalDocuments
+      )
+      expect(resp).toEqual({
+        data: [
+          { _rev: '2-deadbeef', label: 'Fish stew', _id: '1' },
+          { _rev: '2-cffeebabe', label: 'Lamb stew', _id: '2' }
+        ]
+      })
+    })
+
+    it('should throw an error in case of partial update', () => {
+      const updateAllResponse = [
+        { ok: true, rev: '2-deadbeef', id: '1' },
+        { error: 'conflict', reason: 'Conflict', id: '2' }
+      ]
+      const originalDocuments = [
+        { _rev: '1-abcdef', label: 'Fish stew', _id: '1' },
+        { _rev: '1-abcdgg', label: 'Lamb stew', _id: '2' }
+      ]
+
+      let bulkErr
+      try {
+        transformBulkDocsResponse(updateAllResponse, originalDocuments)
+      } catch (e) {
+        bulkErr = e
+      }
+      expect(bulkErr.message).toBe('Error while bulk saving')
+      const errors = bulkErr.getErrors()
+      expect(errors.length).toBe(1)
+      expect(errors[0]).toEqual({
+        error: 'conflict',
+        reason: 'Conflict',
+        id: '2',
+        doc: expect.objectContaining(originalDocuments[1])
+      })
     })
   })
 })

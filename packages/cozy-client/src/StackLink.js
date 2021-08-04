@@ -1,34 +1,34 @@
 import { MutationTypes } from './queries/dsl'
 import CozyLink from './CozyLink'
-import { CozyClientDocument } from './types'
-
-class BulkEditError extends Error {
-  constructor(docs) {
-    super('Error while bulk saving')
-    this.name = 'BulkEditError'
-    this.docs = docs
-  }
-}
+import { CozyClientDocument, CouchDBBulkResult } from './types'
+import { BulkEditError } from './errors'
+import zipWith from 'lodash/zipWith'
 
 /**
  * Returns full documents after a bulk update
  *
- * @param  {{ ok: boolean, id: string, rev: string, error?: string, reason?: string }[]} updateAllResponse - Response from bulk docs
+ * @private
+ *
+ * @param  {CouchDBBulkResult[]} bulkResponse - Response from bulk docs
  * @param  {CozyClientDocument[]} originalDocuments - Documents that were updated
  * @returns {{ data: CozyClientDocument[] }} - Full documents with updated _id and _rev
  */
-const transformBulkDocsResponse = (updateAllResponse, originalDocuments) => {
-  const badResults = updateAllResponse.filter(x => !x.ok)
-  if (badResults.length > 0) {
-    console.warn('Error while bulk saving, bad results', badResults)
-    throw new BulkEditError(badResults)
+export const transformBulkDocsResponse = (bulkResponse, originalDocuments) => {
+  const updatedDocs = zipWith(bulkResponse, originalDocuments, (result, od) =>
+    result.ok
+      ? {
+          ...od,
+          _id: result.id,
+          _rev: result.rev
+        }
+      : od
+  )
+
+  if (bulkResponse.find(x => !x.ok)) {
+    throw new BulkEditError(bulkResponse, updatedDocs)
   }
   return {
-    data: originalDocuments.map((od, i) => ({
-      ...od,
-      _id: updateAllResponse[i].id,
-      _rev: updateAllResponse[i].rev
-    }))
+    data: updatedDocs
   }
 }
 

@@ -26,6 +26,7 @@ import * as manifest from './manifest'
 export { manifest }
 
 export * from './mock'
+export { BulkEditError } from './errors'
 
 export * from './cli'
 
