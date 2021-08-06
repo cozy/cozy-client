@@ -2,6 +2,8 @@ import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 import { isFile, isDirectory } from './FileCollection'
 import { uri } from './utils'
 export const SHARING_DOCTYPE = 'io.cozy.sharings'
+export const BITWARDEN_ORGANIZATIONS_DOCTYPE = 'com.bitwarden.organizations'
+export const BITWARDEN_CIPHERS_DOCTYPE = 'com.bitwarden.ciphers'
 
 const normalizeSharing = sharing => normalizeDoc(sharing, SHARING_DOCTYPE)
 
@@ -237,6 +239,18 @@ class SharingCollection extends DocumentCollection {
 
 SharingCollection.normalizeDoctype = DocumentCollection.normalizeDoctypeJsonApi
 
+const getSharingRulesWithoutWarning = (document, sharingType) => {
+  if (isFile(document)) {
+    return getSharingRulesForFile(document, sharingType)
+  }
+
+  if (document._type === BITWARDEN_ORGANIZATIONS_DOCTYPE) {
+    return getSharingRulesForOrganizations(document)
+  }
+
+  return getSharingRulesForPhotosAlbum(document, sharingType)
+}
+
 /**
  * Rules determine the behavior of the sharing when changes are made to the shared document
  * See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing
@@ -249,18 +263,14 @@ SharingCollection.normalizeDoctype = DocumentCollection.normalizeDoctypeJsonApi
 export const getSharingRules = (document, sharingType) => {
   if (sharingType) {
     console.warn(
-      `sharingType is deprecated and will be removed. We now set this default rules: ${
-        isFile(document)
-          ? getSharingRulesForFile(document)
-          : getSharingRulesForPhotosAlbum(document)
-      }} \n      
+      `sharingType is deprecated and will be removed. We now set this default rules: ${getSharingRulesWithoutWarning(
+        document
+      )}} \n      
       If this default rules do not fill your need, please set custom rules 
       by using the 'rules' object of the SharingCollection.create() method`
     )
   }
-  return isFile(document)
-    ? getSharingRulesForFile(document, sharingType)
-    : getSharingRulesForPhotosAlbum(document, sharingType)
+  return getSharingRulesWithoutWarning(document, sharingType)
 }
 
 /**
@@ -356,6 +366,38 @@ const getSharingPolicyForFile = (document, sharingType) => {
   return sharingType === 'two-way'
     ? { update: 'sync', remove: 'revoke' }
     : { update: 'push', remove: 'revoke' }
+}
+
+/**
+ * Compute the rules that define how to share an Organization. See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing
+ *
+ * @param {Sharing} document The document to share. Should have and _id and a name
+ *
+ * @returns {Array<Rule>=} The rules that define how to share an Organization
+ */
+const getSharingRulesForOrganizations = document => {
+  const { _id, name } = document
+  const sharingRules = [
+    {
+      title: name,
+      doctype: BITWARDEN_ORGANIZATIONS_DOCTYPE,
+      values: [_id],
+      add: 'sync',
+      update: 'sync',
+      remove: 'sync'
+    },
+    {
+      title: 'Ciphers',
+      doctype: BITWARDEN_CIPHERS_DOCTYPE,
+      values: [_id],
+      add: 'sync',
+      update: 'sync',
+      remove: 'sync',
+      selector: 'organization_id'
+    }
+  ]
+
+  return sharingRules
 }
 
 /**
