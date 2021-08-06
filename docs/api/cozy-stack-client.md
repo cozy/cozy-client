@@ -115,6 +115,9 @@ See <a href="https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a
 <dt><a href="#getSharingPolicyForFile">getSharingPolicyForFile(document, sharingType)</a> ⇒ <code><a href="#SharingPolicy">SharingPolicy</a></code></dt>
 <dd><p>Compute the sharing policy for a File based on its sharing type</p>
 </dd>
+<dt><a href="#getSharingRulesForOrganizations">getSharingRulesForOrganizations(document)</a> ⇒ <code><a href="#Rule">Array.&lt;Rule&gt;</a></code></dt>
+<dd><p>Compute the rules that define how to share an Organization. See <a href="https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing">https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing</a></p>
+</dd>
 <dt><a href="#toRelationshipItem">toRelationshipItem(item)</a> ⇒ <code><a href="#RelationshipItem">RelationshipItem</a></code></dt>
 <dd><p>Compute the RelationshipItem that can be referenced as a sharing recipient</p>
 </dd>
@@ -1729,6 +1732,18 @@ Compute the sharing policy for a File based on its sharing type
 | --- | --- | --- |
 | document | [<code>Sharing</code>](#Sharing) | The document to share. Should have and _id and a name |
 | sharingType | [<code>SharingType</code>](#SharingType) | The type of the sharing |
+
+<a name="getSharingRulesForOrganizations"></a>
+
+## getSharingRulesForOrganizations(document) ⇒ [<code>Array.&lt;Rule&gt;</code>](#Rule)
+Compute the rules that define how to share an Organization. See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing
+
+**Kind**: global function  
+**Returns**: [<code>Array.&lt;Rule&gt;</code>](#Rule) - The rules that define how to share an Organization  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | [<code>Sharing</code>](#Sharing) | The document to share. Should have and _id and a name |
 
 <a name="toRelationshipItem"></a>
 

@@ -23,6 +23,11 @@ const RECIPIENT = {
     email: [{ address: 'jdoe@doe.com', primary: true }]
   }
 }
+const ORGANIZATION = {
+  _type: 'com.bitwarden.organizations',
+  _id: 'SOME_ORGANIZATION_ID',
+  name: 'SOME_ORGANIZATION_NAME'
+}
 
 const SHARING = {
   _id: 'sharing_1'
@@ -367,6 +372,54 @@ describe('SharingCollection', () => {
                 title: FILE.name,
                 update: 'sync',
                 values: [FILE._id]
+              }
+            ]
+          },
+          relationships: {
+            recipients: {
+              data: [{ id: 'contact_1', type: 'io.cozy.contacts' }]
+            }
+          },
+          type: 'io.cozy.sharings'
+        }
+      })
+    })
+
+    it('should creates a sharing for an organization with the most open rules, no preview and with recipients', async () => {
+      const sharingDesc = 'foos'
+      const openSharing = true
+      const previewPath = undefined
+      await collection.create({
+        document: ORGANIZATION,
+        recipients: [RECIPIENT],
+        openSharing,
+        previewPath,
+        description: sharingDesc
+      })
+
+      expect(client.fetchJSON).toHaveBeenCalledWith('POST', '/sharings/', {
+        data: {
+          attributes: {
+            description: sharingDesc,
+            open_sharing: openSharing,
+            preview_path: undefined,
+            rules: [
+              {
+                title: 'SOME_ORGANIZATION_NAME',
+                doctype: 'com.bitwarden.organizations',
+                values: ['SOME_ORGANIZATION_ID'],
+                add: 'sync',
+                update: 'sync',
+                remove: 'sync'
+              },
+              {
+                title: 'Ciphers',
+                doctype: 'com.bitwarden.ciphers',
+                values: ['SOME_ORGANIZATION_ID'],
+                add: 'sync',
+                update: 'sync',
+                remove: 'sync',
+                selector: 'organization_id'
               }
             ]
           },
