@@ -128,13 +128,8 @@ class PouchLink extends CozyLink {
       for (const doctype of doctypes) {
         const prefix = getPrefix(url)
         const dbName = getDatabaseName(prefix, doctype)
-        const oldPouch = new PouchDB(dbName, {
-          adapter: fromAdapter,
-          location: 'default'
-        })
-        await migratePouch(oldPouch, toAdapter)
-        await oldPouch.close()
-        await oldPouch.destroy()
+
+        await migratePouch({ dbName, fromAdapter, toAdapter })
       }
       persistAdapterName('indexeddb')
       // Reload page to benefit from new adapter
