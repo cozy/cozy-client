@@ -10,7 +10,11 @@ describe('adapter', () => {
       _id: 'hellodoc',
       name: 'bugs'
     })
-    const migrated = await migratePouch(oldPouch, 'memory')
+    const migrated = await migratePouch({
+      dbName: 'test',
+      fromAdapter: 'memory',
+      toAdapter: 'memory'
+    })
     expect(migrated.adapter).toEqual('memory')
     const doc = await migrated.get('hellodoc')
     expect(doc._id).toEqual('hellodoc')
