@@ -18,5 +18,9 @@ export const migratePouch = async (oldPouch, toAdapter) => {
     location: 'default'
   })
   await oldPouch.replicate.to(newPouch, { batch_size: 1000 })
+
+  await oldPouch.destroy()
+  oldPouch = null // See https://web.dev/detached-window-memory-leaks/
+
   return newPouch
 }
