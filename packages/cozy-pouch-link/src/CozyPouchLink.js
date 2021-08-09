@@ -117,7 +117,13 @@ class PouchLink extends CozyLink {
   /**
    * Migrate the current adapter
    *
-   * @param {{fromAdapter, toAdapter, url, plugins}} - The migration params
+   * @typedef {object} MigrationParams
+   * @property {string} [fromAdapter] - The current adapter type, e.g. 'idb'
+   * @property {string} [toAdapter] - The new adapter type, e.g. 'indexeddb'
+   * @property {string} [url] - The Cozy URL
+   * @property {Array<object>} [plugins] - The PouchDB plugins
+   *
+   * @param {MigrationParams} params - Migration params
    */
   async migrateAdapter({ fromAdapter, toAdapter, url, plugins }) {
     try {
