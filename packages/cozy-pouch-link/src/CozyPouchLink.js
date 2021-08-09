@@ -132,8 +132,6 @@ class PouchLink extends CozyLink {
         await migratePouch({ dbName, fromAdapter, toAdapter })
       }
       persistAdapterName('indexeddb')
-      // Reload page to benefit from new adapter
-      window.location.reload()
     } catch (err) {
       console.error('PouchLink: PouchDB migration failed. ', err)
     }
