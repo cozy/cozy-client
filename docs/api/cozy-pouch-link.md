@@ -74,9 +74,6 @@ and on demand immediately.</p>
 <dt><a href="#persistAdapterName">persistAdapterName</a></dt>
 <dd><p>Persist the adapter name</p>
 </dd>
-<dt><a href="#migratePouch">migratePouch</a> ⇒ <code>object</code></dt>
-<dd><p>Migrate a PouchDB database to a new adapter.</p>
-</dd>
 <dt><a href="#fetchRemoteInstance">fetchRemoteInstance</a> ⇒ <code>object</code></dt>
 <dd><p>Fetch remote instance</p>
 </dd>
@@ -102,6 +99,17 @@ starts from there in case the process stops before the end.</p>
 <dl>
 <dt><a href="#getQueryAlias">getQueryAlias(query)</a> ⇒ <code>string</code></dt>
 <dd></dd>
+</dl>
+
+## Typedefs
+
+<dl>
+<dt><a href="#MigrationParams">MigrationParams</a> : <code>object</code></dt>
+<dd><p>Migrate the current adapter</p>
+</dd>
+<dt><a href="#MigrationParams">MigrationParams</a> ⇒ <code>object</code></dt>
+<dd><p>Migrate a PouchDB database to a new adapter.</p>
+</dd>
 </dl>
 
 <a name="PouchLink"></a>
@@ -437,19 +445,6 @@ Persist the adapter name
 | --- | --- | --- |
 | adapter | <code>string</code> | The adapter name |
 
-<a name="migratePouch"></a>
-
-## migratePouch ⇒ <code>object</code>
-Migrate a PouchDB database to a new adapter.
-
-**Kind**: global constant  
-**Returns**: <code>object</code> - - The migrated pouch  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| oldPouch | <code>object</code> | The pouch to migrate |
-| toAdapter | <code>string</code> | The target adapter name |
-
 <a name="fetchRemoteInstance"></a>
 
 ## fetchRemoteInstance ⇒ <code>object</code>
@@ -527,4 +522,44 @@ Get the URI prefix
 | Param | Type |
 | --- | --- |
 | query | <code>QueryDefinition</code> | 
+
+<a name="MigrationParams"></a>
+
+## MigrationParams : <code>object</code>
+Migrate the current adapter
+
+**Kind**: global typedef  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | [<code>MigrationParams</code>](#MigrationParams) | Migration params |
+
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| [fromAdapter] | <code>string</code> | The current adapter type, e.g. 'idb' |
+| [toAdapter] | <code>string</code> | The new adapter type, e.g. 'indexeddb' |
+| [url] | <code>string</code> | The Cozy URL |
+| [plugins] | <code>Array.&lt;object&gt;</code> | The PouchDB plugins |
+
+<a name="MigrationParams"></a>
+
+## MigrationParams ⇒ <code>object</code>
+Migrate a PouchDB database to a new adapter.
+
+**Kind**: global typedef  
+**Returns**: <code>object</code> - - The migrated pouch  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | [<code>MigrationParams</code>](#MigrationParams) | The migration params |
+
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| [dbName] | <code>string</code> | The database name |
+| [fromAdapter] | <code>string</code> | The current adapter type, e.g. 'idb' |
+| [toAdapter] | <code>string</code> | The new adapter type, e.g. 'indexeddb' |
 
