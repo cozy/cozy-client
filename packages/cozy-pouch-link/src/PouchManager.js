@@ -194,6 +194,9 @@ class PouchManager {
       replicationOptions.since = seq
       replicationOptions.doctype = doctype
 
+      if (this.options.onDoctypeSyncStart) {
+        this.options.onDoctypeSyncStart(doctype)
+      }
       const res = await startReplication(
         pouch,
         replicationOptions,
@@ -205,8 +208,11 @@ class PouchManager {
         localStorage.destroyDoctypeLastSequence(doctype)
       }
 
-      this.addSyncedDoctype(doctype)
+      this.updateSyncInfo(doctype)
       this.checkToWarmupDoctype(doctype, replicationOptions)
+      if (this.options.onDoctypeSyncEnd) {
+        this.options.onDoctypeSyncEnd(doctype)
+      }
       return res
     })
 
@@ -264,19 +270,22 @@ class PouchManager {
     return this.pouches[doctype]
   }
 
-  addSyncedDoctype(doctype) {
-    if (!this.isSynced(doctype)) {
-      this.syncedDoctypes.push(doctype)
-      localStorage.persistSyncedDoctypes(this.syncedDoctypes)
-    }
+  updateSyncInfo(doctype) {
+    this.syncedDoctypes[doctype] = { date: new Date().toISOString() }
+    localStorage.persistSyncedDoctypes(this.syncedDoctypes)
+  }
+
+  getSyncInfo(doctype) {
+    return this.syncedDoctypes && this.syncedDoctypes[doctype]
   }
 
   isSynced(doctype) {
-    return this.syncedDoctypes.includes(doctype)
+    const info = this.getSyncInfo(doctype)
+    return info ? !!info.date : false
   }
 
   clearSyncedDoctypes() {
-    this.syncedDoctypes = []
+    this.syncedDoctypes = {}
     localStorage.destroySyncedDoctypes()
   }
 

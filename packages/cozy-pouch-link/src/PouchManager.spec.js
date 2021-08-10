@@ -7,7 +7,7 @@
 import PouchManager from './PouchManager'
 import * as mocks from './__tests__/mocks'
 import { Q } from 'cozy-client'
-
+import MockDate from 'mockdate'
 import { isMobileApp } from 'cozy-device-helper'
 
 jest.mock('pouchdb-browser')
@@ -247,16 +247,18 @@ describe('PouchManager', () => {
 
   describe('getPersistedSyncedDoctypes', () => {
     it('should return an empty array if local storage is empty', () => {
-      expect(ls.getPersistedSyncedDoctypes()).toEqual([])
+      expect(ls.getPersistedSyncedDoctypes()).toEqual({})
     })
 
     it('should return an empty array if local storage contains something that is not an array', () => {
       localStorage.__STORE__[ls.LOCALSTORAGE_SYNCED_KEY] = 'true'
-      expect(ls.getPersistedSyncedDoctypes()).toEqual([])
+      expect(ls.getPersistedSyncedDoctypes()).toEqual({})
     })
 
     it('should return the list of doctypes if local storage contains one', () => {
-      const persistedSyncedDoctypes = ['io.cozy.todos']
+      const persistedSyncedDoctypes = {
+        'io.cozy.todos': { date: '2021-08-11T13:48:06.085Z' }
+      }
       localStorage.__STORE__[ls.LOCALSTORAGE_SYNCED_KEY] = JSON.stringify(
         persistedSyncedDoctypes
       )
@@ -276,19 +278,29 @@ describe('PouchManager', () => {
     })
   })
 
-  describe('addSyncedDoctype', () => {
+  describe('updateSyncInfo', () => {
+    beforeAll(() => {
+      MockDate.set('2021-08-01T00:00:00.000Z')
+    })
+
+    afterAll(() => {
+      MockDate.reset()
+    })
+
     it('should add the doctype to synced doctypes', () => {
       const manager = new PouchManager(['io.cozy.todos'], managerOptions)
-      manager.addSyncedDoctype('io.cozy.todos')
-
-      expect(manager.syncedDoctypes).toEqual(['io.cozy.todos'])
+      manager.updateSyncInfo('io.cozy.todos')
+      expect(Object.keys(manager.syncedDoctypes)).toEqual(['io.cozy.todos'])
     })
 
     it('should persist the new synced doctypes list', () => {
       const manager = new PouchManager(['io.cozy.todos'], managerOptions)
-      manager.addSyncedDoctype('io.cozy.todos')
+
+      manager.updateSyncInfo('io.cozy.todos')
       expect(localStorage.__STORE__[ls.LOCALSTORAGE_SYNCED_KEY]).toEqual(
-        JSON.stringify(['io.cozy.todos'])
+        JSON.stringify({
+          'io.cozy.todos': { date: '2021-08-01T00:00:00.000Z' }
+        })
       )
     })
   })
@@ -301,7 +313,7 @@ describe('PouchManager', () => {
     })
 
     it('should return true if the doctype is synced', () => {
-      manager.addSyncedDoctype('io.cozy.todos')
+      manager.updateSyncInfo('io.cozy.todos')
       expect(manager.isSynced('io.cozy.todos')).toBe(true)
     })
 
@@ -319,9 +331,11 @@ describe('PouchManager', () => {
       )
     })
     it('should reset syncedDoctypes', () => {
-      manager.syncedDoctypes = ['io.cozy.todos']
+      manager.syncedDoctypes = {
+        'io.cozy.todos': { date: '2021-08-11T13:48:06.085Z' }
+      }
       manager.clearSyncedDoctypes()
-      expect(manager.syncedDoctypes).toEqual([])
+      expect(manager.syncedDoctypes).toEqual({})
     })
   })
 

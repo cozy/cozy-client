@@ -38,9 +38,6 @@ and on demand immediately.</p>
 <dt><a href="#destroyAllLastReplicatedDocID">destroyAllLastReplicatedDocID</a></dt>
 <dd><p>Destroy all the replicated doc id</p>
 </dd>
-<dt><a href="#persistSyncedDoctypes">persistSyncedDoctypes</a></dt>
-<dd><p>Persist the synchronized doctypes</p>
-</dd>
 <dt><a href="#getPersistedSyncedDoctypes">getPersistedSyncedDoctypes</a> ⇒ <code>object</code></dt>
 <dd><p>Get the persisted doctypes</p>
 </dd>
@@ -104,8 +101,13 @@ starts from there in case the process stops before the end.</p>
 ## Typedefs
 
 <dl>
+<dt><a href="#SyncStatus">SyncStatus</a> : <code>&quot;idle&quot;</code> | <code>&quot;replicating&quot;</code></dt>
+<dd></dd>
 <dt><a href="#MigrationParams">MigrationParams</a> : <code>object</code></dt>
 <dd><p>Migrate the current adapter</p>
+</dd>
+<dt><a href="#SyncInfo">SyncInfo</a> : <code>object</code></dt>
+<dd><p>Persist the synchronized doctypes</p>
 </dd>
 <dt><a href="#MigrationParams">MigrationParams</a> ⇒ <code>object</code></dt>
 <dd><p>Migrate a PouchDB database to a new adapter.</p>
@@ -123,6 +125,7 @@ to respond to queries and mutations.
 
 * [PouchLink](#PouchLink)
     * [new PouchLink([opts])](#new_PouchLink_new)
+    * [.replicationStatus](#PouchLink+replicationStatus) : <code>Record.&lt;string, SyncStatus&gt;</code>
     * [.handleOnSync()](#PouchLink+handleOnSync)
     * [.startReplication()](#PouchLink+startReplication) ⇒ <code>void</code>
     * [.stopReplication()](#PouchLink+stopReplication) ⇒ <code>void</code>
@@ -142,6 +145,12 @@ constructor - Initializes a new PouchLink
 | opts.doctypes | <code>Array.&lt;string&gt;</code> |  | Doctypes to replicate |
 | opts.doctypesReplicationOptions | <code>Array.&lt;object&gt;</code> |  | A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote") |
 
+<a name="PouchLink+replicationStatus"></a>
+
+### pouchLink.replicationStatus : <code>Record.&lt;string, SyncStatus&gt;</code>
+- Stores replication states per doctype
+
+**Kind**: instance property of [<code>PouchLink</code>](#PouchLink)  
 <a name="PouchLink+handleOnSync"></a>
 
 ### pouchLink.handleOnSync()
@@ -338,17 +347,6 @@ Get the last replicated doc id for a doctype
 Destroy all the replicated doc id
 
 **Kind**: global constant  
-<a name="persistSyncedDoctypes"></a>
-
-## persistSyncedDoctypes
-Persist the synchronized doctypes
-
-**Kind**: global constant  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| syncedDoctypes | <code>object</code> | The sync doctypes |
-
 <a name="getPersistedSyncedDoctypes"></a>
 
 ## getPersistedSyncedDoctypes ⇒ <code>object</code>
@@ -523,6 +521,10 @@ Get the URI prefix
 | --- | --- |
 | query | <code>QueryDefinition</code> | 
 
+<a name="SyncStatus"></a>
+
+## SyncStatus : <code>&quot;idle&quot;</code> \| <code>&quot;replicating&quot;</code>
+**Kind**: global typedef  
 <a name="MigrationParams"></a>
 
 ## MigrationParams : <code>object</code>
@@ -542,6 +544,23 @@ Migrate the current adapter
 | [toAdapter] | <code>string</code> | The new adapter type, e.g. 'indexeddb' |
 | [url] | <code>string</code> | The Cozy URL |
 | [plugins] | <code>Array.&lt;object&gt;</code> | The PouchDB plugins |
+
+<a name="SyncInfo"></a>
+
+## SyncInfo : <code>object</code>
+Persist the synchronized doctypes
+
+**Kind**: global typedef  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| syncedDoctypes | <code>Record.&lt;string, SyncInfo&gt;</code> | The sync doctypes |
+
+**Properties**
+
+| Name | Type |
+| --- | --- |
+| Date | <code>string</code> | 
 
 <a name="MigrationParams"></a>
 

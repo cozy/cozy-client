@@ -49,7 +49,10 @@ export const destroyAllLastReplicatedDocID = () => {
 /**
  * Persist the synchronized doctypes
  *
- * @param {object} syncedDoctypes - The sync doctypes
+ * @typedef {object} SyncInfo
+ * @property {string} Date
+ *
+ * @param {Record<string, SyncInfo>} syncedDoctypes - The sync doctypes
  */
 export const persistSyncedDoctypes = syncedDoctypes => {
   window.localStorage.setItem(
@@ -65,13 +68,11 @@ export const persistSyncedDoctypes = syncedDoctypes => {
  */
 export const getPersistedSyncedDoctypes = () => {
   const item = window.localStorage.getItem(LOCALSTORAGE_SYNCED_KEY)
-
-  // We check if the item in local storage is an array because we previously stored a boolean
-  if (!item || !Array.isArray(JSON.parse(item))) {
-    return []
+  const parsed = item ? JSON.parse(item) : {}
+  if (typeof parsed !== 'object') {
+    return {}
   }
-
-  return JSON.parse(item)
+  return parsed
 }
 
 /**
