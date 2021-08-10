@@ -30,20 +30,42 @@ const DEFAULT_PANEL_HEIGHT = 300
  * @type {Object.<string, React.CSSProperties>}
  * @private
  */
-const styles = {
+const useStyles = makeStyles(theme => ({
   fab: { position: 'fixed', left: '1rem', bottom: '1rem', zIndex: ABOVE_ALL },
   panel: {
     position: 'fixed',
     bottom: 0,
     left: 0,
     right: 0,
-    zIndex: ABOVE_ALL
+    zIndex: ABOVE_ALL,
   },
-  closeIcon: { position: 'absolute', top: '0.5rem', right: '0.5rem' },
-  panelContainer: { height: '100%', flexWrap: 'nowrap' },
-  panelRight: { height: '100%', overflow: 'scroll', flexGrow: 1 },
+  closeIcon: {
+      position: 'absolute',
+      top: '0',
+      right: '0.5rem',
+      transform: 'translateY(-66%)',
+      background: 'white',
+      border: `2px solid ${theme.palette.primary.main}`,
+      boxShadow: '2px 2px 2px rgba(0, 0, 0, 0.5)',
+      zIndex: 1,
+      '&:hover': {
+        background: '#efefef'
+      }
+    },
+  panelContainer: {
+    background: 'white',
+    height: '100%',
+    flexWrap: 'nowrap',
+    overflowX: 'scroll'
+  },
+  panelRight: {
+    height: '100%',
+    overflowY: 'scroll',
+    flexGrow: 1,
+    minWidth: 150
+  },
   mono: { fontFamily: 'monospace' }
-}
+}))
 
 const defaultPanels = [
   {
@@ -144,19 +166,22 @@ const DevToolsPanel = props => {
     document.addEventListener('mouseup', unsub)
   }
 
+  const classes = useStyles()
+
   return (
     <CozyTheme variant="normal">
       <Slide direction="up" in={open} mountOnEnter unmountOnExit>
         <Paper
           elevation={12}
           ref={ref}
-          style={{ ...props.style, height: panelHeight }}
+          className={props.className}
+          style={{ height: panelHeight }}
         >
           <ResizeBar onMouseDown={handleDragStart} />
-          <IconButton style={styles.closeIcon} onClick={props.onClose}>
+          <IconButton className={classes.closeIcon} onClick={props.onClose}>
             <Icon icon={CrossMedium} size={12} />
           </IconButton>
-          <Grid container style={styles.panelContainer}>
+          <Grid container className={classes.panelContainer}>
             <ListGridItem>
               <Box p={1}>
                 <Typography variant="subtitle1">Cozy Devtools</Typography>
@@ -180,17 +205,18 @@ const DevToolsPanel = props => {
 }
 
 const DevTools = ({ panels }) => {
+  const classes = useStyles()
   const [open, setOpen] = useLocalState('cozydevtools__open', false)
   const handleToggle = useCallback(() => setOpen(state => !state), [setOpen])
   return (
     <>
-      <Fab color="primary" onClick={handleToggle} style={styles.fab}>
+      <Fab color="primary" onClick={handleToggle} className={classes.fab}>
         <Icon icon={GearIcon} />
       </Fab>
 
       <DevToolsPanel
         open={open}
-        style={styles.panel}
+        className={classes.panel}
         onClose={handleToggle}
         panels={panels}
       />
