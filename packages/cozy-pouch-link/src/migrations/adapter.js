@@ -20,7 +20,7 @@ export const migratePouch = async ({ dbName, fromAdapter, toAdapter }) => {
     adapter: fromAdapter,
     location: 'default'
   })
-  const newdbName = getNewIndexedDBDatabaseName(oldPouch.name)
+  const newdbName = getNewIndexedDBDatabaseName(dbName)
   const newPouch = new PouchDB(newdbName, {
     adapter: toAdapter,
     location: 'default'
