@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [23.20.0](https://github.com/cozy/cozy-client/compare/v23.19.3...v23.20.0) (2021-08-10)
+
+
+### Features
+
+* Update pouchdb-browser ([94ce6df](https://github.com/cozy/cozy-client/commit/94ce6df5797ec09a436b50723aef11bdd1e9dce6))
+
+
+
+
+
 ## [23.19.3](https://github.com/cozy/cozy-client/compare/v23.19.2...v23.19.3) (2021-08-10)
 
 **Note:** Version bump only for package cozy-client
