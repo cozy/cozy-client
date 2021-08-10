@@ -126,7 +126,7 @@ const DevToolsPanel = props => {
     }
     return defaultPanels
   }, [userPanels])
-  const [currentPanel, setCurrentPanel] = useState('queries')
+  const [currentPanel, setCurrentPanel] = useLocalState('cozydevtools__panel', 'queries')
   const ref = useRef()
 
   const [panelHeight, setPanelHeight] = useLocalState(
