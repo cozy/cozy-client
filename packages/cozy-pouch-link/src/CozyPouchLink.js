@@ -62,6 +62,10 @@ const normalizeAll = (docs, doctype) => {
 }
 
 /**
+ * @typedef {"idle"|"replicating"} SyncStatus
+ */
+
+/**
  * Link to be passed to a `CozyClient` instance to support CouchDB. It instantiates
  * PouchDB collections for each doctype that it supports and knows how
  * to respond to queries and mutations.
@@ -90,6 +94,9 @@ class PouchLink extends CozyLink {
     this.doctypes = doctypes
     this.doctypesReplicationOptions = doctypesReplicationOptions
     this.indexes = {}
+
+    /** @type {Record<string, SyncStatus>} - Stores replication states per doctype */
+    this.replicationStatus = this.replicationStatus || {}
   }
 
   getReplicationURL(doctype) {
@@ -188,6 +195,8 @@ class PouchLink extends CozyLink {
       doctypesReplicationOptions: this.doctypesReplicationOptions,
       onError: err => this.onSyncError(err),
       onSync: this.handleOnSync.bind(this),
+      onDoctypeSyncStart: this.handleDoctypeSyncStart.bind(this),
+      onDoctypeSyncEnd: this.handleDoctypeSyncEnd.bind(this),
       prefix,
       executeQuery: this.executeQuery.bind(this)
     })
@@ -225,6 +234,16 @@ class PouchLink extends CozyLink {
       logger.info('Pouch synced')
     }
     this.client.emit('pouchlink:sync:end')
+  }
+
+  handleDoctypeSyncStart(doctype) {
+    this.replicationStatus[doctype] = 'replicating'
+    this.client.emit('pouchlink:doctypesync:start', doctype)
+  }
+
+  handleDoctypeSyncEnd(doctype) {
+    this.replicationStatus[doctype] = 'idle'
+    this.client.emit('pouchlink:doctypesync:end', doctype)
   }
 
   /**
@@ -279,6 +298,10 @@ class PouchLink extends CozyLink {
         this.options.onSyncError.call(this, error)
       }
     }
+  }
+
+  getSyncInfo(doctype) {
+    return this.pouches.getSyncInfo(doctype)
   }
 
   getPouch(doctype) {

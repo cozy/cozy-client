@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useRef } from 'react'
+import React, { useCallback, useMemo, useRef } from 'react'
 
 import Fab from '@material-ui/core/Fab'
 import Paper from '@material-ui/core/Paper'
@@ -26,32 +26,33 @@ import useLocalState from './useLocalState'
 const ABOVE_ALL = 1000000
 const DEFAULT_PANEL_HEIGHT = 300
 
-/**
- * @type {Object.<string, React.CSSProperties>}
- * @private
- */
 const useStyles = makeStyles(theme => ({
-  fab: { position: 'fixed', left: '1rem', bottom: '1rem', zIndex: ABOVE_ALL },
+  fab: {
+    position: 'fixed',
+    left: '1rem',
+    bottom: '1rem',
+    zIndex: ABOVE_ALL
+  },
   panel: {
     position: 'fixed',
     bottom: 0,
     left: 0,
     right: 0,
-    zIndex: ABOVE_ALL,
+    zIndex: ABOVE_ALL
   },
   closeIcon: {
-      position: 'absolute',
-      top: '0',
-      right: '0.5rem',
-      transform: 'translateY(-66%)',
-      background: 'white',
-      border: `2px solid ${theme.palette.primary.main}`,
-      boxShadow: '2px 2px 2px rgba(0, 0, 0, 0.5)',
-      zIndex: 1,
-      '&:hover': {
-        background: '#efefef'
-      }
-    },
+    position: 'absolute',
+    top: '0',
+    right: '0.5rem',
+    transform: 'translateY(-66%)',
+    background: 'white',
+    border: `2px solid ${theme.palette.primary.main}`,
+    boxShadow: '2px 2px 2px rgba(0, 0, 0, 0.5)',
+    zIndex: 1,
+    '&:hover': {
+      background: '#efefef'
+    }
+  },
   panelContainer: {
     background: 'white',
     height: '100%',
@@ -126,7 +127,10 @@ const DevToolsPanel = props => {
     }
     return defaultPanels
   }, [userPanels])
-  const [currentPanel, setCurrentPanel] = useLocalState('cozydevtools__panel', 'queries')
+  const [currentPanel, setCurrentPanel] = useLocalState(
+    'cozydevtools__panel',
+    'queries'
+  )
   const ref = useRef()
 
   const [panelHeight, setPanelHeight] = useLocalState(
