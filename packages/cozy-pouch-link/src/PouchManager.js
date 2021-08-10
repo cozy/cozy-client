@@ -298,6 +298,7 @@ class PouchManager {
       localStorage.persistWarmedUpQueries(this.warmedUpQueries)
       logger.log('PouchManager: warmupQueries for ' + doctype + ' are done')
     } catch (err) {
+      logger.error('PouchManager: Could not warm up queries', err)
       delete this.warmedUpQueries[doctype]
     }
   }
