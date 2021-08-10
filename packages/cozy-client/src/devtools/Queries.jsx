@@ -346,7 +346,7 @@ const QueryPanels = () => {
           </PanelContent>
         ) : null}
       </ListGridItem>
-      <Box clone p={1}>
+      <Box clone p={1} minWidth={400}>
         <Grid item style={styles.panelRight}>
           <Typography variant="subtitle1">{selectedQuery}</Typography>
           {selectedQuery ? <QueryStateView name={selectedQuery} /> : null}
