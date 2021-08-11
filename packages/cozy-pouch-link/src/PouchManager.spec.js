@@ -246,16 +246,16 @@ describe('PouchManager', () => {
   })
 
   describe('getPersistedSyncedDoctypes', () => {
-    it('Should return an empty array if local storage is empty', () => {
+    it('should return an empty array if local storage is empty', () => {
       expect(ls.getPersistedSyncedDoctypes()).toEqual([])
     })
 
-    it('Should return an empty array if local storage contains something that is not an array', () => {
+    it('should return an empty array if local storage contains something that is not an array', () => {
       localStorage.__STORE__[ls.LOCALSTORAGE_SYNCED_KEY] = 'true'
       expect(ls.getPersistedSyncedDoctypes()).toEqual([])
     })
 
-    it('Should return the list of doctypes if local storage contains one', () => {
+    it('should return the list of doctypes if local storage contains one', () => {
       const persistedSyncedDoctypes = ['io.cozy.todos']
       localStorage.__STORE__[ls.LOCALSTORAGE_SYNCED_KEY] = JSON.stringify(
         persistedSyncedDoctypes
@@ -265,7 +265,7 @@ describe('PouchManager', () => {
   })
 
   describe('persistSyncedDoctypes', () => {
-    it('Should put the list of synced doctypes in localStorage', () => {
+    it('should put the list of synced doctypes in localStorage', () => {
       const manager = new PouchManager(['io.cozy.todos'], managerOptions)
       manager.syncedDoctypes = ['io.cozy.todos']
       ls.persistSyncedDoctypes(manager.syncedDoctypes)
@@ -277,14 +277,14 @@ describe('PouchManager', () => {
   })
 
   describe('addSyncedDoctype', () => {
-    it('Should add the doctype to synced doctypes', () => {
+    it('should add the doctype to synced doctypes', () => {
       const manager = new PouchManager(['io.cozy.todos'], managerOptions)
       manager.addSyncedDoctype('io.cozy.todos')
 
       expect(manager.syncedDoctypes).toEqual(['io.cozy.todos'])
     })
 
-    it('Should persist the new synced doctypes list', () => {
+    it('should persist the new synced doctypes list', () => {
       const manager = new PouchManager(['io.cozy.todos'], managerOptions)
       manager.addSyncedDoctype('io.cozy.todos')
       expect(localStorage.__STORE__[ls.LOCALSTORAGE_SYNCED_KEY]).toEqual(
@@ -300,26 +300,25 @@ describe('PouchManager', () => {
       manager = new PouchManager(['io.cozy.todos'], managerOptions)
     })
 
-    it('Should return true if the doctype is synced', () => {
+    it('should return true if the doctype is synced', () => {
       manager.addSyncedDoctype('io.cozy.todos')
-
       expect(manager.isSynced('io.cozy.todos')).toBe(true)
     })
 
-    it('Should return false if the doctype is not synced', () => {
+    it('should return false if the doctype is not synced', () => {
       expect(manager.isSynced('io.cozy.todos')).toBe(false)
     })
   })
 
   describe('destroySyncedDoctypes', () => {
-    it('Should destroy the local storage item', () => {
+    it('should destroy the local storage item', () => {
       ls.destroySyncedDoctypes()
 
       expect(localStorage.removeItem).toHaveBeenLastCalledWith(
         ls.LOCALSTORAGE_SYNCED_KEY
       )
     })
-    it('Should reset syncedDoctypes', () => {
+    it('should reset syncedDoctypes', () => {
       manager.syncedDoctypes = ['io.cozy.todos']
       manager.clearSyncedDoctypes()
       expect(manager.syncedDoctypes).toEqual([])
@@ -327,11 +326,11 @@ describe('PouchManager', () => {
   })
 
   describe('getPersistedWarmedUpQueriess', () => {
-    it('Should return an empty object if local storage is empty', () => {
+    it('should return an empty object if local storage is empty', () => {
       expect(ls.getPersistedWarmedUpQueries()).toEqual({})
     })
 
-    it('Should return the list of queries if local storage contains ones', () => {
+    it('should return the list of queries if local storage contains ones', () => {
       const persistedQueries = [query().options.as]
       localStorage.__STORE__[
         ls.LOCALSTORAGE_WARMUPEDQUERIES_KEY
@@ -341,7 +340,7 @@ describe('PouchManager', () => {
   })
 
   describe('persistWarmedUpQueries', () => {
-    it('Should put the list of warmedUpQueries in localStorage', () => {
+    it('should put the list of warmedUpQueries in localStorage', () => {
       const manager = new PouchManager(['io.cozy.todos'], managerOptions)
       manager.warmedUpQueries = { 'io.cozy.todos': ['query1', 'query2'] }
       ls.persistWarmedUpQueries(manager.warmedUpQueries)
@@ -359,7 +358,7 @@ describe('PouchManager', () => {
       manager = new PouchManager(['io.cozy.todos'], managerOptions)
     })
 
-    it('Should return true if all the queries are warmuped', () => {
+    it('should return true if all the queries are warmuped', () => {
       manager.warmedUpQueries = {
         'io.cozy.todos': [query1().options.as, query2().options.as]
       }
@@ -370,7 +369,7 @@ describe('PouchManager', () => {
       ).toBe(true)
     })
 
-    it('Should return false if at least one query is not warmuped', () => {
+    it('should return false if at least one query is not warmuped', () => {
       manager.warmedUpQueries = {
         'io.cozy.todos': [query2().options.as]
       }
@@ -381,7 +380,7 @@ describe('PouchManager', () => {
       ).toBe(false)
     })
 
-    it('Should return false if the queries are not been done', () => {
+    it('should return false if the queries are not been done', () => {
       expect(
         manager.areQueriesWarmedUp('io.cozy.todos', [query1(), query2()])
       ).toBe(false)
@@ -389,14 +388,14 @@ describe('PouchManager', () => {
   })
 
   describe('clearWarmedupQueries', () => {
-    it('Should clear the local storage item', () => {
+    it('should clear the local storage item', () => {
       manager.clearWarmedUpQueries()
 
       expect(localStorage.removeItem).toHaveBeenLastCalledWith(
         ls.LOCALSTORAGE_WARMUPEDQUERIES_KEY
       )
     })
-    it('Should reset warmedupQueries', () => {
+    it('should reset warmedupQueries', () => {
       manager.warmedUpQueries = {
         'io.cozy.todos': [query2().options.as]
       }
