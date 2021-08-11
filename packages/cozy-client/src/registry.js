@@ -85,7 +85,7 @@ class Registry {
    *
    * @param  {object} params - Fetching parameters
    * @param  {string} params.type - "webapp" or "konnector"
-   * @param  {string} params.channel - "dev"/"beta"/"stable"
+   * @param  {RegistryAppChannel} params.channel - The channel of the apps to fetch
    * @param  {string} params.limit - maximum number of fetched apps - defaults to 200
    *
    * @returns {Promise<Array<RegistryApp>>}
@@ -141,7 +141,9 @@ class Registry {
    */
   fetchAppLatestVersion(params) {
     if (!params.slug || !params.channel) {
-      throw new Error('Need to pass a slug and channel param to use fetchAppLatestVersion')
+      throw new Error(
+        'Need to pass a slug and channel param to use fetchAppLatestVersion'
+      )
     }
     const { slug, channel } = params
     return this.client.stackClient.fetchJSON(
