@@ -49,6 +49,21 @@ Shows all the current flags and allow to modify them.
 Show library versions based on the global __VERSIONS__ variable that
 should be injected by the app. If it is defined, the panel will be blank.
 
+
+#### PouchLink
+
+If you use the PouchLink to synchronize your data to PouchDB, you can use
+the optional devtool PouchLink devtool panel. Since PouchDB is optional,
+it is not available by default and you need to explicitly tell the Devtools
+to display it.
+
+```jsx
+import PouchDevtools from 'cozy-client/dist/devtools/Pouch'
+
+<CozyDevTools panels={{ id: 'pouch', Component: PouchDevtools}} />
+```
+
+
 ### Ideas for next features
 
 - Performance tips in query panels
