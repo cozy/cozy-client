@@ -22,7 +22,8 @@ import { getDatabaseName, getPrefix } from './utils'
 import {
   getPersistedSyncedDoctypes,
   persistAdapterName,
-  getAdapterName
+  getAdapterName,
+  destroyWarmedUpQueries
 } from './localStorage'
 
 PouchDB.plugin(PouchDBFind)
@@ -136,6 +137,7 @@ class PouchLink extends CozyLink {
         const dbName = getDatabaseName(prefix, doctype)
 
         await migratePouch({ dbName, fromAdapter, toAdapter })
+        destroyWarmedUpQueries() // force recomputing indexes
       }
       persistAdapterName('indexeddb')
     } catch (err) {
