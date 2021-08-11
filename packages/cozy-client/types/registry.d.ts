@@ -38,14 +38,14 @@ declare class Registry {
      *
      * @param  {object} params - Fetching parameters
      * @param  {string} params.type - "webapp" or "konnector"
-     * @param  {string} params.channel - "dev"/"beta"/"stable"
+     * @param  {RegistryAppChannel} params.channel - The channel of the apps to fetch
      * @param  {string} params.limit - maximum number of fetched apps - defaults to 200
      *
      * @returns {Promise<Array<RegistryApp>>}
      */
     fetchApps(params: {
         type: string;
-        channel: string;
+        channel: RegistryAppChannel;
         limit: string;
     }): Promise<Array<RegistryApp>>;
     /**

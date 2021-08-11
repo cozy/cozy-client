@@ -87,7 +87,7 @@ Fetch at most 200 apps from the channel
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `params` | `Object` | Fetching parameters |
-| `params.channel` | `string` | "dev"/"beta"/"stable" |
+| `params.channel` | `RegistryAppChannel` | The channel of the apps to fetch |
 | `params.limit` | `string` | maximum number of fetched apps - defaults to 200 |
 | `params.type` | `string` | "webapp" or "konnector" |
 
