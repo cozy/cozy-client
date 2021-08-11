@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [23.21.0](https://github.com/cozy/cozy-client/compare/v23.20.0...v23.21.0) (2021-08-11)
+
+
+### Bug Fixes
+
+* Avoid memory leak ([0f276c2](https://github.com/cozy/cozy-client/commit/0f276c2550584f7662277206251c970ad94c2b80))
+
+
+### Features
+
+* Adapter migration ([36c3c7e](https://github.com/cozy/cozy-client/commit/36c3c7ea9e1eb49d4c7f329be7b32a457276e538))
+* Do not reload page after migration ([fb4a2e2](https://github.com/cozy/cozy-client/commit/fb4a2e2d4f6727cbf6780cae2c5ab53927253dfa))
+* Recompute indexes after migration ([2330592](https://github.com/cozy/cozy-client/commit/2330592d61ec4bb6b3dc1ae394b5513eb68b6899))
+* Simpler API ([e73fb42](https://github.com/cozy/cozy-client/commit/e73fb42c7bfc3db49f9ac0bd56b6eee3bd57dc9c))
+
+
+
+
+
 # [23.20.0](https://github.com/cozy/cozy-client/compare/v23.19.3...v23.20.0) (2021-08-10)
 
 
