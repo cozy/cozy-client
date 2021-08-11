@@ -140,6 +140,9 @@ class Registry {
    * @returns {RegistryApp}
    */
   fetchAppLatestVersion(params) {
+    if (!params.slug || !params.channel) {
+      throw new Error('Need to pass a slug and channel param to use fetchAppLatestVersion')
+    }
     const { slug, channel } = params
     return this.client.stackClient.fetchJSON(
       'GET',
