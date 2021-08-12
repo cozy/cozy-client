@@ -122,12 +122,23 @@ describe('registry api', () => {
     })
   })
 
-  describe('fetchAppLatestVersion', () => {
-    it('should call the correct route', async () => {
-      await api.fetchAppLatestVersion({ channel: 'stable', slug: 'ameli' })
+  describe('fetchAppVersion', () => {
+    it('should call the correct route when a channel is given', async () => {
+      await api.fetchAppVersion({ channel: 'stable', slug: 'ameli' })
       expect(fetchJSON).toHaveBeenCalledWith(
         'GET',
         '/registry/ameli/stable/latest'
+      )
+    })
+    it('should call the correct route when a specific version is given', async () => {
+      await api.fetchAppVersion({ version: '1.1.1', slug: 'mgen' })
+      expect(fetchJSON).toHaveBeenCalledWith('GET', '/registry/mgen/1.1.1')
+    })
+    it('should call the correct route when neither a version or a channel is given', async () => {
+      await api.fetchAppVersion({ slug: 'impots' })
+      expect(fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/registry/impots/stable/latest'
       )
     })
   })
