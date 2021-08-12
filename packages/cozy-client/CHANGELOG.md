@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [23.22.0](https://github.com/cozy/cozy-client/compare/v23.21.0...v23.22.0) (2021-08-12)
+
+
+### Features
+
+* Add a devtool panel for pouch ([dca619c](https://github.com/cozy/cozy-client/commit/dca619c25baa2d99b51349ceadb717639ad20e25))
+* Add registry.fetchAppLatestVersion ([100c6ac](https://github.com/cozy/cozy-client/commit/100c6ac95ad25f278a811709ecaef712489ee286))
+* Check presence of parameters in fetchAppLatestVersion ([6536904](https://github.com/cozy/cozy-client/commit/65369048041e2c012d1ba566ab34825b1bff9cad))
+* Devtools opens at last panels that was opened ([6f466a1](https://github.com/cozy/cozy-client/commit/6f466a10352835a2863f697e05bfd2c0734cc826))
+* Nicer close button for dev panel (sits just above the panel) ([9246f40](https://github.com/cozy/cozy-client/commit/9246f408174201e99f09d48f8cb43ecea92d7a57))
+* Queries panels has a minWidth of 400 ([22eb1f5](https://github.com/cozy/cozy-client/commit/22eb1f5ece5b17dd018324bb1350652c78c440e9))
+
+
+
+
+
 ## [23.19.3](https://github.com/cozy/cozy-client/compare/v23.19.2...v23.19.3) (2021-08-10)
 
 **Note:** Version bump only for package cozy-client

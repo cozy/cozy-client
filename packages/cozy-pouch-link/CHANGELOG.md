@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [23.22.0](https://github.com/cozy/cozy-client/compare/v23.21.0...v23.22.0) (2021-08-12)
+
+
+### Features
+
+* Add a devtool panel for pouch ([dca619c](https://github.com/cozy/cozy-client/commit/dca619c25baa2d99b51349ceadb717639ad20e25))
+
+
+
+
+
 # [23.21.0](https://github.com/cozy/cozy-client/compare/v23.20.0...v23.21.0) (2021-08-11)
 
 
