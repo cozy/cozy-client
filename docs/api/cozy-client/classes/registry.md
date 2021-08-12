@@ -16,7 +16,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/registry.js:39](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/registry.js#L39)
+[packages/cozy-client/src/registry.js:38](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/registry.js#L38)
 
 ## Properties
 
@@ -26,7 +26,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/registry.js:43](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/registry.js#L43)
+[packages/cozy-client/src/registry.js:42](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/registry.js#L42)
 
 ## Methods
 
@@ -48,13 +48,13 @@ Fetch the status of a single app on the registry
 
 *Defined in*
 
-[packages/cozy-client/src/registry.js:129](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/registry.js#L129)
+[packages/cozy-client/src/registry.js:128](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/registry.js#L128)
 
 ***
 
-### fetchAppLatestVersion
+### fetchAppVersion
 
-▸ **fetchAppLatestVersion**(`params`): `RegistryApp`
+▸ **fetchAppVersion**(`params`): `RegistryApp`
 
 Fetch the latest version of an app for the given channel and slug
 
@@ -65,6 +65,7 @@ Fetch the latest version of an app for the given channel and slug
 | `params` | `Object` | Fetching parameters |
 | `params.channel` | `RegistryAppChannel` | The channel of the app to fetch |
 | `params.slug` | `string` | The slug of the app to fetch |
+| `params.version` | `string` | The version of the app to fetch. Can also be "latest" |
 
 *Returns*
 
@@ -97,7 +98,7 @@ Fetch at most 200 apps from the channel
 
 *Defined in*
 
-[packages/cozy-client/src/registry.js:93](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/registry.js#L93)
+[packages/cozy-client/src/registry.js:92](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/registry.js#L92)
 
 ***
 
@@ -113,7 +114,7 @@ Fetch the list of apps that are in maintenance mode
 
 *Defined in*
 
-[packages/cozy-client/src/registry.js:118](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/registry.js#L118)
+[packages/cozy-client/src/registry.js:117](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/registry.js#L117)
 
 ***
 
@@ -138,7 +139,7 @@ Accepts the terms if the app has them.
 
 *Defined in*
 
-[packages/cozy-client/src/registry.js:56](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/registry.js#L56)
+[packages/cozy-client/src/registry.js:55](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/registry.js#L55)
 
 ***
 
@@ -160,4 +161,4 @@ Uninstalls an app.
 
 *Defined in*
 
-[packages/cozy-client/src/registry.js:77](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/registry.js#L77)
+[packages/cozy-client/src/registry.js:76](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/registry.js#L76)

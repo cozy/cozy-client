@@ -68,11 +68,13 @@ declare class Registry {
      * @param  {object} params - Fetching parameters
      * @param  {string} params.slug - The slug of the app to fetch
      * @param  {RegistryAppChannel} params.channel - The channel of the app to fetch
+     * @param  {string} params.version - The version of the app to fetch. Can also be "latest"
      *
      * @returns {RegistryApp}
      */
-    fetchAppLatestVersion(params: {
+    fetchAppVersion(params: {
         slug: string;
         channel: RegistryAppChannel;
+        version: string;
     }): RegistryApp;
 }

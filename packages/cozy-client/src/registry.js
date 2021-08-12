@@ -1,6 +1,5 @@
 import get from 'lodash/get'
 import 'url-search-params-polyfill'
-
 import termUtils from './terms'
 import { APP_TYPE } from './constants'
 
@@ -136,20 +135,25 @@ class Registry {
    * @param  {object} params - Fetching parameters
    * @param  {string} params.slug - The slug of the app to fetch
    * @param  {RegistryAppChannel} params.channel - The channel of the app to fetch
+   * @param  {string} params.version - The version of the app to fetch. Can also be "latest"
    *
    * @returns {RegistryApp}
    */
-  fetchAppLatestVersion(params) {
-    if (!params.slug || !params.channel) {
-      throw new Error(
-        'Need to pass a slug and channel param to use fetchAppLatestVersion'
-      )
+  fetchAppVersion(params) {
+    if (!params.slug) {
+      throw new Error('Need to pass a slug to use fetchAppVersion')
     }
-    const { slug, channel } = params
-    return this.client.stackClient.fetchJSON(
-      'GET',
-      `/registry/${slug}/${channel}/latest`
-    )
+    const { slug, channel, version } = params
+    const finalChannel =
+      !channel && (!version || version === 'latest') ? 'stable' : channel
+    let url = `/registry/${slug}/`
+    if (finalChannel) {
+      url += `${finalChannel}/${version || 'latest'}`
+    } else {
+      url += `${version}`
+    }
+
+    return this.client.stackClient.fetchJSON('GET', url)
   }
 }
 
