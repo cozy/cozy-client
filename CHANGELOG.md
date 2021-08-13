@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [24.0.0](https://github.com/cozy/cozy-client/compare/v23.22.0...v24.0.0) (2021-08-13)
+
+
+### Features
+
+* Replace fetchAppLatestVersion by fetchAppVersion ([d705072](https://github.com/cozy/cozy-client/commit/d705072a858430e95579cc27dc7d074fe2912c67))
+
+
+### BREAKING CHANGES
+
+* the fetchAppLatestVersion method won't exist
+anymore, but it is really new and has no sense with the presence of
+fetchAppVersion.
+
+
+
+
+
 # [23.22.0](https://github.com/cozy/cozy-client/compare/v23.21.0...v23.22.0) (2021-08-12)
 
 
