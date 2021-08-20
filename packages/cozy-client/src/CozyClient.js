@@ -32,6 +32,7 @@ import {
   receiveMutationResult,
   receiveMutationError,
   getQueryFromState,
+  getRawQueryFromState,
   getCollectionFromState,
   getDocumentFromState,
   resetState
@@ -916,18 +917,32 @@ client.query(Q('io.cozy.bills'))`)
    * @param  {object} options - Options to the query
    * @returns {Promise<Array>} All documents matching the query
    */
-  async queryAll(queryDefinition, options) {
+  async queryAll(queryDefinition, options = {}) {
+    const queryId =
+      options.as || this.queryIdGenerator.generateId(queryDefinition)
     const documents = []
-    let resp = { next: true }
-
+    let resp = await this.query(queryDefinition, { ...options, as: queryId })
     while (resp && resp.next) {
-      resp = await this.query(
-        queryDefinition.offsetBookmark(resp.bookmark),
-        options
-      )
+      if (resp.bookmark) {
+        resp = await this.query(queryDefinition.offsetBookmark(resp.bookmark), {
+          ...options,
+          as: queryId
+        })
+      } else {
+        const currentResult = getRawQueryFromState(
+          this.store.getState(),
+          queryId
+        )
+        resp = await this.query(
+          queryDefinition.offset(currentResult.data.length),
+          {
+            ...options,
+            as: queryId
+          }
+        )
+      }
       documents.push(...resp.data)
     }
-
     return documents
   }
 
