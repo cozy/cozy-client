@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [24.1.0](https://github.com/cozy/cozy-client/compare/v24.0.0...v24.1.0) (2021-08-23)
+
+
+### Bug Fixes
+
+* Next attribute for Pouch ([556dd99](https://github.com/cozy/cozy-client/commit/556dd99fe0b66af993a9e08b6f658699cbda41b3))
+
+
+### Features
+
+* Add deleted true to a deleted doc with CozyPouchLink ([144be1d](https://github.com/cozy/cozy-client/commit/144be1d4293a1fdf1e4784fb9edbaebc3701cd21))
+* Add doctype specification in warmupQueries error ([b0f6d2f](https://github.com/cozy/cozy-client/commit/b0f6d2feb3a666a9f7e599d7a59d5b3c92f14fad))
+
+
+
+
+
 # [24.0.0](https://github.com/cozy/cozy-client/compare/v23.22.0...v24.0.0) (2021-08-13)
 
 **Note:** Version bump only for package cozy-pouch-link

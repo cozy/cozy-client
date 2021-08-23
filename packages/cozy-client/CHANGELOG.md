@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [24.1.0](https://github.com/cozy/cozy-client/compare/v24.0.0...v24.1.0) (2021-08-23)
+
+
+### Bug Fixes
+
+* QueryAll for CozyPouchLink ([00a54cc](https://github.com/cozy/cozy-client/commit/00a54cc60ac6421c44f31c209c30e4bf6d1f592e))
+
+
+
+
+
 # [24.0.0](https://github.com/cozy/cozy-client/compare/v23.22.0...v24.0.0) (2021-08-13)
 
 
