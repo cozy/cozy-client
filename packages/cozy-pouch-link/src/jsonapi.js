@@ -26,11 +26,12 @@ export const fromPouchResult = (res, withRows, doctype) => {
       ? res.rows.map(row => row.doc).filter(filterDeletedDocumentsFromRows)
       : res.docs
     const offset = res.offset || 0
+
     return {
       data: docs.map(doc => normalizeDoc(doc, doctype)),
       meta: { count: docs.length },
       skip: offset,
-      next: offset + docs.length <= res.total_rows || docs.length >= res.limit
+      next: offset + docs.length < res.total_rows || docs.length >= res.limit
     }
   } else {
     return {

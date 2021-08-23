@@ -72,10 +72,19 @@ describe('jsonapi', () => {
       expect(normalized.next).toBe(false)
     })
 
-    it('paginates when there is a total_rows field', () => {
+    it('paginates when there is a total_rows field greater than the rows number', () => {
       const res = { rows: [BART_FIXTURE], total_rows: 3 }
       const normalized = fromPouchResult(res, true, 'io.cozy.simpsons')
       expect(normalized.next).toBe(true)
+    })
+
+    it("does't paginates when there is a total_rows field equal to the rows number", () => {
+      const res = {
+        rows: [BART_FIXTURE, MARGE_FIXTURE, LISA_FIXTURE],
+        total_rows: 3
+      }
+      const normalized = fromPouchResult(res, true, 'io.cozy.simpsons')
+      expect(normalized.next).toBe(false)
     })
 
     it('paginates when there is a limit field', () => {
