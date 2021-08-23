@@ -609,4 +609,21 @@ describe('CozyPouchLink', () => {
       spyIndex.mockRestore()
     })
   })
+
+  describe('deleteDocument', () => {
+    it('should add _rev and _deleted prop to a deleted document', async () => {
+      await setup()
+      const document = { id: 'docId', rev: '123', ok: true }
+      link.dbMethod = jest.fn().mockReturnValue(document)
+      const res = await link.deleteDocument({ document })
+
+      expect(res).toMatchObject({
+        id: 'docId',
+        _id: 'docId',
+        rev: '123',
+        _rev: '123',
+        _deleted: true
+      })
+    })
+  })
 })

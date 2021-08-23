@@ -539,7 +539,13 @@ class PouchLink extends CozyLink {
 
   async deleteDocument(mutation) {
     const res = await this.dbMethod('remove', mutation)
-    return parseMutationResult(mutation.document, res)
+    const document = {
+      ...mutation.document,
+      _id: res.id,
+      _rev: res.rev,
+      _deleted: true
+    }
+    return parseMutationResult(document, res)
   }
 
   async dbMethod(method, mutation) {
