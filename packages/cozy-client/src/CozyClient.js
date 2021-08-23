@@ -32,6 +32,7 @@ import {
   receiveMutationResult,
   receiveMutationError,
   getQueryFromState,
+  getRawQueryFromState,
   getCollectionFromState,
   getDocumentFromState,
   resetState
@@ -913,21 +914,34 @@ client.query(Q('io.cozy.bills'))`)
    * result in a lot of network requests.
    *
    * @param  {QueryDefinition} queryDefinition - Definition to be executed
-   * @param  {object} options - Options to the query
-   * @returns {Promise<Array>} All documents matching the query
+   * @param {QueryOptions} [options] - Options
+   * @returns {Promise<QueryResult>} All documents matching the query
    */
-  async queryAll(queryDefinition, options) {
-    const documents = []
-    let resp = { next: true }
+  async queryAll(queryDefinition, options = {}) {
+    const queryId =
+      options.as || this.queryIdGenerator.generateId(queryDefinition)
+    const mergedOptions = { ...options, as: queryId }
+    let resp = await this.query(queryDefinition, mergedOptions)
+    const documents = resp.data
 
     while (resp && resp.next) {
-      resp = await this.query(
-        queryDefinition.offsetBookmark(resp.bookmark),
-        options
-      )
+      if (resp.bookmark) {
+        resp = await this.query(
+          queryDefinition.offsetBookmark(resp.bookmark),
+          mergedOptions
+        )
+      } else {
+        const currentResult = getRawQueryFromState(
+          this.store.getState(),
+          queryId
+        )
+        resp = await this.query(
+          queryDefinition.offset(currentResult.data.length),
+          mergedOptions
+        )
+      }
       documents.push(...resp.data)
     }
-
     return documents
   }
 
