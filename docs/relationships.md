@@ -10,7 +10,7 @@ Each relation is an object with a `data` property, containing either **one refer
 
 A reference is an object containing at least:
 * `_type`:  the name of the referenced doctype, e.g. `io.cozy.contacts`
-* `_id`:  the id of the referenced document, e.g. ``.
+* `_id`:  the id of the referenced document.
 
 For instance, a book -> authors relationship might be represented like this:
 ```javascript
@@ -75,7 +75,7 @@ Note specific [view index](https://docs.cozy.io/en/tutorials/data/queries/#usage
 
 You are free to create your own relation type if you need a special behaviour.
 
-For instance, [Banks doctypes](https://github.com/cozy/cozy-banks/blob/master/src/doctypes.js) implements `HasManyBills` or `HasManyReimbursements` that inherits from `HasManyInPlace`. 
+For instance, [Banks doctypes](https://github.com/cozy/cozy-banks/blob/master/src/doctypes.js) implements `HasManyBills` or `HasManyReimbursements`.
 
 #### Old relation types 
 
