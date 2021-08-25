@@ -111,8 +111,6 @@ const book = {
 ```
 
 
-
-
 ## Usage
 
 ### Include relations in your query
@@ -192,11 +190,11 @@ firstDoc.printingCompany.unset()
 
 ### Create a new file with existing relations
 
-Simply pass your reference as a third parameter to `create()`:
+Simply pass the reference to your file as a third parameter to `create()`:
 
 ```javascript
 const photo = { _id: "sunset.jpg" }
-const albumReference = { _id: "1324", _type: "io.cozy.photos.albums" }
-const relationships = { albums: [ albumReference ] }
-await client.create('io.cozy.files', photo, relationships)
+const reference = { _id: "1324", _type: "io.cozy.photos.albums" }
+const albumReference = { albums: [ albumReference ] }
+await client.create('io.cozy.files', photo, albumReference)
 ```
