@@ -5,6 +5,7 @@ describe('HasManyFiles', () => {
   beforeEach(() => {
     original = {
       _type: 'io.cozy.todos',
+      _id: '1234',
       label: 'Get rich',
       relationships: {
         files: {
@@ -99,5 +100,31 @@ describe('HasManyFiles', () => {
       _type: 'io.cozy.todos'
     }
     expect(() => hydrated.files.insertDocuments([refTodo])).toThrow(Error)
+  })
+
+  it('transform the doc-to-file relationship into query', () => {
+    const queryDef = HasManyFiles.query(original, null, {
+      name: 'files',
+      doctype: 'io.cozy.files'
+    })
+
+    expect(queryDef.doctype).toEqual('io.cozy.files')
+    expect(queryDef.referenced).toEqual(original)
+  })
+
+  it('transform the file-to-doc relationship into query', () => {
+    const file = {
+      _id: 1,
+      _type: 'io.cozy.files',
+      relationships: {
+        referenced_by: { data: [{ id: '1234', type: 'io.cozy.todos' }] }
+      }
+    }
+    const queryDef = HasManyFiles.query(file, null, {
+      doctype: 'io.cozy.todos'
+    })
+
+    expect(queryDef.doctype).toEqual('io.cozy.todos')
+    expect(queryDef.ids).toEqual(['1234'])
   })
 })
