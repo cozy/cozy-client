@@ -3,6 +3,7 @@ import omit from 'lodash/omit'
 import { Mutations, Q, QueryDefinition } from '../queries/dsl'
 import { getDocumentFromState } from '../store'
 import { CozyClientDocument } from '../types'
+import { DOCTYPE_FILES } from '../const'
 import Association from './Association'
 import HasMany from './HasMany'
 
@@ -13,7 +14,7 @@ import HasMany from './HasMany'
  */
 export default class HasManyFiles extends HasMany {
   async fetchMore() {
-    const queryDef = new QueryDefinition({ doctype: 'io.cozy.files' })
+    const queryDef = new QueryDefinition({ doctype: DOCTYPE_FILES })
     const relationships = this.getRelationship().data
     // Get last datetime for cursor
     const lastRelationship = relationships[relationships.length - 1]
@@ -67,9 +68,9 @@ export default class HasManyFiles extends HasMany {
   }
 
   addReferences(referencedDocs) {
-    if (this.target._type === 'io.cozy.files') {
+    if (this.target._type === DOCTYPE_FILES) {
       return Mutations.addReferencedBy(this.target, referencedDocs)
-    } else if (referencedDocs[0]._type === 'io.cozy.files') {
+    } else if (referencedDocs[0]._type === DOCTYPE_FILES) {
       return Mutations.addReferencesTo(this.target, referencedDocs)
     } else {
       throw new Error(
@@ -79,9 +80,9 @@ export default class HasManyFiles extends HasMany {
   }
 
   removeReferences(referencedDocs) {
-    if (this.target._type === 'io.cozy.files') {
+    if (this.target._type === DOCTYPE_FILES) {
       return Mutations.removeReferencedBy(this.target, referencedDocs)
-    } else if (referencedDocs[0]._type === 'io.cozy.files') {
+    } else if (referencedDocs[0]._type === DOCTYPE_FILES) {
       return Mutations.removeReferencesTo(this.target, referencedDocs)
     } else {
       throw new Error(
@@ -103,7 +104,7 @@ export default class HasManyFiles extends HasMany {
    * @returns {CozyClientDocument | QueryDefinition}
    */
   static query(document, client, assoc) {
-    if (document._type === 'io.cozy.files') {
+    if (document._type === DOCTYPE_FILES) {
       const refs = get(document, `relationships.referenced_by.data`, [])
       const ids = refs
         .filter(ref => ref.type === assoc.doctype)

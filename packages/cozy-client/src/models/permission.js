@@ -3,6 +3,7 @@ import get from 'lodash/get'
 import CozyClient from '../CozyClient'
 import { Q } from '../queries/dsl'
 import { getParentFolderId } from './file'
+import { DOCTYPE_FILES } from '../const'
 
 /**
  * @typedef {object} Document - Couchdb document like an io.cozy.files
@@ -92,7 +93,7 @@ async function findPermissionFor(options) {
   return _findPermissionFor({ doc, client, perms })
 
   async function getFile(id) {
-    const query = Q('io.cozy.files').getById(id)
+    const query = Q(DOCTYPE_FILES).getById(id)
     const data = await client.query(query)
     return data && data.data
   }
@@ -111,7 +112,7 @@ async function findPermissionFor(options) {
     if (perm) {
       // ok, there is a match
       return perm
-    } else if (type === 'io.cozy.files') {
+    } else if (type === DOCTYPE_FILES) {
       // for files, we recursively try to check for parent folders
       const parentId = getParentFolderId(doc)
       const parentFolder = parentId && (await getFile(parentId))
