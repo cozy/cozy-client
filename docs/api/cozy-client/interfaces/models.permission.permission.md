@@ -14,7 +14,7 @@ Permission document
 
 *Defined in*
 
-[packages/cozy-client/src/models/permission.js:160](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L160)
+[packages/cozy-client/src/models/permission.js:161](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L161)
 
 ***
 
@@ -26,4 +26,4 @@ Member information from the sharing
 
 *Defined in*
 
-[packages/cozy-client/src/models/permission.js:161](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L161)
+[packages/cozy-client/src/models/permission.js:162](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L162)
