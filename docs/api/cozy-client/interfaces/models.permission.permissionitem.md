@@ -14,7 +14,7 @@ defaults to `id`
 
 *Defined in*
 
-[packages/cozy-client/src/models/permission.js:22](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L22)
+[packages/cozy-client/src/models/permission.js:23](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L23)
 
 ***
 
@@ -26,7 +26,7 @@ a couch db database like 'io.cozy.files'
 
 *Defined in*
 
-[packages/cozy-client/src/models/permission.js:24](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L24)
+[packages/cozy-client/src/models/permission.js:25](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L25)
 
 ***
 
@@ -36,7 +36,7 @@ a couch db database like 'io.cozy.files'
 
 *Defined in*
 
-[packages/cozy-client/src/models/permission.js:23](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L23)
+[packages/cozy-client/src/models/permission.js:24](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L24)
 
 ***
 
@@ -48,4 +48,4 @@ ALL, GET, PUT, PATCH, DELETE, POST…
 
 *Defined in*
 
-[packages/cozy-client/src/models/permission.js:21](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L21)
+[packages/cozy-client/src/models/permission.js:22](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L22)
