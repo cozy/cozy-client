@@ -1,3 +1,4 @@
+import { DOCTYPE_FILES } from '../const'
 import HasManyFiles from './HasManyFiles'
 
 describe('HasManyFiles', () => {
@@ -10,8 +11,8 @@ describe('HasManyFiles', () => {
       relationships: {
         files: {
           data: [
-            { _id: 1, _type: 'io.cozy.files' },
-            { _id: 2, _type: 'io.cozy.files' }
+            { _id: 1, _type: DOCTYPE_FILES },
+            { _id: 2, _type: DOCTYPE_FILES }
           ]
         }
       }
@@ -27,7 +28,7 @@ describe('HasManyFiles', () => {
 
     hydrated = {
       ...original,
-      files: new HasManyFiles(original, 'files', 'io.cozy.files', {
+      files: new HasManyFiles(original, 'files', DOCTYPE_FILES, {
         get,
         save,
         mutate
@@ -38,14 +39,14 @@ describe('HasManyFiles', () => {
   it('adds relations', async () => {
     await hydrated.files.addById(4)
     expect(hydrated.files.data).toEqual([
-      { doctype: 'io.cozy.files', id: 1 },
-      { doctype: 'io.cozy.files', id: 2 },
-      { doctype: 'io.cozy.files', id: 4 }
+      { doctype: DOCTYPE_FILES, id: 1 },
+      { doctype: DOCTYPE_FILES, id: 2 },
+      { doctype: DOCTYPE_FILES, id: 4 }
     ])
     expect(mutate).toHaveBeenCalledWith({
       document: hydrated.files.target,
       mutationType: 'ADD_REFERENCES_TO',
-      referencedDocuments: [{ _type: 'io.cozy.files', _id: 4 }]
+      referencedDocuments: [{ _type: DOCTYPE_FILES, _id: 4 }]
     })
     expect(save).toHaveBeenCalled()
   })
@@ -53,17 +54,17 @@ describe('HasManyFiles', () => {
   it('adds multiple relations', async () => {
     await hydrated.files.addById([4, 5])
     expect(hydrated.files.data).toEqual([
-      { doctype: 'io.cozy.files', id: 1 },
-      { doctype: 'io.cozy.files', id: 2 },
-      { doctype: 'io.cozy.files', id: 4 },
-      { doctype: 'io.cozy.files', id: 5 }
+      { doctype: DOCTYPE_FILES, id: 1 },
+      { doctype: DOCTYPE_FILES, id: 2 },
+      { doctype: DOCTYPE_FILES, id: 4 },
+      { doctype: DOCTYPE_FILES, id: 5 }
     ])
     expect(mutate).toHaveBeenCalledWith({
       document: hydrated.files.target,
       mutationType: 'ADD_REFERENCES_TO',
       referencedDocuments: [
-        { _type: 'io.cozy.files', _id: 4 },
-        { _type: 'io.cozy.files', _id: 5 }
+        { _type: DOCTYPE_FILES, _id: 4 },
+        { _type: DOCTYPE_FILES, _id: 5 }
       ]
     })
     expect(save).toHaveBeenCalled()
@@ -71,11 +72,11 @@ describe('HasManyFiles', () => {
 
   it('removes relations', async () => {
     await hydrated.files.removeById(2)
-    expect(hydrated.files.data).toEqual([{ doctype: 'io.cozy.files', id: 1 }])
+    expect(hydrated.files.data).toEqual([{ doctype: DOCTYPE_FILES, id: 1 }])
     expect(mutate).toHaveBeenCalledWith({
       document: hydrated.files.target,
       mutationType: 'REMOVE_REFERENCES_TO',
-      referencedDocuments: [{ _type: 'io.cozy.files', _id: 2 }]
+      referencedDocuments: [{ _type: DOCTYPE_FILES, _id: 2 }]
     })
     expect(save).toHaveBeenCalled()
   })
@@ -87,8 +88,8 @@ describe('HasManyFiles', () => {
       document: hydrated.files.target,
       mutationType: 'REMOVE_REFERENCES_TO',
       referencedDocuments: [
-        { _type: 'io.cozy.files', _id: 1 },
-        { _type: 'io.cozy.files', _id: 2 }
+        { _type: DOCTYPE_FILES, _id: 1 },
+        { _type: DOCTYPE_FILES, _id: 2 }
       ]
     })
     expect(save).toHaveBeenCalled()
@@ -105,17 +106,17 @@ describe('HasManyFiles', () => {
   it('transform the doc-to-file relationship into query', () => {
     const queryDef = HasManyFiles.query(original, null, {
       name: 'files',
-      doctype: 'io.cozy.files'
+      doctype: DOCTYPE_FILES
     })
 
-    expect(queryDef.doctype).toEqual('io.cozy.files')
+    expect(queryDef.doctype).toEqual(DOCTYPE_FILES)
     expect(queryDef.referenced).toEqual(original)
   })
 
   it('transform the file-to-doc relationship into query', () => {
     const file = {
       _id: 1,
-      _type: 'io.cozy.files',
+      _type: DOCTYPE_FILES,
       relationships: {
         referenced_by: { data: [{ id: '1234', type: 'io.cozy.todos' }] }
       }
