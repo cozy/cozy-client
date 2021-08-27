@@ -118,7 +118,12 @@ describe('HasManyFiles', () => {
       _id: 1,
       _type: DOCTYPE_FILES,
       relationships: {
-        referenced_by: { data: [{ id: '1234', type: 'io.cozy.todos' }] }
+        referenced_by: {
+          data: [
+            { id: '1234', type: 'io.cozy.todos' },
+            { id: '1234', type: 'io.cozy.todos' }
+          ]
+        }
       }
     }
     const queryDef = HasManyFiles.query(file, null, {
