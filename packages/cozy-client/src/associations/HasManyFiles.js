@@ -1,5 +1,6 @@
 import get from 'lodash/get'
 import omit from 'lodash/omit'
+import uniq from 'lodash/uniq'
 import { Mutations, Q, QueryDefinition } from '../queries/dsl'
 import { getDocumentFromState } from '../store'
 import { CozyClientDocument } from '../types'
@@ -106,10 +107,9 @@ export default class HasManyFiles extends HasMany {
   static query(document, client, assoc) {
     if (document._type === DOCTYPE_FILES) {
       const refs = get(document, `relationships.referenced_by.data`, [])
-      const ids = refs
-        .filter(ref => ref.type === assoc.doctype)
-        .map(ref => ref.id)
-
+      const ids = uniq(
+        refs.filter(ref => ref.type === assoc.doctype).map(ref => ref.id)
+      )
       return ids.length > 0 ? Q(assoc.doctype).getByIds(ids) : null
     } else {
       const key = [document._type, document._id]
