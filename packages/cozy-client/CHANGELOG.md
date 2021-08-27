@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [24.1.1](https://github.com/cozy/cozy-client/compare/v24.1.0...v24.1.1) (2021-08-27)
+
+
+### Bug Fixes
+
+* Linting ([6a9f31d](https://github.com/cozy/cozy-client/commit/6a9f31dc85b651d996c5b1ce296fe970fcc9ccae))
+* Moved polyfills in createClientInteractive ([39d3cd4](https://github.com/cozy/cozy-client/commit/39d3cd4d8bc6bd9f5c6a4620fa98fa0e15948857))
+
+
+
+
+
 # [24.1.0](https://github.com/cozy/cozy-client/compare/v24.0.0...v24.1.0) (2021-08-23)
 
 
