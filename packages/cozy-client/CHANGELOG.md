@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [24.2.0](https://github.com/cozy/cozy-client/compare/v24.1.3...v24.2.0) (2021-09-01)
+
+
+### Features
+
+* Allow to query a HasManyFiles relation in both ways ([1577564](https://github.com/cozy/cozy-client/commit/15775649a275020cf6d41b36214e3a2b4f486338))
+* Uniq ids in query ([e6a7b17](https://github.com/cozy/cozy-client/commit/e6a7b17c918adf54a9d8b7024f78c7393f9b53b7))
+
+
+
+
+
 ## [24.1.3](https://github.com/cozy/cozy-client/compare/v24.1.2...v24.1.3) (2021-08-27)
 
 **Note:** Version bump only for package cozy-client
