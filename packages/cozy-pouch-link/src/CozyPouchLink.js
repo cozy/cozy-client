@@ -577,6 +577,16 @@ class PouchLink extends CozyLink {
     }
     this.pouches.syncImmediately()
   }
+
+  /**
+   * Return the PouchDB adapter name.
+   * Should be IndexedDB for newest adapters.
+   *
+   * @returns {string} The adapter name
+   */
+  getPouchAdapterName = () => {
+    return getAdapterName()
+  }
 }
 
 export default PouchLink

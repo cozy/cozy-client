@@ -126,6 +126,7 @@ to respond to queries and mutations.
 * [PouchLink](#PouchLink)
     * [new PouchLink([opts])](#new_PouchLink_new)
     * [.replicationStatus](#PouchLink+replicationStatus) : <code>Record.&lt;string, SyncStatus&gt;</code>
+    * [.getPouchAdapterName](#PouchLink+getPouchAdapterName) ⇒ <code>string</code>
     * [.handleOnSync()](#PouchLink+handleOnSync)
     * [.startReplication()](#PouchLink+startReplication) ⇒ <code>void</code>
     * [.stopReplication()](#PouchLink+stopReplication) ⇒ <code>void</code>
@@ -151,6 +152,14 @@ constructor - Initializes a new PouchLink
 - Stores replication states per doctype
 
 **Kind**: instance property of [<code>PouchLink</code>](#PouchLink)  
+<a name="PouchLink+getPouchAdapterName"></a>
+
+### pouchLink.getPouchAdapterName ⇒ <code>string</code>
+Return the PouchDB adapter name.
+Should be IndexedDB for newest adapters.
+
+**Kind**: instance property of [<code>PouchLink</code>](#PouchLink)  
+**Returns**: <code>string</code> - The adapter name  
 <a name="PouchLink+handleOnSync"></a>
 
 ### pouchLink.handleOnSync()
