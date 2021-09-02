@@ -139,7 +139,7 @@ class PouchLink extends CozyLink {
         PouchDB.plugin(plugin)
       }
       const doctypes = getPersistedSyncedDoctypes()
-      for (const doctype of doctypes) {
+      for (const doctype of Object.keys(doctypes)) {
         const prefix = getPrefix(url)
         const dbName = getDatabaseName(prefix, doctype)
 
