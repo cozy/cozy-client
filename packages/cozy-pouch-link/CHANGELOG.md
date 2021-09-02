@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [24.3.0](https://github.com/cozy/cozy-client/compare/v24.2.0...v24.3.0) (2021-09-02)
+
+
+### Features
+
+* Expose method to get the adapter name ([2095d0a](https://github.com/cozy/cozy-client/commit/2095d0a4c0169bd10035043f2e6bd407dcae5bc3))
+
+
+
+
+
 # [24.2.0](https://github.com/cozy/cozy-client/compare/v24.1.3...v24.2.0) (2021-09-01)
 
 **Note:** Version bump only for package cozy-pouch-link
