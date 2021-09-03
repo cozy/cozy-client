@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [24.3.1](https://github.com/cozy/cozy-client/compare/v24.3.0...v24.3.1) (2021-09-03)
+
+
+### Bug Fixes
+
+* Correcty iterate over object keys ([9bf26cd](https://github.com/cozy/cozy-client/commit/9bf26cdd7f8ff7bd572cf98c79f116e0f9fbc8c6))
+
+
+
+
+
 # [24.3.0](https://github.com/cozy/cozy-client/compare/v24.2.0...v24.3.0) (2021-09-02)
 
 
