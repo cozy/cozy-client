@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [24.3.2](https://github.com/cozy/cozy-client/compare/v24.3.1...v24.3.2) (2021-09-03)
+
+
+### Bug Fixes
+
+* Method to get adapter name should be static ([ff7e26d](https://github.com/cozy/cozy-client/commit/ff7e26d40abc6c2a115df4cf3efcad5741242fc5))
+
+
+
+
+
 ## [24.3.1](https://github.com/cozy/cozy-client/compare/v24.3.0...v24.3.1) (2021-09-03)
 
 
