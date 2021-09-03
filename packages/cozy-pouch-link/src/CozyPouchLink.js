@@ -99,6 +99,16 @@ class PouchLink extends CozyLink {
     this.replicationStatus = this.replicationStatus || {}
   }
 
+  /**
+   * Return the PouchDB adapter name.
+   * Should be IndexedDB for newest adapters.
+   *
+   * @returns {string} The adapter name
+   */
+  static getPouchAdapterName = () => {
+    return getAdapterName()
+  }
+
   getReplicationURL(doctype) {
     const url = this.client && this.client.stackClient.uri
     const token = this.client && this.client.stackClient.token
@@ -576,16 +586,6 @@ class PouchLink extends CozyLink {
       return
     }
     this.pouches.syncImmediately()
-  }
-
-  /**
-   * Return the PouchDB adapter name.
-   * Should be IndexedDB for newest adapters.
-   *
-   * @returns {string} The adapter name
-   */
-  getPouchAdapterName = () => {
-    return getAdapterName()
   }
 }
 
