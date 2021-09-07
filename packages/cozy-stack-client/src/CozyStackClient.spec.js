@@ -23,6 +23,20 @@ const FAKE_INIT_OPTIONS = {
 const FAKE_APP_TOKEN =
   'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhcHAiLCJpYXQiOjE1NTYxMTIwOTQsImlzcyI6ImVkYXMubXljb3p5LmNsb3VkIiwic3ViIjoiaG9tZSIsInNlc3Npb25faWQiOiI4YjI1ZTgzNTkwYTg5MDg0MDUzNDIxZGE0ZmZlOTMwNiJ9.gA3Xnoliu43gwpuO88O6G59rVP_HClZ_vBp96pEjVNnZDpxU4ZnQoWmICoLXih4PvFZRj2eHjnG-eqnJx6XM2A'
 
+const FAKE_DATA_COZY = JSON.stringify({
+  app: {
+    editor: 'Cozy',
+    icon: 'icon.svg',
+    name: 'Accueil',
+    prefix: 'Cozy',
+    slug: 'home'
+  },
+  domain: 'test.mycozy.cloud',
+  locale: 'fr',
+  token: `${FAKE_APP_TOKEN}`,
+  tracking: false
+})
+
 const FAKE_APP_HTML = `<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>Cozy Home</title>
   <link rel="icon" href="//test.mycozy.cloud/assets/favicon.f56cf1d03b.ico">
   <link rel="icon" type="image/png" href="//test.mycozy.cloud/assets/favicon-16x16.192a16308f.png" sizes="16x16">
@@ -31,7 +45,7 @@ const FAKE_APP_HTML = `<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8
     <link rel="manifest" href="/manifest.json" crossorigin="use-credentials"><meta name="msapplication-TileColor" content="#2b5797"><meta name="theme-color" content="#ffffff"><meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,viewport-fit=cover"><link rel="stylesheet" href="vendors/home.c451e5ac76c8377b20c5.0.min.css"><link rel="stylesheet" href="app/home.cbb1b1050b936df11fbd.min.css"><link rel="stylesheet" type="text/css" href="//test.mycozy.cloud/assets/styles/theme.faa4e12bdc.css"> <script src="//test.mycozy.cloud/assets/js/cozy-client.605c649bc3.min.js"></script> 
 <link rel="stylesheet" type="text/css" href="//test.mycozy.cloud/assets/fonts/fonts.33109548ca.css">
 <link rel="stylesheet" type="text/css" href="//test.mycozy.cloud/assets/css/cozy-bar.6effa2d88c.min.css">
-<script src="//test.mycozy.cloud/assets/js/cozy-bar.f99c08ee53.min.js"></script></head><body><div role="application" data-cozy-token="${FAKE_APP_TOKEN}" data-cozy-domain="test.mycozy.cloud" data-cozy-locale="fr" data-cozy-app-editor="Cozy" data-cozy-app-name="Accueil" data-cozy-app-name-prefix="Cozy" data-cozy-app-slug="home" data-cozy-tracking="false" data-cozy-icon-path="icon.svg"><script src="vendors/home.a664629f1a5622ccb459.js"></script><script src="app/home.455bbc269323b2c64382.js"></script><script src="//test.mycozy.cloud/assets/js/piwik.js" async></script></div></body></html>
+<script src="//test.mycozy.cloud/assets/js/cozy-bar.f99c08ee53.min.js"></script></head><body><div role="application" data-cozy='${FAKE_DATA_COZY}'><script src="vendors/home.a664629f1a5622ccb459.js"></script><script src="app/home.455bbc269323b2c64382.js"></script><script src="//test.mycozy.cloud/assets/js/piwik.js" async></script></div></body></html>
 `
 
 describe('CozyStackClient', () => {
