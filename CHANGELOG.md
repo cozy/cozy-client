@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [24.3.3](https://github.com/cozy/cozy-client/compare/v24.3.2...v24.3.3) (2021-09-07)
+
+
+### Bug Fixes
+
+* Retrieve correct `data-cozy-*` in `refreshToken()` ([a74b774](https://github.com/cozy/cozy-client/commit/a74b774800d746834d11848547b79215e523cbe5))
+
+
+
+
+
 ## [24.3.2](https://github.com/cozy/cozy-client/compare/v24.3.1...v24.3.2) (2021-09-03)
 
 
