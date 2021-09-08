@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [24.4.0](https://github.com/cozy/cozy-client/compare/v24.3.3...v24.4.0) (2021-09-08)
+
+
+### Features
+
+* Handle Onboarding V2 ([91e0a3a](https://github.com/cozy/cozy-client/commit/91e0a3aad5c2ed6608a9c9d9420cda51a68e9f62))
+
+
+
+
+
 ## [24.3.3](https://github.com/cozy/cozy-client/compare/v24.3.2...v24.3.3) (2021-09-07)
 
 
