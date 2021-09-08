@@ -731,11 +731,8 @@ updateFile - Updates a file's data
 
 | Param | Type | Description |
 | --- | --- | --- |
-| data | <code>object</code> | Javascript File object |
-| params | <code>object</code> | Additional parameters |
-| params.fileId | <code>string</code> | The id of the file to update (required) |
-| params.executable | <code>boolean</code> | Whether the file is executable or not |
-| params.metadata | <code>object</code> | Metadata to be attached to the File io.cozy.file |
+| data | <code>File</code> \| <code>Blob</code> \| [<code>Stream</code>](#Stream) \| <code>string</code> \| <code>ArrayBuffer</code> | file to be uploaded |
+| params | [<code>FileAttributes</code>](#FileAttributes) | Additional parameters |
 | params.options | <code>object</code> | Options to pass to doUpload method (additional headers) |
 
 <a name="FileCollection+download"></a>
@@ -1833,6 +1830,7 @@ Attributes used for file creation
 | dirId | <code>string</code> | Id of the parent directory. |
 | name | <code>string</code> | Name of the created file. |
 | lastModifiedDate | <code>Date</code> | Can be used to set the last modified date of a file. |
+| executable | <code>boolean</code> | Whether or not the file is executable |
 | metadata | <code>object</code> | io.cozy.files.metadata to attach to the file |
 
 <a name="FileDocument"></a>

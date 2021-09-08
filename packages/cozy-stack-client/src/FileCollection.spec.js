@@ -566,6 +566,43 @@ describe('FileCollection', () => {
         }
       })
     })
+    it('should have a file name', async () => {
+      let data = new File([''], '')
+      const params = {
+        fileId: '59140416-b95f',
+        checksum: 'a6dabd99832b270468e254814df2ed20'
+      }
+      await expect(collection.updateFile(data, params)).rejects.toThrow()
+
+      data = new File([''], 'mydoc.epub')
+      await collection.updateFile(data, params)
+      const expectedPath =
+        '/files/59140416-b95f?Name=mydoc.epub&Type=file&Executable=false'
+
+      const expectedOptions = {
+        headers: {
+          'Content-MD5': 'a6dabd99832b270468e254814df2ed20',
+          'Content-Type': 'application/epub+zip'
+        }
+      }
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'PUT',
+        expectedPath,
+        data,
+        expectedOptions
+      )
+
+      data = new ArrayBuffer(8)
+      params.name = 'mydoc.epub'
+      expectedOptions.headers['Content-Type'] = 'application/octet-stream'
+      await collection.updateFile(data, params)
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'PUT',
+        expectedPath,
+        data,
+        expectedOptions
+      )
+    })
   })
 
   describe('emptyTrash', () => {
