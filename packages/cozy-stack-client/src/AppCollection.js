@@ -11,7 +11,12 @@ import { FetchError } from './errors'
 export const APPS_DOCTYPE = 'io.cozy.apps'
 
 export const normalizeApp = (app, doctype) => {
-  return { ...app, ...normalizeDoc(app, doctype), ...app.attributes }
+  return {
+    ...app.attributes,
+    ...app,
+    ...normalizeDoc(app, doctype),
+    id: app.id // ignores any 'id' attribute in the manifest
+  }
 }
 
 /**

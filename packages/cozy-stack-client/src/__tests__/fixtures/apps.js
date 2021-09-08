@@ -4,6 +4,7 @@ export const ALL_APPS_RESPONSE = {
       type: 'io.cozy.apps',
       id: 'io.cozy.apps/drive',
       attributes: {
+        id: 'Drive',
         name: 'Drive',
         editor: 'Cozy',
         icon: 'public/app-icon.svg',
