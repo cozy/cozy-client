@@ -42,6 +42,16 @@ describe(`KonnectorCollection`, () => {
     it('should return normalized documents', async () => {
       const resp = await collection.all()
       expect(resp.data[0]).toHaveDocumentIdentity()
+      expect(resp.data[0].id).toEqual('io.cozy.konnectors/bouibox')
+    })
+
+    it('should ignore id attribute in manifests', async () => {
+      const resp = await collection.all()
+      expect(
+        resp.data.every(
+          konnector => konnector.id === `${konnector._type}/${konnector.slug}`
+        )
+      ).toBe(true)
     })
   })
 

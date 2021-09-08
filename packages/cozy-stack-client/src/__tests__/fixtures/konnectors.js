@@ -4,6 +4,7 @@ export const ALL_KONNECTORS_RESPONSE = {
       type: 'io.cozy.konnectors',
       id: 'io.cozy.konnectors/bouibox',
       attributes: {
+        id: 'Boui Box',
         name: 'Boui Box',
         editor: 'Cozy',
         icon: 'bouibox.svg',
