@@ -107,6 +107,32 @@ describe('OAuthClient', () => {
       )
     })
 
+    it('should generate the auth code URL even with registerToken', () => {
+      const oauthOptions = {
+        ...REGISTERED_CLIENT_INIT_OPTIONS,
+        oauth: {
+          ...REGISTERED_CLIENT_INIT_OPTIONS.oauth,
+          registerToken: 'AZERTY'
+        }
+      }
+      const newClient = new OAuthClient(oauthOptions)
+      newClient.setToken({
+        tokenType: 'type',
+        accessToken: 'accessToken-abcd',
+        refreshToken: 'refresh-789',
+        scope: 'io.cozy.todos'
+      })
+      expect(
+        newClient.getAuthCodeURL('randomstatetoken', ['io.cozy.todos'])
+      ).toEqual(
+        `${REGISTERED_CLIENT_INIT_OPTIONS.uri}/auth/authorize?client_id=${
+          REGISTERED_CLIENT_INIT_OPTIONS.oauth.clientID
+        }&redirect_uri=${encodeURIComponent(
+          REGISTERED_CLIENT_INIT_OPTIONS.oauth.redirectURI
+        )}&state=randomstatetoken&response_type=code&scope=io.cozy.todos&registerToken=AZERTY`
+      )
+    })
+
     it('should get the access code from an URL', () => {
       const stateCode = 'myrandomcode'
       const accessCode = 'myaccesscode'
