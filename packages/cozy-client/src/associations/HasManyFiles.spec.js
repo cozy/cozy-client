@@ -2,9 +2,9 @@ import { DOCTYPE_FILES } from '../const'
 import HasManyFiles from './HasManyFiles'
 
 describe('HasManyFiles', () => {
-  let original, hydrated, save, mutate
+  let originalFile, hydratedFile, originalTodo, hydratedTodo, save, mutate
   beforeEach(() => {
-    original = {
+    originalTodo = {
       _type: 'io.cozy.todos',
       _id: '1234',
       label: 'Get rich',
@@ -26,9 +26,24 @@ describe('HasManyFiles', () => {
     save = jest.fn()
     mutate = jest.fn()
 
-    hydrated = {
-      ...original,
-      files: new HasManyFiles(original, 'files', DOCTYPE_FILES, {
+    hydratedTodo = {
+      ...originalTodo,
+      files: new HasManyFiles(originalTodo, 'files', DOCTYPE_FILES, {
+        get,
+        save,
+        mutate
+      })
+    }
+
+    originalFile = {
+      _type: DOCTYPE_FILES,
+      _id: '4567',
+      name: 'The greatest file',
+      referenced_by: [{ id: '7654', type: 'io.cozy.todos' }]
+    }
+    hydratedFile = {
+      ...originalFile,
+      todos: new HasManyFiles(originalFile, 'todos', 'io.cozy.files', {
         get,
         save,
         mutate
@@ -36,15 +51,25 @@ describe('HasManyFiles', () => {
     }
   })
 
+  it('get data', () => {
+    expect(hydratedTodo.files.data).toEqual([
+      { doctype: DOCTYPE_FILES, id: 1 },
+      { doctype: DOCTYPE_FILES, id: 2 }
+    ])
+    expect(hydratedFile.todos.data).toEqual([
+      { doctype: 'io.cozy.todos', id: '7654' }
+    ])
+  })
+
   it('adds relations', async () => {
-    await hydrated.files.addById(4)
-    expect(hydrated.files.data).toEqual([
+    await hydratedTodo.files.addById(4)
+    expect(hydratedTodo.files.data).toEqual([
       { doctype: DOCTYPE_FILES, id: 1 },
       { doctype: DOCTYPE_FILES, id: 2 },
       { doctype: DOCTYPE_FILES, id: 4 }
     ])
     expect(mutate).toHaveBeenCalledWith({
-      document: hydrated.files.target,
+      document: hydratedTodo.files.target,
       mutationType: 'ADD_REFERENCES_TO',
       referencedDocuments: [{ _type: DOCTYPE_FILES, _id: 4 }]
     })
@@ -52,15 +77,15 @@ describe('HasManyFiles', () => {
   })
 
   it('adds multiple relations', async () => {
-    await hydrated.files.addById([4, 5])
-    expect(hydrated.files.data).toEqual([
+    await hydratedTodo.files.addById([4, 5])
+    expect(hydratedTodo.files.data).toEqual([
       { doctype: DOCTYPE_FILES, id: 1 },
       { doctype: DOCTYPE_FILES, id: 2 },
       { doctype: DOCTYPE_FILES, id: 4 },
       { doctype: DOCTYPE_FILES, id: 5 }
     ])
     expect(mutate).toHaveBeenCalledWith({
-      document: hydrated.files.target,
+      document: hydratedTodo.files.target,
       mutationType: 'ADD_REFERENCES_TO',
       referencedDocuments: [
         { _type: DOCTYPE_FILES, _id: 4 },
@@ -71,10 +96,10 @@ describe('HasManyFiles', () => {
   })
 
   it('removes relations', async () => {
-    await hydrated.files.removeById(2)
-    expect(hydrated.files.data).toEqual([{ doctype: DOCTYPE_FILES, id: 1 }])
+    await hydratedTodo.files.removeById(2)
+    expect(hydratedTodo.files.data).toEqual([{ doctype: DOCTYPE_FILES, id: 1 }])
     expect(mutate).toHaveBeenCalledWith({
-      document: hydrated.files.target,
+      document: hydratedTodo.files.target,
       mutationType: 'REMOVE_REFERENCES_TO',
       referencedDocuments: [{ _type: DOCTYPE_FILES, _id: 2 }]
     })
@@ -82,10 +107,10 @@ describe('HasManyFiles', () => {
   })
 
   it('adds multiple relations', async () => {
-    await hydrated.files.removeById([1, 2])
-    expect(hydrated.files.data).toEqual([])
+    await hydratedTodo.files.removeById([1, 2])
+    expect(hydratedTodo.files.data).toEqual([])
     expect(mutate).toHaveBeenCalledWith({
-      document: hydrated.files.target,
+      document: hydratedTodo.files.target,
       mutationType: 'REMOVE_REFERENCES_TO',
       referencedDocuments: [
         { _type: DOCTYPE_FILES, _id: 1 },
@@ -100,17 +125,17 @@ describe('HasManyFiles', () => {
       _id: 456,
       _type: 'io.cozy.todos'
     }
-    expect(() => hydrated.files.insertDocuments([refTodo])).toThrow(Error)
+    expect(() => hydratedTodo.files.insertDocuments([refTodo])).toThrow(Error)
   })
 
   it('transform the doc-to-file relationship into query', () => {
-    const queryDef = HasManyFiles.query(original, null, {
+    const queryDef = HasManyFiles.query(originalTodo, null, {
       name: 'files',
       doctype: DOCTYPE_FILES
     })
 
     expect(queryDef.doctype).toEqual(DOCTYPE_FILES)
-    expect(queryDef.referenced).toEqual(original)
+    expect(queryDef.referenced).toEqual(originalTodo)
   })
 
   it('transform the file-to-doc relationship into query', () => {
