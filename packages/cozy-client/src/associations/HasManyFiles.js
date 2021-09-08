@@ -14,6 +14,15 @@ import HasMany from './HasMany'
  *  by datetime, with a cursor-based pagination.
  */
 export default class HasManyFiles extends HasMany {
+  get data() {
+    if (this.target._type === DOCTYPE_FILES) {
+      const refs = get(this.target, 'referenced_by', [])
+      return refs.map(({ id, type }) => this.get(type, id)).filter(Boolean)
+    } else {
+      return super.data
+    }
+  }
+
   async fetchMore() {
     const queryDef = new QueryDefinition({ doctype: DOCTYPE_FILES })
     const relationships = this.getRelationship().data
