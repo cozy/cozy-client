@@ -870,23 +870,22 @@ class FileCollection extends DocumentCollection {
 
     let { contentType, contentLength, checksum, lastModifiedDate, ifMatch } =
       options || {}
+
     if (!contentType) {
-      if (isBuffer) {
-        contentType = CONTENT_TYPE_OCTET_STREAM
-      } else if (isFile) {
-        contentType =
-          data.type ||
-          getFileTypeFromName(data.name.toLowerCase()) ||
-          CONTENT_TYPE_OCTET_STREAM
-        if (!lastModifiedDate) {
-          lastModifiedDate = data.lastModifiedDate
-        }
-      } else if (isBlob) {
-        contentType = data.type || CONTENT_TYPE_OCTET_STREAM
-      } else if (isStream) {
-        contentType = CONTENT_TYPE_OCTET_STREAM
-      } else if (typeof data === 'string') {
+      if (typeof data === 'string') {
         contentType = 'text/plain'
+      } else {
+        if (data.type) {
+          // The type is specified in the file object
+          contentType = data.type
+        } else {
+          // Extract the name from the path and infer the type
+          const sPath = path.split('?')
+          const params = sPath.length > 1 ? sPath[1] : ''
+          const name = new URLSearchParams(params).get('Name')
+          contentType =
+            getFileTypeFromName(name.toLowerCase()) || CONTENT_TYPE_OCTET_STREAM
+        }
       }
     }
 

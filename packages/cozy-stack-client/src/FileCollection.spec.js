@@ -594,7 +594,7 @@ describe('FileCollection', () => {
 
       data = new ArrayBuffer(8)
       params.name = 'mydoc.epub'
-      expectedOptions.headers['Content-Type'] = 'application/octet-stream'
+      params.contentType = 'application/epub+zip'
       await collection.updateFile(data, params)
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'PUT',
@@ -817,6 +817,100 @@ describe('FileCollection', () => {
           dir_id: dirId
         }
       })
+    })
+  })
+
+  describe('doUpload', () => {
+    const id = '59140416-b95f'
+    const dirId = '41686c35-9d8e'
+    const fileName = 'mydoc.epub'
+
+    beforeEach(() => {
+      client.fetchJSON.mockReturnValue({
+        data: {
+          id: id,
+          _id: id,
+          dir_id: dirId
+        }
+      })
+    })
+
+    afterEach(() => {
+      client.fetchJSON.mockClear()
+    })
+
+    it('should use the given content-type', async () => {
+      const data = new ArrayBuffer(8)
+      const path = `/files/${dirId}?Name=${fileName}&Type=file`
+      await collection.doUpload(data, path, {
+        contentType: 'application/epub+zip'
+      })
+
+      const expectedOptions = {
+        headers: {
+          'Content-Type': 'application/epub+zip'
+        }
+      }
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        path,
+        data,
+        expectedOptions
+      )
+    })
+    it('should set the File content-type', async () => {
+      const data = new File([''], fileName)
+      const path = `/files/${dirId}?Name=${fileName}&Type=file`
+      await collection.doUpload(data, path, {})
+
+      const expectedOptions = {
+        headers: {
+          'Content-Type': 'application/epub+zip'
+        }
+      }
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        path,
+        data,
+        expectedOptions
+      )
+    })
+
+    it('should infer the content-type based on name', async () => {
+      const data = new ArrayBuffer(8)
+      const path = `/files/${dirId}?Name=${fileName}&Type=file`
+      await collection.doUpload(data, path, {})
+
+      const expectedOptions = {
+        headers: {
+          'Content-Type': 'application/epub+zip'
+        }
+      }
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        path,
+        data,
+        expectedOptions
+      )
+    })
+
+    it('should fallback on application/octet-stream content-type', async () => {
+      const data = new ArrayBuffer(8)
+      const name = 'mydoc.fakeext'
+      const path = `/files/${dirId}?Name=${name}&Type=file`
+      await collection.doUpload(data, path, {})
+
+      const expectedOptions = {
+        headers: {
+          'Content-Type': 'application/octet-stream'
+        }
+      }
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        path,
+        data,
+        expectedOptions
+      )
     })
   })
 
