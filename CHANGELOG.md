@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [24.5.0](https://github.com/cozy/cozy-client/compare/v24.4.0...v24.5.0) (2021-09-09)
+
+
+### Features
+
+* Implement data retrieval for HasManyFiles ([f6740be](https://github.com/cozy/cozy-client/commit/f6740be2b0e8a0c88cbc3d5beddffd30c240fcdb))
+* Pass name as param in updateFile ([b5d8034](https://github.com/cozy/cozy-client/commit/b5d803491bc09484763be5ab98c1a621d83c2c39))
+
+
+
+
+
 # [24.4.0](https://github.com/cozy/cozy-client/compare/v24.3.3...v24.4.0) (2021-09-08)
 
 
