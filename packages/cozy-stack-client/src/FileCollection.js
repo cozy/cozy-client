@@ -889,10 +889,10 @@ class FileCollection extends DocumentCollection {
       }
     }
 
-    if (lastModifiedDate && typeof lastModifiedDate === 'string') {
+    lastModifiedDate = lastModifiedDate || data.lastModified
+    if (lastModifiedDate) {
       lastModifiedDate = new Date(lastModifiedDate)
     }
-
     const headers = {
       'Content-Type': contentType
     }
