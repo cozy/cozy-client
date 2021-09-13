@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [24.6.0](https://github.com/cozy/cozy-client/compare/v24.5.0...v24.6.0) (2021-09-13)
+
+
+### Bug Fixes
+
+* Set lastModifiedDate ([038b7d0](https://github.com/cozy/cozy-client/commit/038b7d0e0eafa5e84398f572f41b0dc34dd7a604))
+
+
+### Features
+
+* Infer content-type from file extension ([16877e8](https://github.com/cozy/cozy-client/commit/16877e81e53aa14b3346f2bda351b4f680ddfa3a))
+
+
+
+
+
 # [24.5.0](https://github.com/cozy/cozy-client/compare/v24.4.0...v24.5.0) (2021-09-09)
 
 
