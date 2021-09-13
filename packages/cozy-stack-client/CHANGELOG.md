@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [24.6.1](https://github.com/cozy/cozy-client/compare/v24.6.0...v24.6.1) (2021-09-13)
+
+
+### Bug Fixes
+
+* Change sharing rule for `com.bitwarden.organizations` ([9884a2c](https://github.com/cozy/cozy-client/commit/9884a2cbc19a75c5d233509e68a1cb8b340376a6))
+
+
+
+
+
 # [24.6.0](https://github.com/cozy/cozy-client/compare/v24.5.0...v24.6.0) (2021-09-13)
 
 
