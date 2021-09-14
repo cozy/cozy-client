@@ -39,7 +39,7 @@ export default class HasOne extends Association {
    * @returns {CozyClientDocument} The saved target document
    */
   add(doc) {
-    this.set(doc)
+    this.setRelationship(doc)
     return this.save(this.target)
   }
 
@@ -49,11 +49,11 @@ export default class HasOne extends Association {
    * @returns {CozyClientDocument} The saved target document
    */
   remove() {
-    this.set(undefined)
+    this.setRelationship(undefined)
     return this.save(this.target)
   }
 
-  set(doc) {
+  setRelationship(doc) {
     if (doc && doc._type !== this.doctype) {
       throw new Error(
         `Tried to associate a ${doc._type} document to a HasOne relationship on ${this.doctype} document`
@@ -72,8 +72,18 @@ export default class HasOne extends Association {
     }
   }
 
+  set(doc) {
+    console.warn(
+      'set is deprecated for has-one relationships. Use `add` instead.'
+    )
+    this.setRelationship(doc)
+  }
+
   unset() {
-    this.set(undefined)
+    console.warn(
+      'unset is deprecated for has-one relationships. Use `remove` instead.'
+    )
+    this.setRelationship(undefined)
   }
 
   dehydrate(doc) {
