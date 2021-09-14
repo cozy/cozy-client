@@ -14,7 +14,7 @@ Couchdb document like an io.cozy.files
 
 *Defined in*
 
-[packages/cozy-client/src/models/permission.js:9](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L9)
+[packages/cozy-client/src/models/permission.js:10](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L10)
 
 ***
 
@@ -24,7 +24,7 @@ Couchdb document like an io.cozy.files
 
 *Defined in*
 
-[packages/cozy-client/src/models/permission.js:11](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L11)
+[packages/cozy-client/src/models/permission.js:12](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L12)
 
 ***
 
@@ -34,7 +34,7 @@ Couchdb document like an io.cozy.files
 
 *Defined in*
 
-[packages/cozy-client/src/models/permission.js:10](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L10)
+[packages/cozy-client/src/models/permission.js:11](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L11)
 
 ***
 
@@ -44,4 +44,4 @@ Couchdb document like an io.cozy.files
 
 *Defined in*
 
-[packages/cozy-client/src/models/permission.js:12](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L12)
+[packages/cozy-client/src/models/permission.js:13](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L13)

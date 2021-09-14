@@ -410,7 +410,7 @@ describe('SharingCollection', () => {
                 values: ['SOME_ORGANIZATION_ID'],
                 add: 'sync',
                 update: 'sync',
-                remove: 'sync'
+                remove: 'revoke'
               },
               {
                 title: 'Ciphers',

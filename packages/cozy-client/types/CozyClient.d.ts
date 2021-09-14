@@ -386,10 +386,10 @@ declare class CozyClient {
      * result in a lot of network requests.
      *
      * @param  {QueryDefinition} queryDefinition - Definition to be executed
-     * @param  {object} options - Options to the query
-     * @returns {Promise<Array>} All documents matching the query
+     * @param {QueryOptions} [options] - Options
+     * @returns {Promise<QueryResult>} All documents matching the query
      */
-    queryAll(queryDefinition: QueryDefinition, options: object): Promise<any[]>;
+    queryAll(queryDefinition: QueryDefinition, options?: QueryOptions): Promise<QueryResult>;
     watchQuery(...args: any[]): ObservableQuery;
     makeObservableQuery(queryDefinition: any, options?: {}): ObservableQuery;
     /**

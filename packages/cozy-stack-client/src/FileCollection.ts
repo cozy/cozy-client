@@ -24,6 +24,7 @@ import { dontThrowNotFoundError } from './Collection'
  * @property {string} dirId - Id of the parent directory.
  * @property {string} name - Name of the created file.
  * @property {Date} lastModifiedDate - Can be used to set the last modified date of a file.
+ * @property {boolean} executable - Whether or not the file is executable
  * @property {object} metadata io.cozy.files.metadata to attach to the file
  */
 
@@ -431,29 +432,25 @@ class FileCollection extends DocumentCollection {
   /**
    * updateFile - Updates a file's data
    *
-   * @param  {object}  data               Javascript File object
-   * @param  {object}  params             Additional parameters
-   * @param  {string}  params.fileId      The id of the file to update (required)
-   * @param  {boolean} params.executable  Whether the file is executable or not
-   * @param  {object}  params.metadata    Metadata to be attached to the File io.cozy.file
+   * @param {File|Blob|Stream|string|ArrayBuffer} data file to be uploaded
+   * @param {FileAttributes} params       Additional parameters
    * @param  {object}  params.options     Options to pass to doUpload method (additional headers)
-   * @returns {object}                     Updated document
+   * @returns {object}                    Updated document
    */
   async updateFile(
     data,
-    { executable = false, fileId, metadata, ...options } = {}
+    { executable = false, fileId, name = '', metadata, ...options } = {}
   ) {
     if (!fileId || typeof fileId !== 'string') {
       throw new Error('missing fileId argument')
     }
-
-    // handle case where data is a file and contains the name
-    if (typeof data.name !== 'string') {
+    // name might be set in a File object
+    const fileName = name || data.name
+    if (!fileName || typeof fileName !== 'string') {
       throw new Error('missing name in data argument')
     }
-
-    const name = sanitizeFileName(data.name)
-    if (typeof name !== 'string' || name === '') {
+    const sanitizedName = sanitizeFileName(fileName)
+    if (typeof sanitizedName !== 'string' || sanitizedName === '') {
       throw new Error('missing name argument')
     }
     /**
@@ -466,7 +463,7 @@ class FileCollection extends DocumentCollection {
      * (no size limit since we can use the body for that) and after we use the ID.
      */
     let metadataId
-    let path = uri`/files/${fileId}?Name=${name}&Type=file&Executable=${executable}`
+    let path = uri`/files/${fileId}?Name=${sanitizedName}&Type=file&Executable=${executable}`
     if (metadata) {
       const meta = await this.createFileMetadata(metadata)
       metadataId = meta.data.id
@@ -873,30 +870,29 @@ class FileCollection extends DocumentCollection {
 
     let { contentType, contentLength, checksum, lastModifiedDate, ifMatch } =
       options || {}
+
     if (!contentType) {
-      if (isBuffer) {
-        contentType = CONTENT_TYPE_OCTET_STREAM
-      } else if (isFile) {
-        contentType =
-          data.type ||
-          getFileTypeFromName(data.name.toLowerCase()) ||
-          CONTENT_TYPE_OCTET_STREAM
-        if (!lastModifiedDate) {
-          lastModifiedDate = data.lastModifiedDate
-        }
-      } else if (isBlob) {
-        contentType = data.type || CONTENT_TYPE_OCTET_STREAM
-      } else if (isStream) {
-        contentType = CONTENT_TYPE_OCTET_STREAM
-      } else if (typeof data === 'string') {
+      if (typeof data === 'string') {
         contentType = 'text/plain'
+      } else {
+        if (data.type) {
+          // The type is specified in the file object
+          contentType = data.type
+        } else {
+          // Extract the name from the path and infer the type
+          const sPath = path.split('?')
+          const params = sPath.length > 1 ? sPath[1] : ''
+          const name = new URLSearchParams(params).get('Name')
+          contentType =
+            getFileTypeFromName(name.toLowerCase()) || CONTENT_TYPE_OCTET_STREAM
+        }
       }
     }
 
-    if (lastModifiedDate && typeof lastModifiedDate === 'string') {
+    lastModifiedDate = lastModifiedDate || data.lastModified
+    if (lastModifiedDate) {
       lastModifiedDate = new Date(lastModifiedDate)
     }
-
     const headers = {
       'Content-Type': contentType
     }

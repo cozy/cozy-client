@@ -1,6 +1,7 @@
 import sortBy from 'lodash/sortBy'
 import CozyClient from '../CozyClient'
 import { IOCozyFolder, CozyClientDocument } from '../types'
+import { DOCTYPE_FILES } from '../const'
 
 const APP_DOCTYPE = 'io.cozy.apps'
 
@@ -63,7 +64,7 @@ export const ensureMagicFolder = async (client, id, path) => {
  * @returns {Promise<IOCozyFolder>}  Folder document
  */
 export const createFolderWithReference = async (client, path, document) => {
-  const collection = client.collection('io.cozy.files')
+  const collection = client.collection(DOCTYPE_FILES)
   const dirId = await collection.ensureDirectoryExists(path)
   await collection.addReferencesTo(document, [
     {
@@ -85,7 +86,7 @@ export const createFolderWithReference = async (client, path, document) => {
  */
 export const getReferencedFolder = async (client, document) => {
   const { included } = await client
-    .collection('io.cozy.files')
+    .collection(DOCTYPE_FILES)
     .findReferencedBy(document)
   const foldersOutsideTrash = included.filter(
     folder => !/^\/\.cozy_trash/.test(folder.attributes.path)

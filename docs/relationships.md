@@ -4,8 +4,15 @@ CouchDB is a document store. It does not materialize relations between documents
 
 ### In CouchDB
 
-To materialize relations, we use a special key inside the document named `relationships`. Please see the cozy-doctypes [documentation](https://github.com/cozy/cozy-doctypes/#relationships) for the exact syntax.
+Relations between documents are materialized under a `relationships` object at the root of the document. Relations are referenced by their names, e.g. `authors`.
 
+Each relation is an object with a `data` property, containing either **one reference**, or an **array of references**.
+
+A reference is an object containing at least:
+* `_type`:  the name of the referenced doctype, e.g. `io.cozy.contacts`
+* `_id`:  the id of the referenced document.
+
+For instance, a book -> authors relationship might be represented like this:
 ```javascript
 {
   "_id": "mobydick",
@@ -17,18 +24,21 @@ To materialize relations, we use a special key inside the document named `relati
 }
 ```
 
+Please see the cozy-doctypes [documentation](https://github.com/cozy/cozy-doctypes/#relationships) for more insights about the syntax.
+
+
 ### In the Cozy-Client schema
 
-Cozy-client knows about these relations with the schema you provide at initialization: 
+Cozy-client knows how to handle these relations thanks to the schema you provide at initialization:
 
 ```javascript
 const schema = {
-  todos: {
+  books: {
     doctype: 'io.cozy.books',
     attributes: {},
     relationships: {
-      items: {
-        doctype: 'io.cozy.contact',
+      authors: {
+        doctype: 'io.cozy.contacts',
         type: 'has-many'
       }
     }
@@ -42,59 +52,50 @@ const client = new CozyClient({
 })
 ```
 
-With the help of the schema, Cozy-Client will be able to manage the `relationships` attribute of your documents for you.
+We explain below what are the different types of relations.
 
 ### Relation types
 
-Cozy-Client [predefines](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/helpers.js) four basic relation types: 
+Cozy-Client [predefines](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/helpers.js) two basic relation types that must be specified in the schema:
 
-- `'has-one'`
-- `'has-many'`
+- `'has-one'`: the relation has a unique reference.
+- `'has-many'`: the relation can have several references.
+
+
+#### Files relations
+
+The files implements a special type of relation: `'io.cozy.files:has-many'`. This relation name is `referenced_by`, which is an array of references, just like the `'has-many'` relation. 
+
+The stack implements routes to handle this kind of relation on the `/files` endpoint. See the [stack documentation](https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/).
+
+Note specific [view index](https://docs.cozy.io/en/tutorials/data/queries/#usage-example-references) are defined on `referenced_by` relationships, allowing fast queries on it.
+
+
+#### Customize relations
+
+You are free to create your own relation type if you need a special behaviour.
+
+For instance, [Banks doctypes](https://github.com/cozy/cozy-banks/blob/master/src/doctypes.js) implements `HasManyBills` or `HasManyReimbursements`.
+
+#### Old relation types 
+
+Note there are two others basic relations, that are here for backward compatibility:
+
 - `'has-one-in-place'`
 - `'has-many-in-place'`
 
-For new doctypes you should use `'has-one'` or `'has-many'`. They use your `relationships` attribute and link either a single document or an array of documents.
+⚠️ For new doctypes, you should not use those relations, prefer `'has-one'` or `'has-many'`.
+
+With these relations, instead of using the `relationships` attribute, you reference directly the ids of linked documents at the root of your data:
 
 ```javascript
 const schema = {
-  todos: {
+  books: {
     doctype: 'io.cozy.books',
     attributes: {},
     relationships: {
       authors: {
-        doctype: 'io.cozy.contact',
-        type: 'has-many'
-      }
-    }
-  }
-}
-```
-
-```javascript
-const document = {
-  "_id": "mobydick",
-  "relationships": {
-    "authors": {
-      "data": [
-        { "_id": "hermanmelville", "_type": "io.cozy.contacts" }
-      ]
-    }
-  }
-}
-// there should be an io.cozy.contact document 
-// for which the _id is "hermanmelville"
-```
-
-`'has-one-in-place'` or `'has-many-in-place'` are here for backward compatibility. Instead of using the `relationships` attribute, you reference directly the ids of linked documents at the root of your data:
-
-```javascript
-const schema = {
-  todos: {
-    doctype: 'io.cozy.books',
-    attributes: {},
-    relationships: {
-      authors: {
-        doctype: 'io.cozy.contact',
+        doctype: 'io.cozy.contacts',
         type: 'has-many-in-place'
       }
     }
@@ -103,22 +104,18 @@ const schema = {
 ```
 
 ```javascript
-const document = {
+const book = {
   "_id": "mobydick",
   "authors": [ "hermanmelville" ]
 }
-// there should be an io.cozy.contact document 
-// for which the _id is "hermanmelville" 
 ```
-
-You may also see a special type named `'io.cozy.files:has-many'`. It's used for backward compatibility with the 'io.cozy.files' doctype. [Banks doctypes](https://github.com/cozy/cozy-banks/blob/master/src/doctypes.js) also have their own special relationship objects like `HasManyBills` or `HasManyReimbursements`. You are free to create your own if you need a special behaviour.
 
 
 ## Usage
 
 ### Include relations in your query
 
-Relations are not loaded eagerly by default. If you want your query to load your relations for you by default, you will have to name them in a `include()` request.
+Relations are not loaded eagerly by default. If you want your query to load your relations for you, you will have to name them in an `include()` request.
 
 ```javascript
 const query = Q('io.cozy.books')
@@ -191,13 +188,13 @@ const firstDoc = docs[0]
 firstDoc.printingCompany.unset()
 ```
 
-### Create a new document with existing relations
+### Create a new file with existing relations
 
-Simply pass your relations as a third parameter to `create()`:
+Simply pass the reference to your file as a third parameter to `create()`:
 
 ```javascript
-const mobydick = { _id: "mobydick" }
-const hermanmelville = { _id: "hermanmelville" }
-const relationships = { authors: [ hermanmelville ] }
-await client.create('io.cozy.books', mobydick, relationships)
+const photo = { _id: "sunset.jpg" }
+const reference = { _id: "1324", _type: "io.cozy.photos.albums" }
+const albumReference = { albums: [ albumReference ] }
+await client.create('io.cozy.files', photo, albumReference)
 ```

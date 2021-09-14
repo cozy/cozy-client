@@ -384,7 +384,7 @@ const getSharingRulesForOrganizations = document => {
       values: [_id],
       add: 'sync',
       update: 'sync',
-      remove: 'sync'
+      remove: 'revoke'
     },
     {
       title: 'Ciphers',

@@ -3,6 +3,7 @@ import { isMobileApp, isAndroidApp, isIOS } from 'cozy-device-helper'
 import CozyClient from '../CozyClient'
 import { CordovaWindow } from '../types'
 import logger from '../logger'
+import { DOCTYPE_FILES } from '../const'
 
 const ERROR_GET_DIRECTORY = 'Error to get directory'
 const ERROR_WRITE_FILE = 'Error to write file'
@@ -216,7 +217,7 @@ export const openFileWith = async (client, file) => {
     let fileData
     try {
       fileData = await client
-        .collection('io.cozy.files')
+        .collection(DOCTYPE_FILES)
         .fetchFileContent(file.id)
     } catch (e) {
       throw e.status === 404 ? 'missing' : 'offline'

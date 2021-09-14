@@ -1,7 +1,10 @@
+import get from 'lodash/get'
 import omit from 'lodash/omit'
+import uniq from 'lodash/uniq'
 import { Mutations, Q, QueryDefinition } from '../queries/dsl'
 import { getDocumentFromState } from '../store'
 import { CozyClientDocument } from '../types'
+import { DOCTYPE_FILES } from '../const'
 import Association from './Association'
 import HasMany from './HasMany'
 
@@ -11,8 +14,17 @@ import HasMany from './HasMany'
  *  by datetime, with a cursor-based pagination.
  */
 export default class HasManyFiles extends HasMany {
+  get data() {
+    if (this.target._type === DOCTYPE_FILES) {
+      const refs = get(this.target, 'referenced_by', [])
+      return refs.map(({ id, type }) => this.get(type, id)).filter(Boolean)
+    } else {
+      return super.data
+    }
+  }
+
   async fetchMore() {
-    const queryDef = new QueryDefinition({ doctype: 'io.cozy.files' })
+    const queryDef = new QueryDefinition({ doctype: DOCTYPE_FILES })
     const relationships = this.getRelationship().data
     // Get last datetime for cursor
     const lastRelationship = relationships[relationships.length - 1]
@@ -66,9 +78,9 @@ export default class HasManyFiles extends HasMany {
   }
 
   addReferences(referencedDocs) {
-    if (this.target._type === 'io.cozy.files') {
+    if (this.target._type === DOCTYPE_FILES) {
       return Mutations.addReferencedBy(this.target, referencedDocs)
-    } else if (referencedDocs[0]._type === 'io.cozy.files') {
+    } else if (referencedDocs[0]._type === DOCTYPE_FILES) {
       return Mutations.addReferencesTo(this.target, referencedDocs)
     } else {
       throw new Error(
@@ -78,9 +90,9 @@ export default class HasManyFiles extends HasMany {
   }
 
   removeReferences(referencedDocs) {
-    if (this.target._type === 'io.cozy.files') {
+    if (this.target._type === DOCTYPE_FILES) {
       return Mutations.removeReferencedBy(this.target, referencedDocs)
-    } else if (referencedDocs[0]._type === 'io.cozy.files') {
+    } else if (referencedDocs[0]._type === DOCTYPE_FILES) {
       return Mutations.removeReferencesTo(this.target, referencedDocs)
     } else {
       throw new Error(
@@ -102,10 +114,19 @@ export default class HasManyFiles extends HasMany {
    * @returns {CozyClientDocument | QueryDefinition}
    */
   static query(document, client, assoc) {
-    const key = [document._type, document._id]
-    const cursor = [key, '']
-    return Q(assoc.doctype)
-      .referencedBy(document)
-      .offsetCursor(cursor)
+    if (document._type === DOCTYPE_FILES) {
+      const refs = get(document, `relationships.referenced_by.data`, [])
+      const ids = uniq(
+        refs.filter(ref => ref.type === assoc.doctype).map(ref => ref.id)
+      )
+      return ids.length > 0 ? Q(assoc.doctype).getByIds(ids) : null
+    } else {
+      const key = [document._type, document._id]
+      const cursor = [key, '']
+
+      return Q(assoc.doctype)
+        .referencedBy(document)
+        .offsetCursor(cursor)
+    }
   }
 }

@@ -478,7 +478,8 @@ describe('FileCollection', () => {
       const expectedOptions = {
         headers: {
           'Content-MD5': 'a6dabd99832b270468e254814df2ed20',
-          'Content-Type': 'application/epub+zip'
+          'Content-Type': 'application/epub+zip',
+          Date: new Date(data.lastModified).toGMTString()
         }
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(
@@ -515,7 +516,8 @@ describe('FileCollection', () => {
       const expectedOptions = {
         headers: {
           'Content-MD5': 'a6dabd99832b270468e254814df2ed20',
-          'Content-Type': 'application/epub+zip'
+          'Content-Type': 'application/epub+zip',
+          Date: new Date(data.lastModified).toGMTString()
         }
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(
@@ -548,7 +550,8 @@ describe('FileCollection', () => {
         headers: {
           'Content-MD5': 'a6dabd99832b270468e254814df2ed20',
           'Content-Type': 'application/epub+zip',
-          'Content-Length': '1234'
+          'Content-Length': '1234',
+          Date: new Date(data.lastModified).toGMTString()
         }
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(
@@ -565,6 +568,50 @@ describe('FileCollection', () => {
           dir_id: '41686c35-9d8e'
         }
       })
+    })
+    it('should have a file name', async () => {
+      let data = new File([''], '')
+      const params = {
+        fileId: '59140416-b95f',
+        checksum: 'a6dabd99832b270468e254814df2ed20'
+      }
+      await expect(collection.updateFile(data, params)).rejects.toThrow()
+
+      data = new File([''], 'mydoc.epub')
+      await collection.updateFile(data, params)
+      const expectedPath =
+        '/files/59140416-b95f?Name=mydoc.epub&Type=file&Executable=false'
+
+      const expectedOptions = {
+        headers: {
+          'Content-MD5': 'a6dabd99832b270468e254814df2ed20',
+          'Content-Type': 'application/epub+zip',
+          Date: new Date(data.lastModified).toGMTString()
+        }
+      }
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'PUT',
+        expectedPath,
+        data,
+        expectedOptions
+      )
+
+      data = new ArrayBuffer(8)
+      params.name = 'mydoc.epub'
+      params.contentType = 'application/epub+zip'
+      const newExpectedOptions = {
+        headers: {
+          'Content-MD5': 'a6dabd99832b270468e254814df2ed20',
+          'Content-Type': 'application/epub+zip'
+        }
+      }
+      await collection.updateFile(data, params)
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'PUT',
+        expectedPath,
+        data,
+        newExpectedOptions
+      )
     })
   })
 
@@ -701,7 +748,8 @@ describe('FileCollection', () => {
       const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&MetadataID=&Size=`
       const expectedOptions = {
         headers: {
-          'Content-Type': 'application/epub+zip'
+          'Content-Type': 'application/epub+zip',
+          Date: new Date(data.lastModified).toGMTString()
         }
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(
@@ -735,7 +783,8 @@ describe('FileCollection', () => {
       const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&MetadataID=${metadataId}&Size=`
       const expectedOptions = {
         headers: {
-          'Content-Type': 'application/epub+zip'
+          'Content-Type': 'application/epub+zip',
+          Date: new Date(data.lastModified).toGMTString()
         }
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(
@@ -763,7 +812,8 @@ describe('FileCollection', () => {
       const expectedOptions = {
         headers: {
           'Content-Type': 'application/epub+zip',
-          'Content-Length': String(contentLength)
+          'Content-Length': String(contentLength),
+          Date: new Date(data.lastModified).toGMTString()
         }
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(
@@ -780,6 +830,141 @@ describe('FileCollection', () => {
           dir_id: dirId
         }
       })
+    })
+  })
+
+  describe('doUpload', () => {
+    const id = '59140416-b95f'
+    const dirId = '41686c35-9d8e'
+    const fileName = 'mydoc.epub'
+
+    beforeEach(() => {
+      client.fetchJSON.mockReturnValue({
+        data: {
+          id: id,
+          _id: id,
+          dir_id: dirId
+        }
+      })
+    })
+
+    afterEach(() => {
+      client.fetchJSON.mockClear()
+    })
+
+    it('should use the given content-type', async () => {
+      const data = new ArrayBuffer(8)
+      const path = `/files/${dirId}?Name=${fileName}&Type=file`
+      await collection.doUpload(data, path, {
+        contentType: 'application/epub+zip'
+      })
+
+      const expectedOptions = {
+        headers: {
+          'Content-Type': 'application/epub+zip'
+        }
+      }
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        path,
+        data,
+        expectedOptions
+      )
+    })
+
+    it('should set the File content-type', async () => {
+      const data = new File([''], fileName)
+      const path = `/files/${dirId}?Name=${fileName}&Type=file`
+      await collection.doUpload(data, path, {})
+
+      const expectedOptions = {
+        headers: {
+          'Content-Type': 'application/epub+zip',
+          Date: new Date(data.lastModified).toGMTString()
+        }
+      }
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        path,
+        data,
+        expectedOptions
+      )
+    })
+
+    it('should infer the content-type based on name', async () => {
+      const data = new ArrayBuffer(8)
+      const path = `/files/${dirId}?Name=${fileName}&Type=file`
+      await collection.doUpload(data, path, {})
+
+      const expectedOptions = {
+        headers: {
+          'Content-Type': 'application/epub+zip'
+        }
+      }
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        path,
+        data,
+        expectedOptions
+      )
+    })
+
+    it('should fallback on application/octet-stream content-type', async () => {
+      const data = new ArrayBuffer(8)
+      const name = 'mydoc.fakeext'
+      const path = `/files/${dirId}?Name=${name}&Type=file`
+      await collection.doUpload(data, path, {})
+
+      const expectedOptions = {
+        headers: {
+          'Content-Type': 'application/octet-stream'
+        }
+      }
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        path,
+        data,
+        expectedOptions
+      )
+    })
+
+    it('should set the lastModifiedDate from File', async () => {
+      const data = new File([''], fileName)
+      const path = `/files/${dirId}?Name=${name}&Type=file`
+      await collection.doUpload(data, path, {})
+
+      const expectedOptions = {
+        headers: {
+          'Content-Type': 'application/octet-stream',
+          Date: new Date(data.lastModified).toGMTString()
+        }
+      }
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        path,
+        data,
+        expectedOptions
+      )
+    })
+
+    it('should set the given lastModifiedDate', async () => {
+      const data = new File([''], fileName)
+      const path = `/files/${dirId}?Name=${name}&Type=file`
+      const lastModifiedDate = new Date('2021-01-01')
+      await collection.doUpload(data, path, { lastModifiedDate })
+
+      const expectedOptions = {
+        headers: {
+          'Content-Type': 'application/octet-stream',
+          Date: lastModifiedDate.toGMTString()
+        }
+      }
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        path,
+        data,
+        expectedOptions
+      )
     })
   })
 

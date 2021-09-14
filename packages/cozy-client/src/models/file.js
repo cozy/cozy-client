@@ -5,6 +5,7 @@ import has from 'lodash/has'
 import { setQualification } from './document'
 import { Q } from '../queries/dsl'
 import { IOCozyFile, QueryResult } from '../types'
+import { DOCTYPE_FILES } from '../const'
 import CozyClient from '../CozyClient'
 
 const FILE_TYPE = 'file'
@@ -109,7 +110,7 @@ export const isShortcut = file => {
  */
 export function normalize(file) {
   const id = file._id || file.id
-  const doctype = file._type || 'io.cozy.files'
+  const doctype = file._type || DOCTYPE_FILES
   return { _id: id, id, _type: doctype, ...file }
 }
 
@@ -230,7 +231,7 @@ export const isSharingShorcutNew = file => {
 export const saveFileQualification = async (client, file, qualification) => {
   const qualifiedFile = setQualification(file, qualification)
   return client
-    .collection('io.cozy.files')
+    .collection(DOCTYPE_FILES)
     .updateMetadataAttribute(file._id, qualifiedFile.metadata)
 }
 
@@ -243,7 +244,7 @@ export const saveFileQualification = async (client, file, qualification) => {
  */
 export const fetchFilesByQualificationRules = async (client, docRules) => {
   const { rules, count } = docRules
-  const query = Q('io.cozy.files')
+  const query = Q(DOCTYPE_FILES)
     .where({
       ...rules
     })

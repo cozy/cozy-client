@@ -199,13 +199,21 @@ class CozyStackClient {
     if (!appNode) {
       throw Error("couldn't fetch a new token - no div[role=application]")
     }
-    const cozyToken = appNode.dataset.cozyToken
-    if (!cozyToken) {
+    const data = appNode.dataset.cozy
+      ? JSON.parse(appNode.dataset.cozy)
+      : { ...appNode.dataset }
+
+    let { token } = data
+    if (token) {
+      token = token || data.cozyToken
+    }
+
+    if (!token) {
       throw Error(
-        "couldn't fetch a new token -- missing data-cozy-token attribute"
+        "couldn't fetch a new token -- missing data-cozy or data-cozy-token attribute"
       )
     }
-    const newToken = new AppToken(cozyToken)
+    const newToken = new AppToken(token)
     this.onTokenRefresh(newToken)
     return newToken
   }

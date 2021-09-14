@@ -3,6 +3,118 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [24.6.1](https://github.com/cozy/cozy-client/compare/v24.6.0...v24.6.1) (2021-09-13)
+
+**Note:** Version bump only for package cozy-client
+
+
+
+
+
+# [24.6.0](https://github.com/cozy/cozy-client/compare/v24.5.0...v24.6.0) (2021-09-13)
+
+**Note:** Version bump only for package cozy-client
+
+
+
+
+
+# [24.5.0](https://github.com/cozy/cozy-client/compare/v24.4.0...v24.5.0) (2021-09-09)
+
+
+### Features
+
+* Implement data retrieval for HasManyFiles ([f6740be](https://github.com/cozy/cozy-client/commit/f6740be2b0e8a0c88cbc3d5beddffd30c240fcdb))
+
+
+
+
+
+# [24.4.0](https://github.com/cozy/cozy-client/compare/v24.3.3...v24.4.0) (2021-09-08)
+
+**Note:** Version bump only for package cozy-client
+
+
+
+
+
+## [24.3.3](https://github.com/cozy/cozy-client/compare/v24.3.2...v24.3.3) (2021-09-07)
+
+**Note:** Version bump only for package cozy-client
+
+
+
+
+
+# [24.2.0](https://github.com/cozy/cozy-client/compare/v24.1.3...v24.2.0) (2021-09-01)
+
+
+### Features
+
+* Allow to query a HasManyFiles relation in both ways ([1577564](https://github.com/cozy/cozy-client/commit/15775649a275020cf6d41b36214e3a2b4f486338))
+* Uniq ids in query ([e6a7b17](https://github.com/cozy/cozy-client/commit/e6a7b17c918adf54a9d8b7024f78c7393f9b53b7))
+
+
+
+
+
+## [24.1.3](https://github.com/cozy/cozy-client/compare/v24.1.2...v24.1.3) (2021-08-27)
+
+**Note:** Version bump only for package cozy-client
+
+
+
+
+
+## [24.1.2](https://github.com/cozy/cozy-client/compare/v24.1.1...v24.1.2) (2021-08-27)
+
+**Note:** Version bump only for package cozy-client
+
+
+
+
+
+## [24.1.1](https://github.com/cozy/cozy-client/compare/v24.1.0...v24.1.1) (2021-08-27)
+
+
+### Bug Fixes
+
+* Linting ([6a9f31d](https://github.com/cozy/cozy-client/commit/6a9f31dc85b651d996c5b1ce296fe970fcc9ccae))
+* Moved polyfills in createClientInteractive ([39d3cd4](https://github.com/cozy/cozy-client/commit/39d3cd4d8bc6bd9f5c6a4620fa98fa0e15948857))
+
+
+
+
+
+# [24.1.0](https://github.com/cozy/cozy-client/compare/v24.0.0...v24.1.0) (2021-08-23)
+
+
+### Bug Fixes
+
+* QueryAll for CozyPouchLink ([00a54cc](https://github.com/cozy/cozy-client/commit/00a54cc60ac6421c44f31c209c30e4bf6d1f592e))
+
+
+
+
+
+# [24.0.0](https://github.com/cozy/cozy-client/compare/v23.22.0...v24.0.0) (2021-08-13)
+
+
+### Features
+
+* Replace fetchAppLatestVersion by fetchAppVersion ([d705072](https://github.com/cozy/cozy-client/commit/d705072a858430e95579cc27dc7d074fe2912c67))
+
+
+### BREAKING CHANGES
+
+* the fetchAppLatestVersion method won't exist
+anymore, but it is really new and has no sense with the presence of
+fetchAppVersion.
+
+
+
+
+
 # [23.22.0](https://github.com/cozy/cozy-client/compare/v23.21.0...v23.22.0) (2021-08-12)
 
 

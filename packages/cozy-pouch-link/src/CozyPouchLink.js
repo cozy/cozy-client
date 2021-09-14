@@ -99,6 +99,16 @@ class PouchLink extends CozyLink {
     this.replicationStatus = this.replicationStatus || {}
   }
 
+  /**
+   * Return the PouchDB adapter name.
+   * Should be IndexedDB for newest adapters.
+   *
+   * @returns {string} The adapter name
+   */
+  static getPouchAdapterName = () => {
+    return getAdapterName()
+  }
+
   getReplicationURL(doctype) {
     const url = this.client && this.client.stackClient.uri
     const token = this.client && this.client.stackClient.token
@@ -139,7 +149,7 @@ class PouchLink extends CozyLink {
         PouchDB.plugin(plugin)
       }
       const doctypes = getPersistedSyncedDoctypes()
-      for (const doctype of doctypes) {
+      for (const doctype of Object.keys(doctypes)) {
         const prefix = getPrefix(url)
         const dbName = getDatabaseName(prefix, doctype)
 
@@ -539,7 +549,13 @@ class PouchLink extends CozyLink {
 
   async deleteDocument(mutation) {
     const res = await this.dbMethod('remove', mutation)
-    return parseMutationResult(mutation.document, res)
+    const document = {
+      ...mutation.document,
+      _id: res.id,
+      _rev: res.rev,
+      _deleted: true
+    }
+    return parseMutationResult(document, res)
   }
 
   async dbMethod(method, mutation) {

@@ -3,6 +3,74 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [24.6.1](https://github.com/cozy/cozy-client/compare/v24.6.0...v24.6.1) (2021-09-13)
+
+
+### Bug Fixes
+
+* Change sharing rule for `com.bitwarden.organizations` ([9884a2c](https://github.com/cozy/cozy-client/commit/9884a2cbc19a75c5d233509e68a1cb8b340376a6))
+
+
+
+
+
+# [24.6.0](https://github.com/cozy/cozy-client/compare/v24.5.0...v24.6.0) (2021-09-13)
+
+
+### Bug Fixes
+
+* Set lastModifiedDate ([038b7d0](https://github.com/cozy/cozy-client/commit/038b7d0e0eafa5e84398f572f41b0dc34dd7a604))
+
+
+### Features
+
+* Infer content-type from file extension ([16877e8](https://github.com/cozy/cozy-client/commit/16877e81e53aa14b3346f2bda351b4f680ddfa3a))
+
+
+
+
+
+# [24.5.0](https://github.com/cozy/cozy-client/compare/v24.4.0...v24.5.0) (2021-09-09)
+
+
+### Features
+
+* Pass name as param in updateFile ([b5d8034](https://github.com/cozy/cozy-client/commit/b5d803491bc09484763be5ab98c1a621d83c2c39))
+
+
+
+
+
+# [24.4.0](https://github.com/cozy/cozy-client/compare/v24.3.3...v24.4.0) (2021-09-08)
+
+
+### Features
+
+* Handle Onboarding V2 ([91e0a3a](https://github.com/cozy/cozy-client/commit/91e0a3aad5c2ed6608a9c9d9420cda51a68e9f62))
+
+
+
+
+
+## [24.3.3](https://github.com/cozy/cozy-client/compare/v24.3.2...v24.3.3) (2021-09-07)
+
+
+### Bug Fixes
+
+* Retrieve correct `data-cozy-*` in `refreshToken()` ([a74b774](https://github.com/cozy/cozy-client/commit/a74b774800d746834d11848547b79215e523cbe5))
+
+
+
+
+
+# [24.0.0](https://github.com/cozy/cozy-client/compare/v23.22.0...v24.0.0) (2021-08-13)
+
+**Note:** Version bump only for package cozy-stack-client
+
+
+
+
+
 # [23.19.0](https://github.com/cozy/cozy-client/compare/v23.18.1...v23.19.0) (2021-08-06)
 
 

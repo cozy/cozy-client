@@ -181,6 +181,8 @@ const readJSON = (fs, filename) => {
  * @returns {Promise<CozyClient>} - A client that is ready with a token
  */
 const createClientInteractive = (clientOptions, serverOpts) => {
+  global.fetch = nodeFetch
+  global.btoa = btoa
   const serverOptions = merge(DEFAULT_SERVER_OPTIONS, serverOpts)
   const createClientFS = serverOptions.fs || fs
 
@@ -226,9 +228,6 @@ const createClientInteractive = (clientOptions, serverOpts) => {
 }
 
 const main = async () => {
-  global.fetch = nodeFetch
-  global.btoa = btoa
-
   const client = await createClientInteractive({
     scope: ['io.cozy.files'],
     uri: 'http://cozy.tools:8080',

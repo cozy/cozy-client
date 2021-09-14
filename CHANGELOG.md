@@ -3,6 +3,176 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [24.6.1](https://github.com/cozy/cozy-client/compare/v24.6.0...v24.6.1) (2021-09-13)
+
+
+### Bug Fixes
+
+* Change sharing rule for `com.bitwarden.organizations` ([9884a2c](https://github.com/cozy/cozy-client/commit/9884a2cbc19a75c5d233509e68a1cb8b340376a6))
+
+
+
+
+
+# [24.6.0](https://github.com/cozy/cozy-client/compare/v24.5.0...v24.6.0) (2021-09-13)
+
+
+### Bug Fixes
+
+* Set lastModifiedDate ([038b7d0](https://github.com/cozy/cozy-client/commit/038b7d0e0eafa5e84398f572f41b0dc34dd7a604))
+
+
+### Features
+
+* Infer content-type from file extension ([16877e8](https://github.com/cozy/cozy-client/commit/16877e81e53aa14b3346f2bda351b4f680ddfa3a))
+
+
+
+
+
+# [24.5.0](https://github.com/cozy/cozy-client/compare/v24.4.0...v24.5.0) (2021-09-09)
+
+
+### Features
+
+* Implement data retrieval for HasManyFiles ([f6740be](https://github.com/cozy/cozy-client/commit/f6740be2b0e8a0c88cbc3d5beddffd30c240fcdb))
+* Pass name as param in updateFile ([b5d8034](https://github.com/cozy/cozy-client/commit/b5d803491bc09484763be5ab98c1a621d83c2c39))
+
+
+
+
+
+# [24.4.0](https://github.com/cozy/cozy-client/compare/v24.3.3...v24.4.0) (2021-09-08)
+
+
+### Features
+
+* Handle Onboarding V2 ([91e0a3a](https://github.com/cozy/cozy-client/commit/91e0a3aad5c2ed6608a9c9d9420cda51a68e9f62))
+
+
+
+
+
+## [24.3.3](https://github.com/cozy/cozy-client/compare/v24.3.2...v24.3.3) (2021-09-07)
+
+
+### Bug Fixes
+
+* Retrieve correct `data-cozy-*` in `refreshToken()` ([a74b774](https://github.com/cozy/cozy-client/commit/a74b774800d746834d11848547b79215e523cbe5))
+
+
+
+
+
+## [24.3.2](https://github.com/cozy/cozy-client/compare/v24.3.1...v24.3.2) (2021-09-03)
+
+
+### Bug Fixes
+
+* Method to get adapter name should be static ([ff7e26d](https://github.com/cozy/cozy-client/commit/ff7e26d40abc6c2a115df4cf3efcad5741242fc5))
+
+
+
+
+
+## [24.3.1](https://github.com/cozy/cozy-client/compare/v24.3.0...v24.3.1) (2021-09-03)
+
+
+### Bug Fixes
+
+* Correcty iterate over object keys ([9bf26cd](https://github.com/cozy/cozy-client/commit/9bf26cdd7f8ff7bd572cf98c79f116e0f9fbc8c6))
+
+
+
+
+
+# [24.3.0](https://github.com/cozy/cozy-client/compare/v24.2.0...v24.3.0) (2021-09-02)
+
+
+### Features
+
+* Expose method to get the adapter name ([2095d0a](https://github.com/cozy/cozy-client/commit/2095d0a4c0169bd10035043f2e6bd407dcae5bc3))
+
+
+
+
+
+# [24.2.0](https://github.com/cozy/cozy-client/compare/v24.1.3...v24.2.0) (2021-09-01)
+
+
+### Features
+
+* Allow to query a HasManyFiles relation in both ways ([1577564](https://github.com/cozy/cozy-client/commit/15775649a275020cf6d41b36214e3a2b4f486338))
+* Uniq ids in query ([e6a7b17](https://github.com/cozy/cozy-client/commit/e6a7b17c918adf54a9d8b7024f78c7393f9b53b7))
+
+
+
+
+
+## [24.1.3](https://github.com/cozy/cozy-client/compare/v24.1.2...v24.1.3) (2021-08-27)
+
+**Note:** Version bump only for package cozy-client
+
+
+
+
+
+## [24.1.2](https://github.com/cozy/cozy-client/compare/v24.1.1...v24.1.2) (2021-08-27)
+
+**Note:** Version bump only for package cozy-client
+
+
+
+
+
+## [24.1.1](https://github.com/cozy/cozy-client/compare/v24.1.0...v24.1.1) (2021-08-27)
+
+
+### Bug Fixes
+
+* Linting ([6a9f31d](https://github.com/cozy/cozy-client/commit/6a9f31dc85b651d996c5b1ce296fe970fcc9ccae))
+* Moved polyfills in createClientInteractive ([39d3cd4](https://github.com/cozy/cozy-client/commit/39d3cd4d8bc6bd9f5c6a4620fa98fa0e15948857))
+
+
+
+
+
+# [24.1.0](https://github.com/cozy/cozy-client/compare/v24.0.0...v24.1.0) (2021-08-23)
+
+
+### Bug Fixes
+
+* Next attribute for Pouch ([556dd99](https://github.com/cozy/cozy-client/commit/556dd99fe0b66af993a9e08b6f658699cbda41b3))
+* QueryAll for CozyPouchLink ([00a54cc](https://github.com/cozy/cozy-client/commit/00a54cc60ac6421c44f31c209c30e4bf6d1f592e))
+
+
+### Features
+
+* Add deleted true to a deleted doc with CozyPouchLink ([144be1d](https://github.com/cozy/cozy-client/commit/144be1d4293a1fdf1e4784fb9edbaebc3701cd21))
+* Add doctype specification in warmupQueries error ([b0f6d2f](https://github.com/cozy/cozy-client/commit/b0f6d2feb3a666a9f7e599d7a59d5b3c92f14fad))
+
+
+
+
+
+# [24.0.0](https://github.com/cozy/cozy-client/compare/v23.22.0...v24.0.0) (2021-08-13)
+
+
+### Features
+
+* Replace fetchAppLatestVersion by fetchAppVersion ([d705072](https://github.com/cozy/cozy-client/commit/d705072a858430e95579cc27dc7d074fe2912c67))
+
+
+### BREAKING CHANGES
+
+* the fetchAppLatestVersion method won't exist
+anymore, but it is really new and has no sense with the presence of
+fetchAppVersion.
+
+
+
+
+
 # [23.22.0](https://github.com/cozy/cozy-client/compare/v23.21.0...v23.22.0) (2021-08-12)
 
 

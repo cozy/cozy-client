@@ -1,6 +1,7 @@
 import { MutationTypes } from './queries/dsl'
 import CozyLink from './CozyLink'
 import { CozyClientDocument, CouchDBBulkResult } from './types'
+import { DOCTYPE_FILES } from './const'
 import { BulkEditError } from './errors'
 import zipWith from 'lodash/zipWith'
 
@@ -111,24 +112,24 @@ export default class StackLink extends CozyLink {
           .collection(props.referencedDocuments[0]._type)
           .removeReferencesTo(doc, props.referencedDocuments)
       case MutationTypes.ADD_REFERENCED_BY:
-        if (doc._type === 'io.cozy.files') {
+        if (doc._type === DOCTYPE_FILES) {
           return this.stackClient
-            .collection('io.cozy.files')
+            .collection(DOCTYPE_FILES)
             .addReferencedBy(doc, props.referencedDocuments)
         } else {
           throw new Error('The document type should be io.cozy.files')
         }
       case MutationTypes.REMOVE_REFERENCED_BY:
-        if (doc._type === 'io.cozy.files') {
+        if (doc._type === DOCTYPE_FILES) {
           return this.stackClient
-            .collection('io.cozy.files')
+            .collection(DOCTYPE_FILES)
             .removeReferencedBy(doc, props.referencedDocuments)
         } else {
           throw new Error('The document type should be io.cozy.files')
         }
       case MutationTypes.UPLOAD_FILE:
         return this.stackClient
-          .collection('io.cozy.files')
+          .collection(DOCTYPE_FILES)
           .upload(props.file, props.dirPath)
       default:
         return forward(mutation, result)

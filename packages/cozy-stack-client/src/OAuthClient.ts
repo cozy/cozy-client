@@ -287,14 +287,19 @@ class OAuthClient extends CozyStackClient {
   getAuthCodeURL(stateCode, scopes = this.scope) {
     if (!this.isRegistered()) throw new NotRegisteredException()
 
-    const query = {
+    let query = {
       client_id: this.oauthOptions.clientID,
       redirect_uri: this.oauthOptions.redirectURI,
       state: stateCode,
       response_type: 'code',
       scope: scopes.join(' ')
     }
-
+    if (this.oauthOptions.registerToken) {
+      query = {
+        ...query,
+        registerToken: this.oauthOptions.registerToken
+      }
+    }
     return `${this.uri}/auth/authorize?${this.dataToQueryString(query)}`
   }
 

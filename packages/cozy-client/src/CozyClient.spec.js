@@ -27,7 +27,8 @@ import {
   initMutation,
   receiveMutationResult,
   receiveMutationError,
-  getQueryFromState
+  getQueryFromState,
+  getRawQueryFromState
 } from './store'
 import { HasManyFiles, Association, HasMany } from './associations'
 import mapValues from 'lodash/mapValues'
@@ -47,7 +48,8 @@ const METADATA_VERSION = 1
 
 jest.mock('./store', () => ({
   ...jest.requireActual('./store'),
-  getQueryFromState: jest.fn().mockReturnValue({})
+  getQueryFromState: jest.fn().mockReturnValue({}),
+  getRawQueryFromState: jest.fn().mockReturnValue({})
 }))
 
 describe('CozyClient initialization', () => {
@@ -1382,7 +1384,7 @@ describe('CozyClient', () => {
     })
 
     afterEach(() => {
-      jest.restoreAllMocks()
+      jest.clearAllMocks()
     })
 
     it('should call `query` until there is no more document to query', async () => {
@@ -1406,14 +1408,46 @@ describe('CozyClient', () => {
           resp = { data: [{ _id: '3', label: 'Rest' }], next: false }
         }
 
+        getRawQueryFromState.mockReturnValue(resp)
+
         ++i
 
         return resp
       })
 
+      const offsetSpy = jest.spyOn(query, 'offset')
+      const offsetBookmarkSpy = jest.spyOn(query, 'offsetBookmark')
       const documents = await client.queryAll(query)
 
       expect(client.query).toHaveBeenCalledTimes(4)
+      expect(offsetSpy).toHaveBeenCalled()
+      expect(offsetBookmarkSpy).not.toHaveBeenCalled()
+      expect(getRawQueryFromState).toHaveBeenCalled()
+      expect(documents).toMatchSnapshot()
+    })
+
+    it('should use offsetBookmark when a bookmark is in the query result', async () => {
+      jest
+        .spyOn(client, 'query')
+        .mockResolvedValueOnce({
+          data: [{ _id: '0', label: 'Shopping' }],
+          next: true,
+          bookmark: '123'
+        })
+        .mockResolvedValue({
+          data: [{ _id: '1', label: 'Laundry' }],
+          next: false
+        })
+
+      const offsetSpy = jest.spyOn(query, 'offset')
+      const offsetBookmarkSpy = jest.spyOn(query, 'offsetBookmark')
+
+      const documents = await client.queryAll(query)
+
+      expect(client.query).toHaveBeenCalledTimes(2)
+      expect(offsetSpy).not.toHaveBeenCalled()
+      expect(offsetBookmarkSpy).toHaveBeenCalled()
+      expect(getRawQueryFromState).not.toHaveBeenCalled()
       expect(documents).toMatchSnapshot()
     })
   })
