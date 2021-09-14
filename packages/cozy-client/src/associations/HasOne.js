@@ -32,6 +32,27 @@ export default class HasOne extends Association {
     return Q(assoc.doctype).getById(relationship._id)
   }
 
+  /**
+   * Add the relationship to the target document
+   *
+   * @param {CozyClientDocument} doc - Document to add as a relationship
+   * @returns {CozyClientDocument} The saved target document
+   */
+  add(doc) {
+    this.set(doc)
+    return this.save(this.target)
+  }
+
+  /**
+   * Remove the relationship from the target document
+   *
+   * @returns {CozyClientDocument} The saved target document
+   */
+  remove() {
+    this.set(undefined)
+    return this.save(this.target)
+  }
+
   set(doc) {
     if (doc && doc._type !== this.doctype) {
       throw new Error(

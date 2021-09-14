@@ -134,23 +134,23 @@ const firstAuthors = firstDoc.authors.data
 
 ### Add a relation to an existing document
 
-When the relationship is a `has-many` type, you can call the `addById(documentId)` to create the relationship:
+When the relationship is a `has-many` type, you can call the `add(docs)` to create the relationship:
 
 ```javascript
-const otherAuthorId = 'abc123'
+const otherAuthors = [{_id: 'Rivest'}, {_id: 'Shamir'}]
 const response = await client.query(query)
 const docs = response.data
 const firstDoc = docs[0]
-firstDoc.authors.addById(otherAuthorId)
+firstDoc.authors.add(otherAuthors)
 ```
 
-`addById` also accepts an array of document ids:
+`add` also accepts single document:
 
 ```javascript
-firstDoc.authors.addById([mainAuthorId, coAuthorId])
+firstDoc.authors.add({_id: 'Adleman'})
 ```
 
-When the relationship is a `has-one` type, use `set(document)` instead:
+Likewise, when the relationship is a `has-one`, use `add(doc)`:
 
 ```javascript
 const printer = {
@@ -161,31 +161,31 @@ const printer = {
 const response = await client.query(query)
 const docs = response.data
 const firstDoc = docs[0]
-firstDoc.printingCompany.set(printer)
+firstDoc.printingCompany.add(printer)
 ```
 
 ### Remove a relation to an existing document
 
-For `has-many` relationships, use the `removeById` method:
+For `has-many` relationships, use the `remove(docs)` method:
 
 ```javascript
-const otherAuthorId = 'abc123'
+const wrongAuthors = [{_id: 'James Wrong' }, {_id: 'Henry Mistake'}]
 const response = await client.query(query)
 const docs = response.data
 const firstDoc = docs[0]
-firstDoc.authors.removeById(otherAuthorId)
+firstDoc.authors.remove(wrongAuthors)
 ```
 
-Just like `addById`, `removeById` accepts an array of ids as parameter.
+Just like `add`, `remove` accepts a single document.
 
-For `has-one` relationships, use the `unset()` method:
+For `has-one` relationships, just use `remove()`, with no argument:
 
 
 ```javascript
 const response = await client.query(query)
 const docs = response.data
 const firstDoc = docs[0]
-firstDoc.printingCompany.unset()
+firstDoc.printingCompany.remove()
 ```
 
 ### Create a new file with existing relations

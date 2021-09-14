@@ -54,51 +54,87 @@ describe('HasMany', () => {
     }
   })
 
-  it('adds', () => {
-    hydrated.tasks.addById(4)
-    expect(hydrated.tasks.data).toEqual([
-      { doctype: 'io.cozy.tasks', id: 1 },
-      { doctype: 'io.cozy.tasks', id: 2 },
-      { doctype: 'io.cozy.tasks', id: 4 }
-    ])
-    expect(save).toHaveBeenCalled()
+  describe('add', () => {
+    it('adds by id', () => {
+      hydrated.tasks.addById(4)
+      expect(hydrated.tasks.data).toEqual([
+        { doctype: 'io.cozy.tasks', id: 1 },
+        { doctype: 'io.cozy.tasks', id: 2 },
+        { doctype: 'io.cozy.tasks', id: 4 }
+      ])
+      expect(save).toHaveBeenCalled()
+    })
+
+    it('doesnt add if already there', () => {
+      hydrated.tasks.addById(1)
+      expect(hydrated.tasks.data).toEqual([
+        { doctype: 'io.cozy.tasks', id: 1 },
+        { doctype: 'io.cozy.tasks', id: 2 }
+      ])
+    })
+
+    it('adds multiple ids', () => {
+      hydrated.tasks.addById([4, 5])
+
+      expect(hydrated.tasks.data).toEqual([
+        { doctype: 'io.cozy.tasks', id: 1 },
+        { doctype: 'io.cozy.tasks', id: 2 },
+        { doctype: 'io.cozy.tasks', id: 4 },
+        { doctype: 'io.cozy.tasks', id: 5 }
+      ])
+    })
+
+    it('adds by doc', () => {
+      hydrated.tasks.add({ _id: 4 })
+      expect(hydrated.tasks.data).toEqual([
+        { doctype: 'io.cozy.tasks', id: 1 },
+        { doctype: 'io.cozy.tasks', id: 2 },
+        { doctype: 'io.cozy.tasks', id: 4 }
+      ])
+    })
+
+    it('adds by multiple docs', () => {
+      hydrated.tasks.add([{ _id: 4 }, { _id: 5 }])
+      expect(hydrated.tasks.data).toEqual([
+        { doctype: 'io.cozy.tasks', id: 1 },
+        { doctype: 'io.cozy.tasks', id: 2 },
+        { doctype: 'io.cozy.tasks', id: 4 },
+        { doctype: 'io.cozy.tasks', id: 5 }
+      ])
+    })
   })
 
-  it('doesnt add if already there', () => {
-    hydrated.tasks.addById(1)
-    expect(hydrated.tasks.data).toEqual([
-      { doctype: 'io.cozy.tasks', id: 1 },
-      { doctype: 'io.cozy.tasks', id: 2 }
-    ])
-  })
+  describe('remove', () => {
+    it('removes by id', () => {
+      hydrated.tasks.removeById(2)
+      expect(hydrated.tasks.data).toEqual([{ doctype: 'io.cozy.tasks', id: 1 }])
+      expect(save).toHaveBeenCalled()
+    })
 
-  it('adds multiple ids', () => {
-    hydrated.tasks.addById([4, 5])
-    expect(hydrated.tasks.data).toEqual([
-      { doctype: 'io.cozy.tasks', id: 1 },
-      { doctype: 'io.cozy.tasks', id: 2 },
-      { doctype: 'io.cozy.tasks', id: 4 },
-      { doctype: 'io.cozy.tasks', id: 5 }
-    ])
-  })
+    it('doesnt remove if not there', () => {
+      hydrated.tasks.removeById(3)
+      expect(hydrated.tasks.data).toEqual([
+        { doctype: 'io.cozy.tasks', id: 1 },
+        { doctype: 'io.cozy.tasks', id: 2 }
+      ])
+    })
 
-  it('removes', () => {
-    hydrated.tasks.removeById(2)
-    expect(hydrated.tasks.data).toEqual([{ doctype: 'io.cozy.tasks', id: 1 }])
-    expect(save).toHaveBeenCalled()
-  })
+    it('can remove multiple docs from the relationship', () => {
+      hydrated.tasks.removeById([1, 2])
+      expect(hydrated.tasks.data).toEqual([])
+    })
 
-  it('doesnt remove if not there', () => {
-    hydrated.tasks.removeById(3)
-    expect(hydrated.tasks.data).toEqual([
-      { doctype: 'io.cozy.tasks', id: 1 },
-      { doctype: 'io.cozy.tasks', id: 2 }
-    ])
-  })
+    it('remove by doc', () => {
+      hydrated.tasks.remove({ _id: 2 })
+      expect(hydrated.tasks.data).toEqual([{ doctype: 'io.cozy.tasks', id: 1 }])
+      expect(save).toHaveBeenCalled()
+    })
 
-  it('can remove multiple docs from the relationship', () => {
-    hydrated.tasks.removeById([1, 2])
-    expect(hydrated.tasks.data).toEqual([])
+    it('remove by docs', () => {
+      hydrated.tasks.remove([{ _id: 1 }, { _id: 2 }])
+      expect(hydrated.tasks.data).toEqual([])
+      expect(save).toHaveBeenCalled()
+    })
   })
 
   it('updates the count metadata', () => {

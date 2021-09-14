@@ -88,6 +88,20 @@ declare class HasMany extends Association {
     containsById(id: any): boolean;
     existsById(id: any): boolean;
     /**
+     * Add the relationships to the target document
+     *
+     * @param {CozyClientDocument[]} docsArg - Documents to add as relationships
+     * @returns {CozyClientDocument} The saved target document
+     */
+    add(docsArg: CozyClientDocument[]): CozyClientDocument;
+    /**
+     * Remove the relationships from the target document
+     *
+     * @param {CozyClientDocument[]} docsArg - Documents to remove as relationships
+     * @returns {CozyClientDocument} The saved target document
+     */
+    remove(docsArg: CozyClientDocument[]): CozyClientDocument;
+    /**
      * Add a referenced document by id. You need to call save()
      * in order to synchronize your document with the store.
      *
@@ -106,3 +120,4 @@ declare class HasMany extends Association {
     dehydrate(doc: any): any;
 }
 import Association from "./Association";
+import { CozyClientDocument } from "../types";
