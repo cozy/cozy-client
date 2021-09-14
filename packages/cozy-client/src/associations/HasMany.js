@@ -116,6 +116,30 @@ class HasMany extends Association {
   }
 
   /**
+   * Add the relationships to the target document
+   *
+   * @param {CozyClientDocument[]} docsArg - Documents to add as relationships
+   * @returns {CozyClientDocument} The saved target document
+   */
+  add(docsArg) {
+    const docs = Array.isArray(docsArg) ? docsArg : [docsArg]
+    const ids = docs.map(doc => doc._id)
+    return this.addById(ids)
+  }
+
+  /**
+   * Remove the relationships from the target document
+   *
+   * @param {CozyClientDocument[]} docsArg - Documents to remove as relationships
+   * @returns {CozyClientDocument} The saved target document
+   */
+  remove(docsArg) {
+    const docs = Array.isArray(docsArg) ? docsArg : [docsArg]
+    const ids = docs.map(doc => doc._id)
+    return this.removeById(ids)
+  }
+
+  /**
    * Add a referenced document by id. You need to call save()
    * in order to synchronize your document with the store.
    *

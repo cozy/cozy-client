@@ -28,14 +28,16 @@ const fixtures = {
 const hydratedMaster = {
   ...fixtures.jediMaster,
   padawan: new HasOne(fixtures.jediMaster, 'padawan', 'io.cozy.jedis', {
-    get: jest.fn().mockReturnValue(fixtures.apprentice)
+    get: jest.fn().mockReturnValue(fixtures.apprentice),
+    save: jest.fn()
   })
 }
 
 const hydratedApprentice = {
   ...fixtures.apprentice,
   padawan: new HasOne(fixtures.apprentice, 'padawan', 'io.cozy.jedis', {
-    get: jest.fn().mockReturnValue(undefined)
+    get: jest.fn().mockReturnValue(undefined),
+    save: jest.fn()
   })
 }
 
@@ -120,6 +122,25 @@ describe('HasOne', () => {
       expect(hydratedMaster.padawan.raw).toEqual({
         _id: newPadawan._id,
         _type: newPadawan._type
+      })
+    })
+  })
+
+  describe('remove', () => {
+    it('should remove', () => {
+      hydratedMaster.padawan.remove()
+      expect(hydratedMaster.padawan.raw).toEqual(null)
+    })
+  })
+
+  describe('add', () => {
+    it('should add', () => {
+      hydratedMaster.padawan.remove()
+      hydratedMaster.padawan.add({ _id: 'luke', _type: 'io.cozy.jedis' })
+
+      expect(hydratedMaster.padawan.raw).toEqual({
+        _type: 'io.cozy.jedis',
+        _id: 'luke'
       })
     })
   })

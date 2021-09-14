@@ -264,6 +264,30 @@ Derived `Association`s need to implement this method.
 
 ## Methods
 
+### add
+
+▸ **add**(`doc`): `CozyClientDocument`
+
+Add the relationship to the target document
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `doc` | `CozyClientDocument` | Document to add as a relationship |
+
+*Returns*
+
+`CozyClientDocument`
+
+The saved target document
+
+*Defined in*
+
+[packages/cozy-client/src/associations/HasOne.js:41](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasOne.js#L41)
+
+***
+
 ### dehydrate
 
 ▸ **dehydrate**(`doc`): `any`
@@ -280,7 +304,25 @@ Derived `Association`s need to implement this method.
 
 *Defined in*
 
-[packages/cozy-client/src/associations/HasOne.js:58](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasOne.js#L58)
+[packages/cozy-client/src/associations/HasOne.js:89](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasOne.js#L89)
+
+***
+
+### remove
+
+▸ **remove**(): `CozyClientDocument`
+
+Remove the relationship from the target document
+
+*Returns*
+
+`CozyClientDocument`
+
+The saved target document
+
+*Defined in*
+
+[packages/cozy-client/src/associations/HasOne.js:51](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasOne.js#L51)
 
 ***
 
@@ -300,7 +342,27 @@ Derived `Association`s need to implement this method.
 
 *Defined in*
 
-[packages/cozy-client/src/associations/HasOne.js:35](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasOne.js#L35)
+[packages/cozy-client/src/associations/HasOne.js:75](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasOne.js#L75)
+
+***
+
+### setRelationship
+
+▸ **setRelationship**(`doc`): `void`
+
+*Parameters*
+
+| Name | Type |
+| :------ | :------ |
+| `doc` | `any` |
+
+*Returns*
+
+`void`
+
+*Defined in*
+
+[packages/cozy-client/src/associations/HasOne.js:56](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasOne.js#L56)
 
 ***
 
@@ -314,7 +376,7 @@ Derived `Association`s need to implement this method.
 
 *Defined in*
 
-[packages/cozy-client/src/associations/HasOne.js:54](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasOne.js#L54)
+[packages/cozy-client/src/associations/HasOne.js:82](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasOne.js#L82)
 
 ***
 
