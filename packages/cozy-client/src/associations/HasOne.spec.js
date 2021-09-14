@@ -103,10 +103,13 @@ describe('HasOne', () => {
     })
   })
 
-  describe('set', () => {
+  describe('setRelationship', () => {
     it("should throw if the document to be set's type is not the same as the association type", () => {
       expect(() =>
-        hydratedMaster.padawan.set({ _id: '1', _type: 'io.cozy.stuff' })
+        hydratedMaster.padawan.setRelationship({
+          _id: '1',
+          _type: 'io.cozy.stuff'
+        })
       ).toThrow()
     })
 
@@ -117,7 +120,7 @@ describe('HasOne', () => {
         name: 'Bernard Nobody'
       }
 
-      hydratedMaster.padawan.set(newPadawan)
+      hydratedMaster.padawan.setRelationship(newPadawan)
 
       expect(hydratedMaster.padawan.raw).toEqual({
         _id: newPadawan._id,
