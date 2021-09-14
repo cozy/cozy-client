@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [24.6.2](https://github.com/cozy/cozy-client/compare/v24.6.1...v24.6.2) (2021-09-14)
+
+
+### Bug Fixes
+
+* **deps:** update dependency open to v8 ([8590ae3](https://github.com/cozy/cozy-client/commit/8590ae3ac00c1109c625316b4449d6e3f1d8b6ab))
+* **deps:** update dependency url-search-params-polyfill to v8 ([7723a7d](https://github.com/cozy/cozy-client/commit/7723a7dbc9bab386cb9dbc9d0e7a751abb2e56fb))
+
+
+
+
+
 ## [24.6.1](https://github.com/cozy/cozy-client/compare/v24.6.0...v24.6.1) (2021-09-13)
 
 
