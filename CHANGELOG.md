@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [24.7.0](https://github.com/cozy/cozy-client/compare/v24.6.2...v24.7.0) (2021-09-14)
+
+
+### Features
+
+* Add deprecating warning for set/unset ([210a816](https://github.com/cozy/cozy-client/commit/210a8162df0816fa96b0beb6d3e910ef9ae5e616))
+* Use add and remove API for both has-one and has-many ([8bc0a4b](https://github.com/cozy/cozy-client/commit/8bc0a4be3c70f2068556d3d0c169eb5d23ed5033))
+
+
+
+
+
 ## [24.6.2](https://github.com/cozy/cozy-client/compare/v24.6.1...v24.6.2) (2021-09-14)
 
 
