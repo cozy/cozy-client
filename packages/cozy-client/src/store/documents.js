@@ -171,25 +171,7 @@ export const extractAndMergeDocument = (data, updatedStateWithIncluded) => {
   }
   const sortedData = keyBy(data, properId)
 
-  let mergedData = {}
-  if (updatedStateWithIncluded && updatedStateWithIncluded[doctype]) {
-    Object.values(updatedStateWithIncluded[doctype]).map(dataState => {
-      if (!mergedData[doctype]) mergedData[doctype] = {}
-      const id = properId(dataState)
-      if (sortedData[id]) {
-        mergedData[doctype][id] = {
-          ...dataState,
-          ...sortedData[id],
-          ...mergedData[doctype][id]
-        }
-      } else {
-        mergedData[doctype][id] = {
-          ...dataState,
-          ...mergedData[doctype][id]
-        }
-      }
-    })
-  }
+  let mergedData = Object.assign({}, updatedStateWithIncluded)
   Object.values(sortedData).map(data => {
     if (!mergedData[doctype]) mergedData[doctype] = {}
     const id = properId(data)
@@ -203,8 +185,5 @@ export const extractAndMergeDocument = (data, updatedStateWithIncluded) => {
     }
   })
 
-  return {
-    ...updatedStateWithIncluded,
-    ...mergedData
-  }
+  return mergedData
 }
