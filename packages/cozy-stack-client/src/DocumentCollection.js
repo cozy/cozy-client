@@ -107,7 +107,8 @@ class DocumentCollection {
   async all(options = {}) {
     const { limit = 100, skip = 0, bookmark, keys } = options
 
-    // If the limit is intentionnally null, we need to use _all_docs, since _normal_docs uses _find and have a hard limit of 100
+    // If the limit is intentionnally null, we need to use _all_docs, since
+    // _normal_docs uses _find and has a hard limit of 1000
     const isUsingAllDocsRoute = !!keys || limit === null
     const route = isUsingAllDocsRoute ? '_all_docs' : '_normal_docs'
     const url = uri`/data/${this.doctype}/${route}`
