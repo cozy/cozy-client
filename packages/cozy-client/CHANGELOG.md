@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [24.8.0](https://github.com/cozy/cozy-client/compare/v24.7.0...v24.8.0) (2021-09-16)
+
+
+### Features
+
+* Makes queryAll faster with many requests ([17a9e23](https://github.com/cozy/cozy-client/commit/17a9e2397f72f94daafd03b49f1cebae5bad0ec3))
+
+
+
+
+
 # [24.7.0](https://github.com/cozy/cozy-client/compare/v24.6.2...v24.7.0) (2021-09-14)
 
 
