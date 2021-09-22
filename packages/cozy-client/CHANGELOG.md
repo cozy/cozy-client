@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [24.9.0](https://github.com/cozy/cozy-client/compare/v24.8.1...v24.9.0) (2021-09-22)
+
+
+### Features
+
+* Add papers path to MAGIC_FOLDERS contante ([3e31d5b](https://github.com/cozy/cozy-client/commit/3e31d5b5e3de64b810366aee64610d92925de823))
+
+
+
+
+
 ## [24.8.1](https://github.com/cozy/cozy-client/compare/v24.8.0...v24.8.1) (2021-09-20)
 
 **Note:** Version bump only for package cozy-client
