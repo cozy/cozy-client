@@ -5,6 +5,7 @@ export namespace MAGIC_FOLDERS {
     const PHOTOS_UPLOAD: string;
     const NOTES: string;
     const HOME: string;
+    const PAPERS: string;
 }
 export function ensureMagicFolder(client: CozyClient, id: string, path: string): Promise<IOCozyFolder>;
 export function createFolderWithReference(client: CozyClient, path: string, document: CozyClientDocument): Promise<IOCozyFolder>;

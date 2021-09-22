@@ -17,13 +17,14 @@
 | `ADMINISTRATIVE` | `string` |
 | `HOME` | `string` |
 | `NOTES` | `string` |
+| `PAPERS` | `string` |
 | `PHOTOS` | `string` |
 | `PHOTOS_BACKUP` | `string` |
 | `PHOTOS_UPLOAD` | `string` |
 
 *Defined in*
 
-[packages/cozy-client/src/models/folder.js:8](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/folder.js#L8)
+[packages/cozy-client/src/models/folder.js:10](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/folder.js#L10)
 
 ## Functions
 
@@ -49,7 +50,7 @@ Folder document
 
 *Defined in*
 
-[packages/cozy-client/src/models/folder.js:66](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/folder.js#L66)
+[packages/cozy-client/src/models/folder.js:69](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/folder.js#L69)
 
 ***
 
@@ -75,7 +76,7 @@ Folder document
 
 *Defined in*
 
-[packages/cozy-client/src/models/folder.js:26](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/folder.js#L26)
+[packages/cozy-client/src/models/folder.js:29](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/folder.js#L29)
 
 ***
 
@@ -100,4 +101,4 @@ Folder referenced by the given document
 
 *Defined in*
 
-[packages/cozy-client/src/models/folder.js:87](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/folder.js#L87)
+[packages/cozy-client/src/models/folder.js:90](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/folder.js#L90)

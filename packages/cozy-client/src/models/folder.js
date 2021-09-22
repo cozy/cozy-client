@@ -4,14 +4,17 @@ import { IOCozyFolder, CozyClientDocument } from '../types'
 import { DOCTYPE_FILES } from '../const'
 
 const APP_DOCTYPE = 'io.cozy.apps'
+const administrative = 'administrative'
+const photos = 'photos'
 
 export const MAGIC_FOLDERS = {
-  ADMINISTRATIVE: `${APP_DOCTYPE}/administrative`,
-  PHOTOS: `${APP_DOCTYPE}/photos`,
-  PHOTOS_BACKUP: `${APP_DOCTYPE}/photos/mobile`,
-  PHOTOS_UPLOAD: `${APP_DOCTYPE}/photos/upload`,
+  ADMINISTRATIVE: `${APP_DOCTYPE}/${administrative}`,
+  PHOTOS: `${APP_DOCTYPE}/${photos}`,
+  PHOTOS_BACKUP: `${APP_DOCTYPE}/${photos}/mobile`,
+  PHOTOS_UPLOAD: `${APP_DOCTYPE}/${photos}/upload`,
   NOTES: `${APP_DOCTYPE}/notes`,
-  HOME: `${APP_DOCTYPE}/home`
+  HOME: `${APP_DOCTYPE}/home`,
+  PAPERS: `${APP_DOCTYPE}/${administrative}/papers`
 }
 
 /**
