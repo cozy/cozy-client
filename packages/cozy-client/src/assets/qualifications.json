@@ -144,10 +144,10 @@
       "label": "other_work_document"
     },
     {
-      "label": "health_book",
-      "purpose": "report",
+      "label": "health_certificate",
+      "purpose": "attestation",
       "sourceCategory": "health",
-      "subjects": ["history"]
+      "subjects": ["identity", "capacity", "vaccine"]
     },
     {
       "label": "national_insurance_card",
