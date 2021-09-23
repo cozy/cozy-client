@@ -150,7 +150,7 @@
       "subjects": ["identity", "capacity", "vaccine"]
     },
     {
-      "label": "national_insurance_card",
+      "label": "national_healthInsurance_card",
       "purpose": "attestation",
       "sourceCategory": "gov",
       "sourceSubCategory": "health",
