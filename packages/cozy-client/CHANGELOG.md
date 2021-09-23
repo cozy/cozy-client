@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [24.9.1](https://github.com/cozy/cozy-client/compare/v24.9.0...v24.9.1) (2021-09-23)
+
+
+### Bug Fixes
+
+* Revert open upgrade ([6c945a5](https://github.com/cozy/cozy-client/commit/6c945a5ef8c286f546f4343df075cc73e6d3416c))
+
+
+
+
+
 # [24.9.0](https://github.com/cozy/cozy-client/compare/v24.8.1...v24.9.0) (2021-09-22)
 
 
