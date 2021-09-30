@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@babel/cli": "7.12.8",
-    "jest-localstorage-mock": "2.4.17",
+    "jest-localstorage-mock": "2.4.18",
     "parcel": "1.12.4",
     "pouchdb-adapter-memory": "7.2.2",
     "react": "16.14.0",
