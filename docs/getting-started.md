@@ -129,16 +129,16 @@ const client = new CozyClient({
 
 
 // create a new io.cozy.todo
-await client.create('io.cozy.todos', { label: 'Buy bread', checked: false })
+await client.save({type: 'io.cozy.todos', label: 'Buy bread', checked: false }})
 
 const qdef = Q('io.cozy.todos').where({ checked: false })
 const { data: todos } = await client.query(qdef)
 const doc = todos[0]
-// modify existing io.cozy.todo
+// modify existing io.cozy.todo (will make an update if _rev is present inside the doc)
 await client.save({...doc, checked: true})
 ```
 
-Both `create()` and `save()` will return a Promise with a `data` attribute containing the saved document.
+`save()` will return a Promise with a `data` attribute containing the saved document.
 
 ℹ️ When mutating data, queries that depend on the mutated document(s) will automatically be refreshed : components
 that depend on these queries will be re-rendered.
