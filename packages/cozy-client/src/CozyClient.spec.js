@@ -676,6 +676,21 @@ describe('CozyClient', () => {
   })
 
   describe('save', () => {
+    it('should add the _type if not present', async () => {
+      const todo = { type: 'io.cozy.todos', label: 'Buy croissants' }
+      client.store.dispatch.mockReset()
+      await client.save(todo)
+      const dispatchCalls = client.store.dispatch.mock.calls
+      expect(dispatchCalls.slice(-2)[0][0]).toMatchObject({
+        definition: expect.objectContaining({
+          document: expect.objectContaining({
+            label: 'Buy croissants',
+            _type: 'io.cozy.todos'
+          }),
+          mutationType: 'CREATE_DOCUMENT'
+        })
+      })
+    })
     it('should mutate the document', async () => {
       client.setData(
         normalizeData({

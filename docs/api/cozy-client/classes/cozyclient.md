@@ -83,7 +83,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1503](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1503)
+[packages/cozy-client/src/CozyClient.js:1504](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1504)
 
 ***
 
@@ -197,7 +197,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1479](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1479)
+[packages/cozy-client/src/CozyClient.js:1480](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1480)
 
 ***
 
@@ -207,7 +207,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1412](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1412)
+[packages/cozy-client/src/CozyClient.js:1413](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1413)
 
 ***
 
@@ -237,7 +237,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1210](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1210)
+[packages/cozy-client/src/CozyClient.js:1211](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1211)
 
 ***
 
@@ -342,7 +342,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1345](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1345)
+[packages/cozy-client/src/CozyClient.js:1346](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1346)
 
 ***
 
@@ -358,7 +358,7 @@ Returns whether the client has been revoked on the server
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1426](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1426)
+[packages/cozy-client/src/CozyClient.js:1427](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1427)
 
 ***
 
@@ -442,7 +442,7 @@ If `oauth` options are passed, stackClient is an OAuthStackClient.
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1460](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1460)
+[packages/cozy-client/src/CozyClient.js:1461](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1461)
 
 ***
 
@@ -467,7 +467,7 @@ The document that has been deleted
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:820](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L820)
+[packages/cozy-client/src/CozyClient.js:821](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L821)
 
 ***
 
@@ -487,7 +487,7 @@ The document that has been deleted
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1531](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1531)
+[packages/cozy-client/src/CozyClient.js:1532](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1532)
 
 ***
 
@@ -535,7 +535,7 @@ a method from cozy-client
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:640](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L640)
+[packages/cozy-client/src/CozyClient.js:641](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L641)
 
 ***
 
@@ -559,7 +559,7 @@ Makes sure that the query exists in the store
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:841](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L841)
+[packages/cozy-client/src/CozyClient.js:842](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L842)
 
 ***
 
@@ -573,7 +573,7 @@ Makes sure that the query exists in the store
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1417](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1417)
+[packages/cozy-client/src/CozyClient.js:1418](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1418)
 
 ***
 
@@ -623,7 +623,7 @@ Query state
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1306](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1306)
+[packages/cozy-client/src/CozyClient.js:1307](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1307)
 
 ***
 
@@ -658,7 +658,7 @@ Query state
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1186](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1186)
+[packages/cozy-client/src/CozyClient.js:1187](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1187)
 
 ***
 
@@ -702,7 +702,7 @@ Creates an association that is linked to the store.
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1193](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1193)
+[packages/cozy-client/src/CozyClient.js:1194](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1194)
 
 ***
 
@@ -716,7 +716,7 @@ Creates an association that is linked to the store.
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1513](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1513)
+[packages/cozy-client/src/CozyClient.js:1514](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1514)
 
 ***
 
@@ -740,7 +740,7 @@ Array of documents or null if the collection does not exist.
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1229](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1229)
+[packages/cozy-client/src/CozyClient.js:1230](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1230)
 
 ***
 
@@ -765,7 +765,7 @@ Document or null if the object does not exist.
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1246](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1246)
+[packages/cozy-client/src/CozyClient.js:1247](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1247)
 
 ***
 
@@ -800,7 +800,7 @@ One or more mutation to execute
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:733](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L733)
+[packages/cozy-client/src/CozyClient.js:734](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L734)
 
 ***
 
@@ -820,7 +820,7 @@ One or more mutation to execute
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1113](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1113)
+[packages/cozy-client/src/CozyClient.js:1114](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1114)
 
 ***
 
@@ -836,7 +836,7 @@ getInstanceOptions - Returns current instance options, such as domain or app slu
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1540](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1540)
+[packages/cozy-client/src/CozyClient.js:1541](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1541)
 
 ***
 
@@ -863,7 +863,7 @@ Get a query from the internal store.
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1267](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1267)
+[packages/cozy-client/src/CozyClient.js:1268](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1268)
 
 ***
 
@@ -892,7 +892,7 @@ the store up, which in turn will update the `<Query>`s and re-render the data.
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1209](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1209)
+[packages/cozy-client/src/CozyClient.js:1210](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1210)
 
 ***
 
@@ -906,7 +906,7 @@ the store up, which in turn will update the `<Query>`s and re-render the data.
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1520](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1520)
+[packages/cozy-client/src/CozyClient.js:1521](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1521)
 
 ***
 
@@ -928,7 +928,7 @@ Sets public attribute and emits event related to revocation
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1431](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1431)
+[packages/cozy-client/src/CozyClient.js:1432](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1432)
 
 ***
 
@@ -950,7 +950,7 @@ Emits event when token is refreshed
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1442](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1442)
+[packages/cozy-client/src/CozyClient.js:1443](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1443)
 
 ***
 
@@ -976,7 +976,7 @@ the relationship
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1156](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1156)
+[packages/cozy-client/src/CozyClient.js:1157](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1157)
 
 ***
 
@@ -1001,7 +1001,7 @@ Instead, the relationships will have null documents.
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1133](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1133)
+[packages/cozy-client/src/CozyClient.js:1134](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1134)
 
 ***
 
@@ -1022,7 +1022,7 @@ Instead, the relationships will have null documents.
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1167](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1167)
+[packages/cozy-client/src/CozyClient.js:1168](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1168)
 
 ***
 
@@ -1036,7 +1036,7 @@ Instead, the relationships will have null documents.
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1329](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1329)
+[packages/cozy-client/src/CozyClient.js:1330](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1330)
 
 ***
 
@@ -1058,7 +1058,7 @@ loadInstanceOptionsFromDOM - Loads the dataset injected by the Stack in web page
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1551](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1551)
+[packages/cozy-client/src/CozyClient.js:1552](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1552)
 
 ***
 
@@ -1139,7 +1139,7 @@ and working.
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1179](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1179)
+[packages/cozy-client/src/CozyClient.js:1180](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1180)
 
 ***
 
@@ -1160,7 +1160,7 @@ and working.
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:955](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L955)
+[packages/cozy-client/src/CozyClient.js:956](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L956)
 
 ***
 
@@ -1186,7 +1186,7 @@ Mutate a document
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:973](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L973)
+[packages/cozy-client/src/CozyClient.js:974](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L974)
 
 ***
 
@@ -1228,7 +1228,7 @@ Dehydrates and adds metadata before saving a document
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:704](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L704)
+[packages/cozy-client/src/CozyClient.js:705](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L705)
 
 ***
 
@@ -1255,7 +1255,7 @@ executes its query when mounted if no fetch policy has been indicated.
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:864](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L864)
+[packages/cozy-client/src/CozyClient.js:865](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L865)
 
 ***
 
@@ -1282,7 +1282,7 @@ All documents matching the query
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:920](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L920)
+[packages/cozy-client/src/CozyClient.js:921](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L921)
 
 ***
 
@@ -1316,7 +1316,7 @@ All documents matching the query
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1527](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1527)
+[packages/cozy-client/src/CozyClient.js:1528](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1528)
 
 ***
 
@@ -1342,7 +1342,7 @@ Contains the fetched token and the client information.
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1323](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1323)
+[packages/cozy-client/src/CozyClient.js:1324](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1324)
 
 ***
 
@@ -1463,7 +1463,7 @@ Contains the fetched token and the client information.
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1376](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1376)
+[packages/cozy-client/src/CozyClient.js:1377](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1377)
 
 ***
 
@@ -1483,7 +1483,7 @@ Contains the fetched token and the client information.
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1097](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1097)
+[packages/cozy-client/src/CozyClient.js:1098](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1098)
 
 ***
 
@@ -1530,7 +1530,7 @@ Saves multiple documents in one batch
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:618](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L618)
+[packages/cozy-client/src/CozyClient.js:619](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L619)
 
 ***
 
@@ -1554,7 +1554,7 @@ set some data in the store.
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1572](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1572)
+[packages/cozy-client/src/CozyClient.js:1573](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1573)
 
 ***
 
@@ -1592,7 +1592,7 @@ use options.force = true.
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1402](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1402)
+[packages/cozy-client/src/CozyClient.js:1403](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1403)
 
 ***
 
@@ -1616,7 +1616,7 @@ Contains the fetched token and the client information. These should be stored an
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1339](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1339)
+[packages/cozy-client/src/CozyClient.js:1340](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1340)
 
 ***
 
@@ -1630,7 +1630,7 @@ Contains the fetched token and the client information. These should be stored an
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1579](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1579)
+[packages/cozy-client/src/CozyClient.js:1580](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1580)
 
 ***
 
@@ -1651,7 +1651,7 @@ Contains the fetched token and the client information. These should be stored an
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:805](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L805)
+[packages/cozy-client/src/CozyClient.js:806](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L806)
 
 ***
 
@@ -1673,7 +1673,7 @@ Contains the fetched token and the client information. These should be stored an
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:830](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L830)
+[packages/cozy-client/src/CozyClient.js:831](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L831)
 
 ***
 
@@ -1713,7 +1713,7 @@ Contains the fetched token and the client information. These should be stored an
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:948](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L948)
+[packages/cozy-client/src/CozyClient.js:949](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L949)
 
 ***
 
@@ -1849,4 +1849,4 @@ There are at the moment only 2 hooks available.
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:799](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L799)
+[packages/cozy-client/src/CozyClient.js:800](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L800)

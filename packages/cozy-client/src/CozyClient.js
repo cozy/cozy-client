@@ -601,9 +601,10 @@ client.query(Q('io.cozy.bills'))`)
   }
 
   async save(doc, mutationOptions = {}) {
-    const ret = await this.schema.validate(doc)
+    const normalizedDoc = { _type: doc.type, ...doc }
+    const ret = await this.schema.validate(normalizedDoc)
     if (ret !== true) throw new Error('Validation failed')
-    return this.mutate(this.getDocumentSavePlan(doc), mutationOptions)
+    return this.mutate(this.getDocumentSavePlan(normalizedDoc), mutationOptions)
   }
 
   /**
