@@ -11,6 +11,9 @@ import PermissionCollection from './PermissionCollection'
 import TriggerCollection, { TRIGGERS_DOCTYPE } from './TriggerCollection'
 import SettingsCollection, { SETTINGS_DOCTYPE } from './SettingsCollection'
 import NotesCollection, { NOTES_DOCTYPE } from './NotesCollection'
+import OAuthClientsCollection, {
+  OAUTH_CLIENTS_DOCTYPE
+} from './OAuthClientsCollection'
 import ShortcutsCollection, { SHORTCUTS_DOCTYPE } from './ShortcutsCollection'
 import ContactsCollection, { CONTACTS_DOCTYPE } from './ContactsCollection'
 import getIconURL from './getIconURL'
@@ -80,6 +83,8 @@ class CozyStackClient {
         return new SettingsCollection(this)
       case NOTES_DOCTYPE:
         return new NotesCollection(this)
+      case OAUTH_CLIENTS_DOCTYPE:
+        return new OAuthClientsCollection(this)
       case SHORTCUTS_DOCTYPE:
         return new ShortcutsCollection(this)
       default:

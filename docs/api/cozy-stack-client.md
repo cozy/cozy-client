@@ -28,6 +28,9 @@ files associated to a specific document</p>
 <dd><p>Specialized <code>CozyStackClient</code> for mobile, implementing stack registration
 through OAuth.</p>
 </dd>
+<dt><a href="#OAuthClientsCollection">OAuthClientsCollection</a></dt>
+<dd><p>Implements <code>DocumentCollection</code> API to interact with the /settings/clients endpoint of the stack</p>
+</dd>
 <dt><a href="#PermissionCollection">PermissionCollection</a></dt>
 <dd><p>Implements <code>DocumentCollection</code> API along with specific methods for <code>io.cozy.permissions</code>.</p>
 </dd>
@@ -1161,6 +1164,58 @@ Updates the OAuth informations
 Reset the current OAuth client
 
 **Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+<a name="OAuthClientsCollection"></a>
+
+## OAuthClientsCollection
+Implements `DocumentCollection` API to interact with the /settings/clients endpoint of the stack
+
+**Kind**: global class  
+
+* [OAuthClientsCollection](#OAuthClientsCollection)
+    * [.all(options)](#OAuthClientsCollection+all) ⇒ <code>object</code>
+    * [.get(id)](#OAuthClientsCollection+get) ⇒ <code>object</code>
+    * [.destroy(client)](#OAuthClientsCollection+destroy) ⇒ <code>Object</code>
+
+<a name="OAuthClientsCollection+all"></a>
+
+### oAuthClientsCollection.all(options) ⇒ <code>object</code>
+Fetches all OAuth clients
+
+**Kind**: instance method of [<code>OAuthClientsCollection</code>](#OAuthClientsCollection)  
+**Returns**: <code>object</code> - The JSON API conformant response.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>object</code> | Query options |
+| options.limit | <code>number</code> | For pagination, the number of results to return. |
+| options.bookmark | <code>object</code> | For cursor-based pagination, the index cursor. |
+| options.keys | <code>array</code> | Ids of specific clients to return (within the current page), |
+
+<a name="OAuthClientsCollection+get"></a>
+
+### oAuthClientsCollection.get(id) ⇒ <code>object</code>
+Get an OAuth client by id
+
+**Kind**: instance method of [<code>OAuthClientsCollection</code>](#OAuthClientsCollection)  
+**Returns**: <code>object</code> - JsonAPI response containing normalized client as data attribute  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | The client id. |
+
+<a name="OAuthClientsCollection+destroy"></a>
+
+### oAuthClientsCollection.destroy(client) ⇒ <code>Object</code>
+Destroys the OAuth client on the server
+
+**Kind**: instance method of [<code>OAuthClientsCollection</code>](#OAuthClientsCollection)  
+**Returns**: <code>Object</code> - The deleted client  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| client | <code>io.cozy.oauth.clients</code> | The client document to destroy |
+| client._id | <code>string</code> | The client's id |
+
 <a name="PermissionCollection"></a>
 
 ## PermissionCollection
