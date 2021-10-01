@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [24.9.2](https://github.com/cozy/cozy-client/compare/v24.9.1...v24.9.2) (2021-10-01)
+
+
+### Bug Fixes
+
+* Save also normalize _type like create ([cdbbd9f](https://github.com/cozy/cozy-client/commit/cdbbd9fd4ead453f67462992c5e8cfff4794165e))
+
+
+
+
+
 ## [24.9.1](https://github.com/cozy/cozy-client/compare/v24.9.0...v24.9.1) (2021-09-23)
 
 
