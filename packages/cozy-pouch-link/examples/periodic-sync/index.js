@@ -88,7 +88,7 @@ class App extends React.Component {
       replicationDelay: 2 * 1000,
       getReplicationURL: this.getReplicationURL,
       onError: err => {
-        if (err.error == 'code=400, message=Expired token') {
+        if (/Expired token/.test(err.error)) {
           console.log('You need to refresh the token')
         }
         this.setState({ error: err.error })

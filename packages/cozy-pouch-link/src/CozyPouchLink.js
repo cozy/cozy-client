@@ -53,8 +53,9 @@ export const getReplicationURL = (uri, token, doctype) => {
 }
 
 const doNothing = () => {}
+const expiredTokenError = /Expired token/
 export const isExpiredTokenError = pouchError => {
-  return pouchError.error === 'code=400, message=Expired token'
+  return expiredTokenError.test(pouchError.error)
 }
 
 const normalizeAll = (docs, doctype) => {
