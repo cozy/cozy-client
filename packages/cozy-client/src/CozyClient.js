@@ -600,8 +600,17 @@ client.query(Q('io.cozy.bills'))`)
     return this.schema.validate(document)
   }
 
+  /**
+   * Create or update a document on the server
+   *
+   * @param  {object} doc - Document to save
+   * @param  {object} mutationOptions - Mutation options
+   * @returns {Promise}
+   */
   async save(doc, mutationOptions = {}) {
-    const normalizedDoc = { _type: doc.type, ...doc }
+    const { _type, ...attributes } = doc
+    if (!_type) throw new Error('The document must have a `_type` property')
+    const normalizedDoc = { _type, ...attributes }
     const ret = await this.schema.validate(normalizedDoc)
     if (ret !== true) throw new Error('Validation failed')
     return this.mutate(this.getDocumentSavePlan(normalizedDoc), mutationOptions)

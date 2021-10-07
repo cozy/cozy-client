@@ -308,7 +308,14 @@ declare class CozyClient {
      */
     create(type: string, doc: object, references?: ReferenceMap, options?: object): Promise<any>;
     validate(document: any): Promise<{}>;
-    save(doc: any, mutationOptions?: {}): Promise<any>;
+    /**
+     * Create or update a document on the server
+     *
+     * @param  {object} doc - Document to save
+     * @param  {object} mutationOptions - Mutation options
+     * @returns {Promise}
+     */
+    save(doc: object, mutationOptions?: object): Promise<any>;
     /**
      * Saves multiple documents in one batch
      * - Can only be called with documents from the same doctype
