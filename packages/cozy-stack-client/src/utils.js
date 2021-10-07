@@ -58,16 +58,6 @@ export const slugify = text =>
     .replace(/^-+/, '') // Trim - from start of text
     .replace(/-+$/, '') // Trim - from end of text
 
-export const forceFileDownload = (href, filename) => {
-  const element = document.createElement('a')
-  element.setAttribute('href', href)
-  element.setAttribute('download', filename)
-  element.style.display = 'none'
-  document.body.appendChild(element)
-  element.click()
-  document.body.removeChild(element)
-}
-
 export const formatBytes = (bytes, decimals = 2) => {
   if (bytes === 0) return '0 Bytes'
 

@@ -507,6 +507,7 @@ files associated to a specific document
 **Kind**: global class  
 
 * [FileCollection](#FileCollection)
+    * [.forceFileDownload](#FileCollection+forceFileDownload)
     * [.get(id)](#FileCollection+get) ⇒ <code>Object</code>
     * [.find(selector, options)](#FileCollection+find) ⇒ <code>Object</code>
     * [.findReferencedBy(document, options)](#FileCollection+findReferencedBy) ⇒ <code>object</code>
@@ -533,6 +534,18 @@ files associated to a specific document
     * [.findNotSynchronizedDirectories(oauthClient, options)](#FileCollection+findNotSynchronizedDirectories) ⇒ <code>Array.&lt;(object\|IOCozyFolder)&gt;</code>
     * [.addNotSynchronizedDirectories(oauthClient, directories)](#FileCollection+addNotSynchronizedDirectories) ⇒
     * [.removeNotSynchronizedDirectories(oauthClient, directories)](#FileCollection+removeNotSynchronizedDirectories) ⇒
+
+<a name="FileCollection+forceFileDownload"></a>
+
+### fileCollection.forceFileDownload
+Force a file download from the given href
+
+**Kind**: instance property of [<code>FileCollection</code>](#FileCollection)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| href | <code>string</code> | The link to download |
+| filename | <code>string</code> | The file name to download |
 
 <a name="FileCollection+get"></a>
 
