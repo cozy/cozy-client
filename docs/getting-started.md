@@ -60,12 +60,12 @@ If you need guidance to get the URI of your instance and/or the token,
 see [the app tutorial](https://docs.cozy.io/en/tutorials/app/#behind-the-magic).
 
 Every doctype accessed in `cozy-client` needs to be declared in the schema section of the options.
-See [how to use the schema features](https://docs.cozy.io/en/cozy-client/schema). 
+See [how to use the schema features](https://docs.cozy.io/en/cozy-client/schema).
 
 
 ## Fetch data
 
-To fetch data, we first build a `QueryDefinition` with the `Q` helper: 
+To fetch data, we first build a `QueryDefinition` with the `Q` helper:
 
 ```javascript
 import { Q } from 'cozy-client'
@@ -88,7 +88,7 @@ Q('io.cozy.todos')
 - `select()` lists the fields you want in the response (all by default)
 - `where()` allows a [mango selector](http://docs.couchdb.org/en/latest/api/database/find.html#find-selectors)
 - `include()` will cause the query to fetch the related documents (see [relationships][cozy-relationships])
-- `sortBy` sorts the documents by their `updatedAt` metadata in descending order 
+- `sortBy` sorts the documents by their `updatedAt` metadata in descending order
 - `limitBy` limits the number of results to 20
 
 By default all fields in the `where()` are automatically indexed. You can turn off this behavior by specifying
@@ -111,7 +111,7 @@ console.log(data)
 ✅ Inside a react application, instead of using directly `client.query`, please use [`useQuery`, `<Query />` or `queryConnect`
 to connect your components to cozy-client queries][react-integration].
 
-ℹ️ Check out our dedicated [query documentation](https://docs.cozy.io/en/tutorials/data/queries/) to 
+ℹ️ Check out our dedicated [query documentation](https://docs.cozy.io/en/tutorials/data/queries/) to
 know more about querying with cozy-client and avoid common traps that can dramatically impact your app performances.
 
 🚀 Cozy-client's [devtool](./devtools.md) allows to monitor your queries data and performance.
@@ -129,7 +129,7 @@ const client = new CozyClient({
 
 
 // create a new io.cozy.todo
-await client.save({type: 'io.cozy.todos', label: 'Buy bread', checked: false }})
+await client.save({_type: 'io.cozy.todos', label: 'Buy bread', checked: false }})
 
 const qdef = Q('io.cozy.todos').where({ checked: false })
 const { data: todos } = await client.query(qdef)

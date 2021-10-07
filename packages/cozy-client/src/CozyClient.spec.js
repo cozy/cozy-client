@@ -677,7 +677,7 @@ describe('CozyClient', () => {
 
   describe('save', () => {
     it('should add the _type if not present', async () => {
-      const todo = { type: 'io.cozy.todos', label: 'Buy croissants' }
+      const todo = { _type: 'io.cozy.todos', label: 'Buy croissants' }
       client.store.dispatch.mockReset()
       await client.save(todo)
       const dispatchCalls = client.store.dispatch.mock.calls
