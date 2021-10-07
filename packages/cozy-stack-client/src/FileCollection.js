@@ -3,7 +3,7 @@ import has from 'lodash/has'
 import get from 'lodash/get'
 import pick from 'lodash/pick'
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
-import { uri, slugify, forceFileDownload, formatBytes } from './utils'
+import { uri, slugify, formatBytes } from './utils'
 import * as querystring from './querystring'
 import { FetchError } from './errors'
 import { dontThrowNotFoundError } from './Collection'
@@ -505,6 +505,22 @@ class FileCollection extends DocumentCollection {
   }
 
   /**
+   * Force a file download from the given href
+   *
+   * @param {string} href - The link to download
+   * @param {string} filename - The file name to download
+   */
+  forceFileDownload = (href, filename) => {
+    const element = document.createElement('a')
+    element.setAttribute('href', href)
+    element.setAttribute('download', filename)
+    element.style.display = 'none'
+    document.body.appendChild(element)
+    element.click()
+    document.body.removeChild(element)
+  }
+
+  /**
    * Download a file or a specific version of the file
    *
    * @param {object} file io.cozy.files object
@@ -528,7 +544,7 @@ class FileCollection extends DocumentCollection {
     } else {
       href = await this.getDownloadLinkByRevision(versionId, filenameToUse)
     }
-    forceFileDownload(`${href}?Dl=1`, filenameToUse)
+    this.forceFileDownload(`${href}?Dl=1`, filenameToUse)
   }
 
   async fetchFileContent(id) {
@@ -567,7 +583,7 @@ class FileCollection extends DocumentCollection {
     const filename = slugify(notSecureFilename)
     const href = await this.getArchiveLinkByIds(fileIds, filename)
     const fullpath = this.stackClient.fullpath(href)
-    forceFileDownload(fullpath, filename + '.zip')
+    this.forceFileDownload(fullpath, filename + '.zip')
   }
 
   async getArchiveLinkByIds(ids, name = 'files') {
