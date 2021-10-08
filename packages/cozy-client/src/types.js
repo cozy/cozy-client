@@ -7,7 +7,9 @@ import { QueryDefinition } from './queries/dsl'
  * @typedef {"io.cozy.notes"} NotesDoctype
  * @typedef {"io.cozy.apps"} AppsDoctype
  * @typedef {"io.cozy.settings"} SettingsDoctype
- * @typedef {AccountsDoctype|TriggersDoctype|KonnectorsDoctype|NotesDoctype|AppsDoctype|SettingsDoctype} KnownDoctype
+ * @typedef {"io.cozy-oauth.clients"} OAuthClientsDoctype
+ * @typedef {"io.cozy.files"} FilesDoctype
+ * @typedef {AccountsDoctype|TriggersDoctype|KonnectorsDoctype|NotesDoctype|AppsDoctype|SettingsDoctype|OAuthClientsDoctype|FilesDoctype} KnownDoctype
  * @typedef {KnownDoctype|string} Doctype
  */
 
@@ -113,13 +115,14 @@ import { QueryDefinition } from './queries/dsl'
  * @property {string} [_id] - Id of the document
  * @property {string} [_type] - Type of the document
  * @property {string} [_rev] - Current revision of the document
- * @property {string} [_deleted] - When the document has been deleted
+ * @property {boolean} [_deleted] - When the document has been deleted
  * @property {object} [relationships] - Relationships of the document
  */
 
 /**
  * @typedef {object} FileDocument - An io.cozy.files document
  * @property {string} _id - Id of the file
+ * @property {FilesDoctype} _type - Doctype of the file
  * @property {string} name - Name of the file
  * @property {object} metadata - Metadata of the file
  * @property {object} type - Type of the file
@@ -130,10 +133,29 @@ import { QueryDefinition } from './queries/dsl'
 /**
  * @typedef {object} FolderDocument - An io.cozy.files document
  * @property {string} _id - Id of the folder
+ * @property {FilesDoctype} _type - Doctype of the folder
  * @property {string} name - Name of the folder
  * @property {object} metadata - Metadata of the folder
  * @property {object} type - Type of the folder
  * @typedef {CozyClientDocument & FileDocument} IOCozyFolder - An io.cozy.files document
+ */
+
+/**
+ * @typedef {object} OAuthClientDocument - An io.cozy.oauth.clients document
+ * @property {string} _id - Id of the client
+ * @property {OAuthClientsDoctype} _type - Doctype of the client
+ * @property {string} software_id
+ * @property {string} software_version
+ * @property {string} client_id
+ * @property {string} client_name
+ * @property {string} client_kind
+ * @property {string} client_uri
+ * @property {string} logo_uri
+ * @property {string} policy_uri
+ * @property {string} notification_platform
+ * @property {string} notification_device_token
+ * @property {Array<String>} redirect_uris
+ * @typedef {CozyClientDocument & OAuthClientDocument} IOCozyOAuthClient - An io.cozy.oauth.clients document
  */
 
 /**
@@ -182,6 +204,14 @@ import { QueryDefinition } from './queries/dsl'
  * @property {object} SafariViewController
  * @property {Function} resolveLocalFileSystemURL
  * @property {Function} handleOpenURL
+ */
+
+/**
+ * @typedef {object} CouchDBDocument - A document
+ * @property {string} _id - Id of the document
+ * @property {string} _rev - Current revision of the document
+ * @property {boolean} [_deleted] - When the document has been deleted
+ * @property {object} [relationships] - Relationships of the document
  */
 
 /**

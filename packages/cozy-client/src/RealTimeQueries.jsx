@@ -1,21 +1,42 @@
 import { memo, useEffect } from 'react'
 import useClient from './hooks/useClient'
-import { file as fileModel } from './models'
 import { Mutations } from './queries/dsl'
 import { receiveMutationResult } from './store'
 import CozyClient from './CozyClient'
-import { CozyClientDocument, Mutation } from './types'
+import { CouchDBDocument, CozyClientDocument, Doctype, Mutation } from './types'
+
+/**
+ * Normalizes an object representing a CouchDB document
+ *
+ * Ensures existence of `_type`
+ *
+ * @public
+ * @param {CouchDBDocument} couchDBDoc - object representing the document
+ * @returns {CozyClientDocument} full normalized document
+ */
+const normalizeDoc = (couchDBDoc, doctype) => {
+  return {
+    _type: doctype,
+    ...couchDBDoc
+  }
+}
 
 /**
  * DispatchChange
  *
  * @param {CozyClient} client CozyClient instane
- * @param {CozyClientDocument} document Document to update
+ * @param {CouchDBDocument} couchDBDoc Document to update
  * @param {Mutation} mutationDefinitionCreator Mutation to apply
  */
-const dispatchChange = (client, document, mutationDefinitionCreator) => {
+const dispatchChange = (
+  client,
+  doctype,
+  couchDBDoc,
+  mutationDefinitionCreator
+) => {
+  const data = normalizeDoc(couchDBDoc, doctype)
   const response = {
-    data: fileModel.normalize(document)
+    data
   }
 
   const options = {}
@@ -24,7 +45,7 @@ const dispatchChange = (client, document, mutationDefinitionCreator) => {
       client.generateRandomId(),
       response,
       options,
-      mutationDefinitionCreator(document)
+      mutationDefinitionCreator(data)
     )
   )
 }
@@ -34,7 +55,7 @@ const dispatchChange = (client, document, mutationDefinitionCreator) => {
  * internal store updated.
  *
  * @param  {object} options - Options
- * @param  {string} options.doctype - The doctype to watch
+ * @param  {Doctype} options.doctype - The doctype to watch
  * @returns {null} The component does not display anything.
  */
 const RealTimeQueries = ({ doctype }) => {
@@ -49,16 +70,17 @@ const RealTimeQueries = ({ doctype }) => {
       )
     }
 
-    const dispatchCreate = document => {
-      dispatchChange(client, document, Mutations.createDocument)
+    const dispatchCreate = couchDBDoc => {
+      dispatchChange(client, doctype, couchDBDoc, Mutations.createDocument)
     }
-    const dispatchUpdate = document => {
-      dispatchChange(client, document, Mutations.updateDocument)
+    const dispatchUpdate = couchDBDoc => {
+      dispatchChange(client, doctype, couchDBDoc, Mutations.updateDocument)
     }
-    const dispatchDelete = document => {
+    const dispatchDelete = couchDBDoc => {
       dispatchChange(
         client,
-        { ...document, _deleted: true },
+        doctype,
+        { ...couchDBDoc, _deleted: true },
         Mutations.deleteDocument
       )
     }
