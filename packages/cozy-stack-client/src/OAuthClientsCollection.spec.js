@@ -228,24 +228,32 @@ describe('OAuthClientsCollection', () => {
 
   describe('destroy', () => {
     const { stackClient, collection } = setup()
+    const client = {
+      _id: '1',
+      attributes: { client_kind: 'desktop' }
+    }
 
     beforeEach(() => {
-      jest.spyOn(stackClient, 'fetchJSON').mockResolvedValue({
-        data: { id: '1', attributes: { client_kind: 'desktop' } }
-      })
+      jest.spyOn(stackClient, 'fetchJSON').mockResolvedValue()
     })
 
     it('should call the appropriate route', async () => {
-      await collection.destroy({ _id: '1' })
+      await collection.destroy(client)
       expect(stackClient.fetchJSON).toHaveBeenCalledWith(
         'DELETE',
         '/settings/clients/1'
       )
     })
 
-    it('should add _deleted to the response', async () => {
-      const result = await collection.destroy({ _id: '1' })
-      expect(result.data._deleted).toBe(true)
+    it('should add _deleted to the normalized document', async () => {
+      const result = await collection.destroy(client)
+      expect(result.data).toEqual({
+        ...client,
+        id: '1',
+        _type: 'io.cozy.oauth.clients',
+        client_kind: 'desktop',
+        _deleted: true
+      })
     })
   })
 })

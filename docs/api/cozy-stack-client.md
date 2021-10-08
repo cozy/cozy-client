@@ -1174,7 +1174,7 @@ Implements `DocumentCollection` API to interact with the /settings/clients endpo
 * [OAuthClientsCollection](#OAuthClientsCollection)
     * [.all(options)](#OAuthClientsCollection+all) ⇒ <code>object</code>
     * [.get(id)](#OAuthClientsCollection+get) ⇒ <code>object</code>
-    * [.destroy(client)](#OAuthClientsCollection+destroy) ⇒ <code>Object</code>
+    * [.destroy(oauthClient)](#OAuthClientsCollection+destroy) ⇒ <code>Object</code>
 
 <a name="OAuthClientsCollection+all"></a>
 
@@ -1189,7 +1189,7 @@ Fetches all OAuth clients
 | options | <code>object</code> | Query options |
 | options.limit | <code>number</code> | For pagination, the number of results to return. |
 | options.bookmark | <code>object</code> | For cursor-based pagination, the index cursor. |
-| options.keys | <code>array</code> | Ids of specific clients to return (within the current page), |
+| options.keys | <code>Array</code> | Ids of specific clients to return (within the current page), |
 
 <a name="OAuthClientsCollection+get"></a>
 
@@ -1205,7 +1205,7 @@ Get an OAuth client by id
 
 <a name="OAuthClientsCollection+destroy"></a>
 
-### oAuthClientsCollection.destroy(client) ⇒ <code>Object</code>
+### oAuthClientsCollection.destroy(oauthClient) ⇒ <code>Object</code>
 Destroys the OAuth client on the server
 
 **Kind**: instance method of [<code>OAuthClientsCollection</code>](#OAuthClientsCollection)  
@@ -1213,8 +1213,7 @@ Destroys the OAuth client on the server
 
 | Param | Type | Description |
 | --- | --- | --- |
-| client | <code>io.cozy.oauth.clients</code> | The client document to destroy |
-| client._id | <code>string</code> | The client's id |
+| oauthClient | <code>io.cozy.oauth.clients</code> | The client document to destroy |
 
 <a name="PermissionCollection"></a>
 
