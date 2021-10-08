@@ -6,7 +6,9 @@ export type KonnectorsDoctype = "io.cozy.konnectors";
 export type NotesDoctype = "io.cozy.notes";
 export type AppsDoctype = "io.cozy.apps";
 export type SettingsDoctype = "io.cozy.settings";
-export type KnownDoctype = "io.cozy.accounts" | "io.cozy.triggers" | "io.cozy.konnectors" | "io.cozy.notes" | "io.cozy.apps" | "io.cozy.settings";
+export type OAuthClientsDoctype = "io.cozy-oauth.clients";
+export type FilesDoctype = "io.cozy.files";
+export type KnownDoctype = "io.cozy.files" | "io.cozy.accounts" | "io.cozy.triggers" | "io.cozy.konnectors" | "io.cozy.notes" | "io.cozy.apps" | "io.cozy.settings" | "io.cozy-oauth.clients";
 export type Doctype = string;
 export type Link = any;
 export type Mutation = any;
@@ -108,7 +110,7 @@ export type CozyClientDocument = {
     /**
      * - When the document has been deleted
      */
-    _deleted?: string;
+    _deleted?: boolean;
     /**
      * - Relationships of the document
      */
@@ -122,6 +124,10 @@ export type FileDocument = {
      * - Id of the file
      */
     _id: string;
+    /**
+     * - Doctype of the file
+     */
+    _type: FilesDoctype;
     /**
      * - Name of the file
      */
@@ -152,6 +158,10 @@ export type FolderDocument = {
      */
     _id: string;
     /**
+     * - Doctype of the folder
+     */
+    _type: FilesDoctype;
+    /**
      * - Name of the folder
      */
     name: string;
@@ -168,6 +178,34 @@ export type FolderDocument = {
  * - An io.cozy.files document
  */
 export type IOCozyFolder = CozyClientDocument & FileDocument;
+/**
+ * - An io.cozy.oauth.clients document
+ */
+export type OAuthClientDocument = {
+    /**
+     * - Id of the client
+     */
+    _id: string;
+    /**
+     * - Doctype of the client
+     */
+    _type: OAuthClientsDoctype;
+    software_id: string;
+    software_version: string;
+    client_id: string;
+    client_name: string;
+    client_kind: string;
+    client_uri: string;
+    logo_uri: string;
+    policy_uri: string;
+    notification_platform: string;
+    notification_device_token: string;
+    redirect_uris: Array<string>;
+};
+/**
+ * - An io.cozy.oauth.clients document
+ */
+export type IOCozyOAuthClient = CozyClientDocument & OAuthClientDocument;
 export type ClientError = {
     status?: string;
 };
@@ -192,6 +230,27 @@ export type CordovaWindow = {
     SafariViewController: object;
     resolveLocalFileSystemURL: Function;
     handleOpenURL: Function;
+};
+/**
+ * - A document
+ */
+export type CouchDBDocument = {
+    /**
+     * - Id of the document
+     */
+    _id: string;
+    /**
+     * - Current revision of the document
+     */
+    _rev: string;
+    /**
+     * - When the document has been deleted
+     */
+    _deleted?: boolean;
+    /**
+     * - Relationships of the document
+     */
+    relationships?: object;
 };
 /**
  * - An item of the CouchDB bulk docs response
