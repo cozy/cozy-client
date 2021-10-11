@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [24.10.2](https://github.com/cozy/cozy-client/compare/v24.10.1...v24.10.2) (2021-10-11)
+
+
+### Bug Fixes
+
+* RealTimeQueries accepts more than files ([e23239f](https://github.com/cozy/cozy-client/commit/e23239fc2a17f8362a74dabdda0e3f816dfc6eb2))
+
+
+
+
+
 ## [24.10.1](https://github.com/cozy/cozy-client/compare/v24.10.0...v24.10.1) (2021-10-08)
 
 **Note:** Version bump only for package cozy-client

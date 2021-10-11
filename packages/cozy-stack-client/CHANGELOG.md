@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [24.10.2](https://github.com/cozy/cozy-client/compare/v24.10.1...v24.10.2) (2021-10-11)
+
+
+### Bug Fixes
+
+* Return destroyed OAuth client ([8e8151b](https://github.com/cozy/cozy-client/commit/8e8151bae87779e4640543566c5b016324621774))
+
+
+
+
+
 ## [24.10.1](https://github.com/cozy/cozy-client/compare/v24.10.0...v24.10.1) (2021-10-08)
 
 **Note:** Version bump only for package cozy-stack-client
