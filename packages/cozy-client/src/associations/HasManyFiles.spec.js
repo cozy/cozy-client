@@ -73,7 +73,6 @@ describe('HasManyFiles', () => {
       mutationType: 'ADD_REFERENCES_TO',
       referencedDocuments: [{ _type: DOCTYPE_FILES, _id: 4 }]
     })
-    expect(save).toHaveBeenCalled()
   })
 
   it('adds multiple relations', async () => {
@@ -92,7 +91,6 @@ describe('HasManyFiles', () => {
         { _type: DOCTYPE_FILES, _id: 5 }
       ]
     })
-    expect(save).toHaveBeenCalled()
   })
 
   it('removes relations', async () => {
@@ -103,7 +101,6 @@ describe('HasManyFiles', () => {
       mutationType: 'REMOVE_REFERENCES_TO',
       referencedDocuments: [{ _type: DOCTYPE_FILES, _id: 2 }]
     })
-    expect(save).toHaveBeenCalled()
   })
 
   it('adds multiple relations', async () => {
@@ -117,7 +114,6 @@ describe('HasManyFiles', () => {
         { _type: DOCTYPE_FILES, _id: 2 }
       ]
     })
-    expect(save).toHaveBeenCalled()
   })
 
   it('add wrong file relations', () => {
