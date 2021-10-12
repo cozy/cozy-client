@@ -63,7 +63,7 @@ export default class HasManyFiles extends HasMany {
     }))
     await this.mutate(this.addReferences(relations))
 
-    await super.addById(ids)
+    this.addTargetRelationships(ids)
   }
 
   async removeById(idsArg) {
@@ -74,7 +74,7 @@ export default class HasManyFiles extends HasMany {
     }))
     await this.mutate(this.removeReferences(references))
 
-    await super.removeById(ids)
+    this.removeTargetRelationships(ids)
   }
 
   addReferences(referencedDocs) {
