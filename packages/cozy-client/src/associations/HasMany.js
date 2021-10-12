@@ -140,20 +140,15 @@ class HasMany extends Association {
   }
 
   /**
-   * Add a referenced document by id. You need to call save()
-   * in order to synchronize your document with the store.
+   * Update target document with relationships
    *
-   * @todo We shouldn't create the array of relationship manually since
-   * it'll not be present in the store as well.
-   * We certainly should use something like `updateRelationship`
-   *
+   * @param {string[]} idsArg - The ids to add as a relationship
    */
-  addById(idsArg) {
+  addTargetRelationships(idsArg) {
     if (!this.target.relationships) this.target.relationships = {}
     if (!this.target.relationships[this.name]) {
       this.target.relationships[this.name] = { data: [] }
     }
-
     const ids = Array.isArray(idsArg) ? idsArg : [idsArg]
 
     const newRelations = ids
@@ -165,18 +160,38 @@ class HasMany extends Association {
 
     this.target.relationships[this.name].data.push(...newRelations)
     this.updateMetaCount()
+  }
 
+  /**
+   * Add a referenced document by id. You need to call save()
+   * in order to synchronize your document with the store.
+   *
+   * @todo We shouldn't create the array of relationship manually since
+   * it'll not be present in the store as well.
+   * We certainly should use something like `updateRelationship`
+   *
+   */
+  addById(idsArg) {
+    this.addTargetRelationships(idsArg)
     return this.save(this.target)
   }
 
-  removeById(idsArg) {
+  /**
+   * Remove relationships from target document
+   *
+   * @param {string[]} idsArg - The ids to remove from the target relationships
+   */
+  removeTargetRelationships(idsArg) {
     const ids = Array.isArray(idsArg) ? idsArg : [idsArg]
 
     this.target.relationships[this.name].data = this.target.relationships[
       this.name
     ].data.filter(({ _id }) => !ids.includes(_id))
     this.updateMetaCount()
+  }
 
+  removeById(idsArg) {
+    this.removeTargetRelationships(idsArg)
     return this.save(this.target)
   }
 

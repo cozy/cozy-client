@@ -297,7 +297,33 @@ We certainly should use something like `updateRelationship`
 
 *Defined in*
 
-[packages/cozy-client/src/associations/HasMany.js:151](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L151)
+[packages/cozy-client/src/associations/HasMany.js:174](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L174)
+
+***
+
+### addTargetRelationships
+
+▸ **addTargetRelationships**(`idsArg`): `void`
+
+Update target document with relationships
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `idsArg` | `string`\[] | The ids to add as a relationship |
+
+*Returns*
+
+`void`
+
+*Inherited from*
+
+[HasMany](hasmany.md).[addTargetRelationships](hasmany.md#addtargetrelationships)
+
+*Defined in*
+
+[packages/cozy-client/src/associations/HasMany.js:147](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L147)
 
 ***
 
@@ -345,7 +371,7 @@ We certainly should use something like `updateRelationship`
 
 *Defined in*
 
-[packages/cozy-client/src/associations/HasMany.js:241](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L241)
+[packages/cozy-client/src/associations/HasMany.js:256](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L256)
 
 ***
 
@@ -429,7 +455,7 @@ We certainly should use something like `updateRelationship`
 
 *Defined in*
 
-[packages/cozy-client/src/associations/HasMany.js:192](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L192)
+[packages/cozy-client/src/associations/HasMany.js:207](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L207)
 
 ***
 
@@ -481,7 +507,33 @@ The saved target document
 
 *Defined in*
 
-[packages/cozy-client/src/associations/HasMany.js:172](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L172)
+[packages/cozy-client/src/associations/HasMany.js:193](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L193)
+
+***
+
+### removeTargetRelationships
+
+▸ **removeTargetRelationships**(`idsArg`): `void`
+
+Remove relationships from target document
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `idsArg` | `string`\[] | The ids to remove from the target relationships |
+
+*Returns*
+
+`void`
+
+*Inherited from*
+
+[HasMany](hasmany.md).[removeTargetRelationships](hasmany.md#removetargetrelationships)
+
+*Defined in*
+
+[packages/cozy-client/src/associations/HasMany.js:184](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L184)
 
 ***
 
@@ -499,7 +551,7 @@ The saved target document
 
 *Defined in*
 
-[packages/cozy-client/src/associations/HasMany.js:183](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L183)
+[packages/cozy-client/src/associations/HasMany.js:198](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L198)
 
 ***
 
@@ -524,7 +576,7 @@ The saved target document
 
 *Defined in*
 
-[packages/cozy-client/src/associations/HasMany.js:213](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L213)
+[packages/cozy-client/src/associations/HasMany.js:228](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L228)
 
 ***
 
@@ -561,7 +613,7 @@ The saved target document
 
 *Defined in*
 
-[packages/cozy-client/src/associations/HasMany.js:217](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L217)
+[packages/cozy-client/src/associations/HasMany.js:232](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L232)
 
 ***
 
@@ -586,7 +638,7 @@ The saved target document
 
 *Defined in*
 
-[packages/cozy-client/src/associations/HasMany.js:206](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L206)
+[packages/cozy-client/src/associations/HasMany.js:221](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L221)
 
 ***
 
@@ -612,7 +664,7 @@ The saved target document
 
 *Defined in*
 
-[packages/cozy-client/src/associations/HasMany.js:274](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L274)
+[packages/cozy-client/src/associations/HasMany.js:289](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L289)
 
 ***
 
@@ -637,7 +689,7 @@ The saved target document
 
 *Defined in*
 
-[packages/cozy-client/src/associations/HasMany.js:283](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L283)
+[packages/cozy-client/src/associations/HasMany.js:298](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L298)
 
 ***
 
@@ -692,7 +744,7 @@ having for the 'konnector' worker, and then filter them based on their
 
 *Defined in*
 
-[packages/cozy-client/src/associations/HasMany.js:321](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L321)
+[packages/cozy-client/src/associations/HasMany.js:336](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L336)
 
 ***
 
@@ -719,7 +771,7 @@ having for the 'konnector' worker, and then filter them based on their
 
 *Defined in*
 
-[packages/cozy-client/src/associations/HasMany.js:295](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L295)
+[packages/cozy-client/src/associations/HasMany.js:310](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L310)
 
 ***
 
@@ -746,7 +798,7 @@ having for the 'konnector' worker, and then filter them based on their
 
 *Defined in*
 
-[packages/cozy-client/src/associations/HasMany.js:345](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L345)
+[packages/cozy-client/src/associations/HasMany.js:360](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L360)
 
 ***
 
@@ -772,4 +824,4 @@ having for the 'konnector' worker, and then filter them based on their
 
 *Defined in*
 
-[packages/cozy-client/src/associations/HasMany.js:356](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L356)
+[packages/cozy-client/src/associations/HasMany.js:371](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L371)
