@@ -94,7 +94,14 @@ exports[`FileCollection referencedBy should add a reference 1`] = `
   "results": Array [
     Object {
       "type": "return",
-      "value": undefined,
+      "value": Object {
+        "data": Array [
+          Object {
+            "id": "123",
+            "type": "io.cozy.files",
+          },
+        ],
+      },
     },
   ],
 }
@@ -119,7 +126,14 @@ exports[`FileCollection referencedBy should remove a reference 1`] = `
   "results": Array [
     Object {
       "type": "return",
-      "value": undefined,
+      "value": Object {
+        "data": Array [
+          Object {
+            "id": "123",
+            "type": "io.cozy.files",
+          },
+        ],
+      },
     },
   ],
 }

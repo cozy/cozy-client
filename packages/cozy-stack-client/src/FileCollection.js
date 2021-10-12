@@ -57,6 +57,10 @@ const normalizeFile = file => ({
   ...file.attributes
 })
 
+const normalizeReferences = references => {
+  return references.map(ref => ({ _type: ref.type, _id: ref.id }))
+}
+
 const sanitizeFileName = name => name && name.trim()
 
 /**
@@ -203,13 +207,16 @@ class FileCollection extends DocumentCollection {
    * @param  {Array}  documents       An array of JSON documents having a `_type` and `_id` field.
    * @returns {object}                The JSON API conformant response.
    */
-  addReferencedBy(document, documents) {
+  async addReferencedBy(document, documents) {
     const refs = documents.map(d => ({ id: d._id, type: d._type }))
-    return this.stackClient.fetchJSON(
+    const resp = await this.stackClient.fetchJSON(
       'POST',
       uri`/files/${document._id}/relationships/referenced_by`,
       { data: refs }
     )
+    return {
+      data: normalizeReferences(resp.data)
+    }
   }
 
   /**
@@ -224,13 +231,16 @@ class FileCollection extends DocumentCollection {
    * @param  {Array}  documents       An array of JSON documents having a `_type` and `_id` field.
    * @returns {object}                The JSON API conformant response.
    */
-  removeReferencedBy(document, documents) {
+  async removeReferencedBy(document, documents) {
     const refs = documents.map(d => ({ id: d._id, type: d._type }))
-    return this.stackClient.fetchJSON(
+    const resp = await this.stackClient.fetchJSON(
       'DELETE',
       uri`/files/${document._id}/relationships/referenced_by`,
       { data: refs }
     )
+    return {
+      data: normalizeReferences(resp.data)
+    }
   }
 
   /**
@@ -245,13 +255,16 @@ class FileCollection extends DocumentCollection {
    * @param  {Array}  documents       An array of JSON files having an `_id` field.
    * @returns {object}                The JSON API conformant response.
    */
-  addReferencesTo(document, documents) {
+  async addReferencesTo(document, documents) {
     const refs = documents.map(d => ({ id: d._id, type: 'io.cozy.files' }))
-    return this.stackClient.fetchJSON(
+    const resp = await this.stackClient.fetchJSON(
       'POST',
       uri`/data/${document._type}/${document._id}/relationships/references`,
       { data: refs }
     )
+    return {
+      data: normalizeReferences(resp.data)
+    }
   }
 
   /**
@@ -266,13 +279,16 @@ class FileCollection extends DocumentCollection {
    * @param  {Array}  documents       An array of JSON files having an `_id` field.
    * @returns {object}                The JSON API conformant response.
    */
-  removeReferencesTo(document, documents) {
+  async removeReferencesTo(document, documents) {
     const refs = documents.map(d => ({ id: d._id, type: 'io.cozy.files' }))
-    return this.stackClient.fetchJSON(
+    const resp = await this.stackClient.fetchJSON(
       'DELETE',
       uri`/data/${document._type}/${document._id}/relationships/references`,
       { data: refs }
     )
+    return {
+      data: normalizeReferences(resp.data)
+    }
   }
 
   /**
