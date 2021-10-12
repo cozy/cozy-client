@@ -102,6 +102,12 @@ declare class HasMany extends Association {
      */
     remove(docsArg: CozyClientDocument[]): CozyClientDocument;
     /**
+     * Update target document with relationships
+     *
+     * @param {string[]} idsArg - The ids to add as a relationship
+     */
+    addTargetRelationships(idsArg: string[]): void;
+    /**
      * Add a referenced document by id. You need to call save()
      * in order to synchronize your document with the store.
      *
@@ -111,6 +117,12 @@ declare class HasMany extends Association {
      *
      */
     addById(idsArg: any): any;
+    /**
+     * Remove relationships from target document
+     *
+     * @param {string[]} idsArg - The ids to remove from the target relationships
+     */
+    removeTargetRelationships(idsArg: string[]): void;
     removeById(idsArg: any): any;
     updateMetaCount(): void;
     getRelationship(): any;
