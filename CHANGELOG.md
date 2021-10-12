@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [25.0.0](https://github.com/cozy/cozy-client/compare/v24.10.2...v25.0.0) (2021-10-12)
+
+
+### Bug Fixes
+
+* Doc created by Save should use _type to define _type ([61f9559](https://github.com/cozy/cozy-client/commit/61f95599359f9bbf02f0f2a689fa4b5aa5577508))
+
+
+### BREAKING CHANGES
+
+* save() must use argument with `_type` property
+
+
+
+
+
 ## [24.10.2](https://github.com/cozy/cozy-client/compare/v24.10.1...v24.10.2) (2021-10-11)
 
 
