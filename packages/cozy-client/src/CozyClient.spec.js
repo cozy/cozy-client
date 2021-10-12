@@ -1754,6 +1754,16 @@ describe('file creation', () => {
   it('should support creating a file with references', async () => {
     const { client } = setup()
     jest.spyOn(client, 'requestMutation')
+    client.stackClient.fetchJSON = jest
+      .fn()
+      .mockResolvedValueOnce({
+        data: {
+          _id: '1337'
+        }
+      })
+      .mockResolvedValueOnce({
+        data: [{ id: 1, type: 'io.cozy.files' }]
+      })
     await client.create(
       'io.cozy.files',
       {
@@ -1766,6 +1776,9 @@ describe('file creation', () => {
         icons: [{ _id: 1, _type: 'io.cozy.files' }]
       }
     )
+    client.stackClient.fetchJSON = jest.fn().mockResolvedValue({
+      data: [{ id: '1337', type: 'io.cozy.files' }]
+    })
     const requestMutationCalls = client.requestMutation.mock.calls
     const lastCall = requestMutationCalls[requestMutationCalls.length - 1]
     expect(lastCall[0]).toEqual(
