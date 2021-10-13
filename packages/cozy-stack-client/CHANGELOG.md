@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [25.0.1](https://github.com/cozy/cozy-client/compare/v25.0.0...v25.0.1) (2021-10-13)
+
+
+### Bug Fixes
+
+* Normalize file relationship response ([f5f465f](https://github.com/cozy/cozy-client/commit/f5f465f05a4885981f7bb1f5c2a4c1d968e29449))
+
+
+
+
+
 # [25.0.0](https://github.com/cozy/cozy-client/compare/v24.10.2...v25.0.0) (2021-10-12)
 
 **Note:** Version bump only for package cozy-stack-client
