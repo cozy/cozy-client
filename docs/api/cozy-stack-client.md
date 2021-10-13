@@ -530,6 +530,7 @@ files associated to a specific document
     * [.createDirectoryByPath(path)](#FileCollection+createDirectoryByPath) ⇒ <code>object</code>
     * [.createFileMetadata(attributes)](#FileCollection+createFileMetadata) ⇒ <code>object</code>
     * [.updateMetadataAttribute(id, metadata)](#FileCollection+updateMetadataAttribute) ⇒ <code>object</code>
+    * [.getFileTypeFromName(name)](#FileCollection+getFileTypeFromName) ⇒ <code>string</code>
     * [.doUpload(dataArg, path, options, method)](#FileCollection+doUpload)
     * [.findNotSynchronizedDirectories(oauthClient, options)](#FileCollection+findNotSynchronizedDirectories) ⇒ <code>Array.&lt;(object\|IOCozyFolder)&gt;</code>
     * [.addNotSynchronizedDirectories(oauthClient, directories)](#FileCollection+addNotSynchronizedDirectories) ⇒
@@ -864,6 +865,18 @@ see : https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files_metadata/
 | --- | --- | --- |
 | id | <code>string</code> | File id |
 | metadata | <code>object</code> | io.cozy.files.metadata attributes |
+
+<a name="FileCollection+getFileTypeFromName"></a>
+
+### fileCollection.getFileTypeFromName(name) ⇒ <code>string</code>
+Get the file mime-type based on its name
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+**Returns**: <code>string</code> - the inferred file mime-type  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | The file name |
 
 <a name="FileCollection+doUpload"></a>
 

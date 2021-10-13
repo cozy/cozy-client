@@ -75,9 +75,6 @@ const sanitizeAttributes = attributes => {
   if (attributes.name) attributes.name = sanitizeFileName(attributes.name)
   return attributes
 }
-const getFileTypeFromName = name =>
-  mime.getType(name) || CONTENT_TYPE_OCTET_STREAM
-
 export const isFile = ({ _type, type }) =>
   _type === 'io.cozy.files' || type === 'directory' || type === 'file'
 
@@ -867,6 +864,17 @@ class FileCollection extends DocumentCollection {
       data: resp.data
     }
   }
+
+  /**
+   * Get the file mime-type based on its name
+   *
+   * @param {string} name - The file name
+   * @returns {string} the inferred file mime-type
+   */
+  getFileTypeFromName(name) {
+    return mime.getType(name) || CONTENT_TYPE_OCTET_STREAM
+  }
+
   /**
    *
    * This method should not be called directly to upload a file.
@@ -915,8 +923,7 @@ class FileCollection extends DocumentCollection {
           const sPath = path.split('?')
           const params = sPath.length > 1 ? sPath[1] : ''
           const name = new URLSearchParams(params).get('Name')
-          contentType =
-            getFileTypeFromName(name.toLowerCase()) || CONTENT_TYPE_OCTET_STREAM
+          contentType = this.getFileTypeFromName(name.toLowerCase())
         }
       }
     }
