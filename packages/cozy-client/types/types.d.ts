@@ -100,6 +100,10 @@ export type CozyClientDocument = {
      */
     _id?: string;
     /**
+     * - Id of the document
+     */
+    id?: string;
+    /**
      * - Type of the document
      */
     _type?: string;

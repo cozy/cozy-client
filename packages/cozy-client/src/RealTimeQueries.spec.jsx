@@ -38,6 +38,7 @@ describe('RealTimeQueries', () => {
         definition: {
           document: {
             _id: 'mock-created',
+            id: 'mock-created',
             _type: 'io.cozy.files',
             type: 'file'
           },
@@ -47,6 +48,7 @@ describe('RealTimeQueries', () => {
         response: {
           data: {
             _id: 'mock-created',
+            id: 'mock-created',
             _type: 'io.cozy.files',
             type: 'file'
           }
@@ -60,6 +62,7 @@ describe('RealTimeQueries', () => {
       definition: {
         document: {
           _id: 'mock-updated',
+          id: 'mock-updated',
           _type: 'io.cozy.files',
           type: 'file'
         },
@@ -69,6 +72,7 @@ describe('RealTimeQueries', () => {
       response: {
         data: {
           _id: 'mock-updated',
+          id: 'mock-updated',
           _type: 'io.cozy.files',
           type: 'file'
         }
@@ -81,6 +85,7 @@ describe('RealTimeQueries', () => {
       definition: {
         document: {
           _id: 'mock-deleted',
+          id: 'mock-deleted',
           _type: 'io.cozy.files',
           type: 'file',
           _deleted: true
@@ -91,6 +96,7 @@ describe('RealTimeQueries', () => {
       response: {
         data: {
           _id: 'mock-deleted',
+          id: 'mock-deleted',
           _type: 'io.cozy.files',
           type: 'file',
           _deleted: true
@@ -118,6 +124,7 @@ describe('RealTimeQueries', () => {
         definition: {
           document: {
             _id: 'mock-created',
+            id: 'mock-created',
             _type: 'io.cozy.oauth.clients',
             client_kind: 'desktop',
             client_name: 'Cozy Drive (hostname)'
@@ -128,6 +135,7 @@ describe('RealTimeQueries', () => {
         response: {
           data: {
             _id: 'mock-created',
+            id: 'mock-created',
             _type: 'io.cozy.oauth.clients',
             client_kind: 'desktop',
             client_name: 'Cozy Drive (hostname)'
