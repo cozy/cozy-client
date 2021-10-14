@@ -113,6 +113,7 @@ import { QueryDefinition } from './queries/dsl'
 /**
  * @typedef {object} CozyClientDocument - A document
  * @property {string} [_id] - Id of the document
+ * @property {string} [id] - Id of the document
  * @property {string} [_type] - Type of the document
  * @property {string} [_rev] - Current revision of the document
  * @property {boolean} [_deleted] - When the document has been deleted

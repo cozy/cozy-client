@@ -16,6 +16,7 @@ import { CouchDBDocument, CozyClientDocument, Doctype, Mutation } from './types'
  */
 const normalizeDoc = (couchDBDoc, doctype) => {
   return {
+    id: couchDBDoc._id,
     _type: doctype,
     ...couchDBDoc
   }
