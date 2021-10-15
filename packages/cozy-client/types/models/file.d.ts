@@ -46,6 +46,39 @@ export function hasMetadataAttribute({ file, attribute }: {
     file: IOCozyFile;
     attribute: string;
 }): boolean;
+export function getFullpath(client: CozyClient, dirId: string, name: string): Promise<string>;
+export function move(client: CozyClient, fileId: string, destination: {
+    folderId: string;
+    path: string;
+}, force?: boolean): Promise<any>;
+export function overrideFileForPath(client: CozyClient, pathArg: string, file: object, metadata: any): Promise<any>;
+export function generateNewFileNameOnConflict(filenameWithoutExtension: string): string;
+export function generateFileNameForRevision(file: IOCozyFile, revision: object, f: Function): string;
+export function uploadFileWithConflictStrategy(client: CozyClient, file: string | ArrayBuffer, options: FileUploadOptions): any;
+export function readMobileFile(fileURL: string): Promise<any>;
+export function doMobileUpload(client: CozyClient, fileURL: string, options: FileUploadOptions): Promise<any>;
+export type FileUploadOptions = {
+    /**
+     * - The file name to upload
+     */
+    name?: string;
+    /**
+     * - The dirId to upload the file to
+     */
+    dirId?: string;
+    /**
+     * An object containing the metadata to attach
+     */
+    metadata?: object;
+    /**
+     * - The file Content-Type
+     */
+    contentType?: string;
+    /**
+     * - erase / rename
+     */
+    conflictStrategy?: string;
+};
 import { IOCozyFile } from "../types";
 import CozyClient from "../CozyClient";
 import { QueryResult } from "../types";

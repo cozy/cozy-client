@@ -1,6 +1,7 @@
 import get from 'lodash/get'
 import isString from 'lodash/isString'
 import has from 'lodash/has'
+import trimEnd from 'lodash/trimEnd'
 
 import { setQualification } from './document'
 import { Q } from '../queries/dsl'
@@ -291,3 +292,268 @@ export const isReferencedByAlbum = file => {
  */
 export const hasMetadataAttribute = ({ file, attribute }) =>
   has(file, `metadata.${attribute}`)
+
+/**
+ * async getFullpath - Gets a file's path
+ *
+ * @param {CozyClient} client - The CozyClient instance
+ * @param {string} dirId  - The id of the parent directory
+ * @param {string} name  - The file's name
+ * @returns {Promise<string>}       The full path of the file in the cozy
+ **/
+export const getFullpath = async (client, dirId, name) => {
+  if (!dirId) {
+    throw new Error('You must provide a dirId')
+  }
+
+  const { data: parentDir } = await client.query(
+    Q(DOCTYPE_FILES).getById(dirId)
+  )
+  const parentDirectoryPath = trimEnd(parentDir.path, '/')
+  return `${parentDirectoryPath}/${name}`
+}
+
+/**
+ * Move file to destination.
+ *
+ * @param {CozyClient} client - The CozyClient instance
+ * @param   {string} fileId               - The file's id (required)
+ * @param   {object} destination
+ * @param   {string} destination.folderId - The destination folder's id (required)
+ * @param   {string} destination.path     - The file's path after the move (optional, used to optimize performance in case of conflict)
+ * @param   {boolean} force                - Whether we should overwrite the destination in case of conflict (defaults to false)
+ * @returns {Promise}                     - A promise that returns the move action response and the deleted file id (if any) if resolved or an Error if rejected
+ *
+ */
+export const move = async (client, fileId, destination, force = false) => {
+  const { folderId, path } = destination
+  try {
+    const resp = await client
+      .collection(DOCTYPE_FILES)
+      .updateFileMetadata(fileId, {
+        dir_id: folderId
+      })
+
+    return {
+      moved: resp.data,
+      deleted: null
+    }
+  } catch (e) {
+    if (e.status === 409 && force) {
+      let destinationPath
+      if (path) {
+        destinationPath = path
+      } else {
+        const { data: movedFile } = await client.query(
+          Q(DOCTYPE_FILES).getById(fileId)
+        )
+        const filename = movedFile.name
+        destinationPath = await getFullpath(client, folderId, filename)
+      }
+      const conflictResp = await client
+        .collection(DOCTYPE_FILES)
+        .statByPath(destinationPath)
+      await client.collection(DOCTYPE_FILES).destroy(conflictResp.data)
+      const resp = await client
+        .collection(DOCTYPE_FILES)
+        .updateFileMetadata(fileId, {
+          dir_id: folderId
+        })
+
+      return {
+        moved: resp.data,
+        deleted: conflictResp.data.id
+      }
+    } else {
+      throw e
+    }
+  }
+}
+
+/**
+ *
+ * Method to upload a file even if a file with the same name already exists.
+ *
+ * @param {CozyClient} client - The CozyClient instance
+ * @param {string} pathArg Fullpath for the file ex: path/to/
+ * @param {object} file HTML Object file
+ * @param {Object} metadata An object containing the wanted metadata to attach
+ */
+export const overrideFileForPath = async (client, pathArg, file, metadata) => {
+  let path = pathArg
+  if (!path.endsWith('/')) path = path + '/'
+
+  const filesCollection = client.collection(DOCTYPE_FILES)
+  try {
+    const existingFile = await filesCollection.statByPath(path + file.name)
+
+    const { id: fileId, dir_id: dirId } = existingFile.data
+    const resp = await filesCollection.updateFile(file, {
+      dirId,
+      fileId,
+      metadata
+    })
+    return resp
+  } catch (error) {
+    if (/Not Found/.test(error)) {
+      const dirId = await filesCollection.ensureDirectoryExists(path)
+      const createdFile = await filesCollection.createFile(file, {
+        dirId,
+        metadata
+      })
+      return createdFile
+    }
+    throw error
+  }
+}
+/**
+ * Method to generate a new filename if there is a conflict
+ *
+ * @param {string} filenameWithoutExtension A filename without the extension
+ * @returns {string} A filename with the right suffix
+ */
+export const generateNewFileNameOnConflict = filenameWithoutExtension => {
+  //Check if the string ends by _1
+  const regex = new RegExp('(_)([0-9]+)$')
+  const matches = filenameWithoutExtension.match(regex)
+  if (matches) {
+    let versionNumber = parseInt(matches[2])
+    //increment versionNumber
+    versionNumber++
+    const newFilenameWithoutExtension = filenameWithoutExtension.replace(
+      new RegExp('(_)([0-9]+)$'),
+      `_${versionNumber}`
+    )
+    return newFilenameWithoutExtension
+  } else {
+    return `${filenameWithoutExtension}_1`
+  }
+}
+
+/**
+ * Generate a file name for a revision
+ *
+ * @param {IOCozyFile} file  - io.cozy.files document
+ * @param {object} revision - The revision containing the updated_at
+ * @param {function} f - A function to apply to generate the name
+ */
+export const generateFileNameForRevision = (file, revision, f) => {
+  const { filename, extension } = splitFilename(file)
+  return `${filename}_${f(
+    revision.updated_at,
+    'DD MMMM - HH[h]mm'
+  )}${extension}`
+}
+
+/**
+ * @typedef FileUploadOptions
+ * @property {string} [name]  - The file name to upload
+ * @property {string} [dirId] - The dirId to upload the file to
+ * @property {object} [metadata] An object containing the metadata to attach
+ * @property {string} [contentType] - The file Content-Type
+ * @property {string} [conflictStrategy] - erase / rename
+ */
+
+/**
+ * The goal of this method is to upload a file based on a conflict strategy.
+ * Be careful: We need to check if the file exists by doing a statByPath query
+ * before trying to upload the file since if we post and the stack return a
+ * 409 conflict, we will get a SPDY_ERROR_PROTOCOL on Chrome. This is the only
+ * viable workaround
+ * If there is no conflict, then we upload the file.
+ * If there is a conflict, then we apply the conflict strategy : `erase` or `rename`
+ *
+ * @param {CozyClient} client - The CozyClient instance
+ * @param {string|ArrayBuffer} file Can be the file path (file://) or the binary itself
+ * @param {FileUploadOptions} options - The upload options
+ */
+export const uploadFileWithConflictStrategy = async (client, file, options) => {
+  const { name, dirId, conflictStrategy } = options
+
+  try {
+    const path = await getFullpath(client, dirId, name)
+    const existingFile = await client.collection(DOCTYPE_FILES).statByPath(path)
+    const { id: fileId } = existingFile.data
+    if (conflictStrategy === 'erase') {
+      //!TODO Bug Fix. Seems we have to pass a name attribute ?!
+      const resp = await client
+        .collection(DOCTYPE_FILES)
+        .updateFile(file, { ...options, fileId })
+      return resp
+    } else {
+      // @ts-ignore
+      const { filename, extension } = splitFilename({
+        name,
+        type: 'file'
+      })
+      const newFileName = generateNewFileNameOnConflict(filename) + extension
+      //recall itself with the newFilename.
+      return uploadFileWithConflictStrategy(client, file, {
+        ...options,
+        name: newFileName
+      })
+    }
+  } catch (error) {
+    if (/Not Found/.test(error.message)) {
+      return client.collection(DOCTYPE_FILES).createFile(file, options)
+    }
+    throw error
+  }
+}
+
+/**
+ * Read a file on a mobile
+ *
+ * @param {string} fileURL - The local file path (file://)
+ */
+export const readMobileFile = async fileURL => {
+  /** Cordova plugin doesn't support promise since there are supporting Android 4.X.X
+   * so we have to create manually a promise to be able to write beautiful code ;)
+   */
+
+  const p = new Promise((resolve, reject) => {
+    const onResolvedLocalFS = async fileEntry => {
+      fileEntry.file(
+        async file => {
+          const reader = new FileReader()
+          reader.onloadend = async () => {
+            resolve(reader.result)
+          }
+          // Read the file as an ArrayBuffer
+          reader.readAsArrayBuffer(file)
+        },
+        err => {
+          // Since this module is pretty recent, let's have this info in sentry if needed
+          console.error('error getting fileentry file!' + err) // eslint-disable-line no-console
+          reject(err)
+        }
+      )
+    }
+    const onError = error => {
+      reject(error)
+    }
+    /**
+     * file:/// can not be converted to a fileEntry without the Cordova's File plugin.
+     * `resolveLocalFileSystemURL` is provided by this plugin and can resolve the native
+     * path to a fileEntry readable by a `FileReader`
+     *
+     * When we finished to read the fileEntry as buffer, we start the upload process
+     *
+     */
+    // @ts-ignore
+    window.resolveLocalFileSystemURL(fileURL, onResolvedLocalFS, onError)
+  })
+  return p
+}
+
+/**
+ * Upload a file on a mobile
+ *
+ * @param {CozyClient} client - The CozyClient instance
+ * @param {string} fileURL - The local file path (file://)
+ * @param {FileUploadOptions} options - The upload options
+ */
+export const doMobileUpload = async (client, fileURL, options) => {
+  const file = await readMobileFile(fileURL)
+  return uploadFileWithConflictStrategy(client, file, options)
+}

@@ -4,6 +4,10 @@
 
 [models](models.md).file
 
+## Interfaces
+
+*   [FileUploadOptions](../interfaces/models.file.fileuploadoptions.md)
+
 ## Variables
 
 ### ALBUMS_DOCTYPE
@@ -12,9 +16,33 @@
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:13](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L13)
+[packages/cozy-client/src/models/file.js:14](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L14)
 
 ## Functions
+
+### doMobileUpload
+
+▸ `Const` **doMobileUpload**(`client`, `fileURL`, `options`): `Promise`<`any`>
+
+Upload a file on a mobile
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `client` | [`CozyClient`](../classes/cozyclient.md) | The CozyClient instance |
+| `fileURL` | `string` | The local file path (file://) |
+| `options` | [`FileUploadOptions`](../interfaces/models.file.fileuploadoptions.md) | The upload options |
+
+*Returns*
+
+`Promise`<`any`>
+
+*Defined in*
+
+[packages/cozy-client/src/models/file.js:556](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L556)
+
+***
 
 ### ensureFilePath
 
@@ -37,7 +65,7 @@ file object with path attribute
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:125](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L125)
+[packages/cozy-client/src/models/file.js:126](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L126)
 
 ***
 
@@ -62,7 +90,81 @@ Helper to query files based on qualification rules
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:245](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L245)
+[packages/cozy-client/src/models/file.js:246](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L246)
+
+***
+
+### generateFileNameForRevision
+
+▸ `Const` **generateFileNameForRevision**(`file`, `revision`, `f`): `string`
+
+Generate a file name for a revision
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `file` | `IOCozyFile` | io.cozy.files document |
+| `revision` | `any` | The revision containing the updated_at |
+| `f` | `Function` | A function to apply to generate the name |
+
+*Returns*
+
+`string`
+
+*Defined in*
+
+[packages/cozy-client/src/models/file.js:440](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L440)
+
+***
+
+### generateNewFileNameOnConflict
+
+▸ `Const` **generateNewFileNameOnConflict**(`filenameWithoutExtension`): `string`
+
+Method to generate a new filename if there is a conflict
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `filenameWithoutExtension` | `string` | A filename without the extension |
+
+*Returns*
+
+`string`
+
+A filename with the right suffix
+
+*Defined in*
+
+[packages/cozy-client/src/models/file.js:415](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L415)
+
+***
+
+### getFullpath
+
+▸ `Const` **getFullpath**(`client`, `dirId`, `name`): `Promise`<`string`>
+
+async getFullpath - Gets a file's path
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `client` | [`CozyClient`](../classes/cozyclient.md) | The CozyClient instance |
+| `dirId` | `string` | The id of the parent directory |
+| `name` | `string` | The file's name |
+
+*Returns*
+
+`Promise`<`string`>
+
+The full path of the file in the cozy
+
+*Defined in*
+
+[packages/cozy-client/src/models/file.js:304](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L304)
 
 ***
 
@@ -86,7 +188,7 @@ id of the parent folder, if any
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:139](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L139)
+[packages/cozy-client/src/models/file.js:140](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L140)
 
 ***
 
@@ -110,7 +212,7 @@ A description of the status
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:151](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L151)
+[packages/cozy-client/src/models/file.js:152](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L152)
 
 ***
 
@@ -134,7 +236,7 @@ A doctype
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:171](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L171)
+[packages/cozy-client/src/models/file.js:172](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L172)
 
 ***
 
@@ -158,7 +260,7 @@ The mime-type of the target file, or an empty string is the target is not a file
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:161](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L161)
+[packages/cozy-client/src/models/file.js:162](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L162)
 
 ***
 
@@ -182,7 +284,7 @@ Whether the file's metadata attribute exists
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:292](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L292)
+[packages/cozy-client/src/models/file.js:293](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L293)
 
 ***
 
@@ -202,7 +304,7 @@ Whether the file's metadata attribute exists
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:45](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L45)
+[packages/cozy-client/src/models/file.js:46](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L46)
 
 ***
 
@@ -222,7 +324,7 @@ Whether the file's metadata attribute exists
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:39](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L39)
+[packages/cozy-client/src/models/file.js:40](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L40)
 
 ***
 
@@ -242,7 +344,7 @@ Whether the file's metadata attribute exists
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:51](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L51)
+[packages/cozy-client/src/models/file.js:52](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L52)
 
 ***
 
@@ -264,7 +366,7 @@ Whether the file is supported by Only Office
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:73](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L73)
+[packages/cozy-client/src/models/file.js:74](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L74)
 
 ***
 
@@ -286,7 +388,7 @@ Whether the file is referenced by an album
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:267](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L267)
+[packages/cozy-client/src/models/file.js:268](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L268)
 
 ***
 
@@ -310,7 +412,7 @@ Returns whether the file is a shortcut to a sharing
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:191](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L191)
+[packages/cozy-client/src/models/file.js:192](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L192)
 
 ***
 
@@ -334,7 +436,7 @@ Returns whether the sharing shortcut is new
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:216](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L216)
+[packages/cozy-client/src/models/file.js:217](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L217)
 
 ***
 
@@ -356,7 +458,7 @@ Returns whether the file is a shortcut to a sharing
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:181](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L181)
+[packages/cozy-client/src/models/file.js:182](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L182)
 
 ***
 
@@ -378,7 +480,7 @@ Returns whether the sharing shortcut is new
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:205](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L205)
+[packages/cozy-client/src/models/file.js:206](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L206)
 
 ***
 
@@ -400,7 +502,36 @@ true if the file is a shortcut
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:98](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L98)
+[packages/cozy-client/src/models/file.js:99](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L99)
+
+***
+
+### move
+
+▸ `Const` **move**(`client`, `fileId`, `destination`, `force?`): `Promise`<`any`>
+
+Move file to destination.
+
+*Parameters*
+
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `client` | [`CozyClient`](../classes/cozyclient.md) | `undefined` | The CozyClient instance |
+| `fileId` | `string` | `undefined` | The file's id (required) |
+| `destination` | `Object` | `undefined` |  |
+| `destination.folderId` | `string` | `undefined` | The destination folder's id (required) |
+| `destination.path` | `string` | `undefined` | The file's path after the move (optional, used to optimize performance in case of conflict) |
+| `force` | `boolean` | `false` | Whether we should overwrite the destination in case of conflict (defaults to false) |
+
+*Returns*
+
+`Promise`<`any`>
+
+*   A promise that returns the move action response and the deleted file id (if any) if resolved or an Error if rejected
+
+*Defined in*
+
+[packages/cozy-client/src/models/file.js:328](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L328)
 
 ***
 
@@ -426,7 +557,54 @@ full normalized object
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:111](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L111)
+[packages/cozy-client/src/models/file.js:112](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L112)
+
+***
+
+### overrideFileForPath
+
+▸ `Const` **overrideFileForPath**(`client`, `pathArg`, `file`, `metadata`): `Promise`<`any`>
+
+Method to upload a file even if a file with the same name already exists.
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `client` | [`CozyClient`](../classes/cozyclient.md) | The CozyClient instance |
+| `pathArg` | `string` | Fullpath for the file ex: path/to/ |
+| `file` | `any` | HTML Object file |
+| `metadata` | `any` | An object containing the wanted metadata to attach |
+
+*Returns*
+
+`Promise`<`any`>
+
+*Defined in*
+
+[packages/cozy-client/src/models/file.js:382](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L382)
+
+***
+
+### readMobileFile
+
+▸ `Const` **readMobileFile**(`fileURL`): `Promise`<`any`>
+
+Read a file on a mobile
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `fileURL` | `string` | The local file path (file://) |
+
+*Returns*
+
+`Promise`<`any`>
+
+*Defined in*
+
+[packages/cozy-client/src/models/file.js:509](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L509)
 
 ***
 
@@ -452,7 +630,7 @@ Save the file with the given qualification
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:231](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L231)
+[packages/cozy-client/src/models/file.js:232](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L232)
 
 ***
 
@@ -476,7 +654,7 @@ But we want to exclude .txt and .md because the CozyUI Viewer can already show t
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:88](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L88)
+[packages/cozy-client/src/models/file.js:89](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L89)
 
 ***
 
@@ -500,4 +678,34 @@ Returns base filename and extension
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:23](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L23)
+[packages/cozy-client/src/models/file.js:24](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L24)
+
+***
+
+### uploadFileWithConflictStrategy
+
+▸ `Const` **uploadFileWithConflictStrategy**(`client`, `file`, `options`): `any`
+
+The goal of this method is to upload a file based on a conflict strategy.
+Be careful: We need to check if the file exists by doing a statByPath query
+before trying to upload the file since if we post and the stack return a
+409 conflict, we will get a SPDY_ERROR_PROTOCOL on Chrome. This is the only
+viable workaround
+If there is no conflict, then we upload the file.
+If there is a conflict, then we apply the conflict strategy : `erase` or `rename`
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `client` | [`CozyClient`](../classes/cozyclient.md) | The CozyClient instance |
+| `file` | `string` | `ArrayBuffer` | Can be the file path (file://) or the binary itself |
+| `options` | [`FileUploadOptions`](../interfaces/models.file.fileuploadoptions.md) | The upload options |
+
+*Returns*
+
+`any`
+
+*Defined in*
+
+[packages/cozy-client/src/models/file.js:470](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L470)
