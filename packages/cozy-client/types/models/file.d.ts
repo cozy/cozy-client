@@ -51,7 +51,7 @@ export function move(client: CozyClient, fileId: string, destination: {
     folderId: string;
     path: string;
 }, force?: boolean): Promise<any>;
-export function overrideFileForPath(client: CozyClient, pathArg: string, file: object, metadata: any): Promise<any>;
+export function overrideFileForPath(client: CozyClient, dirPath: string, file: object, metadata: object): Promise<IOCozyFile>;
 export function generateNewFileNameOnConflict(filenameWithoutExtension: string): string;
 export function generateFileNameForRevision(file: IOCozyFile, revision: object, f: Function): string;
 export function uploadFileWithConflictStrategy(client: CozyClient, file: string | ArrayBuffer, options: FileUploadOptions): any;
@@ -67,7 +67,7 @@ export type FileUploadOptions = {
      */
     dirId?: string;
     /**
-     * An object containing the metadata to attach
+     * - An object containing the metadata to attach
      */
     metadata?: object;
     /**
@@ -75,7 +75,7 @@ export type FileUploadOptions = {
      */
     contentType?: string;
     /**
-     * - erase / rename
+     * - Erase / rename
      */
     conflictStrategy?: string;
 };
