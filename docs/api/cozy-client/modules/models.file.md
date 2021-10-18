@@ -40,7 +40,7 @@ Upload a file on a mobile
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:556](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L556)
+[packages/cozy-client/src/models/file.js:559](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L559)
 
 ***
 
@@ -86,7 +86,7 @@ Helper to query files based on qualification rules
 
 `Promise`<`any`>
 
-*   The files found by the rules
+The files found by the rules
 
 *Defined in*
 
@@ -106,7 +106,7 @@ Generate a file name for a revision
 | :------ | :------ | :------ |
 | `file` | `IOCozyFile` | io.cozy.files document |
 | `revision` | `any` | The revision containing the updated_at |
-| `f` | `Function` | A function to apply to generate the name |
+| `f` | `Function` | A function taking a a date and a format as arguments to generate the name. |
 
 *Returns*
 
@@ -114,7 +114,7 @@ Generate a file name for a revision
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:440](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L440)
+[packages/cozy-client/src/models/file.js:441](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L441)
 
 ***
 
@@ -138,7 +138,7 @@ A filename with the right suffix
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:415](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L415)
+[packages/cozy-client/src/models/file.js:416](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L416)
 
 ***
 
@@ -492,7 +492,7 @@ Returns whether the sharing shortcut is new
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `file` | `IOCozyFile` | io.cozy.files |
+| `file` | `IOCozyFile` | io.cozy.files document |
 
 *Returns*
 
@@ -521,7 +521,7 @@ Move file to destination.
 | `destination` | `Object` | `undefined` |  |
 | `destination.folderId` | `string` | `undefined` | The destination folder's id (required) |
 | `destination.path` | `string` | `undefined` | The file's path after the move (optional, used to optimize performance in case of conflict) |
-| `force` | `boolean` | `false` | Whether we should overwrite the destination in case of conflict (defaults to false) |
+| `force` | `boolean` | `false` | Whether we should overwrite, i.e. put to trash, the destination in case of conflict (defaults to false). |
 
 *Returns*
 
@@ -563,7 +563,7 @@ full normalized object
 
 ### overrideFileForPath
 
-▸ `Const` **overrideFileForPath**(`client`, `pathArg`, `file`, `metadata`): `Promise`<`any`>
+▸ `Const` **overrideFileForPath**(`client`, `dirPath`, `file`, `metadata`): `Promise`<`IOCozyFile`>
 
 Method to upload a file even if a file with the same name already exists.
 
@@ -572,17 +572,19 @@ Method to upload a file even if a file with the same name already exists.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `client` | [`CozyClient`](../classes/cozyclient.md) | The CozyClient instance |
-| `pathArg` | `string` | Fullpath for the file ex: path/to/ |
+| `dirPath` | `string` | Fullpath of directory to upload to ex: path/to/ |
 | `file` | `any` | HTML Object file |
 | `metadata` | `any` | An object containing the wanted metadata to attach |
 
 *Returns*
 
-`Promise`<`any`>
+`Promise`<`IOCozyFile`>
+
+The overrided file
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:382](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L382)
+[packages/cozy-client/src/models/file.js:383](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L383)
 
 ***
 
@@ -604,7 +606,7 @@ Read a file on a mobile
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:509](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L509)
+[packages/cozy-client/src/models/file.js:512](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L512)
 
 ***
 
@@ -626,7 +628,7 @@ Save the file with the given qualification
 
 `Promise`<`IOCozyFile`>
 
-*   The saved file
+The saved file
 
 *Defined in*
 
@@ -692,7 +694,10 @@ before trying to upload the file since if we post and the stack return a
 409 conflict, we will get a SPDY_ERROR_PROTOCOL on Chrome. This is the only
 viable workaround
 If there is no conflict, then we upload the file.
-If there is a conflict, then we apply the conflict strategy : `erase` or `rename`
+If there is a conflict, then we apply the conflict strategy : `erase` or `rename`:
+
+*   The `erase` strategy means an upload with a new version
+*   The `rename` strategy means a new upload with a new name
 
 *Parameters*
 
@@ -708,4 +713,4 @@ If there is a conflict, then we apply the conflict strategy : `erase` or `rename
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:470](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L470)
+[packages/cozy-client/src/models/file.js:473](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L473)

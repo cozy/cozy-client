@@ -93,7 +93,7 @@ export const shouldBeOpenedByOnlyOffice = file =>
 
 /**
  *
- * @param {IOCozyFile} file io.cozy.files
+ * @param {IOCozyFile} file - io.cozy.files document
  * @returns {boolean} true if the file is a shortcut
  */
 export const isShortcut = file => {
@@ -145,7 +145,7 @@ export function getParentFolderId(file) {
 /**
  * Returns the status of a sharing shortcut.
  *
- * @param {IOCozyFile} file  - io.cozy.files document
+ * @param {IOCozyFile} file - io.cozy.files document
  *
  * @returns {string} A description of the status
  */
@@ -165,7 +165,7 @@ export const getSharingShortcutTargetMime = file =>
 /**
  * Returns the doctype of the target of the sharing shortcut.
  *
- * @param {IOCozyFile} file  - io.cozy.files document
+ * @param {IOCozyFile} file - io.cozy.files document
  *
  * @returns {string} A doctype
  */
@@ -175,7 +175,7 @@ export const getSharingShortcutTargetDoctype = file =>
 /**
  * Returns whether the file is a shortcut to a sharing
  *
- * @param {IOCozyFile} file  - io.cozy.files document
+ * @param {IOCozyFile} file - io.cozy.files document
  *
  * @returns {boolean}
  */
@@ -185,7 +185,7 @@ export const isSharingShortcut = file => Boolean(getSharingShortcutStatus(file))
  * Returns whether the file is a shortcut to a sharing
  *
  * @deprecated Prefer to use isSharingShortcut.
- * @param {IOCozyFile} file  - io.cozy.files document
+ * @param {IOCozyFile} file - io.cozy.files document
  *
  * @returns {boolean}
  */
@@ -199,7 +199,7 @@ export const isSharingShorcut = file => {
 /**
  * Returns whether the sharing shortcut is new
  *
- * @param {IOCozyFile} file  - io.cozy.files document
+ * @param {IOCozyFile} file - io.cozy.files document
  *
  * @returns {boolean}
  */
@@ -210,7 +210,7 @@ export const isSharingShortcutNew = file =>
  * Returns whether the sharing shortcut is new
  *
  * @deprecated Prefer to use isSharingShortcutNew.
- * @param {object} file  - io.cozy.files document
+ * @param {object} file - io.cozy.files document
  *
  * @returns {boolean}
  */
@@ -227,7 +227,7 @@ export const isSharingShorcutNew = file => {
  * @param {CozyClient} client - The CozyClient instance
  * @param {IOCozyFile} file - The file to qualify
  * @param {object} qualification - The file qualification
- * @returns {Promise<IOCozyFile>} - The saved file
+ * @returns {Promise<IOCozyFile>} The saved file
  */
 export const saveFileQualification = async (client, file, qualification) => {
   const qualifiedFile = setQualification(file, qualification)
@@ -241,7 +241,7 @@ export const saveFileQualification = async (client, file, qualification) => {
  *
  * @param {object} client - The CozyClient instance
  * @param {object} docRules - the rules containing the searched qualification and the count
- * @returns {Promise<QueryResult>} - The files found by the rules
+ * @returns {Promise<QueryResult>} The files found by the rules
  */
 export const fetchFilesByQualificationRules = async (client, docRules) => {
   const { rules, count } = docRules
@@ -299,7 +299,7 @@ export const hasMetadataAttribute = ({ file, attribute }) =>
  * @param {CozyClient} client - The CozyClient instance
  * @param {string} dirId  - The id of the parent directory
  * @param {string} name  - The file's name
- * @returns {Promise<string>}       The full path of the file in the cozy
+ * @returns {Promise<string>} The full path of the file in the cozy
  **/
 export const getFullpath = async (client, dirId, name) => {
   if (!dirId) {
@@ -316,12 +316,12 @@ export const getFullpath = async (client, dirId, name) => {
 /**
  * Move file to destination.
  *
- * @param {CozyClient} client - The CozyClient instance
+ * @param {CozyClient} client             - The CozyClient instance
  * @param   {string} fileId               - The file's id (required)
  * @param   {object} destination
  * @param   {string} destination.folderId - The destination folder's id (required)
  * @param   {string} destination.path     - The file's path after the move (optional, used to optimize performance in case of conflict)
- * @param   {boolean} force                - Whether we should overwrite the destination in case of conflict (defaults to false)
+ * @param   {boolean} force               - Whether we should overwrite, i.e. put to trash, the destination in case of conflict (defaults to false).
  * @returns {Promise}                     - A promise that returns the move action response and the deleted file id (if any) if resolved or an Error if rejected
  *
  */
@@ -374,13 +374,14 @@ export const move = async (client, fileId, destination, force = false) => {
  *
  * Method to upload a file even if a file with the same name already exists.
  *
- * @param {CozyClient} client - The CozyClient instance
- * @param {string} pathArg Fullpath for the file ex: path/to/
- * @param {object} file HTML Object file
- * @param {Object} metadata An object containing the wanted metadata to attach
+ * @param {CozyClient} client   - The CozyClient instance
+ * @param {string} dirPath      - Fullpath of directory to upload to ex: path/to/
+ * @param {object} file         - HTML Object file
+ * @param {object} metadata     - An object containing the wanted metadata to attach
+ * @returns {Promise<IOCozyFile>} The overrided file
  */
-export const overrideFileForPath = async (client, pathArg, file, metadata) => {
-  let path = pathArg
+export const overrideFileForPath = async (client, dirPath, file, metadata) => {
+  let path = dirPath
   if (!path.endsWith('/')) path = path + '/'
 
   const filesCollection = client.collection(DOCTYPE_FILES)
@@ -409,7 +410,7 @@ export const overrideFileForPath = async (client, pathArg, file, metadata) => {
 /**
  * Method to generate a new filename if there is a conflict
  *
- * @param {string} filenameWithoutExtension A filename without the extension
+ * @param {string} filenameWithoutExtension - A filename without the extension
  * @returns {string} A filename with the right suffix
  */
 export const generateNewFileNameOnConflict = filenameWithoutExtension => {
@@ -433,9 +434,9 @@ export const generateNewFileNameOnConflict = filenameWithoutExtension => {
 /**
  * Generate a file name for a revision
  *
- * @param {IOCozyFile} file  - io.cozy.files document
+ * @param {IOCozyFile} file - io.cozy.files document
  * @param {object} revision - The revision containing the updated_at
- * @param {function} f - A function to apply to generate the name
+ * @param {function} f      - A function taking a a date and a format as arguments to generate the name.
  */
 export const generateFileNameForRevision = (file, revision, f) => {
   const { filename, extension } = splitFilename(file)
@@ -447,11 +448,11 @@ export const generateFileNameForRevision = (file, revision, f) => {
 
 /**
  * @typedef FileUploadOptions
- * @property {string} [name]  - The file name to upload
- * @property {string} [dirId] - The dirId to upload the file to
- * @property {object} [metadata] An object containing the metadata to attach
- * @property {string} [contentType] - The file Content-Type
- * @property {string} [conflictStrategy] - erase / rename
+ * @property {string} [name]              - The file name to upload
+ * @property {string} [dirId]             - The dirId to upload the file to
+ * @property {object} [metadata]          - An object containing the metadata to attach
+ * @property {string} [contentType]       - The file Content-Type
+ * @property {string} [conflictStrategy]  - Erase / rename
  */
 
 /**
@@ -461,10 +462,12 @@ export const generateFileNameForRevision = (file, revision, f) => {
  * 409 conflict, we will get a SPDY_ERROR_PROTOCOL on Chrome. This is the only
  * viable workaround
  * If there is no conflict, then we upload the file.
- * If there is a conflict, then we apply the conflict strategy : `erase` or `rename`
+ * If there is a conflict, then we apply the conflict strategy : `erase` or `rename`:
+ *   - The `erase` strategy means an upload with a new version
+ *   - The `rename` strategy means a new upload with a new name
  *
- * @param {CozyClient} client - The CozyClient instance
- * @param {string|ArrayBuffer} file Can be the file path (file://) or the binary itself
+ * @param {CozyClient} client         - The CozyClient instance
+ * @param {string|ArrayBuffer} file   - Can be the file path (file://) or the binary itself
  * @param {FileUploadOptions} options - The upload options
  */
 export const uploadFileWithConflictStrategy = async (client, file, options) => {
@@ -507,7 +510,7 @@ export const uploadFileWithConflictStrategy = async (client, file, options) => {
  * @param {string} fileURL - The local file path (file://)
  */
 export const readMobileFile = async fileURL => {
-  /** Cordova plugin doesn't support promise since there are supporting Android 4.X.X
+  /** Cordova plugin doesn't support promise since they are supporting Android 4.X.X
    * so we have to create manually a promise to be able to write beautiful code ;)
    */
 
@@ -549,8 +552,8 @@ export const readMobileFile = async fileURL => {
 /**
  * Upload a file on a mobile
  *
- * @param {CozyClient} client - The CozyClient instance
- * @param {string} fileURL - The local file path (file://)
+ * @param {CozyClient} client         - The CozyClient instance
+ * @param {string} fileURL            - The local file path (file://)
  * @param {FileUploadOptions} options - The upload options
  */
 export const doMobileUpload = async (client, fileURL, options) => {
