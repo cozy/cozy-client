@@ -518,6 +518,7 @@ class DocumentCollection {
     }
     if (indexName) {
       indexDef.ddoc = indexName
+      indexDef.name = indexName
     }
     if (partialFilter) {
       indexDef.index.partial_filter_selector = partialFilter

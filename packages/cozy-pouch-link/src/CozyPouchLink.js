@@ -432,7 +432,9 @@ class PouchLink extends CozyLink {
       const index = await db.createIndex({
         index: {
           fields
-        }
+        },
+        ddoc: `${name}`,
+        name: `${name}`
       })
       this.indexes[absName] = index
       return index

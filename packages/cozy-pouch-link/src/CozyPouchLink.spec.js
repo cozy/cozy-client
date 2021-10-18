@@ -588,7 +588,11 @@ describe('CozyPouchLink', () => {
         .where({})
         .sortBy([{ name: 'asc' }])
       await link.request(query)
-      expect(spy).toHaveBeenCalledWith({ index: { fields: ['name'] } })
+      expect(spy).toHaveBeenCalledWith({
+        index: { fields: ['name'] },
+        ddoc: 'by_name',
+        name: 'by_name'
+      })
     })
 
     it('uses indexFields if provided', async () => {
@@ -597,7 +601,11 @@ describe('CozyPouchLink', () => {
       link.ensureIndex(TODO_DOCTYPE, {
         indexedFields: ['myIndex']
       })
-      expect(spy).toHaveBeenCalledWith({ index: { fields: ['myIndex'] } })
+      expect(spy).toHaveBeenCalledWith({
+        index: { fields: ['myIndex'] },
+        ddoc: 'by_myIndex',
+        name: 'by_myIndex'
+      })
     })
 
     it('uses the specified index', async () => {
