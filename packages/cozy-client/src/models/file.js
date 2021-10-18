@@ -415,15 +415,15 @@ export const overrideFileForPath = async (client, dirPath, file, metadata) => {
  */
 export const generateNewFileNameOnConflict = filenameWithoutExtension => {
   //Check if the string ends by _1
-  const regex = new RegExp('(_)([0-9]+)$')
+  const regex = new RegExp('(?<=_)([0-9]+)$') // See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Assertions#other_assertions
   const matches = filenameWithoutExtension.match(regex)
   if (matches) {
-    let versionNumber = parseInt(matches[2])
+    let versionNumber = parseInt(matches[1])
     //increment versionNumber
     versionNumber++
     const newFilenameWithoutExtension = filenameWithoutExtension.replace(
-      new RegExp('(_)([0-9]+)$'),
-      `_${versionNumber}`
+      regex,
+      `${versionNumber}`
     )
     return newFilenameWithoutExtension
   } else {
