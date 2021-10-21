@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [25.0.3](https://github.com/cozy/cozy-client/compare/v25.0.2...v25.0.3) (2021-10-21)
+
+
+### Bug Fixes
+
+* Add id in CozyClientDocument for RealTime ([5e242d6](https://github.com/cozy/cozy-client/commit/5e242d6d5fcb34e9f09c8b5661133b63aa35f93e))
+
+
+
+
+
 ## [25.0.2](https://github.com/cozy/cozy-client/compare/v25.0.1...v25.0.2) (2021-10-14)
 
 **Note:** Version bump only for package cozy-client
