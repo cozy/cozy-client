@@ -474,7 +474,9 @@ class PouchLink extends CozyLink {
       const findOpts = {
         sort,
         selector: mergedSelector,
-        fields,
+        // same selector as Document Collection. We force _id.
+        // Fix https://github.com/cozy/cozy-client/issues/985
+        fields: fields ? [...fields, '_id', '_type', 'class'] : undefined,
         limit,
         skip
       }
