@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [25.0.5](https://github.com/cozy/cozy-client/compare/v25.0.4...v25.0.5) (2021-10-25)
+
+
+### Bug Fixes
+
+* References routes do not return content ([2d34058](https://github.com/cozy/cozy-client/commit/2d340580ba00aac9d20d8b856c12abac998270e2))
+
+
+
+
+
 ## [25.0.2](https://github.com/cozy/cozy-client/compare/v25.0.1...v25.0.2) (2021-10-14)
 
 **Note:** Version bump only for package cozy-stack-client
