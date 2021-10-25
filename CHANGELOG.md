@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [25.0.4](https://github.com/cozy/cozy-client/compare/v25.0.3...v25.0.4) (2021-10-25)
+
+
+### Bug Fixes
+
+* Allow 401 errors for expired tokens ([cdd785d](https://github.com/cozy/cozy-client/commit/cdd785d93015ac8ec2a37e4b80fa77482d788ccf))
+
+
+
+
+
 ## [25.0.3](https://github.com/cozy/cozy-client/compare/v25.0.2...v25.0.3) (2021-10-21)
 
 
