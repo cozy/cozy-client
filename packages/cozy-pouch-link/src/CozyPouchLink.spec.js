@@ -317,6 +317,26 @@ describe('CozyPouchLink', () => {
         expectedMergedSelector
       )
     })
+
+    it("should add _id in the selected fields since CozyClient' store needs it", async () => {
+      find.mockReturnValue({ docs: [TODO_3, TODO_4] })
+      await setup()
+      link.pouches.isSynced = jest.fn().mockReturnValue(true)
+      const db = link.getPouch(TODO_DOCTYPE)
+      await db.bulkDocs(docs.map(x => omit(x, '_type')))
+      const query = Q(TODO_DOCTYPE)
+        .where({ label: { $gt: null }, done: true })
+        .indexFields(['done', 'label'])
+        .sortBy([{ done: 'asc' }, { label: 'asc' }])
+        .select(['label'])
+      await link.request(query)
+      expect(find).toHaveBeenLastCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          fields: ['label', '_id', '_type', 'class']
+        })
+      )
+    })
   })
 
   describe('mutations', () => {
