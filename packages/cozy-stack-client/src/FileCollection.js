@@ -254,14 +254,11 @@ class FileCollection extends DocumentCollection {
    */
   async addReferencesTo(document, documents) {
     const refs = documents.map(d => ({ id: d._id, type: 'io.cozy.files' }))
-    const resp = await this.stackClient.fetchJSON(
+    return this.stackClient.fetchJSON(
       'POST',
       uri`/data/${document._type}/${document._id}/relationships/references`,
       { data: refs }
     )
-    return {
-      data: normalizeReferences(resp.data)
-    }
   }
 
   /**
@@ -278,14 +275,11 @@ class FileCollection extends DocumentCollection {
    */
   async removeReferencesTo(document, documents) {
     const refs = documents.map(d => ({ id: d._id, type: 'io.cozy.files' }))
-    const resp = await this.stackClient.fetchJSON(
+    return this.stackClient.fetchJSON(
       'DELETE',
       uri`/data/${document._type}/${document._id}/relationships/references`,
       { data: refs }
     )
-    return {
-      data: normalizeReferences(resp.data)
-    }
   }
 
   /**
