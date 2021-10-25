@@ -386,6 +386,43 @@ describe('FileCollection', () => {
     })
   })
 
+  describe('referencesTo', () => {
+    const client = new CozyStackClient()
+    const collection = new FileCollection('io.cozy.files', client)
+
+    beforeEach(() => {
+      client.fetchJSON.mockReturnValue({})
+    })
+
+    const file = {
+      _type: 'io.cozy.files',
+      _id: '123'
+    }
+    const refs = [
+      {
+        _id: '456',
+        name: 'Greatest album'
+      }
+    ]
+
+    it('should add a reference', async () => {
+      await collection.addReferencesTo(file, refs)
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/data/io.cozy.files/123/relationships/references',
+        { data: [{ id: '456', type: 'io.cozy.files' }] }
+      )
+    })
+    it('should remove a reference', async () => {
+      await collection.removeReferencesTo(file, refs)
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'DELETE',
+        '/data/io.cozy.files/123/relationships/references',
+        { data: [{ id: '456', type: 'io.cozy.files' }] }
+      )
+    })
+  })
+
   describe('updateAttributes', () => {
     beforeEach(() => {
       client.fetchJSON.mockReturnValue({ data: [] })
