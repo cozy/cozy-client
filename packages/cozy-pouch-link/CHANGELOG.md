@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [25.1.0](https://github.com/cozy/cozy-client/compare/v25.0.5...v25.1.0) (2021-10-26)
+
+
+### Features
+
+* Add at least _id when selecting fields ([0c50670](https://github.com/cozy/cozy-client/commit/0c50670753cd7f2cd369bff3c78d48980f32d563)), closes [#985](https://github.com/cozy/cozy-client/issues/985)
+
+
+
+
+
 ## [25.0.5](https://github.com/cozy/cozy-client/compare/v25.0.4...v25.0.5) (2021-10-25)
 
 **Note:** Version bump only for package cozy-pouch-link
