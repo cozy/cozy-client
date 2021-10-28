@@ -1,6 +1,11 @@
 {
   "qualifications": [
     {
+      "label": "identity_photo",
+      "purpose": "attestation",
+      "subjects": ["identity"]
+    },
+    {
       "label": "national_id_card",
       "purpose": "attestation",
       "sourceCategory": "gov",
@@ -145,29 +150,35 @@
     },
     {
       "label": "health_book",
-      "purpose": "report",
+      "purpose": "attestation",
       "sourceCategory": "health",
-      "subjects": ["history"]
+      "subjects": ["identity", "capacity", "vaccine"]
     },
     {
-      "label": "national_insurance_card",
+      "label": "health_certificate",
+      "purpose": "attestation",
+      "sourceCategory": "health",
+      "subjects": ["identity", "capacity", "vaccine"]
+    },
+    {
+      "label": "national_health_insurance_card",
       "purpose": "attestation",
       "sourceCategory": "gov",
       "sourceSubCategory": "health",
-      "subjects": ["insurance"]
+      "subjects": ["identity", "insurance"]
     },
     {
       "label": "health_insurance_card",
       "purpose": "attestation",
       "sourceCategory": "insurance",
       "sourceSubCategory": "health",
-      "subjects": ["insurance"]
+      "subjects": ["identity", "insurance"]
     },
     {
       "label": "prescription",
       "purpose": "attestation",
       "sourceCategory": "health",
-      "subjects": ["right"]
+      "subjects": ["identity", "right", "medecine"]
     },
     {
       "label": "health_invoice",
@@ -366,14 +377,14 @@
     "real_estate", "web"
   ],
   "sourceSubCategoryKnownValues": [
-    "civil_registration", "immigration", "transport", "family", "tax", "health", 
+    "civil_registration", "immigration", "transport", "family", "tax", "health",
     "real_estate", "mobile", "internet"
   ],
   "subjectsKnownValues": [
     "identity", "permit", "family", "driving", "right", "subvention", "achievement",
     "degree", "work", "employment", "revenues", "history", "insurance", "drugs",
     "medical_act", "car", "moto", "truck", "boat", "subscription", "buy/sale",
-    "house", "compliance", "building", "food", "real_estate", "tax", "insurance",
-    "education", "statement", "course", "internet", "phone"
+    "house", "compliance", "building", "food", "real_estate", "tax",
+    "education", "statement", "course", "internet", "phone", "vaccine", "capacity"
   ]
 }
