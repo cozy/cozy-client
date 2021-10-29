@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [26.0.0](https://github.com/cozy/cozy-client/compare/v25.1.0...v26.0.0) (2021-10-29)
+
+
+### Features
+
+* Update & added qualification labels ([4bcf889](https://github.com/cozy/cozy-client/commit/4bcf889054ab3bf58c24d92ad179f94aad6d3d20))
+
+
+### BREAKING CHANGES
+
+* Renamed label `national_insurance_card`
+to `national_health_insurance_card`.
+
+Replace `Qualification.getByLabel('national_insurance_card')` to
+`Qualification.getByLabel('national_health_insurance_card')`
+if necessary
+
+Please update your `cozy-scanner` to `2.0.0` version
+to be synchronized with the right translations
+
+
+
+
+
 ## [25.0.5](https://github.com/cozy/cozy-client/compare/v25.0.4...v25.0.5) (2021-10-25)
 
 **Note:** Version bump only for package cozy-client
