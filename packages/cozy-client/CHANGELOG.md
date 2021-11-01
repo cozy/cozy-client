@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [26.0.2](https://github.com/cozy/cozy-client/compare/v26.0.1...v26.0.2) (2021-11-01)
+
+
+### Bug Fixes
+
+* Use regex supported by Safari ([1497318](https://github.com/cozy/cozy-client/commit/149731833c1830f4091f9361d717413caac4e664))
+
+
+
+
+
 ## [26.0.1](https://github.com/cozy/cozy-client/compare/v26.0.0...v26.0.1) (2021-10-30)
 
 **Note:** Version bump only for package cozy-client
