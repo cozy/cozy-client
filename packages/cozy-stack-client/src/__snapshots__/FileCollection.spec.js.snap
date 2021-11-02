@@ -101,6 +101,10 @@ exports[`FileCollection referencedBy should add a reference 1`] = `
             "type": "io.cozy.files",
           },
         ],
+        "meta": Object {
+          "count": 1,
+          "rev": "2-xxx",
+        },
       },
     },
   ],
@@ -133,6 +137,10 @@ exports[`FileCollection referencedBy should remove a reference 1`] = `
             "type": "io.cozy.files",
           },
         ],
+        "meta": Object {
+          "count": 1,
+          "rev": "2-xxx",
+        },
       },
     },
   ],

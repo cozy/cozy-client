@@ -171,7 +171,7 @@ class FileCollection extends DocumentCollection {
    * @param  {number} options.skip    For skip-based pagination, the number of referenced files to skip.
    * @param  {number} options.limit   For pagination, the number of results to return.
    * @param  {object} options.cursor  For cursor-based pagination, the index cursor.
-   * @returns {object}                The JSON API conformant response.
+   * @returns {{data, included, meta, skip, next, bookmark}} The JSON API conformant response.
    */
   async findReferencedBy(document, { skip = 0, limit, cursor } = {}) {
     const params = {
@@ -200,9 +200,9 @@ class FileCollection extends DocumentCollection {
    * addReferencedBy({_id: 123, _type: "io.cozy.files", name: "cozy.jpg"}, [{_id: 456, _type: "io.cozy.photos.albums", name: "Happy Cloud"}])
    * ```
    *
-   * @param  {FileDocument} document        A JSON representing the file
+   * @param  {FileDocument} document  A JSON representing the file
    * @param  {Array}  documents       An array of JSON documents having a `_type` and `_id` field.
-   * @returns {object}                The JSON API conformant response.
+   * @returns {{data, meta}}          The JSON API conformant response.
    */
   async addReferencedBy(document, documents) {
     const refs = documents.map(d => ({ id: d._id, type: d._type }))
@@ -212,7 +212,8 @@ class FileCollection extends DocumentCollection {
       { data: refs }
     )
     return {
-      data: normalizeReferences(resp.data)
+      data: normalizeReferences(resp.data),
+      meta: resp.meta
     }
   }
 
@@ -226,7 +227,7 @@ class FileCollection extends DocumentCollection {
    *
    * @param  {object} document        A JSON representing the file
    * @param  {Array}  documents       An array of JSON documents having a `_type` and `_id` field.
-   * @returns {object}                The JSON API conformant response.
+   * @returns {{data, meta}}          The JSON API conformant response.
    */
   async removeReferencedBy(document, documents) {
     const refs = documents.map(d => ({ id: d._id, type: d._type }))
@@ -236,7 +237,8 @@ class FileCollection extends DocumentCollection {
       { data: refs }
     )
     return {
-      data: normalizeReferences(resp.data)
+      data: normalizeReferences(resp.data),
+      meta: resp.meta
     }
   }
 
@@ -250,7 +252,7 @@ class FileCollection extends DocumentCollection {
    *
    * @param  {object} document        A JSON representing a document, with at least a `_type` and `_id` field.
    * @param  {Array}  documents       An array of JSON files having an `_id` field.
-   * @returns {object}                The JSON API conformant response.
+   * @returns 204 No Content
    */
   async addReferencesTo(document, documents) {
     const refs = documents.map(d => ({ id: d._id, type: 'io.cozy.files' }))
@@ -271,7 +273,7 @@ class FileCollection extends DocumentCollection {
    *
    * @param  {object} document        A JSON representing a document, with at least a `_type` and `_id` field.
    * @param  {Array}  documents       An array of JSON files having an `_id` field.
-   * @returns {object}                The JSON API conformant response.
+   * @returns 204 No Content
    */
   async removeReferencesTo(document, documents) {
     const refs = documents.map(d => ({ id: d._id, type: 'io.cozy.files' }))

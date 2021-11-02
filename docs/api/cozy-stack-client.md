@@ -510,11 +510,11 @@ files associated to a specific document
     * [.forceFileDownload](#FileCollection+forceFileDownload)
     * [.get(id)](#FileCollection+get) ⇒ <code>Object</code>
     * [.find(selector, options)](#FileCollection+find) ⇒ <code>Object</code>
-    * [.findReferencedBy(document, options)](#FileCollection+findReferencedBy) ⇒ <code>object</code>
-    * [.addReferencedBy(document, documents)](#FileCollection+addReferencedBy) ⇒ <code>object</code>
-    * [.removeReferencedBy(document, documents)](#FileCollection+removeReferencedBy) ⇒ <code>object</code>
-    * [.addReferencesTo(document, documents)](#FileCollection+addReferencesTo) ⇒ <code>object</code>
-    * [.removeReferencesTo(document, documents)](#FileCollection+removeReferencesTo) ⇒ <code>object</code>
+    * [.findReferencedBy(document, options)](#FileCollection+findReferencedBy) ⇒ <code>Object</code>
+    * [.addReferencedBy(document, documents)](#FileCollection+addReferencedBy) ⇒ <code>Object</code>
+    * [.removeReferencedBy(document, documents)](#FileCollection+removeReferencedBy) ⇒ <code>Object</code>
+    * [.addReferencesTo(document, documents)](#FileCollection+addReferencesTo) ⇒
+    * [.removeReferencesTo(document, documents)](#FileCollection+removeReferencesTo) ⇒
     * [.destroy(file)](#FileCollection+destroy) ⇒ <code>Promise</code>
     * [.emptyTrash()](#FileCollection+emptyTrash)
     * [.restore(id)](#FileCollection+restore) ⇒ <code>Promise</code>
@@ -581,11 +581,11 @@ The returned documents are paginated by the stack.
 
 <a name="FileCollection+findReferencedBy"></a>
 
-### fileCollection.findReferencedBy(document, options) ⇒ <code>object</code>
+### fileCollection.findReferencedBy(document, options) ⇒ <code>Object</code>
 async findReferencedBy - Returns the list of files referenced by a document — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
-**Returns**: <code>object</code> - The JSON API conformant response.  
+**Returns**: <code>Object</code> - The JSON API conformant response.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -597,7 +597,7 @@ async findReferencedBy - Returns the list of files referenced by a document — 
 
 <a name="FileCollection+addReferencedBy"></a>
 
-### fileCollection.addReferencedBy(document, documents) ⇒ <code>object</code>
+### fileCollection.addReferencedBy(document, documents) ⇒ <code>Object</code>
 Add referenced_by documents to a file — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#post-filesfile-idrelationshipsreferenced_by
 
  For example, to have an album referenced by a file:
@@ -606,7 +606,7 @@ addReferencedBy({_id: 123, _type: "io.cozy.files", name: "cozy.jpg"}, [{_id: 456
 ```
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
-**Returns**: <code>object</code> - The JSON API conformant response.  
+**Returns**: <code>Object</code> - The JSON API conformant response.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -615,7 +615,7 @@ addReferencedBy({_id: 123, _type: "io.cozy.files", name: "cozy.jpg"}, [{_id: 456
 
 <a name="FileCollection+removeReferencedBy"></a>
 
-### fileCollection.removeReferencedBy(document, documents) ⇒ <code>object</code>
+### fileCollection.removeReferencedBy(document, documents) ⇒ <code>Object</code>
 Remove referenced_by documents from a file — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#delete-filesfile-idrelationshipsreferenced_by
 
  For example, to remove an album reference from a file:
@@ -624,7 +624,7 @@ Remove referenced_by documents from a file — see https://docs.cozy.io/en/cozy-
 ```
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
-**Returns**: <code>object</code> - The JSON API conformant response.  
+**Returns**: <code>Object</code> - The JSON API conformant response.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -633,7 +633,7 @@ Remove referenced_by documents from a file — see https://docs.cozy.io/en/cozy-
 
 <a name="FileCollection+addReferencesTo"></a>
 
-### fileCollection.addReferencesTo(document, documents) ⇒ <code>object</code>
+### fileCollection.addReferencesTo(document, documents) ⇒
 Add files references to a document — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#post-datatypedoc-idrelationshipsreferences
 
  For example, to add a photo to an album:
@@ -642,7 +642,7 @@ Add files references to a document — see https://docs.cozy.io/en/cozy-stack/re
 ```
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
-**Returns**: <code>object</code> - The JSON API conformant response.  
+**Returns**: 204 No Content  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -651,7 +651,7 @@ Add files references to a document — see https://docs.cozy.io/en/cozy-stack/re
 
 <a name="FileCollection+removeReferencesTo"></a>
 
-### fileCollection.removeReferencesTo(document, documents) ⇒ <code>object</code>
+### fileCollection.removeReferencesTo(document, documents) ⇒
 Remove files references to a document — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#delete-datatypedoc-idrelationshipsreferences
 
  For example, to remove a photo from an album:
@@ -660,7 +660,7 @@ Remove files references to a document — see https://docs.cozy.io/en/cozy-stack
 ```
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
-**Returns**: <code>object</code> - The JSON API conformant response.  
+**Returns**: 204 No Content  
 
 | Param | Type | Description |
 | --- | --- | --- |
