@@ -67,7 +67,7 @@ describe('FileCollection', () => {
       })
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
-        '/files/42?page[limit]=200&page[skip]=50&page[cursor]=abc123'
+        '/files/42?page%5Blimit%5D=200&page%5Bskip%5D=50&page%5Bcursor%5D=abc123'
       )
     })
 

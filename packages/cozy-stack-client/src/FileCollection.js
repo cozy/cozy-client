@@ -2,9 +2,10 @@ import mime from 'mime/lite'
 import has from 'lodash/has'
 import get from 'lodash/get'
 import pick from 'lodash/pick'
+import pickBy from 'lodash/pickBy'
+
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 import { uri, slugify, formatBytes } from './utils'
-import * as querystring from './querystring'
 import { FetchError } from './errors'
 import { dontThrowNotFoundError } from './Collection'
 
@@ -100,6 +101,13 @@ const dirName = path => {
   return path.substring(0, lastIndex)
 }
 
+const buildURL = (path, params) => {
+  const urlParams = new URLSearchParams(pickBy(params))
+  const stringParams = urlParams.toString()
+
+  return stringParams ? `${path}?${stringParams}` : path
+}
+
 /**
  * Implements `DocumentCollection` API along with specific methods for
  * `io.cozy.files`.
@@ -182,9 +190,9 @@ class FileCollection extends DocumentCollection {
       'page[cursor]': cursor,
       sort: 'datetime'
     }
-    const url = uri`/data/${document._type}/${document._id}/relationships/references`
-    const path = querystring.buildURL(url, params)
-    const resp = await this.stackClient.fetchJSON('GET', path)
+    const path = uri`/data/${document._type}/${document._id}/relationships/references`
+    const url = buildURL(path, params)
+    const resp = await this.stackClient.fetchJSON('GET', url)
     return {
       data: normalizeReferences(resp.data),
       included: resp.included ? resp.included.map(f => normalizeFile(f)) : [],
@@ -664,9 +672,9 @@ class FileCollection extends DocumentCollection {
 
   async statById(id, options = {}) {
     const params = pick(options, ['page[limit]', 'page[skip]', 'page[cursor]'])
-    const url = uri`/files/${id}`
-    const path = querystring.buildURL(url, params)
-    const resp = await this.stackClient.fetchJSON('GET', path)
+    const path = uri`/files/${id}`
+    const url = buildURL(path, params)
+    const resp = await this.stackClient.fetchJSON('GET', url)
     return {
       data: normalizeFile(resp.data),
       included: resp.included && resp.included.map(f => normalizeFile(f)),
@@ -968,9 +976,9 @@ class FileCollection extends DocumentCollection {
       'page[cursor]': cursor,
       sort: 'id'
     }
-    const url = uri`/data/${oauthClient._type}/${oauthClient._id}/relationships/not_synchronizing`
-    const path = querystring.buildURL(url, params)
-    const resp = await this.stackClient.fetchJSON('GET', path)
+    const path = uri`/data/${oauthClient._type}/${oauthClient._id}/relationships/not_synchronizing`
+    const url = buildURL(path, params)
+    const resp = await this.stackClient.fetchJSON('GET', url)
     return {
       data: resp.data.map(f => normalizeFile(f)),
       included: resp.included ? resp.included.map(f => normalizeFile(f)) : [],
