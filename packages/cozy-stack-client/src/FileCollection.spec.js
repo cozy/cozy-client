@@ -1238,4 +1238,189 @@ describe('FileCollection', () => {
       expect(spy).toMatchSnapshot()
     })
   })
+
+  describe('fetchChanges', () => {
+    const collection = new FileCollection('io.cozy.files', client)
+    const defaultCouchOptions = { since: 'my-seq' }
+    beforeEach(() => {
+      client.fetchJSON.mockReturnValueOnce(
+        Promise.resolve({
+          last_seq: 'new-seq',
+          pending: false,
+          results: [
+            {
+              doc: {
+                _id: '1',
+                type: 'directory',
+                name: 'bills',
+                dir_id: 'io.cozy.files.root-dir',
+                created_at: '2016-11-25T16:07:45.398867198+01:00',
+                updated_at: '2016-11-25T16:07:45.398867198+01:00',
+                tags: []
+              }
+            },
+            { doc: null },
+            { doc: { _id: '_design/view' } },
+            {
+              doc: {
+                _id: '2',
+                type: 'file',
+                name: 'first-month.pdf',
+                dir_id: '1',
+                created_at: '2016-11-25T16:07:45.398867198+01:00',
+                updated_at: '2016-11-25T16:07:45.398867198+01:00',
+                tags: []
+              }
+            }
+          ]
+        })
+      )
+    })
+
+    it('should call the right route without parameters', async () => {
+      await collection.fetchChanges()
+      expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/files/_changes')
+    })
+
+    it('should call the right route with deprecated parameter', async () => {
+      jest.spyOn(console, 'warn').mockImplementation(() => {})
+      await collection.fetchChanges('my-seq')
+      console.warn.mockRestore()
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/files/_changes?since=my-seq'
+      )
+    })
+
+    it('should call the right route with current parameters', async () => {
+      await collection.fetchChanges({ limit: 100 })
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/files/_changes?limit=100'
+      )
+    })
+
+    it('should  be possible to call fetchChanges with includeDocs false', async () => {
+      client.fetchJSON = jest.fn().mockReturnValue(
+        Promise.resolve({
+          last_seq: '5-xxx',
+          pending: 0,
+          results: [
+            {
+              changes: [
+                {
+                  rev: '2-7051cbe5c8faecd085a3fa619e6e6337'
+                }
+              ],
+              id: '6478c2ae800dfc387396d14e1fc39626',
+              seq: '3-xxx'
+            },
+            {
+              changes: [
+                {
+                  rev: '3-7379b9e515b161226c6559d90c4dc49f'
+                }
+              ],
+              deleted: true,
+              id: '5bbc9ca465f1b0fcd62362168a7c8831',
+              seq: '4-xxx'
+            },
+            {
+              changes: [
+                {
+                  rev: '6-460637e73a6288cb24d532bf91f32969'
+                },
+                {
+                  rev: '5-eeaa298781f60b7bcae0c91bdedd1b87'
+                }
+              ],
+              id: '729eb57437745e506b333068fff665ae',
+              seq: '5-xxx'
+            }
+          ]
+        })
+      )
+      const changes = await collection.fetchChanges({ includeDocs: false })
+
+      expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/files/_changes')
+
+      expect(changes).toEqual({
+        pending: 0,
+        newLastSeq: '5-xxx',
+        results: [
+          {
+            changes: [
+              {
+                rev: '2-7051cbe5c8faecd085a3fa619e6e6337'
+              }
+            ],
+            id: '6478c2ae800dfc387396d14e1fc39626',
+            seq: '3-xxx'
+          },
+          {
+            changes: [
+              {
+                rev: '3-7379b9e515b161226c6559d90c4dc49f'
+              }
+            ],
+            deleted: true,
+            id: '5bbc9ca465f1b0fcd62362168a7c8831',
+            seq: '4-xxx'
+          },
+          {
+            changes: [
+              {
+                rev: '6-460637e73a6288cb24d532bf91f32969'
+              },
+              {
+                rev: '5-eeaa298781f60b7bcae0c91bdedd1b87'
+              }
+            ],
+            id: '729eb57437745e506b333068fff665ae',
+            seq: '5-xxx'
+          }
+        ]
+      })
+    })
+
+    it('should support fields option', async () => {
+      await collection.fetchChanges(defaultCouchOptions, {
+        fields: ['_id', 'name']
+      })
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        `/files/_changes?since=my-seq&fields=${encodeURIComponent('_id,name')}`
+      )
+    })
+
+    it('should support includeFilePath option', async () => {
+      await collection.fetchChanges(defaultCouchOptions, {
+        includeFilePath: true
+      })
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/files/_changes?since=my-seq&include_docs=true&include_file_path=true'
+      )
+    })
+
+    it('should support skipDeleted option', async () => {
+      await collection.fetchChanges(defaultCouchOptions, {
+        skipDeleted: true
+      })
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/files/_changes?since=my-seq&skip_deleted=true'
+      )
+    })
+
+    it('should support skipTrashed option', async () => {
+      await collection.fetchChanges(defaultCouchOptions, {
+        skipTrashed: true
+      })
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/files/_changes?since=my-seq&include_docs=true&skip_trashed=true'
+      )
+    })
+  })
 })

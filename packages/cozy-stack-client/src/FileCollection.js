@@ -1,6 +1,7 @@
 import mime from 'mime/lite'
 import has from 'lodash/has'
 import get from 'lodash/get'
+import omit from 'lodash/omit'
 import pick from 'lodash/pick'
 import pickBy from 'lodash/pickBy'
 
@@ -1028,6 +1029,85 @@ class FileCollection extends DocumentCollection {
       uri`/data/${oauthClient._type}/${oauthClient._id}/relationships/not_synchronizing`,
       { data: refs }
     )
+  }
+
+  /**
+   * Use cozy-stack's _changes API for io.cozy.files
+   * Design docs are filtered by default, thus documents are retrieved in the
+   * response (includeDocs is set to true in the parameters of _changes).
+   * Deleted and trashed documents can be filtered on demand and files' paths
+   * can be requested as well.
+   *
+   * Since deleted and trashed documents are skipped by cozy-stack rather than
+   * CouchDB, when either option is set to true, the response can contain less
+   * documents than the defined limit. Thus one should rely solely on the
+   * `pending` result attribute to determine if more documents can be fetched or
+   * not.
+   *
+   * You should use fetchChangesRaw to call CouchDB's _changes API.
+   *
+   * @typedef {object} CouchOptions
+   * @property {string} since - Bookmark telling CouchDB from which point in time should changes be returned
+   * @property {number} limit - The maximum number of returned documents for one call
+   * @property {boolean} includeDocs - Whether or not complete documents should be returned
+   *
+   * @typedef {object} FetchChangesOptions
+   * @property {Array<string>} fields - The list of fields that should be returned for each document
+   * @property {boolean} includeFilePath - Whether to include the path of file changes (needs includeDocs to be true)
+   * @property {boolean} skipDeleted - Whether to skip changes for deleted documents
+   * @property {boolean} skipTrashed - Whether to skip changes for trashed documents (needs includeDocs to be true)
+   *
+   * @param  {CouchOptions} couchOptions - Couch options for changes
+   * @param  {FetchChangesOptions} options - Further options on the returned documents. By default, it is set to
+   *                                        { includeFilePath: false, skipDeleted: false, skipTrashed: false }
+   *
+   * @typedef {object} FetchChangesReturnValue
+   * @property {string} newLastSeq
+   * @property {boolean} pending
+   * @property {Array<object>} documents
+   * @returns {FetchChangesReturnValue}
+   */
+  async fetchChanges(couchOptions = {}, options = {}) {
+    let opts = {}
+    if (typeof couchOptions !== 'object') {
+      opts.since = couchOptions
+      console.warn(
+        `fetchChanges use couchOptions as Object not a string, since is deprecated, please use fetchChanges({since: "${couchOptions}"}).`
+      )
+    } else if (Object.keys(couchOptions).length > 0) {
+      Object.assign(opts, couchOptions)
+    }
+    if (Object.keys(options).length > 0) {
+      Object.assign(opts, options)
+
+      if (options.skipTrashed || options.includeFilePath) {
+        opts.includeDocs = true
+      }
+    }
+
+    const params = {
+      ...omit(opts, [
+        'fields',
+        'includeDocs',
+        'includeFilePath',
+        'skipDeleted',
+        'skipTrashed'
+      ]),
+      fields: opts.fields ? opts.fields.join(',') : null,
+      include_docs: opts.includeDocs,
+      include_file_path: opts.includeFilePath,
+      skip_deleted: opts.skipDeleted,
+      skip_trashed: opts.skipTrashed
+    }
+    const path = uri`/files/_changes`
+    const url = buildURL(path, params)
+    const {
+      last_seq: newLastSeq,
+      pending,
+      results
+    } = await this.stackClient.fetchJSON('GET', url)
+
+    return { newLastSeq, pending, results }
   }
 }
 
