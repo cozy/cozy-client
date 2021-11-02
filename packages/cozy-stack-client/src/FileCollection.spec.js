@@ -353,7 +353,8 @@ describe('FileCollection', () => {
     beforeEach(() => {
       spy.mockClear()
       spy.mockReturnValue({
-        data: [{ id: '123', type: 'io.cozy.files' }]
+        data: [{ id: '123', type: 'io.cozy.files' }],
+        meta: { rev: '2-xxx', count: 1 }
       })
     })
 
@@ -371,6 +372,7 @@ describe('FileCollection', () => {
       ]
       const res = await collection.addReferencedBy(file, refs)
       expect(res.data).toEqual([file])
+      expect(res.meta).not.toBeNull()
       expect(spy).toMatchSnapshot()
     })
     it('should remove a reference', async () => {
@@ -382,6 +384,7 @@ describe('FileCollection', () => {
       ]
       const res = await collection.removeReferencedBy(file, refs)
       expect(res.data).toEqual([file])
+      expect(res.meta).not.toBeNull()
       expect(spy).toMatchSnapshot()
     })
   })
