@@ -157,6 +157,19 @@ Deleted and design docs are filtered by default, thus documents are retrieved in
 <dt><a href="#OAuthClient">OAuthClient</a> : <code>object</code></dt>
 <dd><p>Document representing a io.cozy.oauth.clients</p>
 </dd>
+<dt><a href="#FetchChangesReturnValue">FetchChangesReturnValue</a> ⇒ <code><a href="#FetchChangesReturnValue">FetchChangesReturnValue</a></code></dt>
+<dd><p>Use cozy-stack&#39;s _changes API for io.cozy.files
+Design docs are filtered by default, thus documents are retrieved in the
+response (includeDocs is set to true in the parameters of _changes).
+Deleted and trashed documents can be filtered on demand and files&#39; paths
+can be requested as well.</p>
+<p>Since deleted and trashed documents are skipped by cozy-stack rather than
+CouchDB, when either option is set to true, the response can contain less
+documents than the defined limit. Thus one should rely solely on the
+<code>pending</code> result attribute to determine if more documents can be fetched or
+not.</p>
+<p>You should use fetchChangesRaw to call CouchDB&#39;s _changes API.</p>
+</dd>
 <dt><a href="#JobDocument">JobDocument</a> : <code>object</code></dt>
 <dd><p>Document representing a io.cozy.jobs</p>
 </dd>
@@ -2113,6 +2126,45 @@ Updates the OAuth informations
 Reset the current OAuth client
 
 **Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+<a name="FetchChangesReturnValue"></a>
+
+## FetchChangesReturnValue ⇒ [<code>FetchChangesReturnValue</code>](#FetchChangesReturnValue)
+Use cozy-stack's _changes API for io.cozy.files
+Design docs are filtered by default, thus documents are retrieved in the
+response (includeDocs is set to true in the parameters of _changes).
+Deleted and trashed documents can be filtered on demand and files' paths
+can be requested as well.
+
+Since deleted and trashed documents are skipped by cozy-stack rather than
+CouchDB, when either option is set to true, the response can contain less
+documents than the defined limit. Thus one should rely solely on the
+`pending` result attribute to determine if more documents can be fetched or
+not.
+
+You should use fetchChangesRaw to call CouchDB's _changes API.
+
+**Kind**: global typedef  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| couchOptions | <code>CouchOptions</code> | Couch options for changes |
+| options | <code>FetchChangesOptions</code> | Further options on the returned documents. By default, it is set to                                        { includeFilePath: false, skipDeleted: false, skipTrashed: false } |
+
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| since | <code>string</code> | Bookmark telling CouchDB from which point in time should changes be returned |
+| limit | <code>number</code> | The maximum number of returned documents for one call |
+| includeDocs | <code>boolean</code> | Whether or not complete documents should be returned |
+| fields | <code>Array.&lt;string&gt;</code> | The list of fields that should be returned for each document |
+| includeFilePath | <code>boolean</code> | Whether to include the path of file changes (needs includeDocs to be true) |
+| skipDeleted | <code>boolean</code> | Whether to skip changes for deleted documents |
+| skipTrashed | <code>boolean</code> | Whether to skip changes for trashed documents (needs includeDocs to be true) |
+| newLastSeq | <code>string</code> |  |
+| pending | <code>boolean</code> |  |
+| documents | <code>Array.&lt;object&gt;</code> |  |
+
 <a name="JobDocument"></a>
 
 ## JobDocument : <code>object</code>
