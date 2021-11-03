@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.0.0](https://github.com/cozy/cozy-client/compare/v26.0.2...v27.0.0) (2021-11-03)
+
+
+### Bug Fixes
+
+* Normalize referenced_by data into Array ([f2dd095](https://github.com/cozy/cozy-client/commit/f2dd095220116c74afaf06dad730ac40de242c2b))
+* Return meta after file's referenced_by update ([917ebb5](https://github.com/cozy/cozy-client/commit/917ebb576f5d199ba596039285c9f074da79e13b))
+
+
+### BREAKING CHANGES
+
+* Changed returned `data` object value of
+  `FileCollection.findReferencedBy()`,
+  `FileCollection.addReferencedBy()` and
+  `FileCollection.removeReferencedBy()` from `null` to `[]`.
+
+  When a file is not referenced by any document, or we removed the last
+  reference with a call to `FileCollection.removeReferencedBy()`,
+  `cozy-stack` will return a `null` data object instead of an empty
+  Array.
+  To simplify the use of these methods, we'll normalize the response
+  data to make sure it is always an Array.
+
+
+
+
+
 ## [26.0.2](https://github.com/cozy/cozy-client/compare/v26.0.1...v26.0.2) (2021-11-01)
 
 
