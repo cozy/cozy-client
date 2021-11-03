@@ -67,8 +67,15 @@ exports[`FileCollection findReferencedBy should pass all the filters 1`] = `
     Object {
       "type": "return",
       "value": Object {
-        "data": Array [],
-        "meta": Object {},
+        "data": Array [
+          Object {
+            "id": "album-1",
+            "type": "io.cozy.photos.albums",
+          },
+        ],
+        "meta": Object {
+          "count": 1,
+        },
       },
     },
   ],
@@ -97,8 +104,8 @@ exports[`FileCollection referencedBy should add a reference 1`] = `
       "value": Object {
         "data": Array [
           Object {
-            "id": "123",
-            "type": "io.cozy.files",
+            "id": "456",
+            "type": "io.cozy.photos.albums",
           },
         ],
         "meta": Object {
@@ -131,15 +138,10 @@ exports[`FileCollection referencedBy should remove a reference 1`] = `
     Object {
       "type": "return",
       "value": Object {
-        "data": Array [
-          Object {
-            "id": "123",
-            "type": "io.cozy.files",
-          },
-        ],
+        "data": null,
         "meta": Object {
-          "count": 1,
-          "rev": "2-xxx",
+          "count": 0,
+          "rev": "3-xxx",
         },
       },
     },

@@ -58,7 +58,9 @@ const normalizeFile = file => ({
 })
 
 const normalizeReferences = references => {
-  return references.map(ref => ({ _type: ref.type, _id: ref.id }))
+  return references
+    ? references.map(ref => ({ _type: ref.type, _id: ref.id }))
+    : []
 }
 
 const sanitizeFileName = name => name && name.trim()
@@ -184,7 +186,7 @@ class FileCollection extends DocumentCollection {
     const path = querystring.buildURL(url, params)
     const resp = await this.stackClient.fetchJSON('GET', path)
     return {
-      data: resp.data.map(f => normalizeFile(f)),
+      data: normalizeReferences(resp.data),
       included: resp.included ? resp.included.map(f => normalizeFile(f)) : [],
       next: has(resp, 'links.next'),
       meta: resp.meta,
