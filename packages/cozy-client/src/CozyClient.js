@@ -293,6 +293,7 @@ class CozyClient {
    * a client with a cookie-based instance of cozy-client-js.
    *
    * @param {OldCozyClient} oldClient - An instance of the deprecated cozy-client
+   * @param {object} options - CozyStackClient options
    * @returns {CozyClient}
    */
   static fromOldClient(oldClient, options) {
@@ -309,21 +310,26 @@ class CozyClient {
    *
    * Warning: unlike other instantiators, this one needs to be awaited.
    *
-   * @param {OldCozyClient} oldClient - An instance of the deprecated cozy-client
+   * @param {OldCozyClient} oldClient - An OAuth instance of the deprecated cozy-client
+   * @param {object} options - CozyStackClient options
    * @returns {Promise<CozyClient>} An instance of a client, configured from the old client
    */
   static async fromOldOAuthClient(oldClient, options) {
-    const hasOauthCreds = oldClient._oauth && oldClient._authcreds != null
-    if (hasOauthCreds) {
-      const token = (await oldClient._authcreds).token
+    if (oldClient._oauth) {
+      const credentials = await oldClient.authorize()
+      const oauthOptions = {
+        oauth: credentials.client,
+        token: credentials.token,
+        scope: credentials.token.scope
+      }
       return new CozyClient({
         uri: oldClient._url,
-        token,
+        ...oauthOptions,
         ...options
       })
     } else {
       throw new Error(
-        'Old client does not have _oauth or _authcreds, cannot instantiate a new client, check if CozyClient.fromOldClient is more suitable'
+        'Cannot instantiate a new client: old client is not an OAuth client. CozyClient.fromOldClient might be more suitable.'
       )
     }
   }

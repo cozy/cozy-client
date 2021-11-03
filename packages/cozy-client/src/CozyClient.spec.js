@@ -143,17 +143,30 @@ describe('CozyClient initialization', () => {
   it('can be instantiated from an oauth-based old client', async () => {
     // Not using a real cozy-client-js here not to have to add it as a dep
     const url = 'https://testcozy.mycozy.cloud'
-    const token = 'Registration-token'
+    const oauth = {
+      clientID: 'my-client'
+      // ... other OAuth client attributes
+    }
+    const token = {
+      tokenType: 'bearer',
+      accessToken: 'access-token',
+      refreshToken: 'refresh-token',
+      scope: ['io.cozy.files']
+    }
     const oldClient = {
       _url: url,
       _oauth: true,
-      _authcreds: Promise.resolve({
+      authorize: () => ({
+        client: oauth,
         token
       })
     }
     const client = await CozyClient.fromOldOAuthClient(oldClient)
+    console.log({ stackClient: client.stackClient })
     expect(client.stackClient.uri).toBe(url)
-    expect(client.stackClient.token.token).toBe(token)
+    expect(client.stackClient.oauthOptions.clientID).toBe(oauth.clientID)
+    expect(client.stackClient.token.accessToken).toBe(token.accessToken)
+    expect(client.stackClient.scope).toBe(token.scope)
   })
 
   it('can be instantiated from dataset injected by the Stack in DOM', async () => {
