@@ -311,11 +311,15 @@ describe('FileCollection', () => {
       _type: 'io.cozy.files',
       _id: '123'
     }
+    const ref = {
+      type: 'io.cozy.photos.albums',
+      id: 'album-1'
+    }
 
     it('should pass all the filters', () => {
       spy.mockReturnValue({
-        data: [],
-        meta: {}
+        data: [ref],
+        meta: { count: 1 }
       })
       collection.findReferencedBy(doc)
       expect(spy).toMatchSnapshot()
@@ -323,11 +327,11 @@ describe('FileCollection', () => {
 
     it('should detect a next page', async () => {
       spy.mockReturnValue({
-        data: [],
+        data: [ref],
         links: {
           next: 'http://example.com/next'
         },
-        meta: {}
+        meta: { count: 1 }
       })
       const result = await collection.findReferencedBy(doc)
       expect(result.next).toBe(true)
@@ -335,9 +339,9 @@ describe('FileCollection', () => {
 
     it('should detect the abscence of a next page', async () => {
       spy.mockReturnValue({
-        data: [],
+        data: null, // XXX: cozy-stack returns null instead of an empty array
         links: {},
-        meta: {}
+        meta: { count: 0 }
       })
       const result = await collection.findReferencedBy(doc)
       expect(result.next).toBe(false)
@@ -352,38 +356,51 @@ describe('FileCollection', () => {
 
     beforeEach(() => {
       spy.mockClear()
-      spy.mockReturnValue({
-        data: [{ id: '123', type: 'io.cozy.files' }],
-        meta: { rev: '2-xxx', count: 1 }
-      })
     })
 
     const file = {
       _type: 'io.cozy.files',
       _id: '123'
     }
+    const refs = [
+      {
+        _id: '456',
+        _type: 'io.cozy.photos.albums'
+      }
+    ]
 
     it('should add a reference', async () => {
-      const refs = [
-        {
-          _id: '456',
-          _type: 'io.cozy.photos.albums'
-        }
-      ]
+      spy.mockReturnValue({
+        data: [{ id: '456', type: 'io.cozy.photos.albums' }],
+        meta: { rev: '2-xxx', count: 1 }
+      })
+
       const res = await collection.addReferencedBy(file, refs)
-      expect(res.data).toEqual([file])
+      expect(spy).toHaveBeenCalledWith(
+        'POST',
+        '/files/123/relationships/referenced_by',
+        { data: [{ id: '456', type: 'io.cozy.photos.albums' }] }
+      )
+
+      expect(res.data).toEqual(refs)
       expect(res.meta).not.toBeNull()
       expect(spy).toMatchSnapshot()
     })
+
     it('should remove a reference', async () => {
-      const refs = [
-        {
-          _id: '456',
-          _type: 'io.cozy.photos.albums'
-        }
-      ]
+      spy.mockReturnValue({
+        data: null,
+        meta: { rev: '3-xxx', count: 0 }
+      })
+
       const res = await collection.removeReferencedBy(file, refs)
-      expect(res.data).toEqual([file])
+      expect(spy).toHaveBeenCalledWith(
+        'DELETE',
+        '/files/123/relationships/referenced_by',
+        { data: [{ id: '456', type: 'io.cozy.photos.albums' }] }
+      )
+
+      expect(res.data).toEqual([])
       expect(res.meta).not.toBeNull()
       expect(spy).toMatchSnapshot()
     })
@@ -397,30 +414,32 @@ describe('FileCollection', () => {
       client.fetchJSON.mockReturnValue({})
     })
 
-    const file = {
-      _type: 'io.cozy.files',
-      _id: '123'
+    const album = {
+      _type: 'io.cozy.photos.albums',
+      _id: '123',
+      name: 'My album'
     }
     const refs = [
       {
         _id: '456',
-        name: 'Greatest album'
+        name: 'My photo.jpg'
       }
     ]
 
     it('should add a reference', async () => {
-      await collection.addReferencesTo(file, refs)
+      await collection.addReferencesTo(album, refs)
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'POST',
-        '/data/io.cozy.files/123/relationships/references',
+        '/data/io.cozy.photos.albums/123/relationships/references',
         { data: [{ id: '456', type: 'io.cozy.files' }] }
       )
     })
+
     it('should remove a reference', async () => {
-      await collection.removeReferencesTo(file, refs)
+      await collection.removeReferencesTo(album, refs)
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'DELETE',
-        '/data/io.cozy.files/123/relationships/references',
+        '/data/io.cozy.photos.albums/123/relationships/references',
         { data: [{ id: '456', type: 'io.cozy.files' }] }
       )
     })
