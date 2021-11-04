@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.0.1](https://github.com/cozy/cozy-client/compare/v27.0.0...v27.0.1) (2021-11-04)
+
+
+### Bug Fixes
+
+* Build new OAuth client from old OAuth client ([a8ecfd0](https://github.com/cozy/cozy-client/commit/a8ecfd0344d86ba7c45e2589442bb836ba274a89))
+
+
+
+
+
 # [27.0.0](https://github.com/cozy/cozy-client/compare/v26.0.2...v27.0.0) (2021-11-03)
 
 
