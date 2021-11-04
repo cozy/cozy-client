@@ -61,19 +61,21 @@ declare class CozyClient {
      * a client with a cookie-based instance of cozy-client-js.
      *
      * @param {OldCozyClient} oldClient - An instance of the deprecated cozy-client
+     * @param {object} options - CozyStackClient options
      * @returns {CozyClient}
      */
-    static fromOldClient(oldClient: OldCozyClient, options: any): CozyClient;
+    static fromOldClient(oldClient: OldCozyClient, options: object): CozyClient;
     /**
      * To help with the transition from cozy-client-js to cozy-client, it is possible to instantiate
      * a client with an OAuth-based instance of cozy-client-js.
      *
      * Warning: unlike other instantiators, this one needs to be awaited.
      *
-     * @param {OldCozyClient} oldClient - An instance of the deprecated cozy-client
+     * @param {OldCozyClient} oldClient - An OAuth instance of the deprecated cozy-client
+     * @param {object} options - CozyStackClient options
      * @returns {Promise<CozyClient>} An instance of a client, configured from the old client
      */
-    static fromOldOAuthClient(oldClient: OldCozyClient, options: any): Promise<CozyClient>;
+    static fromOldOAuthClient(oldClient: OldCozyClient, options: object): Promise<CozyClient>;
     /**
      * In konnector/service context, CozyClient can be instantiated from
      * environment variables
