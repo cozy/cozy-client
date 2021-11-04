@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.1.0](https://github.com/cozy/cozy-client/compare/v27.0.1...v27.1.0) (2021-11-04)
+
+
+### Features
+
+* Add FileCollection.fetchChanges() method ([af2f43b](https://github.com/cozy/cozy-client/commit/af2f43b154e6ba6011cb969c63e4e2045295bd4a))
+
+
+
+
+
 ## [27.0.1](https://github.com/cozy/cozy-client/compare/v27.0.0...v27.0.1) (2021-11-04)
 
 
