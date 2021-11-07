@@ -3,7 +3,7 @@ import isString from 'lodash/isString'
 import has from 'lodash/has'
 import trimEnd from 'lodash/trimEnd'
 
-import { setQualification } from './document'
+import { setQualification } from './document/qualification'
 import { Q } from '../queries/dsl'
 import { IOCozyFile, QueryResult } from '../types'
 import { DOCTYPE_FILES } from '../const'

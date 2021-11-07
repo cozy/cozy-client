@@ -272,4 +272,29 @@ export type CouchDBBulkResult = {
      */
     reason: string | null;
 };
+export type Theme = {
+    id: string;
+    label: string;
+    icon: string;
+    items: Array<QualificationAttributes>;
+    defaultItems?: Array<string>;
+};
+export type ThemesList = Theme[];
+export type ThemesLabels = "transport" | "identity" | "family" | "work_study" | "health" | "home" | "finance" | "invoice";
+export type QualificationAttributes = {
+    label: string;
+    purpose?: string;
+    sourceCategory?: string;
+    sourceSubCategory?: string;
+    subjects?: Array<string>;
+};
+export type IdentityLabel = "identity_photo" | "national_id_card" | "passport" | "residence_permit" | "family_record_book" | "birth_certificate" | "driver_license" | "other_identity_document";
+export type FamilyLabel = "family_record_book" | "birth_certificate" | "wedding" | "pacs" | "divorce" | "large_family_card" | "caf" | "other_family_document";
+export type WorkStudyLabels = "resume" | "diploma" | "work_contract" | "pay_sheet" | "unemployment_benefit" | "pension" | "other_revenue" | "gradebook" | "student_card" | "motivation_letter" | "other_work_document";
+export type HealthLabels = "health_certificate" | "health_book" | "national_health_insurance_card" | "health_insurance_card" | "prescription" | "health_invoice";
+export type HomeLabels = "phone_invoice" | "isp_invoice" | "telecom_invoice" | "energy_invoice" | "water_invoice" | "house_sale_agreeement" | "building_permit" | "technical_diagnostic_record" | "lease" | "rent_receipt" | "house_insurance" | "work_quote" | "work_invoice" | "other_house_document";
+export type TransportLabels = "driver_license" | "vehicle_registration" | "car_insurance" | "mechanic_invoice" | "transport_invoice" | "other_transport_document";
+export type FinanceLabels = "tax_return" | "tax_notice" | "tax_timetable" | "receipt" | "other_tax_document" | "bank_details" | "bank_statement" | "loan_agreement" | "other_bank_document";
+export type InvoiceLabels = "health_invoice" | "phone_invoice" | "isp_invoice" | "telecom_invoice" | "energy_invoice" | "water_invoice" | "work_invoice" | "transport_invoice" | "appliance_invoice" | "web_service_invoice" | "restaurant_invoice" | "other_invoice";
+export type ItemsLabels = "resume" | "identity_photo" | "national_id_card" | "passport" | "residence_permit" | "family_record_book" | "birth_certificate" | "driver_license" | "other_identity_document" | "wedding" | "pacs" | "divorce" | "large_family_card" | "caf" | "other_family_document" | "diploma" | "work_contract" | "pay_sheet" | "unemployment_benefit" | "pension" | "other_revenue" | "gradebook" | "student_card" | "motivation_letter" | "other_work_document" | "health_certificate" | "health_book" | "national_health_insurance_card" | "health_insurance_card" | "prescription" | "health_invoice" | "phone_invoice" | "isp_invoice" | "telecom_invoice" | "energy_invoice" | "water_invoice" | "house_sale_agreeement" | "building_permit" | "technical_diagnostic_record" | "lease" | "rent_receipt" | "house_insurance" | "work_quote" | "work_invoice" | "other_house_document" | "vehicle_registration" | "car_insurance" | "mechanic_invoice" | "transport_invoice" | "other_transport_document" | "tax_return" | "tax_notice" | "tax_timetable" | "receipt" | "other_tax_document" | "bank_details" | "bank_statement" | "loan_agreement" | "other_bank_document" | "appliance_invoice" | "web_service_invoice" | "restaurant_invoice" | "other_invoice";
 import { QueryDefinition } from "./queries/dsl";
