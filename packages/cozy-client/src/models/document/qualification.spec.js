@@ -1,5 +1,9 @@
-import { Qualification, setQualification, getQualification } from './document'
-import * as qualificationModel from '../assets/qualifications.json'
+import {
+  Qualification,
+  setQualification,
+  getQualification
+} from './qualification'
+import * as qualificationModel from '../../assets/qualifications.json'
 
 describe('document qualification', () => {
   beforeEach(() => {

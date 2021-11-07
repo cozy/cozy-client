@@ -1,5 +1,5 @@
 import * as fileModel from './file'
-import { Qualification } from './document'
+import { Qualification } from './document/qualification'
 import { QueryDefinition } from '../queries/dsl'
 const CozyClient = require('cozy-client/dist/CozyClient').default
 const CozyStackClient = require('cozy-stack-client').default

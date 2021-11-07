@@ -224,4 +224,46 @@ import { QueryDefinition } from './queries/dsl'
  * @property {string?} reason?
  */
 
+/**
+ * @typedef {object} Theme
+ * @property {string} id
+ * @property {string} label
+ * @property {string} icon
+ * @property {Array<QualificationAttributes>} items
+ * @property {Array<string>} [defaultItems]
+ *
+ * @typedef {Array<Theme>} ThemesList
+ *
+ * @typedef {'identity'|'family'|'work_study'|'health'|'home'|'transport'|'finance'|'invoice'} ThemesLabels
+ */
+
+/**
+ * @typedef {object} QualificationAttributes
+ * @property {string} label
+ * @property {string} [purpose]
+ * @property {string} [sourceCategory]
+ * @property {string} [sourceSubCategory]
+ * @property {Array<string>} [subjects]
+ */
+
+/**
+ * @typedef {'identity_photo'|'national_id_card'|'passport'|'residence_permit'|'family_record_book'|'birth_certificate'|'driver_license'|'other_identity_document'} IdentityLabel
+ *
+ * @typedef {'family_record_book'|'birth_certificate'|'wedding'|'pacs'|'divorce'|'large_family_card'|'caf'|'other_family_document'} FamilyLabel
+ *
+ * @typedef {'diploma'|'work_contract'|'pay_sheet'|'unemployment_benefit'|'pension'|'other_revenue'|'gradebook'|'student_card'|'resume'|'motivation_letter'|'other_work_document'} WorkStudyLabels
+ *
+ * @typedef {'health_certificate'|'health_book'|'national_health_insurance_card'|'health_insurance_card'|'prescription'|'health_invoice'} HealthLabels
+ *
+ * @typedef {'phone_invoice'|'isp_invoice'|'telecom_invoice'|'energy_invoice'|'water_invoice'|'house_sale_agreeement'|'building_permit'|'technical_diagnostic_record'|'lease'|'rent_receipt'|'house_insurance'|'work_quote'|'work_invoice'|'other_house_document'} HomeLabels
+ *
+ * @typedef {'driver_license'|'vehicle_registration'|'car_insurance'|'mechanic_invoice'|'transport_invoice'|'other_transport_document'} TransportLabels
+ *
+ * @typedef {'tax_return'|'tax_notice'|'tax_timetable'|'receipt'|'other_tax_document'|'bank_details'|'bank_statement'|'loan_agreement'|'other_bank_document'} FinanceLabels
+ *
+ * @typedef {'phone_invoice'|'isp_invoice'|'telecom_invoice'|'energy_invoice'|'water_invoice'|'appliance_invoice'|'web_service_invoice'|'restaurant_invoice'|'work_invoice'|'transport_invoice'|'health_invoice'|'other_invoice'} InvoiceLabels
+ *
+ * @typedef {IdentityLabel|FamilyLabel|WorkStudyLabels|HealthLabels|HomeLabels|TransportLabels|FinanceLabels|InvoiceLabels} ItemsLabels
+ */
+
 export default {}

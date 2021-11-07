@@ -1,5 +1,5 @@
 import { get, set, difference } from 'lodash'
-import * as qualificationModel from '../assets/qualifications.json'
+import * as qualificationModel from '../../assets/qualifications.json'
 
 /**
  * @typedef {object} QualificationAttributes
