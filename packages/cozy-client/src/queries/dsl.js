@@ -84,13 +84,19 @@ class QueryDefinition {
       return
     }
     if (_sort.length > fieldsToIndex.length) {
-      console.warn('You should not sort on non-indexed fields')
+      console.warn(
+        `You should not sort on non-indexed fields.\n
+        Sort: ${JSON.stringify(_sort)}\n
+        Indexed fields: ${fieldsToIndex}`
+      )
       return
     }
     for (let i = 0; i < _sort.length; i++) {
       if (Object.keys(_sort[i])[0] !== fieldsToIndex[i]) {
         console.warn(
-          'The sort order should be the same than the indexed fields'
+          `The sort order should be the same than the indexed fields.\n
+          Sort: ${JSON.stringify(_sort)}\n
+          Indexed fields: ${fieldsToIndex}\n`
         )
         return
       }
@@ -109,13 +115,15 @@ class QueryDefinition {
     const hasExistsFalse = findKey(selector, ['$exists', false])
     if (hasExistsFalse) {
       console.warn(
-        'The "$exists: false" predicate should be defined as a partial index for better performance'
+        `The "$exists: false" predicate should be defined as a partial index for better performance.\n
+        Selector: ${selector}`
       )
     }
     const hasNe = findKey(selector, '$ne')
     if (hasNe) {
       console.info(
-        'The use of the $ne operator is more efficient with a partial index.'
+        `The use of the $ne operator is more efficient with a partial index.\n
+        Selector: ${selector}`
       )
     }
   }
