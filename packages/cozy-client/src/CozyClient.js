@@ -562,7 +562,7 @@ client.query(Q('io.cozy.bills'))`)
 
   get(doctype, id) {
     console.warn(
-      'client.get(doctype, id) is deprecated, please use Q(doctype).getById(id) to build the same query.'
+      `client.get(${doctype}, id) is deprecated, please use Q(${doctype}).getById(id) to build the same query.`
     )
     return new QueryDefinition({ doctype, id })
   }
