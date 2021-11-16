@@ -1,7 +1,7 @@
 //@ts-ignore
 import { InAppBrowser } from 'react-native-inappbrowser-reborn'
 //@ts-ignore
-import { Linking } from 'react-native'
+import { Linking, Platform } from 'react-native'
 
 /**
  * Opens a ReactNative InAppBrowser
@@ -43,11 +43,26 @@ export const authenticateWithReactNativeInAppBrowser = async url => {
     }
 
     const linkListener = ({ url }) => {
+      let sanitizedUrl = url
       const accessCode = /\?access_code=(.+)$/.test(url)
       const state = /\?state=(.+)$/.test(url)
 
       if (accessCode || state) {
-        resolve(url)
+        if (Platform.OS === 'ios') {
+          // On iOS, the # added to the URL by the stack for security
+          // reason is encoded to %23. Because of this, URL().searchParams
+          // is not working as expected since %23 is added to the param
+          // instead of being ignored and assigned to the hash.
+          // Let's convert back %23 to # manually.
+          // I think the issue is related to Linking component but didn't
+          // find any issues on github about it. Need to make a simple
+          // reproduction case to create the issue.
+
+          if (url.endsWith('%23')) {
+            sanitizedUrl = url.replace(/%23$/, '#')
+          }
+        }
+        resolve(sanitizedUrl)
         removeListener()
         InAppBrowser.close()
       }
