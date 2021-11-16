@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.3.1](https://github.com/cozy/cozy-client/compare/v27.3.0...v27.3.1) (2021-11-16)
+
+
+### Bug Fixes
+
+* Export Qualification ([3472bce](https://github.com/cozy/cozy-client/commit/3472bcec6ab3e19353a290e79189bf09c34b38b8))
+
+
+
+
+
 # [27.3.0](https://github.com/cozy/cozy-client/compare/v27.2.0...v27.3.0) (2021-11-16)
 
 
