@@ -8,7 +8,7 @@ import * as note from './note'
 import * as permission from './permission'
 import * as utils from './utils'
 import * as contact from './contact'
-import * as document from './document/index'
+import * as document from './document'
 import * as timeseries from './timeseries'
 
 // For backward compatibility before 9.0.0
