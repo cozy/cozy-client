@@ -1,8 +1,8 @@
-[cozy-client](../README.md) / [models](../modules/models.md) / [document](../modules/models.document.md) / [default](../modules/models.document.default.md) / Qualification
+[cozy-client](../README.md) / [models](../modules/models.md) / [document](../modules/models.document.md) / Qualification
 
 # Class: Qualification
 
-[document](../modules/models.document.md).[default](../modules/models.document.default.md).Qualification
+[models](../modules/models.md).[document](../modules/models.document.md).Qualification
 
 This class is used to create document Qualification, i.e. metadata
 attributes used to describe the document.
@@ -23,7 +23,7 @@ the checkValueAttributes method.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `label` | `string` | The qualification label |
-| `attributes` | [`QualificationAttributes`](../interfaces/models.document.default.qualificationattributes.md) | Qualification's attributes |
+| `attributes` | `QualificationAttributes` | Qualification's attributes |
 
 *Defined in*
 
@@ -114,7 +114,7 @@ Check the given qualification attributes respects the following rules:
 
 ### setPurpose
 
-▸ **setPurpose**(`purpose`): [`Qualification`](models.document.default.qualification.md)
+▸ **setPurpose**(`purpose`): [`Qualification`](models.document.qualification.md)
 
 Set purpose to the qualification.
 
@@ -126,7 +126,7 @@ Set purpose to the qualification.
 
 *Returns*
 
-[`Qualification`](models.document.default.qualification.md)
+[`Qualification`](models.document.qualification.md)
 
 The Qualification object.
 
@@ -138,7 +138,7 @@ The Qualification object.
 
 ### setSourceCategory
 
-▸ **setSourceCategory**(`sourceCategory`): [`Qualification`](models.document.default.qualification.md)
+▸ **setSourceCategory**(`sourceCategory`): [`Qualification`](models.document.qualification.md)
 
 Set sourceCategory to the qualification.
 
@@ -150,7 +150,7 @@ Set sourceCategory to the qualification.
 
 *Returns*
 
-[`Qualification`](models.document.default.qualification.md)
+[`Qualification`](models.document.qualification.md)
 
 The Qualification object.
 
@@ -162,7 +162,7 @@ The Qualification object.
 
 ### setSourceSubCategory
 
-▸ **setSourceSubCategory**(`sourceSubCategory`): [`Qualification`](models.document.default.qualification.md)
+▸ **setSourceSubCategory**(`sourceSubCategory`): [`Qualification`](models.document.qualification.md)
 
 Set sourceSubCategory to the qualification.
 
@@ -174,7 +174,7 @@ Set sourceSubCategory to the qualification.
 
 *Returns*
 
-[`Qualification`](models.document.default.qualification.md)
+[`Qualification`](models.document.qualification.md)
 
 The Qualification object.
 
@@ -186,7 +186,7 @@ The Qualification object.
 
 ### setSubjects
 
-▸ **setSubjects**(`subjects`): [`Qualification`](models.document.default.qualification.md)
+▸ **setSubjects**(`subjects`): [`Qualification`](models.document.qualification.md)
 
 Set subjects to the qualification.
 
@@ -198,7 +198,7 @@ Set subjects to the qualification.
 
 *Returns*
 
-[`Qualification`](models.document.default.qualification.md)
+[`Qualification`](models.document.qualification.md)
 
 The Qualification object.
 
@@ -228,7 +228,7 @@ The qualification attributes
 
 ### getByLabel
 
-▸ `Static` **getByLabel**(`label`): [`Qualification`](models.document.default.qualification.md)
+▸ `Static` **getByLabel**(`label`): [`Qualification`](models.document.qualification.md)
 
 Returns the qualification associated to a label.
 
@@ -240,7 +240,7 @@ Returns the qualification associated to a label.
 
 *Returns*
 
-[`Qualification`](models.document.default.qualification.md)
+[`Qualification`](models.document.qualification.md)
 
 *   The qualification
 
