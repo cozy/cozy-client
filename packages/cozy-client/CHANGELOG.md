@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.3.2](https://github.com/cozy/cozy-client/compare/v27.3.1...v27.3.2) (2021-11-17)
+
+
+### Bug Fixes
+
+* Login on RN iOS ([4b85b47](https://github.com/cozy/cozy-client/commit/4b85b475bf0c5b32f94a06e524fa7f0f5011f90e))
+
+
+
+
+
 ## [27.3.1](https://github.com/cozy/cozy-client/compare/v27.3.0...v27.3.1) (2021-11-16)
 
 
