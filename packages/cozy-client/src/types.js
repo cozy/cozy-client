@@ -78,7 +78,8 @@ import { QueryDefinition } from './queries/dsl'
  * @property {string} [as] - Name of the query
  * @property {Function} [fetchPolicy] - Fetch policy to bypass fetching based on what's already inside the state. See "Fetch policies"
  * @property {AutoUpdateOptions} [autoUpdate] - Options for the query auto update
- * @property {string} [options.update] - Does not seem to be used
+ * @property {string} [update] - Does not seem to be used
+ * @property {Function} [onError] - Callback when the query is errored
  */
 
 /**

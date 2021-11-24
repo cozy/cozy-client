@@ -5,6 +5,7 @@ import useClient from './useClient'
 import logger from '../logger'
 import { UseQueryReturnValue } from '../types'
 import { clientContext } from '../context'
+import { QueryDefinition } from '../queries/dsl'
 
 const useSelector = createSelectorHook(clientContext)
 
@@ -21,15 +22,16 @@ const generateFetchMoreQueryDefinition = queryResult => {
 /**
  * Fetches a queryDefinition and returns the queryState
  *
- * @param  {object} queryDefinition - Definition created with Q()
+ * @param  {QueryDefinition} queryDefinition - Definition created with Q()
  *
- * @param  {object} options - Options
- * @param  {object} options.as - Name for the query [required]
- * @param  {boolean} options.enabled - If set to false, the query won't be executed
- * @param  {object} options.fetchPolicy - Fetch policy
- * @param  {object} options.singleDocData - If true, the "data" returned will be
+ * @typedef {object} UseQueryOptions
+ * @property  {object} as - Name for the query [required]
+ * @property  {boolean} enabled - If set to false, the query won't be executed
+ * @property  {object} fetchPolicy - Fetch policy
+ * @property  {object} singleDocData - If true, the "data" returned will be
  * a single doc instead of an array for single doc queries. Defaults to false for backward
  * compatibility but will be set to true in the future.
+ * @property {Function} onError - Callback if the query is errored
  *
  * @returns {UseQueryReturnValue}
  */

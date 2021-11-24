@@ -102,6 +102,7 @@ const DOC_UPDATE = 'update'
  * @property {boolean} [autoHydrate]
  * @property {object} [oauth]
  * @property {Function} [onTokenRefresh]
+ * @property {Function} [onError] - Default callback if a query is errored
  * @property  {Link}         [link]   - Backward compatibility
  * @property  {Array<Link>}  [links]  - List of links
  * @property  {object}       [schema] - Schema description for each doctypes
@@ -919,7 +920,15 @@ client.query(Q('io.cozy.bills'))`)
       return response
     } catch (error) {
       this.dispatch(receiveQueryError(queryId, error))
-      throw error
+      // specific onError
+      if (options.onError) {
+        options.onError(error)
+        // defaulted onError
+      } else if (this.options.onError) {
+        this.options.onError(error)
+      } else {
+        throw error
+      }
     }
   }
 
@@ -1589,6 +1598,18 @@ instantiation of the client.`
     Object.entries(data).forEach(([doctype, data]) => {
       this.dispatch(receiveQueryResult(null, { data }))
     })
+  }
+
+  /**
+   * At any time put an error function
+   *
+   * @param {Function} [onError] - Set a callback for queries which are errored
+   */
+  setOnError(onError) {
+    if (this.options && this.options.onError) {
+      throw new Error('On Error is already defined')
+    }
+    this.options.onError = onError
   }
 
   toJSON() {

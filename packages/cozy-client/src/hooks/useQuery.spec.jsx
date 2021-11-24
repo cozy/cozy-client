@@ -1,13 +1,20 @@
 import { renderHook } from '@testing-library/react-hooks'
 
+import CozyClient from '../CozyClient'
+import CozyLink from '../CozyLink'
 import useQuery, { useQueries } from './useQuery'
 import { Q } from '../queries/dsl'
 
 import { setupClient, makeWrapper } from '../testing/utils'
 import simpsonsFixture from '../testing/simpsons.json'
 
-const setupQuery = ({ queryDefinition, queryOptions, storeQueries }) => {
-  const client = setupClient({ queries: storeQueries })
+const setupQuery = ({
+  customClient,
+  queryDefinition,
+  queryOptions,
+  storeQueries
+}) => {
+  const client = customClient || setupClient({ queries: storeQueries })
   const hookResult = renderHook(() => useQuery(queryDefinition, queryOptions), {
     wrapper: makeWrapper(client)
   })
@@ -158,6 +165,30 @@ describe('use query', () => {
       client.query.mock.calls[client.query.mock.calls.length - 1][0]
     expect(lastCallArgs).toMatchObject({ skip: current.data.length })
     expect(fetchMoreResult).toEqual({ data: null })
+  })
+
+  it('should call onError callback when an error is thrown. Callback passed as argument', async () => {
+    jest.spyOn(console, 'error').mockImplementation(() => null)
+    const requestHandler = jest.fn()
+    const client = new CozyClient({
+      links: [new CozyLink(requestHandler)]
+    })
+    const error = new TypeError('Failed to fetch')
+    requestHandler.mockReturnValue(Promise.reject(error))
+    const onError = jest.fn().mockReturnValue(() => true)
+    setupQuery({
+      customClient: client,
+      queryOptions: {
+        as: 'fake-query',
+        onError
+      },
+      queryDefinition: () => Q('io.cozy.todos')
+    })
+
+    // TODO find a better alternative
+    setTimeout(() => {
+      expect(onError).toBeCalled()
+    }, 100)
   })
 })
 

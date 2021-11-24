@@ -64,6 +64,10 @@ export type QueryOptions = {
      * - Does not seem to be used
      */
     update?: string;
+    /**
+     * - Callback when the query is errored
+     */
+    onError?: Function;
 };
 export type FetchMoreAble = {
     fetchMore: Function;
