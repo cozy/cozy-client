@@ -102,7 +102,6 @@ const DOC_UPDATE = 'update'
  * @property {boolean} [autoHydrate]
  * @property {object} [oauth]
  * @property {Function} [onTokenRefresh]
- * @property {Function} [onTokenRefresh]
  * @property  {Link}         [link]   - Backward compatibility
  * @property  {Array<Link>}  [links]  - List of links
  * @property  {object}       [schema] - Schema description for each doctypes
