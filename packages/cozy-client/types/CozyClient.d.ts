@@ -11,6 +11,10 @@ export type ClientOptions = {
     oauth?: object;
     onTokenRefresh?: Function;
     /**
+     * - Default callback if a query is errored
+     */
+    onError?: Function;
+    /**
      * - Schema description for each doctypes
      */
     schema?: object;
@@ -39,7 +43,7 @@ export type ClientOptions = {
  * @property {boolean} [autoHydrate]
  * @property {object} [oauth]
  * @property {Function} [onTokenRefresh]
- * @property {Function} [onTokenRefresh]
+ * @property {Function} [onError] - Default callback if a query is errored
  * @property  {Link}         [link]   - Backward compatibility
  * @property  {Array<Link>}  [links]  - List of links
  * @property  {object}       [schema] - Schema description for each doctypes
@@ -146,6 +150,10 @@ declare class CozyClient {
         autoHydrate?: boolean;
         oauth?: object;
         onTokenRefresh?: Function;
+        /**
+         * - Default callback if a query is errored
+         */
+        onError?: Function;
         /**
          * - If set to false, the client will not instantiate a Redux store automatically. Use this if you want to merge cozy-client's store with your own redux store. See [here](https://docs.cozy.io/en/cozy-client/react-integration/#1b-use-your-own-redux-store) for more information.
          */
@@ -640,6 +648,12 @@ declare class CozyClient {
      * @param {object} data - Data that is inserted in the store. Shape: { doctype: [data] }
      */
     setData(data: object): void;
+    /**
+     * At any time put an error function
+     *
+     * @param {Function} [onError] - Set a callback for queries which are errored
+     */
+    setOnError(onError?: Function): void;
     toJSON(): SnapshotClient;
 }
 declare namespace CozyClient {
