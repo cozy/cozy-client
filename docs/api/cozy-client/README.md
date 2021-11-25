@@ -511,16 +511,24 @@ Returns the cozy client from the context
 
 Fetches a queryDefinition and returns the queryState
 
+**`property`** {object} as - Name for the query \[required]
+
+**`property`** {boolean} enabled - If set to false, the query won't be executed
+
+**`property`** {object} fetchPolicy - Fetch policy
+
+**`property`** {object} singleDocData - If true, the "data" returned will be
+a single doc instead of an array for single doc queries. Defaults to false for backward
+compatibility but will be set to true in the future.
+
+**`property`** {Function} onError - Callback if the query is errored
+
 *Parameters*
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `queryDefinition` | `any` | Definition created with Q() |
-| `options` | `Object` | Options |
-| `options.as` | `any` | Name for the query \[required] |
-| `options.enabled` | `boolean` | If set to false, the query won't be executed |
-| `options.fetchPolicy` | `any` | Fetch policy |
-| `options.singleDocData` | `any` | If true, the "data" returned will be a single doc instead of an array for single doc queries. Defaults to false for backward compatibility but will be set to true in the future. |
+| `queryDefinition` | [`QueryDefinition`](classes/querydefinition.md) | Definition created with Q() |
+| `options` | `any` | - |
 
 *Returns*
 
@@ -528,7 +536,7 @@ Fetches a queryDefinition and returns the queryState
 
 *Defined in*
 
-[packages/cozy-client/src/hooks/useQuery.js:36](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useQuery.js#L36)
+[packages/cozy-client/src/hooks/useQuery.js:38](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useQuery.js#L38)
 
 ***
 
