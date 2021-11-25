@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.4.0](https://github.com/cozy/cozy-client/compare/v27.3.2...v27.4.0) (2021-11-25)
+
+
+### Features
+
+* onError Callback ([c5f65d3](https://github.com/cozy/cozy-client/commit/c5f65d33e0ab29a22b409365151173a3b7645b56))
+
+
+
+
+
 ## [27.3.2](https://github.com/cozy/cozy-client/compare/v27.3.1...v27.3.2) (2021-11-17)
 
 
