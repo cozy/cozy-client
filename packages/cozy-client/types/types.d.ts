@@ -74,18 +74,37 @@ export type FetchMoreAble = {
 };
 export type UseQueryReturnValue = QueryState & FetchMoreAble;
 /**
- * A reference to a document (special case of a relationship used between photos and albums)
+ * A reference to a document
+ */
+export type ReferencedByRelationship = {
+    parent?: RelationshipParent;
+    referenced_by?: ReferencedBy;
+};
+export type RelationshipParent = {
+    links: {
+        related: string;
+    };
+    data?: Reference;
+};
+export type ReferencedBy = {
+    links: {
+        self: string;
+    };
+    data: Reference[] | null;
+};
+/**
+ * A reference to a document
  * https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files/#references
  */
 export type Reference = {
     /**
      * - id of the document
      */
-    _id: string;
+    id: string;
     /**
      * - doctype of the document
      */
-    _type: string;
+    type: string;
 };
 export type ReferenceMap = {
     [x: string]: Reference[];
@@ -122,7 +141,11 @@ export type CozyClientDocument = {
     /**
      * - Relationships of the document
      */
-    relationships?: object;
+    relationships?: ReferencedByRelationship;
+    /**
+     * - referenced by of another document
+     */
+    referenced_by?: Reference[];
 };
 /**
  * - An io.cozy.files document

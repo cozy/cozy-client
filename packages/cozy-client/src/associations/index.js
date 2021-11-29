@@ -6,7 +6,14 @@ import HasManyInPlace from './HasManyInPlace'
 import HasManyTriggers from './HasManyTriggers'
 import Association from './Association'
 
-export { resolveClass, create } from './helpers'
+export {
+  resolveClass,
+  create,
+  isReferencedBy,
+  isReferencedById,
+  getReferencedBy,
+  getReferencedById
+} from './helpers'
 
 export {
   Association,
