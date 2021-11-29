@@ -41,3 +41,10 @@ export * from './mock'
 
 export * from './hooks'
 export { BulkEditError } from './errors'
+
+export {
+  isReferencedBy,
+  isReferencedById,
+  getReferencedBy,
+  getReferencedById
+} from './queries/referencedBy'

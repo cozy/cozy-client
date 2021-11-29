@@ -21,3 +21,4 @@ export { Association, HasMany, HasOne, HasOneInPlace, HasManyInPlace, HasManyTri
 export { dehydrate, generateWebLink } from "./helpers";
 export { cancelable, isQueryLoading, hasQueryBeenLoaded } from "./utils";
 export { queryConnect, queryConnectFlat, withClient } from "./hoc";
+export { isReferencedBy, isReferencedById, getReferencedBy, getReferencedById } from "./queries/referencedBy";
