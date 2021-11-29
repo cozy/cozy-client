@@ -92,12 +92,32 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
- * A reference to a document (special case of a relationship used between photos and albums)
+ * A reference to a document
+ *
+ * @typedef {object} ReferencedByRelationship
+ * @property {RelationshipParent} [parent]
+ * @property {ReferencedBy} [referenced_by]
+ */
+
+/**
+ * @typedef {object} RelationshipParent
+ * @property {{related: string}} links
+ * @property {Reference} [data]
+ */
+
+/**
+ * @typedef {object} ReferencedBy
+ * @property {{self: string}} links
+ * @property {Reference[]|null} data
+ */
+
+/**
+ * A reference to a document
  * https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files/#references
  *
  * @typedef {object} Reference
- * @property {string} _id - id of the document
- * @property {string} _type - doctype of the document
+ * @property {string} id - id of the document
+ * @property {string} type - doctype of the document
  */
 
 /**
@@ -118,7 +138,8 @@ import { QueryDefinition } from './queries/dsl'
  * @property {string} [_type] - Type of the document
  * @property {string} [_rev] - Current revision of the document
  * @property {boolean} [_deleted] - When the document has been deleted
- * @property {object} [relationships] - Relationships of the document
+ * @property {ReferencedByRelationship} [relationships] - Relationships of the document
+ * @property {Reference[]} [referenced_by] - referenced by of another document
  */
 
 /**

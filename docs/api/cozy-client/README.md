@@ -284,57 +284,6 @@ Generated URL
 
 ***
 
-### getReferencedBy
-
-▸ `Const` **getReferencedBy**(`file`, `referencedBy`): `Reference`\[]
-
-Get array of reference by an specific doctype
-
-*Parameters*
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `file` | `IOCozyFile` | io.cozy.files document |
-| `referencedBy` | `string` | Doctype where document is referenced |
-
-*Returns*
-
-`Reference`\[]
-
-Array of references found
-
-*Defined in*
-
-[packages/cozy-client/src/queries/referencedBy.js:42](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/referencedBy.js#L42)
-
-***
-
-### getReferencedById
-
-▸ `Const` **getReferencedById**(`file`, `referencedBy`, `referencedId`): `Reference`\[]
-
-Get array of reference by an specific doctype and a specific Id of that reference
-
-*Parameters*
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `file` | `IOCozyFile` | io.cozy.files document |
-| `referencedBy` | `string` | Doctype where document is referenced |
-| `referencedId` | `string` | Id of the referenced document |
-
-*Returns*
-
-`Reference`\[]
-
-Array of the reference found
-
-*Defined in*
-
-[packages/cozy-client/src/queries/referencedBy.js:56](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/referencedBy.js#L56)
-
-***
-
 ### hasQueryBeenLoaded
 
 ▸ `Const` **hasQueryBeenLoaded**(`col`): `any`
@@ -377,57 +326,6 @@ is loading.
 *Defined in*
 
 [packages/cozy-client/src/utils.js:37](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/utils.js#L37)
-
-***
-
-### isReferencedBy
-
-▸ `Const` **isReferencedBy**(`file`, `referencedBy`): `boolean`
-
-Checks if the file is referenced by a specific doctype
-
-*Parameters*
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `file` | `IOCozyFile` | io.cozy.files document |
-| `referencedBy` | `string` | Doctype where document is referenced |
-
-*Returns*
-
-`boolean`
-
-If a reference is found
-
-*Defined in*
-
-[packages/cozy-client/src/queries/referencedBy.js:10](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/referencedBy.js#L10)
-
-***
-
-### isReferencedById
-
-▸ `Const` **isReferencedById**(`file`, `referencedBy`, `referencedId`): `boolean`
-
-Checks if the file is referenced by a specific doctype and a specific Id of that reference
-
-*Parameters*
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `file` | `IOCozyFile` | io.cozy.files document |
-| `referencedBy` | `string` | Doctype where document is referenced |
-| `referencedId` | `string` | Id of the referenced document |
-
-*Returns*
-
-`boolean`
-
-If a reference is found
-
-*Defined in*
-
-[packages/cozy-client/src/queries/referencedBy.js:25](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/referencedBy.js#L25)
 
 ***
 
