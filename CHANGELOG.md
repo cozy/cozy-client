@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.5.1](https://github.com/cozy/cozy-client/compare/v27.5.0...v27.5.1) (2021-12-01)
+
+
+### Bug Fixes
+
+* Re-export associations helpers ([9a8d841](https://github.com/cozy/cozy-client/commit/9a8d84135762a1cf0ce29c7da247ca9a4ec617e5)), closes [#1076](https://github.com/cozy/cozy-client/issues/1076)
+
+
+
+
+
 # [27.5.0](https://github.com/cozy/cozy-client/compare/v27.4.0...v27.5.0) (2021-12-01)
 
 
