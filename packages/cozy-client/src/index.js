@@ -17,6 +17,12 @@ export {
   HasManyInPlace,
   HasManyTriggers
 } from './associations'
+export {
+  isReferencedBy,
+  isReferencedById,
+  getReferencedBy,
+  getReferencedById
+} from './associations/helpers'
 export { dehydrate, generateWebLink } from './helpers'
 export { cancelable, isQueryLoading, hasQueryBeenLoaded } from './utils'
 export { getQueryFromState } from './store'
