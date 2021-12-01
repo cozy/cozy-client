@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.5.0](https://github.com/cozy/cozy-client/compare/v27.4.0...v27.5.0) (2021-12-01)
+
+
+### Features
+
+* Added referencedBy helpers ([2bd77e4](https://github.com/cozy/cozy-client/commit/2bd77e451eab26b85b21b41db522a7da6378672b))
+* Adding types around references ([6d9c8aa](https://github.com/cozy/cozy-client/commit/6d9c8aade0ece644674b9adfee1b08b8eff7482e))
+
+
+
+
+
 # [27.4.0](https://github.com/cozy/cozy-client/compare/v27.3.2...v27.4.0) (2021-11-25)
 
 
