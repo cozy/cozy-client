@@ -183,34 +183,19 @@ describe('File Model', () => {
   })
 
   describe('splitFilename', () => {
-    const joinName = ({ filename, extension }) => filename + extension
-    const mkFile = expectation => ({
-      type: 'file',
-      name: joinName(expectation)
+    it.each`
+      opts                                       | result
+      ${{ type: 'file', name: 'file.ext' }}      | ${{ filename: 'file', extension: '.ext' }}
+      ${{ type: 'file', name: 'file' }}          | ${{ filename: 'file', extension: '' }}
+      ${{ type: 'file', name: 'file.html.ext' }} | ${{ filename: 'file.html', extension: '.ext' }}
+      ${{ type: 'file', name: 'file.' }}         | ${{ filename: 'file', extension: '.' }}
+      ${{ type: 'file', name: 'file..' }}        | ${{ filename: 'file.', extension: '.' }}
+      ${{ type: 'file', name: 'file..ext' }}     | ${{ filename: 'file.', extension: '.ext' }}
+      ${{ type: 'file', name: '.file' }}         | ${{ filename: '.file', extension: '' }}
+      ${{ type: 'file', name: '.file.ext' }}     | ${{ filename: '.file', extension: '.ext' }}
+    `(`should splits $opts.name into $result`, ({ opts, result }) => {
+      expect(fileModel.splitFilename(opts)).toEqual(result)
     })
-    const { stringify } = JSON
-
-    const scenarios = [
-      { filename: 'file', extension: '.ext' },
-      { filename: 'file', extension: '' },
-      { filename: 'file.html', extension: '.ejs' },
-      { filename: 'file', extension: '.' },
-      { filename: 'file.', extension: '.' },
-      { filename: 'file.', extension: '.ext' },
-      { filename: '.file', extension: '' },
-      { filename: '.file', extension: '.ext' }
-    ]
-
-    for (const expectation of scenarios) {
-      it(`splits ${stringify(joinName(expectation))} into ${stringify(
-        expectation
-      )}`, () => {
-        expect(fileModel.splitFilename(mkFile(expectation))).toEqual(
-          expectation
-        )
-      })
-    }
-
     it('should throw an error if the file is not correct', () => {
       expect(() => fileModel.splitFilename({})).toThrow()
       expect(() => fileModel.splitFilename({ name: null })).toThrow()
@@ -506,48 +491,6 @@ describe('File Model', () => {
           dir_id: 'dir-b1e1c256',
           _type: 'io.cozy.files'
         }
-      })
-    })
-  })
-
-  describe('splitFilename', () => {
-    const name = ({ filename, extension }) => filename + extension
-    const file = expectation => ({ type: 'file', name: name(expectation) })
-    const { stringify } = JSON
-
-    const scenarios = [
-      { filename: 'file', extension: '.ext' },
-      { filename: 'file', extension: '' },
-      { filename: 'file.html', extension: '.ejs' },
-      { filename: 'file', extension: '.' },
-      { filename: 'file.', extension: '.' },
-      { filename: 'file.', extension: '.ext' },
-      { filename: '.file', extension: '' },
-      { filename: '.file', extension: '.ext' }
-    ]
-
-    for (const expectation of scenarios) {
-      it(`splits ${stringify(name(expectation))} into ${stringify(
-        expectation
-      )}`, () => {
-        expect(fileModel.splitFilename(file(expectation))).toEqual(expectation)
-      })
-    }
-
-    it('should throw an error if the file is not correct', () => {
-      const file = {}
-
-      expect(() => fileModel.splitFilename(file)).toThrow()
-    })
-    it('should return only the folder name if its a folder', () => {
-      const file = {
-        name: 'foo',
-        type: 'directory'
-      }
-      const result = fileModel.splitFilename(file)
-      expect(result).toEqual({
-        filename: 'foo',
-        extension: ''
       })
     })
   })
