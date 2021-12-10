@@ -17,7 +17,7 @@
 ### Advanced
 
 - API docs
-  - [cozy-client](docs/api/cozy-client.md)
+  - [cozy-client](docs/api/cozy-client/README.md)
   - [cozy-pouch-link](docs/api/cozy-pouch-link.md)
   - [cozy-stack-client](docs/api/cozy-stack-client.md)
 
