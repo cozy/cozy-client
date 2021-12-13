@@ -264,6 +264,26 @@ The mime-type of the target file, or an empty string is the target is not a file
 
 ***
 
+### hasCertifications
+
+▸ `Const` **hasCertifications**(`file`): `boolean`
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `file` | `IOCozyFile` | io.cozy.files document |
+
+*Returns*
+
+`boolean`
+
+*Defined in*
+
+[packages/cozy-client/src/models/file.js:585](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L585)
+
+***
+
 ### hasMetadataAttribute
 
 ▸ `Const` **hasMetadataAttribute**(`__namedParameters`): `boolean`
@@ -285,6 +305,26 @@ Whether the file's metadata attribute exists
 *Defined in*
 
 [packages/cozy-client/src/models/file.js:293](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L293)
+
+***
+
+### hasQualifications
+
+▸ `Const` **hasQualifications**(`file`): `boolean`
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `file` | `IOCozyFile` | io.cozy.files document |
+
+*Returns*
+
+`boolean`
+
+*Defined in*
+
+[packages/cozy-client/src/models/file.js:577](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L577)
 
 ***
 
@@ -328,6 +368,26 @@ Whether the file's metadata attribute exists
 
 ***
 
+### isFromKonnector
+
+▸ `Const` **isFromKonnector**(`file`): `boolean`
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `file` | `IOCozyFile` | io.cozy.files document |
+
+*Returns*
+
+`boolean`
+
+*Defined in*
+
+[packages/cozy-client/src/models/file.js:596](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L596)
+
+***
+
 ### isNote
 
 ▸ `Const` **isNote**(`file`): `boolean`
@@ -367,6 +427,27 @@ Whether the file is supported by Only Office
 *Defined in*
 
 [packages/cozy-client/src/models/file.js:74](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L74)
+
+***
+
+### isPlainText
+
+▸ `Const` **isPlainText**(`mimeType?`, `fileName?`): `boolean`
+
+*Parameters*
+
+| Name | Type | Default value |
+| :------ | :------ | :------ |
+| `mimeType` | `string` | `''` |
+| `fileName` | `string` | `''` |
+
+*Returns*
+
+`boolean`
+
+*Defined in*
+
+[packages/cozy-client/src/models/file.js:569](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L569)
 
 ***
 

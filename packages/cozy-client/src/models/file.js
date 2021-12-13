@@ -560,3 +560,39 @@ export const doMobileUpload = async (client, fileURL, options) => {
   const file = await readMobileFile(fileURL)
   return uploadFileWithConflictStrategy(client, file, options)
 }
+
+/**
+ * @param {string} [mimeType=''] - Mime type of file
+ * @param {string} [fileName=''] - Name of file
+ * @returns {boolean}
+ */
+export const isPlainText = (mimeType = '', fileName = '') => {
+  return mimeType ? /^text\//.test(mimeType) : /\.(txt|md)$/.test(fileName)
+}
+
+/**
+ * @param {IOCozyFile} file - io.cozy.files document
+ * @returns {boolean}
+ */
+export const hasQualifications = file => {
+  return has(file, 'metadata.qualification')
+}
+
+/**
+ * @param {IOCozyFile} file - io.cozy.files document
+ * @returns {boolean}
+ */
+export const hasCertifications = file => {
+  return (
+    get(file, 'metadata.carbonCopy', false) ||
+    get(file, 'metadata.electronicSafe', false)
+  )
+}
+
+/**
+ * @param {IOCozyFile} file - io.cozy.files document
+ * @returns {boolean}
+ */
+export const isFromKonnector = file => {
+  return has(file, 'cozyMetadata.sourceAccount')
+}
