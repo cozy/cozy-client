@@ -57,6 +57,10 @@ export function generateFileNameForRevision(file: IOCozyFile, revision: object, 
 export function uploadFileWithConflictStrategy(client: CozyClient, file: string | ArrayBuffer, options: FileUploadOptions): any;
 export function readMobileFile(fileURL: string): Promise<any>;
 export function doMobileUpload(client: CozyClient, fileURL: string, options: FileUploadOptions): Promise<any>;
+export function isPlainText(mimeType?: string, fileName?: string): boolean;
+export function hasQualifications(file: IOCozyFile): boolean;
+export function hasCertifications(file: IOCozyFile): boolean;
+export function isFromKonnector(file: IOCozyFile): boolean;
 export type FileUploadOptions = {
     /**
      * - The file name to upload

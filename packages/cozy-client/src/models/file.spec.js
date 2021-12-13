@@ -154,6 +154,53 @@ describe('File Model', () => {
     ).toBe(false)
   })
 
+  describe('hasQualifications', () => {
+    it.each`
+      file                                                                      | result
+      ${{ name: 'file01', metadata: { qualification: { label: 'passport' } } }} | ${true}
+      ${{ name: 'file02', metadata: {} }}                                       | ${false}
+      ${{ name: 'file03' }}                                                     | ${false}
+    `(
+      `should test if a $file.name has a qualification or not`,
+      ({ file, result }) => {
+        expect(fileModel.hasQualifications(file)).toEqual(result)
+      }
+    )
+  })
+
+  describe('hasCertifications', () => {
+    it.each`
+      file                                                                          | result
+      ${{ name: 'file01', metadata: { carbonCopy: true } }}                         | ${true}
+      ${{ name: 'file02', metadata: { electronicSafe: true } }}                     | ${true}
+      ${{ name: 'file03', metadata: { carbonCopy: true, electronicSafe: false } }}  | ${true}
+      ${{ name: 'file04', metadata: { carbonCopy: false, electronicSafe: true } }}  | ${true}
+      ${{ name: 'file05', metadata: { carbonCopy: true, electronicSafe: true } }}   | ${true}
+      ${{ name: 'file06', metadata: { carbonCopy: false, electronicSafe: false } }} | ${false}
+      ${{ name: 'file07', metadata: {} }}                                           | ${false}
+      ${{ name: 'file08' }}                                                         | ${false}
+    `(
+      `should test if a $file.name has a certification or not`,
+      ({ file, result }) => {
+        expect(fileModel.hasCertifications(file)).toEqual(result)
+      }
+    )
+  })
+
+  describe('isFromKonnector', () => {
+    it.each`
+      file                                                                      | result
+      ${{ name: 'file01', cozyMetadata: { sourceAccount: 'sourceAccountId' } }} | ${true}
+      ${{ name: 'file02', cozyMetadata: {} }}                                   | ${false}
+      ${{ name: 'file03' }}                                                     | ${false}
+    `(
+      `should test if a $file.name is from connector or not`,
+      ({ file, result }) => {
+        expect(fileModel.isFromKonnector(file)).toEqual(result)
+      }
+    )
+  })
+
   describe('normalizeFile', () => {
     const id = 'uuid123'
     const type = 'directory'
@@ -603,6 +650,53 @@ describe('File Model', () => {
       expect(updateFileSpy).toHaveBeenCalledWith('', {
         ...opts,
         fileId: 'file_id'
+      })
+    })
+  })
+
+  describe('isPlainText', () => {
+    describe('using mime types', () => {
+      it('should match mime types starting with "text/"', () => {
+        expect(fileModel.isPlainText('text/plain')).toBe(true)
+        expect(fileModel.isPlainText('text/markdown')).toBe(true)
+        expect(fileModel.isPlainText('application/text')).toBe(false)
+        expect(fileModel.isPlainText('something/text/else')).toBe(false)
+        expect(fileModel.isPlainText('text/vnd.cozy.note+markdown')).toBe(true)
+      })
+
+      it('should not match complex text formats', () => {
+        expect(fileModel.isPlainText('application/msword')).toBe(false)
+        expect(
+          fileModel.isPlainText('application/vnd.oasis.opendocument.text')
+        ).toBe(false)
+        expect(
+          fileModel.isPlainText('application/x-iwork-pages-sffpages')
+        ).toBe(false)
+      })
+
+      it('should not use the filename if a mime type is present', () => {
+        expect(
+          fileModel.isPlainText('application/msword', 'iswearitstext.txt')
+        ).toBe(false)
+      })
+    })
+
+    describe('using file names', () => {
+      it('should match txt files', () => {
+        expect(fileModel.isPlainText(undefined, 'iswearitstext.txt')).toBe(true)
+      })
+
+      it('should match md files', () => {
+        expect(fileModel.isPlainText(undefined, 'markdown.md')).toBe(true)
+      })
+
+      it('should not match anything else', () => {
+        expect(fileModel.isPlainText(undefined, 'file.doc')).toBe(false)
+        expect(fileModel.isPlainText(undefined, 'file.docx')).toBe(false)
+        expect(fileModel.isPlainText(undefined, 'file.pages')).toBe(false)
+        expect(fileModel.isPlainText(undefined, 'file.odt')).toBe(false)
+        expect(fileModel.isPlainText(undefined, 'file.csv')).toBe(false)
+        expect(fileModel.isPlainText(undefined, 'file.vcf')).toBe(false)
       })
     })
   })
