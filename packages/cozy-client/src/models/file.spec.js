@@ -244,7 +244,9 @@ describe('File Model', () => {
       expect(fileModel.splitFilename(opts)).toEqual(result)
     })
     it('should throw an error if the file is not correct', () => {
-      expect(() => fileModel.splitFilename({})).toThrow()
+      expect(() => fileModel.splitFilename({})).toThrow(
+        'file should have a name property'
+      )
       expect(() => fileModel.splitFilename({ name: null })).toThrow()
       expect(() => fileModel.splitFilename({ name: '' })).not.toThrow()
     })

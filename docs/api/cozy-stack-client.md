@@ -64,6 +64,9 @@ through OAuth.</p>
 <dt><a href="#isDocumentUpdateConflict">isDocumentUpdateConflict</a> ⇒ <code>boolean</code></dt>
 <dd><p>Helper to identify a document conflict</p>
 </dd>
+<dt><a href="#getIllegalCharacters">getIllegalCharacters</a> ⇒ <code>string</code></dt>
+<dd><p>Get the list of illegal characters in the file name</p>
+</dd>
 <dt><a href="#getIndexFields">getIndexFields</a> ⇒ <code>Array</code></dt>
 <dd><p>Compute fields that should be indexed for a mango
 query to work</p>
@@ -92,10 +95,6 @@ See <a href="https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a
 </dd>
 <dt><a href="#getAccessToken">getAccessToken()</a> ⇒ <code>string</code></dt>
 <dd><p>Get the app token string</p>
-</dd>
-<dt><a href="#sanitizeAttributes">sanitizeAttributes(attributes)</a> ⇒ <code><a href="#FileAttributes">FileAttributes</a></code> | <code><a href="#DirectoryAttributes">DirectoryAttributes</a></code></dt>
-<dd><p>Sanitize Attribute for an io.cozy.files</p>
-<p>Currently juste the name</p>
 </dd>
 <dt><a href="#garbageCollect">garbageCollect()</a></dt>
 <dd><p>Delete outdated results from cache</p>
@@ -745,6 +744,10 @@ Creates directory or file.
 - Used by StackLink to support CozyClient.create('io.cozy.files', options)
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+**Throws**:
+
+- <code>Error</code> - explaining reason why creation failed
+
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -758,6 +761,10 @@ updateFile - Updates a file's data
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
 **Returns**: <code>object</code> - Updated document  
+**Throws**:
+
+- <code>Error</code> - explaining reason why update failed
+
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1650,6 +1657,19 @@ Helper to identify a document conflict
 | --- | --- | --- |
 | error | <code>Error</code> | An error |
 
+<a name="getIllegalCharacters"></a>
+
+## getIllegalCharacters ⇒ <code>string</code>
+Get the list of illegal characters in the file name
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - illegal characters separated by spaces  
+**Access**: public  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | the file name |
+
 <a name="getIndexFields"></a>
 
 ## getIndexFields ⇒ <code>Array</code>
@@ -1735,19 +1755,6 @@ Get the app token string
 **Kind**: global function  
 **Returns**: <code>string</code> - token  
 **See**: CozyStackClient.getAccessToken  
-<a name="sanitizeAttributes"></a>
-
-## sanitizeAttributes(attributes) ⇒ [<code>FileAttributes</code>](#FileAttributes) \| [<code>DirectoryAttributes</code>](#DirectoryAttributes)
-Sanitize Attribute for an io.cozy.files
-
-Currently juste the name
-
-**Kind**: global function  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| attributes | [<code>FileAttributes</code>](#FileAttributes) \| [<code>DirectoryAttributes</code>](#DirectoryAttributes) | Attributes of the created file/directory |
-
 <a name="garbageCollect"></a>
 
 ## garbageCollect()

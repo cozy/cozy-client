@@ -22,7 +22,7 @@ const FILENAME_WITH_EXTENSION_REGEX = /(.+)(\..*)$/
  * @returns {object}  {filename, extension}
  */
 export const splitFilename = file => {
-  if (!isString(file.name)) throw new Error('file should have a name property ')
+  if (!isString(file.name)) throw new Error('file should have a name property')
 
   if (file.type === 'file') {
     const match = file.name.match(FILENAME_WITH_EXTENSION_REGEX)
@@ -318,7 +318,7 @@ export const getFullpath = async (client, dirId, name) => {
  *
  * @param {CozyClient} client             - The CozyClient instance
  * @param   {string} fileId               - The file's id (required)
- * @param   {object} destination
+ * @param   {object} destination          - The destination object containing:
  * @param   {string} destination.folderId - The destination folder's id (required)
  * @param   {string} destination.path     - The file's path after the move (optional, used to optimize performance in case of conflict)
  * @param   {boolean} force               - Whether we should overwrite, i.e. put to trash, the destination in case of conflict (defaults to false).

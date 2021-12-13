@@ -103,6 +103,7 @@ export namespace FILE_1 {
     export { _type_6 as _type };
     const label_6: string;
     export { label_6 as label };
+    export const name: string;
 }
 export namespace FILE_2 {
     const _id_7: number;

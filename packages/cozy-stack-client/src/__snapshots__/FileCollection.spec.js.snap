@@ -207,6 +207,7 @@ Array [
     "data": Object {
       "attributes": Object {
         "dir_id": "123",
+        "name": "correct-name",
       },
       "id": "42",
       "type": "io.cozy.files",

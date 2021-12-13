@@ -599,7 +599,7 @@ Move file to destination.
 | :------ | :------ | :------ | :------ |
 | `client` | [`CozyClient`](../classes/cozyclient.md) | `undefined` | The CozyClient instance |
 | `fileId` | `string` | `undefined` | The file's id (required) |
-| `destination` | `Object` | `undefined` |  |
+| `destination` | `Object` | `undefined` | The destination object containing: |
 | `destination.folderId` | `string` | `undefined` | The destination folder's id (required) |
 | `destination.path` | `string` | `undefined` | The file's path after the move (optional, used to optimize performance in case of conflict) |
 | `force` | `boolean` | `false` | Whether we should overwrite, i.e. put to trash, the destination in case of conflict (defaults to false). |
