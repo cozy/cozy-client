@@ -9,6 +9,7 @@ import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 import { uri, slugify, formatBytes } from './utils'
 import { FetchError } from './errors'
 import { dontThrowNotFoundError } from './Collection'
+import { getIllegalCharacters } from './getIllegalCharacter'
 
 /**
  * Attributes used for directory creation
@@ -67,18 +68,26 @@ const normalizeReferences = references => {
 
 const sanitizeFileName = name => name && name.trim()
 
-/**
- * Sanitize Attribute for an io.cozy.files
- *
- * Currently juste the name
- *
- * @param {FileAttributes|DirectoryAttributes} attributes - Attributes of the created file/directory
- * @returns {FileAttributes|DirectoryAttributes}
- */
-const sanitizeAttributes = attributes => {
-  if (attributes.name) attributes.name = sanitizeFileName(attributes.name)
-  return attributes
+const sanitizeAndValidateFileName = name => {
+  let safeName = sanitizeFileName(name)
+  if (typeof safeName !== 'string' || safeName === '') {
+    throw new Error('Missing name argument')
+  }
+
+  if (name === '.' || name === '..') {
+    throw new Error(`Invalid filename: ${name}`)
+  }
+
+  const illegalCharacters = getIllegalCharacters(safeName)
+  if (illegalCharacters.length) {
+    throw new Error(
+      `Invalid filename containing illegal character(s): ${illegalCharacters}`
+    )
+  }
+
+  return safeName
 }
+
 export const isFile = ({ _type, type }) =>
   _type === 'io.cozy.files' || type === 'directory' || type === 'file'
 
@@ -384,6 +393,7 @@ class FileCollection extends DocumentCollection {
    *
    * @param {FileAttributes|DirectoryAttributes} attributes - Attributes of the created file/directory
    * @param {File|Blob|string|ArrayBuffer} attributes.data Will be used as content of the created file
+   * @throws {Error} - explaining reason why creation failed
    */
   async create(attributes) {
     if (attributes.type === 'directory') {
@@ -397,8 +407,9 @@ class FileCollection extends DocumentCollection {
   /***
    * Update the io.cozy.files
    * Used by StackLink to support CozyClient.save({file})
-   * @param {FileAttributes}  The file with its new content
+   * @param {FileAttributes} file - The file with its new content
    * @returns {FileAttributes} Updated document
+   * @throws {Error} - explaining reason why update failed
    */
 
   async update(file) {
@@ -412,6 +423,7 @@ class FileCollection extends DocumentCollection {
    * @param {File|Blob|Stream|string|ArrayBuffer} data file to be uploaded
    * @param {FileAttributes} params Additional parameters
    * @param  {object}  params.options     Options to pass to doUpload method (additional headers)
+   * @throws {Error} - explaining reason why creation failed
    */
   async createFile(
     data,
@@ -429,10 +441,9 @@ class FileCollection extends DocumentCollection {
     if (!name && typeof data.name === 'string') {
       name = data.name
     }
-    name = sanitizeFileName(name)
-    if (typeof name !== 'string' || name === '') {
-      throw new Error('missing name argument')
-    }
+
+    name = sanitizeAndValidateFileName(name)
+
     if (executable === undefined) {
       executable = false
     }
@@ -456,6 +467,7 @@ class FileCollection extends DocumentCollection {
    * @param {FileAttributes} params       Additional parameters
    * @param  {object}  params.options     Options to pass to doUpload method (additional headers)
    * @returns {object}                    Updated document
+   * @throws {Error} - explaining reason why update failed
    */
   async updateFile(
     data,
@@ -469,10 +481,7 @@ class FileCollection extends DocumentCollection {
     if (!fileName || typeof fileName !== 'string') {
       throw new Error('missing name in data argument')
     }
-    const sanitizedName = sanitizeFileName(fileName)
-    if (typeof sanitizedName !== 'string' || sanitizedName === '') {
-      throw new Error('missing name argument')
-    }
+    const sanitizedName = sanitizeAndValidateFileName(fileName)
     /**
      * We already use the body to send the content of the file. So we have 2 choices :
      * Use an object in a query string to send the metadata
@@ -700,13 +709,12 @@ class FileCollection extends DocumentCollection {
    * @private
    * @param  {DirectoryAttributes} attributes - Attributes of the directory
    * @returns {Promise}
+   * @throws {Error} - explaining reason why creation failed
    */
   async createDirectory(attributes = {}) {
     const { name, dirId, lastModifiedDate } = attributes
-    const safeName = sanitizeFileName(name)
-    if (typeof name !== 'string' || safeName === '') {
-      throw new Error('missing name argument')
-    }
+    const safeName = sanitizeAndValidateFileName(name)
+
     const lastModified =
       lastModifiedDate &&
       (typeof lastModifiedDate === 'string'
@@ -796,10 +804,15 @@ class FileCollection extends DocumentCollection {
    * @param  {string} id         File id
    * @param  {object} attributes New file attributes
    * @returns {object}            Updated document
+   * @throws {Error} - explaining reason why update failed
    */
   async updateAttributes(id, attributes) {
-    let attributesToSanitize = { ...attributes }
-    const sanitizedAttributes = sanitizeAttributes(attributesToSanitize)
+    const sanitizedAttributes = { ...attributes }
+
+    if (attributes.name) {
+      sanitizedAttributes.name = sanitizeAndValidateFileName(attributes.name)
+    }
+
     const resp = await this.stackClient.fetchJSON('PATCH', uri`/files/${id}`, {
       data: {
         type: 'io.cozy.files',

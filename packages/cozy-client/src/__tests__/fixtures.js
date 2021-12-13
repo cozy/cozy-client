@@ -84,7 +84,8 @@ export const FILE_1 = {
   _id: 1,
   _rev: '3-bd9bb7286a094842b954d9e86429090d',
   _type: 'io.cozy.files',
-  label: 'File 1'
+  label: 'File 1',
+  name: 'New document name'
 }
 export const FILE_2 = {
   _id: 2,

@@ -173,6 +173,67 @@ describe('FileCollection', () => {
     })
   })
 
+  describe('create', () => {
+    it('file - should throw illegal characters errors when invalid file name', async () => {
+      expect.assertions(1)
+      try {
+        await collection.create({ name: 'incorrect/filename' })
+      } catch (error) {
+        expect(error.message).toEqual(
+          'Invalid filename containing illegal character(s): /'
+        )
+      }
+    })
+    it('file - should throw missing name errors when name is multiple spaces', async () => {
+      expect.assertions(1)
+      try {
+        await collection.create({ name: '   ' })
+      } catch (error) {
+        expect(error.message).toEqual('Missing name argument')
+      }
+    })
+
+    it('file - should throw incorrect file name errors when name is forbidden', async () => {
+      expect.assertions(1)
+      try {
+        await collection.create({ name: '..' })
+      } catch (error) {
+        expect(error.message).toEqual('Invalid filename: ..')
+      }
+    })
+
+    it('directory - should throw illegal characters errors when invalid file name', async () => {
+      expect.assertions(1)
+      try {
+        await collection.create({
+          name: 'incorrect/filename',
+          type: 'directory'
+        })
+      } catch (error) {
+        expect(error.message).toEqual(
+          'Invalid filename containing illegal character(s): /'
+        )
+      }
+    })
+    it('directory - should throw missing name errors when name is multiple spaces', async () => {
+      expect.assertions(1)
+      try {
+        await collection.create({ name: '   ', type: 'directory' })
+      } catch (error) {
+        expect(error.message).toEqual('Missing name argument')
+      }
+    })
+
+    it('directory - should throw incorrect file name errors when name is forbidden', async () => {
+      expect.assertions(1)
+      try {
+        await collection.create({ name: '..', type: 'directory' })
+      } catch (error) {
+        expect(error.message).toEqual('Invalid filename: ..')
+      }
+    })
+  })
+
   describe('createDirectory', () => {
     const NEW_DIR = {
       name: 'notes',
@@ -454,9 +515,56 @@ describe('FileCollection', () => {
       client.fetchJSON.mockClear()
     })
 
+    it('should not fetch json when file name is not valid', async () => {
+      try {
+        await collection.updateAttributes('42', {
+          dir_id: '123',
+          name: 'incorrect / name'
+        })
+      } catch (error) {
+        expect(client.fetchJSON.mock.calls.length).toEqual(0)
+      }
+    })
+
+    it('should throw error when file name contains illegal characters', async () => {
+      try {
+        await collection.updateAttributes('42', {
+          dir_id: '123',
+          name: 'incorrect / name'
+        })
+      } catch (error) {
+        expect(error.message).toEqual(
+          'Invalid filename containing illegal character(s): /'
+        )
+      }
+    })
+
+    it('should throw error when file name is forbidden', async () => {
+      try {
+        await collection.updateAttributes('42', {
+          dir_id: '123',
+          name: '.'
+        })
+      } catch (error) {
+        expect(error.message).toEqual('Invalid filename: .')
+      }
+    })
+
+    it('should throw error when file name is only space', async () => {
+      try {
+        await collection.updateAttributes('42', {
+          dir_id: '123',
+          name: '    '
+        })
+      } catch (error) {
+        expect(error.message).toEqual('Missing name argument')
+      }
+    })
+
     it('should call the right route', async () => {
       await collection.updateAttributes('42', {
-        dir_id: '123'
+        dir_id: '123',
+        name: 'correct-name'
       })
       expect(client.fetchJSON.mock.calls.length).toBeGreaterThan(0)
       expect(
@@ -528,6 +636,62 @@ describe('FileCollection', () => {
 
     afterEach(() => {
       client.fetchJSON.mockClear()
+    })
+
+    it('should not fetch json when file name is not valid', async () => {
+      try {
+        const data = new File([''], 'mydoc.epub')
+        const params = {
+          fileId: '59140416-b95f',
+          name: '/'
+        }
+        await collection.updateFile(data, params)
+      } catch (error) {
+        expect(client.fetchJSON.mock.calls.length).toEqual(0)
+      }
+    })
+
+    it('should throw error when file name contains illegal characters', async () => {
+      try {
+        const data = new File([''], 'mydoc.epub')
+        const params = {
+          fileId: '59140416-b95f',
+          name: 'illegal/characters'
+        }
+        await collection.updateFile(data, params)
+      } catch (error) {
+        expect(error.message).toEqual(
+          'Invalid filename containing illegal character(s): /'
+        )
+      }
+    })
+
+    it('should throw error when file name is forbidden', async () => {
+      try {
+        const data = new File([''], 'mydoc.epub')
+        const params = {
+          fileId: '59140416-b95f',
+          name: '..'
+        }
+        await collection.updateFile(data, params)
+      } catch (error) {
+        expect(error.message).toEqual('Invalid filename: ..')
+      }
+    })
+
+    it('should throw error when file name is only space', async () => {
+      try {
+        const data = new File([''], 'mydoc.epub')
+        const params = {
+          fileId: '59140416-b95f',
+          checksum: 'a6dabd99832b270468e254814df2ed20',
+          metadata: { type: 'bill' },
+          name: ' '
+        }
+        await collection.updateFile(data, params)
+      } catch (error) {
+        expect(error.message).toEqual('Missing name argument')
+      }
     })
 
     it('should update a file without metadata', async () => {
