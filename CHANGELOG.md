@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.6.1](https://github.com/cozy/cozy-client/compare/v27.6.0...v27.6.1) (2021-12-15)
+
+
+### Bug Fixes
+
+* **filename:** Get illegal characters from file name and returns them ([7c00526](https://github.com/cozy/cozy-client/commit/7c00526283dd865aea929c2983d32f7a12121c65))
+
+
+
+
+
 # [27.6.0](https://github.com/cozy/cozy-client/compare/v27.5.1...v27.6.0) (2021-12-13)
 
 
