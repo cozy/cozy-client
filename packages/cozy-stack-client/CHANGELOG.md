@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.6.3](https://github.com/cozy/cozy-client/compare/v27.6.2...v27.6.3) (2021-12-16)
+
+
+### Bug Fixes
+
+* **docs:** Add JS Docs on File Collection ([c3f739a](https://github.com/cozy/cozy-client/commit/c3f739a60a4d32501970997585c0b8f7755ca6b9))
+
+
+
+
+
 ## [27.6.1](https://github.com/cozy/cozy-client/compare/v27.6.0...v27.6.1) (2021-12-15)
 
 
