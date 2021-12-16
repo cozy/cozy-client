@@ -36,6 +36,7 @@ import { getIllegalCharacters } from './getIllegalCharacter'
  *
  * @typedef {object} FileDocument
  * @property {string} _id - Id of the file
+ * @property {FileAttributes} attributes - Attributes of the file
  */
 
 /**
@@ -55,19 +56,48 @@ import { getIllegalCharacters } from './getIllegalCharacter'
 const ROOT_DIR_ID = 'io.cozy.files.root-dir'
 const CONTENT_TYPE_OCTET_STREAM = 'application/octet-stream'
 
+/**
+ * Normalize a file, adding document's doctype if needed
+ *
+ * @param  {FileDocument} file - File to normalize
+ * @returns {FileDocument} normalized file
+ * @private
+ */
 const normalizeFile = file => ({
   ...normalizeDoc(file, 'io.cozy.files'),
   ...file.attributes
 })
 
+/**
+ * Normalize references, expliciting _type and _id — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/
+ *
+ * @param  {array.<object>} references - The list of files referenced by a document to normalize
+ * @returns {array.<object>} the data attribute of the normalized references
+ * @private
+ */
 const normalizeReferences = references => {
   return references
     ? references.map(ref => ({ _type: ref.type, _id: ref.id }))
     : []
 }
 
+/**
+ * Sanitize the file name by trimming spaces
+ *
+ * @param {string} name - The file name to trim
+ * @returns {string} the trimmed file name
+ * @private
+ */
 const sanitizeFileName = name => name && name.trim()
 
+/**
+ * Sanitize and validate the file name - throw errors according to case
+ *
+ * @param {string} name - The file name
+ * @returns {string} the trimmed safe file name
+ * @throws {Error} - explaining reason why file name is not valid
+ * @private
+ */
 const sanitizeAndValidateFileName = name => {
   let safeName = sanitizeFileName(name)
   if (typeof safeName !== 'string' || safeName === '') {
@@ -88,9 +118,22 @@ const sanitizeAndValidateFileName = name => {
   return safeName
 }
 
+/**
+ * Returns true when parameter has type directory, file or has _type io.cozy.files
+ *
+ * @param {string} type - The type of the file
+ * @param {string} _type - The _type of the file
+ * @returns {boolean} true when objects has type directory, file or has _type io.cozy.files or false
+ */
 export const isFile = ({ _type, type }) =>
   _type === 'io.cozy.files' || type === 'directory' || type === 'file'
 
+/**
+ * Returns true when parameters has type directory
+ *
+ * @param {string} type - The type of the file
+ * @returns {boolean} true when parameters has type directory or false
+ */
 export const isDirectory = ({ type }) => type === 'directory'
 
 const raceWithCondition = (promises, predicate) => {
