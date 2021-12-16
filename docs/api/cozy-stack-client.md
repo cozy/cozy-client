@@ -64,6 +64,12 @@ through OAuth.</p>
 <dt><a href="#isDocumentUpdateConflict">isDocumentUpdateConflict</a> ⇒ <code>boolean</code></dt>
 <dd><p>Helper to identify a document conflict</p>
 </dd>
+<dt><a href="#isFile">isFile</a> ⇒ <code>boolean</code></dt>
+<dd><p>Returns true when parameter has type directory, file or has _type io.cozy.files</p>
+</dd>
+<dt><a href="#isDirectory">isDirectory</a> ⇒ <code>boolean</code></dt>
+<dd><p>Returns true when parameters has type directory</p>
+</dd>
 <dt><a href="#getIllegalCharacters">getIllegalCharacters</a> ⇒ <code>string</code></dt>
 <dd><p>Get the list of illegal characters in the file name</p>
 </dd>
@@ -1657,6 +1663,31 @@ Helper to identify a document conflict
 | --- | --- | --- |
 | error | <code>Error</code> | An error |
 
+<a name="isFile"></a>
+
+## isFile ⇒ <code>boolean</code>
+Returns true when parameter has type directory, file or has _type io.cozy.files
+
+**Kind**: global constant  
+**Returns**: <code>boolean</code> - true when objects has type directory, file or has _type io.cozy.files or false  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| type | <code>string</code> | The type of the file |
+| _type | <code>string</code> | The _type of the file |
+
+<a name="isDirectory"></a>
+
+## isDirectory ⇒ <code>boolean</code>
+Returns true when parameters has type directory
+
+**Kind**: global constant  
+**Returns**: <code>boolean</code> - true when parameters has type directory or false  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| type | <code>string</code> | The type of the file |
+
 <a name="getIllegalCharacters"></a>
 
 ## getIllegalCharacters ⇒ <code>string</code>
@@ -1944,6 +1975,7 @@ Document representing a io.cozy.files
 | Name | Type | Description |
 | --- | --- | --- |
 | _id | <code>string</code> | Id of the file |
+| attributes | [<code>FileAttributes</code>](#FileAttributes) | Attributes of the file |
 
 <a name="Stream"></a>
 
