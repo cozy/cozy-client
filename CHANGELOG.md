@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.6.2](https://github.com/cozy/cozy-client/compare/v27.6.1...v27.6.2) (2021-12-16)
+
+
+### Bug Fixes
+
+* Update dependency date-fns to v2.27.0 ([5ec7911](https://github.com/cozy/cozy-client/commit/5ec7911352072a72de99ec68f545f0b36c56c990))
+* **doc:** Update readme + bump version because npm publish failed ([f176dc7](https://github.com/cozy/cozy-client/commit/f176dc7761df738bc75cf383cb7a837acd2d5d5e))
+
+
+
+
+
 ## [27.6.1](https://github.com/cozy/cozy-client/compare/v27.6.0...v27.6.1) (2021-12-15)
 
 
