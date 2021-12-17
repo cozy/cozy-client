@@ -194,12 +194,20 @@ class PermissionCollection extends DocumentCollection {
     }
   }
 
+  /**
+   * async getOwnPermissions - deprecated: please use fetchOwnPermissions instead
+   *
+   * @typedef {object} Permission
+   *
+   * @returns {Permission} permission
+   */
   async getOwnPermissions() {
     console.warn(
       'getOwnPermissions is deprecated, please use fetchOwnPermissions instead'
     )
     return this.fetchOwnPermissions()
   }
+
   /**
    * async fetchOwnPermissions - Fetches permissions
    *

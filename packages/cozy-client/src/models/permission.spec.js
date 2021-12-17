@@ -42,7 +42,7 @@ function setupClient(verbs = [], ids = ['first', 'other']) {
   return {
     query: async data => data,
     collection: () => ({
-      getOwnPermissions: async () => ({
+      fetchOwnPermissions: async () => ({
         data: {
           id: '9385e37389cb9f71a230168f245df2f8',
           _id: '9385e37389cb9f71a230168f245df2f8',

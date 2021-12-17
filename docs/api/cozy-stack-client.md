@@ -182,6 +182,9 @@ not.</p>
 <dd><p>Attributes representing a design doc</p>
 </dd>
 <dt><a href="#Permission">Permission</a> ⇒ <code><a href="#Permission">Permission</a></code></dt>
+<dd><p>async getOwnPermissions - deprecated: please use fetchOwnPermissions instead</p>
+</dd>
+<dt><a href="#Permission">Permission</a> ⇒ <code><a href="#Permission">Permission</a></code></dt>
 <dd><p>async fetchOwnPermissions - Fetches permissions</p>
 </dd>
 <dt><a href="#Rule">Rule</a> : <code>object</code></dt>
@@ -2232,6 +2235,13 @@ Attributes representing a design doc
 | language | <code>string</code> | The index language. Can be 'query' for mango index or 'javascript' for views. |
 | views | <code>object</code> | Views definition, i.e. the index. |
 
+<a name="Permission"></a>
+
+## Permission ⇒ [<code>Permission</code>](#Permission)
+async getOwnPermissions - deprecated: please use fetchOwnPermissions instead
+
+**Kind**: global typedef  
+**Returns**: [<code>Permission</code>](#Permission) - permission  
 <a name="Permission"></a>
 
 ## Permission ⇒ [<code>Permission</code>](#Permission)

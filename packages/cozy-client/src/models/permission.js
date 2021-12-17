@@ -51,7 +51,7 @@ export function isReadOnly(perm, options = {}) {
  */
 export async function fetchOwn(client) {
   const collection = client.collection('io.cozy.permissions')
-  const data = await collection.getOwnPermissions()
+  const data = await collection.fetchOwnPermissions()
   const permissions = get(data, 'data.attributes.permissions')
   if (!permissions) throw `Can't get self permissions`
   return Object.values(permissions)
