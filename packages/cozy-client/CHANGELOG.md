@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.6.5](https://github.com/cozy/cozy-client/compare/v27.6.4...v27.6.5) (2021-12-20)
+
+
+### Bug Fixes
+
+* Use fetchOwnPermissions instead of deprecated getOwnPermissions ([fb1dd51](https://github.com/cozy/cozy-client/commit/fb1dd517c3f8ca6e184055ad3194d387a5901027))
+
+
+
+
+
 ## [27.6.4](https://github.com/cozy/cozy-client/compare/v27.6.3...v27.6.4) (2021-12-20)
 
 **Note:** Version bump only for package cozy-client
