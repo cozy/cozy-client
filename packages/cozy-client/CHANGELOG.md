@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.6.4](https://github.com/cozy/cozy-client/compare/v27.6.3...v27.6.4) (2021-12-20)
+
+**Note:** Version bump only for package cozy-client
+
+
+
+
+
 ## [27.6.3](https://github.com/cozy/cozy-client/compare/v27.6.2...v27.6.3) (2021-12-16)
 
 **Note:** Version bump only for package cozy-client

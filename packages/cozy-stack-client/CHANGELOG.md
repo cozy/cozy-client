@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.6.4](https://github.com/cozy/cozy-client/compare/v27.6.3...v27.6.4) (2021-12-20)
+
+
+### Bug Fixes
+
+* Konnectors collection now ignores id in manifest ([96e08e9](https://github.com/cozy/cozy-client/commit/96e08e91f0447cea60eb2c393ecb7d6935603bff))
+
+
+
+
+
 ## [27.6.3](https://github.com/cozy/cozy-client/compare/v27.6.2...v27.6.3) (2021-12-16)
 
 
