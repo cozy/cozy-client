@@ -42,6 +42,8 @@ const identityLabels = [
   'family_record_book',
   'birth_certificate',
   'driver_license',
+  'citizen_registration_certificate',
+  'personal_sporting_licence',
   'other_identity_document'
 ]
 
@@ -56,6 +58,7 @@ const familyLabels = [
   'divorce',
   'large_family_card',
   'caf',
+  'payment_proof_family_allowance',
   'other_family_document'
 ]
 
@@ -68,9 +71,11 @@ const workStudyLabels = [
   'pay_sheet',
   'unemployment_benefit',
   'pension',
+  'work_disability_recognition',
   'other_revenue',
   'gradebook',
   'student_card',
+  'school_attendance_certificate',
   'resume',
   'motivation_letter',
   'other_work_document'
@@ -83,9 +88,13 @@ const healthLabels = [
   'health_certificate',
   'health_book',
   'national_health_insurance_card',
+  'national_health_insurance_right_certificate',
   'health_insurance_card',
   'prescription',
-  'health_invoice'
+  'health_invoice',
+  'work_disability_recognition',
+  'pregnancy_medical_certificate',
+  'other_health_document'
 ]
 
 /**
@@ -100,8 +109,10 @@ const homeLabels = [
   'house_sale_agreeement',
   'building_permit',
   'technical_diagnostic_record',
+  'unfit_for_habitation_declaration',
   'lease',
   'rent_receipt',
+  'accommodation_proof',
   'house_insurance',
   'work_quote',
   'work_invoice',
@@ -132,6 +143,7 @@ const financeLabels = [
   'bank_details',
   'bank_statement',
   'loan_agreement',
+  'payment_proof_family_allowance',
   'other_bank_document'
 ]
 
