@@ -12,4 +12,4 @@
 
 *Defined in*
 
-[packages/cozy-client/src/models/document/documentTypeData.js:159](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/documentTypeData.js#L159)
+[packages/cozy-client/src/models/document/documentTypeData.js:171](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/documentTypeData.js#L171)

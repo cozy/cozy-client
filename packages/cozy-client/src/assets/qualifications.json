@@ -49,7 +49,8 @@
     },
     {
       "label": "other_identity_document",
-      "purpose": "attestation"
+      "purpose": "attestation",
+      "subjects": ["identity"]
     },
     {
       "label": "wedding",
@@ -86,7 +87,8 @@
       "subjects": ["right"]
     },
     {
-      "label": "other_family_document"
+      "label": "other_family_document",
+      "subjects": ["family"]
     },
     {
       "label": "diploma",
@@ -133,7 +135,7 @@
       "label": "student_card",
       "purpose": "attestation",
       "sourceCategory": "education",
-      "subjects": ["identity"]
+      "subjects": ["identity", "right", "employment", "education"]
     },
     {
       "label": "resume",
@@ -146,39 +148,59 @@
       "subjects": ["employment"]
     },
     {
-      "label": "other_work_document"
+      "label": "other_work_document",
+      "purpose": "employment"
     },
     {
       "label": "health_book",
       "purpose": "attestation",
       "sourceCategory": "health",
-      "subjects": ["identity", "capacity", "vaccine"]
+      "subjects": ["capacity", "vaccine"]
     },
     {
       "label": "health_certificate",
       "purpose": "attestation",
       "sourceCategory": "health",
-      "subjects": ["identity", "capacity", "vaccine"]
+      "subjects": ["capacity", "vaccine"]
+    },
+    {
+      "label": "pregnancy_medical_certificate",
+      "purpose": "attestation",
+      "sourceCategory": "health",
+      "subjects": ["pregnancy"]
+    },
+    {
+      "label": "work_disability_recognition",
+      "purpose": "attestation",
+      "sourceCategory": "health",
+      "subjects": ["right"]
     },
     {
       "label": "national_health_insurance_card",
       "purpose": "attestation",
       "sourceCategory": "gov",
       "sourceSubCategory": "health",
-      "subjects": ["identity", "insurance"]
+      "subjects": ["insurance"]
+    },
+    {
+      "label": "national_health_insurance_right_certificate",
+      "purpose": "attestation",
+      "sourceCategory": "gov",
+      "sourceSubCategory": "health",
+      "subjects": ["right", "insurance"]
     },
     {
       "label": "health_insurance_card",
       "purpose": "attestation",
       "sourceCategory": "insurance",
       "sourceSubCategory": "health",
-      "subjects": ["identity", "insurance"]
+      "subjects": ["insurance"]
     },
     {
       "label": "prescription",
       "purpose": "attestation",
       "sourceCategory": "health",
-      "subjects": ["identity", "right", "medecine"]
+      "subjects": ["right", "medecine"]
     },
     {
       "label": "health_invoice",
@@ -186,14 +208,15 @@
       "sourceCategory": "health"
     },
     {
-      "label": "other_health_document"
+      "label": "other_health_document",
+      "subjects": ["health"]
     },
     {
       "label": "vehicle_registration",
       "purpose": "attestation",
       "sourceCategory": "gov",
       "sourceSubCategory": "transport",
-      "subjects": ["right", "identity"]
+      "subjects": ["vehicule", "indentity", "right"]
     },
     {
       "label": "car_insurance",
@@ -213,7 +236,8 @@
       "sourceCategory": "transport"
     },
     {
-      "label": "other_transport_document"
+      "label": "other_transport_document",
+      "sourceCategory": "transport"
     },
     {
       "label": "house_sale_agreeement",
@@ -266,7 +290,8 @@
       "subjects": ["building", "house"]
     },
     {
-      "label": "other_house_document"
+      "label": "other_house_document",
+      "subjects": ["house"]
     },
     {
       "label": "phone_invoice",
@@ -338,15 +363,13 @@
     },
     {
       "label": "other_tax_document",
-      "sourceCategory": "gov",
-      "sourceSubCategory": "tax",
       "subjects": ["tax"]
     },
     {
       "label": "bank_details",
       "purpose": "attestation",
       "sourceCategory": "bank",
-      "subjects": ["identity"]
+      "subjects": ["bank_account"]
     },
     {
       "label": "bank_statement",
@@ -366,25 +389,66 @@
     {
       "label": "receipt",
       "purpose": "report"
+    },
+    {
+      "label": "payment_proof_family_allowance",
+      "purpose": "attestation",
+      "sourceCategory": "gov",
+      "sourceSubCategory": "tax",
+      "subjects": ["subvention"]
+    },
+    {
+      "label": "school_attendance_certificate",
+      "purpose": "attestation",
+      "sourceCategory": "education",
+      "subjects": ["identity", "right", "education"]
+    },
+    {
+      "label": "unfit_for_habitation_declaration",
+      "purpose": "attestation",
+      "sourceCategory": "gov",
+      "sourceSubCategory": "real_estate",
+      "subjects": ["compliance"]
+    },
+    {
+      "label": "accommodation_proof",
+      "purpose": "attestation",
+      "sourceCategory": "individual",
+      "subjects": ["address"]
+    },
+    {
+      "label": "citizen_registration_certificate",
+      "purpose": "attestation",
+      "sourceCategory": "gov",
+      "sourceSubCategory": "civil_registration",
+      "subjects": ["achievement","education"]
+    },
+    {
+      "label": "personal_sporting_licence",
+      "purpose": "attestation",
+      "sourceCategory": "gov",
+      "sourceSubCategory": "sport",
+      "subjects": ["permit", "invoice"]
     }
   ],
   "purposeKnownValues": [
-    "attestation", "contract", "invoice", "report", "description", "evaluation"
+    "attestation", "contract", "invoice", "report", "description", "evaluation", "employment"
   ],
   "sourceCategoryKnownValues": [
-    "bank", "insurance", "retail", "telecom", "energy", "water", "health", "gov",
+    "bank", "insurance", "retail", "telecom", "energy", "water", "health", "gov", "association",
     "education", "employer", "transport", "goods", "alimentation", "building",
-    "real_estate", "web"
+    "real_estate", "web", "individual"
   ],
   "sourceSubCategoryKnownValues": [
     "civil_registration", "immigration", "transport", "family", "tax", "health",
-    "real_estate", "mobile", "internet"
+    "real_estate", "mobile", "internet", "citizen", "sport"
   ],
   "subjectsKnownValues": [
-    "identity", "permit", "family", "driving", "right", "subvention", "achievement",
-    "degree", "work", "employment", "revenues", "history", "insurance", "drugs",
-    "medical_act", "car", "moto", "truck", "boat", "subscription", "buy/sale",
-    "house", "compliance", "building", "food", "real_estate", "tax",
-    "education", "statement", "course", "internet", "phone", "vaccine", "capacity"
+    "identity", "permit", "family", "address", "driving", "right", "subvention", "achievement",
+    "degree", "work", "employment", "revenues", "history", "insurance",
+    "medical_act", "vehicule", "car", "moto", "truck", "boat", "subscription", "buy/sale",
+    "house", "compliance", "building", "food", "real_estate", "tax", "address",
+    "education", "statement", "course", "internet", "phone", "vaccine", "capacity",
+    "health", "drugs", "child", "pregnancy", "bank_account"
   ]
 }
