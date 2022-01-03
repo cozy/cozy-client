@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.7.0](https://github.com/cozy/cozy-client/compare/v27.6.5...v27.7.0) (2022-01-03)
+
+
+### Features
+
+* Add of missing papers targeted for v1 ([25e4953](https://github.com/cozy/cozy-client/commit/25e4953cee9de7f7043aea33a2f2b67841435529))
+
+
+
+
+
 ## [27.6.5](https://github.com/cozy/cozy-client/compare/v27.6.4...v27.6.5) (2021-12-20)
 
 
