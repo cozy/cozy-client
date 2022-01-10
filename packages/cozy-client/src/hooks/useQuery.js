@@ -84,7 +84,15 @@ const useQuery = (queryDefinition, options) => {
     return client.query(generateFetchMoreQueryDefinition(queryState), { as })
   }, [as, client])
 
-  return { ...queryState, fetchMore: fetchMore }
+  const fetch = useCallback(() => {
+    return client.query(definition, options)
+  }, [client, definition, options])
+
+  return {
+    ...queryState,
+    fetchMore: fetchMore,
+    fetch: fetch
+  }
 }
 
 export const useQueries = querySpecs => {
