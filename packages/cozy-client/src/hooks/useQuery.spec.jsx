@@ -52,6 +52,46 @@ describe('use query', () => {
     })
   })
 
+  it('should share the same API than ObservableQuery', () => {
+    const {
+      hookResult: {
+        result: { current }
+      }
+    } = setupQuery({
+      queryOptions: {
+        as: 'simpsons'
+      },
+      queryDefinition: () => Q('io.cozy.simpsons')
+    })
+    expect(current).toMatchObject({
+      data: [
+        expect.objectContaining({ name: 'Homer' }),
+        expect.objectContaining({ name: 'Marge' })
+      ],
+      definition: expect.objectContaining({
+        doctype: 'io.cozy.simpsons'
+      })
+    })
+
+    expect(Object.keys(current)).toEqual(
+      expect.objectContaining([
+        'id',
+        'definition',
+        'fetchStatus',
+        'lastFetch',
+        'lastUpdate',
+        'lastErrorUpdate',
+        'lastError',
+        'hasMore',
+        'count',
+        'data',
+        'bookmark',
+        'options',
+        'fetchMore',
+        'fetch'
+      ])
+    )
+  })
   it('should query through the client in context', () => {
     const { client } = setupQuery({
       queryOptions: {
