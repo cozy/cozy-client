@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.8.0](https://github.com/cozy/cozy-client/compare/v27.7.0...v27.8.0) (2022-01-11)
+
+
+### Bug Fixes
+
+* Rebuild `permission.d.ts` to fit CI version ([380db52](https://github.com/cozy/cozy-client/commit/380db528004e9a64b244a99bb238351fac4f2a05))
+* UseQuery returns fetch method ([93e7f3d](https://github.com/cozy/cozy-client/commit/93e7f3d217353003795d43dfedf1397bb64815af))
+
+
+### Features
+
+* Add `react-native-google-safetynet` module as peerDependencies ([cd4b37f](https://github.com/cozy/cozy-client/commit/cd4b37fc3353b702035e773b2b423ef7e7aa3156))
+* Add `react-native-ios11-devicecheck` module  as peerDependencies ([b9ed2e9](https://github.com/cozy/cozy-client/commit/b9ed2e9c42518a50961f5b233b5f6ae1894ed7d6))
+* Add flagship certification mechanism ([fe8474c](https://github.com/cozy/cozy-client/commit/fe8474c3286393c996eb5704184de652aa8028fe))
+
+
+
+
+
 # [27.7.0](https://github.com/cozy/cozy-client/compare/v27.6.5...v27.7.0) (2022-01-03)
 
 
