@@ -65,6 +65,8 @@ import { QueryIDGenerator } from './store/queries'
 import stringify from 'json-stable-stringify'
 import PromiseCache from './promise-cache'
 
+import { certifyFlagship } from './flagship-certification/flagship-certification'
+
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
 
 const deprecatedHandler = msg => ({
@@ -1363,6 +1365,11 @@ client.query(Q('io.cozy.bills'))`)
   async startOAuthFlow(openURLCallback) {
     const stackClient = this.getStackClient()
     await stackClient.register()
+
+    if (stackClient.oauthOptions.shouldRequireFlagshipPermissions) {
+      await certifyFlagship(stackClient.oauthOptions.certificationConfig, this)
+    }
+
     return this.authorize(openURLCallback)
   }
 
