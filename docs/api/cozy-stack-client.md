@@ -181,6 +181,8 @@ not.</p>
 <dt><a href="#DesignDoc">DesignDoc</a> : <code>object</code></dt>
 <dd><p>Attributes representing a design doc</p>
 </dd>
+<dt><a href="#SessionCodeRes">SessionCodeRes</a></dt>
+<dd></dd>
 <dt><a href="#Permission">Permission</a> ⇒ <code><a href="#Permission">Permission</a></code></dt>
 <dd><p>async getOwnPermissions - deprecated: please use fetchOwnPermissions instead</p>
 </dd>
@@ -1061,6 +1063,7 @@ through OAuth.
     * [.getAuthCodeURL(stateCode, scopes)](#OAuthClient+getAuthCodeURL) ⇒ <code>string</code>
     * [.getAccessCodeFromURL(pageURL, stateCode)](#OAuthClient+getAccessCodeFromURL) ⇒ <code>string</code>
     * [.fetchAccessToken(accessCode, oauthOptionsArg, uri)](#OAuthClient+fetchAccessToken) ⇒ <code>Promise</code>
+    * [.fetchSessionCode()](#OAuthClient+fetchSessionCode) ⇒ [<code>Promise.&lt;SessionCodeRes&gt;</code>](#SessionCodeRes)
     * [.refreshToken()](#OAuthClient+refreshToken) ⇒ <code>Promise</code>
     * [.setToken(token)](#OAuthClient+setToken)
     * [.setOAuthOptions(options)](#OAuthClient+setOAuthOptions)
@@ -1178,6 +1181,17 @@ Exchanges an access code for an access token. This function does **not** update 
 | accessCode | <code>string</code> | The access code contained in the redirection URL — see `client.getAccessCodeFromURL()` |
 | oauthOptionsArg | <code>object</code> | — To use when OAuthClient is not yet registered (during login process) |
 | uri | <code>string</code> | — To use when OAuthClient is not yet registered (during login process) |
+
+<a name="OAuthClient+fetchSessionCode"></a>
+
+### oAuthClient.fetchSessionCode() ⇒ [<code>Promise.&lt;SessionCodeRes&gt;</code>](#SessionCodeRes)
+Fetches a new session code. Only usable by the Flagship application
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+**Returns**: [<code>Promise.&lt;SessionCodeRes&gt;</code>](#SessionCodeRes) - A promise that resolves with a new session_code  
+**Throws**:
+
+- <code>NotRegisteredException</code> When the client isn't certified to be the Flagship application
 
 <a name="OAuthClient+refreshToken"></a>
 
@@ -2010,6 +2024,7 @@ Document representing a io.cozy.oauth.clients
     * [.getAuthCodeURL(stateCode, scopes)](#OAuthClient+getAuthCodeURL) ⇒ <code>string</code>
     * [.getAccessCodeFromURL(pageURL, stateCode)](#OAuthClient+getAccessCodeFromURL) ⇒ <code>string</code>
     * [.fetchAccessToken(accessCode, oauthOptionsArg, uri)](#OAuthClient+fetchAccessToken) ⇒ <code>Promise</code>
+    * [.fetchSessionCode()](#OAuthClient+fetchSessionCode) ⇒ [<code>Promise.&lt;SessionCodeRes&gt;</code>](#SessionCodeRes)
     * [.refreshToken()](#OAuthClient+refreshToken) ⇒ <code>Promise</code>
     * [.setToken(token)](#OAuthClient+setToken)
     * [.setOAuthOptions(options)](#OAuthClient+setOAuthOptions)
@@ -2128,6 +2143,17 @@ Exchanges an access code for an access token. This function does **not** update 
 | oauthOptionsArg | <code>object</code> | — To use when OAuthClient is not yet registered (during login process) |
 | uri | <code>string</code> | — To use when OAuthClient is not yet registered (during login process) |
 
+<a name="OAuthClient+fetchSessionCode"></a>
+
+### oAuthClient.fetchSessionCode() ⇒ [<code>Promise.&lt;SessionCodeRes&gt;</code>](#SessionCodeRes)
+Fetches a new session code. Only usable by the Flagship application
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+**Returns**: [<code>Promise.&lt;SessionCodeRes&gt;</code>](#SessionCodeRes) - A promise that resolves with a new session_code  
+**Throws**:
+
+- <code>NotRegisteredException</code> When the client isn't certified to be the Flagship application
+
 <a name="OAuthClient+refreshToken"></a>
 
 ### oAuthClient.refreshToken() ⇒ <code>Promise</code>
@@ -2234,6 +2260,16 @@ Attributes representing a design doc
 | _id | <code>string</code> | Id of the design doc. Can be named, e.g. '_design/by_indexed_attribute' or not, e.g. '_design/12345' |
 | language | <code>string</code> | The index language. Can be 'query' for mango index or 'javascript' for views. |
 | views | <code>object</code> | Views definition, i.e. the index. |
+
+<a name="SessionCodeRes"></a>
+
+## SessionCodeRes
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| session_code | <code>string</code> | The value of the session code |
 
 <a name="Permission"></a>
 
