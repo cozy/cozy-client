@@ -82,5 +82,15 @@ In order to certify an app, the `cozy-stack` needs to have the following data:
   - It should be put in `flagship.apple_app_ids` in the `cozy-stack`'s configuration file
 - Android app's certificate digest
   - The Android certificate digest can be found in the Google Play app's Console, in `Configuration/App integrity` page
+    - On local dev environment, the dev certificate location is:
+      - On a ReactNative project: `<project_root>/android/app/debug.keystore`
+      - On an Android Studio project:
+        - On OSX: `~/.android/debug.keystore`
+        - On Windows: `%UserProfile%\.android\debug.keystore`
+      - On a Xamarin Project:
+        - On OSX: `~/.local/share/Xamarin/Mono for Android/debug.keystore`
+        - On Windows: `%LocalAppData%\Xamarin\Mono for Android\debug.keystore`
+    - To extract the certificat digest from local dev certificate:
+      - `keytool -list -v -keystore ./android/app/debug.keystore -alias androiddebugkey -storepass android -keypass android | grep "SHA256: " | cut -d " " -f 3 | xxd -r -p | openssl base64`
   - The certificate digest is the `App signing key certificate` in SHA-256 format converted from HEX to base64
   - It should be put in `flagship.apk_certificate_digests` in the `cozy-stack`'s configuration file
