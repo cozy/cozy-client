@@ -365,6 +365,21 @@ class OAuthClient extends CozyStackClient {
   }
 
   /**
+   * @typedef SessionCodeRes
+   * @property {string} session_code The value of the session code
+   */
+
+  /**
+   * Fetches a new session code. Only usable by the Flagship application
+   *
+   * @throws {NotRegisteredException} When the client isn't certified to be the Flagship application
+   * @returns {Promise<SessionCodeRes>} A promise that resolves with a new session_code
+   */
+  async fetchSessionCode() {
+    return this.fetchJSON('POST', '/auth/session_code')
+  }
+
+  /**
    * Retrieves a new access token by refreshing the currently used token.
    *
    * @throws {NotRegisteredException} When the client doesn't have it's registration information
