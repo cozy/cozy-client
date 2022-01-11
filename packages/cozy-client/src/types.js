@@ -285,7 +285,9 @@ import { QueryDefinition } from './queries/dsl'
  *
  * @typedef {'phone_invoice'|'isp_invoice'|'telecom_invoice'|'energy_invoice'|'water_invoice'|'appliance_invoice'|'web_service_invoice'|'restaurant_invoice'|'work_invoice'|'transport_invoice'|'health_invoice'|'other_invoice'} InvoiceLabels
  *
- * @typedef {IdentityLabel|FamilyLabel|WorkStudyLabels|HealthLabels|HomeLabels|TransportLabels|FinanceLabels|InvoiceLabels} ItemsLabels
+ * @typedef {'personal_sporting_licence'|'other_activity_document'} ActivityLabels
+ *
+ * @typedef {IdentityLabel|FamilyLabel|WorkStudyLabels|HealthLabels|HomeLabels|TransportLabels|FinanceLabels|InvoiceLabels|ActivityLabels} ItemsLabels
  */
 
 export default {}

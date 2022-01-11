@@ -429,6 +429,11 @@
       "sourceCategory": "gov",
       "sourceSubCategory": "sport",
       "subjects": ["permit", "invoice"]
+    },
+    {
+      "label": "other_activity_document",
+      "sourceSubCategory": "sport",
+      "subjects": ["permit", "invoice"]
     }
   ],
   "purposeKnownValues": [

@@ -10,7 +10,8 @@ import {
   TransportLabels,
   FinanceLabels,
   InvoiceLabels,
-  ItemsLabels
+  ItemsLabels,
+  ActivityLabels
 } from '../../types'
 
 /**
@@ -43,7 +44,6 @@ const identityLabels = [
   'birth_certificate',
   'driver_license',
   'citizen_registration_certificate',
-  'personal_sporting_licence',
   'other_identity_document'
 ]
 
@@ -132,6 +132,11 @@ const transportLabels = [
 ]
 
 /**
+ * @type {Array<ActivityLabels>}
+ */
+const activityLabels = ['personal_sporting_licence', 'other_activity_document']
+
+/**
  * @type {Array<FinanceLabels>}
  */
 const financeLabels = [
@@ -210,12 +215,18 @@ export const themesList = [
   },
   {
     id: 'theme7',
+    label: 'activity',
+    icon: 'compass',
+    items: buildItemsByLabel(activityLabels)
+  },
+  {
+    id: 'theme8',
     label: 'finance',
     icon: 'bank',
     items: buildItemsByLabel(financeLabels)
   },
   {
-    id: 'theme8',
+    id: 'theme9',
     label: 'invoice',
     icon: 'bill',
     items: buildItemsByLabel(invoiceLabels)

@@ -98,7 +98,8 @@
       "other_bank_document": "Other banking document",
       "invoices": "Invoices",
       "personal_sporting_licence": "Sporting licence",
-      "other_invoice": "Other invoice"
+      "other_invoice": "Other invoice",
+      "other_activity_document": "Other sports document"
     },
     "themes": {
       "identity": "Identity",
@@ -110,7 +111,8 @@
       "invoice": "Invoice",
       "others": "Others",
       "undefined": "Undefined",
-      "finance": "Finance"
+      "finance": "Finance",
+      "activity": "Activities"
     }
   }
 }
