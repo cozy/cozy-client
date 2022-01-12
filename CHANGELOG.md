@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.10.0](https://github.com/cozy/cozy-client/compare/v27.9.0...v27.10.0) (2022-01-12)
+
+
+### Features
+
+* Add activity theme ([44eb0a8](https://github.com/cozy/cozy-client/commit/44eb0a8d8b0bed4a5f081efe7cd42223d7935768))
+
+
+
+
+
 # [27.9.0](https://github.com/cozy/cozy-client/compare/v27.8.0...v27.9.0) (2022-01-12)
 
 
