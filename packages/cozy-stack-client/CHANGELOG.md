@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.9.0](https://github.com/cozy/cozy-client/compare/v27.8.0...v27.9.0) (2022-01-12)
+
+
+### Features
+
+* Add a method to get session_code ([a3e7c8e](https://github.com/cozy/cozy-client/commit/a3e7c8e7dd0122c55e7e8ff6730de5bdc5b58b3e))
+
+
+
+
+
 ## [27.6.5](https://github.com/cozy/cozy-client/compare/v27.6.4...v27.6.5) (2021-12-20)
 
 
