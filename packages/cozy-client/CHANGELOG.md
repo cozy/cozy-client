@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.11.0](https://github.com/cozy/cozy-client/compare/v27.10.0...v27.11.0) (2022-01-13)
+
+
+### Features
+
+* Change other_identity_document translations ([aebb1bf](https://github.com/cozy/cozy-client/commit/aebb1bff1721f17baf12b79c92440467b4549257))
+* Move other_revenue in finance theme ([dcb54fa](https://github.com/cozy/cozy-client/commit/dcb54fa11eced184524d6c6c713636e8b7e2f06f))
+
+
+
+
+
 # [27.10.0](https://github.com/cozy/cozy-client/compare/v27.9.0...v27.10.0) (2022-01-12)
 
 
