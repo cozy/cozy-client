@@ -273,7 +273,7 @@ import { QueryDefinition } from './queries/dsl'
  *
  * @typedef {'family_record_book'|'birth_certificate'|'wedding'|'pacs'|'divorce'|'large_family_card'|'caf'|'other_family_document'|'payment_proof_family_allowance'} FamilyLabel
  *
- * @typedef {'diploma'|'work_contract'|'pay_sheet'|'unemployment_benefit'|'pension'|'other_revenue'|'gradebook'|'student_card'|'resume'|'motivation_letter'|'other_work_document'|'work_disability_recognition'|'school_attendance_certificate'} WorkStudyLabels
+ * @typedef {'diploma'|'work_contract'|'pay_sheet'|'unemployment_benefit'|'pension'|'gradebook'|'student_card'|'resume'|'motivation_letter'|'other_work_document'|'work_disability_recognition'|'school_attendance_certificate'} WorkStudyLabels
  *
  * @typedef {'health_certificate'|'health_book'|'national_health_insurance_card'|'health_insurance_card'|'prescription'|'health_invoice'|'national_health_insurance_right_certificate'|'work_disability_recognition'|'pregnancy_medical_certificate'|'other_health_document'} HealthLabels
  *
@@ -281,7 +281,7 @@ import { QueryDefinition } from './queries/dsl'
  *
  * @typedef {'driver_license'|'vehicle_registration'|'car_insurance'|'mechanic_invoice'|'transport_invoice'|'other_transport_document'} TransportLabels
  *
- * @typedef {'tax_return'|'tax_notice'|'tax_timetable'|'receipt'|'other_tax_document'|'bank_details'|'bank_statement'|'loan_agreement'|'other_bank_document'|'payment_proof_family_allowance'} FinanceLabels
+ * @typedef {'tax_return'|'tax_notice'|'tax_timetable'|'receipt'|'other_tax_document'|'bank_details'|'bank_statement'|'loan_agreement'|'other_bank_document'|'payment_proof_family_allowance'|'other_revenue'} FinanceLabels
  *
  * @typedef {'phone_invoice'|'isp_invoice'|'telecom_invoice'|'energy_invoice'|'water_invoice'|'appliance_invoice'|'web_service_invoice'|'restaurant_invoice'|'work_invoice'|'transport_invoice'|'health_invoice'|'other_invoice'} InvoiceLabels
  *

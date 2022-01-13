@@ -72,7 +72,6 @@ const workStudyLabels = [
   'unemployment_benefit',
   'pension',
   'work_disability_recognition',
-  'other_revenue',
   'gradebook',
   'student_card',
   'school_attendance_certificate',
@@ -149,7 +148,8 @@ const financeLabels = [
   'bank_statement',
   'loan_agreement',
   'payment_proof_family_allowance',
-  'other_bank_document'
+  'other_bank_document',
+  'other_revenue'
 ]
 
 /**
