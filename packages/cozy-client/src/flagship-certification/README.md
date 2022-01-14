@@ -50,13 +50,13 @@ The `attestation`'s content is described in the `AppAttest`'s documentation: htt
 
 ## Client's configuration
 
-In order to configure `flagship` certification on an app, the OAuth property of `cozy-client` must contain `shouldRequireFlagshipPermissions` property set to `true` and `certificationConfig` property filled with required API keys.
+In order to configure `flagship` certification on an app, the OAuth property of `cozy-client` must contain `shouldRequireFlagshipPermissions` property set to `true` and `certificationConfig` property filled with required API keys. In that case, the OAuth client can claims "*" as scope
 
 Example of `cozy-client` configuration:
 ```js
 const client = await initClient(uri, {
     scope: [
-      'io.cozy.apps'
+      '*'
     ],
     oauth: {
       redirectURI: 'REDIRECT_URI',
