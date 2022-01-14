@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.12.0](https://github.com/cozy/cozy-client/compare/v27.11.1...v27.12.0) (2022-01-14)
+
+
+### Features
+
+* Use lib alias for safetynet ([f937db5](https://github.com/cozy/cozy-client/commit/f937db5eaedf4d41e88f7380ffbe79867941af59))
+
+
+
+
+
 ## [27.11.1](https://github.com/cozy/cozy-client/compare/v27.11.0...v27.11.1) (2022-01-14)
 
 **Note:** Version bump only for package cozy-client
