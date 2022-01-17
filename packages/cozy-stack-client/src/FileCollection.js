@@ -54,6 +54,7 @@ import logger from './logger'
  * @property {FileAttributes} attributes - Attributes of the file
  * @property {object} meta - Meta
  * @property {object} relationships - Relationships
+ * @property {object} referenced_by - Referenced by
  */
 
 /**
@@ -372,17 +373,7 @@ class FileCollection extends DocumentCollection {
    */
   async destroy(file, { ifMatch = '' } = {}) {
     const { _id, relationships } = file
-    if (
-      relationships &&
-      relationships.referenced_by &&
-      Array.isArray(relationships.referenced_by.data)
-    ) {
-      for (const ref of relationships.referenced_by.data) {
-        await this.removeReferencesTo({ _id: ref.id, _type: ref.type }, [
-          { _id }
-        ])
-      }
-    }
+
     const resp = await this.stackClient.fetchJSON(
       'DELETE',
       uri`/files/${_id}`,
@@ -393,6 +384,16 @@ class FileCollection extends DocumentCollection {
         }
       }
     )
+    // needed because we had a bug in cozy-stack https://github.com/cozy/cozy-stack/pull/3566
+    // to remove once the code is deployed everywhere
+    const references = get(
+      relationships,
+      'referenced_by.data',
+      file.referenced_by
+    )
+    if (Array.isArray(references)) {
+      await this.removeReferencedBy(file, references)
+    }
     return {
       data: normalizeFile(resp.data)
     }
