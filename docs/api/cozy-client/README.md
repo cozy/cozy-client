@@ -19,6 +19,8 @@ cozy-client
 *   [HasManyTriggers](classes/hasmanytriggers.md)
 *   [HasOne](classes/hasone.md)
 *   [HasOneInPlace](classes/hasoneinplace.md)
+*   [InvalidCozyUrlError](classes/invalidcozyurlerror.md)
+*   [InvalidProtocolError](classes/invalidprotocolerror.md)
 *   [Query](classes/query.md)
 *   [QueryDefinition](classes/querydefinition.md)
 *   [Registry](classes/registry.md)
@@ -482,6 +484,64 @@ if there are N queries, only 1 extra level of nesting is introduced.
 *Defined in*
 
 [packages/cozy-client/src/hoc.jsx:89](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hoc.jsx#L89)
+
+***
+
+### rootCozyUrl
+
+▸ `Const` **rootCozyUrl**(`url`): `Promise`<`URL`>
+
+rootCozyUrl - Get the root URL of a Cozy from more precise ones
+
+The goal is to allow users to use any URL copied from their browser as their
+Cozy URL rather than trying to explain to them what we expect (e.g. when
+requesting the Cozy URL to connect an app).
+If we can't get the root URL either because there's no Cozy or the domain
+does not exist or anything else, we'll throw an InvalidCozyUrlError.
+Also, since we communicate only via HTTP or HTTPS, we'll throw an
+InvalidProtocolError if any other protocol is used.
+
+This function expects a fully qualified URL thus with a protocol and a valid
+hostname. If your application accepts Cozy intances as input (e.g. `claude`
+when the Cozy can be found at `https://claude.mycozy.cloud`), it is your
+responsibility to add the appropriate domain to the hostname before calling
+this function.
+
+Examples:
+
+1.  getting the root URL when your user gives you its instance name
+
+const userInput = 'claude'
+const rootUrl = await rootCozyUrl(new URL(`https://${userInput}.mycozy.cloud`))
+// → returns new URL('https://claude.mycozy.cloud')
+
+2.  getting the root URL when your user gives you a Cozy Drive URL
+
+const userInput = 'https://claude-drive.mycozy.cloud/#/folder/io.cozy.files.root-dir'
+const rootUrl = await rootCozyUrl(new URL(userInput))
+// → returns new URL('https://claude.mycozy.cloud')
+
+3.  getting the root URL when the Cozy uses nested sub-domains
+
+const userInput = 'http://photos.camille.nimbus.com:8080/#/album/1234567890'
+const rootCozyUrl = await rootCozyUrl(new URL(userInput))
+// → returns new URL('http://camille.nimbus.com:8080')
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `url` | `URL` | The URL from which we'll try to get the root Cozy URL |
+
+*Returns*
+
+`Promise`<`URL`>
+
+The root Cozy URL
+
+*Defined in*
+
+[packages/cozy-client/src/helpers.js:199](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers.js#L199)
 
 ***
 

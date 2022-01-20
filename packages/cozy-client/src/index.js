@@ -23,7 +23,13 @@ export {
   getReferencedBy,
   getReferencedById
 } from './associations/helpers'
-export { dehydrate, generateWebLink } from './helpers'
+export {
+  dehydrate,
+  generateWebLink,
+  rootCozyUrl,
+  InvalidCozyUrlError,
+  InvalidProtocolError
+} from './helpers'
 export { cancelable, isQueryLoading, hasQueryBeenLoaded } from './utils'
 export { getQueryFromState } from './store'
 export { default as Registry } from './registry'
