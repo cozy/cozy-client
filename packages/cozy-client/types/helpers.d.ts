@@ -7,3 +7,12 @@ export function generateWebLink({ cozyUrl, searchParams: searchParamsOption, pat
     slug: string;
     subDomainType: string;
 }): string;
+export class InvalidProtocolError extends Error {
+    constructor(url: any);
+    url: any;
+}
+export class InvalidCozyUrlError extends Error {
+    constructor(url: any);
+    url: any;
+}
+export function rootCozyUrl(url: URL): Promise<URL>;

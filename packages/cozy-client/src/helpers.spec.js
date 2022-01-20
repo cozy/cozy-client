@@ -1,4 +1,12 @@
-import { dehydrate, generateWebLink } from './helpers'
+import { enableFetchMocks, disableFetchMocks } from 'jest-fetch-mock'
+
+import {
+  dehydrate,
+  generateWebLink,
+  rootCozyUrl,
+  InvalidCozyUrlError,
+  InvalidProtocolError
+} from './helpers'
 
 import {
   HasManyInPlace,
@@ -139,5 +147,236 @@ describe('generateWebLink', () => {
         subDomainType: 'nested'
       })
     ).toEqual(`https://drive.alice.cozy.tools/public/#/files/432432`)
+  })
+})
+
+describe('rootCozyUrl', () => {
+  beforeAll(() => {
+    enableFetchMocks()
+  })
+
+  afterAll(() => {
+    disableFetchMocks()
+  })
+
+  it('should handle cozy-hosted https', async () => {
+    fetch.mockOnceIf(
+      'https://camillenimbus.mycozy.cloud/.well-known/change-password',
+      {},
+      { status: 200 }
+    )
+
+    await expect(
+      rootCozyUrl(new URL('https://camillenimbus.mycozy.cloud'))
+    ).resolves.toEqual(new URL('https://camillenimbus.mycozy.cloud'))
+  })
+
+  it('should handle cozy-hosted https trailing slash', async () => {
+    fetch.mockOnceIf(
+      'https://camillenimbus.mycozy.cloud/.well-known/change-password',
+      {},
+      { status: 200 }
+    )
+
+    await expect(
+      rootCozyUrl(new URL('https://camillenimbus.mycozy.cloud/'))
+    ).resolves.toEqual(new URL('https://camillenimbus.mycozy.cloud'))
+  })
+
+  it('should handle cozy-hosted https trailing path', async () => {
+    fetch.mockOnceIf(
+      'https://camillenimbus.mycozy.cloud/.well-known/change-password',
+      {},
+      { status: 200 }
+    )
+
+    await expect(
+      rootCozyUrl(new URL('https://camillenimbus.mycozy.cloud/some-path'))
+    ).resolves.toEqual(new URL('https://camillenimbus.mycozy.cloud'))
+  })
+
+  it('should handle cozy-hosted drive web app url', async () => {
+    fetch.mockOnceIf(
+      'https://camillenimbus-drive.mycozy.cloud/.well-known/change-password',
+      {},
+      { status: 401 }
+    )
+    fetch.mockOnceIf(
+      'https://camillenimbus.mycozy.cloud/.well-known/change-password',
+      {},
+      { status: 200 }
+    )
+
+    await expect(
+      rootCozyUrl(new URL('https://camillenimbus-drive.mycozy.cloud/#/folder'))
+    ).resolves.toEqual(new URL('https://camillenimbus.mycozy.cloud'))
+  })
+
+  it('should handle cozy-hosted photos album url', async () => {
+    fetch.mockOnceIf(
+      'https://camillenimbus-photos.mycozy.cloud/.well-known/change-password',
+      {},
+      { status: 401 }
+    )
+    fetch.mockOnceIf(
+      'https://camillenimbus.mycozy.cloud/.well-known/change-password',
+      {},
+      { status: 200 }
+    )
+
+    await expect(
+      rootCozyUrl(
+        new URL(
+          'https://camillenimbus-photos.mycozy.cloud/#/albums/68b5cda502ae29f5fa73fd89f1be4f92'
+        )
+      )
+    ).resolves.toEqual(new URL('https://camillenimbus.mycozy.cloud'))
+  })
+
+  it('should handle cozy-hosted app name', async () => {
+    fetch.mockOnceIf(
+      'https://camillenimbus-drive.mycozy.cloud/.well-known/change-password',
+      {},
+      { status: 401 }
+    )
+    fetch.mockOnceIf(
+      'https://camillenimbus.mycozy.cloud/.well-known/change-password',
+      {},
+      { status: 200 }
+    )
+
+    await expect(
+      rootCozyUrl(new URL('https://camillenimbus-drive.mycozy.cloud'))
+    ).resolves.toEqual(new URL('https://camillenimbus.mycozy.cloud'))
+  })
+
+  it('should handle self-hosted https', async () => {
+    fetch.mockOnceIf(
+      'https://camillenimbus.com/.well-known/change-password',
+      {},
+      { status: 200 }
+    )
+
+    await expect(
+      rootCozyUrl(new URL('https://camillenimbus.com'))
+    ).resolves.toEqual(new URL('https://camillenimbus.com'))
+  })
+
+  it('should handle self-hosted with dash', async () => {
+    fetch.mockOnceIf(
+      'https://camille-nimbus.com/.well-known/change-password',
+      {},
+      {
+        status: 200
+      }
+    )
+
+    await expect(
+      rootCozyUrl(new URL('https://camille-nimbus.com'))
+    ).resolves.toEqual(new URL('https://camille-nimbus.com'))
+  })
+
+  it('should handle self-hosted http', async () => {
+    fetch.mockOnceIf(
+      'http://camille-nimbus.com/.well-known/change-password',
+      {},
+      {
+        status: 200
+      }
+    )
+
+    await expect(
+      rootCozyUrl(new URL('http://camille-nimbus.com'))
+    ).resolves.toEqual(new URL('http://camille-nimbus.com'))
+  })
+
+  it('should handle self-hosted https with port', async () => {
+    fetch.mockOnceIf(
+      'https://camillenimbus.com:666/.well-known/change-password',
+      {},
+      {
+        status: 200
+      }
+    )
+
+    await expect(
+      rootCozyUrl(new URL('https://camillenimbus.com:666'))
+    ).resolves.toEqual(new URL('https://camillenimbus.com:666'))
+  })
+
+  it('should handle self-hosted nested drive web app url', async () => {
+    fetch.mockOnceIf(
+      'https://drive.camillenimbus.com/.well-known/change-password',
+      {},
+      {
+        status: 401
+      }
+    )
+    fetch.mockOnceIf(
+      'https://camillenimbus.com/.well-known/change-password',
+      {},
+      {
+        status: 200
+      }
+    )
+
+    await expect(
+      rootCozyUrl(new URL('https://drive.camillenimbus.com/#/folder'))
+    ).resolves.toEqual(new URL('https://camillenimbus.com'))
+  })
+
+  it('should handle self-hosted flat drive web app url', async () => {
+    fetch.mockOnceIf(
+      'https://camille-drive.nimbus.com/.well-known/change-password',
+      {},
+      {
+        status: 401
+      }
+    )
+    fetch.mockOnceIf(
+      'https://camille.nimbus.com/.well-known/change-password',
+      {},
+      {
+        status: 200
+      }
+    )
+
+    await expect(
+      rootCozyUrl(new URL('https://camille-drive.nimbus.com/#/folder'))
+    ).resolves.toEqual(new URL('https://camille.nimbus.com'))
+  })
+
+  it('should handle cozy.localhost', async () => {
+    await expect(
+      rootCozyUrl(new URL('http://cozy.localhost:8080'))
+    ).resolves.toEqual(new URL('http://cozy.localhost:8080'))
+  })
+
+  it('expects an http or https protocol', async () => {
+    fetch.mockOnceIf(
+      'ftp://camillenimbus.com',
+      {},
+      {
+        status: 200
+      }
+    )
+
+    await expect(
+      rootCozyUrl(new URL('ftp://camillenimbus.com'))
+    ).rejects.toBeInstanceOf(InvalidProtocolError)
+  })
+
+  it('rejects if URL points to a valid cozy-stack but no valid Cozy instance', async () => {
+    fetch.mockOnceIf(
+      'https://missing.mycozy.cloud',
+      {},
+      {
+        status: 404
+      }
+    )
+
+    await expect(
+      rootCozyUrl(new URL('https://missing.mycozy.cloud'))
+    ).rejects.toBeInstanceOf(InvalidCozyUrlError)
   })
 })

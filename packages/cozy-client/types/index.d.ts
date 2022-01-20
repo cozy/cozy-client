@@ -19,6 +19,6 @@ export { manifest, models };
 export { QueryDefinition, Q, Mutations, MutationTypes, getDoctypeFromOperation } from "./queries/dsl";
 export { Association, HasMany, HasOne, HasOneInPlace, HasManyInPlace, HasManyTriggers } from "./associations";
 export { isReferencedBy, isReferencedById, getReferencedBy, getReferencedById } from "./associations/helpers";
-export { dehydrate, generateWebLink } from "./helpers";
+export { dehydrate, generateWebLink, rootCozyUrl, InvalidCozyUrlError, InvalidProtocolError } from "./helpers";
 export { cancelable, isQueryLoading, hasQueryBeenLoaded } from "./utils";
 export { queryConnect, queryConnectFlat, withClient } from "./hoc";
