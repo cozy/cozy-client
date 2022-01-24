@@ -69,6 +69,27 @@ file object with path attribute
 
 ***
 
+### fetchBlobFileById
+
+▸ `Const` **fetchBlobFileById**(`client`, `fileId`): `Promise`<`Blob`>
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `client` | [`CozyClient`](../classes/cozyclient.md) | Instance of CozyClient |
+| `fileId` | `string` | Id of io.cozy.files document |
+
+*Returns*
+
+`Promise`<`Blob`>
+
+*Defined in*
+
+[packages/cozy-client/src/models/file.js:605](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L605)
+
+***
+
 ### fetchFilesByQualificationRules
 
 ▸ `Const` **fetchFilesByQualificationRules**(`client`, `docRules`): `Promise`<`any`>

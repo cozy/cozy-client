@@ -61,6 +61,7 @@ export function isPlainText(mimeType?: string, fileName?: string): boolean;
 export function hasQualifications(file: IOCozyFile): boolean;
 export function hasCertifications(file: IOCozyFile): boolean;
 export function isFromKonnector(file: IOCozyFile): boolean;
+export function fetchBlobFileById(client: CozyClient, fileId: string): Promise<Blob>;
 export type FileUploadOptions = {
     /**
      * - The file name to upload
