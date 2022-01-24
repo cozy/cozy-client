@@ -15,6 +15,7 @@ const statByPathSpy = jest.fn().mockName('statByPath')
 const updateFileMetadataSpy = jest.fn().mockName('updateFileMetadata')
 const createFileSpy = jest.fn().mockName('createFileSpy')
 const updateFileSpy = jest.fn().mockName('updateFileSpy')
+const fetchFileContentByIdSpy = jest.fn().mockName('fetchFileContentById')
 
 beforeAll(() => {
   cozyClient.stackClient.collection.mockReturnValue({
@@ -23,7 +24,8 @@ beforeAll(() => {
     statByPath: statByPathSpy,
     updateFileMetadata: updateFileMetadataSpy,
     createFile: createFileSpy,
-    updateFile: updateFileSpy
+    updateFile: updateFileSpy,
+    fetchFileContentById: fetchFileContentByIdSpy
   })
 })
 
@@ -700,6 +702,21 @@ describe('File Model', () => {
         expect(fileModel.isPlainText(undefined, 'file.csv')).toBe(false)
         expect(fileModel.isPlainText(undefined, 'file.vcf')).toBe(false)
       })
+    })
+  })
+
+  describe('fetchBlobFileById', () => {
+    const mockData = { _id: '001', name: 'file01' }
+
+    it('should return Blob data', async () => {
+      fetchFileContentByIdSpy.mockImplementation(() => ({
+        blob: jest.fn().mockReturnValue(new Blob([mockData]))
+      }))
+      const res = await fileModel.fetchBlobFileById(cozyClient, mockData._id)
+
+      expect(fetchFileContentByIdSpy).toHaveBeenCalledWith('001')
+      expect(res instanceof Blob).toEqual(true)
+      expect(res.size).toBeGreaterThan(0)
     })
   })
 })

@@ -596,3 +596,16 @@ export const hasCertifications = file => {
 export const isFromKonnector = file => {
   return has(file, 'cozyMetadata.sourceAccount')
 }
+
+/**
+ * @param {CozyClient} client - Instance of CozyClient
+ * @param {string} fileId - Id of io.cozy.files document
+ * @returns {Promise<Blob>}
+ */
+export const fetchBlobFileById = async (client, fileId) => {
+  const fileColl = client.collection(DOCTYPE_FILES)
+  const fileBin = await fileColl.fetchFileContentById(fileId)
+  const fileBlob = await fileBin.blob()
+
+  return fileBlob
+}
