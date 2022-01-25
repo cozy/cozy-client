@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.14.0](https://github.com/cozy/cozy-client/compare/v27.13.0...v27.14.0) (2022-01-25)
+
+
+### Features
+
+* Add rootCozyUrl helper ([ca09e71](https://github.com/cozy/cozy-client/commit/ca09e71a7b687bf28055ed0764d08c4dbd7e70cc))
+
+
+
+
+
 # [27.13.0](https://github.com/cozy/cozy-client/compare/v27.12.0...v27.13.0) (2022-01-24)
 
 
