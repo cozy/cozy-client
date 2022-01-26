@@ -957,6 +957,7 @@ class FileCollection extends DocumentCollection {
    * @param {string} method POST / PUT / PATCH
    */
   async doUpload(dataArg, path, options, method = 'POST') {
+    let correctPath = path
     let data = dataArg
     if (!data) {
       throw new Error('missing data argument')
@@ -989,8 +990,8 @@ class FileCollection extends DocumentCollection {
           // The type is specified in the file object
           contentType = data.type
         } else {
-          // Extract the name from the path and infer the type
-          const sPath = path.split('?')
+          // Extract the name from the correctPath and infer the type
+          const sPath = correctPath.split('?')
           const params = sPath.length > 1 ? sPath[1] : ''
           const name = new URLSearchParams(params).get('Name')
           contentType = this.getFileTypeFromName(name.toLowerCase())
@@ -1007,10 +1008,15 @@ class FileCollection extends DocumentCollection {
     }
     if (contentLength) headers['Content-Length'] = String(contentLength)
     if (checksum) headers['Content-MD5'] = checksum
-    if (lastModifiedDate) headers['Date'] = lastModifiedDate.toGMTString()
+    if (lastModifiedDate) {
+      const qs = new URLSearchParams(correctPath)
+      qs.set('UpdatedAt', lastModifiedDate.toISOString())
+      qs.set('CreatedAt', lastModifiedDate.toISOString())
+      correctPath = decodeURIComponent(qs.toString())
+    }
     if (ifMatch) headers['If-Match'] = ifMatch
 
-    const resp = await this.stackClient.fetchJSON(method, path, data, {
+    const resp = await this.stackClient.fetchJSON(method, correctPath, data, {
       headers,
       onUploadProgress: options.onUploadProgress
     })
