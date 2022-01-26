@@ -694,20 +694,20 @@ describe('FileCollection', () => {
       }
     })
 
-    it('should update a file without metadata', async () => {
+    it('should update a file without metadata + add UpdatedAt when lastModifiedDate filled', async () => {
       const data = new File([''], 'mydoc.epub')
       const params = {
         fileId: '59140416-b95f',
         checksum: 'a6dabd99832b270468e254814df2ed20'
       }
       const result = await collection.updateFile(data, params)
-      const expectedPath =
-        '/files/59140416-b95f?Name=mydoc.epub&Type=file&Executable=false'
+      const expectedPath = `/files/59140416-b95f?Name=mydoc.epub&Type=file&Executable=false&UpdatedAt=${new Date(
+        data.lastModified
+      ).toISOString()}&CreatedAt=${new Date(data.lastModified).toISOString()}`
       const expectedOptions = {
         headers: {
           'Content-MD5': 'a6dabd99832b270468e254814df2ed20',
-          'Content-Type': 'application/epub+zip',
-          Date: new Date(data.lastModified).toGMTString()
+          'Content-Type': 'application/epub+zip'
         }
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(
@@ -740,12 +740,13 @@ describe('FileCollection', () => {
         metadata: { type: 'bill' }
       }
       const result = await collection.updateFile(data, params)
-      const expectedPath = `/files/59140416-b95f?Name=mydoc.epub&Type=file&Executable=false&MetadataID=${metadataId}`
+      const expectedPath = `/files/59140416-b95f?Name=mydoc.epub&Type=file&Executable=false&MetadataID=${metadataId}&UpdatedAt=${new Date(
+        data.lastModified
+      ).toISOString()}&CreatedAt=${new Date(data.lastModified).toISOString()}`
       const expectedOptions = {
         headers: {
           'Content-MD5': 'a6dabd99832b270468e254814df2ed20',
-          'Content-Type': 'application/epub+zip',
-          Date: new Date(data.lastModified).toGMTString()
+          'Content-Type': 'application/epub+zip'
         }
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(
@@ -772,14 +773,14 @@ describe('FileCollection', () => {
         contentLength: 1234
       }
       const result = await collection.updateFile(data, params)
-      const expectedPath =
-        '/files/59140416-b95f?Name=mydoc.epub&Type=file&Executable=false&Size=1234'
+      const expectedPath = `/files/59140416-b95f?Name=mydoc.epub&Type=file&Executable=false&Size=1234&UpdatedAt=${new Date(
+        data.lastModified
+      ).toISOString()}&CreatedAt=${new Date(data.lastModified).toISOString()}`
       const expectedOptions = {
         headers: {
           'Content-MD5': 'a6dabd99832b270468e254814df2ed20',
           'Content-Type': 'application/epub+zip',
-          'Content-Length': '1234',
-          Date: new Date(data.lastModified).toGMTString()
+          'Content-Length': '1234'
         }
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(
@@ -807,14 +808,14 @@ describe('FileCollection', () => {
 
       data = new File([''], 'mydoc.epub')
       await collection.updateFile(data, params)
-      const expectedPath =
-        '/files/59140416-b95f?Name=mydoc.epub&Type=file&Executable=false'
+      const expectedPath = `/files/59140416-b95f?Name=mydoc.epub&Type=file&Executable=false&UpdatedAt=${new Date(
+        data.lastModified
+      ).toISOString()}&CreatedAt=${new Date(data.lastModified).toISOString()}`
 
       const expectedOptions = {
         headers: {
           'Content-MD5': 'a6dabd99832b270468e254814df2ed20',
-          'Content-Type': 'application/epub+zip',
-          Date: new Date(data.lastModified).toGMTString()
+          'Content-Type': 'application/epub+zip'
         }
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(
@@ -827,18 +828,14 @@ describe('FileCollection', () => {
       data = new ArrayBuffer(8)
       params.name = 'mydoc.epub'
       params.contentType = 'application/epub+zip'
-      const newExpectedOptions = {
-        headers: {
-          'Content-MD5': 'a6dabd99832b270468e254814df2ed20',
-          'Content-Type': 'application/epub+zip'
-        }
-      }
+
       await collection.updateFile(data, params)
+
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'PUT',
-        expectedPath,
+        `/files/59140416-b95f?Name=mydoc.epub&Type=file&Executable=false`,
         data,
-        newExpectedOptions
+        expectedOptions
       )
     })
   })
@@ -973,11 +970,12 @@ describe('FileCollection', () => {
     it('should create a file without metadata', async () => {
       const params = { dirId }
       const result = await collection.createFile(data, params)
-      const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&MetadataID=&Size=`
+      const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&MetadataID=&Size=&UpdatedAt=${new Date(
+        data.lastModified
+      ).toISOString()}&CreatedAt=${new Date(data.lastModified).toISOString()}`
       const expectedOptions = {
         headers: {
-          'Content-Type': 'application/epub+zip',
-          Date: new Date(data.lastModified).toGMTString()
+          'Content-Type': 'application/epub+zip'
         }
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(
@@ -1008,11 +1006,12 @@ describe('FileCollection', () => {
         metadata: { type: 'bill' }
       }
       const result = await collection.createFile(data, params)
-      const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&MetadataID=${metadataId}&Size=`
+      const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&MetadataID=${metadataId}&Size=&UpdatedAt=${new Date(
+        data.lastModified
+      ).toISOString()}&CreatedAt=${new Date(data.lastModified).toISOString()}`
       const expectedOptions = {
         headers: {
-          'Content-Type': 'application/epub+zip',
-          Date: new Date(data.lastModified).toGMTString()
+          'Content-Type': 'application/epub+zip'
         }
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(
@@ -1036,12 +1035,13 @@ describe('FileCollection', () => {
       const result = await collection.createFile(data, params)
       const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&MetadataID=&Size=${String(
         contentLength
-      )}`
+      )}&UpdatedAt=${new Date(
+        data.lastModified
+      ).toISOString()}&CreatedAt=${new Date(data.lastModified).toISOString()}`
       const expectedOptions = {
         headers: {
           'Content-Type': 'application/epub+zip',
-          'Content-Length': String(contentLength),
-          Date: new Date(data.lastModified).toGMTString()
+          'Content-Length': String(contentLength)
         }
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(
@@ -1102,13 +1102,14 @@ describe('FileCollection', () => {
 
     it('should set the File content-type', async () => {
       const data = new File([''], fileName)
-      const path = `/files/${dirId}?Name=${fileName}&Type=file`
+      const path = `/files/${dirId}?Name=${fileName}&Type=file&UpdatedAt=${new Date(
+        data.lastModified
+      ).toISOString()}&CreatedAt=${new Date(data.lastModified).toISOString()}`
       await collection.doUpload(data, path, {})
 
       const expectedOptions = {
         headers: {
-          'Content-Type': 'application/epub+zip',
-          Date: new Date(data.lastModified).toGMTString()
+          'Content-Type': 'application/epub+zip'
         }
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(
@@ -1158,13 +1159,14 @@ describe('FileCollection', () => {
 
     it('should set the lastModifiedDate from File', async () => {
       const data = new File([''], fileName)
-      const path = `/files/${dirId}?Name=${name}&Type=file`
+      const path = `/files/${dirId}?Name=${name}&Type=file&UpdatedAt=${new Date(
+        data.lastModified
+      ).toISOString()}&CreatedAt=${new Date(data.lastModified).toISOString()}`
       await collection.doUpload(data, path, {})
 
       const expectedOptions = {
         headers: {
-          'Content-Type': 'application/octet-stream',
-          Date: new Date(data.lastModified).toGMTString()
+          'Content-Type': 'application/octet-stream'
         }
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(
@@ -1177,14 +1179,13 @@ describe('FileCollection', () => {
 
     it('should set the given lastModifiedDate', async () => {
       const data = new File([''], fileName)
-      const path = `/files/${dirId}?Name=${name}&Type=file`
       const lastModifiedDate = new Date('2021-01-01')
+      const path = `/files/${dirId}?Name=${name}&Type=file&UpdatedAt=${lastModifiedDate.toISOString()}&CreatedAt=${lastModifiedDate.toISOString()}`
       await collection.doUpload(data, path, { lastModifiedDate })
 
       const expectedOptions = {
         headers: {
-          'Content-Type': 'application/octet-stream',
-          Date: lastModifiedDate.toGMTString()
+          'Content-Type': 'application/octet-stream'
         }
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(
