@@ -609,3 +609,37 @@ export const fetchBlobFileById = async (client, fileId) => {
 
   return fileBlob
 }
+
+/**
+ * @param {CozyClient} client - Instance of CozyClient
+ * @param {string} fileId - Id of io.cozy.files document
+ */
+export const deleteFileById = async (client, fileId) => {
+  try {
+    const { data: ioCozyFile } = await client.query(
+      Q(DOCTYPE_FILES).getById(fileId)
+    )
+
+    await client.destroy(ioCozyFile)
+  } catch (error) {
+    throw error
+  }
+}
+
+/**
+ * @param {CozyClient} client - Instance of CozyClient
+ * @param {string[]} fileIds - Array of ids of io.cozy.files document
+ */
+export const deleteFileByIds = async (client, fileIds) => {
+  try {
+    const { data: ioCozyFiles } = await client.query(
+      Q(DOCTYPE_FILES).getByIds(fileIds)
+    )
+
+    for (const ioCozyFile of ioCozyFiles) {
+      await client.destroy(ioCozyFile)
+    }
+  } catch (error) {
+    throw error
+  }
+}

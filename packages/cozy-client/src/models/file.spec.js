@@ -1,6 +1,7 @@
 import * as fileModel from './file'
 import { Qualification } from './document/qualification'
 import { QueryDefinition } from '../queries/dsl'
+import { createMockClient } from '../mock'
 const CozyClient = require('cozy-client/dist/CozyClient').default
 const CozyStackClient = require('cozy-stack-client').default
 
@@ -717,6 +718,59 @@ describe('File Model', () => {
       expect(fetchFileContentByIdSpy).toHaveBeenCalledWith('001')
       expect(res instanceof Blob).toEqual(true)
       expect(res.size).toBeGreaterThan(0)
+    })
+  })
+
+  describe('deleteFileById', () => {
+    const mockFile = { _id: 'fileId-01', name: 'file 01' }
+    const mockDestroy = jest.fn()
+
+    let client
+    beforeEach(() => {
+      client = createMockClient({})
+      client.destroy = mockDestroy
+      client.query.mockReturnValue({
+        data: mockFile
+      })
+    })
+
+    it('should find file and delete it', async () => {
+      await fileModel.deleteFileById(client, 'fileId-01')
+      expect(client.query).toHaveBeenNthCalledWith(
+        1,
+        expect.objectContaining({ id: 'fileId-01', doctype: 'io.cozy.files' })
+      )
+      expect(mockDestroy).toHaveBeenNthCalledWith(1, mockFile)
+    })
+  })
+
+  describe('deleteFileByIds', () => {
+    const mockFiles = [
+      { _id: 'fileId-01', name: 'file 01' },
+      { _id: 'fileId-02', name: 'file 02' }
+    ]
+    const mockDestroy = jest.fn()
+
+    let client
+    beforeEach(() => {
+      client = createMockClient({})
+      client.destroy = mockDestroy
+      client.query.mockReturnValue({
+        data: mockFiles
+      })
+    })
+
+    it('should find all files and delete it', async () => {
+      await fileModel.deleteFileByIds(client, ['fileId-01', 'fileId-02'])
+      expect(client.query).toHaveBeenNthCalledWith(
+        1,
+        expect.objectContaining({
+          ids: ['fileId-01', 'fileId-02'],
+          doctype: 'io.cozy.files'
+        })
+      )
+      expect(mockDestroy).toHaveBeenNthCalledWith(1, mockFiles[0])
+      expect(mockDestroy).toHaveBeenNthCalledWith(2, mockFiles[1])
     })
   })
 })

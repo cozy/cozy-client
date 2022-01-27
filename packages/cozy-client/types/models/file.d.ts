@@ -62,6 +62,8 @@ export function hasQualifications(file: IOCozyFile): boolean;
 export function hasCertifications(file: IOCozyFile): boolean;
 export function isFromKonnector(file: IOCozyFile): boolean;
 export function fetchBlobFileById(client: CozyClient, fileId: string): Promise<Blob>;
+export function deleteFileById(client: CozyClient, fileId: string): Promise<void>;
+export function deleteFileByIds(client: CozyClient, fileIds: string[]): Promise<void>;
 export type FileUploadOptions = {
     /**
      * - The file name to upload

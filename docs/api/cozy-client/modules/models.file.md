@@ -20,6 +20,48 @@
 
 ## Functions
 
+### deleteFileById
+
+▸ `Const` **deleteFileById**(`client`, `fileId`): `Promise`<`void`>
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `client` | [`CozyClient`](../classes/cozyclient.md) | Instance of CozyClient |
+| `fileId` | `string` | Id of io.cozy.files document |
+
+*Returns*
+
+`Promise`<`void`>
+
+*Defined in*
+
+[packages/cozy-client/src/models/file.js:617](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L617)
+
+***
+
+### deleteFileByIds
+
+▸ `Const` **deleteFileByIds**(`client`, `fileIds`): `Promise`<`void`>
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `client` | [`CozyClient`](../classes/cozyclient.md) | Instance of CozyClient |
+| `fileIds` | `string`\[] | Array of ids of io.cozy.files document |
+
+*Returns*
+
+`Promise`<`void`>
+
+*Defined in*
+
+[packages/cozy-client/src/models/file.js:633](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L633)
+
+***
+
 ### doMobileUpload
 
 ▸ `Const` **doMobileUpload**(`client`, `fileURL`, `options`): `Promise`<`any`>
