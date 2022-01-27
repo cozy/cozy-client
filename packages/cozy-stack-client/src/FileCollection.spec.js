@@ -46,7 +46,7 @@ describe('FileCollection', () => {
 
   describe('statById', () => {
     beforeEach(() => {
-      client.fetchJSON.mockReturnValue(Promise.resolve(STAT_BY_ID_RESPONSE))
+      client.fetchJSON.mockResolvedValue(STAT_BY_ID_RESPONSE)
     })
 
     afterEach(() => {
@@ -95,7 +95,7 @@ describe('FileCollection', () => {
     }
 
     beforeAll(() => {
-      client.fetchJSON.mockReturnValue(Promise.resolve(FIND_RESPONSE))
+      client.fetchJSON.mockResolvedValue(FIND_RESPONSE)
     })
 
     afterAll(() => {
@@ -142,7 +142,7 @@ describe('FileCollection', () => {
     })
 
     it('should handle malformatted next links', async () => {
-      client.fetchJSON.mockReturnValue(Promise.resolve({ data: [], meta: {} }))
+      client.fetchJSON.mockResolvedValue({ data: [], meta: {} })
       const resultWithoutNext = await collection.find(
         {},
         { indexId: 'index-1' }

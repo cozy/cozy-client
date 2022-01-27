@@ -115,7 +115,7 @@ describe('DocumentCollection', () => {
     const collection = new DocumentCollection('io.cozy.todos', client)
 
     beforeAll(() => {
-      client.fetchJSON.mockReturnValue(Promise.resolve(NORMAL_RESPONSE_FIXTURE))
+      client.fetchJSON.mockResolvedValue(NORMAL_RESPONSE_FIXTURE)
     })
 
     it('should call the right route', async () => {
@@ -125,7 +125,7 @@ describe('DocumentCollection', () => {
         '/data/io.cozy.todos/_normal_docs?include_docs=true&limit=100'
       )
 
-      client.fetchJSON.mockReturnValue(Promise.resolve(ALL_RESPONSE_FIXTURE))
+      client.fetchJSON.mockResolvedValue(ALL_RESPONSE_FIXTURE)
       await collection.all({ limit: null })
       expect(client.fetchJSON).toHaveBeenLastCalledWith(
         'GET',
@@ -185,7 +185,7 @@ describe('DocumentCollection', () => {
     })
 
     it('should accept keys option', async () => {
-      client.fetchJSON.mockReturnValue(Promise.resolve(ALL_RESPONSE_FIXTURE))
+      client.fetchJSON.mockResolvedValue(ALL_RESPONSE_FIXTURE)
       await collection.all({ keys: ['abc', 'def'] })
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
@@ -204,7 +204,7 @@ describe('DocumentCollection', () => {
     })
 
     it('should normalize documents regardless of the route being used', async () => {
-      client.fetchJSON.mockReturnValue(Promise.resolve(ALL_RESPONSE_FIXTURE))
+      client.fetchJSON.mockResolvedValue(ALL_RESPONSE_FIXTURE)
       const resp = await collection.all({ keys: ['abc', 'def'] })
       expect(resp.data[0]).toHaveDocumentIdentity()
       expect(resp.data[0].label).toBe('Buy bread')
@@ -266,7 +266,7 @@ describe('DocumentCollection', () => {
           }
         ]
       }
-      client.fetchJSON.mockReturnValue(Promise.resolve(responsesWithEmptyDoc))
+      client.fetchJSON.mockResolvedValue(responsesWithEmptyDoc)
       const docs = await collection.all({ keys: ['12345', '67890', '11111'] })
       expect(docs.data.length).toBe(2)
     })
@@ -282,7 +282,7 @@ describe('DocumentCollection', () => {
           }
         ]
       }
-      client.fetchJSON.mockReturnValue(Promise.resolve(responsesWithEmptyDoc))
+      client.fetchJSON.mockResolvedValue(responsesWithEmptyDoc)
       const docs = await collection.all({ keys: ['12345', '67890', '11111'] })
       expect(docs.data.length).toBe(2)
     })
@@ -292,7 +292,7 @@ describe('DocumentCollection', () => {
     const collection = new DocumentCollection('io.cozy.todos', client)
 
     beforeAll(() => {
-      client.fetchJSON.mockReturnValue(Promise.resolve(GET_RESPONSE_FIXTURE))
+      client.fetchJSON.mockResolvedValue(GET_RESPONSE_FIXTURE)
     })
     it('should call the right route', async () => {
       await collection.get('fakeid')
@@ -412,7 +412,7 @@ describe('DocumentCollection', () => {
 
   describe('find', () => {
     beforeEach(() => {
-      client.fetchJSON.mockReturnValue(Promise.resolve(FIND_RESPONSE_FIXTURE))
+      client.fetchJSON.mockResolvedValue(FIND_RESPONSE_FIXTURE)
     })
 
     it('should call the right route with the right payload', async () => {
@@ -602,8 +602,8 @@ describe('DocumentCollection', () => {
             result: 'created'
           })
         )
-        .mockReturnValueOnce(Promise.resolve(FIND_RESPONSE_FIXTURE))
-        .mockReturnValueOnce(Promise.resolve(FIND_RESPONSE_FIXTURE))
+        .mockResolvedValueOnce(FIND_RESPONSE_FIXTURE)
+        .mockResolvedValueOnce(FIND_RESPONSE_FIXTURE)
 
       const collection = new DocumentCollection('io.cozy.todos', client)
       await collection.find(
@@ -644,9 +644,9 @@ describe('DocumentCollection', () => {
       client.fetchJSON.mockRestore()
       client.fetchJSON
         .mockRejectedValueOnce(new Error('no_index'))
-        .mockReturnValueOnce(Promise.resolve({ rows: [] }))
+        .mockResolvedValueOnce({ rows: [] })
         .mockRejectedValueOnce(new Error('error_saving_ddoc'))
-        .mockReturnValueOnce(Promise.resolve(FIND_RESPONSE_FIXTURE))
+        .mockResolvedValueOnce(FIND_RESPONSE_FIXTURE)
 
       const collection = new DocumentCollection('io.cozy.todos', client)
       await collection.find(
@@ -709,7 +709,7 @@ describe('DocumentCollection', () => {
       client.fetchJSON.mockRestore()
       client.fetchJSON
         .mockRejectedValueOnce(new Error('no_index'))
-        .mockReturnValueOnce(Promise.resolve({ rows: [index] }))
+        .mockResolvedValueOnce({ rows: [index] })
         .mockReturnValueOnce(
           Promise.resolve({
             id: '_design/by_label_and_done',
@@ -724,8 +724,8 @@ describe('DocumentCollection', () => {
             rev: '1-123'
           })
         )
-        .mockReturnValueOnce(Promise.resolve(FIND_RESPONSE_FIXTURE))
-        .mockReturnValueOnce(Promise.resolve(FIND_RESPONSE_FIXTURE))
+        .mockResolvedValueOnce(FIND_RESPONSE_FIXTURE)
+        .mockResolvedValueOnce(FIND_RESPONSE_FIXTURE)
 
       const collection = new DocumentCollection('io.cozy.todos', client)
       await collection.find(
@@ -795,7 +795,7 @@ describe('DocumentCollection', () => {
 
     beforeAll(() => {
       jest.resetAllMocks()
-      client.fetchJSON.mockReturnValue(Promise.resolve(CREATE_RESPONSE_FIXTURE))
+      client.fetchJSON.mockResolvedValue(CREATE_RESPONSE_FIXTURE)
     })
 
     it('should call the right route with the right payload', async () => {
@@ -817,7 +817,7 @@ describe('DocumentCollection', () => {
     const collection = new DocumentCollection('io.cozy.todos', client)
 
     beforeAll(() => {
-      client.fetchJSON.mockReturnValue(Promise.resolve(UPDATE_RESPONSE_FIXTURE))
+      client.fetchJSON.mockResolvedValue(UPDATE_RESPONSE_FIXTURE)
     })
 
     it('should call the right route with the right payload', async () => {
@@ -840,7 +840,7 @@ describe('DocumentCollection', () => {
 
     beforeEach(() => {
       // we first need to mock the return value of getAllSharingLinks()
-      client.fetchJSON.mockReturnValueOnce(Promise.resolve({ data: [] }))
+      client.fetchJSON.mockResolvedValueOnce({ data: [] })
       client.fetchJSON.mockReturnValueOnce(
         Promise.resolve(DESTROY_RESPONSE_FIXTURE)
       )

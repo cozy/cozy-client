@@ -214,7 +214,7 @@ describe('use query', () => {
       links: [new CozyLink(requestHandler)]
     })
     const error = new TypeError('Failed to fetch')
-    requestHandler.mockReturnValue(Promise.reject(error))
+    requestHandler.mockRejectedValue(error)
     const onError = jest.fn().mockReturnValue(() => true)
     setupQuery({
       customClient: client,

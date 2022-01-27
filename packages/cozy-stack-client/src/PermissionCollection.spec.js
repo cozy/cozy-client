@@ -19,7 +19,7 @@ describe('PermissionCollection', () => {
   describe('Permissions', () => {
     beforeAll(() => {
       client.fetch.mockReset()
-      client.fetchJSON.mockReturnValue(Promise.resolve({ data: [] }))
+      client.fetchJSON.mockResolvedValue({ data: [] })
     })
     describe('create', () => {
       it('calls with the right args', async () => {
@@ -237,7 +237,7 @@ describe('revokeSharingLink', () => {
 
   beforeEach(() => {
     client.fetchJSON.mockReset()
-    client.fetchJSON.mockReturnValue(Promise.resolve({ data: [] }))
+    client.fetchJSON.mockResolvedValue({ data: [] })
   })
 
   it('should revoke a sharing link', async () => {

@@ -38,7 +38,7 @@ describe('SharingCollection', () => {
 
   describe('get', () => {
     it('should call the right route', async () => {
-      client.fetchJSON.mockReturnValue(Promise.resolve({ data: [] }))
+      client.fetchJSON.mockResolvedValue({ data: [] })
       await collection.get('1')
       expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/sharings/1')
     })
@@ -46,7 +46,7 @@ describe('SharingCollection', () => {
   describe('findByDoctype', () => {
     beforeEach(() => {
       client.fetch.mockReset()
-      client.fetchJSON.mockReturnValue(Promise.resolve({ data: [] }))
+      client.fetchJSON.mockResolvedValue({ data: [] })
     })
 
     it('should call the right route', async () => {
@@ -62,7 +62,7 @@ describe('SharingCollection', () => {
     beforeEach(() => {
       jest.spyOn(console, 'warn').mockImplementation(() => {})
       client.fetch.mockReset()
-      client.fetchJSON.mockReturnValue(Promise.resolve({ data: [] }))
+      client.fetchJSON.mockResolvedValue({ data: [] })
     })
 
     it('should create a sharing with read-only policy and set members to read-only too and set the previewPath for a folder', async () => {
@@ -227,7 +227,7 @@ describe('SharingCollection', () => {
   describe('create', () => {
     beforeEach(() => {
       client.fetch.mockReset()
-      client.fetchJSON.mockReturnValue(Promise.resolve({ data: [] }))
+      client.fetchJSON.mockResolvedValue({ data: [] })
     })
 
     it('should creates a sharing for a folder with the most open rules but with only read only recipients', async () => {
@@ -437,7 +437,7 @@ describe('SharingCollection', () => {
   describe('revokeAllRecipients', () => {
     beforeEach(() => {
       client.fetch.mockReset()
-      client.fetchJSON.mockReturnValue(Promise.resolve({ data: [] }))
+      client.fetchJSON.mockResolvedValue({ data: [] })
     })
 
     it('should call the right route', async () => {
@@ -452,7 +452,7 @@ describe('SharingCollection', () => {
   describe('addRecipients', () => {
     beforeEach(() => {
       client.fetch.mockReset()
-      client.fetchJSON.mockReturnValue(Promise.resolve({ data: [] }))
+      client.fetchJSON.mockResolvedValue({ data: [] })
     })
 
     it('handle the recipients option', async () => {
