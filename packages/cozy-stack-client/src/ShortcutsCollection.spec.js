@@ -15,9 +15,7 @@ describe('ShortcutsCollection', () => {
 
   describe('Create', () => {
     it('calls the right route', async () => {
-      jest
-        .spyOn(stackClient, 'fetchJSON')
-        .mockReturnValue(Promise.resolve({ data: [] }))
+      jest.spyOn(stackClient, 'fetchJSON').mockResolvedValue({ data: [] })
       const data = {
         url: 'https://cozy.io',
         name: 'cozy.url',
@@ -109,7 +107,7 @@ describe('ShortcutsCollection', () => {
 
   describe('get', () => {
     it('tests if it calls the right route', async () => {
-      stackClient.fetchJSON.mockReturnValue(Promise.resolve({ data: [] }))
+      stackClient.fetchJSON.mockResolvedValue({ data: [] })
       await collection.get('1')
       expect(stackClient.fetchJSON).toHaveBeenCalledWith('GET', '/shortcuts/1')
     })

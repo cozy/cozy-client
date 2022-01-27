@@ -1140,7 +1140,7 @@ describe('CozyClient', () => {
     })
 
     it('should first dispatch a INIT_QUERY action', async () => {
-      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
+      requestHandler.mockResolvedValueOnce(fakeResponse)
       await client.query(query, { as: 'allTodos' })
       expect(client.store.dispatch.mock.calls[0][0]).toEqual(
         initQuery('allTodos', { doctype: 'io.cozy.todos' }, { as: 'allTodos' })
@@ -1148,7 +1148,7 @@ describe('CozyClient', () => {
     })
 
     it('should then dispatch a RECEIVE_QUERY_RESULT action', async () => {
-      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
+      requestHandler.mockResolvedValueOnce(fakeResponse)
       await client.query(query, { as: 'allTodos' })
       const dispatchCalls = client.store.dispatch.mock.calls
       const lastDispatchCall = dispatchCalls[dispatchCalls.length - 1]
@@ -1159,7 +1159,7 @@ describe('CozyClient', () => {
 
     it('should dispatch a RECEIVE_QUERY_ERROR action if an error occurs', async () => {
       const error = new Error('Fake error')
-      requestHandler.mockReturnValueOnce(Promise.reject(error))
+      requestHandler.mockRejectedValueOnce(error)
       try {
         await client.query(query, { as: 'allTodos' })
       } catch (e) {} // eslint-disable-line no-empty
@@ -1169,13 +1169,13 @@ describe('CozyClient', () => {
     })
 
     it('should resolve to the query response', async () => {
-      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
+      requestHandler.mockResolvedValueOnce(fakeResponse)
       const resp = await client.query(query)
       expect(resp).toEqual(fakeResponse)
     })
 
     it('should call the link with the query', async () => {
-      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
+      requestHandler.mockResolvedValueOnce(fakeResponse)
       await client.query(query)
       expect(requestHandler).toHaveBeenCalledTimes(1)
       expect(requestHandler.mock.calls[0][0]).toBe(query)
@@ -1200,8 +1200,8 @@ describe('CozyClient', () => {
             ]
           })
         )
-        .mockReturnValueOnce(Promise.resolve({ data: [], included: [] }))
-        .mockReturnValueOnce(Promise.resolve({ data: [], included: [] }))
+        .mockResolvedValueOnce({ data: [], included: [] })
+        .mockResolvedValueOnce({ data: [], included: [] })
 
       const resp = await client.query(
         Q('io.cozy.todos').include(['attachments'])
@@ -1246,7 +1246,7 @@ describe('CozyClient', () => {
     })
 
     it('should set the correct name to the query', async () => {
-      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
+      requestHandler.mockResolvedValueOnce(fakeResponse)
       const getById = Q('io.cozy.files').getById('1')
       await client.query(getById)
       expect(client.store.dispatch.mock.calls[0][0]).toEqual(
@@ -1256,7 +1256,7 @@ describe('CozyClient', () => {
       )
     })
     it('should use the name passed as an argument', async () => {
-      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
+      requestHandler.mockResolvedValueOnce(fakeResponse)
       const getById = Q('io.cozy.files').getById('1')
       await client.query(getById, { as: 'toto' })
       expect(client.store.dispatch.mock.calls[0][0]).toEqual(
@@ -1266,7 +1266,7 @@ describe('CozyClient', () => {
       )
     })
     it('should name the query correctly', async () => {
-      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
+      requestHandler.mockResolvedValueOnce(fakeResponse)
       await client.query(query, { as: 'allTodos' })
       expect(client.store.dispatch.mock.calls[0][0]).toEqual(
         initQuery('allTodos', { doctype: 'io.cozy.todos' }, { as: 'allTodos' })
@@ -1353,7 +1353,7 @@ describe('CozyClient', () => {
     })
 
     it('should dispatch a INIT_QUERY action if status is not loaded', async () => {
-      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
+      requestHandler.mockResolvedValueOnce(fakeResponse)
       getQueryFromState.mockReturnValueOnce({
         fetchStatus: 'pending'
       })
@@ -1364,7 +1364,7 @@ describe('CozyClient', () => {
     })
 
     it('should dispatch a INIT_QUERY action if no skip and no bookmark', async () => {
-      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
+      requestHandler.mockResolvedValueOnce(fakeResponse)
       getQueryFromState.mockReturnValueOnce({
         fetchStatus: 'loaded'
       })
@@ -1375,7 +1375,7 @@ describe('CozyClient', () => {
     })
 
     it('should dispatch a RECEIVE_QUERY_RESULT action if query has skip', async () => {
-      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
+      requestHandler.mockResolvedValueOnce(fakeResponse)
       getQueryFromState.mockReturnValueOnce({
         fetchStatus: 'loaded'
       })
@@ -1389,7 +1389,7 @@ describe('CozyClient', () => {
     })
 
     it('should dispatch a RECEIVE_QUERY_RESULT action if query has bookmark', async () => {
-      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
+      requestHandler.mockResolvedValueOnce(fakeResponse)
       getQueryFromState.mockReturnValueOnce({
         fetchStatus: 'loaded'
       })
@@ -1404,7 +1404,7 @@ describe('CozyClient', () => {
 
     const setupOnError = () => {
       const error = new TypeError('Failed to fetch')
-      requestHandler.mockReturnValueOnce(Promise.reject(error))
+      requestHandler.mockRejectedValueOnce(error)
       const onError = jest.fn().mockReturnValueOnce(() => true)
       return onError
     }
@@ -1443,7 +1443,7 @@ describe('CozyClient', () => {
 
     it('should throw an error when there is no onError callback', async () => {
       const error = new TypeError('Failed to fetch')
-      requestHandler.mockReturnValueOnce(Promise.reject(error))
+      requestHandler.mockRejectedValueOnce(error)
 
       await expect(client.query(query, { as: 'allTodos' })).rejects.toThrow(
         'Failed to fetch'
@@ -1546,7 +1546,7 @@ describe('CozyClient', () => {
     })
 
     it('should then dispatch a RECEIVE_MUTATION_RESULT action', async () => {
-      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
+      requestHandler.mockResolvedValueOnce(fakeResponse)
       await client.mutate(mutation, { as: 'updateTodo' })
       expect(client.store.dispatch.mock.calls[1][0]).toEqual(
         receiveMutationResult('updateTodo', fakeResponse, {}, mutation)
@@ -1554,14 +1554,14 @@ describe('CozyClient', () => {
     })
 
     it('should resolve to the mutation response', async () => {
-      requestHandler.mockReturnValueOnce(Promise.resolve(fakeResponse))
+      requestHandler.mockResolvedValueOnce(fakeResponse)
       const resp = await client.mutate(mutation)
       expect(resp).toEqual(fakeResponse)
     })
 
     it('should dispatch a RECEIVE_MUTATION_ERROR action if an error occurs', async () => {
       const error = new Error('Fake error')
-      requestHandler.mockReturnValueOnce(Promise.reject(error))
+      requestHandler.mockRejectedValueOnce(error)
       try {
         await client.mutate(mutation, { as: 'updateTodo' })
       } catch (e) {} // eslint-disable-line no-empty
@@ -1573,7 +1573,7 @@ describe('CozyClient', () => {
     it('should handle an array of mutations (including mutation creators)', async () => {
       const FAKE_MUTATION_1 = { mutationType: 'FAKE_1' }
       const FAKE_MUTATION_2 = resp => ({ mutationType: 'FAKE_2', resp })
-      requestHandler.mockReturnValue(Promise.resolve(fakeResponse))
+      requestHandler.mockResolvedValue(fakeResponse)
       await client.mutate([mutation, FAKE_MUTATION_1, FAKE_MUTATION_2])
       expect(requestHandler).toHaveBeenCalledTimes(3)
       expect(requestHandler.mock.calls[0][0]).toBe(mutation)

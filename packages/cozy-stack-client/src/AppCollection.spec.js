@@ -137,7 +137,7 @@ describe(`AppCollection`, () => {
       it('should fetch /registry/fakeid if /apps/fakeid returns an error', async () => {
         jest
           .spyOn(client, 'fetchJSON')
-          .mockReturnValueOnce(Promise.reject(new Error('Bad request')))
+          .mockRejectedValueOnce(new Error('Bad request'))
 
         await collection.get('io.cozy.apps/fakeid', query)
 
@@ -178,7 +178,7 @@ describe(`AppCollection`, () => {
 
         jest
           .spyOn(client, 'fetchJSON')
-          .mockReturnValueOnce(Promise.reject(new Error('Bad request')))
+          .mockRejectedValueOnce(new Error('Bad request'))
           .mockResolvedValue(registryRes)
 
         const { data } = await collection.get('io.cozy.apps/fakeid', query)

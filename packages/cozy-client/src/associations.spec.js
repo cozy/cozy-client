@@ -119,7 +119,7 @@ describe('Associations', () => {
         ],
         next: false
       }
-      requestHandler.mockReturnValueOnce(Promise.resolve(FAKE_RESPONSE))
+      requestHandler.mockResolvedValueOnce(FAKE_RESPONSE)
 
       const queryBefore = getQueryFromStore(client.store, 'allTodos')
       await getTodo(TODO_1._id).attachments.fetchMore()
