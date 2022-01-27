@@ -652,6 +652,7 @@ declare class CozyClient {
      * At any time put an error function
      *
      * @param {Function} [onError] - Set a callback for queries which are errored
+     * @throws {Error} onError should not have been defined yet
      */
     setOnError(onError?: Function): void;
     toJSON(): SnapshotClient;

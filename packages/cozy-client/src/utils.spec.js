@@ -22,6 +22,7 @@ describe('cancelable', () => {
   })
 
   it('should reject with the rejection of the promise', done => {
+    jest.spyOn(console, 'log').mockImplementation()
     const error = 'normal-rejection-from-cancelable-test'
     const { reject, wrapped } = setup()
     expect.assertions(1)
