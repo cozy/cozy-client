@@ -1611,6 +1611,7 @@ instantiation of the client.`
    * At any time put an error function
    *
    * @param {Function} [onError] - Set a callback for queries which are errored
+   * @throws {Error} onError should not have been defined yet
    */
   setOnError(onError) {
     if (this.options && this.options.onError) {
