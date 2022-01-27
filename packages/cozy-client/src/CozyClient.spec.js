@@ -1402,52 +1402,54 @@ describe('CozyClient', () => {
       )
     })
 
-    const setupOnError = () => {
-      const error = new TypeError('Failed to fetch')
-      requestHandler.mockRejectedValueOnce(error)
-      const onError = jest.fn().mockReturnValueOnce(() => true)
-      return onError
-    }
+    describe('setupOnError', () => {
+      const setupOnError = () => {
+        const error = new TypeError('Failed to fetch')
+        requestHandler.mockRejectedValueOnce(error)
+        return jest.fn().mockReturnValueOnce(() => true)
+      }
 
-    it('should call onError callback when an error is thrown. Callback passed as argument', async () => {
-      const onError = setupOnError()
+      it('should call onError callback when an error is thrown. Callback passed as argument', async () => {
+        const onError = setupOnError()
 
-      await client.query(query, { as: 'allTodos', onError })
-      expect(onError).toBeCalled()
-    })
+        await client.query(query, { as: 'allTodos', onError })
+        expect(onError).toBeCalled()
+      })
 
-    it('should call onError callback when an error is catched. It is passed during instantiation', async () => {
-      const onError = setupOnError()
-      const client = new CozyClient({ onError })
+      it('should call onError callback when an error is caught. It is passed during instantiation', async () => {
+        const setupOnError = () => jest.fn().mockReturnValueOnce(() => true)
+        const onError = setupOnError()
+        const client = new CozyClient({ onError })
 
-      await client.query(query, { as: 'allTodos' })
-      expect(onError).toBeCalled()
-    })
+        await client.query(query, { as: 'allTodos' })
+        expect(onError).toBeCalled()
+      })
 
-    it('should call onError callback when an error is catched. It is passed with setOnError', async () => {
-      const onError = setupOnError()
-      client.setOnError(onError)
+      it('should call onError callback when an error is catched. It is passed with setOnError', async () => {
+        const onError = setupOnError()
+        client.setOnError(onError)
 
-      await client.query(query, { as: 'allTodos' })
-      expect(onError).toBeCalled()
-    })
+        await client.query(query, { as: 'allTodos' })
+        expect(onError).toBeCalled()
+      })
 
-    it('should throw an error when we call setOnError twice (or several times)', async () => {
-      const client = new CozyClient({})
-      const onError = () => true
+      it('should throw an error when we call setOnError twice (or several times)', async () => {
+        const client = new CozyClient({})
+        const onError = () => true
 
-      const funcShouldThrow = () => client.setOnError(onError)
-      expect(funcShouldThrow).not.toThrow()
-      expect(funcShouldThrow).toThrow('On Error is already defined')
-    })
+        const funcShouldThrow = () => client.setOnError(onError)
+        expect(funcShouldThrow).not.toThrow()
+        expect(funcShouldThrow).toThrow('On Error is already defined')
+      })
 
-    it('should throw an error when there is no onError callback', async () => {
-      const error = new TypeError('Failed to fetch')
-      requestHandler.mockRejectedValueOnce(error)
+      it('should throw an error when there is no onError callback', async () => {
+        const error = new TypeError('Failed to fetch')
+        requestHandler.mockRejectedValueOnce(error)
 
-      await expect(client.query(query, { as: 'allTodos' })).rejects.toThrow(
-        'Failed to fetch'
-      )
+        await expect(client.query(query, { as: 'allTodos' })).rejects.toThrow(
+          'Failed to fetch'
+        )
+      })
     })
   })
 
