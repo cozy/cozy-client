@@ -216,7 +216,7 @@
       "purpose": "attestation",
       "sourceCategory": "gov",
       "sourceSubCategory": "transport",
-      "subjects": ["vehicule", "indentity", "right"]
+      "subjects": ["vehicule", "identity", "right"]
     },
     {
       "label": "car_insurance",
