@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.14.3](https://github.com/cozy/cozy-client/compare/v27.14.2...v27.14.3) (2022-01-28)
+
+
+### Bug Fixes
+
+* **qualification:** Fix typo in identity ([e89aa8d](https://github.com/cozy/cozy-client/commit/e89aa8de0b6b25d5eecd8dc1ba41baa80dff5ec2))
+
+
+
+
+
 ## [27.14.2](https://github.com/cozy/cozy-client/compare/v27.14.1...v27.14.2) (2022-01-28)
 
 **Note:** Version bump only for package cozy-client
