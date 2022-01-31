@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.14.4](https://github.com/cozy/cozy-client/compare/v27.14.3...v27.14.4) (2022-01-31)
+
+
+### Bug Fixes
+
+* Generate FileCollection URLs with querystring ([ea17e24](https://github.com/cozy/cozy-client/commit/ea17e24ab40e225ecaf48bbaabac315dd5cda353))
+
+
+
+
+
 ## [27.14.1](https://github.com/cozy/cozy-client/compare/v27.14.0...v27.14.1) (2022-01-28)
 
 **Note:** Version bump only for package cozy-stack-client
