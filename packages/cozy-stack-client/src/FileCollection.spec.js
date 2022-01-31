@@ -67,7 +67,7 @@ describe('FileCollection', () => {
       })
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
-        '/files/42?page%5Blimit%5D=200&page%5Bskip%5D=50&page%5Bcursor%5D=io.cozy.files%2Cabc123'
+        '/files/42?page[limit]=200&page[skip]=50&page[cursor]=[%22io.cozy.files%22,%22abc123%22]'
       )
     })
 

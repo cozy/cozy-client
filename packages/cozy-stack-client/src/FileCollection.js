@@ -3,7 +3,6 @@ import has from 'lodash/has'
 import get from 'lodash/get'
 import omit from 'lodash/omit'
 import pick from 'lodash/pick'
-import pickBy from 'lodash/pickBy'
 import { MangoQueryOptions } from './mangoIndex'
 
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
@@ -11,6 +10,7 @@ import { uri, slugify, formatBytes } from './utils'
 import { FetchError } from './errors'
 import { dontThrowNotFoundError } from './Collection'
 import { getIllegalCharacters } from './getIllegalCharacter'
+import * as querystring from './querystring'
 
 /**
  * Cursor used for Mango queries pagination
@@ -165,13 +165,6 @@ const dirName = path => {
   return path.substring(0, lastIndex)
 }
 
-const buildURL = (path, params) => {
-  const urlParams = new URLSearchParams(pickBy(params))
-  const stringParams = urlParams.toString()
-
-  return stringParams ? `${path}?${stringParams}` : path
-}
-
 /**
  * Implements `DocumentCollection` API along with specific methods for
  * `io.cozy.files`.
@@ -256,7 +249,7 @@ class FileCollection extends DocumentCollection {
       sort: 'datetime'
     }
     const path = uri`/data/${document._type}/${document._id}/relationships/references`
-    const url = buildURL(path, params)
+    const url = querystring.buildURL(path, params)
     const resp = await this.stackClient.fetchJSON('GET', url)
     return {
       data: normalizeReferences(resp.data),
@@ -740,7 +733,7 @@ class FileCollection extends DocumentCollection {
   async statById(id, options = {}) {
     const params = pick(options, ['page[limit]', 'page[skip]', 'page[cursor]'])
     const path = uri`/files/${id}`
-    const url = buildURL(path, params)
+    const url = querystring.buildURL(path, params)
     const resp = await this.stackClient.fetchJSON('GET', url)
     return {
       data: normalizeFile(resp.data),
@@ -1049,7 +1042,7 @@ class FileCollection extends DocumentCollection {
       sort: 'id'
     }
     const path = uri`/data/${oauthClient._type}/${oauthClient._id}/relationships/not_synchronizing`
-    const url = buildURL(path, params)
+    const url = querystring.buildURL(path, params)
     const resp = await this.stackClient.fetchJSON('GET', url)
     return {
       data: resp.data.map(f => normalizeFile(f)),
@@ -1173,7 +1166,7 @@ class FileCollection extends DocumentCollection {
       skip_trashed: opts.skipTrashed
     }
     const path = uri`/files/_changes`
-    const url = buildURL(path, params)
+    const url = querystring.buildURL(path, params)
     const {
       last_seq: newLastSeq,
       pending,
