@@ -1,5 +1,25 @@
 import pickBy from 'lodash/pickBy'
 
+/**
+ * Encode a value of any type into a URI search param compatible string with a specific treatment for arrays which will keep their brackets (they do not with standard `toString()` method).
+ *
+ * Examples:
+ *
+ *   encodeValues([['io.cozy.files', 'abcd1234'], '12345'])
+ *   // → '[[%22io.cozy.files%22,%22abcd1234%22],%2212345%22]'
+ *
+ *   encodeValues([['io.cozy.files', 'abcd1234'], '12345'].toString(), true)
+ *   // → '%22io.cozy.files%2Cabcd1234%2C12345%22'
+ *
+ *   encodeValues([['io.cozy.files', 'abcd1234'], '12345'].toString(), false)
+ *   // → 'io.cozy.files%2Cabcd1234%2C12345'
+ *
+ *   encodeValues('[1234]')
+ *   // → %5B1234%5D
+ *
+ * @function
+ * @private
+ */
 const encodeValues = (values, fromArray = false) => {
   if (Array.isArray(values)) {
     return '[' + values.map(v => encodeValues(v, true)).join(',') + ']'
