@@ -30,7 +30,7 @@
 
 ### createFolderWithReference
 
-▸ `Const` **createFolderWithReference**(`client`, `path`, `document`): `Promise`<`IOCozyFile`>
+▸ `Const` **createFolderWithReference**(`client`, `path`, `document`): `Promise`<`IOCozyFolder`>
 
 Create a folder with a reference to the given document
 
@@ -44,7 +44,7 @@ Create a folder with a reference to the given document
 
 *Returns*
 
-`Promise`<`IOCozyFile`>
+`Promise`<`IOCozyFolder`>
 
 Folder document
 
@@ -56,7 +56,7 @@ Folder document
 
 ### ensureMagicFolder
 
-▸ `Const` **ensureMagicFolder**(`client`, `id`, `path`): `Promise`<`IOCozyFile`>
+▸ `Const` **ensureMagicFolder**(`client`, `id`, `path`): `Promise`<`IOCozyFolder`>
 
 Returns a "Magic Folder", given its id. See https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.apps/#special-iocozyapps-doctypes
 
@@ -70,7 +70,7 @@ Returns a "Magic Folder", given its id. See https://docs.cozy.io/en/cozy-doctype
 
 *Returns*
 
-`Promise`<`IOCozyFile`>
+`Promise`<`IOCozyFolder`>
 
 Folder document
 
@@ -82,7 +82,7 @@ Folder document
 
 ### getReferencedFolder
 
-▸ `Const` **getReferencedFolder**(`client`, `document`): `Promise`<`IOCozyFile`>
+▸ `Const` **getReferencedFolder**(`client`, `document`): `Promise`<`IOCozyFolder`>
 
 Returns the most recent folder referenced by the given document
 
@@ -95,7 +95,7 @@ Returns the most recent folder referenced by the given document
 
 *Returns*
 
-`Promise`<`IOCozyFile`>
+`Promise`<`IOCozyFolder`>
 
 Folder referenced by the given document
 

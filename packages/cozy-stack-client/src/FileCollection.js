@@ -4,12 +4,21 @@ import get from 'lodash/get'
 import omit from 'lodash/omit'
 import pick from 'lodash/pick'
 import pickBy from 'lodash/pickBy'
+import { MangoQueryOptions } from './mangoIndex'
 
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 import { uri, slugify, formatBytes } from './utils'
 import { FetchError } from './errors'
 import { dontThrowNotFoundError } from './Collection'
 import { getIllegalCharacters } from './getIllegalCharacter'
+
+/**
+ * Cursor used for Mango queries pagination
+ *
+ * @typedef {Array<string>|string} ViewKey
+ * @typedef {string} DocId
+ * @typedef {Array<*> & {0: ViewKey, 1: DocId}} CouchDBViewCursor
+ */
 
 /**
  * Attributes used for directory creation
@@ -71,8 +80,8 @@ const normalizeFile = file => ({
 /**
  * Normalize references, expliciting _type and _id — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/
  *
- * @param  {array.<object>} references - The list of files referenced by a document to normalize
- * @returns {array.<object>} the data attribute of the normalized references
+ * @param  {Array<object>} references - The list of files referenced by a document to normalize
+ * @returns {Array<object>} the data attribute of the normalized references
  * @private
  */
 const normalizeReferences = references => {
@@ -121,8 +130,10 @@ const sanitizeAndValidateFileName = name => {
 /**
  * Returns true when parameter has type directory, file or has _type io.cozy.files
  *
- * @param {string} type - The type of the file
- * @param {string} _type - The _type of the file
+ * @param {object} doc - The document whose type is checked
+ * @param {string} [doc._type] - The document's doctype
+ * @param {'directory'|'file'} [doc.type] - The io.cozy-files document type
+ *
  * @returns {boolean} true when objects has type directory, file or has _type io.cozy.files or false
  */
 export const isFile = ({ _type, type }) =>
@@ -198,8 +209,9 @@ class FileCollection extends DocumentCollection {
    *
    * The returned documents are paginated by the stack.
    *
-   * @param  {object} selector The Mango selector.
-   * @param  {{sort, fields, limit, skip, indexId, bookmark}} options The query options.
+   * @param {object}            selector  The Mango selector.
+   * @param {MangoQueryOptions} options   The query options
+   *
    * @returns {{data, meta, skip, next, bookmark}} The JSON API conformant response.
    * @throws {FetchError}
    */
@@ -229,11 +241,11 @@ class FileCollection extends DocumentCollection {
   /**
    * async findReferencedBy - Returns the list of files referenced by a document — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/
    *
-   * @param  {object} document        A JSON representing a document, with at least a `_type` and `_id` field.
-   * @param  {object} options         Additional options
-   * @param  {number} options.skip    For skip-based pagination, the number of referenced files to skip.
-   * @param  {number} options.limit   For pagination, the number of results to return.
-   * @param  {object} options.cursor  For cursor-based pagination, the index cursor.
+   * @param  {object}       document          A JSON representing a document, with at least a `_type` and `_id` field.
+   * @param  {object}       options           Additional options
+   * @param  {number|null}  [options.skip]    For skip-based pagination, the number of referenced files to skip.
+   * @param  {number|null}  [options.limit]   For pagination, the number of results to return.
+   * @param  {CouchDBViewCursor|null}  [options.cursor]  For cursor-based pagination, the index cursor.
    * @returns {{data, included, meta, skip, next, bookmark}} The JSON API conformant response.
    */
   async findReferencedBy(document, { skip = 0, limit, cursor } = {}) {
@@ -315,7 +327,8 @@ class FileCollection extends DocumentCollection {
    *
    * @param  {object} document        A JSON representing a document, with at least a `_type` and `_id` field.
    * @param  {Array}  documents       An array of JSON files having an `_id` field.
-   * @returns 204 No Content
+   *
+   * Returns 204 No Content
    */
   async addReferencesTo(document, documents) {
     const refs = documents.map(d => ({ id: d._id, type: 'io.cozy.files' }))
@@ -336,7 +349,8 @@ class FileCollection extends DocumentCollection {
    *
    * @param  {object} document        A JSON representing a document, with at least a `_type` and `_id` field.
    * @param  {Array}  documents       An array of JSON files having an `_id` field.
-   * @returns 204 No Content
+   *
+   * Returns 204 No Content
    */
   async removeReferencesTo(document, documents) {
     const refs = documents.map(d => ({ id: d._id, type: 'io.cozy.files' }))
@@ -714,11 +728,11 @@ class FileCollection extends DocumentCollection {
   /**
    * statById - Fetches the metadata about a document. For folders, the results include the list of child files and folders.
    *
-   * @param {string}   id           ID of the document
-   * @param {object} [options={}] Description
-   * @param {number} [options.page[limit]] Max number of children documents to return
-   * @param {number} [options.page[skip]] Number of children documents to skip from the start
-   * @param {string} [options.page[cursor]] A cursor id for pagination
+   * @param {string}      id                      ID of the document
+   * @param {object|null} options                 Pagination options
+   * @param {number|null} [options.page[limit]]   For pagination, the number of results to return.
+   * @param {number|null} [options.page[skip]]    For skip-based pagination, the number of referenced files to skip.
+   * @param {CouchDBViewCursor|null} [options.page[cursor]]  For cursor-based pagination, the index cursor.
    *
    * @returns {object} A promise resolving to an object containing "data" (the document metadata), "included" (the child documents) and "links" (pagination informations)
    */
@@ -1015,12 +1029,13 @@ class FileCollection extends DocumentCollection {
   /**
    * async findNotSynchronizedDirectories - Returns the list of directories not synchronized on the given OAuth client (mainly Cozy Desktop clients) — see https://docs.cozy.io/en/cozy-stack/not-synchronized-vfs/#get-datatypedoc-idrelationshipsnot_synchronizing
    *
-   * @param  {OAuthClient} oauthClient  A JSON representing an OAuth client, with at least a `_type` and `_id` field.
-   * @param  {object}   options               Additional options
-   * @param  {number}   options.skip          For skip-based pagination, the number of referenced files to skip.
-   * @param  {number}   options.limit         For pagination, the number of results to return.
-   * @param  {object}   options.cursor        For cursor-based pagination, the index cursor.
-   * @param  {boolean}  options.includeFiles  Include the whole file documents in the results list
+   * @param  {OAuthClient}  oauthClient           A JSON representing an OAuth client, with at least a `_type` and `_id` field.
+   * @param  {object|null}  options               Pagination options
+   * @param  {number|null}  options.skip          For skip-based pagination, the number of referenced files to skip.
+   * @param  {number|null}  options.limit         For pagination, the number of results to return.
+   * @param  {CouchDBViewCursor|null}  options.cursor        For cursor-based pagination, the index cursor.
+   * @param  {boolean}      options.includeFiles  Include the whole file documents in the results list
+   *
    * @returns {Array<object|IOCozyFolder>}    The JSON API conformant response.
    */
   async findNotSynchronizedDirectories(
@@ -1055,7 +1070,8 @@ class FileCollection extends DocumentCollection {
    *
    * @param  {OAuthClient} oauthClient  A JSON representing the OAuth client
    * @param  {Array}  directories       An array of JSON documents having a `_type` and `_id` fields and representing directories.
-   * @returns 204 No Content
+   *
+   * Returns 204 No Content
    */
   addNotSynchronizedDirectories(oauthClient, directories) {
     const refs = directories.map(d => ({ id: d._id, type: d._type }))
@@ -1076,7 +1092,8 @@ class FileCollection extends DocumentCollection {
    *
    * @param  {OAuthClient} oauthClient  A JSON representing the OAuth client
    * @param  {Array}  directories       An array of JSON documents having a `_type` and `_id` field and representing directories.
-   * @returns 204 No Content
+   *
+   * Returns 204 No Content
    */
   removeNotSynchronizedDirectories(oauthClient, directories) {
     const refs = directories.map(d => ({ id: d._id, type: d._type }))

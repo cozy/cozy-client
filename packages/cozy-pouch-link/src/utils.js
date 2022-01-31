@@ -1,8 +1,9 @@
 /**
  * Get the database name based on prefix and doctype
  *
- * @param {string}} prefix - The URL prefix
+ * @param {string} prefix - The URL prefix
  * @param {string} doctype - The database doctype
+ *
  * @returns {string} The database name
  */
 export const getDatabaseName = (prefix, doctype) => {

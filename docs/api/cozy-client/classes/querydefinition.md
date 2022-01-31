@@ -17,13 +17,13 @@ from a Cozy. `QueryDefinition`s are sent to links.
 | :------ | :------ | :------ |
 | `options` | `Object` | Initial options for the query definition |
 | `options.bookmark` | `string` | - |
-| `options.cursor` | `Cursor` | - |
+| `options.cursor` | `CouchDBViewCursor` | - |
 | `options.doctype` | `string` | - |
-| `options.fields` | `any`\[] | - |
+| `options.fields` | `string`\[] | - |
 | `options.id` | `string` | - |
-| `options.ids` | `any`\[] | - |
+| `options.ids` | `string`\[] | - |
 | `options.includes` | `string`\[] | - |
-| `options.indexedFields` | `any`\[] | - |
+| `options.indexedFields` | `string`\[] | - |
 | `options.limit` | `number` | - |
 | `options.partialFilter` | `any` | - |
 | `options.referenced` | `string` | - |
@@ -49,7 +49,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
 
 ### cursor
 
-• **cursor**: `Cursor`
+• **cursor**: `CouchDBViewCursor`
 
 *Defined in*
 
@@ -69,7 +69,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
 
 ### fields
 
-• **fields**: `any`\[]
+• **fields**: `string`\[]
 
 *Defined in*
 
@@ -89,7 +89,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
 
 ### ids
 
-• **ids**: `any`\[]
+• **ids**: `string`\[]
 
 *Defined in*
 
@@ -109,7 +109,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
 
 ### indexedFields
 
-• **indexedFields**: `any`\[]
+• **indexedFields**: `string`\[]
 
 *Defined in*
 
@@ -434,7 +434,7 @@ Use the last docid of each query as startkey_docid to paginate or leave blank fo
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `cursor` | `Cursor` | The cursor for pagination. |
+| `cursor` | `CouchDBViewCursor` | The cursor for pagination. |
 
 *Returns*
 
@@ -557,13 +557,13 @@ The QueryDefinition object.
 | Name | Type |
 | :------ | :------ |
 | `bookmark` | `string` |
-| `cursor` | `Cursor` |
+| `cursor` | `CouchDBViewCursor` |
 | `doctype` | `string` |
-| `fields` | `any`\[] |
+| `fields` | `string`\[] |
 | `id` | `string` |
-| `ids` | `any`\[] |
+| `ids` | `string`\[] |
 | `includes` | `string`\[] |
-| `indexedFields` | `any`\[] |
+| `indexedFields` | `string`\[] |
 | `limit` | `number` |
 | `partialFilter` | `any` |
 | `referenced` | `string` |

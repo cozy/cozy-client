@@ -5,6 +5,7 @@ import omit from 'lodash/omit'
 import head from 'lodash/head'
 import startsWith from 'lodash/startsWith'
 import qs from 'qs'
+import { MangoQueryOptions } from './mangoIndex'
 
 import Collection, {
   dontThrowNotFoundError,
@@ -209,8 +210,8 @@ class DocumentCollection {
    * name but the same definition. If yes, it means we found an old unamed
    * index, so we migrate it. If there is none, we create the new index.
    *
-   * @param {object} selector - The mango selector
-   * @param {object} options - The find options
+   * @param {object} selector The mango selector
+   * @param {MangoQueryOptions} options The find options
    * @private
    */
   async handleMissingIndex(selector, options) {
@@ -242,9 +243,10 @@ class DocumentCollection {
    * error is returned, the index is created and
    * the query run again.
    *
-   * @param {string} path - The route path
-   * @param {object} selector - The mango selector
-   * @param {object} options - The find options
+   * @param {string} path The route path
+   * @param {object} selector The mango selector
+   * @param {MangoQueryOptions} options The find options
+   *
    * @returns {object} - The find response
    * @private
    */
@@ -386,7 +388,7 @@ class DocumentCollection {
   /**
    * Updates several documents in one batch
    *
-   * @param  {Document[]} docs Documents to be updated
+   * @param  {Document[]} rawDocs Documents to be updated
    */
   async updateAll(rawDocs) {
     const stackClient = this.stackClient
@@ -612,8 +614,9 @@ class DocumentCollection {
    * This is useful to avoid creating new indexes having the
    * same definition of an existing one.
    *
-   * @param {object} selector - The query selector
-   * @param {object} options - The query options
+   * @param {object}            selector  The query selector
+   * @param {MangoQueryOptions} options   The find options
+   *
    * @returns {object} A matching index if it exists
    * @private
    */
@@ -644,12 +647,10 @@ class DocumentCollection {
    * Calls _changes route from CouchDB
    * No further treatment is done contrary to fetchchanges
    *
-   * @typedef {object} CouchOptionsRaw
-   * @param {string} since - Bookmark telling CouchDB from which point in time should changes be returned
-   * @param {Array<string>} doc_ids - Only return changes for a subset of documents
-   * @param {boolean} includeDocs - Includes full documents as part of results
-   *
-   * @param  {CouchOptionsRaw} couchOptions - Couch options for changes https://kutt.it/5r7MNQ
+   * @param {object} couchOptions - Couch options for changes https://kutt.it/5r7MNQ
+   * @param {string} [couchOptions.since] - Bookmark telling CouchDB from which point in time should changes be returned
+   * @param {Array<string>} [couchOptions.doc_ids] - Only return changes for a subset of documents
+   * @param {boolean} [couchOptions.includeDocs] - Includes full documents as part of results
    *
    * @see https://docs.couchdb.org/en/stable/api/database/changes.html
    */
@@ -681,17 +682,13 @@ class DocumentCollection {
    *
    * You should use fetchChangesRaw to have low level control on _changes parameters.
    *
-   * @typedef {object} CouchOptions
-   * @param {string} since - Bookmark telling CouchDB from which point in time should changes be returned
-   * @param {Array<string>} doc_ids - Only return changes for a subset of documents
+   * @param {object} couchOptions - Couch options for changes
+   * @param {string} [couchOptions.since] - Bookmark telling CouchDB from which point in time should changes be returned
+   * @param {Array<string>} [couchOptions.doc_ids] - Only return changes for a subset of documents
    *
-   * @typedef {object} FetchChangesOptions
-   * @property {boolean} includeDesign - Whether to include changes from design docs (needs include_docs to be true)
-   * @property {boolean} includeDeleted - Whether to include changes for deleted documents (needs include_docs to be true)
-   *
-   * @param  {CouchOptions} couchOptions - Couch options for changes
-   * @param  {FetchChangesOptions} options - Further options on the returned documents. By default, it is set to
-   *                                         { includeDesign: false, includeDeleted: false }
+   * @param {object} options - Further options on the returned documents. By default, it is set to { includeDesign: false, includeDeleted: false }
+   * @param {boolean} [options.includeDesign] - Whether to include changes from design docs (needs include_docs to be true)
+   * @param {boolean} [options.includeDeleted] - Whether to include changes for deleted documents (needs include_docs to be true)
    *
    * @typedef {object} FetchChangesReturnValue
    * @property {string} newLastSeq

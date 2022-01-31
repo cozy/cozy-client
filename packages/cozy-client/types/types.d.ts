@@ -208,7 +208,7 @@ export type FolderDocument = {
 /**
  * - An io.cozy.files document
  */
-export type IOCozyFolder = CozyClientDocument & FileDocument;
+export type IOCozyFolder = CozyClientDocument & FolderDocument;
 /**
  * - An io.cozy.oauth.clients document
  */
@@ -299,6 +299,9 @@ export type CouchDBBulkResult = {
      */
     reason: string | null;
 };
+export type ViewKey = string | string[];
+export type DocId = string;
+export type CouchDBViewCursor = [string | string[], string];
 export type Theme = {
     id: string;
     label: string;
