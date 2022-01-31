@@ -5,8 +5,10 @@ import get from 'lodash/get'
 import map from 'lodash/map'
 import zip from 'lodash/zip'
 import startsWith from 'lodash/startsWith'
-import Loop from './loop'
 import { isMobileApp } from 'cozy-device-helper'
+import { QueryDefinition } from 'cozy-client'
+
+import Loop from './loop'
 import logger from './logger'
 import { fetchRemoteLastSequence } from './remote'
 import { startReplication } from './startReplication'
@@ -16,7 +18,8 @@ import { getDatabaseName } from './utils'
 const DEFAULT_DELAY = 30 * 1000
 
 /**
- * @param {QueryDefinition} query
+ * @param {QueryDefinition} query The query definition whose name we're getting
+ *
  * @returns {string} alias
  */
 const getQueryAlias = query => {

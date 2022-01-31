@@ -4,9 +4,27 @@ import get from 'lodash/get'
 import isEqual from 'lodash/isEqual'
 
 /**
+ * @typedef {object} MangoPartialFilter
+ */
+
+/**
+ * @typedef {object} MangoQueryOptions
+ *
+ * @property {Array<object>} [sort] The sorting parameters
+ * @property {Array<string>} [fields] The fields to return
+ * @property {number|null} [limit] For pagination, the number of results to return
+ * @property {number|null} [skip] For skip-based pagination, the number of referenced files to skip
+ * @property {string|null} [indexId] The _id of the CouchDB index to use for this request
+ * @property {string|null} [bookmark] For bookmark-based pagination, the document _id to start from
+ * @property {Array<string>} [indexedFields]
+ * @property {MangoPartialFilter|null} [partialFilter] An optional partial filter
+ */
+
+/**
  * Attributes representing a design doc
  *
  * @typedef {object} DesignDoc
+ *
  * @property {string} _id - Id of the design doc. Can be named, e.g. '_design/by_indexed_attribute' or not, e.g. '_design/12345'
  * @property {string} language - The index language. Can be 'query' for mango index or 'javascript' for views.
  * @property {object} views - Views definition, i.e. the index.
@@ -39,7 +57,8 @@ export const transformSort = sort => {
  * Compute fields that should be indexed for a mango
  * query to work
  *
- * @param  {object} options - Mango query options
+ * @param {MangoQueryOptions} options - Mango query options
+ *
  * @returns {Array} - Fields to index
  */
 export const getIndexFields = ({ selector, sort = [] }) => {

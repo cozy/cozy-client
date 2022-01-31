@@ -62,12 +62,12 @@ describe('FileCollection', () => {
       await collection.statById(42, {
         'page[skip]': 50,
         'page[limit]': 200,
-        'page[cursor]': 'abc123',
+        'page[cursor]': ['io.cozy.files', 'abc123'],
         ignoredOption: 'not-included'
       })
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
-        '/files/42?page%5Blimit%5D=200&page%5Bskip%5D=50&page%5Bcursor%5D=abc123'
+        '/files/42?page%5Blimit%5D=200&page%5Bskip%5D=50&page%5Bcursor%5D=io.cozy.files%2Cabc123'
       )
     })
 

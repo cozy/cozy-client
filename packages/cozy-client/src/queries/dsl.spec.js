@@ -50,8 +50,9 @@ describe('QueryDefinition', () => {
     expect(withSkip.bookmark).toBeUndefined()
     expect(withSkip.cursor).toBeUndefined()
 
-    const withCursor = withSkip.offsetCursor('cursor-id')
-    expect(withCursor.cursor).toEqual('cursor-id')
+    const cursor = [['io.cozy.files', '1234'], 'xyz']
+    const withCursor = withSkip.offsetCursor(cursor)
+    expect(withCursor.cursor).toEqual(cursor)
     expect(withCursor.bookmark).toBeUndefined()
     expect(withCursor.skip).toBeUndefined()
 

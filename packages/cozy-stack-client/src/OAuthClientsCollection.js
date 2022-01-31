@@ -27,11 +27,12 @@ class OAuthClientsCollection extends DocumentCollection {
   /**
    * Fetches all OAuth clients
    *
-   * @param  {object} options           Query options
-   * @param  {number} options.limit     For pagination, the number of results to return.
-   * @param  {object} options.bookmark  For cursor-based pagination, the index cursor.
-   * @param  {Array} options.keys       Ids of specific clients to return (within the current page),
-   * @returns {object}                  The JSON API conformant response.
+   * @param  {object}         options             Query options
+   * @param  {number}         [options.limit]     For pagination, the number of results to return.
+   * @param  {string}         [options.bookmark]  For bookmark-based pagination, the document _id to start from
+   * @param  {Array<string>}  [options.keys]      Ids of specific clients to return (within the current page),
+   *
+   * @returns {object} The JSON API conformant response.
    */
   async all(options = {}) {
     const { limit = 100, bookmark, keys } = options
@@ -103,7 +104,8 @@ class OAuthClientsCollection extends DocumentCollection {
   /**
    * Destroys the OAuth client on the server
    *
-   * @param {io.cozy.oauth.clients} oauthClient     The client document to destroy
+   * @param {object} oauthClient The io.cozy.oauth.clients document to destroy
+   *
    * @returns {{ data }} The deleted client
    */
   async destroy(oauthClient) {

@@ -137,15 +137,14 @@ See <a href="https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a
 ## Typedefs
 
 <dl>
-<dt><a href="#CouchOptionsRaw">CouchOptionsRaw</a> : <code>object</code></dt>
-<dd><p>Calls _changes route from CouchDB
-No further treatment is done contrary to fetchchanges</p>
-</dd>
 <dt><a href="#FetchChangesReturnValue">FetchChangesReturnValue</a> ⇒ <code><a href="#FetchChangesReturnValue">FetchChangesReturnValue</a></code></dt>
 <dd><p>Use Couch _changes API
 Deleted and design docs are filtered by default, thus documents are retrieved in the response
 (include_docs is set to true in the parameters of _changes).</p>
 <p>You should use fetchChangesRaw to have low level control on _changes parameters.</p>
+</dd>
+<dt><a href="#CouchDBViewCursor">CouchDBViewCursor</a> : <code>Array.&lt;string&gt;</code> | <code>string</code></dt>
+<dd><p>Cursor used for Mango queries pagination</p>
 </dd>
 <dt><a href="#DirectoryAttributes">DirectoryAttributes</a> : <code>object</code></dt>
 <dd><p>Attributes used for directory creation</p>
@@ -178,6 +177,10 @@ not.</p>
 <dt><a href="#JobDocument">JobDocument</a> : <code>object</code></dt>
 <dd><p>Document representing a io.cozy.jobs</p>
 </dd>
+<dt><a href="#MangoPartialFilter">MangoPartialFilter</a> : <code>object</code></dt>
+<dd></dd>
+<dt><a href="#MangoQueryOptions">MangoQueryOptions</a> : <code>object</code></dt>
+<dd></dd>
 <dt><a href="#DesignDoc">DesignDoc</a> : <code>object</code></dt>
 <dd><p>Attributes representing a design doc</p>
 </dd>
@@ -366,11 +369,12 @@ Abstracts a collection of documents of the same doctype, providing CRUD methods 
     * [.create(doc)](#DocumentCollection+create)
     * [.update(document)](#DocumentCollection+update)
     * [.destroy(doc)](#DocumentCollection+destroy)
-    * [.updateAll(docs)](#DocumentCollection+updateAll)
+    * [.updateAll(rawDocs)](#DocumentCollection+updateAll)
     * [.destroyAll(docs)](#DocumentCollection+destroyAll)
     * [.fetchAllMangoIndexes()](#DocumentCollection+fetchAllMangoIndexes) ⇒ <code>Array</code>
     * [.destroyIndex(index)](#DocumentCollection+destroyIndex) ⇒ <code>object</code>
     * [.copyIndex(existingIndex, newIndexName)](#DocumentCollection+copyIndex) ⇒ <code>object</code>
+    * [.fetchChangesRaw(couchOptions)](#DocumentCollection+fetchChangesRaw)
 
 <a name="DocumentCollection+all"></a>
 
@@ -462,14 +466,14 @@ Destroys a document
 
 <a name="DocumentCollection+updateAll"></a>
 
-### documentCollection.updateAll(docs)
+### documentCollection.updateAll(rawDocs)
 Updates several documents in one batch
 
 **Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| docs | <code>Array.&lt;Document&gt;</code> | Documents to be updated |
+| rawDocs | <code>Array.&lt;Document&gt;</code> | Documents to be updated |
 
 <a name="DocumentCollection+destroyAll"></a>
 
@@ -517,6 +521,22 @@ having to recompute the existing index.
 | existingIndex | <code>object</code> | The design doc to copy |
 | newIndexName | <code>string</code> | The name of the copy |
 
+<a name="DocumentCollection+fetchChangesRaw"></a>
+
+### documentCollection.fetchChangesRaw(couchOptions)
+Calls _changes route from CouchDB
+No further treatment is done contrary to fetchchanges
+
+**Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
+**See**: https://docs.couchdb.org/en/stable/api/database/changes.html  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| couchOptions | <code>object</code> | Couch options for changes https://kutt.it/5r7MNQ |
+| [couchOptions.since] | <code>string</code> | Bookmark telling CouchDB from which point in time should changes be returned |
+| [couchOptions.doc_ids] | <code>Array.&lt;string&gt;</code> | Only return changes for a subset of documents |
+| [couchOptions.includeDocs] | <code>boolean</code> | Includes full documents as part of results |
+
 <a name="FileCollection"></a>
 
 ## FileCollection
@@ -536,8 +556,8 @@ files associated to a specific document
     * [.findReferencedBy(document, options)](#FileCollection+findReferencedBy) ⇒ <code>Object</code>
     * [.addReferencedBy(document, documents)](#FileCollection+addReferencedBy) ⇒ <code>Object</code>
     * [.removeReferencedBy(document, documents)](#FileCollection+removeReferencedBy) ⇒ <code>Object</code>
-    * [.addReferencesTo(document, documents)](#FileCollection+addReferencesTo) ⇒
-    * [.removeReferencesTo(document, documents)](#FileCollection+removeReferencesTo) ⇒
+    * [.addReferencesTo(document, documents)](#FileCollection+addReferencesTo)
+    * [.removeReferencesTo(document, documents)](#FileCollection+removeReferencesTo)
     * [.destroy(file)](#FileCollection+destroy) ⇒ <code>Promise</code>
     * [.emptyTrash()](#FileCollection+emptyTrash)
     * [.restore(id)](#FileCollection+restore) ⇒ <code>Promise</code>
@@ -549,15 +569,15 @@ files associated to a specific document
     * [.fetchFileContentById(id)](#FileCollection+fetchFileContentById)
     * [.getBeautifulSize(file, decimal)](#FileCollection+getBeautifulSize)
     * [.isChildOf(child, parent)](#FileCollection+isChildOf) ⇒ <code>boolean</code>
-    * [.statById(id, [options])](#FileCollection+statById) ⇒ <code>object</code>
+    * [.statById(id, options)](#FileCollection+statById) ⇒ <code>object</code>
     * [.createDirectoryByPath(path)](#FileCollection+createDirectoryByPath) ⇒ <code>object</code>
     * [.createFileMetadata(attributes)](#FileCollection+createFileMetadata) ⇒ <code>object</code>
     * [.updateMetadataAttribute(id, metadata)](#FileCollection+updateMetadataAttribute) ⇒ <code>object</code>
     * [.getFileTypeFromName(name)](#FileCollection+getFileTypeFromName) ⇒ <code>string</code>
     * [.doUpload(dataArg, path, options, method)](#FileCollection+doUpload)
     * [.findNotSynchronizedDirectories(oauthClient, options)](#FileCollection+findNotSynchronizedDirectories) ⇒ <code>Array.&lt;(object\|IOCozyFolder)&gt;</code>
-    * [.addNotSynchronizedDirectories(oauthClient, directories)](#FileCollection+addNotSynchronizedDirectories) ⇒
-    * [.removeNotSynchronizedDirectories(oauthClient, directories)](#FileCollection+removeNotSynchronizedDirectories) ⇒
+    * [.addNotSynchronizedDirectories(oauthClient, directories)](#FileCollection+addNotSynchronizedDirectories)
+    * [.removeNotSynchronizedDirectories(oauthClient, directories)](#FileCollection+removeNotSynchronizedDirectories)
 
 <a name="FileCollection+forceFileDownload"></a>
 
@@ -600,7 +620,7 @@ The returned documents are paginated by the stack.
 | Param | Type | Description |
 | --- | --- | --- |
 | selector | <code>object</code> | The Mango selector. |
-| options | <code>Object</code> | The query options. |
+| options | [<code>MangoQueryOptions</code>](#MangoQueryOptions) | The query options |
 
 <a name="FileCollection+findReferencedBy"></a>
 
@@ -614,9 +634,9 @@ async findReferencedBy - Returns the list of files referenced by a document — 
 | --- | --- | --- |
 | document | <code>object</code> | A JSON representing a document, with at least a `_type` and `_id` field. |
 | options | <code>object</code> | Additional options |
-| options.skip | <code>number</code> | For skip-based pagination, the number of referenced files to skip. |
-| options.limit | <code>number</code> | For pagination, the number of results to return. |
-| options.cursor | <code>object</code> | For cursor-based pagination, the index cursor. |
+| [options.skip] | <code>number</code> \| <code>null</code> | For skip-based pagination, the number of referenced files to skip. |
+| [options.limit] | <code>number</code> \| <code>null</code> | For pagination, the number of results to return. |
+| [options.cursor] | [<code>CouchDBViewCursor</code>](#CouchDBViewCursor) \| <code>null</code> | For cursor-based pagination, the index cursor. |
 
 <a name="FileCollection+addReferencedBy"></a>
 
@@ -656,7 +676,7 @@ Remove referenced_by documents from a file — see https://docs.cozy.io/en/cozy-
 
 <a name="FileCollection+addReferencesTo"></a>
 
-### fileCollection.addReferencesTo(document, documents) ⇒
+### fileCollection.addReferencesTo(document, documents)
 Add files references to a document — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#post-datatypedoc-idrelationshipsreferences
 
  For example, to add a photo to an album:
@@ -665,16 +685,15 @@ Add files references to a document — see https://docs.cozy.io/en/cozy-stack/re
 ```
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
-**Returns**: 204 No Content  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | document | <code>object</code> | A JSON representing a document, with at least a `_type` and `_id` field. |
-| documents | <code>Array</code> | An array of JSON files having an `_id` field. |
+| documents | <code>Array</code> | An array of JSON files having an `_id` field. Returns 204 No Content |
 
 <a name="FileCollection+removeReferencesTo"></a>
 
-### fileCollection.removeReferencesTo(document, documents) ⇒
+### fileCollection.removeReferencesTo(document, documents)
 Remove files references to a document — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#delete-datatypedoc-idrelationshipsreferences
 
  For example, to remove a photo from an album:
@@ -683,12 +702,11 @@ Remove files references to a document — see https://docs.cozy.io/en/cozy-stack
 ```
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
-**Returns**: 204 No Content  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | document | <code>object</code> | A JSON representing a document, with at least a `_type` and `_id` field. |
-| documents | <code>Array</code> | An array of JSON files having an `_id` field. |
+| documents | <code>Array</code> | An array of JSON files having an `_id` field. Returns 204 No Content |
 
 <a name="FileCollection+destroy"></a>
 
@@ -839,19 +857,19 @@ Checks if the file belongs to the parent's hierarchy.
 
 <a name="FileCollection+statById"></a>
 
-### fileCollection.statById(id, [options]) ⇒ <code>object</code>
+### fileCollection.statById(id, options) ⇒ <code>object</code>
 statById - Fetches the metadata about a document. For folders, the results include the list of child files and folders.
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
 **Returns**: <code>object</code> - A promise resolving to an object containing "data" (the document metadata), "included" (the child documents) and "links" (pagination informations)  
 
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| id | <code>string</code> |  | ID of the document |
-| [options] | <code>object</code> | <code>{}</code> | Description |
-| [options.page[limit]] | <code>number</code> |  | Max number of children documents to return |
-| [options.page[skip]] | <code>number</code> |  | Number of children documents to skip from the start |
-| [options.page[cursor]] | <code>string</code> |  | A cursor id for pagination |
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | ID of the document |
+| options | <code>object</code> \| <code>null</code> | Pagination options |
+| [options.page[limit]] | <code>number</code> \| <code>null</code> | For pagination, the number of results to return. |
+| [options.page[skip]] | <code>number</code> \| <code>null</code> | For skip-based pagination, the number of referenced files to skip. |
+| [options.page[cursor]] | [<code>CouchDBViewCursor</code>](#CouchDBViewCursor) \| <code>null</code> | For cursor-based pagination, the index cursor. |
 
 <a name="FileCollection+createDirectoryByPath"></a>
 
@@ -935,15 +953,15 @@ async findNotSynchronizedDirectories - Returns the list of directories not synch
 | Param | Type | Description |
 | --- | --- | --- |
 | oauthClient | [<code>OAuthClient</code>](#OAuthClient) | A JSON representing an OAuth client, with at least a `_type` and `_id` field. |
-| options | <code>object</code> | Additional options |
-| options.skip | <code>number</code> | For skip-based pagination, the number of referenced files to skip. |
-| options.limit | <code>number</code> | For pagination, the number of results to return. |
-| options.cursor | <code>object</code> | For cursor-based pagination, the index cursor. |
+| options | <code>object</code> \| <code>null</code> | Pagination options |
+| options.skip | <code>number</code> \| <code>null</code> | For skip-based pagination, the number of referenced files to skip. |
+| options.limit | <code>number</code> \| <code>null</code> | For pagination, the number of results to return. |
+| options.cursor | [<code>CouchDBViewCursor</code>](#CouchDBViewCursor) \| <code>null</code> | For cursor-based pagination, the index cursor. |
 | options.includeFiles | <code>boolean</code> | Include the whole file documents in the results list |
 
 <a name="FileCollection+addNotSynchronizedDirectories"></a>
 
-### fileCollection.addNotSynchronizedDirectories(oauthClient, directories) ⇒
+### fileCollection.addNotSynchronizedDirectories(oauthClient, directories)
 Add directory synchronization exclusions to an OAuth client — see https://docs.cozy.io/en/cozy-stack/not-synchronized-vfs/#post-datatypedoc-idrelationshipsnot_synchronizing
 
  For example, to exclude directory `/Photos` from `My Computer`'s desktop synchronization:
@@ -952,16 +970,15 @@ addNotSynchronizedDirectories({_id: 123, _type: "io.cozy.oauth.clients", clientN
 ```
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
-**Returns**: 204 No Content  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | oauthClient | [<code>OAuthClient</code>](#OAuthClient) | A JSON representing the OAuth client |
-| directories | <code>Array</code> | An array of JSON documents having a `_type` and `_id` fields and representing directories. |
+| directories | <code>Array</code> | An array of JSON documents having a `_type` and `_id` fields and representing directories. Returns 204 No Content |
 
 <a name="FileCollection+removeNotSynchronizedDirectories"></a>
 
-### fileCollection.removeNotSynchronizedDirectories(oauthClient, directories) ⇒
+### fileCollection.removeNotSynchronizedDirectories(oauthClient, directories)
 Remove directory synchronization exclusions from an OAuth client — see https://docs.cozy.io/en/cozy-stack/not-synchronized-vfs/#delete-datatypedoc-idrelationshipsnot_synchronizing
 
  For example, to re-include directory `/Photos` into `My Computer`'s desktop synchronization:
@@ -970,12 +987,11 @@ Remove directory synchronization exclusions from an OAuth client — see https:/
 ```
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
-**Returns**: 204 No Content  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | oauthClient | [<code>OAuthClient</code>](#OAuthClient) | A JSON representing the OAuth client |
-| directories | <code>Array</code> | An array of JSON documents having a `_type` and `_id` field and representing directories. |
+| directories | <code>Array</code> | An array of JSON documents having a `_type` and `_id` field and representing directories. Returns 204 No Content |
 
 <a name="NotesCollection"></a>
 
@@ -987,7 +1003,7 @@ Implements `DocumentCollection` API to interact with the /notes endpoint of the 
 * [NotesCollection](#NotesCollection)
     * [.all()](#NotesCollection+all) ⇒ <code>Object</code>
     * [.destroy(note)](#NotesCollection+destroy) ⇒ <code>Object</code>
-    * [.create(option)](#NotesCollection+create) ⇒ <code>Object</code>
+    * [.create(options)](#NotesCollection+create) ⇒ <code>Object</code>
     * [.fetchURL(note)](#NotesCollection+fetchURL) ⇒ <code>Object</code>
     * [.getDefaultSchema()](#NotesCollection+getDefaultSchema) ⇒ <code>object</code>
 
@@ -1008,12 +1024,12 @@ Destroys the note on the server
 
 | Param | Type | Description |
 | --- | --- | --- |
-| note | <code>io.cozy.notes</code> | The note document to destroy |
-| note._id | <code>string</code> | The note's id |
+| note | <code>object</code> | The io.cozy.notes document to destroy |
+| [note._id] | <code>string</code> | The note's id |
 
 <a name="NotesCollection+create"></a>
 
-### notesCollection.create(option) ⇒ <code>Object</code>
+### notesCollection.create(options) ⇒ <code>Object</code>
 Create a note
 
 **Kind**: instance method of [<code>NotesCollection</code>](#NotesCollection)  
@@ -1021,8 +1037,8 @@ Create a note
 
 | Param | Type | Description |
 | --- | --- | --- |
-| option | <code>object</code> |  |
-| option.dir_id | <code>string</code> | dir_id where to create the note |
+| options | <code>object</code> |  |
+| [options.dir_id] | <code>string</code> | dir_id where to create the note |
 
 <a name="NotesCollection+fetchURL"></a>
 
@@ -1035,8 +1051,8 @@ Returns the details to build the note's url
 
 | Param | Type | Description |
 | --- | --- | --- |
-| note | <code>io.cozy.notes</code> | The note document to open |
-| note._id | <code>string</code> | The note's id |
+| note | <code>object</code> | The io.cozy.notes document to open |
+| [note._id] | <code>string</code> | The note's id |
 
 <a name="NotesCollection+getDefaultSchema"></a>
 
@@ -1256,9 +1272,9 @@ Fetches all OAuth clients
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>object</code> | Query options |
-| options.limit | <code>number</code> | For pagination, the number of results to return. |
-| options.bookmark | <code>object</code> | For cursor-based pagination, the index cursor. |
-| options.keys | <code>Array</code> | Ids of specific clients to return (within the current page), |
+| [options.limit] | <code>number</code> | For pagination, the number of results to return. |
+| [options.bookmark] | <code>string</code> | For bookmark-based pagination, the document _id to start from |
+| [options.keys] | <code>Array.&lt;string&gt;</code> | Ids of specific clients to return (within the current page), |
 
 <a name="OAuthClientsCollection+get"></a>
 
@@ -1282,7 +1298,7 @@ Destroys the OAuth client on the server
 
 | Param | Type | Description |
 | --- | --- | --- |
-| oauthClient | <code>io.cozy.oauth.clients</code> | The client document to destroy |
+| oauthClient | <code>object</code> | The io.cozy.oauth.clients document to destroy |
 
 <a name="PermissionCollection"></a>
 
@@ -1690,8 +1706,9 @@ Returns true when parameter has type directory, file or has _type io.cozy.files
 
 | Param | Type | Description |
 | --- | --- | --- |
-| type | <code>string</code> | The type of the file |
-| _type | <code>string</code> | The _type of the file |
+| doc | <code>object</code> | The document whose type is checked |
+| [doc._type] | <code>string</code> | The document's doctype |
+| [doc.type] | <code>&#x27;directory&#x27;</code> \| <code>&#x27;file&#x27;</code> | The io.cozy-files document type |
 
 <a name="isDirectory"></a>
 
@@ -1729,7 +1746,7 @@ query to work
 
 | Param | Type | Description |
 | --- | --- | --- |
-| options | <code>object</code> | Mango query options |
+| options | [<code>MangoQueryOptions</code>](#MangoQueryOptions) | Mango query options |
 
 <a name="isInconsistentIndex"></a>
 
@@ -1908,22 +1925,6 @@ Compute the RelationshipItem that can be referenced as a sharing recipient
 Get a uniform formatted URL and SSL information according to a provided URL
 
 **Kind**: global function  
-<a name="CouchOptionsRaw"></a>
-
-## CouchOptionsRaw : <code>object</code>
-Calls _changes route from CouchDB
-No further treatment is done contrary to fetchchanges
-
-**Kind**: global typedef  
-**See**: https://docs.couchdb.org/en/stable/api/database/changes.html  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| since | <code>string</code> | Bookmark telling CouchDB from which point in time should changes be returned |
-| doc_ids | <code>Array.&lt;string&gt;</code> | Only return changes for a subset of documents |
-| includeDocs | <code>boolean</code> | Includes full documents as part of results |
-| couchOptions | [<code>CouchOptionsRaw</code>](#CouchOptionsRaw) | Couch options for changes https://kutt.it/5r7MNQ |
-
 <a name="FetchChangesReturnValue"></a>
 
 ## FetchChangesReturnValue ⇒ [<code>FetchChangesReturnValue</code>](#FetchChangesReturnValue)
@@ -1937,20 +1938,26 @@ You should use fetchChangesRaw to have low level control on _changes parameters.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| since | <code>string</code> | Bookmark telling CouchDB from which point in time should changes be returned |
-| doc_ids | <code>Array.&lt;string&gt;</code> | Only return changes for a subset of documents |
-| couchOptions | <code>CouchOptions</code> | Couch options for changes |
-| options | <code>FetchChangesOptions</code> | Further options on the returned documents. By default, it is set to                                         { includeDesign: false, includeDeleted: false } |
+| couchOptions | <code>object</code> | Couch options for changes |
+| [couchOptions.since] | <code>string</code> | Bookmark telling CouchDB from which point in time should changes be returned |
+| [couchOptions.doc_ids] | <code>Array.&lt;string&gt;</code> | Only return changes for a subset of documents |
+| options | <code>object</code> | Further options on the returned documents. By default, it is set to { includeDesign: false, includeDeleted: false } |
+| [options.includeDesign] | <code>boolean</code> | Whether to include changes from design docs (needs include_docs to be true) |
+| [options.includeDeleted] | <code>boolean</code> | Whether to include changes for deleted documents (needs include_docs to be true) |
 
 **Properties**
 
-| Name | Type | Description |
-| --- | --- | --- |
-| includeDesign | <code>boolean</code> | Whether to include changes from design docs (needs include_docs to be true) |
-| includeDeleted | <code>boolean</code> | Whether to include changes for deleted documents (needs include_docs to be true) |
-| newLastSeq | <code>string</code> |  |
-| documents | <code>Array.&lt;object&gt;</code> |  |
+| Name | Type |
+| --- | --- |
+| newLastSeq | <code>string</code> | 
+| documents | <code>Array.&lt;object&gt;</code> | 
 
+<a name="CouchDBViewCursor"></a>
+
+## CouchDBViewCursor : <code>Array.&lt;string&gt;</code> \| <code>string</code>
+Cursor used for Mango queries pagination
+
+**Kind**: global typedef  
 <a name="DirectoryAttributes"></a>
 
 ## DirectoryAttributes : <code>object</code>
@@ -2246,6 +2253,27 @@ Document representing a io.cozy.jobs
 | _id | <code>string</code> | Id of the job |
 | attributes.state | <code>string</code> | state of the job. Can be 'errored', 'running', 'queued', 'done' |
 | attributes.error | <code>string</code> | Error message of the job if any |
+
+<a name="MangoPartialFilter"></a>
+
+## MangoPartialFilter : <code>object</code>
+**Kind**: global typedef  
+<a name="MangoQueryOptions"></a>
+
+## MangoQueryOptions : <code>object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| [sort] | <code>Array.&lt;object&gt;</code> | The sorting parameters |
+| [fields] | <code>Array.&lt;string&gt;</code> | The fields to return |
+| [limit] | <code>number</code> \| <code>null</code> | For pagination, the number of results to return |
+| [skip] | <code>number</code> \| <code>null</code> | For skip-based pagination, the number of referenced files to skip |
+| [indexId] | <code>string</code> \| <code>null</code> | The _id of the CouchDB index to use for this request |
+| [bookmark] | <code>string</code> \| <code>null</code> | For bookmark-based pagination, the document _id to start from |
+| [indexedFields] | <code>Array.&lt;string&gt;</code> |  |
+| [partialFilter] | [<code>MangoPartialFilter</code>](#MangoPartialFilter) \| <code>null</code> | An optional partial filter |
 
 <a name="DesignDoc"></a>
 

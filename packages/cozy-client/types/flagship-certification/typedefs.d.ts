@@ -1,13 +1,13 @@
 /**
- * A JSON Web Signature
+ * - A JSON Web Signature
  */
 type jws = string;
 /**
- * A JSON Web Signature
+ * - A JSON Web Signature
  */
 type base64string = string;
 /**
- * An app attestation from the app store
+ * - An app attestation from the app store
  */
 type AttestationResult = {
     platform: string;
@@ -15,7 +15,7 @@ type AttestationResult = {
     keyId?: string;
 };
 /**
- * Configuration to access the stores certification API
+ * - Configuration to access the stores certification API
  */
 type CertificationConfig = {
     androidSafetyNetApiKey: string;

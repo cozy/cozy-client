@@ -26,6 +26,7 @@ const normalizeDoc = (couchDBDoc, doctype) => {
  * DispatchChange
  *
  * @param {CozyClient} client CozyClient instane
+ * @param {Doctype} doctype Doctype of the document to update
  * @param {CouchDBDocument} couchDBDoc Document to update
  * @param {Mutation} mutationDefinitionCreator Mutation to apply
  */

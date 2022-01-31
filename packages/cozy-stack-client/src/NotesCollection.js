@@ -41,8 +41,8 @@ class NotesCollection extends DocumentCollection {
   /**
    * Destroys the note on the server
    *
-   * @param {io.cozy.notes} note     The note document to destroy
-   * @param {string}   note._id The note's id
+   * @param {object} note       The io.cozy.notes document to destroy
+   * @param {string} [note._id] The note's id
    *
    * @returns {{ data }} The deleted note
    */
@@ -56,8 +56,9 @@ class NotesCollection extends DocumentCollection {
   /**
    * Create a note
    *
-   * @param {object} option
-   * @param {string} option.dir_id dir_id where to create the note
+   * @param {object} options
+   * @param {string} [options.dir_id] dir_id where to create the note
+   *
    * @returns {{data, links, meta}} The JSON API conformant response.
    */
   async create({ dir_id }) {
@@ -82,8 +83,8 @@ class NotesCollection extends DocumentCollection {
    *
    * @see https://github.com/cozy/cozy-stack/blob/master/docs/notes.md#get-notesidopen
    *
-   * @param {io.cozy.notes} note The note document to open
-   * @param {string}   note._id The note's id
+   * @param {object} note       The io.cozy.notes document to open
+   * @param {string} [note._id] The note's id
    *
    * @returns {{ data }} The note's url details
    */

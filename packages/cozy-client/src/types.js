@@ -160,7 +160,7 @@ import { QueryDefinition } from './queries/dsl'
  * @property {string} name - Name of the folder
  * @property {object} metadata - Metadata of the folder
  * @property {object} type - Type of the folder
- * @typedef {CozyClientDocument & FileDocument} IOCozyFolder - An io.cozy.files document
+ * @typedef {CozyClientDocument & FolderDocument} IOCozyFolder - An io.cozy.files document
  */
 
 /**
@@ -244,6 +244,12 @@ import { QueryDefinition } from './queries/dsl'
  * @property {string} rev
  * @property {string?} error?
  * @property {string?} reason?
+ */
+
+/**
+ * @typedef {Array<string>|string} ViewKey
+ * @typedef {string} DocId
+ * @typedef {[ViewKey, DocId]} CouchDBViewCursor
  */
 
 /**

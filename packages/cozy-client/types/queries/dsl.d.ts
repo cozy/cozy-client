@@ -70,7 +70,7 @@ export type PartialQueryDefinition = {
     selector?: object;
 };
 export type MangoSelector = any;
-export type Cursor = any[];
+export type MangoPartialFilter = any;
 import { Doctype } from "../types";
 /**
  * @typedef PartialQueryDefinition
@@ -83,7 +83,7 @@ import { Doctype } from "../types";
  * @typedef {object} MangoSelector
  */
 /**
- * @typedef {Array} Cursor
+ * @typedef {object} MangoPartialFilter
  */
 /**
  * Chainable API to create query definitions to retrieve documents
@@ -96,50 +96,50 @@ export class QueryDefinition {
      * @class
      *
      * @param {object} options Initial options for the query definition
-     * @param {string} [options.doctype] - The doctype of the doc.
-     * @param {string} [options.id] - The id of the doc.
-     * @param {Array} [options.ids] - The ids of the docs.
-     * @param {object} [options.selector] - The selector to query the docs.
-     * @param {Array} [options.fields] - The fields to return.
-     * @param {Array} [options.indexedFields] - The fields to index.
-     * @param {object} [options.partialFilter] - The partial index definition to filter docs.
-     * @param {Array} [options.sort] - The sorting params.
+     * @param {Doctype} [options.doctype] - The doctype of the doc.
+     * @param {DocId|null} [options.id] - The id of the doc.
+     * @param {Array<DocId>} [options.ids] - The ids of the docs.
+     * @param {MangoSelector} [options.selector] - The selector to query the docs.
+     * @param {Array<string>} [options.fields] - The fields to return.
+     * @param {Array<string>} [options.indexedFields] - The fields to index.
+     * @param {MangoPartialFilter} [options.partialFilter] - The partial index definition to filter docs.
+     * @param {Array<object>} [options.sort] - The sorting params.
      * @param {Array<string>} [options.includes] - The docs to include.
-     * @param {string} [options.referenced] - The referenced document.
+     * @param {string|null} [options.referenced] - The referenced document.
      * @param {number|null} [options.limit] - The document's limit to return.
-     * @param {number} [options.skip] - The number of docs to skip.
-     * @param {Cursor} [options.cursor] - The cursor to paginate views.
+     * @param {number|null} [options.skip] - The number of docs to skip.
+     * @param {CouchDBViewCursor} [options.cursor] - The cursor to paginate views.
      * @param {string} [options.bookmark] - The bookmark to paginate mango queries.
      */
     constructor(options?: {
-        doctype: string;
-        id: string;
-        ids: any[];
-        selector: object;
-        fields: any[];
-        indexedFields: any[];
-        partialFilter: object;
-        sort: any[];
+        doctype: Doctype;
+        id: DocId | null;
+        ids: Array<DocId>;
+        selector: MangoSelector;
+        fields: Array<string>;
+        indexedFields: Array<string>;
+        partialFilter: MangoPartialFilter;
+        sort: Array<object>;
         includes: Array<string>;
-        referenced: string;
+        referenced: string | null;
         limit: number | null;
-        skip: number;
-        cursor: Cursor;
+        skip: number | null;
+        cursor: CouchDBViewCursor;
         bookmark: string;
     });
     doctype: string;
     id: string;
-    ids: any[];
+    ids: string[];
     selector: any;
-    fields: any[];
-    indexedFields: any[];
+    fields: string[];
+    indexedFields: string[];
     partialFilter: any;
     sort: any[];
     includes: string[];
     referenced: string;
     limit: number;
     skip: number;
-    cursor: Cursor;
+    cursor: CouchDBViewCursor;
     bookmark: string;
     /**
      * Checks if the sort order matches the index' fields order.
@@ -249,10 +249,10 @@ export class QueryDefinition {
      * the starting document of the query, e.g. "file-id".
      * Use the last docid of each query as startkey_docid to paginate or leave blank for the first query.
      *
-     * @param {Cursor} cursor The cursor for pagination.
+     * @param {CouchDBViewCursor} cursor The cursor for pagination.
      * @returns {QueryDefinition}  The QueryDefinition object.
      */
-    offsetCursor(cursor: Cursor): QueryDefinition;
+    offsetCursor(cursor: CouchDBViewCursor): QueryDefinition;
     /**
      * Use [bookmark](https://docs.couchdb.org/en/2.2.0/api/database/find.html#pagination) pagination.
      * Note this only applies for mango-queries (not views) and is way more efficient than skip pagination.
@@ -273,17 +273,17 @@ export class QueryDefinition {
     toDefinition(): {
         doctype: string;
         id: string;
-        ids: any[];
+        ids: string[];
         selector: any;
-        fields: any[];
-        indexedFields: any[];
+        fields: string[];
+        indexedFields: string[];
         partialFilter: any;
         sort: any[];
         includes: string[];
         referenced: string;
         limit: number;
         skip: number;
-        cursor: Cursor;
+        cursor: CouchDBViewCursor;
         bookmark: string;
     };
 }
@@ -296,4 +296,6 @@ declare const REMOVE_REFERENCES_TO: "REMOVE_REFERENCES_TO";
 declare const ADD_REFERENCED_BY: "ADD_REFERENCED_BY";
 declare const REMOVE_REFERENCED_BY: "REMOVE_REFERENCED_BY";
 declare const UPLOAD_FILE: "UPLOAD_FILE";
+import { CouchDBViewCursor } from "../types";
+import { DocId } from "../types";
 export {};

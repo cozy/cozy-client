@@ -7,6 +7,20 @@ import { CozyClientDocument } from '../types'
 import { DOCTYPE_FILES } from '../const'
 import Association from './Association'
 import HasMany from './HasMany'
+import { CouchDBViewCursor, DocId, ViewKey } from '../types'
+
+/**
+ * newCursor - Returns a CouchDB view Cursor for cursor-based pagination
+ *
+ * @param {ViewKey} key - The CouchDB key of the view which will be requested
+ * @param {DocId} startDocId - The first doc _id to return from the view
+ *
+ * @returns {CouchDBViewCursor}
+ */
+const newCursor = ([doctype, id, lastDatetime], startDocId) => {
+  const cursorKey = lastDatetime ? [doctype, id, lastDatetime] : [doctype, id]
+  return [cursorKey, startDocId]
+}
 
 /**
  *  This class is only used for photos albums relationships.
@@ -37,11 +51,12 @@ export default class HasManyFiles extends HasMany {
       // Photos always have a datetime field in metadata
       const lastDatetime = lastRelDoc.attributes.metadata.datetime
       // cursor-based pagination
-      const cursorKey = [this.target._type, this.target._id, lastDatetime]
-      const startDocId = relationships[relationships.length - 1]._id
-      const cursorView = [cursorKey, startDocId]
+      const cursor = newCursor(
+        [this.target._type, this.target._id, lastDatetime],
+        relationships[relationships.length - 1]._id
+      )
       const response = await this.query(
-        queryDef.referencedBy(this.target).offsetCursor(cursorView)
+        queryDef.referencedBy(this.target).offsetCursor(cursor)
       )
       // Remove first returned element, used as starting point for the query
       response.data.shift()
@@ -121,8 +136,7 @@ export default class HasManyFiles extends HasMany {
       )
       return ids.length > 0 ? Q(assoc.doctype).getByIds(ids) : null
     } else {
-      const key = [document._type, document._id]
-      const cursor = [key, '']
+      const cursor = newCursor([document._type, document._id], '')
 
       return Q(assoc.doctype)
         .referencedBy(document)

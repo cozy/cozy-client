@@ -505,7 +505,7 @@ Get the database name based on prefix and doctype
 
 | Param | Type | Description |
 | --- | --- | --- |
-| } | <code>string</code> | prefix - The URL prefix |
+| prefix | <code>string</code> | The URL prefix |
 | doctype | <code>string</code> | The database doctype |
 
 <a name="getPrefix"></a>
@@ -526,9 +526,9 @@ Get the URI prefix
 **Kind**: global function  
 **Returns**: <code>string</code> - alias  
 
-| Param | Type |
-| --- | --- |
-| query | <code>QueryDefinition</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| query | <code>QueryDefinition</code> | The query definition whose name we're getting |
 
 <a name="SyncStatus"></a>
 

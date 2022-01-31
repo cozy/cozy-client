@@ -1,23 +1,19 @@
 /**
- * A JSON Web Signature
- * @typedef {string} jws
+ * @typedef {string} jws - A JSON Web Signature
  */
 
 /**
- * A JSON Web Signature
- * @typedef {string} base64string
+ * @typedef {string} base64string - A JSON Web Signature
  */
 
 /**
- * An app attestation from the app store
- * @typedef {object} AttestationResult
+ * @typedef {object} AttestationResult - An app attestation from the app store
  * @property {string} platform
  * @property {jws|base64string} attestation
  * @property {string} [keyId]
  */
 
 /**
- * Configuration to access the stores certification API
- * @typedef {object} CertificationConfig
+ * @typedef {object} CertificationConfig - Configuration to access the stores certification API
  * @property {string} androidSafetyNetApiKey
  */

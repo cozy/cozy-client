@@ -1,6 +1,6 @@
 import isArray from 'lodash/isArray'
 import findKey from 'lodash/findKey'
-import { Doctype } from '../types'
+import { CouchDBViewCursor, DocId, Doctype } from '../types'
 
 /**
  * @typedef PartialQueryDefinition
@@ -15,7 +15,7 @@ import { Doctype } from '../types'
  */
 
 /**
- * @typedef {Array} Cursor
+ * @typedef {object} MangoPartialFilter
  */
 
 /**
@@ -29,19 +29,19 @@ class QueryDefinition {
    * @class
    *
    * @param {object} options Initial options for the query definition
-   * @param {string} [options.doctype] - The doctype of the doc.
-   * @param {string} [options.id] - The id of the doc.
-   * @param {Array} [options.ids] - The ids of the docs.
-   * @param {object} [options.selector] - The selector to query the docs.
-   * @param {Array} [options.fields] - The fields to return.
-   * @param {Array} [options.indexedFields] - The fields to index.
-   * @param {object} [options.partialFilter] - The partial index definition to filter docs.
-   * @param {Array} [options.sort] - The sorting params.
+   * @param {Doctype} [options.doctype] - The doctype of the doc.
+   * @param {DocId|null} [options.id] - The id of the doc.
+   * @param {Array<DocId>} [options.ids] - The ids of the docs.
+   * @param {MangoSelector} [options.selector] - The selector to query the docs.
+   * @param {Array<string>} [options.fields] - The fields to return.
+   * @param {Array<string>} [options.indexedFields] - The fields to index.
+   * @param {MangoPartialFilter} [options.partialFilter] - The partial index definition to filter docs.
+   * @param {Array<object>} [options.sort] - The sorting params.
    * @param {Array<string>} [options.includes] - The docs to include.
-   * @param {string} [options.referenced] - The referenced document.
+   * @param {string|null} [options.referenced] - The referenced document.
    * @param {number|null} [options.limit] - The document's limit to return.
-   * @param {number} [options.skip] - The number of docs to skip.
-   * @param {Cursor} [options.cursor] - The cursor to paginate views.
+   * @param {number|null} [options.skip] - The number of docs to skip.
+   * @param {CouchDBViewCursor} [options.cursor] - The cursor to paginate views.
    * @param {string} [options.bookmark] - The bookmark to paginate mango queries.
    */
   constructor(options = {}) {
@@ -270,7 +270,7 @@ class QueryDefinition {
    * the starting document of the query, e.g. "file-id".
    * Use the last docid of each query as startkey_docid to paginate or leave blank for the first query.
    *
-   * @param {Cursor} cursor The cursor for pagination.
+   * @param {CouchDBViewCursor} cursor The cursor for pagination.
    * @returns {QueryDefinition}  The QueryDefinition object.
    */
   offsetCursor(cursor) {
