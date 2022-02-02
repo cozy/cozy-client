@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.15.0](https://github.com/cozy/cozy-client/compare/v27.14.4...v27.15.0) (2022-02-02)
+
+
+### Features
+
+* **file:** Fill last modified date in UpdatedAt path query string ([9f0a0d2](https://github.com/cozy/cozy-client/commit/9f0a0d26d97b4628855a975016a09bda7957de6f))
+
+
+
+
+
 ## [27.14.4](https://github.com/cozy/cozy-client/compare/v27.14.3...v27.14.4) (2022-01-31)
 
 
