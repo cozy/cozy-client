@@ -151,16 +151,16 @@ export const getCollectionFromSlice = (state = {}, doctype) => {
 }
 
 /*
-  This method has been created in order to get a returned object 
-  in `data` with the full set on information coming potentially from 
-  ìncluded`
+  This method has been created in order to get a returned object
+  in `data` with the full set on information coming potentially from
+  `included`
 
-  This method should be somewhere else. The `document` shall not be 
-  deal with included / data and so on. 
+  This method should be somewhere else. The `document` shall not be
+  dealt with included / data and so on.
 
-  This method takes data and included and merge both sources 
-  together. It should be always up to date. The returned object 
-  will be as full of informations as it can be.
+  This method takes `data` and `included` and merge both sources
+  together. It should be always up-to-date. The returned object
+  will be as full of information as it can be.
 */
 export const extractAndMergeDocument = (data, updatedStateWithIncluded) => {
   const doctype = data[0]._type
@@ -172,8 +172,9 @@ export const extractAndMergeDocument = (data, updatedStateWithIncluded) => {
   const sortedData = keyBy(data, properId)
 
   let mergedData = Object.assign({}, updatedStateWithIncluded)
+  mergedData[doctype] = Object.assign({}, updatedStateWithIncluded[doctype])
+
   Object.values(sortedData).map(data => {
-    if (!mergedData[doctype]) mergedData[doctype] = {}
     const id = properId(data)
     if (mergedData[doctype][id]) {
       mergedData[doctype][id] = {
