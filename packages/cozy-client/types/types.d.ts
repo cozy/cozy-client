@@ -170,11 +170,11 @@ export type FileDocument = {
     /**
      * - Type of the file
      */
-    type: object;
+    type: string;
     /**
      * - Class of the file
      */
-    class: object;
+    class: string;
 };
 /**
  * - An io.cozy.files document
