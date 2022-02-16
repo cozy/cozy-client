@@ -8,7 +8,7 @@
  */
 const validateAppMock = async (nonce, certificationConfig) => {
   throw new Error(
-    `validateApp can only be called from a React Native container`
+    `getAppAttestationFromStore can only be called from a React Native container`
   )
 }
 
