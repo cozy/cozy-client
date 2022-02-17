@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.15.1](https://github.com/cozy/cozy-client/compare/v27.15.0...v27.15.1) (2022-02-17)
+
+
+### Bug Fixes
+
+* **deps:** pin dependencies ([f8fb41a](https://github.com/cozy/cozy-client/commit/f8fb41af68c798f84d29744b9a2d8e7904f9dd87))
+
+
+
+
+
 # [27.15.0](https://github.com/cozy/cozy-client/compare/v27.14.4...v27.15.0) (2022-02-02)
 
 **Note:** Version bump only for package cozy-client

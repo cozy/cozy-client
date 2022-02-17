@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.15.1](https://github.com/cozy/cozy-client/compare/v27.15.0...v27.15.1) (2022-02-17)
+
+
+### Bug Fixes
+
+* **deps:** Bump lodash from 4.17.20 to 4.17.21 ([de0b7df](https://github.com/cozy/cozy-client/commit/de0b7dfa9ca382b4c2c6c9f7a76e839c660526cc))
+* **deps:** pin dependencies ([f8fb41a](https://github.com/cozy/cozy-client/commit/f8fb41af68c798f84d29744b9a2d8e7904f9dd87))
+* **deps:** update dependency lerna to v4 ([2c8dc64](https://github.com/cozy/cozy-client/commit/2c8dc644852294425ba33b3b707028f50bc38feb))
+
+
+
+
+
 # [27.15.0](https://github.com/cozy/cozy-client/compare/v27.14.4...v27.15.0) (2022-02-02)
 
 
