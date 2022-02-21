@@ -365,6 +365,39 @@ describe('CozyStackClient', () => {
       )
     })
 
+    it('should try to refresh the current token when received an expired token response', async () => {
+      const client = new CozyStackClient(FAKE_INIT_OPTIONS)
+      global.fetch
+        .mockResponseOnce(() => {
+          return Promise.resolve({
+            headers: {
+              'content-type': 'application/json; charset=UTF-8'
+            },
+            body: JSON.stringify({
+              error: 'Expired token'
+            }),
+            ok: false,
+            status: 403,
+            statusText: '',
+            type: 'default',
+            url: 'http://cozy.tools:8080/settings/capabilities'
+          })
+        })
+        .once([FAKE_APP_HTML, { status: 200 }])
+        .once([JSON.stringify({ res: 'ok' }), { status: 200 }])
+      await client.fetchJSON('GET', '/test')
+      const token = client.getAccessToken()
+      expect(token).toEqual(FAKE_APP_TOKEN)
+      expect(global.fetch).toHaveBeenLastCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          headers: expect.objectContaining({
+            Authorization: `Bearer ${FAKE_APP_TOKEN}`
+          })
+        })
+      )
+    })
+
     it('should not change option header even if we recall the method after an expired token for instance', async () => {
       jest.spyOn(client, 'fetchJSONWithCurrentToken')
       fetch.mockRejectedValueOnce({ message: 'Expired token' })
