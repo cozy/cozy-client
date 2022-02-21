@@ -15,6 +15,7 @@
 | Name | Type |
 | :------ | :------ |
 | `ADMINISTRATIVE` | `string` |
+| `COACH_CO2` | `string` |
 | `HOME` | `string` |
 | `NOTES` | `string` |
 | `PAPERS` | `string` |
@@ -50,7 +51,7 @@ Folder document
 
 *Defined in*
 
-[packages/cozy-client/src/models/folder.js:69](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/folder.js#L69)
+[packages/cozy-client/src/models/folder.js:70](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/folder.js#L70)
 
 ***
 
@@ -76,7 +77,7 @@ Folder document
 
 *Defined in*
 
-[packages/cozy-client/src/models/folder.js:29](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/folder.js#L29)
+[packages/cozy-client/src/models/folder.js:30](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/folder.js#L30)
 
 ***
 
@@ -101,4 +102,4 @@ Folder referenced by the given document
 
 *Defined in*
 
-[packages/cozy-client/src/models/folder.js:90](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/folder.js#L90)
+[packages/cozy-client/src/models/folder.js:91](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/folder.js#L91)
