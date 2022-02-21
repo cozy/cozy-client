@@ -22,6 +22,7 @@ describe('Folder model', () => {
     expect(MAGIC_FOLDERS.NOTES).toBeDefined()
     expect(MAGIC_FOLDERS.HOME).toBeDefined()
     expect(MAGIC_FOLDERS.PAPERS).toBeDefined()
+    expect(MAGIC_FOLDERS.COACH_CO2).toBeDefined()
   })
 
   describe('ensureMagicFolder', () => {

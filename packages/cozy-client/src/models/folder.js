@@ -14,7 +14,8 @@ export const MAGIC_FOLDERS = {
   PHOTOS_UPLOAD: `${APP_DOCTYPE}/${photos}/upload`,
   NOTES: `${APP_DOCTYPE}/notes`,
   HOME: `${APP_DOCTYPE}/home`,
-  PAPERS: `${APP_DOCTYPE}/${administrative}/papers`
+  PAPERS: `${APP_DOCTYPE}/${administrative}/papers`,
+  COACH_CO2: `${APP_DOCTYPE}/${administrative}/coachco2`
 }
 
 /**
