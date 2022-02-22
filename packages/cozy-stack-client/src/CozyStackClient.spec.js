@@ -367,6 +367,7 @@ describe('CozyStackClient', () => {
 
     it('should try to refresh the current token when received an expired token response', async () => {
       const client = new CozyStackClient(FAKE_INIT_OPTIONS)
+      jest.spyOn(client, 'refreshToken')
       global.fetch
         .mockResponseOnce(() => {
           return Promise.resolve({
@@ -388,6 +389,7 @@ describe('CozyStackClient', () => {
       await client.fetchJSON('GET', '/test')
       const token = client.getAccessToken()
       expect(token).toEqual(FAKE_APP_TOKEN)
+      expect(client.refreshToken).toHaveBeenCalled()
       expect(global.fetch).toHaveBeenLastCalledWith(
         expect.anything(),
         expect.objectContaining({
@@ -396,6 +398,75 @@ describe('CozyStackClient', () => {
           })
         })
       )
+    })
+
+    it(`should try to refresh the current token when receiving a 'forbidden' response with 'access token expired' error in 'www-authenticate'`, async () => {
+      const client = new CozyStackClient(FAKE_INIT_OPTIONS)
+      jest.spyOn(client, 'refreshToken')
+      global.fetch
+        .mockResponseOnce(() => {
+          return Promise.resolve({
+            headers: {
+              'content-type': 'application/json; charset=UTF-8',
+              'www-authenticate':
+                'Bearer error="invalid_token" error_description="The access token expired"'
+            },
+            body: JSON.stringify({
+              error: 'Forbidden'
+            }),
+            ok: false,
+            status: 403,
+            statusText: '',
+            type: 'default',
+            url: 'http://cozy.tools:8080/settings/capabilities'
+          })
+        })
+        .once([FAKE_APP_HTML, { status: 200 }])
+        .once([JSON.stringify({ res: 'ok' }), { status: 200 }])
+      await client.fetchJSON('GET', '/test')
+      const token = client.getAccessToken()
+      expect(token).toEqual(FAKE_APP_TOKEN)
+      expect(client.refreshToken).toHaveBeenCalled()
+      expect(global.fetch).toHaveBeenLastCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          headers: expect.objectContaining({
+            Authorization: `Bearer ${FAKE_APP_TOKEN}`
+          })
+        })
+      )
+    })
+
+    it(`should NOT try to refresh the current token when receiving a 'forbidden' response with 'invalid token' error in 'www-authenticate' (not expired token)`, async () => {
+      const client = new CozyStackClient(FAKE_INIT_OPTIONS)
+      jest.spyOn(client, 'refreshToken')
+      global.fetch.mockResponseOnce(() => {
+        return Promise.resolve({
+          headers: {
+            'content-type': 'application/json; charset=UTF-8',
+            'www-authenticate': 'Bearer error="invalid_token"'
+          },
+          body: JSON.stringify({
+            error: 'Forbidden'
+          }),
+          ok: false,
+          status: 403,
+          statusText: '',
+          type: 'default',
+          url: 'http://cozy.tools:8080/settings/capabilities'
+        })
+      })
+
+      expect.assertions(4)
+      try {
+        await client.fetchJSON('GET', '/test')
+      } catch (e) {
+        expect(e).toBeInstanceOf(FetchError)
+        expect(e.message).toBe('Invalid token')
+        expect(client.refreshToken).not.toHaveBeenCalled()
+        const token = client.getAccessToken()
+        expect(token).toEqual(FAKE_INIT_OPTIONS.token)
+      }
     })
 
     it('should not change option header even if we recall the method after an expired token for instance', async () => {
