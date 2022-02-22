@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.16.1](https://github.com/cozy/cozy-client/compare/v27.16.0...v27.16.1) (2022-02-22)
+
+
+### Bug Fixes
+
+* **documents:** Reducer should assign new object for concerned doctype ([83b03e8](https://github.com/cozy/cozy-client/commit/83b03e8d3bfb5c9722fe95ac8558fc842ef08feb))
+
+
+
+
+
 # [27.16.0](https://github.com/cozy/cozy-client/compare/v27.15.3...v27.16.0) (2022-02-22)
 
 
