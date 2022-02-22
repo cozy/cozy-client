@@ -8,6 +8,27 @@ export default {
   INVALID_TOKEN
 }
 
+const getWwwAuthenticateErrorMessage = response => {
+  const invalidTokenRegex = /invalid_token/
+  const expiredTokenRegex = /access token expired/
+  const wwwAuthenticateHeader =
+    response.headers && response.headers.get('www-authenticate')
+
+  if (!wwwAuthenticateHeader) {
+    return undefined
+  }
+
+  if (expiredTokenRegex.test(wwwAuthenticateHeader)) {
+    return 'Expired token'
+  }
+
+  if (invalidTokenRegex.test(wwwAuthenticateHeader)) {
+    return 'Invalid token'
+  }
+
+  return undefined
+}
+
 export class FetchError extends Error {
   constructor(response, reason) {
     super()
@@ -21,9 +42,12 @@ export class FetchError extends Error {
     this.status = response.status
     this.reason = reason
 
+    let wwwAuthenticateErrorMessage = getWwwAuthenticateErrorMessage(response)
+
     Object.defineProperty(this, 'message', {
       value:
         reason.message ||
+        wwwAuthenticateErrorMessage ||
         (typeof reason === 'string' ? reason : JSON.stringify(reason))
     })
   }
