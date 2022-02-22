@@ -39,17 +39,19 @@ class JobCollection {
    * Creates a job
    *
    * @param  {string} workerType - Ex: "konnector"
-   * @param  {object} args - Ex: {"slug": "my-konnector", "trigger": "trigger-id"}
-   * @param  {object} options - creation options
+   * @param  {object} [args={}] - Ex: {"slug": "my-konnector", "trigger": "trigger-id"}
+   * @param  {object} [options={}] - creation options
+   * @param  {boolean} [manual=false] -  Manual execution
    * @returns {object} createdJob
    */
-  create(workerType, args, options) {
+  create(workerType, args = {}, options = {}, manual = false) {
     return this.stackClient.fetchJSON('POST', `/jobs/queue/${workerType}`, {
       data: {
         type: JOBS_DOCTYPE,
         attributes: {
-          arguments: args || {},
-          options: options || {}
+          arguments: args,
+          options: options,
+          manual
         }
       }
     })
@@ -59,7 +61,6 @@ class JobCollection {
    * Return a normalized job, given its id
    *
    * @param {string} id - id of the job
-   *
    * @returns {JobDocument}
    */
   async get(id) {
