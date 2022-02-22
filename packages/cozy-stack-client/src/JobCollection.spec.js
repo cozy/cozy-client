@@ -13,7 +13,7 @@ describe('job collection', () => {
     col = new JobCollection(stackClient)
   })
 
-  it('should call the right route when creating', async () => {
+  it('should call the right route when creating & defaulting manual to false', async () => {
     await col.create('service', {
       message: {
         name: 'categorization',
@@ -27,6 +27,35 @@ describe('job collection', () => {
         data: {
           attributes: {
             arguments: { message: { name: 'categorization', slug: 'banks' } },
+            manual: false,
+            options: {}
+          },
+          type: 'io.cozy.jobs'
+        }
+      }
+    )
+  })
+
+  it('should call the right route when creating & set manual to true', async () => {
+    await col.create(
+      'service',
+      {
+        message: {
+          name: 'categorization',
+          slug: 'banks'
+        }
+      },
+      {},
+      true
+    )
+    expect(stackClient.fetchJSON).toHaveBeenCalledWith(
+      'POST',
+      '/jobs/queue/service',
+      {
+        data: {
+          attributes: {
+            arguments: { message: { name: 'categorization', slug: 'banks' } },
+            manual: true,
             options: {}
           },
           type: 'io.cozy.jobs'
