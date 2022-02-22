@@ -259,7 +259,11 @@ describe('CozyStackClient', () => {
     const client = new CozyStackClient(FAKE_INIT_OPTIONS)
 
     beforeAll(() => {
-      global.fetch = require('jest-fetch-mock')
+      global.fetch = jestFetchMock
+    })
+
+    beforeEach(() => {
+      fetch.resetMocks()
       fetch.mockResponse(JSON.stringify(FAKE_RESPONSE), {
         headers: { 'Content-Type': 'application/json' }
       })
