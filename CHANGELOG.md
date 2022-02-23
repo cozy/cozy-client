@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.18.0](https://github.com/cozy/cozy-client/compare/v27.17.0...v27.18.0) (2022-02-23)
+
+
+### Bug Fixes
+
+* Set correct error when non-native `store-attestation.js` is called ([716c1ce](https://github.com/cozy/cozy-client/commit/716c1ce4234600d3b356e7b8c567dff2212da7d1))
+
+
+### Features
+
+* Ignore flagship certification failure to allow 2FA certification ([3ee7c2f](https://github.com/cozy/cozy-client/commit/3ee7c2f2517ea376e89f3ab9614a3a9d282d5e72)), closes [cozy/cozy-stack#3287](https://github.com/cozy/cozy-stack/issues/3287)
+
+
+
+
+
 # [27.17.0](https://github.com/cozy/cozy-client/compare/v27.16.1...v27.17.0) (2022-02-23)
 
 
