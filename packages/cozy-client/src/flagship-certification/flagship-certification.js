@@ -1,4 +1,5 @@
 import CozyClient from '../CozyClient'
+import logger from '../logger'
 
 import { getAppAttestationFromStore } from './store-attestation'
 
@@ -82,12 +83,19 @@ export const certifyFlagship = async (certificationConfig, client) => {
     )
   }
 
-  const stackChallengeNonce = await getStackChallenge(client)
+  try {
+    const stackChallengeNonce = await getStackChallenge(client)
 
-  const appAttestation = await getAppAttestationFromStore(
-    stackChallengeNonce,
-    certificationConfig
-  )
+    const appAttestation = await getAppAttestationFromStore(
+      stackChallengeNonce,
+      certificationConfig
+    )
 
-  await giveAppAttestationToStack(appAttestation, stackChallengeNonce, client)
+    await giveAppAttestationToStack(appAttestation, stackChallengeNonce, client)
+  } catch (e) {
+    logger.warn(
+      '[FLAGSHIP_CERTIFICATION] Certification failed but the cozy-stack will continue with 2FA certification'
+    )
+    logger.warn(e.message)
+  }
 }
