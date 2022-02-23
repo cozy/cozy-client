@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.17.0](https://github.com/cozy/cozy-client/compare/v27.16.1...v27.17.0) (2022-02-23)
+
+
+### Features
+
+* Add Manual to Job creation ([4843bd8](https://github.com/cozy/cozy-client/commit/4843bd86651158d9d4ec1611bc48aaf4814a403f))
+
+
+
+
+
 # [27.15.0](https://github.com/cozy/cozy-client/compare/v27.14.4...v27.15.0) (2022-02-02)
 
 
