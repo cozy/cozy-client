@@ -102,6 +102,10 @@ See <a href="https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a
 <dt><a href="#getAccessToken">getAccessToken()</a> ⇒ <code>string</code></dt>
 <dd><p>Get the app token string</p>
 </dd>
+<dt><a href="#getIconURL">getIconURL(stackClient, opts)</a> ⇒ <code>Promise.&lt;string&gt;</code> | <code>string</code></dt>
+<dd><p>Get Icon URL using blob mechanism if OAuth connected
+or using preloaded url when blob not needed</p>
+</dd>
 <dt><a href="#garbageCollect">garbageCollect()</a></dt>
 <dd><p>Delete outdated results from cache</p>
 </dd>
@@ -264,7 +268,7 @@ Main API against the `cozy-stack` server.
 
 * [CozyStackClient](#CozyStackClient)
     * [.collection(doctype)](#CozyStackClient+collection) ⇒ [<code>DocumentCollection</code>](#DocumentCollection)
-    * [.fetch(method, path, body, opts)](#CozyStackClient+fetch) ⇒ <code>object</code>
+    * [.fetch(method, path, [body], [opts])](#CozyStackClient+fetch) ⇒ <code>object</code>
     * [.checkForRevocation()](#CozyStackClient+checkForRevocation)
     * [.refreshToken()](#CozyStackClient+refreshToken) ⇒ <code>Promise</code>
     * [.fetchJSON(method, path, body, options)](#CozyStackClient+fetchJSON) ⇒ <code>object</code>
@@ -284,7 +288,7 @@ Creates a [DocumentCollection](#DocumentCollection) instance.
 
 <a name="CozyStackClient+fetch"></a>
 
-### cozyStackClient.fetch(method, path, body, opts) ⇒ <code>object</code>
+### cozyStackClient.fetch(method, path, [body], [opts]) ⇒ <code>object</code>
 Fetches an endpoint in an authorized way.
 
 **Kind**: instance method of [<code>CozyStackClient</code>](#CozyStackClient)  
@@ -293,12 +297,12 @@ Fetches an endpoint in an authorized way.
 - <code>FetchError</code> 
 
 
-| Param | Type | Description |
-| --- | --- | --- |
-| method | <code>string</code> | The HTTP method. |
-| path | <code>string</code> | The URI. |
-| body | <code>object</code> | The payload. |
-| opts | <code>object</code> | Options for fetch |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| method | <code>string</code> |  | The HTTP method. |
+| path | <code>string</code> |  | The URI. |
+| [body] | <code>object</code> |  | The payload. |
+| [opts] | <code>object</code> | <code>{}</code> | Options for fetch |
 
 <a name="CozyStackClient+checkForRevocation"></a>
 
@@ -1820,6 +1824,25 @@ Get the app token string
 **Kind**: global function  
 **Returns**: <code>string</code> - token  
 **See**: CozyStackClient.getAccessToken  
+<a name="getIconURL"></a>
+
+## getIconURL(stackClient, opts) ⇒ <code>Promise.&lt;string&gt;</code> \| <code>string</code>
+Get Icon URL using blob mechanism if OAuth connected
+or using preloaded url when blob not needed
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;string&gt;</code> \| <code>string</code> - DOMString containing URL source or a URL representing the Blob or ErrorReturned  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| stackClient | [<code>CozyStackClient</code>](#CozyStackClient) |  | CozyStackClient |
+| stackClient.oauthOptions | <code>object</code> |  | oauthOptions used to detect fetching mechanism |
+| opts | <code>object</code> |  | Options |
+| opts.type | <code>string</code> |  | Options type |
+| opts.slug | <code>string</code> |  | Options slug |
+| opts.appData | <code>object</code> |  | Apps data - io.cozy.apps |
+| [opts.priority] | <code>string</code> | <code>&quot;&#x27;stack&#x27;&quot;</code> | Options priority |
+
 <a name="garbageCollect"></a>
 
 ## garbageCollect()

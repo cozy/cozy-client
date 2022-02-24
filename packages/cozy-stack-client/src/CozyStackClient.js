@@ -97,8 +97,8 @@ class CozyStackClient {
    *
    * @param  {string} method The HTTP method.
    * @param  {string} path The URI.
-   * @param  {object} body The payload.
-   * @param  {object} opts Options for fetch
+   * @param  {object} [body] The payload.
+   * @param  {object} [opts={}] Options for fetch
    * @returns {object}
    * @throws {FetchError}
    */
