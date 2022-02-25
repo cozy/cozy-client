@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.19.0](https://github.com/cozy/cozy-client/compare/v27.18.0...v27.19.0) (2022-02-25)
+
+
+### Bug Fixes
+
+* **deps:** update dependency commitlint-config-cozy to v0.7.2 ([d19e7df](https://github.com/cozy/cozy-client/commit/d19e7dfb2a1ae90b4603201c4ae6f2fd888519fe))
+
+
+### Features
+
+* Handle `access token expired` error in `www-authenticate` header ([30a5983](https://github.com/cozy/cozy-client/commit/30a59831dcc772a7ae930214441eaa535acdda6c))
+
+
+
+
+
 # [27.18.0](https://github.com/cozy/cozy-client/compare/v27.17.0...v27.18.0) (2022-02-23)
 
 
