@@ -47,7 +47,7 @@
     "@cozy/codemods": "1.7.0",
     "@material-ui/core": "4.11.3",
     "@testing-library/react": "10.4.9",
-    "@testing-library/react-hooks": "3.4.2",
+    "@testing-library/react-hooks": "3.7.0",
     "babel-plugin-search-and-replace": "1.1.0",
     "btoa": "1.2.1",
     "cozy-logger": "1.7.0",
