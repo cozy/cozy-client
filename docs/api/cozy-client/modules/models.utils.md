@@ -8,7 +8,7 @@
 
 ### getCreatedByApp
 
-▸ `Const` **getCreatedByApp**(`doc`): `any`
+▸ **getCreatedByApp**(`doc`): `any`
 
 *Parameters*
 
@@ -28,7 +28,7 @@
 
 ### hasBeenUpdatedByApp
 
-▸ `Const` **hasBeenUpdatedByApp**(`doc`, `appSlug`): `boolean`
+▸ **hasBeenUpdatedByApp**(`doc`, `appSlug`): `boolean`
 
 *Parameters*
 

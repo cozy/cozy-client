@@ -6,7 +6,7 @@
 
 *   **`CozyLink`**
 
-    ↳ [`StackLink`](stacklink.md)
+    ↳ [`StackLink`](StackLink.md)
 
 ## Constructors
 
@@ -22,7 +22,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/CozyLink.js:1](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyLink.js#L1)
+[packages/cozy-client/src/CozyLink.js:2](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyLink.js#L2)
 
 ## Methods
 

@@ -6,14 +6,14 @@
 
 ## Interfaces
 
-*   [TimeSeries](../interfaces/models.timeseries.timeseries.md)
-*   [TimeSeriesJSONAPI](../interfaces/models.timeseries.timeseriesjsonapi.md)
+*   [TimeSeries](../interfaces/models.timeseries.TimeSeries.md)
+*   [TimeSeriesJSONAPI](../interfaces/models.timeseries.TimeSeriesJSONAPI.md)
 
 ## Functions
 
 ### fetchTimeSeriesByIntervalAndSource
 
-▸ `Const` **fetchTimeSeriesByIntervalAndSource**(`client`, `__namedParameters`): `Promise`<[`TimeSeriesJSONAPI`](../interfaces/models.timeseries.timeseriesjsonapi.md)>
+▸ **fetchTimeSeriesByIntervalAndSource**(`client`, `params`): `Promise`<[`TimeSeriesJSONAPI`](../interfaces/models.timeseries.TimeSeriesJSONAPI.md)>
 
 Helper to retrieve time series by their date interval and source.
 
@@ -24,16 +24,16 @@ Helper to retrieve time series by their date interval and source.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `client` | `any` | The CozyClient instance |
-| `__namedParameters` | `Object` | - |
-| `__namedParameters.dataType` | `string` | - |
-| `__namedParameters.endDate` | `Date` | - |
-| `__namedParameters.limit` | `number` | - |
-| `__namedParameters.source` | `string` | - |
-| `__namedParameters.startDate` | `Date` | - |
+| `params` | `Object` | The query params |
+| `params.dataType` | `string` | The type of time series, e.g. 'electricity' |
+| `params.endDate` | `Date` | The end date of the series |
+| `params.limit` | `number` | Number of serie items to retrieve |
+| `params.source` | `string` | The data source, e.g. 'enedis.fr' |
+| `params.startDate` | `Date` | The starting date of the series |
 
 *Returns*
 
-`Promise`<[`TimeSeriesJSONAPI`](../interfaces/models.timeseries.timeseriesjsonapi.md)>
+`Promise`<[`TimeSeriesJSONAPI`](../interfaces/models.timeseries.TimeSeriesJSONAPI.md)>
 
 The TimeSeries found by the query in JSON-API format
 
@@ -45,7 +45,7 @@ The TimeSeries found by the query in JSON-API format
 
 ### saveTimeSeries
 
-▸ `Const` **saveTimeSeries**(`client`, `timeseriesOption`): `Promise`<`any`>
+▸ **saveTimeSeries**(`client`, `timeseriesOption`): `Promise`<`any`>
 
 Helper to save a time series document.
 
@@ -54,7 +54,7 @@ Helper to save a time series document.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `client` | `any` | The CozyClient instance |
-| `timeseriesOption` | [`TimeSeries`](../interfaces/models.timeseries.timeseries.md) | The time series to save |
+| `timeseriesOption` | [`TimeSeries`](../interfaces/models.timeseries.TimeSeries.md) | The time series to save |
 
 *Returns*
 

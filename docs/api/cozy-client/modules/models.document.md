@@ -12,13 +12,13 @@
 
 ## Classes
 
-*   [Qualification](../classes/models.document.qualification.md)
+*   [Qualification](../classes/models.document.Qualification.md)
 
 ## Functions
 
 ### getQualification
 
-▸ `Const` **getQualification**(`document`): [`Qualification`](../classes/models.document.qualification.md)
+▸ **getQualification**(`document`): [`Qualification`](../classes/models.document.Qualification.md)
 
 Helper to get the qualification from a document
 
@@ -30,7 +30,7 @@ Helper to get the qualification from a document
 
 *Returns*
 
-[`Qualification`](../classes/models.document.qualification.md)
+[`Qualification`](../classes/models.document.Qualification.md)
 
 *   The document qualification
 
@@ -42,7 +42,7 @@ Helper to get the qualification from a document
 
 ### setQualification
 
-▸ `Const` **setQualification**(`document`, `qualification`): `any`
+▸ **setQualification**(`document`, `qualification`): `any`
 
 Set the qualification to the document metadata
 
@@ -51,7 +51,7 @@ Set the qualification to the document metadata
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `document` | `any` | The document to set the qualification |
-| `qualification` | [`Qualification`](../classes/models.document.qualification.md) | The qualification to set |
+| `qualification` | [`Qualification`](../classes/models.document.Qualification.md) | The qualification to set |
 
 *Returns*
 

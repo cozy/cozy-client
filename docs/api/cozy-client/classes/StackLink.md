@@ -6,7 +6,7 @@ Transfers queries and mutations to a remote stack
 
 ## Hierarchy
 
-*   [`CozyLink`](cozylink.md)
+*   [`CozyLink`](CozyLink.md)
 
     ↳ **`StackLink`**
 
@@ -14,23 +14,23 @@ Transfers queries and mutations to a remote stack
 
 ### constructor
 
-• **new StackLink**(`__namedParameters?`)
+• **new StackLink**(`[options]?`)
 
 *Parameters*
 
-| Name | Type |
-| :------ | :------ |
-| `__namedParameters` | `Object` |
-| `__namedParameters.client` | `any` |
-| `__namedParameters.stackClient` | `any` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `[options]` | `Object` | Options |
+| `[options].client` | `any` | - |
+| `[options].stackClient` | `any` | - |
 
 *Overrides*
 
-[CozyLink](cozylink.md).[constructor](cozylink.md#constructor)
+[CozyLink](CozyLink.md).[constructor](CozyLink.md#constructor)
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:39](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L39)
+[packages/cozy-client/src/StackLink.js:45](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L45)
 
 ## Properties
 
@@ -40,7 +40,7 @@ Transfers queries and mutations to a remote stack
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:51](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L51)
+[packages/cozy-client/src/StackLink.js:52](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L52)
 
 ## Methods
 
@@ -124,7 +124,7 @@ Transfers queries and mutations to a remote stack
 
 *Overrides*
 
-[CozyLink](cozylink.md).[request](cozylink.md#request)
+[CozyLink](CozyLink.md).[request](CozyLink.md#request)
 
 *Defined in*
 

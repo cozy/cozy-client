@@ -8,7 +8,7 @@
 
 ### data
 
-• **data**: [`TimeSeries`](models.timeseries.timeseries.md)\[]
+• **data**: [`TimeSeries`](models.timeseries.TimeSeries.md)\[]
 
 The JSON-API data response
 

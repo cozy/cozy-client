@@ -44,7 +44,7 @@ const todo = {
 
 ## Hierarchy
 
-*   [`Association`](association.md)
+*   [`Association`](Association.md)
 
     ↳ **`HasManyInPlace`**
 
@@ -70,11 +70,11 @@ const todo = {
 
 *Inherited from*
 
-[Association](association.md).[constructor](association.md#constructor)
+[Association](Association.md).[constructor](Association.md#constructor)
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:76](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L76)
+[packages/cozy-client/src/associations/Association.js:88](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L88)
 
 ## Properties
 
@@ -86,11 +86,11 @@ Dispatch an action on the store.
 
 *Inherited from*
 
-[Association](association.md).[dispatch](association.md#dispatch)
+[Association](Association.md).[dispatch](Association.md#dispatch)
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:139](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L139)
+[packages/cozy-client/src/associations/Association.js:145](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L145)
 
 ***
 
@@ -104,11 +104,11 @@ Doctype of the relationship
 
 *Inherited from*
 
-[Association](association.md).[doctype](association.md#doctype)
+[Association](Association.md).[doctype](Association.md#doctype)
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:102](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L102)
+[packages/cozy-client/src/associations/Association.js:110](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L110)
 
 ***
 
@@ -120,11 +120,11 @@ Returns the document from the store
 
 *Inherited from*
 
-[Association](association.md).[get](association.md#get)
+[Association](Association.md).[get](Association.md#get)
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:110](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L110)
+[packages/cozy-client/src/associations/Association.js:117](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L117)
 
 ***
 
@@ -138,11 +138,11 @@ Performs a mutation on the relationship.
 
 *Inherited from*
 
-[Association](association.md).[mutate](association.md#mutate)
+[Association](Association.md).[mutate](Association.md#mutate)
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:125](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L125)
+[packages/cozy-client/src/associations/Association.js:132](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L132)
 
 ***
 
@@ -156,11 +156,11 @@ The name of the relationship.
 
 *Inherited from*
 
-[Association](association.md).[name](association.md#name)
+[Association](Association.md).[name](Association.md#name)
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:95](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L95)
+[packages/cozy-client/src/associations/Association.js:102](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L102)
 
 ***
 
@@ -176,11 +176,11 @@ Performs a query to retrieve relationship documents.
 
 *Inherited from*
 
-[Association](association.md).[query](association.md#query)
+[Association](Association.md).[query](Association.md#query)
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:117](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L117)
+[packages/cozy-client/src/associations/Association.js:125](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L125)
 
 ***
 
@@ -192,11 +192,11 @@ Saves the relationship in store.
 
 *Inherited from*
 
-[Association](association.md).[save](association.md#save)
+[Association](Association.md).[save](Association.md#save)
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:132](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L132)
+[packages/cozy-client/src/associations/Association.js:139](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L139)
 
 ***
 
@@ -208,11 +208,11 @@ The original document declaring the relationship
 
 *Inherited from*
 
-[Association](association.md).[target](association.md#target)
+[Association](Association.md).[target](Association.md#target)
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:89](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L89)
+[packages/cozy-client/src/associations/Association.js:95](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L95)
 
 ## Accessors
 
@@ -220,40 +220,13 @@ The original document declaring the relationship
 
 • `get` **data**(): `any`\[]
 
-Returns the document(s) from the store
-
-For document with relationships stored as JSON API spec :
-
-```js
-const book = {
-  title: 'Moby Dick',
-  relationships: {
-    author: {
-      data: {
-        doctype: 'io.cozy.authors',
-        id: 'herman'
-      }
-    }
-  }
- }
-```
-
-`data` will be
-
-```json
-{
-  "_id": "herman"
-  "_type": "io.cozy.authors",
-  "firstName": "herman",
-  "name": "Melville"
-}
-```
-
-Derived `Association`s need to implement this method.
-
 *Returns*
 
 `any`\[]
+
+*Overrides*
+
+Association.data
 
 *Defined in*
 
@@ -270,6 +243,10 @@ Raw property
 *Returns*
 
 `string`\[]
+
+*Overrides*
+
+Association.raw
 
 *Defined in*
 
@@ -373,7 +350,7 @@ Raw property
 
 ### query
 
-▸ `Static` **query**(`document`, `client`, `assoc`): [`QueryDefinition`](querydefinition.md) | `CozyClientDocument`
+▸ `Static` **query**(`document`, `client`, `assoc`): `CozyClientDocument` | [`QueryDefinition`](QueryDefinition.md)
 
 *Parameters*
 
@@ -381,15 +358,15 @@ Raw property
 | :------ | :------ | :------ |
 | `document` | `CozyClientDocument` | Document to query |
 | `client` | `any` | The CozyClient instance |
-| `assoc` | [`Association`](association.md) | The query params |
+| `assoc` | [`Association`](Association.md) | The query params |
 
 *Returns*
 
-[`QueryDefinition`](querydefinition.md) | `CozyClientDocument`
+`CozyClientDocument` | [`QueryDefinition`](QueryDefinition.md)
 
 *Overrides*
 
-[Association](association.md).[query](association.md#query)
+[Association](Association.md).[query](Association.md#query)
 
 *Defined in*
 

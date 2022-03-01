@@ -9,28 +9,28 @@ cozy-client
 
 ## Classes
 
-*   [Association](classes/association.md)
-*   [BulkEditError](classes/bulkediterror.md)
-*   [CozyClient](classes/cozyclient.md)
-*   [CozyLink](classes/cozylink.md)
-*   [CozyProvider](classes/cozyprovider.md)
-*   [HasMany](classes/hasmany.md)
-*   [HasManyInPlace](classes/hasmanyinplace.md)
-*   [HasManyTriggers](classes/hasmanytriggers.md)
-*   [HasOne](classes/hasone.md)
-*   [HasOneInPlace](classes/hasoneinplace.md)
-*   [InvalidCozyUrlError](classes/invalidcozyurlerror.md)
-*   [InvalidProtocolError](classes/invalidprotocolerror.md)
-*   [Query](classes/query.md)
-*   [QueryDefinition](classes/querydefinition.md)
-*   [Registry](classes/registry.md)
-*   [StackLink](classes/stacklink.md)
+*   [Association](classes/Association.md)
+*   [BulkEditError](classes/BulkEditError.md)
+*   [CozyClient](classes/CozyClient.md)
+*   [CozyLink](classes/CozyLink.md)
+*   [CozyProvider](classes/CozyProvider.md)
+*   [HasMany](classes/HasMany.md)
+*   [HasManyInPlace](classes/HasManyInPlace.md)
+*   [HasManyTriggers](classes/HasManyTriggers.md)
+*   [HasOne](classes/HasOne.md)
+*   [HasOneInPlace](classes/HasOneInPlace.md)
+*   [InvalidCozyUrlError](classes/InvalidCozyUrlError.md)
+*   [InvalidProtocolError](classes/InvalidProtocolError.md)
+*   [Query](classes/Query.md)
+*   [QueryDefinition](classes/QueryDefinition.md)
+*   [Registry](classes/Registry.md)
+*   [StackLink](classes/StackLink.md)
 
 ## Properties
 
 ### RealTimeQueries
 
-• **RealTimeQueries**: `MemoExoticComponent`<`fn`>
+• **RealTimeQueries**: `MemoExoticComponent`<(`options`: { `doctype`: `string`  }) => `null`>
 
 ## Variables
 
@@ -66,15 +66,15 @@ cozy-client
 
 | Name | Type |
 | :------ | :------ |
-| `addReferencedBy` | (`document`: `any`, `referencedDocuments`: `any`) => { `document`: `any` ; `mutationType`: `string` ; `referencedDocuments`: `any`  } |
-| `addReferencesTo` | (`document`: `any`, `referencedDocuments`: `any`) => { `document`: `any` ; `mutationType`: `string` ; `referencedDocuments`: `any`  } |
-| `createDocument` | (`document`: `any`) => { `document`: `any` ; `mutationType`: `string`  } |
-| `deleteDocument` | (`document`: `any`) => { `document`: `any` ; `mutationType`: `string`  } |
-| `removeReferencedBy` | (`document`: `any`, `referencedDocuments`: `any`) => { `document`: `any` ; `mutationType`: `string` ; `referencedDocuments`: `any`  } |
-| `removeReferencesTo` | (`document`: `any`, `referencedDocuments`: `any`) => { `document`: `any` ; `mutationType`: `string` ; `referencedDocuments`: `any`  } |
-| `updateDocument` | (`document`: `any`) => { `document`: `any` ; `mutationType`: `string`  } |
-| `updateDocuments` | (`documents`: `any`) => { `documents`: `any` ; `mutationType`: `string`  } |
-| `uploadFile` | (`file`: `any`, `dirPath`: `any`) => { `dirPath`: `any` ; `file`: `any` ; `mutationType`: `string`  } |
+| `addReferencedBy` | (`document`: `any`, `referencedDocuments`: `any`) => { `document`: `any` ; `mutationType`: `string` = MutationTypes.ADD_REFERENCED_BY; `referencedDocuments`: `any`  } |
+| `addReferencesTo` | (`document`: `any`, `referencedDocuments`: `any`) => { `document`: `any` ; `mutationType`: `string` = MutationTypes.ADD_REFERENCES_TO; `referencedDocuments`: `any`  } |
+| `createDocument` | (`document`: `any`) => { `document`: `any` ; `mutationType`: `string` = MutationTypes.CREATE_DOCUMENT } |
+| `deleteDocument` | (`document`: `any`) => { `document`: `any` ; `mutationType`: `string` = MutationTypes.DELETE_DOCUMENT } |
+| `removeReferencedBy` | (`document`: `any`, `referencedDocuments`: `any`) => { `document`: `any` ; `mutationType`: `string` = MutationTypes.REMOVE_REFERENCED_BY; `referencedDocuments`: `any`  } |
+| `removeReferencesTo` | (`document`: `any`, `referencedDocuments`: `any`) => { `document`: `any` ; `mutationType`: `string` = MutationTypes.REMOVE_REFERENCES_TO; `referencedDocuments`: `any`  } |
+| `updateDocument` | (`document`: `any`) => { `document`: `any` ; `mutationType`: `string` = MutationTypes.UPDATE_DOCUMENT } |
+| `updateDocuments` | (`documents`: `any`) => { `documents`: `any` ; `mutationType`: `string` = MutationTypes.UPDATE_DOCUMENTS } |
+| `uploadFile` | (`file`: `any`, `dirPath`: `any`) => { `dirPath`: `any` ; `file`: `any` ; `mutationType`: `string` = MutationTypes.UPLOAD_FILE } |
 
 *Defined in*
 
@@ -109,7 +109,7 @@ Use those fetch policies with `<Query />` to limit the number of re-fetch.
 
 ### Q
 
-▸ `Const` **Q**(`doctype`): [`QueryDefinition`](classes/querydefinition.md)
+▸ **Q**(`doctype`): [`QueryDefinition`](classes/QueryDefinition.md)
 
 Helper to create a QueryDefinition. Recommended way to create
 query definitions.
@@ -128,7 +128,7 @@ query definitions.
 
 *Returns*
 
-[`QueryDefinition`](classes/querydefinition.md)
+[`QueryDefinition`](classes/QueryDefinition.md)
 
 *Defined in*
 
@@ -138,7 +138,7 @@ query definitions.
 
 ### cancelable
 
-▸ `Const` **cancelable**(`promise`): `CancelablePromise`
+▸ **cancelable**(`promise`): `CancelablePromise`
 
 Wraps a promise so that it can be canceled
 
@@ -164,7 +164,7 @@ Rejects with canceled: true as soon as cancel is called
 
 ### createMockClient
 
-▸ `Const` **createMockClient**(`__namedParameters`): [`CozyClient`](classes/cozyclient.md)
+▸ **createMockClient**(`options`): [`CozyClient`](classes/CozyClient.md)
 
 Creates a client suitable for use in tests
 
@@ -173,16 +173,16 @@ Creates a client suitable for use in tests
 
 *Parameters*
 
-| Name | Type |
-| :------ | :------ |
-| `__namedParameters` | `Object` |
-| `__namedParameters.clientOptions` | `any` |
-| `__namedParameters.queries` | `any` |
-| `__namedParameters.remote` | `any` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `options` | `Object` | Options |
+| `options.clientOptions` | `any` | - |
+| `options.queries` | `any` | - |
+| `options.remote` | `any` | - |
 
 *Returns*
 
-[`CozyClient`](classes/cozyclient.md)
+[`CozyClient`](classes/CozyClient.md)
 
 *Defined in*
 
@@ -192,7 +192,7 @@ Creates a client suitable for use in tests
 
 ### dehydrate
 
-▸ `Const` **dehydrate**(`document`): `Object`
+▸ **dehydrate**(`document`): `Object`
 
 *Parameters*
 
@@ -212,7 +212,7 @@ Creates a client suitable for use in tests
 
 ### generateWebLink
 
-▸ `Const` **generateWebLink**(`__namedParameters`): `string`
+▸ **generateWebLink**(`options`): `string`
 
 generateWebLink - Construct a link to a web app
 
@@ -223,15 +223,15 @@ example.
 
 *Parameters*
 
-| Name | Type |
-| :------ | :------ |
-| `__namedParameters` | `Object` |
-| `__namedParameters.cozyUrl` | `string` |
-| `__namedParameters.hash` | `string` |
-| `__namedParameters.pathname` | `string` |
-| `__namedParameters.searchParams` | `any`\[] |
-| `__namedParameters.slug` | `string` |
-| `__namedParameters.subDomainType` | `string` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `options` | `Object` | Object of options |
+| `options.cozyUrl` | `string` | Base URL of the cozy, eg. cozy.tools or test.mycozy.cloud |
+| `options.hash` | `string` | - |
+| `options.pathname` | `string` | - |
+| `options.searchParams` | `any`\[] | - |
+| `options.slug` | `string` | - |
+| `options.subDomainType` | `string` | - |
 
 *Returns*
 
@@ -247,7 +247,7 @@ Generated URL
 
 ### getDoctypeFromOperation
 
-▸ `Const` **getDoctypeFromOperation**(`operation`): `any`
+▸ **getDoctypeFromOperation**(`operation`): `any`
 
 *Parameters*
 
@@ -267,7 +267,7 @@ Generated URL
 
 ### getQueryFromState
 
-▸ `Const` **getQueryFromState**(`state`, `queryId`): `any`
+▸ **getQueryFromState**(`state`, `queryId`): `any`
 
 *Parameters*
 
@@ -288,7 +288,7 @@ Generated URL
 
 ### getReferencedBy
 
-▸ `Const` **getReferencedBy**(`file`, `referencedBy`): `Reference`\[]
+▸ **getReferencedBy**(`file`, `referencedBy`): `Reference`\[]
 
 Get array of reference by an specific doctype
 
@@ -313,7 +313,7 @@ Array of references found
 
 ### getReferencedById
 
-▸ `Const` **getReferencedById**(`file`, `referencedBy`, `referencedId`): `Reference`\[]
+▸ **getReferencedById**(`file`, `referencedBy`, `referencedId`): `Reference`\[]
 
 Get array of reference by an specific doctype and a specific Id of that reference
 
@@ -339,7 +339,7 @@ Array of the reference found
 
 ### hasQueryBeenLoaded
 
-▸ `Const` **hasQueryBeenLoaded**(`col`): `any`
+▸ **hasQueryBeenLoaded**(`col`): `any`
 
 Returns whether a query has been loaded at least once
 
@@ -361,7 +361,7 @@ Returns whether a query has been loaded at least once
 
 ### isQueryLoading
 
-▸ `Const` **isQueryLoading**(`col`): `boolean`
+▸ **isQueryLoading**(`col`): `boolean`
 
 Returns whether the result of a query (given via queryConnect or Query)
 is loading.
@@ -384,7 +384,7 @@ is loading.
 
 ### isReferencedBy
 
-▸ `Const` **isReferencedBy**(`file`, `referencedBy`): `boolean`
+▸ **isReferencedBy**(`file`, `referencedBy`): `boolean`
 
 Checks if the file is referenced by a specific doctype
 
@@ -409,7 +409,7 @@ If a reference is found
 
 ### isReferencedById
 
-▸ `Const` **isReferencedById**(`file`, `referencedBy`, `referencedId`): `boolean`
+▸ **isReferencedById**(`file`, `referencedBy`, `referencedId`): `boolean`
 
 Checks if the file is referenced by a specific doctype and a specific Id of that reference
 
@@ -435,7 +435,7 @@ If a reference is found
 
 ### queryConnect
 
-▸ `Const` **queryConnect**(`querySpecs`): `Function`
+▸ **queryConnect**(`querySpecs`): `Function`
 
 **`function`**
 
@@ -461,7 +461,7 @@ If a reference is found
 
 ### queryConnectFlat
 
-▸ `Const` **queryConnectFlat**(`querySpecs`): `Function`
+▸ **queryConnectFlat**(`querySpecs`): `Function`
 
 **`function`**
 
@@ -489,7 +489,7 @@ if there are N queries, only 1 extra level of nesting is introduced.
 
 ### rootCozyUrl
 
-▸ `Const` **rootCozyUrl**(`url`): `Promise`<`URL`>
+▸ **rootCozyUrl**(`url`): `Promise`<`URL`>
 
 rootCozyUrl - Get the root URL of a Cozy from more precise ones
 
@@ -547,7 +547,7 @@ The root Cozy URL
 
 ### useAppLinkWithStoreFallback
 
-▸ `Const` **useAppLinkWithStoreFallback**(`slug`, `client`, `path?`): `Object`
+▸ **useAppLinkWithStoreFallback**(`slug`, `client`, `path?`): `Object`
 
 *Parameters*
 
@@ -575,7 +575,7 @@ The root Cozy URL
 
 ### useAppsInMaintenance
 
-▸ `Const` **useAppsInMaintenance**(`client`): `"io.cozy.apps"`\[]
+▸ **useAppsInMaintenance**(`client`): `"io.cozy.apps"`\[]
 
 Returns all apps in maintenance
 
@@ -583,7 +583,7 @@ Returns all apps in maintenance
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `client` | [`CozyClient`](classes/cozyclient.md) | CozyClient instance |
+| `client` | [`CozyClient`](classes/CozyClient.md) | CozyClient instance |
 
 *Returns*
 
@@ -599,7 +599,7 @@ An array with all apps in maintenance
 
 ### useCapabilities
 
-▸ `Const` **useCapabilities**(`client`): `Object`
+▸ **useCapabilities**(`client`): `Object`
 
 *Parameters*
 
@@ -624,13 +624,13 @@ An array with all apps in maintenance
 
 ### useClient
 
-▸ `Const` **useClient**(): [`CozyClient`](classes/cozyclient.md)
+▸ **useClient**(): [`CozyClient`](classes/CozyClient.md)
 
 Returns the cozy client from the context
 
 *Returns*
 
-[`CozyClient`](classes/cozyclient.md)
+[`CozyClient`](classes/CozyClient.md)
 
 *   Current cozy client
 
@@ -642,7 +642,7 @@ Returns the cozy client from the context
 
 ### useFetchShortcut
 
-▸ `Const` **useFetchShortcut**(`client`, `id`): `Object`
+▸ **useFetchShortcut**(`client`, `id`): `Object`
 
 *Parameters*
 
@@ -669,7 +669,7 @@ Returns the cozy client from the context
 
 ### useQuery
 
-▸ `Const` **useQuery**(`queryDefinition`, `options`): `UseQueryReturnValue`
+▸ **useQuery**(`queryDefinition`, `options`): `UseQueryReturnValue`
 
 Fetches a queryDefinition and returns the queryState
 
@@ -689,7 +689,7 @@ compatibility but will be set to true in the future.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `queryDefinition` | [`QueryDefinition`](classes/querydefinition.md) | Definition created with Q() |
+| `queryDefinition` | [`QueryDefinition`](classes/QueryDefinition.md) | Definition created with Q() |
 | `options` | `any` | - |
 
 *Returns*
@@ -704,7 +704,7 @@ compatibility but will be set to true in the future.
 
 ### withClient
 
-▸ `Const` **withClient**(`WrappedComponent`): `Function`
+▸ **withClient**(`WrappedComponent`): `Function`
 
 **`function`**
 
@@ -730,7 +730,7 @@ compatibility but will be set to true in the future.
 
 ### withMutation
 
-▸ `Const` **withMutation**(`mutation`, `options?`): `Function`
+▸ **withMutation**(`mutation`, `options?`): `Function`
 
 *Parameters*
 
@@ -751,7 +751,7 @@ compatibility but will be set to true in the future.
 
 ### withMutations
 
-▸ `Const` **withMutations**(...`mutations`): `Function`
+▸ **withMutations**(...`mutations`): `Function`
 
 **`function`**
 

@@ -27,7 +27,7 @@ Component.constructor
 
 *Defined in*
 
-[packages/cozy-client/src/Provider.jsx:16](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/Provider.jsx#L16)
+[packages/cozy-client/src/Provider.jsx:18](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/Provider.jsx#L18)
 
 ## Properties
 
@@ -74,7 +74,7 @@ Component.constructor
 | :------ | :------ |
 | `children` | `Validator`<`ReactElementLike`> |
 | `client` | `Validator`<`object`> |
-| `store` | `Requireable`<`InferProps`<`Object`>> |
+| `store` | `Requireable`<`InferProps`<{ `dispatch`: `Validator`<(...`args`: `any`\[]) => `any`> = PropTypes.func.isRequired; `getState`: `Validator`<(...`args`: `any`\[]) => `any`> = PropTypes.func.isRequired; `subscribe`: `Validator`<(...`args`: `any`\[]) => `any`> = PropTypes.func.isRequired }>> |
 
 *Defined in*
 

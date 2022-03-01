@@ -21,7 +21,7 @@
 
 ### accounts
 
-• `Const` **accounts**: [`account`](models.account.md)
+• `Const` **accounts**: [`account`](models.account.md) = `account`
 
 *Defined in*
 
@@ -31,7 +31,7 @@
 
 ### triggers
 
-• `Const` **triggers**: [`trigger`](models.trigger.md)
+• `Const` **triggers**: [`trigger`](models.trigger.md) = `trigger`
 
 *Defined in*
 

@@ -8,7 +8,7 @@
 
 ### getBoundT
 
-▸ `Const` **getBoundT**(`lang`): (`key`: `string`) => `string`
+▸ **getBoundT**(`lang`): (`key`: `string`) => `string`
 
 *Parameters*
 

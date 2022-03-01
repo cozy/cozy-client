@@ -27,7 +27,7 @@ the checkValueAttributes method.
 
 *Defined in*
 
-[packages/cozy-client/src/models/document/qualification.js:22](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L22)
+[packages/cozy-client/src/models/document/qualification.js:27](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L27)
 
 ## Properties
 
@@ -37,7 +37,7 @@ the checkValueAttributes method.
 
 *Defined in*
 
-[packages/cozy-client/src/models/document/qualification.js:31](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L31)
+[packages/cozy-client/src/models/document/qualification.js:35](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L35)
 
 ***
 
@@ -47,7 +47,7 @@ the checkValueAttributes method.
 
 *Defined in*
 
-[packages/cozy-client/src/models/document/qualification.js:35](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L35)
+[packages/cozy-client/src/models/document/qualification.js:39](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L39)
 
 ***
 
@@ -57,7 +57,7 @@ the checkValueAttributes method.
 
 *Defined in*
 
-[packages/cozy-client/src/models/document/qualification.js:39](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L39)
+[packages/cozy-client/src/models/document/qualification.js:40](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L40)
 
 ***
 
@@ -67,7 +67,7 @@ the checkValueAttributes method.
 
 *Defined in*
 
-[packages/cozy-client/src/models/document/qualification.js:41](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L41)
+[packages/cozy-client/src/models/document/qualification.js:42](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L42)
 
 ***
 
@@ -77,7 +77,7 @@ the checkValueAttributes method.
 
 *Defined in*
 
-[packages/cozy-client/src/models/document/qualification.js:43](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L43)
+[packages/cozy-client/src/models/document/qualification.js:44](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L44)
 
 ## Methods
 
@@ -114,7 +114,7 @@ Check the given qualification attributes respects the following rules:
 
 ### setPurpose
 
-▸ **setPurpose**(`purpose`): [`Qualification`](models.document.qualification.md)
+▸ **setPurpose**(`purpose`): [`Qualification`](models.document.Qualification.md)
 
 Set purpose to the qualification.
 
@@ -126,7 +126,7 @@ Set purpose to the qualification.
 
 *Returns*
 
-[`Qualification`](models.document.qualification.md)
+[`Qualification`](models.document.Qualification.md)
 
 The Qualification object.
 
@@ -138,7 +138,7 @@ The Qualification object.
 
 ### setSourceCategory
 
-▸ **setSourceCategory**(`sourceCategory`): [`Qualification`](models.document.qualification.md)
+▸ **setSourceCategory**(`sourceCategory`): [`Qualification`](models.document.Qualification.md)
 
 Set sourceCategory to the qualification.
 
@@ -150,7 +150,7 @@ Set sourceCategory to the qualification.
 
 *Returns*
 
-[`Qualification`](models.document.qualification.md)
+[`Qualification`](models.document.Qualification.md)
 
 The Qualification object.
 
@@ -162,7 +162,7 @@ The Qualification object.
 
 ### setSourceSubCategory
 
-▸ **setSourceSubCategory**(`sourceSubCategory`): [`Qualification`](models.document.qualification.md)
+▸ **setSourceSubCategory**(`sourceSubCategory`): [`Qualification`](models.document.Qualification.md)
 
 Set sourceSubCategory to the qualification.
 
@@ -174,7 +174,7 @@ Set sourceSubCategory to the qualification.
 
 *Returns*
 
-[`Qualification`](models.document.qualification.md)
+[`Qualification`](models.document.Qualification.md)
 
 The Qualification object.
 
@@ -186,7 +186,7 @@ The Qualification object.
 
 ### setSubjects
 
-▸ **setSubjects**(`subjects`): [`Qualification`](models.document.qualification.md)
+▸ **setSubjects**(`subjects`): [`Qualification`](models.document.Qualification.md)
 
 Set subjects to the qualification.
 
@@ -198,7 +198,7 @@ Set subjects to the qualification.
 
 *Returns*
 
-[`Qualification`](models.document.qualification.md)
+[`Qualification`](models.document.Qualification.md)
 
 The Qualification object.
 
@@ -228,7 +228,7 @@ The qualification attributes
 
 ### getByLabel
 
-▸ `Static` **getByLabel**(`label`): [`Qualification`](models.document.qualification.md)
+▸ `Static` **getByLabel**(`label`): [`Qualification`](models.document.Qualification.md)
 
 Returns the qualification associated to a label.
 
@@ -240,10 +240,10 @@ Returns the qualification associated to a label.
 
 *Returns*
 
-[`Qualification`](models.document.qualification.md)
+[`Qualification`](models.document.Qualification.md)
 
 *   The qualification
 
 *Defined in*
 
-[packages/cozy-client/src/models/document/qualification.js:203](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L203)
+[packages/cozy-client/src/models/document/qualification.js:211](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L211)

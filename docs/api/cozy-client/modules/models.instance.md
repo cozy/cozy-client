@@ -6,7 +6,7 @@
 
 ## Interfaces
 
-*   [SettingsInfo](../interfaces/models.instance.settingsinfo.md)
+*   [SettingsInfo](../interfaces/models.instance.SettingsInfo.md)
 
 ## Type aliases
 
@@ -42,7 +42,7 @@
 
 ### arePremiumLinksEnabled
 
-▸ `Const` **arePremiumLinksEnabled**(`instanceInfo`): `boolean`
+▸ **arePremiumLinksEnabled**(`instanceInfo`): `boolean`
 
 *Parameters*
 
@@ -62,7 +62,7 @@
 
 ### buildPremiumLink
 
-▸ `Const` **buildPremiumLink**(`instanceInfo`): `string`
+▸ **buildPremiumLink**(`instanceInfo`): `string`
 
 Returns the link to the Premium page on the Cozy's Manager
 
@@ -84,7 +84,7 @@ Returns the link to the Premium page on the Cozy's Manager
 
 ### getUuid
 
-▸ `Const` **getUuid**(`instanceInfo`): `any`
+▸ **getUuid**(`instanceInfo`): `any`
 
 *Parameters*
 
@@ -104,7 +104,7 @@ Returns the link to the Premium page on the Cozy's Manager
 
 ### hasAnOffer
 
-▸ `Const` **hasAnOffer**(`data`): `boolean`
+▸ **hasAnOffer**(`data`): `boolean`
 
 Returns if an instance has subscribed to one of our offers
 
@@ -112,7 +112,7 @@ Returns if an instance has subscribed to one of our offers
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `data` | [`SettingsInfo`](../interfaces/models.instance.settingsinfo.md) | Object containing all the results from /settings/\* |
+| `data` | [`SettingsInfo`](../interfaces/models.instance.SettingsInfo.md) | Object containing all the results from /settings/\* |
 
 *Returns*
 
@@ -128,7 +128,7 @@ Does the cozy have offers
 
 ### isFreemiumUser
 
-▸ `Const` **isFreemiumUser**(`instanceInfo`): `boolean`
+▸ **isFreemiumUser**(`instanceInfo`): `boolean`
 
 *Parameters*
 
@@ -148,7 +148,7 @@ Does the cozy have offers
 
 ### isSelfHosted
 
-▸ `Const` **isSelfHosted**(`instanceInfo`): `boolean`
+▸ **isSelfHosted**(`instanceInfo`): `boolean`
 
 **`property`** {ContextInfo} context - Object returned by /settings/context
 
@@ -174,7 +174,7 @@ Does the cozy have offers
 
 ### shouldDisplayOffers
 
-▸ `Const` **shouldDisplayOffers**(`data`): `boolean`
+▸ **shouldDisplayOffers**(`data`): `boolean`
 
 Returns whether an instance is concerned by our offers
 
@@ -182,7 +182,7 @@ Returns whether an instance is concerned by our offers
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `data` | [`SettingsInfo`](../interfaces/models.instance.settingsinfo.md) | Object containing all the results from /settings/\* |
+| `data` | [`SettingsInfo`](../interfaces/models.instance.SettingsInfo.md) | Object containing all the results from /settings/\* |
 
 *Returns*
 

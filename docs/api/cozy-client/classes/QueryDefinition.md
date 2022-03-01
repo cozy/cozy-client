@@ -33,7 +33,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:27](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L27)
+[packages/cozy-client/src/queries/dsl.js:47](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L47)
 
 ## Properties
 
@@ -43,7 +43,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:60](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L60)
+[packages/cozy-client/src/queries/dsl.js:61](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L61)
 
 ***
 
@@ -53,7 +53,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:59](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L59)
+[packages/cozy-client/src/queries/dsl.js:60](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L60)
 
 ***
 
@@ -63,7 +63,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:47](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L47)
+[packages/cozy-client/src/queries/dsl.js:48](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L48)
 
 ***
 
@@ -73,7 +73,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:51](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L51)
+[packages/cozy-client/src/queries/dsl.js:52](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L52)
 
 ***
 
@@ -83,7 +83,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:48](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L48)
+[packages/cozy-client/src/queries/dsl.js:49](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L49)
 
 ***
 
@@ -93,7 +93,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:49](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L49)
+[packages/cozy-client/src/queries/dsl.js:50](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L50)
 
 ***
 
@@ -103,7 +103,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:55](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L55)
+[packages/cozy-client/src/queries/dsl.js:56](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L56)
 
 ***
 
@@ -113,7 +113,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:52](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L52)
+[packages/cozy-client/src/queries/dsl.js:53](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L53)
 
 ***
 
@@ -123,7 +123,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:57](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L57)
+[packages/cozy-client/src/queries/dsl.js:58](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L58)
 
 ***
 
@@ -133,7 +133,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:53](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L53)
+[packages/cozy-client/src/queries/dsl.js:54](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L54)
 
 ***
 
@@ -143,7 +143,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:56](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L56)
+[packages/cozy-client/src/queries/dsl.js:57](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L57)
 
 ***
 
@@ -153,7 +153,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:50](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L50)
+[packages/cozy-client/src/queries/dsl.js:51](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L51)
 
 ***
 
@@ -163,7 +163,7 @@ from a Cozy. `QueryDefinition`s are sent to links.
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:58](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L58)
+[packages/cozy-client/src/queries/dsl.js:59](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L59)
 
 ***
 
@@ -173,17 +173,17 @@ from a Cozy. `QueryDefinition`s are sent to links.
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:54](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L54)
+[packages/cozy-client/src/queries/dsl.js:55](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L55)
 
 ## Methods
 
 ### UNSAFE_noLimit
 
-▸ **UNSAFE_noLimit**(): [`QueryDefinition`](querydefinition.md)
+▸ **UNSAFE_noLimit**(): [`QueryDefinition`](QueryDefinition.md)
 
 *Returns*
 
-[`QueryDefinition`](querydefinition.md)
+[`QueryDefinition`](QueryDefinition.md)
 
 *Defined in*
 
@@ -217,7 +217,7 @@ It is useful to warn the developer when a partial index might be used.
 
 ### checkSortOrder
 
-▸ **checkSortOrder**(`__namedParameters`): `void`
+▸ **checkSortOrder**(`obj`): `void`
 
 Checks if the sort order matches the index' fields order.
 
@@ -230,9 +230,9 @@ See https://docs.cozy.io/en/tutorials/data/queries/#sort-data-with-mango
 
 *Parameters*
 
-| Name | Type |
-| :------ | :------ |
-| `__namedParameters` | `PartialQueryDefinition` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `obj` | `PartialQueryDefinition` | A partial QueryDefinition to check |
 
 *Returns*
 
@@ -246,7 +246,7 @@ See https://docs.cozy.io/en/tutorials/data/queries/#sort-data-with-mango
 
 ### getById
 
-▸ **getById**(`id`): [`QueryDefinition`](querydefinition.md)
+▸ **getById**(`id`): [`QueryDefinition`](QueryDefinition.md)
 
 Query a single document on its id.
 
@@ -258,7 +258,7 @@ Query a single document on its id.
 
 *Returns*
 
-[`QueryDefinition`](querydefinition.md)
+[`QueryDefinition`](QueryDefinition.md)
 
 The QueryDefinition object.
 
@@ -270,7 +270,7 @@ The QueryDefinition object.
 
 ### getByIds
 
-▸ **getByIds**(`ids`): [`QueryDefinition`](querydefinition.md)
+▸ **getByIds**(`ids`): [`QueryDefinition`](QueryDefinition.md)
 
 Query several documents on their ids.
 
@@ -282,7 +282,7 @@ Query several documents on their ids.
 
 *Returns*
 
-[`QueryDefinition`](querydefinition.md)
+[`QueryDefinition`](QueryDefinition.md)
 
 The QueryDefinition object.
 
@@ -294,7 +294,7 @@ The QueryDefinition object.
 
 ### include
 
-▸ **include**(`includes`): [`QueryDefinition`](querydefinition.md)
+▸ **include**(`includes`): [`QueryDefinition`](QueryDefinition.md)
 
 Includes documents having a relationships with the ones queried.
 For example, query albums including the photos.
@@ -307,7 +307,7 @@ For example, query albums including the photos.
 
 *Returns*
 
-[`QueryDefinition`](querydefinition.md)
+[`QueryDefinition`](QueryDefinition.md)
 
 The QueryDefinition object.
 
@@ -319,7 +319,7 @@ The QueryDefinition object.
 
 ### indexFields
 
-▸ **indexFields**(`indexedFields`): [`QueryDefinition`](querydefinition.md)
+▸ **indexFields**(`indexedFields`): [`QueryDefinition`](QueryDefinition.md)
 
 Specify which fields should be indexed. This prevent the automatic indexing of the mango fields.
 
@@ -331,7 +331,7 @@ Specify which fields should be indexed. This prevent the automatic indexing of t
 
 *Returns*
 
-[`QueryDefinition`](querydefinition.md)
+[`QueryDefinition`](QueryDefinition.md)
 
 The QueryDefinition object.
 
@@ -343,7 +343,7 @@ The QueryDefinition object.
 
 ### limitBy
 
-▸ **limitBy**(`limit`): [`QueryDefinition`](querydefinition.md)
+▸ **limitBy**(`limit`): [`QueryDefinition`](QueryDefinition.md)
 
 Maximum number of documents returned, useful for pagination. Default is 100.
 
@@ -355,7 +355,7 @@ Maximum number of documents returned, useful for pagination. Default is 100.
 
 *Returns*
 
-[`QueryDefinition`](querydefinition.md)
+[`QueryDefinition`](QueryDefinition.md)
 
 The QueryDefinition object.
 
@@ -367,7 +367,7 @@ The QueryDefinition object.
 
 ### offset
 
-▸ **offset**(`skip`): [`QueryDefinition`](querydefinition.md)
+▸ **offset**(`skip`): [`QueryDefinition`](QueryDefinition.md)
 
 Skip the first ‘n’ documents, where ‘n’ is the value specified.
 
@@ -382,7 +382,7 @@ Prefer cursor-based pagination in such situation.
 
 *Returns*
 
-[`QueryDefinition`](querydefinition.md)
+[`QueryDefinition`](QueryDefinition.md)
 
 The QueryDefinition object.
 
@@ -394,7 +394,7 @@ The QueryDefinition object.
 
 ### offsetBookmark
 
-▸ **offsetBookmark**(`bookmark`): [`QueryDefinition`](querydefinition.md)
+▸ **offsetBookmark**(`bookmark`): [`QueryDefinition`](QueryDefinition.md)
 
 Use [bookmark](https://docs.couchdb.org/en/2.2.0/api/database/find.html#pagination) pagination.
 Note this only applies for mango-queries (not views) and is way more efficient than skip pagination.
@@ -409,7 +409,7 @@ the index for the next query.
 
 *Returns*
 
-[`QueryDefinition`](querydefinition.md)
+[`QueryDefinition`](QueryDefinition.md)
 
 The QueryDefinition object.
 
@@ -421,7 +421,7 @@ The QueryDefinition object.
 
 ### offsetCursor
 
-▸ **offsetCursor**(`cursor`): [`QueryDefinition`](querydefinition.md)
+▸ **offsetCursor**(`cursor`): [`QueryDefinition`](QueryDefinition.md)
 
 Use [cursor-based](https://docs.cozy.io/en/cozy-stack/jsonapi/#pagination) pagination.
 *Warning*: this is only useful for views.
@@ -438,7 +438,7 @@ Use the last docid of each query as startkey_docid to paginate or leave blank fo
 
 *Returns*
 
-[`QueryDefinition`](querydefinition.md)
+[`QueryDefinition`](QueryDefinition.md)
 
 The QueryDefinition object.
 
@@ -450,7 +450,7 @@ The QueryDefinition object.
 
 ### partialIndex
 
-▸ **partialIndex**(`partialFilter`): [`QueryDefinition`](querydefinition.md)
+▸ **partialIndex**(`partialFilter`): [`QueryDefinition`](QueryDefinition.md)
 
 Specify a [partial index](https://docs.couchdb.org/en/stable/api/database/find.html#find-partial-indexes).
 The filter must follow the same syntax than the selector.
@@ -466,7 +466,7 @@ You can find more information about partial indexes [here](https://docs.cozy.io/
 
 *Returns*
 
-[`QueryDefinition`](querydefinition.md)
+[`QueryDefinition`](QueryDefinition.md)
 
 *Defined in*
 
@@ -476,7 +476,7 @@ You can find more information about partial indexes [here](https://docs.cozy.io/
 
 ### referencedBy
 
-▸ **referencedBy**(`document`): [`QueryDefinition`](querydefinition.md)
+▸ **referencedBy**(`document`): [`QueryDefinition`](QueryDefinition.md)
 
 Use the [file reference system](https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/)
 
@@ -488,7 +488,7 @@ Use the [file reference system](https://docs.cozy.io/en/cozy-stack/references-do
 
 *Returns*
 
-[`QueryDefinition`](querydefinition.md)
+[`QueryDefinition`](QueryDefinition.md)
 
 The QueryDefinition object.
 
@@ -500,7 +500,7 @@ The QueryDefinition object.
 
 ### select
 
-▸ **select**(`fields`): [`QueryDefinition`](querydefinition.md)
+▸ **select**(`fields`): [`QueryDefinition`](QueryDefinition.md)
 
 Specify which fields of each object should be returned. If it is omitted, the entire object is returned.
 
@@ -512,7 +512,7 @@ Specify which fields of each object should be returned. If it is omitted, the en
 
 *Returns*
 
-[`QueryDefinition`](querydefinition.md)
+[`QueryDefinition`](QueryDefinition.md)
 
 The QueryDefinition object.
 
@@ -524,7 +524,7 @@ The QueryDefinition object.
 
 ### sortBy
 
-▸ **sortBy**(`sort`): [`QueryDefinition`](querydefinition.md)
+▸ **sortBy**(`sort`): [`QueryDefinition`](QueryDefinition.md)
 
 Specify how to sort documents, following the [sort syntax](http://docs.couchdb.org/en/latest/api/database/find.html#find-sort)
 
@@ -536,7 +536,7 @@ Specify how to sort documents, following the [sort syntax](http://docs.couchdb.o
 
 *Returns*
 
-[`QueryDefinition`](querydefinition.md)
+[`QueryDefinition`](QueryDefinition.md)
 
 The QueryDefinition object.
 
@@ -579,7 +579,7 @@ The QueryDefinition object.
 
 ### where
 
-▸ **where**(`selector`): [`QueryDefinition`](querydefinition.md)
+▸ **where**(`selector`): [`QueryDefinition`](QueryDefinition.md)
 
 Query documents with a [mango selector](http://docs.couchdb.org/en/latest/api/database/find.html#find-selectors).
 Each field passed in the selector will be indexed, except if the indexField option is used.
@@ -592,7 +592,7 @@ Each field passed in the selector will be indexed, except if the indexField opti
 
 *Returns*
 
-[`QueryDefinition`](querydefinition.md)
+[`QueryDefinition`](QueryDefinition.md)
 
 The QueryDefinition object.
 
