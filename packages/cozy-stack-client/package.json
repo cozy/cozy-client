@@ -10,19 +10,22 @@
     "type": "git",
     "url": "git+https://github.com/cozy/cozy-client.git"
   },
-  "dependencies": {
-    "cozy-flags": "2.7.1",
-    "detect-node": "^2.0.4",
-    "mime": "^2.4.0",
-    "qs": "^6.7.0"
-  },
   "scripts": {
     "build": "../../bin/build",
     "watch": "yarn run build --watch",
     "prepublishOnly": "yarn run build"
   },
-  "devDependencies": {
-    "@babel/cli": "7.12.8"
+  "sideEffects": false,
+  "dependencies": {
+    "detect-node": "^2.0.4",
+    "mime": "^2.4.0",
+    "qs": "^6.7.0"
   },
-  "sideEffects": false
+  "devDependencies": {
+    "@babel/cli": "7.12.8",
+    "cozy-flags": "2.8.6"
+  },
+  "peerDependencies": {
+    "cozy-flags": "2.8.6"
+  }
 }
