@@ -43,7 +43,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:127](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L127)
+[packages/cozy-client/src/CozyClient.js:150](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L150)
 
 ## Properties
 
@@ -53,7 +53,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:161](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L161)
+[packages/cozy-client/src/CozyClient.js:163](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L163)
 
 ***
 
@@ -63,7 +63,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:184](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L184)
+[packages/cozy-client/src/CozyClient.js:189](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L189)
 
 ***
 
@@ -73,7 +73,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:180](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L180)
+[packages/cozy-client/src/CozyClient.js:182](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L182)
 
 ***
 
@@ -83,7 +83,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1574](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1574)
+[packages/cozy-client/src/CozyClient.js:1576](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1576)
 
 ***
 
@@ -93,7 +93,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:168](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L168)
+[packages/cozy-client/src/CozyClient.js:169](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L169)
 
 ***
 
@@ -103,7 +103,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:167](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L167)
+[packages/cozy-client/src/CozyClient.js:168](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L168)
 
 ***
 
@@ -113,7 +113,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:475](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L475)
+[packages/cozy-client/src/CozyClient.js:476](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L476)
 
 ***
 
@@ -123,7 +123,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:177](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L177)
+[packages/cozy-client/src/CozyClient.js:179](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L179)
 
 ***
 
@@ -158,7 +158,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:163](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L163)
+[packages/cozy-client/src/CozyClient.js:165](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L165)
 
 ***
 
@@ -168,7 +168,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:189](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L189)
+[packages/cozy-client/src/CozyClient.js:192](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L192)
 
 ***
 
@@ -178,7 +178,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:165](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L165)
+[packages/cozy-client/src/CozyClient.js:167](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L167)
 
 ***
 
@@ -188,7 +188,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:182](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L182)
+[packages/cozy-client/src/CozyClient.js:184](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L184)
 
 ***
 
@@ -198,7 +198,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1550](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1550)
+[packages/cozy-client/src/CozyClient.js:1551](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1551)
 
 ***
 
@@ -208,7 +208,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1483](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1483)
+[packages/cozy-client/src/CozyClient.js:1485](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1485)
 
 ***
 
@@ -218,7 +218,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:202](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L202)
+[packages/cozy-client/src/CozyClient.js:207](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L207)
 
 ***
 
@@ -238,7 +238,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1239](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1239)
+[packages/cozy-client/src/CozyClient.js:1240](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1240)
 
 ***
 
@@ -309,7 +309,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 ### all
 
-▸ **all**(`doctype`): [`QueryDefinition`](querydefinition.md)
+▸ **all**(`doctype`): [`QueryDefinition`](QueryDefinition.md)
 
 *Parameters*
 
@@ -319,7 +319,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Returns*
 
-[`QueryDefinition`](querydefinition.md)
+[`QueryDefinition`](QueryDefinition.md)
 
 *Defined in*
 
@@ -329,7 +329,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 ### authorize
 
-▸ **authorize**(`__namedParameters?`): `Promise`<`any`>
+▸ **authorize**(`[options]?`): `Promise`<`any`>
 
 Creates an OAuth token with needed permissions for the current client.
 The authorization page URL generation can be overriding by passing a function pointer as `openURLCallback` parameter
@@ -337,12 +337,12 @@ It is possible to skip the session creation process (when using an in-app browse
 
 *Parameters*
 
-| Name | Type |
-| :------ | :------ |
-| `__namedParameters` | `Object` |
-| `__namedParameters.openURLCallback` | `OpenURLCallback` |
-| `__namedParameters.pkceCodes` | `PKCECodes` |
-| `__namedParameters.sessionCode` | `string` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `[options]` | `Object` | Authorization options |
+| `[options].openURLCallback` | `OpenURLCallback` | - |
+| `[options].pkceCodes` | `PKCECodes` | - |
+| `[options].sessionCode` | `string` | - |
 
 *Returns*
 
@@ -551,11 +551,11 @@ a method from cozy-client
 
 *Parameters*
 
-| Name | Type |
-| :------ | :------ |
-| `document` | `any` |
-| `options` | `Object` |
-| `options.event` | `string` |
+| Name | Type | Default value |
+| :------ | :------ | :------ |
+| `document` | `any` | `undefined` |
+| `options` | `Object` | `undefined` |
+| `options.event` | `string` | `DOC_CREATION` |
 
 *Returns*
 
@@ -578,7 +578,7 @@ Makes sure that the query exists in the store
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `queryId` | `string` | Id of the query |
-| `queryDefinition` | [`QueryDefinition`](querydefinition.md) | Definition of the query |
+| `queryDefinition` | [`QueryDefinition`](QueryDefinition.md) | Definition of the query |
 | `options` | `QueryOptions` | - |
 
 *Returns*
@@ -657,18 +657,18 @@ Query state
 
 ### find
 
-▸ **find**(`doctype`, `selector?`): [`QueryDefinition`](querydefinition.md)
+▸ **find**(`doctype`, `selector?`): [`QueryDefinition`](QueryDefinition.md)
 
 *Parameters*
 
-| Name | Type |
-| :------ | :------ |
-| `doctype` | `any` |
-| `selector` | `any` |
+| Name | Type | Default value |
+| :------ | :------ | :------ |
+| `doctype` | `any` | `undefined` |
+| `selector` | `any` | `undefined` |
 
 *Returns*
 
-[`QueryDefinition`](querydefinition.md)
+[`QueryDefinition`](QueryDefinition.md)
 
 *Defined in*
 
@@ -692,7 +692,7 @@ Query state
 
 ### get
 
-▸ **get**(`doctype`, `id`): [`QueryDefinition`](querydefinition.md)
+▸ **get**(`doctype`, `id`): [`QueryDefinition`](QueryDefinition.md)
 
 *Parameters*
 
@@ -703,7 +703,7 @@ Query state
 
 *Returns*
 
-[`QueryDefinition`](querydefinition.md)
+[`QueryDefinition`](QueryDefinition.md)
 
 *Defined in*
 
@@ -1194,7 +1194,7 @@ and working.
 
 ### mutate
 
-▸ **mutate**(`mutationDefinition`, `__namedParameters?`): `Promise`<`any`>
+▸ **mutate**(`mutationDefinition`, `[options]?`): `Promise`<`any`>
 
 Mutate a document
 
@@ -1203,10 +1203,10 @@ Mutate a document
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `mutationDefinition` | `any` | Describe the mutation |
-| `__namedParameters` | `Object` | - |
-| `__namedParameters.as` | `string` | - |
-| `__namedParameters.update` | `Function` | - |
-| `__namedParameters.updateQueries` | `Function` | - |
+| `[options]` | `Object` | Options |
+| `[options].as` | `string` | - |
+| `[options].update` | `Function` | - |
+| `[options].updateQueries` | `Function` | - |
 
 *Returns*
 
@@ -1262,7 +1262,7 @@ Dehydrates and adds metadata before saving a document
 
 ### query
 
-▸ **query**(`queryDefinition`, `__namedParameters?`): `Promise`<`any`>
+▸ **query**(`queryDefinition`, `[options]?`): `Promise`<`any`>
 
 Executes a query and returns its results.
 
@@ -1274,8 +1274,8 @@ executes its query when mounted if no fetch policy has been indicated.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `queryDefinition` | [`QueryDefinition`](querydefinition.md) | Definition that will be executed |
-| `__namedParameters` | `QueryOptions` | - |
+| `queryDefinition` | [`QueryDefinition`](QueryDefinition.md) | Definition that will be executed |
+| `[options]` | `QueryOptions` | Options |
 
 *Returns*
 
@@ -1299,7 +1299,7 @@ result in a lot of network requests.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `queryDefinition` | [`QueryDefinition`](querydefinition.md) | Definition to be executed |
+| `queryDefinition` | [`QueryDefinition`](QueryDefinition.md) | Definition to be executed |
 | `options` | `QueryOptions` | - |
 
 *Returns*
@@ -1316,7 +1316,7 @@ All documents matching the query
 
 ### reducer
 
-▸ **reducer**(): (`state`: { `documents`: {} = {}; `queries`: {} = {} }, `action`: `any`) => { `documents`: `any` ; `queries`: `Record`<`string`, `QueryState`>  }
+▸ **reducer**(): (`state`: { `documents`: {} = {}; `queries`: {} = {} }, `action`: `any`) => { `documents`: `any` ; `queries`: `QueriesStateSlice`  }
 
 *Returns*
 
@@ -1326,12 +1326,12 @@ All documents matching the query
 
 *Parameters*
 
-| Name | Type |
-| :------ | :------ |
-| `state` | `Object` |
-| `state.documents` | `Object` |
-| `state.queries` | `Object` |
-| `action` | `any` |
+| Name | Type | Default value |
+| :------ | :------ | :------ |
+| `state` | `Object` | `initialState` |
+| `state.documents` | `Object` | `{}` |
+| `state.queries` | `Object` | `{}` |
+| `action` | `any` | `undefined` |
 
 *Returns*
 
@@ -1340,7 +1340,7 @@ All documents matching the query
 | Name | Type |
 | :------ | :------ |
 | `documents` | `any` |
-| `queries` | `Record`<`string`, `QueryState`> |
+| `queries` | `QueriesStateSlice` |
 
 *Defined in*
 
@@ -1614,7 +1614,7 @@ At any time put an error function
 
 ### setStore
 
-▸ **setStore**(`store`, `__namedParameters?`): `void`
+▸ **setStore**(`store`, `[options]?`): `void`
 
 Sets the internal store of the client. Use this when you want to have cozy-client's
 internal store colocated with your existing Redux store.
@@ -1637,8 +1637,8 @@ use options.force = true.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `store` | `any` | A redux store |
-| `__namedParameters` | `Object` | - |
-| `__namedParameters.force` | `boolean` | - |
+| `[options]` | `Object` | Options |
+| `[options].force` | `boolean` | - |
 
 *Returns*
 
@@ -1733,7 +1733,7 @@ Contains the fetched token and the client information. These should be stored an
 
 ### validate
 
-▸ **validate**(`document`): `Promise`<`Object`>
+▸ **validate**(`document`): `Promise`<{}>
 
 *Parameters*
 
@@ -1743,7 +1743,7 @@ Contains the fetched token and the client information. These should be stored an
 
 *Returns*
 
-`Promise`<`Object`>
+`Promise`<{}>
 
 *Defined in*
 
@@ -1773,7 +1773,7 @@ Contains the fetched token and the client information. These should be stored an
 
 ### fromDOM
 
-▸ `Static` **fromDOM**(`options?`, `selector?`): [`CozyClient`](cozyclient.md)
+▸ `Static` **fromDOM**(`options?`, `selector?`): [`CozyClient`](CozyClient.md)
 
 When used from an app, CozyClient can be instantiated from the data injected by the stack in
 the DOM.
@@ -1787,7 +1787,7 @@ the DOM.
 
 *Returns*
 
-[`CozyClient`](cozyclient.md)
+[`CozyClient`](CozyClient.md)
 
 *   CozyClient instance
 
@@ -1799,7 +1799,7 @@ the DOM.
 
 ### fromEnv
 
-▸ `Static` **fromEnv**(`envArg`, `options?`): [`CozyClient`](cozyclient.md)
+▸ `Static` **fromEnv**(`envArg`, `options?`): [`CozyClient`](CozyClient.md)
 
 In konnector/service context, CozyClient can be instantiated from
 environment variables
@@ -1813,7 +1813,7 @@ environment variables
 
 *Returns*
 
-[`CozyClient`](cozyclient.md)
+[`CozyClient`](CozyClient.md)
 
 *Defined in*
 
@@ -1823,7 +1823,7 @@ environment variables
 
 ### fromOldClient
 
-▸ `Static` **fromOldClient**(`oldClient`, `options`): [`CozyClient`](cozyclient.md)
+▸ `Static` **fromOldClient**(`oldClient`, `options`): [`CozyClient`](CozyClient.md)
 
 To help with the transition from cozy-client-js to cozy-client, it is possible to instantiate
 a client with a cookie-based instance of cozy-client-js.
@@ -1837,7 +1837,7 @@ a client with a cookie-based instance of cozy-client-js.
 
 *Returns*
 
-[`CozyClient`](cozyclient.md)
+[`CozyClient`](CozyClient.md)
 
 *Defined in*
 
@@ -1847,7 +1847,7 @@ a client with a cookie-based instance of cozy-client-js.
 
 ### fromOldOAuthClient
 
-▸ `Static` **fromOldOAuthClient**(`oldClient`, `options`): `Promise`<[`CozyClient`](cozyclient.md)>
+▸ `Static` **fromOldOAuthClient**(`oldClient`, `options`): `Promise`<[`CozyClient`](CozyClient.md)>
 
 To help with the transition from cozy-client-js to cozy-client, it is possible to instantiate
 a client with an OAuth-based instance of cozy-client-js.
@@ -1863,7 +1863,7 @@ Warning: unlike other instantiators, this one needs to be awaited.
 
 *Returns*
 
-`Promise`<[`CozyClient`](cozyclient.md)>
+`Promise`<[`CozyClient`](CozyClient.md)>
 
 An instance of a client, configured from the old client
 

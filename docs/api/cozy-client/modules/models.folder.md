@@ -31,7 +31,7 @@
 
 ### createFolderWithReference
 
-▸ `Const` **createFolderWithReference**(`client`, `path`, `document`): `Promise`<`IOCozyFolder`>
+▸ **createFolderWithReference**(`client`, `path`, `document`): `Promise`<`IOCozyFolder`>
 
 Create a folder with a reference to the given document
 
@@ -39,7 +39,7 @@ Create a folder with a reference to the given document
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `client` | [`CozyClient`](../classes/cozyclient.md) | cozy-client instance |
+| `client` | [`CozyClient`](../classes/CozyClient.md) | cozy-client instance |
 | `path` | `string` | Folder path |
 | `document` | `CozyClientDocument` | Document to make reference to. Any doctype. |
 
@@ -57,7 +57,7 @@ Folder document
 
 ### ensureMagicFolder
 
-▸ `Const` **ensureMagicFolder**(`client`, `id`, `path`): `Promise`<`IOCozyFolder`>
+▸ **ensureMagicFolder**(`client`, `id`, `path`): `Promise`<`IOCozyFolder`>
 
 Returns a "Magic Folder", given its id. See https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.apps/#special-iocozyapps-doctypes
 
@@ -65,7 +65,7 @@ Returns a "Magic Folder", given its id. See https://docs.cozy.io/en/cozy-doctype
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `client` | [`CozyClient`](../classes/cozyclient.md) | cozy-client instance |
+| `client` | [`CozyClient`](../classes/CozyClient.md) | cozy-client instance |
 | `id` | `string` | Magic Folder id. `CozyFolder.magicFolders` contains the ids of folders that can be magic folders. |
 | `path` | `string` | Default path to use if magic folder does not exist |
 
@@ -83,7 +83,7 @@ Folder document
 
 ### getReferencedFolder
 
-▸ `Const` **getReferencedFolder**(`client`, `document`): `Promise`<`IOCozyFolder`>
+▸ **getReferencedFolder**(`client`, `document`): `Promise`<`IOCozyFolder`>
 
 Returns the most recent folder referenced by the given document
 
@@ -91,7 +91,7 @@ Returns the most recent folder referenced by the given document
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `client` | [`CozyClient`](../classes/cozyclient.md) | cozy-client instance |
+| `client` | [`CozyClient`](../classes/CozyClient.md) | cozy-client instance |
 | `document` | `CozyClientDocument` | Document to get references from |
 
 *Returns*

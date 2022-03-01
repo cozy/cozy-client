@@ -29,7 +29,7 @@ Error.constructor
 
 *Defined in*
 
-[packages/cozy-client/src/errors.js:4](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/errors.js#L4)
+[packages/cozy-client/src/errors.js:11](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/errors.js#L11)
 
 ## Properties
 
@@ -43,7 +43,7 @@ Error.name
 
 *Defined in*
 
-[packages/cozy-client/src/errors.js:12](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/errors.js#L12)
+[packages/cozy-client/src/errors.js:13](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/errors.js#L13)
 
 ***
 
@@ -53,7 +53,7 @@ Error.name
 
 *Defined in*
 
-[packages/cozy-client/src/errors.js:13](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/errors.js#L13)
+[packages/cozy-client/src/errors.js:14](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/errors.js#L14)
 
 ## Methods
 

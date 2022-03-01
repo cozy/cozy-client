@@ -8,7 +8,7 @@
 
 ### getThemeByItem
 
-▸ `Const` **getThemeByItem**(`item`): `Theme`
+▸ **getThemeByItem**(`item`): `Theme`
 
 *Parameters*
 

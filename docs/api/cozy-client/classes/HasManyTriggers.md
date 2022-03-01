@@ -6,7 +6,7 @@ Association used for konnectors to retrieve all their related triggers.
 
 ## Hierarchy
 
-*   [`HasMany`](hasmany.md)
+*   [`HasMany`](HasMany.md)
 
     ↳ **`HasManyTriggers`**
 
@@ -32,11 +32,11 @@ Association used for konnectors to retrieve all their related triggers.
 
 *Inherited from*
 
-[HasMany](hasmany.md).[constructor](hasmany.md#constructor)
+[HasMany](HasMany.md).[constructor](HasMany.md#constructor)
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:76](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L76)
+[packages/cozy-client/src/associations/Association.js:88](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L88)
 
 ## Properties
 
@@ -48,11 +48,11 @@ Dispatch an action on the store.
 
 *Inherited from*
 
-[HasMany](hasmany.md).[dispatch](hasmany.md#dispatch)
+[HasMany](HasMany.md).[dispatch](HasMany.md#dispatch)
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:139](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L139)
+[packages/cozy-client/src/associations/Association.js:145](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L145)
 
 ***
 
@@ -66,11 +66,11 @@ Doctype of the relationship
 
 *Inherited from*
 
-[HasMany](hasmany.md).[doctype](hasmany.md#doctype)
+[HasMany](HasMany.md).[doctype](HasMany.md#doctype)
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:102](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L102)
+[packages/cozy-client/src/associations/Association.js:110](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L110)
 
 ***
 
@@ -82,11 +82,11 @@ Returns the document from the store
 
 *Inherited from*
 
-[HasMany](hasmany.md).[get](hasmany.md#get)
+[HasMany](HasMany.md).[get](HasMany.md#get)
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:110](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L110)
+[packages/cozy-client/src/associations/Association.js:117](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L117)
 
 ***
 
@@ -100,11 +100,11 @@ Performs a mutation on the relationship.
 
 *Inherited from*
 
-[HasMany](hasmany.md).[mutate](hasmany.md#mutate)
+[HasMany](HasMany.md).[mutate](HasMany.md#mutate)
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:125](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L125)
+[packages/cozy-client/src/associations/Association.js:132](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L132)
 
 ***
 
@@ -118,11 +118,11 @@ The name of the relationship.
 
 *Inherited from*
 
-[HasMany](hasmany.md).[name](hasmany.md#name)
+[HasMany](HasMany.md).[name](HasMany.md#name)
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:95](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L95)
+[packages/cozy-client/src/associations/Association.js:102](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L102)
 
 ***
 
@@ -138,11 +138,11 @@ Performs a query to retrieve relationship documents.
 
 *Inherited from*
 
-[HasMany](hasmany.md).[query](hasmany.md#query)
+[HasMany](HasMany.md).[query](HasMany.md#query)
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:117](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L117)
+[packages/cozy-client/src/associations/Association.js:125](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L125)
 
 ***
 
@@ -154,11 +154,11 @@ Saves the relationship in store.
 
 *Inherited from*
 
-[HasMany](hasmany.md).[save](hasmany.md#save)
+[HasMany](HasMany.md).[save](HasMany.md#save)
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:132](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L132)
+[packages/cozy-client/src/associations/Association.js:139](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L139)
 
 ***
 
@@ -170,11 +170,11 @@ The original document declaring the relationship
 
 *Inherited from*
 
-[HasMany](hasmany.md).[target](hasmany.md#target)
+[HasMany](HasMany.md).[target](HasMany.md#target)
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:89](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L89)
+[packages/cozy-client/src/associations/Association.js:95](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L95)
 
 ## Accessors
 
@@ -192,6 +192,10 @@ to do that, you can use .data.length.
 
 *   Total number of documents in the relationships
 
+*Inherited from*
+
+HasMany.count
+
 *Defined in*
 
 [packages/cozy-client/src/associations/HasMany.js:93](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L93)
@@ -202,11 +206,13 @@ to do that, you can use .data.length.
 
 • `get` **data**(): `any`
 
-Returns store documents
-
 *Returns*
 
 `any`
+
+*Overrides*
+
+HasMany.data
 
 *Defined in*
 
@@ -222,6 +228,10 @@ Returns store documents
 
 `any`
 
+*Inherited from*
+
+HasMany.hasMore
+
 *Defined in*
 
 [packages/cozy-client/src/associations/HasMany.js:82](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasMany.js#L82)
@@ -235,6 +245,10 @@ Returns store documents
 *Returns*
 
 `any`
+
+*Inherited from*
+
+HasMany.raw
 
 *Defined in*
 
@@ -262,7 +276,7 @@ The saved target document
 
 *Inherited from*
 
-[HasMany](hasmany.md).[add](hasmany.md#add)
+[HasMany](HasMany.md).[add](HasMany.md#add)
 
 *Defined in*
 
@@ -293,7 +307,7 @@ We certainly should use something like `updateRelationship`
 
 *Inherited from*
 
-[HasMany](hasmany.md).[addById](hasmany.md#addbyid)
+[HasMany](HasMany.md).[addById](HasMany.md#addbyid)
 
 *Defined in*
 
@@ -319,7 +333,7 @@ Update target document with relationships
 
 *Inherited from*
 
-[HasMany](hasmany.md).[addTargetRelationships](hasmany.md#addtargetrelationships)
+[HasMany](HasMany.md).[addTargetRelationships](HasMany.md#addtargetrelationships)
 
 *Defined in*
 
@@ -343,7 +357,7 @@ Update target document with relationships
 
 *Inherited from*
 
-[HasMany](hasmany.md).[containsById](hasmany.md#containsbyid)
+[HasMany](HasMany.md).[containsById](HasMany.md#containsbyid)
 
 *Defined in*
 
@@ -367,7 +381,7 @@ Update target document with relationships
 
 *Inherited from*
 
-[HasMany](hasmany.md).[dehydrate](hasmany.md#dehydrate)
+[HasMany](HasMany.md).[dehydrate](HasMany.md#dehydrate)
 
 *Defined in*
 
@@ -391,7 +405,7 @@ Update target document with relationships
 
 *Inherited from*
 
-[HasMany](hasmany.md).[exists](hasmany.md#exists)
+[HasMany](HasMany.md).[exists](HasMany.md#exists)
 
 *Defined in*
 
@@ -415,7 +429,7 @@ Update target document with relationships
 
 *Inherited from*
 
-[HasMany](hasmany.md).[existsById](hasmany.md#existsbyid)
+[HasMany](HasMany.md).[existsById](HasMany.md#existsbyid)
 
 *Defined in*
 
@@ -433,7 +447,7 @@ Update target document with relationships
 
 *Inherited from*
 
-[HasMany](hasmany.md).[fetchMore](hasmany.md#fetchmore)
+[HasMany](HasMany.md).[fetchMore](HasMany.md#fetchmore)
 
 *Defined in*
 
@@ -451,7 +465,7 @@ Update target document with relationships
 
 *Inherited from*
 
-[HasMany](hasmany.md).[getRelationship](hasmany.md#getrelationship)
+[HasMany](HasMany.md).[getRelationship](HasMany.md#getrelationship)
 
 *Defined in*
 
@@ -479,7 +493,7 @@ The saved target document
 
 *Inherited from*
 
-[HasMany](hasmany.md).[remove](hasmany.md#remove)
+[HasMany](HasMany.md).[remove](HasMany.md#remove)
 
 *Defined in*
 
@@ -503,7 +517,7 @@ The saved target document
 
 *Inherited from*
 
-[HasMany](hasmany.md).[removeById](hasmany.md#removebyid)
+[HasMany](HasMany.md).[removeById](HasMany.md#removebyid)
 
 *Defined in*
 
@@ -529,7 +543,7 @@ Remove relationships from target document
 
 *Inherited from*
 
-[HasMany](hasmany.md).[removeTargetRelationships](hasmany.md#removetargetrelationships)
+[HasMany](HasMany.md).[removeTargetRelationships](HasMany.md#removetargetrelationships)
 
 *Defined in*
 
@@ -547,7 +561,7 @@ Remove relationships from target document
 
 *Inherited from*
 
-[HasMany](hasmany.md).[updateMetaCount](hasmany.md#updatemetacount)
+[HasMany](HasMany.md).[updateMetaCount](HasMany.md#updatemetacount)
 
 *Defined in*
 
@@ -572,7 +586,7 @@ Remove relationships from target document
 
 *Inherited from*
 
-[HasMany](hasmany.md).[updateRelationship](hasmany.md#updaterelationship)
+[HasMany](HasMany.md).[updateRelationship](HasMany.md#updaterelationship)
 
 *Defined in*
 
@@ -609,7 +623,7 @@ Remove relationships from target document
 
 *Inherited from*
 
-[HasMany](hasmany.md).[updateRelationshipData](hasmany.md#updaterelationshipdata)
+[HasMany](HasMany.md).[updateRelationshipData](HasMany.md#updaterelationshipdata)
 
 *Defined in*
 
@@ -634,7 +648,7 @@ Remove relationships from target document
 
 *Inherited from*
 
-[HasMany](hasmany.md).[updateTargetRelationship](hasmany.md#updatetargetrelationship)
+[HasMany](HasMany.md).[updateTargetRelationship](HasMany.md#updatetargetrelationship)
 
 *Defined in*
 
@@ -660,7 +674,7 @@ Remove relationships from target document
 
 *Inherited from*
 
-[HasMany](hasmany.md).[getHasManyItem](hasmany.md#gethasmanyitem)
+[HasMany](HasMany.md).[getHasManyItem](HasMany.md#gethasmanyitem)
 
 *Defined in*
 
@@ -685,7 +699,7 @@ Remove relationships from target document
 
 *Inherited from*
 
-[HasMany](hasmany.md).[getHasManyItems](hasmany.md#gethasmanyitems)
+[HasMany](HasMany.md).[getHasManyItems](HasMany.md#gethasmanyitems)
 
 *Defined in*
 
@@ -695,7 +709,7 @@ Remove relationships from target document
 
 ### query
 
-▸ `Static` **query**(`doc`, `client`): [`QueryDefinition`](querydefinition.md)
+▸ `Static` **query**(`doc`, `client`): [`QueryDefinition`](QueryDefinition.md)
 
 In this association the query is special, we need to fetch all the triggers
 having for the 'konnector' worker, and then filter them based on their
@@ -710,11 +724,11 @@ having for the 'konnector' worker, and then filter them based on their
 
 *Returns*
 
-[`QueryDefinition`](querydefinition.md)
+[`QueryDefinition`](QueryDefinition.md)
 
 *Overrides*
 
-[HasMany](hasmany.md).[query](hasmany.md#query)
+[HasMany](HasMany.md).[query](HasMany.md#query)
 
 *Defined in*
 
@@ -740,7 +754,7 @@ having for the 'konnector' worker, and then filter them based on their
 
 *Inherited from*
 
-[HasMany](hasmany.md).[removeHasManyItem](hasmany.md#removehasmanyitem)
+[HasMany](HasMany.md).[removeHasManyItem](HasMany.md#removehasmanyitem)
 
 *Defined in*
 
@@ -767,7 +781,7 @@ having for the 'konnector' worker, and then filter them based on their
 
 *Inherited from*
 
-[HasMany](hasmany.md).[setHasManyItem](hasmany.md#sethasmanyitem)
+[HasMany](HasMany.md).[setHasManyItem](HasMany.md#sethasmanyitem)
 
 *Defined in*
 
@@ -794,7 +808,7 @@ having for the 'konnector' worker, and then filter them based on their
 
 *Inherited from*
 
-[HasMany](hasmany.md).[updateHasManyItem](hasmany.md#updatehasmanyitem)
+[HasMany](HasMany.md).[updateHasManyItem](HasMany.md#updatehasmanyitem)
 
 *Defined in*
 
@@ -820,7 +834,7 @@ having for the 'konnector' worker, and then filter them based on their
 
 *Inherited from*
 
-[HasMany](hasmany.md).[updateRelationship](hasmany.md#updaterelationship)
+[HasMany](HasMany.md).[updateRelationship](HasMany.md#updaterelationship)
 
 *Defined in*
 

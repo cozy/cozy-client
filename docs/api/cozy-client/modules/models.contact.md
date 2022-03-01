@@ -8,7 +8,7 @@
 
 ### getDefaultSortIndexValue
 
-▸ `Const` **getDefaultSortIndexValue**(`contact`): `string`
+▸ **getDefaultSortIndexValue**(`contact`): `string`
 
 Returns 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
 
@@ -32,7 +32,7 @@ Returns 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
 
 ### getDisplayName
 
-▸ `Const` **getDisplayName**(`contact`): `string`
+▸ **getDisplayName**(`contact`): `string`
 
 Returns a display name for the contact
 
@@ -56,7 +56,7 @@ Returns a display name for the contact
 
 ### getFullname
 
-▸ `Const` **getFullname**(`contact`): `string`
+▸ **getFullname**(`contact`): `string`
 
 Returns the contact's fullname
 
@@ -80,7 +80,7 @@ Returns the contact's fullname
 
 ### getIndexByFamilyNameGivenNameEmailCozyUrl
 
-▸ `Const` **getIndexByFamilyNameGivenNameEmailCozyUrl**(`contact`): `string`
+▸ **getIndexByFamilyNameGivenNameEmailCozyUrl**(`contact`): `string`
 
 Returns 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
 
@@ -106,7 +106,7 @@ Returns 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
 
 ### getInitials
 
-▸ `Const` **getInitials**(`contact`): `string`
+▸ **getInitials**(`contact`): `string`
 
 Returns the initials of the contact.
 
@@ -130,7 +130,7 @@ Returns the initials of the contact.
 
 ### getPrimaryAddress
 
-▸ `Const` **getPrimaryAddress**(`contact`): `string`
+▸ **getPrimaryAddress**(`contact`): `string`
 
 Returns the contact's main address
 
@@ -154,7 +154,7 @@ Returns the contact's main address
 
 ### getPrimaryCozy
 
-▸ `Const` **getPrimaryCozy**(`contact`): `string`
+▸ **getPrimaryCozy**(`contact`): `string`
 
 Returns the contact's main cozy
 
@@ -178,7 +178,7 @@ Returns the contact's main cozy
 
 ### getPrimaryCozyDomain
 
-▸ `Const` **getPrimaryCozyDomain**(`contact`): `string`
+▸ **getPrimaryCozyDomain**(`contact`): `string`
 
 Returns the contact's main cozy url without protocol
 
@@ -202,7 +202,7 @@ Returns the contact's main cozy url without protocol
 
 ### getPrimaryEmail
 
-▸ `Const` **getPrimaryEmail**(`contact`): `string`
+▸ **getPrimaryEmail**(`contact`): `string`
 
 Returns the contact's main email
 
@@ -226,7 +226,7 @@ Returns the contact's main email
 
 ### getPrimaryOrFirst
 
-▸ `Const` **getPrimaryOrFirst**(`property`): (`obj`: `any`) => `any`
+▸ **getPrimaryOrFirst**(`property`): (`obj`: `any`) => `any`
 
 *Parameters*
 
@@ -258,7 +258,7 @@ Returns the contact's main email
 
 ### getPrimaryPhone
 
-▸ `Const` **getPrimaryPhone**(`contact`): `string`
+▸ **getPrimaryPhone**(`contact`): `string`
 
 Returns the contact's main phone number
 
@@ -282,7 +282,7 @@ Returns the contact's main phone number
 
 ### makeDefaultSortIndexValue
 
-▸ `Const` **makeDefaultSortIndexValue**(`contact`): `string`
+▸ **makeDefaultSortIndexValue**(`contact`): `string`
 
 Makes 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
 
@@ -306,7 +306,7 @@ Makes 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
 
 ### makeDisplayName
 
-▸ `Const` **makeDisplayName**(`contact`): `string`
+▸ **makeDisplayName**(`contact`): `string`
 
 Makes displayName from contact data
 
@@ -330,7 +330,7 @@ Makes displayName from contact data
 
 ### makeFullname
 
-▸ `Const` **makeFullname**(`contact`): `string`
+▸ **makeFullname**(`contact`): `string`
 
 Makes fullname from contact name
 

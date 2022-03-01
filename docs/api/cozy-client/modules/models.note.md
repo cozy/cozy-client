@@ -8,7 +8,7 @@
 
 ### fetchURL
 
-▸ `Const` **fetchURL**(`client`, `file`): `Promise`<`string`>
+▸ **fetchURL**(`client`, `file`): `Promise`<`string`>
 
 Fetch and build an URL to open a note.
 
@@ -33,7 +33,7 @@ url
 
 ### generatePrivateUrl
 
-▸ `Const` **generatePrivateUrl**(`notesAppUrl`, `file`, `options?`): `string`
+▸ **generatePrivateUrl**(`notesAppUrl`, `file`, `options?`): `string`
 
 *Parameters*
 
@@ -55,7 +55,7 @@ url
 
 ### generateUrlForNote
 
-▸ `Const` **generateUrlForNote**(`notesAppUrl`, `file`): `string`
+▸ **generateUrlForNote**(`notesAppUrl`, `file`): `string`
 
 *Parameters*
 

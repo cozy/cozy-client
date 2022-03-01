@@ -8,7 +8,7 @@
 
 ### getAppDisplayName
 
-▸ `Const` **getAppDisplayName**(`app`, `lang`): `string`
+▸ **getAppDisplayName**(`app`, `lang`): `string`
 
 getAppDisplayName - Combines the translated prefix and name of the app into a single string.
 
@@ -33,7 +33,7 @@ Name of the app suitable for display
 
 ### getStoreInstallationURL
 
-▸ `Const` **getStoreInstallationURL**(`appData?`, `app?`): `string`
+▸ **getStoreInstallationURL**(`appData?`, `app?`): `string`
 
 Returns the store URL to install/update an app/konnector
 
@@ -58,7 +58,7 @@ URL as string
 
 ### getStoreURL
 
-▸ `Const` **getStoreURL**(`appData?`, `app?`): `string`
+▸ **getStoreURL**(`appData?`, `app?`): `string`
 
 Returns the store URL of an app/konnector
 
@@ -83,7 +83,7 @@ URL as string
 
 ### getUrl
 
-▸ `Const` **getUrl**(`app`): `string`
+▸ **getUrl**(`app`): `string`
 
 *Parameters*
 
@@ -105,7 +105,7 @@ url to the app
 
 ### isInstalled
 
-▸ `Const` **isInstalled**(`apps?`, `wantedApp?`): `any`
+▸ **isInstalled**(`apps?`, `wantedApp?`): `any`
 
 *Parameters*
 

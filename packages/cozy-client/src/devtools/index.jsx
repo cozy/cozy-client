@@ -150,6 +150,7 @@ const DevToolsPanel = props => {
     }
 
     const dragInfo = {
+      // @ts-ignore
       originalHeight: node.getBoundingClientRect().height,
       pageY: startEvent.pageY
     }

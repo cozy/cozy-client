@@ -6,7 +6,7 @@
 
 ## Interfaces
 
-*   [FileUploadOptions](../interfaces/models.file.fileuploadoptions.md)
+*   [FileUploadOptions](../interfaces/models.file.FileUploadOptions.md)
 
 ## Variables
 
@@ -22,7 +22,7 @@
 
 ### doMobileUpload
 
-▸ `Const` **doMobileUpload**(`client`, `fileURL`, `options`): `Promise`<`any`>
+▸ **doMobileUpload**(`client`, `fileURL`, `options`): `Promise`<`any`>
 
 Upload a file on a mobile
 
@@ -30,9 +30,9 @@ Upload a file on a mobile
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `client` | [`CozyClient`](../classes/cozyclient.md) | The CozyClient instance |
+| `client` | [`CozyClient`](../classes/CozyClient.md) | The CozyClient instance |
 | `fileURL` | `string` | The local file path (file://) |
-| `options` | [`FileUploadOptions`](../interfaces/models.file.fileuploadoptions.md) | The upload options |
+| `options` | [`FileUploadOptions`](../interfaces/models.file.FileUploadOptions.md) | The upload options |
 
 *Returns*
 
@@ -71,13 +71,13 @@ file object with path attribute
 
 ### fetchBlobFileById
 
-▸ `Const` **fetchBlobFileById**(`client`, `fileId`): `Promise`<`Blob`>
+▸ **fetchBlobFileById**(`client`, `fileId`): `Promise`<`Blob`>
 
 *Parameters*
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `client` | [`CozyClient`](../classes/cozyclient.md) | Instance of CozyClient |
+| `client` | [`CozyClient`](../classes/CozyClient.md) | Instance of CozyClient |
 | `fileId` | `string` | Id of io.cozy.files document |
 
 *Returns*
@@ -92,7 +92,7 @@ file object with path attribute
 
 ### fetchFilesByQualificationRules
 
-▸ `Const` **fetchFilesByQualificationRules**(`client`, `docRules`): `Promise`<`any`>
+▸ **fetchFilesByQualificationRules**(`client`, `docRules`): `Promise`<`any`>
 
 Helper to query files based on qualification rules
 
@@ -117,7 +117,7 @@ The files found by the rules
 
 ### generateFileNameForRevision
 
-▸ `Const` **generateFileNameForRevision**(`file`, `revision`, `f`): `string`
+▸ **generateFileNameForRevision**(`file`, `revision`, `f`): `string`
 
 Generate a file name for a revision
 
@@ -141,7 +141,7 @@ Generate a file name for a revision
 
 ### generateNewFileNameOnConflict
 
-▸ `Const` **generateNewFileNameOnConflict**(`filenameWithoutExtension`): `string`
+▸ **generateNewFileNameOnConflict**(`filenameWithoutExtension`): `string`
 
 Method to generate a new filename if there is a conflict
 
@@ -165,7 +165,7 @@ A filename with the right suffix
 
 ### getFullpath
 
-▸ `Const` **getFullpath**(`client`, `dirId`, `name`): `Promise`<`string`>
+▸ **getFullpath**(`client`, `dirId`, `name`): `Promise`<`string`>
 
 async getFullpath - Gets a file's path
 
@@ -173,7 +173,7 @@ async getFullpath - Gets a file's path
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `client` | [`CozyClient`](../classes/cozyclient.md) | The CozyClient instance |
+| `client` | [`CozyClient`](../classes/CozyClient.md) | The CozyClient instance |
 | `dirId` | `string` | The id of the parent directory |
 | `name` | `string` | The file's name |
 
@@ -215,7 +215,7 @@ id of the parent folder, if any
 
 ### getSharingShortcutStatus
 
-▸ `Const` **getSharingShortcutStatus**(`file`): `string`
+▸ **getSharingShortcutStatus**(`file`): `string`
 
 Returns the status of a sharing shortcut.
 
@@ -239,7 +239,7 @@ A description of the status
 
 ### getSharingShortcutTargetDoctype
 
-▸ `Const` **getSharingShortcutTargetDoctype**(`file`): `string`
+▸ **getSharingShortcutTargetDoctype**(`file`): `string`
 
 Returns the doctype of the target of the sharing shortcut.
 
@@ -263,7 +263,7 @@ A doctype
 
 ### getSharingShortcutTargetMime
 
-▸ `Const` **getSharingShortcutTargetMime**(`file`): `string`
+▸ **getSharingShortcutTargetMime**(`file`): `string`
 
 Returns the mime type of the target of the sharing shortcut, if it is a file.
 
@@ -287,7 +287,7 @@ The mime-type of the target file, or an empty string is the target is not a file
 
 ### hasCertifications
 
-▸ `Const` **hasCertifications**(`file`): `boolean`
+▸ **hasCertifications**(`file`): `boolean`
 
 *Parameters*
 
@@ -307,17 +307,17 @@ The mime-type of the target file, or an empty string is the target is not a file
 
 ### hasMetadataAttribute
 
-▸ `Const` **hasMetadataAttribute**(`__namedParameters`): `boolean`
+▸ **hasMetadataAttribute**(`params`): `boolean`
 
 Whether the file's metadata attribute exists
 
 *Parameters*
 
-| Name | Type |
-| :------ | :------ |
-| `__namedParameters` | `Object` |
-| `__namedParameters.attribute` | `string` |
-| `__namedParameters.file` | `IOCozyFile` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `params` | `Object` | Param |
+| `params.attribute` | `string` | Metadata attribute to check |
+| `params.file` | `IOCozyFile` | An io.cozy.files document |
 
 *Returns*
 
@@ -331,7 +331,7 @@ Whether the file's metadata attribute exists
 
 ### hasQualifications
 
-▸ `Const` **hasQualifications**(`file`): `boolean`
+▸ **hasQualifications**(`file`): `boolean`
 
 *Parameters*
 
@@ -351,7 +351,7 @@ Whether the file's metadata attribute exists
 
 ### isDirectory
 
-▸ `Const` **isDirectory**(`file`): `boolean`
+▸ **isDirectory**(`file`): `boolean`
 
 *Parameters*
 
@@ -371,7 +371,7 @@ Whether the file's metadata attribute exists
 
 ### isFile
 
-▸ `Const` **isFile**(`file`): `boolean`
+▸ **isFile**(`file`): `boolean`
 
 *Parameters*
 
@@ -391,7 +391,7 @@ Whether the file's metadata attribute exists
 
 ### isFromKonnector
 
-▸ `Const` **isFromKonnector**(`file`): `boolean`
+▸ **isFromKonnector**(`file`): `boolean`
 
 *Parameters*
 
@@ -411,7 +411,7 @@ Whether the file's metadata attribute exists
 
 ### isNote
 
-▸ `Const` **isNote**(`file`): `boolean`
+▸ **isNote**(`file`): `boolean`
 
 *Parameters*
 
@@ -431,7 +431,7 @@ Whether the file's metadata attribute exists
 
 ### isOnlyOfficeFile
 
-▸ `Const` **isOnlyOfficeFile**(`file`): `boolean`
+▸ **isOnlyOfficeFile**(`file`): `boolean`
 
 Whether the file is supported by Only Office
 
@@ -453,7 +453,7 @@ Whether the file is supported by Only Office
 
 ### isPlainText
 
-▸ `Const` **isPlainText**(`mimeType?`, `fileName?`): `boolean`
+▸ **isPlainText**(`mimeType?`, `fileName?`): `boolean`
 
 *Parameters*
 
@@ -474,7 +474,7 @@ Whether the file is supported by Only Office
 
 ### isReferencedByAlbum
 
-▸ `Const` **isReferencedByAlbum**(`file`): `boolean`
+▸ **isReferencedByAlbum**(`file`): `boolean`
 
 Whether the file is referenced by an album
 
@@ -496,7 +496,7 @@ Whether the file is referenced by an album
 
 ### isSharingShorcut
 
-▸ `Const` **isSharingShorcut**(`file`): `boolean`
+▸ **isSharingShorcut**(`file`): `boolean`
 
 Returns whether the file is a shortcut to a sharing
 
@@ -520,7 +520,7 @@ Returns whether the file is a shortcut to a sharing
 
 ### isSharingShorcutNew
 
-▸ `Const` **isSharingShorcutNew**(`file`): `boolean`
+▸ **isSharingShorcutNew**(`file`): `boolean`
 
 Returns whether the sharing shortcut is new
 
@@ -544,7 +544,7 @@ Returns whether the sharing shortcut is new
 
 ### isSharingShortcut
 
-▸ `Const` **isSharingShortcut**(`file`): `boolean`
+▸ **isSharingShortcut**(`file`): `boolean`
 
 Returns whether the file is a shortcut to a sharing
 
@@ -566,7 +566,7 @@ Returns whether the file is a shortcut to a sharing
 
 ### isSharingShortcutNew
 
-▸ `Const` **isSharingShortcutNew**(`file`): `boolean`
+▸ **isSharingShortcutNew**(`file`): `boolean`
 
 Returns whether the sharing shortcut is new
 
@@ -588,7 +588,7 @@ Returns whether the sharing shortcut is new
 
 ### isShortcut
 
-▸ `Const` **isShortcut**(`file`): `boolean`
+▸ **isShortcut**(`file`): `boolean`
 
 *Parameters*
 
@@ -610,7 +610,7 @@ true if the file is a shortcut
 
 ### move
 
-▸ `Const` **move**(`client`, `fileId`, `destination`, `force?`): `Promise`<`any`>
+▸ **move**(`client`, `fileId`, `destination`, `force?`): `Promise`<`any`>
 
 Move file to destination.
 
@@ -618,7 +618,7 @@ Move file to destination.
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
-| `client` | [`CozyClient`](../classes/cozyclient.md) | `undefined` | The CozyClient instance |
+| `client` | [`CozyClient`](../classes/CozyClient.md) | `undefined` | The CozyClient instance |
 | `fileId` | `string` | `undefined` | The file's id (required) |
 | `destination` | `Object` | `undefined` | The destination object containing: |
 | `destination.folderId` | `string` | `undefined` | The destination folder's id (required) |
@@ -665,7 +665,7 @@ full normalized object
 
 ### overrideFileForPath
 
-▸ `Const` **overrideFileForPath**(`client`, `dirPath`, `file`, `metadata`): `Promise`<`IOCozyFile`>
+▸ **overrideFileForPath**(`client`, `dirPath`, `file`, `metadata`): `Promise`<`IOCozyFile`>
 
 Method to upload a file even if a file with the same name already exists.
 
@@ -673,7 +673,7 @@ Method to upload a file even if a file with the same name already exists.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `client` | [`CozyClient`](../classes/cozyclient.md) | The CozyClient instance |
+| `client` | [`CozyClient`](../classes/CozyClient.md) | The CozyClient instance |
 | `dirPath` | `string` | Fullpath of directory to upload to ex: path/to/ |
 | `file` | `any` | HTML Object file |
 | `metadata` | `any` | An object containing the wanted metadata to attach |
@@ -692,7 +692,7 @@ The overrided file
 
 ### readMobileFile
 
-▸ `Const` **readMobileFile**(`fileURL`): `Promise`<`any`>
+▸ **readMobileFile**(`fileURL`): `Promise`<`any`>
 
 Read a file on a mobile
 
@@ -714,7 +714,7 @@ Read a file on a mobile
 
 ### saveFileQualification
 
-▸ `Const` **saveFileQualification**(`client`, `file`, `qualification`): `Promise`<`IOCozyFile`>
+▸ **saveFileQualification**(`client`, `file`, `qualification`): `Promise`<`IOCozyFile`>
 
 Save the file with the given qualification
 
@@ -722,7 +722,7 @@ Save the file with the given qualification
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `client` | [`CozyClient`](../classes/cozyclient.md) | The CozyClient instance |
+| `client` | [`CozyClient`](../classes/CozyClient.md) | The CozyClient instance |
 | `file` | `IOCozyFile` | The file to qualify |
 | `qualification` | `any` | The file qualification |
 
@@ -740,7 +740,7 @@ The saved file
 
 ### shouldBeOpenedByOnlyOffice
 
-▸ `Const` **shouldBeOpenedByOnlyOffice**(`file`): `boolean`
+▸ **shouldBeOpenedByOnlyOffice**(`file`): `boolean`
 
 Whether the file should be opened by only office
 We want to be consistent with the stack so we check the class attributes
@@ -764,7 +764,7 @@ But we want to exclude .txt and .md because the CozyUI Viewer can already show t
 
 ### splitFilename
 
-▸ `Const` **splitFilename**(`file`): `any`
+▸ **splitFilename**(`file`): `any`
 
 Returns base filename and extension
 
@@ -788,7 +788,7 @@ Returns base filename and extension
 
 ### uploadFileWithConflictStrategy
 
-▸ `Const` **uploadFileWithConflictStrategy**(`client`, `file`, `options`): `any`
+▸ **uploadFileWithConflictStrategy**(`client`, `file`, `options`): `any`
 
 The goal of this method is to upload a file based on a conflict strategy.
 Be careful: We need to check if the file exists by doing a statByPath query
@@ -805,9 +805,9 @@ If there is a conflict, then we apply the conflict strategy : `erase` or `rename
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `client` | [`CozyClient`](../classes/cozyclient.md) | The CozyClient instance |
+| `client` | [`CozyClient`](../classes/CozyClient.md) | The CozyClient instance |
 | `file` | `string` | `ArrayBuffer` | Can be the file path (file://) or the binary itself |
-| `options` | [`FileUploadOptions`](../interfaces/models.file.fileuploadoptions.md) | The upload options |
+| `options` | [`FileUploadOptions`](../interfaces/models.file.FileUploadOptions.md) | The upload options |
 
 *Returns*
 

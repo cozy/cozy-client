@@ -16,7 +16,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/registry.js:38](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/registry.js#L38)
+[packages/cozy-client/src/registry.js:39](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/registry.js#L39)
 
 ## Properties
 
@@ -26,7 +26,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/registry.js:42](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/registry.js#L42)
+[packages/cozy-client/src/registry.js:43](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/registry.js#L43)
 
 ## Methods
 

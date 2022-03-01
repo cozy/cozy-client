@@ -27,7 +27,7 @@ Component.constructor
 
 *Defined in*
 
-[packages/cozy-client/src/Query.jsx:91](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/Query.jsx#L91)
+[packages/cozy-client/src/Query.jsx:92](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/Query.jsx#L92)
 
 ## Properties
 
@@ -37,19 +37,19 @@ Component.constructor
 
 *Defined in*
 
-[packages/cozy-client/src/Query.jsx:163](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/Query.jsx#L163)
+[packages/cozy-client/src/Query.jsx:164](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/Query.jsx#L164)
 
 ***
 
 ### client
 
-• **client**: [`CozyClient`](cozyclient.md)
+• **client**: [`CozyClient`](CozyClient.md)
 
 Current client
 
 *Defined in*
 
-[packages/cozy-client/src/Query.jsx:99](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/Query.jsx#L99)
+[packages/cozy-client/src/Query.jsx:106](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/Query.jsx#L106)
 
 ***
 
@@ -61,7 +61,7 @@ Observable query to connect store to query
 
 *Defined in*
 
-[packages/cozy-client/src/Query.jsx:106](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/Query.jsx#L106)
+[packages/cozy-client/src/Query.jsx:112](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/Query.jsx#L112)
 
 ***
 
@@ -73,7 +73,7 @@ Callback to unsubscribe from observable query
 
 *Defined in*
 
-[packages/cozy-client/src/Query.jsx:112](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/Query.jsx#L112)
+[packages/cozy-client/src/Query.jsx:118](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/Query.jsx#L118)
 
 ***
 
@@ -111,9 +111,9 @@ Callback to unsubscribe from observable query
 | Name | Type |
 | :------ | :------ |
 | `as` | `Requireable`<`string`> |
-| `children` | `Validator`<`fn`> |
+| `children` | `Validator`<(...`args`: `any`\[]) => `any`> |
 | `enabled` | `Requireable`<`boolean`> |
-| `fetchPolicy` | `Requireable`<`fn`> |
+| `fetchPolicy` | `Requireable`<(...`args`: `any`\[]) => `any`> |
 | `query` | `Validator`<`object`> |
 
 ## Methods

@@ -18,7 +18,7 @@
 
 ### getContractSyncStatusFromAccount
 
-▸ `Const` **getContractSyncStatusFromAccount**(`account`, `contractId`): `any`
+▸ **getContractSyncStatusFromAccount**(`account`, `contractId`): `any`
 
 Returns whether a contract is synced from account relationship
 
@@ -41,7 +41,7 @@ Returns whether a contract is synced from account relationship
 
 ### getMutedErrors
 
-▸ `Const` **getMutedErrors**(`account`): `any`\[]
+▸ **getMutedErrors**(`account`): `any`\[]
 
 getMutedErrors - Returns the list of errors that have been muted for the given account
 
@@ -65,7 +65,7 @@ An array of errors with a `type` and `mutedAt` field
 
 ### muteError
 
-▸ `Const` **muteError**(`account`, `errorType`): `any`
+▸ **muteError**(`account`, `errorType`): `any`
 
 muteError - Adds an error to the list of muted errors for the given account
 
@@ -90,7 +90,7 @@ An updated io.cozy.accounts
 
 ### setContractSyncStatusInAccount
 
-▸ `Const` **setContractSyncStatusInAccount**(`account`, `contractId`, `syncStatus`): `any`
+▸ **setContractSyncStatusInAccount**(`account`, `contractId`, `syncStatus`): `any`
 
 Sets contract sync status into account relationship
 

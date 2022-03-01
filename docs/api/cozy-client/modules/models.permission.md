@@ -6,9 +6,9 @@
 
 ## Interfaces
 
-*   [Document](../interfaces/models.permission.document.md)
-*   [Permission](../interfaces/models.permission.permission.md)
-*   [PermissionItem](../interfaces/models.permission.permissionitem.md)
+*   [Document](../interfaces/models.permission.Document.md)
+*   [Permission](../interfaces/models.permission.Permission.md)
+*   [PermissionItem](../interfaces/models.permission.PermissionItem.md)
 
 ## Type aliases
 
@@ -24,7 +24,7 @@
 
 ### fetchOwn
 
-▸ **fetchOwn**(`client`): `Promise`<[`PermissionItem`](../interfaces/models.permission.permissionitem.md)\[]>
+▸ **fetchOwn**(`client`): `Promise`<[`PermissionItem`](../interfaces/models.permission.PermissionItem.md)\[]>
 
 Fetches the list of permissions blocks
 
@@ -32,11 +32,11 @@ Fetches the list of permissions blocks
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `client` | [`CozyClient`](../classes/cozyclient.md) | - |
+| `client` | [`CozyClient`](../classes/CozyClient.md) | - |
 
 *Returns*
 
-`Promise`<[`PermissionItem`](../interfaces/models.permission.permissionitem.md)\[]>
+`Promise`<[`PermissionItem`](../interfaces/models.permission.PermissionItem.md)\[]>
 
 list of permissions
 
@@ -76,7 +76,7 @@ Checks if the permission item is about a specific doctype
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `permission` | [`PermissionItem`](../interfaces/models.permission.permissionitem.md) | - |
+| `permission` | [`PermissionItem`](../interfaces/models.permission.PermissionItem.md) | - |
 | `type` | `string` | doctype |
 
 *Returns*
@@ -91,7 +91,7 @@ Checks if the permission item is about a specific doctype
 
 ### isShortcutCreatedOnTheRecipientCozy
 
-▸ `Const` **isShortcutCreatedOnTheRecipientCozy**(`permission`): `boolean`
+▸ **isShortcutCreatedOnTheRecipientCozy**(`permission`): `boolean`
 
 When a cozy to cozy sharing is created Cozy's stack creates a
 shortcut in `/Inbox of sharing` on the recipient's cozy to have a
@@ -112,7 +112,7 @@ both situation.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `permission` | [`Permission`](../interfaces/models.permission.permission.md) | From getOwnPermissions mainly |
+| `permission` | [`Permission`](../interfaces/models.permission.Permission.md) | From getOwnPermissions mainly |
 
 *Returns*
 
