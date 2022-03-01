@@ -1100,11 +1100,29 @@ describe('FileCollection', () => {
       )
     })
 
+    it('should handle fileName with &', async () => {
+      const fileNameWithAmpersand = 'toto%26titi.txt'
+      const data = new File([''], fileNameWithAmpersand)
+      const path = `/files/${dirId}?Name=${fileNameWithAmpersand}&Type=file`
+
+      await collection.doUpload(data, path, {})
+
+      const date = new Date(data.lastModified).toISOString()
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        `${path}&UpdatedAt=${date}&CreatedAt=${date}`,
+        data,
+        {
+          headers: {
+            'Content-Type': 'text/plain'
+          }
+        }
+      )
+    })
+
     it('should set the File content-type', async () => {
       const data = new File([''], fileName)
-      const path = `/files/${dirId}?Name=${fileName}&Type=file&UpdatedAt=${new Date(
-        data.lastModified
-      ).toISOString()}&CreatedAt=${new Date(data.lastModified).toISOString()}`
+      const path = `/files/${dirId}?Name=${fileName}&Type=file`
       await collection.doUpload(data, path, {})
 
       const expectedOptions = {
@@ -1112,9 +1130,10 @@ describe('FileCollection', () => {
           'Content-Type': 'application/epub+zip'
         }
       }
+      const date = new Date(data.lastModified).toISOString()
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'POST',
-        path,
+        `${path}&UpdatedAt=${date}&CreatedAt=${date}`,
         data,
         expectedOptions
       )
@@ -1159,9 +1178,7 @@ describe('FileCollection', () => {
 
     it('should set the lastModifiedDate from File', async () => {
       const data = new File([''], fileName)
-      const path = `/files/${dirId}?Name=${name}&Type=file&UpdatedAt=${new Date(
-        data.lastModified
-      ).toISOString()}&CreatedAt=${new Date(data.lastModified).toISOString()}`
+      const path = `/files/${dirId}?Name=${undefined}&Type=file`
       await collection.doUpload(data, path, {})
 
       const expectedOptions = {
@@ -1169,9 +1186,10 @@ describe('FileCollection', () => {
           'Content-Type': 'application/octet-stream'
         }
       }
+      const date = new Date(data.lastModified).toISOString()
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'POST',
-        path,
+        `${path}&UpdatedAt=${date}&CreatedAt=${date}`,
         data,
         expectedOptions
       )
@@ -1180,7 +1198,7 @@ describe('FileCollection', () => {
     it('should set the given lastModifiedDate', async () => {
       const data = new File([''], fileName)
       const lastModifiedDate = new Date('2021-01-01')
-      const path = `/files/${dirId}?Name=${name}&Type=file&UpdatedAt=${lastModifiedDate.toISOString()}&CreatedAt=${lastModifiedDate.toISOString()}`
+      const path = `/files/${dirId}?Name=${undefined}&Type=file`
       await collection.doUpload(data, path, { lastModifiedDate })
 
       const expectedOptions = {
@@ -1188,9 +1206,10 @@ describe('FileCollection', () => {
           'Content-Type': 'application/octet-stream'
         }
       }
+      const date = new Date(lastModifiedDate).toISOString()
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'POST',
-        path,
+        `${path}&UpdatedAt=${date}&CreatedAt=${date}`,
         data,
         expectedOptions
       )

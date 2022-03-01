@@ -1009,10 +1009,8 @@ class FileCollection extends DocumentCollection {
     if (contentLength) headers['Content-Length'] = String(contentLength)
     if (checksum) headers['Content-MD5'] = checksum
     if (lastModifiedDate) {
-      const qs = new URLSearchParams(correctPath)
-      qs.set('UpdatedAt', lastModifiedDate.toISOString())
-      qs.set('CreatedAt', lastModifiedDate.toISOString())
-      correctPath = decodeURIComponent(qs.toString())
+      const date = lastModifiedDate.toISOString()
+      correctPath = `${correctPath}&UpdatedAt=${date}&CreatedAt=${date}`
     }
     if (ifMatch) headers['If-Match'] = ifMatch
 
