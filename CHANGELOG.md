@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.19.2](https://github.com/cozy/cozy-client/compare/v27.19.1...v27.19.2) (2022-03-02)
+
+
+### Bug Fixes
+
+* **upload:** Handle Ampersand characters in file name while xhr used ([03256a0](https://github.com/cozy/cozy-client/commit/03256a0f9eb9c23629efa6873169660833f2680d))
+
+
+
+
+
 ## [27.19.1](https://github.com/cozy/cozy-client/compare/v27.19.0...v27.19.1) (2022-03-01)
 
 
