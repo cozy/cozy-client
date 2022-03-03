@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HasMany static helpers should remove an item from a relationship data 1`] = `
+Object {
+  "_id": "task-1",
+  "label": "Task 1",
+  "relationships": Object {
+    "contacts": Object {
+      "data": Array [
+        Object {
+          "_id": "contactId-2",
+          "_type": "io.cozy.contacts",
+        },
+      ],
+    },
+    "docrules": Object {
+      "data": Array [
+        Object {
+          "_id": "io.cozy.docrules/payslip",
+          "_type": "io.cozy.docrules",
+        },
+        Object {
+          "_id": "io.cozy.docrules/certificate",
+          "_type": "io.cozy.docrules",
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`HasMany static helpers should work with a doc that already have setted relationships 1`] = `
+Object {
+  "_id": "doc-1",
+  "label": "Document 1",
+  "relationships": Object {
+    "author": Object {
+      "data": Object {
+        "_id": "author-1",
+        "_type": "io.cozy.authors",
+      },
+    },
+    "books": Object {
+      "data": Array [
+        Object {
+          "_id": "book-1",
+          "_type": "io.cozy.books",
+        },
+        Object {
+          "_id": "book-2",
+          "_type": "io.cozy.books",
+          "metadata": Object {
+            "read": true,
+          },
+        },
+        Object {
+          "_id": "book-3",
+          "_type": "io.cozy.books",
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`HasMany static helpers should work with a doc that already have setted relationships 2`] = `
+Object {
+  "_id": "doc-1",
+  "label": "Document 1",
+  "relationships": Object {
+    "author": Object {
+      "data": Object {
+        "_id": "author-1",
+        "_type": "io.cozy.authors",
+      },
+    },
+    "books": Object {
+      "data": Array [
+        Object {
+          "_id": "book-1",
+          "_type": "io.cozy.books",
+        },
+        Object {
+          "_id": "book-2",
+          "_type": "io.cozy.books",
+          "metadata": Object {
+            "read": true,
+          },
+        },
+        Object {
+          "_id": "book-3",
+          "_type": "io.cozy.books",
+          "metadata": Object {
+            "read": true,
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`HasMany static helpers should work with a doc that don't have relationships yet 1`] = `
+Object {
+  "_id": "doc-1",
+  "label": "Document 1",
+  "relationships": Object {
+    "books": Object {
+      "data": Array [
+        Object {
+          "_id": "book-1",
+          "_type": "io.cozy.books",
+        },
+      ],
+    },
+  },
+}
+`;
