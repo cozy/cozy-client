@@ -1,0 +1,75 @@
+{
+  "name": "cozy-client",
+  "version": "27.19.2",
+  "license": "MIT",
+  "main": "dist/index.node.js",
+  "browser": "dist/index.js",
+  "types": "types/index.d.ts",
+  "files": [
+    "types",
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cozy/cozy-client.git"
+  },
+  "dependencies": {
+    "@cozy/minilog": "1.0.0",
+    "@redux-devtools/extension": "^3.2.2",
+    "@types/jest": "^26.0.20",
+    "@types/lodash": "^4.14.170",
+    "btoa": "^1.2.1",
+    "cozy-device-helper": "^1.12.0",
+    "cozy-flags": "2.7.1",
+    "cozy-logger": "^1.6.0",
+    "cozy-stack-client": "^27.19.2",
+    "json-stable-stringify": "^1.0.1",
+    "lodash": "^4.17.13",
+    "microee": "^0.0.6",
+    "node-fetch": "^2.6.1",
+    "node-polyglot": "2.4.2",
+    "open": "7.4.2",
+    "prop-types": "^15.6.2",
+    "react-redux": "^7.2.0",
+    "redux": "3 || 4",
+    "redux-thunk": "^2.3.0",
+    "server-destroy": "^1.0.1",
+    "sift": "^6.0.0",
+    "url-search-params-polyfill": "^8.0.0"
+  },
+  "scripts": {
+    "build": "../../bin/build",
+    "watch": "yarn run build --watch",
+    "prepublishOnly": "yarn run build",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.12.8",
+    "@cozy/codemods": "1.7.0",
+    "@material-ui/core": "4.11.3",
+    "@testing-library/react": "10.4.9",
+    "@testing-library/react-hooks": "3.4.2",
+    "babel-plugin-search-and-replace": "1.1.0",
+    "btoa": "1.2.1",
+    "cozy-logger": "1.7.0",
+    "cozy-ui": "48.0.0",
+    "date-fns": "2.27.0",
+    "jsdoc-plugin-intersection": "1.0.4",
+    "mockdate": "2.0.5",
+    "react": "16.14.0",
+    "react-inspector": "5.1.1",
+    "react-redux": "7.2.5",
+    "react-test-renderer": "16.14.0",
+    "server-destroy": "1.0.1",
+    "typescript": "4.1.5"
+  },
+  "peerDependencies": {
+    "cozy-ui": ">34.0.0",
+    "react": "^16.7.0",
+    "react-native": "^0.65.0",
+    "react-native-google-safetynet": "npm:cozy-react-native-google-safetynet@^1.0.0",
+    "react-native-inappbrowser-reborn": "^3.5.1",
+    "react-native-ios11-devicecheck": "https://github.com/cozy/react-native-devicecheck#app-attest-v0.1"
+  },
+  "sideEffects": false
+}

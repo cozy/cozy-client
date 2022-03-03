@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`urls should return browser cozy url 1`] = `"[cozy-url] cozyDomain isn't defined in index.ejs https://git.io/fhmP9, (Cannot read property 'dataset' of null)"`;
+
+exports[`urls should return node cozy url 1`] = `"[cozy-url] COZY_URL variable isn't defined, (Invalid URL: undefined)."`;

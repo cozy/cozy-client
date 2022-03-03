@@ -1,0 +1,53 @@
+{
+  "devDependencies": {
+    "babel-preset-cozy-app": "1.11.0",
+    "babel-preset-react": "6.24.1",
+    "commitlint-config-cozy": "0.7.2",
+    "enzyme": "3.11.0",
+    "enzyme-adapter-react-16": "1.15.6",
+    "eslint": "5.16.0",
+    "eslint-config-cozy-app": "1.6.0",
+    "eslint-config-react-app": "5.2.1",
+    "eslint-plugin-flowtype": "4.7.0",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-jsdoc": "15.12.2",
+    "eslint-plugin-jsx-a11y": "6.4.1",
+    "eslint-plugin-react": "7.25.1",
+    "husky": "0.14.3",
+    "jest": "24.9.0",
+    "jest-environment-jsdom-sixteen": "1.0.3",
+    "jest-fetch-mock": "3.0.3",
+    "jsdoc-to-markdown": "6.0.1",
+    "lerna": "4.0.0",
+    "react": "16.14.0",
+    "react-dom": "16.14.0",
+    "redux-mock-store": "1.5.4",
+    "remark-cli": "9.0.0",
+    "typedoc": "0.21.0",
+    "typedoc-plugin-markdown": "3.10.4",
+    "typedoc-plugin-rename-defaults": "0.1.0",
+    "unist-util-find": "1.0.2",
+    "unist-util-visit": "3.1.0",
+    "whatwg-fetch": "3.5.0"
+  },
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "lint": "eslint 'packages/*/src/**/*.{js,jsx}' 'packages/*/examples/**/*.{js,jsx}'",
+    "test": "jest",
+    "watch": "lerna run watch --parallel",
+    "build": "lerna run build --parallel",
+    "commitmsg": "commitlint -e $GIT_PARAMS",
+    "clean": "rm -rf packages/*/dist",
+    "docs": "node scripts/docs.js && yarn docs:cozy-client",
+    "docs:cozy-client": "yarn typedoc --readme none --hideInPageTOC --excludeExternals --excludePrivate --tsconfig packages/cozy-client/tsconfig.json packages/cozy-client/src/index.js --out docs/api/cozy-client --gitRevision master && yarn remark -o -u ./scripts/strip-typedoc-headings.mjs docs/api/cozy-client/",
+    "types": "cd packages/cozy-client && yarn typecheck"
+  },
+  "commitlint": {
+    "extends": [
+      "cozy"
+    ]
+  }
+}

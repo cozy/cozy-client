@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`KonnectorCollection launch should launch the right konnector 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "POST",
+      "/jobs/triggers/1/launch",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Promise {},
+    },
+  ],
+}
+`;

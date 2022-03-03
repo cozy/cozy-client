@@ -1,0 +1,115 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OAuthClient with registration should fetch an access token 1`] = `
+Array [
+  "http://cozy.tools:8080/auth/access_token",
+  Object {
+    "body": "grant_type=authorization_code&code=myaccesstoken&client_id=1&client_secret=",
+    "credentials": "include",
+    "headers": Object {
+      "Accept": "application/json",
+      "Authorization": "Bearer accessToken-abcd",
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    "method": "POST",
+  },
+]
+`;
+
+exports[`OAuthClient with registration should fetch client informations 1`] = `
+Array [
+  "http://cozy.tools:8080/auth/register/1",
+  Object {
+    "credentials": "include",
+    "headers": Object {
+      "Accept": "application/json",
+      "Authorization": "Bearer registrationAccessToken-1234",
+    },
+    "method": "GET",
+  },
+]
+`;
+
+exports[`OAuthClient with registration should refresh the access token 1`] = `
+Array [
+  "http://cozy.tools:8080/auth/access_token",
+  Object {
+    "body": "grant_type=refresh_token&refresh_token=refresh-789&client_id=1&client_secret=",
+    "credentials": "include",
+    "headers": Object {
+      "Accept": "application/json",
+      "Authorization": "Bearer accessToken-abcd",
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    "method": "POST",
+  },
+]
+`;
+
+exports[`OAuthClient with registration should throw when no access code is provided 1`] = `"Missing state code"`;
+
+exports[`OAuthClient with registration should throw when refreshing the access token without token 1`] = `"No token to refresh"`;
+
+exports[`OAuthClient with registration should throw when the provided access code is different from the URL 1`] = `"Given state does not match url query state"`;
+
+exports[`OAuthClient with registration should throw when trying to register again 1`] = `"Client already registered"`;
+
+exports[`OAuthClient with registration should unregister a client 1`] = `
+Array [
+  "http://cozy.tools:8080/auth/register/1",
+  Object {
+    "body": "null",
+    "credentials": "include",
+    "headers": Object {
+      "Accept": "application/json",
+      "Authorization": "Bearer registrationAccessToken-1234",
+      "Content-Type": "application/json",
+    },
+    "method": "DELETE",
+  },
+]
+`;
+
+exports[`OAuthClient with registration should update client informations 1`] = `
+Array [
+  "http://cozy.tools:8080/auth/register/1",
+  Object {
+    "body": "{\\"client_id\\":\\"1\\",\\"client_name\\":\\"TestClientName\\",\\"redirect_uris\\":[\\"http://localhost\\"],\\"software_id\\":\\"TestSofwareID\\",\\"policy_url\\":\\"http://example.com\\"}",
+    "credentials": "include",
+    "headers": Object {
+      "Accept": "application/json",
+      "Authorization": "Bearer registrationAccessToken-1234",
+      "Content-Type": "application/json",
+    },
+    "method": "PUT",
+  },
+]
+`;
+
+exports[`OAuthClient without registration should not generate a auth code URL 1`] = `"Client not registered or missing OAuth information"`;
+
+exports[`OAuthClient without registration should register a client 1`] = `
+Array [
+  "http://cozy.tools:8080/auth/register",
+  Object {
+    "body": "{\\"redirect_uris\\":[\\"http://localhost\\"],\\"client_name\\":\\"TestClientName\\",\\"software_id\\":\\"TestSofwareID\\",\\"client_kind\\":\\"\\",\\"client_uri\\":\\"\\",\\"logo_uri\\":\\"\\",\\"policy_uri\\":\\"\\",\\"software_version\\":\\"\\",\\"notification_platform\\":\\"\\",\\"notification_device_token\\":\\"\\"}",
+    "credentials": "include",
+    "headers": Object {
+      "Accept": "application/json",
+      "Authorization": null,
+      "Content-Type": "application/json",
+    },
+    "method": "POST",
+  },
+]
+`;
+
+exports[`OAuthClient without registration should throw on other server interactions 1`] = `"Client not registered or missing OAuth information"`;
+
+exports[`OAuthClient without registration should throw on other server interactions 2`] = `"Client not registered or missing OAuth information"`;
+
+exports[`OAuthClient without registration should throw on other server interactions 3`] = `"Client not registered or missing OAuth information"`;
+
+exports[`OAuthClient without registration should throw on other server interactions 4`] = `"Client not registered or missing OAuth information"`;
+
+exports[`OAuthClient without registration should throw on other server interactions 5`] = `"Client not registered or missing OAuth information"`;

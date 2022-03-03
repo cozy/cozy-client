@@ -1,0 +1,249 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FileCollection createFileMetadata should call the right route 1`] = `
+Array [
+  "POST",
+  "/files/upload/metadata",
+  Object {
+    "data": Object {
+      "attributes": Object {
+        "type": "bill",
+      },
+      "type": "io.cozy.files.metadata",
+    },
+  },
+]
+`;
+
+exports[`FileCollection findNotSynchronizedDirectories should accept an \`includeFiles\` param to fetch whole directory objects 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "GET",
+      "/data/io.cozy.oauth.clients/123/relationships/not_synchronizing?include=files&sort=id",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "data": Array [],
+        "meta": Object {},
+      },
+    },
+  ],
+}
+`;
+
+exports[`FileCollection findNotSynchronizedDirectories should pass all the filters 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "GET",
+      "/data/io.cozy.oauth.clients/123/relationships/not_synchronizing?sort=id",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "data": Array [],
+        "meta": Object {},
+      },
+    },
+  ],
+}
+`;
+
+exports[`FileCollection findReferencedBy should pass all the filters 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "GET",
+      "/data/io.cozy.files/123/relationships/references?include=files&sort=datetime",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "data": Array [
+          Object {
+            "id": "album-1",
+            "type": "io.cozy.photos.albums",
+          },
+        ],
+        "meta": Object {
+          "count": 1,
+        },
+      },
+    },
+  ],
+}
+`;
+
+exports[`FileCollection referencedBy should add a reference 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "POST",
+      "/files/123/relationships/referenced_by",
+      Object {
+        "data": Array [
+          Object {
+            "id": "456",
+            "type": "io.cozy.photos.albums",
+          },
+        ],
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "data": Array [
+          Object {
+            "id": "456",
+            "type": "io.cozy.photos.albums",
+          },
+        ],
+        "meta": Object {
+          "count": 1,
+          "rev": "2-xxx",
+        },
+      },
+    },
+  ],
+}
+`;
+
+exports[`FileCollection referencedBy should remove a reference 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "DELETE",
+      "/files/123/relationships/referenced_by",
+      Object {
+        "data": Array [
+          Object {
+            "id": "456",
+            "type": "io.cozy.photos.albums",
+          },
+        ],
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "data": null,
+        "meta": Object {
+          "count": 0,
+          "rev": "3-xxx",
+        },
+      },
+    },
+  ],
+}
+`;
+
+exports[`FileCollection synchronization directories exclusions should add a directory exclusion 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "POST",
+      "/data/io.cozy.oauth.clients/123/relationships/not_synchronizing",
+      Object {
+        "data": Array [
+          Object {
+            "id": "456",
+            "type": "io.cozy.files",
+          },
+        ],
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`FileCollection synchronization directories exclusions should remove a directory exclusion 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "DELETE",
+      "/data/io.cozy.oauth.clients/123/relationships/not_synchronizing",
+      Object {
+        "data": Array [
+          Object {
+            "id": "456",
+            "type": "io.cozy.files",
+          },
+        ],
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`FileCollection updateAttributes should call the right route 1`] = `
+Array [
+  "PATCH",
+  "/files/42",
+  Object {
+    "data": Object {
+      "attributes": Object {
+        "dir_id": "123",
+        "name": "correct-name",
+      },
+      "id": "42",
+      "type": "io.cozy.files",
+    },
+  },
+]
+`;
+
+exports[`FileCollection updateAttributes should sanitize the filename 1`] = `
+Array [
+  "PATCH",
+  "/files/42",
+  Object {
+    "data": Object {
+      "attributes": Object {
+        "dir_id": "123",
+        "name": "Name",
+      },
+      "id": "42",
+      "type": "io.cozy.files",
+    },
+  },
+]
+`;
+
+exports[`FileCollection updateMetadataAttribute should call the right route 1`] = `
+Array [
+  "POST",
+  "/files/42/versions",
+  Object {
+    "data": Object {
+      "attributes": Object {
+        "classification": "tax_notice",
+      },
+      "type": "io.cozy.files.metadata",
+    },
+  },
+]
+`;

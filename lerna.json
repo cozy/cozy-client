@@ -1,0 +1,18 @@
+{
+  "lerna": "2.8.0",
+  "packages": [
+    "packages/*"
+  ],
+  "version": "27.19.2",
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "command": {
+    "version": {
+      "conventionalCommits": true,
+      "createRelease": "github"
+    },
+    "publish": {
+      "conventionalCommits": true
+    }
+  }
+}
