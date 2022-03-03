@@ -1,7 +1,10 @@
+import flag from 'cozy-flags'
+
 import {
   createStore as createReduxStore,
   combineReducers,
-  applyMiddleware
+  applyMiddleware,
+  compose
 } from 'redux'
 import thunk from 'redux-thunk'
 
@@ -79,10 +82,16 @@ const combinedReducer = (state = initialState, action) => {
 }
 export default combinedReducer
 
+const composedEnhancer =
+  // @ts-ignore '__REDUX_DEVTOOLS_EXTENSION_COMPOSE__' doesn't exist 'Window & typeof globalThis'.ts(2339)
+  // should be (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ in ts file
+  // see https://github.com/reduxjs/redux-devtools/tree/main/extension#11-basic-store
+  (flag('debug') && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose
+
 export const createStore = () =>
   createReduxStore(
     combineReducers({ cozy: combinedReducer }),
-    applyMiddleware(thunk)
+    composedEnhancer(applyMiddleware(thunk))
   )
 
 export const getStateRoot = state => state.cozy || {}
