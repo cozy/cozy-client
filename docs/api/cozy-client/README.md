@@ -282,7 +282,7 @@ Generated URL
 
 *Defined in*
 
-[packages/cozy-client/src/store/index.js:99](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/store/index.js#L99)
+[packages/cozy-client/src/store/index.js:108](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/store/index.js#L108)
 
 ***
 

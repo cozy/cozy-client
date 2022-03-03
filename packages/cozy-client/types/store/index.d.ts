@@ -7,14 +7,7 @@ export class StoreProxy {
     getState(): any;
 }
 export default combinedReducer;
-export function createStore(): import("redux").Store<import("redux").CombinedState<{
-    cozy: {
-        documents: any;
-        queries: Record<string, import("../types").QueryState>;
-    };
-}>, import("redux").AnyAction> & {
-    dispatch: any;
-};
+export function createStore(): any;
 export function getStateRoot(state: any): any;
 export function getCollectionFromState(state: any, doctype: any): any[];
 export function getDocumentFromState(state: any, doctype: any, id: any): any;
