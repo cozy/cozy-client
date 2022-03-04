@@ -1840,7 +1840,7 @@ or using preloaded url when blob not needed
 | opts | <code>object</code> |  | Options |
 | opts.type | <code>string</code> |  | Options type |
 | opts.slug | <code>string</code> |  | Options slug |
-| opts.appData | <code>object</code> |  | Apps data - io.cozy.apps |
+| opts.appData | <code>object</code> \| <code>string</code> |  | Apps data - io.cozy.apps or Slug - string |
 | [opts.priority] | <code>string</code> | <code>&quot;&#x27;stack&#x27;&quot;</code> | Options priority |
 
 <a name="garbageCollect"></a>

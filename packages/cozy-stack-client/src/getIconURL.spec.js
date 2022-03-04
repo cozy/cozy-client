@@ -220,5 +220,13 @@ describe('get icon', () => {
       const url = await getIconURL(stackClient, defaultOpts)
       expect(url).toEqual(new ErrorReturned())
     })
+
+    it('should return url from appData if appData is a SLUG', async () => {
+      defaultOpts.appData = 'appData-that-is-a-slug'
+      const url = await getIconURL(stackClient, defaultOpts)
+      expect(url).toEqual(
+        'http://cozy.tools:8080/registry/appData-that-is-a-slug/icon'
+      )
+    })
   })
 })

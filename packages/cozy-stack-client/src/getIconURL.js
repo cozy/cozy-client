@@ -3,7 +3,7 @@ import memoize, { ErrorReturned } from './memoize'
 /**
  * Get Icon source Url
  *
- * @param  {object}  app - Apps data - io.cozy.apps
+ * @param  {object|string}  app - Apps data - io.cozy.apps or Slug - string
  * @param  {string|undefined} domain - Host to use in the origin (e.g. cozy.tools)
  * @param  {string} protocol - Url protocol (e.g. http / https)
  * @returns {string}  Source Url of icon
@@ -22,7 +22,7 @@ const loadIcon = async (app, domain, protocol) => {
 /**
  * Get App Icon URL
  *
- * @param  {object|string}  app - Apps data - io.cozy.apps
+ * @param  {object|string}  app - Apps data - io.cozy.apps or Slug - string
  * @param  {string|undefined} domain - Host to use in the origin (e.g. cozy.tools)
  * @param  {string} protocol - Url protocol (e.g. http / https)
  * @private
@@ -36,13 +36,22 @@ const _getAppIconURL = (app, domain, protocol) => {
 /**
  * Get Registry Icon Path
  *
- * @param  {object|string}  app - Apps data - io.cozy.apps
+ * @param  {object|string}  app - Apps data - io.cozy.apps or Slug - string
  * @returns {string|undefined}  Registry icon path
  * @private
  */
-const _getRegistryIconPath = app =>
-  app?.latest_version?.version &&
-  `/registry/${app.slug}/${app.latest_version.version}/icon`
+const _getRegistryIconPath = app => {
+  if (typeof app === 'string') {
+    return `/registry/${app}/icon`
+  }
+
+  return (
+    app &&
+    app.latest_version &&
+    app.latest_version.version &&
+    `/registry/${app.slug}/${app.latest_version.version}/icon`
+  )
+}
 
 const mimeTypes = {
   gif: 'image/gif',
@@ -122,7 +131,7 @@ const fetchAppOrKonnectorViaRegistry = (stackClient, type, slug) =>
  * @param  {object} opts - Options
  * @param  {string} opts.type - Options type
  * @param  {string} opts.slug - Options slug
- * @param  {object} opts.appData - Apps data - io.cozy.apps
+ * @param  {object|string}  opts.appData - Apps data - io.cozy.apps or Slug - string
  * @param  {string} [opts.priority='stack'] - Options priority
  * @returns {Promise<string>|string} DOMString containing URL source or a URL representing the Blob .
  * @private
@@ -190,7 +199,7 @@ export const _getIconURL = async (stackClient, opts) => {
  * @param  {object} opts - Options
  * @param  {string} opts.type - Options type
  * @param  {string} opts.slug - Options slug
- * @param  {object} opts.appData - Apps data - io.cozy.apps
+ * @param  {object|string}  opts.appData - Apps data - io.cozy.apps or Slug - string
  * @param  {string} [opts.priority='stack'] - Options priority
  * @returns {Promise<string>|string} DOMString containing URL source or a URL representing the Blob or ErrorReturned
  */
