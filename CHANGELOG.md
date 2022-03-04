@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.19.3](https://github.com/cozy/cozy-client/compare/v27.19.2...v27.19.3) (2022-03-04)
+
+
+### Bug Fixes
+
+* **stack-client:** Fetch icon url from registry when slug is passed ([17fbc69](https://github.com/cozy/cozy-client/commit/17fbc69679910741511db1676121d3b4933fbd57))
+
+
+
+
+
 ## [27.19.2](https://github.com/cozy/cozy-client/compare/v27.19.1...v27.19.2) (2022-03-02)
 
 
