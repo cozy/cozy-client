@@ -1839,8 +1839,8 @@ or using preloaded url when blob not needed
 | stackClient.oauthOptions | <code>object</code> |  | oauthOptions used to detect fetching mechanism |
 | opts | <code>object</code> |  | Options |
 | opts.type | <code>string</code> |  | Options type |
-| opts.slug | <code>string</code> |  | Options slug |
-| opts.appData | <code>object</code> \| <code>string</code> |  | Apps data - io.cozy.apps or Slug - string |
+| opts.slug | <code>string</code> \| <code>undefined</code> |  | Options slug |
+| opts.appData | <code>object</code> \| <code>string</code> \| <code>undefined</code> |  | Apps data - io.cozy.apps or Slug - string |
 | [opts.priority] | <code>string</code> | <code>&quot;&#x27;stack&#x27;&quot;</code> | Options priority |
 
 <a name="garbageCollect"></a>

@@ -3,16 +3,17 @@ import memoize, { ErrorReturned } from './memoize'
 /**
  * Get Icon source Url
  *
- * @param  {object|string}  app - Apps data - io.cozy.apps or Slug - string
+ * @param  {object}  app - Apps data - io.cozy.apps
+ * @param  {string}  slug - Slug - string
  * @param  {string|undefined} domain - Host to use in the origin (e.g. cozy.tools)
  * @param  {string} protocol - Url protocol (e.g. http / https)
  * @returns {string}  Source Url of icon
  * @private
  * @throws {Error} When cannot fetch or get icon source
  */
-const loadIcon = async (app, domain, protocol) => {
+const loadIcon = async (app, slug, domain, protocol) => {
   if (!domain) throw new Error('Cannot fetch icon: missing domain')
-  const source = _getAppIconURL(app, domain, protocol)
+  const source = _getAppIconURL(app, slug, domain, protocol)
   if (!source) {
     throw new Error(`Cannot get icon source for app ${app.name}`)
   }
@@ -22,27 +23,30 @@ const loadIcon = async (app, domain, protocol) => {
 /**
  * Get App Icon URL
  *
- * @param  {object|string}  app - Apps data - io.cozy.apps or Slug - string
+ * @param  {object}  app - Apps data - io.cozy.apps or Slug - string
+ * @param  {string}  slug - Slug - string
  * @param  {string|undefined} domain - Host to use in the origin (e.g. cozy.tools)
  * @param  {string} protocol - Url protocol (e.g. http / https)
  * @private
  * @returns {string|null}  App Icon URL
  */
-const _getAppIconURL = (app, domain, protocol) => {
-  const path = (app && app.links && app.links.icon) || _getRegistryIconPath(app)
+const _getAppIconURL = (app, slug, domain, protocol) => {
+  const path =
+    (app && app.links && app.links.icon) || _getRegistryIconPath(app, slug)
   return path ? `${protocol}//${domain}${path}` : null
 }
 
 /**
  * Get Registry Icon Path
  *
- * @param  {object|string}  app - Apps data - io.cozy.apps or Slug - string
+ * @param  {object}  app - Apps data - io.cozy.apps or Slug - string
+ * @param  {string}  slug - Slug - string
  * @returns {string|undefined}  Registry icon path
  * @private
  */
-const _getRegistryIconPath = app => {
-  if (typeof app === 'string') {
-    return `/registry/${app}/icon`
+const _getRegistryIconPath = (app, slug) => {
+  if (slug) {
+    return `/registry/${slug}/icon`
   }
 
   return (
@@ -130,8 +134,8 @@ const fetchAppOrKonnectorViaRegistry = (stackClient, type, slug) =>
  * @param  {object}  stackClient.oauthOptions - oauthOptions used to detect fetching mechanism
  * @param  {object} opts - Options
  * @param  {string} opts.type - Options type
- * @param  {string} opts.slug - Options slug
- * @param  {object|string}  opts.appData - Apps data - io.cozy.apps or Slug - string
+ * @param  {string|undefined} opts.slug - Options slug
+ * @param  {object|string|undefined}  opts.appData - Apps data - io.cozy.apps
  * @param  {string} [opts.priority='stack'] - Options priority
  * @returns {Promise<string>|string} DOMString containing URL source or a URL representing the Blob .
  * @private
@@ -181,7 +185,7 @@ export const _getIconURL = async (stackClient, opts) => {
   } else {
     try {
       const { host: domain, protocol } = new URL(stackClient.uri)
-      return loadIcon(appData, domain, protocol)
+      return loadIcon(appData, slug, domain, protocol)
     } catch (error) {
       throw new Error(
         `Cannot fetch icon: invalid stackClient.uri: ${error.message}`
@@ -198,8 +202,8 @@ export const _getIconURL = async (stackClient, opts) => {
  * @param  {object}  stackClient.oauthOptions - oauthOptions used to detect fetching mechanism
  * @param  {object} opts - Options
  * @param  {string} opts.type - Options type
- * @param  {string} opts.slug - Options slug
- * @param  {object|string}  opts.appData - Apps data - io.cozy.apps or Slug - string
+ * @param  {string|undefined} opts.slug - Options slug
+ * @param  {object|string|undefined}  opts.appData - Apps data - io.cozy.apps or Slug - string
  * @param  {string} [opts.priority='stack'] - Options priority
  * @returns {Promise<string>|string} DOMString containing URL source or a URL representing the Blob or ErrorReturned
  */
