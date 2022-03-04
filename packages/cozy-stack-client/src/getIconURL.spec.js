@@ -205,6 +205,7 @@ describe('get icon', () => {
 
     it('should return url from registry if app data not containing icon path', async () => {
       defaultOpts.appData = { latest_version: { version: '3' }, slug: 'slug' }
+      defaultOpts.slug = undefined
       const url = await getIconURL(stackClient, defaultOpts)
       expect(url).toEqual('http://cozy.tools:8080/registry/slug/3/icon')
     })
@@ -217,16 +218,30 @@ describe('get icon', () => {
 
     it('should catch occurring error and returns nothing - ErrorReturned', async () => {
       defaultOpts.appData = { latest_version: undefined, slug: 'slug' }
+      defaultOpts.slug = undefined
       const url = await getIconURL(stackClient, defaultOpts)
       expect(url).toEqual(new ErrorReturned())
     })
 
-    it('should return url from appData if appData is a SLUG', async () => {
-      defaultOpts.appData = 'appData-that-is-a-slug'
+    it('should return url from slug if appData is  undefined and there is a slug', async () => {
+      defaultOpts.appData = undefined
+      defaultOpts.slug = 'slug'
       const url = await getIconURL(stackClient, defaultOpts)
-      expect(url).toEqual(
-        'http://cozy.tools:8080/registry/appData-that-is-a-slug/icon'
-      )
+      expect(url).toEqual('http://cozy.tools:8080/registry/slug/icon')
+    })
+
+    it('should return url from slug if appData is  version latest_version but there is a slug', async () => {
+      defaultOpts.appData = { latest_version: { version: '3' }, slug: 'slug' }
+      defaultOpts.slug = 'slug'
+      const url = await getIconURL(stackClient, defaultOpts)
+      expect(url).toEqual('http://cozy.tools:8080/registry/slug/icon')
+    })
+
+    it('should return url from appData, links, icon if defined, even if slug defined', async () => {
+      defaultOpts.appData = { links: { icon: '/path/to/icon' } }
+      defaultOpts.slug = 'slug'
+      const url = await getIconURL(stackClient, defaultOpts)
+      expect(url).toEqual('http://cozy.tools:8080/path/to/icon')
     })
   })
 })
