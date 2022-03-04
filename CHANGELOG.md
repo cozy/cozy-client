@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.19.4](https://github.com/cozy/cozy-client/compare/v27.19.3...v27.19.4) (2022-03-04)
+
+
+### Bug Fixes
+
+* **stack-client:** Fetch icon url when no appData and slug is passed ([5538630](https://github.com/cozy/cozy-client/commit/5538630f7e04fe7ba1563e5dd8f1982fe8e64fb7))
+
+
+
+
+
 ## [27.19.3](https://github.com/cozy/cozy-client/compare/v27.19.2...v27.19.3) (2022-03-04)
 
 
