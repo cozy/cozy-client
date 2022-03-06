@@ -296,4 +296,11 @@ import { QueryDefinition } from './queries/dsl'
  * @typedef {IdentityLabel|FamilyLabel|WorkStudyLabels|HealthLabels|HomeLabels|TransportLabels|FinanceLabels|InvoiceLabels|ActivityLabels} ItemsLabels
  */
 
+/**
+ * Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
+ *
+ * @callback OpenURLCallback
+ * @param {string} url - URL to present to the user
+ */
+
 export default {}

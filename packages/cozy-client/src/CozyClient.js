@@ -54,6 +54,7 @@ import {
   Mutation,
   NodeEnvironment,
   OldCozyClient,
+  OpenURLCallback,
   QueryOptions,
   QueryResult,
   QueryState,
@@ -1359,7 +1360,7 @@ client.query(Q('io.cozy.bills'))`)
   /**
    * Performs a complete OAuth flow, including updating the internal token at the end.
    *
-   * @param   {Function} openURLCallback Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
+   * @param   {OpenURLCallback} openURLCallback Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
    * @returns {Promise<object>} Contains the fetched token and the client information. These should be stored and used to restore the client.
    */
   async startOAuthFlow(openURLCallback) {
@@ -1384,7 +1385,14 @@ client.query(Q('io.cozy.bills'))`)
     }
   }
 
-  async authorize(openURLCallback) {
+  /**
+   * Creates an OAuth token with needed permissions for the current client.
+   * The authorization page URL generation can be overriding by passing a function pointer as `openURLCallback` parameter
+   *
+   * @param {OpenURLCallback} [openURLCallback] - Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
+   * @returns {Promise<object>} Contains the fetched token and the client information. These should be stored and used to restore the client.
+   */
+  async authorize(openURLCallback = authFunction) {
     try {
       const stackClient = this.getStackClient()
       const stateCode = stackClient.generateStateCode()
