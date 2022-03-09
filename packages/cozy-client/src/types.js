@@ -311,4 +311,15 @@ import { QueryDefinition } from './queries/dsl'
  * @typedef {string} SessionCode
  */
 
+/**
+ * An object containing a code verifier and a code challenge that can be used in a
+ * PKCE verification process
+ *
+ * More information: https://docs.cozy.io/en/cozy-stack/auth/#pkce-extension
+ *
+ * @typedef {object} PKCECodes
+ * @property {string} [codeVerifier]
+ * @property {string} [codeChallenge]
+ */
+
 export default {}
