@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.21.0](https://github.com/cozy/cozy-client/compare/v27.20.0...v27.21.0) (2022-03-09)
+
+
+### Features
+
+* Add `sessionCode` handling on `authorize()` method ([4176f54](https://github.com/cozy/cozy-client/commit/4176f5405379c826c401e180b6c701ded2883ad0))
+* Add default value for `openURLCallback` param on `authorize()` ([d0ee7a2](https://github.com/cozy/cozy-client/commit/d0ee7a230acc9ecd546235f7479858c97b639a11))
+* Add optional PKCE code handling on `authorize()` ([663a0a4](https://github.com/cozy/cozy-client/commit/663a0a41d2f80161a4abccfda953db7e7b7e1291))
+* Extract `certifyFlagship` from `startOAuthFlow` ([8d4b260](https://github.com/cozy/cozy-client/commit/8d4b2604d35cd2f9a08a9c3d32e9b573108df72d))
+
+
+
+
+
 # [27.20.0](https://github.com/cozy/cozy-client/compare/v27.19.4...v27.20.0) (2022-03-07)
 
 

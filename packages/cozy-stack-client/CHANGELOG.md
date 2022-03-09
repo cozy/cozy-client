@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.21.0](https://github.com/cozy/cozy-client/compare/v27.20.0...v27.21.0) (2022-03-09)
+
+
+### Features
+
+* Add `fetchSessionCodeWithPassword` method on OAuthClient ([beaaa8b](https://github.com/cozy/cozy-client/commit/beaaa8bc6caf8d489be906a028337d6a621ecd94))
+* Add `sessionCode` handling on `authorize()` method ([4176f54](https://github.com/cozy/cozy-client/commit/4176f5405379c826c401e180b6c701ded2883ad0))
+* Add optional PKCE code handling on `authorize()` ([663a0a4](https://github.com/cozy/cozy-client/commit/663a0a41d2f80161a4abccfda953db7e7b7e1291))
+* Implement `/settings/passphrase/flagship` api in `OAuthClient` ([574b1f5](https://github.com/cozy/cozy-client/commit/574b1f59b7e19481d0aaf73bef6d0c382b7f49f9))
+
+
+
+
+
 ## [27.19.4](https://github.com/cozy/cozy-client/compare/v27.19.3...v27.19.4) (2022-03-04)
 
 
