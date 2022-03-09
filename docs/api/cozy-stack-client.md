@@ -1080,14 +1080,16 @@ through OAuth.
     * [.fetchInformation()](#OAuthClient+fetchInformation) ⇒ <code>Promise</code>
     * [.updateInformation(information, resetSecret)](#OAuthClient+updateInformation) ⇒ <code>Promise</code>
     * [.generateStateCode()](#OAuthClient+generateStateCode) ⇒ <code>string</code>
-    * [.getAuthCodeURL(stateCode, scopes)](#OAuthClient+getAuthCodeURL) ⇒ <code>string</code>
+    * [.getAuthCodeURL(options)](#OAuthClient+getAuthCodeURL) ⇒ <code>string</code>
     * [.getAccessCodeFromURL(pageURL, stateCode)](#OAuthClient+getAccessCodeFromURL) ⇒ <code>string</code>
-    * [.fetchAccessToken(accessCode, oauthOptionsArg, uri)](#OAuthClient+fetchAccessToken) ⇒ <code>Promise</code>
+    * [.fetchAccessToken(accessCode, oauthOptionsArg, uri, codeVerifier)](#OAuthClient+fetchAccessToken) ⇒ <code>Promise</code>
     * [.fetchSessionCode()](#OAuthClient+fetchSessionCode) ⇒ [<code>Promise.&lt;SessionCodeRes&gt;</code>](#SessionCodeRes)
+    * [.fetchSessionCodeWithPassword()](#OAuthClient+fetchSessionCodeWithPassword) ⇒ [<code>Promise.&lt;SessionCodeRes&gt;</code>](#SessionCodeRes)
     * [.refreshToken()](#OAuthClient+refreshToken) ⇒ <code>Promise</code>
     * [.setToken(token)](#OAuthClient+setToken)
     * [.setOAuthOptions(options)](#OAuthClient+setOAuthOptions)
     * [.resetClient()](#OAuthClient+resetClient)
+    * [.setPassphraseFlagship(params)](#OAuthClient+setPassphraseFlagship) ⇒ <code>object</code>
 
 <a name="OAuthClient+doRegistration"></a>
 
@@ -1152,7 +1154,7 @@ Generates a random state code to be used during the OAuth process
 **Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
 <a name="OAuthClient+getAuthCodeURL"></a>
 
-### oAuthClient.getAuthCodeURL(stateCode, scopes) ⇒ <code>string</code>
+### oAuthClient.getAuthCodeURL(options) ⇒ <code>string</code>
 Generates the URL that the user should be sent to in order to accept the app's permissions.
 
 **Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
@@ -1164,8 +1166,11 @@ Generates the URL that the user should be sent to in order to accept the app's p
 
 | Param | Type | Description |
 | --- | --- | --- |
-| stateCode | <code>string</code> | A random code to be included in the URl for security. Can be generated with `client.generateStateCode()` |
-| scopes | <code>Array</code> | = [] An array of permission scopes for the token. |
+| options | <code>object</code> | URL generation options |
+| options.stateCode | <code>string</code> | A random code to be included in the URl for security. Can be generated with `client.generateStateCode()` |
+| [options.scopes] | <code>Array</code> | An array of permission scopes for the token. |
+| [options.sessionCode] | <code>SessionCode</code> | A session code that can be used to create a session. |
+| [options.codeChallenge] | <code>string</code> | A code challenge that can be used in a PKCE verification process. |
 
 <a name="OAuthClient+getAccessCodeFromURL"></a>
 
@@ -1186,7 +1191,7 @@ Retrieves the access code contained in the URL to which the user is redirected a
 
 <a name="OAuthClient+fetchAccessToken"></a>
 
-### oAuthClient.fetchAccessToken(accessCode, oauthOptionsArg, uri) ⇒ <code>Promise</code>
+### oAuthClient.fetchAccessToken(accessCode, oauthOptionsArg, uri, codeVerifier) ⇒ <code>Promise</code>
 Exchanges an access code for an access token. This function does **not** update the client's token.
 
 **Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
@@ -1201,10 +1206,22 @@ Exchanges an access code for an access token. This function does **not** update 
 | accessCode | <code>string</code> | The access code contained in the redirection URL — see `client.getAccessCodeFromURL()` |
 | oauthOptionsArg | <code>object</code> | — To use when OAuthClient is not yet registered (during login process) |
 | uri | <code>string</code> | — To use when OAuthClient is not yet registered (during login process) |
+| codeVerifier | <code>string</code> | — The PKCE code verifier (see https://docs.cozy.io/en/cozy-stack/auth/#pkce-extension) |
 
 <a name="OAuthClient+fetchSessionCode"></a>
 
 ### oAuthClient.fetchSessionCode() ⇒ [<code>Promise.&lt;SessionCodeRes&gt;</code>](#SessionCodeRes)
+Fetches a new session code. Only usable by the Flagship application
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+**Returns**: [<code>Promise.&lt;SessionCodeRes&gt;</code>](#SessionCodeRes) - A promise that resolves with a new session_code  
+**Throws**:
+
+- <code>NotRegisteredException</code> When the client isn't certified to be the Flagship application
+
+<a name="OAuthClient+fetchSessionCodeWithPassword"></a>
+
+### oAuthClient.fetchSessionCodeWithPassword() ⇒ [<code>Promise.&lt;SessionCodeRes&gt;</code>](#SessionCodeRes)
 Fetches a new session code. Only usable by the Flagship application
 
 **Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
@@ -1253,6 +1270,28 @@ Updates the OAuth informations
 Reset the current OAuth client
 
 **Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+<a name="OAuthClient+setPassphraseFlagship"></a>
+
+### oAuthClient.setPassphraseFlagship(params) ⇒ <code>object</code>
+This method should be used in flagship app onboarding process to finalize the
+cozy creation by setting the user password into the cozy-stack
+
+More info: https://docs.cozy.io/en/cozy-stack/settings/#post-settingspassphraseflagship
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+**Returns**: <code>object</code> - token - The OAauth token  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>object</code> |  |
+| params.registerToken | <code>string</code> | registration token provided by the onboarding link |
+| params.passwordHash | <code>string</code> | hash of the master password |
+| params.hint | <code>string</code> | hint for the master password |
+| params.key | <code>string</code> | key (crypted) used for the vault encryption |
+| params.publicKey | <code>string</code> | public key used for sharing ciphers from the vault |
+| params.privateKey | <code>string</code> | private key (crypted) used for sharing ciphers from the vault |
+| params.iterations | <code>string</code> | number of KDF iterations applied when hashing the master password |
+
 <a name="OAuthClientsCollection"></a>
 
 ## OAuthClientsCollection
@@ -2051,14 +2090,16 @@ Document representing a io.cozy.oauth.clients
     * [.fetchInformation()](#OAuthClient+fetchInformation) ⇒ <code>Promise</code>
     * [.updateInformation(information, resetSecret)](#OAuthClient+updateInformation) ⇒ <code>Promise</code>
     * [.generateStateCode()](#OAuthClient+generateStateCode) ⇒ <code>string</code>
-    * [.getAuthCodeURL(stateCode, scopes)](#OAuthClient+getAuthCodeURL) ⇒ <code>string</code>
+    * [.getAuthCodeURL(options)](#OAuthClient+getAuthCodeURL) ⇒ <code>string</code>
     * [.getAccessCodeFromURL(pageURL, stateCode)](#OAuthClient+getAccessCodeFromURL) ⇒ <code>string</code>
-    * [.fetchAccessToken(accessCode, oauthOptionsArg, uri)](#OAuthClient+fetchAccessToken) ⇒ <code>Promise</code>
+    * [.fetchAccessToken(accessCode, oauthOptionsArg, uri, codeVerifier)](#OAuthClient+fetchAccessToken) ⇒ <code>Promise</code>
     * [.fetchSessionCode()](#OAuthClient+fetchSessionCode) ⇒ [<code>Promise.&lt;SessionCodeRes&gt;</code>](#SessionCodeRes)
+    * [.fetchSessionCodeWithPassword()](#OAuthClient+fetchSessionCodeWithPassword) ⇒ [<code>Promise.&lt;SessionCodeRes&gt;</code>](#SessionCodeRes)
     * [.refreshToken()](#OAuthClient+refreshToken) ⇒ <code>Promise</code>
     * [.setToken(token)](#OAuthClient+setToken)
     * [.setOAuthOptions(options)](#OAuthClient+setOAuthOptions)
     * [.resetClient()](#OAuthClient+resetClient)
+    * [.setPassphraseFlagship(params)](#OAuthClient+setPassphraseFlagship) ⇒ <code>object</code>
 
 <a name="OAuthClient+doRegistration"></a>
 
@@ -2123,7 +2164,7 @@ Generates a random state code to be used during the OAuth process
 **Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
 <a name="OAuthClient+getAuthCodeURL"></a>
 
-### oAuthClient.getAuthCodeURL(stateCode, scopes) ⇒ <code>string</code>
+### oAuthClient.getAuthCodeURL(options) ⇒ <code>string</code>
 Generates the URL that the user should be sent to in order to accept the app's permissions.
 
 **Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
@@ -2135,8 +2176,11 @@ Generates the URL that the user should be sent to in order to accept the app's p
 
 | Param | Type | Description |
 | --- | --- | --- |
-| stateCode | <code>string</code> | A random code to be included in the URl for security. Can be generated with `client.generateStateCode()` |
-| scopes | <code>Array</code> | = [] An array of permission scopes for the token. |
+| options | <code>object</code> | URL generation options |
+| options.stateCode | <code>string</code> | A random code to be included in the URl for security. Can be generated with `client.generateStateCode()` |
+| [options.scopes] | <code>Array</code> | An array of permission scopes for the token. |
+| [options.sessionCode] | <code>SessionCode</code> | A session code that can be used to create a session. |
+| [options.codeChallenge] | <code>string</code> | A code challenge that can be used in a PKCE verification process. |
 
 <a name="OAuthClient+getAccessCodeFromURL"></a>
 
@@ -2157,7 +2201,7 @@ Retrieves the access code contained in the URL to which the user is redirected a
 
 <a name="OAuthClient+fetchAccessToken"></a>
 
-### oAuthClient.fetchAccessToken(accessCode, oauthOptionsArg, uri) ⇒ <code>Promise</code>
+### oAuthClient.fetchAccessToken(accessCode, oauthOptionsArg, uri, codeVerifier) ⇒ <code>Promise</code>
 Exchanges an access code for an access token. This function does **not** update the client's token.
 
 **Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
@@ -2172,10 +2216,22 @@ Exchanges an access code for an access token. This function does **not** update 
 | accessCode | <code>string</code> | The access code contained in the redirection URL — see `client.getAccessCodeFromURL()` |
 | oauthOptionsArg | <code>object</code> | — To use when OAuthClient is not yet registered (during login process) |
 | uri | <code>string</code> | — To use when OAuthClient is not yet registered (during login process) |
+| codeVerifier | <code>string</code> | — The PKCE code verifier (see https://docs.cozy.io/en/cozy-stack/auth/#pkce-extension) |
 
 <a name="OAuthClient+fetchSessionCode"></a>
 
 ### oAuthClient.fetchSessionCode() ⇒ [<code>Promise.&lt;SessionCodeRes&gt;</code>](#SessionCodeRes)
+Fetches a new session code. Only usable by the Flagship application
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+**Returns**: [<code>Promise.&lt;SessionCodeRes&gt;</code>](#SessionCodeRes) - A promise that resolves with a new session_code  
+**Throws**:
+
+- <code>NotRegisteredException</code> When the client isn't certified to be the Flagship application
+
+<a name="OAuthClient+fetchSessionCodeWithPassword"></a>
+
+### oAuthClient.fetchSessionCodeWithPassword() ⇒ [<code>Promise.&lt;SessionCodeRes&gt;</code>](#SessionCodeRes)
 Fetches a new session code. Only usable by the Flagship application
 
 **Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
@@ -2224,6 +2280,28 @@ Updates the OAuth informations
 Reset the current OAuth client
 
 **Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+<a name="OAuthClient+setPassphraseFlagship"></a>
+
+### oAuthClient.setPassphraseFlagship(params) ⇒ <code>object</code>
+This method should be used in flagship app onboarding process to finalize the
+cozy creation by setting the user password into the cozy-stack
+
+More info: https://docs.cozy.io/en/cozy-stack/settings/#post-settingspassphraseflagship
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+**Returns**: <code>object</code> - token - The OAauth token  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>object</code> |  |
+| params.registerToken | <code>string</code> | registration token provided by the onboarding link |
+| params.passwordHash | <code>string</code> | hash of the master password |
+| params.hint | <code>string</code> | hint for the master password |
+| params.key | <code>string</code> | key (crypted) used for the vault encryption |
+| params.publicKey | <code>string</code> | public key used for sharing ciphers from the vault |
+| params.privateKey | <code>string</code> | private key (crypted) used for sharing ciphers from the vault |
+| params.iterations | <code>string</code> | number of KDF iterations applied when hashing the master password |
+
 <a name="FetchChangesReturnValue"></a>
 
 ## FetchChangesReturnValue ⇒ [<code>FetchChangesReturnValue</code>](#FetchChangesReturnValue)
