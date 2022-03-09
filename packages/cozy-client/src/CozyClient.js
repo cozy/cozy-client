@@ -1371,7 +1371,7 @@ client.query(Q('io.cozy.bills'))`)
 
     await this.certifyFlagship()
 
-    return this.authorize(openURLCallback)
+    return this.authorize({ openURLCallback })
   }
 
   /**
@@ -1392,16 +1392,17 @@ client.query(Q('io.cozy.bills'))`)
    * The authorization page URL generation can be overriding by passing a function pointer as `openURLCallback` parameter
    * It is possible to skip the session creation process (when using an in-app browser) by passing a sessionCode (see https://docs.cozy.io/en/cozy-stack/auth/#post-authsession_code)
    *
-   * @param {OpenURLCallback} [openURLCallback] - Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
-   * @param {SessionCode} [sessionCode] - session code than can be added to the authorization URL to automatically create the session.
-   * @param {PKCECodes} [pkceCodes] - code verifier and a code challenge that should be used in the PKCE verification process.
+   * @param {object} [options] - Authorization options
+   * @param {OpenURLCallback} [options.openURLCallback] - Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
+   * @param {SessionCode} [options.sessionCode] - session code than can be added to the authorization URL to automatically create the session.
+   * @param {PKCECodes} [options.pkceCodes] - code verifier and a code challenge that should be used in the PKCE verification process.
    * @returns {Promise<object>} Contains the fetched token and the client information. These should be stored and used to restore the client.
    */
-  async authorize(
+  async authorize({
     openURLCallback = authFunction,
     sessionCode = undefined,
     pkceCodes = {}
-  ) {
+  } = {}) {
     try {
       const { codeVerifier, codeChallenge } = pkceCodes
       const stackClient = this.getStackClient()
@@ -1444,7 +1445,7 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {object}   Contains the fetched token and the client information.
    */
   renewAuthorization() {
-    return this.authorize(authFunction)
+    return this.authorize({ openURLCallback: authFunction })
   }
 
   /**
