@@ -1366,11 +1366,22 @@ client.query(Q('io.cozy.bills'))`)
     const stackClient = this.getStackClient()
     await stackClient.register()
 
+    await this.certifyFlagship()
+
+    return this.authorize(openURLCallback)
+  }
+
+  /**
+   * Perform the Flagship certification process for verifying that the current running app is a genuine Cozy application
+   *
+   * This mechanism is described in https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/flagship-certification/README.md
+   */
+  async certifyFlagship() {
+    const stackClient = this.getStackClient()
+
     if (stackClient.oauthOptions.shouldRequireFlagshipPermissions) {
       await certifyFlagship(stackClient.oauthOptions.certificationConfig, this)
     }
-
-    return this.authorize(openURLCallback)
   }
 
   async authorize(openURLCallback) {
