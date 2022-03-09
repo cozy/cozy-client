@@ -558,15 +558,32 @@ declare class CozyClient {
     /**
      * Performs a complete OAuth flow, including updating the internal token at the end.
      *
-     * @param   {Function} openURLCallback Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
+     * @param   {OpenURLCallback} openURLCallback Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
      * @returns {Promise<object>} Contains the fetched token and the client information. These should be stored and used to restore the client.
      */
-    startOAuthFlow(openURLCallback: Function): Promise<object>;
-    authorize(openURLCallback: any): Promise<{
-        token: any;
-        infos: any;
-        client: any;
-    }>;
+    startOAuthFlow(openURLCallback: OpenURLCallback): Promise<object>;
+    /**
+     * Perform the Flagship certification process for verifying that the current running app is a genuine Cozy application
+     *
+     * This mechanism is described in https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/flagship-certification/README.md
+     */
+    certifyFlagship(): Promise<void>;
+    /**
+     * Creates an OAuth token with needed permissions for the current client.
+     * The authorization page URL generation can be overriding by passing a function pointer as `openURLCallback` parameter
+     * It is possible to skip the session creation process (when using an in-app browser) by passing a sessionCode (see https://docs.cozy.io/en/cozy-stack/auth/#post-authsession_code)
+     *
+     * @param {object} [options] - Authorization options
+     * @param {OpenURLCallback} [options.openURLCallback] - Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
+     * @param {SessionCode} [options.sessionCode] - session code than can be added to the authorization URL to automatically create the session.
+     * @param {PKCECodes} [options.pkceCodes] - code verifier and a code challenge that should be used in the PKCE verification process.
+     * @returns {Promise<object>} Contains the fetched token and the client information. These should be stored and used to restore the client.
+     */
+    authorize({ openURLCallback, sessionCode, pkceCodes }?: {
+        openURLCallback?: OpenURLCallback;
+        sessionCode?: SessionCode;
+        pkceCodes?: PKCECodes;
+    }): Promise<object>;
     /**
      * Renews the token if, for instance, new permissions are required or token
      * has expired.
@@ -677,6 +694,9 @@ import { QueryResult } from "./types";
 import ObservableQuery from "./ObservableQuery";
 import { HydratedDocument } from "./types";
 import { QueryState } from "./types";
+import { OpenURLCallback } from "./types";
+import { SessionCode } from "./types";
+import { PKCECodes } from "./types";
 import { ReduxStore } from "./types";
 import { CozyClient as SnapshotClient } from "./testing/snapshots";
 import { OldCozyClient } from "./types";
