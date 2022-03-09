@@ -60,6 +60,7 @@ import {
   QueryState,
   ReduxStore,
   ReferenceMap,
+  SessionCode,
   Token
 } from './types'
 import { QueryIDGenerator } from './store/queries'
@@ -1388,15 +1389,17 @@ client.query(Q('io.cozy.bills'))`)
   /**
    * Creates an OAuth token with needed permissions for the current client.
    * The authorization page URL generation can be overriding by passing a function pointer as `openURLCallback` parameter
+   * It is possible to skip the session creation process (when using an in-app browser) by passing a sessionCode (see https://docs.cozy.io/en/cozy-stack/auth/#post-authsession_code)
    *
    * @param {OpenURLCallback} [openURLCallback] - Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
+   * @param {SessionCode} [sessionCode] - session code than can be added to the authorization URL to automatically create the session.
    * @returns {Promise<object>} Contains the fetched token and the client information. These should be stored and used to restore the client.
    */
-  async authorize(openURLCallback = authFunction) {
+  async authorize(openURLCallback = authFunction, sessionCode = undefined) {
     try {
       const stackClient = this.getStackClient()
       const stateCode = stackClient.generateStateCode()
-      const url = stackClient.getAuthCodeURL(stateCode)
+      const url = stackClient.getAuthCodeURL(stateCode, undefined, sessionCode)
       const redirectedURL = await openURLCallback(url)
       const code = stackClient.getAccessCodeFromURL(redirectedURL, stateCode)
       const token = await stackClient.fetchAccessToken(code)
