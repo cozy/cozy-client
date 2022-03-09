@@ -52,7 +52,7 @@ describe('OAuthClient', () => {
 
     it('should not generate a auth code URL', () => {
       expect(() => {
-        client.getAuthCodeURL('statecode')
+        client.getAuthCodeURL({ stateCode: 'statecode' })
       }).toThrowErrorMatchingSnapshot()
     })
   })
@@ -97,7 +97,10 @@ describe('OAuthClient', () => {
 
     it('should generate the auth code URL', () => {
       expect(
-        client.getAuthCodeURL('randomstatetoken', ['io.cozy.todos'])
+        client.getAuthCodeURL({
+          stateCode: 'randomstatetoken',
+          scopes: ['io.cozy.todos']
+        })
       ).toEqual(
         `${REGISTERED_CLIENT_INIT_OPTIONS.uri}/auth/authorize?client_id=${
           REGISTERED_CLIENT_INIT_OPTIONS.oauth.clientID
@@ -123,7 +126,10 @@ describe('OAuthClient', () => {
         scope: 'io.cozy.todos'
       })
       expect(
-        newClient.getAuthCodeURL('randomstatetoken', ['io.cozy.todos'])
+        newClient.getAuthCodeURL({
+          stateCode: 'randomstatetoken',
+          scopes: ['io.cozy.todos']
+        })
       ).toEqual(
         `${REGISTERED_CLIENT_INIT_OPTIONS.uri}/auth/authorize?client_id=${
           REGISTERED_CLIENT_INIT_OPTIONS.oauth.clientID

@@ -280,18 +280,19 @@ class OAuthClient extends CozyStackClient {
    * Generates the URL that the user should be sent to in order to accept the app's permissions.
    *
    * @throws {NotRegisteredException} When the client doesn't have it's registration information
-   * @param   {string} stateCode   A random code to be included in the URl for security. Can be generated with `client.generateStateCode()`
-   * @param   {Array} scopes = [] An array of permission scopes for the token.
-   * @param   {SessionCode} [sessionCode] A session code that can be used to create a session.
-   * @param   {string} [codeChallenge] A code challenge that can be used in a PKCE verification process.
+   * @param {object} options - URL generation options
+   * @param {string} options.stateCode - A random code to be included in the URl for security. Can be generated with `client.generateStateCode()`
+   * @param {Array} [options.scopes] - An array of permission scopes for the token.
+   * @param {SessionCode} [options.sessionCode] - A session code that can be used to create a session.
+   * @param {string} [options.codeChallenge] - A code challenge that can be used in a PKCE verification process.
    * @returns {string} The URL
    */
-  getAuthCodeURL(
+  getAuthCodeURL({
     stateCode,
     scopes = this.scope,
     sessionCode = undefined,
     codeChallenge = undefined
-  ) {
+  }) {
     if (!this.isRegistered()) throw new NotRegisteredException()
 
     let query = {

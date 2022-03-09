@@ -1406,12 +1406,12 @@ client.query(Q('io.cozy.bills'))`)
       const { codeVerifier, codeChallenge } = pkceCodes
       const stackClient = this.getStackClient()
       const stateCode = stackClient.generateStateCode()
-      const url = stackClient.getAuthCodeURL(
-        stateCode,
-        undefined,
-        sessionCode,
-        codeChallenge
-      )
+      const url = stackClient.getAuthCodeURL({
+        stateCode: stateCode,
+        scopes: undefined,
+        sessionCode: sessionCode,
+        codeChallenge: codeChallenge
+      })
       const redirectedURL = await openURLCallback(url)
       const code = stackClient.getAccessCodeFromURL(redirectedURL, stateCode)
       const token = await stackClient.fetchAccessToken(
