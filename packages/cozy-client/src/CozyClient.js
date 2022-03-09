@@ -55,6 +55,7 @@ import {
   NodeEnvironment,
   OldCozyClient,
   OpenURLCallback,
+  PKCECodes,
   QueryOptions,
   QueryResult,
   QueryState,
@@ -1393,16 +1394,32 @@ client.query(Q('io.cozy.bills'))`)
    *
    * @param {OpenURLCallback} [openURLCallback] - Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
    * @param {SessionCode} [sessionCode] - session code than can be added to the authorization URL to automatically create the session.
+   * @param {PKCECodes} [pkceCodes] - code verifier and a code challenge that should be used in the PKCE verification process.
    * @returns {Promise<object>} Contains the fetched token and the client information. These should be stored and used to restore the client.
    */
-  async authorize(openURLCallback = authFunction, sessionCode = undefined) {
+  async authorize(
+    openURLCallback = authFunction,
+    sessionCode = undefined,
+    pkceCodes = {}
+  ) {
     try {
+      const { codeVerifier, codeChallenge } = pkceCodes
       const stackClient = this.getStackClient()
       const stateCode = stackClient.generateStateCode()
-      const url = stackClient.getAuthCodeURL(stateCode, undefined, sessionCode)
+      const url = stackClient.getAuthCodeURL(
+        stateCode,
+        undefined,
+        sessionCode,
+        codeChallenge
+      )
       const redirectedURL = await openURLCallback(url)
       const code = stackClient.getAccessCodeFromURL(redirectedURL, stateCode)
-      const token = await stackClient.fetchAccessToken(code)
+      const token = await stackClient.fetchAccessToken(
+        code,
+        undefined,
+        undefined,
+        codeVerifier
+      )
 
       stackClient.setToken(token)
       return {

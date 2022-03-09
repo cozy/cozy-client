@@ -283,9 +283,15 @@ class OAuthClient extends CozyStackClient {
    * @param   {string} stateCode   A random code to be included in the URl for security. Can be generated with `client.generateStateCode()`
    * @param   {Array} scopes = [] An array of permission scopes for the token.
    * @param   {SessionCode} [sessionCode] A session code that can be used to create a session.
+   * @param   {string} [codeChallenge] A code challenge that can be used in a PKCE verification process.
    * @returns {string} The URL
    */
-  getAuthCodeURL(stateCode, scopes = this.scope, sessionCode = undefined) {
+  getAuthCodeURL(
+    stateCode,
+    scopes = this.scope,
+    sessionCode = undefined,
+    codeChallenge = undefined
+  ) {
     if (!this.isRegistered()) throw new NotRegisteredException()
 
     let query = {
@@ -305,6 +311,13 @@ class OAuthClient extends CozyStackClient {
       query = {
         ...query,
         session_code: sessionCode
+      }
+    }
+    if (codeChallenge) {
+      query = {
+        ...query,
+        code_challenge: codeChallenge,
+        code_challenge_method: 'S256'
       }
     }
     return `${this.uri}/auth/authorize?${this.dataToQueryString(query)}`
@@ -344,19 +357,27 @@ class OAuthClient extends CozyStackClient {
    * @param   {string} accessCode - The access code contained in the redirection URL — see `client.getAccessCodeFromURL()`
    * @param   {object} oauthOptionsArg — To use when OAuthClient is not yet registered (during login process)
    * @param   {string} uri — To use when OAuthClient is not yet registered (during login process)
+   * @param   {string} codeVerifier — The PKCE code verifier (see https://docs.cozy.io/en/cozy-stack/auth/#pkce-extension)
    * @returns {Promise} A promise that resolves with an AccessToken object.
    */
-  async fetchAccessToken(accessCode, oauthOptionsArg, uri) {
+  async fetchAccessToken(accessCode, oauthOptionsArg, uri, codeVerifier) {
     if (!this.isRegistered() && !oauthOptionsArg) {
       throw new NotRegisteredException()
     }
 
     let oauthOptions = oauthOptionsArg || this.oauthOptions
-    const data = {
+    let data = {
       grant_type: 'authorization_code',
       code: accessCode,
       client_id: oauthOptions.clientID,
       client_secret: oauthOptions.clientSecret
+    }
+
+    if (codeVerifier) {
+      data = {
+        ...data,
+        code_verifier: codeVerifier
+      }
     }
 
     const result = await this.fetchJSON(
