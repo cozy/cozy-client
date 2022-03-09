@@ -13,9 +13,12 @@ fetched is stored in the redux store.
 
 <!-- MarkdownTOC autolink=true -->
 
-- [Query definitions](#query-definitions)
-- [Links](#links)
-- [Store](#store)
+- [Cozy-client Architecture](#cozy-client-architecture)
+  - [Query definitions](#query-definitions)
+  - [Links](#links)
+  - [Store](#store)
+  - [How does it works?](#how-does-it-works)
+  - [Focus on `receiveMutationResult`:](#focus-on-receivemutationresult)
 
 <!-- /MarkdownTOC -->
 
@@ -82,9 +85,9 @@ UI components to the data.
 advanced techniques where you create selectors directly on the data
 of cozy-client.
 
-The redux store is composed of two slices, "documents" and "queries": 
+The redux store is composed of two `slices` : `documents` and `queries`: 
 
-- `documents` stores the data indexed by `[doctype]([doctype](https://docs.cozy.io/en/cozy-doctypes/docs/)` then `_id`.
+- `documents` stores the data indexed by [doctype](https://docs.cozy.io/en/cozy-doctypes/docs/) then `_id`
 - `queries` store information for each query that has been done by cozy-client. 
     * ids of the documents that match the query
     * whether the server has more documents that can be fetched (useful for
@@ -109,7 +112,6 @@ The redux store is composed of two slices, "documents" and "queries":
 
 }
 ```
-
 > ℹ️ If queries are not named, a name is automatically generated but this means that the `queries`
 slice can grow indefinitely if there are a large number of queries. This is why you are 
 encouraged to name your queries : `client.query(qdef, { as: 'finishedTodos'})`. 
@@ -118,3 +120,60 @@ The glue between the Redux store and the UI is done via ObservableQuery.
 `ObservableQuery` are objects instantiated by a <Query /> component. Their
 role is to react to store changes and wake the component. They should not
 be used directly as `useQuery` and `queryConnect` do the job for you.
+
+What do we mean exactly by saying "This redux store
+brings observability to cozy-client, and allows for connection of
+UI components to the data." Let's take a full exemple: 
+
+We have a component that displays a todolist: 
+```jsx
+// TodoListComponent.jsx
+const { data, fetchStatus } = useQuery(Q('io.cozy.todos'), {'as': 'todoslist'})
+if(fetchStatus === 'loaded'){
+  return <TodoLists todos={data}> /> 
+}
+```
+
+But we also have a component that gives use the opportunity to add a 
+new todo: 
+```jsx
+client.save({_type: 'io.cozy.todos', 'label': 'New TODO'});
+```
+
+After the call to `save` your `TodoListComponent` will be re-rendered 
+with the `New TODO`. 
+
+### How does it works?
+
+When a `query` is resolved, CozyClient dispatches a `receiveQueryResult`
+action for a simple `get` but `receiveMutationResult` when we mutate 
+something. 
+
+### Focus on `receiveMutationResult`: 
+
+Our two slices `documents` and `queries` listen actions and do some specific work on
+ `isReceivingMutationResult` action.
+
+`documents`: If the `_id` of the mutated document is not present, then we add the document. 
+If the `_id` is already there, then we update the content of the document with the fresh data
+(for now the work is done in extractAndMergeDocument() method). 
+
+So if your app is linked to the documents store via getDocumentFromStore() for instance
+your app will have the updated value. 
+
+`queries` has an autoUpdater mechanism that does something we can explain this way:
+- it takes the mutated documents (newly created or updated) 
+- it converts the initial `query` to a "`js predicate`" (thanks to the [sift library](https://github.com/crcn/sift.js/))
+- For each query already in the `slice` it runs this `js predicate` and detects if the query
+is concerned by the mutation
+- If the query is concerned, then it checks if it has to remove / add the id of the `mutated` 
+document
+(for now the work is done mainly in queries.js/updateData())
+
+So in our previous example our `todoslist` is concerned by the addition of the new todo, then 
+the `id` is added to `todolist` data, then the component linked will be refreshed with this new 
+document.
+
+
+
+
