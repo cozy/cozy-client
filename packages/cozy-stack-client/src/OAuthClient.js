@@ -282,9 +282,10 @@ class OAuthClient extends CozyStackClient {
    * @throws {NotRegisteredException} When the client doesn't have it's registration information
    * @param   {string} stateCode   A random code to be included in the URl for security. Can be generated with `client.generateStateCode()`
    * @param   {Array} scopes = [] An array of permission scopes for the token.
+   * @param   {SessionCode} [sessionCode] A session code that can be used to create a session.
    * @returns {string} The URL
    */
-  getAuthCodeURL(stateCode, scopes = this.scope) {
+  getAuthCodeURL(stateCode, scopes = this.scope, sessionCode = undefined) {
     if (!this.isRegistered()) throw new NotRegisteredException()
 
     let query = {
@@ -298,6 +299,12 @@ class OAuthClient extends CozyStackClient {
       query = {
         ...query,
         registerToken: this.oauthOptions.registerToken
+      }
+    }
+    if (sessionCode) {
+      query = {
+        ...query,
+        session_code: sessionCode
       }
     }
     return `${this.uri}/auth/authorize?${this.dataToQueryString(query)}`
