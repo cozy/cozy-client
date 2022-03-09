@@ -476,6 +476,54 @@ class OAuthClient extends CozyStackClient {
     }
     return 'Bearer ' + this.oauthOptions.registrationAccessToken
   }
+
+  /**
+   * This method should be used in flagship app onboarding process to finalize the
+   * cozy creation by setting the user password into the cozy-stack
+   *
+   * More info: https://docs.cozy.io/en/cozy-stack/settings/#post-settingspassphraseflagship
+   *
+   * @param {object} params
+   * @param {string} params.registerToken - registration token provided by the onboarding link
+   * @param {string} params.passwordHash - hash of the master password
+   * @param {string} params.hint - hint for the master password
+   * @param {string} params.key - key (crypted) used for the vault encryption
+   * @param {string} params.publicKey - public key used for sharing ciphers from the vault
+   * @param {string} params.privateKey - private key (crypted) used for sharing ciphers from the vault
+   * @param {string} params.iterations - number of KDF iterations applied when hashing the master password
+   * @returns {object} token - The OAauth token
+   */
+  setPassphraseFlagship({
+    registerToken,
+    passwordHash,
+    hint,
+    key,
+    publicKey,
+    privateKey,
+    iterations
+  }) {
+    return this.fetchJSON(
+      'POST',
+      '/settings/passphrase/flagship',
+      {
+        register_token: registerToken,
+        passphrase: passwordHash,
+        hint: hint,
+        key: key,
+        public_key: publicKey,
+        private_key: privateKey,
+        iterations: iterations,
+        client_id: this.oauthOptions.clientID,
+        client_secret: this.oauthOptions.clientSecret
+      },
+      {
+        // TODO: faut il mettre le header?
+        headers: {
+          Authorization: this.registrationAccessTokenToAuthHeader()
+        }
+      }
+    )
+  }
 }
 
 class NotRegisteredException extends Error {
