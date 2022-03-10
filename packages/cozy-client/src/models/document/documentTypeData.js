@@ -142,6 +142,7 @@ const financeLabels = [
   'tax_return',
   'tax_notice',
   'tax_timetable',
+  'pay_sheet',
   'receipt',
   'other_tax_document',
   'bank_details',
