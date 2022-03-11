@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.22.0](https://github.com/cozy/cozy-client/compare/v27.21.0...v27.22.0) (2022-03-11)
+
+
+### Bug Fixes
+
+* Wording FR translation ([459e9fe](https://github.com/cozy/cozy-client/commit/459e9fee4de909e26f60863dab7da23f218bc2a0))
+
+
+### Features
+
+* Add pay sheet to finance thème list ([7128d77](https://github.com/cozy/cozy-client/commit/7128d77f430e49298c667f549e8c9eef6e01ecdf))
+
+
+
+
+
 # [27.21.0](https://github.com/cozy/cozy-client/compare/v27.20.0...v27.21.0) (2022-03-09)
 
 
