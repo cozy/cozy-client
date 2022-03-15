@@ -80,6 +80,11 @@ import { QueryDefinition } from './queries/dsl'
  * @property {AutoUpdateOptions} [autoUpdate] - Options for the query auto update
  * @property {string} [update] - Does not seem to be used
  * @property {Function} [onError] - Callback when the query is errored
+ * @property {boolean} [enabled=true] - If set to false, the query won't be executed
+ * @property {object} [hydrated=true] - Whether documents should be returned already hydrated
+ * @property {object} [singleDocData] - If true, the "data" returned will be
+ * a single doc instead of an array for single doc queries. Defaults to false for backward
+ * compatibility but will be set to true in the future.
  */
 
 /**
