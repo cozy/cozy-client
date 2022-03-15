@@ -673,24 +673,12 @@ Returns the cozy client from the context
 
 Fetches a queryDefinition and returns the queryState
 
-**`property`** {object} as - Name for the query \[required]
-
-**`property`** {boolean} enabled - If set to false, the query won't be executed
-
-**`property`** {object} fetchPolicy - Fetch policy
-
-**`property`** {object} singleDocData - If true, the "data" returned will be
-a single doc instead of an array for single doc queries. Defaults to false for backward
-compatibility but will be set to true in the future.
-
-**`property`** {Function} onError - Callback if the query is errored
-
 *Parameters*
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `queryDefinition` | [`QueryDefinition`](classes/QueryDefinition.md) | Definition created with Q() |
-| `options` | `any` | - |
+| `options` | `QueryOptions` | Options created with Q() |
 
 *Returns*
 
@@ -698,7 +686,30 @@ compatibility but will be set to true in the future.
 
 *Defined in*
 
-[packages/cozy-client/src/hooks/useQuery.js:38](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useQuery.js#L38)
+[packages/cozy-client/src/hooks/useQuery.js:29](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useQuery.js#L29)
+
+***
+
+### useQueryAll
+
+▸ **useQueryAll**(`queryDefinition`, `options`): `UseQueryReturnValue`
+
+Fetches a queryDefinition and run fetchMore on the query until the query is fully loaded
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `queryDefinition` | [`QueryDefinition`](classes/QueryDefinition.md) | Definition created with Q() |
+| `options` | `QueryOptions` | Options created with Q() |
+
+*Returns*
+
+`UseQueryReturnValue`
+
+*Defined in*
+
+[packages/cozy-client/src/hooks/useQueryAll.jsx:15](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useQueryAll.jsx#L15)
 
 ***
 

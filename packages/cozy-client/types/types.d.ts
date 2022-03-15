@@ -68,6 +68,20 @@ export type QueryOptions = {
      * - Callback when the query is errored
      */
     onError?: Function;
+    /**
+     * - If set to false, the query won't be executed
+     */
+    enabled?: boolean;
+    /**
+     * - Whether documents should be returned already hydrated
+     */
+    hydrated?: object;
+    /**
+     * - If true, the "data" returned will be
+     * a single doc instead of an array for single doc queries. Defaults to false for backward
+     * compatibility but will be set to true in the future.
+     */
+    singleDocData?: object;
 };
 export type FetchMoreAble = {
     fetchMore: Function;
