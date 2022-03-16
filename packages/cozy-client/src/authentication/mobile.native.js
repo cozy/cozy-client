@@ -29,6 +29,7 @@ export const authenticateWithReactNativeInAppBrowser = async url => {
       enableUrlBarHiding: true,
       enableDefaultShare: true,
       forceCloseOnRedirection: false,
+      showInRecents: true,
       // Specify full animation resource identifier(package:anim/name)
       // or only resource name(in case of animation bundled with app).
       animations: {
