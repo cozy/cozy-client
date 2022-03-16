@@ -32,6 +32,12 @@ cozy-client
 
 • **RealTimeQueries**: `MemoExoticComponent`<(`options`: { `doctype`: `string`  }) => `null`>
 
+***
+
+### qualifications
+
+• **qualifications**: ({ `label`: `string` = "identity_photo"; `purpose`: `string` = "attestation"; `sourceCategory`: `undefined` = "telecom"; `sourceSubCategory`: `undefined` = "sport"; `subjects`: `string`\[]  } | { `label`: `string` = "national_id_card"; `purpose`: `string` = "attestation"; `sourceCategory`: `string` = "gov"; `sourceSubCategory`: `string` = "civil_registration"; `subjects`: `string`\[]  } | { `label`: `string` = "large_family_card"; `purpose`: `string` = "attestation"; `sourceCategory`: `string` = "transport"; `sourceSubCategory`: `undefined` = "sport"; `subjects`: `string`\[]  } | { `label`: `string` = "other_family_document"; `purpose`: `undefined` = "invoice"; `sourceCategory`: `undefined` = "telecom"; `sourceSubCategory`: `undefined` = "sport"; `subjects`: `string`\[]  } | { `label`: `string` = "other_work_document"; `purpose`: `string` = "employment"; `sourceCategory`: `undefined` = "telecom"; `sourceSubCategory`: `undefined` = "sport"; `subjects`: `undefined`  } | { `label`: `string` = "health_invoice"; `purpose`: `string` = "invoice"; `sourceCategory`: `string` = "health"; `sourceSubCategory`: `undefined` = "sport"; `subjects`: `undefined`  } | { `label`: `string` = "other_transport_document"; `purpose`: `undefined` = "invoice"; `sourceCategory`: `string` = "transport"; `sourceSubCategory`: `undefined` = "sport"; `subjects`: `undefined`  } | { `label`: `string` = "phone_invoice"; `purpose`: `string` = "invoice"; `sourceCategory`: `string` = "telecom"; `sourceSubCategory`: `string` = "mobile"; `subjects`: `undefined`  } | { `label`: `string` = "other_activity_document"; `purpose`: `undefined` = "invoice"; `sourceCategory`: `undefined` = "telecom"; `sourceSubCategory`: `string` = "sport"; `subjects`: `string`\[]  })\[]
+
 ## Variables
 
 ### MutationTypes
