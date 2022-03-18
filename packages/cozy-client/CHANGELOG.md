@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.22.3](https://github.com/cozy/cozy-client/compare/v27.22.2...v27.22.3) (2022-03-18)
+
+
+### Bug Fixes
+
+* Correct fr locale 'facture d'énergie' in cozy-client ([81a0b21](https://github.com/cozy/cozy-client/commit/81a0b21fbb81cedb526ffeea988d868a543695f2))
+
+
+
+
+
 ## [27.22.2](https://github.com/cozy/cozy-client/compare/v27.22.1...v27.22.2) (2022-03-18)
 
 
