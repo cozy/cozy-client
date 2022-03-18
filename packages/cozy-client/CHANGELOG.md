@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.22.2](https://github.com/cozy/cozy-client/compare/v27.22.1...v27.22.2) (2022-03-18)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @testing-library/react-hooks to v3.7.0 ([98af3ae](https://github.com/cozy/cozy-client/commit/98af3ae5455af91af4ea0c6f715261d3afef4b59))
+
+
+
+
+
 ## [27.22.1](https://github.com/cozy/cozy-client/compare/v27.22.0...v27.22.1) (2022-03-18)
 
 

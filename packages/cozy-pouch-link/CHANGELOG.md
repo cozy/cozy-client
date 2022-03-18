@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.22.2](https://github.com/cozy/cozy-client/compare/v27.22.1...v27.22.2) (2022-03-18)
+
+
+### Bug Fixes
+
+* **deps:** update dependency jest-localstorage-mock to v2.4.19 ([50cf979](https://github.com/cozy/cozy-client/commit/50cf979e64b28cbdf65fc6e1bc60b6f289e28ff9))
+
+
+
+
+
 ## [27.22.1](https://github.com/cozy/cozy-client/compare/v27.22.0...v27.22.1) (2022-03-18)
 
 **Note:** Version bump only for package cozy-pouch-link
