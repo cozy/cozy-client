@@ -3,13 +3,23 @@ import { InAppBrowser } from 'react-native-inappbrowser-reborn'
 //@ts-ignore
 import { Linking, Platform } from 'react-native'
 
+const USER_CANCELED = 'USER_CANCELED'
+
 /**
  * Opens a ReactNative InAppBrowser
  * and resolves with the URL containing
  * the token
  *
+ * When the user close the InAppBrowser, the promise
+ * rejects with USER_CANCELED message
+ *
+ * When the redirection URL contains `error=access_denied`
+ * the promise rejects with USER_CANCELED message. This means
+ * that the user closed the authorization popup
+ *
  * @param {string} url
  * @returns {Promise}
+ * @throws Will throw an "USER_CANCELED" message when the user cancel the authorization process
  */
 
 export const authenticateWithReactNativeInAppBrowser = async url => {
@@ -38,6 +48,10 @@ export const authenticateWithReactNativeInAppBrowser = async url => {
         endEnter: 'slide_in_left',
         endExit: 'slide_out_right'
       }
+    }).then(result => {
+      if (result.type === 'cancel') {
+        reject(USER_CANCELED)
+      }
     })
     const removeListener = () => {
       Linking.removeEventListener('url', linkListener)
@@ -47,6 +61,7 @@ export const authenticateWithReactNativeInAppBrowser = async url => {
       let sanitizedUrl = url
       const accessCode = /\?access_code=(.+)$/.test(url)
       const state = /\?state=(.+)$/.test(url)
+      const closeSignal = /\?error=access_denied$/.test(url)
 
       if (accessCode || state) {
         if (Platform.OS === 'ios') {
@@ -66,6 +81,8 @@ export const authenticateWithReactNativeInAppBrowser = async url => {
         resolve(sanitizedUrl)
         removeListener()
         InAppBrowser.close()
+      } else if (closeSignal) {
+        reject(USER_CANCELED)
       }
     }
 
