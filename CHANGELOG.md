@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.22.1](https://github.com/cozy/cozy-client/compare/v27.22.0...v27.22.1) (2022-03-18)
+
+
+### Bug Fixes
+
+* **typedoc:** Upgrade typedoc package ([09889e5](https://github.com/cozy/cozy-client/commit/09889e5d60b0da5ab1a4c44db5ac5d4c02d007de))
+
+
+
+
+
 # [27.22.0](https://github.com/cozy/cozy-client/compare/v27.21.0...v27.22.0) (2022-03-11)
 
 
