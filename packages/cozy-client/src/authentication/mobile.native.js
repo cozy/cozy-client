@@ -34,7 +34,7 @@ export const authenticateWithReactNativeInAppBrowser = async url => {
       enableBarCollapsing: false,
       // Android Properties
       showTitle: true,
-      toolbarColor: '#6200EE',
+      toolbarColor: '#8e9094',
       secondaryToolbarColor: 'black',
       enableUrlBarHiding: true,
       enableDefaultShare: true,
