@@ -155,6 +155,10 @@ describe('rootCozyUrl', () => {
     enableFetchMocks()
   })
 
+  beforeEach(() => {
+    fetch.resetMocks()
+  })
+
   afterAll(() => {
     disableFetchMocks()
   })
@@ -354,7 +358,7 @@ describe('rootCozyUrl', () => {
 
   it('expects an http or https protocol', async () => {
     fetch.mockOnceIf(
-      'ftp://camillenimbus.com',
+      'ftp://camillenimbus.com/.well-known/change-password',
       {},
       {
         status: 200
@@ -368,7 +372,7 @@ describe('rootCozyUrl', () => {
 
   it('rejects if URL points to a valid cozy-stack but no valid Cozy instance', async () => {
     fetch.mockOnceIf(
-      'https://missing.mycozy.cloud',
+      'https://missing.mycozy.cloud/.well-known/change-password',
       {},
       {
         status: 404
