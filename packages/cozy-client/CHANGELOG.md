@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.24.0](https://github.com/cozy/cozy-client/compare/v27.23.0...v27.24.0) (2022-03-22)
+
+
+### Bug Fixes
+
+* Persist native inapp browser when sending application in background ([eacd7e4](https://github.com/cozy/cozy-client/commit/eacd7e44687acfd8fb0779fd62bc22c4dbe6cfd7))
+
+
+### Features
+
+* Display gray header instead of violet in ReactNative InAppBrowser ([7aa93e2](https://github.com/cozy/cozy-client/commit/7aa93e20e1f5f66621a9c5e226c60dabbb56532c))
+* Handle user cancelation from ReactNative's InAppBrowser ([17cf4e9](https://github.com/cozy/cozy-client/commit/17cf4e9d22daa5f78fad824a76876cfb2eb812e7)), closes [cozy/cozy-stack#3338](https://github.com/cozy/cozy-stack/issues/3338)
+
+
+
+
+
 # [27.23.0](https://github.com/cozy/cozy-client/compare/v27.22.3...v27.23.0) (2022-03-21)
 
 
