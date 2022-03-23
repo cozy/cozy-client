@@ -303,13 +303,15 @@ import { QueryDefinition } from './queries/dsl'
 
 /**
  * @typedef {object} DACCMeasure
- * @property {string} measureName
- * @property {string} startDate
- * @property {string} createdBy
- * @property {number} value
- * @property {object} group1
- * @property {object} group2
- * @property {object} group3
+ * See https://github.com/cozy/DACC
+ *
+ * @property {string} measureName - It must match an existing measure name on the DACC server
+ * @property {string} startDate - Start of the aggregation period. Should be in YYYY-MM-DD format
+ * @property {number} value - The measured value on the aggregation period
+ * @property {string} createdBy - The slug of the app creating the measure
+ * @property {object} group1 - Should be a {key: value} where the key is set in the measure definition.
+ * @property {object} group2 - Should be a {key: value} where the key is set in the measure definition.
+ * @property {object} group3 - Should be a {key: value} where the key is set in the measure definition.
  */
 
 /**
