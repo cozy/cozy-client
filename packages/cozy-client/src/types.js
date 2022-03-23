@@ -302,6 +302,17 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
+ * @typedef {object} DACCMeasure
+ * @property {string} measureName
+ * @property {string} startDate
+ * @property {string} createdBy
+ * @property {number} value
+ * @property {object} group1
+ * @property {object} group2
+ * @property {object} group3
+ */
+
+/**
  * Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
  *
  * @callback OpenURLCallback
