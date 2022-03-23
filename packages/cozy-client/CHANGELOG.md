@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.25.0](https://github.com/cozy/cozy-client/compare/v27.24.0...v27.25.0) (2022-03-23)
+
+
+### Features
+
+* Add DACC model ([f9c38fe](https://github.com/cozy/cozy-client/commit/f9c38feeaee272d9f7cc72b05d94d2b3cb2d94e7))
+
+
+
+
+
 # [27.24.0](https://github.com/cozy/cozy-client/compare/v27.23.0...v27.24.0) (2022-03-22)
 
 
