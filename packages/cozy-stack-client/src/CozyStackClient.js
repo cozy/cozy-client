@@ -187,7 +187,7 @@ class CozyStackClient {
       throw new Error('Not in a web context, cannot refresh token')
     }
 
-    const response = await fetch('/', options)
+    const response = await fetch('/?refreshToken', options)
 
     if (!response.ok) {
       throw new Error(
