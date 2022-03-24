@@ -76,6 +76,7 @@
       "web_service_invoice": "Web service invoice",
       "appliance_invoice": "Appliance invoice",
       "restaurant_invoice": "Restaurant invoice",
+      "grocery_invoice": "Grocery invoice",
       "house_sale_agreeement": "House sale agreement",
       "building_permit": "Building permit",
       "technical_diagnostic_record": "Technical diagnostic record",
