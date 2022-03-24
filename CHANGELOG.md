@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [27.26.0](https://github.com/cozy/cozy-client/compare/v27.25.0...v27.26.0) (2022-03-24)
+
+
+### Bug Fixes
+
+* **refresh-token:** Fetch refresh token on a specific route ([cbc62eb](https://github.com/cozy/cozy-client/commit/cbc62eb431403d1538f1b428d3996783eb9c7455))
+
+
+### Features
+
+* Add grocery invoice qualification ([778e7f1](https://github.com/cozy/cozy-client/commit/778e7f12b42112b11be28b2297f563657d6664a4))
+
+
+
+
+
 # [27.25.0](https://github.com/cozy/cozy-client/compare/v27.24.0...v27.25.0) (2022-03-23)
 
 
