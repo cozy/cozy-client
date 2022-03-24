@@ -337,6 +337,11 @@
       "sourceCategory": "alimentation"
     },
     {
+      "label": "grocery_invoice",
+      "purpose": "invoice",
+      "sourceCategory": "shopping"
+    },
+    {
       "label": "other_invoice",
       "purpose": "invoice"
     },
@@ -442,7 +447,7 @@
   "sourceCategoryKnownValues": [
     "bank", "insurance", "retail", "telecom", "energy", "water", "health", "gov", "association",
     "education", "employer", "transport", "goods", "alimentation", "building",
-    "real_estate", "web", "individual"
+    "real_estate", "web", "individual", "shopping"
   ],
   "sourceSubCategoryKnownValues": [
     "civil_registration", "immigration", "transport", "family", "tax", "health",

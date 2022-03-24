@@ -76,6 +76,7 @@
       "web_service_invoice": "Facture de service web",
       "appliance_invoice": "Facture d'électroménager",
       "restaurant_invoice": "Facture de restaurant",
+      "grocery_invoice": "Facture de courses",
       "house_sale_agreeement": "Compromis de vente",
       "building_permit": "Permis de construire",
       "technical_diagnostic_record": "Dossier de diagnostic technique",
