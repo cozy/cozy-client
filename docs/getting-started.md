@@ -12,7 +12,7 @@ Main features :
 Additional features with plugins:
 
 - [Realtime][cozy-realtime]: Be notified when changes occur on the server side
-- [InterApp][cozy-interapp]: Interact with other apps (exemple : file picking within your app)
+- [InterApp][cozy-interapp]: Interact with other apps (example : file picking within your app)
 - [Flag][cozy-flags]: Use feature flags
 
 The following guide is an overview of a cozy-client integration to help you getting started.
@@ -24,8 +24,8 @@ npm install --save cozy-client
 # or yarn add cozy-client
 ```
 
-⚠️ If you use Jest, you should also add a bit of configuration for imports to works properly,
-[see this document for more information](./entrypoints.md).
+⚠️ If you use Jest, you should also add a bit of configuration for imports to work properly,
+[see this document for more information][entrypoints].
 
 ## Usage
 
@@ -57,10 +57,10 @@ const client = CozyClient.fromDOM({
 ```
 
 If you need guidance to get the URI of your instance and/or the token,
-see [the app tutorial](https://docs.cozy.io/en/tutorials/app/#behind-the-magic).
+see [the app tutorial][app-tutorial].
 
 Every doctype accessed in `cozy-client` needs to be declared in the schema section of the options.
-See [how to use the schema features](https://docs.cozy.io/en/cozy-client/schema).
+See [how to use the schema features][schema]
 
 
 ## Fetch data
@@ -86,7 +86,7 @@ Q('io.cozy.todos')
 ```
 
 - `select()` lists the fields you want in the response (all by default)
-- `where()` allows a [mango selector](http://docs.couchdb.org/en/latest/api/database/find.html#find-selectors)
+- `where()` allows a [mango selector][mango-selector]
 - `include()` will cause the query to fetch the related documents (see [relationships][cozy-relationships])
 - `sortBy` sorts the documents by their `updatedAt` metadata in descending order
 - `limitBy` limits the number of results to 20
@@ -108,13 +108,13 @@ const { data } = await client.query(Q('io.cozy.todos').where({ checked: false })
 console.log(data)
 ```
 
-✅ Inside a react application, instead of using directly `client.query`, please use [`useQuery`, `<Query />` or `queryConnect`
+✅ Inside a React application, instead of using directly `client.query`, please use [`useQuery`, `<Query />` or `queryConnect`
 to connect your components to cozy-client queries][react-integration].
 
-ℹ️ Check out our dedicated [query documentation](https://docs.cozy.io/en/tutorials/data/queries/) to
+ℹ️ Check out our dedicated [query documentation][query-documentation] to
 know more about querying with cozy-client and avoid common traps that can dramatically impact your app performances.
 
-🚀 Cozy-client's [devtool](./devtools.md) allows to monitor your queries data and performance.
+🚀 Cozy-client's [devtools] allows to monitor your queries data and performance.
 
 ## Mutate the data
 
@@ -129,7 +129,7 @@ const client = new CozyClient({
 
 
 // create a new io.cozy.todo
-await client.save({_type: 'io.cozy.todos', label: 'Buy bread', checked: false }})
+await client.save({_type: 'io.cozy.todos', label: 'Buy bread', checked: false })
 
 const qdef = Q('io.cozy.todos').where({ checked: false })
 const { data: todos } = await client.query(qdef)
@@ -154,8 +154,14 @@ const { data: updatedDocs } = await client.saveAll([
 ])
 ```
 
+[cozy-realtime]: https://docs.cozy.io/en/cozy-realtime/
+[cozy-interapp]: https://github.com/cozy/cozy-libs/tree/master/packages/cozy-interapp
 [cozy-flags]: https://docs.cozy.io/en/cozy-flags/
+[entrypoints]: ./entrypoints.md
+[app-tutorial]: https://docs.cozy.io/en/tutorials/app/#behind-the-magic
+[schema]: https://docs.cozy.io/en/cozy-client/schema
+[mango-selector]: http://docs.couchdb.org/en/latest/api/database/find.html#find-selectors
 [cozy-relationships]: https://docs.cozy.io/en/cozy-doctypes/docs/#relationships
 [react-integration]: ./react-integration.md
-[cozy-interapp]: https://github.com/cozy/cozy-libs/tree/master/packages/cozy-interapp
-[cozy-realtime]: https://docs.cozy.io/en/cozy-realtime/
+[query-documentation]: https://docs.cozy.io/en/tutorials/data/queries/
+[devtools]: ./devtools.md
