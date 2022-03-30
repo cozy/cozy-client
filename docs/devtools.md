@@ -4,6 +4,11 @@ Cozy-client exposes a devtool that can be injected in an app for debug
 and better developer experience. It is inspired by the [awesome devtools
 for react-query][react-query devtools].
 
+To activate it, just run in your browser console:
+```js
+flag('debug', true)
+```
+
 ### Usage
 
 Before using the devtools, you need to install cozy-ui and react-inspector.
