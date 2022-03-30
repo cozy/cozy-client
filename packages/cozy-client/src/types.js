@@ -93,7 +93,12 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
- * @typedef {QueryState & FetchMoreAble} UseQueryReturnValue
+ * @typedef {object} FetchAble
+ * @property {Function} fetch
+ */
+
+/**
+ * @typedef {QueryState & FetchMoreAble & FetchAble} UseQueryReturnValue
  */
 
 /**
