@@ -21,10 +21,9 @@ import CozyDevtools from 'cozy-client/dist/devtools'
 
 const App = () => {
   return <CozyProvider client={client}>
-     {/* Your app is here */
+     /* Your app is here */
      { process.env.NODE_ENV !== 'production' ? <CozyDevtools /> : null }
   </CozyProvider>
-
 }
 ```
 
@@ -60,7 +59,7 @@ to display it.
 ```jsx
 import PouchDevtools from 'cozy-client/dist/devtools/Pouch'
 
-<CozyDevTools panels={{ id: 'pouch', Component: PouchDevtools}} />
+() => <CozyDevTools panels={{ id: 'pouch', Component: PouchDevtools}} />
 ```
 
 
