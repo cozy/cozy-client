@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [27.26.4](https://github.com/cozy/cozy-client/compare/v27.26.3...v27.26.4) (2022-04-01)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @cozy/codemods to v1.14.2 ([1c1b6ef](https://github.com/cozy/cozy-client/commit/1c1b6efdc740d5338ca895be2c4d6f695360fb7f))
+* **deps:** update dependency react-redux to v7.2.7 ([7cf5585](https://github.com/cozy/cozy-client/commit/7cf5585d4cf7ddc46dd9226340183a1273bc6414))
+
+
+
+
+
 ## [27.26.3](https://github.com/cozy/cozy-client/compare/v27.26.2...v27.26.3) (2022-03-30)
 
 **Note:** Version bump only for package cozy-client
