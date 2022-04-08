@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [28.0.0](https://github.com/cozy/cozy-client/compare/v27.26.4...v28.0.0) (2022-04-08)
+
+
+### Bug Fixes
+
+* **deps:** Upgrade cozy-flags + consider each cozy-lib as peerDeps ([afdee02](https://github.com/cozy/cozy-client/commit/afdee027edb8da4107693bab01c60ca671e5b310))
+
+
+### BREAKING CHANGES
+
+* **deps:** Each consuming app should install the following
+dependencies:
+    "@cozy/minilog": "1.0.0",
+    "cozy-device-helper": ">1.12.0",
+    "cozy-flags": ">2.8.6",
+    "cozy-logger": ">1.7.0",
+
+
+
+
+
 ## [27.26.4](https://github.com/cozy/cozy-client/compare/v27.26.3...v27.26.4) (2022-04-01)
 
 
