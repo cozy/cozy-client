@@ -1,9 +1,18 @@
-import CozyClient from './CozyClient'
-import { receiveQueryResult, initQuery } from './store'
 import { normalizeDoc } from 'cozy-stack-client'
 
-import { Q } from './queries/dsl'
+import CozyClient from './CozyClient'
+import { receiveQueryResult, initQuery } from './store'
+import { IOCozyFile } from './types'
+import { Q, QueryDefinition } from './queries/dsl'
 
+/**
+ * @param {CozyClient} client - Instance of CozyClient
+ * @param {string} queryName - Name of Query
+ * @param {object} queryOptions - queryOptions
+ * @param {QueryDefinition} queryOptions.definition - A query definition
+ * @param {string} queryOptions.doctype - Document doctype
+ * @param {IOCozyFile[]} queryOptions.data - io.cozy.files document
+ */
 const fillQueryInsideClient = (client, queryName, queryOptions) => {
   const { definition, doctype, data, ...queryResult } = queryOptions
   client.store.dispatch(initQuery(queryName, definition || Q(doctype)))
@@ -27,18 +36,28 @@ const mockedQueryFromMockedRemoteData = remoteData => qdef => {
 }
 
 /**
- * Creates a client suitable for use in tests
+ * Creates a client suitable for use in tests or documentation
  *
- * - client.{query,save} are mocked
- * - client.stackClient.fetchJSON is mocked
+ * If isDocumentation is false:
+ *   - client.{query,save,saveAll} are mocked
+ *   - client.stackClient.fetchJSON is mocked
  *
- * @param  {object} options Options
- * @param  {object} [options.queries] Prefill queries inside the store
- * @param  {object} [options.remote] Mock data from the server
- * @param  {object} [options.clientOptions] Options passed to the client
+ * If isDocumentation is true:
+ *   - All jest mock is bypassed
+ *
+ * @param {object} options Options
+ * @param {object} [options.queries] Prefill queries inside the store
+ * @param {object} [options.remote] Mock data from the server
+ * @param {object} [options.clientOptions] Options passed to the client
+ * @param {boolean} [options.isDocumentation] Define if used for documentation or test
  * @returns {CozyClient}
  */
-const createMockClient = ({ queries, remote, clientOptions }) => {
+const createMockClient = ({
+  queries,
+  remote,
+  clientOptions,
+  isDocumentation = false
+}) => {
   const client = new CozyClient(clientOptions || {})
   client.ensureStore()
 
@@ -46,13 +65,15 @@ const createMockClient = ({ queries, remote, clientOptions }) => {
     fillQueryInsideClient(client, queryName, queryOptions)
   }
 
-  client.query = jest
-    .fn()
-    .mockImplementation(mockedQueryFromMockedRemoteData(remote))
+  if (!isDocumentation) {
+    client.query = jest
+      .fn()
+      .mockImplementation(mockedQueryFromMockedRemoteData(remote))
 
-  client.save = jest.fn()
-  client.saveAll = jest.fn()
-  client.stackClient.fetchJSON = jest.fn()
+    client.save = jest.fn()
+    client.saveAll = jest.fn()
+    client.stackClient.fetchJSON = jest.fn()
+  }
 
   return client
 }

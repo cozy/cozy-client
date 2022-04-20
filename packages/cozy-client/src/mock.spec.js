@@ -33,7 +33,7 @@ describe('createMockClient', () => {
       }
     })
     const simpsons = await client.query(Q('io.cozy.simpsons'))
-    await expect(simpsons.data.map(x => x._id)).toEqual(['homer', 'marge'])
+    expect(simpsons.data.map(x => x._id)).toEqual(['homer', 'marge'])
   })
 
   it('should mock query even if the doctype has not been mocked', async () => {
@@ -43,6 +43,6 @@ describe('createMockClient', () => {
       }
     })
     const simpsons = await client.query(Q('io.cozy.adams'))
-    await expect(simpsons.data.map(x => x._id)).toEqual([])
+    expect(simpsons.data.map(x => x._id)).toEqual([])
   })
 })
