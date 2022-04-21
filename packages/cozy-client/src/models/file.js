@@ -6,7 +6,7 @@ import trimEnd from 'lodash/trimEnd'
 import { setQualification } from './document/qualification'
 import { Q } from '../queries/dsl'
 import { IOCozyFile, QueryResult } from '../types'
-import { DOCTYPE_FILES } from '../const'
+import { DOCTYPE_FILES, ENCRYPTION_MIME_TYPE } from '../const'
 import CozyClient from '../CozyClient'
 
 const FILE_TYPE = 'file'
@@ -568,6 +568,14 @@ export const doMobileUpload = async (client, fileURL, options) => {
  */
 export const isPlainText = (mimeType = '', fileName = '') => {
   return mimeType ? /^text\//.test(mimeType) : /\.(txt|md)$/.test(fileName)
+}
+
+/**
+ * @param {IOCozyFile} file - io.cozy.files document
+ * @returns {boolean}
+ */
+export const isEncryptedFile = file => {
+  return file.mime === ENCRYPTION_MIME_TYPE
 }
 
 /**

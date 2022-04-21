@@ -1,6 +1,7 @@
 import * as fileModel from './file'
 import { Qualification } from './document/qualification'
 import { QueryDefinition } from '../queries/dsl'
+import { ENCRYPTION_MIME_TYPE } from '../const'
 const CozyClient = require('cozy-client/dist/CozyClient').default
 const CozyStackClient = require('cozy-stack-client').default
 
@@ -228,6 +229,18 @@ describe('File Model', () => {
 
       const doc3 = { id }
       expect(fileModel.normalize(doc3)).toHaveProperty('_type', 'io.cozy.files')
+    })
+  })
+
+  describe('encryption', () => {
+    it('should detect when a file is encrypted or not, through mime', () => {
+      const encryptedFile = {
+        name: 'encryptedfile.txt',
+        mime: ENCRYPTION_MIME_TYPE
+      }
+      const plaintextFile = { name: 'plaintext.txt', mime: 'text' }
+      expect(fileModel.isEncryptedFile(encryptedFile)).toBe(true)
+      expect(fileModel.isEncryptedFile(plaintextFile)).toBe(false)
     })
   })
 
