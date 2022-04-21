@@ -86,7 +86,7 @@ file object with path attribute
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:605](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L605)
+[packages/cozy-client/src/models/file.js:613](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L613)
 
 ***
 
@@ -301,7 +301,7 @@ The mime-type of the target file, or an empty string is the target is not a file
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:585](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L585)
+[packages/cozy-client/src/models/file.js:593](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L593)
 
 ***
 
@@ -345,7 +345,7 @@ Whether the file's metadata attribute exists
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:577](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L577)
+[packages/cozy-client/src/models/file.js:585](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L585)
 
 ***
 
@@ -366,6 +366,26 @@ Whether the file's metadata attribute exists
 *Defined in*
 
 [packages/cozy-client/src/models/file.js:46](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L46)
+
+***
+
+### isEncryptedFile
+
+▸ **isEncryptedFile**(`file`): `boolean`
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `file` | `IOCozyFile` | io.cozy.files document |
+
+*Returns*
+
+`boolean`
+
+*Defined in*
+
+[packages/cozy-client/src/models/file.js:577](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L577)
 
 ***
 
@@ -405,7 +425,7 @@ Whether the file's metadata attribute exists
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:596](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L596)
+[packages/cozy-client/src/models/file.js:604](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L604)
 
 ***
 
