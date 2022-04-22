@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [28.0.2](https://github.com/cozy/cozy-client/compare/v28.0.1...v28.0.2) (2022-04-22)
+
+
+### Bug Fixes
+
+* Update tsconfig.json ([454ba2f](https://github.com/cozy/cozy-client/commit/454ba2f4659acd49e53d8a277a8c4d89d9664620))
+
+
+
+
+
 ## [28.0.1](https://github.com/cozy/cozy-client/compare/v28.0.0...v28.0.1) (2022-04-22)
 
 **Note:** Version bump only for package cozy-client
