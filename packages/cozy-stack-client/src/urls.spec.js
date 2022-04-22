@@ -12,7 +12,9 @@ const prodUrl = 'https://prod.mycozy.cloud'
 
 describe('urls', () => {
   it('should return browser cozy url', () => {
-    expect(() => getBrowserCozyURL()).toThrowErrorMatchingSnapshot()
+    expect(() => getBrowserCozyURL()).toThrow(
+      `cozyDomain isn't defined in index.ejs`
+    )
     document.querySelector = jest
       .fn()
       .mockImplementation(() => ({ dataset: { cozyDomain } }))
@@ -23,7 +25,7 @@ describe('urls', () => {
 
   it('should return node cozy url', () => {
     process.env.COZY_URL = undefined
-    expect(() => getNodeCozyURL()).toThrowErrorMatchingSnapshot()
+    expect(() => getNodeCozyURL()).toThrow(`COZY_URL variable isn't defined`)
     process.env.COZY_URL = fullCozyUrlNoSSL
     expect(getNodeCozyURL().origin).toBe(fullCozyUrlNoSSL)
   })
