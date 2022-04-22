@@ -10,6 +10,7 @@ import * as utils from './utils'
 import * as contact from './contact'
 import * as document from './document'
 import * as timeseries from './timeseries'
+import * as sharing from './sharing'
 
 // For backward compatibility before 9.0.0
 const triggers = trigger
@@ -29,5 +30,6 @@ export {
   utils,
   contact,
   document,
-  timeseries
+  timeseries,
+  sharing
 }
