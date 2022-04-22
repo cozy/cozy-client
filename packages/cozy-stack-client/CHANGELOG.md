@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [28.0.1](https://github.com/cozy/cozy-client/compare/v28.0.0...v28.0.1) (2022-04-22)
+
+
+### Bug Fixes
+
+* **stack-client:** PeerDependencies should not be fixed ([1fe5086](https://github.com/cozy/cozy-client/commit/1fe50865f6d0eca9bfe0191c694bdea100518391))
+
+
+
+
+
 # [28.0.0](https://github.com/cozy/cozy-client/compare/v27.26.4...v28.0.0) (2022-04-08)
 
 
