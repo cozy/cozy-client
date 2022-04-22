@@ -86,7 +86,10 @@ export type QueryOptions = {
 export type FetchMoreAble = {
     fetchMore: Function;
 };
-export type UseQueryReturnValue = QueryState & FetchMoreAble;
+export type FetchAble = {
+    fetch: Function;
+};
+export type UseQueryReturnValue = QueryState & FetchMoreAble & FetchAble;
 /**
  * A reference to a document
  */
@@ -342,6 +345,39 @@ export type FinanceLabels = "payment_proof_family_allowance" | "pay_sheet" | "ta
 export type InvoiceLabels = "health_invoice" | "phone_invoice" | "isp_invoice" | "telecom_invoice" | "energy_invoice" | "water_invoice" | "work_invoice" | "transport_invoice" | "appliance_invoice" | "web_service_invoice" | "restaurant_invoice" | "other_invoice";
 export type ActivityLabels = "personal_sporting_licence" | "other_activity_document";
 export type ItemsLabels = "resume" | "identity_photo" | "national_id_card" | "passport" | "residence_permit" | "family_record_book" | "birth_certificate" | "driver_license" | "other_identity_document" | "citizen_registration_certificate" | "personal_sporting_licence" | "wedding" | "pacs" | "divorce" | "large_family_card" | "caf" | "other_family_document" | "payment_proof_family_allowance" | "diploma" | "work_contract" | "pay_sheet" | "unemployment_benefit" | "pension" | "gradebook" | "student_card" | "motivation_letter" | "other_work_document" | "work_disability_recognition" | "school_attendance_certificate" | "health_certificate" | "health_book" | "national_health_insurance_card" | "health_insurance_card" | "prescription" | "health_invoice" | "national_health_insurance_right_certificate" | "pregnancy_medical_certificate" | "other_health_document" | "phone_invoice" | "isp_invoice" | "telecom_invoice" | "energy_invoice" | "water_invoice" | "house_sale_agreeement" | "building_permit" | "technical_diagnostic_record" | "lease" | "rent_receipt" | "house_insurance" | "work_quote" | "work_invoice" | "other_house_document" | "unfit_for_habitation_declaration" | "accommodation_proof" | "vehicle_registration" | "car_insurance" | "mechanic_invoice" | "transport_invoice" | "other_transport_document" | "tax_return" | "tax_notice" | "tax_timetable" | "receipt" | "other_tax_document" | "bank_details" | "bank_statement" | "loan_agreement" | "other_bank_document" | "other_revenue" | "appliance_invoice" | "web_service_invoice" | "restaurant_invoice" | "other_invoice" | "other_activity_document";
+/**
+ * See https://github.com/cozy/DACC
+ */
+export type DACCMeasure = {
+    /**
+     * - It must match an existing measure name on the DACC server
+     */
+    measureName: string;
+    /**
+     * - Start of the aggregation period. Should be in YYYY-MM-DD format
+     */
+    startDate: string;
+    /**
+     * - The measured value on the aggregation period
+     */
+    value: number;
+    /**
+     * - The slug of the app creating the measure
+     */
+    createdBy: string;
+    /**
+     * - Should be a {key: value} where the key is set in the measure definition.
+     */
+    group1: object;
+    /**
+     * - Should be a {key: value} where the key is set in the measure definition.
+     */
+    group2: object;
+    /**
+     * - Should be a {key: value} where the key is set in the measure definition.
+     */
+    group3: object;
+};
 /**
  * Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
  */

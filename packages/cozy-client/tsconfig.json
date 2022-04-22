@@ -9,7 +9,7 @@
       "resolveJsonModule": true,
       "esModuleInterop": true,
       "jsx": "react",
-      "declaration": false,
+      "declaration": true,
       "target": "es6",
       "moduleResolution": "node",
       "noImplicitReturns": true,
