@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [28.1.0](https://github.com/cozy/cozy-client/compare/v28.0.2...v28.1.0) (2022-04-22)
+
+
+### Features
+
+* Add getSharingLink function ([17ea34e](https://github.com/cozy/cozy-client/commit/17ea34e9d42371fe44a633f7a7dc2ac961b6d36a))
+
+
+
+
+
 ## [28.0.2](https://github.com/cozy/cozy-client/compare/v28.0.1...v28.0.2) (2022-04-22)
 
 
