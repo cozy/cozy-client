@@ -13,6 +13,7 @@
 *   [instance](models.instance.md)
 *   [note](models.note.md)
 *   [permission](models.permission.md)
+*   [sharing](models.sharing.md)
 *   [timeseries](models.timeseries.md)
 *   [trigger](models.trigger.md)
 *   [utils](models.utils.md)
@@ -25,7 +26,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/models/index.js:16](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/index.js#L16)
+[packages/cozy-client/src/models/index.js:17](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/index.js#L17)
 
 ***
 
@@ -35,4 +36,4 @@
 
 *Defined in*
 
-[packages/cozy-client/src/models/index.js:15](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/index.js#L15)
+[packages/cozy-client/src/models/index.js:16](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/index.js#L16)
