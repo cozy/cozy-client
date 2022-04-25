@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [28.2.0](https://github.com/cozy/cozy-client/compare/v28.1.1...v28.2.0) (2022-04-25)
+
+
+### Features
+
+* Add encrypted option to file creation and update ([7a1a8d0](https://github.com/cozy/cozy-client/commit/7a1a8d0075095d7d7406c3c0ef14b41d9fcc6bb1))
+
+
+
+
+
 ## [28.0.1](https://github.com/cozy/cozy-client/compare/v28.0.0...v28.0.1) (2022-04-22)
 
 
