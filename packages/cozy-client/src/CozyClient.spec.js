@@ -1800,7 +1800,7 @@ describe('file creation', () => {
     expect(doc._id).toEqual('1337')
     expect(client.stackClient.fetchJSON).toHaveBeenCalledWith(
       'POST',
-      '/files/folder-id?Name=toto.pdf&Type=file&Executable=false&MetadataID=&Size=12',
+      '/files/folder-id?Name=toto.pdf&Type=file&Executable=false&Encrypted=false&MetadataID=&Size=12',
       'file-content',
       {
         headers: { 'Content-Type': 'text/plain', 'Content-Length': '12' },

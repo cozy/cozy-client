@@ -2048,6 +2048,7 @@ Attributes used for file creation
 | name | <code>string</code> | Name of the created file. |
 | lastModifiedDate | <code>Date</code> | Can be used to set the last modified date of a file. |
 | executable | <code>boolean</code> | Whether or not the file is executable |
+| encrypted | <code>boolean</code> | Whether or not the file is client-side encrypted |
 | metadata | <code>object</code> | io.cozy.files.metadata to attach to the file |
 
 <a name="FileDocument"></a>
