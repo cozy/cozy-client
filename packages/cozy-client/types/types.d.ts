@@ -184,11 +184,23 @@ export type FileDocument = {
     /**
      * - Type of the file
      */
-    type: object;
+    type: string;
     /**
      * - Class of the file
      */
-    class: object;
+    class: string;
+    /**
+     * - Mime of the file
+     */
+    mime: string;
+    /**
+     * - Whether or not the file is executable
+     */
+    executable: boolean;
+    /**
+     * - Whether or not the file is client-side encrypted
+     */
+    encrypted: boolean;
 };
 /**
  * - An io.cozy.files document
