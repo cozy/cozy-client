@@ -231,6 +231,18 @@ describe('File Model', () => {
     })
   })
 
+  describe('encryption', () => {
+    it('should return when a file is encrypted or not', () => {
+      const encryptedFile = {
+        name: 'encryptedfile.txt',
+        encrypted: true
+      }
+      const plaintextFile = { name: 'plaintext.txt', mime: 'text' }
+      expect(fileModel.isEncrypted(encryptedFile)).toBe(true)
+      expect(fileModel.isEncrypted(plaintextFile)).toBe(false)
+    })
+  })
+
   describe('splitFilename', () => {
     it.each`
       opts                                       | result

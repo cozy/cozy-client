@@ -158,8 +158,11 @@ import { QueryDefinition } from './queries/dsl'
  * @property {FilesDoctype} _type - Doctype of the file
  * @property {string} name - Name of the file
  * @property {object} metadata - Metadata of the file
- * @property {object} type - Type of the file
- * @property {object} class - Class of the file
+ * @property {string} type - Type of the file
+ * @property {string} class - Class of the file
+ * @property {string} mime - Mime of the file
+ * @property {boolean} executable - Whether or not the file is executable
+ * @property {boolean} encrypted - Whether or not the file is client-side encrypted
  * @typedef {CozyClientDocument & FileDocument} IOCozyFile - An io.cozy.files document
  */
 
