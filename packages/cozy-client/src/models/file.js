@@ -66,6 +66,16 @@ export const isNote = file => {
 }
 
 /**
+ * Whether the file is client-side encrypted
+ *
+ * @param {IOCozyFile} file - io.cozy.files document
+ * @returns {boolean}
+ */
+export const isEncrypted = file => {
+  return !!file.encrypted
+}
+
+/**
  * Whether the file is supported by Only Office
  *
  * @param {IOCozyFile} file - io.cozy.file document
