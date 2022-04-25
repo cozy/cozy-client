@@ -29,6 +29,7 @@ export function splitFilename(file: IOCozyFile): object;
 export function isFile(file: IOCozyFile): boolean;
 export function isDirectory(file: IOCozyFile): boolean;
 export function isNote(file: IOCozyFile): boolean;
+export function isEncrypted(file: IOCozyFile): boolean;
 export function isOnlyOfficeFile(file: IOCozyFile): boolean;
 export function shouldBeOpenedByOnlyOffice(file: IOCozyFile): boolean;
 export function isShortcut(file: IOCozyFile): boolean;
