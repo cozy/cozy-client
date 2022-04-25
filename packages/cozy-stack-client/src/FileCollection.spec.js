@@ -701,7 +701,7 @@ describe('FileCollection', () => {
         checksum: 'a6dabd99832b270468e254814df2ed20'
       }
       const result = await collection.updateFile(data, params)
-      const expectedPath = `/files/59140416-b95f?Name=mydoc.epub&Type=file&Executable=false&UpdatedAt=${new Date(
+      const expectedPath = `/files/59140416-b95f?Name=mydoc.epub&Type=file&Executable=false&Encrypted=false&UpdatedAt=${new Date(
         data.lastModified
       ).toISOString()}&CreatedAt=${new Date(data.lastModified).toISOString()}`
       const expectedOptions = {
@@ -740,7 +740,7 @@ describe('FileCollection', () => {
         metadata: { type: 'bill' }
       }
       const result = await collection.updateFile(data, params)
-      const expectedPath = `/files/59140416-b95f?Name=mydoc.epub&Type=file&Executable=false&MetadataID=${metadataId}&UpdatedAt=${new Date(
+      const expectedPath = `/files/59140416-b95f?Name=mydoc.epub&Type=file&Executable=false&Encrypted=false&MetadataID=${metadataId}&UpdatedAt=${new Date(
         data.lastModified
       ).toISOString()}&CreatedAt=${new Date(data.lastModified).toISOString()}`
       const expectedOptions = {
@@ -773,7 +773,7 @@ describe('FileCollection', () => {
         contentLength: 1234
       }
       const result = await collection.updateFile(data, params)
-      const expectedPath = `/files/59140416-b95f?Name=mydoc.epub&Type=file&Executable=false&Size=1234&UpdatedAt=${new Date(
+      const expectedPath = `/files/59140416-b95f?Name=mydoc.epub&Type=file&Executable=false&Encrypted=false&Size=1234&UpdatedAt=${new Date(
         data.lastModified
       ).toISOString()}&CreatedAt=${new Date(data.lastModified).toISOString()}`
       const expectedOptions = {
@@ -808,7 +808,7 @@ describe('FileCollection', () => {
 
       data = new File([''], 'mydoc.epub')
       await collection.updateFile(data, params)
-      const expectedPath = `/files/59140416-b95f?Name=mydoc.epub&Type=file&Executable=false&UpdatedAt=${new Date(
+      const expectedPath = `/files/59140416-b95f?Name=mydoc.epub&Type=file&Executable=false&Encrypted=false&UpdatedAt=${new Date(
         data.lastModified
       ).toISOString()}&CreatedAt=${new Date(data.lastModified).toISOString()}`
 
@@ -833,7 +833,7 @@ describe('FileCollection', () => {
 
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'PUT',
-        `/files/59140416-b95f?Name=mydoc.epub&Type=file&Executable=false`,
+        `/files/59140416-b95f?Name=mydoc.epub&Type=file&Executable=false&Encrypted=false`,
         data,
         expectedOptions
       )
@@ -970,7 +970,7 @@ describe('FileCollection', () => {
     it('should create a file without metadata', async () => {
       const params = { dirId }
       const result = await collection.createFile(data, params)
-      const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&MetadataID=&Size=&UpdatedAt=${new Date(
+      const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&Encrypted=false&MetadataID=&Size=&UpdatedAt=${new Date(
         data.lastModified
       ).toISOString()}&CreatedAt=${new Date(data.lastModified).toISOString()}`
       const expectedOptions = {
@@ -1006,7 +1006,7 @@ describe('FileCollection', () => {
         metadata: { type: 'bill' }
       }
       const result = await collection.createFile(data, params)
-      const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&MetadataID=${metadataId}&Size=&UpdatedAt=${new Date(
+      const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&Encrypted=false&MetadataID=${metadataId}&Size=&UpdatedAt=${new Date(
         data.lastModified
       ).toISOString()}&CreatedAt=${new Date(data.lastModified).toISOString()}`
       const expectedOptions = {
@@ -1033,7 +1033,7 @@ describe('FileCollection', () => {
     it('should send the file size via querystring and headers', async () => {
       const params = { dirId, contentLength }
       const result = await collection.createFile(data, params)
-      const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&MetadataID=&Size=${String(
+      const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&Encrypted=false&MetadataID=&Size=${String(
         contentLength
       )}&UpdatedAt=${new Date(
         data.lastModified

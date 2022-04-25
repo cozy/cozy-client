@@ -37,6 +37,7 @@ import * as querystring from './querystring'
  * @property {string} name - Name of the created file.
  * @property {Date} lastModifiedDate - Can be used to set the last modified date of a file.
  * @property {boolean} executable - Whether or not the file is executable
+ * @property {boolean} encrypted - Whether or not the file is client-side encrypted
  * @property {object} metadata io.cozy.files.metadata to attach to the file
  */
 
@@ -480,13 +481,13 @@ class FileCollection extends DocumentCollection {
     {
       name: nameOption,
       dirId = '',
-      executable: executableOption,
+      executable = false,
+      encrypted = false,
       metadata,
       ...options
     } = {}
   ) {
     let name = nameOption
-    let executable = executableOption
     // handle case where data is a file and contains the name
     if (!name && typeof data.name === 'string') {
       name = data.name
@@ -494,9 +495,6 @@ class FileCollection extends DocumentCollection {
 
     name = sanitizeAndValidateFileName(name)
 
-    if (executable === undefined) {
-      executable = false
-    }
     let metadataId = ''
     if (metadata) {
       const meta = await this.createFileMetadata(metadata)
@@ -506,7 +504,7 @@ class FileCollection extends DocumentCollection {
     if (options.contentLength) {
       size = String(options.contentLength)
     }
-    const path = uri`/files/${dirId}?Name=${name}&Type=file&Executable=${executable}&MetadataID=${metadataId}&Size=${size}`
+    const path = uri`/files/${dirId}?Name=${name}&Type=file&Executable=${executable}&Encrypted=${encrypted}&MetadataID=${metadataId}&Size=${size}`
     return this.doUpload(data, path, options)
   }
 
@@ -521,7 +519,14 @@ class FileCollection extends DocumentCollection {
    */
   async updateFile(
     data,
-    { executable = false, fileId, name = '', metadata, ...options } = {}
+    {
+      executable = false,
+      encrypted = false,
+      fileId,
+      name = '',
+      metadata,
+      ...options
+    } = {}
   ) {
     if (!fileId || typeof fileId !== 'string') {
       throw new Error('missing fileId argument')
@@ -542,7 +547,7 @@ class FileCollection extends DocumentCollection {
      * (no size limit since we can use the body for that) and after we use the ID.
      */
     let metadataId
-    let path = uri`/files/${fileId}?Name=${sanitizedName}&Type=file&Executable=${executable}`
+    let path = uri`/files/${fileId}?Name=${sanitizedName}&Type=file&Executable=${executable}&Encrypted=${encrypted}`
     if (metadata) {
       const meta = await this.createFileMetadata(metadata)
       metadataId = meta.data.id
