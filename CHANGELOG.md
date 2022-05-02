@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [28.2.3](https://github.com/cozy/cozy-client/compare/v28.2.2...v28.2.3) (2022-05-02)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @cozy/codemods to v1.14.4 ([0794262](https://github.com/cozy/cozy-client/commit/079426228c80b4832de0a43b543ccd56317cdc6c))
+
+
+
+
+
 ## [28.2.2](https://github.com/cozy/cozy-client/compare/v28.2.1...v28.2.2) (2022-05-02)
 
 
