@@ -1,5 +1,5 @@
-import React from 'react';
-import './App.css';
+import React from 'react'
+import './App.css'
 import Example from './Example'
 import DebugClientProvider from './DebugClientProvider'
 
@@ -10,7 +10,7 @@ function App() {
         <Example />
       </DebugClientProvider>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

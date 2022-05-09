@@ -207,7 +207,7 @@ export const _getIconURL = async (stackClient, opts) => {
  * @param  {string} [opts.priority='stack'] - Options priority
  * @returns {Promise<string>|string} DOMString containing URL source or a URL representing the Blob or ErrorReturned
  */
-const getIconURL = function() {
+const getIconURL = function () {
   return _getIconURL.apply(this, arguments).catch(() => new ErrorReturned())
 }
 

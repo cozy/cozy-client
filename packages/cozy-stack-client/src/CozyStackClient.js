@@ -256,8 +256,8 @@ class CozyStackClient {
   }
 
   async fetchJSONWithCurrentToken(method, path, bodyArg, options = {}) {
-    //Since we modify the object later by adding in some case a
-    //content-type, let's clone this object to scope the modification
+    // Since we modify the object later by adding in some case a
+    // content-type, let's clone this object to scope the modification
     const clonedOptions = cloneDeep(options)
     const headers = (clonedOptions.headers = clonedOptions.headers || {})
     headers['Accept'] = 'application/json'

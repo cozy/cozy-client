@@ -26,7 +26,10 @@ describe('dehydrate', () => {
     oneInPlace: '1',
     relationships: {
       hasMany: {
-        data: [{ _id: 1, _type: 'has.many' }, { _id: 2, _type: 'has.many' }]
+        data: [
+          { _id: 1, _type: 'has.many' },
+          { _id: 2, _type: 'has.many' }
+        ]
       },
       hasManyFiles: {
         data: [
@@ -126,7 +129,10 @@ describe('generateWebLink', () => {
     expect(
       generateWebLink({
         cozyUrl: 'http://alice.cozy.tools',
-        searchParams: [['sharecode', sharecode], ['username', username]],
+        searchParams: [
+          ['sharecode', sharecode],
+          ['username', username]
+        ],
         pathname: 'public',
         hash: '/n/4',
         slug: 'notes',

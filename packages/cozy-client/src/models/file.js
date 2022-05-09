@@ -424,12 +424,12 @@ export const overrideFileForPath = async (client, dirPath, file, metadata) => {
  * @returns {string} A filename with the right suffix
  */
 export const generateNewFileNameOnConflict = filenameWithoutExtension => {
-  //Check if the string ends by _1
+  // Check if the string ends by _1
   const regex = new RegExp('(_)([0-9]+)$')
   const matches = filenameWithoutExtension.match(regex)
   if (matches) {
     let versionNumber = parseInt(matches[2])
-    //increment versionNumber
+    // increment versionNumber
     versionNumber++
     const newFilenameWithoutExtension = filenameWithoutExtension.replace(
       new RegExp('(_)([0-9]+)$'),
@@ -488,7 +488,7 @@ export const uploadFileWithConflictStrategy = async (client, file, options) => {
     const existingFile = await client.collection(DOCTYPE_FILES).statByPath(path)
     const { id: fileId } = existingFile.data
     if (conflictStrategy === 'erase') {
-      //!TODO Bug Fix. Seems we have to pass a name attribute ?!
+      // !TODO Bug Fix. Seems we have to pass a name attribute ?!
       const resp = await client
         .collection(DOCTYPE_FILES)
         .updateFile(file, { ...options, fileId })
@@ -500,7 +500,7 @@ export const uploadFileWithConflictStrategy = async (client, file, options) => {
         type: 'file'
       })
       const newFileName = generateNewFileNameOnConflict(filename) + extension
-      //recall itself with the newFilename.
+      // recall itself with the newFilename.
       return uploadFileWithConflictStrategy(client, file, {
         ...options,
         name: newFileName

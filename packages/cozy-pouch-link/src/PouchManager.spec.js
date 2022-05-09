@@ -1,5 +1,3 @@
-/* global jest */
-
 // TODO use jest.useFakeTimers() to speed up the tests
 // See https://github.com/cozy/cozy-client/pull/239 for example
 // on how to use fake timers with setTimeout created in promises.
@@ -346,9 +344,8 @@ describe('PouchManager', () => {
 
     it('should return the list of queries if local storage contains ones', () => {
       const persistedQueries = [query().options.as]
-      localStorage.__STORE__[
-        ls.LOCALSTORAGE_WARMUPEDQUERIES_KEY
-      ] = JSON.stringify(persistedQueries)
+      localStorage.__STORE__[ls.LOCALSTORAGE_WARMUPEDQUERIES_KEY] =
+        JSON.stringify(persistedQueries)
       expect(ls.getPersistedWarmedUpQueries()).toEqual(persistedQueries)
     })
   })
@@ -514,20 +511,16 @@ describe('PouchManager', () => {
       expect(executeMock).toHaveBeenCalledTimes(2)
       expect(executeMock).toHaveBeenNthCalledWith(
         1,
-        query1()
-          .definition()
-          .toDefinition()
+        query1().definition().toDefinition()
       )
       expect(executeMock).toHaveBeenNthCalledWith(
         2,
-        query2()
-          .definition()
-          .toDefinition()
+        query2().definition().toDefinition()
       )
       expect(ls.getPersistedWarmedUpQueries()).toEqual({
         'io.cozy.todos': ['query1', 'query2']
       })
-      //Simulation of a loop. Let's replicate again
+      // Simulation of a loop. Let's replicate again
       await manager.replicateOnce()
       await sleep(10)
       expect(executeMock).toHaveBeenCalledTimes(2)

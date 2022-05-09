@@ -104,13 +104,7 @@ const makeMatcher = search => {
         return false
       }
       const attr = get(obj, key)
-      return (
-        attr &&
-        attr
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
-      )
+      return attr && attr.toString().toLowerCase().includes(value.toLowerCase())
     }
   })
   return overEvery(conditions)
@@ -127,9 +121,10 @@ const QueryData = ({ data, doctype }) => {
     return data.map(id => client.hydrateDocument(documents[id]))
   }, [client, data, documents])
 
-  const handleShowTable = useCallback(() => setShowTable(value => !value), [
-    setShowTable
-  ])
+  const handleShowTable = useCallback(
+    () => setShowTable(value => !value),
+    [setShowTable]
+  )
 
   const [results, setResults] = useState(null)
   const [search, setSearch] = useState('')
@@ -171,9 +166,10 @@ const QueryData = ({ data, doctype }) => {
 
 const ObjectInspectorAndStringificator = ({ object }) => {
   const [showStringify, setShowStringify] = useState(false)
-  const handleStringify = useCallback(() => setShowStringify(value => !value), [
-    setShowStringify
-  ])
+  const handleStringify = useCallback(
+    () => setShowStringify(value => !value),
+    [setShowStringify]
+  )
   return (
     <>
       Stringify:{' '}

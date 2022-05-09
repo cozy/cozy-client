@@ -14,6 +14,7 @@ describe('cancelable', () => {
   it('should resolve with the result of the promise', done => {
     const { resolve, wrapped } = setup()
     expect.assertions(1)
+    // eslint-disable-next-line
     wrapped.then(res => {
       expect(res).toBe(5)
       done()

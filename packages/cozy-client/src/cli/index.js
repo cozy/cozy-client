@@ -106,7 +106,7 @@ const mkServerFlowCallback = serverOptions => authenticationURL =>
     }, 30 * 1000)
   })
 
-const hashCode = function(str) {
+const hashCode = function (str) {
   var hash = 0,
     i,
     chr
@@ -205,6 +205,7 @@ const createClientInteractive = (clientOptions, serverOpts) => {
   const savedCredentials = readJSON(createClientFS, savedCredentialsFilename)
 
   log('debug', `Starting OAuth flow`)
+  // eslint-disable-next-line
   return new Promise(async (resolve, reject) => {
     const client = new CozyClient(mergedClientOptions)
 

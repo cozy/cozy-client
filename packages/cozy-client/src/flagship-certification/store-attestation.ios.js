@@ -1,4 +1,4 @@
-//@ts-ignore
+// @ts-ignore
 import RNIOS11DeviceCheck from 'react-native-ios11-devicecheck'
 
 /**

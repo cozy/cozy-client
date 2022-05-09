@@ -1350,12 +1350,8 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {Promise<QueryState>} Query state
    */
   fetchQueryAndGetFromState = async query => {
-    try {
-      await this.query(query.definition, query.options)
-      return this.getQueryFromState(query.options.as)
-    } catch (error) {
-      throw error
-    }
+    await this.query(query.definition, query.options)
+    return this.getQueryFromState(query.options.as)
   }
 
   /**
@@ -1685,7 +1681,7 @@ instantiation of the client.`
 CozyClient.hooks = CozyClient.hooks || {}
 
 CozyClient.fetchPolicies = fetchPolicies
-//COZY_CLIENT_VERSION_PACKAGE in replaced by babel. See babel config
+// COZY_CLIENT_VERSION_PACKAGE in replaced by babel. See babel config
 CozyClient.version = 'COZY_CLIENT_VERSION_PACKAGE'
 
 MicroEE.mixin(CozyClient)
