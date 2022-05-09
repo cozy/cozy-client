@@ -26,10 +26,7 @@ describe('withMutation', () => {
     const ConnectedAddButton = withMutation(mutationCreator)(AddButton)
 
     const wrapper = shallow(<ConnectedAddButton />, { context: { client } })
-    wrapper
-      .dive()
-      .find('button')
-      .simulate('click')
+    wrapper.dive().find('button').simulate('click')
 
     expect(mutationCreator).toHaveBeenCalledWith(NEW_TODO)
   })
@@ -43,10 +40,7 @@ describe('withMutation', () => {
     })(AddButton)
 
     const wrapper = shallow(<ConnectedAddButton />, { context: { client } })
-    wrapper
-      .dive()
-      .find('button')
-      .simulate('click')
+    wrapper.dive().find('button').simulate('click')
 
     expect(mutationCreator).toHaveBeenCalledWith(NEW_TODO)
   })

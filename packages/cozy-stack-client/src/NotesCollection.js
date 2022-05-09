@@ -29,7 +29,7 @@ class NotesCollection extends DocumentCollection {
    * @returns {{data, links, meta}} The JSON API conformant response.
    */
   async all() {
-    //TODO: add support for pagination
+    // TODO: add support for pagination
     const resp = await this.stackClient.fetchJSON('GET', '/notes')
 
     return {

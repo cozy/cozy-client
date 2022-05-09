@@ -1,4 +1,4 @@
-//@ts-ignore next-line
+// @ts-ignore next-line
 import RNGoogleSafetyNet from 'react-native-google-safetynet'
 
 import { AttestationResult, CertificationConfig } from './typedefs'

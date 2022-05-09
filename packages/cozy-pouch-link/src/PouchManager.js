@@ -107,12 +107,17 @@ class PouchManager {
     if (this.ensureDatabasesExistDone) {
       return Promise.resolve()
     }
-    return Promise.all(
-      Object.values(this.pouches).map(pouch => pouch.info())
-    ).then(() => {
-      logger.info('PouchManager: ensure databases exist done')
-      this.ensureDatabasesExistDone = true
-    })
+    return (
+      Promise.all(Object.values(this.pouches).map(pouch => pouch.info()))
+        // eslint-disable-next-line
+      .then(() => {
+          logger.info('PouchManager: ensure databases exist done')
+          this.ensureDatabasesExistDone = true
+        })
+        .catch(e => {
+          logger.error('PouchManager: ensure databases errors: ', e)
+        })
+    )
   }
 
   /** Starts periodic syncing of the pouches */

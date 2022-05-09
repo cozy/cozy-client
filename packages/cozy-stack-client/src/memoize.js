@@ -29,7 +29,7 @@ const isPromise = maybePromise => {
 const memoize = (fn, options) => {
   const cache = {}
 
-  return function() {
+  return function () {
     const key = options.key.apply(null, arguments)
     garbageCollect(cache, options.maxDuration)
     const existing = cache[key]
@@ -51,6 +51,7 @@ const memoize = (fn, options) => {
       if (isPromise(result)) {
         result
           .then(v => {
+            // eslint-disable-next-line
             if (v instanceof ErrorReturned) {
               delete cache[key]
             }

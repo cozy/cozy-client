@@ -16,6 +16,7 @@ const cancelable = promise => {
 
   const wrapped = new Promise((resolve, reject) => {
     _reject = reject
+    // eslint-disable-next-line
     promise.then(resolve)
     promise.catch(reject)
   })

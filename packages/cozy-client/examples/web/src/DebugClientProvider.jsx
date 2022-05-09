@@ -1,4 +1,4 @@
-import React,  { Component, useState, useEffect, useCallback }  from 'react'
+import React, { Component, useState, useEffect, useCallback } from 'react'
 import CozyClient, { CozyProvider } from 'cozy-client'
 import { Provider } from 'react-redux'
 
@@ -35,7 +35,6 @@ const DebugClientProvider = ({ children }) => {
     setClient(client)
   }, [token, uri])
 
-
   const handleLogout = useCallback(() => {
     setToken(null)
     setURI(null)
@@ -47,18 +46,21 @@ const DebugClientProvider = ({ children }) => {
       <ExpiredTokenHandler onExpiredToken={handleLogout}>
         <CozyProvider client={client}>
           <Provider store={client.store}>
-            { children }
+            {children}
             <button onClick={handleLogout}>logout</button>
           </Provider>
         </CozyProvider>
       </ExpiredTokenHandler>
     )
   } else {
-    return <URITokenPrompt
-      initialToken={token}
-      initialURI={uri}
-      onChangeToken={setToken}
-      onChangeURI={setURI} />
+    return (
+      <URITokenPrompt
+        initialToken={token}
+        initialURI={uri}
+        onChangeToken={setToken}
+        onChangeURI={setURI}
+      />
+    )
   }
 }
 
@@ -81,19 +83,46 @@ class ExpiredTokenHandler extends Component {
   }
 }
 
-
-const URITokenPrompt = ({ onChangeToken, onChangeURI, initialURI, initialToken  }) => {
-  return <>
+const URITokenPrompt = ({
+  onChangeToken,
+  onChangeURI,
+  initialURI,
+  initialToken
+}) => {
+  return (
+    <>
       <div style={styles.uriTokenPrompt}>
-      <p>
-        Please enter an URI and a token (<span style={{ fontFamily: 'monospace' }}>cozy-stack instances token-cli</span>)<br/>
-        <label>
-          uri: <input defaultValue={initialURI} type='text' onChange={e => { onChangeURI(e.target.value)}}/>
-        </label><br/>
-        <label>token: <input defaultValue={initialToken} type='text' onChange={e => { onChangeToken(e.target.value)}}/></label>
-      </p>
+        <p>
+          Please enter an URI and a token (
+          <span style={{ fontFamily: 'monospace' }}>
+            cozy-stack instances token-cli
+          </span>
+          )<br />
+          <label>
+            uri:{' '}
+            <input
+              defaultValue={initialURI}
+              type="text"
+              onChange={e => {
+                onChangeURI(e.target.value)
+              }}
+            />
+          </label>
+          <br />
+          <label>
+            token:{' '}
+            <input
+              defaultValue={initialToken}
+              type="text"
+              onChange={e => {
+                onChangeToken(e.target.value)
+              }}
+            />
+          </label>
+        </p>
       </div>
     </>
+  )
 }
 
 export default DebugClientProvider

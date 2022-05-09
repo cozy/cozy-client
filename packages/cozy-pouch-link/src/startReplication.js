@@ -26,7 +26,12 @@ const humanTimeDelta = timeMs => {
   str = `${cur}${lastUnit[0]}` + str
   return str
 }
-const TIME_UNITS = [['ms', 1000], ['s', 60], ['m', 60], ['h', 24]]
+const TIME_UNITS = [
+  ['ms', 1000],
+  ['s', 60],
+  ['m', 60],
+  ['h', 24]
+]
 
 /**
  * startReplication - Create a cancellable promise for replication with default options
@@ -89,7 +94,7 @@ export const startReplication = (
     }
 
     replication.on('change', infos => {
-      //! Since we introduced the concept of strategy we can use
+      // ! Since we introduced the concept of strategy we can use
       // PouchDB.replicate or PouchDB.sync. But both don't share the
       // same API for the change's event.
       // See https://pouchdb.com/api.html#replication

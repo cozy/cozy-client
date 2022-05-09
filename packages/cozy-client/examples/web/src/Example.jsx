@@ -43,18 +43,23 @@ const accountsConn = {
 }
 
 const transactionsConn = {
-  definition: () => Q('io.cozy.bank.operations').limitBy(10).sortBy([{'date': 'desc'}]).where({}),
+  definition: () =>
+    Q('io.cozy.bank.operations')
+      .limitBy(10)
+      .sortBy([{ date: 'desc' }])
+      .where({}),
   options: {
     as: 'transactions'
   }
 }
 
 const QueryResult = ({ collection }) => {
-
   return (
     <div style={styles.data}>
-      id: { collection.id }<br/>
-      bookmark: {collection.bookmark }<br/>
+      id: {collection.id}
+      <br />
+      bookmark: {collection.bookmark}
+      <br />
       length: {collection.data ? collection.data.length : 0}{' '}
     </div>
   )
@@ -68,7 +73,11 @@ const useCounter = initialCount => {
 }
 
 const ColoredAmount = ({ amount }) => {
-  return <span style={amount > 0 ? styles.amount.positive : styles.amount.negative}>{ amount }</span>
+  return (
+    <span style={amount > 0 ? styles.amount.positive : styles.amount.negative}>
+      {amount}
+    </span>
+  )
 }
 
 const TransactionRow = ({ transaction: tr }) => (
@@ -80,14 +89,22 @@ const TransactionRow = ({ transaction: tr }) => (
 const Queries = () => {
   const [count, increment, decrement] = useCounter(0)
   const accounts = useQuery(accountsConn.definition, accountsConn.options)
-  const transactions = useQuery(transactionsConn.definition, transactionsConn.options)
+  const transactions = useQuery(
+    transactionsConn.definition,
+    transactionsConn.options
+  )
 
   return (
     <div style={styles.queries}>
       <div style={styles.block}>
         <div style={styles.stateTester}>
-          <i>Changing "Count" here should not trigger any network requests</i><br/>
-          Count: {count}<br/>
+          <i>
+            Changing &quot;Count&quot; here should not trigger any network
+            requests
+          </i>
+          <br />
+          Count: {count}
+          <br />
           <button onClick={increment}>increment</button>
           <button onClick={decrement}>decrement</button>
         </div>
@@ -96,7 +113,9 @@ const Queries = () => {
         <QueryResult collection={transactions} />
       </div>
       <div style={styles.block}>
-        {transactions.data ? `${transactions.data.length} transactions shown` : null }
+        {transactions.data
+          ? `${transactions.data.length} transactions shown`
+          : null}
         {transactions.data &&
           transactions.data.map(tr => (
             <TransactionRow key={tr._id} transaction={tr} />

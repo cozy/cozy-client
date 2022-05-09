@@ -18,6 +18,7 @@ describe('loop', () => {
 
   const scheduleForward = duration => {
     time = time + duration
+    // eslint-disable-next-line
     Promise.resolve().then(() => {
       jest.advanceTimersByTime(duration)
     })
@@ -36,7 +37,7 @@ describe('loop', () => {
   }
 
   // We have to customize loop only for tests, to be able to use Jest timers
-  const Loop = function(task, delay) {
+  const Loop = function (task, delay) {
     return new OriginalLoop(task, delay, afterRound, sleep)
   }
 

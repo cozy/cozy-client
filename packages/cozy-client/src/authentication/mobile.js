@@ -1,4 +1,3 @@
-/* global prompt */
 import { REGISTRATION_ABORT } from '../const'
 import {
   hasInAppBrowserPlugin,

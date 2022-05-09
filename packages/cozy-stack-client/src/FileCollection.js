@@ -149,6 +149,7 @@ export const isFile = ({ _type, type }) =>
 
 /**
  * Returns true when parameters has type directory
+ *
  * @param {object} args File
  * @param {string} args.type - The type of the file
  * @returns {boolean} true when parameters has type directory or false
@@ -158,13 +159,22 @@ export const isDirectory = ({ type }) => type === 'directory'
 const raceWithCondition = (promises, predicate) => {
   return new Promise(resolve => {
     promises.forEach(p =>
-      p.then(res => {
+      p
+        .then(res => {
+          // eslint-disable-next-line
         if (predicate(res)) {
-          resolve(true)
-        }
-      })
+            resolve(true)
+          }
+        })
+        .catch(e => {
+          throw e
+        })
     )
-    Promise.all(promises).then(() => resolve(false))
+    Promise.all(promises)
+      .then(() => resolve(false))
+      .catch(e => {
+        throw e
+      })
   })
 }
 
@@ -461,13 +471,14 @@ class FileCollection extends DocumentCollection {
     }
   }
 
-  /***
+  /** *
    * Updates an existing file or directory
    *
    * Used by StackLink to support CozyClient.save({file}).
    * Update the binary file if a `data` param is passed. Only updates
    * attributes otherwise.
-   * @param {object} attributes
+   *
+   * @param {object} attributes Attributes
    * @param {FileAttributes} attributes.file - The file with its new content
    * @param {File|Blob|string|ArrayBuffer} attributes.data Will be used as content of the updated file
    * @returns {Promise<FileAttributes>} Updated document
@@ -710,8 +721,11 @@ class FileCollection extends DocumentCollection {
    * @returns {boolean}                 Whether the file is a parent's child
    */
   async isChildOf(child, parent) {
-    let { _id: childID, dirID: childDirID, path: childPath } =
-      typeof child === 'object' ? child : { _id: child }
+    let {
+      _id: childID,
+      dirID: childDirID,
+      path: childPath
+    } = typeof child === 'object' ? child : { _id: child }
     let { _id: parentID } =
       typeof parent === 'object' ? parent : { _id: parent }
     if (childID === parentID || childDirID === parentID) {

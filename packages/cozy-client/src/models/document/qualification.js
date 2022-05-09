@@ -81,9 +81,10 @@ export class Qualification {
     }
     if (this.sourceCategory !== attributes.sourceCategory) {
       if (!this.sourceCategory) {
-        const isKnownValue = qualificationModel.sourceCategoryKnownValues.includes(
-          attributes.sourceCategory
-        )
+        const isKnownValue =
+          qualificationModel.sourceCategoryKnownValues.includes(
+            attributes.sourceCategory
+          )
         if (!isKnownValue) {
           console.info(
             `This sourceCategory is not listed among the known values: ${attributes.sourceCategory}. ` +
@@ -99,9 +100,10 @@ export class Qualification {
     }
     if (this.sourceSubCategory !== attributes.sourceSubCategory) {
       if (!this.sourceSubCategory) {
-        const isKnownValue = qualificationModel.sourceSubCategoryKnownValues.includes(
-          attributes.sourceSubCategory
-        )
+        const isKnownValue =
+          qualificationModel.sourceSubCategoryKnownValues.includes(
+            attributes.sourceSubCategory
+          )
         if (!isKnownValue) {
           console.info(
             `This sourceSubCategory is not listed among the known values: ${attributes.sourceSubCategory}. ` +

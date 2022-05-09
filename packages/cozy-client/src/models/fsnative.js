@@ -123,6 +123,7 @@ const saveFile = (dirEntry, fileData, fileName) =>
       { create: true, exclusive: false },
       fileEntry => {
         writeFile(fileEntry, fileData)
+          // eslint-disable-next-line
           .then(() => {
             resolve(fileEntry)
           })

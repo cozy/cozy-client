@@ -76,7 +76,7 @@ class DocumentCollection {
    *                                        using `normalizeDoc`
    */
   static normalizeDoctypeJsonApi(doctype) {
-    return function(data, response) {
+    return function (data, response) {
       // use the "data" attribute of the response
       return normalizeDoc(data, doctype)
     }
@@ -91,7 +91,7 @@ class DocumentCollection {
    *                                        using `normalizeDoc`
    */
   static normalizeDoctypeRawApi(doctype) {
-    return function(data, response) {
+    return function (data, response) {
       // use the response directly
       return normalizeDoc(response, doctype)
     }

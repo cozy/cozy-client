@@ -221,10 +221,7 @@ export const rootCozyUrl = async url => {
 
   // Try to remove the first sub-domain in case its a nested app name
   // eslint-disable-next-line no-unused-vars
-  const hostname = url.hostname
-    .split('.')
-    .splice(1)
-    .join('.')
+  const hostname = url.hostname.split('.').splice(1).join('.')
   if (
     await isValidOrigin({ protocol: url.protocol, hostname, port: url.port })
   ) {
