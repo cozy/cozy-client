@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [28.3.0](https://github.com/cozy/cozy-client/compare/v28.2.3...v28.3.0) (2022-05-10)
+
+
+### Features
+
+* Add secure protocol to URI when window.cozy.isSecureProtocol=true ([3a9d557](https://github.com/cozy/cozy-client/commit/3a9d557bbf70f6c7a30acbdad225000b40a23215))
+
+
+
+
+
 ## [28.2.3](https://github.com/cozy/cozy-client/compare/v28.2.2...v28.2.3) (2022-05-02)
 
 
