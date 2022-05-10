@@ -72,6 +72,8 @@ describe('CozyClient initialization', () => {
     })
 
     client = new CozyClient({ links, schema: SCHEMA })
+
+    delete window.cozy
   })
 
   it('should autologin when provided token and uri', () => {
@@ -248,6 +250,34 @@ describe('CozyClient initialization', () => {
       })
 
       document.querySelector = globalQuerySelectorBefore
+    })
+
+    it('should secure the URL if window.cozy.isSecureProtocol is true', () => {
+      window.cozy = {
+        isSecureProtocol: true
+      }
+
+      const client = new CozyClient({
+        uri: 'http://cozy.tools',
+        schema: '',
+        token: 'SOME_TOKEN'
+      })
+
+      expect(client.options.uri).toBe('https://cozy.tools/')
+    })
+
+    it('should NOT secure the URL if window.cozy.isSecureProtocol is false', () => {
+      window.cozy = {
+        isSecureProtocol: false
+      }
+
+      const client = new CozyClient({
+        uri: 'http://cozy.tools',
+        schema: '',
+        token: 'SOME_TOKEN'
+      })
+
+      expect(client.options.uri).toBe('http://cozy.tools')
     })
 
     describe('capabilities', () => {

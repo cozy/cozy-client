@@ -92,6 +92,17 @@ const referencesUnsupportedError = relationshipClassName => {
   )
 }
 
+const securiseUri = uri => {
+  if (uri && window['cozy']?.isSecureProtocol) {
+    const secureUrl = new URL(uri)
+    secureUrl.protocol = 'https:'
+
+    return secureUrl.toString()
+  }
+
+  return uri
+}
+
 const DOC_CREATION = 'creation'
 const DOC_UPDATE = 'update'
 
@@ -161,6 +172,8 @@ class CozyClient {
     }
 
     this.appMetadata = appMetadata
+
+    options.uri = securiseUri(options.uri)
 
     this.options = options
 
