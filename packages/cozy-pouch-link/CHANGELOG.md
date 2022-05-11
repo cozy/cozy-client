@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [29.0.0](https://github.com/cozy/cozy-client/compare/v28.3.0...v29.0.0) (2022-05-11)
+
+
+### Bug Fixes
+
+* Cozy-Client runs on node ([9d546f8](https://github.com/cozy/cozy-client/commit/9d546f85f6392a6b9417d095964621b370d823f8))
+
+
+### BREAKING CHANGES
+
+* We need to upgrade cozy-device-helper
+in order to be able to run cozy-client within a node
+context. So let's upgrade it.
+
+You need to install cozy-device-helper >= 2.1.0 in
+your app.
+
+
+
+
+
 # [28.3.0](https://github.com/cozy/cozy-client/compare/v28.2.3...v28.3.0) (2022-05-10)
 
 **Note:** Version bump only for package cozy-pouch-link
