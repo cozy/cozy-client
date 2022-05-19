@@ -174,6 +174,19 @@ So in our previous example our `todoslist` is concerned by the addition of the n
 the `id` is added to `todolist` data, then the component linked will be refreshed with this new 
 document.
 
+### About updates
 
+As already mentioned, when a mutated document already exists in the store throught its `_id`, it is updated with the new content. However, this update never removes existing fields, it only merges or adds new fields. This is typically useful when two queries retrieve the same document, but not with all the fields. 
+Let us illustrate with this example:
 
+```js
+const Q1 = { definition: Q('io.cozy.todos').getById('my-todo'), options: { as: todoslist-full, fetchPolicy: lessThan30s }}
+const Q2 = { definition: Q('io.cozy.todos').getById('my-todo').select(['label']), options: { as: todoslist-label }}
+
+await client.query(Q1) // returns { _id: 'my-todo', _type: 'io.cozy.todos', label: 'TODOTODO' }, from the database
+await client.query(Q2) // returns { label: 'TODOTODO' }, from the database
+await client.query(Q1) // returns { _id: 'my-todo', _type: 'io.cozy.todos', label: 'TODOTODO' }, from the store
+```
+
+Q1 retrieves the full content of 'my-todo' while Q2 only retrieves its label. When Q2 is run, 'my-todo' already exists in the store, as Q1 was previsouly run. However, the fields retrieved by Q1 for 'my-todos' but absent from Q2 are not lost. This way, when Q1 is run again, the results fetched from the store (thanks to the fetch policy) will include all the fields.
 
