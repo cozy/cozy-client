@@ -75,7 +75,8 @@ const CONTENT_TYPE_OCTET_STREAM = 'application/octet-stream'
  */
 const normalizeFile = file => ({
   ...normalizeDoc(file, 'io.cozy.files'),
-  ...file.attributes
+  ...file.attributes,
+  _rev: file?.meta?.rev // Beware of JSON-API
 })
 
 /**
