@@ -93,7 +93,7 @@ const referencesUnsupportedError = relationshipClassName => {
 }
 
 const securiseUri = uri => {
-  if (uri && window['cozy']?.isSecureProtocol) {
+  if (uri && window && window['cozy']?.isSecureProtocol) {
     const secureUrl = new URL(uri)
     secureUrl.protocol = 'https:'
 
