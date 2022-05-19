@@ -280,6 +280,19 @@ describe('CozyClient initialization', () => {
       expect(client.options.uri).toBe('http://cozy.tools')
     })
 
+    it('should not secure the URL if window is undefined (node env)', () => {
+      let windowSpy = jest.spyOn(window, 'window', 'get')
+      windowSpy.mockImplementation(() => undefined)
+      const client = new CozyClient({
+        uri: 'http://cozy.tools',
+        schema: '',
+        token: 'SOME_TOKEN'
+      })
+
+      expect(client.options.uri).toBe('http://cozy.tools')
+      windowSpy.mockRestore()
+    })
+
     describe('capabilities', () => {
       it('should instanciate Client with capabilities', () => {
         const options = {
