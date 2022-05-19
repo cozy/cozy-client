@@ -506,6 +506,55 @@ describe('FileCollection', () => {
     })
   })
 
+  describe('update', () => {
+    const client = new CozyStackClient()
+    const collection = new FileCollection('io.cozy.files', client)
+
+    const spyUpdateFile = jest.spyOn(collection, 'updateFile')
+    const spyUpdateAttributes = jest.spyOn(collection, 'updateAttributes')
+
+    beforeEach(() => {
+      spyUpdateFile.mockReturnValue()
+      spyUpdateAttributes.mockReturnValue()
+    })
+
+    it('should update file when a data param is passed', async () => {
+      const atts = {
+        fileId: '123',
+        type: 'file',
+        name: 'thoughts.txt',
+        data: new Blob()
+      }
+      await collection.update(atts)
+      expect(spyUpdateFile).toHaveBeenCalled()
+    })
+    it('should fail when a data param is passed for a directory', async () => {
+      expect.assertions(1)
+      try {
+        const atts = {
+          fileId: '123',
+          type: 'directory',
+          name: 'dirdir',
+          data: new Blob()
+        }
+        await collection.update(atts)
+      } catch (error) {
+        expect(error.message).toEqual(
+          'You cannot pass a data object for a directory'
+        )
+      }
+    })
+    it('should update attributes when no data param is passed', async () => {
+      const atts = {
+        _id: '123',
+        type: 'file',
+        name: 'thoughts.txt'
+      }
+      await collection.update(atts)
+      expect(spyUpdateAttributes).toHaveBeenCalledWith(atts._id, atts)
+    })
+  })
+
   describe('updateAttributes', () => {
     beforeEach(() => {
       client.fetchJSON.mockReturnValue({ data: [] })

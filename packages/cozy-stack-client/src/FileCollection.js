@@ -457,15 +457,28 @@ class FileCollection extends DocumentCollection {
   }
 
   /***
-   * Update the io.cozy.files
-   * Used by StackLink to support CozyClient.save({file})
+   * Updates an existing file or directory
+   *
+   * Used by StackLink to support CozyClient.save({file}).
+   * Update the binary file if a `data` param is passed. Only updates
+   * attributes otherwise.
+   *
    * @param {FileAttributes} file - The file with its new content
+   * @param {File|Blob|string|ArrayBuffer} attributes.data Will be used as content of the updated file
    * @returns {FileAttributes} Updated document
    * @throws {Error} - explaining reason why update failed
    */
-
-  async update(file) {
-    return this.updateAttributes(file.id, file)
+  async update(attributes) {
+    const { data, ...updateFileOptions } = attributes
+    const fileId = attributes.id || attributes._id
+    if (data) {
+      if (attributes.type === 'directory') {
+        throw new Error('You cannot pass a data object for a directory')
+      }
+      updateFileOptions.fileId = fileId
+      return this.updateFile(data, updateFileOptions)
+    }
+    return this.updateAttributes(fileId, attributes)
   }
 
   /**
