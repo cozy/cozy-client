@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [29.1.0](https://github.com/cozy/cozy-client/compare/v29.0.1...v29.1.0) (2022-05-24)
+
+
+### Bug Fixes
+
+* Include rev when normalizing files ([f420743](https://github.com/cozy/cozy-client/commit/f42074387a9713ee2e8a8fb46265f7d03475a11d))
+
+
+### Features
+
+* Support client.save for files ([ac72bff](https://github.com/cozy/cozy-client/commit/ac72bff11a3d8afa0a509e1baf893af78504ca75))
+
+
+
+
+
 ## [29.0.1](https://github.com/cozy/cozy-client/compare/v29.0.0...v29.0.1) (2022-05-19)
 
 
