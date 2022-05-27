@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [29.1.1](https://github.com/cozy/cozy-client/compare/v29.1.0...v29.1.1) (2022-05-27)
+
+
+### Bug Fixes
+
+* CozyClient can be used in a node env ([ab4556f](https://github.com/cozy/cozy-client/commit/ab4556fe28c4be092fdadb889b120bb0ae89a213))
+
+
+
+
+
 # [29.1.0](https://github.com/cozy/cozy-client/compare/v29.0.1...v29.1.0) (2022-05-24)
 
 **Note:** Version bump only for package cozy-client
