@@ -11,6 +11,7 @@ import * as contact from './contact'
 import * as document from './document'
 import * as timeseries from './timeseries'
 import * as sharing from './sharing'
+import * as dacc from './dacc'
 
 // For backward compatibility before 9.0.0
 const triggers = trigger
@@ -31,5 +32,6 @@ export {
   contact,
   document,
   timeseries,
-  sharing
+  sharing,
+  dacc
 }
