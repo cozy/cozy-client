@@ -3526,13 +3526,13 @@ cosmiconfig@^7.0.0:
     yaml "^1.10.0"
 
 cozy-client@../../:
-  version "28.0.0"
+  version "29.1.1"
   dependencies:
     "@cozy/minilog" "1.0.0"
     "@types/jest" "^26.0.20"
     "@types/lodash" "^4.14.170"
     btoa "^1.2.1"
-    cozy-stack-client "^28.0.0"
+    cozy-stack-client "^29.1.0"
     json-stable-stringify "^1.0.1"
     lodash "^4.17.13"
     microee "^0.0.6"
@@ -3547,10 +3547,10 @@ cozy-client@../../:
     sift "^6.0.0"
     url-search-params-polyfill "^8.0.0"
 
-cozy-stack-client@^28.0.0:
-  version "28.0.0"
-  resolved "https://registry.yarnpkg.com/cozy-stack-client/-/cozy-stack-client-28.0.0.tgz#8a09e400306d5d1370d939380b518b4429ef4d9e"
-  integrity sha512-JpaknOxoR5VD9ocJnkMLXIzZeYOQwu2l/HhrWrO6rKxJJrBIApjQ4HrY8tBsjBH6FvtKkKv5MKBoH0uA7WwmCQ==
+cozy-stack-client@^29.1.0:
+  version "29.1.0"
+  resolved "https://registry.yarnpkg.com/cozy-stack-client/-/cozy-stack-client-29.1.0.tgz#a101e164b45088560df828ff39e369cd9e5a5466"
+  integrity sha512-KxLTdGhqNFDX4TpstzuyROROTGkvvMy4sSiRS5yHir8hfudCuME6pyRIKTslTlMx/y7vjYqcInaEnrwlZP7zaA==
   dependencies:
     detect-node "^2.0.4"
     mime "^2.4.0"
@@ -4682,9 +4682,9 @@ events@^3.0.0:
   integrity sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==
 
 eventsource@^1.0.7:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/eventsource/-/eventsource-1.1.0.tgz#00e8ca7c92109e94b0ddf32dac677d841028cfaf"
-  integrity sha512-VSJjT5oCNrFvCS6igjzPAt5hBzQ2qPBFIbJ03zLI9SE0mxwZpMw6BfJrbFHm1a141AavMEB8JHmBhWAd66PfCg==
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/eventsource/-/eventsource-1.1.1.tgz#4544a35a57d7120fba4fa4c86cb4023b2c09df2f"
+  integrity sha512-qV5ZC0h7jYIAOhArFJgSfdyz6rALJyb270714o7ZtNnw2WSJ+eexhKtE0O8LYPRsHZHf2osHKZBxGPvm3kPkCA==
   dependencies:
     original "^1.0.0"
 
