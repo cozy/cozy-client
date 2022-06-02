@@ -30,7 +30,7 @@ export const checkMeasureParams = measure => {
   if (!parsedDate.toISOString().startsWith(startDate)) {
     throw new Error('Date should be in YYYY-MM-DD format')
   }
-  if (!value || typeof value !== 'number') {
+  if (typeof value !== 'number') {
     throw new Error('Missing or wrong type parameter: value')
   }
   if (
