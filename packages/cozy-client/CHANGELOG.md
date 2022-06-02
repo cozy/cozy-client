@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [29.1.2](https://github.com/cozy/cozy-client/compare/v29.1.1...v29.1.2) (2022-06-02)
+
+
+### Bug Fixes
+
+* Export dacc model ([82781cd](https://github.com/cozy/cozy-client/commit/82781cd4be0413a9138e3dde35fc6434bcd2b3b2))
+
+
+
+
+
 ## [29.1.1](https://github.com/cozy/cozy-client/compare/v29.1.0...v29.1.1) (2022-05-27)
 
 
