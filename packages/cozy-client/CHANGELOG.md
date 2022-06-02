@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [29.1.3](https://github.com/cozy/cozy-client/compare/v29.1.2...v29.1.3) (2022-06-02)
+
+
+### Bug Fixes
+
+* Do not throw when  value is 0 ([17d75ac](https://github.com/cozy/cozy-client/commit/17d75ac98bb277bb0df4f920380d7e4267e28601))
+
+
+
+
+
 ## [29.1.2](https://github.com/cozy/cozy-client/compare/v29.1.1...v29.1.2) (2022-06-02)
 
 
