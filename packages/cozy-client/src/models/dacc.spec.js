@@ -28,10 +28,17 @@ describe('dacc', () => {
   })
 
   it('should throw an error when value is missing or malformed', () => {
+    const measureNoValue = { ...measure }
+    delete measureNoValue.value
+    expect(() => checkMeasureParams(measureNoValue)).toThrow()
     expect(() => checkMeasureParams({ ...measure, value: null })).toThrow()
     expect(() =>
       checkMeasureParams({ ...measure, value: 'notacorrectvalue' })
     ).toThrow()
+  })
+
+  it('should not throw an error when value is 0', () => {
+    expect(() => checkMeasureParams({ ...measure, value: 0 })).not.toThrow()
   })
 
   it('should throw an error when measureName is missing or malformed', () => {
