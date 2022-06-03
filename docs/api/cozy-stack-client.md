@@ -190,6 +190,10 @@ not.</p>
 </dd>
 <dt><a href="#SessionCodeRes">SessionCodeRes</a></dt>
 <dd></dd>
+<dt><a href="#AccessTokenRes">AccessTokenRes</a></dt>
+<dd></dd>
+<dt><a href="#TwoFactorNeededRes">TwoFactorNeededRes</a></dt>
+<dd></dd>
 <dt><a href="#Permission">Permission</a> ⇒ <code><a href="#Permission">Permission</a></code></dt>
 <dd><p>async getOwnPermissions - deprecated: please use fetchOwnPermissions instead</p>
 </dd>
@@ -1085,6 +1089,7 @@ through OAuth.
     * [.fetchAccessToken(accessCode, oauthOptionsArg, uri, codeVerifier)](#OAuthClient+fetchAccessToken) ⇒ <code>Promise</code>
     * [.fetchSessionCode()](#OAuthClient+fetchSessionCode) ⇒ [<code>Promise.&lt;SessionCodeRes&gt;</code>](#SessionCodeRes)
     * [.fetchSessionCodeWithPassword()](#OAuthClient+fetchSessionCodeWithPassword) ⇒ [<code>Promise.&lt;SessionCodeRes&gt;</code>](#SessionCodeRes)
+    * [.loginFlagship()](#OAuthClient+loginFlagship) ⇒ <code>Promise.&lt;(AccessTokenRes\|TwoFactorNeededRes\|SessionCodeRes)&gt;</code>
     * [.refreshToken()](#OAuthClient+refreshToken) ⇒ <code>Promise</code>
     * [.setToken(token)](#OAuthClient+setToken)
     * [.setOAuthOptions(options)](#OAuthClient+setOAuthOptions)
@@ -1230,6 +1235,19 @@ Fetches a new session code. Only usable by the Flagship application
 
 - <code>NotRegisteredException</code> When the client isn't certified to be the Flagship application
 
+<a name="OAuthClient+loginFlagship"></a>
+
+### oAuthClient.loginFlagship() ⇒ <code>Promise.&lt;(AccessTokenRes\|TwoFactorNeededRes\|SessionCodeRes)&gt;</code>
+Get OAuth access and register tokens without having to make OAuth dance
+
+This endpoint returns registration tokens only from a Flagship app,
+otherwise it returns a session_code that should be used in an OAuth dance
+
+More info: https://docs.cozy.io/en/cozy-stack/flagship/
+More info: https://docs.cozy.io/en/cozy-stack/auth/#post-authloginflagship
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+**Returns**: <code>Promise.&lt;(AccessTokenRes\|TwoFactorNeededRes\|SessionCodeRes)&gt;</code> - A promise that resolves with an access token, a session_code or a 2FA code  
 <a name="OAuthClient+refreshToken"></a>
 
 ### oAuthClient.refreshToken() ⇒ <code>Promise</code>
@@ -2096,6 +2114,7 @@ Document representing a io.cozy.oauth.clients
     * [.fetchAccessToken(accessCode, oauthOptionsArg, uri, codeVerifier)](#OAuthClient+fetchAccessToken) ⇒ <code>Promise</code>
     * [.fetchSessionCode()](#OAuthClient+fetchSessionCode) ⇒ [<code>Promise.&lt;SessionCodeRes&gt;</code>](#SessionCodeRes)
     * [.fetchSessionCodeWithPassword()](#OAuthClient+fetchSessionCodeWithPassword) ⇒ [<code>Promise.&lt;SessionCodeRes&gt;</code>](#SessionCodeRes)
+    * [.loginFlagship()](#OAuthClient+loginFlagship) ⇒ <code>Promise.&lt;(AccessTokenRes\|TwoFactorNeededRes\|SessionCodeRes)&gt;</code>
     * [.refreshToken()](#OAuthClient+refreshToken) ⇒ <code>Promise</code>
     * [.setToken(token)](#OAuthClient+setToken)
     * [.setOAuthOptions(options)](#OAuthClient+setOAuthOptions)
@@ -2241,6 +2260,19 @@ Fetches a new session code. Only usable by the Flagship application
 
 - <code>NotRegisteredException</code> When the client isn't certified to be the Flagship application
 
+<a name="OAuthClient+loginFlagship"></a>
+
+### oAuthClient.loginFlagship() ⇒ <code>Promise.&lt;(AccessTokenRes\|TwoFactorNeededRes\|SessionCodeRes)&gt;</code>
+Get OAuth access and register tokens without having to make OAuth dance
+
+This endpoint returns registration tokens only from a Flagship app,
+otherwise it returns a session_code that should be used in an OAuth dance
+
+More info: https://docs.cozy.io/en/cozy-stack/flagship/
+More info: https://docs.cozy.io/en/cozy-stack/auth/#post-authloginflagship
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+**Returns**: <code>Promise.&lt;(AccessTokenRes\|TwoFactorNeededRes\|SessionCodeRes)&gt;</code> - A promise that resolves with an access token, a session_code or a 2FA code  
 <a name="OAuthClient+refreshToken"></a>
 
 ### oAuthClient.refreshToken() ⇒ <code>Promise</code>
@@ -2400,6 +2432,29 @@ Attributes representing a design doc
 | Name | Type | Description |
 | --- | --- | --- |
 | session_code | <code>string</code> | The value of the session code |
+
+<a name="AccessTokenRes"></a>
+
+## AccessTokenRes
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| access_token | <code>string</code> | The OAuth access token |
+| refresh_token | <code>string</code> | The OAuth refresh token |
+| token_type | <code>string</code> | The OAuth token type |
+| scope | <code>string</code> | The OAuth scope |
+
+<a name="TwoFactorNeededRes"></a>
+
+## TwoFactorNeededRes
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| two_factor_token | <code>string</code> | The 2FA token |
 
 <a name="Permission"></a>
 
