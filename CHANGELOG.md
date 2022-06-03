@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [29.2.0](https://github.com/cozy/cozy-client/compare/v29.1.3...v29.2.0) (2022-06-03)
+
+
+### Features
+
+* **cozy-stack-client:** Add loginFlagship entry point ([ee66c16](https://github.com/cozy/cozy-client/commit/ee66c16c9ae71b6534e30e06e0d20550b2d34854)), closes [cozy/cozy-stack#3400](https://github.com/cozy/cozy-stack/issues/3400)
+
+
+
+
+
 ## [29.1.3](https://github.com/cozy/cozy-client/compare/v29.1.2...v29.1.3) (2022-06-02)
 
 
