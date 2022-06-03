@@ -427,6 +427,44 @@ class OAuthClient extends CozyStackClient {
   }
 
   /**
+   * @typedef AccessTokenRes
+   * @property {string} access_token The OAuth access token
+   * @property {string} refresh_token The OAuth refresh token
+   * @property {string} token_type The OAuth token type
+   * @property {string} scope The OAuth scope
+   */
+
+  /**
+   * @typedef TwoFactorNeededRes
+   * @property {string} two_factor_token The 2FA token
+   */
+
+  /**
+   * Get OAuth access and register tokens without having to make OAuth dance
+   *
+   * This endpoint returns registration tokens only from a Flagship app,
+   * otherwise it returns a session_code that should be used in an OAuth dance
+   *
+   * More info: https://docs.cozy.io/en/cozy-stack/flagship/
+   * More info: https://docs.cozy.io/en/cozy-stack/auth/#post-authloginflagship
+   *
+   * @returns {Promise<AccessTokenRes|TwoFactorNeededRes|SessionCodeRes>} A promise that resolves with an access token, a session_code or a 2FA code
+   */
+  async loginFlagship({
+    passwordHash,
+    twoFactorToken = undefined,
+    twoFactorPasscode = undefined
+  }) {
+    return this.fetchJSON('POST', '/auth/login/flagship', {
+      client_id: this.oauthOptions.clientID,
+      client_secret: this.oauthOptions.clientSecret,
+      passphrase: passwordHash,
+      two_factor_token: twoFactorToken,
+      two_factor_passcode: twoFactorPasscode
+    })
+  }
+
+  /**
    * Retrieves a new access token by refreshing the currently used token.
    *
    * @throws {NotRegisteredException} When the client doesn't have it's registration information
