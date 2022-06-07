@@ -61,7 +61,8 @@ export const sendMeasureToDACC = async (client, remoteDoctype, measure) => {
     await client
       .getStackClient()
       .fetchJSON('POST', `/remote/${remoteDoctype}`, {
-        data: JSON.stringify(measure)
+        data: JSON.stringify(measure),
+        path: 'measure'
       })
   } catch (error) {
     log(
