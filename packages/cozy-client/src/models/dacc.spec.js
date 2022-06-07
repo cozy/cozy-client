@@ -1,6 +1,6 @@
-import { checkMeasureParams } from './dacc'
+import { checkMeasureParams, buildAggregateParams } from './dacc'
 
-describe('dacc', () => {
+describe('checkMeasureParams', () => {
   const measure = {
     value: 42,
     measureName: 'theanswer',
@@ -102,5 +102,39 @@ describe('dacc', () => {
     expect(() =>
       checkMeasureParams({ ...measure, group2: { b: 1 }, group3: { c: 1 } })
     ).toThrow()
+  })
+})
+
+describe('buildAggregateParams', () => {
+  beforeAll(() => {
+    jest
+      .spyOn(global.Date, 'now')
+      .mockImplementation(() => new Date(2022, 5, 1).valueOf())
+  })
+  it('should throw if measure name is not correct', () => {
+    expect(() => buildAggregateParams({})).toThrow()
+    expect(() => buildAggregateParams({ measurName: 42 })).toThrow()
+  })
+
+  it('should throw if dates are not correct', () => {
+    expect(() =>
+      buildAggregateParams({
+        measureName: 'test',
+        startDate: 'Lundi 10 août 2021'
+      })
+    ).toThrow()
+    expect(() =>
+      buildAggregateParams({
+        measureName: 'test',
+        endDate: 'Lundi 10 août 2021'
+      })
+    ).toThrow()
+  })
+  it('should build date if not provided', () => {
+    expect(buildAggregateParams({ measureName: 'test' })).toEqual({
+      measureName: 'test',
+      startDate: '1970-01-01T00:00:00.000Z',
+      endDate: new Date(2022, 5, 1).toISOString()
+    })
   })
 })

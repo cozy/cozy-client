@@ -323,6 +323,15 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
+ * @typedef {object} DACCAggregatesParams
+ * See https://github.com/cozy/DACC
+ *
+ * @property {string} measureName - It must match an existing measure name on the DACC server
+ * @property {string} startDate - Start of the aggregation period. Should be in YYYY-MM-DD format
+ * @property {string} endDate - End of the aggregation period. Should be in YYYY-MM-DD format
+ */
+
+/**
  * Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
  *
  * @callback OpenURLCallback

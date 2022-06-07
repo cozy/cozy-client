@@ -391,6 +391,23 @@ export type DACCMeasure = {
     group3: object;
 };
 /**
+ * See https://github.com/cozy/DACC
+ */
+export type DACCAggregatesParams = {
+    /**
+     * - It must match an existing measure name on the DACC server
+     */
+    measureName: string;
+    /**
+     * - Start of the aggregation period. Should be in YYYY-MM-DD format
+     */
+    startDate: string;
+    /**
+     * - End of the aggregation period. Should be in YYYY-MM-DD format
+     */
+    endDate: string;
+};
+/**
  * Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
  */
 export type OpenURLCallback = (url: string) => any;
