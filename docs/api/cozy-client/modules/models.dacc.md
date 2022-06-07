@@ -4,7 +4,39 @@
 
 [models](models.md).dacc
 
+## Interfaces
+
+*   [Params](../interfaces/models.dacc.Params.md)
+
 ## Functions
+
+### buildAggregateParams
+
+▸ **buildAggregateParams**(`params`): `DACCAggregatesParams`
+
+Build parameters to request DACC aggregate
+
+**`property`** {string} \[measureName] - The measure name
+
+**`property`** {string} \[startDate]   - The measure start date
+
+**`property`** {string} \[endDate]     - The measure end date
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `params` | [`Params`](../interfaces/models.dacc.Params.md) | The unformatted DACC aggregate params |
+
+*Returns*
+
+`DACCAggregatesParams`
+
+*Defined in*
+
+[packages/cozy-client/src/models/dacc.js:103](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/dacc.js#L103)
+
+***
 
 ### checkMeasureParams
 
@@ -24,7 +56,53 @@ Throw an errror if a DACC parameter is incorrect.
 
 *Defined in*
 
-[packages/cozy-client/src/models/dacc.js:9](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/dacc.js#L9)
+[packages/cozy-client/src/models/dacc.js:25](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/dacc.js#L25)
+
+***
+
+### fetchAggregatesFromDACC
+
+▸ **fetchAggregatesFromDACC**(`client`, `remoteDoctype`, `params`): `Promise`<`void`>
+
+Send measures to a DACC through a remote doctype
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `client` | [`CozyClient`](../classes/CozyClient.md) | The CozyClient instance |
+| `remoteDoctype` | `string` | The remote doctype to use |
+| `params` | `DACCAggregatesParams` | The request params |
+
+*Returns*
+
+`Promise`<`void`>
+
+*Defined in*
+
+[packages/cozy-client/src/models/dacc.js:127](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/dacc.js#L127)
+
+***
+
+### isCorrectDateFormat
+
+▸ **isCorrectDateFormat**(`date`): `boolean`
+
+Check whether or not the given date is in YYYY-MM-DD format
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `date` | `string` | The date to check |
+
+*Returns*
+
+`boolean`
+
+*Defined in*
+
+[packages/cozy-client/src/models/dacc.js:11](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/dacc.js#L11)
 
 ***
 
@@ -38,7 +116,7 @@ Send measures to a DACC through a remote doctype
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `client` | `any` | The CozyClient instance |
+| `client` | [`CozyClient`](../classes/CozyClient.md) | The CozyClient instance |
 | `remoteDoctype` | `string` | The remote doctype to use |
 | `measure` | `DACCMeasure` | The DACC measure |
 
@@ -48,4 +126,4 @@ Send measures to a DACC through a remote doctype
 
 *Defined in*
 
-[packages/cozy-client/src/models/dacc.js:57](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/dacc.js#L57)
+[packages/cozy-client/src/models/dacc.js:72](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/dacc.js#L72)

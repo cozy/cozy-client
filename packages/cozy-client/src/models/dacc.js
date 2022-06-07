@@ -1,10 +1,17 @@
 import log from 'cozy-logger'
 import { DACCMeasure, DACCAggregatesParams } from '../types'
+import CozyClient from '../CozyClient'
 
+/**
+ * Check whether or not the given date is in YYYY-MM-DD format
+ *
+ * @param {string} date - The date to check
+ * @returns {boolean}
+ */
 export const isCorrectDateFormat = date => {
   try {
     const parsedDate = new Date(Date.parse(date))
-    return parsedDate.toISOString().startsWith(date)
+    return !!parsedDate.toISOString().startsWith(date)
   } catch (err) {
     return false
   }
@@ -58,7 +65,7 @@ export const checkMeasureParams = measure => {
 /**
  * Send measures to a DACC through a remote doctype
  *
- * @param {object} client - The CozyClient instance
+ * @param {CozyClient} client - The CozyClient instance
  * @param {string} remoteDoctype - The remote doctype to use
  * @param {DACCMeasure} measure - The DACC measure
  */
@@ -81,6 +88,18 @@ export const sendMeasureToDACC = async (client, remoteDoctype, measure) => {
   }
 }
 
+/**
+ * Build parameters to request DACC aggregate
+ *
+ *
+ * @typedef Params - The unformatted DACC aggregate params
+ * @property {string} [measureName] - The measure name
+ * @property {string} [startDate]   - The measure start date
+ * @property {string} [endDate]     - The measure end date
+ *
+ * @param {Params} params - The unformatted DACC aggregate params
+ * @returns {DACCAggregatesParams}
+ */
 export const buildAggregateParams = params => {
   const { measureName } = params
   if (!measureName || typeof measureName !== 'string') {
@@ -89,6 +108,10 @@ export const buildAggregateParams = params => {
   const startDate = params.startDate || new Date(0).toISOString()
   const endDate = params.endDate || new Date(Date.now()).toISOString()
   if (!isCorrectDateFormat(startDate) || !isCorrectDateFormat(endDate)) {
+    log(
+      'error',
+      `Date should be in YYYY-MM-DD format but received: startDate: ${startDate} | endDate: ${endDate}`
+    )
     throw new Error('Date should be in YYYY-MM-DD format')
   }
   return { measureName, startDate, endDate }
@@ -97,7 +120,7 @@ export const buildAggregateParams = params => {
 /**
  * Send measures to a DACC through a remote doctype
  *
- * @param {object} client - The CozyClient instance
+ * @param {CozyClient} client - The CozyClient instance
  * @param {string} remoteDoctype - The remote doctype to use
  * @param {DACCAggregatesParams} params - The request params
  */
