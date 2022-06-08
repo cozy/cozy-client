@@ -8,6 +8,8 @@ import { CouchDBViewCursor, DocId, Doctype } from '../types'
  * @property {Array} [indexedFields]
  * @property {Array} [sort]
  * @property {object} [selector]
+ * @property {object} [partialFilter]
+ * @property {Array} [fields]
  */
 
 /**
@@ -24,6 +26,7 @@ import { CouchDBViewCursor, DocId, Doctype } from '../types'
  *
  * @augments {object}
  */
+
 class QueryDefinition {
   /**
    * @class
@@ -129,6 +132,32 @@ class QueryDefinition {
   }
 
   /**
+   * Check if the selected fields are all included in the selectors
+   *
+   * @param {PartialQueryDefinition} obj - A partial QueryDefinition to check
+   */
+  checkSelectFields({ fields, selector, partialFilter }) {
+    const _fields = this.fields || fields
+    const _selector = this.selector || selector
+    const _partialFilter = this.partialFilter || partialFilter
+    if (!_fields || (!_selector && !_partialFilter)) {
+      return
+    }
+    const mergedSelector = { ..._selector, ..._partialFilter }
+    const selectorAttributes = Object.keys(mergedSelector)
+    const hasEveryFieldsInSelector = selectorAttributes.every(attribute =>
+      _fields.includes(attribute)
+    )
+    if (!hasEveryFieldsInSelector) {
+      throw new Error(
+        `The .select should includes all the fields used in where or partialIndex.
+        Please fix this query: fields: ${JSON.stringify(this.toDefinition())}`
+      )
+    }
+    return
+  }
+
+  /**
    * Query a single document on its id.
    *
    * @param {string} id   The document id.
@@ -161,6 +190,7 @@ class QueryDefinition {
   where(selector) {
     this.checkSortOrder({ selector })
     this.checkSelector(selector)
+    this.checkSelectFields({ selector })
     return new QueryDefinition({ ...this.toDefinition(), selector })
   }
 
@@ -171,6 +201,8 @@ class QueryDefinition {
    * @returns {QueryDefinition}  The QueryDefinition object.
    */
   select(fields) {
+    this.checkSelectFields({ fields })
+
     return new QueryDefinition({ ...this.toDefinition(), fields })
   }
 
@@ -195,6 +227,7 @@ class QueryDefinition {
    * @param {object} partialFilter - The filter definition.
    */
   partialIndex(partialFilter) {
+    this.checkSelectFields({ partialFilter })
     return new QueryDefinition({ ...this.toDefinition(), partialFilter })
   }
 

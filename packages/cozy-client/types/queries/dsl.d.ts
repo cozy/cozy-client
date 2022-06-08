@@ -68,6 +68,8 @@ export type PartialQueryDefinition = {
     indexedFields?: any[];
     sort?: any[];
     selector?: object;
+    partialFilter?: object;
+    fields?: any[];
 };
 export type MangoSelector = any;
 export type MangoPartialFilter = any;
@@ -78,6 +80,8 @@ import { Doctype } from "../types";
  * @property {Array} [indexedFields]
  * @property {Array} [sort]
  * @property {object} [selector]
+ * @property {object} [partialFilter]
+ * @property {Array} [fields]
  */
 /**
  * @typedef {object} MangoSelector
@@ -162,6 +166,12 @@ export class QueryDefinition {
      * @returns {void}
      */
     checkSelector(selector: MangoSelector): void;
+    /**
+     * Check if the selected fields are all included in the selectors
+     *
+     * @param {PartialQueryDefinition} obj - A partial QueryDefinition to check
+     */
+    checkSelectFields({ fields, selector, partialFilter }: PartialQueryDefinition): void;
     /**
      * Query a single document on its id.
      *

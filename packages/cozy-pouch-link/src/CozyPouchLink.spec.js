@@ -328,12 +328,12 @@ describe('CozyPouchLink', () => {
         .where({ label: { $gt: null }, done: true })
         .indexFields(['done', 'label'])
         .sortBy([{ done: 'asc' }, { label: 'asc' }])
-        .select(['label'])
+        .select(['label', 'done'])
       await link.request(query)
       expect(find).toHaveBeenLastCalledWith(
         expect.anything(),
         expect.objectContaining({
-          fields: ['label', '_id', '_type', 'class']
+          fields: ['label', 'done', '_id', '_type', 'class']
         })
       )
     })
