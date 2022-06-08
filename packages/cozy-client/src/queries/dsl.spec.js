@@ -107,4 +107,43 @@ describe('QueryDefinition', () => {
     Q('io.cozy.files').where({ _id: { $ne: 'io.cozy.root-id' } })
     expect(console.info).toHaveBeenCalledTimes(1)
   })
+
+  it('should throw an error when there is a select without all the fields in selector', () => {
+    const query = () =>
+      Q('io.cozy.files')
+        .where({ name: 'saymyname' })
+        .select(['size'])
+    expect(() => query()).toThrow()
+  })
+  it('should throw an error when there is a select without all the fields in partial index', () => {
+    const query = () =>
+      Q('io.cozy.files')
+        .where({ size: 42 })
+        .partialIndex({ name: { $exists: true } })
+        .select(['size'])
+    expect(() => query()).toThrow()
+  })
+  it('should throw an error when there is a select without all the fields in nor selector nor partial index', () => {
+    const query = () =>
+      Q('io.cozy.files')
+        .where({ size: 42 })
+        .partialIndex({ name: { $exists: true } })
+        .select(['date'])
+    expect(() => query()).toThrow()
+  })
+  it('should not throw when there is a select with all the fields in selector and partial index', () => {
+    const query = () =>
+      Q('io.cozy.files')
+        .where(
+          {
+            size: 42
+          },
+          {
+            date: '2021-01-01'
+          }
+        )
+        .partialIndex({ name: { $exists: true } })
+        .select(['date', 'size', 'name', 'trashed'])
+    expect(() => query()).not.toThrow()
+  })
 })

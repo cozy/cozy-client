@@ -54,7 +54,7 @@ cozy-client
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:462](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L462)
+[packages/cozy-client/src/queries/dsl.js:495](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L495)
 
 ***
 
@@ -78,7 +78,7 @@ cozy-client
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:450](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L450)
+[packages/cozy-client/src/queries/dsl.js:483](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L483)
 
 ***
 
@@ -132,7 +132,7 @@ query definitions.
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:346](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L346)
+[packages/cozy-client/src/queries/dsl.js:379](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L379)
 
 ***
 
@@ -261,7 +261,7 @@ Generated URL
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:426](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L426)
+[packages/cozy-client/src/queries/dsl.js:459](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L459)
 
 ***
 
