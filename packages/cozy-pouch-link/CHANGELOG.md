@@ -3,6 +3,37 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [30.0.0](https://github.com/cozy/cozy-client/compare/v29.2.0...v30.0.0) (2022-06-09)
+
+
+### Features
+
+* Throw an error when fields do not include all searched attributes ([ca72614](https://github.com/cozy/cozy-client/commit/ca726142e5194a3f03bf6f0d48fc62a3e4ee2df7))
+
+
+### BREAKING CHANGES
+
+* when a `.select` is used in a query definition, it
+MUST includes all the fields expressed in the selector and partial
+index.
+This is because we evaluate queries on the store thanks to sift,
+and it requires to have all the necessary fields to evaluate the
+query. If one is missing, the query will return nothing.
+See this example:
+
+```
+Q('io.cozy.todos).where({date: $gt: { null}}).select(['name'])
+```
+
+When this query will be run, only the todos name will be in the store.
+Then, when later evaluated in the store, sift won't find any todos with
+a date ; thus it will return nothing and consider all the existing todos
+should be removed from the store.
+
+
+
+
+
 # [29.2.0](https://github.com/cozy/cozy-client/compare/v29.1.3...v29.2.0) (2022-06-03)
 
 **Note:** Version bump only for package cozy-pouch-link
