@@ -130,11 +130,29 @@ describe('buildAggregateParams', () => {
       })
     ).toThrow()
   })
-  it('should build date if not provided', () => {
+  it('should build dates if none provided', () => {
     expect(buildAggregateParams({ measureName: 'test' })).toEqual({
       measureName: 'test',
       startDate: '1970-01-01T00:00:00.000Z',
       endDate: new Date(2022, 5, 1).toISOString()
+    })
+  })
+  it('should build dates if startDate provided', () => {
+    expect(
+      buildAggregateParams({ measureName: 'test', startDate: '2021-08-10' })
+    ).toEqual({
+      measureName: 'test',
+      startDate: '2021-08-10',
+      endDate: new Date(2022, 5, 1).toISOString()
+    })
+  })
+  it('should build dates if endDate provided', () => {
+    expect(
+      buildAggregateParams({ measureName: 'test', endDate: '2022-05-02' })
+    ).toEqual({
+      measureName: 'test',
+      startDate: '1970-01-01T00:00:00.000Z',
+      endDate: '2022-05-02'
     })
   })
 })
