@@ -408,6 +408,51 @@ export type DACCAggregatesParams = {
     endDate: string;
 };
 /**
+ * See https://github.com/cozy/DACC
+ */
+export type DACCAggregatesResponse = DACCAggregate[];
+/**
+ * See https://github.com/cozy/DACC
+ */
+export type DACCAggregate = {
+    /**
+     * - The name of the measures aggregate
+     */
+    measureName: string;
+    /**
+     * - The aggregation start date
+     */
+    startDate: string;
+    /**
+     * - The aggregate sum
+     */
+    sum: number;
+    /**
+     * - The aggregate count
+     */
+    count: number;
+    /**
+     * - The aggregate count of values different from zero
+     */
+    countNotZero: number;
+    /**
+     * - The aggregate average
+     */
+    avg: number;
+    /**
+     * - The aggregate min
+     */
+    min: number;
+    /**
+     * - The aggregate max
+     */
+    max: number;
+    /**
+     * - The aggregate standard deviation
+     */
+    std: number;
+};
+/**
  * Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
  */
 export type OpenURLCallback = (url: string) => any;

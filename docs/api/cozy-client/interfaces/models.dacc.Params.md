@@ -16,7 +16,7 @@ The measure end date
 
 *Defined in*
 
-[packages/cozy-client/src/models/dacc.js:98](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/dacc.js#L98)
+[packages/cozy-client/src/models/dacc.js:102](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/dacc.js#L102)
 
 ***
 
@@ -28,7 +28,7 @@ The measure name
 
 *Defined in*
 
-[packages/cozy-client/src/models/dacc.js:96](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/dacc.js#L96)
+[packages/cozy-client/src/models/dacc.js:100](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/dacc.js#L100)
 
 ***
 
@@ -40,4 +40,4 @@ The measure start date
 
 *Defined in*
 
-[packages/cozy-client/src/models/dacc.js:97](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/dacc.js#L97)
+[packages/cozy-client/src/models/dacc.js:101](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/dacc.js#L101)

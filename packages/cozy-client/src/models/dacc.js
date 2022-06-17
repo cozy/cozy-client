@@ -1,5 +1,9 @@
 import log from 'cozy-logger'
-import { DACCMeasure, DACCAggregatesParams } from '../types'
+import {
+  DACCMeasure,
+  DACCAggregatesParams,
+  DACCAggregatesResponse
+} from '../types'
 import CozyClient from '../CozyClient'
 
 /**
@@ -123,6 +127,7 @@ export const buildAggregateParams = params => {
  * @param {CozyClient} client - The CozyClient instance
  * @param {string} remoteDoctype - The remote doctype to use
  * @param {DACCAggregatesParams} params - The request params
+ * @returns { Promise<DACCAggregatesResponse> }
  */
 export const fetchAggregatesFromDACC = async (
   client,
@@ -131,7 +136,7 @@ export const fetchAggregatesFromDACC = async (
 ) => {
   try {
     const aggregateParams = buildAggregateParams(params)
-    return client
+    return await client
       .getStackClient()
       .fetchJSON('POST', `/remote/${remoteDoctype}`, {
         data: JSON.stringify(aggregateParams),

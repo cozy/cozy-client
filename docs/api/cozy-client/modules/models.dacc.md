@@ -34,7 +34,7 @@ Build parameters to request DACC aggregate
 
 *Defined in*
 
-[packages/cozy-client/src/models/dacc.js:103](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/dacc.js#L103)
+[packages/cozy-client/src/models/dacc.js:107](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/dacc.js#L107)
 
 ***
 
@@ -56,13 +56,13 @@ Throw an errror if a DACC parameter is incorrect.
 
 *Defined in*
 
-[packages/cozy-client/src/models/dacc.js:25](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/dacc.js#L25)
+[packages/cozy-client/src/models/dacc.js:29](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/dacc.js#L29)
 
 ***
 
 ### fetchAggregatesFromDACC
 
-▸ **fetchAggregatesFromDACC**(`client`, `remoteDoctype`, `params`): `Promise`<`void`>
+▸ **fetchAggregatesFromDACC**(`client`, `remoteDoctype`, `params`): `Promise`<`DACCAggregatesResponse`>
 
 Send measures to a DACC through a remote doctype
 
@@ -76,11 +76,11 @@ Send measures to a DACC through a remote doctype
 
 *Returns*
 
-`Promise`<`void`>
+`Promise`<`DACCAggregatesResponse`>
 
 *Defined in*
 
-[packages/cozy-client/src/models/dacc.js:127](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/dacc.js#L127)
+[packages/cozy-client/src/models/dacc.js:132](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/dacc.js#L132)
 
 ***
 
@@ -102,7 +102,7 @@ Check whether or not the given date is in YYYY-MM-DD format
 
 *Defined in*
 
-[packages/cozy-client/src/models/dacc.js:11](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/dacc.js#L11)
+[packages/cozy-client/src/models/dacc.js:15](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/dacc.js#L15)
 
 ***
 
@@ -126,4 +126,4 @@ Send measures to a DACC through a remote doctype
 
 *Defined in*
 
-[packages/cozy-client/src/models/dacc.js:72](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/dacc.js#L72)
+[packages/cozy-client/src/models/dacc.js:76](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/dacc.js#L76)
