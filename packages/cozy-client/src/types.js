@@ -332,6 +332,27 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
+ * @typedef {Array<DACCAggregate>} DACCAggregatesResponse
+ * See https://github.com/cozy/DACC
+ */
+
+/**
+ * @typedef {object} DACCAggregate
+ * See https://github.com/cozy/DACC
+ *
+ * @property {string} measureName - The name of the measures aggregate
+ * @property {string} startDate - The aggregation start date
+ * @property {number} sum - The aggregate sum
+ * @property {number} count - The aggregate count
+ * @property {number} countNotZero - The aggregate count of values different from zero
+ * @property {number} avg - The aggregate average
+ * @property {number} min - The aggregate min
+ * @property {number} max - The aggregate max
+ * @property {number} std - The aggregate standard deviation
+ *
+ */
+
+/**
  * Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
  *
  * @callback OpenURLCallback
