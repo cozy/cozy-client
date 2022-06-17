@@ -131,7 +131,7 @@ export const fetchAggregatesFromDACC = async (
 ) => {
   try {
     const aggregateParams = buildAggregateParams(params)
-    await client
+    return client
       .getStackClient()
       .fetchJSON('POST', `/remote/${remoteDoctype}`, {
         data: JSON.stringify(aggregateParams),
