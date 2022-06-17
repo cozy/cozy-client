@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [31.0.0](https://github.com/cozy/cozy-client/compare/v30.0.0...v31.0.0) (2022-06-17)
+
+
+### Bug Fixes
+
+* Adapt dacc remote-doctype contribution sending ([4aa5a18](https://github.com/cozy/cozy-client/commit/4aa5a185f7818fe5c9120beece06a97bb1a3d258))
+
+
+### Features
+
+* Add method to fetch DACC aggregates ([281701e](https://github.com/cozy/cozy-client/commit/281701eb2fd43fa97c22adccf6a61d0611a03a19))
+
+
+### BREAKING CHANGES
+
+* Adapt DACC measure request to cope with new
+remote-doctypes.
+
+The `sendMeasureToDACC` method should be uesd with the DACC v2
+remote doctype, that parametrize the path, e.g. /measure or /aggregate.
+See https://github.com/cozy/cozy-doctypes/pull/202/files
+
+
+
+
+
 # [30.0.0](https://github.com/cozy/cozy-client/compare/v29.2.0...v30.0.0) (2022-06-09)
 
 
