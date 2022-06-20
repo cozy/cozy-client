@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [31.0.1](https://github.com/cozy/cozy-client/compare/v31.0.0...v31.0.1) (2022-06-20)
+
+
+### Bug Fixes
+
+* Return data from remote-doctype ([f6cb0cc](https://github.com/cozy/cozy-client/commit/f6cb0ccff9bf0a5b2abf36ba8d3e3740d1159012))
+
+
+
+
+
 # [31.0.0](https://github.com/cozy/cozy-client/compare/v30.0.0...v31.0.0) (2022-06-17)
 
 
