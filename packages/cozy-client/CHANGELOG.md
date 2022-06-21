@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [32.0.0](https://github.com/cozy/cozy-client/compare/v31.0.1...v32.0.0) (2022-06-21)
+
+
+### Bug Fixes
+
+* Enforce limit on documents coming from store ([0f2e8a3](https://github.com/cozy/cozy-client/commit/0f2e8a3f2f13157723fa6395929476d66b860dec))
+
+
+### BREAKING CHANGES
+
+* we used to return all data from the store
+positively evaluated by sift without enforcing any limit, even when a
+`.limitBy` was specified.
+
+To demonstrate the problematic, consider this example:
+
+```
+Q1 = Q('io.cozy.todos').select(['name']).limitBy(10)
+Q2 = Q('io.cozy.todos').limitBy(1000)
+```
+
+When Q2 is run, Q1 is updated and receives all data coming from Q2.
+Thus, Q1 returns 1000 docs, while expecting only 10 max.
+
+Another problem was related to the use of `.select`: Q1 only needs
+the `name` attribute, and displays todos accordingly to this expected
+format. But since it actually also receives the results from Q2, some
+todos will have more data than expected.
+Likewise, Q2 will expect all the attributes from Q2. But, if the todos
+retreived by Q1 and Q2 are not the same, Q2 will have todos without
+all the expecting fields, which could leads to issues.
+
+docs: Add jsdoc and fix typo
+
+
+
+
+
 ## [31.0.1](https://github.com/cozy/cozy-client/compare/v31.0.0...v31.0.1) (2022-06-20)
 
 
