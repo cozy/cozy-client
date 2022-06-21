@@ -230,6 +230,54 @@ describe('Store', () => {
       ).toBe(FILE_1.label)
     })
 
+    it('should respect the query limit', () => {
+      const query = new Q({
+        doctype: 'io.cozy.todos',
+        limit: 2
+      })
+      let queryResult
+      store.dispatch(initQuery('Q1', query))
+      store.dispatch(initQuery('Q2', query))
+      store.dispatch(
+        receiveQueryResult('Q1', {
+          data: [TODO_1, TODO_2]
+        })
+      )
+      store.dispatch(
+        receiveQueryResult('Q2', {
+          data: [TODO_3, TODO_4]
+        })
+      )
+      queryResult = getQueryFromStore(store, 'Q1')
+      expect(queryResult.data.map(x => x._id)).toEqual(['todo_1', 'todo_2'])
+      queryResult = getQueryFromStore(store, 'Q2')
+      expect(queryResult.data.map(x => x._id)).toEqual(['todo_3', 'todo_4'])
+    })
+
+    it('should respect the query limit with sort', () => {
+      const query = new Q({
+        doctype: 'io.cozy.todos',
+        limit: 2
+      })
+      let queryResult
+      store.dispatch(initQuery('Q1', query.sortBy([{ label: 'asc' }])))
+      store.dispatch(initQuery('Q2', query.sortBy([{ label: 'desc' }])))
+      store.dispatch(
+        receiveQueryResult('Q1', {
+          data: [TODO_3, TODO_1]
+        })
+      )
+      store.dispatch(
+        receiveQueryResult('Q2', {
+          data: [TODO_4, TODO_2]
+        })
+      )
+      queryResult = getQueryFromStore(store, 'Q1')
+      expect(queryResult.data.map(x => x._id)).toEqual(['todo_3', 'todo_1'])
+      queryResult = getQueryFromStore(store, 'Q2')
+      expect(queryResult.data.map(x => x._id)).toEqual(['todo_4', 'todo_2'])
+    })
+
     describe('deletion', () => {
       let originalWarn
       beforeEach(() => {
@@ -326,6 +374,7 @@ describe('Store', () => {
         lastErrorUpdate: null,
         hasMore: false,
         count: 0,
+        fetchedPagesCount: 0,
         data: null
       })
     })

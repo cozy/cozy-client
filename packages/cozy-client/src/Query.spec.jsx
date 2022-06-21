@@ -184,6 +184,7 @@ describe('Query', () => {
         {
           bookmark: null,
           count: 0,
+          fetchedPagesCount: 0,
           data: [],
           definition: { doctype: 'io.cozy.todos' },
           fetch: expect.any(Function),

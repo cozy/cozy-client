@@ -84,6 +84,7 @@ describe('use query', () => {
         'lastError',
         'hasMore',
         'count',
+        'fetchedPagesCount',
         'data',
         'bookmark',
         'options',
