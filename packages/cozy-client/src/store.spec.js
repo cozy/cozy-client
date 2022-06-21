@@ -237,7 +237,7 @@ describe('Store', () => {
       })
       let queryResult
       store.dispatch(initQuery('Q1', query))
-      store.dispatch(initQuery('Q2', query))
+      store.dispatch(initQuery('Q2', query.offset(2)))
       store.dispatch(
         receiveQueryResult('Q1', {
           data: [TODO_1, TODO_2]
@@ -248,9 +248,16 @@ describe('Store', () => {
           data: [TODO_3, TODO_4]
         })
       )
+      // There are now 4 docs in the store
+      expect(
+        Object.keys(store.getState().cozy.documents['io.cozy.todos']).length
+      ).toBe(4)
+      // Q1 and Q2 only returns 2 todos because of the limit
       queryResult = getQueryFromStore(store, 'Q1')
+      expect(queryResult.data.length).toBe(2)
       expect(queryResult.data.map(x => x._id)).toEqual(['todo_1', 'todo_2'])
       queryResult = getQueryFromStore(store, 'Q2')
+      expect(queryResult.data.length).toBe(2)
       expect(queryResult.data.map(x => x._id)).toEqual(['todo_3', 'todo_4'])
     })
 
@@ -262,20 +269,42 @@ describe('Store', () => {
       let queryResult
       store.dispatch(initQuery('Q1', query.sortBy([{ label: 'asc' }])))
       store.dispatch(initQuery('Q2', query.sortBy([{ label: 'desc' }])))
+
+      // Labels' ascending order, as defined in fixtures: TODO_3, TODO_1, TODO_4, TODO_2
+      store.dispatch(
+        receiveQueryResult('Q2', {
+          data: [TODO_2, TODO_4]
+        })
+      )
       store.dispatch(
         receiveQueryResult('Q1', {
           data: [TODO_3, TODO_1]
         })
       )
-      store.dispatch(
-        receiveQueryResult('Q2', {
-          data: [TODO_4, TODO_2]
-        })
-      )
+
+      // There are now 4 docs in the store, ordered by their query arrival
+      const todosInStore = store.getState().cozy.documents['io.cozy.todos']
+      expect(Object.values(todosInStore)).toEqual([
+        TODO_2,
+        TODO_4,
+        TODO_3,
+        TODO_1
+      ])
+      // Q1 and Q2 retrieves the todos sorted by label, thanks to the sort in the store
       queryResult = getQueryFromStore(store, 'Q1')
-      expect(queryResult.data.map(x => x._id)).toEqual(['todo_3', 'todo_1'])
+      expect(
+        queryResult.data.map(x => ({ _id: x._id, label: x.label }))
+      ).toEqual([
+        { _id: 'todo_3', label: 'Build stuff' },
+        { _id: 'todo_1', label: 'Buy bread' }
+      ])
       queryResult = getQueryFromStore(store, 'Q2')
-      expect(queryResult.data.map(x => x._id)).toEqual(['todo_4', 'todo_2'])
+      expect(
+        queryResult.data.map(x => ({ _id: x._id, label: x.label }))
+      ).toEqual([
+        { _id: 'todo_4', label: 'Run a semi-marathon' },
+        { _id: 'todo_2', label: 'Check email' }
+      ])
     })
 
     describe('deletion', () => {
