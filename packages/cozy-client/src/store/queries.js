@@ -54,23 +54,67 @@ const queryInitialState = {
   lastError: null,
   hasMore: false,
   count: 0,
+  fetchedPagesCount: 0,
   data: [],
   bookmark: null
 }
 
-const updateQueryDataFromResponse = (queryState, response, documents) => {
-  let updatedIds = uniq([...queryState.data, ...response.data.map(properId)])
-  if (queryState.definition.sort) {
+/**
+ * Return the docs ids accordingly to the given sort and fetched docs
+ *
+ * @param {QueryState} queryState - Current state
+ * @param {DocumentsStateSlice} documents - Reference to the documents slice
+ * @param {Array<string>} ids - The updated ids after query
+ * @param {object} params - The additional params
+ * @param {number} params.count - The count of retrieved docs
+ * @param {number} params.fetchedPagesCount - The number of pages already fetched
+ * @returns {Array<string>} The list of sorted ids
+ */
+export const sortAndLimitDocsIds = (
+  queryState,
+  documents,
+  ids,
+  { count, fetchedPagesCount }
+) => {
+  let evaluatedIds = [...ids]
+  if (queryState.definition.sort && documents) {
     const sorter = makeSorterFromDefinition(queryState.definition)
-    const doctype = queryState.definition.doctype
-    const allDocs = documents[doctype]
+    const allDocs = documents[queryState.definition.doctype]
     const docs = allDocs
-      ? updatedIds.map(_id => allDocs[_id]).filter(Boolean)
+      ? evaluatedIds.map(_id => allDocs[_id]).filter(Boolean)
       : []
-    const sortedDocs = sorter(docs)
-    updatedIds = sortedDocs.map(properId)
+    evaluatedIds = sorter(docs).map(properId)
   }
-  return updatedIds
+  if (queryState.definition.limit) {
+    evaluatedIds = queryState.definition.limit
+      ? evaluatedIds.slice(0, count * fetchedPagesCount)
+      : evaluatedIds
+  }
+  return evaluatedIds
+}
+
+/**
+ * Return the query docs ids, taken from the action response and the documents' slice
+ *
+ * @param {QueryState} queryState - Current state
+ * @param {object} response - The action response
+ * @param {DocumentsStateSlice} documents - Reference to the documents slice
+ * @param {object} params - The additional params
+ * @param {number} params.count - The count of retrieved docs
+ * @param {number} params.fetchedPagesCount - The number of pages already fetched
+ * @returns {Array<string>} The list of sorted ids
+ */
+const updateQueryDataFromResponse = (
+  queryState,
+  response,
+  documents,
+  { count, fetchedPagesCount }
+) => {
+  let updatedIds = uniq([...queryState.data, ...response.data.map(properId)])
+  return sortAndLimitDocsIds(queryState, documents, updatedIds, {
+    count,
+    fetchedPagesCount
+  })
 }
 
 /**
@@ -135,16 +179,23 @@ const query = (state = queryInitialState, action, documents) => {
           data: [properId(response.data)]
         }
       }
+      const count =
+        response.meta && response.meta.count
+          ? response.meta.count
+          : response.data.length
+      const fetchedPagesCount = state.fetchedPagesCount + 1
+      const data = updateQueryDataFromResponse(state, response, documents, {
+        count,
+        fetchedPagesCount
+      })
       return {
         ...state,
         ...common,
         bookmark: response.bookmark || null,
         hasMore: response.next !== undefined ? response.next : state.hasMore,
-        count:
-          response.meta && response.meta.count
-            ? response.meta.count
-            : response.data.length,
-        data: updateQueryDataFromResponse(state, response, documents)
+        count,
+        fetchedPagesCount,
+        data
       }
     }
     case RECEIVE_QUERY_ERROR:
@@ -303,19 +354,17 @@ const updateData = (query, newData, documents) => {
   // toAdd does not contain any id present in originalIds, by construction.
   // It is also faster than union.
   let updatedData = difference(concat(originalIds, toAdd), toRemove)
-
-  if (query.definition.sort && documents) {
-    const sorter = makeSorterFromDefinition(query.definition)
-    const allDocs = documents[query.definition.doctype]
-    const docs = updatedData.map(_id => allDocs[_id])
-    const sortedDocs = sorter(docs)
-    updatedData = sortedDocs.map(properId)
-  }
+  const { count, fetchedPagesCount } = query
+  const docsIds = sortAndLimitDocsIds(query, documents, updatedData, {
+    count,
+    fetchedPagesCount
+  })
 
   return {
     ...query,
-    data: updatedData,
+    data: docsIds,
     count: updatedData.length,
+    fetchedPagesCount,
     lastUpdate: changed ? Date.now() : query.lastUpdate
   }
 }

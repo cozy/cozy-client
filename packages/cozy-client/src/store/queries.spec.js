@@ -3,7 +3,8 @@ import queries, {
   receiveQueryResult,
   convert$gtNullSelectors,
   makeSorterFromDefinition,
-  mergeSelectorAndPartialIndex
+  mergeSelectorAndPartialIndex,
+  sortAndLimitDocsIds
 } from './queries'
 import { Q } from '../queries/dsl'
 import { TODO_1, TODO_2, TODO_3 } from '../__tests__/fixtures'
@@ -330,5 +331,100 @@ describe('mergeSelectorAndPartialIndex', () => {
     }
 
     expect(mergeSelectorAndPartialIndex(query)).toMatchObject(result)
+  })
+})
+
+describe('sortAndLimitDocsIds', () => {
+  const docs = {
+    'io.cozy.files': {
+      doc1: {
+        _id: 'doc1',
+        name: 'toto'
+      },
+      doc2: {
+        _id: 'doc2',
+        name: 'tata'
+      },
+      doc3: {
+        _id: 'doc3',
+        name: 'tutu'
+      },
+      doc4: {
+        _id: 'doc4',
+        name: 'tutu'
+      }
+    }
+  }
+  it('should return ids as is, when no sort', () => {
+    const query = Q('io.cozy.files')
+    const ids = sortAndLimitDocsIds(
+      { definition: query.toDefinition() },
+      docs,
+      ['doc1', 'doc2', 'doc3'],
+      {
+        count: 0,
+        fetchedPagesCount: 0
+      }
+    )
+    expect(ids).toEqual(['doc1', 'doc2', 'doc3'])
+  })
+  it('should return ids as is, when no documents in the documents slice', () => {
+    const query = Q('io.cozy.files').sortBy([{ name: 'asc' }])
+
+    const ids = sortAndLimitDocsIds(
+      { definition: query.toDefinition() },
+      null,
+      ['doc1', 'doc2', 'doc3'],
+      {
+        count: 0,
+        fetchedPagesCount: 0
+      }
+    )
+    expect(ids).toEqual(['doc1', 'doc2', 'doc3'])
+  })
+  it('should return sorted ids', () => {
+    const query = Q('io.cozy.files').sortBy([{ name: 'asc' }])
+
+    const ids = sortAndLimitDocsIds(
+      { definition: query.toDefinition() },
+      docs,
+      ['doc1', 'doc2', 'doc3'],
+      {
+        count: 3,
+        fetchedPagesCount: 1
+      }
+    )
+    expect(ids).toEqual(['doc2', 'doc1', 'doc3'])
+  })
+  it('should return sorted ids, accordingly to limitBy', () => {
+    const query1 = Q('io.cozy.files')
+      .sortBy([{ name: 'asc' }])
+      .limitBy(2)
+
+    const ids1 = sortAndLimitDocsIds(
+      { definition: query1.toDefinition() },
+      docs,
+      ['doc1', 'doc2', 'doc3'],
+      {
+        count: 2,
+        fetchedPagesCount: 1
+      }
+    )
+    expect(ids1).toEqual(['doc2', 'doc1'])
+
+    const query2 = Q('io.cozy.files')
+      .sortBy([{ name: 'asc' }])
+      .limitBy(1)
+
+    const ids2 = sortAndLimitDocsIds(
+      { definition: query2.toDefinition() },
+      docs,
+      ['doc1', 'doc2', 'doc3'],
+      {
+        count: 1,
+        fetchedPagesCount: 2
+      }
+    )
+    expect(ids2).toEqual(['doc2', 'doc1'])
   })
 })

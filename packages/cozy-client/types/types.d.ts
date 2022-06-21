@@ -41,6 +41,7 @@ export type QueryState = {
     lastError: Error;
     hasMore: boolean;
     count: number;
+    fetchedPagesCount: number;
     data: object | any[];
     bookmark: string;
     execution_stats?: object;

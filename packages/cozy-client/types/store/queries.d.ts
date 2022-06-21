@@ -1,5 +1,9 @@
 export function isQueryAction(action: any): boolean;
 export function isReceivingData(action: any): boolean;
+export function sortAndLimitDocsIds(queryState: QueryState, documents: DocumentsStateSlice, ids: Array<string>, { count, fetchedPagesCount }: {
+    count: number;
+    fetchedPagesCount: number;
+}): Array<string>;
 export function convert$gtNullSelectors(selector: any): object;
 export function mergeSelectorAndPartialIndex(queryDefinition: object): object;
 export function makeSorterFromDefinition(definition: QueryDefinition): (arg0: Array<CozyClientDocument>) => Array<CozyClientDocument>;
@@ -46,6 +50,8 @@ export class QueryIDGenerator {
 export namespace QueryIDGenerator {
     const UNNAMED: string;
 }
+import { QueryState } from "../types";
+import { DocumentsStateSlice } from "../types";
 import { QueryDefinition } from "../queries/dsl";
 import { CozyClientDocument } from "../types";
 /**
@@ -58,4 +64,3 @@ import { CozyClientDocument } from "../types";
 declare function queries(state: QueriesStateSlice, action: object, documents?: DocumentsStateSlice, haveDocumentsChanged?: boolean): QueriesStateSlice;
 import { QueryOptions } from "../types";
 import { QueriesStateSlice } from "../types";
-import { DocumentsStateSlice } from "../types";
