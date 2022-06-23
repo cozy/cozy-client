@@ -12,6 +12,7 @@ import isEqual from 'lodash/isEqual'
  *
  * @property {Array<object>} [sort] The sorting parameters
  * @property {Array<string>} [fields] The fields to return
+ * @property {Array<string>} [partialFilterFields] The partial filter fields
  * @property {number|null} [limit] For pagination, the number of results to return
  * @property {number|null} [skip] For skip-based pagination, the number of referenced files to skip
  * @property {string|null} [indexId] The _id of the CouchDB index to use for this request
@@ -35,8 +36,25 @@ export const normalizeDesignDoc = designDoc => {
   return { id, _id: id, ...designDoc.doc }
 }
 
-export const getIndexNameFromFields = fields => {
-  return `by_${fields.join('_and_')}`
+/**
+ * Name an index, based on its indexed fields and partial filter.
+ *
+ * It follows this naming convention:
+ * `by_{indexed_field1}_and_{indexed_field2}_filter_{partial_filter_field1}_and_{partial_filter_field2}
+ *
+ * @param {Array<string>} fields - The indexed fields
+ * @param {object} params - The additional params
+ * @param {Array<string>} params.partialFilterFields - The partial filter fields
+ * @returns {string} The index name, built from the fields
+ */
+export const getIndexNameFromFields = (
+  fields,
+  { partialFilterFields } = {}
+) => {
+  const indexName = `by_${fields.join('_and_')}`
+  return partialFilterFields
+    ? `${indexName}_filter_${partialFilterFields.join('_and_')}`
+    : indexName
 }
 
 export const transformSort = sort => {
@@ -61,11 +79,12 @@ export const transformSort = sort => {
  *
  * @returns {Array} - Fields to index
  */
-export const getIndexFields = ({ selector, sort = [] }) => {
+export const getIndexFields = ({ selector, partialFilter, sort = [] }) => {
   return Array.from(
     new Set([
       ...sort.map(sortOption => head(Object.keys(sortOption))),
-      ...(selector ? Object.keys(selector) : [])
+      ...(selector ? Object.keys(selector) : []),
+      ...(partialFilter ? Object.keys(partialFilter) : [])
     ])
   )
 }

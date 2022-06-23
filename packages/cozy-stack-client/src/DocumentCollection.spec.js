@@ -759,7 +759,7 @@ describe('DocumentCollection', () => {
         'POST',
         '/data/io.cozy.todos/_design/123456/copy?rev=1-123',
         null,
-        { headers: { Destination: '_design/by_label_and_done' } }
+        { headers: { Destination: '_design/by_label_and_done_filter_trashed' } }
       )
       expect(client.fetchJSON).toHaveBeenNthCalledWith(
         4,
