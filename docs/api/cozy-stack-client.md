@@ -73,6 +73,11 @@ through OAuth.</p>
 <dt><a href="#getIllegalCharacters">getIllegalCharacters</a> ⇒ <code>string</code></dt>
 <dd><p>Get the list of illegal characters in the file name</p>
 </dd>
+<dt><a href="#getIndexNameFromFields">getIndexNameFromFields</a> ⇒ <code>string</code></dt>
+<dd><p>Name an index, based on its indexed fields and partial filter.</p>
+<p>It follows this naming convention:
+`by_{indexed_field1}<em>and</em>{indexed_field2}<em>filter</em>{partial_filter_field1}<em>and</em>{partial_filter_field2}</p>
+</dd>
 <dt><a href="#getIndexFields">getIndexFields</a> ⇒ <code>Array</code></dt>
 <dd><p>Compute fields that should be indexed for a mango
 query to work</p>
@@ -1796,6 +1801,23 @@ Get the list of illegal characters in the file name
 | --- | --- | --- |
 | name | <code>string</code> | the file name |
 
+<a name="getIndexNameFromFields"></a>
+
+## getIndexNameFromFields ⇒ <code>string</code>
+Name an index, based on its indexed fields and partial filter.
+
+It follows this naming convention:
+`by_{indexed_field1}_and_{indexed_field2}_filter_{partial_filter_field1}_and_{partial_filter_field2}
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - The index name, built from the fields  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| fields | <code>Array.&lt;string&gt;</code> | The indexed fields |
+| params | <code>object</code> | The additional params |
+| params.partialFilterFields | <code>Array.&lt;string&gt;</code> | The partial filter fields |
+
 <a name="getIndexFields"></a>
 
 ## getIndexFields ⇒ <code>Array</code>
@@ -2402,6 +2424,7 @@ Document representing a io.cozy.jobs
 | --- | --- | --- |
 | [sort] | <code>Array.&lt;object&gt;</code> | The sorting parameters |
 | [fields] | <code>Array.&lt;string&gt;</code> | The fields to return |
+| [partialFilterFields] | <code>Array.&lt;string&gt;</code> | The partial filter fields |
 | [limit] | <code>number</code> \| <code>null</code> | For pagination, the number of results to return |
 | [skip] | <code>number</code> \| <code>null</code> | For skip-based pagination, the number of referenced files to skip |
 | [indexId] | <code>string</code> \| <code>null</code> | The _id of the CouchDB index to use for this request |

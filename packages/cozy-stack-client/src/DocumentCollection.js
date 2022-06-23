@@ -220,8 +220,14 @@ class DocumentCollection {
     if (!indexedFields) {
       indexedFields = getIndexFields({ sort: options.sort, selector })
     }
+    const partialFilterFields = partialFilter
+      ? getIndexFields({ partialFilter })
+      : null
+
     const existingIndex = await this.findExistingIndex(selector, options)
-    const indexName = getIndexNameFromFields(indexedFields)
+    const indexName = getIndexNameFromFields(indexedFields, {
+      partialFilterFields
+    })
     if (!existingIndex) {
       await this.createIndex(indexedFields, {
         partialFilter,

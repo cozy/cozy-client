@@ -1,4 +1,9 @@
-import { isMatchingIndex, isInconsistentIndex } from './mangoIndex'
+import {
+  isMatchingIndex,
+  isInconsistentIndex,
+  getIndexFields,
+  getIndexNameFromFields
+} from './mangoIndex'
 
 const buildDesignDoc = (fields, { partialFilter, id } = {}) => {
   return {
@@ -101,5 +106,79 @@ describe('inconsistent index', () => {
     )
     expect(isInconsistentIndex(index1)).toBe(false)
     expect(isInconsistentIndex(index2)).toBe(false)
+  })
+})
+
+describe('getIndexFields', () => {
+  it('should return nothing', () => {
+    expect(getIndexFields({})).toEqual([])
+  })
+
+  it('should return fields from selector', () => {
+    const selector = {
+      _id: {
+        $gt: null
+      },
+      name: 'toto'
+    }
+    expect(getIndexFields({ selector })).toEqual(['_id', 'name'])
+  })
+
+  it('should return fields from sort', () => {
+    const selector = {}
+    const sort = [{ _id: 'asc' }, { name: 'asc' }]
+    expect(getIndexFields({ selector, sort })).toEqual(['_id', 'name'])
+  })
+
+  it('should return fields from partial filter', () => {
+    const partialFilter = {
+      date: {
+        $exists: false
+      },
+      trashed: {
+        $ne: true
+      }
+    }
+    expect(getIndexFields({ partialFilter })).toEqual(['date', 'trashed'])
+  })
+
+  it('should return all fields', () => {
+    const selector = {
+      _id: {
+        $gt: null
+      },
+      name: 'toto'
+    }
+    const sort = [{ _id: 'asc' }, { name: 'asc' }]
+
+    const partialFilter = {
+      date: {
+        $exists: false
+      },
+      trashed: {
+        $ne: true
+      }
+    }
+    expect(getIndexFields({ selector, sort, partialFilter })).toEqual([
+      '_id',
+      'name',
+      'date',
+      'trashed'
+    ])
+  })
+})
+
+describe('getIndexNameFromFields', () => {
+  it('should return index fields', () => {
+    const fields = ['_id', 'name']
+    expect(getIndexNameFromFields(fields)).toEqual('by__id_and_name')
+  })
+
+  it('should return index fields with partial filter', () => {
+    const fields = ['_id', 'name']
+    const partialFilterFields = ['date', 'trashed']
+    expect(getIndexNameFromFields(fields, { partialFilterFields })).toEqual(
+      'by__id_and_name_filter_date_and_trashed'
+    )
   })
 })
