@@ -10,7 +10,10 @@ describe('extractAndMerge', () => {
       _id: 'b6ff135b34e041ffb2d4a4865f3e0a53',
       type: 'io.cozy.files',
       _type: 'io.cozy.files',
-      blabla: 'new field'
+      blabla: 'new field',
+      cozyMedata: {
+        created_at: '123456'
+      }
     },
     1: {
       id: 'b6ff135b34e041ffb2d4a4865f3e235f',
@@ -38,7 +41,10 @@ describe('extractAndMerge', () => {
           }
         },
         type: 'io.cozy.files',
-        _type: 'io.cozy.files'
+        _type: 'io.cozy.files',
+        cozyMedata: {
+          updated_at: '987654'
+        }
       },
       b6ff135b34e041ffb2d4a4865f3e235f: {
         attributes: {
@@ -78,6 +84,10 @@ describe('extractAndMerge', () => {
             type: 'file'
           },
           blabla: 'new field',
+          cozyMedata: {
+            created_at: '123456',
+            updated_at: '987654'
+          },
           id: 'b6ff135b34e041ffb2d4a4865f3e0a53',
           links: { self: '/files/b6ff135b34e041ffb2d4a4865f3e0a53' },
           meta: { rev: '5-87840eceaab358e38aa8b6bb0d4577b1' },
