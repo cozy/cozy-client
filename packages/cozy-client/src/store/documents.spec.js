@@ -11,8 +11,11 @@ describe('extractAndMerge', () => {
       type: 'io.cozy.files',
       _type: 'io.cozy.files',
       blabla: 'new field',
-      cozyMedata: {
-        created_at: '123456'
+      cozyMetadata: {
+        created_at: '123456',
+        updatedByApps: {
+          slug: 'drive'
+        }
       }
     },
     1: {
@@ -42,8 +45,11 @@ describe('extractAndMerge', () => {
         },
         type: 'io.cozy.files',
         _type: 'io.cozy.files',
-        cozyMedata: {
-          updated_at: '987654'
+        cozyMetadata: {
+          updated_at: '987654',
+          updatedByApps: {
+            date: '2019-06-11T01:02:03Z'
+          }
         }
       },
       b6ff135b34e041ffb2d4a4865f3e235f: {
@@ -84,9 +90,13 @@ describe('extractAndMerge', () => {
             type: 'file'
           },
           blabla: 'new field',
-          cozyMedata: {
+          cozyMetadata: {
             created_at: '123456',
-            updated_at: '987654'
+            updated_at: '987654',
+            updatedByApps: {
+              slug: 'drive',
+              date: '2019-06-11T01:02:03Z'
+            }
           },
           id: 'b6ff135b34e041ffb2d4a4865f3e0a53',
           links: { self: '/files/b6ff135b34e041ffb2d4a4865f3e0a53' },
