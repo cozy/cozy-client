@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [32.1.0](https://github.com/cozy/cozy-client/compare/v32.0.0...v32.1.0) (2022-06-24)
+
+
+### Features
+
+* Add the partial filter fields in the index name ([32c432d](https://github.com/cozy/cozy-client/commit/32c432dd1376b9faec51376294f27d116b1f6370))
+
+
+
+
+
 # [32.0.0](https://github.com/cozy/cozy-client/compare/v31.0.1...v32.0.0) (2022-06-21)
 
 **Note:** Version bump only for package cozy-stack-client
