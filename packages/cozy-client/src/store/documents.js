@@ -2,6 +2,7 @@ import keyBy from 'lodash/keyBy'
 import get from 'lodash/get'
 import isEqual from 'lodash/isEqual'
 import omit from 'lodash/omit'
+import merge from 'lodash/merge'
 
 import logger from '../logger'
 
@@ -177,10 +178,7 @@ export const extractAndMergeDocument = (data, updatedStateWithIncluded) => {
   Object.values(sortedData).map(data => {
     const id = properId(data)
     if (mergedData[doctype][id]) {
-      mergedData[doctype][id] = {
-        ...mergedData[doctype][id],
-        ...data
-      }
+      mergedData[doctype][id] = merge(mergedData[doctype][id], data)
     } else {
       mergedData[doctype][id] = data
     }
