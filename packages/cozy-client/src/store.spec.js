@@ -188,48 +188,6 @@ describe('Store', () => {
       spy.mockRestore()
     })
 
-    it('should store a new doc received in a mutation result', () => {
-      store.dispatch(
-        receiveMutationResult('foo', {
-          data: [TODO_1]
-        })
-      )
-      expect(
-        getDocumentFromState(store.getState(), 'io.cozy.todos', TODO_1._id)
-      ).toEqual(TODO_1)
-    })
-
-    it('should store an updated doc received in a mutation result', () => {
-      store.dispatch(
-        receiveMutationResult('foo', {
-          data: [TODO_1]
-        })
-      )
-      store.dispatch(
-        receiveMutationResult('bar', {
-          data: [{ ...TODO_1, label: 'Buy croissants' }]
-        })
-      )
-      expect(
-        getDocumentFromState(store.getState(), 'io.cozy.todos', TODO_1._id)
-          .label
-      ).toBe('Buy croissants')
-    })
-
-    it('it should store documents with included from a mutation result', () => {
-      store.dispatch(
-        receiveMutationResult('foo', {
-          data: [...TODO_WITH_RELATION.relationships.attachments.files],
-          included: [FILE_1, FILE_2]
-        })
-      )
-
-      expect(
-        getDocumentFromState(store.getState(), 'io.cozy.files', FILE_1._id)
-          .label
-      ).toBe(FILE_1.label)
-    })
-
     it('should respect the query limit', () => {
       const query = new Q({
         doctype: 'io.cozy.todos',
@@ -305,6 +263,48 @@ describe('Store', () => {
         { _id: 'todo_4', label: 'Run a semi-marathon' },
         { _id: 'todo_2', label: 'Check email' }
       ])
+    })
+
+    it('should store a new doc received in a mutation result', () => {
+      store.dispatch(
+        receiveMutationResult('foo', {
+          data: [TODO_1]
+        })
+      )
+      expect(
+        getDocumentFromState(store.getState(), 'io.cozy.todos', TODO_1._id)
+      ).toEqual(TODO_1)
+    })
+
+    it('should store an updated doc received in a mutation result', () => {
+      store.dispatch(
+        receiveMutationResult('foo', {
+          data: [TODO_1]
+        })
+      )
+      store.dispatch(
+        receiveMutationResult('bar', {
+          data: [{ ...TODO_1, label: 'Buy croissants' }]
+        })
+      )
+      expect(
+        getDocumentFromState(store.getState(), 'io.cozy.todos', TODO_1._id)
+          .label
+      ).toBe('Buy croissants')
+    })
+
+    it('it should store documents with included from a mutation result', () => {
+      store.dispatch(
+        receiveMutationResult('foo', {
+          data: [...TODO_WITH_RELATION.relationships.attachments.files],
+          included: [FILE_1, FILE_2]
+        })
+      )
+
+      expect(
+        getDocumentFromState(store.getState(), 'io.cozy.files', FILE_1._id)
+          .label
+      ).toBe(FILE_1.label)
     })
 
     describe('deletion', () => {
