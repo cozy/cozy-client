@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [32.1.1](https://github.com/cozy/cozy-client/compare/v32.1.0...v32.1.1) (2022-06-27)
+
+
+### Bug Fixes
+
+* Make a correct deep merge on objects. ([59a2708](https://github.com/cozy/cozy-client/commit/59a2708c6c8cf1321e0270c11489777a6f1a2581)), closes [#1175](https://github.com/cozy/cozy-client/issues/1175)
+
+
+
+
+
 # [32.1.0](https://github.com/cozy/cozy-client/compare/v32.0.0...v32.1.0) (2022-06-24)
 
 
