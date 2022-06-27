@@ -90,8 +90,9 @@ export const getIndexFields = ({ selector, partialFilter, sort = [] }) => {
 }
 
 /**
- * Check if an index is in an inconsistent state, i.e. its name
- * contains the indexed attributes which are not in correct order.
+ * Check if an index is in an inconsistent state, i.e. it evaluates one of these:
+ * - its name contains the indexed attributes which are not in correct order
+ * - it contains a partial filter, but the fields are not in the name
  *
  * @param {DesignDoc} index - The index to check
  * @returns {boolean} True if the index is inconsistent
@@ -101,10 +102,25 @@ export const isInconsistentIndex = index => {
   if (!indexId.startsWith('_design/by_')) {
     return false
   }
-  const fieldsInName = indexId.split('_design/by_')[1].split('_and_')
+  const fieldsInName = indexId
+    .split('_design/by_')[1]
+    .split('_filter_')[0]
+    .split('_and_')
   const viewId = Object.keys(get(index, `views`))[0]
   const fieldsInIndex = Object.keys(get(index, `views.${viewId}.map.fields`))
-  return !isEqual(fieldsInName, fieldsInIndex)
+  if (!isEqual(fieldsInName, fieldsInIndex)) {
+    return true
+  }
+  const partialFilter = get(
+    index,
+    `views.${viewId}.map.partial_filter_selector`
+  )
+  const partialFilterFields = partialFilter ? Object.keys(partialFilter) : []
+  const filteredName = indexId.split('_filter_')
+  const partialFilterFieldsInName =
+    filteredName.length > 1 ? filteredName[1].split('_and_') : []
+
+  return !isEqual(partialFilterFields, partialFilterFieldsInName)
 }
 
 /**

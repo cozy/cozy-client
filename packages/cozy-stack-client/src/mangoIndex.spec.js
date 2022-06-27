@@ -107,6 +107,26 @@ describe('inconsistent index', () => {
     expect(isInconsistentIndex(index1)).toBe(false)
     expect(isInconsistentIndex(index2)).toBe(false)
   })
+  it('should not detect consistent index with partial filter', () => {
+    const index = buildDesignDoc(
+      { bar: 'asc', foo: 'asc' },
+      {
+        id: '_design/by_bar_and_foo_filter_trashed',
+        partialFilter: { trashed: { $ne: false } }
+      }
+    )
+    expect(isInconsistentIndex(index)).toBe(false)
+  })
+  it('should detect index with partial filter but without fields in name', () => {
+    const index = buildDesignDoc(
+      { bar: 'asc', foo: 'asc' },
+      {
+        id: '_design/by_bar_and_foo',
+        partialFilter: { trashed: { $ne: false } }
+      }
+    )
+    expect(isInconsistentIndex(index)).toBe(true)
+  })
 })
 
 describe('getIndexFields', () => {
