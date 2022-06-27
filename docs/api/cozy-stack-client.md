@@ -58,6 +58,9 @@ through OAuth.</p>
 <dt><a href="#isIndexConflictError">isIndexConflictError</a> ⇒ <code>boolean</code></dt>
 <dd><p>Helper to identify an index conflict</p>
 </dd>
+<dt><a href="#isIndexNotUsedWarning">isIndexNotUsedWarning</a> ⇒ <code>boolean</code></dt>
+<dd><p>Helper to identify a not used index</p>
+</dd>
 <dt><a href="#isNoUsableIndexError">isNoUsableIndexError</a> ⇒ <code>boolean</code></dt>
 <dd><p>Helper to identify a no usable index error</p>
 </dd>
@@ -83,8 +86,11 @@ through OAuth.</p>
 query to work</p>
 </dd>
 <dt><a href="#isInconsistentIndex">isInconsistentIndex</a> ⇒ <code>boolean</code></dt>
-<dd><p>Check if an index is in an inconsistent state, i.e. its name
-contains the indexed attributes which are not in correct order.</p>
+<dd><p>Check if an index is in an inconsistent state, i.e. it evaluates one of these:</p>
+<ul>
+<li>its name contains the indexed attributes which are not in correct order</li>
+<li>it contains a partial filter, but the fields are not in the name</li>
+</ul>
 </dd>
 <dt><a href="#isMatchingIndex">isMatchingIndex</a> ⇒ <code>boolean</code></dt>
 <dd><p>Check if an index is matching the given fields</p>
@@ -1738,6 +1744,18 @@ Helper to identify an index conflict
 | --- | --- | --- |
 | error | <code>Error</code> | An error |
 
+<a name="isIndexNotUsedWarning"></a>
+
+## isIndexNotUsedWarning ⇒ <code>boolean</code>
+Helper to identify a not used index
+
+**Kind**: global constant  
+**Returns**: <code>boolean</code> - Whether or not this is a not used index warning  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| warning | <code>string</code> | The warning returned by CouchDB |
+
 <a name="isNoUsableIndexError"></a>
 
 ## isNoUsableIndexError ⇒ <code>boolean</code>
@@ -1834,8 +1852,9 @@ query to work
 <a name="isInconsistentIndex"></a>
 
 ## isInconsistentIndex ⇒ <code>boolean</code>
-Check if an index is in an inconsistent state, i.e. its name
-contains the indexed attributes which are not in correct order.
+Check if an index is in an inconsistent state, i.e. it evaluates one of these:
+- its name contains the indexed attributes which are not in correct order
+- it contains a partial filter, but the fields are not in the name
 
 **Kind**: global constant  
 **Returns**: <code>boolean</code> - True if the index is inconsistent  

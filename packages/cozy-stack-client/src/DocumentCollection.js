@@ -3,6 +3,7 @@ import { uri, attempt, sleep } from './utils'
 import uniq from 'lodash/uniq'
 import omit from 'lodash/omit'
 import head from 'lodash/head'
+import merge from 'lodash/merge'
 import startsWith from 'lodash/startsWith'
 import qs from 'qs'
 import { MangoQueryOptions } from './mangoIndex'
@@ -12,7 +13,8 @@ import Collection, {
   isIndexNotFoundError,
   isIndexConflictError,
   isNoUsableIndexError,
-  isDocumentUpdateConflict
+  isDocumentUpdateConflict,
+  isIndexNotUsedWarning
 } from './Collection'
 import {
   getIndexNameFromFields,
@@ -260,6 +262,15 @@ class DocumentCollection {
     let resp
     try {
       resp = await this.fetchDocumentsWithMango(path, selector, options)
+      if (
+        resp.warning &&
+        options.partialFilter &&
+        isIndexNotUsedWarning(resp.warning)
+      ) {
+        // This warning might happen when an index including a partial filter
+        // is not created yet.
+        throw new Error('no_index')
+      }
     } catch (error) {
       if (!isIndexNotFoundError(error) && !isNoUsableIndexError(error)) {
         throw error
@@ -468,9 +479,14 @@ class DocumentCollection {
           sort.push({ [field]: sortOrder })
       }
     }
+    // We need to pass the partialFilter in the selector, otherwise CouchDB might
+    // fallback on another index if it does not exist yet
+    const mergedSelector = partialFilter
+      ? merge(selector, partialFilter)
+      : selector
 
     const opts = {
-      selector,
+      selector: mergedSelector,
       use_index: indexName,
       // TODO: type and class should not be necessary, it's just a temp fix for a stack bug
       fields: fields ? [...fields, '_id', '_type', 'class'] : undefined,

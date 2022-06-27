@@ -573,6 +573,31 @@ describe('DocumentCollection', () => {
       ).resolves.toBe(FIND_RESPONSE_FIXTURE)
     })
 
+    it('should not throw an error when a warning is returned and a partial filter is defined', async () => {
+      client.fetchJSON.mockRestore()
+      client.fetchJSON
+        .mockResolvedValueOnce({
+          rows: [],
+          warning:
+            '_design/by_label was not used because it does not contain a valid index for this query'
+        })
+        .mockResolvedValueOnce({ rows: [] })
+        .mockResolvedValueOnce({})
+        .mockResolvedValueOnce(FIND_RESPONSE_FIXTURE)
+        .mockResolvedValueOnce(FIND_RESPONSE_FIXTURE)
+      const collection = new DocumentCollection('io.cozy.todos', client)
+      await expect(
+        collection.findWithMango(
+          'fakepath',
+          { label: 'work' },
+          {
+            indexedFields: ['label'],
+            partialFilter: { done: { $exists: true } }
+          }
+        )
+      ).resolves.toBe(FIND_RESPONSE_FIXTURE)
+    })
+
     it('should throw an error if it is not a missing index', async () => {
       client.fetchJSON.mockRestore()
       client.fetchJSON.mockRejectedValueOnce(new Error('custom error'))
@@ -1281,6 +1306,43 @@ describe('DocumentCollection', () => {
       }
       const opts = collection.toMangoOptions(selector, { partialFilter })
       expect(opts.use_index).toEqual('_design/by_name_and_date_filter_trashed')
+    })
+
+    it('should merge selector and partialFilter', () => {
+      const selector = {
+        name: {
+          $gt: null
+        }
+      }
+      const partialFilter = {
+        trashed: {
+          $ne: true
+        }
+      }
+      const opts = collection.toMangoOptions(selector, { partialFilter })
+      expect(opts.selector).toEqual({
+        name: {
+          $gt: null
+        },
+        trashed: {
+          $ne: true
+        }
+      })
+    })
+
+    it('should correctly build the sort', () => {
+      const selector = {
+        name: {
+          $gt: null
+        }
+      }
+      const sort = [{ name: 'asc' }]
+      const indexedFields = ['date']
+      const opts = collection.toMangoOptions(selector, {
+        sort,
+        indexedFields
+      })
+      expect(opts.sort).toEqual([{ name: 'asc' }, { date: 'asc' }])
     })
   })
 })

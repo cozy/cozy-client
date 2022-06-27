@@ -41,6 +41,18 @@ export const isIndexConflictError = error => {
 }
 
 /**
+ * Helper to identify a not used index
+ *
+ * @param {string} warning - The warning returned by CouchDB
+ * @returns {boolean} Whether or not this is a not used index warning
+ */
+export const isIndexNotUsedWarning = warning => {
+  return warning.match(
+    /was not used because it does not contain a valid index for this query/
+  )
+}
+
+/**
  * Helper to identify a no usable index error
  *
  * @param {Error} error - An error
