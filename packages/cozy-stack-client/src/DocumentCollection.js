@@ -438,7 +438,7 @@ class DocumentCollection {
   }
 
   toMangoOptions(selector, options = {}) {
-    let { sort, indexedFields } = options
+    let { sort, indexedFields, partialFilter } = options
     const { fields, skip = 0, limit, bookmark } = options
 
     sort = transformSort(sort)
@@ -446,8 +446,15 @@ class DocumentCollection {
     indexedFields = indexedFields
       ? indexedFields
       : getIndexFields({ sort, selector })
+
+    const partialFilterFields = partialFilter
+      ? getIndexFields({ partialFilter })
+      : null
     const indexName =
-      options.indexId || `_design/${getIndexNameFromFields(indexedFields)}`
+      options.indexId ||
+      `_design/${getIndexNameFromFields(indexedFields, {
+        partialFilterFields
+      })}`
     if (sort) {
       const sortOrders = uniq(
         sort.map(sortOption => head(Object.values(sortOption)))

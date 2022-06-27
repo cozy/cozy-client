@@ -712,7 +712,7 @@ describe('DocumentCollection', () => {
         .mockResolvedValueOnce({ rows: [index] })
         .mockReturnValueOnce(
           Promise.resolve({
-            id: '_design/by_label_and_done',
+            id: '_design/by_label_and_done_filter_trashed',
             ok: true,
             rev: '1-123'
           })
@@ -740,9 +740,9 @@ describe('DocumentCollection', () => {
       )
       const expectedFindParams = {
         skip: 0,
-        selector: { done: { $exists: true } },
+        selector: { done: { $exists: true }, trashed: false },
         sort: [{ label: 'desc' }, { done: 'desc' }],
-        use_index: '_design/by_label_and_done'
+        use_index: '_design/by_label_and_done_filter_trashed'
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'POST',
@@ -1246,6 +1246,41 @@ describe('DocumentCollection', () => {
         ['cozyMetadata.createdAt', 'message.account'],
         undefined
       )
+    })
+  })
+  describe('toMangoOptions', () => {
+    const collection = new DocumentCollection('io.cozy.todos', client)
+
+    it('should correctly build the indexName', () => {
+      const selector = {
+        name: {
+          $gt: null
+        },
+        date: {
+          $lt: '2022-01-01'
+        }
+      }
+
+      const opts = collection.toMangoOptions(selector)
+      expect(opts.use_index).toEqual('_design/by_name_and_date')
+    })
+
+    it('should correctly build the indexName with partialFilter', () => {
+      const selector = {
+        name: {
+          $gt: null
+        },
+        date: {
+          $lt: '2022-01-01'
+        }
+      }
+      const partialFilter = {
+        trashed: {
+          $ne: true
+        }
+      }
+      const opts = collection.toMangoOptions(selector, { partialFilter })
+      expect(opts.use_index).toEqual('_design/by_name_and_date_filter_trashed')
     })
   })
 })
