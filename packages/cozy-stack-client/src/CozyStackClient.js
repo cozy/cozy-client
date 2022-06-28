@@ -237,6 +237,10 @@ class CozyStackClient {
     try {
       return await this.fetchJSONWithCurrentToken(method, path, body, options)
     } catch (e) {
+      console.error(
+        `error while fetchJSON for path: ${path}. Error message is ${e.message}. Error:`,
+        e
+      )
       if (
         errors.EXPIRED_TOKEN.test(e.message) ||
         errors.INVALID_TOKEN.test(e.message)
@@ -245,6 +249,7 @@ class CozyStackClient {
         try {
           token = await this.refreshToken()
         } catch (refreshError) {
+          console.error(`error while refreshing token. Error:`, refreshError)
           throw e
         }
         this.setToken(token)

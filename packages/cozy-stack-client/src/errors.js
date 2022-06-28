@@ -32,6 +32,10 @@ const getWwwAuthenticateErrorMessage = response => {
 export class FetchError extends Error {
   constructor(response, reason) {
     super()
+
+    console.error('FETCH ERROR')
+    console.error('response:', JSON.stringify(response))
+    console.error('reason:', JSON.stringify(reason))
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, this.constructor)
     }
