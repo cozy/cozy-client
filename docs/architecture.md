@@ -180,8 +180,8 @@ As already mentioned, when a mutated document already exists in the store throug
 Let us illustrate with this example:
 
 ```js
-const Q1 = { definition: Q('io.cozy.todos').getById('my-todo'), options: { as: todoslist-full, fetchPolicy: lessThan30s }}
-const Q2 = { definition: Q('io.cozy.todos').getById('my-todo').select(['label']), options: { as: todoslist-label }}
+const Q1 = { definition: Q('io.cozy.todos').getById('my-todo'), options: { as: 'todoslist-full', fetchPolicy: lessThan30s }}
+const Q2 = { definition: Q('io.cozy.todos').getById('my-todo').select(['label']), options: { as: 'todoslist-label' }}
 
 await client.query(Q1) // returns { _id: 'my-todo', _type: 'io.cozy.todos', label: 'TODOTODO' }, from the database
 await client.query(Q2) // returns { label: 'TODOTODO' }, from the database
