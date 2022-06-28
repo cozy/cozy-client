@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [32.2.0](https://github.com/cozy/cozy-client/compare/v32.1.1...v32.2.0) (2022-06-28)
+
+
+### Bug Fixes
+
+* Use correct index name with partial filter ([06d61a8](https://github.com/cozy/cozy-client/commit/06d61a83ddf310470207fb9d3e6849a770422596))
+
+
+### Features
+
+* Detect inconsistent index with partial filter ([2c30bcb](https://github.com/cozy/cozy-client/commit/2c30bcb12d39cc2dc6ca0d3cab597bf74fce4927))
+* Handle CouchDB fallback for partial index ([7c69838](https://github.com/cozy/cozy-client/commit/7c69838d2962be8f59ada6806d65761dbfe47082))
+
+
+
+
+
 # [32.1.0](https://github.com/cozy/cozy-client/compare/v32.0.0...v32.1.0) (2022-06-24)
 
 
