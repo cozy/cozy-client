@@ -45,7 +45,7 @@
     "@material-ui/core": "4.11.3",
     "@testing-library/react": "10.4.9",
     "@testing-library/react-hooks": "3.7.0",
-    "babel-plugin-search-and-replace": "1.1.0",
+    "babel-plugin-search-and-replace": "1.1.1",
     "btoa": "1.2.1",
     "cozy-device-helper": "2.1.0",
     "cozy-flags": "2.8.6",
