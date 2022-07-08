@@ -85,10 +85,18 @@ export const sortAndLimitDocsIds = (
       : []
     evaluatedIds = sorter(docs).map(properId)
   }
-  if (queryState.definition.limit) {
-    evaluatedIds = queryState.definition.limit
-      ? evaluatedIds.slice(0, count * fetchedPagesCount)
-      : evaluatedIds
+  const limit = queryState.definition.limit
+  if (limit) {
+    let sliceCount
+    if (count < limit) {
+      // When there are less results than the limit, this is either the first
+      // or last paginated query.
+      sliceCount =
+        fetchedPagesCount > 1 ? limit * (fetchedPagesCount - 1) + count : count
+    } else {
+      sliceCount = limit * fetchedPagesCount
+    }
+    evaluatedIds = evaluatedIds.slice(0, sliceCount)
   }
   return evaluatedIds
 }
