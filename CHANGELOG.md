@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [32.2.2](https://github.com/cozy/cozy-client/compare/v32.2.1...v32.2.2) (2022-07-08)
+
+
+### Bug Fixes
+
+* Handle query limit for first and last paginated query ([d986f59](https://github.com/cozy/cozy-client/commit/d986f59781557a97ff2545b228153325d18307b9))
+
+
+
+
+
 ## [32.2.1](https://github.com/cozy/cozy-client/compare/v32.2.0...v32.2.1) (2022-07-04)
 
 
