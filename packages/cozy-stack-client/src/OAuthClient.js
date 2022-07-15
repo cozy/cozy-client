@@ -496,6 +496,8 @@ class OAuthClient extends CozyStackClient {
       ...result
     })
 
+    this.setToken(newToken)
+
     if (this.onTokenRefresh && typeof this.onTokenRefresh === 'function') {
       this.onTokenRefresh(newToken)
     }
