@@ -400,6 +400,38 @@ describe('CozyStackClient', () => {
       )
     })
 
+    it('should call onTokenRefresh after setToken when refreshing the current token', async () => {
+      const client = new CozyStackClient(FAKE_INIT_OPTIONS)
+      jest.spyOn(client, 'onTokenRefresh')
+      jest.spyOn(client, 'setToken')
+      global.fetch
+        .mockResponseOnce(() => {
+          return Promise.resolve({
+            headers: {
+              'content-type': 'application/json; charset=UTF-8'
+            },
+            body: JSON.stringify({
+              error: 'Expired token'
+            }),
+            ok: false,
+            status: 403,
+            statusText: '',
+            type: 'default',
+            url: 'http://cozy.tools:8080/settings/capabilities'
+          })
+        })
+        .once([FAKE_APP_HTML, { status: 200 }])
+        .once([JSON.stringify({ res: 'ok' }), { status: 200 }])
+      await client.fetchJSON('GET', '/test')
+
+      expect(client.onTokenRefresh).toHaveBeenCalled()
+      expect(client.setToken).toHaveBeenCalled()
+      const onTokenRefreshOrder =
+        client.onTokenRefresh.mock.invocationCallOrder[0]
+      const setTokenOrder = client.setToken.mock.invocationCallOrder[0]
+      expect(setTokenOrder).toBeLessThan(onTokenRefreshOrder)
+    })
+
     it(`should try to refresh the current token when receiving a 'forbidden' response with 'access token expired' error in 'www-authenticate'`, async () => {
       const client = new CozyStackClient(FAKE_INIT_OPTIONS)
       jest.spyOn(client, 'refreshToken')
@@ -522,13 +554,25 @@ describe('CozyStackClient', () => {
       expect(newToken.token).toEqual(FAKE_APP_TOKEN)
     })
 
-    it('should have called onRefreshToken`', async () => {
+    it('should have called onRefreshToken', async () => {
       const handleRefresh = jest.fn()
       const client = getClient({
         onTokenRefresh: handleRefresh
       })
       await client.refreshToken()
       expect(handleRefresh).toHaveBeenCalledWith({
+        token: FAKE_APP_TOKEN
+      })
+    })
+
+    it('should have called setToken', async () => {
+      const handleRefresh = jest.fn()
+      const client = getClient({
+        onTokenRefresh: handleRefresh
+      })
+      jest.spyOn(client, 'setToken')
+      await client.refreshToken()
+      expect(client.setToken).toHaveBeenCalledWith({
         token: FAKE_APP_TOKEN
       })
     })

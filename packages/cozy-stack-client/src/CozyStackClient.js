@@ -219,6 +219,7 @@ class CozyStackClient {
       )
     }
     const newToken = new AppToken(token)
+    this.setToken(newToken)
     this.onTokenRefresh(newToken)
     return newToken
   }
@@ -241,13 +242,11 @@ class CozyStackClient {
         errors.EXPIRED_TOKEN.test(e.message) ||
         errors.INVALID_TOKEN.test(e.message)
       ) {
-        let token
         try {
-          token = await this.refreshToken()
+          await this.refreshToken()
         } catch (refreshError) {
           throw e
         }
-        this.setToken(token)
         return await this.fetchJSONWithCurrentToken(method, path, body, options)
       } else {
         throw e
