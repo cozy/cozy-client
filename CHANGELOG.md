@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [32.2.3](https://github.com/cozy/cozy-client/compare/v32.2.2...v32.2.3) (2022-07-18)
+
+
+### Bug Fixes
+
+* Check the correct path to get the warning ([60a6959](https://github.com/cozy/cozy-client/commit/60a69599b7709525ea2471f956a84d33c3981bbc))
+
+
+
+
+
 ## [32.2.2](https://github.com/cozy/cozy-client/compare/v32.2.1...v32.2.2) (2022-07-08)
 
 
