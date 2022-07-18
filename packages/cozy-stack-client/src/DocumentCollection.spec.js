@@ -573,13 +573,40 @@ describe('DocumentCollection', () => {
       ).resolves.toBe(FIND_RESPONSE_FIXTURE)
     })
 
-    it('should not throw an error when a warning is returned and a partial filter is defined', async () => {
+    it('should not throw an error when a warning is returned in resp.warning and a partial filter is defined', async () => {
       client.fetchJSON.mockRestore()
       client.fetchJSON
         .mockResolvedValueOnce({
           rows: [],
           warning:
             '_design/by_label was not used because it does not contain a valid index for this query'
+        })
+        .mockResolvedValueOnce({ rows: [] })
+        .mockResolvedValueOnce({})
+        .mockResolvedValueOnce(FIND_RESPONSE_FIXTURE)
+        .mockResolvedValueOnce(FIND_RESPONSE_FIXTURE)
+      const collection = new DocumentCollection('io.cozy.todos', client)
+      await expect(
+        collection.findWithMango(
+          'fakepath',
+          { label: 'work' },
+          {
+            indexedFields: ['label'],
+            partialFilter: { done: { $exists: true } }
+          }
+        )
+      ).resolves.toBe(FIND_RESPONSE_FIXTURE)
+    })
+
+    it('should not throw an error when a warning is returned in resp.meta.warning and a partial filter is defined', async () => {
+      client.fetchJSON.mockRestore()
+      client.fetchJSON
+        .mockResolvedValueOnce({
+          rows: [],
+          meta: {
+            warning:
+              '_design/by_label was not used because it does not contain a valid index for this query'
+          }
         })
         .mockResolvedValueOnce({ rows: [] })
         .mockResolvedValueOnce({})
