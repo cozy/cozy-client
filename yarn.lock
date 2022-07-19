@@ -3557,10 +3557,10 @@ babel-plugin-transform-react-jsx@^6.24.1:
     babel-plugin-syntax-jsx "^6.8.0"
     babel-runtime "^6.22.0"
 
-babel-preset-cozy-app@1.11.0:
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/babel-preset-cozy-app/-/babel-preset-cozy-app-1.11.0.tgz#f5a3e7ec2167ad39ba69cb58de9f806ae0c39e6b"
-  integrity sha512-HNsXwuT79pb92FFdxUIFbk3tf8+Daybs6rchTSAvyrAkOLygEpD6jxGjX93mjmiQOjGKc+RM2TgA8QJSgWtlAA==
+babel-preset-cozy-app@1.12.0:
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/babel-preset-cozy-app/-/babel-preset-cozy-app-1.12.0.tgz#dea97f3f3fb6ac18835613083b63b0b42a9e4909"
+  integrity sha512-PjVfCypMjFNzeii3qg+SJkRDGzX99s6Cj2mnOP4RseF0YjpLDAzPyg37j8rLAwYP5DvQGgt8vW/6hsWfnIdf8Q==
   dependencies:
     "@babel/core" "^7.12.3"
     "@babel/helper-plugin-utils" "^7.10.4"
