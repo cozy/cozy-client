@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [32.2.4](https://github.com/cozy/cozy-client/compare/v32.2.3...v32.2.4) (2022-07-19)
+
+
+### Bug Fixes
+
+* Call `onTokenRefresh()` after `setToken()` when refreshing token ([e0c4581](https://github.com/cozy/cozy-client/commit/e0c4581f8837412b3d81dad58ebc7e3e6fdce673))
+* **deps:** update dependency commitlint-config-cozy to v0.7.7 ([403adae](https://github.com/cozy/cozy-client/commit/403adae96f92f6c1e72d90a1f90d9892d48622eb))
+
+
+
+
+
 ## [32.2.3](https://github.com/cozy/cozy-client/compare/v32.2.2...v32.2.3) (2022-07-18)
 
 
