@@ -52,19 +52,19 @@ through OAuth.</p>
 <dt><a href="#dontThrowNotFoundError">dontThrowNotFoundError</a> ⇒ <code>object</code></dt>
 <dd><p>Handler for error response which return a empty value for &quot;not found&quot; error</p>
 </dd>
-<dt><a href="#isIndexNotFoundError">isIndexNotFoundError</a> ⇒ <code>boolean</code></dt>
+<dt><a href="#isIndexNotFoundError">isIndexNotFoundError</a> ⇒ <code>Array</code> | <code>null</code></dt>
 <dd><p>Helper to identify an index not found error</p>
 </dd>
-<dt><a href="#isIndexConflictError">isIndexConflictError</a> ⇒ <code>boolean</code></dt>
+<dt><a href="#isIndexConflictError">isIndexConflictError</a> ⇒ <code>Array</code> | <code>null</code></dt>
 <dd><p>Helper to identify an index conflict</p>
 </dd>
-<dt><a href="#isIndexNotUsedWarning">isIndexNotUsedWarning</a> ⇒ <code>boolean</code></dt>
+<dt><a href="#isIndexNotUsedWarning">isIndexNotUsedWarning</a> ⇒ <code>Array</code> | <code>null</code></dt>
 <dd><p>Helper to identify a not used index</p>
 </dd>
-<dt><a href="#isNoUsableIndexError">isNoUsableIndexError</a> ⇒ <code>boolean</code></dt>
+<dt><a href="#isNoUsableIndexError">isNoUsableIndexError</a> ⇒ <code>Array</code> | <code>null</code></dt>
 <dd><p>Helper to identify a no usable index error</p>
 </dd>
-<dt><a href="#isDocumentUpdateConflict">isDocumentUpdateConflict</a> ⇒ <code>boolean</code></dt>
+<dt><a href="#isDocumentUpdateConflict">isDocumentUpdateConflict</a> ⇒ <code>Array</code> | <code>null</code></dt>
 <dd><p>Helper to identify a document conflict</p>
 </dd>
 <dt><a href="#isFile">isFile</a> ⇒ <code>boolean</code></dt>
@@ -259,11 +259,11 @@ specific collections.
 **Kind**: global class  
 <a name="Collection.get"></a>
 
-### Collection.get(stackClient, endpoint, options) ⇒ <code>object</code>
+### Collection.get(stackClient, endpoint, options) ⇒ <code>Promise.&lt;object&gt;</code>
 Utility method aimed to return only one document.
 
 **Kind**: static method of [<code>Collection</code>](#Collection)  
-**Returns**: <code>object</code> - JsonAPI response containing normalized
+**Returns**: <code>Promise.&lt;object&gt;</code> - JsonAPI response containing normalized
 document as data attribute  
 
 | Param | Type | Description |
@@ -1718,15 +1718,15 @@ found" error.
 | Param | Type | Description |
 | --- | --- | --- |
 | error | <code>Error</code> | An error |
-| data | <code>Array</code> \| <code>object</code> | Data to return in case of "not found" error |
+| data | <code>Array</code> \| <code>object</code> \| <code>null</code> | Data to return in case of "not found" error |
 
 <a name="isIndexNotFoundError"></a>
 
-## isIndexNotFoundError ⇒ <code>boolean</code>
+## isIndexNotFoundError ⇒ <code>Array</code> \| <code>null</code>
 Helper to identify an index not found error
 
 **Kind**: global constant  
-**Returns**: <code>boolean</code> - - Whether or not the error is an index not found error  
+**Returns**: <code>Array</code> \| <code>null</code> - - Whether or not the error is an index not found error  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1734,11 +1734,11 @@ Helper to identify an index not found error
 
 <a name="isIndexConflictError"></a>
 
-## isIndexConflictError ⇒ <code>boolean</code>
+## isIndexConflictError ⇒ <code>Array</code> \| <code>null</code>
 Helper to identify an index conflict
 
 **Kind**: global constant  
-**Returns**: <code>boolean</code> - - Whether or not the error is an index conflict error  
+**Returns**: <code>Array</code> \| <code>null</code> - - Whether or not the error is an index conflict error  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1746,11 +1746,11 @@ Helper to identify an index conflict
 
 <a name="isIndexNotUsedWarning"></a>
 
-## isIndexNotUsedWarning ⇒ <code>boolean</code>
+## isIndexNotUsedWarning ⇒ <code>Array</code> \| <code>null</code>
 Helper to identify a not used index
 
 **Kind**: global constant  
-**Returns**: <code>boolean</code> - Whether or not this is a not used index warning  
+**Returns**: <code>Array</code> \| <code>null</code> - Whether or not this is a not used index warning  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1758,11 +1758,11 @@ Helper to identify a not used index
 
 <a name="isNoUsableIndexError"></a>
 
-## isNoUsableIndexError ⇒ <code>boolean</code>
+## isNoUsableIndexError ⇒ <code>Array</code> \| <code>null</code>
 Helper to identify a no usable index error
 
 **Kind**: global constant  
-**Returns**: <code>boolean</code> - - Whether or not the error is a no usable index error  
+**Returns**: <code>Array</code> \| <code>null</code> - - Whether or not the error is a no usable index error  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1770,11 +1770,11 @@ Helper to identify a no usable index error
 
 <a name="isDocumentUpdateConflict"></a>
 
-## isDocumentUpdateConflict ⇒ <code>boolean</code>
+## isDocumentUpdateConflict ⇒ <code>Array</code> \| <code>null</code>
 Helper to identify a document conflict
 
 **Kind**: global constant  
-**Returns**: <code>boolean</code> - - Whether or not the error is a document conflict error  
+**Returns**: <code>Array</code> \| <code>null</code> - - Whether or not the error is a document conflict error  
 
 | Param | Type | Description |
 | --- | --- | --- |
