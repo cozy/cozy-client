@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [32.2.5](https://github.com/cozy/cozy-client/compare/v32.2.4...v32.2.5) (2022-07-20)
+
+
+### Bug Fixes
+
+* Mark the query as loaded when the document does not exist ([8dcd1e9](https://github.com/cozy/cozy-client/commit/8dcd1e9d18cc06e5b3c4d31f89d6b5a08c68c44e)), closes [/github.com/cozy/cozy-client/blob/8ec78eb5a028f8df4908e283d0d48572d475ab3f/packages/cozy-stack-client/src/Collection.js#L103](https://github.com//github.com/cozy/cozy-client/blob/8ec78eb5a028f8df4908e283d0d48572d475ab3f/packages/cozy-stack-client/src/Collection.js/issues/L103) [/github.com/cozy/cozy-client/blob/8ec78eb5a028f8df4908e283d0d48572d475ab3f/packages/cozy-client/src/store/queries.js#L167-L169](https://github.com//github.com/cozy/cozy-client/blob/8ec78eb5a028f8df4908e283d0d48572d475ab3f/packages/cozy-client/src/store/queries.js/issues/L167-L169) [/github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L922-L925](https://github.com//github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js/issues/L922-L925)
+* Types ([5b5ab85](https://github.com/cozy/cozy-client/commit/5b5ab8556b2752881f08ae203e574264a01d9bd1))
+
+
+
+
+
 ## [32.2.4](https://github.com/cozy/cozy-client/compare/v32.2.3...v32.2.4) (2022-07-19)
 
 
