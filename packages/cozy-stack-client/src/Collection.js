@@ -2,7 +2,7 @@
  * Handler for error response which return a empty value for "not found" error
  *
  * @param  {Error}         error - An error
- * @param  {Array|object}  data Data to return in case of "not found" error
+ * @param  {Array|object|null}  data Data to return in case of "not found" error
  * @returns {object}        JsonAPI response with empty data in case of "not
  * found" error.
  */
@@ -24,7 +24,7 @@ export const dontThrowNotFoundError = (error, data = []) => {
  * Helper to identify an index not found error
  *
  * @param {Error} error - An error
- * @returns {boolean} - Whether or not the error is an index not found error
+ * @returns {Array|null} - Whether or not the error is an index not found error
  */
 export const isIndexNotFoundError = error => {
   return error.message.match(/no_index/)
@@ -34,7 +34,7 @@ export const isIndexNotFoundError = error => {
  * Helper to identify an index conflict
  *
  * @param {Error} error - An error
- * @returns {boolean} - Whether or not the error is an index conflict error
+ * @returns {Array|null} - Whether or not the error is an index conflict error
  */
 export const isIndexConflictError = error => {
   return error.message.match(/error_saving_ddoc/)
@@ -44,7 +44,7 @@ export const isIndexConflictError = error => {
  * Helper to identify a not used index
  *
  * @param {string} warning - The warning returned by CouchDB
- * @returns {boolean} Whether or not this is a not used index warning
+ * @returns {Array|null} Whether or not this is a not used index warning
  */
 export const isIndexNotUsedWarning = warning => {
   return warning.match(
@@ -56,7 +56,7 @@ export const isIndexNotUsedWarning = warning => {
  * Helper to identify a no usable index error
  *
  * @param {Error} error - An error
- * @returns {boolean} - Whether or not the error is a no usable index error
+ * @returns {Array|null} - Whether or not the error is a no usable index error
  */
 export const isNoUsableIndexError = error => {
   return error.message.match(/no_usable_index/)
@@ -66,7 +66,7 @@ export const isNoUsableIndexError = error => {
  * Helper to identify a document conflict
  *
  * @param {Error} error - An error
- * @returns {boolean} - Whether or not the error is a document conflict error
+ * @returns {Array|null} - Whether or not the error is a document conflict error
  */
 export const isDocumentUpdateConflict = error => {
   return error.message.match(/Document update conflict/)
@@ -86,7 +86,7 @@ export class Collection {
    * @param  {Function}    options.normalize Callback to normalize response data
    * (default `data => data`)
    * @param  {string}  options.method    HTTP method (default `GET`)
-   * @returns {object}  JsonAPI response containing normalized
+   * @returns {Promise<object>}  JsonAPI response containing normalized
    * document as data attribute
    */
   static async get(
