@@ -164,8 +164,16 @@ const query = (state = queryInitialState, action, documents) => {
       }
     case RECEIVE_QUERY_RESULT: {
       const response = action.response
+      // Data can be null when we get a 404 not found
+      // see Collection.get()
+      // but we still need to update the fetchStatus.
       if (!response.data) {
-        return state
+        return {
+          ...state,
+          fetchStatus: 'loaded',
+          lastFetch: Date.now(),
+          lastUpdate: Date.now()
+        }
       }
 
       /** @type {Partial<QueryState>} */
