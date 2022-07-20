@@ -921,7 +921,12 @@ client.query(Q('io.cozy.bills'))`)
     // have in the promiseCache
     if (existingQuery && Object.keys(existingQuery).length > 0) {
       if (existingQuery.fetchStatus === 'loading') {
-        return this._promiseCache.get(() => stringify(queryDefinition))
+        const promiseFromCache = this._promiseCache.get(() =>
+          stringify(queryDefinition)
+        )
+        // we can have race condition between cache and the redux store.
+        // quick fix to check the hypothesis
+        if (promiseFromCache !== null) return promiseFromCache
       }
     }
     this.ensureQueryExists(queryId, queryDefinition, options)
