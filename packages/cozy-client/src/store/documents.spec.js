@@ -148,7 +148,24 @@ describe('extractAndMerge', () => {
       ).toBeFalsy()
     }
   )
+  it(
+    'should assign a new object for doctype[id] of document to update' +
+      'in order to allow selector to recompute their data when documents are updated',
+    () => {
+      const returnedDatas = extractAndMergeDocument(
+        data,
+        updatedStateWithIncluded
+      )
 
+      // Then
+      expect(
+        returnedDatas['io.cozy.files']['b6ff135b34e041ffb2d4a4865f3e0a53'] ===
+          updatedStateWithIncluded['io.cozy.files'][
+            'b6ff135b34e041ffb2d4a4865f3e0a53'
+          ]
+      ).toBeFalsy()
+    }
+  )
   it(
     'should assign a new object for doctype of document to update' +
       'even if the mergedData is the same, because reselect createSelector update ' +
