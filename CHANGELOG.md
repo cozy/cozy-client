@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [32.2.7](https://github.com/cozy/cozy-client/compare/v32.2.6...v32.2.7) (2022-07-21)
+
+
+### Bug Fixes
+
+* Lodash.merge is not creating a new object ([3bb94d0](https://github.com/cozy/cozy-client/commit/3bb94d0ba9aa3d919cf79ad839022981f2b6d7ea))
+
+
+
+
+
 ## [32.2.6](https://github.com/cozy/cozy-client/compare/v32.2.5...v32.2.6) (2022-07-20)
 
 **Note:** Version bump only for package cozy-client
