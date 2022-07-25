@@ -194,14 +194,14 @@ Emits pouchlink:sync:stop event
 
 ### pouchLink.needsToWaitWarmup(doctype) ⇒ <code>boolean</code>
 Check if there is warmup queries for this doctype
-and return if those queries are already warmedup or not
+and return if those queries are already warmed up or not
 
 **Kind**: instance method of [<code>PouchLink</code>](#PouchLink)  
 **Returns**: <code>boolean</code> - the need to wait for the warmup  
 
-| Param | Type |
-| --- | --- |
-| doctype | <code>string</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| doctype | <code>string</code> | Doctype to check |
 
 <a name="Loop"></a>
 

@@ -40,8 +40,8 @@ class KonnectorCollection extends AppCollection {
   /**
    * Launch a trigger for a given konnector.
    *
-   * @param  {string} slug
-   * @param  {object} options
+   * @param  {string} slug - Konnector slug
+   * @param  {object} options - Options
    * @param  {object} options.accountId - Pinpoint the account that should be used, useful if the user
    * has more than 1 account for 1 konnector
    */
@@ -71,8 +71,8 @@ class KonnectorCollection extends AppCollection {
   /**
    * Updates a konnector
    *
-   * @param  {string} slug
-   * @param  {object} options
+   * @param  {string} slug - Konnector slug
+   * @param  {object} options - Options
    * @param  {object} options.source - Specify the source (ex: registry://slug/stable)
    * @param  {boolean} options.sync - Wait for konnector to be updated, otherwise the job
    * is just scheduled

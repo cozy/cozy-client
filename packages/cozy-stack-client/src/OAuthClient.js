@@ -570,7 +570,7 @@ class OAuthClient extends CozyStackClient {
    *
    * More info: https://docs.cozy.io/en/cozy-stack/settings/#post-settingspassphraseflagship
    *
-   * @param {object} params
+   * @param {object} params - parameters needed to set passphrase
    * @param {string} params.registerToken - registration token provided by the onboarding link
    * @param {string} params.passwordHash - hash of the master password
    * @param {string} params.hint - hint for the master password

@@ -55,7 +55,7 @@ const getClassNameForExecutedTimesQuery = time => {
 }
 
 /**
- * @param  {{ queryState: QueryState }} props
+ * @param  {{ queryState: QueryState }} props - Query state containing fetchStatus, lastError
  */
 const FetchStatus = props => {
   const { queryState } = props
@@ -79,7 +79,7 @@ const FetchStatus = props => {
 }
 
 /**
- * @param  {{ queryState: QueryState }} props
+ * @param  {{ queryState: QueryState }} props - Query state containing definition
  */
 const IndexedFields = props => {
   const { queryState } = props

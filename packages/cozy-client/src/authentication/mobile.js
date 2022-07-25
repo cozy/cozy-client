@@ -16,7 +16,7 @@ const win = typeof window !== 'undefined' ? window : null
 /**
  * Open a SafariView Controller and resolve with the URL containing the token
  *
- * @param {string} url
+ * @param {string} url - Url containing access_code and state
  * @returns {Promise}
  */
 const authenticateWithSafari = url => {
@@ -55,7 +55,7 @@ const authenticateWithSafari = url => {
 /**
  * Opens an InAppBrowser and resolves with the URL containing the token
  *
- * @param {string} url
+ * @param {string} url - Url containing access_code and state
  * @returns {Promise}
  */
 const authenticateWithInAppBrowser = url => {

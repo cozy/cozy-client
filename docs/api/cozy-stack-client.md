@@ -1056,7 +1056,7 @@ Create a note
 
 | Param | Type | Description |
 | --- | --- | --- |
-| options | <code>object</code> |  |
+| options | <code>object</code> | Options |
 | [options.dir_id] | <code>string</code> | dir_id where to create the note |
 
 <a name="NotesCollection+fetchURL"></a>
@@ -1312,7 +1312,7 @@ More info: https://docs.cozy.io/en/cozy-stack/settings/#post-settingspassphrasef
 
 | Param | Type | Description |
 | --- | --- | --- |
-| params | <code>object</code> |  |
+| params | <code>object</code> | parameters needed to set passphrase |
 | params.registerToken | <code>string</code> | registration token provided by the onboarding link |
 | params.passwordHash | <code>string</code> | hash of the master password |
 | params.hint | <code>string</code> | hint for the master password |
@@ -1398,7 +1398,7 @@ It can also associates one or more codes to it, via the codes parameter
 
 | Param | Type | Description |
 | --- | --- | --- |
-| permission | <code>object</code> |  |
+| permission | <code>object</code> | permission to create |
 | permission.codes | <code>string</code> | A comma separed list of values (defaulted to code) |
 | permission.ttl | <code>string</code> | Make the codes expire after a delay (bigduration format) |
 | permission.tiny | <code>boolean</code> | If set to true then the generated shortcode will be 6 digits Cozy-Stack has a few conditions to be able to use this tiny shortcode ATM you have to specifiy a ttl < 1h, but it can change. see https://docs.cozy.io/en/cozy-stack/permissions/#post-permissions for exact informations bigduration format: https://github.com/justincampbell/bigduration/blob/master/README.md |
@@ -1469,9 +1469,9 @@ Destroy a sharing link and the related permissions
 
 **Kind**: instance method of [<code>PermissionCollection</code>](#PermissionCollection)  
 
-| Param | Type |
-| --- | --- |
-| document | <code>object</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| document | <code>object</code> | document to revoke sharing link |
 
 <a name="SettingsCollection"></a>
 
@@ -2367,7 +2367,7 @@ More info: https://docs.cozy.io/en/cozy-stack/settings/#post-settingspassphrasef
 
 | Param | Type | Description |
 | --- | --- | --- |
-| params | <code>object</code> |  |
+| params | <code>object</code> | parameters needed to set passphrase |
 | params.registerToken | <code>string</code> | registration token provided by the onboarding link |
 | params.passwordHash | <code>string</code> | hash of the master password |
 | params.hint | <code>string</code> | hint for the master password |

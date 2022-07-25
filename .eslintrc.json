@@ -12,8 +12,9 @@
     ],
     "jsdoc/check-types": 0, // Types are checked via typescript
     "jsdoc/valid-types": 0, // Types are checked via typescript
-    "jsdoc/require-jsdoc": 0, // --fix adds empty jsdocs 
+    "jsdoc/require-jsdoc": 0, // --fix adds empty jsdocs
     "jsdoc/require-param": 0, // --fix breaks docstrings without params
+    "jsdoc/require-param-description": ["error"],
     "jsdoc/require-returns": 0, // too much warnings for now
     "jsdoc/require-returns-description": 0, // too much warnings for now
     "no-param-reassign": 2
@@ -23,7 +24,7 @@
       "mode": "typescript",
       "preferredTypes": {
         "object.<>": "Object.<>", // For Typescript compatibility
-	    
+
         // Typescript utility types are defined here so that the plugin
         // does not consider them as undefined
         "Partial": "Partial",

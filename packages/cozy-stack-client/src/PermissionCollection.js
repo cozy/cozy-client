@@ -21,7 +21,7 @@ class PermissionCollection extends DocumentCollection {
    * Create a new set of permissions
    * It can also associates one or more codes to it, via the codes parameter
    *
-   * @param {object} permission
+   * @param {object} permission - permission to create
    * @param {string} permission.codes A comma separed list of values (defaulted to code)
    * @param {string} permission.ttl Make the codes expire after a delay (bigduration format)
    * @param {boolean} permission.tiny If set to true then the generated shortcode will be 6 digits
@@ -182,7 +182,7 @@ class PermissionCollection extends DocumentCollection {
   /**
    * Destroy a sharing link and the related permissions
    *
-   * @param {object} document
+   * @param {object} document - document to revoke sharing link
    */
   async revokeSharingLink(document) {
     const allLinks = await this.fetchAllLinks(document)
