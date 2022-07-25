@@ -1,0 +1,44 @@
+{
+  "Permissions": {
+    "io": {
+      "cozy": {
+        "accounts": "Login details",
+        "apps": "List of installed applications",
+        "apps.suggestions": "Application suggestions",
+        "bank.accounts": "Banking accounts",
+        "bank.accounts.stats": "Stats on banking accounts",
+        "bank.balancehistories": "Bank balances",
+        "bank.groups": "Banking groups",
+        "bank.operations": "Bank operations",
+        "bank.settings": "Banks app settings",
+        "bank.recipients": "Banking transfer recipients",
+        "bank.recurrence": "Banks recurrence groups",
+        "bills": "Bills",
+        "certified.carbon_copy": "Carbon copy",
+        "certified.electronic_safe": "Electronic safe",
+        "coachco2.settings": "CoachCO2 app settings",
+        "contacts": "Contacts",
+        "contacts.groups": "Contacts groups",
+        "contacts.accounts": "Accounts linked to the contacts",
+        "files": "Files",
+        "files.versions": "Files versions",
+        "files.*": "File-related data (files, folders, versions, ...)",
+        "identities": "Identities",
+        "jobs": "Jobs",
+        "konnectors": "Connectors for importing data",
+        "konnectors.result": "Connectors results",
+        "netflix.views": "Netflix history",
+        "netflix.opinions": "Netflix opinions",
+        "notifications": "Notifications",
+        "oauth.clients": "Connected devices",
+        "permissions": "Delegating permissions",
+        "photos.albums": "Photo albums",
+        "photos.settings": "Photo settings",
+        "settings": "Settings",
+        "sharings": "Sharing",
+        "timeseries.geojson": "Trips",
+        "triggers": "Scheduling jobs"
+      }
+    }
+  }
+}
