@@ -56,7 +56,7 @@ class NotesCollection extends DocumentCollection {
   /**
    * Create a note
    *
-   * @param {object} options
+   * @param {object} options - Options
    * @param {string} [options.dir_id] dir_id where to create the note
    *
    * @returns {{data, links, meta}} The JSON API conformant response.

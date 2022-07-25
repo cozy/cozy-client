@@ -39,9 +39,9 @@ export function isPartnershipValid(partnership) {
 }
 
 /**
- * Normalize app manifest, retrocompatibility for old manifests
+ * Normalize app manifest, retro-compatibility for old manifests
  *
- * @param  {Manifest} manifest
+ * @param  {Manifest} manifest - app manifest to normalize
  * @returns {Manifest}
  */
 export function sanitize(manifest) {

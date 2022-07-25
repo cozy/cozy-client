@@ -384,9 +384,9 @@ class PouchLink extends CozyLink {
   /**
    *
    * Check if there is warmup queries for this doctype
-   * and return if those queries are already warmedup or not
+   * and return if those queries are already warmed up or not
    *
-   * @param {string} doctype
+   * @param {string} doctype - Doctype to check
    * @returns {boolean} the need to wait for the warmup
    */
   needsToWaitWarmup(doctype) {

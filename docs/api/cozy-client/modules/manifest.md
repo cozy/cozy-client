@@ -48,13 +48,13 @@
 
 ▸ **sanitize**(`manifest`): `any`
 
-Normalize app manifest, retrocompatibility for old manifests
+Normalize app manifest, retro-compatibility for old manifests
 
 *Parameters*
 
-| Name | Type |
-| :------ | :------ |
-| `manifest` | `any` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `manifest` | `any` | app manifest to normalize |
 
 *Returns*
 

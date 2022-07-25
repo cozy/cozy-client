@@ -649,8 +649,11 @@ client.query(Q('io.cozy.bills'))`)
    * - Can only be called with documents from the same doctype
    * - Does not support automatic creation of references
    *
-   * @param  {CozyClientDocument[]} docs
-   * @param  {Object} mutationOptions
+   * @param  {CozyClientDocument[]} docs - Documents from the same doctype
+   * @param  {Object} mutationOptions - Mutation Options
+   * @param  {string}    [mutationOptions.as] - Mutation id
+   * @param  {Function}    [mutationOptions.update] - Function to update the document
+   * @param  {Function}    [mutationOptions.updateQueries] - Function to update queries
    * @returns {Promise<void>}
    */
   async saveAll(docs, mutationOptions = {}) {
