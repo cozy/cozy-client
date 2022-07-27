@@ -12,6 +12,7 @@ import * as document from './document'
 import * as timeseries from './timeseries'
 import * as sharing from './sharing'
 import * as dacc from './dacc'
+import * as doctypes from './doctypes'
 
 // For backward compatibility before 9.0.0
 const triggers = trigger
@@ -33,5 +34,6 @@ export {
   document,
   timeseries,
   sharing,
-  dacc
+  dacc,
+  doctypes
 }
