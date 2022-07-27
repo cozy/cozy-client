@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [32.3.0](https://github.com/cozy/cozy-client/compare/v32.2.8...v32.3.0) (2022-07-27)
+
+
+### Features
+
+* Add permissions's translation ([68ba8b7](https://github.com/cozy/cozy-client/commit/68ba8b793791d6a435fb68869f362afa5141cd07))
+
+
+
+
+
 ## [32.2.8](https://github.com/cozy/cozy-client/compare/v32.2.7...v32.2.8) (2022-07-25)
 
 **Note:** Version bump only for package cozy-client
