@@ -78,6 +78,7 @@ describe('use query', () => {
         'id',
         'definition',
         'fetchStatus',
+        'isFetching',
         'lastFetch',
         'lastUpdate',
         'lastErrorUpdate',

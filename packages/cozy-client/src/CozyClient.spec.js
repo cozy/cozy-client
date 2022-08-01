@@ -28,7 +28,8 @@ import {
   receiveMutationResult,
   receiveMutationError,
   getQueryFromState,
-  getRawQueryFromState
+  getRawQueryFromState,
+  loadQuery
 } from './store'
 import { HasManyFiles, Association, HasMany } from './associations'
 import mapValues from 'lodash/mapValues'
@@ -1395,6 +1396,17 @@ describe('CozyClient', () => {
       expect(client.requestQuery).not.toHaveBeenCalled()
     })
 
+    it('should not fetch policy when background fetching enabled', async () => {
+      jest.spyOn(client, 'requestQuery')
+      const fetchPolicy = jest.fn(() => false)
+      await client.query(query, {
+        as: 'allTodos',
+        fetchPolicy,
+        backgroundFetching: true
+      })
+      expect(fetchPolicy).not.toHaveBeenCalled()
+    })
+
     it('should dispatch a INIT_QUERY action if status is not loaded', async () => {
       requestHandler.mockResolvedValueOnce(fakeResponse)
       getQueryFromState.mockReturnValueOnce({
@@ -1414,6 +1426,44 @@ describe('CozyClient', () => {
       await client.query(query, { as: 'allTodos' })
       expect(client.store.dispatch.mock.calls[0][0]).toEqual(
         initQuery('allTodos', { doctype: 'io.cozy.todos' }, { as: 'allTodos' })
+      )
+    })
+
+    it('should dispatch a LOAD_QUERY action', async () => {
+      requestHandler.mockResolvedValueOnce(fakeResponse)
+      getQueryFromState.mockReturnValueOnce({
+        fetchStatus: 'loaded'
+      })
+      await client.query(query, { as: 'allTodos' })
+      expect(client.store.dispatch.mock.calls[1][0]).toEqual(
+        loadQuery('allTodos', {})
+      )
+    })
+
+    it('should dispatch a LOAD_QUERY action providing backgroundFetching when set', async () => {
+      requestHandler.mockResolvedValueOnce(fakeResponse)
+      getQueryFromState.mockReturnValueOnce({
+        fetchStatus: 'loaded'
+      })
+      await client.query(query, { as: 'allTodos', backgroundFetching: true })
+      expect(client.store.dispatch.mock.calls[1][0]).toEqual(
+        loadQuery('allTodos', { backgroundFetching: true })
+      )
+    })
+
+    it('should dispatch a RECEIVE_QUERY_RESULT action providing backgroundFetching when set', async () => {
+      requestHandler.mockResolvedValueOnce(fakeResponse)
+      getQueryFromState.mockReturnValueOnce({
+        fetchStatus: 'loaded'
+      })
+      query.skip = 100
+      await client.query(query, { as: 'allTodos', backgroundFetching: true })
+      const dispatchCalls = client.store.dispatch.mock.calls
+      const lastDispatchCall = dispatchCalls[dispatchCalls.length - 1]
+      expect(lastDispatchCall[0]).toEqual(
+        receiveQueryResult('allTodos', fakeResponse, {
+          backgroundFetching: true
+        })
       )
     })
 

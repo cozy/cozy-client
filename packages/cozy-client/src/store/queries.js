@@ -48,6 +48,7 @@ const queryInitialState = {
   id: null,
   definition: null,
   fetchStatus: 'pending',
+  isFetching: null,
   lastFetch: null,
   lastUpdate: null,
   lastErrorUpdate: null,
@@ -148,15 +149,18 @@ const query = (state = queryInitialState, action, documents) => {
         id: action.queryId,
         definition: action.queryDefinition,
         options: action.options,
-        // When the query is new, we set "fetchStatus" to "loading"
-        // directly since we know it will be loaded right away.
-        // This way, the loadQuery action will have no effect, and
-        // we save an additional render.
         fetchStatus: state.lastUpdate ? state.fetchStatus : 'pending'
       }
     case LOAD_QUERY:
       if (state.fetchStatus === 'loading') {
         return state
+      }
+      if (state.fetchStatus === 'loaded' && action.backgroundFetching) {
+        return {
+          ...state,
+          fetchStatus: 'loaded',
+          isFetching: true
+        }
       }
       return {
         ...state,
@@ -171,6 +175,7 @@ const query = (state = queryInitialState, action, documents) => {
         return {
           ...state,
           fetchStatus: 'loaded',
+          isFetching: action.backgroundFetching ? false : null,
           lastFetch: Date.now(),
           lastUpdate: Date.now()
         }
@@ -179,6 +184,7 @@ const query = (state = queryInitialState, action, documents) => {
       /** @type {Partial<QueryState>} */
       const common = {
         fetchStatus: 'loaded',
+        isFetching: action.backgroundFetching ? false : null,
         lastFetch: Date.now(),
         lastUpdate: Date.now(),
         ...(executionStatsEnabled && {
@@ -219,6 +225,7 @@ const query = (state = queryInitialState, action, documents) => {
         ...state,
         id: action.queryId,
         fetchStatus: 'failed',
+        isFetching: action.backgroundFetching ? false : null,
         lastError: action.error,
         lastErrorUpdate: Date.now()
       }
@@ -494,6 +501,7 @@ export default queries
  * @param  {string} queryId  Name/id of the query
  * @param  {QueryDefinition} queryDefinition - Definition of the created query
  * @param  {QueryOptions} [options] - Options for the created query
+ * @returns {object} Redux action to dispatch
  */
 export const initQuery = (queryId, queryDefinition, options = null) => {
   if (!queryDefinition.doctype) {
@@ -507,13 +515,29 @@ export const initQuery = (queryId, queryDefinition, options = null) => {
   }
 }
 
-export const loadQuery = queryId => {
+/**
+ * Update the fetchStatus when the query is loading
+ *
+ * @param  {string} queryId - id of the query
+ * @param  {QueryOptions} [options] - Options for the created query
+ * @returns {object} Redux action to dispatch
+ */
+export const loadQuery = (queryId, options) => {
   return {
     type: LOAD_QUERY,
-    queryId
+    queryId,
+    ...options
   }
 }
 
+/**
+ * Update the fetchStatus when the query is loading
+ *
+ * @param  {string} queryId - id of the query
+ * @param {object} response - The action response
+ * @param  {QueryOptions} [options] - Options for the created query
+ * @returns {object} Redux action to dispatch
+ */
 export const receiveQueryResult = (queryId, response, options = {}) => ({
   type: RECEIVE_QUERY_RESULT,
   queryId,
@@ -521,10 +545,19 @@ export const receiveQueryResult = (queryId, response, options = {}) => ({
   ...options
 })
 
-export const receiveQueryError = (queryId, error) => ({
+/**
+ * Update the fetchStatus when the query is loading
+ *
+ * @param  {string} queryId - id of the query
+ * @param {object} error - The action error
+ * @param  {QueryOptions} [options] - Options for the created query
+ * @returns {object} Redux action to dispatch
+ */
+export const receiveQueryError = (queryId, error, options = {}) => ({
   type: RECEIVE_QUERY_ERROR,
   queryId,
-  error
+  error,
+  ...options
 })
 
 // selectors

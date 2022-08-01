@@ -35,6 +35,7 @@ export type QueryState = {
     id: string;
     definition: QueryDefinition;
     fetchStatus: QueryFetchStatus;
+    isFetching: boolean;
     lastFetch: number;
     lastUpdate: number;
     lastErrorUpdate: number;
@@ -73,6 +74,10 @@ export type QueryOptions = {
      * - If set to false, the query won't be executed
      */
     enabled?: boolean;
+    /**
+     * - If set to true, when the fetchStatus has already been loaded, it won't be updated during future fetches. Instead, a `isFetching` attribute will be used to indicate when background fetching is started.
+     */
+    backgroundFetching?: boolean;
     /**
      * - Whether documents should be returned already hydrated
      */

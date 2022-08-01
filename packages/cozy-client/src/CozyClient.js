@@ -120,6 +120,7 @@ const DOC_UPDATE = 'update'
  * @property {object} [stackClient]
  * @property {boolean} [warningForCustomHandlers]
  * @property {boolean} [autoHydrate]
+ * @property {boolean} [backgroundFetching] - If set to true, backgroundFetching will be enabled by default on every query. Meaning that, when the fetchStatus has already been loaded, it won't be updated during future fetches. Instead, a `isFetching` attribute will be used to indicate when background fetching is started.
  * @property {object} [oauth]
  * @property {Function} [onTokenRefresh]
  * @property {Function} [onError] - Default callback if a query is errored
@@ -913,7 +914,7 @@ client.query(Q('io.cozy.bills'))`)
       options.as || this.queryIdGenerator.generateId(queryDefinition)
     const existingQuery = this.getQueryFromState(queryId)
 
-    if (options.fetchPolicy) {
+    if (!options.backgroundFetching && options.fetchPolicy) {
       if (!options.as) {
         throw new Error(
           'Cannot use `fetchPolicy` without naming the query, please use `as` to name the query'
@@ -935,7 +936,11 @@ client.query(Q('io.cozy.bills'))`)
     this.ensureQueryExists(queryId, queryDefinition, options)
 
     try {
-      this.dispatch(loadQuery(queryId))
+      const backgroundFetching =
+        options.backgroundFetching !== undefined
+          ? options.backgroundFetching
+          : this.options.backgroundFetching
+      this.dispatch(loadQuery(queryId, { backgroundFetching }))
 
       const response = await this._promiseCache.exec(
         () => this.requestQuery(queryDefinition),
@@ -944,7 +949,8 @@ client.query(Q('io.cozy.bills'))`)
 
       this.dispatch(
         receiveQueryResult(queryId, response, {
-          update
+          update,
+          backgroundFetching
         })
       )
       return response

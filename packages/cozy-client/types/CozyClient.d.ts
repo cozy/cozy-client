@@ -8,6 +8,10 @@ export type ClientOptions = {
     stackClient?: object;
     warningForCustomHandlers?: boolean;
     autoHydrate?: boolean;
+    /**
+     * - If set to true, backgroundFetching will be enabled by default on every query. Meaning that, when the fetchStatus has already been loaded, it won't be updated during future fetches. Instead, a `isFetching` attribute will be used to indicate when background fetching is started.
+     */
+    backgroundFetching?: boolean;
     oauth?: object;
     onTokenRefresh?: Function;
     /**
@@ -41,6 +45,7 @@ export type ClientOptions = {
  * @property {object} [stackClient]
  * @property {boolean} [warningForCustomHandlers]
  * @property {boolean} [autoHydrate]
+ * @property {boolean} [backgroundFetching] - If set to true, backgroundFetching will be enabled by default on every query. Meaning that, when the fetchStatus has already been loaded, it won't be updated during future fetches. Instead, a `isFetching` attribute will be used to indicate when background fetching is started.
  * @property {object} [oauth]
  * @property {Function} [onTokenRefresh]
  * @property {Function} [onError] - Default callback if a query is errored
@@ -148,6 +153,10 @@ declare class CozyClient {
         stackClient?: object;
         warningForCustomHandlers?: boolean;
         autoHydrate?: boolean;
+        /**
+         * - If set to true, backgroundFetching will be enabled by default on every query. Meaning that, when the fetchStatus has already been loaded, it won't be updated during future fetches. Instead, a `isFetching` attribute will be used to indicate when background fetching is started.
+         */
+        backgroundFetching?: boolean;
         oauth?: object;
         onTokenRefresh?: Function;
         /**
