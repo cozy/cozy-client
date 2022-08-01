@@ -54,6 +54,7 @@ import { QueryDefinition } from './queries/dsl'
  * @property {string} id
  * @property {QueryDefinition} definition
  * @property {QueryFetchStatus} fetchStatus
+ * @property {boolean} isFetching
  * @property {number} lastFetch
  * @property {number} lastUpdate
  * @property {number} lastErrorUpdate
@@ -82,6 +83,7 @@ import { QueryDefinition } from './queries/dsl'
  * @property {string} [update] - Does not seem to be used
  * @property {Function} [onError] - Callback when the query is errored
  * @property {boolean} [enabled=true] - If set to false, the query won't be executed
+ * @property {boolean} [backgroundFetching] - If set to true, when the fetchStatus has already been loaded, it won't be updated during future fetches. Instead, a `isFetching` attribute will be used to indicate when background fetching is started.
  * @property {object} [hydrated=true] - Whether documents should be returned already hydrated
  * @property {object} [singleDocData] - If true, the "data" returned will be
  * a single doc instead of an array for single doc queries. Defaults to false for backward

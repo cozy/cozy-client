@@ -8,26 +8,10 @@ export function convert$gtNullSelectors(selector: any): object;
 export function mergeSelectorAndPartialIndex(queryDefinition: object): object;
 export function makeSorterFromDefinition(definition: QueryDefinition): (arg0: Array<CozyClientDocument>) => Array<CozyClientDocument>;
 export default queries;
-export function initQuery(queryId: string, queryDefinition: QueryDefinition, options?: QueryOptions): {
-    type: string;
-    queryId: string;
-    queryDefinition: QueryDefinition;
-    options: QueryOptions;
-};
-export function loadQuery(queryId: any): {
-    type: string;
-    queryId: any;
-};
-export function receiveQueryResult(queryId: any, response: any, options?: {}): {
-    type: string;
-    queryId: any;
-    response: any;
-};
-export function receiveQueryError(queryId: any, error: any): {
-    type: string;
-    queryId: any;
-    error: any;
-};
+export function initQuery(queryId: string, queryDefinition: QueryDefinition, options?: QueryOptions): object;
+export function loadQuery(queryId: string, options?: QueryOptions): object;
+export function receiveQueryResult(queryId: string, response: object, options?: QueryOptions): object;
+export function receiveQueryError(queryId: string, error: object, options?: QueryOptions): object;
 export function getQueryFromSlice(state: any, queryId: any, documents: any): any;
 export class QueryIDGenerator {
     idCounter: number;

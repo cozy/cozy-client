@@ -100,7 +100,7 @@ Query results are cached and can be reused across components, you just
 have to name the query results ("checked-todos") below.
 
 ```jsx
-import CozyClient, { Query, isQueryLoading, Q } from 'cozy-client'
+import CozyClient, { useQuery, isQueryLoading, Q } from 'cozy-client'
 
 const client = CozyClient.fromDOM()
 client.ensureStore()
@@ -108,10 +108,10 @@ const todos = 'io.cozy.todos'
 const checked = { checked: false }
 
 // Use the Q helper to build queries
-const query = Q(todos).where(checked)
+const queryDefinition = Q(todos).where(checked)
 
 function TodoList(props) {
-  const queryResult = useQuery(query, {
+  const queryResult = useQuery(queryDefinition, {
     as: 'checked-todos',
     fetchPolicy: CozyClient.fetchPolicies.olderThan(30 * 1000)
   })
@@ -143,22 +143,22 @@ If you cannot use a hook, you can use the `Query` render-prop component. Basic e
 
 ```jsx
 import { Query, isQueryLoading, Q } from 'cozy-client'
+import React from 'react'
 
 const todos = 'io.cozy.todos'
 const checked = { checked: false }
 
 // Use the Q helper to build queries
-const query = Q(todos).where(checked)
+const queryDefinition = Q(todos).where(checked)
 
-function TodoList(props) {
-  return <Query query={query}>
-    {
-      queryResult => isQueryLoading(queryResult)
-        ? <h1>Loading...</h1>
-        : <ul>{queryResult.data.map(todo => <li>{todo.label}</li>)}</ul>
+const TodoList = () => (
+  <Query query={queryDefinition}>
+    {queryResult => isQueryLoading(queryResult)
+      ? <h1>Loading...</h1>
+      : <ul>{queryResult.data.map(todo => <li>{todo.label}</li>)}</ul>
     }
   </Query>
-}
+)
 ```
 
 When we use `Query` to "wrap" a component, three things happen:
@@ -170,43 +170,44 @@ When we use `Query` to "wrap" a component, three things happen:
 The following props will be given to your wrapped component:
  - `data`: an array of documents
  - `fetchStatus`: the status of the fetch (`pending`, `loading`, `loaded` or `error`)
- - `lastFetch`: when the last fetch occured
+ - `lastFetch`: when the last fetch occurred
  - `hasMore`: the fetches being paginated, this property indicates if there are more documents to load
 
 
-You can also pass a function instead of a direct query. Your function will be given the props of the component and should return the requested query:
+You can also pass a function instead of a direct query definition. Your function will be given the props of the component and should return the requested query definition:
 
 ```jsx
 import { Query, Q } from 'cozy-client'
+import React from 'react'
 
-const query = function (props) {
+const queryDefinition = function(props) {
   const todos = 'io.cozy.todos'
   const where = { checked: props.checked }
   return Q(todos).where(where)
 }
 
-function TodoList() {
-  return <Query query={query} checked={props.checked}>
-    {
-      ({ data, fetchStatus }) =>
+const TodoList = ({ props }) => (
+  <Query query={queryDefinition} checked={props.checked}>
+    {({ data, fetchStatus }) => (
       fetchStatus !== 'loaded'
         ? <h1>Loading...</h1>
         : <ul>{data.map(todo => <li>{todo.label}</li>)}</ul>
+      )
     }
   </Query>
-}
+)
 
-// use <TodoList checked={false} />
+// use <TodoList checked={false}/>
 ```
 
-Note: Your query will be bound when the `<Query/>` component mounts. Future changes in props will not modify the query.
+Note: Your query definition will be bound when the `<Query/>` component mounts. Future changes in props will not modify the query.
 
 ### 2.c Requesting data with the `queryConnect` HOC
 
-At your preference, you can use an higher-order component. `queryConnect` will take the name of the props field where it should send the result of the query and the actual query:
+At your preference, you can use a higher-order component. `queryConnect` will take the name of the props field where it should send the result of the query and the actual query:
 
 ```jsx
-import { queryConnect } from 'cozy-client'
+import { queryConnect, Q } from 'cozy-client'
 
 function TodoList(props) {
   const { data, fetchStatus } = props.result
@@ -224,12 +225,12 @@ const ConnectedTodoList = queryConnect({
 })(TodoList)
 ```
 
-`queryConnect` will use `<Query />` internally so you will inherits the same behaviour.
+`queryConnect` will use `<Query />` internally, so you will inherit the same behaviour.
 
 With the same syntax, you may register multiple queries to run:
 
 ```jsx
-import { queryConnect } from 'cozy-client'
+import { queryConnect, Q } from 'cozy-client'
 
 function TodoList(props) {
   const { data, fetchStatus } = props.checked
@@ -257,15 +258,15 @@ two components should share the same data and only 1 network request should be e
 
 There are two solutions:
 
-1) Lift the data fetching up the React tree: make a parent of the two components be the responsible of the data.
+1) Lift the data fetching up the React tree: make a parent of the two components be the responsible for the data.
 2) Using fetch policies to prevent re-fetching of the data
 
 1 can be a good solution but sometimes the components needing the data are too far down the tree and/or too decoupled;
 it might not make sense to lift the data fetching up only to have to drill the data down the tree again.
 
-Using both `Query` and `queryConnect`, you can declare a *fetch policy*. It tells cozy-client if it should
-execute the `query` at componentDidMount time. It enables n components to be connected to the same query without
-triggering n requests.
+Using `useQuery`, `Query` and `queryConnect`, you can declare a *fetch policy*. It tells cozy-client if it should
+execute the `query` at componentDidMount time. It enables *N* components to be connected to the same query without
+triggering *N* requests.
 
 A fetch policy is a function receiving the state of the current query and returning true if it should
 be fetched and false otherwise. It is important to name the query with `as` when using fetch policies
@@ -273,17 +274,20 @@ otherwise query data cannot be shared across components.
 
 ```jsx
 import { Q } from 'cozy-client'
-const query = () => Q('io.cozy.todos')
+const queryDefinition = () => Q('io.cozy.todos')
 
-// io.cozy.todos will not be refetched if there are already io.cozy.todos
-// in the store and the data is fresh (updated less than 30s ago). 
-const fetchPolicy = CozyClient.olderThan(30*1000)
-const as = 'my-query'
+const MyComponent = () => {
+  
+  // io.cozy.todos will not be refetched if there are already io.cozy.todos
+  // in the store and the data is fresh (updated less than 30s ago). 
+  const fetchPolicy = CozyClient.olderThan(30*1000)
+  const as = 'my-query'
 
-// With Query and a render prop
-<Query as={as} query={query} fetchPolicy={fetchPolicy}>{
-  ({ data: todos }) => {<TodoList todos={todos} />}
-}</Query>
+  // With Query and a render prop
+  return (<Query as={as} query={queryDefinition} fetchPolicy={fetchPolicy}>{
+    ({ data: todos }) => {<TodoList todos={todos} />}
+  }</Query>)
+}
 
 // With queryConnect
 queryConnect({
@@ -310,7 +314,7 @@ import { RealTimeQueries } from 'cozy-client'
 function MyParentComponent(props) {
   return (
     <>
-      <ConnectedTodoList +>
+      <ConnectedTodoList />
       <RealTimeQueries doctype="io.cozy.todos" />
     </>
   )
@@ -333,14 +337,16 @@ function TodoList(props) {
     { label: e.target.elements['new-todo'], checked: false }
   )
   return (
-    <ul>
-      {/* todo items */}
-    </ul>
-    <form onSubmit={createNewTodo}>
-      <label htmlFor="new-todo">Todo</label>
-      <input id="new-todo" name="new-todo" />
-      <button type="submit">Add todo</button>
-    </form>
+    <>
+      <ul>
+        {/* todo items */}
+      </ul>
+      <form onSubmit={createNewTodo}>
+        <label htmlFor="new-todo">Todo</label>
+        <input id="new-todo" name="new-todo" />
+        <button type="submit">Add todo</button>
+      </form>
+    </>
   )
 }
 
@@ -354,11 +360,11 @@ import { Query } from 'cozy-client'
 
 const todos = 'io.cozy.todos'
 const checked = { checked: false }
-const query = Q(todos).where(checked)
+const queryDefinition = Q(todos).where(checked)
 const mutations = client => ({ createDocument: client.create.bind(client) })
 
 function TodoList() {
-  return <Query query={query} mutations={mutations}>
+  return <Query query={queryDefinition} mutations={mutations}>
     {
       ({ data, fetchStatus }) =>
       fetchStatus !== 'loaded'
@@ -385,13 +391,11 @@ function DumbTodoList(props) {
   if (fetchStatus !== 'loaded') {
     return <h1>Loading...</h1>
   } else {
-    return (
-      <ul>
-        {data.map(todo => (
-          <li key={todo.id}>{todo.label}</li>
-        ))}
-      </ul>
-    )
+    return <ul>
+      {data.map(todo => (
+              <li key={todo.id}>{todo.label}</li>
+      ))}
+    </ul>
   }
 }
 

@@ -4,14 +4,18 @@ import queries, {
   convert$gtNullSelectors,
   makeSorterFromDefinition,
   mergeSelectorAndPartialIndex,
-  sortAndLimitDocsIds
+  sortAndLimitDocsIds,
+  loadQuery,
+  receiveQueryError
 } from './queries'
 import { Q } from '../queries/dsl'
 import { TODO_1, TODO_2, TODO_3 } from '../__tests__/fixtures'
 
 describe('queries reducer', () => {
   let state
-
+  const response = {
+    data: [TODO_1, TODO_2]
+  }
   const applyAction = action => {
     state = queries(state, action)
   }
@@ -23,35 +27,116 @@ describe('queries reducer', () => {
     Date.now.mockRestore()
   })
 
-  it('should init correctly', () => {
-    const qdef = Q('io.cozy.todos')
-    applyAction(initQuery('a', qdef))
-    expect(state).toMatchSnapshot()
+  describe('INIT_QUERY', () => {
+    it('should init correctly', () => {
+      const qdef = Q('io.cozy.todos')
+      applyAction(initQuery('a', qdef))
+      expect(state).toMatchSnapshot()
+    })
+
+    test('init should have no effect after receiveQueryResult', () => {
+      const qdef = Q('io.cozy.todos')
+      applyAction(initQuery('a', qdef))
+      applyAction(receiveQueryResult('a', response))
+      let state1 = state
+      applyAction(initQuery('a', qdef))
+      expect(state1).toBe(state)
+    })
+
+    test('init should not set status to loading after receiveQueryResult', () => {
+      const qdef = Q('io.cozy.todos')
+      applyAction(initQuery('a', qdef))
+      applyAction(receiveQueryResult('a', response))
+      applyAction(initQuery('a', qdef))
+      expect(state.a.fetchStatus).toBe('loaded')
+    })
   })
 
-  test('init should have no effect after receiveQueryResult', () => {
-    const qdef = Q('io.cozy.todos')
-    applyAction(initQuery('a', qdef))
-    applyAction(
-      receiveQueryResult('a', {
-        data: [TODO_1, TODO_2]
-      })
-    )
-    let state1 = state
-    applyAction(initQuery('a', qdef))
-    expect(state1).toBe(state)
+  describe('LOAD_QUERY', () => {
+    it('should set isFetching to true and not changing fetchStatus when query has been loaded and background fetching activated', () => {
+      // Given
+      const queryDefinition = Q('io.cozy.todos')
+      applyAction(initQuery('a', queryDefinition))
+      applyAction(receiveQueryResult('a', response))
+      expect(state.a.fetchStatus).toBe('loaded')
+
+      // When
+      applyAction(loadQuery('a', { backgroundFetching: true }))
+
+      // Then
+      expect(state.a.fetchStatus).toBe('loaded')
+      expect(state.a.isFetching).toBe(true)
+    })
+
+    it('should not set isFetching and keep changing fetchStatus when query has been loaded and background fetching deactivated', () => {
+      // Given
+      const queryDefinition = Q('io.cozy.todos')
+      applyAction(initQuery('a', queryDefinition))
+      applyAction(receiveQueryResult('a', response))
+      expect(state.a.fetchStatus).toBe('loaded')
+
+      // When
+      applyAction(loadQuery('a'))
+
+      // Then
+      expect(state.a.fetchStatus).toBe('loading')
+      expect(state.a.isFetching).toBe(null)
+    })
   })
 
-  test('init should not set status to loading after receiveQueryResult', () => {
-    const qdef = Q('io.cozy.todos')
-    applyAction(initQuery('a', qdef))
-    applyAction(
-      receiveQueryResult('a', {
-        data: [TODO_1, TODO_2]
-      })
-    )
-    applyAction(initQuery('a', qdef))
-    expect(state.a.fetchStatus).toBe('loaded')
+  describe('RECEIVE_QUERY_RESULT', () => {
+    it('should set isFetching to false when query has been re-fetched correctly and background fetching activated', () => {
+      // Given
+      const queryDefinition = Q('io.cozy.todos')
+      applyAction(initQuery('a', queryDefinition))
+
+      // When
+      applyAction(
+        receiveQueryResult('a', response, { backgroundFetching: true })
+      )
+
+      // Then
+      expect(state.a.isFetching).toBe(false)
+    })
+
+    it('should set isFetching to false when query has been re-fetched correctly and background fetching deactivated', () => {
+      // Given
+      const queryDefinition = Q('io.cozy.todos')
+      applyAction(initQuery('a', queryDefinition))
+
+      // When
+      applyAction(receiveQueryResult('a', response))
+
+      // Then
+      expect(state.a.isFetching).toBe(null)
+    })
+  })
+
+  describe('RECEIVE_QUERY_ERROR', () => {
+    it('should set isFetching to false when query is in error and background fetching activated', () => {
+      // Given
+      const queryDefinition = Q('io.cozy.todos')
+      applyAction(initQuery('a', queryDefinition))
+      const error = {}
+
+      // When
+      applyAction(receiveQueryError('a', error, { backgroundFetching: true }))
+
+      // Then
+      expect(state.a.isFetching).toBe(false)
+    })
+    it('should not set isFetching when query is in error and background fetching deactivated', () => {
+      // Given
+      const queryDefinition = Q('io.cozy.todos')
+      applyAction(initQuery('a', queryDefinition))
+      const error = {}
+
+      // When
+      applyAction(receiveQueryError('a', error))
+
+      // Then
+      expect(state.a.isFetching).toBe(null)
+    })
   })
 
   describe('updates', () => {

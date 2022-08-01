@@ -192,6 +192,7 @@ describe('Query', () => {
           fetchStatus: 'pending',
           hasMore: false,
           id: '1',
+          isFetching: null,
           lastError: null,
           lastFetch: null,
           lastUpdate: null,
