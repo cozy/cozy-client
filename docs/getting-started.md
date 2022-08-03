@@ -1,6 +1,6 @@
 `cozy-client` is the sdk to interact with the cozy stack from a Javascript application. It aims at hiding all low level details and providing a simple high level API to fetch and cache documents.
 
-Main features :
+Main features:
 
 - Authentication with a Cozy
 - Querying and caching documents
@@ -15,7 +15,7 @@ Additional features with plugins:
 - [InterApp][cozy-interapp]: Interact with other apps (example : file picking within your app)
 - [Flag][cozy-flags]: Use feature flags
 
-The following guide is an overview of a cozy-client integration to help you getting started.
+The following guide is an overview of a cozy-client integration to help you to get started.
 
 ## Install
 
@@ -48,7 +48,7 @@ const client = new CozyClient({
 ```
 
 Usually, the token and URI are provided by the stack on the DOM node `<div role="application">`.
-When using this, you can instantiate a client with :
+When using this, you can instantiate a client with:
 
 ```
 const client = CozyClient.fromDOM({
@@ -65,7 +65,7 @@ See [how to use the schema features][schema]
 
 ## Fetch data
 
-To fetch data, we first build a `QueryDefinition` with the `Q` helper:
+To fetch data, we first build a [`QueryDefinition`][query-definition] with the `Q` helper:
 
 ```javascript
 import { Q } from 'cozy-client'
@@ -91,7 +91,7 @@ Q('io.cozy.todos')
 - `sortBy` sorts the documents by their `updatedAt` metadata in descending order
 - `limitBy` limits the number of results to 20
 
-By default all fields in the `where()` are automatically indexed. You can turn off this behavior by specifying
+By default, all fields in the `where()` are automatically indexed. You can turn off this behavior by specifying
 explicitly the list of fields to be indexed in `indexFields()`.
 
 
@@ -118,7 +118,7 @@ know more about querying with cozy-client and avoid common traps that can dramat
 
 ## Mutate the data
 
-An instance of `CozyClient` allows you to query and mutate (update) data, here's how it looks:
+An instance of [`CozyClient`][cozy-client] allows you to query and mutate (update) data, here's how it looks:
 
 ```javascript
 import CozyClient from 'cozy-client'
@@ -140,12 +140,12 @@ await client.save({...doc, checked: true})
 
 `save()` will return a Promise with a `data` attribute containing the saved document.
 
-ℹ️ When mutating data, queries that depend on the mutated document(s) will automatically be refreshed : components
-that depend on these queries will be re-rendered.
+ℹ️ When mutating data, queries that depend on the mutated document(s) will automatically be refreshed: 
+components that depend on these queries will be re-rendered.
 
 ## Mutate several documents in batch
 
-The `saveAll` method can be used to save multiple documents in one request.
+The `saveAll()` method can be used to save multiple documents in one request.
 
 ```javascript
 const { data: updatedDocs } = await client.saveAll([
@@ -160,8 +160,10 @@ const { data: updatedDocs } = await client.saveAll([
 [entrypoints]: ./entrypoints.md
 [app-tutorial]: https://docs.cozy.io/en/tutorials/app/#behind-the-magic
 [schema]: https://docs.cozy.io/en/cozy-client/schema
+[query-definition]: ./api/cozy-client/classes/QueryDefinition.md
 [mango-selector]: http://docs.couchdb.org/en/latest/api/database/find.html#find-selectors
 [cozy-relationships]: https://docs.cozy.io/en/cozy-doctypes/docs/#relationships
 [react-integration]: ./react-integration.md
 [query-documentation]: https://docs.cozy.io/en/tutorials/data/queries/
+[cozy-client]: ./api/cozy-client/classes/CozyClient.md
 [devtools]: ./devtools.md
