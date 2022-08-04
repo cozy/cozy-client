@@ -679,6 +679,8 @@ client.query(Q('io.cozy.bills'))`)
   }
   /**
    * @param  {CozyClientDocument} document - Document that will be saved
+   * @param {object} [options={event: DOC_CREATION}] - Event
+   * @param {string} [options.event] - Mutation type
    * @returns {CozyClientDocument}
    */
   ensureCozyMetadata(

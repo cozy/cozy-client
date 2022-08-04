@@ -17,3 +17,5 @@
  * @typedef {object} CertificationConfig - Configuration to access the stores certification API
  * @property {string} androidSafetyNetApiKey
  */
+
+export default {}

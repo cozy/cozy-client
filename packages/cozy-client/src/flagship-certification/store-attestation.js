@@ -1,3 +1,5 @@
+import { AttestationResult, CertificationConfig } from './typedefs'
+
 /**
  * Retrieve the app's attestation from the app's store
  * /!\ This is a mock implementation that should never be called
