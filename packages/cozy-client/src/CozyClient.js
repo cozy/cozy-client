@@ -677,7 +677,10 @@ client.query(Q('io.cozy.bills'))`)
     const mutation = Mutations.updateDocuments(toSaveDocs)
     return this.mutate(mutation, mutationOptions)
   }
-
+  /**
+   * @param  {CozyClientDocument} document - Document that will be saved
+   * @returns {CozyClientDocument}
+   */
   ensureCozyMetadata(
     document,
     options = {
@@ -764,7 +767,7 @@ client.query(Q('io.cozy.bills'))`)
    * ```
    *
    *
-   * @param  {object} document - Document to create
+   * @param  {CozyClientDocument} document - Document to create
    * @param  {ReferenceMap} [referencesByName] - References to the created document. The
    * relationship class associated to each reference list should support references, otherwise this
    * method will throw.
@@ -1350,12 +1353,14 @@ client.query(Q('io.cozy.bills'))`)
    * Has a behavior close to <Query /> or useQuery
    *
    * @param {object} query - Query with definition and options
+   * @param {QueryDefinition} query.definition - Query Definition
+   * @param {QueryOptions} query.options - Query Options
    * @returns {Promise<QueryState>} Query state
    */
-  fetchQueryAndGetFromState = async query => {
+  fetchQueryAndGetFromState = async ({ definition, options }) => {
     try {
-      await this.query(query.definition, query.options)
-      return this.getQueryFromState(query.options.as)
+      await this.query(definition, options)
+      return this.getQueryFromState(options.as)
     } catch (error) {
       throw error
     }
