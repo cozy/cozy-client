@@ -86,7 +86,7 @@ export class Collection {
    * @param  {object}  options - Options of the collection
    * @param  {Function}    options.normalize Callback to normalize response data
    * (default `data => data`)
-   * @param  {string}  options.method    HTTP method (default `GET`)
+   * @param  {string}  [options.method=GET]  -  HTTP method
    * @returns {Promise<object>}  JsonAPI response containing normalized
    * document as data attribute
    */
