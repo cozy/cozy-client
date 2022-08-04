@@ -35,6 +35,8 @@ import * as querystring from './querystring'
  * Attributes used for file creation
  *
  * @typedef {object} FileAttributes
+ * @property {string} id - Id of the document
+ * @property {string} _id - Id of the document
  * @property {string} dirId - Id of the parent directory.
  * @property {string} name - Name of the created file.
  * @property {Date} lastModifiedDate - Can be used to set the last modified date of a file.
@@ -49,6 +51,8 @@ import * as querystring from './querystring'
  * @typedef {object} FileDocument
  * @property {string} _id - Id of the file
  * @property {FileAttributes} attributes - Attributes of the file
+ * @property {object} meta - Meta
+ * @property {object} relationships - Relationships
  */
 
 /**
@@ -145,8 +149,8 @@ export const isFile = ({ _type, type }) =>
 
 /**
  * Returns true when parameters has type directory
- *
- * @param {string} type - The type of the file
+ * @param {object} args File
+ * @param {string} args.type - The type of the file
  * @returns {boolean} true when parameters has type directory or false
  */
 export const isDirectory = ({ type }) => type === 'directory'
@@ -208,8 +212,7 @@ class FileCollection extends DocumentCollection {
    *
    * @param {object}            selector  The Mango selector.
    * @param {MangoQueryOptions} options   The query options
-   *
-   * @returns {{data, meta, skip, next, bookmark}} The JSON API conformant response.
+   * @returns {Promise<{data, meta, skip, next, bookmark, execution_stats}>} The JSON API conformant response.
    * @throws {FetchError}
    */
   async find(selector, options = {}) {
@@ -243,7 +246,7 @@ class FileCollection extends DocumentCollection {
    * @param  {number|null}  [options.skip]    For skip-based pagination, the number of referenced files to skip.
    * @param  {number|null}  [options.limit]   For pagination, the number of results to return.
    * @param  {CouchDBViewCursor|null}  [options.cursor]  For cursor-based pagination, the index cursor.
-   * @returns {{data, included, meta, skip, next, bookmark}} The JSON API conformant response.
+   * @returns {Promise<{data, included, meta, skip, next}>} The JSON API conformant response.
    */
   async findReferencedBy(document, { skip = 0, limit, cursor } = {}) {
     const params = {
@@ -274,7 +277,7 @@ class FileCollection extends DocumentCollection {
    *
    * @param  {FileDocument} document  A JSON representing the file
    * @param  {Array}  documents       An array of JSON documents having a `_type` and `_id` field.
-   * @returns {{data, meta}}          The JSON API conformant response.
+   * @returns {Promise<{data, meta}>}          The JSON API conformant response.
    */
   async addReferencedBy(document, documents) {
     const refs = documents.map(d => ({ id: d._id, type: d._type }))
@@ -299,7 +302,7 @@ class FileCollection extends DocumentCollection {
    *
    * @param  {object} document        A JSON representing the file
    * @param  {Array}  documents       An array of JSON documents having a `_type` and `_id` field.
-   * @returns {{data, meta}}          The JSON API conformant response.
+   * @returns {Promise<{data, meta}>}          The JSON API conformant response.
    */
   async removeReferencedBy(document, documents) {
     const refs = documents.map(d => ({ id: d._id, type: d._type }))
@@ -416,7 +419,7 @@ class FileCollection extends DocumentCollection {
    * async deleteFilePermanently - Definitely delete a file
    *
    * @param  {string} id - The id of the file to delete
-   * @returns {object} The deleted file object
+   * @returns {Promise<object>} The deleted file object
    */
   async deleteFilePermanently(id) {
     const resp = await this.stackClient.fetchJSON('PATCH', uri`/files/${id}`, {
@@ -434,7 +437,7 @@ class FileCollection extends DocumentCollection {
   /**
    * @param {File|Blob|Stream|string|ArrayBuffer} data file to be uploaded
    * @param {string} dirPath Path to upload the file to. ie : /Administative/XXX/
-   * @returns {object} Created io.cozy.files
+   * @returns {Promise<object>} Created io.cozy.files
    */
   async upload(data, dirPath) {
     const dirId = await this.ensureDirectoryExists(dirPath)
@@ -464,10 +467,10 @@ class FileCollection extends DocumentCollection {
    * Used by StackLink to support CozyClient.save({file}).
    * Update the binary file if a `data` param is passed. Only updates
    * attributes otherwise.
-   *
-   * @param {FileAttributes} file - The file with its new content
+   * @param {object} attributes
+   * @param {FileAttributes} attributes.file - The file with its new content
    * @param {File|Blob|string|ArrayBuffer} attributes.data Will be used as content of the updated file
-   * @returns {FileAttributes} Updated document
+   * @returns {Promise<FileAttributes>} Updated document
    * @throws {Error} - explaining reason why update failed
    */
   async update(attributes) {
@@ -909,7 +912,7 @@ class FileCollection extends DocumentCollection {
    * See https://github.com/cozy/cozy-stack/blob/master/docs/files.md#post-filesuploadmetadata
    *
    * @param {object} attributes The file's metadata
-   * @returns {object}          The Metadata object
+   * @returns {Promise<object>}          The Metadata object
    */
   async createFileMetadata(attributes) {
     const resp = await this.stackClient.fetchJSON(
@@ -938,7 +941,7 @@ class FileCollection extends DocumentCollection {
    *
    * @param {string} id File id
    * @param {object} metadata io.cozy.files.metadata attributes
-   * @returns {object} io.cozy.files updated
+   * @returns {Promise<object>} io.cozy.files updated
    */
   async updateMetadataAttribute(id, metadata) {
     const resp = await this.stackClient.fetchJSON(

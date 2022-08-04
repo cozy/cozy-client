@@ -59,7 +59,6 @@ class DocumentCollection {
   /**
    * Provides a callback for `Collection.get`
    *
-   * @private
    * @param {string} doctype - Document doctype
    * @returns {Function} (data, response) => normalizedDocument
    *                                        using `normalizeDoc`
@@ -103,13 +102,15 @@ class DocumentCollection {
    *
    * The returned documents are paginated by the stack.
    *
-   * @param  {{limit, skip, bookmark, keys}} options The fetch options: pagination & fetch of specific docs.
-   * @returns {{data, meta, skip, bookmark, next}} The JSON API conformant response.
+   * @param {object} options The fetch options: pagination & fetch of specific docs.
+   * @param {number} [options.limit=100] - Pagination limit
+   * @param {number} [options.skip=0] - Pagination Skip
+   * @param {string} [options.bookmark] - Pagination bookmark
+   * @param {Array<string>} [options.keys] - Keys to query
+   * @returns {Promise<{data, meta, skip, bookmark, next}>} The JSON API conformant response.
    * @throws {FetchError}
    */
-  async all(options = {}) {
-    const { limit = 100, skip = 0, bookmark, keys } = options
-
+  async all({ limit = 100, skip = 0, bookmark, keys } = {}) {
     // If the limit is intentionnally null, we need to use _all_docs, since
     // _normal_docs uses _find and has a hard limit of 1000
     const isUsingAllDocsRoute = !!keys || limit === null
@@ -256,7 +257,7 @@ class DocumentCollection {
    * @param {MangoQueryOptions} options The find options
    *
    * @returns {Promise<object>} - The find response
-   * @private
+   * @protected
    */
   async findWithMango(path, selector, options = {}) {
     let resp
@@ -281,12 +282,12 @@ class DocumentCollection {
 
   /**
    * Returns a filtered list of documents using a Mango selector.
+   
+The returned documents are paginated by the stack.
    *
-   * The returned documents are paginated by the stack.
-   *
-   * @param  {object} selector The Mango selector.
-   * @param  {{sort, fields, limit, skip, bookmark, indexId}} options The query options.
-   * @returns {{data, skip, bookmark, next, execution_stats}} The JSON API conformant response.
+   * @param {object} selector The Mango selector.
+   * @param {MangoQueryOptions} options MangoQueryOptions
+   * @returns {Promise<{data, skip, bookmark, next, execution_stats}>} The JSON API conformant response.
    * @throws {FetchError}
    */
   async find(selector, options = {}) {
@@ -311,7 +312,7 @@ class DocumentCollection {
    * Get a document by id
    *
    * @param  {string} id The document id.
-   * @returns {object}  JsonAPI response containing normalized document as data attribute
+   * @returns {Promise<object>}  JsonAPI response containing normalized document as data attribute
    */
   async get(id) {
     return Collection.get(
@@ -513,7 +514,7 @@ class DocumentCollection {
 
   async getIndexId(
     fields,
-    { partialFilter, indexName = this.getIndexNameFromFields(fields) }
+    { partialFilter = '', indexName = getIndexNameFromFields(fields) }
   ) {
     if (!this.indexes[indexName]) {
       let index
@@ -537,7 +538,14 @@ class DocumentCollection {
     }
     return this.indexes[indexName].id
   }
-
+  /**
+   *
+   * @param {Array} fields - Fields to index
+   * @param {object} indexOption - Options for the index
+   * @param {string} [indexOption.partialFilter] - partialFilter
+   * @param {string} [indexOption.indexName] - indexName
+   * @returns {Promise<{id, fields}>}
+   */
   async createIndex(fields, { partialFilter, indexName } = {}) {
     const indexDef = {
       index: {
@@ -588,7 +596,7 @@ class DocumentCollection {
   /**
    * Retrieve all design docs of mango indexes
    *
-   * @returns {Array} The design docs
+   * @returns {Promise<Array>} The design docs
    */
   async fetchAllMangoIndexes() {
     const path = uri`/data/${this.doctype}/_design_docs?include_docs=true`
@@ -603,7 +611,7 @@ class DocumentCollection {
    * Delete the specified design doc
    *
    * @param {object} index - The design doc to remove
-   * @returns {object} The delete response
+   * @returns {Promise<object>} The delete response
    */
   async destroyIndex(index) {
     const ddoc = index._id.split('/')[1]
@@ -620,7 +628,7 @@ class DocumentCollection {
    *
    * @param {object} existingIndex - The design doc to copy
    * @param {string} newIndexName - The name of the copy
-   * @returns {object} The copy response
+   * @returns {Promise<object>} The copy response
    */
   async copyIndex(existingIndex, newIndexName) {
     const ddoc = existingIndex._id.split('/')[1]
@@ -643,7 +651,7 @@ class DocumentCollection {
    * @param {object}            selector  The query selector
    * @param {MangoQueryOptions} options   The find options
    *
-   * @returns {object} A matching index if it exists
+   * @returns {Promise<object>} A matching index if it exists
    * @private
    */
   async findExistingIndex(selector, options) {
@@ -677,7 +685,7 @@ class DocumentCollection {
    * @param {string} [couchOptions.since] - Bookmark telling CouchDB from which point in time should changes be returned
    * @param {Array<string>} [couchOptions.doc_ids] - Only return changes for a subset of documents
    * @param {boolean} [couchOptions.includeDocs] - Includes full documents as part of results
-   *
+   * @param {string} [couchOptions.filter] - Filter
    * @see https://docs.couchdb.org/en/stable/api/database/changes.html
    */
   async fetchChangesRaw(couchOptions) {
@@ -719,7 +727,7 @@ class DocumentCollection {
    * @typedef {object} FetchChangesReturnValue
    * @property {string} newLastSeq
    * @property {Array<object>} documents
-   * @returns {FetchChangesReturnValue}
+   * @returns {Promise<FetchChangesReturnValue>}
    */
   async fetchChanges(couchOptions = {}, options = {}) {
     let opts = {

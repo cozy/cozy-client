@@ -9,7 +9,7 @@ import isEqual from 'lodash/isEqual'
 
 /**
  * @typedef {object} MangoQueryOptions
- *
+ * @property {object} [selector] Selector
  * @property {Array<object>} [sort] The sorting parameters
  * @property {Array<string>} [fields] The fields to return
  * @property {Array<string>} [partialFilterFields] The partial filter fields
