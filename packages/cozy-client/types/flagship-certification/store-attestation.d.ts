@@ -7,3 +7,5 @@
  * @returns {Promise<AttestationResult>} the app's attestation
  */
 export function getAppAttestationFromStore(nonce: string, certificationConfig: CertificationConfig): Promise<AttestationResult>;
+import { CertificationConfig } from "./typedefs";
+import { AttestationResult } from "./typedefs";

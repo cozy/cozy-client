@@ -1,5 +1,7 @@
-//@ts-ignore
+//@ts-ignore next-line
 import RNGoogleSafetyNet from 'react-native-google-safetynet'
+
+import { AttestationResult, CertificationConfig } from './typedefs'
 
 /**
  * Retrieve the app's attestation from the Google Play store

@@ -1,15 +1,17 @@
+declare var _default: {};
+export default _default;
 /**
  * - A JSON Web Signature
  */
-type jws = string;
+export type jws = string;
 /**
  * - A JSON Web Signature
  */
-type base64string = string;
+export type base64string = string;
 /**
  * - An app attestation from the app store
  */
-type AttestationResult = {
+export type AttestationResult = {
     platform: string;
     attestation: jws | base64string;
     keyId?: string;
@@ -17,6 +19,6 @@ type AttestationResult = {
 /**
  * - Configuration to access the stores certification API
  */
-type CertificationConfig = {
+export type CertificationConfig = {
     androidSafetyNetApiKey: string;
 };

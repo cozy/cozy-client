@@ -1,5 +1,7 @@
-//@ts-ignore
+//@ts-ignore next-line
 import RNIOS11DeviceCheck from 'react-native-ios11-devicecheck'
+
+import { AttestationResult, CertificationConfig } from './typedefs'
 
 /**
  * Retrieve the app's attestation from the Apple AppStore
