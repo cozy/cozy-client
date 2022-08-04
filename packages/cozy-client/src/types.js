@@ -151,6 +151,7 @@ import { QueryDefinition } from './queries/dsl'
  * @property {boolean} [_deleted] - When the document has been deleted
  * @property {ReferencedByRelationship} [relationships] - Relationships of the document
  * @property {Reference[]} [referenced_by] - referenced by of another document
+ * @property {object} [cozyMetadata] - Cozy Metadata
  */
 
 /**
