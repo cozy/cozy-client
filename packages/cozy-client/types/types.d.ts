@@ -164,6 +164,10 @@ export type CozyClientDocument = {
      * - referenced by of another document
      */
     referenced_by?: Reference[];
+    /**
+     * - Cozy Metadata
+     */
+    cozyMetadata?: object;
 };
 /**
  * - An io.cozy.files document
