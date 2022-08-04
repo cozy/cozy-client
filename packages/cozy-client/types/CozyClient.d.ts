@@ -343,9 +343,13 @@ declare class CozyClient {
         update?: Function;
         updateQueries?: Function;
     }): Promise<void>;
-    ensureCozyMetadata(document: any, options?: {
+    /**
+     * @param  {CozyClientDocument} document - Document that will be saved
+     * @returns {CozyClientDocument}
+     */
+    ensureCozyMetadata(document: CozyClientDocument, options?: {
         event: string;
-    }): any;
+    }): CozyClientDocument;
     /**
      * Dehydrates and adds metadata before saving a document
      *
@@ -367,14 +371,14 @@ declare class CozyClient {
      * ```
      *
      *
-     * @param  {object} document - Document to create
+     * @param  {CozyClientDocument} document - Document to create
      * @param  {ReferenceMap} [referencesByName] - References to the created document. The
      * relationship class associated to each reference list should support references, otherwise this
      * method will throw.
      *
      * @returns {Mutation[]|Mutation}  One or more mutation to execute
      */
-    getDocumentSavePlan(document: object, referencesByName?: ReferenceMap): Mutation[] | Mutation;
+    getDocumentSavePlan(document: CozyClientDocument, referencesByName?: ReferenceMap): Mutation[] | Mutation;
     triggerHook(name: any, document: any): void;
     /**
      * Destroys a document. {before,after}:destroy hooks will be fired.
@@ -549,9 +553,14 @@ declare class CozyClient {
      * Has a behavior close to <Query /> or useQuery
      *
      * @param {object} query - Query with definition and options
+     * @param {QueryDefinition} query.definition - Query Definition
+     * @param {QueryOptions} query.options - Query Options
      * @returns {Promise<QueryState>} Query state
      */
-    fetchQueryAndGetFromState: (query: object) => Promise<QueryState>;
+    fetchQueryAndGetFromState: ({ definition, options }: {
+        definition: QueryDefinition;
+        options: QueryOptions;
+    }) => Promise<QueryState>;
     /**
      * Performs a complete OAuth flow using a Cordova webview
      * or React Native WebView for auth.
