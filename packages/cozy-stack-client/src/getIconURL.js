@@ -1,5 +1,5 @@
 import memoize, { ErrorReturned } from './memoize'
-
+import { CozyStackClient } from './types'
 /**
  * Get Icon source Url
  *
@@ -11,7 +11,7 @@ import memoize, { ErrorReturned } from './memoize'
  * @private
  * @throws {Error} When cannot fetch or get icon source
  */
-const loadIcon = async (app, slug, domain, protocol) => {
+const loadIcon = (app, slug, domain, protocol) => {
   if (!domain) throw new Error('Cannot fetch icon: missing domain')
   const source = _getAppIconURL(app, slug, domain, protocol)
   if (!source) {
@@ -131,13 +131,12 @@ const fetchAppOrKonnectorViaRegistry = (stackClient, type, slug) =>
  * or using preloaded url when blob not needed
  *
  * @param  {CozyStackClient}  stackClient - CozyStackClient
- * @param  {object}  stackClient.oauthOptions - oauthOptions used to detect fetching mechanism
  * @param  {object} opts - Options
  * @param  {string} opts.type - Options type
  * @param  {string|undefined} opts.slug - Options slug
  * @param  {object|string|undefined}  opts.appData - Apps data - io.cozy.apps
  * @param  {string} [opts.priority='stack'] - Options priority
- * @returns {Promise<string>|string} DOMString containing URL source or a URL representing the Blob .
+ * @returns {Promise<string>} DOMString containing URL source or a URL representing the Blob .
  * @private
  * @throws {Error} while fetching icon, or unknown image extension
  */
@@ -198,14 +197,6 @@ export const _getIconURL = async (stackClient, opts) => {
  * Get Icon URL using blob mechanism if OAuth connected
  * or using preloaded url when blob not needed
  *
- * @param  {CozyStackClient}  stackClient - CozyStackClient
- * @param  {object}  stackClient.oauthOptions - oauthOptions used to detect fetching mechanism
- * @param  {object} opts - Options
- * @param  {string} opts.type - Options type
- * @param  {string|undefined} opts.slug - Options slug
- * @param  {object|string|undefined}  opts.appData - Apps data - io.cozy.apps or Slug - string
- * @param  {string} [opts.priority='stack'] - Options priority
- * @returns {Promise<string>|string} DOMString containing URL source or a URL representing the Blob or ErrorReturned
  */
 const getIconURL = function() {
   return _getIconURL.apply(this, arguments).catch(() => new ErrorReturned())

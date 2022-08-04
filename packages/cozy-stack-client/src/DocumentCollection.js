@@ -255,7 +255,7 @@ class DocumentCollection {
    * @param {object} selector The mango selector
    * @param {MangoQueryOptions} options The find options
    *
-   * @returns {object} - The find response
+   * @returns {Promise<object>} - The find response
    * @private
    */
   async findWithMango(path, selector, options = {}) {
@@ -286,7 +286,7 @@ class DocumentCollection {
    *
    * @param  {object} selector The Mango selector.
    * @param  {{sort, fields, limit, skip, bookmark, indexId}} options The query options.
-   * @returns {{data, skip, bookmark, next}} The JSON API conformant response.
+   * @returns {{data, skip, bookmark, next, execution_stats}} The JSON API conformant response.
    * @throws {FetchError}
    */
   async find(selector, options = {}) {

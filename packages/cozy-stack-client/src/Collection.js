@@ -1,3 +1,4 @@
+import { CozyStackClient } from './types'
 /**
  * Handler for error response which return a empty value for "not found" error
  *

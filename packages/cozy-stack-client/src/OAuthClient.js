@@ -1,7 +1,9 @@
 import CozyStackClient from './CozyStackClient'
 import AccessToken from './AccessToken'
 import logDeprecate from './logDeprecate'
-
+/**
+ * @typedef {string} SessionCode
+ */
 const defaultoauthOptions = {
   clientID: '',
   clientName: '',

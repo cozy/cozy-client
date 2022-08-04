@@ -11,7 +11,9 @@ import { FetchError } from './errors'
 import { dontThrowNotFoundError } from './Collection'
 import { getIllegalCharacters } from './getIllegalCharacter'
 import * as querystring from './querystring'
-
+/**
+ * @typedef {object} IOCozyFolder Folder
+ */
 /**
  * Cursor used for Mango queries pagination
  *
