@@ -113,7 +113,7 @@ See <a href="https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a
 <dt><a href="#getAccessToken">getAccessToken()</a> ⇒ <code>string</code></dt>
 <dd><p>Get the app token string</p>
 </dd>
-<dt><a href="#getIconURL">getIconURL(stackClient, opts)</a> ⇒ <code>Promise.&lt;string&gt;</code> | <code>string</code></dt>
+<dt><a href="#getIconURL">getIconURL()</a></dt>
 <dd><p>Get Icon URL using blob mechanism if OAuth connected
 or using preloaded url when blob not needed</p>
 </dd>
@@ -152,11 +152,14 @@ or using preloaded url when blob not needed</p>
 ## Typedefs
 
 <dl>
-<dt><a href="#FetchChangesReturnValue">FetchChangesReturnValue</a> ⇒ <code><a href="#FetchChangesReturnValue">FetchChangesReturnValue</a></code></dt>
+<dt><a href="#FetchChangesReturnValue">FetchChangesReturnValue</a> ⇒ <code><a href="#FetchChangesReturnValue">Promise.&lt;FetchChangesReturnValue&gt;</a></code></dt>
 <dd><p>Use Couch _changes API
 Deleted and design docs are filtered by default, thus documents are retrieved in the response
 (include_docs is set to true in the parameters of _changes).</p>
 <p>You should use fetchChangesRaw to have low level control on _changes parameters.</p>
+</dd>
+<dt><a href="#IOCozyFolder">IOCozyFolder</a> : <code>object</code></dt>
+<dd><p>Folder</p>
 </dd>
 <dt><a href="#CouchDBViewCursor">CouchDBViewCursor</a> : <code>Array.&lt;string&gt;</code> | <code>string</code></dt>
 <dd><p>Cursor used for Mango queries pagination</p>
@@ -199,6 +202,8 @@ not.</p>
 <dt><a href="#DesignDoc">DesignDoc</a> : <code>object</code></dt>
 <dd><p>Attributes representing a design doc</p>
 </dd>
+<dt><a href="#SessionCode">SessionCode</a> : <code>string</code></dt>
+<dd></dd>
 <dt><a href="#SessionCodeRes">SessionCodeRes</a></dt>
 <dd></dd>
 <dt><a href="#AccessTokenRes">AccessTokenRes</a></dt>
@@ -229,6 +234,8 @@ not.</p>
 <dt><a href="#RelationshipItem">RelationshipItem</a> : <code>object</code></dt>
 <dd><p>Define a recipient that can be used as target of a sharing</p>
 </dd>
+<dt><a href="#CozyStackClient">CozyStackClient</a> : <code>object</code></dt>
+<dd></dd>
 </dl>
 
 <a name="AppCollection"></a>
@@ -266,13 +273,13 @@ Utility method aimed to return only one document.
 **Returns**: <code>Promise.&lt;object&gt;</code> - JsonAPI response containing normalized
 document as data attribute  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| stackClient | [<code>CozyStackClient</code>](#CozyStackClient) | CozyStackClient |
-| endpoint | <code>string</code> | Stack endpoint |
-| options | <code>object</code> | Options of the collection |
-| options.normalize | <code>function</code> | Callback to normalize response data (default `data => data`) |
-| options.method | <code>string</code> | HTTP method (default `GET`) |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| stackClient | [<code>CozyStackClient</code>](#CozyStackClient) |  | CozyStackClient |
+| endpoint | <code>string</code> |  | Stack endpoint |
+| options | <code>object</code> |  | Options of the collection |
+| options.normalize | <code>function</code> |  | Callback to normalize response data (default `data => data`) |
+| [options.method] | <code>string</code> | <code>&quot;GET&quot;</code> | HTTP method |
 
 <a name="CozyStackClient"></a>
 
@@ -381,47 +388,77 @@ Abstracts a collection of documents of the same doctype, providing CRUD methods 
 **Kind**: global class  
 
 * [DocumentCollection](#DocumentCollection)
-    * [.all(options)](#DocumentCollection+all) ⇒ <code>Object</code>
-    * [.find(selector, options)](#DocumentCollection+find) ⇒ <code>Object</code>
-    * [.get(id)](#DocumentCollection+get) ⇒ <code>object</code>
-    * [.getAll()](#DocumentCollection+getAll)
-    * [.create(doc)](#DocumentCollection+create)
-    * [.update(document)](#DocumentCollection+update)
-    * [.destroy(doc)](#DocumentCollection+destroy)
-    * [.updateAll(rawDocs)](#DocumentCollection+updateAll)
-    * [.destroyAll(docs)](#DocumentCollection+destroyAll)
-    * [.fetchAllMangoIndexes()](#DocumentCollection+fetchAllMangoIndexes) ⇒ <code>Array</code>
-    * [.destroyIndex(index)](#DocumentCollection+destroyIndex) ⇒ <code>object</code>
-    * [.copyIndex(existingIndex, newIndexName)](#DocumentCollection+copyIndex) ⇒ <code>object</code>
-    * [.fetchChangesRaw(couchOptions)](#DocumentCollection+fetchChangesRaw)
+    * _instance_
+        * [.all(options)](#DocumentCollection+all) ⇒ <code>Promise.&lt;{data, meta, skip, bookmark, next}&gt;</code>
+        * [.findWithMango(path, selector, options)](#DocumentCollection+findWithMango) ⇒ <code>Promise.&lt;object&gt;</code>
+        * [.find(selector, options)](#DocumentCollection+find) ⇒ <code>Promise.&lt;{data, skip, bookmark, next, execution\_stats}&gt;</code>
+        * [.get(id)](#DocumentCollection+get) ⇒ <code>Promise.&lt;object&gt;</code>
+        * [.getAll()](#DocumentCollection+getAll)
+        * [.create(doc)](#DocumentCollection+create)
+        * [.update(document)](#DocumentCollection+update)
+        * [.destroy(doc)](#DocumentCollection+destroy)
+        * [.updateAll(rawDocs)](#DocumentCollection+updateAll)
+        * [.destroyAll(docs)](#DocumentCollection+destroyAll)
+        * [.createIndex(fields, indexOption)](#DocumentCollection+createIndex) ⇒ <code>Promise.&lt;{id, fields}&gt;</code>
+        * [.fetchAllMangoIndexes()](#DocumentCollection+fetchAllMangoIndexes) ⇒ <code>Promise.&lt;Array&gt;</code>
+        * [.destroyIndex(index)](#DocumentCollection+destroyIndex) ⇒ <code>Promise.&lt;object&gt;</code>
+        * [.copyIndex(existingIndex, newIndexName)](#DocumentCollection+copyIndex) ⇒ <code>Promise.&lt;object&gt;</code>
+        * [.fetchChangesRaw(couchOptions)](#DocumentCollection+fetchChangesRaw)
+    * _static_
+        * [.normalizeDoctype(doctype)](#DocumentCollection.normalizeDoctype) ⇒ <code>function</code>
 
 <a name="DocumentCollection+all"></a>
 
-### documentCollection.all(options) ⇒ <code>Object</code>
+### documentCollection.all(options) ⇒ <code>Promise.&lt;{data, meta, skip, bookmark, next}&gt;</code>
 Lists all documents of the collection, without filters.
 
 The returned documents are paginated by the stack.
 
 **Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
-**Returns**: <code>Object</code> - The JSON API conformant response.  
+**Returns**: <code>Promise.&lt;{data, meta, skip, bookmark, next}&gt;</code> - The JSON API conformant response.  
 **Throws**:
 
 - <code>FetchError</code> 
 
 
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| options | <code>object</code> |  | The fetch options: pagination & fetch of specific docs. |
+| [options.limit] | <code>number</code> | <code>100</code> | Pagination limit |
+| [options.skip] | <code>number</code> | <code>0</code> | Pagination Skip |
+| [options.bookmark] | <code>string</code> |  | Pagination bookmark |
+| [options.keys] | <code>Array.&lt;string&gt;</code> |  | Keys to query |
+
+<a name="DocumentCollection+findWithMango"></a>
+
+### documentCollection.findWithMango(path, selector, options) ⇒ <code>Promise.&lt;object&gt;</code>
+Find documents with the mango selector and create index
+if missing.
+
+We adopt an optimistic approach for index creation:
+we run the query first, and only if an index missing
+error is returned, the index is created and
+the query run again.
+
+**Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
+**Returns**: <code>Promise.&lt;object&gt;</code> - - The find response  
+**Access**: protected  
+
 | Param | Type | Description |
 | --- | --- | --- |
-| options | <code>Object</code> | The fetch options: pagination & fetch of specific docs. |
+| path | <code>string</code> | The route path |
+| selector | <code>object</code> | The mango selector |
+| options | [<code>MangoQueryOptions</code>](#MangoQueryOptions) | The find options |
 
 <a name="DocumentCollection+find"></a>
 
-### documentCollection.find(selector, options) ⇒ <code>Object</code>
+### documentCollection.find(selector, options) ⇒ <code>Promise.&lt;{data, skip, bookmark, next, execution\_stats}&gt;</code>
 Returns a filtered list of documents using a Mango selector.
-
+   
 The returned documents are paginated by the stack.
 
 **Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
-**Returns**: <code>Object</code> - The JSON API conformant response.  
+**Returns**: <code>Promise.&lt;{data, skip, bookmark, next, execution\_stats}&gt;</code> - The JSON API conformant response.  
 **Throws**:
 
 - <code>FetchError</code> 
@@ -430,15 +467,15 @@ The returned documents are paginated by the stack.
 | Param | Type | Description |
 | --- | --- | --- |
 | selector | <code>object</code> | The Mango selector. |
-| options | <code>Object</code> | The query options. |
+| options | [<code>MangoQueryOptions</code>](#MangoQueryOptions) | MangoQueryOptions |
 
 <a name="DocumentCollection+get"></a>
 
-### documentCollection.get(id) ⇒ <code>object</code>
+### documentCollection.get(id) ⇒ <code>Promise.&lt;object&gt;</code>
 Get a document by id
 
 **Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
-**Returns**: <code>object</code> - JsonAPI response containing normalized document as data attribute  
+**Returns**: <code>Promise.&lt;object&gt;</code> - JsonAPI response containing normalized document as data attribute  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -505,20 +542,32 @@ Deletes several documents in one batch
 | --- | --- | --- |
 | docs | <code>Array.&lt;Document&gt;</code> | Documents to delete |
 
+<a name="DocumentCollection+createIndex"></a>
+
+### documentCollection.createIndex(fields, indexOption) ⇒ <code>Promise.&lt;{id, fields}&gt;</code>
+**Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| fields | <code>Array</code> | Fields to index |
+| indexOption | <code>object</code> | Options for the index |
+| [indexOption.partialFilter] | <code>string</code> | partialFilter |
+| [indexOption.indexName] | <code>string</code> | indexName |
+
 <a name="DocumentCollection+fetchAllMangoIndexes"></a>
 
-### documentCollection.fetchAllMangoIndexes() ⇒ <code>Array</code>
+### documentCollection.fetchAllMangoIndexes() ⇒ <code>Promise.&lt;Array&gt;</code>
 Retrieve all design docs of mango indexes
 
 **Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
-**Returns**: <code>Array</code> - The design docs  
+**Returns**: <code>Promise.&lt;Array&gt;</code> - The design docs  
 <a name="DocumentCollection+destroyIndex"></a>
 
-### documentCollection.destroyIndex(index) ⇒ <code>object</code>
+### documentCollection.destroyIndex(index) ⇒ <code>Promise.&lt;object&gt;</code>
 Delete the specified design doc
 
 **Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
-**Returns**: <code>object</code> - The delete response  
+**Returns**: <code>Promise.&lt;object&gt;</code> - The delete response  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -526,14 +575,14 @@ Delete the specified design doc
 
 <a name="DocumentCollection+copyIndex"></a>
 
-### documentCollection.copyIndex(existingIndex, newIndexName) ⇒ <code>object</code>
+### documentCollection.copyIndex(existingIndex, newIndexName) ⇒ <code>Promise.&lt;object&gt;</code>
 Copy an existing design doc.
 
 This is useful to create a new design doc without
 having to recompute the existing index.
 
 **Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
-**Returns**: <code>object</code> - The copy response  
+**Returns**: <code>Promise.&lt;object&gt;</code> - The copy response  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -555,6 +604,20 @@ No further treatment is done contrary to fetchchanges
 | [couchOptions.since] | <code>string</code> | Bookmark telling CouchDB from which point in time should changes be returned |
 | [couchOptions.doc_ids] | <code>Array.&lt;string&gt;</code> | Only return changes for a subset of documents |
 | [couchOptions.includeDocs] | <code>boolean</code> | Includes full documents as part of results |
+| [couchOptions.filter] | <code>string</code> | Filter |
+
+<a name="DocumentCollection.normalizeDoctype"></a>
+
+### DocumentCollection.normalizeDoctype(doctype) ⇒ <code>function</code>
+Provides a callback for `Collection.get`
+
+**Kind**: static method of [<code>DocumentCollection</code>](#DocumentCollection)  
+**Returns**: <code>function</code> - (data, response) => normalizedDocument
+                                       using `normalizeDoc`  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doctype | <code>string</code> | Document doctype |
 
 <a name="FileCollection"></a>
 
@@ -571,17 +634,17 @@ files associated to a specific document
 * [FileCollection](#FileCollection)
     * [.forceFileDownload](#FileCollection+forceFileDownload)
     * [.get(id)](#FileCollection+get) ⇒ <code>Object</code>
-    * [.find(selector, options)](#FileCollection+find) ⇒ <code>Object</code>
-    * [.findReferencedBy(document, options)](#FileCollection+findReferencedBy) ⇒ <code>Object</code>
-    * [.addReferencedBy(document, documents)](#FileCollection+addReferencedBy) ⇒ <code>Object</code>
-    * [.removeReferencedBy(document, documents)](#FileCollection+removeReferencedBy) ⇒ <code>Object</code>
+    * [.find(selector, options)](#FileCollection+find) ⇒ <code>Promise.&lt;{data, meta, skip, next, bookmark, execution\_stats}&gt;</code>
+    * [.findReferencedBy(document, options)](#FileCollection+findReferencedBy) ⇒ <code>Promise.&lt;{data, included, meta, skip, next}&gt;</code>
+    * [.addReferencedBy(document, documents)](#FileCollection+addReferencedBy) ⇒ <code>Promise.&lt;{data, meta}&gt;</code>
+    * [.removeReferencedBy(document, documents)](#FileCollection+removeReferencedBy) ⇒ <code>Promise.&lt;{data, meta}&gt;</code>
     * [.addReferencesTo(document, documents)](#FileCollection+addReferencesTo)
     * [.removeReferencesTo(document, documents)](#FileCollection+removeReferencesTo)
     * [.destroy(file)](#FileCollection+destroy) ⇒ <code>Promise</code>
     * [.emptyTrash()](#FileCollection+emptyTrash)
     * [.restore(id)](#FileCollection+restore) ⇒ <code>Promise</code>
-    * [.deleteFilePermanently(id)](#FileCollection+deleteFilePermanently) ⇒ <code>object</code>
-    * [.upload(data, dirPath)](#FileCollection+upload) ⇒ <code>object</code>
+    * [.deleteFilePermanently(id)](#FileCollection+deleteFilePermanently) ⇒ <code>Promise.&lt;object&gt;</code>
+    * [.upload(data, dirPath)](#FileCollection+upload) ⇒ <code>Promise.&lt;object&gt;</code>
     * [.create(attributes)](#FileCollection+create)
     * [.updateFile(data, params)](#FileCollection+updateFile) ⇒ <code>object</code>
     * [.download(file, versionId, filename)](#FileCollection+download)
@@ -590,8 +653,8 @@ files associated to a specific document
     * [.isChildOf(child, parent)](#FileCollection+isChildOf) ⇒ <code>boolean</code>
     * [.statById(id, options)](#FileCollection+statById) ⇒ <code>object</code>
     * [.createDirectoryByPath(path)](#FileCollection+createDirectoryByPath) ⇒ <code>object</code>
-    * [.createFileMetadata(attributes)](#FileCollection+createFileMetadata) ⇒ <code>object</code>
-    * [.updateMetadataAttribute(id, metadata)](#FileCollection+updateMetadataAttribute) ⇒ <code>object</code>
+    * [.createFileMetadata(attributes)](#FileCollection+createFileMetadata) ⇒ <code>Promise.&lt;object&gt;</code>
+    * [.updateMetadataAttribute(id, metadata)](#FileCollection+updateMetadataAttribute) ⇒ <code>Promise.&lt;object&gt;</code>
     * [.getFileTypeFromName(name)](#FileCollection+getFileTypeFromName) ⇒ <code>string</code>
     * [.doUpload(dataArg, path, options, method)](#FileCollection+doUpload)
     * [.findNotSynchronizedDirectories(oauthClient, options)](#FileCollection+findNotSynchronizedDirectories) ⇒ <code>Array.&lt;(object\|IOCozyFolder)&gt;</code>
@@ -624,13 +687,13 @@ Fetches the file's data
 
 <a name="FileCollection+find"></a>
 
-### fileCollection.find(selector, options) ⇒ <code>Object</code>
+### fileCollection.find(selector, options) ⇒ <code>Promise.&lt;{data, meta, skip, next, bookmark, execution\_stats}&gt;</code>
 Returns a filtered list of documents using a Mango selector.
 
 The returned documents are paginated by the stack.
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
-**Returns**: <code>Object</code> - The JSON API conformant response.  
+**Returns**: <code>Promise.&lt;{data, meta, skip, next, bookmark, execution\_stats}&gt;</code> - The JSON API conformant response.  
 **Throws**:
 
 - <code>FetchError</code> 
@@ -643,11 +706,11 @@ The returned documents are paginated by the stack.
 
 <a name="FileCollection+findReferencedBy"></a>
 
-### fileCollection.findReferencedBy(document, options) ⇒ <code>Object</code>
+### fileCollection.findReferencedBy(document, options) ⇒ <code>Promise.&lt;{data, included, meta, skip, next}&gt;</code>
 async findReferencedBy - Returns the list of files referenced by a document — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
-**Returns**: <code>Object</code> - The JSON API conformant response.  
+**Returns**: <code>Promise.&lt;{data, included, meta, skip, next}&gt;</code> - The JSON API conformant response.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -659,7 +722,7 @@ async findReferencedBy - Returns the list of files referenced by a document — 
 
 <a name="FileCollection+addReferencedBy"></a>
 
-### fileCollection.addReferencedBy(document, documents) ⇒ <code>Object</code>
+### fileCollection.addReferencedBy(document, documents) ⇒ <code>Promise.&lt;{data, meta}&gt;</code>
 Add referenced_by documents to a file — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#post-filesfile-idrelationshipsreferenced_by
 
  For example, to have an album referenced by a file:
@@ -668,7 +731,7 @@ addReferencedBy({_id: 123, _type: "io.cozy.files", name: "cozy.jpg"}, [{_id: 456
 ```
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
-**Returns**: <code>Object</code> - The JSON API conformant response.  
+**Returns**: <code>Promise.&lt;{data, meta}&gt;</code> - The JSON API conformant response.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -677,7 +740,7 @@ addReferencedBy({_id: 123, _type: "io.cozy.files", name: "cozy.jpg"}, [{_id: 456
 
 <a name="FileCollection+removeReferencedBy"></a>
 
-### fileCollection.removeReferencedBy(document, documents) ⇒ <code>Object</code>
+### fileCollection.removeReferencedBy(document, documents) ⇒ <code>Promise.&lt;{data, meta}&gt;</code>
 Remove referenced_by documents from a file — see https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/#delete-filesfile-idrelationshipsreferenced_by
 
  For example, to remove an album reference from a file:
@@ -686,7 +749,7 @@ Remove referenced_by documents from a file — see https://docs.cozy.io/en/cozy-
 ```
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
-**Returns**: <code>Object</code> - The JSON API conformant response.  
+**Returns**: <code>Promise.&lt;{data, meta}&gt;</code> - The JSON API conformant response.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -764,11 +827,11 @@ Restores a trashed file.
 
 <a name="FileCollection+deleteFilePermanently"></a>
 
-### fileCollection.deleteFilePermanently(id) ⇒ <code>object</code>
+### fileCollection.deleteFilePermanently(id) ⇒ <code>Promise.&lt;object&gt;</code>
 async deleteFilePermanently - Definitely delete a file
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
-**Returns**: <code>object</code> - The deleted file object  
+**Returns**: <code>Promise.&lt;object&gt;</code> - The deleted file object  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -776,9 +839,9 @@ async deleteFilePermanently - Definitely delete a file
 
 <a name="FileCollection+upload"></a>
 
-### fileCollection.upload(data, dirPath) ⇒ <code>object</code>
+### fileCollection.upload(data, dirPath) ⇒ <code>Promise.&lt;object&gt;</code>
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
-**Returns**: <code>object</code> - Created io.cozy.files  
+**Returns**: <code>Promise.&lt;object&gt;</code> - Created io.cozy.files  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -904,13 +967,13 @@ async createDirectoryByPath - Creates one or more folders until the given path e
 
 <a name="FileCollection+createFileMetadata"></a>
 
-### fileCollection.createFileMetadata(attributes) ⇒ <code>object</code>
+### fileCollection.createFileMetadata(attributes) ⇒ <code>Promise.&lt;object&gt;</code>
 Send a metadata object that can be associated to a file uploaded after that,
 via the MetadataID query parameter.
 See https://github.com/cozy/cozy-stack/blob/master/docs/files.md#post-filesuploadmetadata
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
-**Returns**: <code>object</code> - The Metadata object  
+**Returns**: <code>Promise.&lt;object&gt;</code> - The Metadata object  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -918,7 +981,7 @@ See https://github.com/cozy/cozy-stack/blob/master/docs/files.md#post-filesuploa
 
 <a name="FileCollection+updateMetadataAttribute"></a>
 
-### fileCollection.updateMetadataAttribute(id, metadata) ⇒ <code>object</code>
+### fileCollection.updateMetadataAttribute(id, metadata) ⇒ <code>Promise.&lt;object&gt;</code>
 Updates the metadata attribute of a io.cozy.files
 Creates a new version of the file without having
 to upload again the file's content
@@ -927,7 +990,7 @@ To see available content of the metadata attribute
 see : https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files_metadata/
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
-**Returns**: <code>object</code> - io.cozy.files updated  
+**Returns**: <code>Promise.&lt;object&gt;</code> - io.cozy.files updated  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1185,7 +1248,7 @@ Generates the URL that the user should be sent to in order to accept the app's p
 | options | <code>object</code> | URL generation options |
 | options.stateCode | <code>string</code> | A random code to be included in the URl for security. Can be generated with `client.generateStateCode()` |
 | [options.scopes] | <code>Array</code> | An array of permission scopes for the token. |
-| [options.sessionCode] | <code>SessionCode</code> | A session code that can be used to create a session. |
+| [options.sessionCode] | [<code>SessionCode</code>](#SessionCode) | A session code that can be used to create a session. |
 | [options.codeChallenge] | <code>string</code> | A code challenge that can be used in a PKCE verification process. |
 
 <a name="OAuthClient+getAccessCodeFromURL"></a>
@@ -1804,7 +1867,8 @@ Returns true when parameters has type directory
 
 | Param | Type | Description |
 | --- | --- | --- |
-| type | <code>string</code> | The type of the file |
+| args | <code>object</code> | File |
+| args.type | <code>string</code> | The type of the file |
 
 <a name="getIllegalCharacters"></a>
 
@@ -1924,23 +1988,11 @@ Get the app token string
 **See**: CozyStackClient.getAccessToken  
 <a name="getIconURL"></a>
 
-## getIconURL(stackClient, opts) ⇒ <code>Promise.&lt;string&gt;</code> \| <code>string</code>
+## getIconURL()
 Get Icon URL using blob mechanism if OAuth connected
 or using preloaded url when blob not needed
 
 **Kind**: global function  
-**Returns**: <code>Promise.&lt;string&gt;</code> \| <code>string</code> - DOMString containing URL source or a URL representing the Blob or ErrorReturned  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| stackClient | [<code>CozyStackClient</code>](#CozyStackClient) |  | CozyStackClient |
-| stackClient.oauthOptions | <code>object</code> |  | oauthOptions used to detect fetching mechanism |
-| opts | <code>object</code> |  | Options |
-| opts.type | <code>string</code> |  | Options type |
-| opts.slug | <code>string</code> \| <code>undefined</code> |  | Options slug |
-| opts.appData | <code>object</code> \| <code>string</code> \| <code>undefined</code> |  | Apps data - io.cozy.apps or Slug - string |
-| [opts.priority] | <code>string</code> | <code>&quot;&#x27;stack&#x27;&quot;</code> | Options priority |
-
 <a name="garbageCollect"></a>
 
 ## garbageCollect()
@@ -2048,7 +2100,7 @@ Get a uniform formatted URL and SSL information according to a provided URL
 **Kind**: global function  
 <a name="FetchChangesReturnValue"></a>
 
-## FetchChangesReturnValue ⇒ [<code>FetchChangesReturnValue</code>](#FetchChangesReturnValue)
+## FetchChangesReturnValue ⇒ [<code>Promise.&lt;FetchChangesReturnValue&gt;</code>](#FetchChangesReturnValue)
 Use Couch _changes API
 Deleted and design docs are filtered by default, thus documents are retrieved in the response
 (include_docs is set to true in the parameters of _changes).
@@ -2073,6 +2125,12 @@ You should use fetchChangesRaw to have low level control on _changes parameters.
 | newLastSeq | <code>string</code> | 
 | documents | <code>Array.&lt;object&gt;</code> | 
 
+<a name="IOCozyFolder"></a>
+
+## IOCozyFolder : <code>object</code>
+Folder
+
+**Kind**: global typedef  
 <a name="CouchDBViewCursor"></a>
 
 ## CouchDBViewCursor : <code>Array.&lt;string&gt;</code> \| <code>string</code>
@@ -2103,6 +2161,8 @@ Attributes used for file creation
 
 | Name | Type | Description |
 | --- | --- | --- |
+| id | <code>string</code> | Id of the document |
+| _id | <code>string</code> | Id of the document |
 | dirId | <code>string</code> | Id of the parent directory. |
 | name | <code>string</code> | Name of the created file. |
 | lastModifiedDate | <code>Date</code> | Can be used to set the last modified date of a file. |
@@ -2122,6 +2182,8 @@ Document representing a io.cozy.files
 | --- | --- | --- |
 | _id | <code>string</code> | Id of the file |
 | attributes | [<code>FileAttributes</code>](#FileAttributes) | Attributes of the file |
+| meta | <code>object</code> | Meta |
+| relationships | <code>object</code> | Relationships |
 
 <a name="Stream"></a>
 
@@ -2240,7 +2302,7 @@ Generates the URL that the user should be sent to in order to accept the app's p
 | options | <code>object</code> | URL generation options |
 | options.stateCode | <code>string</code> | A random code to be included in the URl for security. Can be generated with `client.generateStateCode()` |
 | [options.scopes] | <code>Array</code> | An array of permission scopes for the token. |
-| [options.sessionCode] | <code>SessionCode</code> | A session code that can be used to create a session. |
+| [options.sessionCode] | [<code>SessionCode</code>](#SessionCode) | A session code that can be used to create a session. |
 | [options.codeChallenge] | <code>string</code> | A code challenge that can be used in a PKCE verification process. |
 
 <a name="OAuthClient+getAccessCodeFromURL"></a>
@@ -2441,6 +2503,7 @@ Document representing a io.cozy.jobs
 
 | Name | Type | Description |
 | --- | --- | --- |
+| [selector] | <code>object</code> | Selector |
 | [sort] | <code>Array.&lt;object&gt;</code> | The sorting parameters |
 | [fields] | <code>Array.&lt;string&gt;</code> | The fields to return |
 | [partialFilterFields] | <code>Array.&lt;string&gt;</code> | The partial filter fields |
@@ -2465,6 +2528,10 @@ Attributes representing a design doc
 | language | <code>string</code> | The index language. Can be 'query' for mango index or 'javascript' for views. |
 | views | <code>object</code> | Views definition, i.e. the index. |
 
+<a name="SessionCode"></a>
+
+## SessionCode : <code>string</code>
+**Kind**: global typedef  
 <a name="SessionCodeRes"></a>
 
 ## SessionCodeRes
@@ -2574,3 +2641,109 @@ Define a recipient that can be used as target of a sharing
 | id | <code>string</code> | Recipient's ID |
 | type | <code>string</code> | Reciptient's type (should be 'io.cozy.contacts') |
 
+<a name="CozyStackClient"></a>
+
+## CozyStackClient : <code>object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| oauthOptions | <code>object</code> | oauthOptions |
+| uri | <code>string</code> | CozyUri |
+| fetch | <code>function</code> | fetchMethod |
+| fetchJSON | <code>function</code> | fetchJSON |
+
+
+* [CozyStackClient](#CozyStackClient) : <code>object</code>
+    * [.collection(doctype)](#CozyStackClient+collection) ⇒ [<code>DocumentCollection</code>](#DocumentCollection)
+    * [.fetch(method, path, [body], [opts])](#CozyStackClient+fetch) ⇒ <code>object</code>
+    * [.checkForRevocation()](#CozyStackClient+checkForRevocation)
+    * [.refreshToken()](#CozyStackClient+refreshToken) ⇒ <code>Promise</code>
+    * [.fetchJSON(method, path, body, options)](#CozyStackClient+fetchJSON) ⇒ <code>object</code>
+    * [.setToken(token)](#CozyStackClient+setToken)
+    * [.getAccessToken()](#CozyStackClient+getAccessToken) ⇒ <code>string</code>
+
+<a name="CozyStackClient+collection"></a>
+
+### cozyStackClient.collection(doctype) ⇒ [<code>DocumentCollection</code>](#DocumentCollection)
+Creates a [DocumentCollection](#DocumentCollection) instance.
+
+**Kind**: instance method of [<code>CozyStackClient</code>](#CozyStackClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doctype | <code>string</code> | The collection doctype. |
+
+<a name="CozyStackClient+fetch"></a>
+
+### cozyStackClient.fetch(method, path, [body], [opts]) ⇒ <code>object</code>
+Fetches an endpoint in an authorized way.
+
+**Kind**: instance method of [<code>CozyStackClient</code>](#CozyStackClient)  
+**Throws**:
+
+- <code>FetchError</code> 
+
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| method | <code>string</code> |  | The HTTP method. |
+| path | <code>string</code> |  | The URI. |
+| [body] | <code>object</code> |  | The payload. |
+| [opts] | <code>object</code> | <code>{}</code> | Options for fetch |
+
+<a name="CozyStackClient+checkForRevocation"></a>
+
+### cozyStackClient.checkForRevocation()
+Returns whether the client has been revoked on the server
+
+**Kind**: instance method of [<code>CozyStackClient</code>](#CozyStackClient)  
+<a name="CozyStackClient+refreshToken"></a>
+
+### cozyStackClient.refreshToken() ⇒ <code>Promise</code>
+Retrieves a new app token by refreshing the currently used token.
+
+**Kind**: instance method of [<code>CozyStackClient</code>](#CozyStackClient)  
+**Returns**: <code>Promise</code> - A promise that resolves with a new AccessToken object  
+**Throws**:
+
+- <code>Error</code> The client should already have an access token to use this function
+- <code>Error</code> The client couldn't fetch a new token
+
+<a name="CozyStackClient+fetchJSON"></a>
+
+### cozyStackClient.fetchJSON(method, path, body, options) ⇒ <code>object</code>
+Fetches JSON in an authorized way.
+
+**Kind**: instance method of [<code>CozyStackClient</code>](#CozyStackClient)  
+**Throws**:
+
+- <code>FetchError</code> 
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| method | <code>string</code> | The HTTP method. |
+| path | <code>string</code> | The URI. |
+| body | <code>object</code> | The payload. |
+| options | <code>object</code> | Options |
+
+<a name="CozyStackClient+setToken"></a>
+
+### cozyStackClient.setToken(token)
+Change or set the API token
+
+**Kind**: instance method of [<code>CozyStackClient</code>](#CozyStackClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| token | <code>string</code> \| <code>AppToken</code> \| <code>AccessToken</code> | Stack API token |
+
+<a name="CozyStackClient+getAccessToken"></a>
+
+### cozyStackClient.getAccessToken() ⇒ <code>string</code>
+Get the access token string, being an oauth token or an app token
+
+**Kind**: instance method of [<code>CozyStackClient</code>](#CozyStackClient)  
+**Returns**: <code>string</code> - token  
