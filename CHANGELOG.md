@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [32.3.3](https://github.com/cozy/cozy-client/compare/v32.3.2...v32.3.3) (2022-08-05)
+
+
+### Bug Fixes
+
+* Fix lint issue ([c4c64c5](https://github.com/cozy/cozy-client/commit/c4c64c5aed00bf18d1cb7e048ae6a9a98f65031a))
+
+
+
+
+
 ## [32.3.2](https://github.com/cozy/cozy-client/compare/v32.3.1...v32.3.2) (2022-08-04)
 
 **Note:** Version bump only for package cozy-client
