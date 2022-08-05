@@ -914,7 +914,7 @@ client.query(Q('io.cozy.bills'))`)
       options.as || this.queryIdGenerator.generateId(queryDefinition)
     const existingQuery = this.getQueryFromState(queryId)
 
-    if (!options.backgroundFetching && options.fetchPolicy) {
+    if (options.fetchPolicy) {
       if (!options.as) {
         throw new Error(
           'Cannot use `fetchPolicy` without naming the query, please use `as` to name the query'
