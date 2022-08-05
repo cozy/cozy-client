@@ -345,10 +345,12 @@ declare class CozyClient {
     }): Promise<void>;
     /**
      * @param  {CozyClientDocument} document - Document that will be saved
+     * @param {object} [options={event: DOC_CREATION}] - Event
+     * @param {string} [options.event] - Mutation type
      * @returns {CozyClientDocument}
      */
     ensureCozyMetadata(document: CozyClientDocument, options?: {
-        event: string;
+        event?: string;
     }): CozyClientDocument;
     /**
      * Dehydrates and adds metadata before saving a document
