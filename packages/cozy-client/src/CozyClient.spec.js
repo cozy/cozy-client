@@ -1396,17 +1396,6 @@ describe('CozyClient', () => {
       expect(client.requestQuery).not.toHaveBeenCalled()
     })
 
-    it('should not fetch policy when background fetching enabled', async () => {
-      jest.spyOn(client, 'requestQuery')
-      const fetchPolicy = jest.fn(() => false)
-      await client.query(query, {
-        as: 'allTodos',
-        fetchPolicy,
-        backgroundFetching: true
-      })
-      expect(fetchPolicy).not.toHaveBeenCalled()
-    })
-
     it('should dispatch a INIT_QUERY action if status is not loaded', async () => {
       requestHandler.mockResolvedValueOnce(fakeResponse)
       getQueryFromState.mockReturnValueOnce({
