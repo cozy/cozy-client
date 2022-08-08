@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [32.4.0](https://github.com/cozy/cozy-client/compare/v32.3.3...v32.4.0) (2022-08-08)
+
+
+### Bug Fixes
+
+* **deps:** update dependency babel-preset-cozy-app to v1.12.0 ([56680c3](https://github.com/cozy/cozy-client/commit/56680c3ddfe2665f8d415e079e6c5f2cb6fd2c06))
+* **fetchPolicies:** Background fetching should respect the fetch policy ([cfeec8b](https://github.com/cozy/cozy-client/commit/cfeec8b59893d6083aa9b814f895be774a7f8693))
+
+
+### Features
+
+* **background-fetching:** Introduce isFetching in QueryState to handle refetch ([8c565eb](https://github.com/cozy/cozy-client/commit/8c565eba797319e544a3b1c24b5f874c97dae221))
+
+
+
+
+
 ## [32.3.3](https://github.com/cozy/cozy-client/compare/v32.3.2...v32.3.3) (2022-08-05)
 
 
