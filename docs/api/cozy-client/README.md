@@ -190,6 +190,33 @@ Creates a client suitable for use in tests
 
 ***
 
+### deconstructCozyWebLinkWithSlug
+
+▸ **deconstructCozyWebLinkWithSlug**(`webLink`, `subDomainType?`): `CozyLinkData`
+
+Deconstruct the given link in order to retrieve useful data like Cozy's name, domain, or slug
+
+The given link MUST contain a slug
+
+*Parameters*
+
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `webLink` | `string` | `undefined` | link to deconstruct. It should be a link from a Cozy and containing a slug |
+| `subDomainType` | `SubdomainType` | `'flat'` | - |
+
+*Returns*
+
+`CozyLinkData`
+
+Deconstructed link
+
+*Defined in*
+
+[packages/cozy-client/src/helpers.js:90](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers.js#L90)
+
+***
+
 ### dehydrate
 
 ▸ **dehydrate**(`document`): `Object`
@@ -206,7 +233,7 @@ Creates a client suitable for use in tests
 
 *Defined in*
 
-[packages/cozy-client/src/helpers.js:3](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers.js#L3)
+[packages/cozy-client/src/helpers.js:5](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers.js#L5)
 
 ***
 
@@ -241,7 +268,7 @@ Generated URL
 
 *Defined in*
 
-[packages/cozy-client/src/helpers.js:51](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers.js#L51)
+[packages/cozy-client/src/helpers.js:53](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers.js#L53)
 
 ***
 
@@ -541,7 +568,7 @@ The root Cozy URL
 
 *Defined in*
 
-[packages/cozy-client/src/helpers.js:199](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers.js#L199)
+[packages/cozy-client/src/helpers.js:242](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers.js#L242)
 
 ***
 

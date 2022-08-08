@@ -382,4 +382,26 @@ import { QueryDefinition } from './queries/dsl'
  * @property {string} [codeChallenge]
  */
 
+/**
+ * Subdomain type for a Cozy. Can be flat or nested subdomains
+ *
+ * Example of 'flat' domain: https://claude-notes.somedomain.fr
+ * Example of 'nested' domain: https://notes.claude.somedomain.fr
+ *
+ * @typedef {'flat'|'nested'} SubdomainType
+ */
+
+/**
+ * Represents the different parts of a deconstructed Cozy link
+ *
+ * @typedef {object} CozyLinkData
+ * @property {string} cozyBaseDomain - The Cozy's domain (i.e. 'mycozy.cloud')
+ * @property {string} cozyName - The Cozy's name (i.e. 'claude')
+ * @property {string} [hash] - The link's path (i.e. '#/folder/SOME_FOLDER_ID')
+ * @property {string} [pathname] - The link's path (i.e. '/public/')
+ * @property {string} protocol - The link's protocol (i.e. 'https')
+ * @property {string} [searchParams] - The link's searchParams (i.e. 'id=SOME_FOLDER_ID&sharecode=SOME_SHARECODE')
+ * @property {string} slug - The link's slug (i.e. 'drive' or 'notes)
+ */
+
 export default {}
