@@ -477,4 +477,44 @@ export type PKCECodes = {
     codeVerifier?: string;
     codeChallenge?: string;
 };
+/**
+ * Subdomain type for a Cozy. Can be flat or nested subdomains
+ *
+ * Example of 'flat' domain: https://claude-notes.somedomain.fr
+ * Example of 'nested' domain: https://notes.claude.somedomain.fr
+ */
+export type SubdomainType = "flat" | "nested";
+/**
+ * Represents the different parts of a deconstructed Cozy link
+ */
+export type CozyLinkData = {
+    /**
+     * - The Cozy's domain (i.e. 'mycozy.cloud')
+     */
+    cozyBaseDomain: string;
+    /**
+     * - The Cozy's name (i.e. 'claude')
+     */
+    cozyName: string;
+    /**
+     * - The link's path (i.e. '#/folder/SOME_FOLDER_ID')
+     */
+    hash?: string;
+    /**
+     * - The link's path (i.e. '/public/')
+     */
+    pathname?: string;
+    /**
+     * - The link's protocol (i.e. 'https')
+     */
+    protocol: string;
+    /**
+     * - The link's searchParams (i.e. 'id=SOME_FOLDER_ID&sharecode=SOME_SHARECODE')
+     */
+    searchParams?: string;
+    /**
+     * - The link's slug (i.e. 'drive' or 'notes)
+     */
+    slug: string;
+};
 import { QueryDefinition } from "./queries/dsl";

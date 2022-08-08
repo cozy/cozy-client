@@ -24,6 +24,7 @@ export {
   getReferencedById
 } from './associations/helpers'
 export {
+  deconstructCozyWebLinkWithSlug,
   dehydrate,
   generateWebLink,
   rootCozyUrl,

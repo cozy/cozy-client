@@ -1,5 +1,7 @@
 import { Association } from './associations'
 
+import { CozyLinkData, SubdomainType } from './types'
+
 export const dehydrate = document => {
   const dehydrated = Object.entries(document).reduce(
     (documentArg, [key, value]) => {
@@ -74,6 +76,47 @@ export const generateWebLink = ({
   }
 
   return url.toString()
+}
+
+/**
+ * Deconstruct the given link in order to retrieve useful data like Cozy's name, domain, or slug
+ *
+ * The given link MUST contain a slug
+ *
+ * @param {string} webLink - link to deconstruct. It should be a link from a Cozy and containing a slug
+ * @param {SubdomainType} [subDomainType=flat] - whether the cozy is using flat or nested subdomains.
+ * @returns {CozyLinkData} Deconstructed link
+ */
+export const deconstructCozyWebLinkWithSlug = (
+  webLink,
+  subDomainType = 'flat'
+) => {
+  const url = new URL(webLink)
+
+  const slug =
+    subDomainType === 'nested'
+      ? url.host.split('.')[0]
+      : url.host.split('.')[0].split('-')[1]
+
+  const cozyName =
+    subDomainType === 'nested'
+      ? url.host.split('.')[1]
+      : url.host.split('.')[0].split('-')[0]
+
+  const cozyBaseDomain = url.host
+    .split('.')
+    .slice(subDomainType === 'nested' ? 2 : 1)
+    .join('.')
+
+  return {
+    cozyBaseDomain,
+    cozyName,
+    pathname: url.pathname,
+    hash: url.hash,
+    protocol: url.protocol,
+    searchParams: url.searchParams.toString(),
+    slug
+  }
 }
 
 export class InvalidProtocolError extends Error {

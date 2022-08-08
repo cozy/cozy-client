@@ -1,6 +1,7 @@
 import { enableFetchMocks, disableFetchMocks } from 'jest-fetch-mock'
 
 import {
+  deconstructCozyWebLinkWithSlug,
   dehydrate,
   generateWebLink,
   rootCozyUrl,
@@ -148,6 +149,83 @@ describe('generateWebLink', () => {
       })
     ).toEqual(`https://drive.alice.cozy.tools/public/#/files/432432`)
   })
+})
+
+describe('deconstructWebLink', () => {
+  it.each([
+    [
+      'https://claude-notes.mycozy.cloud',
+      'flat',
+      {
+        protocol: 'https:',
+        cozyName: 'claude',
+        cozyBaseDomain: 'mycozy.cloud',
+        pathname: '/',
+        hash: '',
+        searchParams: '',
+        slug: 'notes'
+      }
+    ],
+    [
+      'http://alice-drive.cozy.tools:8080',
+      'flat',
+      {
+        protocol: 'http:',
+        cozyName: 'alice',
+        cozyBaseDomain: 'cozy.tools:8080',
+        pathname: '/',
+        hash: '',
+        searchParams: '',
+        slug: 'drive'
+      }
+    ],
+    [
+      'https://photo.claude.custome-domain.fr',
+      'nested',
+      {
+        protocol: 'https:',
+        cozyName: 'claude',
+        cozyBaseDomain: 'custome-domain.fr',
+        pathname: '/',
+        hash: '',
+        searchParams: '',
+        slug: 'photo'
+      }
+    ],
+    [
+      'http://drive.cozy.tools:8080/#/folder/SOME_FOLDER_ID',
+      'nested',
+      {
+        protocol: 'http:',
+        cozyName: 'cozy',
+        cozyBaseDomain: 'tools:8080',
+        pathname: '/',
+        hash: '#/folder/SOME_FOLDER_ID',
+        searchParams: '',
+        slug: 'drive'
+      }
+    ],
+    [
+      'http://notes.cozy.tools:8080/public/?id=SOME_FOLDER_ID&sharecode=SOME_SHARECODE',
+      'nested',
+      {
+        protocol: 'http:',
+        cozyName: 'cozy',
+        cozyBaseDomain: 'tools:8080',
+        pathname: '/public/',
+        hash: '',
+        searchParams: 'id=SOME_FOLDER_ID&sharecode=SOME_SHARECODE',
+        slug: 'notes'
+      }
+    ]
+  ])(
+    'should deconstruct %p link with %p subdomain type',
+    (link, subdomainType, result) => {
+      expect(deconstructCozyWebLinkWithSlug(link, subdomainType)).toEqual(
+        result
+      )
+    }
+  )
 })
 
 describe('rootCozyUrl', () => {
