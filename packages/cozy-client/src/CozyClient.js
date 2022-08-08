@@ -1366,8 +1366,8 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {Promise<QueryState>} Query state
    */
   fetchQueryAndGetFromState = async ({ definition, options }) => {
-      await this.query(definition, options)
-      return this.getQueryFromState(options.as)
+    await this.query(definition, options)
+    return this.getQueryFromState(options.as)
   }
 
   /**
