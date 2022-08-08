@@ -646,6 +646,7 @@ files associated to a specific document
     * [.deleteFilePermanently(id)](#FileCollection+deleteFilePermanently) ⇒ <code>Promise.&lt;object&gt;</code>
     * [.upload(data, dirPath)](#FileCollection+upload) ⇒ <code>Promise.&lt;object&gt;</code>
     * [.create(attributes)](#FileCollection+create)
+    * [.update(attributes)](#FileCollection+update) ⇒ [<code>Promise.&lt;FileAttributes&gt;</code>](#FileAttributes)
     * [.updateFile(data, params)](#FileCollection+updateFile) ⇒ <code>object</code>
     * [.download(file, versionId, filename)](#FileCollection+download)
     * [.fetchFileContentById(id)](#FileCollection+fetchFileContentById)
@@ -864,6 +865,28 @@ Creates directory or file.
 | --- | --- | --- |
 | attributes | [<code>FileAttributes</code>](#FileAttributes) \| [<code>DirectoryAttributes</code>](#DirectoryAttributes) | Attributes of the created file/directory |
 | attributes.data | <code>File</code> \| <code>Blob</code> \| <code>string</code> \| <code>ArrayBuffer</code> | Will be used as content of the created file |
+
+<a name="FileCollection+update"></a>
+
+### fileCollection.update(attributes) ⇒ [<code>Promise.&lt;FileAttributes&gt;</code>](#FileAttributes)
+Updates an existing file or directory
+
+Used by StackLink to support CozyClient.save({file}).
+Update the binary file if a `data` param is passed. Only updates
+attributes otherwise.
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+**Returns**: [<code>Promise.&lt;FileAttributes&gt;</code>](#FileAttributes) - Updated document  
+**Throws**:
+
+- <code>Error</code> - explaining reason why update failed
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| attributes | <code>object</code> | Attributes |
+| attributes.file | [<code>FileAttributes</code>](#FileAttributes) | The file with its new content |
+| attributes.data | <code>File</code> \| <code>Blob</code> \| <code>string</code> \| <code>ArrayBuffer</code> | Will be used as content of the updated file |
 
 <a name="FileCollection+updateFile"></a>
 

@@ -355,7 +355,7 @@ Returns whether a query has been loaded at least once
 
 *Defined in*
 
-[packages/cozy-client/src/utils.js:48](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/utils.js#L48)
+[packages/cozy-client/src/utils.js:49](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/utils.js#L49)
 
 ***
 
@@ -378,7 +378,7 @@ is loading.
 
 *Defined in*
 
-[packages/cozy-client/src/utils.js:37](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/utils.js#L37)
+[packages/cozy-client/src/utils.js:38](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/utils.js#L38)
 
 ***
 
@@ -455,7 +455,7 @@ If a reference is found
 
 *Defined in*
 
-[packages/cozy-client/src/hoc.jsx:73](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hoc.jsx#L73)
+[packages/cozy-client/src/hoc.jsx:77](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hoc.jsx#L77)
 
 ***
 
@@ -483,7 +483,7 @@ if there are N queries, only 1 extra level of nesting is introduced.
 
 *Defined in*
 
-[packages/cozy-client/src/hoc.jsx:89](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hoc.jsx#L89)
+[packages/cozy-client/src/hoc.jsx:93](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hoc.jsx#L93)
 
 ***
 
