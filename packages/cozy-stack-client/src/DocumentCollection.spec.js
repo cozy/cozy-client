@@ -842,6 +842,72 @@ describe('DocumentCollection', () => {
     })
   })
 
+  describe('findAll', () => {
+    beforeEach(() => {
+      client.fetchJSON.mockClear()
+      client.fetchJSON.mockResolvedValue(FIND_RESPONSE_FIXTURE)
+    })
+
+    it('should behave as find method', async () => {
+      const collection = new DocumentCollection('io.cozy.todos', client)
+      await collection.findAll({ done: false })
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/data/io.cozy.todos/_find',
+        {
+          selector: { done: false },
+          skip: 0,
+          use_index: '_design/by_done',
+          execution_stats: true
+        }
+      )
+    })
+
+    it('should call find several time with bookmark until next is true, and returns all data', async () => {
+      const FIND_RESPONSE_WITH_NEXT_FIXTURE = {
+        docs: [
+          { _id: '1111', label: 'Buy bread', done: false },
+          { _id: '2222', label: 'Check email', done: false }
+        ],
+        bookmark: 'AZERTYUIO',
+        limit: 100,
+        next: true
+      }
+      client.fetchJSON.mockResolvedValueOnce(FIND_RESPONSE_WITH_NEXT_FIXTURE)
+
+      const collection = new DocumentCollection('io.cozy.todos', client)
+      const data = await collection.findAll({ done: false })
+      expect(client.fetchJSON).toHaveBeenCalledTimes(2)
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/data/io.cozy.todos/_find',
+        {
+          bookmark: 'AZERTYUIO',
+          selector: { done: false },
+          skip: 0,
+          use_index: '_design/by_done',
+          execution_stats: true
+        }
+      )
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/data/io.cozy.todos/_find',
+        {
+          selector: { done: false },
+          skip: 0,
+          use_index: '_design/by_done',
+          execution_stats: true
+        }
+      )
+      expect(data).toEqual(
+        [
+          ...FIND_RESPONSE_WITH_NEXT_FIXTURE.docs,
+          ...FIND_RESPONSE_FIXTURE.docs
+        ].map(doc => ({ ...doc, id: doc._id, _type: 'io.cozy.todos' }))
+      )
+    })
+  })
+
   describe('create', () => {
     const collection = new DocumentCollection('io.cozy.todos', client)
 
