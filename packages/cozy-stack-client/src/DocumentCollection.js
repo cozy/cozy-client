@@ -316,6 +316,32 @@ The returned documents are paginated by the stack.
   }
 
   /**
+   * Returns a filtered list with all documents using a Mango selector,
+   * automatically fetching more documents if the total of documents is
+   * superior to the pagination limit.
+   * Can result in a lot of network requests.
+
+   The returned documents are paginated by the stack.
+   *
+   * @param {MangoPartialSelector} selector The Mango selector.
+   * @param {MangoQueryOptions} options MangoQueryOptions
+   * @returns {Promise<{data, skip, bookmark, next, execution_stats}>} Response in JSON
+   * @throws {FetchError}
+   */
+  async findAll(selector, options = {}) {
+    let next = true
+    let files = []
+    let bookmark = options.bookmark || undefined
+    while (next) {
+      const resp = await this.find(selector, { ...options, bookmark })
+      files = [...files, ...resp.data]
+      bookmark = resp.bookmark
+      next = resp.next
+    }
+    return files
+  }
+
+  /**
    * Get a document by id
    *
    * @param  {string} id The document id.
