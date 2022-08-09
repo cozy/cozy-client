@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [32.5.0](https://github.com/cozy/cozy-client/compare/v32.4.1...v32.5.0) (2022-08-09)
+
+
+### Features
+
+* Add `deconstructCozyWebLinkWithSlug` to extract data from Cozy url ([9fa2b4b](https://github.com/cozy/cozy-client/commit/9fa2b4bca719c4f6bb8453ccd1f4fd927c703f5a))
+
+
+
+
+
 ## [32.4.1](https://github.com/cozy/cozy-client/compare/v32.4.0...v32.4.1) (2022-08-08)
 
 
