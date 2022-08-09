@@ -6,7 +6,7 @@ import head from 'lodash/head'
 import merge from 'lodash/merge'
 import startsWith from 'lodash/startsWith'
 import qs from 'qs'
-import { MangoQueryOptions } from './mangoIndex'
+import { MangoQueryOptions, MangoPartialSelector } from './mangoIndex'
 
 import Collection, {
   dontThrowNotFoundError,
@@ -171,6 +171,13 @@ class DocumentCollection {
     }
   }
 
+  /**
+   * Fetch Documents with Mango
+   *
+   * @param {string} path - path to fetch
+   * @param {MangoPartialSelector} selector - selector
+   * @param {MangoQueryOptions} options - request options
+   */
   async fetchDocumentsWithMango(path, selector, options = {}) {
     return this.stackClient.fetchJSON(
       'POST',
@@ -253,7 +260,7 @@ class DocumentCollection {
    * the query run again.
    *
    * @param {string} path The route path
-   * @param {object} selector The mango selector
+   * @param {MangoPartialSelector} selector The mango selector
    * @param {MangoQueryOptions} options The find options
    *
    * @returns {Promise<object>} - The find response
@@ -282,12 +289,12 @@ class DocumentCollection {
 
   /**
    * Returns a filtered list of documents using a Mango selector.
-   
+
 The returned documents are paginated by the stack.
    *
-   * @param {object} selector The Mango selector.
+   * @param {MangoPartialSelector} selector The Mango selector.
    * @param {MangoQueryOptions} options MangoQueryOptions
-   * @returns {Promise<{data, skip, bookmark, next, execution_stats}>} The JSON API conformant response.
+   * @returns {Promise<{data, skip, bookmark, next, execution_stats}>} Response in JSON
    * @throws {FetchError}
    */
   async find(selector, options = {}) {
@@ -446,6 +453,13 @@ The returned documents are paginated by the stack.
     return this.updateAll(docs.map(prepareForDeletion))
   }
 
+  /**
+   * Returns Mango Options from Selector and Options
+   *
+   * @param {MangoPartialSelector} selector - Mango selector
+   * @param {MangoQueryOptions} options - Mango Options
+   * @returns {MangoQueryOptions} Mango options
+   */
   toMangoOptions(selector, options = {}) {
     let { sort, indexedFields, partialFilter } = options
     const { fields, skip = 0, limit, bookmark } = options
@@ -489,7 +503,7 @@ The returned documents are paginated by the stack.
       ? merge(selector, partialFilter)
       : selector
 
-    const opts = {
+    return {
       selector: mergedSelector,
       use_index: indexName,
       // TODO: type and class should not be necessary, it's just a temp fix for a stack bug
@@ -500,7 +514,6 @@ The returned documents are paginated by the stack.
       sort,
       execution_stats: flag('debug') ? true : undefined
     }
-    return opts
   }
 
   async checkUniquenessOf(property, value) {
