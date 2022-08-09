@@ -8,9 +8,17 @@ import isEqual from 'lodash/isEqual'
  */
 
 /**
+ * @typedef {object} MangoPartialSelector
+ */
+
+/**
+ * @typedef {Array<object>} MangoPartialSort
+ */
+
+/**
  * @typedef {object} MangoQueryOptions
- * @property {object} [selector] Selector
- * @property {Array<object>} [sort] The sorting parameters
+ * @property {MangoPartialSelector} [selector] Selector
+ * @property {MangoPartialSort} [sort] The sorting parameters
  * @property {Array<string>} [fields] The fields to return
  * @property {Array<string>} [partialFilterFields] The partial filter fields
  * @property {number|null} [limit] For pagination, the number of results to return
@@ -56,7 +64,12 @@ export const getIndexNameFromFields = (
     ? `${indexName}_filter_${partialFilterFields.join('_and_')}`
     : indexName
 }
-
+/**
+ * Transform sort into Array
+ *
+ * @param {MangoPartialSort} sort - The sorting parameters
+ * @returns {MangoPartialSort}
+ */
 export const transformSort = sort => {
   if (!sort || Array.isArray(sort)) {
     return sort
@@ -76,6 +89,9 @@ export const transformSort = sort => {
  * query to work
  *
  * @param {MangoQueryOptions} options - Mango query options
+ * @param {MangoPartialSelector|null} options.selector - Mango selector
+ * @param {MangoPartialFilter|null} options.partialFilter - An optional partial filter
+ * @param {MangoPartialSort} [options.sort] - The sorting parameters
  *
  * @returns {Array} - Fields to index
  */
