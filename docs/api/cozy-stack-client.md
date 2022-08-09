@@ -81,6 +81,9 @@ through OAuth.</p>
 <p>It follows this naming convention:
 `by_{indexed_field1}<em>and</em>{indexed_field2}<em>filter</em>{partial_filter_field1}<em>and</em>{partial_filter_field2}</p>
 </dd>
+<dt><a href="#transformSort">transformSort</a> ⇒ <code><a href="#MangoPartialSort">MangoPartialSort</a></code></dt>
+<dd><p>Transform sort into Array</p>
+</dd>
 <dt><a href="#getIndexFields">getIndexFields</a> ⇒ <code>Array</code></dt>
 <dd><p>Compute fields that should be indexed for a mango
 query to work</p>
@@ -196,6 +199,10 @@ not.</p>
 <dd><p>Document representing a io.cozy.jobs</p>
 </dd>
 <dt><a href="#MangoPartialFilter">MangoPartialFilter</a> : <code>object</code></dt>
+<dd></dd>
+<dt><a href="#MangoPartialSelector">MangoPartialSelector</a> : <code>object</code></dt>
+<dd></dd>
+<dt><a href="#MangoPartialSort">MangoPartialSort</a> : <code>Array.&lt;object&gt;</code></dt>
 <dd></dd>
 <dt><a href="#MangoQueryOptions">MangoQueryOptions</a> : <code>object</code></dt>
 <dd></dd>
@@ -390,8 +397,10 @@ Abstracts a collection of documents of the same doctype, providing CRUD methods 
 * [DocumentCollection](#DocumentCollection)
     * _instance_
         * [.all(options)](#DocumentCollection+all) ⇒ <code>Promise.&lt;{data, meta, skip, bookmark, next}&gt;</code>
+        * [.fetchDocumentsWithMango(path, selector, options)](#DocumentCollection+fetchDocumentsWithMango)
         * [.findWithMango(path, selector, options)](#DocumentCollection+findWithMango) ⇒ <code>Promise.&lt;object&gt;</code>
         * [.find(selector, options)](#DocumentCollection+find) ⇒ <code>Promise.&lt;{data, skip, bookmark, next, execution\_stats}&gt;</code>
+        * [.findAll(selector, options)](#DocumentCollection+findAll) ⇒ <code>Promise.&lt;{data, skip, bookmark, next, execution\_stats}&gt;</code>
         * [.get(id)](#DocumentCollection+get) ⇒ <code>Promise.&lt;object&gt;</code>
         * [.getAll()](#DocumentCollection+getAll)
         * [.create(doc)](#DocumentCollection+create)
@@ -399,6 +408,7 @@ Abstracts a collection of documents of the same doctype, providing CRUD methods 
         * [.destroy(doc)](#DocumentCollection+destroy)
         * [.updateAll(rawDocs)](#DocumentCollection+updateAll)
         * [.destroyAll(docs)](#DocumentCollection+destroyAll)
+        * [.toMangoOptions(selector, options)](#DocumentCollection+toMangoOptions) ⇒ [<code>MangoQueryOptions</code>](#MangoQueryOptions)
         * [.createIndex(fields, indexOption)](#DocumentCollection+createIndex) ⇒ <code>Promise.&lt;{id, fields}&gt;</code>
         * [.fetchAllMangoIndexes()](#DocumentCollection+fetchAllMangoIndexes) ⇒ <code>Promise.&lt;Array&gt;</code>
         * [.destroyIndex(index)](#DocumentCollection+destroyIndex) ⇒ <code>Promise.&lt;object&gt;</code>
@@ -429,6 +439,19 @@ The returned documents are paginated by the stack.
 | [options.bookmark] | <code>string</code> |  | Pagination bookmark |
 | [options.keys] | <code>Array.&lt;string&gt;</code> |  | Keys to query |
 
+<a name="DocumentCollection+fetchDocumentsWithMango"></a>
+
+### documentCollection.fetchDocumentsWithMango(path, selector, options)
+Fetch Documents with Mango
+
+**Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| path | <code>string</code> | path to fetch |
+| selector | [<code>MangoPartialSelector</code>](#MangoPartialSelector) | selector |
+| options | [<code>MangoQueryOptions</code>](#MangoQueryOptions) | request options |
+
 <a name="DocumentCollection+findWithMango"></a>
 
 ### documentCollection.findWithMango(path, selector, options) ⇒ <code>Promise.&lt;object&gt;</code>
@@ -447,18 +470,18 @@ the query run again.
 | Param | Type | Description |
 | --- | --- | --- |
 | path | <code>string</code> | The route path |
-| selector | <code>object</code> | The mango selector |
+| selector | [<code>MangoPartialSelector</code>](#MangoPartialSelector) | The mango selector |
 | options | [<code>MangoQueryOptions</code>](#MangoQueryOptions) | The find options |
 
 <a name="DocumentCollection+find"></a>
 
 ### documentCollection.find(selector, options) ⇒ <code>Promise.&lt;{data, skip, bookmark, next, execution\_stats}&gt;</code>
 Returns a filtered list of documents using a Mango selector.
-   
+
 The returned documents are paginated by the stack.
 
 **Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
-**Returns**: <code>Promise.&lt;{data, skip, bookmark, next, execution\_stats}&gt;</code> - The JSON API conformant response.  
+**Returns**: <code>Promise.&lt;{data, skip, bookmark, next, execution\_stats}&gt;</code> - Response in JSON  
 **Throws**:
 
 - <code>FetchError</code> 
@@ -466,7 +489,29 @@ The returned documents are paginated by the stack.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| selector | <code>object</code> | The Mango selector. |
+| selector | [<code>MangoPartialSelector</code>](#MangoPartialSelector) | The Mango selector. |
+| options | [<code>MangoQueryOptions</code>](#MangoQueryOptions) | MangoQueryOptions |
+
+<a name="DocumentCollection+findAll"></a>
+
+### documentCollection.findAll(selector, options) ⇒ <code>Promise.&lt;{data, skip, bookmark, next, execution\_stats}&gt;</code>
+Returns a filtered list with all documents using a Mango selector,
+automatically fetching more documents if the total of documents is
+superior to the pagination limit.
+Can result in a lot of network requests.
+
+   The returned documents are paginated by the stack.
+
+**Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
+**Returns**: <code>Promise.&lt;{data, skip, bookmark, next, execution\_stats}&gt;</code> - Response in JSON  
+**Throws**:
+
+- <code>FetchError</code> 
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| selector | [<code>MangoPartialSelector</code>](#MangoPartialSelector) | The Mango selector. |
 | options | [<code>MangoQueryOptions</code>](#MangoQueryOptions) | MangoQueryOptions |
 
 <a name="DocumentCollection+get"></a>
@@ -541,6 +586,19 @@ Deletes several documents in one batch
 | Param | Type | Description |
 | --- | --- | --- |
 | docs | <code>Array.&lt;Document&gt;</code> | Documents to delete |
+
+<a name="DocumentCollection+toMangoOptions"></a>
+
+### documentCollection.toMangoOptions(selector, options) ⇒ [<code>MangoQueryOptions</code>](#MangoQueryOptions)
+Returns Mango Options from Selector and Options
+
+**Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
+**Returns**: [<code>MangoQueryOptions</code>](#MangoQueryOptions) - Mango options  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| selector | [<code>MangoPartialSelector</code>](#MangoPartialSelector) | Mango selector |
+| options | [<code>MangoQueryOptions</code>](#MangoQueryOptions) | Mango Options |
 
 <a name="DocumentCollection+createIndex"></a>
 
@@ -1900,6 +1958,17 @@ It follows this naming convention:
 | params | <code>object</code> | The additional params |
 | params.partialFilterFields | <code>Array.&lt;string&gt;</code> | The partial filter fields |
 
+<a name="transformSort"></a>
+
+## transformSort ⇒ [<code>MangoPartialSort</code>](#MangoPartialSort)
+Transform sort into Array
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| sort | [<code>MangoPartialSort</code>](#MangoPartialSort) | The sorting parameters |
+
 <a name="getIndexFields"></a>
 
 ## getIndexFields ⇒ <code>Array</code>
@@ -1912,6 +1981,9 @@ query to work
 | Param | Type | Description |
 | --- | --- | --- |
 | options | [<code>MangoQueryOptions</code>](#MangoQueryOptions) | Mango query options |
+| options.selector | [<code>MangoPartialSelector</code>](#MangoPartialSelector) \| <code>null</code> | Mango selector |
+| options.partialFilter | [<code>MangoPartialFilter</code>](#MangoPartialFilter) \| <code>null</code> | An optional partial filter |
+| [options.sort] | [<code>MangoPartialSort</code>](#MangoPartialSort) | The sorting parameters |
 
 <a name="isInconsistentIndex"></a>
 
@@ -2495,6 +2567,14 @@ Document representing a io.cozy.jobs
 
 ## MangoPartialFilter : <code>object</code>
 **Kind**: global typedef  
+<a name="MangoPartialSelector"></a>
+
+## MangoPartialSelector : <code>object</code>
+**Kind**: global typedef  
+<a name="MangoPartialSort"></a>
+
+## MangoPartialSort : <code>Array.&lt;object&gt;</code>
+**Kind**: global typedef  
 <a name="MangoQueryOptions"></a>
 
 ## MangoQueryOptions : <code>object</code>
@@ -2503,8 +2583,8 @@ Document representing a io.cozy.jobs
 
 | Name | Type | Description |
 | --- | --- | --- |
-| [selector] | <code>object</code> | Selector |
-| [sort] | <code>Array.&lt;object&gt;</code> | The sorting parameters |
+| [selector] | [<code>MangoPartialSelector</code>](#MangoPartialSelector) | Selector |
+| [sort] | [<code>MangoPartialSort</code>](#MangoPartialSort) | The sorting parameters |
 | [fields] | <code>Array.&lt;string&gt;</code> | The fields to return |
 | [partialFilterFields] | <code>Array.&lt;string&gt;</code> | The partial filter fields |
 | [limit] | <code>number</code> \| <code>null</code> | For pagination, the number of results to return |

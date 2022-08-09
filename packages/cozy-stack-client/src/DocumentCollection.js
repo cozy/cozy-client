@@ -320,7 +320,7 @@ The returned documents are paginated by the stack.
    * automatically fetching more documents if the total of documents is
    * superior to the pagination limit.
    * Can result in a lot of network requests.
-
+   *
    The returned documents are paginated by the stack.
    *
    * @param {MangoPartialSelector} selector The Mango selector.
@@ -334,7 +334,7 @@ The returned documents are paginated by the stack.
     let bookmark = options.bookmark || undefined
     while (next) {
       const resp = await this.find(selector, { ...options, bookmark })
-      files = [...files, ...resp.data]
+      files.push(...resp.data)
       bookmark = resp.bookmark
       next = resp.next
     }
