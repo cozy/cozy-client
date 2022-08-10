@@ -452,6 +452,12 @@ The returned documents are paginated by the stack.
 
     sort = transformSort(sort)
 
+    if (!indexedFields && selector) {
+      console.warn(
+        'Selector fields should be manually indexed to prevent unexpected behaviour'
+      )
+    }
+
     indexedFields = indexedFields
       ? indexedFields
       : getIndexFields({ sort, selector })
