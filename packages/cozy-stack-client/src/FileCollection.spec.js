@@ -96,6 +96,7 @@ describe('FileCollection', () => {
 
     beforeAll(() => {
       client.fetchJSON.mockResolvedValue(FIND_RESPONSE)
+      jest.spyOn(console, 'warn').mockImplementation(() => {})
     })
 
     afterAll(() => {

@@ -32,6 +32,9 @@ describe('ContactsCollection', () => {
     const col = new ContactsCollection('io.cozy.contacts', stackClient)
     return { stackClient, col }
   }
+  beforeEach(() => {
+    jest.spyOn(console, 'warn').mockImplementation(() => {})
+  })
 
   it('should use a special route for the myself contact', async () => {
     const { col, stackClient } = setup()

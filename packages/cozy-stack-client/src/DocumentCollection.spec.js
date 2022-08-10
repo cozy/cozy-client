@@ -116,6 +116,7 @@ describe('DocumentCollection', () => {
 
     beforeAll(() => {
       client.fetchJSON.mockResolvedValue(NORMAL_RESPONSE_FIXTURE)
+      jest.spyOn(console, 'warn').mockImplementation(() => {})
     })
 
     it('should call the right route', async () => {
@@ -1302,6 +1303,12 @@ describe('DocumentCollection', () => {
   })
   describe('toMangoOptions', () => {
     const collection = new DocumentCollection('io.cozy.todos', client)
+    let warnSpy
+
+    beforeEach(() => {
+      jest.resetAllMocks()
+      warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {})
+    })
 
     it('should correctly build the indexName', () => {
       const selector = {
@@ -1370,6 +1377,14 @@ describe('DocumentCollection', () => {
         indexedFields
       })
       expect(opts.sort).toEqual([{ name: 'asc' }, { date: 'asc' }])
+    })
+    it('should raise warning when there is a selector and no indexFields', () => {
+      collection.toMangoOptions({ name: 'toto' }, {})
+      expect(warnSpy).toHaveBeenCalled()
+    })
+    it('should not raise warning when there is a selector and indexFields', () => {
+      collection.toMangoOptions({ name: 'toto' }, { indexedFields: ['name'] })
+      expect(warnSpy).not.toHaveBeenCalled()
     })
   })
 })
