@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [32.7.0](https://github.com/cozy/cozy-client/compare/v32.6.0...v32.7.0) (2022-08-10)
+
+
+### Features
+
+* **stack-client:** Add findAll ([e69433e](https://github.com/cozy/cozy-client/commit/e69433ed15efabc573be7f355229c1e946240ca4))
+
+
+
+
+
 # [32.6.0](https://github.com/cozy/cozy-client/compare/v32.5.0...v32.6.0) (2022-08-10)
 
 
