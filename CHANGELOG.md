@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [32.6.0](https://github.com/cozy/cozy-client/compare/v32.5.0...v32.6.0) (2022-08-10)
+
+
+### Features
+
+* Add warning when selector fields are not indexed ([bdb630a](https://github.com/cozy/cozy-client/commit/bdb630a354603fb66c459d360a0a36206773a8e6))
+
+
+
+
+
 # [32.5.0](https://github.com/cozy/cozy-client/compare/v32.4.1...v32.5.0) (2022-08-09)
 
 
