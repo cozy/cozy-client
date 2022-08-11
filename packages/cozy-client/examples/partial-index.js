@@ -6,7 +6,7 @@ const {
   getContactsByIndexesAttributePartialIndex,
   getContactsByIndexesAttribute,
   getContactsTest
-} = require('./contacts')
+} = require('./helpers/contacts')
 const { ArgumentParser } = require('argparse')
 
 global.fetch = require('node-fetch') // in the browser we have native fetch
