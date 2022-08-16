@@ -8,17 +8,17 @@ import isEqual from 'lodash/isEqual'
  */
 
 /**
- * @typedef {object} MangoPartialSelector
+ * @typedef {object} MangoSelector
  */
 
 /**
- * @typedef {Array<object>} MangoPartialSort
+ * @typedef {Array<object>} MangoSort
  */
 
 /**
  * @typedef {object} MangoQueryOptions
- * @property {MangoPartialSelector} [selector] Selector
- * @property {MangoPartialSort} [sort] The sorting parameters
+ * @property {MangoSelector} [selector] Selector
+ * @property {MangoSort} [sort] The sorting parameters
  * @property {Array<string>} [fields] The fields to return
  * @property {Array<string>} [partialFilterFields] The partial filter fields
  * @property {number|null} [limit] For pagination, the number of results to return
@@ -67,8 +67,8 @@ export const getIndexNameFromFields = (
 /**
  * Transform sort into Array
  *
- * @param {MangoPartialSort} sort - The sorting parameters
- * @returns {MangoPartialSort}
+ * @param {MangoSort} sort - The sorting parameters
+ * @returns {MangoSort}
  */
 export const transformSort = sort => {
   if (!sort || Array.isArray(sort)) {
@@ -89,9 +89,9 @@ export const transformSort = sort => {
  * query to work
  *
  * @param {MangoQueryOptions} options - Mango query options
- * @param {MangoPartialSelector|null} options.selector - Mango selector
+ * @param {MangoSelector|null} options.selector - Mango selector
  * @param {MangoPartialFilter|null} options.partialFilter - An optional partial filter
- * @param {MangoPartialSort} [options.sort] - The sorting parameters
+ * @param {MangoSort} [options.sort] - The sorting parameters
  *
  * @returns {Array} - Fields to index
  */
