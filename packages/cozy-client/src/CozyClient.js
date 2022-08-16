@@ -209,10 +209,12 @@ class CozyClient {
     // Instances of plugins registered with registerPlugin
     this.plugins = {}
 
-    try {
-      this.loadInstanceOptionsFromDOM()
-    } catch (err) {
-      // not a critical error, we may be in node or the instance options are not on the default HTML element
+    if (!(this.stackClient instanceof OAuthClient)) {
+      try {
+        this.loadInstanceOptionsFromDOM()
+      } catch (err) {
+        // not a critical error, we may be in node or the instance options are not on the default HTML element
+      }
     }
 
     if (options.uri && options.token) {
