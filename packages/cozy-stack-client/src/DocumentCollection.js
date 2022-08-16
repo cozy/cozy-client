@@ -6,7 +6,7 @@ import head from 'lodash/head'
 import merge from 'lodash/merge'
 import startsWith from 'lodash/startsWith'
 import qs from 'qs'
-import { MangoQueryOptions, MangoPartialSelector } from './mangoIndex'
+import { MangoQueryOptions, MangoSelector } from './mangoIndex'
 
 import Collection, {
   dontThrowNotFoundError,
@@ -175,7 +175,7 @@ class DocumentCollection {
    * Fetch Documents with Mango
    *
    * @param {string} path - path to fetch
-   * @param {MangoPartialSelector} selector - selector
+   * @param {MangoSelector} selector - selector
    * @param {MangoQueryOptions} options - request options
    */
   async fetchDocumentsWithMango(path, selector, options = {}) {
@@ -260,7 +260,7 @@ class DocumentCollection {
    * the query run again.
    *
    * @param {string} path The route path
-   * @param {MangoPartialSelector} selector The mango selector
+   * @param {MangoSelector} selector The mango selector
    * @param {MangoQueryOptions} options The find options
    *
    * @returns {Promise<object>} - The find response
@@ -292,9 +292,9 @@ class DocumentCollection {
 
 The returned documents are paginated by the stack.
    *
-   * @param {MangoPartialSelector} selector The Mango selector.
+   * @param {MangoSelector} selector The Mango selector.
    * @param {MangoQueryOptions} options MangoQueryOptions
-   * @returns {Promise<{data, skip, bookmark, next, execution_stats}>} Response in JSON
+   * @returns {Promise<{data, skip, bookmark, next, execution_stats}>} The JSON API conformant response.
    * @throws {FetchError}
    */
   async find(selector, options = {}) {
@@ -323,9 +323,9 @@ The returned documents are paginated by the stack.
    *
    The returned documents are paginated by the stack.
    *
-   * @param {MangoPartialSelector} selector The Mango selector.
+   * @param {MangoSelector} selector The Mango selector.
    * @param {MangoQueryOptions} options MangoQueryOptions
-   * @returns {Promise<{data, skip, bookmark, next, execution_stats}>} Response in JSON
+   * @returns {Promise<{data, skip, bookmark, next, execution_stats}>} The JSON API conformant response.
    * @throws {FetchError}
    */
   async findAll(selector, options = {}) {
@@ -482,7 +482,7 @@ The returned documents are paginated by the stack.
   /**
    * Returns Mango Options from Selector and Options
    *
-   * @param {MangoPartialSelector} selector - Mango selector
+   * @param {MangoSelector} selector - Mango selector
    * @param {MangoQueryOptions} options - Mango Options
    * @returns {MangoQueryOptions} Mango options
    */

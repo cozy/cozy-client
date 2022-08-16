@@ -81,7 +81,7 @@ through OAuth.</p>
 <p>It follows this naming convention:
 `by_{indexed_field1}<em>and</em>{indexed_field2}<em>filter</em>{partial_filter_field1}<em>and</em>{partial_filter_field2}</p>
 </dd>
-<dt><a href="#transformSort">transformSort</a> ⇒ <code><a href="#MangoPartialSort">MangoPartialSort</a></code></dt>
+<dt><a href="#transformSort">transformSort</a> ⇒ <code><a href="#MangoSort">MangoSort</a></code></dt>
 <dd><p>Transform sort into Array</p>
 </dd>
 <dt><a href="#getIndexFields">getIndexFields</a> ⇒ <code>Array</code></dt>
@@ -200,9 +200,9 @@ not.</p>
 </dd>
 <dt><a href="#MangoPartialFilter">MangoPartialFilter</a> : <code>object</code></dt>
 <dd></dd>
-<dt><a href="#MangoPartialSelector">MangoPartialSelector</a> : <code>object</code></dt>
+<dt><a href="#MangoSelector">MangoSelector</a> : <code>object</code></dt>
 <dd></dd>
-<dt><a href="#MangoPartialSort">MangoPartialSort</a> : <code>Array.&lt;object&gt;</code></dt>
+<dt><a href="#MangoSort">MangoSort</a> : <code>Array.&lt;object&gt;</code></dt>
 <dd></dd>
 <dt><a href="#MangoQueryOptions">MangoQueryOptions</a> : <code>object</code></dt>
 <dd></dd>
@@ -449,7 +449,7 @@ Fetch Documents with Mango
 | Param | Type | Description |
 | --- | --- | --- |
 | path | <code>string</code> | path to fetch |
-| selector | [<code>MangoPartialSelector</code>](#MangoPartialSelector) | selector |
+| selector | [<code>MangoSelector</code>](#MangoSelector) | selector |
 | options | [<code>MangoQueryOptions</code>](#MangoQueryOptions) | request options |
 
 <a name="DocumentCollection+findWithMango"></a>
@@ -470,7 +470,7 @@ the query run again.
 | Param | Type | Description |
 | --- | --- | --- |
 | path | <code>string</code> | The route path |
-| selector | [<code>MangoPartialSelector</code>](#MangoPartialSelector) | The mango selector |
+| selector | [<code>MangoSelector</code>](#MangoSelector) | The mango selector |
 | options | [<code>MangoQueryOptions</code>](#MangoQueryOptions) | The find options |
 
 <a name="DocumentCollection+find"></a>
@@ -481,7 +481,7 @@ Returns a filtered list of documents using a Mango selector.
 The returned documents are paginated by the stack.
 
 **Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
-**Returns**: <code>Promise.&lt;{data, skip, bookmark, next, execution\_stats}&gt;</code> - Response in JSON  
+**Returns**: <code>Promise.&lt;{data, skip, bookmark, next, execution\_stats}&gt;</code> - The JSON API conformant response.  
 **Throws**:
 
 - <code>FetchError</code> 
@@ -489,7 +489,7 @@ The returned documents are paginated by the stack.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| selector | [<code>MangoPartialSelector</code>](#MangoPartialSelector) | The Mango selector. |
+| selector | [<code>MangoSelector</code>](#MangoSelector) | The Mango selector. |
 | options | [<code>MangoQueryOptions</code>](#MangoQueryOptions) | MangoQueryOptions |
 
 <a name="DocumentCollection+findAll"></a>
@@ -503,7 +503,7 @@ Can result in a lot of network requests.
    The returned documents are paginated by the stack.
 
 **Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
-**Returns**: <code>Promise.&lt;{data, skip, bookmark, next, execution\_stats}&gt;</code> - Response in JSON  
+**Returns**: <code>Promise.&lt;{data, skip, bookmark, next, execution\_stats}&gt;</code> - The JSON API conformant response.  
 **Throws**:
 
 - <code>FetchError</code> 
@@ -511,7 +511,7 @@ Can result in a lot of network requests.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| selector | [<code>MangoPartialSelector</code>](#MangoPartialSelector) | The Mango selector. |
+| selector | [<code>MangoSelector</code>](#MangoSelector) | The Mango selector. |
 | options | [<code>MangoQueryOptions</code>](#MangoQueryOptions) | MangoQueryOptions |
 
 <a name="DocumentCollection+get"></a>
@@ -597,7 +597,7 @@ Returns Mango Options from Selector and Options
 
 | Param | Type | Description |
 | --- | --- | --- |
-| selector | [<code>MangoPartialSelector</code>](#MangoPartialSelector) | Mango selector |
+| selector | [<code>MangoSelector</code>](#MangoSelector) | Mango selector |
 | options | [<code>MangoQueryOptions</code>](#MangoQueryOptions) | Mango Options |
 
 <a name="DocumentCollection+createIndex"></a>
@@ -1960,14 +1960,14 @@ It follows this naming convention:
 
 <a name="transformSort"></a>
 
-## transformSort ⇒ [<code>MangoPartialSort</code>](#MangoPartialSort)
+## transformSort ⇒ [<code>MangoSort</code>](#MangoSort)
 Transform sort into Array
 
 **Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| sort | [<code>MangoPartialSort</code>](#MangoPartialSort) | The sorting parameters |
+| sort | [<code>MangoSort</code>](#MangoSort) | The sorting parameters |
 
 <a name="getIndexFields"></a>
 
@@ -1981,9 +1981,9 @@ query to work
 | Param | Type | Description |
 | --- | --- | --- |
 | options | [<code>MangoQueryOptions</code>](#MangoQueryOptions) | Mango query options |
-| options.selector | [<code>MangoPartialSelector</code>](#MangoPartialSelector) \| <code>null</code> | Mango selector |
+| options.selector | [<code>MangoSelector</code>](#MangoSelector) \| <code>null</code> | Mango selector |
 | options.partialFilter | [<code>MangoPartialFilter</code>](#MangoPartialFilter) \| <code>null</code> | An optional partial filter |
-| [options.sort] | [<code>MangoPartialSort</code>](#MangoPartialSort) | The sorting parameters |
+| [options.sort] | [<code>MangoSort</code>](#MangoSort) | The sorting parameters |
 
 <a name="isInconsistentIndex"></a>
 
@@ -2567,13 +2567,13 @@ Document representing a io.cozy.jobs
 
 ## MangoPartialFilter : <code>object</code>
 **Kind**: global typedef  
-<a name="MangoPartialSelector"></a>
+<a name="MangoSelector"></a>
 
-## MangoPartialSelector : <code>object</code>
+## MangoSelector : <code>object</code>
 **Kind**: global typedef  
-<a name="MangoPartialSort"></a>
+<a name="MangoSort"></a>
 
-## MangoPartialSort : <code>Array.&lt;object&gt;</code>
+## MangoSort : <code>Array.&lt;object&gt;</code>
 **Kind**: global typedef  
 <a name="MangoQueryOptions"></a>
 
@@ -2583,8 +2583,8 @@ Document representing a io.cozy.jobs
 
 | Name | Type | Description |
 | --- | --- | --- |
-| [selector] | [<code>MangoPartialSelector</code>](#MangoPartialSelector) | Selector |
-| [sort] | [<code>MangoPartialSort</code>](#MangoPartialSort) | The sorting parameters |
+| [selector] | [<code>MangoSelector</code>](#MangoSelector) | Selector |
+| [sort] | [<code>MangoSort</code>](#MangoSort) | The sorting parameters |
 | [fields] | <code>Array.&lt;string&gt;</code> | The fields to return |
 | [partialFilterFields] | <code>Array.&lt;string&gt;</code> | The partial filter fields |
 | [limit] | <code>number</code> \| <code>null</code> | For pagination, the number of results to return |
