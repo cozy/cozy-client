@@ -493,6 +493,9 @@ describe('CozyClient logout', () => {
   })
 
   it('should call reset on each link that can be reset', async () => {
+    client.query = jest.fn().mockResolvedValueOnce({
+      data: { attributes: { file_versioning: true, flat_subdomains: true } }
+    })
     links[0].reset = jest.fn()
     links[2].reset = jest.fn()
     await client.login()
@@ -510,6 +513,9 @@ describe('CozyClient logout', () => {
   })
 
   it('should call all reset even if a reset throws an error', async () => {
+    client.query = jest.fn().mockResolvedValueOnce({
+      data: { attributes: { file_versioning: true, flat_subdomains: true } }
+    })
     links[0].reset = jest.fn().mockRejectedValue(new Error('Async error'))
     links[2].reset = jest.fn()
     await client.login()
@@ -519,6 +525,9 @@ describe('CozyClient logout', () => {
   })
 
   it('should emit events', async () => {
+    client.query = jest.fn().mockResolvedValueOnce({
+      data: { attributes: { file_versioning: true, flat_subdomains: true } }
+    })
     const originalLogout = client.logout
     links[0].reset = jest.fn()
     links[2].reset = jest.fn()
@@ -537,6 +546,9 @@ describe('CozyClient logout', () => {
   })
 
   it('should unregister an oauth client', async () => {
+    client.query = jest.fn().mockResolvedValueOnce({
+      data: { attributes: { file_versioning: true, flat_subdomains: true } }
+    })
     await client.login()
     stackClient.isRegistered.mockReturnValue(true)
 
