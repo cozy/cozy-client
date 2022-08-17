@@ -13,4 +13,4 @@ import * as models from "./models";
 export { manifest, models };
 export { QueryDefinition, Mutations, MutationTypes, getDoctypeFromOperation, Q } from "./queries/dsl";
 export { Association, HasMany, HasOne, HasOneInPlace, HasManyInPlace, HasManyTriggers } from "./associations";
-export { dehydrate, generateWebLink, rootCozyUrl, InvalidCozyUrlError, InvalidProtocolError } from "./helpers";
+export { deconstructCozyWebLinkWithSlug, dehydrate, generateWebLink, rootCozyUrl, InvalidCozyUrlError, InvalidProtocolError } from "./helpers";
