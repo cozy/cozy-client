@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [32.7.2](https://github.com/cozy/cozy-client/compare/v32.7.1...v32.7.2) (2022-08-17)
+
+
+### Bug Fixes
+
+* Use find method where args are for find ([dadbbd4](https://github.com/cozy/cozy-client/commit/dadbbd407e45babd9dfa4c2ef04feeb990753e0a))
+
+
+
+
+
 ## [32.7.1](https://github.com/cozy/cozy-client/compare/v32.7.0...v32.7.1) (2022-08-16)
 
 **Note:** Version bump only for package cozy-client
