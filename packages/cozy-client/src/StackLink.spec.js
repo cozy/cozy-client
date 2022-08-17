@@ -46,6 +46,22 @@ describe('StackLink', () => {
       expect(stackClient.collection().all).toHaveBeenCalled()
       expect(stackClient.collection).toHaveBeenCalledWith('io.cozy.todos')
     })
+
+    it('should use find if a partialFilter is given', async () => {
+      const query = Q('io.cozy.todos').partialIndex({ trashed: false })
+      stackClient.collection().find.mockReset()
+      await link.request(query)
+      expect(stackClient.collection().find).toHaveBeenCalled()
+      expect(stackClient.collection).toHaveBeenCalledWith('io.cozy.todos')
+    })
+
+    it('should use find if fields are given', async () => {
+      const query = Q('io.cozy.todos').select(['trashed'])
+      stackClient.collection().find.mockReset()
+      await link.request(query)
+      expect(stackClient.collection().find).toHaveBeenCalled()
+      expect(stackClient.collection).toHaveBeenCalledWith('io.cozy.todos')
+    })
   })
 
   describe('reset', () => {

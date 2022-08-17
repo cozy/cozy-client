@@ -1,10 +1,24 @@
-import { MutationTypes } from './queries/dsl'
+import { MutationTypes, QueryDefinition } from './queries/dsl'
 import CozyLink from './CozyLink'
-import { CozyClientDocument, CouchDBBulkResult } from './types'
+import { CozyClientDocument, CouchDBBulkResult, ClientResponse } from './types'
 import { DOCTYPE_FILES } from './const'
 import { BulkEditError } from './errors'
 import zipWith from 'lodash/zipWith'
-
+/**
+ *
+ * To know if cozy-client should use Document.find()
+ * or Document.all()
+ * Similar to what is done in CozyPouchLink executeQuery()
+ *
+ * @param {QueryDefinition} queryDefinition - QueryDefinition to check
+ * @returns {boolean} If has find options
+ *
+ */
+const hasFindOptions = queryDefinition => {
+  const { selector, partialFilter, sort, fields } = queryDefinition
+  if (selector || partialFilter || sort || fields) return true
+  return false
+}
 /**
  * Returns full documents after a bulk update
  *
@@ -66,7 +80,11 @@ export default class StackLink extends CozyLink {
     }
     return this.executeQuery(operation)
   }
-
+  /**
+   *
+   * @param {QueryDefinition} query - Query to execute
+   * @returns {Promise<ClientResponse>}
+   */
   executeQuery(query) {
     const { doctype, selector, id, ids, referenced, ...options } = query
     if (!doctype) {
@@ -83,9 +101,11 @@ export default class StackLink extends CozyLink {
     if (referenced) {
       return collection.findReferencedBy(referenced, options)
     }
-    return !selector && !options.sort
-      ? collection.all(options)
-      : collection.find(selector, options)
+    if (hasFindOptions(query)) {
+      return collection.find(selector, options)
+    } else {
+      return collection.all(options)
+    }
   }
 
   async executeMutation(mutation, result, forward) {
