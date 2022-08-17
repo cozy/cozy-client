@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [32.7.4](https://github.com/cozy/cozy-client/compare/v32.7.3...v32.7.4) (2022-08-17)
+
+
+### Bug Fixes
+
+* Export `deconstructCozyWebLinkWithSlug` from `index.node.js` ([e3f43e8](https://github.com/cozy/cozy-client/commit/e3f43e823e67b159dc8272a3bf60e078fe91a0c8)), closes [#1217](https://github.com/cozy/cozy-client/issues/1217)
+
+
+
+
+
 ## [32.7.3](https://github.com/cozy/cozy-client/compare/v32.7.2...v32.7.3) (2022-08-17)
 
 **Note:** Version bump only for package cozy-client
