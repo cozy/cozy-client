@@ -4,16 +4,17 @@ import {
   getQualification
 } from './qualification'
 import * as qualificationModel from '../../assets/qualifications.json'
+import logger from '../../logger'
 
 describe('document qualification', () => {
   beforeEach(() => {
-    jest.spyOn(console, 'warn').mockImplementation(() => jest.fn())
-    jest.spyOn(console, 'info').mockImplementation(() => jest.fn())
+    jest.spyOn(logger, 'warn').mockImplementation(() => jest.fn())
+    jest.spyOn(logger, 'info').mockImplementation(() => jest.fn())
   })
 
   afterEach(() => {
-    console.warn.mockRestore()
-    console.info.mockRestore()
+    logger.warn.mockRestore()
+    logger.info.mockRestore()
   })
 
   it('should get the correct qualification by the label', () => {
@@ -112,7 +113,7 @@ describe('document qualification', () => {
       subjects: ['very_hard_drugs']
     }
     setQualification({}, qualification)
-    expect(console.info).toHaveBeenCalledTimes(1)
+    expect(logger.info).toHaveBeenCalledTimes(1)
   })
 })
 describe('qualifications items', () => {

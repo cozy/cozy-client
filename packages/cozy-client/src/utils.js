@@ -1,3 +1,5 @@
+import logger from './logger'
+
 /**
  * @typedef {Promise} CancelablePromise
  * @property {Function} cancel - Cancel the promise
@@ -36,7 +38,7 @@ export { cancelable }
  */
 export const isQueryLoading = col => {
   if (!col) {
-    console.warn('isQueryLoading called on falsy value.') // eslint-disable-line no-console
+    logger.warn('isQueryLoading called on falsy value.')
     return false
   }
   return col.fetchStatus === 'loading' || col.fetchStatus === 'pending'

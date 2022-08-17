@@ -1,6 +1,8 @@
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 import { isFile, isDirectory } from './FileCollection'
 import { uri } from './utils'
+import logger from './logger'
+
 export const SHARING_DOCTYPE = 'io.cozy.sharings'
 export const BITWARDEN_ORGANIZATIONS_DOCTYPE = 'com.bitwarden.organizations'
 export const BITWARDEN_CIPHERS_DOCTYPE = 'com.bitwarden.ciphers'
@@ -139,7 +141,7 @@ class SharingCollection extends DocumentCollection {
     description,
     previewPath = null
   ) {
-    console.warn(
+    logger.warn(
       'SharingCollection.share is deprecated, use SharingCollection.create instead'
     )
     const recipientsToUse =
@@ -262,7 +264,7 @@ const getSharingRulesWithoutWarning = (document, sharingType) => {
  */
 export const getSharingRules = (document, sharingType) => {
   if (sharingType) {
-    console.warn(
+    logger.warn(
       `sharingType is deprecated and will be removed. We now set this default rules: ${getSharingRulesWithoutWarning(
         document
       )}} \n      

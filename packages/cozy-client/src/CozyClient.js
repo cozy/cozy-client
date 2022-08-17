@@ -74,7 +74,7 @@ const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
 
 const deprecatedHandler = msg => ({
   get(target, prop) {
-    console.warn(msg)
+    logger.warn(msg)
     return target[prop]
   }
 })
@@ -173,7 +173,7 @@ class CozyClient {
       ...options
     } = rawOptions
     if (link) {
-      console.warn('`link` is deprecated, use `links`')
+      logger.warn('`link` is deprecated, use `links`')
     }
 
     this.appMetadata = appMetadata
@@ -436,7 +436,7 @@ class CozyClient {
         try {
           link.registerClient(this)
         } catch (e) {
-          console.warn(e)
+          logger.warn(e)
         }
       }
     }
@@ -464,7 +464,7 @@ class CozyClient {
     // This allows us to autoLogin in constructor without breaking any compatibility
     // with codes that uses an explicit login.
     if (this.isLogged && !this.isRevoked) {
-      console.warn(`CozyClient is already logged.`)
+      logger.warn(`CozyClient is already logged.`)
       return this.loginPromise
     }
     return (this.loginPromise = this._login(options))
@@ -541,7 +541,7 @@ class CozyClient {
         try {
           await link.reset()
         } catch (e) {
-          console.warn(e)
+          logger.warn(e)
         }
       }
     }
@@ -577,14 +577,14 @@ client.query(Q('io.cozy.bills'))`)
   }
 
   find(doctype, selector = undefined) {
-    console.warn(
+    logger.warn(
       'client.find(doctype, selector) is deprecated, please use Q(doctype).where(selector) to build the same query.'
     )
     return new QueryDefinition({ doctype, selector })
   }
 
   get(doctype, id) {
-    console.warn(
+    logger.warn(
       `client.get(${doctype}, id) is deprecated, please use Q(${doctype}).getById(id) to build the same query.`
     )
     return new QueryDefinition({ doctype, id })
@@ -667,7 +667,7 @@ client.query(Q('io.cozy.bills'))`)
     )
     const errors = validations.filter(validation => validation !== true)
     if (errors.length > 0) {
-      console.warn(
+      logger.warn(
         'There has been some validation errors while bulk saving',
         errors
       )
@@ -1006,7 +1006,7 @@ client.query(Q('io.cozy.bills'))`)
   }
 
   watchQuery(...args) {
-    console.warn(
+    logger.warn(
       'client.watchQuery is deprecated, please use client.makeObservableQuery.'
     )
     return this.makeObservableQuery(...args)
@@ -1347,7 +1347,7 @@ client.query(Q('io.cozy.bills'))`)
         data: isSingleDocQuery && singleDocData ? data[0] : data
       }
     } catch (e) {
-      console.warn(
+      logger.warn(
         `Could not get query from state. queryId: ${id}, error: ${e.message}`
       )
       return null
@@ -1563,7 +1563,7 @@ instantiation of the client.`
    */
   createClient() {
     if (this.options.client) {
-      console.warn(
+      logger.warn(
         'CozyClient: Using options.client is deprecated, please use options.stackClient.'
       )
     }
@@ -1590,7 +1590,7 @@ instantiation of the client.`
           stackClient.options[handlerName] = handlers[handlerName]
         } else {
           if (warningForCustomHandlers) {
-            console.warn(
+            logger.warn(
               `You passed a stackClient with its own ${handlerName}. It is not supported, unexpected things might happen.`
             )
           }
@@ -1615,7 +1615,7 @@ instantiation of the client.`
   }
 
   getClient() {
-    console.warn(
+    logger.warn(
       'CozyClient: getClient() is deprecated, please use getStackClient().'
     )
     return this.getStackClient()

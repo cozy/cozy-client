@@ -5,17 +5,17 @@ import { mount } from 'enzyme'
 import { withClient, queryConnect, queryConnectFlat } from './hoc'
 import { Q } from './queries/dsl'
 import Provider from './Provider'
-
+import logger from './logger'
 // At some point __tests__/mocks and testing/utils shall be reconciled
 import * as mocks from './__tests__/mocks'
 import { setupClient } from './testing/utils'
 
 beforeEach(() => {
-  jest.spyOn(console, 'warn').mockImplementation(() => {})
+  jest.spyOn(logger, 'warn').mockImplementation(() => {})
 })
 
 afterEach(() => {
-  console.warn.mockRestore()
+  logger.warn.mockRestore()
 })
 
 class Component extends React.Component {

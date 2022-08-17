@@ -34,7 +34,7 @@ import {
 import { HasManyFiles, Association, HasMany } from './associations'
 import mapValues from 'lodash/mapValues'
 import FileCollection from 'cozy-stack-client/dist/FileCollection'
-
+import logger from './logger'
 const normalizeData = data =>
   mapValues(data, (docs, doctype) => {
     return docs.map(doc => ({
@@ -86,10 +86,10 @@ describe('CozyClient initialization', () => {
 
   describe('explicit login', () => {
     beforeEach(() => {
-      jest.spyOn(console, 'warn').mockImplementation(() => {})
+      jest.spyOn(logger, 'warn').mockImplementation(() => {})
     })
     afterEach(() => {
-      console.warn.mockRestore()
+      logger.warn.mockRestore()
     })
 
     it('should not break explicit login when provided token and uri', () => {
@@ -380,22 +380,22 @@ describe('CozyClient initialization', () => {
   })
 
   it('should create a store when calling makeObservableQuery', () => {
-    jest.spyOn(console, 'warn').mockImplementation(() => {})
+    jest.spyOn(logger, 'warn').mockImplementation(() => {})
     client.makeObservableQuery(
       new QueryDefinition({ doctype: 'io.cozy.todos' })
     )
-    console.warn.mockRestore()
+    logger.warn.mockRestore()
     expect(client.store).not.toBe(undefined)
   })
 })
 
 describe('Stack client initialization', () => {
   beforeEach(() => {
-    jest.spyOn(console, 'warn').mockImplementation(() => {})
+    jest.spyOn(logger, 'warn').mockImplementation(() => {})
   })
 
   afterEach(() => {
-    console.warn.mockRestore()
+    logger.warn.mockRestore()
   })
 
   it('should add default callbacks', async () => {
@@ -444,13 +444,13 @@ describe('CozyClient handlers', () => {
   })
 
   it('should warn when overriding default handlers', () => {
-    jest.spyOn(console, 'warn').mockImplementation(() => {})
+    jest.spyOn(logger, 'warn').mockImplementation(() => {})
     new CozyClient({
       stackClient: new CozyStackClient({
         onRevocationChange: () => {}
       })
     })
-    expect(console.warn).toHaveBeenCalledWith(
+    expect(logger.warn).toHaveBeenCalledWith(
       'You passed a stackClient with its own onRevocationChange. It is not supported, unexpected things might happen.'
     )
   })
@@ -501,23 +501,21 @@ describe('CozyClient logout', () => {
     expect(links[2].reset).toHaveBeenCalledTimes(1)
 
     // test if we launch twice logout, it doesn't launch twice reset.
-    jest.spyOn(console, 'warn').mockImplementation(() => {})
+    jest.spyOn(logger, 'warn').mockImplementation(() => {})
     await client.logout()
-    console.warn.mockRestore()
+    logger.warn.mockRestore()
 
     expect(links[0].reset).toHaveBeenCalledTimes(1)
     expect(links[2].reset).toHaveBeenCalledTimes(1)
   })
 
   it('should call all reset even if a reset throws an error', async () => {
-    const spy = jest.spyOn(global.console, 'warn').mockReturnValue(jest.fn())
     links[0].reset = jest.fn().mockRejectedValue(new Error('Async error'))
     links[2].reset = jest.fn()
     await client.login()
     await client.logout()
     expect(links[0].reset).toHaveBeenCalledTimes(1)
     expect(links[2].reset).toHaveBeenCalledTimes(1)
-    spy.mockRestore()
   })
 
   it('should emit events', async () => {

@@ -8,6 +8,7 @@ import { Q } from '../queries/dsl'
 import { IOCozyFile, QueryResult } from '../types'
 import { DOCTYPE_FILES } from '../const'
 import CozyClient from '../CozyClient'
+import logger from '../logger'
 
 const FILE_TYPE = 'file'
 const DIR_TYPE = 'directory'
@@ -200,7 +201,7 @@ export const isSharingShortcut = file => Boolean(getSharingShortcutStatus(file))
  * @returns {boolean}
  */
 export const isSharingShorcut = file => {
-  console.warn(
+  logger.warn(
     'Deprecation: `isSharingShorcut` is deprecated, please use `isSharingShortcut` instead'
   )
   return isSharingShortcut(file)
@@ -225,7 +226,7 @@ export const isSharingShortcutNew = file =>
  * @returns {boolean}
  */
 export const isSharingShorcutNew = file => {
-  console.warn(
+  logger.warn(
     'Deprecation: `isSharingShorcutNew` is deprecated, please use `isSharingShortcutNew` instead'
   )
   return isSharingShortcutNew(file)

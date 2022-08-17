@@ -1,9 +1,12 @@
+import zipWith from 'lodash/zipWith'
+
 import { MutationTypes, QueryDefinition } from './queries/dsl'
 import CozyLink from './CozyLink'
 import { CozyClientDocument, CouchDBBulkResult, ClientResponse } from './types'
 import { DOCTYPE_FILES } from './const'
 import { BulkEditError } from './errors'
-import zipWith from 'lodash/zipWith'
+import logger from './logger'
+
 /**
  *
  * To know if cozy-client should use Document.find()
@@ -19,6 +22,7 @@ const hasFindOptions = queryDefinition => {
   if (selector || partialFilter || sort || fields) return true
   return false
 }
+
 /**
  * Returns full documents after a bulk update
  *
@@ -59,7 +63,7 @@ export default class StackLink extends CozyLink {
   constructor({ client, stackClient } = {}) {
     super()
     if (client) {
-      console.warn(
+      logger.warn(
         'Using options.client is deprecated, prefer options.stackClient'
       )
     }
@@ -88,7 +92,7 @@ export default class StackLink extends CozyLink {
   executeQuery(query) {
     const { doctype, selector, id, ids, referenced, ...options } = query
     if (!doctype) {
-      console.warn('Bad query', query)
+      logger.warn('Bad query', query)
       throw new Error('No doctype found in a query definition')
     }
     const collection = this.stackClient.collection(doctype)

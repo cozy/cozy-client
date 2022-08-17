@@ -1,6 +1,7 @@
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 import { isFile } from './FileCollection'
 import { uri } from './utils'
+import logger from './logger'
 
 const normalizePermission = perm => normalizeDoc(perm, 'io.cozy.permissions')
 
@@ -202,7 +203,7 @@ class PermissionCollection extends DocumentCollection {
    * @returns {Permission} permission
    */
   async getOwnPermissions() {
-    console.warn(
+    logger.warn(
       'getOwnPermissions is deprecated, please use fetchOwnPermissions instead'
     )
     return this.fetchOwnPermissions()

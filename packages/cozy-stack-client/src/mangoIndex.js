@@ -2,6 +2,7 @@ import { transform } from './utils'
 import head from 'lodash/head'
 import get from 'lodash/get'
 import isEqual from 'lodash/isEqual'
+import logger from './logger'
 
 /**
  * @typedef {object} MangoPartialFilter
@@ -74,7 +75,7 @@ export const transformSort = sort => {
   if (!sort || Array.isArray(sort)) {
     return sort
   }
-  console.warn(
+  logger.warn(
     'Passing an object to the "sort" is deprecated, please use an array instead.'
   )
   return transform(

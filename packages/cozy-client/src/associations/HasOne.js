@@ -3,6 +3,7 @@ import set from 'lodash/set'
 import { Q, QueryDefinition } from '../queries/dsl'
 import { CozyClientDocument } from '../types'
 import Association from './Association'
+import logger from '../logger'
 
 export default class HasOne extends Association {
   get raw() {
@@ -73,14 +74,14 @@ export default class HasOne extends Association {
   }
 
   set(doc) {
-    console.warn(
+    logger.warn(
       'set is deprecated for has-one relationships. Use `add` instead.'
     )
     this.setRelationship(doc)
   }
 
   unset() {
-    console.warn(
+    logger.warn(
       'unset is deprecated for has-one relationships. Use `remove` instead.'
     )
     this.setRelationship(undefined)

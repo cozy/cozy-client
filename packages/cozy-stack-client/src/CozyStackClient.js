@@ -22,6 +22,7 @@ import errors from './errors'
 import { fetchWithXMLHttpRequest, shouldXMLHTTPRequestBeUsed } from './xhrFetch'
 import MicroEE from 'microee'
 import { FetchError } from './errors'
+import logger from './logger'
 
 const normalizeUri = uriArg => {
   let uri = uriArg
@@ -320,7 +321,7 @@ class CozyStackClient {
         // jwt string
         this.token = new AppToken(token)
       } else {
-        console.warn('Cozy-Client: Unknown token format', token)
+        logger.warn('Cozy-Client: Unknown token format', token)
         throw new Error('Cozy-Client: Unknown token format')
       }
       this.onRevocationChange(false)

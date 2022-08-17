@@ -3,7 +3,7 @@ jest.mock('./CozyStackClient')
 import CozyStackClient from './CozyStackClient'
 import AppCollection from './AppCollection'
 import { ALL_APPS_RESPONSE, GET_APPS_RESPONSE } from './__tests__/fixtures/apps'
-
+import logger from './logger'
 const FIXTURES = {
   ALL_APPS_RESPONSE,
   GET_APPS_RESPONSE
@@ -70,11 +70,11 @@ describe(`AppCollection`, () => {
 
     describe('deprecated get call without <doctype>/', () => {
       beforeEach(() => {
-        jest.spyOn(console, 'warn').mockImplementation(() => {})
+        jest.spyOn(logger, 'warn').mockImplementation(() => {})
       })
 
       afterEach(() => {
-        console.warn.mockRestore()
+        logger.warn.mockRestore()
       })
       it('should call the right route (deprecated call with <doctype>/)', async () => {
         await collection.get('fakeid')
