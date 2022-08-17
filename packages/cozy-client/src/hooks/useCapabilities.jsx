@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import get from 'lodash/get'
 import { Q } from '../queries/dsl'
 
 const useCapabilities = client => {
@@ -12,13 +13,19 @@ const useCapabilities = client => {
           Q('io.cozy.settings').getById('capabilities')
         )
 
-        setCapabilities(capabilitiesResult)
+        setCapabilities(get(capabilitiesResult, 'data.attributes', {}))
         setFetchStatus('loaded')
       } catch (e) {
         setFetchStatus('failed')
       }
     }
-    fetchData()
+
+    if (client.capabilities) {
+      setCapabilities(client.capabilities)
+      setFetchStatus('loaded')
+    } else {
+      fetchData()
+    }
   }, [client])
 
   return {

@@ -3,6 +3,10 @@ import useCapabilities from './useCapabilities'
 describe('useCapabilities', () => {
   const mockClient = { query: jest.fn(), get: jest.fn() }
 
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
   it('should change loading status', async () => {
     mockClient.query.mockResolvedValue({ data: [] })
     const { result, waitForNextUpdate } = renderHook(() =>
@@ -40,13 +44,22 @@ describe('useCapabilities', () => {
 
     await waitForNextUpdate()
     expect(result.current.capabilities).toEqual({
-      data: {
-        type: 'io.cozy.settings',
-        id: 'io.cozy.settings.capabilities',
-        attributes: { file_versioning: true, flat_subdomains: true },
-        meta: {},
-        links: { self: '/settings/capabilities' }
-      }
+      file_versioning: true,
+      flat_subdomains: true
     })
+  })
+
+  it(`should return client's capabilities if defined`, async () => {
+    mockClient.capabilities = {
+      file_versioning: false,
+      flat_subdomains: false
+    }
+    const { result } = renderHook(() => useCapabilities(mockClient))
+
+    expect(result.current.capabilities).toEqual({
+      file_versioning: false,
+      flat_subdomains: false
+    })
+    expect(mockClient.query).not.toHaveBeenCalled()
   })
 })

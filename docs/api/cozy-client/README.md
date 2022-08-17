@@ -645,7 +645,7 @@ An array with all apps in maintenance
 
 *Defined in*
 
-[packages/cozy-client/src/hooks/useCapabilities.jsx:4](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useCapabilities.jsx#L4)
+[packages/cozy-client/src/hooks/useCapabilities.jsx:5](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useCapabilities.jsx#L5)
 
 ***
 
