@@ -30,7 +30,7 @@ Transfers queries and mutations to a remote stack
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:45](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L45)
+[packages/cozy-client/src/StackLink.js:59](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L59)
 
 ## Properties
 
@@ -40,7 +40,7 @@ Transfers queries and mutations to a remote stack
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:52](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L52)
+[packages/cozy-client/src/StackLink.js:66](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L66)
 
 ## Methods
 
@@ -62,27 +62,27 @@ Transfers queries and mutations to a remote stack
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:91](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L91)
+[packages/cozy-client/src/StackLink.js:111](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L111)
 
 ***
 
 ### executeQuery
 
-▸ **executeQuery**(`query`): `any`
+▸ **executeQuery**(`query`): `Promise`<`any`>
 
 *Parameters*
 
-| Name | Type |
-| :------ | :------ |
-| `query` | `any` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `query` | [`QueryDefinition`](QueryDefinition.md) | Query to execute |
 
 *Returns*
 
-`any`
+`Promise`<`any`>
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:70](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L70)
+[packages/cozy-client/src/StackLink.js:88](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L88)
 
 ***
 
@@ -102,13 +102,13 @@ Transfers queries and mutations to a remote stack
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:55](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L55)
+[packages/cozy-client/src/StackLink.js:69](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L69)
 
 ***
 
 ### request
 
-▸ **request**(`operation`, `result`, `forward`): `any`
+▸ **request**(`operation`, `result`, `forward`): `Promise`<`any`>
 
 *Parameters*
 
@@ -120,7 +120,7 @@ Transfers queries and mutations to a remote stack
 
 *Returns*
 
-`any`
+`Promise`<`any`>
 
 *Overrides*
 
@@ -128,7 +128,7 @@ Transfers queries and mutations to a remote stack
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:63](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L63)
+[packages/cozy-client/src/StackLink.js:77](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L77)
 
 ***
 
@@ -142,4 +142,4 @@ Transfers queries and mutations to a remote stack
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:59](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L59)
+[packages/cozy-client/src/StackLink.js:73](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L73)
