@@ -51,7 +51,7 @@ export const normalizeDesignDoc = designDoc => {
  *
  * @param {Array<string>} fields - The indexed fields
  * @param {object} params - The additional params
- * @param {Array<string>} params.partialFilterFields - The partial filter fields
+ * @param {Array<string>=} params.partialFilterFields - The partial filter fields
  * @returns {string} The index name, built from the fields
  */
 export const getIndexNameFromFields = (

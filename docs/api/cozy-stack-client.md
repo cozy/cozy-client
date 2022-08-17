@@ -1956,7 +1956,7 @@ It follows this naming convention:
 | --- | --- | --- |
 | fields | <code>Array.&lt;string&gt;</code> | The indexed fields |
 | params | <code>object</code> | The additional params |
-| params.partialFilterFields | <code>Array.&lt;string&gt;</code> | The partial filter fields |
+| [params.partialFilterFields] | <code>Array.&lt;string&gt;</code> | The partial filter fields |
 
 <a name="transformSort"></a>
 
