@@ -18,6 +18,7 @@ export {
   HasManyTriggers
 } from './associations'
 export {
+  deconstructCozyWebLinkWithSlug,
   dehydrate,
   generateWebLink,
   rootCozyUrl,
