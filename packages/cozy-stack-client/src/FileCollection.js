@@ -11,6 +11,7 @@ import { FetchError } from './errors'
 import { dontThrowNotFoundError } from './Collection'
 import { getIllegalCharacters } from './getIllegalCharacter'
 import * as querystring from './querystring'
+import logger from './logger'
 /**
  * @typedef {object} IOCozyFolder Folder
  */
@@ -149,6 +150,7 @@ export const isFile = ({ _type, type }) =>
 
 /**
  * Returns true when parameters has type directory
+ *
  * @param {object} args File
  * @param {string} args.type - The type of the file
  * @returns {boolean} true when parameters has type directory or false
@@ -651,7 +653,7 @@ class FileCollection extends DocumentCollection {
   }
 
   async fetchFileContent(id) {
-    console.warn(
+    logger.warn(
       'FileCollection.fetchFileContent() is deprecated. Use FileCollection.fetchFileContentById() instead'
     )
     return this.fetchFileContentById(id)
@@ -900,7 +902,7 @@ class FileCollection extends DocumentCollection {
   }
 
   async updateFileMetadata(id, attributes) {
-    console.warn(
+    logger.warn(
       'CozyClient FileCollection updateFileMetadata method is deprecated. Use updateAttributes instead'
     )
     return this.updateAttributes(id, attributes)
@@ -1165,7 +1167,7 @@ class FileCollection extends DocumentCollection {
     let opts = {}
     if (typeof couchOptions !== 'object') {
       opts.since = couchOptions
-      console.warn(
+      logger.warn(
         `fetchChanges use couchOptions as Object not a string, since is deprecated, please use fetchChanges({since: "${couchOptions}"}).`
       )
     } else if (Object.keys(couchOptions).length > 0) {

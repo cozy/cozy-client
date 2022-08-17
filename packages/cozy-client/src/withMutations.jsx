@@ -1,6 +1,7 @@
 import merge from 'lodash/merge'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import logger from './logger'
 
 const makeMutationsObject = (mutations, client, props) => {
   return merge(
@@ -32,7 +33,7 @@ const withMutations = (...mutations) => WrappedComponent => {
     constructor(props, context) {
       super(props, context)
       const client = props.client || context.client
-      console.warn(
+      logger.warn(
         `Deprecation: withMutations will be removed in the near future, prefer to use withClient to access the client. See https://github.com/cozy/cozy-client/pull/638 for more information.`
       )
       if (!client) {

@@ -4,6 +4,7 @@ import CozyClient from '../CozyClient'
 import { Q } from '../queries/dsl'
 import { getParentFolderId } from './file'
 import { DOCTYPE_FILES } from '../const'
+import logger from '../logger'
 
 /**
  * @typedef {object} Document - Couchdb document like an io.cozy.files
@@ -140,7 +141,7 @@ export async function isDocumentReadOnly(args) {
   if (perm) {
     return isReadOnly(perm, { writability })
   } else {
-    console.warn(`can't find the document in current attached permissions`)
+    logger.warn(`can't find the document in current attached permissions`)
     return undefined
   }
 }

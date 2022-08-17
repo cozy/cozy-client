@@ -1,4 +1,6 @@
 import { generateWebLink } from '../helpers'
+import logger from '../logger'
+
 /**
  *
  * @param {string} notesAppUrl URL to the Notes App (https://notes.foo.mycozy.cloud)
@@ -14,7 +16,7 @@ export const generatePrivateUrl = (notesAppUrl, file, options = {}) => {
   return url.toString()
 }
 export const generateUrlForNote = (notesAppUrl, file) => {
-  console.warn(
+  logger.warn(
     'generateUrlForNote is deprecated. Please use models.note.generatePrivateUrl instead'
   )
   return generatePrivateUrl(notesAppUrl, file)

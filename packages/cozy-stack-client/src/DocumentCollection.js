@@ -27,6 +27,8 @@ import {
 import * as querystring from './querystring'
 import { FetchError } from './errors'
 
+import logger from './logger'
+
 const DATABASE_DOES_NOT_EXIST = 'Database does not exist.'
 
 /**
@@ -289,7 +291,7 @@ class DocumentCollection {
 
   /**
    * Returns a filtered list of documents using a Mango selector.
-
+   
 The returned documents are paginated by the stack.
    *
    * @param {MangoSelector} selector The Mango selector.
@@ -493,7 +495,7 @@ The returned documents are paginated by the stack.
     sort = transformSort(sort)
 
     if (!indexedFields && selector) {
-      console.warn(
+      logger.warn(
         'Selector fields should be manually indexed to prevent unexpected behaviour'
       )
     }
@@ -781,7 +783,7 @@ The returned documents are paginated by the stack.
     }
     if (typeof couchOptions !== 'object') {
       opts.since = couchOptions
-      console.warn(
+      logger.warn(
         `fetchChanges use couchOptions as Object not a string, since is deprecated, please use fetchChanges({since: "${couchOptions}"}).`
       )
     } else if (Object.keys(couchOptions).length > 0) {

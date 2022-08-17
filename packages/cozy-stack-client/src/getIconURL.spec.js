@@ -1,5 +1,6 @@
 import { getIconURL } from './getIconURL'
 import { ErrorReturned } from './memoize'
+import logger from './logger'
 
 const FakeBlob = (data, options) => {
   return { data, ...options }
@@ -114,9 +115,9 @@ describe('get icon', () => {
       responses['/registry/caissedepargne1'] = {
         data: { name: 'caissedepargne1', icon: 'icon.mp4' }
       }
-      jest.spyOn(console, 'warn').mockImplementation(() => {})
+      jest.spyOn(logger, 'warn').mockImplementation(() => {})
       const url = await getIconURL(stackClient, defaultOpts)
-      console.warn.mockRestore()
+      logger.warn.mockRestore()
       expect(url).toEqual('')
     })
 

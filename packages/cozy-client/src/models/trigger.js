@@ -1,5 +1,6 @@
 import get from 'lodash/get'
 import { getMutedErrors } from './account'
+import logger from '../logger'
 
 const actionableErrors = [
   'CHALLENGE_ASKED',
@@ -19,7 +20,7 @@ const triggerStates = {
   getLastExecution: triggerState =>
     get(triggerState, 'current_state.last_execution'),
   getLastsuccess: triggerState => {
-    console.warn(
+    logger.warn(
       'Deprecated, please use getLastSuccess instead of getLastsuccess'
     )
     return get(triggerState, 'current_state.last_success')

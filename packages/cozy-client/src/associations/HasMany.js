@@ -4,6 +4,7 @@ import { QueryDefinition } from '../queries/dsl'
 import { getDocumentFromState, receiveQueryResult } from '../store'
 import { CozyClientDocument } from '../types'
 import Association from './Association'
+import logger from '../logger'
 
 /**
  * @typedef {object} Relationship
@@ -209,7 +210,7 @@ class HasMany extends Association {
     const relationship = get(this.target, `relationships.${this.name}`)
     if (!relationship) {
       if (rawData && rawData.length) {
-        console.warn(
+        logger.warn(
           "You're trying to access data on a relationship that appear to not be loaded yet. You may want to use 'include()' on your query"
         )
       }

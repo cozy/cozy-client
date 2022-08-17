@@ -4,6 +4,7 @@ import compose from 'lodash/flowRight'
 import Query from './Query'
 import useClient from './hooks/useClient'
 import { useQueries } from './hooks/useQuery'
+import logger from './logger'
 
 /**
  * @function
@@ -44,7 +45,7 @@ const withQuery = (dest, queryOpts, Original) => {
         typeof queryOpts === 'function' ? queryOpts(props) : queryOpts
 
       if (queryOpts.doc) {
-        console.warn('queryOpts.doc is deprecated')
+        logger.warn('queryOpts.doc is deprecated')
         return <Component {...{ [dest]: queryOptsRes.doc, ...props }} />
       }
 

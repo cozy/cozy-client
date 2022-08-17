@@ -1,5 +1,6 @@
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
+import logger from '../logger'
 
 export const getPrimaryOrFirst = property => obj =>
   !obj[property] || obj[property].length === 0
@@ -216,7 +217,7 @@ export const getDefaultSortIndexValue = contact => {
  * @returns {string} - the contact's 'byFamilyNameGivenNameEmailCozyUrl' index
  */
 export const getIndexByFamilyNameGivenNameEmailCozyUrl = contact => {
-  console.warn(
+  logger.warn(
     'Deprecation: `getIndexByFamilyNameGivenNameEmailCozyUrl` is deprecated, please use `getDefaultSortIndexValue` instead'
   )
 

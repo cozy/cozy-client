@@ -4,6 +4,7 @@ import flag from 'cozy-flags'
 import CozyStackClient from './CozyStackClient'
 import DocumentCollection from './DocumentCollection'
 import { isMatchingIndex } from './mangoIndex'
+import logger from './logger'
 
 jest.mock('./mangoIndex', () => ({
   ...jest.requireActual('./mangoIndex'),
@@ -116,7 +117,7 @@ describe('DocumentCollection', () => {
 
     beforeAll(() => {
       client.fetchJSON.mockResolvedValue(NORMAL_RESPONSE_FIXTURE)
-      jest.spyOn(console, 'warn').mockImplementation(() => {})
+      jest.spyOn(logger, 'warn').mockImplementation(() => {})
     })
 
     it('should call the right route', async () => {
@@ -1082,9 +1083,9 @@ describe('DocumentCollection', () => {
     })
 
     it('should call the right route with deprecated parameter', async () => {
-      jest.spyOn(console, 'warn').mockImplementation(() => {})
+      jest.spyOn(logger, 'warn').mockImplementation(() => {})
       await collection.fetchChanges('my-seq')
-      console.warn.mockRestore()
+      logger.warn.mockRestore()
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
         '/data/io.cozy.todos/_changes?since=my-seq&include_docs=true',
@@ -1373,7 +1374,7 @@ describe('DocumentCollection', () => {
 
     beforeEach(() => {
       jest.resetAllMocks()
-      warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {})
+      warnSpy = jest.spyOn(logger, 'warn').mockImplementation(() => {})
     })
 
     it('should correctly build the indexName', () => {

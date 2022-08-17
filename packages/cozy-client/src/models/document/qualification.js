@@ -1,6 +1,6 @@
 import { get, set, difference } from 'lodash'
 import * as qualificationModel from '../../assets/qualifications.json'
-
+import logger from '../../logger'
 /**
  * @typedef {object} QualificationAttributes
  * @property {string} [label] - The qualification label.
@@ -67,7 +67,7 @@ export class Qualification {
           attributes.purpose
         )
         if (!isKnownValue) {
-          console.info(
+          logger.info(
             `This purpose is not listed among the known values: ${attributes.purpose}. ` +
               `Please open an issue on https://github.com/cozy/cozy-client/issues`
           )
@@ -85,7 +85,7 @@ export class Qualification {
           attributes.sourceCategory
         )
         if (!isKnownValue) {
-          console.info(
+          logger.info(
             `This sourceCategory is not listed among the known values: ${attributes.sourceCategory}. ` +
               `Please open an issue on https://github.com/cozy/cozy-client/issues`
           )
@@ -103,7 +103,7 @@ export class Qualification {
           attributes.sourceSubCategory
         )
         if (!isKnownValue) {
-          console.info(
+          logger.info(
             `This sourceSubCategory is not listed among the known values: ${attributes.sourceSubCategory}. ` +
               `Please open an issue on https://github.com/cozy/cozy-client/issues`
           )
@@ -130,7 +130,7 @@ export class Qualification {
         qualificationModel.subjectsKnownValues
       )
       if (unknownSubjects.length > 0)
-        console.info(
+        logger.info(
           `These subjects are not listed among the known values: ${unknownSubjects}. ` +
             `Please open an issue on https://github.com/cozy/cozy-client/issues`
         )

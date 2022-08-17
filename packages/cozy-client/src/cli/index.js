@@ -152,7 +152,7 @@ const readJSON = (fs, filename) => {
     const res = JSON.parse(fs.readFileSync(filename).toString())
     return res
   } catch (e) {
-    console.warn(`Could not load ${filename} (${e.message})`)
+    logger.warn(`Could not load ${filename} (${e.message})`)
     return null
   }
 }

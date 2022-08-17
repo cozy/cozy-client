@@ -1,14 +1,15 @@
 import { QueryDefinition, Q } from '../queries/dsl'
+import logger from '../logger'
 
 describe('QueryDefinition', () => {
   beforeEach(() => {
-    jest.spyOn(console, 'warn').mockImplementation(() => jest.fn())
-    jest.spyOn(console, 'info').mockImplementation(() => jest.fn())
+    jest.spyOn(logger, 'warn').mockImplementation(() => jest.fn())
+    jest.spyOn(logger, 'info').mockImplementation(() => jest.fn())
   })
 
   afterEach(() => {
-    console.warn.mockRestore()
-    console.info.mockRestore()
+    logger.warn.mockRestore()
+    logger.info.mockRestore()
   })
 
   it('should build query defs on selected fields', () => {
@@ -72,40 +73,40 @@ describe('QueryDefinition', () => {
       .sortBy([{ type: 'asc' }, { dirID: 'asc' }])
       .where({ type: 'file', dirID: '123' })
       .indexFields(['type', 'dirID'])
-    expect(console.warn).toHaveBeenCalledTimes(0)
+    expect(logger.warn).toHaveBeenCalledTimes(0)
   })
   it('should warn on sorting non-indexed fields', () => {
     Q('io.cozy.files')
       .where({ type: 'file', dirID: '123' })
       .indexFields(['type', 'dirID'])
       .sortBy([{ type: 'asc' }, { dirID: 'asc' }, { date: 'asc' }])
-    expect(console.warn).toHaveBeenCalledTimes(1)
+    expect(logger.warn).toHaveBeenCalledTimes(1)
   })
   it('should warn on sort order', () => {
     Q('io.cozy.files')
       .where({ type: 'file', dirID: '123' })
       .indexFields(['type', 'dirID'])
       .sortBy([{ dirID: 'asc' }, { type: 'asc' }])
-    expect(console.warn).toHaveBeenCalledTimes(1)
+    expect(logger.warn).toHaveBeenCalledTimes(1)
   })
   it('should warn on sort order through the selector', () => {
     Q('io.cozy.files')
       .where({ type: 'file', dirID: '123' })
       .sortBy([{ dirID: 'asc' }, { type: 'asc' }])
-    expect(console.warn).toHaveBeenCalledTimes(1)
+    expect(logger.warn).toHaveBeenCalledTimes(1)
   })
   it('should not warn for queries with no selector', () => {
     Q('io.cozy.files').sortBy([{ dirID: 'asc' }, { type: 'asc' }])
-    expect(console.warn).toHaveBeenCalledTimes(0)
+    expect(logger.warn).toHaveBeenCalledTimes(0)
   })
 
   it('should warn when using a selector with $exists: false', () => {
     Q('io.cozy.files').where({ trashed: { $exists: false } })
-    expect(console.warn).toHaveBeenCalledTimes(1)
+    expect(logger.warn).toHaveBeenCalledTimes(1)
   })
   it('should inform when using a selector with $neq', () => {
     Q('io.cozy.files').where({ _id: { $ne: 'io.cozy.root-id' } })
-    expect(console.info).toHaveBeenCalledTimes(1)
+    expect(logger.info).toHaveBeenCalledTimes(1)
   })
 
   it('should throw an error when there is a select without all the fields in selector', () => {

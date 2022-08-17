@@ -2,6 +2,7 @@ jest.mock('./CozyStackClient')
 
 import CozyStackClient from './CozyStackClient'
 import FileCollection from './FileCollection'
+import logger from './logger'
 
 const STAT_BY_ID_RESPONSE = {
   data: {
@@ -1517,9 +1518,9 @@ describe('FileCollection', () => {
     })
 
     it('should call the right route with deprecated parameter', async () => {
-      jest.spyOn(console, 'warn').mockImplementation(() => {})
+      jest.spyOn(logger, 'warn').mockImplementation(() => {})
       await collection.fetchChanges('my-seq')
-      console.warn.mockRestore()
+      logger.warn.mockRestore()
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
         '/files/_changes?since=my-seq'

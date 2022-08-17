@@ -24,6 +24,7 @@ import {
   CozyClientDocument,
   QueryOptions
 } from '../types'
+import logger from '../logger'
 
 const INIT_QUERY = 'INIT_QUERY'
 const LOAD_QUERY = 'LOAD_QUERY'
@@ -332,7 +333,7 @@ export const makeSorterFromDefinition = definition => {
   if (!sort) {
     return docs => docs
   } else if (!isArray(definition.sort)) {
-    console.warn(
+    logger.warn(
       'Correct update of queries with a sort that is not an array is not supported. Use an array as argument of QueryDefinition::sort'
     )
     return docs => docs
