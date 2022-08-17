@@ -322,6 +322,11 @@
       "sourceCategory": "water"
     },
     {
+      "label": "energy_contract",
+      "purpose": "contract",
+      "sourceCategory": "energy"
+    },
+    {
       "label": "appliance_invoice",
       "purpose": "invoice",
       "sourceCategory": "retail"
