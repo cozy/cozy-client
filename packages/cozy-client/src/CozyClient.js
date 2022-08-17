@@ -493,6 +493,10 @@ class CozyClient {
     this.isLogged = true
     this.isRevoked = false
 
+    if (this.stackClient instanceof OAuthClient) {
+      await this.loadInstanceOptionsFromStack()
+    }
+
     this.emit('login')
   }
 
@@ -1662,6 +1666,25 @@ instantiation of the client.`
 
     const { cozy = '{}', ...dataset } = root.dataset
     this.instanceOptions = { ...JSON.parse(cozy), ...dataset }
+
+    this.capabilities = this.instanceOptions.capabilities || null
+  }
+
+  /**
+   * loadInstanceOptionsFromStack - Loads the instance options from cozy-stack and exposes it through getInstanceOptions
+   *
+   * For now only retrieving capabilities is supported
+   *
+   * @returns {Promise<void>}
+   */
+  async loadInstanceOptionsFromStack() {
+    const { data } = await this.query(
+      Q('io.cozy.settings').getById('capabilities')
+    )
+
+    this.instanceOptions = {
+      capabilities: data.attributes
+    }
 
     this.capabilities = this.instanceOptions.capabilities || null
   }

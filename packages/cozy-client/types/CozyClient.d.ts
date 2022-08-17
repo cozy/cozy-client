@@ -685,6 +685,14 @@ declare class CozyClient {
      */
     loadInstanceOptionsFromDOM(selector?: string): void;
     /**
+     * loadInstanceOptionsFromStack - Loads the instance options from cozy-stack and exposes it through getInstanceOptions
+     *
+     * For now only retrieving capabilities is supported
+     *
+     * @returns {Promise<void>}
+     */
+    loadInstanceOptionsFromStack(): Promise<void>;
+    /**
      * Directly set the data in the store, without using a query
      * This is useful for cases like Pouch replication, which wants to
      * set some data in the store.
