@@ -477,7 +477,7 @@ the query run again.
 
 ### documentCollection.find(selector, options) ⇒ <code>Promise.&lt;{data, skip, bookmark, next, execution\_stats}&gt;</code>
 Returns a filtered list of documents using a Mango selector.
-
+   
 The returned documents are paginated by the stack.
 
 **Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  

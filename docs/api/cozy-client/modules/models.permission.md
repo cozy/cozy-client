@@ -18,7 +18,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/models/permission.js:17](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L17)
+[packages/cozy-client/src/models/permission.js:18](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L18)
 
 ## Functions
 
@@ -42,7 +42,7 @@ list of permissions
 
 *Defined in*
 
-[packages/cozy-client/src/models/permission.js:52](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L52)
+[packages/cozy-client/src/models/permission.js:53](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L53)
 
 ***
 
@@ -62,7 +62,7 @@ list of permissions
 
 *Defined in*
 
-[packages/cozy-client/src/models/permission.js:128](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L128)
+[packages/cozy-client/src/models/permission.js:129](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L129)
 
 ***
 
@@ -85,7 +85,7 @@ Checks if the permission item is about a specific doctype
 
 *Defined in*
 
-[packages/cozy-client/src/models/permission.js:66](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L66)
+[packages/cozy-client/src/models/permission.js:67](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L67)
 
 ***
 
@@ -120,4 +120,4 @@ both situation.
 
 *Defined in*
 
-[packages/cozy-client/src/models/permission.js:166](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L166)
+[packages/cozy-client/src/models/permission.js:167](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/permission.js#L167)

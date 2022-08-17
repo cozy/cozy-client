@@ -54,7 +54,7 @@ cozy-client
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:495](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L495)
+[packages/cozy-client/src/queries/dsl.js:496](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L496)
 
 ***
 
@@ -78,7 +78,7 @@ cozy-client
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:483](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L483)
+[packages/cozy-client/src/queries/dsl.js:484](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L484)
 
 ***
 
@@ -132,7 +132,7 @@ query definitions.
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:379](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L379)
+[packages/cozy-client/src/queries/dsl.js:380](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L380)
 
 ***
 
@@ -158,7 +158,7 @@ Rejects with canceled: true as soon as cancel is called
 
 *Defined in*
 
-[packages/cozy-client/src/utils.js:14](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/utils.js#L14)
+[packages/cozy-client/src/utils.js:16](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/utils.js#L16)
 
 ***
 
@@ -288,7 +288,7 @@ Generated URL
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:459](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L459)
+[packages/cozy-client/src/queries/dsl.js:460](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L460)
 
 ***
 
@@ -382,7 +382,7 @@ Returns whether a query has been loaded at least once
 
 *Defined in*
 
-[packages/cozy-client/src/utils.js:48](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/utils.js#L48)
+[packages/cozy-client/src/utils.js:50](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/utils.js#L50)
 
 ***
 
@@ -405,7 +405,7 @@ is loading.
 
 *Defined in*
 
-[packages/cozy-client/src/utils.js:37](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/utils.js#L37)
+[packages/cozy-client/src/utils.js:39](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/utils.js#L39)
 
 ***
 
@@ -482,7 +482,7 @@ If a reference is found
 
 *Defined in*
 
-[packages/cozy-client/src/hoc.jsx:73](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hoc.jsx#L73)
+[packages/cozy-client/src/hoc.jsx:74](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hoc.jsx#L74)
 
 ***
 
@@ -510,7 +510,7 @@ if there are N queries, only 1 extra level of nesting is introduced.
 
 *Defined in*
 
-[packages/cozy-client/src/hoc.jsx:89](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hoc.jsx#L89)
+[packages/cozy-client/src/hoc.jsx:90](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hoc.jsx#L90)
 
 ***
 
@@ -762,7 +762,7 @@ Fetches a queryDefinition and run fetchMore on the query until the query is full
 
 *Defined in*
 
-[packages/cozy-client/src/hoc.jsx:15](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hoc.jsx#L15)
+[packages/cozy-client/src/hoc.jsx:16](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hoc.jsx#L16)
 
 ***
 
@@ -811,4 +811,4 @@ Fetches a queryDefinition and run fetchMore on the query until the query is full
 
 *Defined in*
 
-[packages/cozy-client/src/withMutations.jsx:23](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/withMutations.jsx#L23)
+[packages/cozy-client/src/withMutations.jsx:24](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/withMutations.jsx#L24)
