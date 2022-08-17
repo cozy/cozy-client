@@ -17,9 +17,16 @@ export default class StackLink extends CozyLink {
     stackClient: any;
     registerClient(client: any): void;
     reset(): void;
-    executeQuery(query: any): any;
+    /**
+     *
+     * @param {QueryDefinition} query - Query to execute
+     * @returns {Promise<ClientResponse>}
+     */
+    executeQuery(query: QueryDefinition): Promise<ClientResponse>;
     executeMutation(mutation: any, result: any, forward: any): Promise<any>;
 }
 import { CouchDBBulkResult } from "./types";
 import { CozyClientDocument } from "./types";
 import CozyLink from "./CozyLink";
+import { QueryDefinition } from "./queries/dsl";
+import { ClientResponse } from "./types";
