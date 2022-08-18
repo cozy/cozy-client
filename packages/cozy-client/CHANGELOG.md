@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [32.8.0](https://github.com/cozy/cozy-client/compare/v32.7.4...v32.8.0) (2022-08-18)
+
+
+### Features
+
+* Add energy contract qualification ([2a85113](https://github.com/cozy/cozy-client/commit/2a85113be251f1423f7521a3dd898164df67409a))
+
+
+
+
+
 ## [32.7.4](https://github.com/cozy/cozy-client/compare/v32.7.3...v32.7.4) (2022-08-17)
 
 
