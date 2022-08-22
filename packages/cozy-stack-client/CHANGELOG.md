@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [32.8.1](https://github.com/cozy/cozy-client/compare/v32.8.0...v32.8.1) (2022-08-22)
+
+
+### Bug Fixes
+
+* Throw error instead of not existing code ([b07276f](https://github.com/cozy/cozy-client/commit/b07276fda9d7ca73960a0b5b86e53185e4ebf7bf))
+
+
+
+
+
 ## [32.7.3](https://github.com/cozy/cozy-client/compare/v32.7.2...v32.7.3) (2022-08-17)
 
 **Note:** Version bump only for package cozy-stack-client
