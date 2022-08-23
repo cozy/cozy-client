@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [33.0.0](https://github.com/cozy/cozy-client/compare/v32.8.1...v33.0.0) (2022-08-23)
+
+
+### Bug Fixes
+
+* Do not call `loadInstanceOptionsFromDOM` for OAuth clients ([cc2f931](https://github.com/cozy/cozy-client/commit/cc2f93130303f5fe0c4f8d7da00f281314a547fb))
+
+
+### Features
+
+* Fetch capabilities on OAuth login ([46955d0](https://github.com/cozy/cozy-client/commit/46955d0116a61efb2281f69d0735b4572cb1d2f9))
+* Use `client.capabilities` in `useCapabilities` if available ([d6864c8](https://github.com/cozy/cozy-client/commit/d6864c80ebbbc4c71ee1e6f5475eb74af58ad24b))
+
+
+### BREAKING CHANGES
+
+* `useCapabilities` now returns the `capability` object
+instead of the `.query()` result. So there is no need anymore to drill
+into `.data?.attributes?.` members
+
+Old usage:
+```
+const { capabilities } = useCapabilities(client)
+
+const isFlatDomain = capabilities?.data?.attributes?.flat_subdomains
+```
+
+New usage:
+```
+const { capabilities } = useCapabilities(client)
+
+const isFlatDomain = capabilities?.flat_subdomains
+```
+
+
+
+
+
 ## [32.8.1](https://github.com/cozy/cozy-client/compare/v32.8.0...v32.8.1) (2022-08-22)
 
 **Note:** Version bump only for package cozy-client
