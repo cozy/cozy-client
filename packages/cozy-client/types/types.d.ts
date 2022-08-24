@@ -175,6 +175,27 @@ export type CozyClientDocument = {
     cozyMetadata?: object;
 };
 /**
+ * - A io.cozy.files document's metadata
+ */
+export type FileMetadata = {
+    /**
+     * - The Note's content. See https://prosemirror.net/docs/ref/#model for more informations
+     */
+    content?: object;
+    /**
+     * - the schema used by prosemirror (with notes and marks serialized as arrays to preserve the order).
+     */
+    schema?: object;
+    /**
+     * - the initial title of the note (that will also be used for the file name)
+     */
+    title?: string;
+    /**
+     * - Number of a note
+     */
+    version?: number;
+};
+/**
  * - An io.cozy.files document
  */
 export type FileDocument = {
@@ -193,7 +214,7 @@ export type FileDocument = {
     /**
      * - Metadata of the file
      */
-    metadata: object;
+    metadata: FileMetadata;
     /**
      * - Type of the file
      */

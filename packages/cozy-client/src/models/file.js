@@ -47,8 +47,10 @@ export const isFile = file => file && file.type === FILE_TYPE
 export const isDirectory = file => file && file.type === DIR_TYPE
 
 /**
+ * Is file param a correct note
  *
  * @param {IOCozyFile} file io.cozy.files
+ * @returns {boolean}
  */
 export const isNote = file => {
   if (
