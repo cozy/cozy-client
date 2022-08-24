@@ -157,11 +157,27 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
+ * Metadata on io.cozy.files documents
+ *
+ * This is a first step, to continue
+ *
+ * Filled according to:
+ * https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.files_metadata/
+ * https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.notes/
+ *
+ * @typedef {object} FileMetadata - A io.cozy.files document's metadata
+ * @property {object} [content] - The Note's content. See https://prosemirror.net/docs/ref/#model for more informations
+ * @property {object} [schema] - the schema used by prosemirror (with notes and marks serialized as arrays to preserve the order).
+ * @property {string} [title] - the initial title of the note (that will also be used for the file name)
+ * @property {number} [version] - Number of a note
+ */
+
+/**
  * @typedef {object} FileDocument - An io.cozy.files document
  * @property {string} _id - Id of the file
  * @property {FilesDoctype} _type - Doctype of the file
  * @property {string} name - Name of the file
- * @property {object} metadata - Metadata of the file
+ * @property {FileMetadata} metadata - Metadata of the file
  * @property {string} type - Type of the file
  * @property {string} class - Class of the file
  * @property {string} mime - Mime of the file
