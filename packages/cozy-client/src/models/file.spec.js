@@ -40,24 +40,27 @@ describe('File Model', () => {
       type: 'file',
       name: 'test.cozy-note',
       metadata: {
-        content: 'content',
-        schema: [],
-        title: 'title',
-        version: 1
-      }
-    }
-    expect(fileModel.isNote(note)).toBe(true)
-    const note2 = {
-      type: 'file',
-      name: 'test.cozy-note',
-      metadata: {
-        content: 'content',
-        schema: [],
         title: '',
         version: 0
       }
     }
-    expect(fileModel.isNote(note2)).toBe(true)
+    expect(fileModel.isNote(note)).toBe(true)
+    const noteMissingVersion = {
+      type: 'file',
+      name: 'test.cozy-note',
+      metadata: {
+        title: ''
+      }
+    }
+    expect(fileModel.isNote(noteMissingVersion)).toBe(false)
+    const noteMissingTitle = {
+      type: 'file',
+      name: 'test.cozy-note',
+      metadata: {
+        version: 0
+      }
+    }
+    expect(fileModel.isNote(noteMissingTitle)).toBe(false)
   })
 
   it('should test if a file is a shortcut or not', () => {
