@@ -59,8 +59,6 @@ export const isNote = file => {
     file.name.endsWith('.cozy-note') &&
     file.type === FILE_TYPE &&
     file.metadata &&
-    file.metadata.content !== undefined &&
-    file.metadata.schema !== undefined &&
     file.metadata.title !== undefined &&
     file.metadata.version !== undefined
   )
