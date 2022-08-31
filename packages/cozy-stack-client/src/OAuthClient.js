@@ -534,7 +534,7 @@ class OAuthClient extends CozyStackClient {
   /**
    * Updates the client's stored token
    *
-   * @param {string} token = null The new token to use — can be a string, a json object or an AccessToken instance.
+   * @param {AccessToken|string} token = null The new token to use — can be a string, a json object or an AccessToken instance.
    */
   setToken(token) {
     if (token) {
