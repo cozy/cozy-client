@@ -1645,6 +1645,11 @@ instantiation of the client.`
     return this.getStackClient()
   }
 
+  /**
+   * Retrieve the CozyStackClient instance used by CozyClient
+   *
+   * @returns {CozyStackClient} - CozyStackClient instance
+   */
   getStackClient() {
     if (!this.stackClient) {
       this.createClient()

@@ -297,7 +297,7 @@ declare class CozyClient {
      * @returns {DocumentCollection} Collection corresponding to the doctype
      */
     collection(doctype: string): DocumentCollection;
-    fetch(method: any, path: any, body: any, options?: {}): any;
+    fetch(method: any, path: any, body: any, options?: {}): Promise<object>;
     all(doctype: any): QueryDefinition;
     find(doctype: any, selector?: any): QueryDefinition;
     get(doctype: any, id: any): QueryDefinition;
@@ -660,8 +660,13 @@ declare class CozyClient {
     createClient(): void;
     stackClient: any;
     client: any;
-    getClient(): any;
-    getStackClient(): any;
+    getClient(): CozyStackClient;
+    /**
+     * Retrieve the CozyStackClient instance used by CozyClient
+     *
+     * @returns {CozyStackClient} - CozyStackClient instance
+     */
+    getStackClient(): CozyStackClient;
     reducer(): (state: {
         documents: {};
         queries: {};
@@ -733,6 +738,7 @@ import { OpenURLCallback } from "./types";
 import { SessionCode } from "./types";
 import { PKCECodes } from "./types";
 import { ReduxStore } from "./types";
+import CozyStackClient from "cozy-stack-client";
 import { CozyClient as SnapshotClient } from "./testing/snapshots";
 import { OldCozyClient } from "./types";
 import { NodeEnvironment } from "./types";
