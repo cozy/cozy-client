@@ -203,7 +203,7 @@ class CozyStackClient {
       throw Error("couldn't fetch a new token - doc is not html")
     }
     const appNode = doc.querySelector('div[role="application"]')
-    if (!appNode) {
+    if (!appNode || !(appNode instanceof HTMLElement)) {
       throw Error("couldn't fetch a new token - no div[role=application]")
     }
     const data = appNode.dataset.cozy
