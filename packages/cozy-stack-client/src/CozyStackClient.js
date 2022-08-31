@@ -315,12 +315,12 @@ class CozyStackClient {
     if (!token) {
       this.token = null
     } else {
-      if (token.toAuthHeader) {
-        // AppToken or AccessToken
-        this.token = token
-      } else if (typeof token === 'string') {
+      if (typeof token === 'string') {
         // jwt string
         this.token = new AppToken(token)
+      } else if (token.toAuthHeader) {
+        // AppToken or AccessToken
+        this.token = token
       } else {
         logger.warn('Cozy-Client: Unknown token format', token)
         throw new Error('Cozy-Client: Unknown token format')
