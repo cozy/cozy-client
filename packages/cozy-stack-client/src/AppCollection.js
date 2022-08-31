@@ -103,14 +103,32 @@ class AppCollection extends DocumentCollection {
     }
   }
 
+  /**
+   * Not implemented, will throw
+   *
+   * @returns {Promise}
+   * @throws
+   */
   async create() {
     throw new Error('create() method is not available for applications')
   }
 
+  /**
+   * Not implemented, will throw
+   *
+   * @returns {Promise}
+   * @throws
+   */
   async update() {
     throw new Error('update() method is not available for applications')
   }
 
+  /**
+   * Not implemented, will throw
+   *
+   * @returns {Promise}
+   * @throws
+   */
   async destroy() {
     throw new Error('destroy() method is not available for applications')
   }
