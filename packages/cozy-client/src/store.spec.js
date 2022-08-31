@@ -216,7 +216,7 @@ describe('Store', () => {
       expect(queryResult.data.map(x => x._id)).toEqual(['todo_1', 'todo_2'])
       queryResult = getQueryFromStore(store, 'Q2')
       expect(queryResult.data.length).toBe(2)
-      expect(queryResult.data.map(x => x._id)).toEqual(['todo_3', 'todo_4'])
+      expect(queryResult.data.map(x => x._id)).toEqual(['todo_1', 'todo_2'])
     })
 
     it('should respect the query limit with sort', () => {

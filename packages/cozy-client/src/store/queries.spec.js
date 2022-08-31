@@ -527,7 +527,7 @@ describe('sortAndLimitDocsIds', () => {
         fetchedPagesCount: 1
       }
     )
-    expect(ids1.length).toEqual(1)
+    expect(ids1.length).toEqual(2)
 
     const query2 = Q('io.cozy.files')
       .sortBy([{ name: 'asc' }])
@@ -543,5 +543,37 @@ describe('sortAndLimitDocsIds', () => {
       }
     )
     expect(ids2.length).toEqual(3)
+  })
+
+  it('should correctly handle count null, using the limit then', () => {
+    const query1 = Q('io.cozy.files')
+      .sortBy([{ name: 'asc' }])
+      .limitBy(2)
+
+    const ids1 = sortAndLimitDocsIds(
+      { definition: query1.toDefinition() },
+      docs,
+      ['doc1', 'doc2'],
+      {
+        count: 0,
+        fetchedPagesCount: 1
+      }
+    )
+    expect(ids1.length).toEqual(2)
+
+    const query2 = Q('io.cozy.files')
+      .sortBy([{ name: 'asc' }])
+      .limitBy(2)
+
+    const ids2 = sortAndLimitDocsIds(
+      { definition: query2.toDefinition() },
+      docs,
+      ['doc1', 'doc2', 'doc3'],
+      {
+        count: 0,
+        fetchedPagesCount: 2
+      }
+    )
+    expect(ids2.length).toEqual(2)
   })
 })

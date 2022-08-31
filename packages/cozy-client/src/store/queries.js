@@ -94,7 +94,7 @@ export const sortAndLimitDocsIds = (
       // When there are less results than the limit, this is either the first
       // or last paginated query.
       sliceCount =
-        fetchedPagesCount > 1 ? limit * (fetchedPagesCount - 1) + count : count
+        fetchedPagesCount > 1 ? limit * (fetchedPagesCount - 1) + count : limit
     } else {
       sliceCount = limit * fetchedPagesCount
     }
