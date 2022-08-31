@@ -16,7 +16,10 @@ const headersFromString = headerString => {
  * @private
  * @param {string} fullpath - Route path
  * @param {object} options - Fetch options
- * @param {Function} options.onUploadProgress - Callback to receive upload progress events
+ * @param {(this: XMLHttpRequestUpload, ev: ProgressEvent<XMLHttpRequestEventTarget>) => any} options.onUploadProgress - Callback to receive upload progress events
+ * @param {string} options.method - TODO
+ * @param {object} options.headers - TODO
+ * @param {any} options.body - TODO
  */
 const fetchWithXMLHttpRequest = async (fullpath, options) => {
   const response = await new Promise((resolve, reject) => {
