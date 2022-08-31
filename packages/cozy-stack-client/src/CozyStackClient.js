@@ -132,6 +132,7 @@ class CozyStackClient {
     try {
       const response = await fetcher(fullPath, options)
       if (!response.ok) {
+        // @ts-ignore - this.emit is added by MicroEE.mixin
         this.emit(
           'error',
           new FetchError(response, `${response.status} ${response.statusText}`)
