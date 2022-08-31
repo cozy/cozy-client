@@ -1095,10 +1095,10 @@ class FileCollection extends DocumentCollection {
    * async findNotSynchronizedDirectories - Returns the list of directories not synchronized on the given OAuth client (mainly Cozy Desktop clients) — see https://docs.cozy.io/en/cozy-stack/not-synchronized-vfs/#get-datatypedoc-idrelationshipsnot_synchronizing
    *
    * @param  {OAuthClient}  oauthClient           A JSON representing an OAuth client, with at least a `_type` and `_id` field.
-   * @param  {object|null}  options               Pagination options
-   * @param  {number|null}  options.skip          For skip-based pagination, the number of referenced files to skip.
-   * @param  {number|null}  options.limit         For pagination, the number of results to return.
-   * @param  {CouchDBViewCursor|null}  options.cursor        For cursor-based pagination, the index cursor.
+   * @param  {object}  [options]                  Pagination options
+   * @param  {number}  [options.skip]             For skip-based pagination, the number of referenced files to skip.
+   * @param  {number}  [options.limit]            For pagination, the number of results to return.
+   * @param  {CouchDBViewCursor}  [options.cursor]        For cursor-based pagination, the index cursor.
    * @param  {boolean}      options.includeFiles  Include the whole file documents in the results list
    *
    * @returns {Promise<Array<object|IOCozyFolder>>}    The JSON API conformant response.
