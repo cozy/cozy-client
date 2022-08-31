@@ -32,7 +32,7 @@ class OAuthClientsCollection extends DocumentCollection {
    * @param  {string}         [options.bookmark]  For bookmark-based pagination, the document _id to start from
    * @param  {Array<string>}  [options.keys]      Ids of specific clients to return (within the current page),
    *
-   * @returns {object} The JSON API conformant response.
+   * @returns {Promise<object>} The JSON API conformant response.
    */
   async all(options = {}) {
     const { limit = 100, bookmark, keys } = options
@@ -81,7 +81,7 @@ class OAuthClientsCollection extends DocumentCollection {
    * Get an OAuth client by id
    *
    * @param  {string} id The client id.
-   * @returns {object}  JsonAPI response containing normalized client as data attribute
+   * @returns {Promise<object>}  JsonAPI response containing normalized client as data attribute
    */
   async get(id) {
     let resp = await this.all({ keys: [id] })

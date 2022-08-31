@@ -182,7 +182,7 @@ class PermissionCollection extends DocumentCollection {
   /**
    *
    * @param {object} document Cozy doc
-   * @returns {object} with all the permissions
+   * @returns {Promise<object>} with all the permissions
    */
   async fetchAllLinks(document) {
     let allLinks = await this.findLinksByDoctype(document._type)
@@ -227,7 +227,7 @@ class PermissionCollection extends DocumentCollection {
    *
    * @typedef {object} Permission
    *
-   * @returns {Permission} permission
+   * @returns {Promise<Permission>} permission
    */
   async fetchOwnPermissions() {
     const resp = await this.stackClient.fetchJSON('GET', '/permissions/self')

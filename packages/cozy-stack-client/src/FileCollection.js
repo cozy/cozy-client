@@ -199,7 +199,7 @@ class FileCollection extends DocumentCollection {
    * Fetches the file's data
    *
    * @param {string} id File id
-   * @returns {{data, included}} Information about the file or folder and it's descendents
+   * @returns {Promise<{data, included}>} Information about the file or folder and it's descendents
    */
   get(id) {
     return this.statById(id)
@@ -1101,7 +1101,7 @@ class FileCollection extends DocumentCollection {
    * @param  {CouchDBViewCursor|null}  options.cursor        For cursor-based pagination, the index cursor.
    * @param  {boolean}      options.includeFiles  Include the whole file documents in the results list
    *
-   * @returns {Array<object|IOCozyFolder>}    The JSON API conformant response.
+   * @returns {Promise<Array<object|IOCozyFolder>>}    The JSON API conformant response.
    */
   async findNotSynchronizedDirectories(
     oauthClient,
@@ -1203,7 +1203,7 @@ class FileCollection extends DocumentCollection {
    * @property {string} newLastSeq
    * @property {boolean} pending
    * @property {Array<object>} documents
-   * @returns {FetchChangesReturnValue}
+   * @returns {Promise<FetchChangesReturnValue>}
    */
   async fetchChanges(couchOptions = {}, options = {}) {
     let opts = {}

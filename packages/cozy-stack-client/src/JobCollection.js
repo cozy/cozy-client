@@ -61,7 +61,7 @@ class JobCollection {
    * Return a normalized job, given its id
    *
    * @param {string} id - id of the job
-   * @returns {JobDocument}
+   * @returns {Promise<JobDocument>}
    */
   async get(id) {
     return Collection.get(this.stackClient, uri`/jobs/${id}`, {

@@ -393,6 +393,8 @@ The returned documents are paginated by the stack.
    * Creates a document
    *
    * @param {object} doc - Document to create. Optional: you can force the id with the _id attribute
+   *
+   * @returns {Promise<{data}>} The updated document.
    */
   async create({ _id, _type, ...document }) {
     // In case of a fixed id, let's use the dedicated creation endpoint
@@ -410,6 +412,8 @@ The returned documents are paginated by the stack.
    * Updates a document
    *
    * @param {object} document - Document to update. Do not forget the _id attribute
+   *
+   * @returns {Promise<{data}>} The updated document.
    */
   async update(document) {
     const resp = await this.stackClient.fetchJSON(
@@ -426,6 +430,8 @@ The returned documents are paginated by the stack.
    * Destroys a document
    *
    * @param {object} doc - Document to destroy. Do not forget _id and _rev attributes
+   *
+   * @returns {Promise<{data}>} The deleted document
    */
   async destroy({ _id, _rev, ...document }) {
     const resp = await this.stackClient.fetchJSON(

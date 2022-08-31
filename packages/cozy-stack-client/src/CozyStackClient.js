@@ -100,7 +100,7 @@ class CozyStackClient {
    * @param  {string} path The URI.
    * @param  {object} [body] The payload.
    * @param  {object} [opts={}] Options for fetch
-   * @returns {object}
+   * @returns {Promise<object>}
    * @throws {FetchError}
    */
   async fetch(method, path, body, opts = {}) {
@@ -233,7 +233,7 @@ class CozyStackClient {
    * @param  {string} path The URI.
    * @param  {object} body The payload.
    * @param  {object} options Options
-   * @returns {object}
+   * @returns {Promise<object>}
    * @throws {FetchError}
    */
   async fetchJSON(method, path, body, options = {}) {
