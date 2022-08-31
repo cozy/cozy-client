@@ -95,7 +95,7 @@ class KonnectorCollection extends AppCollection {
       `/konnectors/${slug}` + (source ? `?Source=${source}` : ''),
       reqOptions
     )
-    return normalizeDoc(rawKonnector)
+    return normalizeDoc(rawKonnector, this.doctype)
   }
 }
 
