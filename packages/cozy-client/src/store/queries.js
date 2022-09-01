@@ -355,7 +355,7 @@ export const makeSorterFromDefinition = definition => {
  * @param  {DocumentsStateSlice} documents - A reference to the documents slice
  * @returns {QueryState} - Updated query state
  */
-const updateData = (query, newData, documents) => {
+export const updateData = (query, newData, documents) => {
   const belongsToQuery = getQueryDocumentsChecker(query)
   const res = mapValues(groupBy(newData, belongsToQuery), docs =>
     docs.map(properId)
@@ -378,16 +378,15 @@ const updateData = (query, newData, documents) => {
   // toAdd does not contain any id present in originalIds, by construction.
   // It is also faster than union.
   let updatedData = difference(concat(originalIds, toAdd), toRemove)
-  const { count, fetchedPagesCount } = query
+  const { fetchedPagesCount } = query
   const docsIds = sortAndLimitDocsIds(query, documents, updatedData, {
-    count,
+    count: updatedData.length,
     fetchedPagesCount
   })
-
   return {
     ...query,
     data: docsIds,
-    count: updatedData.length,
+    count: docsIds.length,
     fetchedPagesCount,
     lastUpdate: changed ? Date.now() : query.lastUpdate
   }

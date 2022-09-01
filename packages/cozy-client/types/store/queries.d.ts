@@ -7,6 +7,7 @@ export function sortAndLimitDocsIds(queryState: QueryState, documents: Documents
 export function convert$gtNullSelectors(selector: any): object;
 export function mergeSelectorAndPartialIndex(queryDefinition: object): object;
 export function makeSorterFromDefinition(definition: QueryDefinition): (arg0: Array<CozyClientDocument>) => Array<CozyClientDocument>;
+export function updateData(query: QueryState, newData: Array<CozyClientDocument>, documents: DocumentsStateSlice): QueryState;
 export default queries;
 export function initQuery(queryId: string, queryDefinition: QueryDefinition, options?: QueryOptions): object;
 export function loadQuery(queryId: string, options?: QueryOptions): object;
