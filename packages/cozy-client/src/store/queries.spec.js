@@ -6,7 +6,8 @@ import queries, {
   mergeSelectorAndPartialIndex,
   sortAndLimitDocsIds,
   loadQuery,
-  receiveQueryError
+  receiveQueryError,
+  updateData
 } from './queries'
 import { Q } from '../queries/dsl'
 import { TODO_1, TODO_2, TODO_3 } from '../__tests__/fixtures'
@@ -543,5 +544,71 @@ describe('sortAndLimitDocsIds', () => {
       }
     )
     expect(ids2.length).toEqual(3)
+  })
+})
+
+describe('updateData', () => {
+  it('should update correctly the data after a create mutation', () => {
+    const queryState = {
+      definition: {
+        doctype: 'io.cozy.files',
+        selector: {
+          dir_id: 'd6fa040d335c5f49e8c4b674a001849a',
+          type: 'file',
+          name: {
+            $gt: null
+          },
+          _id: {
+            $ne: 'io.cozy.files.trash-dir'
+          }
+        },
+        sort: [
+          {
+            dir_id: 'asc'
+          }
+        ],
+        limit: 100
+      }
+    }
+
+    const createdDocument = {
+      id: 'd6fa040d335c5f49e8c4b674a00216d2',
+      _type: 'io.cozy.files',
+      type: 'file',
+      _id: 'd6fa040d335c5f49e8c4b674a00216d2',
+      _rev: '1-b8663df3d2a468171ceaccc7049421ba',
+      name: 'cozy.url',
+      dir_id: 'd6fa040d335c5f49e8c4b674a001849a',
+      created_at: '2022-09-01T10:39:01.759905+02:00',
+      updated_at: '2022-09-01T10:39:01.759905+02:00'
+    }
+    const newData = [createdDocument]
+
+    const documents = {
+      'io.cozy.files': {
+        d6fa040d335c5f49e8c4b674a001849a: {
+          id: 'd6fa040d335c5f49e8c4b674a001849a',
+          _id: 'd6fa040d335c5f49e8c4b674a001849a',
+          _type: 'io.cozy.files',
+          type: 'directory',
+          attributes: {
+            type: 'directory',
+            name: 'test',
+            dir_id: 'io.cozy.files.root-dir',
+            created_at: '2022-08-31T13:07:19.976349+02:00',
+            updated_at: '2022-08-31T13:07:19.976349+02:00',
+            path: '/test'
+          },
+          name: 'test',
+          dir_id: 'io.cozy.files.root-dir'
+        },
+        [createdDocument.id]: {
+          ...createdDocument
+        }
+      }
+    }
+    const updatedDataToCheck = updateData(queryState, newData, documents)
+    expect(updatedDataToCheck.data.length).toEqual(1)
+    expect(updatedDataToCheck.count).toEqual(1)
   })
 })
