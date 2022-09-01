@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [33.0.3](https://github.com/cozy/cozy-client/compare/v33.0.2...v33.0.3) (2022-09-01)
+
+
+### Bug Fixes
+
+* **cozy-client:** IsNote should validate note with less params ([681a5ae](https://github.com/cozy/cozy-client/commit/681a5aef82ad3b10b5b9c3ab9ba5781117f4e5f7))
+
+
+
+
+
 ## [33.0.2](https://github.com/cozy/cozy-client/compare/v33.0.1...v33.0.2) (2022-08-31)
 
 **Note:** Version bump only for package cozy-client
