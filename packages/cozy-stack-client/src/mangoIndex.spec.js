@@ -84,6 +84,23 @@ describe('matching index', () => {
       })
     ).toEqual(false)
   })
+
+  it('should not match index with same fields and index with existing partialFilter but asked for index without partialFilter', () => {
+    const partialFilter = {
+      baz: {
+        $ne: 'xyz',
+        $exists: true
+      }
+    }
+    const matchingIndex = buildDesignDoc(
+      {
+        foo: 'asc',
+        bar: 'asc'
+      },
+      { partialFilter }
+    )
+    expect(isMatchingIndex(matchingIndex, ['foo', 'bar'])).toEqual(false)
+  })
 })
 
 describe('inconsistent index', () => {
