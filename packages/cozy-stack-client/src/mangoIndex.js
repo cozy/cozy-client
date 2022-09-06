@@ -143,13 +143,13 @@ export const isMatchingIndex = (index, fields, partialFilter) => {
   const viewId = Object.keys(get(index, `views`))[0]
   const fieldsInIndex = Object.keys(get(index, `views.${viewId}.map.fields`))
   if (isEqual(fieldsInIndex, fields)) {
-    if (!partialFilter) {
-      return true
-    }
     const partialFilterInIndex = get(
       index,
       `views.${viewId}.map.partial_filter_selector`
     )
+    if (!partialFilter && !partialFilterInIndex) {
+      return true
+    }
     if (isEqual(partialFilter, partialFilterInIndex)) {
       return true
     }
