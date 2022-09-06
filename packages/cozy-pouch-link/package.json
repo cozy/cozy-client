@@ -1,6 +1,6 @@
 {
   "name": "cozy-pouch-link",
-  "version": "33.0.4",
+  "version": "33.0.5",
   "license": "MIT",
   "main": "dist/index.js",
   "files": [
@@ -11,7 +11,7 @@
     "url": "git+https://github.com/cozy/cozy-client.git"
   },
   "dependencies": {
-    "cozy-client": "^33.0.4",
+    "cozy-client": "^33.0.5",
     "pouchdb-browser": "^7.2.2",
     "pouchdb-find": "^7.2.2"
   },

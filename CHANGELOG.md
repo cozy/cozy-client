@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [33.0.5](https://github.com/cozy/cozy-client/compare/v33.0.4...v33.0.5) (2022-09-06)
+
+
+### Bug Fixes
+
+* MatchingIndex with partialFilter ([8687e6b](https://github.com/cozy/cozy-client/commit/8687e6b6bbc21d6ae2c46a54cbb4d1ac3404bd18))
+
+
+
+
+
 ## [33.0.4](https://github.com/cozy/cozy-client/compare/v33.0.3...v33.0.4) (2022-09-01)
 
 
