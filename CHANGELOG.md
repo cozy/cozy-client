@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [33.0.6](https://github.com/cozy/cozy-client/compare/v33.0.5...v33.0.6) (2022-09-07)
+
+
+### Bug Fixes
+
+* Don't throw error when removing inconsistent indexes ([beeb270](https://github.com/cozy/cozy-client/commit/beeb2709fee5da4b6a9985fb041d779d01c32483))
+
+
+
+
+
 ## [33.0.5](https://github.com/cozy/cozy-client/compare/v33.0.4...v33.0.5) (2022-09-06)
 
 
