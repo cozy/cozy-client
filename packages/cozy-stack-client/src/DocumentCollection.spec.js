@@ -1312,6 +1312,27 @@ describe('DocumentCollection', () => {
     })
   })
 
+  describe('removeInconsistentIndex', () => {
+    const collection = new DocumentCollection('io.cozy.triggers', client)
+    const inconsistentIndex = {
+      _id: '_design/by_aaaaa',
+      views: {
+        '123': {
+          map: {
+            fields: {
+              'cozyMetadata.createdAt': 'desc'
+            }
+          }
+        }
+      }
+    }
+    it('should not throw an error if the deletion failed', async () => {
+      client.fetchJSON.mockRejectedValue()
+      await expect(
+        collection.removeInconsistentIndex([inconsistentIndex])
+      ).resolves.not.toThrowError()
+    })
+  })
   describe('findExistingIndex', () => {
     const collection = new DocumentCollection('io.cozy.triggers', client)
     const selector = {
