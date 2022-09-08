@@ -327,20 +327,20 @@ The returned documents are paginated by the stack.
    *
    * @param {MangoSelector} selector The Mango selector.
    * @param {MangoQueryOptions} options MangoQueryOptions
-   * @returns {Promise<{data, skip, bookmark, next, execution_stats}>} The JSON API conformant response.
+   * @returns {Promise<Array<{data}>>} Documents fetched
    * @throws {FetchError}
    */
   async findAll(selector, options = {}) {
     let next = true
-    let files = []
+    let documents = []
     let bookmark = options.bookmark || undefined
     while (next) {
       const resp = await this.find(selector, { ...options, bookmark })
-      files.push(...resp.data)
+      documents.push(...resp.data)
       bookmark = resp.bookmark
       next = resp.next
     }
-    return files
+    return documents
   }
 
   /**
