@@ -25,6 +25,8 @@ import isEqual from 'lodash/isEqual'
  * @property {string|null} [indexId] The _id of the CouchDB index to use for this request
  * @property {string|null} [bookmark] For bookmark-based pagination, the document _id to start from
  * @property {Array<string>} [indexedFields]
+ * @property {string} [use_index] Name of the index to use
+ * @property {boolean} [execution_stats] If true, we request the stats from Couch
  * @property {MangoPartialFilter|null} [partialFilter] An optional partial filter
  */
 
