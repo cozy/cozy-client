@@ -630,7 +630,13 @@ The returned documents are paginated by the stack.
     // indexes might not be usable right after being created; so we delay the resolving until they are
     const selector = {}
     fields.forEach(f => (selector[f] = { $gt: null }))
-    const options = { indexId: indexResp.id, limit: 1 }
+    const options = {
+      indexId: indexResp.id,
+      limit: 1,
+      partialFilterFields: partialFilter
+        ? getIndexFields({ partialFilter })
+        : null
+    }
 
     if (await attempt(this.find(selector, options))) return indexResp
     // one retry
