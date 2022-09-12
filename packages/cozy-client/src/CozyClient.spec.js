@@ -1619,6 +1619,12 @@ describe('CozyClient', () => {
       expect(getRawQueryFromState).not.toHaveBeenCalled()
       expect(documents).toMatchSnapshot()
     })
+    it('should not throw error if there is an error', async () => {
+      const error = new Error('Fake error')
+      jest.spyOn(client, 'query').mockRejectedValue(error)
+
+      await expect(client.queryAll(query)).resolves.not.toThrowError()
+    })
   })
 
   describe('mutate', () => {

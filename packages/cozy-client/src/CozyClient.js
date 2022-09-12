@@ -987,28 +987,33 @@ client.query(Q('io.cozy.bills'))`)
     const queryId =
       options.as || this.queryIdGenerator.generateId(queryDefinition)
     const mergedOptions = { ...options, as: queryId }
-    let resp = await this.query(queryDefinition, mergedOptions)
-    const documents = resp.data
+    try {
+      let resp = await this.query(queryDefinition, mergedOptions)
+      const documents = resp.data
 
-    while (resp && resp.next) {
-      if (resp.bookmark) {
-        resp = await this.query(
-          queryDefinition.offsetBookmark(resp.bookmark),
-          mergedOptions
-        )
-      } else {
-        const currentResult = getRawQueryFromState(
-          this.store.getState(),
-          queryId
-        )
-        resp = await this.query(
-          queryDefinition.offset(currentResult.data.length),
-          mergedOptions
-        )
+      while (resp && resp.next) {
+        if (resp.bookmark) {
+          resp = await this.query(
+            queryDefinition.offsetBookmark(resp.bookmark),
+            mergedOptions
+          )
+        } else {
+          const currentResult = getRawQueryFromState(
+            this.store.getState(),
+            queryId
+          )
+          resp = await this.query(
+            queryDefinition.offset(currentResult.data.length),
+            mergedOptions
+          )
+        }
+        documents.push(...resp.data)
       }
-      documents.push(...resp.data)
+      return documents
+    } catch (e) {
+      logger.log(`queryAll error for ${e.toString()}`)
+      return []
     }
-    return documents
   }
 
   watchQuery(...args) {
