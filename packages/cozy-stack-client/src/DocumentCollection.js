@@ -6,7 +6,7 @@ import head from 'lodash/head'
 import merge from 'lodash/merge'
 import startsWith from 'lodash/startsWith'
 import qs from 'qs'
-import { MangoQueryOptions, MangoSelector } from './mangoIndex'
+import { MangoQueryOptions, MangoSelector, MangoPartialFilter } from './mangoIndex'
 
 import Collection, {
   dontThrowNotFoundError,
@@ -589,7 +589,7 @@ The returned documents are paginated by the stack.
    *
    * @param {Array} fields - Fields to index
    * @param {object} indexOption - Options for the index
-   * @param {string} [indexOption.partialFilter] - partialFilter
+   * @param {MangoPartialFilter} [indexOption.partialFilter] - partialFilter
    * @param {string} [indexOption.indexName] - indexName
    * @returns {Promise<{id, fields}>}
    */
