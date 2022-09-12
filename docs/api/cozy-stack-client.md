@@ -198,7 +198,7 @@ not.</p>
 <dt><a href="#JobDocument">JobDocument</a> : <code>object</code></dt>
 <dd><p>Document representing a io.cozy.jobs</p>
 </dd>
-<dt><a href="#MangoPartialFilter">MangoPartialFilter</a> : <code>object</code></dt>
+<dt><a href="#MangoPartialFilter">MangoPartialFilter</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#MangoSelector">MangoSelector</a> : <code>object</code></dt>
 <dd></dd>
@@ -400,7 +400,7 @@ Abstracts a collection of documents of the same doctype, providing CRUD methods 
         * [.fetchDocumentsWithMango(path, selector, options)](#DocumentCollection+fetchDocumentsWithMango)
         * [.findWithMango(path, selector, options)](#DocumentCollection+findWithMango) ⇒ <code>Promise.&lt;object&gt;</code>
         * [.find(selector, options)](#DocumentCollection+find) ⇒ <code>Promise.&lt;{data, skip, bookmark, next, execution\_stats}&gt;</code>
-        * [.findAll(selector, options)](#DocumentCollection+findAll) ⇒ <code>Promise.&lt;{data, skip, bookmark, next, execution\_stats}&gt;</code>
+        * [.findAll(selector, options)](#DocumentCollection+findAll) ⇒ <code>Promise.&lt;Array.&lt;{data}&gt;&gt;</code>
         * [.get(id)](#DocumentCollection+get) ⇒ <code>Promise.&lt;object&gt;</code>
         * [.getAll()](#DocumentCollection+getAll)
         * [.create(doc)](#DocumentCollection+create)
@@ -494,7 +494,7 @@ The returned documents are paginated by the stack.
 
 <a name="DocumentCollection+findAll"></a>
 
-### documentCollection.findAll(selector, options) ⇒ <code>Promise.&lt;{data, skip, bookmark, next, execution\_stats}&gt;</code>
+### documentCollection.findAll(selector, options) ⇒ <code>Promise.&lt;Array.&lt;{data}&gt;&gt;</code>
 Returns a filtered list with all documents using a Mango selector,
 automatically fetching more documents if the total of documents is
 superior to the pagination limit.
@@ -503,7 +503,7 @@ Can result in a lot of network requests.
    The returned documents are paginated by the stack.
 
 **Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
-**Returns**: <code>Promise.&lt;{data, skip, bookmark, next, execution\_stats}&gt;</code> - The JSON API conformant response.  
+**Returns**: <code>Promise.&lt;Array.&lt;{data}&gt;&gt;</code> - Documents fetched  
 **Throws**:
 
 - <code>FetchError</code> 
@@ -609,7 +609,7 @@ Returns Mango Options from Selector and Options
 | --- | --- | --- |
 | fields | <code>Array</code> | Fields to index |
 | indexOption | <code>object</code> | Options for the index |
-| [indexOption.partialFilter] | <code>string</code> | partialFilter |
+| [indexOption.partialFilter] | [<code>MangoPartialFilter</code>](#MangoPartialFilter) | partialFilter |
 | [indexOption.indexName] | <code>string</code> | indexName |
 
 <a name="DocumentCollection+fetchAllMangoIndexes"></a>
@@ -1980,9 +1980,9 @@ query to work
 
 | Param | Type | Description |
 | --- | --- | --- |
-| options | [<code>MangoQueryOptions</code>](#MangoQueryOptions) | Mango query options |
-| options.selector | [<code>MangoSelector</code>](#MangoSelector) \| <code>null</code> | Mango selector |
-| options.partialFilter | [<code>MangoPartialFilter</code>](#MangoPartialFilter) \| <code>null</code> | An optional partial filter |
+| options | <code>object</code> | Mango query options |
+| [options.selector] | [<code>MangoSelector</code>](#MangoSelector) | Mango selector |
+| [options.partialFilter] | [<code>MangoPartialFilter</code>](#MangoPartialFilter) | An optional partial filter |
 | [options.sort] | [<code>MangoSort</code>](#MangoSort) | The sorting parameters |
 
 <a name="isInconsistentIndex"></a>
@@ -2565,7 +2565,7 @@ Document representing a io.cozy.jobs
 
 <a name="MangoPartialFilter"></a>
 
-## MangoPartialFilter : <code>object</code>
+## MangoPartialFilter : <code>Object</code>
 **Kind**: global typedef  
 <a name="MangoSelector"></a>
 
@@ -2592,6 +2592,8 @@ Document representing a io.cozy.jobs
 | [indexId] | <code>string</code> \| <code>null</code> | The _id of the CouchDB index to use for this request |
 | [bookmark] | <code>string</code> \| <code>null</code> | For bookmark-based pagination, the document _id to start from |
 | [indexedFields] | <code>Array.&lt;string&gt;</code> |  |
+| [use_index] | <code>string</code> | Name of the index to use |
+| [execution_stats] | <code>boolean</code> | If true, we request the stats from Couch |
 | [partialFilter] | [<code>MangoPartialFilter</code>](#MangoPartialFilter) \| <code>null</code> | An optional partial filter |
 
 <a name="DesignDoc"></a>
