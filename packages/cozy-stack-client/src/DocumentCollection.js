@@ -6,7 +6,11 @@ import head from 'lodash/head'
 import merge from 'lodash/merge'
 import startsWith from 'lodash/startsWith'
 import qs from 'qs'
-import { MangoQueryOptions, MangoSelector, MangoPartialFilter } from './mangoIndex'
+import {
+  MangoQueryOptions,
+  MangoSelector,
+  MangoPartialFilter
+} from './mangoIndex'
 
 import Collection, {
   dontThrowNotFoundError,
