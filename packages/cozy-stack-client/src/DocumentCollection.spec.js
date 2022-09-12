@@ -321,11 +321,6 @@ describe('DocumentCollection', () => {
     describe('existing index', () => {
       beforeAll(() => {
         jest.resetAllMocks()
-        jest.spyOn(client, 'fetchJSON').mockResolvedValue({
-          id: '_design/123456',
-          name: '123456',
-          result: 'exists'
-        })
       })
 
       afterAll(() => {
@@ -364,6 +359,11 @@ describe('DocumentCollection', () => {
       })
 
       it('should use the partial filter if defined', async () => {
+        client.fetchJSON.mockResolvedValueOnce({
+          id: '_design/123456',
+          name: '123456',
+          result: 'exists'
+        })
         const partialFilter = { $trashed: false }
         await collection.createIndex(['label', 'done'], {
           partialFilter
@@ -381,16 +381,54 @@ describe('DocumentCollection', () => {
       })
 
       it('should return the index ID', async () => {
+        client.fetchJSON.mockResolvedValue({
+          id: '_design/123456',
+          name: '123456',
+          result: 'exists'
+        })
         const resp = await collection.createIndex(['label', 'done'])
         expect(resp).toHaveProperty('id', '_design/123456')
+      })
+
+      it('should use the partial filter if defined and use it also when querying after a fail', async () => {
+        const partialFilter = { $trashed: false }
+        collection.find = jest.fn()
+        collection.find.mockResolvedValueOnce({ data: [] })
+        client.fetchJSON.mockResolvedValueOnce({
+          result: 'dontexistyet'
+        })
+        await collection.createIndex(['label', 'done'], {
+          partialFilter
+        })
+
+        expect(client.fetchJSON).toHaveBeenCalledWith(
+          'POST',
+          '/data/io.cozy.todos/_index',
+          {
+            index: {
+              fields: ['label', 'done'],
+              partial_filter_selector: partialFilter
+            }
+          }
+        )
+
+        expect(collection.find).toHaveBeenCalledWith(
+          { done: { $gt: null }, label: { $gt: null } },
+          { indexId: undefined, limit: 1, partialFilterFields: ['$trashed'] }
+        )
       })
     })
 
     describe('new index', () => {
+      beforeAll(() => {
+        jest.resetAllMocks()
+      })
       afterAll(() => {
         jest.resetAllMocks()
       })
       it('should return the index ID', async () => {
+        collection.find = jest.fn()
+        collection.find.mockResolvedValueOnce({ data: [] })
         client.fetchJSON
           .mockReturnValueOnce(
             Promise.resolve({
