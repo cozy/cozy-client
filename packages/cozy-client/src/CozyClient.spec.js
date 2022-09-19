@@ -121,8 +121,7 @@ describe('CozyClient initialization', () => {
     }
     client = CozyClient.fromEnv({
       COZY_URL: url,
-      COZY_CREDENTIALS: JSON.stringify(creds),
-      NODE_ENV: 'development'
+      COZY_CREDENTIALS: JSON.stringify(creds)
     })
     expect(client.stackClient.uri).toBe(url)
     expect(client.stackClient.token.accessToken).toBe(token)

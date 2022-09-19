@@ -369,15 +369,16 @@ class CozyClient {
    */
   static fromEnv(envArg, options = {}) {
     const env = envArg || (typeof process !== 'undefined' ? process.env : {})
-    const { COZY_URL, COZY_CREDENTIALS, NODE_ENV } = env
+    const { COZY_URL, COZY_CREDENTIALS } = env
     if (!COZY_URL || !COZY_CREDENTIALS) {
       throw new Error(
         'Env used to instantiate CozyClient must have COZY_URL and COZY_CREDENTIALS'
       )
     }
-    if (NODE_ENV === 'development') {
+
+    try {
       options.oauth = JSON.parse(COZY_CREDENTIALS)
-    } else {
+    } catch (err) {
       options.token = COZY_CREDENTIALS.trim()
     }
     options.uri = COZY_URL.trim()
