@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [33.0.7](https://github.com/cozy/cozy-client/compare/v33.0.6...v33.0.7) (2022-09-19)
+
+
+### Bug Fixes
+
+* QueryAll return empty array if error ([20a8a80](https://github.com/cozy/cozy-client/commit/20a8a807a0b9d9137bfad1ac1c7715ab8a3a057c))
+
+
+
+
+
 ## [33.0.6](https://github.com/cozy/cozy-client/compare/v33.0.5...v33.0.6) (2022-09-07)
 
 
