@@ -60,7 +60,7 @@ class AppCollection extends DocumentCollection {
           this.stackClient,
           `${this.endpoint}${encodeURIComponent(id)}`,
           {
-            normalize: this.constructor.normalizeDoctype(this.doctype)
+            normalize: (data, doctype) => normalizeApp(data, doctype)
           }
         ),
       registry: () => this.stackClient.fetchJSON('GET', registryEndpoint + id)
@@ -75,9 +75,8 @@ class AppCollection extends DocumentCollection {
         }
 
         const data = transformRegistryFormatToStackFormat(res)
-        const normalizedDoc = normalizeDoc(data, this.doctype)
 
-        return { data: normalizedDoc }
+        return { data: normalizeApp(data, this.doctype) }
       } catch (err) {
         if (source === sources[sources.length - 1]) {
           throw err

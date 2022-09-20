@@ -66,6 +66,7 @@ describe(`AppCollection`, () => {
     it('should return normalized document', async () => {
       const resp = await collection.get('io.cozy.apps/fakeid')
       expect(resp.data).toHaveDocumentIdentity()
+      expect(resp.data.name).toEqual('Drive')
     })
 
     describe('deprecated get call without <doctype>/', () => {
