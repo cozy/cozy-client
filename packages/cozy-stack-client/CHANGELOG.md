@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [33.0.8](https://github.com/cozy/cozy-client/compare/v33.0.7...v33.0.8) (2022-09-20)
+
+
+### Bug Fixes
+
+* Spread attributes also with get request ([8fe9a58](https://github.com/cozy/cozy-client/commit/8fe9a588431ce83e72f0253548dc56b023c3bf3a))
+
+
+
+
+
 ## [33.0.6](https://github.com/cozy/cozy-client/compare/v33.0.5...v33.0.6) (2022-09-07)
 
 
