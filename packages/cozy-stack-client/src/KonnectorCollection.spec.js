@@ -91,6 +91,7 @@ describe(`KonnectorCollection`, () => {
     it('should return normalized document', async () => {
       const resp = await collection.get('io.cozy.konnectors/fakeid')
       expect(resp.data).toHaveDocumentIdentity()
+      expect(resp.data.name).toEqual('Boui Box')
     })
   })
 
