@@ -31,7 +31,7 @@ class KonnectorCollection extends AppCollection {
    */
   async findTriggersBySlug(slug) {
     const triggerCol = new TriggerCollection(this.stackClient)
-    const { data: rawTriggers } = await triggerCol.all({ limit: null })
+    const { data: rawTriggers } = await triggerCol.all()
     return rawTriggers
       .map(x => x.attributes)
       .filter(triggerAttrs => isForKonnector(triggerAttrs, slug))
