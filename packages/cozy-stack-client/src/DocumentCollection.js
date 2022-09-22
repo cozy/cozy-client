@@ -9,7 +9,8 @@ import qs from 'qs'
 import {
   MangoQueryOptions,
   MangoSelector,
-  MangoPartialFilter
+  MangoPartialFilter,
+  DesignDoc
 } from './mangoIndex'
 
 import Collection, {
@@ -653,7 +654,7 @@ The returned documents are paginated by the stack.
   /**
    * Retrieve all design docs of mango indexes
    *
-   * @returns {Promise<Array>} The design docs
+   * @returns {Promise<DesignDoc[]>} The design docs
    */
   async fetchAllMangoIndexes() {
     const path = uri`/data/${this.doctype}/_design_docs?include_docs=true`
@@ -667,7 +668,7 @@ The returned documents are paginated by the stack.
   /**
    * Delete the specified design doc
    *
-   * @param {object} index - The design doc to remove
+   * @param {DesignDoc} index - The design doc to remove
    * @returns {Promise<object>} The delete response
    */
   async destroyIndex(index) {
@@ -683,9 +684,9 @@ The returned documents are paginated by the stack.
    * This is useful to create a new design doc without
    * having to recompute the existing index.
    *
-   * @param {object} existingIndex - The design doc to copy
+   * @param {DesignDoc} existingIndex - The design doc to copy
    * @param {string} newIndexName - The name of the copy
-   * @returns {Promise<object>} The copy response
+   * @returns {Promise<DesignDoc>} The copy response
    */
   async copyIndex(existingIndex, newIndexName) {
     const ddoc = existingIndex._id.split('/')[1]
@@ -708,7 +709,7 @@ The returned documents are paginated by the stack.
    * @param {object}            selector  The query selector
    * @param {MangoQueryOptions} options   The find options
    *
-   * @returns {Promise<object>} A matching index if it exists
+   * @returns {Promise<DesignDoc>} A matching index if it exists
    * @private
    */
   async findExistingIndex(selector, options) {
@@ -731,7 +732,10 @@ The returned documents are paginated by the stack.
     this.removeInconsistentIndex(indexes)
     return existingIndex
   }
-
+  /**
+   *
+   * @param {DesignDoc[]} indexes Index to remove
+   */
   async removeInconsistentIndex(indexes) {
     for (const index of indexes) {
       // Since we use this as a safeguard and only for
