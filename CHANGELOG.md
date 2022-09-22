@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [33.1.0](https://github.com/cozy/cozy-client/compare/v33.0.8...v33.1.0) (2022-09-22)
+
+
+### Features
+
+* **qualification:** Add more logic to getBoundT function ([1154d33](https://github.com/cozy/cozy-client/commit/1154d33f0eb5c001c4348a8569356bb0560f0715))
+
+
+
+
+
 ## [33.0.8](https://github.com/cozy/cozy-client/compare/v33.0.7...v33.0.8) (2022-09-20)
 
 
