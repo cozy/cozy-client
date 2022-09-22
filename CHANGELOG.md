@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [33.1.1](https://github.com/cozy/cozy-client/compare/v33.1.0...v33.1.1) (2022-09-22)
+
+
+### Bug Fixes
+
+* Rename and fix types for findAll ([b7cd8d9](https://github.com/cozy/cozy-client/commit/b7cd8d931bed78d83aeda31d03db1cb4077db84e))
+* Use partial filter in the find when index creation fails ([8830a3f](https://github.com/cozy/cozy-client/commit/8830a3fa3a2c5e17c320e4f6726b5ed0f947867c))
+
+
+
+
+
 # [33.1.0](https://github.com/cozy/cozy-client/compare/v33.0.8...v33.1.0) (2022-09-22)
 
 
