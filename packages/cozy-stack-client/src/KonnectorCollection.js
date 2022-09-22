@@ -73,8 +73,8 @@ class KonnectorCollection extends AppCollection {
    *
    * @param  {string} slug - Konnector slug
    * @param  {object} options - Options
-   * @param  {object} options.source - Specify the source (ex: registry://slug/stable)
-   * @param  {boolean} options.sync - Wait for konnector to be updated, otherwise the job
+   * @param  {object} [options.source] - Specify the source (ex: registry://slug/stable)
+   * @param  {boolean} [options.sync] - Wait for konnector to be updated, otherwise the job
    *
    * @returns {Promise<object>} The updated document.
    * is just scheduled
