@@ -120,7 +120,8 @@ class CozyStackClient {
 
     // the option credentials:include tells fetch to include the cookies in the
     // request even for cross-origin requests
-    options.credentials = 'include'
+    // it is still prossible to enforce `credentials` value by providing one in the `opts` prop
+    options.credentials = options.credentials || 'include'
 
     const fullPath = this.fullpath(path)
 
