@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [33.1.2](https://github.com/cozy/cozy-client/compare/v33.1.1...v33.1.2) (2022-09-22)
+
+
+### Bug Fixes
+
+* Get apps method was returning wrong type for not-registry source ([32eaf43](https://github.com/cozy/cozy-client/commit/32eaf43ee4172cf4f93d843aa200b6f4303b1e7b))
+
+
+
+
+
 ## [33.1.1](https://github.com/cozy/cozy-client/compare/v33.1.0...v33.1.1) (2022-09-22)
 
 
