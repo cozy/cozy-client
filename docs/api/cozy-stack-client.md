@@ -410,9 +410,10 @@ Abstracts a collection of documents of the same doctype, providing CRUD methods 
         * [.destroyAll(docs)](#DocumentCollection+destroyAll)
         * [.toMangoOptions(selector, options)](#DocumentCollection+toMangoOptions) ⇒ [<code>MangoQueryOptions</code>](#MangoQueryOptions)
         * [.createIndex(fields, indexOption)](#DocumentCollection+createIndex) ⇒ <code>Promise.&lt;{id, fields}&gt;</code>
-        * [.fetchAllMangoIndexes()](#DocumentCollection+fetchAllMangoIndexes) ⇒ <code>Promise.&lt;Array&gt;</code>
+        * [.fetchAllMangoIndexes()](#DocumentCollection+fetchAllMangoIndexes) ⇒ <code>Promise.&lt;Array.&lt;DesignDoc&gt;&gt;</code>
         * [.destroyIndex(index)](#DocumentCollection+destroyIndex) ⇒ <code>Promise.&lt;object&gt;</code>
-        * [.copyIndex(existingIndex, newIndexName)](#DocumentCollection+copyIndex) ⇒ <code>Promise.&lt;object&gt;</code>
+        * [.copyIndex(existingIndex, newIndexName)](#DocumentCollection+copyIndex) ⇒ [<code>Promise.&lt;DesignDoc&gt;</code>](#DesignDoc)
+        * [.removeInconsistentIndex(indexes)](#DocumentCollection+removeInconsistentIndex)
         * [.fetchChangesRaw(couchOptions)](#DocumentCollection+fetchChangesRaw)
     * _static_
         * [.normalizeDoctype(doctype)](#DocumentCollection.normalizeDoctype) ⇒ <code>function</code>
@@ -614,11 +615,11 @@ Returns Mango Options from Selector and Options
 
 <a name="DocumentCollection+fetchAllMangoIndexes"></a>
 
-### documentCollection.fetchAllMangoIndexes() ⇒ <code>Promise.&lt;Array&gt;</code>
+### documentCollection.fetchAllMangoIndexes() ⇒ <code>Promise.&lt;Array.&lt;DesignDoc&gt;&gt;</code>
 Retrieve all design docs of mango indexes
 
 **Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
-**Returns**: <code>Promise.&lt;Array&gt;</code> - The design docs  
+**Returns**: <code>Promise.&lt;Array.&lt;DesignDoc&gt;&gt;</code> - The design docs  
 <a name="DocumentCollection+destroyIndex"></a>
 
 ### documentCollection.destroyIndex(index) ⇒ <code>Promise.&lt;object&gt;</code>
@@ -629,23 +630,32 @@ Delete the specified design doc
 
 | Param | Type | Description |
 | --- | --- | --- |
-| index | <code>object</code> | The design doc to remove |
+| index | [<code>DesignDoc</code>](#DesignDoc) | The design doc to remove |
 
 <a name="DocumentCollection+copyIndex"></a>
 
-### documentCollection.copyIndex(existingIndex, newIndexName) ⇒ <code>Promise.&lt;object&gt;</code>
+### documentCollection.copyIndex(existingIndex, newIndexName) ⇒ [<code>Promise.&lt;DesignDoc&gt;</code>](#DesignDoc)
 Copy an existing design doc.
 
 This is useful to create a new design doc without
 having to recompute the existing index.
 
 **Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
-**Returns**: <code>Promise.&lt;object&gt;</code> - The copy response  
+**Returns**: [<code>Promise.&lt;DesignDoc&gt;</code>](#DesignDoc) - The copy response  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| existingIndex | <code>object</code> | The design doc to copy |
+| existingIndex | [<code>DesignDoc</code>](#DesignDoc) | The design doc to copy |
 | newIndexName | <code>string</code> | The name of the copy |
+
+<a name="DocumentCollection+removeInconsistentIndex"></a>
+
+### documentCollection.removeInconsistentIndex(indexes)
+**Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| indexes | [<code>Array.&lt;DesignDoc&gt;</code>](#DesignDoc) | Index to remove |
 
 <a name="DocumentCollection+fetchChangesRaw"></a>
 
@@ -1977,14 +1987,6 @@ query to work
 
 **Kind**: global constant  
 **Returns**: <code>Array</code> - - Fields to index  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| options | <code>object</code> | Mango query options |
-| [options.selector] | [<code>MangoSelector</code>](#MangoSelector) | Mango selector |
-| [options.partialFilter] | [<code>MangoPartialFilter</code>](#MangoPartialFilter) | An optional partial filter |
-| [options.sort] | [<code>MangoSort</code>](#MangoSort) | The sorting parameters |
-
 <a name="isInconsistentIndex"></a>
 
 ## isInconsistentIndex ⇒ <code>boolean</code>
@@ -2609,6 +2611,7 @@ Attributes representing a design doc
 | _id | <code>string</code> | Id of the design doc. Can be named, e.g. '_design/by_indexed_attribute' or not, e.g. '_design/12345' |
 | language | <code>string</code> | The index language. Can be 'query' for mango index or 'javascript' for views. |
 | views | <code>object</code> | Views definition, i.e. the index. |
+| _rev | <code>string</code> | Rev version |
 
 <a name="SessionCode"></a>
 
