@@ -45,7 +45,7 @@ class KonnectorCollection extends AppCollection {
    * @param  {object} options.accountId - Pinpoint the account that should be used, useful if the user
    * has more than 1 account for 1 konnector
    */
-  async launch(slug, options = {}) {
+  async launch(slug, options = { accountId: '' }) {
     const triggerCol = new TriggerCollection(this.stackClient)
     const konnTriggers = await this.findTriggersBySlug(slug)
     const filteredTriggers = options.accountId
