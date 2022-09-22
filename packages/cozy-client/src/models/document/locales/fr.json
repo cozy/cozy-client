@@ -1,4 +1,7 @@
 {
+  "country": {
+    "stranger": "Étranger"
+  },
   "Scan": {
     "scan_a_doc": "Numériser un doc",
     "save_doc": "Enregistrer le document",

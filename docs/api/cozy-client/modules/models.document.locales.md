@@ -8,7 +8,7 @@
 
 ### getBoundT
 
-▸ **getBoundT**(`lang`): (`key`: `string`) => `string`
+▸ **getBoundT**(`lang`): (`label`: `string`, `country?`: `string`) => `string`
 
 *Parameters*
 
@@ -20,13 +20,14 @@
 
 `fn`
 
-▸ (`key`): `string`
+▸ (`label`, `country?`): `string`
 
 *Parameters*
 
 | Name | Type |
 | :------ | :------ |
-| `key` | `string` |
+| `label` | `string` |
+| `country?` | `string` |
 
 *Returns*
 
@@ -34,4 +35,4 @@
 
 *Defined in*
 
-[packages/cozy-client/src/models/document/locales/index.js:22](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/locales/index.js#L22)
+[packages/cozy-client/src/models/document/locales/index.js:23](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/locales/index.js#L23)
