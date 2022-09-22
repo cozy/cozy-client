@@ -83,18 +83,12 @@ export const transformSort = sort => {
  * Compute fields that should be indexed for a mango
  * query to work
  *
- * @param {object} options - Mango query options
- * @param {MangoSelector} [options.selector] - Mango selector
- * @param {MangoPartialFilter} [options.partialFilter] - An optional partial filter
- * @param {MangoSort} [options.sort] - The sorting parameters
  *
  * @returns {Array} - Fields to index
  */
-export const getIndexFields = ({
-  selector = {},
-  partialFilter = {},
-  sort = []
-}) => {
+export const getIndexFields = (
+  /** @type {MangoQueryOptions} */ { selector, partialFilter, sort = [] }
+) => {
   return Array.from(
     new Set([
       ...sort.map(sortOption => head(Object.keys(sortOption))),
