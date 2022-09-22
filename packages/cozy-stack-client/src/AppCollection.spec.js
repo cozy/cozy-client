@@ -2,6 +2,7 @@ jest.mock('./CozyStackClient')
 
 import CozyStackClient from './CozyStackClient'
 import AppCollection from './AppCollection'
+import { APPS_DOCTYPE } from './AppCollection'
 import { ALL_APPS_RESPONSE, GET_APPS_RESPONSE } from './__tests__/fixtures/apps'
 import logger from './logger'
 const FIXTURES = {
@@ -66,7 +67,7 @@ describe(`AppCollection`, () => {
     it('should return normalized document', async () => {
       const resp = await collection.get('io.cozy.apps/fakeid')
       expect(resp.data).toHaveDocumentIdentity()
-      expect(resp.data.name).toEqual('Drive')
+      expect(resp.data._type).toEqual(APPS_DOCTYPE)
     })
 
     describe('deprecated get call without <doctype>/', () => {
