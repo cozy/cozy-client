@@ -38,6 +38,7 @@ import isEqual from 'lodash/isEqual'
  * @property {string} _id - Id of the design doc. Can be named, e.g. '_design/by_indexed_attribute' or not, e.g. '_design/12345'
  * @property {string} language - The index language. Can be 'query' for mango index or 'javascript' for views.
  * @property {object} views - Views definition, i.e. the index.
+ * @property {string} _rev - Rev version
  */
 
 export const normalizeDesignDoc = designDoc => {
