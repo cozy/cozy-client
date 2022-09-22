@@ -1,4 +1,7 @@
 {
+  "country": {
+    "stranger": "Stranger"
+  },
   "Scan": {
     "scan_a_doc": "Scan a doc",
     "save_doc": "Save the doc",

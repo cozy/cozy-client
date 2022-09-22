@@ -1,6 +1,5 @@
 /**
- *
  * @param {string} lang - fr, en, etc
- * @returns {(key: string) => string}
+ * @returns {(label: string, country?: string) => string}
  */
-export function getBoundT(lang: string): (key: string) => string;
+export function getBoundT(lang: string): (label: string, country?: string) => string;

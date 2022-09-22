@@ -1,5 +1,7 @@
 import Polyglot from 'node-polyglot'
 
+import { getEmojiByCountry } from '../emojiCountry'
+
 const polyglots = {}
 const langs = ['fr', 'en']
 for (const lang of langs) {
@@ -15,13 +17,18 @@ for (const lang of langs) {
 }
 
 /**
- *
  * @param {string} lang - fr, en, etc
- * @returns {(key: string) => string}
+ * @returns {(label: string, country?: string) => string}
  */
 const getBoundT = lang => {
   const polyglot = polyglots[lang] || polyglots['en']
-  return polyglot.t.bind(polyglot)
+  const t = polyglot.t.bind(polyglot)
+
+  return (label, country) => {
+    const emojiCountry = getEmojiByCountry(country, t)
+
+    return emojiCountry ? `${t(label)} (${emojiCountry})` : t(label)
+  }
 }
 
 export { getBoundT }
