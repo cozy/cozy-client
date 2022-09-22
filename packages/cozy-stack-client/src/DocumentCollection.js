@@ -706,7 +706,7 @@ The returned documents are paginated by the stack.
    * This is useful to avoid creating new indexes having the
    * same definition of an existing one.
    *
-   * @param {object}            selector  The query selector
+   * @param {MangoSelector}     selector  The query selector
    * @param {MangoQueryOptions} options   The find options
    *
    * @returns {Promise<DesignDoc>} A matching index if it exists
