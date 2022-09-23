@@ -59,11 +59,10 @@ class TriggerCollection extends DocumentCollection {
    * Get the list of triggers.
    *
    * @see https://docs.cozy.io/en/cozy-stack/jobs/#get-jobstriggers
-   * @param  {{Worker}} options The fetch options: Worker allow to filter only triggers associated with a specific worker.
    * @returns {Promise<{data}>} The JSON API conformant response.
    * @throws {FetchError}
    */
-  async all(options = {}) {
+  async all() {
     try {
       const resp = await this.stackClient.fetchJSON('GET', `/jobs/triggers`)
 
