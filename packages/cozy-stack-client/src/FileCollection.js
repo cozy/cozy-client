@@ -773,7 +773,7 @@ class FileCollection extends DocumentCollection {
    *
    * @param  {string|object}  child    The file which can either be an id or an object
    * @param  {string|object}  parent   The parent target which can either be an id or an object
-   * @returns {boolean}                 Whether the file is a parent's child
+   * @returns {Promise<boolean>}                 Whether the file is a parent's child
    */
   async isChildOf(child, parent) {
     let { _id: childID, dirID: childDirID, path: childPath } =
@@ -812,8 +812,8 @@ class FileCollection extends DocumentCollection {
    * statById - Fetches the metadata about a document. For folders, the results include the list of child files and folders.
    *
    * @param {string}      id                      ID of the document
-   * @param {object|null} options                 Pagination options
-   * @param {number|null} [options.page[limit]]   For pagination, the number of results to return.
+   * @param {object} [options]                 Pagination options
+   * @param {number} [options.page[limit]]   For pagination, the number of results to return.
    * @param {number|null} [options.page[skip]]    For skip-based pagination, the number of referenced files to skip.
    * @param {CouchDBViewCursor|null} [options.page[cursor]]  For cursor-based pagination, the index cursor.
    *
