@@ -40,6 +40,9 @@ import logger from './logger'
  * @property {string} dirId - Id of the parent directory.
  * @property {string} name - Name of the created directory.
  * @property {boolean} executable - Indicates whether the file will be executable.
+/**
+ * @typedef {object} OnlyDataObjectWithFileAttributes
+ * @property {FileDocument} data
  */
 
 /**
@@ -478,7 +481,7 @@ class FileCollection extends DocumentCollection {
   /**
    * @param {File|Blob|Stream|string|ArrayBuffer} data file to be uploaded
    * @param {string} dirPath Path to upload the file to. ie : /Administative/XXX/
-   * @returns {Promise<object>} Created io.cozy.files
+   * @returns {Promise<OnlyDataObjectWithFileAttributes>} Created io.cozy.files
    */
   async upload(data, dirPath) {
     const dirId = await this.ensureDirectoryExists(dirPath)
@@ -511,7 +514,7 @@ class FileCollection extends DocumentCollection {
    * @param {object} attributes
    * @param {FileAttributes} attributes.file - The file with its new content
    * @param {File|Blob|string|ArrayBuffer} attributes.data Will be used as content of the updated file
-   * @returns {Promise<FileAttributes>} Updated document
+   * @returns {Promise<OnlyDataObjectWithFileAttributes>} Updated document
    * @throws {Error} - explaining reason why update failed
    */
   async update(attributes) {
@@ -536,6 +539,7 @@ class FileCollection extends DocumentCollection {
    * @param {FileAttributes & SpecificFileAttributesForKonnector} params Additional parameters
    * @param  {object}  params.options     Options to pass to doUpload method (additional headers)
    * @throws {Error} - explaining reason why creation failed
+   * @returns {Promise<OnlyDataObjectWithFileAttributes>}
    */
   async createFile(
     data,
@@ -926,7 +930,7 @@ class FileCollection extends DocumentCollection {
    * @private You shoud use update() directly.
    * @param  {string} id         File id
    * @param  {object} attributes New file attributes
-   * @returns {object}            Updated document
+   * @returns {Promise<OnlyDataObjectWithFileAttributes>} Updated document
    * @throws {Error} - explaining reason why update failed
    */
   async updateAttributes(id, attributes) {
@@ -1028,6 +1032,7 @@ class FileCollection extends DocumentCollection {
    * `/files/${dirId}?Name=${name}&Type=file&Executable=${executable}&MetadataID=${metadataId}`
    * @param {object} options Additional headers
    * @param {string} method POST / PUT / PATCH
+   * @returns {Promise<OnlyDataObjectWithFileAttributes>}
    */
   async doUpload(dataArg, path, options, method = 'POST') {
     let correctPath = path
