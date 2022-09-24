@@ -33,7 +33,7 @@ import logger from './logger'
  *
  * @typedef {object} DirectoryAttributes
  * @property {string} dirId - Id of the parent directory.
- * @property {boolean} name - Name of the created directory.
+ * @property {string} name - Name of the created directory.
  * @property {boolean} executable - Indicates whether the file will be executable.
  */
 
