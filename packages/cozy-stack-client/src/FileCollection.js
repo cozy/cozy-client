@@ -3,7 +3,6 @@ import has from 'lodash/has'
 import get from 'lodash/get'
 import omit from 'lodash/omit'
 import pick from 'lodash/pick'
-import { MangoQueryOptions } from './mangoIndex'
 
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 import { uri, slugify, formatBytes } from './utils'
@@ -12,6 +11,12 @@ import { dontThrowNotFoundError } from './Collection'
 import { getIllegalCharacters } from './getIllegalCharacter'
 import * as querystring from './querystring'
 import logger from './logger'
+
+/**
+ * @typedef {import("./mangoIndex").MangoQueryOptions} MangoQueryOptions
+ * @typedef {object} CozyClient
+ 
+ */
 /**
  * @typedef {object} IOCozyFolder Folder
  */
