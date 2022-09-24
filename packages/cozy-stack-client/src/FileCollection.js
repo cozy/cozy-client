@@ -556,9 +556,8 @@ class FileCollection extends DocumentCollection {
    * @throws {Error} - explaining reason why creation failed
    * @returns {Promise<OnlyDataObjectWithFileAttributes>}
    */
-  async createFile(
-    data,
-    {
+  async createFile(data, params) {
+    const {
       name: nameOption,
       dirId = '',
       executable = false,
@@ -567,8 +566,7 @@ class FileCollection extends DocumentCollection {
       sourceAccount = '',
       sourceAccountIdentifier = '',
       ...options
-    } = {}
-  ) {
+    } = params || {}
     let name = nameOption
     // handle case where data is a file and contains the name
     if (!name && typeof data.name === 'string') {
@@ -844,7 +842,8 @@ class FileCollection extends DocumentCollection {
     )
     return {
       data: normalizeFile(resp.data),
-      included: resp.included && resp.included.map(f => normalizeFile(f))
+      included: resp.included && resp.included.map(f => normalizeFile(f)),
+      links: resp.links
     }
   }
 
@@ -856,7 +855,7 @@ class FileCollection extends DocumentCollection {
    * @returns {Promise}
    * @throws {Error} - explaining reason why creation failed
    */
-  async createDirectory(attributes = {}) {
+  async createDirectory(attributes) {
     const { name, dirId, lastModifiedDate } = attributes
     const safeName = sanitizeAndValidateFileName(name)
 
@@ -872,7 +871,7 @@ class FileCollection extends DocumentCollection {
       undefined,
       {
         headers: {
-          Date: lastModified ? lastModified.toGMTString() : ''
+          Date: lastModified ? lastModified.toUTCString() : ''
         }
       }
     )
