@@ -18,6 +18,9 @@ import logger from './logger'
  
  */
 /**
+ * @typedef {File|Blob|Stream|string|ArrayBuffer} FileBinaryData
+ */
+/**
  * @typedef {object} IOCozyFolder Folder
  */
 /**
@@ -40,11 +43,18 @@ import logger from './logger'
  * @property {string} dirId - Id of the parent directory.
  * @property {string} name - Name of the created directory.
  * @property {boolean} executable - Indicates whether the file will be executable.
+ * @property {Date} [lastModifiedDate] - Last modified date
+ */
+/**
+ * @typedef {object} JSONApiFiles
+ * @property {FileDocument} data
+ * @property {object} included
+ * @property {object} links
+ */
 /**
  * @typedef {object} OnlyDataObjectWithFileAttributes
  * @property {FileDocument} data
  */
-
 /**
  * Attributes used for file creation
  *
@@ -53,10 +63,12 @@ import logger from './logger'
  * @property {string} _id - Id of the document
  * @property {string} dirId - Id of the parent directory.
  * @property {string} name - Name of the created file.
+ * @property {'file'|'directory'} type - Type of the file
  * @property {Date} lastModifiedDate - Can be used to set the last modified date of a file.
  * @property {boolean} executable - Whether or not the file is executable
  * @property {boolean} encrypted - Whether or not the file is client-side encrypted
  * @property {object} metadata io.cozy.files.metadata to attach to the file
+ * @property {string} fileId - Duplicated ID : to be remove
  */
 
 /**
@@ -492,8 +504,7 @@ class FileCollection extends DocumentCollection {
    * Creates directory or file.
    * - Used by StackLink to support CozyClient.create('io.cozy.files', options)
    *
-   * @param {FileAttributes|DirectoryAttributes} attributes - Attributes of the created file/directory
-   * @param {File|Blob|string|ArrayBuffer} attributes.data Will be used as content of the created file
+   * @param {(FileAttributes|DirectoryAttributes) & FileBinaryData } attributes - Attributes of the created file/directory
    * @throws {Error} - explaining reason why creation failed
    */
   async create(attributes) {
@@ -511,9 +522,13 @@ class FileCollection extends DocumentCollection {
    * Used by StackLink to support CozyClient.save({file}).
    * Update the binary file if a `data` param is passed. Only updates
    * attributes otherwise.
-   * @param {object} attributes
-   * @param {FileAttributes} attributes.file - The file with its new content
-   * @param {File|Blob|string|ArrayBuffer} attributes.data Will be used as content of the updated file
+   *
+   * @typedef { Object } FileBinaryDataObject
+   * @property {FileBinaryData} data
+   *
+   * @typedef { FileAttributes & FileBinaryDataObject} FileAttributesAndBinaryData
+   *
+   * @param {FileAttributesAndBinaryData} attributes
    * @returns {Promise<OnlyDataObjectWithFileAttributes>} Updated document
    * @throws {Error} - explaining reason why update failed
    */
@@ -578,7 +593,7 @@ class FileCollection extends DocumentCollection {
   /**
    * updateFile - Updates a file's data
    *
-   * @param {File|Blob|Stream|string|ArrayBuffer} data file to be uploaded
+   * @param {FileBinaryData} data file to be uploaded
    * @param {FileAttributes} params       Additional parameters
    * @param  {object}  params.options     Options to pass to doUpload method (additional headers)
    * @returns {object}                    Updated document
@@ -804,7 +819,7 @@ class FileCollection extends DocumentCollection {
    * @param {number|null} [options.page[skip]]    For skip-based pagination, the number of referenced files to skip.
    * @param {CouchDBViewCursor|null} [options.page[cursor]]  For cursor-based pagination, the index cursor.
    *
-   * @returns {object} A promise resolving to an object containing "data" (the document metadata), "included" (the child documents) and "links" (pagination informations)
+   * @returns {Promise<JSONApiFiles>} A promise resolving to an object containing "data" (the document metadata), "included" (the child documents) and "links" (pagination informations)
    */
 
   async statById(id, options = {}) {
@@ -818,7 +833,10 @@ class FileCollection extends DocumentCollection {
       links: resp.links
     }
   }
-
+  /**
+   * @param {string} path - Path
+   * @returns {Promise<JSONApiFiles>}
+   */
   async statByPath(path) {
     const resp = await this.stackClient.fetchJSON(
       'GET',
