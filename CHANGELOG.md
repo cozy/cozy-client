@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [33.2.0](https://github.com/cozy/cozy-client/compare/v33.1.2...v33.2.0) (2022-09-27)
+
+
+### Features
+
+* Allow to provide `credential` value in `fetchJSON()` options ([a3cd585](https://github.com/cozy/cozy-client/commit/a3cd58544709d95aa7bf64bee1a201afaa8a5d31))
+* Do not use NODE_ENV=development to detect authentication ([57114cf](https://github.com/cozy/cozy-client/commit/57114cfc9e07a2667d453549c9c59739c42f8efc))
+* **scripts:** Add examples of scripts adding and deleting files ([b525047](https://github.com/cozy/cozy-client/commit/b5250478529f33b2b39c25fb64881071732b4ea9))
+
+
+
+
+
 ## [33.1.2](https://github.com/cozy/cozy-client/compare/v33.1.1...v33.1.2) (2022-09-22)
 
 
