@@ -551,8 +551,7 @@ class FileCollection extends DocumentCollection {
    *
    * @private
    * @param {File|Blob|Stream|string|ArrayBuffer} data file to be uploaded
-   * @param {FileAttributes & SpecificFileAttributesForKonnector} params Additional parameters
-   * @param  {object}  params.options     Options to pass to doUpload method (additional headers)
+   * @param {FileAttributes & object} params Additional parameters
    * @throws {Error} - explaining reason why creation failed
    * @returns {Promise<OnlyDataObjectWithFileAttributes>}
    */
