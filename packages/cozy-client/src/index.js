@@ -54,3 +54,4 @@ export * from './mock'
 
 export * from './hooks'
 export { BulkEditError } from './errors'
+export { qualifications } from './assets/qualifications.json'

@@ -13,6 +13,7 @@ export { default as fetchPolicies } from "./policies";
 export * from "./mock";
 export * from "./hooks";
 export { BulkEditError } from "./errors";
+export { qualifications } from "./assets/qualifications.json";
 import * as manifest from "./manifest";
 import * as models from "./models";
 export { manifest, models };

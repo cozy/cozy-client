@@ -1,3 +1,14 @@
 #!/bin/bash
 
-babel --root-mode upward src/ -d dist/ --copy-files --verbose --ignore '**/*.spec.js','**/*.spec.jsx' "$@" 
+babel --root-mode upward src/ -d dist/ --ignore '**/*.spec.js','**/*.spec.jsx','src/__mocks__/*','src/__snapshots__/*','src/__tests__/*' "$@"
+# Copy src/assets JSON file that are not handled by babel
+if [[ -d src/assets ]] # present only in cozy-client packages
+then
+  if [[ -d dist/assets ]]
+  then
+      rm -rf dist/assets # remove previous assets if build already done
+  fi
+  mkdir dist/assets # create folder
+  cp -r src/assets/qualifications.json dist/assets/qualifications.json # copy for use
+fi
+
