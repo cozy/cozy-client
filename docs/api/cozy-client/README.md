@@ -166,10 +166,16 @@ Rejects with canceled: true as soon as cancel is called
 
 ▸ **createMockClient**(`options`): [`CozyClient`](classes/CozyClient.md)
 
-Creates a client suitable for use in tests
+Creates a client suitable for use in tests or documentation
 
-*   client.{query,save} are mocked
+If isDocumentation is false:
+
+*   client.{query,save,saveAll} are mocked
 *   client.stackClient.fetchJSON is mocked
+
+If isDocumentation is true:
+
+*   All jest mock is bypassed
 
 *Parameters*
 
@@ -177,6 +183,7 @@ Creates a client suitable for use in tests
 | :------ | :------ | :------ |
 | `options` | `Object` | Options |
 | `options.clientOptions` | `any` | - |
+| `options.isDocumentation` | `boolean` | - |
 | `options.queries` | `any` | - |
 | `options.remote` | `any` | - |
 
@@ -186,7 +193,7 @@ Creates a client suitable for use in tests
 
 *Defined in*
 
-[packages/cozy-client/src/mock.js:41](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/mock.js#L41)
+[packages/cozy-client/src/mock.js:55](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/mock.js#L55)
 
 ***
 
