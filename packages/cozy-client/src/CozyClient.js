@@ -1380,7 +1380,7 @@ client.query(Q('io.cozy.bills'))`)
   fetchQueryAndGetFromState = async ({ definition, options }) => {
     try {
       await this.query(definition, options)
-      return this.getQueryFromState(options.as)
+      return this.getQueryFromState(options.as, options)
     } catch (error) {
       throw error
     }
