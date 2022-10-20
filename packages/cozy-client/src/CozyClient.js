@@ -919,7 +919,7 @@ client.query(Q('io.cozy.bills'))`)
     this.ensureStore()
     const queryId =
       options.as || this.queryIdGenerator.generateId(queryDefinition)
-    const existingQuery = this.getQueryFromState(queryId)
+    const existingQuery = this.getQueryFromState(queryId, options)
 
     if (options.fetchPolicy) {
       if (!options.as) {
