@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [33.2.1](https://github.com/cozy/cozy-client/compare/v33.2.0...v33.2.1) (2022-10-20)
+
+
+### Bug Fixes
+
+* CozyClient typing issue ([06abe53](https://github.com/cozy/cozy-client/commit/06abe53cd95e8c4e6e3afc3c7692761599c55d7c))
+* Pass option to getQueryFromstate for query too ([3768d54](https://github.com/cozy/cozy-client/commit/3768d54741d792cc2cab8aec2d7bdbd97a56c195))
+* Pass options to getQueryFromState ([a840bf4](https://github.com/cozy/cozy-client/commit/a840bf46e2d6b5f28572e3f1d9f9558765d8e085))
+
+
+
+
+
 # [33.2.0](https://github.com/cozy/cozy-client/compare/v33.1.2...v33.2.0) (2022-09-27)
 
 
