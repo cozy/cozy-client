@@ -418,6 +418,31 @@ class FileCollection extends DocumentCollection {
   }
 
   /**
+   * Copy a file.
+   *
+   * @param {string} id   - The file's id
+   * @param {string} [name]   - The file copy name
+   * @param {string} [dirId]   - The destination directory id
+   * @returns {Promise<object>}   - A promise that returns the copied file if resolved.
+   * @throws {FetchError}
+   *
+   */
+  async copy(id, name, dirId) {
+    const params = {
+      name: name === undefined ? undefined : sanitizeAndValidateFileName(name),
+      dirId
+    }
+    const path = uri`/files/${id}/copy`
+    const url = querystring.buildURL(path, params)
+
+    const resp = await this.stackClient.fetchJSON('POST', url)
+
+    return {
+      data: normalizeFile(resp.data)
+    }
+  }
+
+  /**
    * async deleteFilePermanently - Definitely delete a file
    *
    * @param  {string} id - The id of the file to delete

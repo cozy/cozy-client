@@ -923,6 +923,74 @@ describe('FileCollection', () => {
     })
   })
 
+  describe('copy', () => {
+    it('should copy a file', async () => {
+      const FILE_ID = 'd04ab491-2fc6'
+      const COPIED_FILE_ID = '59140416-b95f'
+      client.fetchJSON.mockReturnValue({
+        data: {
+          id: COPIED_FILE_ID,
+          type: 'io.cozy.files'
+        }
+      })
+      const result = await collection.copy(FILE_ID)
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/files/d04ab491-2fc6/copy'
+      )
+      expect(result).toEqual({
+        data: {
+          id: COPIED_FILE_ID,
+          type: 'io.cozy.files',
+          _id: COPIED_FILE_ID,
+          _rev: undefined,
+          _type: 'io.cozy.files'
+        }
+      })
+    })
+
+    it('should copy a file with custom name and directory', async () => {
+      const FILE_ID = 'd04ab491-2fc6'
+      const COPIED_FILE_ID = '59140416-b95f'
+      const COPIED_FILE_NAME = 'newName'
+      const COPIED_DIR_ID = '41686c35-9d8e'
+      client.fetchJSON.mockReturnValue({
+        data: {
+          id: COPIED_FILE_ID,
+          type: 'io.cozy.files',
+          attributes: {
+            name: COPIED_FILE_NAME,
+            dir_id: COPIED_DIR_ID
+          }
+        }
+      })
+      const result = await collection.copy(
+        FILE_ID,
+        COPIED_FILE_NAME,
+        COPIED_DIR_ID
+      )
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/files/d04ab491-2fc6/copy'
+      )
+      expect(result).toEqual({
+        data: {
+          id: COPIED_FILE_ID,
+          type: 'io.cozy.files',
+          _id: COPIED_FILE_ID,
+          _rev: undefined,
+          _type: 'io.cozy.files',
+          name: COPIED_FILE_NAME,
+          dir_id: COPIED_DIR_ID,
+          attributes: {
+            name: COPIED_FILE_NAME,
+            dir_id: COPIED_DIR_ID
+          }
+        }
+      })
+    })
+  })
+
   describe('deleteFilePermanently', () => {
     it('should definitely delete a file', async () => {
       const FILE_ID = 'd04ab491-2fc6'
