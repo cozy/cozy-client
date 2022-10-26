@@ -711,6 +711,7 @@ files associated to a specific document
     * [.destroy(file)](#FileCollection+destroy) ⇒ <code>Promise</code>
     * [.emptyTrash()](#FileCollection+emptyTrash)
     * [.restore(id)](#FileCollection+restore) ⇒ <code>Promise</code>
+    * [.copy(id, [name], [dirId])](#FileCollection+copy) ⇒ <code>Promise.&lt;object&gt;</code>
     * [.deleteFilePermanently(id)](#FileCollection+deleteFilePermanently) ⇒ <code>Promise.&lt;object&gt;</code>
     * [.upload(data, dirPath)](#FileCollection+upload) ⇒ <code>Promise.&lt;object&gt;</code>
     * [.create(attributes)](#FileCollection+create)
@@ -892,6 +893,24 @@ Restores a trashed file.
 | Param | Type | Description |
 | --- | --- | --- |
 | id | <code>string</code> | The file's id |
+
+<a name="FileCollection+copy"></a>
+
+### fileCollection.copy(id, [name], [dirId]) ⇒ <code>Promise.&lt;object&gt;</code>
+Copy a file.
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+**Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that returns the copied file if resolved.  
+**Throws**:
+
+- <code>FetchError</code> 
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | The file's id |
+| [name] | <code>string</code> | The file copy name |
+| [dirId] | <code>string</code> | The destination directory id |
 
 <a name="FileCollection+deleteFilePermanently"></a>
 
