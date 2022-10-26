@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [33.3.0](https://github.com/cozy/cozy-client/compare/v33.2.1...v33.3.0) (2022-10-26)
+
+
+### Features
+
+* Add all doctypes translations from cozy-store ([2edcfe2](https://github.com/cozy/cozy-client/commit/2edcfe2753956b428906f0e1ce1d520ae1a8649e))
+
+
+
+
+
 ## [33.2.1](https://github.com/cozy/cozy-client/compare/v33.2.0...v33.2.1) (2022-10-20)
 
 
