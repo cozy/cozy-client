@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [33.4.0](https://github.com/cozy/cozy-client/compare/v33.3.0...v33.4.0) (2022-10-27)
+
+
+### Features
+
+* Add copy in FileCollection ([f45b861](https://github.com/cozy/cozy-client/commit/f45b861333b1c6c635345d7ce088c3a380dfa38e))
+
+
+
+
+
 # [33.2.0](https://github.com/cozy/cozy-client/compare/v33.1.2...v33.2.0) (2022-09-27)
 
 
