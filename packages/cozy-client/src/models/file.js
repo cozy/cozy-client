@@ -271,29 +271,6 @@ export const fetchFilesByQualificationRules = async (client, docRules) => {
 }
 
 /**
- * Whether the file is referenced by an album
- *
- * @param {IOCozyFile} file - An io.cozy.files document
- * @returns {boolean}
- */
-export const isReferencedByAlbum = file => {
-  if (
-    file.relationships &&
-    file.relationships.referenced_by &&
-    file.relationships.referenced_by.data &&
-    file.relationships.referenced_by.data.length > 0
-  ) {
-    const references = file.relationships.referenced_by.data
-    for (const reference of references) {
-      if (reference.type === ALBUMS_DOCTYPE) {
-        return true
-      }
-    }
-  }
-  return false
-}
-
-/**
  * Whether the file's metadata attribute exists
  *
  * @param {object} params - Param
