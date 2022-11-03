@@ -42,7 +42,6 @@ export function isSharingShortcutNew(file: IOCozyFile): boolean;
 export function isSharingShorcutNew(file: object): boolean;
 export function saveFileQualification(client: CozyClient, file: IOCozyFile, qualification: object): Promise<IOCozyFile>;
 export function fetchFilesByQualificationRules(client: object, docRules: object): Promise<QueryResult>;
-export function isReferencedByAlbum(file: IOCozyFile): boolean;
 export function hasMetadataAttribute({ file, attribute }: {
     file: IOCozyFile;
     attribute: string;
