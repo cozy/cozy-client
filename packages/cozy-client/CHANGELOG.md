@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [34.0.0](https://github.com/cozy/cozy-client/compare/v33.4.0...v34.0.0) (2022-11-04)
+
+
+### Bug Fixes
+
+* Remove isReferencedByAlbum ([890cc7b](https://github.com/cozy/cozy-client/commit/890cc7b9bad7cc1692f970f1fc439bacf38a0d3d))
+
+
+### BREAKING CHANGES
+
+* Since the introduction of the photos' clustering, each photo is at least referenced by an automatic album. Therefore, this method which was used to know if a file was referenced by an album, will always return true, does not make sense anymore because it is not what we want to test.
+
+Instead, we now want to see if a file is not referenced by an album that has not been created automatically. This implementation has been done in Drive directly in eb76c831b3deabd0857b9472451830831df5fb3a
+
+
+
+
+
 # [33.4.0](https://github.com/cozy/cozy-client/compare/v33.3.0...v33.4.0) (2022-10-27)
 
 **Note:** Version bump only for package cozy-client
