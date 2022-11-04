@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [34.0.1](https://github.com/cozy/cozy-client/compare/v34.0.0...v34.0.1) (2022-11-04)
+
+
+### Bug Fixes
+
+* Properly display objects in warning logs ([d0e0cc3](https://github.com/cozy/cozy-client/commit/d0e0cc33ed2b595ac6b9ae86bc8dfd3af616516d))
+
+
+
+
+
 # [34.0.0](https://github.com/cozy/cozy-client/compare/v33.4.0...v34.0.0) (2022-11-04)
 
 
