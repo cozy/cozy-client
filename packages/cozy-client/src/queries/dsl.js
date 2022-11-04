@@ -120,14 +120,14 @@ class QueryDefinition {
     if (hasExistsFalse) {
       logger.warn(
         `The "$exists: false" predicate should be defined as a partial index for better performance.\n
-        Selector: ${selector}`
+        Selector: ${JSON.stringify(selector)}`
       )
     }
     const hasNe = findKey(selector, '$ne')
     if (hasNe) {
       logger.info(
         `The use of the $ne operator is more efficient with a partial index.\n
-        Selector: ${selector}`
+        Selector: ${JSON.stringify(selector)}`
       )
     }
   }
