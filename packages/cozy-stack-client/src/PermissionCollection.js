@@ -162,7 +162,11 @@ class PermissionCollection extends DocumentCollection {
    */
   async fetchPermissionsByLink(permissions) {
     if (permissions.links && permissions.links.next) {
-      return await this.stackClient.fetchJSON('GET', permissions.links.next)
+      const resp = await this.stackClient.fetchJSON(
+        'GET',
+        permissions.links.next
+      )
+      return { ...resp, data: resp.data.map(normalizePermission) }
     }
   }
 
@@ -176,7 +180,7 @@ class PermissionCollection extends DocumentCollection {
     let resp = allLinks
     while (resp.links && resp.links.next) {
       resp = await this.fetchPermissionsByLink(resp)
-      allLinks.data.push(...resp.data.map(normalizePermission))
+      allLinks.data.push(...resp.data)
     }
     return allLinks
   }
