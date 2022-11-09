@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [34.1.0](https://github.com/cozy/cozy-client/compare/v34.0.1...v34.1.0) (2022-11-09)
+
+
+### Features
+
+* Method fetchPermissionsByLink normalizes permissions ([c454fc7](https://github.com/cozy/cozy-client/commit/c454fc7c1a4d2476da1e10d32d6058248762ed2a))
+
+
+
+
+
 ## [34.0.1](https://github.com/cozy/cozy-client/compare/v34.0.0...v34.0.1) (2022-11-04)
 
 
