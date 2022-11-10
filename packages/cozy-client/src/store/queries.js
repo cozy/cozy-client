@@ -261,7 +261,7 @@ export const convert$gtNullSelectors = selector => {
  * @returns {object} A query definition selector
  */
 export const mergeSelectorAndPartialIndex = queryDefinition => ({
-  ...queryDefinition.selector,
+  ...get(queryDefinition, 'selector'),
   ...get(queryDefinition, 'partialFilter')
 })
 
@@ -270,7 +270,7 @@ export const mergeSelectorAndPartialIndex = queryDefinition => ({
  * @returns {function(CozyClientDocument): boolean}
  */
 const getSelectorFilterFn = queryDefinition => {
-  if (queryDefinition.selector) {
+  if (queryDefinition.selector || queryDefinition.partialFilter) {
     const selectors = mergeSelectorAndPartialIndex(queryDefinition)
     // sift does not work like couchdb when using { $gt: null } as a selector, so we use a custom operator
     sift.use({

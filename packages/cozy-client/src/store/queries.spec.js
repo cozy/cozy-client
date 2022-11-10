@@ -418,6 +418,22 @@ describe('mergeSelectorAndPartialIndex', () => {
 
     expect(mergeSelectorAndPartialIndex(query)).toMatchObject(result)
   })
+
+  it('should return a selector even if only partial index', () => {
+    const query = Q('io.cozy.files').partialIndex({
+      specificAttributes: {
+        $exists: false
+      }
+    })
+
+    const result = {
+      specificAttributes: {
+        $exists: false
+      }
+    }
+
+    expect(mergeSelectorAndPartialIndex(query)).toMatchObject(result)
+  })
 })
 
 describe('sortAndLimitDocsIds', () => {
