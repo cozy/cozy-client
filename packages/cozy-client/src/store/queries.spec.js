@@ -4,6 +4,7 @@ import queries, {
   convert$gtNullSelectors,
   makeSorterFromDefinition,
   mergeSelectorAndPartialIndex,
+  getSelectorFilterFn,
   sortAndLimitDocsIds,
   loadQuery,
   receiveQueryError,
@@ -11,6 +12,15 @@ import queries, {
 } from './queries'
 import { Q } from '../queries/dsl'
 import { TODO_1, TODO_2, TODO_3 } from '../__tests__/fixtures'
+
+import sift from 'sift'
+// const actualSift = jest.requireActual('sift')
+
+// jest.mock('sift', () => ({
+//   __esModule: true,
+//   default: params => {
+//     use: () => {},
+//     }))
 
 describe('queries reducer', () => {
   let state
@@ -433,6 +443,50 @@ describe('mergeSelectorAndPartialIndex', () => {
     }
 
     expect(mergeSelectorAndPartialIndex(query)).toMatchObject(result)
+  })
+})
+
+// jest.mock('sift', () => {
+//   const mockSift = param => param
+
+//   mockSift.use = () => {}
+
+//   return mockSift
+// })
+
+describe('getSelectorFilterFn', () => {
+
+  beforeEach(() => {
+
+  })
+
+  afterEach(() => {
+    jest.rest
+    //jest.clearAllMocks()
+  })
+
+  it('abcd', () => {
+    const spySift = jest.spyOn(sift, 'default')
+
+    // const mockSift = param => param
+    
+    // mockSift.use = () => {}
+
+    spySift.mockImplementation(param => param)
+
+    const query = Q('io.cozy.files').partialIndex({
+      specificAttributes: {
+        $exists: false
+      }
+    })
+
+    const result = {
+      specificAttributes: {
+        $exists: false
+      }
+    }
+
+    expect(getSelectorFilterFn(query)).toMatchObject(result)
   })
 })
 

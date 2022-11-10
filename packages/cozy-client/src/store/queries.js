@@ -269,10 +269,11 @@ export const mergeSelectorAndPartialIndex = queryDefinition => ({
  * @param  {QueryDefinition} queryDefinition - A query definition
  * @returns {function(CozyClientDocument): boolean}
  */
-const getSelectorFilterFn = queryDefinition => {
+export const getSelectorFilterFn = queryDefinition => {
   if (queryDefinition.selector || queryDefinition.partialFilter) {
     const selectors = mergeSelectorAndPartialIndex(queryDefinition)
     // sift does not work like couchdb when using { $gt: null } as a selector, so we use a custom operator
+    console.log(sift)
     sift.use({
       $gtnull: (_selectorValue, actualValue) => {
         return !!actualValue
