@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [34.1.1](https://github.com/cozy/cozy-client/compare/v34.1.0...v34.1.1) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** update dependency cozy-device-helper to v2.5.0 ([1b0fa1e](https://github.com/cozy/cozy-client/commit/1b0fa1e0c10de9bb19f23a0ea17c142d4ff364d1))
+
+
+
+
+
 # [34.1.0](https://github.com/cozy/cozy-client/compare/v34.0.1...v34.1.0) (2022-11-09)
 
 **Note:** Version bump only for package cozy-client
