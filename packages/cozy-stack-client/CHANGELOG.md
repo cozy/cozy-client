@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [34.1.2](https://github.com/cozy/cozy-client/compare/v34.1.1...v34.1.2) (2022-11-10)
+
+
+### Bug Fixes
+
+* **deps:** update dependency cozy-flags to v2.10.2 ([a158b48](https://github.com/cozy/cozy-client/commit/a158b48b7dd9e3fb146f9e3fb54730c4544335e8))
+
+
+
+
+
 # [34.1.0](https://github.com/cozy/cozy-client/compare/v34.0.1...v34.1.0) (2022-11-09)
 
 
