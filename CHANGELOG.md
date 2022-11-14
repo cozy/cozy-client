@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [34.1.3](https://github.com/cozy/cozy-client/compare/v34.1.2...v34.1.3) (2022-11-14)
+
+
+### Bug Fixes
+
+* Query definition evaluation when only partialFilter ([61803b7](https://github.com/cozy/cozy-client/commit/61803b7d784c6de230f9f76ba3f046bf124964e6))
+
+
+
+
+
 ## [34.1.2](https://github.com/cozy/cozy-client/compare/v34.1.1...v34.1.2) (2022-11-10)
 
 
