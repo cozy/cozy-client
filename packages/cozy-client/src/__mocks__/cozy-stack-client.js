@@ -7,6 +7,9 @@ const {
 
 const collectionMock = {
   all: jest.fn(() => Promise.resolve()),
+  // needed because we call it inside the CozyClient constructor
+  // so we can't define it during the test
+  get: jest.fn(() => Promise.resolve({ data: [] })),
   find: jest.fn(() => Promise.resolve()),
   create: jest.fn(() => Promise.resolve()),
   update: jest.fn(() => Promise.resolve()),

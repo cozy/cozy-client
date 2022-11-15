@@ -177,7 +177,7 @@ class CozyClient {
     }
 
     this.appMetadata = appMetadata
-
+    this.loginPromise = null
     options.uri = securiseUri(options.uri)
 
     this.options = options
@@ -217,6 +217,14 @@ class CozyClient {
       }
     }
 
+    /**
+     * Holds in-flight promises for deduplication purpose
+     *
+     * @private
+     * @type {PromiseCache}
+     */
+    this._promiseCache = new PromiseCache()
+
     if (options.uri && options.token) {
       this.login()
     }
@@ -229,14 +237,6 @@ class CozyClient {
     if (options.store !== false) {
       this.ensureStore()
     }
-
-    /**
-     * Holds in-flight promises for deduplication purpose
-     *
-     * @private
-     * @type {PromiseCache}
-     */
-    this._promiseCache = new PromiseCache()
   }
 
   /**
@@ -347,11 +347,15 @@ class CozyClient {
         token: credentials.token,
         scope: credentials.token.scope
       }
-      return new CozyClient({
+      const client = new CozyClient({
         uri: oldClient._url,
         ...oauthOptions,
         ...options
       })
+      if (client.loginPromise) {
+        await client.loginPromise
+      }
+      return client
     } else {
       throw new Error(
         'Cannot instantiate a new client: old client is not an OAuth client. CozyClient.fromOldClient might be more suitable.'
