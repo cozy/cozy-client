@@ -2277,6 +2277,7 @@ Document representing a io.cozy.files
 | attributes | [<code>FileAttributes</code>](#FileAttributes) | Attributes of the file |
 | meta | <code>object</code> | Meta |
 | relationships | <code>object</code> | Relationships |
+| referenced_by | <code>object</code> | Referenced by |
 
 <a name="Stream"></a>
 
