@@ -308,10 +308,13 @@ class FileCollection extends DocumentCollection {
    * @returns {Promise<{data, meta}>}          The JSON API conformant response.
    */
   async removeReferencedBy(document, documents) {
-    const refs = documents.map(d => ({ id: d._id, type: d._type }))
+    const refs = documents.map(d => ({
+      id: d._id || d.id,
+      type: d._type || d.type
+    }))
     const resp = await this.stackClient.fetchJSON(
       'DELETE',
-      uri`/files/${document._id}/relationships/referenced_by`,
+      uri`/files/${document._id || document.id}/relationships/referenced_by`,
       { data: refs }
     )
     return {
