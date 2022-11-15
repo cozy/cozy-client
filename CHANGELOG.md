@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [34.1.4](https://github.com/cozy/cozy-client/compare/v34.1.3...v34.1.4) (2022-11-15)
+
+
+### Bug Fixes
+
+* Be more defensive on id and type ([48ad8bb](https://github.com/cozy/cozy-client/commit/48ad8bb6914552ba3edf572057757c6237d389ed))
+* Delete File ([47e4e07](https://github.com/cozy/cozy-client/commit/47e4e078db7dcb317fe78a93fc6c757012cf6011))
+
+
+
+
+
 ## [34.1.3](https://github.com/cozy/cozy-client/compare/v34.1.2...v34.1.3) (2022-11-14)
 
 
