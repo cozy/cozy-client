@@ -146,6 +146,7 @@ declare class CozyClient {
      */
     constructor(rawOptions?: ClientOptions);
     appMetadata: any;
+    loginPromise: Promise<void>;
     options: {
         client?: object;
         token?: Token;
@@ -184,16 +185,16 @@ declare class CozyClient {
     capabilities: ClientCapabilities;
     plugins: {};
     /**
-     * @type {object}
-     */
-    storeAccesors: object;
-    /**
      * Holds in-flight promises for deduplication purpose
      *
      * @private
      * @type {PromiseCache}
      */
     private _promiseCache;
+    /**
+     * @type {object}
+     */
+    storeAccesors: object;
     /**
      * Gets overrided by MicroEE.mixin
      * This is here just so typescript does not scream
@@ -275,7 +276,6 @@ declare class CozyClient {
         token: string;
         uri: string;
     }): Promise<any>;
-    loginPromise: Promise<void>;
     _login(options: any): Promise<void>;
     isRevoked: boolean;
     /**

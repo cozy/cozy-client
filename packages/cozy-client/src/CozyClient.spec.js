@@ -576,6 +576,10 @@ describe('CozyClient logout', () => {
   })
 
   it('should reset the redux state', async () => {
+    stackClient = {
+      fetch: jest.fn(),
+      on: jest.fn()
+    }
     client = new CozyClient({
       links,
       stackClient,
