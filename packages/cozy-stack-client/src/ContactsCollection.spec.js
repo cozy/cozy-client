@@ -36,6 +36,16 @@ describe('ContactsCollection', () => {
     jest.spyOn(console, 'warn').mockImplementation(() => {})
   })
 
+  it('call find route if there is no selector', async () => {
+    const { col, stackClient } = setup()
+    await col.find()
+    expect(stackClient.fetchJSON).toHaveBeenCalledWith(
+      'POST',
+      '/data/io.cozy.contacts/_find',
+      expect.any(Object)
+    )
+  })
+
   it('should use a special route for the myself contact', async () => {
     const { col, stackClient } = setup()
     const resp = await col.find({

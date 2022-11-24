@@ -10,7 +10,11 @@ const normalizeMyselfResp = resp => {
 
 class ContactsCollection extends DocumentCollection {
   async find(selector, options) {
-    if (Object.values(selector).length === 1 && selector['me'] == true) {
+    if (
+      selector !== undefined &&
+      Object.values(selector).length === 1 &&
+      selector['me'] == true
+    ) {
       return this.findMyself()
     } else {
       return super.find(selector, options)
