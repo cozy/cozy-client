@@ -57,7 +57,7 @@ const queryInitialState = {
   hasMore: false,
   count: 0,
   fetchedPagesCount: 0,
-  data: [],
+  data: new Set(),
   bookmark: null
 }
 
@@ -79,6 +79,7 @@ export const sortAndLimitDocsIds = (
   { count, fetchedPagesCount }
 ) => {
   let evaluatedIds = [...ids]
+
   if (queryState.definition.sort && documents) {
     const sorter = makeSorterFromDefinition(queryState.definition)
     const allDocs = documents[queryState.definition.doctype]
@@ -199,7 +200,7 @@ const query = (state = queryInitialState, action, documents) => {
           ...common,
           hasMore: false,
           count: 1,
-          data: [properId(response.data)]
+          data: new Set([properId(response.data)])
         }
       }
       const count =
@@ -218,7 +219,7 @@ const query = (state = queryInitialState, action, documents) => {
         hasMore: response.next !== undefined ? response.next : state.hasMore,
         count,
         fetchedPagesCount,
-        data
+        data: new Set(data)
       }
     }
     case RECEIVE_QUERY_ERROR:
@@ -361,7 +362,7 @@ export const updateData = (query, newData, documents) => {
     docs.map(properId)
   )
   const { true: matchedIds = [], false: unmatchedIds = [] } = res
-  const originalIds = query.data
+  const originalIds = Array.from(query.data)
 
   const autoUpdate = query.options && query.options.autoUpdate
   const shouldRemove = !autoUpdate || autoUpdate.remove !== false
@@ -385,7 +386,7 @@ export const updateData = (query, newData, documents) => {
   })
   return {
     ...query,
-    data: docsIds,
+    data: new Set(docsIds),
     count: docsIds.length,
     fetchedPagesCount,
     lastUpdate: changed ? Date.now() : query.lastUpdate

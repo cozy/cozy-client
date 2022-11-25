@@ -62,7 +62,7 @@ import { QueryDefinition } from './queries/dsl'
  * @property {boolean} hasMore
  * @property {number} count
  * @property {number} fetchedPagesCount
- * @property {object|Array} data
+ * @property {Set} data
  * @property {string} bookmark
  * @property {object} [execution_stats]
  * @property {QueryOptions} [options]
