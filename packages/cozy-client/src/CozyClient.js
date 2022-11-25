@@ -920,13 +920,47 @@ client.query(Q('io.cozy.bills'))`)
     const queryId =
       options.as || this.queryIdGenerator.generateId(queryDefinition)
     const existingQuery = this.getQueryFromState(queryId, options)
-
+    if (queryDefinition.id) {
+      const doc = this.getDocumentFromState(
+        queryDefinition.doctype,
+        queryDefinition.id
+      )
+      const queries = this.store.queries
+      let fetchedFields = []
+      Object.values(queries).map(query => {
+        if (query.data.include(doc._id)) {
+          if (query.definition.fields === undefined) {
+            fetchedFields = undefined
+            return
+          }
+          fetchedFields.concat(query.definition.fields)
+        }
+      })
+      if (fetchedFields === undefined) {
+        return doc
+      }
+      const hasNoAllFields = queryDefinition.fields.some(field => {
+        return !fetchedFields.includes(field)
+      })
+      if (hasNoAllFields) {
+        return doc
+      }
+    }
+    /**
+     * if(query is for single Doc){
+     * const doc = this.getDocumentFromState(option.id)
+     * if(doc.lastFetched < doc.lastFetched + fetchPolicy){
+     * return doc
+     * }
+     * }
+     */
     if (options.fetchPolicy) {
       if (!options.as) {
         throw new Error(
           'Cannot use `fetchPolicy` without naming the query, please use `as` to name the query'
         )
       }
+      // client.query(Q('io.cozy.files'), fetchPolicy 10 minutes)
       const shouldFetch = options.fetchPolicy(existingQuery)
       if (!shouldFetch) {
         return
