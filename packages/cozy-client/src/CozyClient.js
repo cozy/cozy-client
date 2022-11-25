@@ -32,6 +32,7 @@ import {
   receiveMutationResult,
   receiveMutationError,
   getQueryFromState,
+  getQueriesFromState,
   getRawQueryFromState,
   getCollectionFromState,
   getDocumentFromState,
@@ -925,27 +926,11 @@ client.query(Q('io.cozy.bills'))`)
         queryDefinition.doctype,
         queryDefinition.id
       )
-      const queries = this.store.queries
-      let fetchedFields = []
-      Object.values(queries).map(query => {
-        if (query.data.include(doc._id)) {
-          if (query.definition.fields === undefined) {
-            fetchedFields = undefined
-            return
-          }
-          fetchedFields.concat(query.definition.fields)
-        }
-      })
-      if (fetchedFields === undefined) {
-        return doc
-      }
-      const hasNoAllFields = queryDefinition.fields.some(field => {
-        return !fetchedFields.includes(field)
-      })
-      if (hasNoAllFields) {
+      if (this.documentHasAllRequiredFields(queryDefinition.fields, doc)) {
         return doc
       }
     }
+
     /**
      * if(query is for single Doc){
      * const doc = this.getDocumentFromState(option.id)
@@ -1323,6 +1308,32 @@ client.query(Q('io.cozy.bills'))`)
       }
     }
     return this.storeAccessors
+  }
+
+  /**
+   *
+   * @param {*} queryDefFields
+   * @param {*} doc
+   * @returns
+   */
+  documentHasAllRequiredFields(queryDefFields, doc) {
+    const queries = Object.values(getQueriesFromState(this.store.getState()))
+    let fetchedFields = []
+
+    for (let i = 0; i < queries.length; i++) {
+      if (queries[i].data.has(doc._id)) {
+        if (queryDefFields === undefined) {
+          // The query definition includes all the fields: the document is complete in the store
+          return true
+        }
+        fetchedFields = fetchedFields.concat(queries[i].definition.fields)
+      }
+    }
+    // Check if the union of all matching queries fields includes the fields from the query definition
+    const hasAllFields = queryDefFields.every(field => {
+      return fetchedFields.includes(field)
+    })
+    return hasAllFields
   }
 
   /**

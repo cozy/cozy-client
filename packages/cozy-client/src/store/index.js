@@ -112,6 +112,10 @@ export const getQueryFromState = (state, queryId) =>
     getStateRoot(state).documents
   )
 
+export const getQueriesFromState = state => {
+  return getStateRoot(state).queries
+}
+
 export const getRawQueryFromState = (state, queryId) =>
   getQueryFromSlice(getStateRoot(state).queries, queryId)
 

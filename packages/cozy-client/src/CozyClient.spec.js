@@ -28,6 +28,7 @@ import {
   receiveMutationResult,
   receiveMutationError,
   getQueryFromState,
+  getQueriesFromState,
   getRawQueryFromState,
   loadQuery
 } from './store'
@@ -50,6 +51,7 @@ const METADATA_VERSION = 1
 jest.mock('./store', () => ({
   ...jest.requireActual('./store'),
   getQueryFromState: jest.fn().mockReturnValue({}),
+  getQueriesFromState: jest.fn().mockReturnValue({}),
   getRawQueryFromState: jest.fn().mockReturnValue({})
 }))
 
@@ -1053,6 +1055,48 @@ describe('CozyClient', () => {
           }
         }
       })
+    })
+  })
+
+  describe('documentHasAllRequiredFields', () => {
+    beforeEach(() => {
+      getQueriesFromState.mockReturnValue({
+        'io.cozy.todos/1': {
+          definition: {
+            fields: undefined
+          },
+          data: new Set([1, 2, 3, 4])
+        },
+        'io.cozy.todos/2': {
+          definition: {
+            fields: ['label']
+          },
+          data: new Set([5, 6])
+        },
+        'io.cozy.todos/3': {
+          definition: {
+            fields: ['date']
+          },
+          data: new Set([5, 6, 7])
+        }
+      })
+    })
+
+    fit('should return true when the doc is complete', () => {
+      expect(client.documentHasAllRequiredFields(undefined, { _id: 2 })).toBe(
+        true
+      )
+      expect(client.documentHasAllRequiredFields(['label'], { _id: 5 })).toBe(
+        true
+      )
+    })
+
+    fit('should return false when the doc is not complete', () => {
+      expect(
+        client.documentHasAllRequiredFields(['label', 'date', 'done'], {
+          _id: 5
+        })
+      ).toBe(false)
     })
   })
 
