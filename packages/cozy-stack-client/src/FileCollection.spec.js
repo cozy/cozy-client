@@ -83,6 +83,54 @@ describe('FileCollection', () => {
     })
   })
 
+  describe('getDownloadLinkByRevision', () => {
+    beforeEach(() => {
+      client.fetchJSON.mockResolvedValue({
+        ...STAT_BY_ID_RESPONSE,
+
+        links: {
+          related: 'http://foo'
+        }
+      })
+    })
+
+    afterEach(() => {
+      client.fetchJSON.mockReset()
+    })
+
+    it('should encode filename', async () => {
+      await collection.getDownloadLinkByRevision('1', '#name')
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/files/downloads?VersionId=1&Filename=%2523name'
+      )
+    })
+  })
+
+  describe('getDownloadLinkById', () => {
+    beforeEach(() => {
+      client.fetchJSON.mockResolvedValue({
+        ...STAT_BY_ID_RESPONSE,
+
+        links: {
+          related: 'http://foo'
+        }
+      })
+    })
+
+    afterEach(() => {
+      client.fetchJSON.mockReset()
+    })
+
+    it('should encode filename', async () => {
+      await collection.getDownloadLinkById('1', '#name')
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/files/downloads?Id=1&Filename=%2523name'
+      )
+    })
+  })
+
   describe('find', () => {
     client.uri = 'http://cozy.tools'
     const FIND_RESPONSE = {
