@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [34.1.5](https://github.com/cozy/cozy-client/compare/v34.1.4...v34.1.5) (2022-11-28)
+
+
+### Bug Fixes
+
+* Encode filename ([dda0284](https://github.com/cozy/cozy-client/commit/dda028423bbbcf9b3cd3f6ae50f6da9bd29da41d))
+
+
+
+
+
 ## [34.1.4](https://github.com/cozy/cozy-client/compare/v34.1.3...v34.1.4) (2022-11-15)
 
 
