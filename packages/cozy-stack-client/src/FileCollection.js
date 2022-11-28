@@ -614,7 +614,10 @@ class FileCollection extends DocumentCollection {
 
   getDownloadLinkById(id, filename) {
     return this.stackClient
-      .fetchJSON('POST', uri`/files/downloads?Id=${id}&Filename=${filename}`)
+      .fetchJSON(
+        'POST',
+        uri`/files/downloads?Id=${id}&Filename=${encodeURIComponent(filename)}`
+      )
       .then(this.extractResponseLinkRelated)
   }
 
@@ -622,7 +625,9 @@ class FileCollection extends DocumentCollection {
     return this.stackClient
       .fetchJSON(
         'POST',
-        uri`/files/downloads?VersionId=${versionId}&Filename=${filename}`
+        uri`/files/downloads?VersionId=${versionId}&Filename=${encodeURIComponent(
+          filename
+        )}`
       )
       .then(this.extractResponseLinkRelated)
   }
