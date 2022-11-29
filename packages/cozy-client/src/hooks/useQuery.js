@@ -38,8 +38,13 @@ const useQuery = (queryDefinition, options) => {
     throw new Error('Bad query')
   }
 
-  const definition = resolveToValue(queryDefinition)
   const { as, enabled = true } = options
+  // If the query is not enabled, no need to call the queryDefinition
+  // because sometimes, we can have a getById(null) since we want to
+  // enabled the query only when the specific id is defined. And since
+  // Q() can throw error when some checks are KO we don't call Q() if
+  // enabled is not true
+  const definition = enabled ? resolveToValue(queryDefinition) : null
 
   if (!as) {
     throw new Error('You must specify options.as when using useQuery')
