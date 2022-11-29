@@ -8,6 +8,14 @@ import { Q } from '../queries/dsl'
 import { setupClient, makeWrapper } from '../testing/utils'
 import simpsonsFixture from '../testing/simpsons.json'
 
+/**
+ * @param {object} Options options
+ * @param {object=} Options.customClient custom Client
+ * @param {object=} Options.queryDefinition custom Querydef
+ * @param {object=} Options.queryOptions custom QueryOpts
+ * @param {object=} Options.storeQueries custome StoreQueries
+ * @returns
+ */
 const setupQuery = ({
   customClient,
   queryDefinition,
@@ -51,7 +59,32 @@ describe('use query', () => {
       })
     })
   })
-
+  it('should respect the enable property', () => {
+    const { client } = setupQuery({
+      queryOptions: {
+        as: 'simpsons',
+        enabled: false
+      },
+      queryDefinition: () => Q('io.cozy.simpsons')
+    })
+    expect(client.query).not.toHaveBeenCalled()
+  })
+  it('should respect not throw error if the qDef contains a getById with null', () => {
+    const {
+      client,
+      hookResult: {
+        result: { current }
+      }
+    } = setupQuery({
+      queryOptions: {
+        as: 'simpsonsTest',
+        enabled: false
+      },
+      queryDefinition: () => Q('io.cozy.simpsons').getById(null)
+    })
+    expect(client.query).not.toThrowError()
+    expect(current.fetchStatus).toEqual('pending')
+  })
   it('should share the same API than ObservableQuery', () => {
     const {
       hookResult: {
