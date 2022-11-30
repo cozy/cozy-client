@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [34.2.0](https://github.com/cozy/cozy-client/compare/v34.1.5...v34.2.0) (2022-11-30)
+
+
+### Features
+
+* **documentTypeData:** Add other_invoice qualif in homeLabels theme ([1a69b0d](https://github.com/cozy/cozy-client/commit/1a69b0d4727f58869d564ed9fc70d05d13c1d5b6))
+
+
+
+
+
 ## [34.1.5](https://github.com/cozy/cozy-client/compare/v34.1.4...v34.1.5) (2022-11-28)
 
 
