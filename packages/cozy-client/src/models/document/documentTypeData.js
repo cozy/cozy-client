@@ -105,6 +105,8 @@ const homeLabels = [
   'telecom_invoice',
   'energy_invoice',
   'water_invoice',
+  'other_invoice',
+  'work_invoice',
   'house_sale_agreeement',
   'building_permit',
   'technical_diagnostic_record',
@@ -114,7 +116,6 @@ const homeLabels = [
   'accommodation_proof',
   'house_insurance',
   'work_quote',
-  'work_invoice',
   'other_house_document'
 ]
 
