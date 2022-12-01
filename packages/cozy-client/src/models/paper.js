@@ -5,6 +5,7 @@ import get from 'lodash/get'
 import { IOCozyFile } from '../types'
 
 const DEFAULT_NOTICE_PERIOD_DAYS = 90
+const PERSONAL_SPORTING_LICENCE_PERIOD_DAYS = 365
 const PERSONAL_SPORTING_LICENCE_NOTICE_PERIOD_DAYS = 15
 
 /**
@@ -70,50 +71,55 @@ export const isExpiring = file => {
 }
 
 /**
- * @param {IOCozyFile} file - An CozyFile
- * @param {string} dateLabel - Label of date
- * @returns {Date} Normalize expiration date
+ * @param {IOCozyFile} file - io.cozy.files document
+ * @returns {Date | null} Expiration date
  */
-export const computeNormalizeExpirationDate = (file, dateLabel) => {
-  if (file.metadata[dateLabel]) {
-    if (dateLabel === 'referencedDate') {
-      return add(new Date(file.metadata[dateLabel] ?? file.created_at), {
-        days: 365
-      })
-    }
-    return new Date(file.metadata[dateLabel])
+export const computeExpirationDate = file => {
+  if (isExpiringFrenchNationalIdCard(file) || isExpiringResidencePermit(file)) {
+    const expirationDate = get(file, 'metadata.expirationDate', null)
+    return new Date(expirationDate)
   }
-
+  if (isExpiringPersonalSportingLicense(file)) {
+    const referencedDate = get(file, 'metadata.referencedDate', null)
+    const created_at = get(file, 'created_at', null)
+    return add(new Date(referencedDate ?? created_at), {
+      days: PERSONAL_SPORTING_LICENCE_PERIOD_DAYS
+    })
+  }
   return null
 }
 
 /**
- * @param {IOCozyFile} file - An CozyFile
- * @param {string} dateLabel - Label of date
- * @returns {Date} Notice date
+ * @param {IOCozyFile} file - io.cozy.files document
+ * @returns {number | null} Expiration notice period in days
  */
-export const computeNoticeDate = (file, dateLabel) => {
-  let noticeDays
-  if (file.metadata[dateLabel]) {
-    if (dateLabel === 'referencedDate') {
-      noticeDays = PERSONAL_SPORTING_LICENCE_NOTICE_PERIOD_DAYS
-    }
-    if (dateLabel === 'expirationDate') {
-      noticeDays =
-        parseInt(file.metadata.noticePeriod, 10) || DEFAULT_NOTICE_PERIOD_DAYS
-    }
+const computeExpirationNoticePeriodInDays = file => {
+  if (isExpiringFrenchNationalIdCard(file) || isExpiringResidencePermit(file)) {
+    const noticePeriodInDays = get(file, 'metadata.noticePeriod', null)
+    return noticePeriodInDays
+      ? parseInt(noticePeriodInDays, 10)
+      : DEFAULT_NOTICE_PERIOD_DAYS
   }
-  if (!noticeDays) {
+  if (isExpiringPersonalSportingLicense(file)) {
+    return PERSONAL_SPORTING_LICENCE_NOTICE_PERIOD_DAYS
+  }
+  return null
+}
+
+/**
+ * @param {IOCozyFile} file - io.cozy.files document
+ * @returns {Date | null} Expiration notice date
+ */
+export const computeExpirationNoticeDate = file => {
+  const expirationDate = computeExpirationDate(file)
+  if (expirationDate == null) {
     return null
   }
-
-  const normalizeExpirationDate = computeNormalizeExpirationDate(
-    file,
-    dateLabel
-  )
-  return normalizeExpirationDate
-    ? sub(normalizeExpirationDate, {
-        days: noticeDays
-      })
-    : null
+  const noticePeriodInDays = computeExpirationNoticePeriodInDays(file)
+  if (noticePeriodInDays == null) {
+    return null
+  }
+  return sub(expirationDate, {
+    days: noticePeriodInDays
+  })
 }
