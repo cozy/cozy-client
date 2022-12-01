@@ -7,26 +7,6 @@ import { IOCozyFile } from '../types'
 const DEFAULT_NOTICE_PERIOD_DAYS = 90
 const PERSONAL_SPORTING_LICENCE_NOTICE_PERIOD_DAYS = 15
 
-const papersDefinitions = {
-  notifications: {
-    papersToNotify: [
-      {
-        label: 'national_id_card',
-        country: 'fr',
-        expirationDateAttribute: 'expirationDate'
-      },
-      {
-        label: 'residence_permit',
-        expirationDateAttribute: 'expirationDate'
-      },
-      {
-        label: 'personal_sporting_licence',
-        expirationDateAttribute: 'referencedDate'
-      }
-    ]
-  }
-}
-
 /**
  * @param {IOCozyFile} file - io.cozy.files document
  * @returns {boolean}
@@ -136,25 +116,4 @@ export const computeNoticeDate = (file, dateLabel) => {
         days: noticeDays
       })
     : null
-}
-
-/**
- * @param {IOCozyFile} file - An CozyFile
- * @returns {{ label: string, country?: string, expirationDateAttribute: string }} papersToNotify - Rule in the paperDefinitions file
- */
-export const getPaperToNotify = file => {
-  const { papersToNotify } = papersDefinitions.notifications
-
-  return papersToNotify.find(({ label, expirationDateAttribute, country }) => {
-    let validCountry = true
-    if (country && country !== 'fr') {
-      validCountry = file.metadata.country === country
-    }
-
-    return (
-      validCountry &&
-      label === file.metadata.qualification.label &&
-      file.metadata[expirationDateAttribute]
-    )
-  })
 }
