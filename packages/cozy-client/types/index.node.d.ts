@@ -8,6 +8,7 @@ export { default as Registry } from "./registry";
 export * from "./mock";
 export * from "./cli";
 export { BulkEditError } from "./errors";
+export { default as fetchPolicies } from "./policies";
 import * as manifest from "./manifest";
 import * as models from "./models";
 export { manifest, models };

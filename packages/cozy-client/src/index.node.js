@@ -39,3 +39,5 @@ export * from './cli'
 
 import * as models from './models'
 export { models }
+
+export { default as fetchPolicies } from './policies'
