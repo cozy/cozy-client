@@ -123,3 +123,17 @@ export const computeExpirationNoticeDate = file => {
     days: noticePeriodInDays
   })
 }
+
+/**
+ * @param {IOCozyFile} file - io.cozy.files document
+ * @returns {string | null} Expiration notice link
+ */
+export const computeExpirationNoticeLink = file => {
+  if (isExpiringFrenchNationalIdCard(file)) {
+    return 'https://www.service-public.fr/particuliers/vosdroits/N358'
+  }
+  if (isExpiringResidencePermit(file)) {
+    return 'https://www.service-public.fr/particuliers/vosdroits/N110'
+  }
+  return null
+}
