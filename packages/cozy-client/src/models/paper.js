@@ -137,3 +137,30 @@ export const computeExpirationNoticeLink = file => {
   }
   return null
 }
+
+/**
+ * @param {IOCozyFile} file - io.cozy.files document
+ * @returns {boolean}
+ */
+export const isExpired = file => {
+  const now = new Date()
+  const expirationDate = computeExpirationDate(file)
+  const isExpired = expirationDate != null && expirationDate <= now
+  return isExpired
+}
+
+/**
+ * @param {IOCozyFile} file - io.cozy.files document
+ * @returns {boolean}
+ */
+export const isExpiringSoon = file => {
+  const now = new Date()
+  const expirationDate = computeExpirationDate(file)
+  const expirationNoticeDate = computeExpirationNoticeDate(file)
+  const isExpiringSoon =
+    expirationDate != null &&
+    expirationNoticeDate != null &&
+    expirationNoticeDate <= now &&
+    now < expirationDate
+  return isExpiringSoon
+}
