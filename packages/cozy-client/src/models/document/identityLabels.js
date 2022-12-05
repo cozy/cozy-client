@@ -65,10 +65,7 @@ export const residence_permit = {
    * @param {IOCozyFile} file - io.cozy.files document
    * @returns {Date}
    */
-  expirationDate(file) {
-    const expirationDate = file.metadata?.expirationDate
-    return new Date(expirationDate)
-  },
+  expirationDate: national_id_card.expirationDate,
 
   /**
    * @param {IOCozyFile} file - io.cozy.files document
@@ -82,10 +79,7 @@ export const residence_permit = {
    * @param {IOCozyFile} file - io.cozy.files document
    * @returns {number}
    */
-  noticePeriod(file) {
-    const noticePeriodInDays = file.metadata?.noticePeriod
-    return parseInt(noticePeriodInDays, 10)
-  }
+  noticePeriod: national_id_card.noticePeriod
 }
 export const personal_sporting_licence = {
   /**
