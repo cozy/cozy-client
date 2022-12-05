@@ -1,6 +1,5 @@
 import add from 'date-fns/add'
 import sub from 'date-fns/sub'
-import get from 'lodash/get'
 
 import { IOCozyFile } from '../types'
 
@@ -13,9 +12,9 @@ const PERSONAL_SPORTING_LICENCE_NOTICE_PERIOD_DAYS = 15
  * @returns {boolean}
  */
 const isExpiringFrenchNationalIdCard = file => {
-  const label = get(file, 'metadata.qualification.label', null)
-  const country = get(file, 'metadata.country', null)
-  const expirationDate = get(file, 'metadata.expirationDate', null)
+  const label = file.metadata?.qualification?.label
+  const country = file.metadata?.country
+  const expirationDate = file.metadata?.expirationDate
   if (
     label === 'national_id_card' &&
     (!country || country === 'fr') &&
@@ -31,8 +30,8 @@ const isExpiringFrenchNationalIdCard = file => {
  * @returns {boolean}
  */
 const isExpiringResidencePermit = file => {
-  const label = get(file, 'metadata.qualification.label', null)
-  const expirationDate = get(file, 'metadata.expirationDate', null)
+  const label = file.metadata?.qualification?.label
+  const expirationDate = file.metadata?.expirationDate
   if (label === 'residence_permit' && expirationDate) {
     return true
   }
@@ -44,9 +43,9 @@ const isExpiringResidencePermit = file => {
  * @returns {boolean}
  */
 const isExpiringPersonalSportingLicense = file => {
-  const label = get(file, 'metadata.qualification.label', null)
-  const referencedDate = get(file, 'metadata.referencedDate', null)
-  const created_at = get(file, 'created_at', null)
+  const label = file.metadata?.qualification?.label
+  const referencedDate = file.metadata?.referencedDate
+  const created_at = file.created_at
   if (label === 'personal_sporting_licence' && (referencedDate || created_at)) {
     return true
   }
@@ -76,12 +75,12 @@ export const isExpiring = file => {
  */
 export const computeExpirationDate = file => {
   if (isExpiringFrenchNationalIdCard(file) || isExpiringResidencePermit(file)) {
-    const expirationDate = get(file, 'metadata.expirationDate', null)
+    const expirationDate = file.metadata?.expirationDate
     return new Date(expirationDate)
   }
   if (isExpiringPersonalSportingLicense(file)) {
-    const referencedDate = get(file, 'metadata.referencedDate', null)
-    const created_at = get(file, 'created_at', null)
+    const referencedDate = file.metadata?.referencedDate
+    const created_at = file.created_at
     return add(new Date(referencedDate ?? created_at), {
       days: PERSONAL_SPORTING_LICENCE_PERIOD_DAYS
     })
@@ -95,7 +94,7 @@ export const computeExpirationDate = file => {
  */
 const computeExpirationNoticePeriodInDays = file => {
   if (isExpiringFrenchNationalIdCard(file) || isExpiringResidencePermit(file)) {
-    const noticePeriodInDays = get(file, 'metadata.noticePeriod', null)
+    const noticePeriodInDays = file.metadata?.noticePeriod
     return noticePeriodInDays
       ? parseInt(noticePeriodInDays, 10)
       : DEFAULT_NOTICE_PERIOD_DAYS
