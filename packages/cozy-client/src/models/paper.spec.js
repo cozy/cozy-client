@@ -2,6 +2,34 @@ import MockDate from 'mockdate'
 
 import * as paperModel from './paper'
 
+describe('isExpiring', () => {
+  const fakeFile01 = {
+    name: 'file01',
+    metadata: {
+      qualification: { label: 'national_id_card' },
+      expirationDate: '2022-09-23T11:35:58.118Z'
+    }
+  }
+  const fakeFile02 = {
+    name: 'file02',
+    metadata: {
+      qualification: { label: 'personal_sporting_licence' },
+      referencedDate: '2022-09-23T11:35:58.118Z'
+    }
+  }
+  const fakeFile03 = {
+    name: 'file03'
+  }
+  it.each`
+    file          | result
+    ${fakeFile01} | ${true}
+    ${fakeFile02} | ${true}
+    ${fakeFile03} | ${false}
+  `(`should test if a $file.name is expiring or not`, ({ file, result }) => {
+    expect(paperModel.isExpiring(file)).toEqual(result)
+  })
+})
+
 describe('Expiration', () => {
   beforeEach(() => {
     MockDate.set('2022-11-01T11:35:58.118Z')
