@@ -6,69 +6,174 @@ import { IOCozyFile } from '../types'
 const PERSONAL_SPORTING_LICENCE_PERIOD_DAYS = 365
 const PERSONAL_SPORTING_LICENCE_NOTICE_PERIOD_DAYS = 15
 
-/**
- * @param {IOCozyFile} file - io.cozy.files document
- * @returns {boolean}
- */
-const isExpiringFrenchNationalIdCard = file => {
-  const label = file.metadata?.qualification?.label
-  const country = file.metadata?.country
-  const expirationDate = file.metadata?.expirationDate
-  const noticePeriod = file.metadata?.noticePeriod
-  if (
-    label === 'national_id_card' &&
-    (!country || country === 'fr') &&
-    expirationDate &&
-    noticePeriod
-  ) {
-    return true
-  }
-  return false
-}
+const paperTypesThatMightExpire = Object.assign(Object.create(null), {
+  national_id_card: {
+    /**
+     * @param {IOCozyFile} file - io.cozy.files document
+     * @returns {boolean}
+     */
+    isExpiring(file) {
+      const country = file.metadata?.country
+      const expirationDate = file.metadata?.expirationDate
+      const noticePeriod = file.metadata?.noticePeriod
+      if ((!country || country === 'fr') && expirationDate && noticePeriod) {
+        return true
+      }
+      return false
+    },
 
-/**
- * @param {IOCozyFile} file - io.cozy.files document
- * @returns {boolean}
- */
-const isExpiringResidencePermit = file => {
-  const label = file.metadata?.qualification?.label
-  const expirationDate = file.metadata?.expirationDate
-  const noticePeriod = file.metadata?.noticePeriod
-  if (label === 'residence_permit' && expirationDate && noticePeriod) {
-    return true
-  }
-  return false
-}
+    /**
+     * @param {IOCozyFile} file - io.cozy.files document
+     * @returns {Date | null}
+     */
+    computeExpirationDate(file) {
+      if (!paperTypesThatMightExpire.national_id_card.isExpiring(file)) {
+        return null
+      }
+      const expirationDate = file.metadata?.expirationDate
+      return new Date(expirationDate)
+    },
 
-/**
- * @param {IOCozyFile} file - io.cozy.files document
- * @returns {boolean}
- */
-const isExpiringPersonalSportingLicense = file => {
-  const label = file.metadata?.qualification?.label
-  const referencedDate = file.metadata?.referencedDate
-  const created_at = file.created_at
-  if (label === 'personal_sporting_licence' && (referencedDate || created_at)) {
-    return true
+    /**
+     * @param {IOCozyFile} file - io.cozy.files document
+     * @returns {number | null}
+     */
+    computeExpirationNoticePeriodInDays(file) {
+      if (!paperTypesThatMightExpire.national_id_card.isExpiring(file)) {
+        return null
+      }
+      const noticePeriodInDays = file.metadata?.noticePeriod
+      return parseInt(noticePeriodInDays, 10)
+    },
+
+    /**
+     * @param {IOCozyFile} file - io.cozy.files document
+     * @returns {string | null}
+     */
+    computeExpirationNoticeLink(file) {
+      if (!paperTypesThatMightExpire.national_id_card.isExpiring(file)) {
+        return null
+      }
+      return 'https://www.service-public.fr/particuliers/vosdroits/N358'
+    }
+  },
+  residence_permit: {
+    /**
+     * @param {IOCozyFile} file - io.cozy.files document
+     * @returns {boolean}
+     */
+    isExpiring(file) {
+      const expirationDate = file.metadata?.expirationDate
+      const noticePeriod = file.metadata?.noticePeriod
+      if (expirationDate && noticePeriod) {
+        return true
+      }
+      return false
+    },
+
+    /**
+     * @param {IOCozyFile} file - io.cozy.files document
+     * @returns {Date | null}
+     */
+    computeExpirationDate(file) {
+      if (!paperTypesThatMightExpire.residence_permit.isExpiring(file)) {
+        return null
+      }
+      const expirationDate = file.metadata?.expirationDate
+      return new Date(expirationDate)
+    },
+
+    /**
+     * @param {IOCozyFile} file - io.cozy.files document
+     * @returns {number | null}
+     */
+    computeExpirationNoticePeriodInDays(file) {
+      if (!paperTypesThatMightExpire.residence_permit.isExpiring(file)) {
+        return null
+      }
+      const noticePeriodInDays = file.metadata?.noticePeriod
+      return parseInt(noticePeriodInDays, 10)
+    },
+
+    /**
+     * @param {IOCozyFile} file - io.cozy.files document
+     * @returns {string | null}
+     */
+    computeExpirationNoticeLink(file) {
+      if (!paperTypesThatMightExpire.residence_permit.isExpiring(file)) {
+        return null
+      }
+      return 'https://www.service-public.fr/particuliers/vosdroits/N110'
+    }
+  },
+  personal_sporting_licence: {
+    /**
+     * @param {IOCozyFile} file - io.cozy.files document
+     * @returns {boolean}
+     */
+    isExpiring(file) {
+      const referencedDate = file.metadata?.referencedDate
+      const created_at = file.created_at
+      if (referencedDate || created_at) {
+        return true
+      }
+      return false
+    },
+
+    /**
+     * @param {IOCozyFile} file - io.cozy.files document
+     * @returns {Date | null}
+     */
+    computeExpirationDate(file) {
+      if (
+        !paperTypesThatMightExpire.personal_sporting_licence.isExpiring(file)
+      ) {
+        return null
+      }
+      const referencedDate = file.metadata?.referencedDate
+      const created_at = file.created_at
+      return add(new Date(referencedDate ?? created_at), {
+        days: PERSONAL_SPORTING_LICENCE_PERIOD_DAYS
+      })
+    },
+
+    /**
+     * @param {IOCozyFile} file - io.cozy.files document
+     * @returns {number | null}
+     */
+    computeExpirationNoticePeriodInDays(file) {
+      if (
+        !paperTypesThatMightExpire.personal_sporting_licence.isExpiring(file)
+      ) {
+        return null
+      }
+      return PERSONAL_SPORTING_LICENCE_NOTICE_PERIOD_DAYS
+    },
+
+    /**
+     * @param {IOCozyFile} file - io.cozy.files document
+     * @returns {string | null}
+     */
+    computeExpirationNoticeLink(file) {
+      return null
+    }
   }
-  return false
-}
+})
 
 /**
  * @param {IOCozyFile} file - io.cozy.files document
  * @returns {boolean}
  */
 export const isExpiring = file => {
-  if (isExpiringFrenchNationalIdCard(file)) {
-    return true
+  const label = file.metadata?.qualification?.label
+  if (label == null) {
+    return false
   }
-  if (isExpiringResidencePermit(file)) {
-    return true
+  const isExpiring = paperTypesThatMightExpire?.[label]?.isExpiring
+  if (isExpiring == null) {
+    return false
   }
-  if (isExpiringPersonalSportingLicense(file)) {
-    return true
-  }
-  return false
+  return isExpiring(file)
 }
 
 /**
@@ -76,18 +181,16 @@ export const isExpiring = file => {
  * @returns {Date | null} Expiration date
  */
 export const computeExpirationDate = file => {
-  if (isExpiringFrenchNationalIdCard(file) || isExpiringResidencePermit(file)) {
-    const expirationDate = file.metadata?.expirationDate
-    return new Date(expirationDate)
+  const label = file.metadata?.qualification?.label
+  if (label == null) {
+    return null
   }
-  if (isExpiringPersonalSportingLicense(file)) {
-    const referencedDate = file.metadata?.referencedDate
-    const created_at = file.created_at
-    return add(new Date(referencedDate ?? created_at), {
-      days: PERSONAL_SPORTING_LICENCE_PERIOD_DAYS
-    })
+  const computeExpirationDate =
+    paperTypesThatMightExpire?.[label]?.computeExpirationDate
+  if (computeExpirationDate == null) {
+    return null
   }
-  return null
+  return computeExpirationDate(file)
 }
 
 /**
@@ -95,14 +198,16 @@ export const computeExpirationDate = file => {
  * @returns {number | null} Expiration notice period in days
  */
 const computeExpirationNoticePeriodInDays = file => {
-  if (isExpiringFrenchNationalIdCard(file) || isExpiringResidencePermit(file)) {
-    const noticePeriodInDays = file.metadata?.noticePeriod
-    return parseInt(noticePeriodInDays, 10)
+  const label = file.metadata?.qualification?.label
+  if (label == null) {
+    return null
   }
-  if (isExpiringPersonalSportingLicense(file)) {
-    return PERSONAL_SPORTING_LICENCE_NOTICE_PERIOD_DAYS
+  const computeExpirationNoticePeriodInDays =
+    paperTypesThatMightExpire?.[label]?.computeExpirationNoticePeriodInDays
+  if (computeExpirationNoticePeriodInDays == null) {
+    return null
   }
-  return null
+  return computeExpirationNoticePeriodInDays(file)
 }
 
 /**
@@ -128,13 +233,16 @@ export const computeExpirationNoticeDate = file => {
  * @returns {string | null} Expiration notice link
  */
 export const computeExpirationNoticeLink = file => {
-  if (isExpiringFrenchNationalIdCard(file)) {
-    return 'https://www.service-public.fr/particuliers/vosdroits/N358'
+  const label = file.metadata?.qualification?.label
+  if (label == null) {
+    return null
   }
-  if (isExpiringResidencePermit(file)) {
-    return 'https://www.service-public.fr/particuliers/vosdroits/N110'
+  const computeExpirationNoticeLink =
+    paperTypesThatMightExpire?.[label]?.computeExpirationNoticeLink
+  if (computeExpirationNoticeLink == null) {
+    return null
   }
-  return null
+  return computeExpirationNoticeLink(file)
 }
 
 /**
