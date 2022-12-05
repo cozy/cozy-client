@@ -16,7 +16,8 @@ describe('Expiration', () => {
     created_at: '2022-09-01T00:00:00.000Z',
     metadata: {
       qualification: { label: 'national_id_card' },
-      expirationDate: '2022-09-23T11:35:58.118Z'
+      expirationDate: '2022-09-23T11:35:58.118Z',
+      noticePeriod: '90'
     }
   }
   const fakeFile02 = {

@@ -3,7 +3,6 @@ import sub from 'date-fns/sub'
 
 import { IOCozyFile } from '../types'
 
-const DEFAULT_NOTICE_PERIOD_DAYS = 90
 const PERSONAL_SPORTING_LICENCE_PERIOD_DAYS = 365
 const PERSONAL_SPORTING_LICENCE_NOTICE_PERIOD_DAYS = 15
 
@@ -15,10 +14,12 @@ const isExpiringFrenchNationalIdCard = file => {
   const label = file.metadata?.qualification?.label
   const country = file.metadata?.country
   const expirationDate = file.metadata?.expirationDate
+  const noticePeriod = file.metadata?.noticePeriod
   if (
     label === 'national_id_card' &&
     (!country || country === 'fr') &&
-    expirationDate
+    expirationDate &&
+    noticePeriod
   ) {
     return true
   }
@@ -32,7 +33,8 @@ const isExpiringFrenchNationalIdCard = file => {
 const isExpiringResidencePermit = file => {
   const label = file.metadata?.qualification?.label
   const expirationDate = file.metadata?.expirationDate
-  if (label === 'residence_permit' && expirationDate) {
+  const noticePeriod = file.metadata?.noticePeriod
+  if (label === 'residence_permit' && expirationDate && noticePeriod) {
     return true
   }
   return false
@@ -95,9 +97,7 @@ export const computeExpirationDate = file => {
 const computeExpirationNoticePeriodInDays = file => {
   if (isExpiringFrenchNationalIdCard(file) || isExpiringResidencePermit(file)) {
     const noticePeriodInDays = file.metadata?.noticePeriod
-    return noticePeriodInDays
-      ? parseInt(noticePeriodInDays, 10)
-      : DEFAULT_NOTICE_PERIOD_DAYS
+    return parseInt(noticePeriodInDays, 10)
   }
   if (isExpiringPersonalSportingLicense(file)) {
     return PERSONAL_SPORTING_LICENCE_NOTICE_PERIOD_DAYS
