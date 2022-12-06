@@ -1,5 +1,6 @@
 declare var _default: {};
 export default _default;
+export type Qualification = import("./models/document/qualification").Qualification;
 export type AccountsDoctype = "io.cozy.accounts";
 export type TriggersDoctype = "io.cozy.triggers";
 export type KonnectorsDoctype = "io.cozy.konnectors";
@@ -194,6 +195,26 @@ export type FileMetadata = {
      * - Number of a note
      */
     version?: number;
+    /**
+     * - Qualification of the file
+     */
+    qualification?: Qualification;
+    /**
+     * - Country of the paper
+     */
+    country?: string;
+    /**
+     * - Expiration date of the paper
+     */
+    expirationDate?: string;
+    /**
+     * - Reference date of the paper
+     */
+    referencedDate?: string;
+    /**
+     * - Notice period of the paper, in days
+     */
+    noticePeriod?: string;
 };
 /**
  * - An io.cozy.files document
@@ -235,6 +256,10 @@ export type FileDocument = {
      * - Whether or not the file is client-side encrypted
      */
     encrypted: boolean;
+    /**
+     * - Creation date of the file
+     */
+    created_at: string;
 };
 /**
  * - An io.cozy.files document
@@ -370,7 +395,7 @@ export type Theme = {
     defaultItems?: Array<string>;
 };
 export type ThemesList = Theme[];
-export type ThemesLabels = "transport" | "identity" | "family" | "work_study" | "health" | "home" | "finance" | "invoice";
+export type ThemesLabels = "transport" | "identity" | "family" | "health" | "invoice" | "work_study" | "home" | "finance";
 export type QualificationAttributes = {
     label: string;
     purpose?: string;
@@ -381,13 +406,13 @@ export type QualificationAttributes = {
 export type IdentityLabel = "identity_photo" | "national_id_card" | "passport" | "residence_permit" | "family_record_book" | "birth_certificate" | "driver_license" | "other_identity_document" | "citizen_registration_certificate" | "personal_sporting_licence";
 export type FamilyLabel = "family_record_book" | "birth_certificate" | "wedding" | "pacs" | "divorce" | "large_family_card" | "caf" | "other_family_document" | "payment_proof_family_allowance";
 export type WorkStudyLabels = "resume" | "diploma" | "work_contract" | "pay_sheet" | "unemployment_benefit" | "pension" | "gradebook" | "student_card" | "motivation_letter" | "other_work_document" | "work_disability_recognition" | "school_attendance_certificate";
-export type HealthLabels = "work_disability_recognition" | "health_certificate" | "health_book" | "national_health_insurance_card" | "health_insurance_card" | "prescription" | "health_invoice" | "national_health_insurance_right_certificate" | "pregnancy_medical_certificate" | "other_health_document";
-export type HomeLabels = "phone_invoice" | "isp_invoice" | "telecom_invoice" | "energy_invoice" | "water_invoice" | "other_invoice" | "house_sale_agreeement" | "building_permit" | "technical_diagnostic_record" | "lease" | "rent_receipt" | "house_insurance" | "work_quote" | "work_invoice" | "other_house_document" | "unfit_for_habitation_declaration" | "accommodation_proof";
+export type HealthLabels = "health_book" | "health_certificate" | "pregnancy_medical_certificate" | "work_disability_recognition" | "national_health_insurance_card" | "national_health_insurance_right_certificate" | "health_insurance_card" | "prescription" | "health_invoice" | "other_health_document";
+export type HomeLabels = "house_sale_agreeement" | "building_permit" | "technical_diagnostic_record" | "lease" | "rent_receipt" | "house_insurance" | "work_quote" | "work_invoice" | "other_house_document" | "phone_invoice" | "isp_invoice" | "telecom_invoice" | "energy_invoice" | "water_invoice" | "other_invoice" | "unfit_for_habitation_declaration" | "accommodation_proof";
 export type TransportLabels = "driver_license" | "vehicle_registration" | "car_insurance" | "mechanic_invoice" | "transport_invoice" | "other_transport_document";
-export type FinanceLabels = "payment_proof_family_allowance" | "pay_sheet" | "tax_return" | "tax_notice" | "tax_timetable" | "receipt" | "other_tax_document" | "bank_details" | "bank_statement" | "loan_agreement" | "other_bank_document" | "other_revenue";
-export type InvoiceLabels = "health_invoice" | "phone_invoice" | "isp_invoice" | "telecom_invoice" | "energy_invoice" | "water_invoice" | "other_invoice" | "work_invoice" | "transport_invoice" | "appliance_invoice" | "web_service_invoice" | "restaurant_invoice";
+export type FinanceLabels = "pay_sheet" | "other_revenue" | "tax_return" | "tax_notice" | "tax_timetable" | "other_tax_document" | "bank_details" | "bank_statement" | "loan_agreement" | "other_bank_document" | "receipt" | "payment_proof_family_allowance";
+export type InvoiceLabels = "health_invoice" | "transport_invoice" | "work_invoice" | "phone_invoice" | "isp_invoice" | "telecom_invoice" | "energy_invoice" | "water_invoice" | "appliance_invoice" | "web_service_invoice" | "restaurant_invoice" | "other_invoice";
 export type ActivityLabels = "personal_sporting_licence" | "other_activity_document";
-export type ItemsLabels = "resume" | "identity_photo" | "national_id_card" | "passport" | "residence_permit" | "family_record_book" | "birth_certificate" | "driver_license" | "other_identity_document" | "citizen_registration_certificate" | "personal_sporting_licence" | "wedding" | "pacs" | "divorce" | "large_family_card" | "caf" | "other_family_document" | "payment_proof_family_allowance" | "diploma" | "work_contract" | "pay_sheet" | "unemployment_benefit" | "pension" | "gradebook" | "student_card" | "motivation_letter" | "other_work_document" | "work_disability_recognition" | "school_attendance_certificate" | "health_certificate" | "health_book" | "national_health_insurance_card" | "health_insurance_card" | "prescription" | "health_invoice" | "national_health_insurance_right_certificate" | "pregnancy_medical_certificate" | "other_health_document" | "phone_invoice" | "isp_invoice" | "telecom_invoice" | "energy_invoice" | "water_invoice" | "other_invoice" | "house_sale_agreeement" | "building_permit" | "technical_diagnostic_record" | "lease" | "rent_receipt" | "house_insurance" | "work_quote" | "work_invoice" | "other_house_document" | "unfit_for_habitation_declaration" | "accommodation_proof" | "vehicle_registration" | "car_insurance" | "mechanic_invoice" | "transport_invoice" | "other_transport_document" | "tax_return" | "tax_notice" | "tax_timetable" | "receipt" | "other_tax_document" | "bank_details" | "bank_statement" | "loan_agreement" | "other_bank_document" | "other_revenue" | "appliance_invoice" | "web_service_invoice" | "restaurant_invoice" | "other_activity_document";
+export type ItemsLabels = "resume" | "identity_photo" | "national_id_card" | "passport" | "residence_permit" | "family_record_book" | "birth_certificate" | "driver_license" | "other_identity_document" | "wedding" | "pacs" | "divorce" | "large_family_card" | "caf" | "other_family_document" | "diploma" | "work_contract" | "pay_sheet" | "unemployment_benefit" | "pension" | "other_revenue" | "gradebook" | "student_card" | "motivation_letter" | "other_work_document" | "health_book" | "health_certificate" | "pregnancy_medical_certificate" | "work_disability_recognition" | "national_health_insurance_card" | "national_health_insurance_right_certificate" | "health_insurance_card" | "prescription" | "health_invoice" | "other_health_document" | "vehicle_registration" | "car_insurance" | "mechanic_invoice" | "transport_invoice" | "other_transport_document" | "house_sale_agreeement" | "building_permit" | "technical_diagnostic_record" | "lease" | "rent_receipt" | "house_insurance" | "work_quote" | "work_invoice" | "other_house_document" | "phone_invoice" | "isp_invoice" | "telecom_invoice" | "energy_invoice" | "water_invoice" | "appliance_invoice" | "web_service_invoice" | "restaurant_invoice" | "other_invoice" | "tax_return" | "tax_notice" | "tax_timetable" | "other_tax_document" | "bank_details" | "bank_statement" | "loan_agreement" | "other_bank_document" | "receipt" | "payment_proof_family_allowance" | "school_attendance_certificate" | "unfit_for_habitation_declaration" | "accommodation_proof" | "citizen_registration_certificate" | "personal_sporting_licence" | "other_activity_document";
 /**
  * See https://github.com/cozy/DACC
  */

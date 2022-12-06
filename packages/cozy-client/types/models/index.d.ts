@@ -15,4 +15,5 @@ import * as timeseries from "./timeseries";
 import * as sharing from "./sharing";
 import * as dacc from "./dacc";
 import * as doctypes from "./doctypes";
-export { trigger, instance, applications, file, folder, note, account, permission, utils, contact, document, timeseries, sharing, dacc, doctypes };
+import * as paper from "./paper";
+export { trigger, instance, applications, file, folder, note, account, permission, utils, contact, document, timeseries, sharing, dacc, doctypes, paper };
