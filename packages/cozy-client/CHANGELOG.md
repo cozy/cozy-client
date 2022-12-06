@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [34.3.0](https://github.com/cozy/cozy-client/compare/v34.2.0...v34.3.0) (2022-12-06)
+
+
+### Features
+
+* **index.node.js:** Export fetchPolicies ([e4615ea](https://github.com/cozy/cozy-client/commit/e4615ea0998c7d3345dae5e4e95d1eae01f0ce62))
+
+
+
+
+
 # [34.2.0](https://github.com/cozy/cozy-client/compare/v34.1.5...v34.2.0) (2022-11-30)
 
 
