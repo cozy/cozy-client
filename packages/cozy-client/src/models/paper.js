@@ -32,13 +32,12 @@ const isExpiringFrenchNationalIdCard = file => {
 /**
  * @param {IOCozyFile} file - io.cozy.files document
  * @returns {boolean}
- * @description Tells if a given file is a residence permit, has an expiration date set and a notice period set
+ * @description Tells if a given file has an expiration date set and a notice period set
  */
-const isExpiringResidencePermit = file => {
-  const label = file.metadata?.qualification?.label
+const isExpiringGeneric = file => {
   const expirationDate = file.metadata?.expirationDate
   const noticePeriod = file.metadata?.noticePeriod
-  if (label === 'residence_permit' && expirationDate && noticePeriod) {
+  if (expirationDate && noticePeriod) {
     return true
   }
   return false
@@ -68,7 +67,7 @@ export const isExpiring = file => {
   if (isExpiringFrenchNationalIdCard(file)) {
     return true
   }
-  if (isExpiringResidencePermit(file)) {
+  if (isExpiringGeneric(file)) {
     return true
   }
   if (isExpiringPersonalSportingLicense(file)) {
@@ -83,7 +82,7 @@ export const isExpiring = file => {
  * @description Computes et returns the expiration date of the given file, or null if it is not expiring
  */
 export const computeExpirationDate = file => {
-  if (isExpiringFrenchNationalIdCard(file) || isExpiringResidencePermit(file)) {
+  if (isExpiringFrenchNationalIdCard(file) || isExpiringGeneric(file)) {
     const expirationDate = file.metadata?.expirationDate
     return new Date(expirationDate)
   }
@@ -103,7 +102,7 @@ export const computeExpirationDate = file => {
  * @description Computes et returns the expiration notice period of the given file, or null if it is not expiring
  */
 const computeExpirationNoticePeriodInDays = file => {
-  if (isExpiringFrenchNationalIdCard(file) || isExpiringResidencePermit(file)) {
+  if (isExpiringFrenchNationalIdCard(file) || isExpiringGeneric(file)) {
     const noticePeriodInDays = file.metadata?.noticePeriod
     return parseInt(noticePeriodInDays, 10)
   }
@@ -138,10 +137,11 @@ export const computeExpirationNoticeDate = file => {
  * @description Computes et returns the expiration notice link of the given file, or null if it has none or it is not expiring
  */
 export const computeExpirationNoticeLink = file => {
+  const qualificationLabel = file.metadata?.qualification?.label
   if (isExpiringFrenchNationalIdCard(file)) {
     return 'https://www.service-public.fr/particuliers/vosdroits/N358'
   }
-  if (isExpiringResidencePermit(file)) {
+  if (isExpiringGeneric(file) && qualificationLabel === 'residence_permit') {
     return 'https://www.service-public.fr/particuliers/vosdroits/N110'
   }
   return null
