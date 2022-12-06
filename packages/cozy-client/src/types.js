@@ -1,6 +1,10 @@
 import { QueryDefinition } from './queries/dsl'
 
 /**
+ * @typedef {import("./models/document/qualification").Qualification} Qualification
+ */
+
+/**
  * @typedef {"io.cozy.accounts"} AccountsDoctype
  * @typedef {"io.cozy.triggers"} TriggersDoctype
  * @typedef {"io.cozy.konnectors"} KonnectorsDoctype
@@ -170,6 +174,11 @@ import { QueryDefinition } from './queries/dsl'
  * @property {object} [schema] - the schema used by prosemirror (with notes and marks serialized as arrays to preserve the order).
  * @property {string} [title] - the initial title of the note (that will also be used for the file name)
  * @property {number} [version] - Number of a note
+ * @property {Qualification} [qualification] - Qualification of the file
+ * @property {string} [country] - Country of the paper
+ * @property {string} [expirationDate] - Expiration date of the paper
+ * @property {string} [referencedDate] - Reference date of the paper
+ * @property {string} [noticePeriod] - Notice period of the paper, in days
  */
 
 /**
@@ -183,6 +192,7 @@ import { QueryDefinition } from './queries/dsl'
  * @property {string} mime - Mime of the file
  * @property {boolean} executable - Whether or not the file is executable
  * @property {boolean} encrypted - Whether or not the file is client-side encrypted
+ * @property {string} created_at - Creation date of the file
  * @typedef {CozyClientDocument & FileDocument} IOCozyFile - An io.cozy.files document
  */
 
