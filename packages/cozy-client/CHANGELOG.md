@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [34.4.0](https://github.com/cozy/cozy-client/compare/v34.3.0...v34.4.0) (2022-12-06)
+
+
+### Features
+
+* Add expiration helpers ([aa7f501](https://github.com/cozy/cozy-client/commit/aa7f50143e9f1871105b5be05b5e8e9b1aa752c2))
+* Add generated types and documentation for new exported helpers ([e9fc08b](https://github.com/cozy/cozy-client/commit/e9fc08beab0784afb3ac467aa2413e5ffa7e409a))
+* Update `date-fns` to 2.29.3 and put it as a dependency ([c4e392c](https://github.com/cozy/cozy-client/commit/c4e392cb161555110f7cdf72ff4900ea33f3f768))
+
+
+
+
+
 # [34.3.0](https://github.com/cozy/cozy-client/compare/v34.2.0...v34.3.0) (2022-12-06)
 
 
