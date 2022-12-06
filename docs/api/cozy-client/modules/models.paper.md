@@ -36,7 +36,7 @@ Expiration date
 
 *Defined in*
 
-[packages/cozy-client/src/models/paper.js:85](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L85)
+[packages/cozy-client/src/models/paper.js:84](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L84)
 
 ***
 
@@ -60,7 +60,7 @@ Expiration notice date
 
 *Defined in*
 
-[packages/cozy-client/src/models/paper.js:121](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L121)
+[packages/cozy-client/src/models/paper.js:120](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L120)
 
 ***
 
@@ -84,7 +84,7 @@ Expiration notice link
 
 *Defined in*
 
-[packages/cozy-client/src/models/paper.js:140](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L140)
+[packages/cozy-client/src/models/paper.js:139](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L139)
 
 ***
 
@@ -128,7 +128,7 @@ Expiration notice link
 
 *Defined in*
 
-[packages/cozy-client/src/models/paper.js:67](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L67)
+[packages/cozy-client/src/models/paper.js:66](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L66)
 
 ***
 
