@@ -6,12 +6,6 @@ import head from 'lodash/head'
 import merge from 'lodash/merge'
 import startsWith from 'lodash/startsWith'
 import qs from 'qs'
-import {
-  MangoQueryOptions,
-  MangoSelector,
-  MangoPartialFilter,
-  DesignDoc
-} from './mangoIndex'
 
 import Collection, {
   dontThrowNotFoundError,
@@ -30,18 +24,24 @@ import {
   normalizeDesignDoc
 } from './mangoIndex'
 import * as querystring from './querystring'
-import { FetchError } from './errors'
 
 import logger from './logger'
 
 const DATABASE_DOES_NOT_EXIST = 'Database does not exist.'
-
+/**
+ * @typedef {import("cozy-client/types/types").CozyClientDocument} CozyClientDocument
+ * @typedef {import('./mangoIndex').MangoQueryOptions} MangoQueryOptions
+ * @typedef {import('./mangoIndex').MangoSelector} MangoSelector
+ * @typedef {import('./mangoIndex').MangoPartialFilter} MangoPartialFilter
+ * @typedef {import('./mangoIndex').DesignDoc} DesignDoc
+ * @typedef {import('./errors').FetchError} FetchError
+ */
 /**
  * Normalize a document, adding its doctype if needed
  *
  * @param {object} doc - Document to normalize
  * @param {string} doctype - Document doctype
- * @returns {object} normalized document
+ * @returns {CozyClientDocument} normalized document
  * @private
  */
 export function normalizeDoc(doc = {}, doctype) {
@@ -114,7 +114,7 @@ class DocumentCollection {
    * @param {number} [options.skip=0] - Pagination Skip
    * @param {string} [options.bookmark] - Pagination bookmark
    * @param {Array<string>} [options.keys] - Keys to query
-   * @returns {Promise<{data, meta, skip, bookmark, next}>} The JSON API conformant response.
+   * @returns {Promise<{data: CozyClientDocument, meta, skip, bookmark, next}>} The JSON API conformant response.
    * @throws {FetchError}
    */
   async all({ limit = 100, skip = 0, bookmark, keys } = {}) {
