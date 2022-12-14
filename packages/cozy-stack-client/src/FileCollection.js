@@ -239,7 +239,7 @@ class FileCollection extends DocumentCollection {
    *
    * @param {object}            selector  The Mango selector.
    * @param {MangoQueryOptions} options   The query options
-   * @returns {Promise<{data, meta, skip, next, bookmark, execution_stats}>} The JSON API conformant response.
+   * @returns {Promise<import('./DocumentCollection').JSONAPIDocument>} The JSON API conformant response.
    * @throws {FetchError}
    */
   async find(selector, options = {}) {
@@ -850,7 +850,7 @@ class FileCollection extends DocumentCollection {
    *
    * @private
    * @param  {DirectoryAttributes} attributes - Attributes of the directory
-   * @returns {Promise}
+   * @returns {Promise<{data: FileDocument}>}
    * @throws {Error} - explaining reason why creation failed
    */
   async createDirectory(attributes) {
@@ -1124,9 +1124,9 @@ class FileCollection extends DocumentCollection {
    * @param  {number}  [options.skip]             For skip-based pagination, the number of referenced files to skip.
    * @param  {number}  [options.limit]            For pagination, the number of results to return.
    * @param  {CouchDBViewCursor}  [options.cursor]        For cursor-based pagination, the index cursor.
-   * @param  {boolean}      options.includeFiles  Include the whole file documents in the results list
+   * @param  {boolean}      [options.includeFiles]  Include the whole file documents in the results list
    *
-   * @returns {Promise<Array<object|IOCozyFolder>>}    The JSON API conformant response.
+   * @returns {Promise<Array<JSONApiFiles>>}    The JSON API conformant response.
    */
   async findNotSynchronizedDirectories(
     oauthClient,
@@ -1227,7 +1227,7 @@ class FileCollection extends DocumentCollection {
    * @typedef {object} FetchChangesReturnValue
    * @property {string} newLastSeq
    * @property {boolean} pending
-   * @property {Array<object>} documents
+   * @property {Array<object>} results
    * @returns {Promise<FetchChangesReturnValue>}
    */
   async fetchChanges(couchOptions = {}, options = {}) {

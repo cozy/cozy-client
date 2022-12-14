@@ -35,6 +35,22 @@ const DATABASE_DOES_NOT_EXIST = 'Database does not exist.'
  * @typedef {import('./mangoIndex').MangoPartialFilter} MangoPartialFilter
  * @typedef {import('./mangoIndex').DesignDoc} DesignDoc
  * @typedef {import('./errors').FetchError} FetchError
+ *
+ * @typedef JSONAPIDocument
+ * @property {Array<CozyClientDocument>} data
+ * @property {number} skip
+ * @property {boolean} next
+ * @property {object} [meta]
+ * @property {string} [bookmark]
+ * @property {object} [execution_stats]
+ *
+ * @typedef JSONAPIDocumentForDataRoute
+ * @property {Array<CozyClientDocument>} docs
+ * @property {number} skip
+ * @property {boolean} next
+ * @property {object} [meta]
+ * @property {string} [bookmark]
+ * @property {object} [execution_stats]
  */
 /**
  * Normalize a document, adding its doctype if needed
@@ -114,7 +130,7 @@ class DocumentCollection {
    * @param {number} [options.skip=0] - Pagination Skip
    * @param {string} [options.bookmark] - Pagination bookmark
    * @param {Array<string>} [options.keys] - Keys to query
-   * @returns {Promise<{data: CozyClientDocument, meta, skip, bookmark, next}>} The JSON API conformant response.
+   * @returns {Promise<JSONAPIDocument>} The JSON API conformant response.
    * @throws {FetchError}
    */
   async all({ limit = 100, skip = 0, bookmark, keys } = {}) {
@@ -184,6 +200,7 @@ class DocumentCollection {
    * @param {string} path - path to fetch
    * @param {MangoSelector} selector - selector
    * @param {MangoQueryOptions} options - request options
+   * @returns {Promise<JSONAPIDocumentForDataRoute & JSONAPIDocument>} documents
    */
   async fetchDocumentsWithMango(path, selector, options = {}) {
     return this.stackClient.fetchJSON(
@@ -270,7 +287,7 @@ class DocumentCollection {
    * @param {MangoSelector} selector The mango selector
    * @param {MangoQueryOptions} options The find options
    *
-   * @returns {Promise<object>} - The find response
+   * @returns {Promise<JSONAPIDocumentForDataRoute & JSONAPIDocument>} - The find response
    * @protected
    */
   async findWithMango(path, selector, options = {}) {
@@ -301,7 +318,7 @@ The returned documents are paginated by the stack.
    *
    * @param {MangoSelector} selector The Mango selector.
    * @param {MangoQueryOptions} options MangoQueryOptions
-   * @returns {Promise<{data, skip, bookmark, next, execution_stats}>} The JSON API conformant response.
+   * @returns {Promise<JSONAPIDocument>} The JSON API conformant response.
    * @throws {FetchError}
    */
   async find(selector, options = {}) {
@@ -332,7 +349,7 @@ The returned documents are paginated by the stack.
    *
    * @param {MangoSelector} selector The Mango selector.
    * @param {MangoQueryOptions} options MangoQueryOptions
-   * @returns {Promise<Array<{data}>>} Documents fetched
+   * @returns {Promise<Array<CozyClientDocument>>} Documents fetched
    * @throws {FetchError}
    */
   async findAll(selector, options = {}) {
@@ -352,7 +369,7 @@ The returned documents are paginated by the stack.
    * Get a document by id
    *
    * @param  {string} id The document id.
-   * @returns {Promise<object>}  JsonAPI response containing normalized document as data attribute
+   * @returns {Promise<CozyClientDocument>}  JsonAPI response containing normalized document as data attribute
    */
   async get(id) {
     return Collection.get(

@@ -8,9 +8,17 @@ import Collection from './Collection'
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 import { FetchError } from './errors'
 import logger from './logger'
-
+/**
+ * @typedef {import('./DocumentCollection').CozyClientDocument} CozyClientDocument
+ */
 export const APPS_DOCTYPE = 'io.cozy.apps'
 
+/**
+ *
+ * @param {object} app Doc to normalize
+ * @param {string} doctype Doctype
+ * @returns CozyClientDocument document
+ */
 export const normalizeApp = (app, doctype) => {
   return {
     ...app.attributes,
@@ -28,7 +36,12 @@ class AppCollection extends DocumentCollection {
     super(APPS_DOCTYPE, stackClient)
     this.endpoint = '/apps/'
   }
-
+  /**
+   * @param {string} idArg
+   * @param {Array} query
+   *
+   * @returns {Promise<{data: CozyClientDocument}>}
+   */
   async get(idArg, query) {
     let id
     if (idArg.indexOf('/') > -1) {
@@ -88,7 +101,8 @@ class AppCollection extends DocumentCollection {
    *
    * The returned documents are not paginated by the stack.
    *
-   * @returns {{data, meta, skip, next}} The JSON API conformant response.
+   * @typedef {import("./DocumentCollection").JSONAPIDocument} JSONAPIDocument
+   * @returns {Promise<JSONAPIDocument>} The JSON API conformant response.
    * @throws {FetchError}
    */
   async all() {
