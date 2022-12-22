@@ -36,7 +36,7 @@ Expiration date
 
 *Defined in*
 
-[packages/cozy-client/src/models/paper.js:84](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L84)
+[packages/cozy-client/src/models/paper.js:89](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L89)
 
 ***
 
@@ -60,7 +60,7 @@ Expiration notice date
 
 *Defined in*
 
-[packages/cozy-client/src/models/paper.js:120](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L120)
+[packages/cozy-client/src/models/paper.js:125](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L125)
 
 ***
 
@@ -68,7 +68,7 @@ Expiration notice date
 
 ▸ **computeExpirationNoticeLink**(`file`): `string`
 
-**`description`** Computes et returns the expiration notice link of the given file, or null if it has none or it is not expiring
+**`description`** Computes and returns the expiration notice link of the given file, or null if it has none
 
 *Parameters*
 
@@ -84,7 +84,7 @@ Expiration notice link
 
 *Defined in*
 
-[packages/cozy-client/src/models/paper.js:139](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L139)
+[packages/cozy-client/src/models/paper.js:144](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L144)
 
 ***
 
@@ -106,7 +106,7 @@ Expiration notice link
 
 *Defined in*
 
-[packages/cozy-client/src/models/paper.js:155](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L155)
+[packages/cozy-client/src/models/paper.js:156](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L156)
 
 ***
 
@@ -128,7 +128,7 @@ Expiration notice link
 
 *Defined in*
 
-[packages/cozy-client/src/models/paper.js:66](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L66)
+[packages/cozy-client/src/models/paper.js:71](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L71)
 
 ***
 
@@ -150,4 +150,4 @@ Expiration notice link
 
 *Defined in*
 
-[packages/cozy-client/src/models/paper.js:167](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L167)
+[packages/cozy-client/src/models/paper.js:168](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L168)
