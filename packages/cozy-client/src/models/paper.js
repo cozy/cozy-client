@@ -7,6 +7,10 @@ import sub from 'date-fns/sub'
 
 const PERSONAL_SPORTING_LICENCE_PERIOD_DAYS = 365
 const PERSONAL_SPORTING_LICENCE_NOTICE_PERIOD_DAYS = 15
+const EXPIRATION_LINK_BY_LABEL = {
+  national_id_card: 'https://www.service-public.fr/particuliers/vosdroits/N358',
+  residence_permit: 'https://www.service-public.fr/particuliers/vosdroits/N110'
+}
 
 /**
  * @param {IOCozyFile} file - io.cozy.files document
@@ -134,17 +138,13 @@ export const computeExpirationNoticeDate = file => {
 /**
  * @param {IOCozyFile} file - io.cozy.files document
  * @returns {string | null} Expiration notice link
- * @description Computes et returns the expiration notice link of the given file, or null if it has none or it is not expiring
+ * @description Computes and returns the expiration notice link of the given file, or null if it has none
  */
 export const computeExpirationNoticeLink = file => {
   const qualificationLabel = file.metadata?.qualification?.label
-  if (isExpiringFrenchNationalIdCard(file)) {
-    return 'https://www.service-public.fr/particuliers/vosdroits/N358'
-  }
-  if (isExpiringGeneric(file) && qualificationLabel === 'residence_permit') {
-    return 'https://www.service-public.fr/particuliers/vosdroits/N110'
-  }
-  return null
+  if (!qualificationLabel) return null
+
+  return EXPIRATION_LINK_BY_LABEL[qualificationLabel] || null
 }
 
 /**
