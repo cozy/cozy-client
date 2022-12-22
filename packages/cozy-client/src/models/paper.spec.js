@@ -45,6 +45,11 @@ describe('Expiration', () => {
     expirationDate: '2022-09-23T11:35:58.118Z',
     noticePeriod: '90'
   })
+  const fakePassportFile = buildMockFile({
+    qualificationLabel: 'passport',
+    expirationDate: '2022-09-23T11:35:58.118Z',
+    noticePeriod: '90'
+  })
   const fakePersonalSportingLicenceFile = buildMockFile({
     qualificationLabel: 'personal_sporting_licence',
     referencedDate: '2022-09-23T11:35:58.118Z'
@@ -103,6 +108,7 @@ describe('Expiration', () => {
       file                       | link
       ${fakeNationalIdCardFile}  | ${'https://www.service-public.fr/particuliers/vosdroits/N358'}
       ${fakeResidencePermitFile} | ${'https://www.service-public.fr/particuliers/vosdroits/N110'}
+      ${fakePassportFile}        | ${'https://www.service-public.fr/particuliers/vosdroits/N360'}
     `(
       `should return "$link" link for an file with "$file.metadata.qualification.label" qualification label`,
       ({ file, link }) => {
