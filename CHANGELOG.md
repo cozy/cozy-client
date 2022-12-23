@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [34.6.0](https://github.com/cozy/cozy-client/compare/v34.5.0...v34.6.0) (2022-12-23)
+
+
+### Features
+
+* Add helper link for passport file ([c99a808](https://github.com/cozy/cozy-client/commit/c99a8083aec95afbf8f093eefdf1a9e2ab070d88))
+* Update computeExpirationNoticeLink function ([b081108](https://github.com/cozy/cozy-client/commit/b08110879c0ce2df929a9744ccee1a545032ddde))
+
+
+
+
+
 # [34.5.0](https://github.com/cozy/cozy-client/compare/v34.4.0...v34.5.0) (2022-12-07)
 
 
