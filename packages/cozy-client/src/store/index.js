@@ -88,11 +88,13 @@ const composedEnhancer =
   // see https://github.com/reduxjs/redux-devtools/tree/main/extension#11-basic-store
   (flag('debug') && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose
 
-export const createStore = () =>
-  createReduxStore(
+export const createStore = () => {
+  console.log('🍌 SHOULD NOT BE CALLED')
+  return createReduxStore(
     combineReducers({ cozy: combinedReducer }),
     composedEnhancer(applyMiddleware(thunk))
   )
+}
 
 export const getStateRoot = state => state.cozy || {}
 

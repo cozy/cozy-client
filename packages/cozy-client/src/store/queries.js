@@ -173,6 +173,13 @@ const query = (state = queryInitialState, action, documents) => {
       // see Collection.get()
       // but we still need to update the fetchStatus.
       if (!response.data) {
+        console.log('🥝 return 1', {
+          ...state,
+          fetchStatus: 'loaded',
+          isFetching: action.backgroundFetching ? false : null,
+          lastFetch: Date.now(),
+          lastUpdate: Date.now()
+        })
         return {
           ...state,
           fetchStatus: 'loaded',
@@ -194,6 +201,13 @@ const query = (state = queryInitialState, action, documents) => {
       }
 
       if (!Array.isArray(response.data)) {
+        console.log('🥝 return 2', {
+          ...state,
+          ...common,
+          hasMore: false,
+          count: 1,
+          data: [properId(response.data)]
+        })
         return {
           ...state,
           ...common,
@@ -210,6 +224,15 @@ const query = (state = queryInitialState, action, documents) => {
       const data = updateQueryDataFromResponse(state, response, documents, {
         count,
         fetchedPagesCount
+      })
+      console.log('🥝 return 3', {
+        ...state,
+        ...common,
+        bookmark: response.bookmark || null,
+        hasMore: response.next !== undefined ? response.next : state.hasMore,
+        count,
+        fetchedPagesCount,
+        data
       })
       return {
         ...state,
@@ -448,6 +471,25 @@ const manualQueryUpdater = (action, documents) => query => {
   }
 }
 
+const cleanState = (state) => {
+  if (state.definition.bookmark === undefined) { delete state.definition.bookmark }
+  if (state.definition.cursor === undefined) { delete state.definition.cursor }
+  if (state.definition.doctype === undefined) { delete state.definition.doctype }
+  if (state.definition.fields === undefined) { delete state.definition.fields }
+  if (state.definition.id === undefined) { delete state.definition.id }
+  if (state.definition.ids === undefined) { delete state.definition.ids }
+  if (state.definition.includes === undefined) { delete state.definition.includes }
+  if (state.definition.indexedFields === undefined) { delete state.definition.indexedFields }
+  if (state.definition.limit === undefined) { delete state.definition.limit }
+  if (state.definition.partialFilter === undefined) { delete state.definition.partialFilter }
+  if (state.definition.referenced === undefined) { delete state.definition.referenced }
+  if (state.definition.selector === undefined) { delete state.definition.selector }
+  if (state.definition.skip === undefined) { delete state.definition.skip }
+  if (state.definition.sort === undefined) { delete state.definition.sort }
+
+  return state
+}
+
 /**
  * @param  {QueriesStateSlice}  state - Redux slice containing all the query states indexed by name
  * @param  {object}  action - Income redux action
@@ -462,7 +504,11 @@ const queries = (
   haveDocumentsChanged = true
 ) => {
   if (action.type == INIT_QUERY) {
-    const newQueryState = query(state[action.queryId], action, documents)
+    let newQueryState = query(state[action.queryId], action, documents)
+    console.log('🍎🍎🍎 NEW STATE', newQueryState)
+    // newQueryState = cleanState(newQueryState)
+    // console.log('🍎🍎🍎 NEW STATE2', newQueryState)
+
     // Do not create new object unnecessarily
     if (newQueryState === state[action.queryId]) {
       return state
