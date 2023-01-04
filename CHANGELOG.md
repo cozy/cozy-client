@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [34.6.2](https://github.com/cozy/cozy-client/compare/v34.6.1...v34.6.2) (2023-01-04)
+
+
+### Bug Fixes
+
+* Do not call the queryDefinition if enabled is false ([c5b6022](https://github.com/cozy/cozy-client/commit/c5b602256f3e4cd747734fa213500191eeb2e3c9))
+
+
+
+
+
 ## [34.6.1](https://github.com/cozy/cozy-client/compare/v34.6.0...v34.6.1) (2023-01-04)
 
 
