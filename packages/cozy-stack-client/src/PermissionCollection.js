@@ -123,7 +123,16 @@ class PermissionCollection extends DocumentCollection {
     }
   }
 
+  /**
+   *
+   * @deprecated
+   */
   async findApps() {
+    logger.warn(
+      `PermissionCollection.findApps will be removed in next version of cozy-client. \n
+      You can use AppCollection.all() instead \n
+      or even better client.query(Q('io.cozy.apps'), {as: 'io.cozy.apps'})`
+    )
     const resp = await this.stackClient.fetchJSON('GET', '/apps/')
     return { ...resp, data: resp.data.map(a => ({ _id: a.id, ...a })) }
   }
