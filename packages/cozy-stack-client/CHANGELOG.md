@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [34.6.1](https://github.com/cozy/cozy-client/compare/v34.6.0...v34.6.1) (2023-01-04)
+
+
+### Bug Fixes
+
+* Add deprecated PermCollection.findApps ([6e82d87](https://github.com/cozy/cozy-client/commit/6e82d87bd713d6b94d046df98d5c5c0b13cb856b))
+
+
+
+
+
 ## [34.1.5](https://github.com/cozy/cozy-client/compare/v34.1.4...v34.1.5) (2022-11-28)
 
 
