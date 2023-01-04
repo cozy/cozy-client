@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [34.6.3](https://github.com/cozy/cozy-client/compare/v34.6.2...v34.6.3) (2023-01-04)
+
+
+### Bug Fixes
+
+* **deps:** update dependency cozy-device-helper to v2.6.0 ([dac2ecf](https://github.com/cozy/cozy-client/commit/dac2ecf0218eee09e0a67c5e61f62bc6d5f59337))
+* **deps:** update dependency enzyme-adapter-react-16 to v1.15.7 ([8f5f8bd](https://github.com/cozy/cozy-client/commit/8f5f8bdb5397e8268de27e4ec637d837a6f38a30))
+
+
+
+
+
 ## [34.6.2](https://github.com/cozy/cozy-client/compare/v34.6.1...v34.6.2) (2023-01-04)
 
 
