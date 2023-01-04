@@ -1532,6 +1532,7 @@ Implements `DocumentCollection` API along with specific methods for `io.cozy.per
 * [PermissionCollection](#PermissionCollection)
     * [.create(permission)](#PermissionCollection+create)
     * [.add(document, permission)](#PermissionCollection+add) ⇒ <code>Promise</code>
+    * ~~[.findApps()](#PermissionCollection+findApps)~~
     * [.createSharingLink(document, options)](#PermissionCollection+createSharingLink)
     * [.fetchPermissionsByLink(permissions)](#PermissionCollection+fetchPermissionsByLink)
     * [.fetchAllLinks(document)](#PermissionCollection+fetchAllLinks) ⇒ <code>object</code>
@@ -1578,6 +1579,12 @@ const permissions = await client
     }
  })
 ```
+<a name="PermissionCollection+findApps"></a>
+
+### ~~permissionCollection.findApps()~~
+***Deprecated***
+
+**Kind**: instance method of [<code>PermissionCollection</code>](#PermissionCollection)  
 <a name="PermissionCollection+createSharingLink"></a>
 
 ### permissionCollection.createSharingLink(document, options)
