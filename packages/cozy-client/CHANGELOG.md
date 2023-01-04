@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [34.6.4](https://github.com/cozy/cozy-client/compare/v34.6.3...v34.6.4) (2023-01-04)
+
+
+### Bug Fixes
+
+* Async login ([f642ec9](https://github.com/cozy/cozy-client/commit/f642ec9b34fbda38224bf1eaf33b939596ce396d))
+
+
+
+
+
 ## [34.6.3](https://github.com/cozy/cozy-client/compare/v34.6.2...v34.6.3) (2023-01-04)
 
 
