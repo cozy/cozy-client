@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [34.7.0](https://github.com/cozy/cozy-client/compare/v34.6.4...v34.7.0) (2023-01-05)
+
+
+### Features
+
+* Add new method to fetch konnector token in native context ([aad6757](https://github.com/cozy/cozy-client/commit/aad6757cb7a3c874c1ac6380043a84445a8a05c5))
+
+
+
+
+
 ## [34.6.1](https://github.com/cozy/cozy-client/compare/v34.6.0...v34.6.1) (2023-01-04)
 
 
