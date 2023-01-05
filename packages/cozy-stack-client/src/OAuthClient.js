@@ -396,6 +396,24 @@ class OAuthClient extends CozyStackClient {
   }
 
   /**
+   * Used by the flagship application in order to create a token for the konnector with the given slug.
+   * This token can then be used by the client-side konnector to make requests to cozy-stack.
+   * The flagship app will need to use its own access token to request the konnector token.
+   *
+   * @param {string} slug - The slug of the konnector
+   * @returns {Promise<string>} - A promise that resolves with a new token
+   */
+  async fetchKonnectorToken(slug) {
+    try {
+      return await this.fetchJSON('POST', `/auth/tokens/konnectors/${slug}`)
+    } catch (error) {
+      throw new Error(
+        `oAuthClient.fetchKonnectorToken(): Could not create a token for the konnector with slug "${slug}". \n\n${error}`
+      )
+    }
+  }
+
+  /**
    * @typedef SessionCodeRes
    * @property {string} session_code The value of the session code
    */
