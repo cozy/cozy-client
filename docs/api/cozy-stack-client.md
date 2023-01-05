@@ -1248,6 +1248,7 @@ through OAuth.
     * [.getAuthCodeURL(options)](#OAuthClient+getAuthCodeURL) ⇒ <code>string</code>
     * [.getAccessCodeFromURL(pageURL, stateCode)](#OAuthClient+getAccessCodeFromURL) ⇒ <code>string</code>
     * [.fetchAccessToken(accessCode, oauthOptionsArg, uri, codeVerifier)](#OAuthClient+fetchAccessToken) ⇒ <code>Promise</code>
+    * [.fetchKonnectorToken(slug)](#OAuthClient+fetchKonnectorToken) ⇒ <code>Promise.&lt;string&gt;</code>
     * [.fetchSessionCode()](#OAuthClient+fetchSessionCode) ⇒ [<code>Promise.&lt;SessionCodeRes&gt;</code>](#SessionCodeRes)
     * [.fetchSessionCodeWithPassword()](#OAuthClient+fetchSessionCodeWithPassword) ⇒ [<code>Promise.&lt;SessionCodeRes&gt;</code>](#SessionCodeRes)
     * [.loginFlagship()](#OAuthClient+loginFlagship) ⇒ <code>Promise.&lt;(AccessTokenRes\|TwoFactorNeededRes\|SessionCodeRes)&gt;</code>
@@ -1373,6 +1374,20 @@ Exchanges an access code for an access token. This function does **not** update 
 | oauthOptionsArg | <code>object</code> | — To use when OAuthClient is not yet registered (during login process) |
 | uri | <code>string</code> | — To use when OAuthClient is not yet registered (during login process) |
 | codeVerifier | <code>string</code> | — The PKCE code verifier (see https://docs.cozy.io/en/cozy-stack/auth/#pkce-extension) |
+
+<a name="OAuthClient+fetchKonnectorToken"></a>
+
+### oAuthClient.fetchKonnectorToken(slug) ⇒ <code>Promise.&lt;string&gt;</code>
+Used by the flagship application in order to create a token for the konnector with the given slug.
+This token can then be used by the client-side konnector to make requests to cozy-stack.
+The flagship app will need to use its own access token to request the konnector token.
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+**Returns**: <code>Promise.&lt;string&gt;</code> - - A promise that resolves with a new token  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| slug | <code>string</code> | The slug of the konnector |
 
 <a name="OAuthClient+fetchSessionCode"></a>
 
@@ -2316,6 +2331,7 @@ Document representing a io.cozy.oauth.clients
     * [.getAuthCodeURL(options)](#OAuthClient+getAuthCodeURL) ⇒ <code>string</code>
     * [.getAccessCodeFromURL(pageURL, stateCode)](#OAuthClient+getAccessCodeFromURL) ⇒ <code>string</code>
     * [.fetchAccessToken(accessCode, oauthOptionsArg, uri, codeVerifier)](#OAuthClient+fetchAccessToken) ⇒ <code>Promise</code>
+    * [.fetchKonnectorToken(slug)](#OAuthClient+fetchKonnectorToken) ⇒ <code>Promise.&lt;string&gt;</code>
     * [.fetchSessionCode()](#OAuthClient+fetchSessionCode) ⇒ [<code>Promise.&lt;SessionCodeRes&gt;</code>](#SessionCodeRes)
     * [.fetchSessionCodeWithPassword()](#OAuthClient+fetchSessionCodeWithPassword) ⇒ [<code>Promise.&lt;SessionCodeRes&gt;</code>](#SessionCodeRes)
     * [.loginFlagship()](#OAuthClient+loginFlagship) ⇒ <code>Promise.&lt;(AccessTokenRes\|TwoFactorNeededRes\|SessionCodeRes)&gt;</code>
@@ -2441,6 +2457,20 @@ Exchanges an access code for an access token. This function does **not** update 
 | oauthOptionsArg | <code>object</code> | — To use when OAuthClient is not yet registered (during login process) |
 | uri | <code>string</code> | — To use when OAuthClient is not yet registered (during login process) |
 | codeVerifier | <code>string</code> | — The PKCE code verifier (see https://docs.cozy.io/en/cozy-stack/auth/#pkce-extension) |
+
+<a name="OAuthClient+fetchKonnectorToken"></a>
+
+### oAuthClient.fetchKonnectorToken(slug) ⇒ <code>Promise.&lt;string&gt;</code>
+Used by the flagship application in order to create a token for the konnector with the given slug.
+This token can then be used by the client-side konnector to make requests to cozy-stack.
+The flagship app will need to use its own access token to request the konnector token.
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+**Returns**: <code>Promise.&lt;string&gt;</code> - - A promise that resolves with a new token  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| slug | <code>string</code> | The slug of the konnector |
 
 <a name="OAuthClient+fetchSessionCode"></a>
 
