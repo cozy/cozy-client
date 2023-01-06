@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [34.7.1](https://github.com/cozy/cozy-client/compare/v34.7.0...v34.7.1) (2023-01-06)
+
+
+### Bug Fixes
+
+* **ContactsCollection:** Check selector to prevent undefined ([a18ea13](https://github.com/cozy/cozy-client/commit/a18ea13f7823a195570ed18cfd4a3d32c9e60ec5))
+
+
+
+
+
 # [34.7.0](https://github.com/cozy/cozy-client/compare/v34.6.4...v34.7.0) (2023-01-05)
 
 
