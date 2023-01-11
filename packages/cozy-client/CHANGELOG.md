@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [34.7.2](https://github.com/cozy/cozy-client/compare/v34.7.1...v34.7.2) (2023-01-11)
+
+
+### Bug Fixes
+
+* Translation key `work_disability_recognition` ([5159e10](https://github.com/cozy/cozy-client/commit/5159e10ebe34308afa2bd0a93e401a249709129d))
+
+
+
+
+
 ## [34.7.1](https://github.com/cozy/cozy-client/compare/v34.7.0...v34.7.1) (2023-01-06)
 
 **Note:** Version bump only for package cozy-client
