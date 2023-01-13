@@ -1490,6 +1490,18 @@ describe('DocumentCollection', () => {
       })
     })
 
+    it('should not modify the selector after merge', () => {
+      // This test is made to ensure there is no side-effect on the selector
+      const selector = {
+        name: {
+          $gt: null
+        }
+      }
+      const selectorCopy = { ...selector }
+      collection.toMangoOptions(selector, { partialFilter: { trashed: false } })
+      expect(selector).toEqual(selectorCopy)
+    })
+
     it('should correctly build the sort', () => {
       const selector = {
         name: {
