@@ -533,7 +533,7 @@ The returned documents are paginated by the stack.
     // We need to pass the partialFilter in the selector, otherwise CouchDB might
     // fallback on another index if it does not exist yet
     const mergedSelector = partialFilter
-      ? merge(selector, partialFilter)
+      ? merge({ ...selector }, partialFilter)
       : selector
 
     return {
