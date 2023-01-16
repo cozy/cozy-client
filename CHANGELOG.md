@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [34.7.3](https://github.com/cozy/cozy-client/compare/v34.7.2...v34.7.3) (2023-01-16)
+
+
+### Bug Fixes
+
+* Do not modify selector with lodash merge ([552c73a](https://github.com/cozy/cozy-client/commit/552c73ad79b684b9ec58b3440f76d4eb1d8fbd16))
+
+
+
+
+
 ## [34.7.2](https://github.com/cozy/cozy-client/compare/v34.7.1...v34.7.2) (2023-01-11)
 
 
