@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [34.8.0](https://github.com/cozy/cozy-client/compare/v34.7.3...v34.8.0) (2023-01-17)
+
+
+### Features
+
+* Expose ensureFirstSlash method to replace the one in cozy-ui ([6d0de6b](https://github.com/cozy/cozy-client/commit/6d0de6b5477f8b752c20f1b12a7bfe7477703290))
+
+
+
+
+
 ## [34.7.3](https://github.com/cozy/cozy-client/compare/v34.7.2...v34.7.3) (2023-01-16)
 
 
