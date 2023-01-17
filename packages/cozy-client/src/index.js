@@ -27,6 +27,7 @@ export {
   deconstructCozyWebLinkWithSlug,
   dehydrate,
   generateWebLink,
+  ensureFirstSlash,
   rootCozyUrl,
   InvalidCozyUrlError,
   InvalidProtocolError
