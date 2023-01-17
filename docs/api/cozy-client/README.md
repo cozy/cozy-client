@@ -237,6 +237,26 @@ Deconstructed link
 
 ***
 
+### ensureFirstSlash
+
+▸ **ensureFirstSlash**(`path`): `any`
+
+*Parameters*
+
+| Name | Type |
+| :------ | :------ |
+| `path` | `any` |
+
+*Returns*
+
+`any`
+
+*Defined in*
+
+[packages/cozy-client/src/helpers.js:27](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers.js#L27)
+
+***
+
 ### generateWebLink
 
 ▸ **generateWebLink**(`options`): `string`

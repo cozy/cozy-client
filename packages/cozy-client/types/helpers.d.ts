@@ -1,4 +1,5 @@
 export function dehydrate(document: any): {};
+export function ensureFirstSlash(path: any): any;
 export function generateWebLink({ cozyUrl, searchParams: searchParamsOption, pathname, hash, slug, subDomainType }: {
     cozyUrl: string;
     searchParams: any[];

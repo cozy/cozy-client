@@ -24,7 +24,7 @@ export const dehydrate = document => {
   return dehydrated
 }
 
-const ensureFirstSlash = path => {
+export const ensureFirstSlash = path => {
   if (!path) {
     return '/'
   } else {
