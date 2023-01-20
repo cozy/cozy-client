@@ -40,6 +40,7 @@ const identityLabels = [
   'national_id_card',
   'passport',
   'residence_permit',
+  'electoral_card',
   'family_record_book',
   'birth_certificate',
   'driver_license',
@@ -55,6 +56,7 @@ const familyLabels = [
   'birth_certificate',
   'wedding',
   'pacs',
+  'single_parent_benefit',
   'divorce',
   'large_family_card',
   'caf',
@@ -70,6 +72,7 @@ const workStudyLabels = [
   'work_contract',
   'pay_sheet',
   'unemployment_benefit',
+  'employment_center_certificate',
   'pension',
   'work_disability_recognition',
   'gradebook',
@@ -115,6 +118,7 @@ const homeLabels = [
   'rent_receipt',
   'accommodation_proof',
   'house_insurance',
+  'school_insurance_certificate',
   'work_quote',
   'other_house_document'
 ]
@@ -126,6 +130,7 @@ const transportLabels = [
   'driver_license',
   'vehicle_registration',
   'car_insurance',
+  'transport_card',
   'mechanic_invoice',
   'transport_invoice',
   'other_transport_document'
@@ -134,7 +139,12 @@ const transportLabels = [
 /**
  * @type {Array<ActivityLabels>}
  */
-const activityLabels = ['personal_sporting_licence', 'other_activity_document']
+const activityLabels = [
+  'personal_sporting_licence',
+  'fidelity_card',
+  'library_card',
+  'other_activity_document'
+]
 
 /**
  * @type {Array<FinanceLabels>}
@@ -143,8 +153,10 @@ const financeLabels = [
   'tax_return',
   'tax_notice',
   'tax_timetable',
+  'real_estate_tax',
   'pay_sheet',
   'receipt',
+  'single_parent_benefit',
   'other_tax_document',
   'bank_details',
   'bank_statement',
