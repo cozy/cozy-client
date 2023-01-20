@@ -109,6 +109,36 @@
       "subjects": ["work", "revenues"]
     },
     {
+      "label": "fidelity_card",
+      "sourceCategory": "shopping"
+    },
+    {
+      "label": "library_card",
+      "sourceCategory": "individual"
+    },
+    {
+      "label": "single_parent_benefit",
+      "purpose": "attestation",
+      "sourceCategory": "gov",
+      "sourceSubCategory": "family",
+      "subjects": ["revenues"]
+    },
+    {
+      "label": "transport_card",
+      "sourceCategory": "transport",
+      "subjects": ["vehicule"]
+    },
+    {
+      "label": "electoral_card",
+      "sourceCategory": "gov"
+    },
+    {
+      "label": "employment_center_certificate",
+      "purpose": "attestation",
+      "sourceCategory": "gov",
+      "subjects": ["employment"]
+    },
+    {
       "label": "unemployment_benefit",
       "purpose": "attestation",
       "sourceCategory": "gov",
@@ -244,6 +274,13 @@
       "purpose": "contract",
       "sourceCategory": "real_estate",
       "subjects": ["house"]
+    },
+    {
+      "label": "real_estate_tax",
+      "purpose": "invoice",
+      "sourceCategory": "gov",
+      "sourceSubCategory": "real_estate",
+      "subjects": ["tax", "house"]
     },
     {
       "label": "building_permit",
@@ -412,6 +449,12 @@
       "purpose": "attestation",
       "sourceCategory": "education",
       "subjects": ["identity", "right", "education"]
+    },
+    {
+      "label": "school_insurance_certificate",
+      "purpose": "attestation",
+      "sourceCategory": "education",
+      "subjects": ["education", "insurance"]
     },
     {
       "label": "unfit_for_habitation_declaration",
