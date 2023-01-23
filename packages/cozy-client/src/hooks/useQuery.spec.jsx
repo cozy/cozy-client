@@ -69,6 +69,36 @@ describe('use query', () => {
     })
     expect(client.query).not.toHaveBeenCalled()
   })
+  it.each`
+    queryOptions                         | error
+    ${{ as: 'simpsons', enabled: '' }}   | ${'useQuery options.enabled must be a boolean, please check the value given to it.'}
+    ${{ as: 'simpsons', enabled: [] }}   | ${'useQuery options.enabled must be a boolean, please check the value given to it.'}
+    ${{ as: 'simpsons', enabled: 0 }}    | ${'useQuery options.enabled must be a boolean, please check the value given to it.'}
+    ${{ as: 'simpsons', enabled: null }} | ${'useQuery options.enabled must be a boolean, please check the value given to it.'}
+  `(
+    `should throw "$error" if no respect the type of the enable property`,
+    ({ queryOptions, error }) => {
+      try {
+        const { hookResult } = setupQuery({
+          queryOptions,
+          queryDefinition: () => Q('io.cozy.simpsons')
+        })
+        expect(hookResult.result.current).toBe(undefined)
+      } catch (err) {
+        expect(err).toEqual(Error(error))
+      }
+    }
+  )
+  it('should not throw error if pass "undefined" of the enable property', () => {
+    const { hookResult } = setupQuery({
+      queryOptions: { as: 'simpsons', enabled: undefined },
+      queryDefinition: () => Q('io.cozy.simpsons')
+    })
+    expect(hookResult.result.current.data).toEqual([
+      { _id: 'homer', _type: 'io.cozy.simpsons', id: 'homer', name: 'Homer' },
+      { _id: 'marge', _type: 'io.cozy.simpsons', id: 'marge', name: 'Marge' }
+    ])
+  })
   it('should respect not throw error if the qDef contains a getById with null', () => {
     const {
       client,

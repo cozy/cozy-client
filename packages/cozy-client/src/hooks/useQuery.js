@@ -39,6 +39,12 @@ const useQuery = (queryDefinition, options) => {
   }
 
   const { as, enabled = true } = options
+
+  if (typeof enabled !== 'boolean') {
+    throw new Error(
+      `useQuery options.enabled must be a boolean, please check the value given to it.`
+    )
+  }
   // If the query is not enabled, no need to call the queryDefinition
   // because sometimes, we can have a getById(null) since we want to
   // enabled the query only when the specific id is defined. And since
