@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [34.9.0](https://github.com/cozy/cozy-client/compare/v34.8.0...v34.9.0) (2023-01-23)
+
+
+### Features
+
+* Add some qualifications ([cbbe235](https://github.com/cozy/cozy-client/commit/cbbe235caa1542053d03aca1df6d9cf7f3a0db9a))
+
+
+
+
+
 # [34.8.0](https://github.com/cozy/cozy-client/compare/v34.7.3...v34.8.0) (2023-01-17)
 
 
