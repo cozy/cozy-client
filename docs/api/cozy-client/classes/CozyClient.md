@@ -59,7 +59,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 ### capabilities
 
-• **capabilities**: `any`
+• **capabilities**: `ClientCapabilities`
 
 *Defined in*
 

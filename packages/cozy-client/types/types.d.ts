@@ -335,7 +335,24 @@ export type InAppBrowser = {
     open: Function;
 };
 export type AppMetadata = any;
-export type ClientCapabilities = any;
+export type ClientCapabilities = {
+    /**
+     * - Whether OIDC login is possible with this Cozy
+     */
+    can_auth_with_oidc?: boolean;
+    /**
+     * - Whether  password login is possible with this Cozy
+     */
+    can_auth_with_password?: boolean;
+    /**
+     * - Whether file versioning is active on this Cozy
+     */
+    file_versioning?: boolean;
+    /**
+     * - Whether the stack has been configured to use flat subdomains
+     */
+    flat_subdomains?: boolean;
+};
 export type Cordova = {
     file: FilePlugin;
     InAppBrowser: InAppBrowser;
