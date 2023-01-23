@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [34.10.0](https://github.com/cozy/cozy-client/compare/v34.9.0...v34.10.0) (2023-01-23)
+
+
+### Features
+
+* Add types to client capabilities ([2962b6d](https://github.com/cozy/cozy-client/commit/2962b6d6f89fd6cd156d37c966ccb5eff91dc1e2))
+
+
+
+
+
 # [34.9.0](https://github.com/cozy/cozy-client/compare/v34.8.0...v34.9.0) (2023-01-23)
 
 
