@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [34.10.1](https://github.com/cozy/cozy-client/compare/v34.10.0...v34.10.1) (2023-01-24)
+
+
+### Bug Fixes
+
+* Throw error if enabled is not a boolean ([e56c933](https://github.com/cozy/cozy-client/commit/e56c93394cf22b8d0b03d49e2adc5464a876864a))
+
+
+
+
+
 # [34.10.0](https://github.com/cozy/cozy-client/compare/v34.9.0...v34.10.0) (2023-01-23)
 
 
