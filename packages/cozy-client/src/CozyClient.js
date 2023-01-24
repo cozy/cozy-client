@@ -924,7 +924,15 @@ client.query(Q('io.cozy.bills'))`)
     const queryId =
       options.as || this.queryIdGenerator.generateId(queryDefinition)
     const existingQuery = this.getQueryFromState(queryId, options)
-
+    if (options.enabled !== undefined) {
+      if ('boolean' !== typeof options.enabled) {
+        throw new Error(
+          `option.enabled should be a boolean for this query: ${JSON.stringify(
+            queryDefinition
+          )}`
+        )
+      }
+    }
     if (options.fetchPolicy) {
       if (!options.as) {
         throw new Error(
