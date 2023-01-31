@@ -16,6 +16,11 @@ import logger from './logger'
  * @typedef {object} IOCozyFolder Folder
  */
 /**
+ * @typedef {object} SpecificFileAttributesForKonnector Specific file attributes for creation for konnector
+ * @property {string} sourceAccount the id of the source account used by a konnector
+ * @property {string} sourceAccountIdentifier the unique identifier of the account targeted by the connector
+ */
+/**
  * Cursor used for Mango queries pagination
  *
  * @typedef {Array<string>|string} ViewKey
@@ -520,9 +525,10 @@ class FileCollection extends DocumentCollection {
   /**
    * Creates a file
    *
+   *
    * @private
    * @param {File|Blob|Stream|string|ArrayBuffer} data file to be uploaded
-   * @param {FileAttributes} params Additional parameters
+   * @param {FileAttributes & SpecificFileAttributesForKonnector} params Additional parameters
    * @param  {object}  params.options     Options to pass to doUpload method (additional headers)
    * @throws {Error} - explaining reason why creation failed
    */
@@ -534,6 +540,8 @@ class FileCollection extends DocumentCollection {
       executable = false,
       encrypted = false,
       metadata,
+      sourceAccount = '',
+      sourceAccountIdentifier = '',
       ...options
     } = {}
   ) {
@@ -554,7 +562,7 @@ class FileCollection extends DocumentCollection {
     if (options.contentLength) {
       size = String(options.contentLength)
     }
-    const path = uri`/files/${dirId}?Name=${name}&Type=file&Executable=${executable}&Encrypted=${encrypted}&MetadataID=${metadataId}&Size=${size}`
+    const path = uri`/files/${dirId}?Name=${name}&Type=file&Executable=${executable}&Encrypted=${encrypted}&MetadataID=${metadataId}&Size=${size}&SourceAccount=${sourceAccount}&SourceAccountIdentifier=${sourceAccountIdentifier}`
     return this.doUpload(data, path, options)
   }
 

@@ -1137,7 +1137,7 @@ describe('FileCollection', () => {
     it('should create a file without metadata', async () => {
       const params = { dirId }
       const result = await collection.createFile(data, params)
-      const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&Encrypted=false&MetadataID=&Size=&UpdatedAt=${new Date(
+      const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&Encrypted=false&MetadataID=&Size=&SourceAccount=&SourceAccountIdentifier=&UpdatedAt=${new Date(
         data.lastModified
       ).toISOString()}&CreatedAt=${new Date(data.lastModified).toISOString()}`
       const expectedOptions = {
@@ -1173,7 +1173,7 @@ describe('FileCollection', () => {
         metadata: { type: 'bill' }
       }
       const result = await collection.createFile(data, params)
-      const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&Encrypted=false&MetadataID=${metadataId}&Size=&UpdatedAt=${new Date(
+      const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&Encrypted=false&MetadataID=${metadataId}&Size=&SourceAccount=&SourceAccountIdentifier=&UpdatedAt=${new Date(
         data.lastModified
       ).toISOString()}&CreatedAt=${new Date(data.lastModified).toISOString()}`
       const expectedOptions = {
@@ -1202,7 +1202,42 @@ describe('FileCollection', () => {
       const result = await collection.createFile(data, params)
       const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&Encrypted=false&MetadataID=&Size=${String(
         contentLength
-      )}&UpdatedAt=${new Date(
+      )}&SourceAccount=&SourceAccountIdentifier=&UpdatedAt=${new Date(
+        data.lastModified
+      ).toISOString()}&CreatedAt=${new Date(data.lastModified).toISOString()}`
+      const expectedOptions = {
+        headers: {
+          'Content-Type': 'application/epub+zip',
+          'Content-Length': String(contentLength)
+        }
+      }
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        expectedPath,
+        data,
+        expectedOptions
+      )
+      expect(result).toEqual({
+        data: {
+          id: id,
+          _id: id,
+          _type: 'io.cozy.files',
+          dir_id: dirId
+        }
+      })
+    })
+
+    it('should send the file konnectors params via querystring', async () => {
+      const params = {
+        dirId,
+        contentLength,
+        sourceAccount: 'source-account',
+        sourceAccountIdentifier: 'bob@cozy.localhost'
+      }
+      const result = await collection.createFile(data, params)
+      const expectedPath = `/files/${dirId}?Name=mydoc.epub&Type=file&Executable=false&Encrypted=false&MetadataID=&Size=${String(
+        contentLength
+      )}&SourceAccount=source-account&SourceAccountIdentifier=bob%40cozy.localhost&UpdatedAt=${new Date(
         data.lastModified
       ).toISOString()}&CreatedAt=${new Date(data.lastModified).toISOString()}`
       const expectedOptions = {
