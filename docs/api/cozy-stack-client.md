@@ -164,6 +164,9 @@ Deleted and design docs are filtered by default, thus documents are retrieved in
 <dt><a href="#IOCozyFolder">IOCozyFolder</a> : <code>object</code></dt>
 <dd><p>Folder</p>
 </dd>
+<dt><a href="#SpecificFileAttributesForKonnector">SpecificFileAttributesForKonnector</a> : <code>object</code></dt>
+<dd><p>Specific file attributes for creation for konnector</p>
+</dd>
 <dt><a href="#CouchDBViewCursor">CouchDBViewCursor</a> : <code>Array.&lt;string&gt;</code> | <code>string</code></dt>
 <dd><p>Cursor used for Mango queries pagination</p>
 </dd>
@@ -2246,6 +2249,19 @@ You should use fetchChangesRaw to have low level control on _changes parameters.
 Folder
 
 **Kind**: global typedef  
+<a name="SpecificFileAttributesForKonnector"></a>
+
+## SpecificFileAttributesForKonnector : <code>object</code>
+Specific file attributes for creation for konnector
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| sourceAccount | <code>string</code> | the id of the source account used by a konnector |
+| sourceAccountIdentifier | <code>string</code> | the unique identifier of the account targeted by the connector |
+
 <a name="CouchDBViewCursor"></a>
 
 ## CouchDBViewCursor : <code>Array.&lt;string&gt;</code> \| <code>string</code>
