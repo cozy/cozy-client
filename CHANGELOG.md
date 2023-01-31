@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [34.11.0](https://github.com/cozy/cozy-client/compare/v34.10.1...v34.11.0) (2023-01-31)
+
+
+### Features
+
+* Add sourceAccount & sourceAccountIdentifier to createFile ([1f8e450](https://github.com/cozy/cozy-client/commit/1f8e4507632dd43309366b1df5ecbefa5a4a8406))
+
+
+
+
+
 ## [34.10.1](https://github.com/cozy/cozy-client/compare/v34.10.0...v34.10.1) (2023-01-24)
 
 
