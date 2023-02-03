@@ -43,15 +43,15 @@ When you provide this information, cozy-client will automatically update metadat
 
 ### For new documents
 
-Cozy-Client will set: 
+Cozy-Client will set:
 
 * `metadataVersion` <string>: to the last version known to Cozy-Client. It's the version of the schema for the metadata block itself.
 * `doctypeVersion` <string>: if it's provided in the `schema` at Cozy-Client initialization
 * `slug` <string>: Slug of the app
-* `sourceAccount`: 
+* `sourceAccount`:
 * creation date, app and version
 * updated date, app and version
-  
+
 ```
 const client = new CozyClient({
   appMetadata: {
