@@ -48,7 +48,7 @@ Cozy-Client will set:
 * `metadataVersion` <string>: to the last version known to Cozy-Client. It's the version of the schema for the metadata block itself.
 * `doctypeVersion` <string>: if it's provided in the `schema` at Cozy-Client initialization
 * `slug` <string>: Slug of the app
-* `sourceAccount`:
+* `sourceAccount`: <string>: if it's provided in the `appMetadata` at initialization. Note it won't work for files (see below).
 * creation date, app and version
 * updated date, app and version
 
@@ -76,4 +76,25 @@ Cozy-Client will:
 * Add your app and version in the `updatedByApps` list
 
 ⚠️ These values will override any values that your document may already have.
+
+### Specific case of io.cozy.files
+
+The io.cozy.files doctype is protected by cozy-stack, that restricts the attributes that can be saved by the client, including the cozyMetadata.
+
+This is the case for :
+* `cozyMetadata.sourceAccount`
+* `cozyMetadata.sourceAccountIdentifier`
+
+To save those attributes, you can pass them directly to the save method, like this:
+
+```
+const client = new client()
+client.save({
+  _type: 'io.cozy.files',
+  sourceAcount: '12ab3c',
+  sourceAccountIdentifier: 'john@example.org',
+  ...
+})
+```
+
 
