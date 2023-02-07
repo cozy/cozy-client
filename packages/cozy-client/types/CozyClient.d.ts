@@ -284,7 +284,7 @@ declare class CozyClient {
      * Emits
      *
      * - "beforeLogout" at the beginning, before links have been reset
-     * - "login" when the client is fully logged out and links have been reset
+     * - "logout" when the client is fully logged out and links have been reset
      *
      * @returns {Promise} - Resolves when all links have been reset and client is fully logged out
      */
