@@ -5,16 +5,60 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
- * @typedef {"io.cozy.accounts"} AccountsDoctype
- * @typedef {"io.cozy.triggers"} TriggersDoctype
- * @typedef {"io.cozy.konnectors"} KonnectorsDoctype
  * @typedef {"io.cozy.notes"} NotesDoctype
  * @typedef {"io.cozy.apps"} AppsDoctype
  * @typedef {"io.cozy.settings"} SettingsDoctype
  * @typedef {"io.cozy-oauth.clients"} OAuthClientsDoctype
  * @typedef {"io.cozy.files"} FilesDoctype
+ * @typedef {"io.cozy.account"} AccountsDoctype
+ * @typedef {"io.cozy.konnectors"} KonnectorsDoctype
+ * @typedef {"io.cozy.triggers"} TriggersDoctype
  * @typedef {AccountsDoctype|TriggersDoctype|KonnectorsDoctype|NotesDoctype|AppsDoctype|SettingsDoctype|OAuthClientsDoctype|FilesDoctype} KnownDoctype
  * @typedef {KnownDoctype|string} Doctype
+ */
+
+/**
+ * @typedef {object} AccountsDocument
+ * @property {String} [_id] - document identifier
+ * @property {String} account_type - slug of the associated konnector
+ * @property {object} auth - user credentials
+ * @property {String} [identifier] - Name of the attribute in the auth object that can be used to name the account.
+ * @property {Array} [mutedErrors] - list of ignored errors
+ * @property {String} [state] - used by harvest and the konnectors to communicate
+ * @typedef {CozyClientDocument & AccountsDocument} IOCozyAccount - An io.cozy.accounts document
+ */
+
+/**
+ * @typedef {object} KonnectorsDocument
+ * @property {String} slug - slug of konnector
+ * @property {ManifestFields} fields - konnector fields
+ * @property {Boolean} clientSide - whether the konnector runs on client or not
+ * @typedef {CozyClientDocument & KonnectorsDocument} IOCozyKonnector - An io.cozy.konnectors document
+ */
+
+/**
+ * @typedef {object} TriggersDocument
+ * @property {String} [_id] - document identifier
+ * @property {String} type - type of the trigger. Can be "at", "cron", "event", "every", "in", "webhook", "client"
+ * @property {String} worker - type of worker. Can be "konnector" or "sendmail"
+ * @property {object} message - Parameters to pass to the the worker. For example, when the worker is set to konnector, message contains the related konnector and the related account.
+ * @property {TriggerState} [current_state] - state of the last executed jobs related to this trigger
+ * @property {String} [arguments] - Arguments related to the type attribute. For example it's a cron configuration when the type is set to @cron.
+ * @typedef {CozyClientDocument & TriggersDocument} IOCozyTrigger - An io.cozy.konnectors document
+ */
+
+/**
+ * @typedef {object} TriggerState
+ * @property {'queued'|'running'|'done'|'errored'} status - Global status of the trigger
+ * @property {String} last_success - Date  of the last job in success
+ * @property {String} last_successful_job_id - ID of the last job in success
+ * @property {String} last_execution - Date of the last executed job
+ * @property {String} last_executed_job_id - ID of the last executed job
+ * @property {String} last_failure - Date of the last job in failure
+ * @property {String} last_failed_job_id - ID of the last job in failure
+ * @property {String} last_manual_execution - Date of the last job manually executed
+ * @property {String} last_manual_job_id - ID of the last job manually executed
+ * @property {String} last_error - Content of the last error
  */
 
 /**
