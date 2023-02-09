@@ -1,4 +1,3 @@
-import get from 'lodash/get'
 import { getMutedErrors } from './account'
 import logger from '../logger'
 
@@ -19,51 +18,47 @@ const triggerStates = {
   /**
    * Returns when the trigger was last executed
    *
-   * @param {import('../types').TriggersDoctype} triggerState - trigger object
+   * @param {import('../types').IOCozyTrigger} trigger - trigger object
    * @returns {String} last execution date of any job related to the given trigger
    */
-  getLastExecution: triggerState =>
-    get(triggerState, 'current_state.last_execution'),
+  getLastExecution: trigger => trigger?.current_state?.last_execution,
 
   /**
    * Returns when the trigger was last executed with success
    *
-   * @param {import('../types').TriggersDoctype} triggerState - trigger object
+   * @param {import('../types').IOCozyTrigger} trigger - trigger object
    * @returns {String} last execution date of any job related to the given trigger and with success
    */
-  getLastSuccess: triggerState =>
-    get(triggerState, 'current_state.last_success'),
+  getLastSuccess: trigger => trigger?.current_state?.last_success,
 
   /**
    * Returns when the trigger was last executed with success
    *
-   * @param {import('../types').TriggersDoctype} triggerState - trigger object
+   * @param {import('../types').IOCozyTrigger} trigger - trigger object
    * @returns {String} last execution date of any job related to the given trigger and with success
    */
-  getLastsuccess: triggerState => {
+  getLastsuccess: trigger => {
     logger.warn(
       'Deprecated, please use getLastSuccess instead of getLastsuccess'
     )
-    return get(triggerState, 'current_state.last_success')
+    return trigger?.current_state?.last_success
   },
 
   /**
    * Returns whether last job failed
    *
-   * @param {import('../types').TriggersDoctype} triggerState - trigger object
+   * @param {import('../types').IOCozyTrigger} trigger - trigger object
    * @returns {Boolean}
    */
-  isErrored: triggerState =>
-    get(triggerState, 'current_state.status') === 'errored',
+  isErrored: trigger => trigger?.current_state?.status === 'errored',
 
   /**
    * Returns the type of the last error to occur
    *
-   * @param {import('../types').TriggersDoctype} triggerState - trigger object
+   * @param {import('../types').IOCozyTrigger} trigger - trigger object
    * @returns {String}
    */
-  getLastErrorType: triggerState =>
-    get(triggerState, 'current_state.last_error')
+  getLastErrorType: trigger => trigger?.current_state?.last_error
 }
 
 const DEFAULT_CRON = '0 0 0 * * 0' // Once a week, sunday at midnight
@@ -72,7 +67,7 @@ const triggers = {
   /**
    * Returns whether the given trigger is associated to a konnector or not
    *
-   * @param {import('../types').TriggersDoctype} trigger - trigger object
+   * @param {import('../types').IOCozyTrigger} trigger - trigger object
    * @returns {Boolean}
    */
   isKonnectorWorker: trigger => trigger.worker === 'konnector',
@@ -80,7 +75,7 @@ const triggers = {
   /**
    * Returns the konnector slug that executed a trigger
    *
-   * @param {import('../types').TriggersDoctype} trigger - io.cozy.triggers
+   * @param {import('../types').IOCozyTrigger} trigger - io.cozy.triggers
    *
    * @returns {string|void} A konnector slug
    */
@@ -100,26 +95,26 @@ const triggers = {
   /**
    * getAccountId - Returns the account id for a trigger
    *
-   * @param {import('../types').TriggersDoctype} trigger io.cozy.triggers
+   * @param {import('../types').IOCozyTrigger} trigger io.cozy.triggers
    *
    * @returns {String} Id for an io.cozy.accounts
    */
   getAccountId: trigger => {
-    const legacyData = get(trigger, 'message.Data')
+    const legacyData = trigger?.message?.Data
 
     if (legacyData) {
       const message = JSON.parse(atob(legacyData))
       return message.account
     } else {
-      return get(trigger, 'message.account')
+      return trigger?.message?.account
     }
   },
 
   /**
    * Checks if the triggers current error has been muted in the corresponding io.cozy.accounts
    *
-   * @param {import('../types').TriggersDoctype} trigger      io.cozy.triggers
-   * @param {import('../types').AccountsDoctype} account      io.cozy.accounts used by the trigger
+   * @param {import('../types').IOCozyTrigger} trigger      io.cozy.triggers
+   * @param {import('../types').IOCozyAccount} account      io.cozy.accounts used by the trigger
    *
    * @returns {Boolean} Whether the error is muted or not
    */
@@ -143,23 +138,22 @@ const triggers = {
   /**
    * Returns whether the error in trigger can be solved by the user
    *
-   * @param {import('../types').TriggersDoctype} trigger      io.cozy.triggers
+   * @param {import('../types').IOCozyTrigger} trigger      io.cozy.triggers
    *
    * @returns {Boolean} Whether the error is muted or not
    */
-  hasActionableError: trigger => {
-    return actionableErrors.includes(get(trigger, 'current_state.last_error'))
-  },
+  hasActionableError: trigger =>
+    actionableErrors.includes(trigger?.current_state?.last_error),
 
   /**
    * Build trigger attributes given konnector and account
    *
    * @param  {Object} options - options object
-   * @param  {import('../types').KonnectorsDoctype} options.konnector - konnector object
-   * @param  {import('../types').AccountsDoctype} options.account - account object
+   * @param  {import('../types').IOCozyKonnector} options.konnector - konnector object
+   * @param  {import('../types').IOCozyAccount} options.account - account object
    * @param  {String} [options.cron] - cron string. Defaults to '0 0 0 * * 0'
    * @param  {object} [options.folder] - folder object
-   * @returns {import('../types').TriggersDoctype} created trigger
+   * @returns {import('../types').IOCozyTrigger} created trigger
    */
   buildTriggerAttributes: ({
     account,

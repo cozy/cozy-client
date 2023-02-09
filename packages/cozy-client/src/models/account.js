@@ -3,26 +3,23 @@ import merge from 'lodash/merge'
 
 import { getHasManyItem, updateHasManyItem } from '../associations/HasMany'
 import { legacyLoginFields, getIdentifier } from './manifest'
-/**
- * @typedef {object} CozyAccount
- */
 
 /**
  * getMutedErrors - Returns the list of errors that have been muted for the given account
  *
- * @param {object} account io.cozy.accounts
+ * @param {import('../types').IOCozyAccount} account io.cozy.accounts
  *
  * @returns {Array} An array of errors with a `type` and `mutedAt` field
  */
-export const getMutedErrors = account => account?.mutedErrors ?? []
+export const getMutedErrors = account => account?.mutedErrors || []
 
 /**
  * muteError - Adds an error to the list of muted errors for the given account
  *
- * @param {CozyAccount} account   io.cozy.accounts
+ * @param {import('../types').IOCozyAccount} account   io.cozy.accounts
  * @param {string} errorType The type of the error to mute
  *
- * @returns {CozyAccount} An updated io.cozy.accounts
+ * @returns {import('../types').IOCozyAccount} An updated io.cozy.accounts
  */
 export const muteError = (account, errorType) => {
   const mutedErrors = getMutedErrors(account)
@@ -39,7 +36,9 @@ const DEFAULT_CONTRACT_SYNC_STATUS = true
 /**
  * Returns whether a contract is synced from account relationship
  *
- * @param  {CozyAccount} account - Cozy account
+ * @param  {import('../types').IOCozyAccount} account - Cozy account
+ * @param  {String} contractId - contract identifier
+ * @returns  {Boolean} synchronisation status
  */
 export const getContractSyncStatusFromAccount = (account, contractId) => {
   const relItem = getHasManyItem(account, 'contracts', contractId)
@@ -52,7 +51,10 @@ export const getContractSyncStatusFromAccount = (account, contractId) => {
 /**
  * Sets contract sync status into account relationship
  *
- * @param  {CozyAccount} account - Cozy account
+ * @param  {import('../types').IOCozyAccount} account - Cozy account
+ * @param  {String} contractId - contract identifier
+ * @param  {String} syncStatus - synchronisation status
+ * @returns {import('../types').IOCozyAccount}
  */
 export const setContractSyncStatusInAccount = (
   account,
@@ -67,6 +69,12 @@ export const setContractSyncStatusInAccount = (
   })
 }
 
+/**
+ * Get the account login field value from a given account
+ *
+ * @param {import('../types').IOCozyAccount} account - the given cozy account
+ * @returns {String|null} - Account login
+ */
 export const getAccountLogin = account => {
   if (account && account.auth) {
     for (const fieldName of legacyLoginFields) {
@@ -76,6 +84,12 @@ export const getAccountLogin = account => {
   return null
 }
 
+/**
+ * Get the account name from a given account
+ *
+ * @param {import('../types').IOCozyAccount} account - the given cozy account
+ * @returns {String|null} - Account name
+ */
 export const getAccountName = account => {
   if (!account) return null
   if (account.auth) {
@@ -85,6 +99,13 @@ export const getAccountName = account => {
   }
 }
 
+/**
+ * Transforms account auth data to io.cozy.accounts document
+ *
+ * @param  {import('../types').IOCozyKonnector} konnector Konnector related to account
+ * @param  {object} authData  Authentication data
+ * @returns {import('../types').IOCozyAccount}          io.cozy.accounts attributes
+ */
 export const buildAccount = (konnector, authData) => {
   return {
     auth: authData,
