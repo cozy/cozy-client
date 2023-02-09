@@ -227,8 +227,8 @@ class OAuthClient extends CozyStackClient {
       softwareID: this.oauthOptions.softwareID
     }
     const data = this.snakeCaseOAuthData({
-      ...mandatoryFields,
-      ...information
+      ...information,
+      ...mandatoryFields
     })
 
     if (resetSecret) data['client_secret'] = this.oauthOptions.clientSecret
