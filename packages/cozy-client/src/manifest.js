@@ -1,3 +1,4 @@
+// @ts-check
 import _flow from 'lodash/flow'
 import _cloneDeep from 'lodash/cloneDeep'
 import findKey from 'lodash/findKey'
@@ -46,7 +47,12 @@ const APP_CATEGORIES = [
   'transport'
 ]
 
-/** Filters unauthorized categories. Defaults to ['others'] if no suitable category. */
+/**
+ * Filters unauthorized categories. Defaults to ['others'] if no suitable category.
+ *
+ * @param {Array<Object>} categories - Array of categories
+ * @returns {Array<Object>} sanitized categories
+ */
 export function sanitizeCategories(categories) {
   if (!categories) return ['others']
   const filteredList = categories.filter(c => APP_CATEGORIES.includes(c))
@@ -65,8 +71,8 @@ export function isPartnershipValid(partnership) {
 /**
  * Normalize app manifest, retro-compatibility for old manifests
  *
- * @param  {Manifest} manifest - app manifest to normalize
- * @returns {Manifest}
+ * @param  {import('./types').Manifest} manifest - app manifest to normalize
+ * @returns {import('./types').Manifest}
  */
 export function sanitize(manifest) {
   const sanitized = { ...manifest }
@@ -117,8 +123,9 @@ export function sanitize(manifest) {
 
 /**
  * Ensures that fields has at least one field with the role 'identifier'
+ *
  * @param  {Object} [fields={}] Manifest fields
- * @return {Object}             Sanitized manifest fields
+ * @returns {Object}             Sanitized manifest fields
  */
 export const sanitizeIdentifier = fields => {
   const sanitized = _cloneDeep(fields)
@@ -147,15 +154,17 @@ export const sanitizeIdentifier = fields => {
 
 /**
  * Returns the key for the field having the role=identifier attribute
+ *
  * @param  {Object} fields Konnector fields
- * @return {string}        The key for the identifier field, example 'login'
+ * @returns {string}        The key for the identifier field, example 'login'
  */
 export const getIdentifier = (fields = {}) =>
   findKey(sanitizeIdentifier(fields), field => field.role === ROLE_IDENTIFIER)
 /**
  * Ensures old fields are removed
+ *
  * @param  {Object} fields Manifest fields
- * @return {Object}        Sanitized manifest fields
+ * @returns {Object}        Sanitized manifest fields
  */
 const removeOldFields = fields => {
   const sanitized = _cloneDeep(fields)
@@ -165,8 +174,9 @@ const removeOldFields = fields => {
 
 /**
  * Ensures every field not explicitely tagged as not required is required
+ *
  * @param  {Object} [fields={}] Manifest fields
- * @return {Object}             Sanitized manifest fields
+ * @returns {Object}             Sanitized manifest fields
  */
 const sanitizeRequired = fields => {
   const sanitized = _cloneDeep(fields)
@@ -186,8 +196,9 @@ const sanitizeRequired = fields => {
  * Ensures:
  * * any field flagged as encrypted keeps its flag
  * * any legacy encrypted field is tagged as encrypted
+ *
  * @param  {Object} [fields={}] Manifest fields
- * @return {Object}             Sanitized Manifest fields
+ * @returns {Object}             Sanitized Manifest fields
  */
 const sanitizeEncrypted = fields => {
   const sanitized = _cloneDeep(fields)
@@ -200,6 +211,12 @@ const sanitizeEncrypted = fields => {
   return sanitized
 }
 
+/**
+ * Sanitizes manifest fields with multiple rules
+ *
+ * @param  {Object} [fields={}] Manifest fields
+ * @returns {Object}            Sanitized manifest fields
+ */
 const sanitizeFields = _flow([
   removeOldFields,
   sanitizeIdentifier,
