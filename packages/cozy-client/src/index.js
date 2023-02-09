@@ -37,7 +37,7 @@ export { getQueryFromState } from './store'
 export { default as Registry } from './registry'
 export { default as RealTimeQueries } from './RealTimeQueries'
 
-import * as manifest from './manifest'
+import * as manifest from './models/manifest'
 export { manifest }
 
 export { default as CozyProvider } from './Provider'

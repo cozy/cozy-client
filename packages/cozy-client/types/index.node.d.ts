@@ -9,7 +9,7 @@ export * from "./mock";
 export * from "./cli";
 export { BulkEditError } from "./errors";
 export { default as fetchPolicies } from "./policies";
-import * as manifest from "./manifest";
+import * as manifest from "./models/manifest";
 import * as models from "./models";
 export { manifest, models };
 export { QueryDefinition, Mutations, MutationTypes, getDoctypeFromOperation, Q } from "./queries/dsl";

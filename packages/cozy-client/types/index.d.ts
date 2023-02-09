@@ -13,7 +13,7 @@ export { default as fetchPolicies } from "./policies";
 export * from "./mock";
 export * from "./hooks";
 export { BulkEditError } from "./errors";
-import * as manifest from "./manifest";
+import * as manifest from "./models/manifest";
 import * as models from "./models";
 export { manifest, models };
 export { QueryDefinition, Q, Mutations, MutationTypes, getDoctypeFromOperation } from "./queries/dsl";

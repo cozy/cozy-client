@@ -30,7 +30,7 @@ export { cancelable } from './utils'
 export { getQueryFromState } from './store'
 export { default as Registry } from './registry'
 
-import * as manifest from './manifest'
+import * as manifest from './models/manifest'
 export { manifest }
 
 export * from './mock'

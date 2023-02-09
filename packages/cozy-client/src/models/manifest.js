@@ -71,8 +71,8 @@ export function isPartnershipValid(partnership) {
 /**
  * Normalize app manifest, retro-compatibility for old manifests
  *
- * @param  {import('./types').Manifest} manifest - app manifest to normalize
- * @returns {import('./types').Manifest}
+ * @param  {import('../types').Manifest} manifest - app manifest to normalize
+ * @returns {import('../types').Manifest}
  */
 export function sanitize(manifest) {
   const sanitized = { ...manifest }
