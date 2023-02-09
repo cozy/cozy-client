@@ -20,6 +20,32 @@ export type ReduxStore = any;
 export type Token = any;
 export type ClientResponse = any;
 export type Manifest = any;
+export type SanitizedManifest = any;
+export type ManifestField = {
+    /**
+     * - field type : can be "text" or "hidden" or "date" or "dropdown" or "password"
+     */
+    type?: string;
+    /**
+     * - field role : with "identifier" value
+     */
+    role?: string;
+    /**
+     * - is the field required or not
+     */
+    required?: boolean;
+    /**
+     * - is the field required or not (legacy)
+     */
+    isRequired?: boolean;
+    /**
+     * - encrypted value of the field (legacy)
+     */
+    encrypted?: boolean;
+};
+export type ManifestFields = {
+    [key: string]: ManifestField;
+};
 export type OldCozyClient = any;
 export type NodeEnvironment = any;
 export type QueryFetchStatus = "failed" | "loading" | "pending" | "loaded";
