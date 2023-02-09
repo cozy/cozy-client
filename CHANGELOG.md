@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [34.11.1](https://github.com/cozy/cozy-client/compare/v34.11.0...v34.11.1) (2023-02-09)
+
+
+### Bug Fixes
+
+* Remove existing trailing space ([1e8112e](https://github.com/cozy/cozy-client/commit/1e8112e06db653d9c635f80a5ebdf64f5fff87ac))
+
+
+
+
+
 # [34.11.0](https://github.com/cozy/cozy-client/compare/v34.10.1...v34.11.0) (2023-01-31)
 
 
