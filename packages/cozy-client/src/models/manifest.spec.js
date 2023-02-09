@@ -132,93 +132,7 @@ describe('sanitizeManifest', () => {
     })
   })
 
-  describe('terms', () => {
-    it('should remove incomplete terms', () => {
-      const incompleteTerms = {
-        id: 'mock-terms'
-      }
-      expect(
-        sanitizeManifest({ ...baseMan, terms: incompleteTerms })
-      ).not.toHaveProperty('terms')
-      expect(sanitizeManifest({ ...baseMan, terms: {} })).not.toHaveProperty(
-        'terms'
-      )
-    })
-
-    it('should keep complete terms', () => {
-      const completeTerms = {
-        id: 'mock-terms',
-        url: 'mock://terms',
-        version: 'mock001'
-      }
-      const man = { ...baseMan, terms: completeTerms }
-
-      expect(sanitizeManifest(man)).toEqual(expect.objectContaining(man))
-    })
-  })
-
-  describe('partnership', () => {
-    it('should remove incomplete', () => {
-      const incompletePartnership = {
-        icon: 'icon.svg' // icon is optional
-      }
-
-      expect(
-        sanitizeManifest({
-          ...baseMan,
-          partnership: {}
-        })
-      ).not.toHaveProperty('partnership')
-
-      expect(
-        sanitizeManifest({
-          ...baseMan,
-          partnership: incompletePartnership
-        })
-      ).not.toHaveProperty('partnership')
-    })
-
-    it('should keep complete', () => {
-      const completePartnership = {
-        description: 'A partnership text here' // description is mandatory
-      }
-
-      const man = { ...baseMan, partnership: completePartnership }
-      expect(sanitizeManifest(man)).toEqual(expect.objectContaining(man))
-    })
-  })
-})
-
-describe('getIdentifier', () => {
-  it('should return field having role=identifier', () => {
-    const fields = {
-      username: {
-        type: 'text'
-      },
-      id: {
-        type: 'text',
-        role: 'identifier'
-      }
-    }
-    expect(getIdentifier(fields)).toBe('id')
-  })
-
-  it('should return the first field', () => {
-    const fields = {
-      username: {
-        type: 'text'
-      },
-      id: {
-        type: 'text'
-      }
-    }
-
-    expect(getIdentifier(fields)).toBe('username')
-  })
-})
-
-describe('sanitizeFields', () => {
-  it('should remove old property advancedFields', () => {
+  it('should remove old property advancedFields in fields', () => {
     const oldManifest = {
       fields: {
         login: {
@@ -239,8 +153,7 @@ describe('sanitizeFields', () => {
     const result = sanitizeManifest(oldManifest)
     expect(result.fields.advancedFields).toBeUndefined()
   })
-})
-describe('sanitizeIdentifier', () => {
+
   it('should not add any identifier', () => {
     const current = {
       fields: {
@@ -361,10 +274,8 @@ describe('sanitizeIdentifier', () => {
     const result = sanitizeManifest(current)
     expect(result.fields.login.required).toBe(true)
   })
-})
 
-describe('sanitizeRequired', () => {
-  it('should set required=true as default value', () => {
+  it('should set required=true as default value in fields', () => {
     const current = {
       fields: {
         login: { type: 'text' },
@@ -380,7 +291,7 @@ describe('sanitizeRequired', () => {
     expect(result.fields.country.required).toBe(true)
   })
 
-  it('should handle legacy property isRequired', () => {
+  it('should handle legacy property isRequired in fields', () => {
     const current = {
       fields: {
         login: { type: 'text' },
@@ -395,10 +306,8 @@ describe('sanitizeRequired', () => {
     expect(result.fields.gender.required).toBe(false)
     expect(result.fields.country.required).toBe(true)
   })
-})
 
-describe('sanitizeEncrypted', () => {
-  it('should et encrypted for type=password', () => {
+  it('should set encrypted for type=password fields', () => {
     const current = {
       fields: {
         username: { type: 'text' },
@@ -446,4 +355,92 @@ describe('sanitizeEncrypted', () => {
       expect(result.fields.passphrase.encrypted).toBe(true)
     })
   }
+
+  describe('terms', () => {
+    it('should remove incomplete terms', () => {
+      const incompleteTerms = {
+        id: 'mock-terms'
+      }
+      expect(
+        sanitizeManifest({ ...baseMan, terms: incompleteTerms })
+      ).not.toHaveProperty('terms')
+      expect(sanitizeManifest({ ...baseMan, terms: {} })).not.toHaveProperty(
+        'terms'
+      )
+    })
+
+    it('should keep complete terms', () => {
+      const completeTerms = {
+        id: 'mock-terms',
+        url: 'mock://terms',
+        version: 'mock001'
+      }
+      const man = { ...baseMan, terms: completeTerms }
+
+      expect(sanitizeManifest(man)).toEqual(expect.objectContaining(man))
+    })
+  })
+
+  describe('partnership', () => {
+    it('should remove incomplete', () => {
+      const incompletePartnership = {
+        icon: 'icon.svg' // icon is optional
+      }
+
+      expect(
+        sanitizeManifest({
+          ...baseMan,
+          partnership: {}
+        })
+      ).not.toHaveProperty('partnership')
+
+      expect(
+        sanitizeManifest({
+          ...baseMan,
+          partnership: incompletePartnership
+        })
+      ).not.toHaveProperty('partnership')
+    })
+
+    it('should keep complete', () => {
+      const completePartnership = {
+        description: 'A partnership text here' // description is mandatory
+      }
+
+      const man = { ...baseMan, partnership: completePartnership }
+      expect(sanitizeManifest(man)).toEqual(expect.objectContaining(man))
+    })
+  })
+})
+
+describe('getIdentifier', () => {
+  it('should return field having role=identifier', () => {
+    const fields = {
+      username: {
+        type: 'text'
+      },
+      id: {
+        type: 'text',
+        role: 'identifier'
+      }
+    }
+    expect(getIdentifier(fields)).toBe('id')
+  })
+
+  it('should return the first field', () => {
+    const fields = {
+      username: {
+        type: 'text'
+      },
+      id: {
+        type: 'text'
+      }
+    }
+
+    expect(getIdentifier(fields)).toBe('username')
+  })
+
+  it('should return null if there is no match', () => {
+    expect(getIdentifier({})).toBe(null)
+  })
 })

@@ -27,6 +27,22 @@ import { QueryDefinition } from './queries/dsl'
  * @typedef {object} Token
  * @typedef {object} ClientResponse
  * @typedef {object} Manifest
+ * @typedef {object} SanitizedManifest
+ */
+
+/**
+ * @typedef {Object} ManifestField
+ * @property {String} [type] - field type : can be "text" or "hidden" or "date" or "dropdown" or "password"
+ * @property {String} [role] - field role : with "identifier" value
+ * @property {Boolean} [required] - is the field required or not
+ * @property {Boolean} [isRequired] - is the field required or not (legacy)
+ * @property {Boolean} [encrypted] - encrypted value of the field (legacy)
+ */
+
+/**
+ * @typedef {{
+ *   [key: string]: ManifestField;
+ * }} ManifestFields
  */
 
 /**
