@@ -3,7 +3,10 @@ import {
   setContractSyncStatusInAccount,
   getContractSyncStatusFromAccount,
   getMutedErrors,
-  muteError
+  muteError,
+  getAccountLogin,
+  getAccountName,
+  buildAccount
 } from './account'
 
 const fixtures = {
@@ -174,6 +177,84 @@ describe('account model', () => {
           'non-existing-contract-id'
         )
       ).toThrow('Cannot find contrat non-existing-contract-id in account')
+    })
+  })
+
+  describe('getAccountLogin', () => {
+    it('should get the login value according to legacyLoginFields order', () => {
+      expect(
+        getAccountLogin({
+          auth: { test: 'testvalue', login: 'loginvalue', email: 'emailvalue' }
+        })
+      ).toStrictEqual('loginvalue')
+
+      expect(
+        getAccountLogin({
+          auth: { test: 'testvalue', email: 'emailvalue' }
+        })
+      ).toStrictEqual('emailvalue')
+
+      expect(
+        getAccountLogin({
+          auth: { test: 'testvalue', email: 'emailvalue', login: 'loginvalue' }
+        })
+      ).toStrictEqual('loginvalue')
+
+      expect(
+        getAccountLogin({
+          auth: { test: 'testvalue' }
+        })
+      ).toStrictEqual(null)
+    })
+  })
+
+  describe('getAccountName', () => {
+    it('should return auth.accountName in priority', () => {
+      expect(
+        getAccountName({
+          _id: 'idvalue',
+          auth: { _id: 'idvalue', login: 'loginvalue' }
+        })
+      ).toStrictEqual('loginvalue')
+
+      expect(
+        getAccountName({
+          _id: 'idvalue',
+          auth: {
+            accountName: 'accountNameValue',
+            login: 'loginvalue'
+          }
+        })
+      ).toStrictEqual('accountNameValue')
+    })
+    it('should return account _id by default', () => {
+      expect(
+        getAccountName({
+          _id: 'idvalue',
+          auth: {}
+        })
+      ).toStrictEqual('idvalue')
+
+      expect(
+        getAccountName({
+          _id: 'idvalue'
+        })
+      ).toStrictEqual('idvalue')
+    })
+  })
+  describe('buildAccount', () => {
+    it('should build an account', () => {
+      expect(
+        buildAccount(
+          { slug: 'slugvalue', fields: { loginfield: { role: 'identifier' } } },
+          { loginfield: 'loginfieldvalue' }
+        )
+      ).toStrictEqual({
+        auth: { loginfield: 'loginfieldvalue' },
+        account_type: 'slugvalue',
+        identifier: 'loginfield',
+        state: null
+      })
     })
   })
 })
