@@ -37,8 +37,11 @@ class AppCollection extends DocumentCollection {
     this.endpoint = '/apps/'
   }
   /**
-   * @param {string} idArg
-   * @param {Array} query
+   * @typedef SourceParams
+   * @property {Array} sources
+   *
+   * @param {string} idArg id
+   * @param {SourceParams} [query] query
    *
    * @returns {Promise<{data: CozyClientDocument}>}
    */
