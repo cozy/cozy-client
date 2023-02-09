@@ -16,33 +16,71 @@ const actionableErrors = [
 
 /** Trigger states come from /jobs/triggers */
 const triggerStates = {
-  /** Returns when the trigger was last executed. Need a trigger */
+  /**
+   * Returns when the trigger was last executed
+   *
+   * @param {import('../types').TriggersDoctype} triggerState - trigger object
+   * @returns {String} last execution date of any job related to the given trigger
+   */
   getLastExecution: triggerState =>
     get(triggerState, 'current_state.last_execution'),
+
+  /**
+   * Returns when the trigger was last executed with success
+   *
+   * @param {import('../types').TriggersDoctype} triggerState - trigger object
+   * @returns {String} last execution date of any job related to the given trigger and with success
+   */
+  getLastSuccess: triggerState =>
+    get(triggerState, 'current_state.last_success'),
+
+  /**
+   * Returns when the trigger was last executed with success
+   *
+   * @param {import('../types').TriggersDoctype} triggerState - trigger object
+   * @returns {String} last execution date of any job related to the given trigger and with success
+   */
   getLastsuccess: triggerState => {
     logger.warn(
       'Deprecated, please use getLastSuccess instead of getLastsuccess'
     )
     return get(triggerState, 'current_state.last_success')
   },
-  /** Returns when the trigger was last successfully executed. */
-  getLastSuccess: triggerState =>
-    get(triggerState, 'current_state.last_success'),
-  /** Returns whether last job failed */
+
+  /**
+   * Returns whether last job failed
+   *
+   * @param {import('../types').TriggersDoctype} triggerState - trigger object
+   * @returns {Boolean}
+   */
   isErrored: triggerState =>
     get(triggerState, 'current_state.status') === 'errored',
-  /** Returns the type of the last error to occur */
+
+  /**
+   * Returns the type of the last error to occur
+   *
+   * @param {import('../types').TriggersDoctype} triggerState - trigger object
+   * @returns {String}
+   */
   getLastErrorType: triggerState =>
     get(triggerState, 'current_state.last_error')
 }
 
+const DEFAULT_CRON = '0 0 0 * * 0' // Once a week, sunday at midnight
+
 const triggers = {
+  /**
+   * Returns whether the given trigger is associated to a konnector or not
+   *
+   * @param {import('../types').TriggersDoctype} trigger - trigger object
+   * @returns {Boolean}
+   */
   isKonnectorWorker: trigger => trigger.worker === 'konnector',
 
   /**
    * Returns the konnector slug that executed a trigger
    *
-   * @param {object} trigger io.cozy.triggers
+   * @param {import('../types').TriggersDoctype} trigger - io.cozy.triggers
    *
    * @returns {string|void} A konnector slug
    */
@@ -62,9 +100,9 @@ const triggers = {
   /**
    * getAccountId - Returns the account id for a trigger
    *
-   * @param {object} trigger io.cozy.triggers
+   * @param {import('../types').TriggersDoctype} trigger io.cozy.triggers
    *
-   * @returns {string} Id for an io.cozy.accounts
+   * @returns {String} Id for an io.cozy.accounts
    */
   getAccountId: trigger => {
     const legacyData = get(trigger, 'message.Data')
@@ -80,10 +118,10 @@ const triggers = {
   /**
    * Checks if the triggers current error has been muted in the corresponding io.cozy.accounts
    *
-   * @param {object} trigger      io.cozy.triggers
-   * @param {object} account      io.cozy.accounts used by the trigger
+   * @param {import('../types').TriggersDoctype} trigger      io.cozy.triggers
+   * @param {import('../types').AccountsDoctype} account      io.cozy.accounts used by the trigger
    *
-   * @returns {boolean} Whether the error is muted or not
+   * @returns {Boolean} Whether the error is muted or not
    */
   isLatestErrorMuted: (trigger, account) => {
     const lastErrorType = triggerStates.getLastErrorType(trigger)
@@ -105,12 +143,49 @@ const triggers = {
   /**
    * Returns whether the error in trigger can be solved by the user
    *
-   * @param {object} trigger      io.cozy.triggers
+   * @param {import('../types').TriggersDoctype} trigger      io.cozy.triggers
    *
-   * @returns {boolean} Whether the error is muted or not
+   * @returns {Boolean} Whether the error is muted or not
    */
   hasActionableError: trigger => {
-    return actionableErrors.includes(trigger.current_state.last_error)
+    return actionableErrors.includes(get(trigger, 'current_state.last_error'))
+  },
+
+  /**
+   * Build trigger attributes given konnector and account
+   *
+   * @param  {Object} options - options object
+   * @param  {import('../types').KonnectorsDoctype} options.konnector - konnector object
+   * @param  {import('../types').AccountsDoctype} options.account - account object
+   * @param  {String} [options.cron] - cron string. Defaults to '0 0 0 * * 0'
+   * @param  {object} [options.folder] - folder object
+   * @returns {import('../types').TriggersDoctype} created trigger
+   */
+  buildTriggerAttributes: ({
+    account,
+    cron = DEFAULT_CRON,
+    folder,
+    konnector
+  }) => {
+    const message = {
+      account: account._id,
+      konnector: konnector.slug
+    }
+
+    if (folder) {
+      message['folder_to_save'] = folder._id
+    }
+
+    const result = {
+      worker: 'konnector',
+      message
+    }
+
+    const options = konnector.clientSide
+      ? { type: '@client' }
+      : { type: '@cron', arguments: cron }
+
+    return { ...result, ...options }
   }
 }
 

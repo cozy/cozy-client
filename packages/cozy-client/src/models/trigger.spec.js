@@ -219,4 +219,71 @@ describe('trigger model', () => {
       ).toBe(false)
     })
   })
+
+  describe('buildTriggerAttributes', () => {
+    const konnector = { slug: 'konnectest' }
+    const account = { _id: '963a51f6cdd34401b0904de32cc5578d' }
+
+    it('builds attributes', () => {
+      expect(
+        triggerModel.buildTriggerAttributes({ konnector, account })
+      ).toEqual({
+        arguments: '0 0 0 * * 0',
+        type: '@cron',
+        worker: 'konnector',
+        message: {
+          account: '963a51f6cdd34401b0904de32cc5578d',
+          konnector: 'konnectest'
+        }
+      })
+    })
+
+    it('builds attributes with cron', () => {
+      const cron = '0 0 0 * * 2'
+      expect(
+        triggerModel.buildTriggerAttributes({ konnector, account, cron })
+      ).toEqual({
+        arguments: '0 0 0 * * 2',
+        type: '@cron',
+        worker: 'konnector',
+        message: {
+          account: '963a51f6cdd34401b0904de32cc5578d',
+          konnector: 'konnectest'
+        }
+      })
+    })
+
+    it('builds for client side connectors', () => {
+      const clientSideConnector = { ...konnector, clientSide: true }
+      expect(
+        triggerModel.buildTriggerAttributes({
+          konnector: clientSideConnector,
+          account
+        })
+      ).toEqual({
+        type: '@client',
+        worker: 'konnector',
+        message: {
+          account: '963a51f6cdd34401b0904de32cc5578d',
+          konnector: 'konnectest'
+        }
+      })
+    })
+
+    it('build attributes with folder', () => {
+      const folder = { _id: '4c43f8e88e5f4a608667da6b5bae8fa4' }
+      expect(
+        triggerModel.buildTriggerAttributes({ konnector, account, folder })
+      ).toEqual({
+        arguments: '0 0 0 * * 0',
+        type: '@cron',
+        worker: 'konnector',
+        message: {
+          account: '963a51f6cdd34401b0904de32cc5578d',
+          folder_to_save: '4c43f8e88e5f4a608667da6b5bae8fa4',
+          konnector: 'konnectest'
+        }
+      })
+    })
+  })
 })
