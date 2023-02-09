@@ -72,7 +72,7 @@ export function isPartnershipValid(partnership) {
  * Normalize app manifest, retro-compatibility for old manifests
  *
  * @param  {import('../types').Manifest} manifest - app manifest to normalize
- * @returns {import('../types').Manifest}
+ * @returns {import('../types').SanitizedManifest}
  */
 export function sanitize(manifest) {
   const sanitized = { ...manifest }
@@ -124,8 +124,8 @@ export function sanitize(manifest) {
 /**
  * Ensures that fields has at least one field with the role 'identifier'
  *
- * @param  {Object} [fields={}] Manifest fields
- * @returns {Object}             Sanitized manifest fields
+ * @param  {import('../types').ManifestFields} fields - Manifest fields
+ * @returns {import('../types').ManifestFields} - Sanitized manifest fields
  */
 export const sanitizeIdentifier = fields => {
   const sanitized = _cloneDeep(fields)
@@ -155,11 +155,14 @@ export const sanitizeIdentifier = fields => {
 /**
  * Returns the key for the field having the role=identifier attribute
  *
- * @param  {Object} fields Konnector fields
- * @returns {string}        The key for the identifier field, example 'login'
+ * @param  {import('../types').ManifestFields} fields Konnector fields
+ * @returns {String|null}  The key for the identifier field, example 'login'
  */
 export const getIdentifier = (fields = {}) =>
-  findKey(sanitizeIdentifier(fields), field => field.role === ROLE_IDENTIFIER)
+  findKey(
+    sanitizeIdentifier(fields),
+    field => field.role === ROLE_IDENTIFIER
+  ) || null
 /**
  * Ensures old fields are removed
  *
@@ -175,8 +178,8 @@ const removeOldFields = fields => {
 /**
  * Ensures every field not explicitely tagged as not required is required
  *
- * @param  {Object} [fields={}] Manifest fields
- * @returns {Object}             Sanitized manifest fields
+ * @param  {import('../types').ManifestFields} [fields={}] Manifest fields
+ * @returns {import('../types').ManifestFields}            Sanitized manifest fields
  */
 const sanitizeRequired = fields => {
   const sanitized = _cloneDeep(fields)
@@ -197,8 +200,8 @@ const sanitizeRequired = fields => {
  * * any field flagged as encrypted keeps its flag
  * * any legacy encrypted field is tagged as encrypted
  *
- * @param  {Object} [fields={}] Manifest fields
- * @returns {Object}             Sanitized Manifest fields
+ * @param  {import('../types').ManifestFields} [fields={}] Manifest fields
+ * @returns {import('../types').ManifestFields}             Sanitized Manifest fields
  */
 const sanitizeEncrypted = fields => {
   const sanitized = _cloneDeep(fields)
@@ -214,8 +217,8 @@ const sanitizeEncrypted = fields => {
 /**
  * Sanitizes manifest fields with multiple rules
  *
- * @param  {Object} [fields={}] Manifest fields
- * @returns {Object}            Sanitized manifest fields
+ * @param  {import('../types').ManifestFields} [fields={}] Manifest fields
+ * @returns {import('../types').ManifestFields}            Sanitized manifest fields
  */
 const sanitizeFields = _flow([
   removeOldFields,
