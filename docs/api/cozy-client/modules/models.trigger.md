@@ -16,15 +16,15 @@ Trigger states come from /jobs/triggers
 
 | Name | Type |
 | :------ | :------ |
-| `getLastErrorType` | (`triggerState`: `any`) => `any` |
-| `getLastExecution` | (`triggerState`: `any`) => `any` |
-| `getLastSuccess` | (`triggerState`: `any`) => `any` |
-| `getLastsuccess` | (`triggerState`: `any`) => `any` |
-| `isErrored` | (`triggerState`: `any`) => `boolean` |
+| `getLastErrorType` | (`trigger`: `IOCozyTrigger`) => `string` |
+| `getLastExecution` | (`trigger`: `IOCozyTrigger`) => `string` |
+| `getLastSuccess` | (`trigger`: `IOCozyTrigger`) => `string` |
+| `getLastsuccess` | (`trigger`: `IOCozyTrigger`) => `string` |
+| `isErrored` | (`trigger`: `IOCozyTrigger`) => `boolean` |
 
 *Defined in*
 
-[packages/cozy-client/src/models/trigger.js:18](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/trigger.js#L18)
+[packages/cozy-client/src/models/trigger.js:17](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/trigger.js#L17)
 
 ***
 
@@ -36,12 +36,13 @@ Trigger states come from /jobs/triggers
 
 | Name | Type |
 | :------ | :------ |
-| `getAccountId` | (`trigger`: `any`) => `string` |
-| `getKonnector` | (`trigger`: `any`) => `string` | `void` |
-| `hasActionableError` | (`trigger`: `any`) => `boolean` |
-| `isKonnectorWorker` | (`trigger`: `any`) => `boolean` |
-| `isLatestErrorMuted` | (`trigger`: `any`, `account`: `any`) => `boolean` |
+| `buildTriggerAttributes` | (`options`: { `account`: `IOCozyAccount` ; `cron`: `string` ; `folder`: `any` ; `konnector`: `IOCozyKonnector`  }) => `IOCozyTrigger` |
+| `getAccountId` | (`trigger`: `IOCozyTrigger`) => `string` |
+| `getKonnector` | (`trigger`: `IOCozyTrigger`) => `string` | `void` |
+| `hasActionableError` | (`trigger`: `IOCozyTrigger`) => `boolean` |
+| `isKonnectorWorker` | (`trigger`: `IOCozyTrigger`) => `boolean` |
+| `isLatestErrorMuted` | (`trigger`: `IOCozyTrigger`, `account`: `IOCozyAccount`) => `boolean` |
 
 *Defined in*
 
-[packages/cozy-client/src/models/trigger.js:39](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/trigger.js#L39)
+[packages/cozy-client/src/models/trigger.js:66](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/trigger.js#L66)

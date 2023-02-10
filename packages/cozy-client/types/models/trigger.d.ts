@@ -1,14 +1,20 @@
 export namespace triggerStates {
-    function getLastExecution(triggerState: any): any;
-    function getLastsuccess(triggerState: any): any;
-    function getLastSuccess(triggerState: any): any;
-    function isErrored(triggerState: any): boolean;
-    function getLastErrorType(triggerState: any): any;
+    function getLastExecution(trigger: import("../types").IOCozyTrigger): string;
+    function getLastSuccess(trigger: import("../types").IOCozyTrigger): string;
+    function getLastsuccess(trigger: import("../types").IOCozyTrigger): string;
+    function isErrored(trigger: import("../types").IOCozyTrigger): boolean;
+    function getLastErrorType(trigger: import("../types").IOCozyTrigger): string;
 }
 export namespace triggers {
-    function isKonnectorWorker(trigger: any): boolean;
-    function getKonnector(trigger: any): string | void;
-    function getAccountId(trigger: any): string;
-    function isLatestErrorMuted(trigger: any, account: any): boolean;
-    function hasActionableError(trigger: any): boolean;
+    function isKonnectorWorker(trigger: import("../types").IOCozyTrigger): boolean;
+    function getKonnector(trigger: import("../types").IOCozyTrigger): string | void;
+    function getAccountId(trigger: import("../types").IOCozyTrigger): string;
+    function isLatestErrorMuted(trigger: import("../types").IOCozyTrigger, account: import("../types").IOCozyAccount): boolean;
+    function hasActionableError(trigger: import("../types").IOCozyTrigger): boolean;
+    function buildTriggerAttributes({ account, cron, folder, konnector }: {
+        konnector: import("../types").IOCozyKonnector;
+        account: import("../types").IOCozyAccount;
+        cron?: string;
+        folder?: any;
+    }): import("../types").IOCozyTrigger;
 }

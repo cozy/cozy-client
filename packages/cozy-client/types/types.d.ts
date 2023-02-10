@@ -1,16 +1,136 @@
 declare var _default: {};
 export default _default;
 export type Qualification = import("./models/document/qualification").Qualification;
-export type AccountsDoctype = "io.cozy.accounts";
-export type TriggersDoctype = "io.cozy.triggers";
-export type KonnectorsDoctype = "io.cozy.konnectors";
 export type NotesDoctype = "io.cozy.notes";
 export type AppsDoctype = "io.cozy.apps";
 export type SettingsDoctype = "io.cozy.settings";
 export type OAuthClientsDoctype = "io.cozy-oauth.clients";
 export type FilesDoctype = "io.cozy.files";
-export type KnownDoctype = "io.cozy.files" | "io.cozy.accounts" | "io.cozy.triggers" | "io.cozy.konnectors" | "io.cozy.notes" | "io.cozy.apps" | "io.cozy.settings" | "io.cozy-oauth.clients";
+export type AccountsDoctype = "io.cozy.account";
+export type KonnectorsDoctype = "io.cozy.konnectors";
+export type TriggersDoctype = "io.cozy.triggers";
+export type KnownDoctype = "io.cozy.files" | "io.cozy.account" | "io.cozy.triggers" | "io.cozy.konnectors" | "io.cozy.notes" | "io.cozy.apps" | "io.cozy.settings" | "io.cozy-oauth.clients";
 export type Doctype = string;
+export type AccountsDocument = {
+    /**
+     * - document identifier
+     */
+    _id?: string;
+    /**
+     * - slug of the associated konnector
+     */
+    account_type: string;
+    /**
+     * - user credentials
+     */
+    auth: object;
+    /**
+     * - Name of the attribute in the auth object that can be used to name the account.
+     */
+    identifier?: string;
+    /**
+     * - list of ignored errors
+     */
+    mutedErrors?: any[];
+    /**
+     * - used by harvest and the konnectors to communicate
+     */
+    state?: string;
+};
+/**
+ * - An io.cozy.accounts document
+ */
+export type IOCozyAccount = CozyClientDocument & AccountsDocument;
+export type KonnectorsDocument = {
+    /**
+     * - slug of konnector
+     */
+    slug: string;
+    /**
+     * - konnector fields
+     */
+    fields: ManifestFields;
+    /**
+     * - whether the konnector runs on client or not
+     */
+    clientSide: boolean;
+};
+/**
+ * - An io.cozy.konnectors document
+ */
+export type IOCozyKonnector = CozyClientDocument & KonnectorsDocument;
+export type TriggersDocument = {
+    /**
+     * - document identifier
+     */
+    _id?: string;
+    /**
+     * - type of the trigger. Can be "at", "cron", "event", "every", "in", "webhook", "client"
+     */
+    type: string;
+    /**
+     * - type of worker. Can be "konnector" or "sendmail"
+     */
+    worker: string;
+    /**
+     * - Parameters to pass to the the worker. For example, when the worker is set to konnector, message contains the related konnector and the related account.
+     */
+    message: object;
+    /**
+     * - state of the last executed jobs related to this trigger
+     */
+    current_state?: TriggerState;
+    /**
+     * - Arguments related to the type attribute. For example it's a cron configuration when the type is set to
+     */
+    arguments?: string;
+};
+/**
+ * - An io.cozy.konnectors document
+ */
+export type IOCozyTrigger = CozyClientDocument & TriggersDocument;
+export type TriggerState = {
+    /**
+     * - Global status of the trigger
+     */
+    status: 'queued' | 'running' | 'done' | 'errored';
+    /**
+     * - Date  of the last job in success
+     */
+    last_success: string;
+    /**
+     * - ID of the last job in success
+     */
+    last_successful_job_id: string;
+    /**
+     * - Date of the last executed job
+     */
+    last_execution: string;
+    /**
+     * - ID of the last executed job
+     */
+    last_executed_job_id: string;
+    /**
+     * - Date of the last job in failure
+     */
+    last_failure: string;
+    /**
+     * - ID of the last job in failure
+     */
+    last_failed_job_id: string;
+    /**
+     * - Date of the last job manually executed
+     */
+    last_manual_execution: string;
+    /**
+     * - ID of the last job manually executed
+     */
+    last_manual_job_id: string;
+    /**
+     * - Content of the last error
+     */
+    last_error: string;
+};
 export type Link = any;
 export type Mutation = any;
 export type DocumentCollection = any;
