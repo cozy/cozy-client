@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [35.1.0](https://github.com/cozy/cozy-client/compare/v35.0.0...v35.1.0) (2023-02-10)
+
+
+### Features
+
+* Import accounts and triggers features from harvest ([aef7a4f](https://github.com/cozy/cozy-client/commit/aef7a4f1a9b92cb1f2fc28375a458dce15fdb366))
+
+
+
+
+
 # [35.0.0](https://github.com/cozy/cozy-client/compare/v34.11.1...v35.0.0) (2023-02-10)
 
 
