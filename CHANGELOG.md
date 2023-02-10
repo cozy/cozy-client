@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [35.0.0](https://github.com/cozy/cozy-client/compare/v34.11.1...v35.0.0) (2023-02-10)
+
+
+### Features
+
+* Move manifest file to cozy-client models ([edf9f2a](https://github.com/cozy/cozy-client/commit/edf9f2ac86d93b61cc24cb10939c20403d964a0a))
+* Sanitize fields in manifest lib ([6554b76](https://github.com/cozy/cozy-client/commit/6554b76c00758248f6d867c172ab8a8e1a694f98))
+* Small fixes after review ([4cf775c](https://github.com/cozy/cozy-client/commit/4cf775c8919c0364cfd136ee6efd798eba4a4bea))
+
+
+### BREAKING CHANGES
+
+* If you were importing manifest from
+'cozy-client/dist/manifest` you have to either import it from the root
+ or from the models.
+
+
+
+
+
 ## [34.11.1](https://github.com/cozy/cozy-client/compare/v34.11.0...v34.11.1) (2023-02-09)
 
 
