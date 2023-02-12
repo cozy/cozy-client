@@ -23,6 +23,7 @@ import { fetchWithXMLHttpRequest, shouldXMLHTTPRequestBeUsed } from './xhrFetch'
 import MicroEE from 'microee'
 import { FetchError } from './errors'
 import logger from './logger'
+import OAuthClient from './OAuthClient'
 
 const normalizeUri = uriArg => {
   let uri = uriArg
@@ -38,9 +39,16 @@ const isRevocationError = err => {
 }
 
 /**
- * Main API against the `cozy-stack` server.
+ * @class CozyStackClient
+ * @classdesc Main API against the `cozy-stack` server.
+ * @augments {OAuthClient}
  */
 class CozyStackClient {
+  /**
+   * @type {string}
+   */
+  uri
+
   constructor(options) {
     const opts = { ...options }
     const { token, uri = '' } = opts
@@ -230,11 +238,12 @@ class CozyStackClient {
   /**
    * Fetches JSON in an authorized way.
    *
+   * @template T
    * @param  {string} method The HTTP method.
    * @param  {string} path The URI.
-   * @param  {object} body The payload.
-   * @param  {object} options Options
-   * @returns {Promise<object>}
+   * @param  {object} [body] The payload.
+   * @param  {object} [options] Options
+   * @returns {Promise<T>}
    * @throws {FetchError}
    */
   async fetchJSON(method, path, body, options = {}) {
