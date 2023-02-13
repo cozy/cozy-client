@@ -18,7 +18,6 @@
     "successful": {
       "qualified_ok": "Vous venez de qualifier votre fichier avec succès !"
     },
-
     "items": {
       "accommodation_proof": "Attestation d'hébergement",
       "appliance_invoice": "Facture d'électroménager",
@@ -113,6 +112,15 @@
       "work_invoice": "Facture de travaux",
       "work_quote": "Devis de travaux",
       "work_study": "Travail & Études"
+    },
+    "attributes":{
+      "contractType": {
+        "cdi": "CDI",
+        "cdd": "CDD",
+        "alternate": "Alternance",
+        "internship": "Stage",
+        "other": "Autre"
+      }
     },
     "themes": {
       "activity": "Activités & loisirs",
