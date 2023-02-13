@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [35.2.0](https://github.com/cozy/cozy-client/compare/v35.1.0...v35.2.0) (2023-02-13)
+
+
+### Features
+
+* Add contract type locales ([80ff505](https://github.com/cozy/cozy-client/commit/80ff5057ab495c4d21ecc37e695e1dea139a3b51))
+
+
+
+
+
 # [35.1.0](https://github.com/cozy/cozy-client/compare/v35.0.0...v35.1.0) (2023-02-10)
 
 
