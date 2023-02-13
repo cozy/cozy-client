@@ -18,7 +18,6 @@
     "successful": {
       "qualified_ok": "You just have successfully described your file! "
     },
-
     "items": {
       "accommodation_proof": "Proof of accommodation",
       "appliance_invoice": "Appliance invoice",
@@ -113,6 +112,15 @@
       "work_invoice": "Work invoice",
       "work_quote": "Work quote",
       "work_study": "Work & Study"
+    },
+    "attributes":{
+      "contractType": {
+        "cdi": "CDI",
+        "cdd": "CDD",
+        "alternate": "Alternate",
+        "internship": "Internship",
+        "other": "Other"
+      }
     },
     "themes": {
       "activity": "Activities",
