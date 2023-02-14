@@ -5,6 +5,7 @@ export type RegistryApp = {
     slug: string;
     terms: object;
     installed: boolean;
+    type: string;
 };
 export type RegistryAppChannel = "stable" | "dev" | "beta";
 /**
@@ -12,6 +13,7 @@ export type RegistryAppChannel = "stable" | "dev" | "beta";
  * @property {string} slug
  * @property {object} terms
  * @property {boolean} installed
+ * @property {string} type
  */
 /**
  * @typedef {"dev"|"beta"|"stable"} RegistryAppChannel
@@ -31,8 +33,11 @@ declare class Registry {
     installApp(app: RegistryApp, source: string): Promise<any>;
     /**
      * Uninstalls an app.
+     *
+     * @param  {RegistryApp} app - App to be installed
+     * @returns {Promise}
      */
-    uninstallApp(app: any): Promise<any>;
+    uninstallApp(app: RegistryApp): Promise<any>;
     /**
      * Fetch at most 200 apps from the channel
      *
@@ -51,17 +56,17 @@ declare class Registry {
     /**
      * Fetch the list of apps that are in maintenance mode
      *
-     * @returns {Array<RegistryApp>}
+     * @returns {Promise<Array<RegistryApp>>}
      */
-    fetchAppsInMaintenance(): Array<RegistryApp>;
+    fetchAppsInMaintenance(): Promise<Array<RegistryApp>>;
     /**
      * Fetch the status of a single app on the registry
      *
      * @param  {string} slug - The slug of the app to fetch
      *
-     * @returns {RegistryApp}
+     * @returns {Promise<RegistryApp>}
      */
-    fetchApp(slug: string): RegistryApp;
+    fetchApp(slug: string): Promise<RegistryApp>;
     /**
      * Fetch the latest version of an app for the given channel and slug
      *
@@ -70,11 +75,11 @@ declare class Registry {
      * @param  {RegistryAppChannel} params.channel - The channel of the app to fetch
      * @param  {string} params.version - The version of the app to fetch. Can also be "latest"
      *
-     * @returns {RegistryApp}
+     * @returns {Promise<RegistryApp>}
      */
     fetchAppVersion(params: {
         slug: string;
         channel: RegistryAppChannel;
         version: string;
-    }): RegistryApp;
+    }): Promise<RegistryApp>;
 }

@@ -29,6 +29,7 @@ const getBaseRoute = app => {
  * @property {string} slug
  * @property {object} terms
  * @property {boolean} installed
+ * @property {string} type
  */
 
 /**
@@ -72,6 +73,9 @@ class Registry {
 
   /**
    * Uninstalls an app.
+   *
+   * @param  {RegistryApp} app - App to be installed
+   * @returns {Promise}
    */
   async uninstallApp(app) {
     const { slug } = app
@@ -112,7 +116,7 @@ class Registry {
   /**
    * Fetch the list of apps that are in maintenance mode
    *
-   * @returns {Array<RegistryApp>}
+   * @returns {Promise<Array<RegistryApp>>}
    */
   fetchAppsInMaintenance() {
     return this.client.stackClient.fetchJSON('GET', '/registry/maintenance')
@@ -123,7 +127,7 @@ class Registry {
    *
    * @param  {string} slug - The slug of the app to fetch
    *
-   * @returns {RegistryApp}
+   * @returns {Promise<RegistryApp>}
    */
   fetchApp(slug) {
     return this.client.stackClient.fetchJSON('GET', `/registry/${slug}`)
@@ -137,7 +141,7 @@ class Registry {
    * @param  {RegistryAppChannel} params.channel - The channel of the app to fetch
    * @param  {string} params.version - The version of the app to fetch. Can also be "latest"
    *
-   * @returns {RegistryApp}
+   * @returns {Promise<RegistryApp>}
    */
   fetchAppVersion(params) {
     if (!params.slug) {
