@@ -23,6 +23,17 @@ const newCursor = ([doctype, id, lastDatetime], startDocId) => {
 }
 
 /**
+ * Get the file datetime
+ *
+ * @param  {import('../types').IOCozyFile} file - io.cozy.files document
+ * @returns {string} The file datetime
+ */
+export const getFileDatetime = file => {
+  // Some files do not have any metadata, e.g. bitmap files.
+  return file.metadata?.datetime || file.created_at
+}
+
+/**
  *  This class is only used for photos albums relationships.
  *  Behind the hood, the queries uses a view returning the files sorted
  *  by datetime, with a cursor-based pagination.
@@ -48,8 +59,7 @@ export default class HasManyFiles extends HasMany {
         lastRelationship._type,
         lastRelationship._id
       )
-      // Photos always have a datetime field in metadata
-      const lastDatetime = lastRelDoc.attributes.metadata.datetime
+      const lastDatetime = getFileDatetime(lastRelDoc.attributes)
       // cursor-based pagination
       const cursor = newCursor(
         [this.target._type, this.target._id, lastDatetime],

@@ -1,5 +1,5 @@
 import { DOCTYPE_FILES } from '../const'
-import HasManyFiles from './HasManyFiles'
+import HasManyFiles, { getFileDatetime } from './HasManyFiles'
 
 describe('HasManyFiles', () => {
   let originalFile, hydratedFile, originalTodo, hydratedTodo, save, mutate
@@ -153,5 +153,23 @@ describe('HasManyFiles', () => {
 
     expect(queryDef.doctype).toEqual('io.cozy.todos')
     expect(queryDef.ids).toEqual(['1234'])
+  })
+})
+
+describe('getFileDatetime', () => {
+  it('should get the metadata datetime when it exists', () => {
+    const file = {
+      created_at: '2023-01-01',
+      metadata: {
+        datetime: '2023-02-01'
+      }
+    }
+    expect(getFileDatetime(file)).toEqual('2023-02-01')
+  })
+  it('should get the created_at when there is no datetime metadata', () => {
+    const file = {
+      created_at: '2023-01-01'
+    }
+    expect(getFileDatetime(file)).toEqual('2023-01-01')
   })
 })

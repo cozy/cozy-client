@@ -1,3 +1,4 @@
+export function getFileDatetime(file: import('../types').IOCozyFile): string;
 /**
  *  This class is only used for photos albums relationships.
  *  Behind the hood, the queries uses a view returning the files sorted
