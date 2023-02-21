@@ -239,6 +239,7 @@ import { QueryDefinition } from './queries/dsl'
  * @property {string} [expirationDate] - Expiration date of the paper
  * @property {string} [referencedDate] - Reference date of the paper
  * @property {string} [noticePeriod] - Notice period of the paper, in days
+ * @property {string} [datetime] - Image EXIF date, if relevant
  */
 
 /**

@@ -361,6 +361,10 @@ export type FileMetadata = {
      * - Notice period of the paper, in days
      */
     noticePeriod?: string;
+    /**
+     * - Image EXIF date, if relevant
+     */
+    datetime?: string;
 };
 /**
  * - An io.cozy.files document
