@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [35.3.0](https://github.com/cozy/cozy-client/compare/v35.2.2...v35.3.0) (2023-02-21)
+
+
+### Bug Fixes
+
+* Do not rely on potentially missing datetime ([e49a1e9](https://github.com/cozy/cozy-client/commit/e49a1e97af1f356a67d52667730ae25d5aa348ad))
+
+
+### Features
+
+* Add datetime type for files metadata ([0a17373](https://github.com/cozy/cozy-client/commit/0a17373760a21c0ddec4bd0603db766da05df7fc))
+
+
+
+
+
 ## [35.2.2](https://github.com/cozy/cozy-client/compare/v35.2.1...v35.2.2) (2023-02-20)
 
 
