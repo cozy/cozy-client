@@ -1251,7 +1251,15 @@ describe('DocumentCollection', () => {
       )
       expect(changes).toEqual({
         newLastSeq: 'new-seq',
-        documents: [{ _id: '1', done: false, label: 'Fetch changes' }]
+        documents: [
+          {
+            _id: '1',
+            id: '1',
+            _type: 'io.cozy.todos',
+            done: false,
+            label: 'Fetch changes'
+          }
+        ]
       })
     })
 
@@ -1262,8 +1270,20 @@ describe('DocumentCollection', () => {
       expect(changes).toEqual({
         newLastSeq: 'new-seq',
         documents: [
-          { _id: '1', done: false, label: 'Fetch changes' },
-          { _id: '2', _deleted: true, label: 'Refactor code' }
+          {
+            _id: '1',
+            id: '1',
+            _type: 'io.cozy.todos',
+            done: false,
+            label: 'Fetch changes'
+          },
+          {
+            _id: '2',
+            id: '2',
+            _type: 'io.cozy.todos',
+            _deleted: true,
+            label: 'Refactor code'
+          }
         ]
       })
     })
@@ -1275,8 +1295,14 @@ describe('DocumentCollection', () => {
       expect(changes).toEqual({
         newLastSeq: 'new-seq',
         documents: [
-          { _id: '1', done: false, label: 'Fetch changes' },
-          { _id: '_design/view' }
+          {
+            _id: '1',
+            id: '1',
+            _type: 'io.cozy.todos',
+            done: false,
+            label: 'Fetch changes'
+          },
+          { _id: '_design/view', id: '_design/view', _type: 'io.cozy.todos' }
         ]
       })
     })

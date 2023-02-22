@@ -827,7 +827,10 @@ The returned documents are paginated by the stack.
     if (!options.includeDeleted) {
       docs = docs.filter(doc => !doc._deleted)
     }
-    return { newLastSeq, documents: docs }
+    return {
+      newLastSeq,
+      documents: docs.map(doc => normalizeDoc(doc, this.doctype))
+    }
   }
 }
 
