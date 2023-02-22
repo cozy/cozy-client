@@ -213,7 +213,7 @@ Deconstructed link
 
 *Defined in*
 
-[packages/cozy-client/src/helpers.js:90](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers.js#L90)
+[packages/cozy-client/src/helpers/urlHelper.js:66](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L66)
 
 ***
 
@@ -233,7 +233,7 @@ Deconstructed link
 
 *Defined in*
 
-[packages/cozy-client/src/helpers.js:5](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers.js#L5)
+[packages/cozy-client/src/helpers/dehydrateHelper.js:3](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/dehydrateHelper.js#L3)
 
 ***
 
@@ -253,7 +253,7 @@ Deconstructed link
 
 *Defined in*
 
-[packages/cozy-client/src/helpers.js:27](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers.js#L27)
+[packages/cozy-client/src/helpers/urlHelper.js:3](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L3)
 
 ***
 
@@ -288,7 +288,7 @@ Generated URL
 
 *Defined in*
 
-[packages/cozy-client/src/helpers.js:53](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers.js#L53)
+[packages/cozy-client/src/helpers/urlHelper.js:29](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L29)
 
 ***
 
@@ -588,7 +588,7 @@ The root Cozy URL
 
 *Defined in*
 
-[packages/cozy-client/src/helpers.js:260](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers.js#L260)
+[packages/cozy-client/src/helpers/urlHelper.js:236](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L236)
 
 ***
 
