@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [35.3.1](https://github.com/cozy/cozy-client/compare/v35.3.0...v35.3.1) (2023-02-22)
+
+
+### Bug Fixes
+
+* Normalize doc for fetchChanges ([5f662eb](https://github.com/cozy/cozy-client/commit/5f662eb3adfe0eb36ee38f20fe7a23585ad6642d)), closes [/github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L122](https://github.com//github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js/issues/L122) [/github.com/cozy/cozy-banks/blob/master/src/targets/services/helpers/helpers.js#L19-L45](https://github.com//github.com/cozy/cozy-banks/blob/master/src/targets/services/helpers/helpers.js/issues/L19-L45)
+
+
+
+
+
 # [35.0.0](https://github.com/cozy/cozy-client/compare/v34.11.1...v35.0.0) (2023-02-10)
 
 **Note:** Version bump only for package cozy-stack-client
