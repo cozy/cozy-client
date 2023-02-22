@@ -2,6 +2,7 @@ import { enableFetchMocks, disableFetchMocks } from 'jest-fetch-mock'
 
 import {
   deconstructCozyWebLinkWithSlug,
+  deconstructRedirectLink,
   dehydrate,
   generateWebLink,
   rootCozyUrl,
@@ -226,6 +227,53 @@ describe('deconstructWebLink', () => {
       )
     }
   )
+})
+
+describe('deconstructRedirectLink', () => {
+  it.each([
+    [
+      'contacts/#/',
+      {
+        slug: 'contacts',
+        path: '',
+        hash: '/'
+      }
+    ],
+    [
+      'contacts/#/hash',
+      {
+        slug: 'contacts',
+        path: '',
+        hash: '/hash'
+      }
+    ],
+    [
+      'contacts/#/long/hash',
+      {
+        slug: 'contacts',
+        path: '',
+        hash: '/long/hash'
+      }
+    ],
+    [
+      'contacts/path/#/long/hash',
+      {
+        slug: 'contacts',
+        path: 'path/',
+        hash: '/long/hash'
+      }
+    ],
+    [
+      'contacts/long/path/#/long/hash',
+      {
+        slug: 'contacts',
+        path: 'long/path/',
+        hash: '/long/hash'
+      }
+    ]
+  ])('should deconstruct %p redirect link', (link, result) => {
+    expect(deconstructRedirectLink(link)).toEqual(result)
+  })
 })
 
 describe('rootCozyUrl', () => {
