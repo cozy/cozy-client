@@ -26,7 +26,7 @@ Error.constructor
 
 *Defined in*
 
-[packages/cozy-client/src/helpers.js:123](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers.js#L123)
+[packages/cozy-client/src/helpers.js:141](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers.js#L141)
 
 ## Properties
 
@@ -36,4 +36,4 @@ Error.constructor
 
 *Defined in*
 
-[packages/cozy-client/src/helpers.js:126](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers.js#L126)
+[packages/cozy-client/src/helpers.js:144](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers.js#L144)

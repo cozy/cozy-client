@@ -489,4 +489,13 @@ import { QueryDefinition } from './queries/dsl'
  * @property {string} slug - The link's slug (i.e. 'drive' or 'notes)
  */
 
+/**
+ * Represents the different parts of a deconstructed redirect link
+ *
+ * @typedef {object} RedirectLinkData
+ * @property {string} slug - The redirect link's slug (i.e. 'drive')
+ * @property {string} path - The redirect link's path (i.e. 'public')
+ * @property {string} hash - The redirect link's path (i.e. '/folder/SOME_FOLDER_ID')
+ */
+
 export default {}

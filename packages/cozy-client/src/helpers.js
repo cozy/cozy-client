@@ -1,6 +1,6 @@
 import { Association } from './associations'
 
-import { CozyLinkData, SubdomainType } from './types'
+import { CozyLinkData, RedirectLinkData, SubdomainType } from './types'
 
 export const dehydrate = document => {
   const dehydrated = Object.entries(document).reduce(
@@ -116,6 +116,24 @@ export const deconstructCozyWebLinkWithSlug = (
     protocol: url.protocol,
     searchParams: url.searchParams.toString(),
     slug
+  }
+}
+
+/**
+ * Deconstruct the given redirect link in order to retrieve slug and hash
+ *
+ * @param {string} redirectLink - redirect link to deconstruct (i.e. 'slug/#/path')
+ * @returns {RedirectLinkData} Deconstructed link
+ */
+
+export const deconstructRedirectLink = redirectLink => {
+  const [splits, hash] = redirectLink.split('#')
+  const [slug, path] = splits.split(/\/(.*)/)
+
+  return {
+    slug,
+    path,
+    hash
   }
 }
 
