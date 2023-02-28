@@ -1,5 +1,6 @@
 // @ts-check
 import merge from 'lodash/merge'
+import { Q } from '../queries/dsl'
 
 import { getHasManyItem, updateHasManyItem } from '../associations/HasMany'
 import { legacyLoginFields, getIdentifier } from './manifest'
@@ -113,4 +114,23 @@ export const buildAccount = (konnector, authData) => {
     identifier: getIdentifier(konnector.fields),
     state: null
   }
+}
+
+/**
+ * Look if the given account has an associated trigger or not.
+ *
+ * @param {import('../CozyClient').default} client - CozyClient instance
+ * @param {import('../types').IOCozyAccount} account - account document
+ * @returns {Promise<Boolean>}
+ */
+export const isAccountWithTrigger = async (client, account) => {
+  const result = await client.query(
+    Q('io.cozy.triggers')
+      .where({
+        'message.account': account._id
+      })
+      .indexFields(['message.account'])
+      .limitBy(1)
+  )
+  return result.data.length > 0
 }

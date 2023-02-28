@@ -5,3 +5,4 @@ export function setContractSyncStatusInAccount(account: import('../types').IOCoz
 export function getAccountLogin(account: import('../types').IOCozyAccount): string | null;
 export function getAccountName(account: import('../types').IOCozyAccount): string | null;
 export function buildAccount(konnector: import('../types').IOCozyKonnector, authData: object): import('../types').IOCozyAccount;
+export function isAccountWithTrigger(client: import('../CozyClient').default, account: import('../types').IOCozyAccount): Promise<boolean>;
