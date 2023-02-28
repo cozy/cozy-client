@@ -6,7 +6,8 @@ import {
   muteError,
   getAccountLogin,
   getAccountName,
-  buildAccount
+  buildAccount,
+  isAccountWithTrigger
 } from './account'
 
 const fixtures = {
@@ -255,6 +256,22 @@ describe('account model', () => {
         identifier: 'loginfield',
         state: null
       })
+    })
+  })
+  describe('isAccountWithTrigger', () => {
+    it('should return true if an account is connected or not', async () => {
+      const client = {
+        query: jest.fn()
+      }
+      client.query.mockResolvedValueOnce({ data: [{ _id: 'testaccountid' }] })
+      expect(
+        await isAccountWithTrigger(client, { _id: 'testaccountid' })
+      ).toStrictEqual(true)
+
+      client.query.mockResolvedValueOnce({ data: [] })
+      expect(
+        await isAccountWithTrigger(client, { _id: 'testaccountid' })
+      ).toStrictEqual(false)
     })
   })
 })
