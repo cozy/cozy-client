@@ -217,6 +217,30 @@ Deconstructed link
 
 ***
 
+### deconstructRedirectLink
+
+▸ **deconstructRedirectLink**(`redirectLink`): `RedirectLinkData`
+
+Deconstruct the given redirect link in order to retrieve slug and hash
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `redirectLink` | `string` | redirect link to deconstruct (i.e. 'slug/#/path') |
+
+*Returns*
+
+`RedirectLinkData`
+
+Deconstructed link
+
+*Defined in*
+
+[packages/cozy-client/src/helpers/urlHelper.js:105](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L105)
+
+***
+
 ### dehydrate
 
 ▸ **dehydrate**(`document`): `Object`

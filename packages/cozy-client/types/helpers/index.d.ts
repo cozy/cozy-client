@@ -1,2 +1,2 @@
 export { dehydrate } from "./dehydrateHelper";
-export { deconstructCozyWebLinkWithSlug, generateWebLink, ensureFirstSlash, rootCozyUrl, InvalidCozyUrlError, InvalidProtocolError } from "./urlHelper";
+export { deconstructCozyWebLinkWithSlug, deconstructRedirectLink, generateWebLink, ensureFirstSlash, rootCozyUrl, InvalidCozyUrlError, InvalidProtocolError } from "./urlHelper";

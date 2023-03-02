@@ -25,6 +25,7 @@ export {
 } from './associations/helpers'
 export {
   deconstructCozyWebLinkWithSlug,
+  deconstructRedirectLink,
   dehydrate,
   generateWebLink,
   ensureFirstSlash,

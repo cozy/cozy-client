@@ -1,5 +1,6 @@
 export {
   deconstructCozyWebLinkWithSlug,
+  deconstructRedirectLink,
   generateWebLink,
   ensureFirstSlash,
   rootCozyUrl,
