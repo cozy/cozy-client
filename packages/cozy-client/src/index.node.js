@@ -19,6 +19,7 @@ export {
 } from './associations'
 export {
   deconstructCozyWebLinkWithSlug,
+  deconstructRedirectLink,
   dehydrate,
   generateWebLink,
   ensureFirstSlash,
