@@ -735,4 +735,21 @@ export type CozyLinkData = {
      */
     slug: string;
 };
+/**
+ * Represents the different parts of a deconstructed redirect link
+ */
+export type RedirectLinkData = {
+    /**
+     * - The redirect link's slug (i.e. 'drive')
+     */
+    slug: string;
+    /**
+     * - The redirect link's path (i.e. 'public')
+     */
+    path: string;
+    /**
+     * - The redirect link's path (i.e. '/folder/SOME_FOLDER_ID')
+     */
+    hash: string;
+};
 import { QueryDefinition } from "./queries/dsl";
