@@ -33,6 +33,8 @@ import { QueryDefinition } from './queries/dsl'
  * @property {String} slug - slug of konnector
  * @property {ManifestFields} fields - konnector fields
  * @property {Boolean} clientSide - whether the konnector runs on client or not
+ * @property {'hourly'|'daily'|'weekly'|'monthly'} frequency - frequency at which the konnector is supposed to be run
+ * @property {Array<number>} time_interval - interval of hours in the day where the konnector can be run
  * @typedef {CozyClientDocument & KonnectorsDocument} IOCozyKonnector - An io.cozy.konnectors document
  */
 

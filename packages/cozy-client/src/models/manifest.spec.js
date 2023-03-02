@@ -1,7 +1,10 @@
 import {
   sanitizeCategories,
   sanitize as sanitizeManifest,
-  getIdentifier
+  getIdentifier,
+  getCronFromFrequency,
+  getCronFromKonnector,
+  randomDayTime
 } from './manifest'
 
 describe('sanitizeCategories', () => {
@@ -442,5 +445,138 @@ describe('getIdentifier', () => {
 
   it('should return null if there is no match', () => {
     expect(getIdentifier({})).toBe(null)
+  })
+})
+
+describe('getCronFromFrequency', () => {
+  const options = { dayOfMonth: 25, dayOfWeek: 4, hours: 14, minutes: 15 }
+  it('creates default cron (weekly)', () => {
+    expect(getCronFromFrequency()).toEqual('0 0 0 * * 1')
+  })
+  it('creates weekly cron', () => {
+    expect(getCronFromFrequency('weekly', options)).toEqual('0 15 14 * * 4')
+  })
+  it('creates monthly cron', () => {
+    expect(getCronFromFrequency('monthly', options)).toEqual('0 15 14 25 * *')
+  })
+  it('creates daily cron', () => {
+    expect(getCronFromFrequency('daily', options)).toEqual('0 15 14 * * *')
+  })
+  it('creates hourly cron', () => {
+    expect(getCronFromFrequency('hourly', options)).toEqual('0 15 * * * *')
+  })
+})
+
+describe('getCronFromKonnector', () => {
+  const randomDayTimeMock = jest.fn()
+
+  beforeEach(() => {
+    randomDayTimeMock.mockImplementation((min, max) => ({
+      hours: max - 1,
+      minutes: 59
+    }))
+  })
+  afterEach(() => {
+    randomDayTimeMock.mockReset()
+  })
+  it('returns expected default cron', () => {
+    const konnector = {}
+    const date = new Date('2019-02-07T14:12:00')
+    expect(getCronFromKonnector(konnector, date, randomDayTimeMock)).toEqual(
+      `0 59 4 * * 4`
+    )
+  })
+  it('returns expected monthly cron', () => {
+    const konnector = {
+      frequency: 'monthly'
+    }
+    const date = new Date('2019-02-07T14:12:00')
+    expect(getCronFromKonnector(konnector, date, randomDayTimeMock)).toEqual(
+      `0 59 4 7 * *`
+    )
+  })
+  it('returns expected cron with time interval', () => {
+    const konnector = {
+      time_interval: [0, 12]
+    }
+    const date = new Date('2019-02-07T14:12:00')
+    expect(getCronFromKonnector(konnector, date, randomDayTimeMock)).toEqual(
+      `0 59 11 * * 4`
+    )
+  })
+})
+
+describe('daytime library', () => {
+  describe('randomDayTime', () => {
+    it('throws error on inconsistent start hour', () => {
+      expect(() => randomDayTime(-1, 12)).toThrow(
+        'interval must be inside [0, 24]'
+      )
+    })
+    it('throws error on inconsistent end hour', () => {
+      expect(() => randomDayTime(2, 26)).toThrow(
+        'interval must be inside [0, 24]'
+      )
+    })
+    it('throws error when randomize is null', () => {
+      expect(() => randomDayTime(0, 1, null)).toThrow(
+        'Parameter randomize must be a function'
+      )
+    })
+    it('throws error when randomize is not a function', () => {
+      expect(() => randomDayTime(0, 1, 2)).toThrow(
+        'Parameter randomize must be a function'
+      )
+    })
+    it('returns expected hours/minutes values', () => {
+      const randomizeStub = jest.fn().mockReturnValueOnce(10.58)
+
+      const result = randomDayTime(0, 24, randomizeStub)
+
+      expect(result).toEqual({
+        hours: 10,
+        minutes: 34
+      })
+    })
+    it('returns defaut hours/minutes with no parameter', () => {
+      // Test based on random function, not sure if it is a good idea, but it
+      // makes code 100% covered.
+      const result = randomDayTime()
+
+      expect(result.hours).toBe(0)
+
+      expect(result.minutes).toBeGreaterThanOrEqual(0)
+      expect(result.minutes).toBeLessThanOrEqual(59)
+    })
+    it('returns valid hours/minutes with default randomize function', () => {
+      // Test based on random function, not sure if it is a good idea, but it
+      // makes code 100% covered.
+      const result = randomDayTime(19, 21)
+
+      expect(result.hours).toBeGreaterThanOrEqual(19)
+      expect(result.hours).toBeLessThanOrEqual(20)
+
+      expect(result.minutes).toBeGreaterThanOrEqual(0)
+      expect(result.minutes).toBeLessThanOrEqual(59)
+    })
+    it('throw error on incorrect minimal hour', () => {
+      const randomizeStub = jest.fn().mockReturnValueOnce(-1)
+
+      expect(() => randomDayTime(0, 24, randomizeStub)).toThrow(
+        'randomize function returns invalid hour value'
+      )
+    })
+    it('throws error on incorrect maximal hour', () => {
+      const randomizeStub = jest.fn().mockReturnValueOnce(24)
+
+      expect(() => randomDayTime(0, 24, randomizeStub)).toThrow(
+        'randomize function returns invalid hour value'
+      )
+    })
+    it('handles floats', () => {
+      const randomizeStub = jest.fn().mockReturnValueOnce(10.58)
+      randomDayTime(5.5, 6.5, randomizeStub)
+      expect(randomizeStub).toHaveBeenCalledWith(5.5, 6.5)
+    })
   })
 })
