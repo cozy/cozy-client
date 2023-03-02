@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [35.4.0](https://github.com/cozy/cozy-client/compare/v35.3.1...v35.4.0) (2023-03-02)
+
+
+### Features
+
+* Add deconstruct redirect link helper ([3362196](https://github.com/cozy/cozy-client/commit/336219668c2bd3920be2f0ea27f9f6c8fe437e30))
+* Add ts types for new helpers files ([9428736](https://github.com/cozy/cozy-client/commit/942873643c2f77f6863eef9174ccd4d4a6e9150b))
+* Export deconstructRedirectLink ([28421ee](https://github.com/cozy/cozy-client/commit/28421eecccf4baf6677b4b692c5bf46300da4dc0))
+* Remove deprecated helpers types ([2720603](https://github.com/cozy/cozy-client/commit/272060324dc07ee079154b52fc0fc0c0efa0b93d))
+
+
+
+
+
 ## [35.3.1](https://github.com/cozy/cozy-client/compare/v35.3.0...v35.3.1) (2023-02-22)
 
 **Note:** Version bump only for package cozy-client
