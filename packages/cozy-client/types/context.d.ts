@@ -1,6 +1,6 @@
 export const clientContext: import("react").Context<{
-    /** @type {CozyClient}  */
-    client: CozyClient;
+    /** @type {CozyClient|null}  */
+    client: CozyClient | null;
     store: any;
 }>;
 export default clientContext;
