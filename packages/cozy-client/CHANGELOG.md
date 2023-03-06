@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [35.4.1](https://github.com/cozy/cozy-client/compare/v35.4.0...v35.4.1) (2023-03-06)
+
+
+### Bug Fixes
+
+* Correctly type nullable return for `useClient()` ([b946c52](https://github.com/cozy/cozy-client/commit/b946c5208c9696eaac7731e0033b5818abd2bddf))
+
+
+
+
+
 # [35.4.0](https://github.com/cozy/cozy-client/compare/v35.3.1...v35.4.0) (2023-03-02)
 
 
