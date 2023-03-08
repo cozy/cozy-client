@@ -1,5 +1,5 @@
 import Collection from './Collection'
-import { normalizeDoc } from './DocumentCollection'
+import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 import { uri } from './utils'
 
 export const JOBS_DOCTYPE = 'io.cozy.jobs'
@@ -27,10 +27,11 @@ export const hasJobFinished = job => {
  * @property {string} attributes.error - Error message of the job if any
  */
 
-class JobCollection {
+class JobCollection extends DocumentCollection {
   constructor(stackClient) {
-    this.stackClient = stackClient
+    super(JOBS_DOCTYPE, stackClient)
   }
+
   queued(workerType) {
     return this.stackClient.fetchJSON('GET', `/jobs/queue/${workerType}`)
   }
