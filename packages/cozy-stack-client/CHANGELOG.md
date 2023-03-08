@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [35.6.0](https://github.com/cozy/cozy-client/compare/v35.5.0...v35.6.0) (2023-03-08)
+
+
+### Features
+
+* JobCollection extends DocumentCollection ([2e770e3](https://github.com/cozy/cozy-client/commit/2e770e35c0037def9a48b3170c5419e3f5ebe686))
+
+
+
+
+
 ## [35.3.1](https://github.com/cozy/cozy-client/compare/v35.3.0...v35.3.1) (2023-02-22)
 
 
