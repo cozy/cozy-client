@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [35.5.0](https://github.com/cozy/cozy-client/compare/v35.4.1...v35.5.0) (2023-03-08)
+
+
+### Features
+
+* Add account.isAccountWithTrigger ([eacbb79](https://github.com/cozy/cozy-client/commit/eacbb797b51ce27a2bd3f18054ed9b3fb0759d2e))
+
+
+
+
+
 ## [35.4.1](https://github.com/cozy/cozy-client/compare/v35.4.0...v35.4.1) (2023-03-06)
 
 
