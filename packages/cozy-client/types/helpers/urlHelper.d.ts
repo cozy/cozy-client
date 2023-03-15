@@ -9,6 +9,10 @@ export function generateWebLink({ cozyUrl, searchParams: searchParamsOption, pat
 }): string;
 export function deconstructCozyWebLinkWithSlug(webLink: string, subDomainType?: SubdomainType): CozyLinkData;
 export function deconstructRedirectLink(redirectLink: string): RedirectLinkData;
+export class InvalidRedirectLinkError extends Error {
+    constructor(redirectLink: any);
+    redirectLink: any;
+}
 export class InvalidProtocolError extends Error {
     constructor(url: any);
     url: any;

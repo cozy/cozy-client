@@ -30,6 +30,7 @@ export {
   generateWebLink,
   ensureFirstSlash,
   rootCozyUrl,
+  InvalidRedirectLinkError,
   InvalidCozyUrlError,
   InvalidProtocolError
 } from './helpers'

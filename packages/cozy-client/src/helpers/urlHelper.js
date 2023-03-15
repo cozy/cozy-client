@@ -95,21 +95,36 @@ export const deconstructCozyWebLinkWithSlug = (
   }
 }
 
+const isValidSlug = slug => slug.match(/^[a-z0-9]+$/)
+
 /**
- * Deconstruct the given redirect link in order to retrieve slug and hash
+ * Deconstruct the given redirect link in order to retrieve slug, pathname and hash
  *
  * @param {string} redirectLink - redirect link to deconstruct (i.e. 'drive/public/#/folder/SOME_ID')
  * @returns {RedirectLinkData} Deconstructed link
+ * @throws {InvalidRedirectLinkError} Thrown when redirect link is invalid
  */
 
 export const deconstructRedirectLink = redirectLink => {
   const [splits, hash] = redirectLink.split('#')
   const [slug, pathname] = splits.split(/\/(.*)/)
 
+  if (!isValidSlug(slug)) {
+    throw new InvalidRedirectLinkError(redirectLink)
+  }
+
   return {
     slug,
     pathname,
     hash
+  }
+}
+
+export class InvalidRedirectLinkError extends Error {
+  constructor(redirectLink) {
+    super(`Invalid redirect link ${redirectLink}`)
+
+    this.redirectLink = redirectLink
   }
 }
 
