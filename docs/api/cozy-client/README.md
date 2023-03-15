@@ -21,6 +21,7 @@ cozy-client
 *   [HasOneInPlace](classes/HasOneInPlace.md)
 *   [InvalidCozyUrlError](classes/InvalidCozyUrlError.md)
 *   [InvalidProtocolError](classes/InvalidProtocolError.md)
+*   [InvalidRedirectLinkError](classes/InvalidRedirectLinkError.md)
 *   [Query](classes/Query.md)
 *   [QueryDefinition](classes/QueryDefinition.md)
 *   [Registry](classes/Registry.md)
@@ -221,7 +222,9 @@ Deconstructed link
 
 ▸ **deconstructRedirectLink**(`redirectLink`): `RedirectLinkData`
 
-Deconstruct the given redirect link in order to retrieve slug and hash
+Deconstruct the given redirect link in order to retrieve slug, pathname and hash
+
+**`throws`** {InvalidRedirectLinkError} Thrown when redirect link is invalid
 
 *Parameters*
 
@@ -237,7 +240,7 @@ Deconstructed link
 
 *Defined in*
 
-[packages/cozy-client/src/helpers/urlHelper.js:105](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L105)
+[packages/cozy-client/src/helpers/urlHelper.js:108](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L108)
 
 ***
 
@@ -612,7 +615,7 @@ The root Cozy URL
 
 *Defined in*
 
-[packages/cozy-client/src/helpers/urlHelper.js:236](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L236)
+[packages/cozy-client/src/helpers/urlHelper.js:251](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L251)
 
 ***
 

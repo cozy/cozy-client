@@ -5,6 +5,7 @@ import {
   deconstructRedirectLink,
   generateWebLink,
   rootCozyUrl,
+  InvalidRedirectLinkError,
   InvalidCozyUrlError,
   InvalidProtocolError
 } from './urlHelper'
@@ -162,6 +163,15 @@ describe('deconstructRedirectLink', () => {
     ]
   ])('should deconstruct %p redirect link', (link, result) => {
     expect(deconstructRedirectLink(link)).toEqual(result)
+  })
+
+  it.each([
+    ['camillenimbus-photos.mycozy.cloud'],
+    ['http://camillenimbus-photos.mycozy.cloud']
+  ])('should throw when redirect link is invalid', link => {
+    expect(() => deconstructRedirectLink(link)).toThrow(
+      InvalidRedirectLinkError
+    )
   })
 })
 

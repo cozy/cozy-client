@@ -4,6 +4,7 @@ export {
   generateWebLink,
   ensureFirstSlash,
   rootCozyUrl,
+  InvalidRedirectLinkError,
   InvalidCozyUrlError,
   InvalidProtocolError
 } from './urlHelper'
