@@ -78,6 +78,7 @@ const workStudyLabels = [
   'gradebook',
   'student_card',
   'school_attendance_certificate',
+  'school_insurance_certificate',
   'resume',
   'motivation_letter',
   'other_work_document'
@@ -118,7 +119,6 @@ const homeLabels = [
   'rent_receipt',
   'accommodation_proof',
   'house_insurance',
-  'school_insurance_certificate',
   'work_quote',
   'other_house_document'
 ]
