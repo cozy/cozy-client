@@ -124,7 +124,7 @@ describe('deconstructRedirectLink', () => {
       'contacts/#/',
       {
         slug: 'contacts',
-        path: '',
+        pathname: '',
         hash: '/'
       }
     ],
@@ -132,7 +132,7 @@ describe('deconstructRedirectLink', () => {
       'contacts/#/hash',
       {
         slug: 'contacts',
-        path: '',
+        pathname: '',
         hash: '/hash'
       }
     ],
@@ -140,23 +140,23 @@ describe('deconstructRedirectLink', () => {
       'contacts/#/long/hash',
       {
         slug: 'contacts',
-        path: '',
+        pathname: '',
         hash: '/long/hash'
       }
     ],
     [
-      'contacts/path/#/long/hash',
+      'contacts/pathname/#/long/hash',
       {
         slug: 'contacts',
-        path: 'path/',
+        pathname: 'pathname/',
         hash: '/long/hash'
       }
     ],
     [
-      'contacts/long/path/#/long/hash',
+      'contacts/long/pathname/#/long/hash',
       {
         slug: 'contacts',
-        path: 'long/path/',
+        pathname: 'long/pathname/',
         hash: '/long/hash'
       }
     ]

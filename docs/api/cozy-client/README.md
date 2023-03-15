@@ -227,7 +227,7 @@ Deconstruct the given redirect link in order to retrieve slug and hash
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `redirectLink` | `string` | redirect link to deconstruct (i.e. 'slug/#/path') |
+| `redirectLink` | `string` | redirect link to deconstruct (i.e. 'drive/public/#/folder/SOME_ID') |
 
 *Returns*
 

@@ -494,7 +494,7 @@ import { QueryDefinition } from './queries/dsl'
  *
  * @typedef {object} RedirectLinkData
  * @property {string} slug - The redirect link's slug (i.e. 'drive')
- * @property {string} path - The redirect link's path (i.e. 'public')
+ * @property {string} pathname - The redirect link's path (i.e. 'public')
  * @property {string} hash - The redirect link's path (i.e. '/folder/SOME_FOLDER_ID')
  */
 
