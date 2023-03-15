@@ -98,17 +98,17 @@ export const deconstructCozyWebLinkWithSlug = (
 /**
  * Deconstruct the given redirect link in order to retrieve slug and hash
  *
- * @param {string} redirectLink - redirect link to deconstruct (i.e. 'slug/#/path')
+ * @param {string} redirectLink - redirect link to deconstruct (i.e. 'drive/public/#/folder/SOME_ID')
  * @returns {RedirectLinkData} Deconstructed link
  */
 
 export const deconstructRedirectLink = redirectLink => {
   const [splits, hash] = redirectLink.split('#')
-  const [slug, path] = splits.split(/\/(.*)/)
+  const [slug, pathname] = splits.split(/\/(.*)/)
 
   return {
     slug,
-    path,
+    pathname,
     hash
   }
 }

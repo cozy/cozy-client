@@ -746,7 +746,7 @@ export type RedirectLinkData = {
     /**
      * - The redirect link's path (i.e. 'public')
      */
-    path: string;
+    pathname: string;
     /**
      * - The redirect link's path (i.e. '/folder/SOME_FOLDER_ID')
      */
