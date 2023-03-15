@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [35.7.0](https://github.com/cozy/cozy-client/compare/v35.6.0...v35.7.0) (2023-03-15)
+
+
+### Features
+
+* Changing a label's theme ([7131f86](https://github.com/cozy/cozy-client/commit/7131f86b5ba7bdcbedfb309b1c5c8c3ad6c46e0c))
+
+
+
+
+
 # [35.6.0](https://github.com/cozy/cozy-client/compare/v35.5.0...v35.6.0) (2023-03-08)
 
 **Note:** Version bump only for package cozy-client
