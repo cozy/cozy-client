@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [36.1.0](https://github.com/cozy/cozy-client/compare/v36.0.0...v36.1.0) (2023-03-16)
+
+
+### Features
+
+* Add isContact method on contacts models ([0281ad3](https://github.com/cozy/cozy-client/commit/0281ad39f7ad612aa0d53afdb26569fcdcbf58ad))
+
+
+
+
+
 # [36.0.0](https://github.com/cozy/cozy-client/compare/v35.7.0...v36.0.0) (2023-03-16)
 
 
