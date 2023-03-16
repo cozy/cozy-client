@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [36.0.0](https://github.com/cozy/cozy-client/compare/v35.7.0...v36.0.0) (2023-03-16)
+
+
+### Bug Fixes
+
+* Harmonize deconstructRedirectLink return path to pathname ([8f1cdf3](https://github.com/cozy/cozy-client/commit/8f1cdf3ea6973bb2a90c6ed12300aa4503dd9a72))
+* Throw when redirect link not correct in deconstructRedirectLink ([e5bd367](https://github.com/cozy/cozy-client/commit/e5bd367ce3be7eedd61d42545ca489e3de8de74a))
+
+
+### BREAKING CHANGES
+
+* deconstructRedirectLink return an object
+with an attribute called "pathname" instead of "path".
+
+
+
+
+
 # [35.7.0](https://github.com/cozy/cozy-client/compare/v35.6.0...v35.7.0) (2023-03-15)
 
 
