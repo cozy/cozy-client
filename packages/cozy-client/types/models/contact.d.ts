@@ -1,3 +1,4 @@
+export const CONTACTS_DOCTYPE: "io.cozy.contacts";
 export function getPrimaryOrFirst(property: any): (obj: any) => any;
 export function getInitials(contact: object): string;
 export function getPrimaryEmail(contact: object): string;
@@ -12,3 +13,4 @@ export function getDisplayName(contact: object): string;
 export function makeDefaultSortIndexValue(contact: object): string;
 export function getDefaultSortIndexValue(contact: object): string;
 export function getIndexByFamilyNameGivenNameEmailCozyUrl(contact: object): string;
+export function isContact(doc: object): boolean;

@@ -1,6 +1,9 @@
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
+
 import logger from '../logger'
+
+export const CONTACTS_DOCTYPE = 'io.cozy.contacts'
 
 export const getPrimaryOrFirst = property => obj =>
   !obj[property] || obj[property].length === 0
@@ -223,3 +226,11 @@ export const getIndexByFamilyNameGivenNameEmailCozyUrl = contact => {
 
   return getDefaultSortIndexValue(contact)
 }
+
+/**
+ * Whether the document is a contact
+ *
+ * @param {object} doc - A document (from io.cozy.something, or com.bitwarden or anything else)
+ * @returns {boolean}
+ */
+export const isContact = doc => doc._type === CONTACTS_DOCTYPE
