@@ -4,6 +4,16 @@
 
 [models](models.md).contact
 
+## Variables
+
+### CONTACTS_DOCTYPE
+
+• `Const` **CONTACTS_DOCTYPE**: `"io.cozy.contacts"`
+
+*Defined in*
+
+[packages/cozy-client/src/models/contact.js:6](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L6)
+
 ## Functions
 
 ### getDefaultSortIndexValue
@@ -26,7 +36,7 @@ Returns 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
 
 *Defined in*
 
-[packages/cozy-client/src/models/contact.js:198](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L198)
+[packages/cozy-client/src/models/contact.js:201](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L201)
 
 ***
 
@@ -50,7 +60,7 @@ Returns a display name for the contact
 
 *Defined in*
 
-[packages/cozy-client/src/models/contact.js:160](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L160)
+[packages/cozy-client/src/models/contact.js:163](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L163)
 
 ***
 
@@ -74,7 +84,7 @@ Returns the contact's fullname
 
 *Defined in*
 
-[packages/cozy-client/src/models/contact.js:122](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L122)
+[packages/cozy-client/src/models/contact.js:125](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L125)
 
 ***
 
@@ -100,7 +110,7 @@ Returns 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
 
 *Defined in*
 
-[packages/cozy-client/src/models/contact.js:219](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L219)
+[packages/cozy-client/src/models/contact.js:222](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L222)
 
 ***
 
@@ -124,7 +134,7 @@ Returns the initials of the contact.
 
 *Defined in*
 
-[packages/cozy-client/src/models/contact.js:16](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L16)
+[packages/cozy-client/src/models/contact.js:19](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L19)
 
 ***
 
@@ -148,7 +158,7 @@ Returns the contact's main address
 
 *Defined in*
 
-[packages/cozy-client/src/models/contact.js:89](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L89)
+[packages/cozy-client/src/models/contact.js:92](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L92)
 
 ***
 
@@ -172,7 +182,7 @@ Returns the contact's main cozy
 
 *Defined in*
 
-[packages/cozy-client/src/models/contact.js:54](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L54)
+[packages/cozy-client/src/models/contact.js:57](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L57)
 
 ***
 
@@ -196,7 +206,7 @@ Returns the contact's main cozy url without protocol
 
 *Defined in*
 
-[packages/cozy-client/src/models/contact.js:65](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L65)
+[packages/cozy-client/src/models/contact.js:68](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L68)
 
 ***
 
@@ -220,7 +230,7 @@ Returns the contact's main email
 
 *Defined in*
 
-[packages/cozy-client/src/models/contact.js:43](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L43)
+[packages/cozy-client/src/models/contact.js:46](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L46)
 
 ***
 
@@ -252,7 +262,7 @@ Returns the contact's main email
 
 *Defined in*
 
-[packages/cozy-client/src/models/contact.js:5](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L5)
+[packages/cozy-client/src/models/contact.js:8](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L8)
 
 ***
 
@@ -276,7 +286,29 @@ Returns the contact's main phone number
 
 *Defined in*
 
-[packages/cozy-client/src/models/contact.js:80](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L80)
+[packages/cozy-client/src/models/contact.js:83](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L83)
+
+***
+
+### isContact
+
+▸ **isContact**(`doc`): `boolean`
+
+Whether the document is a contact
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `doc` | `any` | A document (from io.cozy.something, or com.bitwarden or anything else) |
+
+*Returns*
+
+`boolean`
+
+*Defined in*
+
+[packages/cozy-client/src/models/contact.js:236](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L236)
 
 ***
 
@@ -300,7 +332,7 @@ Makes 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
 
 *Defined in*
 
-[packages/cozy-client/src/models/contact.js:174](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L174)
+[packages/cozy-client/src/models/contact.js:177](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L177)
 
 ***
 
@@ -324,7 +356,7 @@ Makes displayName from contact data
 
 *Defined in*
 
-[packages/cozy-client/src/models/contact.js:136](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L136)
+[packages/cozy-client/src/models/contact.js:139](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L139)
 
 ***
 
@@ -348,4 +380,4 @@ Makes fullname from contact name
 
 *Defined in*
 
-[packages/cozy-client/src/models/contact.js:98](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L98)
+[packages/cozy-client/src/models/contact.js:101](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L101)
