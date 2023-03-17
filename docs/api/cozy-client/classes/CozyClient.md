@@ -1310,7 +1310,7 @@ executes its query when mounted if no fetch policy has been indicated.
 
 ### queryAll
 
-▸ **queryAll**(`queryDefinition`, `options?`): `Promise`<`any`>
+▸ **queryAll**(`queryDefinition`, `options?`): `Promise`<`CozyClientDocument`\[]>
 
 Will fetch all documents for a `queryDefinition`, automatically fetching more
 documents if the total of documents is superior to the pagination limit. Can
@@ -1325,7 +1325,7 @@ result in a lot of network requests.
 
 *Returns*
 
-`Promise`<`any`>
+`Promise`<`CozyClientDocument`\[]>
 
 All documents matching the query
 

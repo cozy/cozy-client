@@ -994,7 +994,7 @@ client.query(Q('io.cozy.bills'))`)
    *
    * @param  {QueryDefinition} queryDefinition - Definition to be executed
    * @param {QueryOptions} [options] - Options
-   * @returns {Promise<QueryResult>} All documents matching the query
+   * @returns {Promise<CozyClientDocument[]>} All documents matching the query
    */
   async queryAll(queryDefinition, options = {}) {
     const queryId =
