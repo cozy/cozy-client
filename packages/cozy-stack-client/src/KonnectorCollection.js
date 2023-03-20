@@ -31,7 +31,7 @@ class KonnectorCollection extends AppCollection {
    */
   async findTriggersBySlug(slug) {
     const triggerCol = new TriggerCollection(this.stackClient)
-    const { data: rawTriggers } = await triggerCol.all({ limit: null })
+    const { data: rawTriggers } = await triggerCol.all()
     return rawTriggers
       .map(x => x.attributes)
       .filter(triggerAttrs => isForKonnector(triggerAttrs, slug))
@@ -45,7 +45,7 @@ class KonnectorCollection extends AppCollection {
    * @param  {object} options.accountId - Pinpoint the account that should be used, useful if the user
    * has more than 1 account for 1 konnector
    */
-  async launch(slug, options = {}) {
+  async launch(slug, options = { accountId: '' }) {
     const triggerCol = new TriggerCollection(this.stackClient)
     const konnTriggers = await this.findTriggersBySlug(slug)
     const filteredTriggers = options.accountId
@@ -73,8 +73,10 @@ class KonnectorCollection extends AppCollection {
    *
    * @param  {string} slug - Konnector slug
    * @param  {object} options - Options
-   * @param  {object} options.source - Specify the source (ex: registry://slug/stable)
-   * @param  {boolean} options.sync - Wait for konnector to be updated, otherwise the job
+   * @param  {object} [options.source] - Specify the source (ex: registry://slug/stable)
+   * @param  {boolean} [options.sync] - Wait for konnector to be updated, otherwise the job
+   *
+   * @returns {Promise<object>} The updated document.
    * is just scheduled
    */
   async update(slug, options = {}) {
@@ -95,7 +97,7 @@ class KonnectorCollection extends AppCollection {
       `/konnectors/${slug}` + (source ? `?Source=${source}` : ''),
       reqOptions
     )
-    return normalizeDoc(rawKonnector)
+    return normalizeDoc(rawKonnector, this.doctype)
   }
 }
 

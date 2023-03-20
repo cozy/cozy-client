@@ -3,7 +3,6 @@ import has from 'lodash/has'
 import get from 'lodash/get'
 import omit from 'lodash/omit'
 import pick from 'lodash/pick'
-import { MangoQueryOptions } from './mangoIndex'
 
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 import { uri, slugify, formatBytes } from './utils'
@@ -12,6 +11,15 @@ import { dontThrowNotFoundError } from './Collection'
 import { getIllegalCharacters } from './getIllegalCharacter'
 import * as querystring from './querystring'
 import logger from './logger'
+
+/**
+ * @typedef {import("./mangoIndex").MangoQueryOptions} MangoQueryOptions
+ * @typedef {object} CozyClient
+ 
+ */
+/**
+ * @typedef {File|Blob|Stream|string|ArrayBuffer} FileBinaryData
+ */
 /**
  * @typedef {object} IOCozyFolder Folder
  */
@@ -33,10 +41,19 @@ import logger from './logger'
  *
  * @typedef {object} DirectoryAttributes
  * @property {string} dirId - Id of the parent directory.
- * @property {boolean} name - Name of the created directory.
- * @property {boolean} executable - Indicates whether the file will be executable.
+ * @property {string} name - Name of the created directory.
+ * @property {Date} [lastModifiedDate] - Last modified date
  */
-
+/**
+ * @typedef {object} JSONApiFiles
+ * @property {FileDocument} data
+ * @property {object} included
+ * @property {object} links
+ */
+/**
+ * @typedef {object} OnlyDataObjectWithFileAttributes
+ * @property {FileDocument} data
+ */
 /**
  * Attributes used for file creation
  *
@@ -45,10 +62,12 @@ import logger from './logger'
  * @property {string} _id - Id of the document
  * @property {string} dirId - Id of the parent directory.
  * @property {string} name - Name of the created file.
+ * @property {'file'|'directory'} type - Type of the file
  * @property {Date} lastModifiedDate - Can be used to set the last modified date of a file.
  * @property {boolean} executable - Whether or not the file is executable
  * @property {boolean} encrypted - Whether or not the file is client-side encrypted
  * @property {object} metadata io.cozy.files.metadata to attach to the file
+ * @property {string} fileId - Duplicated ID : to be remove
  */
 
 /**
@@ -199,7 +218,7 @@ class FileCollection extends DocumentCollection {
    * Fetches the file's data
    *
    * @param {string} id File id
-   * @returns {{data, included}} Information about the file or folder and it's descendents
+   * @returns {Promise<{data, included}>} Information about the file or folder and it's descendents
    */
   get(id) {
     return this.statById(id)
@@ -220,7 +239,7 @@ class FileCollection extends DocumentCollection {
    *
    * @param {object}            selector  The Mango selector.
    * @param {MangoQueryOptions} options   The query options
-   * @returns {Promise<{data, meta, skip, next, bookmark, execution_stats}>} The JSON API conformant response.
+   * @returns {Promise<import('./DocumentCollection').JSONAPIDocument>} The JSON API conformant response.
    * @throws {FetchError}
    */
   async find(selector, options = {}) {
@@ -473,7 +492,7 @@ class FileCollection extends DocumentCollection {
   /**
    * @param {File|Blob|Stream|string|ArrayBuffer} data file to be uploaded
    * @param {string} dirPath Path to upload the file to. ie : /Administative/XXX/
-   * @returns {Promise<object>} Created io.cozy.files
+   * @returns {Promise<OnlyDataObjectWithFileAttributes>} Created io.cozy.files
    */
   async upload(data, dirPath) {
     const dirId = await this.ensureDirectoryExists(dirPath)
@@ -484,8 +503,7 @@ class FileCollection extends DocumentCollection {
    * Creates directory or file.
    * - Used by StackLink to support CozyClient.create('io.cozy.files', options)
    *
-   * @param {FileAttributes|DirectoryAttributes} attributes - Attributes of the created file/directory
-   * @param {File|Blob|string|ArrayBuffer} attributes.data Will be used as content of the created file
+   * @param {(FileAttributes|DirectoryAttributes) & FileBinaryData } attributes - Attributes of the created file/directory
    * @throws {Error} - explaining reason why creation failed
    */
   async create(attributes) {
@@ -503,10 +521,14 @@ class FileCollection extends DocumentCollection {
    * Used by StackLink to support CozyClient.save({file}).
    * Update the binary file if a `data` param is passed. Only updates
    * attributes otherwise.
-   * @param {object} attributes
-   * @param {FileAttributes} attributes.file - The file with its new content
-   * @param {File|Blob|string|ArrayBuffer} attributes.data Will be used as content of the updated file
-   * @returns {Promise<FileAttributes>} Updated document
+   *
+   * @typedef { Object } FileBinaryDataObject
+   * @property {FileBinaryData} data
+   *
+   * @typedef { FileAttributes & FileBinaryDataObject} FileAttributesAndBinaryData
+   *
+   * @param {FileAttributesAndBinaryData} attributes
+   * @returns {Promise<OnlyDataObjectWithFileAttributes>} Updated document
    * @throws {Error} - explaining reason why update failed
    */
   async update(attributes) {
@@ -528,13 +550,12 @@ class FileCollection extends DocumentCollection {
    *
    * @private
    * @param {File|Blob|Stream|string|ArrayBuffer} data file to be uploaded
-   * @param {FileAttributes & SpecificFileAttributesForKonnector} params Additional parameters
-   * @param  {object}  params.options     Options to pass to doUpload method (additional headers)
+   * @param {FileAttributes & object} params Additional parameters
    * @throws {Error} - explaining reason why creation failed
+   * @returns {Promise<OnlyDataObjectWithFileAttributes>}
    */
-  async createFile(
-    data,
-    {
+  async createFile(data, params) {
+    const {
       name: nameOption,
       dirId = '',
       executable = false,
@@ -543,8 +564,7 @@ class FileCollection extends DocumentCollection {
       sourceAccount = '',
       sourceAccountIdentifier = '',
       ...options
-    } = {}
-  ) {
+    } = params || {}
     let name = nameOption
     // handle case where data is a file and contains the name
     if (!name && typeof data.name === 'string') {
@@ -569,7 +589,7 @@ class FileCollection extends DocumentCollection {
   /**
    * updateFile - Updates a file's data
    *
-   * @param {File|Blob|Stream|string|ArrayBuffer} data file to be uploaded
+   * @param {FileBinaryData} data file to be uploaded
    * @param {FileAttributes} params       Additional parameters
    * @param  {object}  params.options     Options to pass to doUpload method (additional headers)
    * @returns {object}                    Updated document
@@ -751,7 +771,7 @@ class FileCollection extends DocumentCollection {
    *
    * @param  {string|object}  child    The file which can either be an id or an object
    * @param  {string|object}  parent   The parent target which can either be an id or an object
-   * @returns {boolean}                 Whether the file is a parent's child
+   * @returns {Promise<boolean>}                 Whether the file is a parent's child
    */
   async isChildOf(child, parent) {
     let { _id: childID, dirID: childDirID, path: childPath } =
@@ -790,12 +810,12 @@ class FileCollection extends DocumentCollection {
    * statById - Fetches the metadata about a document. For folders, the results include the list of child files and folders.
    *
    * @param {string}      id                      ID of the document
-   * @param {object|null} options                 Pagination options
-   * @param {number|null} [options.page[limit]]   For pagination, the number of results to return.
+   * @param {object} [options]                 Pagination options
+   * @param {number} [options.page[limit]]   For pagination, the number of results to return.
    * @param {number|null} [options.page[skip]]    For skip-based pagination, the number of referenced files to skip.
    * @param {CouchDBViewCursor|null} [options.page[cursor]]  For cursor-based pagination, the index cursor.
    *
-   * @returns {object} A promise resolving to an object containing "data" (the document metadata), "included" (the child documents) and "links" (pagination informations)
+   * @returns {Promise<JSONApiFiles>} A promise resolving to an object containing "data" (the document metadata), "included" (the child documents) and "links" (pagination informations)
    */
 
   async statById(id, options = {}) {
@@ -809,7 +829,10 @@ class FileCollection extends DocumentCollection {
       links: resp.links
     }
   }
-
+  /**
+   * @param {string} path - Path
+   * @returns {Promise<JSONApiFiles>}
+   */
   async statByPath(path) {
     const resp = await this.stackClient.fetchJSON(
       'GET',
@@ -817,7 +840,8 @@ class FileCollection extends DocumentCollection {
     )
     return {
       data: normalizeFile(resp.data),
-      included: resp.included && resp.included.map(f => normalizeFile(f))
+      included: resp.included && resp.included.map(f => normalizeFile(f)),
+      links: resp.links
     }
   }
 
@@ -826,10 +850,10 @@ class FileCollection extends DocumentCollection {
    *
    * @private
    * @param  {DirectoryAttributes} attributes - Attributes of the directory
-   * @returns {Promise}
+   * @returns {Promise<{data: FileDocument}>}
    * @throws {Error} - explaining reason why creation failed
    */
-  async createDirectory(attributes = {}) {
+  async createDirectory(attributes) {
     const { name, dirId, lastModifiedDate } = attributes
     const safeName = sanitizeAndValidateFileName(name)
 
@@ -845,7 +869,7 @@ class FileCollection extends DocumentCollection {
       undefined,
       {
         headers: {
-          Date: lastModified ? lastModified.toGMTString() : ''
+          Date: lastModified ? lastModified.toUTCString() : ''
         }
       }
     )
@@ -921,7 +945,7 @@ class FileCollection extends DocumentCollection {
    * @private You shoud use update() directly.
    * @param  {string} id         File id
    * @param  {object} attributes New file attributes
-   * @returns {object}            Updated document
+   * @returns {Promise<OnlyDataObjectWithFileAttributes>} Updated document
    * @throws {Error} - explaining reason why update failed
    */
   async updateAttributes(id, attributes) {
@@ -1023,6 +1047,7 @@ class FileCollection extends DocumentCollection {
    * `/files/${dirId}?Name=${name}&Type=file&Executable=${executable}&MetadataID=${metadataId}`
    * @param {object} options Additional headers
    * @param {string} method POST / PUT / PATCH
+   * @returns {Promise<OnlyDataObjectWithFileAttributes>}
    */
   async doUpload(dataArg, path, options, method = 'POST') {
     let correctPath = path
@@ -1095,13 +1120,13 @@ class FileCollection extends DocumentCollection {
    * async findNotSynchronizedDirectories - Returns the list of directories not synchronized on the given OAuth client (mainly Cozy Desktop clients) — see https://docs.cozy.io/en/cozy-stack/not-synchronized-vfs/#get-datatypedoc-idrelationshipsnot_synchronizing
    *
    * @param  {OAuthClient}  oauthClient           A JSON representing an OAuth client, with at least a `_type` and `_id` field.
-   * @param  {object|null}  options               Pagination options
-   * @param  {number|null}  options.skip          For skip-based pagination, the number of referenced files to skip.
-   * @param  {number|null}  options.limit         For pagination, the number of results to return.
-   * @param  {CouchDBViewCursor|null}  options.cursor        For cursor-based pagination, the index cursor.
-   * @param  {boolean}      options.includeFiles  Include the whole file documents in the results list
+   * @param  {object}  [options]                  Pagination options
+   * @param  {number}  [options.skip]             For skip-based pagination, the number of referenced files to skip.
+   * @param  {number}  [options.limit]            For pagination, the number of results to return.
+   * @param  {CouchDBViewCursor}  [options.cursor]        For cursor-based pagination, the index cursor.
+   * @param  {boolean}      [options.includeFiles]  Include the whole file documents in the results list
    *
-   * @returns {Array<object|IOCozyFolder>}    The JSON API conformant response.
+   * @returns {Promise<Array<JSONApiFiles>>}    The JSON API conformant response.
    */
   async findNotSynchronizedDirectories(
     oauthClient,
@@ -1202,8 +1227,8 @@ class FileCollection extends DocumentCollection {
    * @typedef {object} FetchChangesReturnValue
    * @property {string} newLastSeq
    * @property {boolean} pending
-   * @property {Array<object>} documents
-   * @returns {FetchChangesReturnValue}
+   * @property {Array<object>} results
+   * @returns {Promise<FetchChangesReturnValue>}
    */
   async fetchChanges(couchOptions = {}, options = {}) {
     let opts = {}

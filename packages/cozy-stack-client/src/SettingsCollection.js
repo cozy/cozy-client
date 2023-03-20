@@ -14,7 +14,7 @@ class SettingsCollection extends DocumentCollection {
    * async get - Calls a route on the /settings API
    *
    * @param  {string} path The setting route to call, eg `instance` or `context`
-   * @returns {object} The response from the route
+   * @returns {Promise<object>} The response from the route
    */
   async get(path) {
     const resp = await this.stackClient.fetchJSON('GET', `/settings/${path}`)

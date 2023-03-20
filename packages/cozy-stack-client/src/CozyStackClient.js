@@ -23,6 +23,7 @@ import { fetchWithXMLHttpRequest, shouldXMLHTTPRequestBeUsed } from './xhrFetch'
 import MicroEE from 'microee'
 import { FetchError } from './errors'
 import logger from './logger'
+import OAuthClient from './OAuthClient'
 
 const normalizeUri = uriArg => {
   let uri = uriArg
@@ -38,9 +39,16 @@ const isRevocationError = err => {
 }
 
 /**
- * Main API against the `cozy-stack` server.
+ * @class CozyStackClient
+ * @classdesc Main API against the `cozy-stack` server.
+ * @augments {OAuthClient}
  */
 class CozyStackClient {
+  /**
+   * @type {string}
+   */
+  uri
+
   constructor(options) {
     const opts = { ...options }
     const { token, uri = '' } = opts
@@ -100,7 +108,7 @@ class CozyStackClient {
    * @param  {string} path The URI.
    * @param  {object} [body] The payload.
    * @param  {object} [opts={}] Options for fetch
-   * @returns {object}
+   * @returns {Promise<object>}
    * @throws {FetchError}
    */
   async fetch(method, path, body, opts = {}) {
@@ -132,6 +140,7 @@ class CozyStackClient {
     try {
       const response = await fetcher(fullPath, options)
       if (!response.ok) {
+        // @ts-ignore - this.emit is added by MicroEE.mixin
         this.emit(
           'error',
           new FetchError(response, `${response.status} ${response.statusText}`)
@@ -203,7 +212,7 @@ class CozyStackClient {
       throw Error("couldn't fetch a new token - doc is not html")
     }
     const appNode = doc.querySelector('div[role="application"]')
-    if (!appNode) {
+    if (!appNode || !(appNode instanceof HTMLElement)) {
       throw Error("couldn't fetch a new token - no div[role=application]")
     }
     const data = appNode.dataset.cozy
@@ -229,11 +238,12 @@ class CozyStackClient {
   /**
    * Fetches JSON in an authorized way.
    *
+   * @template T
    * @param  {string} method The HTTP method.
    * @param  {string} path The URI.
-   * @param  {object} body The payload.
-   * @param  {object} options Options
-   * @returns {object}
+   * @param  {object} [body] The payload.
+   * @param  {object} [options] Options
+   * @returns {Promise<T>}
    * @throws {FetchError}
    */
   async fetchJSON(method, path, body, options = {}) {
@@ -315,12 +325,12 @@ class CozyStackClient {
     if (!token) {
       this.token = null
     } else {
-      if (token.toAuthHeader) {
-        // AppToken or AccessToken
-        this.token = token
-      } else if (typeof token === 'string') {
+      if (typeof token === 'string') {
         // jwt string
         this.token = new AppToken(token)
+      } else if (token.toAuthHeader) {
+        // AppToken or AccessToken
+        this.token = token
       } else {
         logger.warn('Cozy-Client: Unknown token format', token)
         throw new Error('Cozy-Client: Unknown token format')

@@ -59,11 +59,10 @@ class TriggerCollection extends DocumentCollection {
    * Get the list of triggers.
    *
    * @see https://docs.cozy.io/en/cozy-stack/jobs/#get-jobstriggers
-   * @param  {{Worker}} options The fetch options: Worker allow to filter only triggers associated with a specific worker.
-   * @returns {{data}} The JSON API conformant response.
+   * @returns {Promise<{data}>} The JSON API conformant response.
    * @throws {FetchError}
    */
-  async all(options = {}) {
+  async all() {
     try {
       const resp = await this.stackClient.fetchJSON('GET', `/jobs/triggers`)
 
@@ -83,7 +82,7 @@ class TriggerCollection extends DocumentCollection {
    *
    * @see https://docs.cozy.io/en/cozy-stack/jobs/#post-jobstriggers
    * @param  {object}  attributes Trigger's attributes
-   * @returns {object}  Stack response, containing trigger document under `data` attribute.
+   * @returns {Promise<object>}  Stack response, containing trigger document under `data` attribute.
    */
   async create(attributes) {
     const path = uri`/jobs/triggers`
@@ -102,7 +101,7 @@ class TriggerCollection extends DocumentCollection {
    *
    * @see https://docs.cozy.io/en/cozy-stack/jobs/#delete-jobstriggerstrigger-id
    * @param  {object} document The trigger to delete — must have an _id field
-   * @returns {object} The deleted document
+   * @returns {Promise<object>} The deleted document
    */
   async destroy(document) {
     const { _id } = document
@@ -123,7 +122,7 @@ class TriggerCollection extends DocumentCollection {
    *
    * @param {object} selector - Which kind of worker {konnector,service}
    * @param {object} options - Options
-   * @returns {{data, meta, skip, next}} The JSON API conformant response.
+   * @returns {Promise<{data, meta, skip, next}>} The JSON API conformant response.
    * @throws {FetchError}
    */
   async find(selector = {}, options = {}) {
@@ -161,7 +160,7 @@ class TriggerCollection extends DocumentCollection {
    *
    * @see https://docs.cozy.io/en/cozy-stack/jobs/#post-jobstriggerstrigger-idlaunch
    * @param {object} trigger Trigger to launch
-   * @returns {object} Stack response, containing job launched by trigger, under `data` attribute.
+   * @returns {Promise<object>} Stack response, containing job launched by trigger, under `data` attribute.
    */
   async launch(trigger) {
     const path = uri`/jobs/triggers/${trigger._id}/launch`

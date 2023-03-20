@@ -21,6 +21,10 @@ export function isSecureProtocol(urlArg) {
 export function getBrowserCozyURL() {
   try {
     const root = document.querySelector('[role=application]')
+    // @ts-ignore
+    // to make this pass TS checks we should use type assertion with `as HTMLElement | null`
+    // which cannot be used as this project is not TS transpiled
+    // More details: https://bobbyhadz.com/blog/typescript-property-dataset-not-exist-type-element
     const data = root.dataset
 
     return new URL(`${window.location.protocol}//${data.cozyDomain}`)

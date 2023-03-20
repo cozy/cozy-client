@@ -15,6 +15,7 @@ class ShortcutsCollection extends DocumentCollection {
    * @param {string} attributes.name Filename
    * @param {string} attributes.url Shortcut's URL
    * @param {string} attributes.dir_id dir_id where to create the shortcut
+   * @param {string} [attributes.type] Type of the document
    * @throws {Error} - explaining reason why creation failed
    */
   async create(attributes) {

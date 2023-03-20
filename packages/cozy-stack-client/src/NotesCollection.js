@@ -26,7 +26,7 @@ class NotesCollection extends DocumentCollection {
   /**
    * Fetches all notes
    *
-   * @returns {{data, links, meta}} The JSON API conformant response.
+   * @returns {Promise<{data, links, meta}>} The JSON API conformant response.
    */
   async all() {
     //TODO: add support for pagination
@@ -44,7 +44,7 @@ class NotesCollection extends DocumentCollection {
    * @param {object} note       The io.cozy.notes document to destroy
    * @param {string} [note._id] The note's id
    *
-   * @returns {{ data }} The deleted note
+   * @returns {Promise<{ data }>} The deleted note
    */
   async destroy({ _id }) {
     // io.cozy.notes are in fact io.cozy.files, but with a special endpoint. However there is no dedicated route to delete a note, so we use the /files endpoint.
@@ -59,7 +59,7 @@ class NotesCollection extends DocumentCollection {
    * @param {object} options - Options
    * @param {string} [options.dir_id] dir_id where to create the note
    *
-   * @returns {{data, links, meta}} The JSON API conformant response.
+   * @returns {Promise<{data, links, meta}>} The JSON API conformant response.
    */
   async create({ dir_id }) {
     const resp = await this.stackClient.fetchJSON('POST', '/notes', {
@@ -86,7 +86,7 @@ class NotesCollection extends DocumentCollection {
    * @param {object} note       The io.cozy.notes document to open
    * @param {string} [note._id] The note's id
    *
-   * @returns {{ data }} The note's url details
+   * @returns {Promise<{ data }>} The note's url details
    */
   async fetchURL({ _id }) {
     const resp = await this.stackClient.fetchJSON(

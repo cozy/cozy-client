@@ -3,7 +3,9 @@
   "version": "36.0.0",
   "license": "MIT",
   "main": "dist/index.js",
+  "types": "types/index.d.ts",
   "files": [
+    "types",
     "dist"
   ],
   "repository": {
@@ -13,7 +15,8 @@
   "scripts": {
     "build": "../../bin/build",
     "watch": "yarn run build --watch",
-    "prepublishOnly": "yarn run build"
+    "prepublishOnly": "yarn run build",
+    "typecheck": "tsc -p tsconfig.json"
   },
   "sideEffects": false,
   "dependencies": {

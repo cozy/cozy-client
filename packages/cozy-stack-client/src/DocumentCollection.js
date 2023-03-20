@@ -6,12 +6,6 @@ import head from 'lodash/head'
 import merge from 'lodash/merge'
 import startsWith from 'lodash/startsWith'
 import qs from 'qs'
-import {
-  MangoQueryOptions,
-  MangoSelector,
-  MangoPartialFilter,
-  DesignDoc
-} from './mangoIndex'
 
 import Collection, {
   dontThrowNotFoundError,
@@ -30,18 +24,40 @@ import {
   normalizeDesignDoc
 } from './mangoIndex'
 import * as querystring from './querystring'
-import { FetchError } from './errors'
 
 import logger from './logger'
 
 const DATABASE_DOES_NOT_EXIST = 'Database does not exist.'
-
+/**
+ * @typedef {import("cozy-client/types/types").CozyClientDocument} CozyClientDocument
+ * @typedef {import('./mangoIndex').MangoQueryOptions} MangoQueryOptions
+ * @typedef {import('./mangoIndex').MangoSelector} MangoSelector
+ * @typedef {import('./mangoIndex').MangoPartialFilter} MangoPartialFilter
+ * @typedef {import('./mangoIndex').DesignDoc} DesignDoc
+ * @typedef {import('./errors').FetchError} FetchError
+ *
+ * @typedef JSONAPIDocument
+ * @property {Array<CozyClientDocument>} data
+ * @property {number} skip
+ * @property {boolean} next
+ * @property {object} [meta]
+ * @property {string} [bookmark]
+ * @property {object} [execution_stats]
+ *
+ * @typedef JSONAPIDocumentForDataRoute
+ * @property {Array<CozyClientDocument>} docs
+ * @property {number} skip
+ * @property {boolean} next
+ * @property {object} [meta]
+ * @property {string} [bookmark]
+ * @property {object} [execution_stats]
+ */
 /**
  * Normalize a document, adding its doctype if needed
  *
  * @param {object} doc - Document to normalize
  * @param {string} doctype - Document doctype
- * @returns {object} normalized document
+ * @returns {CozyClientDocument} normalized document
  * @private
  */
 export function normalizeDoc(doc = {}, doctype) {
@@ -114,7 +130,7 @@ class DocumentCollection {
    * @param {number} [options.skip=0] - Pagination Skip
    * @param {string} [options.bookmark] - Pagination bookmark
    * @param {Array<string>} [options.keys] - Keys to query
-   * @returns {Promise<{data, meta, skip, bookmark, next}>} The JSON API conformant response.
+   * @returns {Promise<JSONAPIDocument>} The JSON API conformant response.
    * @throws {FetchError}
    */
   async all({ limit = 100, skip = 0, bookmark, keys } = {}) {
@@ -184,6 +200,7 @@ class DocumentCollection {
    * @param {string} path - path to fetch
    * @param {MangoSelector} selector - selector
    * @param {MangoQueryOptions} options - request options
+   * @returns {Promise<JSONAPIDocumentForDataRoute & JSONAPIDocument>} documents
    */
   async fetchDocumentsWithMango(path, selector, options = {}) {
     return this.stackClient.fetchJSON(
@@ -270,7 +287,7 @@ class DocumentCollection {
    * @param {MangoSelector} selector The mango selector
    * @param {MangoQueryOptions} options The find options
    *
-   * @returns {Promise<object>} - The find response
+   * @returns {Promise<JSONAPIDocumentForDataRoute & JSONAPIDocument>} - The find response
    * @protected
    */
   async findWithMango(path, selector, options = {}) {
@@ -301,7 +318,7 @@ The returned documents are paginated by the stack.
    *
    * @param {MangoSelector} selector The Mango selector.
    * @param {MangoQueryOptions} options MangoQueryOptions
-   * @returns {Promise<{data, skip, bookmark, next, execution_stats}>} The JSON API conformant response.
+   * @returns {Promise<JSONAPIDocument>} The JSON API conformant response.
    * @throws {FetchError}
    */
   async find(selector, options = {}) {
@@ -332,7 +349,7 @@ The returned documents are paginated by the stack.
    *
    * @param {MangoSelector} selector The Mango selector.
    * @param {MangoQueryOptions} options MangoQueryOptions
-   * @returns {Promise<Array<{data}>>} Documents fetched
+   * @returns {Promise<Array<CozyClientDocument>>} Documents fetched
    * @throws {FetchError}
    */
   async findAll(selector, options = {}) {
@@ -352,7 +369,7 @@ The returned documents are paginated by the stack.
    * Get a document by id
    *
    * @param  {string} id The document id.
-   * @returns {Promise<object>}  JsonAPI response containing normalized document as data attribute
+   * @returns {Promise<CozyClientDocument>}  JsonAPI response containing normalized document as data attribute
    */
   async get(id) {
     return Collection.get(
@@ -393,6 +410,8 @@ The returned documents are paginated by the stack.
    * Creates a document
    *
    * @param {object} doc - Document to create. Optional: you can force the id with the _id attribute
+   *
+   * @returns {Promise<{data}>} The updated document.
    */
   async create({ _id, _type, ...document }) {
     // In case of a fixed id, let's use the dedicated creation endpoint
@@ -410,6 +429,8 @@ The returned documents are paginated by the stack.
    * Updates a document
    *
    * @param {object} document - Document to update. Do not forget the _id attribute
+   *
+   * @returns {Promise<{data}>} The updated document.
    */
   async update(document) {
     const resp = await this.stackClient.fetchJSON(
@@ -426,6 +447,8 @@ The returned documents are paginated by the stack.
    * Destroys a document
    *
    * @param {object} doc - Document to destroy. Do not forget _id and _rev attributes
+   *
+   * @returns {Promise<{data}>} The deleted document
    */
   async destroy({ _id, _rev, ...document }) {
     const resp = await this.stackClient.fetchJSON(

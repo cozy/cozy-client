@@ -58,7 +58,7 @@ class SharingCollection extends DocumentCollection {
    * Fetches a sharing by id
    *
    * @param {string} id Sharing's id
-   * @returns {Sharing} sharing
+   * @returns {Promise<Sharing>} sharing
    */
   async get(id) {
     const path = uri`/sharings/${id}`
@@ -130,7 +130,7 @@ class SharingCollection extends DocumentCollection {
    *
    * @param  {Sharing} document The document to share. Should have and _id and a name.
    * @param  {Array} recipients A list of io.cozy.contacts
-   * @param  {string} sharingType - If "two-way", will set the open_sharing attribute to true
+   * @param  {SharingType} sharingType - If "two-way", will set the open_sharing attribute to true
    * @param  {string} description - Describes the sharing
    * @param  {string=} previewPath Relative URL of the sharings preview page
    */
