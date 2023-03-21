@@ -1654,6 +1654,11 @@ Destroy a sharing link and the related permissions
 Implements `DocumentCollection` API to interact with the /settings endpoint of the stack
 
 **Kind**: global class  
+
+* [SettingsCollection](#SettingsCollection)
+    * [.get(id)](#SettingsCollection+get) ⇒ <code>object</code>
+    * [.update(document)](#SettingsCollection+update)
+
 <a name="SettingsCollection+get"></a>
 
 ### settingsCollection.get(id) ⇒ <code>object</code>
@@ -1665,6 +1670,17 @@ async get - Calls a route on the /settings API
 | Param | Type | Description |
 | --- | --- | --- |
 | id | <code>string</code> | The setting id to call, eg `io.cozy.settings.instance` for `instance` route or `io.cozy.settings.context` for `context`route |
+
+<a name="SettingsCollection+update"></a>
+
+### settingsCollection.update(document)
+Updates a settings document
+
+**Kind**: instance method of [<code>SettingsCollection</code>](#SettingsCollection)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | <code>object</code> | Document to update. Do not forget the _id attribute |
 
 <a name="SharingCollection"></a>
 
