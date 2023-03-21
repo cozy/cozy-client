@@ -1,4 +1,5 @@
 import DocumentCollection from './DocumentCollection'
+import logger from './logger'
 
 export const SETTINGS_DOCTYPE = 'io.cozy.settings'
 
@@ -13,10 +14,24 @@ class SettingsCollection extends DocumentCollection {
   /**
    * async get - Calls a route on the /settings API
    *
-   * @param  {string} path The setting route to call, eg `instance` or `context`
+   * @param  {string} id The setting id to call, eg `io.cozy.settings.instance` for `instance` route or `io.cozy.settings.context` for `context`route
    * @returns {object} The response from the route
    */
-  async get(path) {
+  async get(id) {
+    let path
+
+    if (id.startsWith('io.cozy.settings.')) {
+      path = id.substring(17)
+    } else {
+      logger.warn(
+        `Deprecated: in next versions of cozy-client, it will not be possible to query settings with an incomplete id
+
+- Q('io.cozy.settings').getById('instance')
++ Q('io.cozy.settings').getById('io.cozy.settings.instance')`
+      )
+      path = id
+    }
+
     const resp = await this.stackClient.fetchJSON('GET', `/settings/${path}`)
     return {
       data: DocumentCollection.normalizeDoctypeJsonApi(SETTINGS_DOCTYPE)(

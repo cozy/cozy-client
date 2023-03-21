@@ -1656,7 +1656,7 @@ Implements `DocumentCollection` API to interact with the /settings endpoint of t
 **Kind**: global class  
 <a name="SettingsCollection+get"></a>
 
-### settingsCollection.get(path) ⇒ <code>object</code>
+### settingsCollection.get(id) ⇒ <code>object</code>
 async get - Calls a route on the /settings API
 
 **Kind**: instance method of [<code>SettingsCollection</code>](#SettingsCollection)  
@@ -1664,7 +1664,7 @@ async get - Calls a route on the /settings API
 
 | Param | Type | Description |
 | --- | --- | --- |
-| path | <code>string</code> | The setting route to call, eg `instance` or `context` |
+| id | <code>string</code> | The setting id to call, eg `io.cozy.settings.instance` for `instance` route or `io.cozy.settings.context` for `context`route |
 
 <a name="SharingCollection"></a>
 
