@@ -1,5 +1,6 @@
-import DocumentCollection from './DocumentCollection'
+import DocumentCollection, { normalizeDoc } from './DocumentCollection'
 import logger from './logger'
+import { uri } from './utils'
 
 export const SETTINGS_DOCTYPE = 'io.cozy.settings'
 
@@ -38,6 +39,33 @@ class SettingsCollection extends DocumentCollection {
         { id: `/settings/${path}`, ...resp.data },
         resp
       )
+    }
+  }
+
+  /**
+   * Updates a settings document
+   *
+   * @param {object} document - Document to update. Do not forget the _id attribute
+   */
+  async update(document) {
+    let resp
+
+    if (document._id === 'io.cozy.settings.instance') {
+      resp = await this.stackClient.fetchJSON(
+        'PUT',
+        '/settings/instance',
+        document
+      )
+    } else {
+      resp = await this.stackClient.fetchJSON(
+        'PUT',
+        uri`/data/${this.doctype}/${document._id}`,
+        document
+      )
+    }
+
+    return {
+      data: normalizeDoc(resp.data, this.doctype)
     }
   }
 }

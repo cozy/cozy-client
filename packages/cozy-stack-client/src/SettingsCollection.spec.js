@@ -13,55 +13,79 @@ describe('SettingsCollection', () => {
     jest.restoreAllMocks()
   })
 
-  it('should call the appropriate route', async () => {
-    jest.spyOn(stackClient, 'fetchJSON').mockResolvedValue({
-      data: {}
+  describe('get', () => {
+    it('should call the appropriate route', async () => {
+      jest.spyOn(stackClient, 'fetchJSON').mockResolvedValue({
+        data: {}
+      })
+
+      await collection.get('instance')
+      expect(stackClient.fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/settings/instance'
+      )
+
+      await collection.get('io.cozy.settings.instance')
+      expect(stackClient.fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/settings/instance'
+      )
+
+      await collection.get('disk-usage')
+      expect(stackClient.fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/settings/disk-usage'
+      )
     })
 
-    await collection.get('instance')
-    expect(stackClient.fetchJSON).toHaveBeenCalledWith(
-      'GET',
-      '/settings/instance'
-    )
+    it('should format correctly the response', async () => {
+      jest.spyOn(stackClient, 'fetchJSON').mockResolvedValueOnce({
+        data: {
+          type: 'io.cozy.settings',
+          id: 'io.cozy.settings.disk-usage'
+        }
+      })
+      const resp = await collection.get('disk-usage')
+      expect(resp.data.id).toBe('io.cozy.settings.disk-usage')
 
-    await collection.get('io.cozy.settings.instance')
-    expect(stackClient.fetchJSON).toHaveBeenCalledWith(
-      'GET',
-      '/settings/instance'
-    )
+      jest.spyOn(stackClient, 'fetchJSON').mockResolvedValueOnce({
+        data: {
+          0: { id: 'client-0' },
+          1: { id: 'client-1' }
+        }
+      })
+      const clientsResp = await collection.get('clients')
+      expect(clientsResp.data.id).toBe('/settings/clients')
+    })
 
-    await collection.get('disk-usage')
-    expect(stackClient.fetchJSON).toHaveBeenCalledWith(
-      'GET',
-      '/settings/disk-usage'
-    )
+    it('should throw server error', async () => {
+      jest
+        .spyOn(stackClient, 'fetchJSON')
+        .mockRejectedValue(new Error('Some problem'))
+
+      await expect(collection.get('whatever')).rejects.toThrow()
+    })
   })
 
-  it('should format correctly the response', async () => {
-    jest.spyOn(stackClient, 'fetchJSON').mockResolvedValueOnce({
-      data: {
-        type: 'io.cozy.settings',
-        id: 'io.cozy.settings.disk-usage'
-      }
+  describe('update', () => {
+    it('should call the appropriate route', async () => {
+      jest.spyOn(stackClient, 'fetchJSON').mockResolvedValue({
+        data: {}
+      })
+
+      await collection.update({ _id: 'io.cozy.settings.instance' })
+      expect(stackClient.fetchJSON).toHaveBeenCalledWith(
+        'PUT',
+        '/settings/instance',
+        { _id: 'io.cozy.settings.instance' }
+      )
+
+      await collection.update({ _id: 'instance' })
+      expect(stackClient.fetchJSON).toHaveBeenCalledWith(
+        'PUT',
+        '/data/io.cozy.settings/instance',
+        { _id: 'instance' }
+      )
     })
-    const resp = await collection.get('disk-usage')
-    expect(resp.data.id).toBe('io.cozy.settings.disk-usage')
-
-    jest.spyOn(stackClient, 'fetchJSON').mockResolvedValueOnce({
-      data: {
-        0: { id: 'client-0' },
-        1: { id: 'client-1' }
-      }
-    })
-    const clientsResp = await collection.get('clients')
-    expect(clientsResp.data.id).toBe('/settings/clients')
-  })
-
-  it('should throw server error', async () => {
-    jest
-      .spyOn(stackClient, 'fetchJSON')
-      .mockRejectedValue(new Error('Some problem'))
-
-    await expect(collection.get('whatever')).rejects.toThrow()
   })
 })
