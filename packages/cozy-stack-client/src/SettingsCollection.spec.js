@@ -24,6 +24,12 @@ describe('SettingsCollection', () => {
       '/settings/instance'
     )
 
+    await collection.get('io.cozy.settings.instance')
+    expect(stackClient.fetchJSON).toHaveBeenCalledWith(
+      'GET',
+      '/settings/instance'
+    )
+
     await collection.get('disk-usage')
     expect(stackClient.fetchJSON).toHaveBeenCalledWith(
       'GET',
