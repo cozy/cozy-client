@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [36.2.0](https://github.com/cozy/cozy-client/compare/v36.1.0...v36.2.0) (2023-03-21)
+
+
+### Bug Fixes
+
+* Use id instead of path in SettingsCollection.get() ([3a35f4f](https://github.com/cozy/cozy-client/commit/3a35f4fd34a74b1133bb9fc36a1f915c69e4122f))
+
+
+### Features
+
+* Add update method to SettingsCollection ([68d5dd0](https://github.com/cozy/cozy-client/commit/68d5dd0220c32edc8647fb49fd538962e65dff28))
+
+
+
+
+
 # [36.0.0](https://github.com/cozy/cozy-client/compare/v35.7.0...v36.0.0) (2023-03-16)
 
 **Note:** Version bump only for package cozy-stack-client
