@@ -12,7 +12,6 @@ import * as document from './document'
 import * as timeseries from './timeseries'
 import * as sharing from './sharing'
 import * as dacc from './dacc'
-import * as doctypes from './doctypes'
 import * as paper from './paper'
 
 // For backward compatibility before 9.0.0
@@ -36,6 +35,5 @@ export {
   timeseries,
   sharing,
   dacc,
-  doctypes,
   paper
 }
