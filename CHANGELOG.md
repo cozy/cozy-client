@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [37.0.0](https://github.com/cozy/cozy-client/compare/v36.2.0...v37.0.0) (2023-03-27)
+
+
+### Bug Fixes
+
+* Remove doctypes locales type ([9a30f02](https://github.com/cozy/cozy-client/commit/9a30f0286c6ae1b8655e767355c6995e87fbdd45)), closes [/github.com/cozy/cozy-settings/blob/71a21962f4fb48f84561db845bd5f4f5c3e858e8/src/lib/withAllLocales.js#L4](https://github.com//github.com/cozy/cozy-settings/blob/71a21962f4fb48f84561db845bd5f4f5c3e858e8/src/lib/withAllLocales.js/issues/L4)
+
+
+### BREAKING CHANGES
+
+* Before, you could import with `import { en, fr } from 'cozy-client/dist/models/doctypes/locales'`
+
+Now you have to import each locale doctypes with `import en from 'cozy-client/dist/models/doctypes/locales/en.json'`
+
+
+
+
+
 # [36.2.0](https://github.com/cozy/cozy-client/compare/v36.1.0...v36.2.0) (2023-03-21)
 
 
