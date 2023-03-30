@@ -1739,6 +1739,16 @@ instantiation of the client.`
   toJSON() {
     return new SnapshotClient({ uri: this.options.uri })
   }
+  /**
+   *
+   * @param {AppMetadata} newAppMetadata AppMetadata to update
+   */
+  setAppMetadata(newAppMetadata) {
+    this.appMetadata = {
+      ...this.appMetadata,
+      ...newAppMetadata
+    }
+  }
 }
 
 CozyClient.hooks = CozyClient.hooks || {}

@@ -1588,6 +1588,26 @@ Saves multiple documents in one batch
 
 ***
 
+### setAppMetadata
+
+▸ **setAppMetadata**(`newAppMetadata`): `void`
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `newAppMetadata` | `any` | AppMetadata to update |
+
+*Returns*
+
+`void`
+
+*Defined in*
+
+[packages/cozy-client/src/CozyClient.js:1746](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1746)
+
+***
+
 ### setData
 
 ▸ **setData**(`data`): `void`
