@@ -708,6 +708,11 @@ declare class CozyClient {
      */
     setOnError(onError?: Function): void;
     toJSON(): SnapshotClient;
+    /**
+     *
+     * @param {AppMetadata} newAppMetadata AppMetadata to update
+     */
+    setAppMetadata(newAppMetadata: AppMetadata): void;
 }
 declare namespace CozyClient {
     export const hooks: {};

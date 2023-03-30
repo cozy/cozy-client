@@ -698,7 +698,13 @@ describe('CozyClient', () => {
   afterEach(() => {
     requestHandler.mockReset()
   })
-
+  describe('setAppMetadata', () => {
+    it('should update the appMetadata', () => {
+      client.setAppMetadata({ slug: 'test' })
+      expect(client.appMetadata.slug).toEqual('test')
+      expect(client.appMetadata.sourceAccount).toEqual(SOURCE_ACCOUNT_ID)
+    })
+  })
   describe('all', () => {
     it('should return a QueryDefinition', () => {
       expect(Q('io.cozy.todos')).toEqual({ doctype: 'io.cozy.todos' })
