@@ -40,6 +40,18 @@ describe('generateWebLink', () => {
       })
     ).toEqual(`https://drive.alice.cozy.tools/public/#/files/432432`)
   })
+
+  it('should handle undefined pathname', () => {
+    expect(
+      generateWebLink({
+        cozyUrl: 'https://alice.cozy.tools',
+        pathname: undefined,
+        hash: 'files/432432',
+        slug: 'drive',
+        subDomainType: 'nested'
+      })
+    ).toEqual(`https://drive.alice.cozy.tools/#/files/432432`)
+  })
 })
 
 describe('deconstructWebLink', () => {
