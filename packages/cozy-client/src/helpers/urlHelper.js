@@ -44,7 +44,7 @@ export const generateWebLink = ({
           .split('.')
           .map((x, i) => (i === 0 ? x + '-' + slug : x))
           .join('.')
-  url.pathname = pathname
+  url.pathname = ensureFirstSlash(pathname)
   url.hash = ensureFirstSlash(hash)
 
   for (const [param, value] of searchParams) {
