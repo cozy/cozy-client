@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [37.1.0](https://github.com/cozy/cozy-client/compare/v37.0.0...v37.1.0) (2023-03-30)
+
+
+### Features
+
+* Expose setAppMetadata ([cb65772](https://github.com/cozy/cozy-client/commit/cb65772ef41e927a61cc67178a63277dff17a0e3))
+
+
+
+
+
 # [37.0.0](https://github.com/cozy/cozy-client/compare/v36.2.0...v37.0.0) (2023-03-27)
 
 
