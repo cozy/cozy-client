@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [37.1.1](https://github.com/cozy/cozy-client/compare/v37.1.0...v37.1.1) (2023-03-31)
+
+
+### Bug Fixes
+
+* Handle undefined `pathname` in `generateWebLink()` method ([c633f43](https://github.com/cozy/cozy-client/commit/c633f4397ddaa4db53543370744e5a99cfc6ab3e))
+
+
+
+
+
 # [37.1.0](https://github.com/cozy/cozy-client/compare/v37.0.0...v37.1.0) (2023-03-30)
 
 
