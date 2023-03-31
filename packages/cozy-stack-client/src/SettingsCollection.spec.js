@@ -36,6 +36,12 @@ describe('SettingsCollection', () => {
         'GET',
         '/settings/disk-usage'
       )
+
+      await collection.get('io.cozy.settings.bitwarden')
+      expect(stackClient.fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/data/io.cozy.settings/io.cozy.settings.bitwarden'
+      )
     })
 
     it('should format correctly the response', async () => {

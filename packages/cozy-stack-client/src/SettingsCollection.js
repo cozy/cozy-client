@@ -19,6 +19,24 @@ class SettingsCollection extends DocumentCollection {
    * @returns {object} The response from the route
    */
   async get(id) {
+    // This is a dirty quick fix waiting for this issue to be resolved
+    // https://github.com/cozy/cozy-stack/issues/3864
+    if (id === 'io.cozy.settings.bitwarden') {
+      const resp = await this.stackClient.fetchJSON(
+        'GET',
+        '/data/io.cozy.settings/io.cozy.settings.bitwarden'
+      )
+      return {
+        data: DocumentCollection.normalizeDoctypeJsonApi(SETTINGS_DOCTYPE)(
+          {
+            id: '/data/io.cozy.settings/io.cozy.settings.bitwarden',
+            ...resp
+          },
+          resp
+        )
+      }
+    }
+
     let path
 
     if (id.startsWith('io.cozy.settings.')) {
