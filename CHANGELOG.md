@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [37.2.0](https://github.com/cozy/cozy-client/compare/v37.1.1...v37.2.0) (2023-04-03)
+
+
+### Features
+
+* Query io.cozy.settings.bitwarden in SettingsCollection ([3447594](https://github.com/cozy/cozy-client/commit/3447594a2641e9216b0fc9bacf2f6b01d2b8b63d))
+
+
+
+
+
 ## [37.1.1](https://github.com/cozy/cozy-client/compare/v37.1.0...v37.1.1) (2023-03-31)
 
 
