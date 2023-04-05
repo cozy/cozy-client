@@ -1699,7 +1699,7 @@ instantiation of the client.`
    */
   async loadInstanceOptionsFromStack() {
     const { data } = await this.query(
-      Q('io.cozy.settings').getById('capabilities')
+      Q('io.cozy.settings').getById('io.cozy.settings.capabilities')
     )
 
     this.instanceOptions = {
