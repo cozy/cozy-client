@@ -44,6 +44,16 @@ describe('SettingsCollection', () => {
       )
     })
 
+    it('should format bitwarden id', async () => {
+      jest.spyOn(stackClient, 'fetchJSON').mockResolvedValueOnce({
+        type: 'io.cozy.settings',
+        _id: 'io.cozy.settings.bitwarden'
+      })
+      const bitwardenResp = await collection.get('io.cozy.settings.bitwarden')
+      expect(bitwardenResp.data.id).toBe('io.cozy.settings.bitwarden')
+      expect(bitwardenResp.data._id).toBe('io.cozy.settings.bitwarden')
+    })
+
     it('should format correctly the response', async () => {
       jest.spyOn(stackClient, 'fetchJSON').mockResolvedValueOnce({
         data: {
