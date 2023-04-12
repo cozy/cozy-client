@@ -18,16 +18,21 @@ for (const lang of langs) {
 
 /**
  * @param {string} lang - fr, en, etc
- * @returns {(label: string, country?: string) => string}
+ * @returns {(label: string, opts?: {country?: string, smart_count?: number}) => string}
  */
 const getBoundT = lang => {
   const polyglot = polyglots[lang] || polyglots['en']
   const t = polyglot.t.bind(polyglot)
 
-  return (label, country) => {
-    const emojiCountry = getEmojiByCountry(country, t)
+  return (label, opts = {}) => {
+    const newOpts = {
+      smart_count: opts?.smart_count || 1
+    }
+    const emojiCountry = getEmojiByCountry(opts?.country, t)
 
-    return emojiCountry ? `${t(label)} (${emojiCountry})` : t(label)
+    return emojiCountry
+      ? `${t(label, newOpts)} (${emojiCountry})`
+      : t(label, newOpts)
   }
 }
 
