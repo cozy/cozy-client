@@ -178,7 +178,9 @@ export const extractAndMergeDocument = (data, updatedStateWithIncluded) => {
   Object.values(sortedData).map(data => {
     const id = properId(data)
     if (mergedData[doctype][id]) {
-      mergedData[doctype][id] = merge({}, mergedData[doctype][id], data)
+      if (!data._rev || mergedData[doctype][id]._rev !== data._rev) {
+        mergedData[doctype][id] = merge({}, mergedData[doctype][id], data)
+      }
     } else {
       mergedData[doctype][id] = data
     }

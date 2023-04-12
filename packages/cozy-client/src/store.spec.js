@@ -276,7 +276,24 @@ describe('Store', () => {
       ).toEqual(TODO_1)
     })
 
-    it('should store an updated doc received in a mutation result', () => {
+    it('should store an updated doc received in a mutation result and the rev is updated', () => {
+      store.dispatch(
+        receiveMutationResult('foo', {
+          data: [TODO_1]
+        })
+      )
+      store.dispatch(
+        receiveMutationResult('bar', {
+          data: [{ ...TODO_1, _rev: '13456', label: 'Buy croissants' }]
+        })
+      )
+      expect(
+        getDocumentFromState(store.getState(), 'io.cozy.todos', TODO_1._id)
+          .label
+      ).toBe('Buy croissants')
+    })
+
+    it('should not update the store with a new value if the _rev is the same. This case should never occurs, but lets test is anyway', () => {
       store.dispatch(
         receiveMutationResult('foo', {
           data: [TODO_1]
@@ -290,7 +307,7 @@ describe('Store', () => {
       expect(
         getDocumentFromState(store.getState(), 'io.cozy.todos', TODO_1._id)
           .label
-      ).toBe('Buy croissants')
+      ).toBe(TODO_1.label)
     })
 
     it('it should store documents with included from a mutation result', () => {

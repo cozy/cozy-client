@@ -8,6 +8,7 @@ describe('extractAndMerge', () => {
     0: {
       id: 'b6ff135b34e041ffb2d4a4865f3e0a53',
       _id: 'b6ff135b34e041ffb2d4a4865f3e0a53',
+      _rev: '2',
       type: 'io.cozy.files',
       _type: 'io.cozy.files',
       blabla: 'new field',
@@ -36,6 +37,7 @@ describe('extractAndMerge', () => {
         },
         id: 'b6ff135b34e041ffb2d4a4865f3e0a53',
         _id: 'b6ff135b34e041ffb2d4a4865f3e0a53',
+        _rev: '1',
         links: { self: '/files/b6ff135b34e041ffb2d4a4865f3e0a53' },
         meta: { rev: '5-87840eceaab358e38aa8b6bb0d4577b1' },
         relationships: {
@@ -84,6 +86,7 @@ describe('extractAndMerge', () => {
         b6ff135b34e041ffb2d4a4865f3e0a53: {
           _id: 'b6ff135b34e041ffb2d4a4865f3e0a53',
           _type: 'io.cozy.files',
+          _rev: '2',
           attributes: {
             dir_id: '7d2f9c24cd345ce3171bf71f401e80c6',
             name: 'IMG_0016.PNG',
@@ -202,6 +205,42 @@ describe('extractAndMerge', () => {
       )
     }
   )
+
+  it('should keep the same reference for a document if the _rev is already there', () => {
+    const dataAlreadyIncludedInUpdatedStateWithIncluded = {
+      0: {
+        id: 'b6ff135b34e041ffb2d4a4865f3e0a53',
+        _id: 'b6ff135b34e041ffb2d4a4865f3e0a53',
+        type: 'io.cozy.files',
+        _type: 'io.cozy.files',
+        _rev: '1'
+      },
+      1: {
+        id: 'b6ff135b34e041ffb2d4a4865f3e235f',
+        type: 'io.cozy.files',
+        _type: 'io.cozy.files',
+        _id: 'b6ff135b34e041ffb2d4a4865f3e235f'
+      }
+    }
+
+    const returnedDatas = extractAndMergeDocument(
+      dataAlreadyIncludedInUpdatedStateWithIncluded,
+      updatedStateWithIncluded
+    )
+
+    // Then
+    expect(
+      returnedDatas['io.cozy.files'] ===
+        updatedStateWithIncluded['io.cozy.files']
+    ).toBeFalsy()
+
+    expect(
+      returnedDatas['io.cozy.files']['b6ff135b34e041ffb2d4a4865f3e0a53'] ===
+        updatedStateWithIncluded['io.cozy.files'][
+          'b6ff135b34e041ffb2d4a4865f3e0a53'
+        ]
+    ).toBeTruthy()
+  })
 })
 
 describe('mergeDocumentsWithRelationships', () => {
