@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [37.2.1](https://github.com/cozy/cozy-client/compare/v37.2.0...v37.2.1) (2023-04-12)
+
+
+### Bug Fixes
+
+* Return correct bitwarden id in SettingsCollection.getById ([d562101](https://github.com/cozy/cozy-client/commit/d562101702fc22cbcd62ae5beca9331dde1c1aec))
+
+
+
+
+
 # [37.2.0](https://github.com/cozy/cozy-client/compare/v37.1.1...v37.2.0) (2023-04-03)
 
 
