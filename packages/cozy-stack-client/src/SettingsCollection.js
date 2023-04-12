@@ -28,10 +28,7 @@ class SettingsCollection extends DocumentCollection {
       )
       return {
         data: DocumentCollection.normalizeDoctypeJsonApi(SETTINGS_DOCTYPE)(
-          {
-            id: '/data/io.cozy.settings/io.cozy.settings.bitwarden',
-            ...resp
-          },
+          resp,
           resp
         )
       }
