@@ -8,7 +8,7 @@
 
 ### getBoundT
 
-▸ **getBoundT**(`lang`): (`label`: `string`, `country?`: `string`) => `string`
+▸ **getBoundT**(`lang`): (`label`: `string`, `opts?`: { `country?`: `string` ; `smart_count?`: `number`  }) => `string`
 
 *Parameters*
 
@@ -20,14 +20,18 @@
 
 `fn`
 
-▸ (`label`, `country?`): `string`
+) => string}
+
+▸ (`label`, `opts?`): `string`
 
 *Parameters*
 
 | Name | Type |
 | :------ | :------ |
 | `label` | `string` |
-| `country?` | `string` |
+| `opts?` | `Object` |
+| `opts.country?` | `string` |
+| `opts.smart_count?` | `number` |
 
 *Returns*
 
