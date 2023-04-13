@@ -3,6 +3,54 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [38.0.0](https://github.com/cozy/cozy-client/compare/v37.2.1...v38.0.0) (2023-04-13)
+
+
+### Features
+
+* Add pluralization to the qualification labels ([6c27cc3](https://github.com/cozy/cozy-client/commit/6c27cc350570d61b9000782eff3befaa898b029a))
+
+
+### BREAKING CHANGES
+
+* getBoundT: With the arrival of pluralization, the return of this function has been updated
+The second parameter, to indicate the country, is no longer of String type.
+
+Before, we use this implementation:
+```
+const t  = getBoundT(lang)
+t("translation.key", "fr" )
+```
+
+Now please follow the following example:
+```
+const t  = getBoundT(lang)
+t("translation.key", { country: "fr" })
+```
+
+For pluralization, just add the `smart_count` option
+```
+t("translation.key", { country: "fr", smart_count: 2 })
+```
+
+The `Items.invoices` translation key has been removed,
+its value has been added to the `Items.invoice` key in its plural version.
+Please use this new implementation:
+```
+t("Items.invoice", { smart_count: 2 })
+```
+
+The following translation keys are no longer plural by default.
+`Items.other_revenue`, `Items.unemployment_benefit`,
+`Items.personal_sporting_licence`, `Items.tax_timetable`.
+Please use this new implementation:
+```
+t("translation.key", { smart_count: 2 })
+
+
+
+
+
 ## [37.2.1](https://github.com/cozy/cozy-client/compare/v37.2.0...v37.2.1) (2023-04-12)
 
 **Note:** Version bump only for package cozy-client
