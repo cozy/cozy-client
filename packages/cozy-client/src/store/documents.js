@@ -174,17 +174,22 @@ export const extractAndMergeDocument = (data, updatedStateWithIncluded) => {
 
   let mergedData = Object.assign({}, updatedStateWithIncluded)
   mergedData[doctype] = Object.assign({}, updatedStateWithIncluded[doctype])
-
+  let shouldCreateNewRef = false
   Object.values(sortedData).map(data => {
     const id = properId(data)
     if (mergedData[doctype][id]) {
       if (!data._rev || mergedData[doctype][id]._rev !== data._rev) {
         mergedData[doctype][id] = merge({}, mergedData[doctype][id], data)
+        shouldCreateNewRef = true
       }
     } else {
+      shouldCreateNewRef = true
       mergedData[doctype][id] = data
     }
   })
-
-  return mergedData
+  if (shouldCreateNewRef) {
+    return mergedData
+  } else {
+    return updatedStateWithIncluded
+  }
 }

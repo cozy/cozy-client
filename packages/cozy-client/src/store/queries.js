@@ -79,13 +79,18 @@ export const sortAndLimitDocsIds = (
   { count, fetchedPagesCount }
 ) => {
   let evaluatedIds = [...ids]
+  /*   console.log('evaluatedIds', evaluatedIds) */
   if (queryState.definition.sort && documents) {
+    /*  console.log('iiifff ? ') */
     const sorter = makeSorterFromDefinition(queryState.definition)
     const allDocs = documents[queryState.definition.doctype]
+    /*  console.log('allDocs', allDocs) */
     const docs = allDocs
       ? evaluatedIds.map(_id => allDocs[_id]).filter(Boolean)
       : []
+    /*   console.log('docs', docs) */
     evaluatedIds = sorter(docs).map(properId)
+    /* console.log('evaluatedIds 2', evaluatedIds) */
   }
   const limit = queryState.definition.limit
   if (limit) {
@@ -356,13 +361,35 @@ export const makeSorterFromDefinition = definition => {
  * @returns {QueryState} - Updated query state
  */
 export const updateData = (query, newData, documents) => {
+  // documents => j'ai mon store documents
+  // newData j'ai les nouvelles datas
+  // newData[0]._rev = 1234 _type: io.cozy/files _id: 1
+  // documents[io.cozy.files][1]: _rev : 1233
+  //console.log('doucments', documents)
+  //console.log('newData', newData)
+  const realNewDataBecauseRevHasChanged = newData.filter(
+    doc =>
+      !documents[doc._type] ||
+      !documents[doc._type][doc._id] ||
+      documents[doc._type][doc._id]._rev !== doc._rev
+  )
+
+  /*  console.log(
+    'realNewDataBecauseRevHasChanged',
+    realNewDataBecauseRevHasChanged
+  )
+  console.log('newData', newData) */
+  /* if (realNewDataBecauseRevHasChanged.length === 0) {
+    return query
+  } */
   const belongsToQuery = getQueryDocumentsChecker(query)
   const res = mapValues(groupBy(newData, belongsToQuery), docs =>
     docs.map(properId)
   )
+  /*  console.log('res', res) */
   const { true: matchedIds = [], false: unmatchedIds = [] } = res
   const originalIds = query.data
-
+  /* console.log('originalIds', originalIds) */
   const autoUpdate = query.options && query.options.autoUpdate
   const shouldRemove = !autoUpdate || autoUpdate.remove !== false
   const shouldAdd = !autoUpdate || autoUpdate.add !== false
@@ -373,16 +400,21 @@ export const updateData = (query, newData, documents) => {
   const toUpdate = shouldUpdate ? intersection(originalIds, matchedIds) : []
 
   const changed = toRemove.length || toAdd.length || toUpdate.length
-
+  //console.log('changed', changed)
+  /*  if (!changed) {
+    return query
+  } */
   // concat doesn't check duplicates (contrarily to union), which is ok as
   // toAdd does not contain any id present in originalIds, by construction.
   // It is also faster than union.
   let updatedData = difference(concat(originalIds, toAdd), toRemove)
+  /*  console.log('updatedData', updatedData) */
   const { fetchedPagesCount } = query
   const docsIds = sortAndLimitDocsIds(query, documents, updatedData, {
     count: updatedData.length,
     fetchedPagesCount
   })
+  /* console.log('docsIds', docsIds) */
   return {
     ...query,
     data: docsIds,
@@ -401,6 +433,7 @@ export const updateData = (query, newData, documents) => {
  * @returns {function(QueryState): QueryState} - Updater query state
  */
 const autoQueryUpdater = (action, documents) => query => {
+  /** @type Array<CozyClientDocument> */
   let data = get(action, 'response.data') || get(action, 'definition.document')
 
   if (!data) return query
@@ -415,7 +448,6 @@ const autoQueryUpdater = (action, documents) => query => {
   if (query.definition.doctype !== data[0]._type) {
     return query
   }
-
   return updateData(query, data, documents)
 }
 
@@ -484,7 +516,9 @@ const queries = (
       }
     })
   }
+  //check sur le haveDocumentsChanged
   if (isReceivingMutationResult(action)) {
+    if (!haveDocumentsChanged) return state
     const updater = action.updateQueries
       ? manualQueryUpdater(action, documents)
       : autoQueryUpdater(action, documents)

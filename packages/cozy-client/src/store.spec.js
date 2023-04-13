@@ -708,7 +708,10 @@ describe('Store', () => {
         )
         await store.dispatch(
           receiveQueryResult('allTodos', {
-            data: [{ ...TODO_1, done: true }, { ...TODO_2, done: true }],
+            data: [
+              { ...TODO_1, done: true, _rev: '5-AAA' },
+              { ...TODO_2, done: true, _rev: '3-ZZZZ' }
+            ],
             meta: { count: data.length },
             skip: 0,
             next: true
