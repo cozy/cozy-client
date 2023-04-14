@@ -426,9 +426,9 @@ declare class CozyClient {
      *
      * @param  {QueryDefinition} queryDefinition - Definition to be executed
      * @param {QueryOptions} [options] - Options
-     * @returns {Promise<QueryResult>} All documents matching the query
+     * @returns {Promise<CozyClientDocument[]>} All documents matching the query
      */
-    queryAll(queryDefinition: QueryDefinition, options?: QueryOptions): Promise<QueryResult>;
+    queryAll(queryDefinition: QueryDefinition, options?: QueryOptions): Promise<CozyClientDocument[]>;
     watchQuery(...args: any[]): ObservableQuery;
     makeObservableQuery(queryDefinition: any, options?: {}): ObservableQuery;
     /**
