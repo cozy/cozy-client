@@ -344,6 +344,26 @@ describe('CozyStackClient', () => {
       }
     })
 
+    it('should throw a specific error when the request returns an error with no Response Body', async () => {
+      fetch.mockResponse(() => {
+        return Promise.resolve({
+          headers: {
+            'content-type': 'application/json; charset=UTF-8'
+          },
+          body: JSON.stringify(null),
+          ok: false,
+          status: 503,
+          statusText: '',
+          type: 'default',
+          url: 'http://cozy.tools:8080/data/io.cozy.todos'
+        })
+      })
+
+      await expect(client.fetchJSON('GET', '/foo/bar')).rejects.toThrow(
+        `FetchError received a 503 error without a Response Body when calling http://cozy.tools:8080/data/io.cozy.todos`
+      )
+    })
+
     it('should try to refresh the current token when received an invalid token error', async () => {
       const client = new CozyStackClient(FAKE_INIT_OPTIONS)
       global.fetch
@@ -691,6 +711,20 @@ describe('FetchError', () => {
     expect(error).toHaveProperty(
       'url',
       'http://cozy.tools:8080/data/io.cozy.todos'
+    )
+  })
+
+  it('should throw an error if no reason param is provided', () => {
+    expect(() => {
+      new FetchError(
+        {
+          url: 'http://cozy.tools:8080/data/io.cozy.todos',
+          status: 400
+        },
+        null
+      )
+    }).toThrowError(
+      `FetchError received a 400 error without a Response Body when calling http://cozy.tools:8080/data/io.cozy.todos`
     )
   })
 })

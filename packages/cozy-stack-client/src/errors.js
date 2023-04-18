@@ -44,6 +44,12 @@ export class FetchError extends Error {
 
     let wwwAuthenticateErrorMessage = getWwwAuthenticateErrorMessage(response)
 
+    if (reason === null) {
+      throw new Error(
+        `FetchError received a ${response.status} error without a Response Body when calling ${response.url}`
+      )
+    }
+
     Object.defineProperty(this, 'message', {
       value:
         reason.message ||
