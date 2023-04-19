@@ -214,7 +214,7 @@ Deconstructed link
 
 *Defined in*
 
-[packages/cozy-client/src/helpers/urlHelper.js:66](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L66)
+[packages/cozy-client/src/helpers/urlHelper.js:64](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L64)
 
 ***
 
@@ -240,7 +240,7 @@ Deconstructed link
 
 *Defined in*
 
-[packages/cozy-client/src/helpers/urlHelper.js:108](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L108)
+[packages/cozy-client/src/helpers/urlHelper.js:106](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L106)
 
 ***
 
@@ -280,7 +280,7 @@ Deconstructed link
 
 *Defined in*
 
-[packages/cozy-client/src/helpers/urlHelper.js:3](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L3)
+[packages/cozy-client/src/helpers/urlHelper.js:1](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L1)
 
 ***
 
@@ -315,7 +315,7 @@ Generated URL
 
 *Defined in*
 
-[packages/cozy-client/src/helpers/urlHelper.js:29](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L29)
+[packages/cozy-client/src/helpers/urlHelper.js:27](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L27)
 
 ***
 
@@ -381,7 +381,7 @@ Array of references found
 
 *Defined in*
 
-[packages/cozy-client/src/associations/helpers.js:134](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/helpers.js#L134)
+[packages/cozy-client/src/associations/helpers.js:133](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/helpers.js#L133)
 
 ***
 
@@ -407,7 +407,7 @@ Array of the reference found
 
 *Defined in*
 
-[packages/cozy-client/src/associations/helpers.js:148](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/helpers.js#L148)
+[packages/cozy-client/src/associations/helpers.js:147](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/helpers.js#L147)
 
 ***
 
@@ -477,7 +477,7 @@ If a reference is found
 
 *Defined in*
 
-[packages/cozy-client/src/associations/helpers.js:102](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/helpers.js#L102)
+[packages/cozy-client/src/associations/helpers.js:101](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/helpers.js#L101)
 
 ***
 
@@ -503,7 +503,7 @@ If a reference is found
 
 *Defined in*
 
-[packages/cozy-client/src/associations/helpers.js:117](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/helpers.js#L117)
+[packages/cozy-client/src/associations/helpers.js:116](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/helpers.js#L116)
 
 ***
 
@@ -615,7 +615,7 @@ The root Cozy URL
 
 *Defined in*
 
-[packages/cozy-client/src/helpers/urlHelper.js:251](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L251)
+[packages/cozy-client/src/helpers/urlHelper.js:249](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L249)
 
 ***
 
@@ -667,7 +667,7 @@ An array with all apps in maintenance
 
 *Defined in*
 
-[packages/cozy-client/src/hooks/useAppsInMaintenance.jsx:13](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useAppsInMaintenance.jsx#L13)
+[packages/cozy-client/src/hooks/useAppsInMaintenance.jsx:12](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useAppsInMaintenance.jsx#L12)
 
 ***
 
@@ -760,7 +760,7 @@ Fetches a queryDefinition and returns the queryState
 
 *Defined in*
 
-[packages/cozy-client/src/hooks/useQuery.js:29](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useQuery.js#L29)
+[packages/cozy-client/src/hooks/useQuery.js:28](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useQuery.js#L28)
 
 ***
 
@@ -783,7 +783,7 @@ Fetches a queryDefinition and run fetchMore on the query until the query is full
 
 *Defined in*
 
-[packages/cozy-client/src/hooks/useQueryAll.jsx:15](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useQueryAll.jsx#L15)
+[packages/cozy-client/src/hooks/useQueryAll.jsx:14](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useQueryAll.jsx#L14)
 
 ***
 

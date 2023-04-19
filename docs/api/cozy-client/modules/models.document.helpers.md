@@ -22,4 +22,4 @@
 
 *Defined in*
 
-[packages/cozy-client/src/models/document/documentTypeDataHelpers.js:19](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/documentTypeDataHelpers.js#L19)
+[packages/cozy-client/src/models/document/documentTypeDataHelpers.js:17](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/documentTypeDataHelpers.js#L17)
