@@ -3,19 +3,17 @@ import omit from 'lodash/omit'
 import uniq from 'lodash/uniq'
 import { Mutations, Q, QueryDefinition } from '../queries/dsl'
 import { getDocumentFromState } from '../store'
-import { CozyClientDocument } from '../types'
 import { DOCTYPE_FILES } from '../const'
 import Association from './Association'
 import HasMany from './HasMany'
-import { CouchDBViewCursor, DocId, ViewKey } from '../types'
 
 /**
  * newCursor - Returns a CouchDB view Cursor for cursor-based pagination
  *
- * @param {ViewKey} key - The CouchDB key of the view which will be requested
- * @param {DocId} startDocId - The first doc _id to return from the view
+ * @param {import("../types").ViewKey} key - The CouchDB key of the view which will be requested
+ * @param {import("../types").DocId} startDocId - The first doc _id to return from the view
  *
- * @returns {CouchDBViewCursor}
+ * @returns {import("../types").CouchDBViewCursor}
  */
 const newCursor = ([doctype, id, lastDatetime], startDocId) => {
   const cursorKey = lastDatetime ? [doctype, id, lastDatetime] : [doctype, id]
@@ -132,11 +130,11 @@ export default class HasManyFiles extends HasMany {
   }
 
   /**
-   * @param {CozyClientDocument} document - Document to query
+   * @param {import("../types").CozyClientDocument} document - Document to query
    * @param {object} client - The CozyClient instance
    * @param {Association} assoc - The query params
    *
-   * @returns {CozyClientDocument | QueryDefinition}
+   * @returns {import("../types").CozyClientDocument | QueryDefinition}
    */
   static query(document, client, assoc) {
     if (document._type === DOCTYPE_FILES) {

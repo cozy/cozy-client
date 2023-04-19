@@ -23,7 +23,6 @@ import ListItemText from 'cozy-ui/transpiled/react/ListItemText'
 import CozyContext from '../context'
 import useClient from '../hooks/useClient'
 
-import { QueryState, CozyClientDocument } from '../types'
 import { NavSecondaryAction, ListGridItem } from './common'
 import PanelContent from './PanelContent'
 
@@ -55,7 +54,7 @@ const getClassNameForExecutedTimesQuery = time => {
 }
 
 /**
- * @param  {{ queryState: QueryState }} props - Query state containing fetchStatus, lastError
+ * @param  {{ queryState: import("../types").QueryState }} props - Query state containing fetchStatus, lastError
  */
 const FetchStatus = props => {
   const { queryState } = props
@@ -79,7 +78,7 @@ const FetchStatus = props => {
 }
 
 /**
- * @param  {{ queryState: QueryState }} props - Query state containing definition
+ * @param  {{ queryState: import("../types").QueryState }} props - Query state containing definition
  */
 const IndexedFields = props => {
   const { queryState } = props
@@ -93,7 +92,7 @@ const IndexedFields = props => {
 
 /**
  * @param  {string} search - Search string
- * @returns {function(CozyClientDocument): Boolean}
+ * @returns {function(import("../types").CozyClientDocument): Boolean}
  */
 const makeMatcher = search => {
   const specs = search.split(';')
@@ -192,7 +191,7 @@ const ObjectInspectorAndStringificator = ({ object }) => {
 }
 const QueryStateView = ({ name }) => {
   /**
-   * @type {QueryState}
+   * @type {import("../types").QueryState}
    */
   const queryState = useCozySelector(state => state.cozy.queries[name])
   const { data, options } = queryState

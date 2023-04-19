@@ -1,4 +1,3 @@
-import { CozyClientDocument } from '../types'
 import { QueryDefinition } from '../queries/dsl'
 
 /**
@@ -223,11 +222,11 @@ class Association {
   /**
    * Derived `Association`s need to implement this method.
    *
-   * @param {CozyClientDocument} document - Document to query
+   * @param {import("../types").CozyClientDocument} document - Document to query
    * @param {object} client - The CozyClient instance
    * @param {Association} assoc - Association containing info on how to build the query to fetch related documents
    *
-   * @returns {CozyClientDocument | QueryDefinition }
+   * @returns {import("../types").CozyClientDocument | QueryDefinition }
    */
   static query(document, client, assoc) {
     throw new Error('A custom relationship must define its query() function')

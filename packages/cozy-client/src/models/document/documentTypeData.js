@@ -1,23 +1,9 @@
 import { Qualification } from './qualification'
-import {
-  ThemesList,
-  QualificationAttributes,
-  IdentityLabel,
-  FamilyLabel,
-  WorkStudyLabels,
-  HealthLabels,
-  HomeLabels,
-  TransportLabels,
-  FinanceLabels,
-  InvoiceLabels,
-  ItemsLabels,
-  ActivityLabels
-} from '../../types'
 
 /**
  *
- * @param {Array<ItemsLabels>} labels - Array of items labels
- * @returns {Array<QualificationAttributes>}
+ * @param {Array<import("../../types").ItemsLabels>} labels - Array of items labels
+ * @returns {Array<import("../../types").QualificationAttributes>}
  */
 const buildItemsByLabel = labels => {
   return labels
@@ -33,7 +19,7 @@ const buildItemsByLabel = labels => {
 }
 
 /**
- * @type {Array<IdentityLabel>}
+ * @type {Array<import("../../types").IdentityLabel>}
  */
 const identityLabels = [
   'identity_photo',
@@ -49,7 +35,7 @@ const identityLabels = [
 ]
 
 /**
- * @type {Array<FamilyLabel>}
+ * @type {Array<import("../../types").FamilyLabel>}
  */
 const familyLabels = [
   'family_record_book',
@@ -65,7 +51,7 @@ const familyLabels = [
 ]
 
 /**
- * @type {Array<WorkStudyLabels>}
+ * @type {Array<import("../../types").WorkStudyLabels>}
  */
 const workStudyLabels = [
   'diploma',
@@ -85,7 +71,7 @@ const workStudyLabels = [
 ]
 
 /**
- * @type {Array<HealthLabels>}
+ * @type {Array<import("../../types").HealthLabels>}
  */
 const healthLabels = [
   'health_certificate',
@@ -101,7 +87,7 @@ const healthLabels = [
 ]
 
 /**
- * @type {Array<HomeLabels>}
+ * @type {Array<import("../../types").HomeLabels>}
  */
 const homeLabels = [
   'phone_invoice',
@@ -124,7 +110,7 @@ const homeLabels = [
 ]
 
 /**
- * @type {Array<TransportLabels>}
+ * @type {Array<import("../../types").TransportLabels>}
  */
 const transportLabels = [
   'driver_license',
@@ -137,7 +123,7 @@ const transportLabels = [
 ]
 
 /**
- * @type {Array<ActivityLabels>}
+ * @type {Array<import("../../types").ActivityLabels>}
  */
 const activityLabels = [
   'personal_sporting_licence',
@@ -147,7 +133,7 @@ const activityLabels = [
 ]
 
 /**
- * @type {Array<FinanceLabels>}
+ * @type {Array<import("../../types").FinanceLabels>}
  */
 const financeLabels = [
   'tax_return',
@@ -167,7 +153,7 @@ const financeLabels = [
 ]
 
 /**
- * @type {Array<InvoiceLabels>}
+ * @type {Array<import("../../types").InvoiceLabels>}
  */
 const invoiceLabels = [
   'phone_invoice',
@@ -185,7 +171,7 @@ const invoiceLabels = [
 ]
 
 /**
- * @type {ThemesList}
+ * @type {import("../../types").ThemesList}
  */
 export const themesList = [
   {

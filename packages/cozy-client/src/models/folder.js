@@ -1,6 +1,5 @@
 import sortBy from 'lodash/sortBy'
 import CozyClient from '../CozyClient'
-import { IOCozyFolder, CozyClientDocument } from '../types'
 import { DOCTYPE_FILES } from '../const'
 
 const APP_DOCTYPE = 'io.cozy.apps'
@@ -25,7 +24,7 @@ export const MAGIC_FOLDERS = {
  * @param  {string} id Magic Folder id. `CozyFolder.magicFolders` contains the
  * ids of folders that can be magic folders.
  * @param {string} path Default path to use if magic folder does not exist
- * @returns {Promise<IOCozyFolder>} Folder document
+ * @returns {Promise<import("../types").IOCozyFolder>} Folder document
  */
 export const ensureMagicFolder = async (client, id, path) => {
   const magicFolderDocument = {
@@ -64,8 +63,8 @@ export const ensureMagicFolder = async (client, id, path) => {
  *
  * @param  {CozyClient}  client - cozy-client instance
  * @param  {string}  path - Folder path
- * @param  {CozyClientDocument}  document - Document to make reference to. Any doctype.
- * @returns {Promise<IOCozyFolder>}  Folder document
+ * @param  {import("../types").CozyClientDocument}  document - Document to make reference to. Any doctype.
+ * @returns {Promise<import("../types").IOCozyFolder>}  Folder document
  */
 export const createFolderWithReference = async (client, path, document) => {
   const collection = client.collection(DOCTYPE_FILES)
@@ -85,8 +84,8 @@ export const createFolderWithReference = async (client, path, document) => {
  * Returns the most recent folder referenced by the given document
  *
  * @param  {CozyClient}  client    cozy-client instance
- * @param  {CozyClientDocument}  document  Document to get references from
- * @returns {Promise<IOCozyFolder>} Folder referenced by the given document
+ * @param  {import("../types").CozyClientDocument}  document  Document to get references from
+ * @returns {Promise<import("../types").IOCozyFolder>} Folder referenced by the given document
  */
 export const getReferencedFolder = async (client, document) => {
   const { included } = await client

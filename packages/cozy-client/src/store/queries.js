@@ -17,13 +17,6 @@ import { getDocumentFromSlice } from './documents'
 import { isReceivingMutationResult } from './mutations'
 import { properId } from './helpers'
 import { isAGetByIdQuery, QueryDefinition } from '../queries/dsl'
-import {
-  QueryState,
-  QueriesStateSlice,
-  DocumentsStateSlice,
-  CozyClientDocument,
-  QueryOptions
-} from '../types'
 import logger from '../logger'
 
 const INIT_QUERY = 'INIT_QUERY'
@@ -44,7 +37,7 @@ export const isQueryAction = action =>
 
 export const isReceivingData = action => action.type === RECEIVE_QUERY_RESULT
 
-/** @type {QueryState} */
+/** @type {import("../types").QueryState} */
 const queryInitialState = {
   id: null,
   definition: null,
@@ -64,8 +57,8 @@ const queryInitialState = {
 /**
  * Return the docs ids accordingly to the given sort and fetched docs
  *
- * @param {QueryState} queryState - Current state
- * @param {DocumentsStateSlice} documents - Reference to the documents slice
+ * @param {import("../types").QueryState} queryState - Current state
+ * @param {import("../types").DocumentsStateSlice} documents - Reference to the documents slice
  * @param {Array<string>} ids - The updated ids after query
  * @param {object} params - The additional params
  * @param {number} params.count - The count of retrieved docs
@@ -106,9 +99,9 @@ export const sortAndLimitDocsIds = (
 /**
  * Return the query docs ids, taken from the action response and the documents' slice
  *
- * @param {QueryState} queryState - Current state
+ * @param {import("../types").QueryState} queryState - Current state
  * @param {object} response - The action response
- * @param {DocumentsStateSlice} documents - Reference to the documents slice
+ * @param {import("../types").DocumentsStateSlice} documents - Reference to the documents slice
  * @param {object} params - The additional params
  * @param {number} params.count - The count of retrieved docs
  * @param {number} params.fetchedPagesCount - The number of pages already fetched
@@ -130,10 +123,10 @@ const updateQueryDataFromResponse = (
 /**
  * Reducer for a query slice
  *
- * @param  {QueryState} state - Current state
+ * @param  {import("../types").QueryState} state - Current state
  * @param  {any} action - Redux action
- * @param  {DocumentsStateSlice} documents - Reference to the next documents slice
- * @returns {QueryState} - Next state
+ * @param  {import("../types").DocumentsStateSlice} documents - Reference to the next documents slice
+ * @returns {import("../types").QueryState} - Next state
  */
 const query = (state = queryInitialState, action, documents) => {
   switch (action.type) {
@@ -182,7 +175,7 @@ const query = (state = queryInitialState, action, documents) => {
         }
       }
 
-      /** @type {Partial<QueryState>} */
+      /** @type {Partial<import("../types").QueryState>} */
       const common = {
         fetchStatus: 'loaded',
         isFetching: action.backgroundFetching ? false : null,
@@ -267,7 +260,7 @@ export const mergeSelectorAndPartialIndex = queryDefinition => ({
 
 /**
  * @param  {QueryDefinition} queryDefinition - A query definition
- * @returns {function(CozyClientDocument): boolean}
+ * @returns {function(import("../types").CozyClientDocument): boolean}
  */
 const getSelectorFilterFn = queryDefinition => {
   if (queryDefinition.selector || queryDefinition.partialFilter) {
@@ -297,8 +290,8 @@ const getSelectorFilterFn = queryDefinition => {
  * Returns a predicate function that checks if a document should be
  * included in the result of the query.
  *
- * @param  {QueryState} query - Definition of the query
- * @returns {function(CozyClientDocument): boolean} Predicate function
+ * @param  {import("../types").QueryState} query - Definition of the query
+ * @returns {function(import("../types").CozyClientDocument): boolean} Predicate function
  */
 const getQueryDocumentsChecker = query => {
   const qdoctype = query.definition.doctype
@@ -324,7 +317,7 @@ const makeCaseInsensitiveStringSorter = attrName => item => {
  * receiving updates.
  *
  * @param {QueryDefinition} definition - A query definition
- * @returns {function(Array<CozyClientDocument>): Array<CozyClientDocument>}
+ * @returns {function(Array<import("../types").CozyClientDocument>): Array<import("../types").CozyClientDocument>}
  *
  * @private
  */
@@ -350,10 +343,10 @@ export const makeSorterFromDefinition = definition => {
 /**
  * Updates query state when new data comes in
  *
- * @param  {QueryState} query - Current query state
- * @param  {Array<CozyClientDocument>} newData - New documents (in most case from the server)
- * @param  {DocumentsStateSlice} documents - A reference to the documents slice
- * @returns {QueryState} - Updated query state
+ * @param  {import("../types").QueryState} query - Current query state
+ * @param  {Array<import("../types").CozyClientDocument>} newData - New documents (in most case from the server)
+ * @param  {import("../types").DocumentsStateSlice} documents - A reference to the documents slice
+ * @returns {import("../types").QueryState} - Updated query state
  */
 export const updateData = (query, newData, documents) => {
   const belongsToQuery = getQueryDocumentsChecker(query)
@@ -397,8 +390,8 @@ export const updateData = (query, newData, documents) => {
  * from an action
  *
  * @param  {object} action - A redux action
- * @param  {DocumentsStateSlice} documents - Reference to documents slice
- * @returns {function(QueryState): QueryState} - Updater query state
+ * @param  {import("../types").DocumentsStateSlice} documents - Reference to documents slice
+ * @returns {function(import("../types").QueryState): import("../types").QueryState} - Updater query state
  */
 const autoQueryUpdater = (action, documents) => query => {
   let data = get(action, 'response.data') || get(action, 'definition.document')
@@ -424,8 +417,8 @@ const autoQueryUpdater = (action, documents) => query => {
  * from an action
  *
  * @param  {object} action - A redux action
- * @param  {DocumentsStateSlice} documents - Reference to documents slice
- * @returns {function(QueryState): QueryState} - Updater query state
+ * @param  {import("../types").DocumentsStateSlice} documents - Reference to documents slice
+ * @returns {function(import("../types").QueryState): import("../types").QueryState} - Updater query state
  */
 const manualQueryUpdater = (action, documents) => query => {
   const updateQueries = action.updateQueries
@@ -449,11 +442,11 @@ const manualQueryUpdater = (action, documents) => query => {
 }
 
 /**
- * @param  {QueriesStateSlice}  state - Redux slice containing all the query states indexed by name
+ * @param  {import("../types").QueriesStateSlice}  state - Redux slice containing all the query states indexed by name
  * @param  {object}  action - Income redux action
- * @param  {DocumentsStateSlice}  documents - Reference to documents slice
+ * @param  {import("../types").DocumentsStateSlice}  documents - Reference to documents slice
  * @param  {boolean} haveDocumentsChanged - Has the document slice changed with current action
- * @returns {QueriesStateSlice}
+ * @returns {import("../types").QueriesStateSlice}
  */
 const queries = (
   state = {},
@@ -500,7 +493,7 @@ export default queries
  *
  * @param  {string} queryId  Name/id of the query
  * @param  {QueryDefinition} queryDefinition - Definition of the created query
- * @param  {QueryOptions} [options] - Options for the created query
+ * @param  {import("../types").QueryOptions} [options] - Options for the created query
  * @returns {object} Redux action to dispatch
  */
 export const initQuery = (queryId, queryDefinition, options = null) => {
@@ -519,7 +512,7 @@ export const initQuery = (queryId, queryDefinition, options = null) => {
  * Update the fetchStatus when the query is loading
  *
  * @param  {string} queryId - id of the query
- * @param  {QueryOptions} [options] - Options for the created query
+ * @param  {import("../types").QueryOptions} [options] - Options for the created query
  * @returns {object} Redux action to dispatch
  */
 export const loadQuery = (queryId, options) => {
@@ -535,7 +528,7 @@ export const loadQuery = (queryId, options) => {
  *
  * @param  {string} queryId - id of the query
  * @param {object} response - The action response
- * @param  {QueryOptions} [options] - Options for the created query
+ * @param  {import("../types").QueryOptions} [options] - Options for the created query
  * @returns {object} Redux action to dispatch
  */
 export const receiveQueryResult = (queryId, response, options = {}) => ({
@@ -550,7 +543,7 @@ export const receiveQueryResult = (queryId, response, options = {}) => ({
  *
  * @param  {string} queryId - id of the query
  * @param {object} error - The action error
- * @param  {QueryOptions} [options] - Options for the created query
+ * @param  {import("../types").QueryOptions} [options] - Options for the created query
  * @returns {object} Redux action to dispatch
  */
 export const receiveQueryError = (queryId, error, options = {}) => ({

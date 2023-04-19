@@ -5,10 +5,9 @@ import {
   hasSafariPlugin,
   isIOSApp
 } from 'cozy-device-helper'
-import { CordovaWindow } from '../types'
 
 /**
- * @type {CordovaWindow}
+ * @type {import("../types").CordovaWindow}
  */
 // @ts-ignore
 const win = typeof window !== 'undefined' ? window : null

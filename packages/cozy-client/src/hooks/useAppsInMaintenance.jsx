@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react'
 import Registry from '../registry'
 import CozyClient from '../CozyClient'
-import { AppsDoctype } from '../types'
 
 /**
  * Returns all apps in maintenance
  *
  * @param {CozyClient} client CozyClient instance
  *
- * @returns {AppsDoctype[]} An array with all apps in maintenance
+ * @returns {import("../types").AppsDoctype[]} An array with all apps in maintenance
  */
 const useAppsInMaintenance = client => {
   const [appsInMaintenance, setAppsInMaintenance] = useState([])

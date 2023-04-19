@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 
-import { UseQueryReturnValue, QueryOptions } from '../types'
 import { QueryDefinition } from '../queries/dsl'
 import useQuery from './useQuery'
 import useSafeState from './helpers/useSafeState'
@@ -9,8 +8,8 @@ import useSafeState from './helpers/useSafeState'
  * Fetches a queryDefinition and run fetchMore on the query until the query is fully loaded
  *
  * @param {QueryDefinition} queryDefinition - Definition created with Q()
- * @param {QueryOptions} options - Options created with Q()
- * @returns {UseQueryReturnValue}
+ * @param {import("../types").QueryOptions} options - Options created with Q()
+ * @returns {import("../types").UseQueryReturnValue}
  */
 const useQueryAll = (queryDefinition, options) => {
   const [fetching, setFetching] = useSafeState(false)

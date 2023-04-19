@@ -1,5 +1,3 @@
-import { CozyLinkData, RedirectLinkData, SubdomainType } from '../types'
-
 export const ensureFirstSlash = path => {
   if (!path) {
     return '/'
@@ -60,8 +58,8 @@ export const generateWebLink = ({
  * The given link MUST contain a slug
  *
  * @param {string} webLink - link to deconstruct. It should be a link from a Cozy and containing a slug
- * @param {SubdomainType} [subDomainType=flat] - whether the cozy is using flat or nested subdomains.
- * @returns {CozyLinkData} Deconstructed link
+ * @param {import("../types").SubdomainType} [subDomainType=flat] - whether the cozy is using flat or nested subdomains.
+ * @returns {import("../types").CozyLinkData} Deconstructed link
  */
 export const deconstructCozyWebLinkWithSlug = (
   webLink,
@@ -101,7 +99,7 @@ const isValidSlug = slug => slug.match(/^[a-z0-9]+$/)
  * Deconstruct the given redirect link in order to retrieve slug, pathname and hash
  *
  * @param {string} redirectLink - redirect link to deconstruct (i.e. 'drive/public/#/folder/SOME_ID')
- * @returns {RedirectLinkData} Deconstructed link
+ * @returns {import("../types").RedirectLinkData} Deconstructed link
  * @throws {InvalidRedirectLinkError} Thrown when redirect link is invalid
  */
 

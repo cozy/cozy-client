@@ -1,6 +1,6 @@
 import isArray from 'lodash/isArray'
 import findKey from 'lodash/findKey'
-import { CouchDBViewCursor, DocId, Doctype } from '../types'
+
 import logger from '../logger'
 
 /**
@@ -33,9 +33,9 @@ class QueryDefinition {
    * @class
    *
    * @param {object} options Initial options for the query definition
-   * @param {Doctype} [options.doctype] - The doctype of the doc.
-   * @param {DocId|null} [options.id] - The id of the doc.
-   * @param {Array<DocId>} [options.ids] - The ids of the docs.
+   * @param  {import('../types').Doctype} [options.doctype] - The doctype of the doc.
+   * @param {import('../types').DocId|null} [options.id] - The id of the doc.
+   * @param {Array<import('../types').DocId>} [options.ids] - The ids of the docs.
    * @param {MangoSelector} [options.selector] - The selector to query the docs.
    * @param {Array<string>} [options.fields] - The fields to return.
    * @param {Array<string>} [options.indexedFields] - The fields to index.
@@ -45,7 +45,7 @@ class QueryDefinition {
    * @param {string|null} [options.referenced] - The referenced document.
    * @param {number|null} [options.limit] - The document's limit to return.
    * @param {number|null} [options.skip] - The number of docs to skip.
-   * @param {CouchDBViewCursor} [options.cursor] - The cursor to paginate views.
+   * @param {import('../types').CouchDBViewCursor} [options.cursor] - The cursor to paginate views.
    * @param {string} [options.bookmark] - The bookmark to paginate mango queries.
    */
   constructor(options = {}) {
@@ -304,7 +304,7 @@ class QueryDefinition {
    * the starting document of the query, e.g. "file-id".
    * Use the last docid of each query as startkey_docid to paginate or leave blank for the first query.
    *
-   * @param {CouchDBViewCursor} cursor The cursor for pagination.
+   * @param {import('../types').CouchDBViewCursor} cursor The cursor for pagination.
    * @returns {QueryDefinition}  The QueryDefinition object.
    */
   offsetCursor(cursor) {
@@ -368,7 +368,7 @@ class QueryDefinition {
  * Helper to create a QueryDefinition. Recommended way to create
  * query definitions.
  *
- * @param {Doctype} doctype - Doctype of the query definition
+ * @param {import('../types').Doctype} doctype - Doctype of the query definition
  *
  * @example
  * ```

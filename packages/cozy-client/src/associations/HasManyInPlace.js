@@ -1,5 +1,4 @@
 import { Q, QueryDefinition } from '../queries/dsl'
-import { CozyClientDocument } from '../types'
 import Association from './Association'
 
 /**
@@ -91,11 +90,11 @@ class HasManyInPlace extends Association {
   }
 
   /**
-   * @param {CozyClientDocument} document - Document to query
+   * @param {import("../types").CozyClientDocument} document - Document to query
    * @param {object} client - The CozyClient instance
    * @param {Association} assoc - The query params
    *
-   * @returns {CozyClientDocument | QueryDefinition}
+   * @returns {import("../types").CozyClientDocument | QueryDefinition}
    */
   static query(document, client, assoc) {
     const ids = document[assoc.name]

@@ -1,4 +1,3 @@
-import { CozyStackClient } from './types'
 /**
  * Handler for error response which return a empty value for "not found" error
  *
@@ -81,7 +80,7 @@ export class Collection {
   /**
    * Utility method aimed to return only one document.
    *
-   * @param  {CozyStackClient}  stackClient - CozyStackClient
+   * @param  {import("./types").CozyStackClient}  stackClient - CozyStackClient
    * @param  {string}  endpoint - Stack endpoint
    * @param  {object}  options - Options of the collection
    * @param  {Function}    options.normalize Callback to normalize response data

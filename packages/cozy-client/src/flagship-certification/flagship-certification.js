@@ -2,7 +2,6 @@ import CozyClient from '../CozyClient'
 import logger from '../logger'
 
 import { getAppAttestationFromStore } from './store-attestation'
-import { AttestationResult, CertificationConfig } from './typedefs'
 /**
  * Request a challenge from the Stack that can be used to request the app attestation from the app store
  *
@@ -36,7 +35,7 @@ const getStackChallenge = async client => {
 /**
  * Give the app attestation to the Stack
  *
- * @param {AttestationResult} appAttestation - the app attestation that was returned by the app store
+ * @param {import("./typedefs").AttestationResult} appAttestation - the app attestation that was returned by the app store
  * @param {string} nonce - the Nonce string retrieved from the stack
  * @param {CozyClient} client - the CozyClient instance
  */
@@ -73,7 +72,7 @@ const giveAppAttestationToStack = async (appAttestation, nonce, client) => {
  * Verify app's identity and integrity so the Stack can trust it
  * Verification is done on Stack side by using information from the app's store (Google Play or Apple AppStore)
  *
- * @param {CertificationConfig} certificationConfig - the required configuration to access the stores API
+ * @param {import("./typedefs").CertificationConfig} certificationConfig - the required configuration to access the stores API
  * @param {CozyClient} client - the CozyClient instance
  */
 export const certifyFlagship = async (certificationConfig, client) => {

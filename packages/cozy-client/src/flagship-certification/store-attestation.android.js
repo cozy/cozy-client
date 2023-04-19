@@ -1,14 +1,12 @@
 //@ts-ignore next-line
 import RNGoogleSafetyNet from 'react-native-google-safetynet'
 
-import { AttestationResult, CertificationConfig } from './typedefs'
-
 /**
  * Retrieve the app's attestation from the Google Play store
  *
  * @param {string} nonce - the Nonce string retrieved from the stack
- * @param {CertificationConfig} certificationConfig - Configuration to access the stores certification API
- * @returns {Promise<AttestationResult>} the app's attestation
+ * @param {import("./typedefs").CertificationConfig} certificationConfig - Configuration to access the stores certification API
+ * @returns {Promise<import("./typedefs").AttestationResult>} the app's attestation
  */
 export const getAppAttestationFromStore = async (
   nonce,

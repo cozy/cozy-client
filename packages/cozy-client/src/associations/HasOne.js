@@ -1,7 +1,6 @@
 import get from 'lodash/get'
 import set from 'lodash/set'
 import { Q, QueryDefinition } from '../queries/dsl'
-import { CozyClientDocument } from '../types'
 import Association from './Association'
 import logger from '../logger'
 
@@ -19,11 +18,11 @@ export default class HasOne extends Association {
   }
 
   /**
-   * @param {CozyClientDocument} document - Document to query
+   * @param {import("../types").CozyClientDocument} document - Document to query
    * @param {object} client - The CozyClient instance
    * @param {Association} assoc - The query params
    *
-   * @returns {CozyClientDocument | QueryDefinition}
+   * @returns {import("../types").CozyClientDocument | QueryDefinition}
    */
   static query(document, client, assoc) {
     const relationship = get(document, `relationships.${assoc.name}.data`, {})
@@ -36,8 +35,8 @@ export default class HasOne extends Association {
   /**
    * Add the relationship to the target document
    *
-   * @param {CozyClientDocument} doc - Document to add as a relationship
-   * @returns {CozyClientDocument} The saved target document
+   * @param {import("../types").CozyClientDocument} doc - Document to add as a relationship
+   * @returns {import("../types").CozyClientDocument} The saved target document
    */
   add(doc) {
     this.setRelationship(doc)
@@ -47,7 +46,7 @@ export default class HasOne extends Association {
   /**
    * Remove the relationship from the target document
    *
-   * @returns {CozyClientDocument} The saved target document
+   * @returns {import("../types").CozyClientDocument} The saved target document
    */
   remove() {
     this.setRelationship(undefined)

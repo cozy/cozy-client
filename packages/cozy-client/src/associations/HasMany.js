@@ -2,7 +2,6 @@ import get from 'lodash/get'
 import merge from 'lodash/merge'
 import { QueryDefinition } from '../queries/dsl'
 import { getDocumentFromState, receiveQueryResult } from '../store'
-import { CozyClientDocument } from '../types'
 import Association from './Association'
 import logger from '../logger'
 
@@ -119,8 +118,8 @@ class HasMany extends Association {
   /**
    * Add the relationships to the target document
    *
-   * @param {CozyClientDocument[]} docsArg - Documents to add as relationships
-   * @returns {CozyClientDocument} The saved target document
+   * @param {import("../types").CozyClientDocument[]} docsArg - Documents to add as relationships
+   * @returns {import("../types").CozyClientDocument} The saved target document
    */
   add(docsArg) {
     const docs = Array.isArray(docsArg) ? docsArg : [docsArg]
@@ -131,8 +130,8 @@ class HasMany extends Association {
   /**
    * Remove the relationships from the target document
    *
-   * @param {CozyClientDocument[]} docsArg - Documents to remove as relationships
-   * @returns {CozyClientDocument} The saved target document
+   * @param {import("../types").CozyClientDocument[]} docsArg - Documents to remove as relationships
+   * @returns {import("../types").CozyClientDocument} The saved target document
    */
   remove(docsArg) {
     const docs = Array.isArray(docsArg) ? docsArg : [docsArg]
@@ -267,11 +266,11 @@ class HasMany extends Association {
   }
 
   /**
-   * @param {CozyClientDocument} document - Document to query
+   * @param {import("../types").CozyClientDocument} document - Document to query
    * @param {object} client - The CozyClient instance
    * @param {Association} assoc - The query params
    *
-   * @returns {CozyClientDocument | QueryDefinition}
+   * @returns {import("../types").CozyClientDocument | QueryDefinition}
    */
   static query(document, client, assoc) {
     const relationships = get(document, `relationships.${assoc.name}.data`, [])

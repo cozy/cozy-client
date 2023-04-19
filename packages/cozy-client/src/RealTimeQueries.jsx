@@ -3,7 +3,6 @@ import useClient from './hooks/useClient'
 import { Mutations } from './queries/dsl'
 import { receiveMutationResult } from './store'
 import CozyClient from './CozyClient'
-import { CouchDBDocument, CozyClientDocument, Doctype, Mutation } from './types'
 
 /**
  * Normalizes an object representing a CouchDB document
@@ -11,8 +10,8 @@ import { CouchDBDocument, CozyClientDocument, Doctype, Mutation } from './types'
  * Ensures existence of `_type`
  *
  * @public
- * @param {CouchDBDocument} couchDBDoc - object representing the document
- * @returns {CozyClientDocument} full normalized document
+ * @param {import("./types").CouchDBDocument} couchDBDoc - object representing the document
+ * @returns {import("./types").CozyClientDocument} full normalized document
  */
 const normalizeDoc = (couchDBDoc, doctype) => {
   return {
@@ -26,9 +25,9 @@ const normalizeDoc = (couchDBDoc, doctype) => {
  * DispatchChange
  *
  * @param {CozyClient} client CozyClient instane
- * @param {Doctype} doctype Doctype of the document to update
- * @param {CouchDBDocument} couchDBDoc Document to update
- * @param {Mutation} mutationDefinitionCreator Mutation to apply
+ * @param {import("./types").Doctype} doctype Doctype of the document to update
+ * @param {import("./types").CouchDBDocument} couchDBDoc Document to update
+ * @param {import("./types").Mutation} mutationDefinitionCreator Mutation to apply
  */
 const dispatchChange = (
   client,
@@ -57,7 +56,7 @@ const dispatchChange = (
  * internal store updated.
  *
  * @param  {object} options - Options
- * @param  {Doctype} options.doctype - The doctype to watch
+ * @param  {import("./types").Doctype} options.doctype - The doctype to watch
  * @returns {null} The component does not display anything.
  */
 const RealTimeQueries = ({ doctype }) => {

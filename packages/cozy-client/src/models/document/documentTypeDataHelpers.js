@@ -1,10 +1,8 @@
-import { Theme, QualificationAttributes } from '../../types'
-
 import { themesList } from './documentTypeData'
 
 /**
- * @param {QualificationAttributes} item - Qualification item
- * @returns {Theme|undefined}
+ * @param {import("../../types").QualificationAttributes} item - Qualification item
+ * @returns {import("../../types").Theme|undefined}
  */
 const findDefaultItemTheme = item => {
   return themesList.find(
@@ -13,8 +11,8 @@ const findDefaultItemTheme = item => {
 }
 
 /**
- * @param {QualificationAttributes} item - Qualification item
- * @returns {Theme|undefined}
+ * @param {import("../../types").QualificationAttributes} item - Qualification item
+ * @returns {import("../../types").Theme|undefined}
  */
 export const getThemeByItem = item => {
   const defaultTheme = findDefaultItemTheme(item)

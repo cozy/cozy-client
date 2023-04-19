@@ -5,7 +5,6 @@ import trimEnd from 'lodash/trimEnd'
 
 import { setQualification } from './document/qualification'
 import { Q } from '../queries/dsl'
-import { IOCozyFile, QueryResult } from '../types'
 import { DOCTYPE_FILES } from '../const'
 import CozyClient from '../CozyClient'
 import logger from '../logger'
@@ -19,7 +18,7 @@ const FILENAME_WITH_EXTENSION_REGEX = /(.+)(\..*)$/
 /**
  * Returns base filename and extension
  *
- * @param {IOCozyFile} file An io.cozy.files
+ * @param {import("../types").IOCozyFile} file An io.cozy.files
  * @returns {object}  {filename, extension}
  */
 export const splitFilename = file => {
@@ -36,20 +35,20 @@ export const splitFilename = file => {
 
 /**
  *
- * @param {IOCozyFile} file io.cozy.files
+ * @param {import("../types").IOCozyFile} file io.cozy.files
  */
 export const isFile = file => file && file.type === FILE_TYPE
 
 /**
  *
- * @param {IOCozyFile} file io.cozy.files
+ * @param {import("../types").IOCozyFile} file io.cozy.files
  */
 export const isDirectory = file => file && file.type === DIR_TYPE
 
 /**
  * Is file param a correct note
  *
- * @param {IOCozyFile} file io.cozy.files
+ * @param {import("../types").IOCozyFile} file io.cozy.files
  * @returns {boolean}
  */
 export const isNote = file => {
@@ -69,7 +68,7 @@ export const isNote = file => {
 /**
  * Whether the file is client-side encrypted
  *
- * @param {IOCozyFile} file - io.cozy.files document
+ * @param {import("../types").IOCozyFile} file - io.cozy.files document
  * @returns {boolean}
  */
 export const isEncrypted = file => {
@@ -79,7 +78,7 @@ export const isEncrypted = file => {
 /**
  * Whether the file is supported by Only Office
  *
- * @param {IOCozyFile} file - io.cozy.file document
+ * @param {import("../types").IOCozyFile} file - io.cozy.file document
  * @returns {boolean}
  */
 export const isOnlyOfficeFile = file =>
@@ -94,7 +93,7 @@ export const isOnlyOfficeFile = file =>
  * We want to be consistent with the stack so we check the class attributes
  * But we want to exclude .txt and .md because the CozyUI Viewer can already show them
  *
- * @param {IOCozyFile} file - io.cozy.file document
+ * @param {import("../types").IOCozyFile} file - io.cozy.file document
  * @returns {boolean}
  */
 export const shouldBeOpenedByOnlyOffice = file =>
@@ -104,7 +103,7 @@ export const shouldBeOpenedByOnlyOffice = file =>
 
 /**
  *
- * @param {IOCozyFile} file - io.cozy.files document
+ * @param {import("../types").IOCozyFile} file - io.cozy.files document
  * @returns {boolean} true if the file is a shortcut
  */
 export const isShortcut = file => {
@@ -156,7 +155,7 @@ export function getParentFolderId(file) {
 /**
  * Returns the status of a sharing shortcut.
  *
- * @param {IOCozyFile} file - io.cozy.files document
+ * @param {import("../types").IOCozyFile} file - io.cozy.files document
  *
  * @returns {string} A description of the status
  */
@@ -166,7 +165,7 @@ export const getSharingShortcutStatus = file =>
 /**
  * Returns the mime type of the target of the sharing shortcut, if it is a file.
  *
- * @param {IOCozyFile} file  - io.cozy.files document
+ * @param {import("../types").IOCozyFile} file  - io.cozy.files document
  *
  * @returns {string} The mime-type of the target file, or an empty string is the target is not a file.
  */
@@ -176,7 +175,7 @@ export const getSharingShortcutTargetMime = file =>
 /**
  * Returns the doctype of the target of the sharing shortcut.
  *
- * @param {IOCozyFile} file - io.cozy.files document
+ * @param {import("../types").IOCozyFile} file - io.cozy.files document
  *
  * @returns {string} A doctype
  */
@@ -186,7 +185,7 @@ export const getSharingShortcutTargetDoctype = file =>
 /**
  * Returns whether the file is a shortcut to a sharing
  *
- * @param {IOCozyFile} file - io.cozy.files document
+ * @param {import("../types").IOCozyFile} file - io.cozy.files document
  *
  * @returns {boolean}
  */
@@ -196,7 +195,7 @@ export const isSharingShortcut = file => Boolean(getSharingShortcutStatus(file))
  * Returns whether the file is a shortcut to a sharing
  *
  * @deprecated Prefer to use isSharingShortcut.
- * @param {IOCozyFile} file - io.cozy.files document
+ * @param {import("../types").IOCozyFile} file - io.cozy.files document
  *
  * @returns {boolean}
  */
@@ -210,7 +209,7 @@ export const isSharingShorcut = file => {
 /**
  * Returns whether the sharing shortcut is new
  *
- * @param {IOCozyFile} file - io.cozy.files document
+ * @param {import("../types").IOCozyFile} file - io.cozy.files document
  *
  * @returns {boolean}
  */
@@ -236,9 +235,9 @@ export const isSharingShorcutNew = file => {
  * Save the file with the given qualification
  *
  * @param {CozyClient} client - The CozyClient instance
- * @param {IOCozyFile} file - The file to qualify
+ * @param {import("../types").IOCozyFile} file - The file to qualify
  * @param {object} qualification - The file qualification
- * @returns {Promise<IOCozyFile>} The saved file
+ * @returns {Promise<import("../types").IOCozyFile>} The saved file
  */
 export const saveFileQualification = async (client, file, qualification) => {
   const qualifiedFile = setQualification(file, qualification)
@@ -252,7 +251,7 @@ export const saveFileQualification = async (client, file, qualification) => {
  *
  * @param {object} client - The CozyClient instance
  * @param {object} docRules - the rules containing the searched qualification and the count
- * @returns {Promise<QueryResult>} The files found by the rules
+ * @returns {Promise<import("../types").QueryResult>} The files found by the rules
  */
 export const fetchFilesByQualificationRules = async (client, docRules) => {
   const { rules, count } = docRules
@@ -274,7 +273,7 @@ export const fetchFilesByQualificationRules = async (client, docRules) => {
  * Whether the file's metadata attribute exists
  *
  * @param {object} params - Param
- * @param {IOCozyFile} params.file - An io.cozy.files document
+ * @param {import("../types").IOCozyFile} params.file - An io.cozy.files document
  * @param {string} params.attribute - Metadata attribute to check
  * @returns {boolean}
  */
@@ -366,7 +365,7 @@ export const move = async (client, fileId, destination, force = false) => {
  * @param {string} dirPath      - Fullpath of directory to upload to ex: path/to/
  * @param {object} file         - HTML Object file
  * @param {object} metadata     - An object containing the wanted metadata to attach
- * @returns {Promise<IOCozyFile>} The overrided file
+ * @returns {Promise<import("../types").IOCozyFile>} The overrided file
  */
 export const overrideFileForPath = async (client, dirPath, file, metadata) => {
   let path = dirPath
@@ -422,7 +421,7 @@ export const generateNewFileNameOnConflict = filenameWithoutExtension => {
 /**
  * Generate a file name for a revision
  *
- * @param {IOCozyFile} file - io.cozy.files document
+ * @param {import("../types").IOCozyFile} file - io.cozy.files document
  * @param {object} revision - The revision containing the updated_at
  * @param {function} f      - A function taking a a date and a format as arguments to generate the name.
  */
@@ -559,7 +558,7 @@ export const isPlainText = (mimeType = '', fileName = '') => {
 }
 
 /**
- * @param {IOCozyFile} file - io.cozy.files document
+ * @param {import("../types").IOCozyFile} file - io.cozy.files document
  * @returns {boolean}
  */
 export const hasQualifications = file => {
@@ -567,7 +566,7 @@ export const hasQualifications = file => {
 }
 
 /**
- * @param {IOCozyFile} file - io.cozy.files document
+ * @param {import("../types").IOCozyFile} file - io.cozy.files document
  * @returns {boolean}
  */
 export const hasCertifications = file => {
@@ -578,7 +577,7 @@ export const hasCertifications = file => {
 }
 
 /**
- * @param {IOCozyFile} file - io.cozy.files document
+ * @param {import("../types").IOCozyFile} file - io.cozy.files document
  * @returns {boolean}
  */
 export const isFromKonnector = file => {
