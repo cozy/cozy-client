@@ -1,5 +1,4 @@
 /**
- * @type {ThemesList}
+ * @type {import("../../types").ThemesList}
  */
-export const themesList: ThemesList;
-import { ThemesList } from "../../types";
+export const themesList: import("../../types").ThemesList;

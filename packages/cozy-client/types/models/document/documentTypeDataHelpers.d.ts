@@ -1,3 +1,1 @@
-export function getThemeByItem(item: QualificationAttributes): Theme | undefined;
-import { QualificationAttributes } from "../../types";
-import { Theme } from "../../types";
+export function getThemeByItem(item: import("../../types").QualificationAttributes): import("../../types").Theme | undefined;

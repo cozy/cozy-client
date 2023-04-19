@@ -1,3 +1,2 @@
-export function certifyFlagship(certificationConfig: CertificationConfig, client: CozyClient): Promise<void>;
-import { CertificationConfig } from "./typedefs";
+export function certifyFlagship(certificationConfig: import("./typedefs").CertificationConfig, client: CozyClient): Promise<void>;
 import CozyClient from "../CozyClient";

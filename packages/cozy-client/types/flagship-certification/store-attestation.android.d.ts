@@ -1,3 +1,1 @@
-export function getAppAttestationFromStore(nonce: string, certificationConfig: CertificationConfig): Promise<AttestationResult>;
-import { CertificationConfig } from "./typedefs";
-import { AttestationResult } from "./typedefs";
+export function getAppAttestationFromStore(nonce: string, certificationConfig: import("./typedefs").CertificationConfig): Promise<import("./typedefs").AttestationResult>;
