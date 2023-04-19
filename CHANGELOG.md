@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [38.0.2](https://github.com/cozy/cozy-client/compare/v38.0.1...v38.0.2) (2023-04-19)
+
+
+### Bug Fixes
+
+* Revert the import change for cozy-stack-client ([9ee0a9e](https://github.com/cozy/cozy-client/commit/9ee0a9e6704c810c5775fbfb740ff2594d9fe965))
+
+
+
+
+
 ## [38.0.1](https://github.com/cozy/cozy-client/compare/v38.0.0...v38.0.1) (2023-04-19)
 
 
