@@ -3,7 +3,6 @@ import QuotaAlert from 'cozy-ui/transpiled/react/QuotaAlert'
 import filter from 'lodash/filter'
 import { FetchError } from 'cozy-stack-client'
 import { useClient } from './'
-import { ClientError } from '../types'
 
 /**
  * Rendering functions for client fetch errors by status code
@@ -31,7 +30,7 @@ function QuotaError({ dismiss }) {
 /**
  * Returns the handler for an error
  *
- * @param {ClientError} error - The error
+ * @param {import("../types").ClientError} error - The error
  * @returns {Function|null} React Component
  */
 function getErrorComponent(error) {
@@ -47,7 +46,7 @@ function getErrorComponent(error) {
  *
  * @private
  * @see ClientErrors
- * @param {ClientError[]} errorStack - array of errors/exceptions
+ * @param {import("../types").ClientError[]} errorStack - array of errors/exceptions
  * @param {Function} setErrorStack - mutates the array of errors
  * @returns {Array<React.ReactElement>} React rendering
  */
@@ -96,7 +95,7 @@ export default function useClientErrors({ handleExceptions = true } = {}) {
   /**
    * Handle client errors, add them to the error stack
    *
-   * @param {ClientError} error -
+   * @param {import("../types").ClientError} error -
    * @returns {boolean} true if the error was manager, false otherwise
    */
   const handleError = useCallback(

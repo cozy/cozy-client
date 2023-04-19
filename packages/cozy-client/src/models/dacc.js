@@ -1,9 +1,4 @@
 import log from 'cozy-logger'
-import {
-  DACCMeasure,
-  DACCAggregatesParams,
-  DACCAggregatesResponse
-} from '../types'
 import CozyClient from '../CozyClient'
 
 /**
@@ -24,7 +19,7 @@ export const isCorrectDateFormat = date => {
 /**
  * Throw an errror if a DACC parameter is incorrect.
  *
- * @param { DACCMeasure} measure - The DACC measure
+ * @param { import("../types").DACCMeasure} measure - The DACC measure
  */
 export const checkMeasureParams = measure => {
   const {
@@ -71,7 +66,7 @@ export const checkMeasureParams = measure => {
  *
  * @param {CozyClient} client - The CozyClient instance
  * @param {string} remoteDoctype - The remote doctype to use
- * @param {DACCMeasure} measure - The DACC measure
+ * @param {import("../types").DACCMeasure} measure - The DACC measure
  */
 export const sendMeasureToDACC = async (client, remoteDoctype, measure) => {
   try {
@@ -102,7 +97,7 @@ export const sendMeasureToDACC = async (client, remoteDoctype, measure) => {
  * @property {string} [endDate]     - The measure end date
  *
  * @param {Params} params - The unformatted DACC aggregate params
- * @returns {DACCAggregatesParams}
+ * @returns {import("../types").DACCAggregatesParams}
  */
 export const buildAggregateParams = params => {
   const { measureName } = params
@@ -126,8 +121,8 @@ export const buildAggregateParams = params => {
  *
  * @param {CozyClient} client - The CozyClient instance
  * @param {string} remoteDoctype - The remote doctype to use
- * @param {DACCAggregatesParams} params - The request params
- * @returns { Promise<DACCAggregatesResponse> }
+ * @param {import("../types").DACCAggregatesParams} params - The request params
+ * @returns { Promise<import("../types").DACCAggregatesResponse> }
  */
 export const fetchAggregatesFromDACC = async (
   client,

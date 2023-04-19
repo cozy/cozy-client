@@ -3,7 +3,6 @@ import { createSelectorHook } from 'react-redux'
 import get from 'lodash/get'
 import useClient from './useClient'
 import logger from '../logger'
-import { UseQueryReturnValue, QueryOptions } from '../types'
 import { clientContext } from '../context'
 import { QueryDefinition } from '../queries/dsl'
 
@@ -23,8 +22,8 @@ const generateFetchMoreQueryDefinition = queryResult => {
  * Fetches a queryDefinition and returns the queryState
  *
  * @param {QueryDefinition} queryDefinition - Definition created with Q()
- * @param {QueryOptions} options - Options created with Q()
- * @returns {UseQueryReturnValue}
+ * @param {import("../types").QueryOptions} options - Options created with Q()
+ * @returns {import("../types").UseQueryReturnValue}
  */
 const useQuery = (queryDefinition, options) => {
   if (!useSelector) {

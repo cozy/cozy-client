@@ -6,7 +6,6 @@ import HasOneInPlace from './HasOneInPlace'
 import HasMany from './HasMany'
 import HasManyInPlace from './HasManyInPlace'
 import HasManyFiles from './HasManyFiles'
-import { IOCozyFile, Doctype, Reference } from '../types'
 
 export const pickTypeAndId = x => pick(x, '_type', '_id')
 
@@ -95,8 +94,8 @@ export const create = (target, { name, type, doctype }, accessors) => {
 /**
  * Checks if the file is referenced by a specific doctype
  *
- * @param {IOCozyFile} file - io.cozy.files document
- * @param {Doctype} referencedBy - Doctype where document is referenced
+ * @param {import("../types").IOCozyFile} file - io.cozy.files document
+ * @param {import("../types").Doctype} referencedBy - Doctype where document is referenced
  * @returns {boolean} If a reference is found
  */
 export const isReferencedBy = (file, referencedBy) => {
@@ -109,8 +108,8 @@ export const isReferencedBy = (file, referencedBy) => {
 /**
  * Checks if the file is referenced by a specific doctype and a specific Id of that reference
  *
- * @param {IOCozyFile} file - io.cozy.files document
- * @param {Doctype} referencedBy - Doctype where document is referenced
+ * @param {import("../types").IOCozyFile} file - io.cozy.files document
+ * @param {import("../types").Doctype} referencedBy - Doctype where document is referenced
  * @param {string} referencedId - Id of the referenced document
  * @returns {boolean} If a reference is found
  */
@@ -127,9 +126,9 @@ export const isReferencedById = (file, referencedBy, referencedId) => {
 /**
  * Get array of reference by an specific doctype
  *
- * @param {IOCozyFile} file - io.cozy.files document
- * @param {Doctype} referencedBy - Doctype where document is referenced
- * @returns {Reference[]} Array of references found
+ * @param {import("../types").IOCozyFile} file - io.cozy.files document
+ * @param {import("../types").Doctype} referencedBy - Doctype where document is referenced
+ * @returns {import("../types").Reference[]} Array of references found
  */
 export const getReferencedBy = (file, referencedBy) => {
   const references =
@@ -140,10 +139,10 @@ export const getReferencedBy = (file, referencedBy) => {
 /**
  * Get array of reference by an specific doctype and a specific Id of that reference
  *
- * @param {IOCozyFile} file - io.cozy.files document
- * @param {Doctype} referencedBy - Doctype where document is referenced
+ * @param {import("../types").IOCozyFile} file - io.cozy.files document
+ * @param {import("../types").Doctype} referencedBy - Doctype where document is referenced
  * @param {string} referencedId - Id of the referenced document
- * @returns {Reference[]} Array of the reference found
+ * @returns {import("../types").Reference[]} Array of the reference found
  */
 export const getReferencedById = (file, referencedBy, referencedId) => {
   const references =

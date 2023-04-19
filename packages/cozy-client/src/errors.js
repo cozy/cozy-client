@@ -1,12 +1,11 @@
 import zipWith from 'lodash/zipWith'
-import { CozyClientDocument, CouchDBBulkResult } from './types'
 
 export class BulkEditError extends Error {
   /**
    * Indicates that a bulk edit has (potentially partially) failed
    *
-   * @param  {CouchDBBulkResult[]} bulkResponse - CouchDB Bulk response
-   * @param  {CozyClientDocument[]} updatedDocs - Docs with updated _id and _rev
+   * @param  {import("./types").CouchDBBulkResult[]} bulkResponse - CouchDB Bulk response
+   * @param  {import("./types").CozyClientDocument[]} updatedDocs - Docs with updated _id and _rev
    */
   constructor(bulkResponse, updatedDocs) {
     super('Error while bulk saving')
@@ -19,7 +18,7 @@ export class BulkEditError extends Error {
   /**
    * Get documents that have been correctly updated
    *
-   * @returns {CozyClientDocument[]}
+   * @returns {import("./types").CozyClientDocument[]}
    */
   getUpdatedDocuments() {
     return this.results.filter(r => r.ok).map(r => r.doc)
@@ -28,7 +27,7 @@ export class BulkEditError extends Error {
   /**
    * Get bulk errors results
    *
-   * @returns {Array<CouchDBBulkResult & { doc: CozyClientDocument }>}
+   * @returns {Array<import("./types").CouchDBBulkResult & { doc: import("./types").CozyClientDocument }>}
    */
   getErrors() {
     return this.results.filter(r => !r.ok)

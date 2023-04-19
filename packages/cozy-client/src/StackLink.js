@@ -2,7 +2,6 @@ import zipWith from 'lodash/zipWith'
 
 import { MutationTypes, QueryDefinition } from './queries/dsl'
 import CozyLink from './CozyLink'
-import { CozyClientDocument, CouchDBBulkResult, ClientResponse } from './types'
 import { DOCTYPE_FILES } from './const'
 import { BulkEditError } from './errors'
 import logger from './logger'
@@ -28,9 +27,9 @@ const hasFindOptions = queryDefinition => {
  *
  * @private
  *
- * @param  {CouchDBBulkResult[]} bulkResponse - Response from bulk docs
- * @param  {CozyClientDocument[]} originalDocuments - Documents that were updated
- * @returns {{ data: CozyClientDocument[] }} - Full documents with updated _id and _rev
+ * @param  {import("./types").CouchDBBulkResult[]} bulkResponse - Response from bulk docs
+ * @param  {import("./types").CozyClientDocument[]} originalDocuments - Documents that were updated
+ * @returns {{ data: import("./types").CozyClientDocument[] }} - Full documents with updated _id and _rev
  */
 export const transformBulkDocsResponse = (bulkResponse, originalDocuments) => {
   const updatedDocs = zipWith(bulkResponse, originalDocuments, (result, od) =>
@@ -87,7 +86,7 @@ export default class StackLink extends CozyLink {
   /**
    *
    * @param {QueryDefinition} query - Query to execute
-   * @returns {Promise<ClientResponse>}
+   * @returns {Promise<import("./types").ClientResponse>}
    */
   executeQuery(query) {
     const { doctype, selector, id, ids, referenced, ...options } = query
