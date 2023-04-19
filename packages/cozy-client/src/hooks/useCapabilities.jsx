@@ -10,7 +10,7 @@ const useCapabilities = client => {
       setFetchStatus('loading')
       try {
         const capabilitiesResult = await client.query(
-          Q('io.cozy.settings').getById('capabilities')
+          Q('io.cozy.settings').getById('io.cozy.settings.capabilities')
         )
 
         setCapabilities(get(capabilitiesResult, 'data.attributes', {}))
