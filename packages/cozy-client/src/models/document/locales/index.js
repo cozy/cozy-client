@@ -31,7 +31,7 @@ const getBoundT = lang => {
     const emojiCountry = getEmojiByCountry(opts?.country, t)
 
     return emojiCountry
-      ? `${t(label, newOpts)} (${emojiCountry})`
+      ? `${t(label, newOpts)} ${emojiCountry}`
       : t(label, newOpts)
   }
 }
