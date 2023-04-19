@@ -17,10 +17,10 @@ describe('getBoundT', () => {
   it.each`
     translationKey                   | country       | smart_count  | lang    | expected
     ${'Scan.items.national_id_card'} | ${undefined}  | ${undefined} | ${'en'} | ${'ID card'}
-    ${'Scan.items.national_id_card'} | ${'fr'}       | ${undefined} | ${'en'} | ${'ID card (🇫🇷)'}
-    ${'Scan.items.national_id_card'} | ${'stranger'} | ${undefined} | ${'en'} | ${'ID card (Stranger)'}
-    ${'Scan.items.national_id_card'} | ${'fr'}       | ${1}         | ${'en'} | ${'ID card (🇫🇷)'}
-    ${'Scan.items.national_id_card'} | ${'fr'}       | ${2}         | ${'en'} | ${'ID cards (🇫🇷)'}
+    ${'Scan.items.national_id_card'} | ${'fr'}       | ${undefined} | ${'en'} | ${'ID card 🇫🇷'}
+    ${'Scan.items.national_id_card'} | ${'stranger'} | ${undefined} | ${'en'} | ${'ID card Stranger'}
+    ${'Scan.items.national_id_card'} | ${'fr'}       | ${1}         | ${'en'} | ${'ID card 🇫🇷'}
+    ${'Scan.items.national_id_card'} | ${'fr'}       | ${2}         | ${'en'} | ${'ID cards 🇫🇷'}
     ${'Scan.items.national_id_card'} | ${undefined}  | ${1}         | ${'en'} | ${'ID card'}
     ${'Scan.items.national_id_card'} | ${undefined}  | ${2}         | ${'en'} | ${'ID cards'}
   `(
