@@ -310,7 +310,8 @@ import { QueryDefinition } from './queries/dsl'
 /**
  * @typedef {object} ClientCapabilities
  * @property {boolean} [can_auth_with_oidc] - Whether OIDC login is possible with this Cozy
- * @property {boolean} [can_auth_with_password] - Whether  password login is possible with this Cozy
+ * @property {boolean} [can_auth_with_password] - Whether password login is possible with this Cozy
+ * @property {boolean} [can_auth_with_magic_links] - Whether magic-link login is possible with this Cozy
  * @property {boolean} [file_versioning] - Whether file versioning is active on this Cozy
  * @property {boolean} [flat_subdomains] - Whether the stack has been configured to use flat subdomains
  * @description Read more about client capabilities here https://docs.cozy.io/en/cozy-stack/settings/#get-settingscapabilities.
