@@ -491,9 +491,13 @@ export type ClientCapabilities = {
      */
     can_auth_with_oidc?: boolean;
     /**
-     * - Whether  password login is possible with this Cozy
+     * - Whether password login is possible with this Cozy
      */
     can_auth_with_password?: boolean;
+    /**
+     * - Whether magic-link login is possible with this Cozy
+     */
+    can_auth_with_magic_links?: boolean;
     /**
      * - Whether file versioning is active on this Cozy
      */
