@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [38.0.1](https://github.com/cozy/cozy-client/compare/v38.0.0...v38.0.1) (2023-04-19)
+
+
+### Bug Fixes
+
+* Use io.cozy.settings.capabilities full id in getById ([abb71d0](https://github.com/cozy/cozy-client/commit/abb71d0647f467732df52894c9b029e5c8b15dbb))
+
+
+
+
+
 # [38.0.0](https://github.com/cozy/cozy-client/compare/v37.2.1...v38.0.0) (2023-04-13)
 
 
