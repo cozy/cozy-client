@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [38.1.0](https://github.com/cozy/cozy-client/compare/v38.0.2...v38.1.0) (2023-04-19)
+
+
+### Features
+
+* Remove unnecessary parentheses ([8566460](https://github.com/cozy/cozy-client/commit/85664605c9c8057d7fce1b9a189b3f13bb47b4d8))
+
+
+
+
+
 ## [38.0.2](https://github.com/cozy/cozy-client/compare/v38.0.1...v38.0.2) (2023-04-19)
 
 **Note:** Version bump only for package cozy-client
