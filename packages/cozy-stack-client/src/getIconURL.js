@@ -1,3 +1,5 @@
+import { CozyStackClient } from './types'
+
 import memoize, { ErrorReturned } from './memoize'
 /**
  * Get Icon source Url
@@ -129,7 +131,7 @@ const fetchAppOrKonnectorViaRegistry = (stackClient, type, slug) =>
  * Get Icon URL using blob mechanism if OAuth connected
  * or using preloaded url when blob not needed
  *
- * @param  {import("./types").CozyStackClient}  stackClient - CozyStackClient
+ * @param  {CozyStackClient}  stackClient - CozyStackClient
  * @param  {object} opts - Options
  * @param  {string} opts.type - Options type
  * @param  {string|undefined} opts.slug - Options slug
