@@ -1,4 +1,4 @@
-export function Q(doctype: Doctype): QueryDefinition;
+export function Q(doctype: import('../types').Doctype): QueryDefinition;
 export function isAGetByIdQuery(queryDefinition: QueryDefinition): boolean;
 export function createDocument(document: any): {
     mutationType: string;
@@ -73,7 +73,6 @@ export type PartialQueryDefinition = {
 };
 export type MangoSelector = any;
 export type MangoPartialFilter = any;
-import { Doctype } from "../types";
 /**
  * @typedef PartialQueryDefinition
  *
@@ -100,9 +99,9 @@ export class QueryDefinition {
      * @class
      *
      * @param {object} options Initial options for the query definition
-     * @param {Doctype} [options.doctype] - The doctype of the doc.
-     * @param {DocId|null} [options.id] - The id of the doc.
-     * @param {Array<DocId>} [options.ids] - The ids of the docs.
+     * @param  {import('../types').Doctype} [options.doctype] - The doctype of the doc.
+     * @param {import('../types').DocId|null} [options.id] - The id of the doc.
+     * @param {Array<import('../types').DocId>} [options.ids] - The ids of the docs.
      * @param {MangoSelector} [options.selector] - The selector to query the docs.
      * @param {Array<string>} [options.fields] - The fields to return.
      * @param {Array<string>} [options.indexedFields] - The fields to index.
@@ -112,13 +111,13 @@ export class QueryDefinition {
      * @param {string|null} [options.referenced] - The referenced document.
      * @param {number|null} [options.limit] - The document's limit to return.
      * @param {number|null} [options.skip] - The number of docs to skip.
-     * @param {CouchDBViewCursor} [options.cursor] - The cursor to paginate views.
+     * @param {import('../types').CouchDBViewCursor} [options.cursor] - The cursor to paginate views.
      * @param {string} [options.bookmark] - The bookmark to paginate mango queries.
      */
     constructor(options?: {
-        doctype: Doctype;
-        id: DocId | null;
-        ids: Array<DocId>;
+        doctype: import('../types').Doctype;
+        id: import('../types').DocId | null;
+        ids: Array<import('../types').DocId>;
         selector: MangoSelector;
         fields: Array<string>;
         indexedFields: Array<string>;
@@ -128,7 +127,7 @@ export class QueryDefinition {
         referenced: string | null;
         limit: number | null;
         skip: number | null;
-        cursor: CouchDBViewCursor;
+        cursor: import('../types').CouchDBViewCursor;
         bookmark: string;
     });
     doctype: string;
@@ -143,7 +142,7 @@ export class QueryDefinition {
     referenced: string;
     limit: number;
     skip: number;
-    cursor: CouchDBViewCursor;
+    cursor: import("../types").CouchDBViewCursor;
     bookmark: string;
     /**
      * Checks if the sort order matches the index' fields order.
@@ -259,10 +258,10 @@ export class QueryDefinition {
      * the starting document of the query, e.g. "file-id".
      * Use the last docid of each query as startkey_docid to paginate or leave blank for the first query.
      *
-     * @param {CouchDBViewCursor} cursor The cursor for pagination.
+     * @param {import('../types').CouchDBViewCursor} cursor The cursor for pagination.
      * @returns {QueryDefinition}  The QueryDefinition object.
      */
-    offsetCursor(cursor: CouchDBViewCursor): QueryDefinition;
+    offsetCursor(cursor: import('../types').CouchDBViewCursor): QueryDefinition;
     /**
      * Use [bookmark](https://docs.couchdb.org/en/2.2.0/api/database/find.html#pagination) pagination.
      * Note this only applies for mango-queries (not views) and is way more efficient than skip pagination.
@@ -293,7 +292,7 @@ export class QueryDefinition {
         referenced: string;
         limit: number;
         skip: number;
-        cursor: CouchDBViewCursor;
+        cursor: import("../types").CouchDBViewCursor;
         bookmark: string;
     };
 }
@@ -306,6 +305,4 @@ declare const REMOVE_REFERENCES_TO: "REMOVE_REFERENCES_TO";
 declare const ADD_REFERENCED_BY: "ADD_REFERENCED_BY";
 declare const REMOVE_REFERENCED_BY: "REMOVE_REFERENCED_BY";
 declare const UPLOAD_FILE: "UPLOAD_FILE";
-import { CouchDBViewCursor } from "../types";
-import { DocId } from "../types";
 export {};

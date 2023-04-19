@@ -1,18 +1,18 @@
 export function isQueryAction(action: any): boolean;
 export function isReceivingData(action: any): boolean;
-export function sortAndLimitDocsIds(queryState: QueryState, documents: DocumentsStateSlice, ids: Array<string>, { count, fetchedPagesCount }: {
+export function sortAndLimitDocsIds(queryState: import("../types").QueryState, documents: import("../types").DocumentsStateSlice, ids: Array<string>, { count, fetchedPagesCount }: {
     count: number;
     fetchedPagesCount: number;
 }): Array<string>;
 export function convert$gtNullSelectors(selector: any): object;
 export function mergeSelectorAndPartialIndex(queryDefinition: object): object;
-export function makeSorterFromDefinition(definition: QueryDefinition): (arg0: Array<CozyClientDocument>) => Array<CozyClientDocument>;
-export function updateData(query: QueryState, newData: Array<CozyClientDocument>, documents: DocumentsStateSlice): QueryState;
+export function makeSorterFromDefinition(definition: QueryDefinition): (arg0: Array<import("../types").CozyClientDocument>) => Array<import("../types").CozyClientDocument>;
+export function updateData(query: import("../types").QueryState, newData: Array<import("../types").CozyClientDocument>, documents: import("../types").DocumentsStateSlice): import("../types").QueryState;
 export default queries;
-export function initQuery(queryId: string, queryDefinition: QueryDefinition, options?: QueryOptions): object;
-export function loadQuery(queryId: string, options?: QueryOptions): object;
-export function receiveQueryResult(queryId: string, response: object, options?: QueryOptions): object;
-export function receiveQueryError(queryId: string, error: object, options?: QueryOptions): object;
+export function initQuery(queryId: string, queryDefinition: QueryDefinition, options?: import("../types").QueryOptions): object;
+export function loadQuery(queryId: string, options?: import("../types").QueryOptions): object;
+export function receiveQueryResult(queryId: string, response: object, options?: import("../types").QueryOptions): object;
+export function receiveQueryError(queryId: string, error: object, options?: import("../types").QueryOptions): object;
 export function getQueryFromSlice(state: any, queryId: any, documents: any): any;
 export class QueryIDGenerator {
     idCounter: number;
@@ -35,17 +35,12 @@ export class QueryIDGenerator {
 export namespace QueryIDGenerator {
     const UNNAMED: string;
 }
-import { QueryState } from "../types";
-import { DocumentsStateSlice } from "../types";
 import { QueryDefinition } from "../queries/dsl";
-import { CozyClientDocument } from "../types";
 /**
- * @param  {QueriesStateSlice}  state - Redux slice containing all the query states indexed by name
+ * @param  {import("../types").QueriesStateSlice}  state - Redux slice containing all the query states indexed by name
  * @param  {object}  action - Income redux action
- * @param  {DocumentsStateSlice}  documents - Reference to documents slice
+ * @param  {import("../types").DocumentsStateSlice}  documents - Reference to documents slice
  * @param  {boolean} haveDocumentsChanged - Has the document slice changed with current action
- * @returns {QueriesStateSlice}
+ * @returns {import("../types").QueriesStateSlice}
  */
-declare function queries(state: QueriesStateSlice, action: object, documents?: DocumentsStateSlice, haveDocumentsChanged?: boolean): QueriesStateSlice;
-import { QueryOptions } from "../types";
-import { QueriesStateSlice } from "../types";
+declare function queries(state: import("../types").QueriesStateSlice, action: object, documents?: import("../types").DocumentsStateSlice, haveDocumentsChanged?: boolean): import("../types").QueriesStateSlice;

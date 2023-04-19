@@ -2,12 +2,12 @@ export class BulkEditError extends Error {
     /**
      * Indicates that a bulk edit has (potentially partially) failed
      *
-     * @param  {CouchDBBulkResult[]} bulkResponse - CouchDB Bulk response
-     * @param  {CozyClientDocument[]} updatedDocs - Docs with updated _id and _rev
+     * @param  {import("./types").CouchDBBulkResult[]} bulkResponse - CouchDB Bulk response
+     * @param  {import("./types").CozyClientDocument[]} updatedDocs - Docs with updated _id and _rev
      */
-    constructor(bulkResponse: CouchDBBulkResult[], updatedDocs: CozyClientDocument[]);
+    constructor(bulkResponse: import("./types").CouchDBBulkResult[], updatedDocs: import("./types").CozyClientDocument[]);
     results: {
-        doc: CozyClientDocument;
+        doc: import("./types").CozyClientDocument;
         ok: boolean;
         id: string;
         rev: string;
@@ -23,17 +23,15 @@ export class BulkEditError extends Error {
     /**
      * Get documents that have been correctly updated
      *
-     * @returns {CozyClientDocument[]}
+     * @returns {import("./types").CozyClientDocument[]}
      */
-    getUpdatedDocuments(): CozyClientDocument[];
+    getUpdatedDocuments(): import("./types").CozyClientDocument[];
     /**
      * Get bulk errors results
      *
-     * @returns {Array<CouchDBBulkResult & { doc: CozyClientDocument }>}
+     * @returns {Array<import("./types").CouchDBBulkResult & { doc: import("./types").CozyClientDocument }>}
      */
-    getErrors(): Array<CouchDBBulkResult & {
-        doc: CozyClientDocument;
+    getErrors(): Array<import("./types").CouchDBBulkResult & {
+        doc: import("./types").CozyClientDocument;
     }>;
 }
-import { CozyClientDocument } from "./types";
-import { CouchDBBulkResult } from "./types";

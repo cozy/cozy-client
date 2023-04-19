@@ -90,17 +90,17 @@ declare class HasMany extends Association {
     /**
      * Add the relationships to the target document
      *
-     * @param {CozyClientDocument[]} docsArg - Documents to add as relationships
-     * @returns {CozyClientDocument} The saved target document
+     * @param {import("../types").CozyClientDocument[]} docsArg - Documents to add as relationships
+     * @returns {import("../types").CozyClientDocument} The saved target document
      */
-    add(docsArg: CozyClientDocument[]): CozyClientDocument;
+    add(docsArg: import("../types").CozyClientDocument[]): import("../types").CozyClientDocument;
     /**
      * Remove the relationships from the target document
      *
-     * @param {CozyClientDocument[]} docsArg - Documents to remove as relationships
-     * @returns {CozyClientDocument} The saved target document
+     * @param {import("../types").CozyClientDocument[]} docsArg - Documents to remove as relationships
+     * @returns {import("../types").CozyClientDocument} The saved target document
      */
-    remove(docsArg: CozyClientDocument[]): CozyClientDocument;
+    remove(docsArg: import("../types").CozyClientDocument[]): import("../types").CozyClientDocument;
     /**
      * Update target document with relationships
      *
@@ -132,4 +132,3 @@ declare class HasMany extends Association {
     dehydrate(doc: any): any;
 }
 import Association from "./Association";
-import { CozyClientDocument } from "../types";

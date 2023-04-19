@@ -7,8 +7,8 @@ export function generateWebLink({ cozyUrl, searchParams: searchParamsOption, pat
     slug: string;
     subDomainType: string;
 }): string;
-export function deconstructCozyWebLinkWithSlug(webLink: string, subDomainType?: SubdomainType): CozyLinkData;
-export function deconstructRedirectLink(redirectLink: string): RedirectLinkData;
+export function deconstructCozyWebLinkWithSlug(webLink: string, subDomainType?: import("../types").SubdomainType): import("../types").CozyLinkData;
+export function deconstructRedirectLink(redirectLink: string): import("../types").RedirectLinkData;
 export class InvalidRedirectLinkError extends Error {
     constructor(redirectLink: any);
     redirectLink: any;
@@ -22,6 +22,3 @@ export class InvalidCozyUrlError extends Error {
     url: any;
 }
 export function rootCozyUrl(url: URL): Promise<URL>;
-import { SubdomainType } from "../types";
-import { CozyLinkData } from "../types";
-import { RedirectLinkData } from "../types";

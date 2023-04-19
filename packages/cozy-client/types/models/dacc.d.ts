@@ -1,8 +1,8 @@
 export function isCorrectDateFormat(date: string): boolean;
-export function checkMeasureParams(measure: DACCMeasure): void;
-export function sendMeasureToDACC(client: CozyClient, remoteDoctype: string, measure: DACCMeasure): Promise<void>;
-export function buildAggregateParams(params: Params): DACCAggregatesParams;
-export function fetchAggregatesFromDACC(client: CozyClient, remoteDoctype: string, params: DACCAggregatesParams): Promise<DACCAggregatesResponse>;
+export function checkMeasureParams(measure: import("../types").DACCMeasure): void;
+export function sendMeasureToDACC(client: CozyClient, remoteDoctype: string, measure: import("../types").DACCMeasure): Promise<void>;
+export function buildAggregateParams(params: Params): import("../types").DACCAggregatesParams;
+export function fetchAggregatesFromDACC(client: CozyClient, remoteDoctype: string, params: import("../types").DACCAggregatesParams): Promise<import("../types").DACCAggregatesResponse>;
 /**
  * - The unformatted DACC aggregate params
  */
@@ -20,7 +20,4 @@ export type Params = {
      */
     endDate?: string;
 };
-import { DACCMeasure } from "../types";
 import CozyClient from "../CozyClient";
-import { DACCAggregatesParams } from "../types";
-import { DACCAggregatesResponse } from "../types";

@@ -1,5 +1,5 @@
-export function transformBulkDocsResponse(bulkResponse: CouchDBBulkResult[], originalDocuments: CozyClientDocument[]): {
-    data: CozyClientDocument[];
+export function transformBulkDocsResponse(bulkResponse: import("./types").CouchDBBulkResult[], originalDocuments: import("./types").CozyClientDocument[]): {
+    data: import("./types").CozyClientDocument[];
 };
 /**
  * Transfers queries and mutations to a remote stack
@@ -20,13 +20,10 @@ export default class StackLink extends CozyLink {
     /**
      *
      * @param {QueryDefinition} query - Query to execute
-     * @returns {Promise<ClientResponse>}
+     * @returns {Promise<import("./types").ClientResponse>}
      */
-    executeQuery(query: QueryDefinition): Promise<ClientResponse>;
+    executeQuery(query: QueryDefinition): Promise<import("./types").ClientResponse>;
     executeMutation(mutation: any, result: any, forward: any): Promise<any>;
 }
-import { CouchDBBulkResult } from "./types";
-import { CozyClientDocument } from "./types";
 import CozyLink from "./CozyLink";
 import { QueryDefinition } from "./queries/dsl";
-import { ClientResponse } from "./types";

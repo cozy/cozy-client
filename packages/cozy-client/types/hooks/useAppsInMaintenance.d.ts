@@ -4,8 +4,7 @@ export default useAppsInMaintenance;
  *
  * @param {CozyClient} client CozyClient instance
  *
- * @returns {AppsDoctype[]} An array with all apps in maintenance
+ * @returns {import("../types").AppsDoctype[]} An array with all apps in maintenance
  */
-declare function useAppsInMaintenance(client: CozyClient): AppsDoctype[];
+declare function useAppsInMaintenance(client: CozyClient): import("../types").AppsDoctype[];
 import CozyClient from "../CozyClient";
-import { AppsDoctype } from "../types";
