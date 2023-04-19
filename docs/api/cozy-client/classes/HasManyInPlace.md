@@ -74,7 +74,7 @@ const todo = {
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:88](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L88)
+[packages/cozy-client/src/associations/Association.js:87](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L87)
 
 ## Properties
 
@@ -90,7 +90,7 @@ Dispatch an action on the store.
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:145](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L145)
+[packages/cozy-client/src/associations/Association.js:144](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L144)
 
 ***
 
@@ -108,7 +108,7 @@ Doctype of the relationship
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:110](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L110)
+[packages/cozy-client/src/associations/Association.js:109](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L109)
 
 ***
 
@@ -124,7 +124,7 @@ Returns the document from the store
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:117](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L117)
+[packages/cozy-client/src/associations/Association.js:116](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L116)
 
 ***
 
@@ -142,7 +142,7 @@ Performs a mutation on the relationship.
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:132](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L132)
+[packages/cozy-client/src/associations/Association.js:131](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L131)
 
 ***
 
@@ -160,7 +160,7 @@ The name of the relationship.
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:102](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L102)
+[packages/cozy-client/src/associations/Association.js:101](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L101)
 
 ***
 
@@ -180,7 +180,7 @@ Performs a query to retrieve relationship documents.
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:125](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L125)
+[packages/cozy-client/src/associations/Association.js:124](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L124)
 
 ***
 
@@ -196,7 +196,7 @@ Saves the relationship in store.
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:139](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L139)
+[packages/cozy-client/src/associations/Association.js:138](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L138)
 
 ***
 
@@ -212,7 +212,7 @@ The original document declaring the relationship
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:95](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L95)
+[packages/cozy-client/src/associations/Association.js:94](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L94)
 
 ## Accessors
 
@@ -230,7 +230,7 @@ Association.data
 
 *Defined in*
 
-[packages/cozy-client/src/associations/HasManyInPlace.js:88](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasManyInPlace.js#L88)
+[packages/cozy-client/src/associations/HasManyInPlace.js:87](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasManyInPlace.js#L87)
 
 ***
 
@@ -250,7 +250,7 @@ Association.raw
 
 *Defined in*
 
-[packages/cozy-client/src/associations/HasManyInPlace.js:54](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasManyInPlace.js#L54)
+[packages/cozy-client/src/associations/HasManyInPlace.js:53](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasManyInPlace.js#L53)
 
 ## Methods
 
@@ -270,7 +270,7 @@ Association.raw
 
 *Defined in*
 
-[packages/cozy-client/src/associations/HasManyInPlace.js:58](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasManyInPlace.js#L58)
+[packages/cozy-client/src/associations/HasManyInPlace.js:57](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasManyInPlace.js#L57)
 
 ***
 
@@ -290,7 +290,7 @@ Association.raw
 
 *Defined in*
 
-[packages/cozy-client/src/associations/HasManyInPlace.js:81](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasManyInPlace.js#L81)
+[packages/cozy-client/src/associations/HasManyInPlace.js:80](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasManyInPlace.js#L80)
 
 ***
 
@@ -310,7 +310,7 @@ Association.raw
 
 *Defined in*
 
-[packages/cozy-client/src/associations/HasManyInPlace.js:71](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasManyInPlace.js#L71)
+[packages/cozy-client/src/associations/HasManyInPlace.js:70](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasManyInPlace.js#L70)
 
 ***
 
@@ -324,7 +324,7 @@ Association.raw
 
 *Defined in*
 
-[packages/cozy-client/src/associations/HasManyInPlace.js:76](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasManyInPlace.js#L76)
+[packages/cozy-client/src/associations/HasManyInPlace.js:75](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasManyInPlace.js#L75)
 
 ***
 
@@ -344,7 +344,7 @@ Association.raw
 
 *Defined in*
 
-[packages/cozy-client/src/associations/HasManyInPlace.js:63](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasManyInPlace.js#L63)
+[packages/cozy-client/src/associations/HasManyInPlace.js:62](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasManyInPlace.js#L62)
 
 ***
 
@@ -370,4 +370,4 @@ Association.raw
 
 *Defined in*
 
-[packages/cozy-client/src/associations/HasManyInPlace.js:100](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasManyInPlace.js#L100)
+[packages/cozy-client/src/associations/HasManyInPlace.js:99](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/HasManyInPlace.js#L99)

@@ -25,7 +25,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/models/folder.js:10](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/folder.js#L10)
+[packages/cozy-client/src/models/folder.js:9](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/folder.js#L9)
 
 ## Functions
 
@@ -51,7 +51,7 @@ Folder document
 
 *Defined in*
 
-[packages/cozy-client/src/models/folder.js:70](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/folder.js#L70)
+[packages/cozy-client/src/models/folder.js:69](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/folder.js#L69)
 
 ***
 
@@ -77,7 +77,7 @@ Folder document
 
 *Defined in*
 
-[packages/cozy-client/src/models/folder.js:30](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/folder.js#L30)
+[packages/cozy-client/src/models/folder.js:29](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/folder.js#L29)
 
 ***
 
@@ -102,4 +102,4 @@ Folder referenced by the given document
 
 *Defined in*
 
-[packages/cozy-client/src/models/folder.js:91](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/folder.js#L91)
+[packages/cozy-client/src/models/folder.js:90](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/folder.js#L90)

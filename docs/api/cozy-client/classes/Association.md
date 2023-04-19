@@ -106,7 +106,7 @@ Each different type of Association may change:
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:88](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L88)
+[packages/cozy-client/src/associations/Association.js:87](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L87)
 
 ## Properties
 
@@ -118,7 +118,7 @@ Dispatch an action on the store.
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:145](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L145)
+[packages/cozy-client/src/associations/Association.js:144](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L144)
 
 ***
 
@@ -132,7 +132,7 @@ Doctype of the relationship
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:110](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L110)
+[packages/cozy-client/src/associations/Association.js:109](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L109)
 
 ***
 
@@ -144,7 +144,7 @@ Returns the document from the store
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:117](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L117)
+[packages/cozy-client/src/associations/Association.js:116](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L116)
 
 ***
 
@@ -158,7 +158,7 @@ Performs a mutation on the relationship.
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:132](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L132)
+[packages/cozy-client/src/associations/Association.js:131](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L131)
 
 ***
 
@@ -172,7 +172,7 @@ The name of the relationship.
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:102](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L102)
+[packages/cozy-client/src/associations/Association.js:101](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L101)
 
 ***
 
@@ -188,7 +188,7 @@ Performs a query to retrieve relationship documents.
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:125](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L125)
+[packages/cozy-client/src/associations/Association.js:124](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L124)
 
 ***
 
@@ -200,7 +200,7 @@ Saves the relationship in store.
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:139](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L139)
+[packages/cozy-client/src/associations/Association.js:138](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L138)
 
 ***
 
@@ -212,7 +212,7 @@ The original document declaring the relationship
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:95](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L95)
+[packages/cozy-client/src/associations/Association.js:94](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L94)
 
 ## Accessors
 
@@ -257,7 +257,7 @@ Derived `Association`s need to implement this method.
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:219](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L219)
+[packages/cozy-client/src/associations/Association.js:218](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L218)
 
 ***
 
@@ -300,7 +300,7 @@ Derived `Association`s need to implement this method.
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:181](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L181)
+[packages/cozy-client/src/associations/Association.js:180](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L180)
 
 ## Methods
 
@@ -324,4 +324,4 @@ Derived `Association`s need to implement this method.
 
 *Defined in*
 
-[packages/cozy-client/src/associations/Association.js:232](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L232)
+[packages/cozy-client/src/associations/Association.js:231](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/associations/Association.js#L231)
