@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [38.2.0](https://github.com/cozy/cozy-client/compare/v38.1.0...v38.2.0) (2023-04-20)
+
+
+### Features
+
+* Add `can_auth_with_magic_links` to `ClientCapabilities` type ([28fe220](https://github.com/cozy/cozy-client/commit/28fe220789948bb0d74948d8a6672ed5a30b17d8)), closes [cozy/cozy-stack#3872](https://github.com/cozy/cozy-stack/issues/3872)
+
+
+
+
+
 # [38.1.0](https://github.com/cozy/cozy-client/compare/v38.0.2...v38.1.0) (2023-04-19)
 
 
