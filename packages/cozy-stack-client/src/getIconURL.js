@@ -16,7 +16,8 @@ const loadIcon = (app, slug, domain, protocol) => {
   if (!domain) throw new Error('Cannot fetch icon: missing domain')
   const source = _getAppIconURL(app, slug, domain, protocol)
   if (!source) {
-    throw new Error(`Cannot get icon source for app ${app.name}`)
+    return null
+    //throw new Error(`Cannot get icon source for app ${app.name}`)
   }
   return source
 }
@@ -32,8 +33,28 @@ const loadIcon = (app, slug, domain, protocol) => {
  * @returns {string|null}  App Icon URL
  */
 const _getAppIconURL = (app, slug, domain, protocol) => {
-  const path =
-    (app && app.links && app.links.icon) || _getRegistryIconPath(app, slug)
+  let path
+
+  if (app && app.state === 'installing') {
+    return null
+  }
+
+  // Case 1: If app.links.icon is present, use it for the icon path
+  if (app && app.links && app.links.icon) {
+    path = app.links.icon
+  }
+  // Case 2: If app.links is not present but app.icon and app.version are, construct the icon path using app.slug, app.icon, and app.version
+  else if (app && app.icon && app.version) {
+    path = `/apps/${app.slug}/icon/${app.version}`
+  }
+  // Case 3: If neither app.links.icon nor app.icon are present, fallback to the registry icon path
+  else {
+    path = _getRegistryIconPath(app, slug)
+  }
+
+  // Ensure path starts with a leading slash
+  path = path && !path.startsWith('/') ? `/${path}` : path
+
   return path ? `${protocol}//${domain}${path}` : null
 }
 
@@ -144,6 +165,7 @@ const fetchAppOrKonnectorViaRegistry = (stackClient, type, slug) =>
 export const _getIconURL = async (stackClient, opts) => {
   const { type, slug, appData, priority = 'stack' } = opts
   if (stackClient.oauthOptions) {
+    console.log('Fetching icon via OAuth')
     const iconDataFetchers = [
       () => stackClient.fetch('GET', `/${type}s/${slug}/icon`),
       () => stackClient.fetch('GET', `/registry/${slug}/icon`)
@@ -183,10 +205,14 @@ export const _getIconURL = async (stackClient, opts) => {
     }
     return URL.createObjectURL(icon)
   } else {
+    if (slug === 'calendar') {
+      console.log('Fetching icon via preloaded url')
+    }
     try {
       const { host: domain, protocol } = new URL(stackClient.uri)
       return loadIcon(appData, slug, domain, protocol)
     } catch (error) {
+      console.log(error)
       throw new Error(
         `Cannot fetch icon: invalid stackClient.uri: ${error.message}`
       )

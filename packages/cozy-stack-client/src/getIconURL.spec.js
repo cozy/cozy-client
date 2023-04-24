@@ -244,5 +244,31 @@ describe('get icon', () => {
       const url = await getIconURL(stackClient, defaultOpts)
       expect(url).toEqual('http://cozy.tools:8080/path/to/icon')
     })
+
+    it('should handle app.icon and app.version correctly', async () => {
+      const appData = {
+        slug: 'test-app',
+        icon: 'icon.svg',
+        version: '1.0.0-abcdef123456'
+      }
+      defaultOpts.appData = appData
+      const url = await getIconURL(stackClient, defaultOpts)
+      expect(url).toEqual(
+        'http://cozy.tools:8080/apps/test-app/icon/1.0.0-abcdef123456'
+      )
+    })
+
+    it('should handle leading slash in app.icon correctly', async () => {
+      const appData = {
+        slug: 'test-app',
+        icon: '/icon.svg',
+        version: '1.0.0-abcdef123456'
+      }
+      defaultOpts.appData = appData
+      const url = await getIconURL(stackClient, defaultOpts)
+      expect(url).toEqual(
+        'http://cozy.tools:8080/apps/test-app/icon/1.0.0-abcdef123456'
+      )
+    })
   })
 })
