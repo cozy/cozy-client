@@ -185,7 +185,8 @@ const wellKnownUrl = url => uri(url) + '/.well-known/change-password'
  *   page accessible from the given origin so we suppose it's a valid Cozy
  *   origin (i.e. it could be another site altogether though)
  * - a 401 response status means the pointed page requires authentication so the
- *   origin is probably pointing to a Cozy app
+ *   origin is probably pointing to a cozy-app. In that case we should consider this
+ *   URL to be invalid
  * - another status means there aren't any Cozy behind to the given origin
  *
  * @param {object} url          Object of URL elements
