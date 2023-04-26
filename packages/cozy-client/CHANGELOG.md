@@ -87,7 +87,7 @@ The following translation keys are no longer plural by default.
 Please use this new implementation:
 ```
 t("translation.key", { smart_count: 2 })
-
+```
 
 
 
@@ -4690,7 +4690,7 @@ returned docs for each query and perform a `.length` on it.
 
 ### BREAKING CHANGES
 
-* The trigger model is now singular, update your import 
+* The trigger model is now singular, update your import
 statements
 
 
