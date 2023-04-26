@@ -17,6 +17,10 @@ export class InvalidProtocolError extends Error {
     constructor(url: any);
     url: any;
 }
+export class BlockedCozyError extends Error {
+    constructor(url: any);
+    url: any;
+}
 export class InvalidCozyUrlError extends Error {
     constructor(url: any);
     url: any;

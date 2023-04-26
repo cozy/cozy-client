@@ -25,7 +25,8 @@ export {
   ensureFirstSlash,
   rootCozyUrl,
   InvalidCozyUrlError,
-  InvalidProtocolError
+  InvalidProtocolError,
+  BlockedCozyError
 } from './helpers'
 export { cancelable } from './utils'
 export { getQueryFromState } from './store'

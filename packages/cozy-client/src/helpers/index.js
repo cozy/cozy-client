@@ -6,7 +6,8 @@ export {
   rootCozyUrl,
   InvalidRedirectLinkError,
   InvalidCozyUrlError,
-  InvalidProtocolError
+  InvalidProtocolError,
+  BlockedCozyError
 } from './urlHelper'
 
 export { dehydrate } from './dehydrateHelper'
