@@ -134,6 +134,14 @@ export class InvalidProtocolError extends Error {
   }
 }
 
+export class BlockedCozyError extends Error {
+  constructor(url) {
+    super(`Blocked cozy ${url.toString()}`)
+
+    this.url = url
+  }
+}
+
 export class InvalidCozyUrlError extends Error {
   constructor(url) {
     super(`URL ${url.toString()} does not seem to be a valid Cozy URL`)
@@ -187,6 +195,10 @@ const wellKnownUrl = url => uri(url) + '/.well-known/change-password'
  * - a 401 response status means the pointed page requires authentication so the
  *   origin is probably pointing to a cozy-app. In that case we should consider this
  *   URL to be invalid
+ * - a 503 response status with a "Blocked" reason means the pointed page is a Cozy
+ *   but it is blocked. In that case we consider that the url is a valid Cozy origin
+ *   but we want the method to throw as we cannot verify if the URL points to the
+ *   Cozy's root or to a specifc slug. The caller is responsible to handle that exception
  * - another status means there aren't any Cozy behind to the given origin
  *
  * @param {object} url          Object of URL elements
@@ -196,13 +208,20 @@ const wellKnownUrl = url => uri(url) + '/.well-known/change-password'
  *
  * @returns {Promise<boolean>} True if we believe there's a Cozy behind the given origin
  * @throws {InvalidCozyUrlError} Thrown when we know for sure there aren't any Cozy behind the given origin
+ * @throws {BlockedCozyError} Thrown when we know for sure there is Cozy behind the given origin but it is in a "Blocked" state
  */
 const isValidOrigin = async url => {
-  const { status } = await fetch(wellKnownUrl(url))
+  const response = await fetch(wellKnownUrl(url))
+  const { status } = response
 
   if (status === 404) {
     throw new InvalidCozyUrlError(url)
   }
+
+  if (await isResponseAboutBlockedCozy(response)) {
+    throw new BlockedCozyError(url)
+  }
+
   return status === 200
 }
 
@@ -285,4 +304,24 @@ export const rootCozyUrl = async url => {
   // At this point, we've tried everything we could to correct the user's URL
   // without success. So bail out and let the user provide a valid one.
   throw new InvalidCozyUrlError(url)
+}
+
+/**
+ * Check if the given response is about a Cozy being blocked
+ *
+ * @param {Response} response - Fetch API response
+ * @returns {Promise<boolean>} true if the response is about a Cozy being blocked, false otherwize
+ */
+const isResponseAboutBlockedCozy = async response => {
+  if (response.status !== 503) return false
+
+  const contentType = response.headers.get('content-type')
+  const isJson = contentType && contentType.indexOf('json') >= 0
+  const data = await (isJson ? response.json() : response.text())
+
+  if (data?.some?.(reason => reason.title === 'Blocked')) {
+    return true
+  }
+
+  return false
 }

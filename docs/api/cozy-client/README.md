@@ -10,6 +10,7 @@ cozy-client
 ## Classes
 
 *   [Association](classes/Association.md)
+*   [BlockedCozyError](classes/BlockedCozyError.md)
 *   [BulkEditError](classes/BulkEditError.md)
 *   [CozyClient](classes/CozyClient.md)
 *   [CozyLink](classes/CozyLink.md)
@@ -615,7 +616,7 @@ The root Cozy URL
 
 *Defined in*
 
-[packages/cozy-client/src/helpers/urlHelper.js:249](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L249)
+[packages/cozy-client/src/helpers/urlHelper.js:269](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L269)
 
 ***
 

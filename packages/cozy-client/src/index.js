@@ -32,7 +32,8 @@ export {
   rootCozyUrl,
   InvalidRedirectLinkError,
   InvalidCozyUrlError,
-  InvalidProtocolError
+  InvalidProtocolError,
+  BlockedCozyError
 } from './helpers'
 export { cancelable, isQueryLoading, hasQueryBeenLoaded } from './utils'
 export { getQueryFromState } from './store'

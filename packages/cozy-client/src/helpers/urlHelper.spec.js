@@ -7,7 +7,8 @@ import {
   rootCozyUrl,
   InvalidRedirectLinkError,
   InvalidCozyUrlError,
-  InvalidProtocolError
+  InvalidProtocolError,
+  BlockedCozyError
 } from './urlHelper'
 
 describe('generateWebLink', () => {
@@ -418,6 +419,62 @@ describe('rootCozyUrl', () => {
 
     await expect(
       rootCozyUrl(new URL('https://missing.mycozy.cloud'))
+    ).rejects.toBeInstanceOf(InvalidCozyUrlError)
+  })
+
+  it('should reject if Blocked cozy', async () => {
+    fetch.mockResponse(() => {
+      return Promise.resolve({
+        headers: {
+          'content-type': 'application/json; charset=UTF-8'
+        },
+        body: JSON.stringify([
+          {
+            status: '503',
+            title: 'Blocked',
+            code: 'UNKNOWN',
+            detail: 'The Cozy is blocked for an unknown reason',
+            source: {}
+          }
+        ]),
+        ok: false,
+        status: 503,
+        statusText: '',
+        type: 'default',
+        url: 'https://camillenimbus.com/.well-known/change-password'
+      })
+    })
+
+    await expect(
+      rootCozyUrl(new URL('https://camillenimbus.com'))
+    ).rejects.toBeInstanceOf(BlockedCozyError)
+  })
+
+  it('should reject on 503 error (if not Blocked)', async () => {
+    fetch.mockResponse(() => {
+      return Promise.resolve({
+        headers: {
+          'content-type': 'application/json; charset=UTF-8'
+        },
+        body: JSON.stringify([
+          {
+            status: '503',
+            title: 'Some error',
+            code: 'UNKNOWN',
+            detail: 'Some error description',
+            source: {}
+          }
+        ]),
+        ok: false,
+        status: 503,
+        statusText: '',
+        type: 'default',
+        url: 'https://camillenimbus.com/.well-known/change-password'
+      })
+    })
+
+    await expect(
+      rootCozyUrl(new URL('https://camillenimbus.com'))
     ).rejects.toBeInstanceOf(InvalidCozyUrlError)
   })
 })
