@@ -54,6 +54,14 @@ export type KonnectorsDocument = {
      * - whether the konnector runs on client or not
      */
     clientSide: boolean;
+    /**
+     * - frequency at which the konnector is supposed to be run
+     */
+    frequency: 'hourly' | 'daily' | 'weekly' | 'monthly';
+    /**
+     * - interval of hours in the day where the konnector can be run
+     */
+    time_interval: Array<number>;
 };
 /**
  * - An io.cozy.konnectors document

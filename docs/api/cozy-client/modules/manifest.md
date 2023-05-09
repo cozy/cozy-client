@@ -2,6 +2,11 @@
 
 # Namespace: manifest
 
+## Interfaces
+
+*   [FrequencyOptions](../interfaces/manifest.FrequencyOptions.md)
+*   [randomDayTimeResult](../interfaces/manifest.randomDayTimeResult.md)
+
 ## Variables
 
 ### ROLE_IDENTIFIER
@@ -22,7 +27,7 @@ Legacy login fields declared by some konnectors
 
 *Defined in*
 
-[packages/cozy-client/src/models/manifest.js:11](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/manifest.js#L11)
+[packages/cozy-client/src/models/manifest.js:21](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/manifest.js#L21)
 
 ## Functions
 
@@ -42,7 +47,59 @@ Legacy login fields declared by some konnectors
 
 *Defined in*
 
-[packages/cozy-client/src/models/manifest.js:63](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/manifest.js#L63)
+[packages/cozy-client/src/models/manifest.js:73](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/manifest.js#L73)
+
+***
+
+### getCronFromFrequency
+
+▸ **getCronFromFrequency**(`frequency`, `options?`): `string`
+
+Build a cron string for given frequency with given options
+See https://docs.cozy.io/en/cozy-stack/jobs/#cron-syntax
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `frequency` | `"hourly"` | `"daily"` | `"weekly"` | `"monthly"` | Frequency |
+| `options` | [`FrequencyOptions`](../interfaces/manifest.FrequencyOptions.md) | - |
+
+*Returns*
+
+`string`
+
+*   The cron definition for trigger
+
+*Defined in*
+
+[packages/cozy-client/src/models/manifest.js:280](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/manifest.js#L280)
+
+***
+
+### getCronFromKonnector
+
+▸ **getCronFromKonnector**(`konnector`, `startDate?`, `randomDayTimeFn?`): `string`
+
+Build a cron string for given konnector and from a given start date
+
+*Parameters*
+
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `konnector` | `IOCozyKonnector` | `undefined` | io.cozy.konnectors object |
+| `startDate` | `Date` | `undefined` | start date |
+| `randomDayTimeFn` | `Function` | `randomDayTime` | - |
+
+*Returns*
+
+`string`
+
+*   The cron definition for trigger
+
+*Defined in*
+
+[packages/cozy-client/src/models/manifest.js:307](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/manifest.js#L307)
 
 ***
 
@@ -66,7 +123,7 @@ The key for the identifier field, example 'login'
 
 *Defined in*
 
-[packages/cozy-client/src/models/manifest.js:161](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/manifest.js#L161)
+[packages/cozy-client/src/models/manifest.js:171](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/manifest.js#L171)
 
 ***
 
@@ -86,7 +143,33 @@ The key for the identifier field, example 'login'
 
 *Defined in*
 
-[packages/cozy-client/src/models/manifest.js:67](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/manifest.js#L67)
+[packages/cozy-client/src/models/manifest.js:77](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/manifest.js#L77)
+
+***
+
+### randomDayTime
+
+▸ **randomDayTime**(`start?`, `end?`, `randomize?`): [`randomDayTimeResult`](../interfaces/manifest.randomDayTimeResult.md)
+
+Returns an hour of the day between two hours given in parameters
+
+*Parameters*
+
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `start` | `number` | `0` | minimal start hour |
+| `end` | `number` | `1` | maximal end hour |
+| `randomize` | `Function` | `undefined` | The function used to generate random values |
+
+*Returns*
+
+[`randomDayTimeResult`](../interfaces/manifest.randomDayTimeResult.md)
+
+Object containing two atributes : hours and minutes
+
+*Defined in*
+
+[packages/cozy-client/src/models/manifest.js:248](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/manifest.js#L248)
 
 ***
 
@@ -108,7 +191,7 @@ Normalize app manifest, retro-compatibility for old manifests
 
 *Defined in*
 
-[packages/cozy-client/src/models/manifest.js:77](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/manifest.js#L77)
+[packages/cozy-client/src/models/manifest.js:87](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/manifest.js#L87)
 
 ***
 
@@ -132,7 +215,7 @@ sanitized categories
 
 *Defined in*
 
-[packages/cozy-client/src/models/manifest.js:56](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/manifest.js#L56)
+[packages/cozy-client/src/models/manifest.js:66](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/manifest.js#L66)
 
 ***
 
@@ -156,4 +239,4 @@ Ensures that fields has at least one field with the role 'identifier'
 
 *Defined in*
 
-[packages/cozy-client/src/models/manifest.js:130](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/manifest.js#L130)
+[packages/cozy-client/src/models/manifest.js:140](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/manifest.js#L140)
