@@ -487,6 +487,9 @@
       "label": "other_activity_document",
       "sourceSubCategory": "sport",
       "subjects": ["permit", "invoice"]
+    },
+    {
+      "label": "other_administrative_document"
     }
   ],
   "purposeKnownValues": [

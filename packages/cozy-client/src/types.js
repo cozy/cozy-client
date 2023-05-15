@@ -365,7 +365,7 @@ import { QueryDefinition } from './queries/dsl'
  *
  * @typedef {Array<Theme>} ThemesList
  *
- * @typedef {'identity'|'family'|'work_study'|'health'|'home'|'transport'|'finance'|'invoice'} ThemesLabels
+ * @typedef {'identity'|'family'|'work_study'|'health'|'home'|'transport'|'finance'|'invoice'|'others'} ThemesLabels
  */
 
 /**
@@ -396,7 +396,9 @@ import { QueryDefinition } from './queries/dsl'
  *
  * @typedef {'personal_sporting_licence'|'other_activity_document'|'fidelity_card'|'library_card'} ActivityLabels
  *
- * @typedef {IdentityLabel|FamilyLabel|WorkStudyLabels|HealthLabels|HomeLabels|TransportLabels|FinanceLabels|InvoiceLabels|ActivityLabels} ItemsLabels
+ * @typedef {'other_administrative_document'} OthersLabels
+ *
+ * @typedef {IdentityLabel|FamilyLabel|WorkStudyLabels|HealthLabels|HomeLabels|TransportLabels|FinanceLabels|InvoiceLabels|ActivityLabels|OthersLabels} ItemsLabels
  */
 
 /**

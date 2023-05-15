@@ -171,6 +171,11 @@ const invoiceLabels = [
 ]
 
 /**
+ * @type {Array<import("../../types").OthersLabels>}
+ */
+const othersLabels = ['other_administrative_document']
+
+/**
  * @type {import("../../types").ThemesList}
  */
 export const themesList = [
@@ -230,5 +235,11 @@ export const themesList = [
     label: 'invoice',
     icon: 'bill',
     items: buildItemsByLabel(invoiceLabels)
+  },
+  {
+    id: 'theme10',
+    label: 'others',
+    icon: 'dots',
+    items: buildItemsByLabel(othersLabels)
   }
 ]
