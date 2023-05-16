@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [38.3.0](https://github.com/cozy/cozy-client/compare/v38.2.1...v38.3.0) (2023-05-16)
+
+
+### Features
+
+* **cozy-client:** Add `others` theme and `other_admin_doc` qualif ([47c5618](https://github.com/cozy/cozy-client/commit/47c561862867c041628ac270f940586c6953c14e))
+
+
+
+
+
 ## [38.2.1](https://github.com/cozy/cozy-client/compare/v38.2.0...v38.2.1) (2023-04-26)
 
 **Note:** Version bump only for package cozy-client
