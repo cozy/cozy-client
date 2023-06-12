@@ -120,7 +120,7 @@ The following translation keys are no longer plural by default.
 Please use this new implementation:
 ```
 t("translation.key", { smart_count: 2 })
-
+```
 
 
 
