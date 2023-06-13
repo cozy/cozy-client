@@ -41,19 +41,141 @@ export type AccountsDocument = {
  * - An io.cozy.accounts document
  */
 export type IOCozyAccount = CozyClientDocument & AccountsDocument;
+/**
+ * See https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.konnectors/
+ */
 export type KonnectorsDocument = {
     /**
-     * - slug of konnector
+     * - object containing aggregator data
      */
-    slug: string;
+    aggregator?: object;
     /**
-     * - konnector fields
+     * - list of categories (default: ['others'])
      */
-    fields: ManifestFields;
+    categories?: string[];
     /**
      * - whether the konnector runs on client or not
      */
-    clientSide: boolean;
+    clientSide?: boolean;
+    /**
+     * - list of data types managed by the connector
+     */
+    data_types?: string[];
+    /**
+     * - identity information on the connector developer
+     */
+    developer?: {
+        name: string;
+        url: string;
+    };
+    /**
+     * - name of the editor
+     */
+    editor: string;
+    /**
+     * - list of features added in the konnector
+     */
+    features?: object[];
+    /**
+     * - konnector fields
+     */
+    fields?: ManifestFields;
+    /**
+     * - list of folders required by the konnector to store files according to data types
+     */
+    folders?: object[];
+    /**
+     * - interval of time between two runs of the konnector (default: weekly)
+     */
+    frequency?: "monthly" | "weekly" | "daily";
+    /**
+     * - path to the icon for the cozy-home
+     */
+    icon?: string;
+    /**
+     * - available languages (may differ from local)
+     */
+    langs?: string[];
+    /**
+     * - an object with language slug as property, each name property is an object of localized informations
+     */
+    locales?: object;
+    /**
+     * - konnector development language used (ex: node)
+     */
+    language?: string;
+    /**
+     * - current manifest version number
+     */
+    manifest_version?: string;
+    /**
+     * - list of message identifiers, which can be used to display information in known zones
+     */
+    measures?: string[];
+    /**
+     * - name of the konnector
+     */
+    name: string;
+    /**
+     * - prefix to display with the name
+     */
+    name_prefix?: string;
+    /**
+     * - object containing oAuth information, like scope
+     */
+    oauth?: object;
+    /**
+     * - additional parameters which should be passed to the konnector
+     */
+    parameters?: object;
+    /**
+     * - object to provide informations about a partnership related to the konnector
+     */
+    partnership?: object;
+    /**
+     * - map of permissions needed by the konnector
+     */
+    permissions?: object;
+    /**
+     * - list of one or more cozy-client qualification labels that the connector will associate with the files it retrieves
+     */
+    qualification_labels?: string[];
+    /**
+     * - 	an array of paths to the screenshots of the konnector (paths in the build)
+     */
+    screenshots?: string[];
+    /**
+     * - slug of the konnector
+     */
+    slug: string;
+    /**
+     * -	installation state of the konnector
+     */
+    state: string;
+    /**
+     * - where the files of the konnector can be downloaded (default: build branch)
+     */
+    source?: string;
+    /**
+     * - object defining properties for terms that need to be displayed/accepted by the user when installing the konnector
+     */
+    terms?: object;
+    /**
+     * - list of two values, first is the interval start hour, second is the interval end hour (ex: [15, 21]) based on GMT time zone
+     */
+    time_interval?: number[];
+    /**
+     * - type of application (konnector or webapp)
+     */
+    type: string;
+    /**
+     * - Store the installation state of the konnector
+     */
+    vendor_link?: string;
+    /**
+     * - current version number of the konnector
+     */
+    version: string;
 };
 /**
  * - An io.cozy.konnectors document
@@ -86,7 +208,7 @@ export type TriggersDocument = {
     arguments?: string;
 };
 /**
- * - An io.cozy.konnectors document
+ * - An io.cozy.triggers document
  */
 export type IOCozyTrigger = CozyClientDocument & TriggersDocument;
 export type TriggerState = {

@@ -30,9 +30,42 @@ import { QueryDefinition } from './queries/dsl'
 
 /**
  * @typedef {object} KonnectorsDocument
- * @property {String} slug - slug of konnector
- * @property {ManifestFields} fields - konnector fields
- * @property {Boolean} clientSide - whether the konnector runs on client or not
+ * See https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.konnectors/
+ *
+ * @property {object} [aggregator] - object containing aggregator data
+ * @property {String[]} [categories] - list of categories (default: ['others'])
+ * @property {Boolean} [clientSide] - whether the konnector runs on client or not
+ * @property {String[]} [data_types] - list of data types managed by the connector
+ * @property {object} [developer] - identity information on the connector developer
+ * @property {String} [developer.name] - name of the developer
+ * @property {String} [developer.url] - url of the developer
+ * @property {String} editor - name of the editor
+ * @property {object[]} [features] - list of features added in the konnector
+ * @property {ManifestFields} [fields] - konnector fields
+ * @property {object[]} [folders] - list of folders required by the konnector to store files according to data types
+ * @property {"monthly"|"weekly"|"daily"} [frequency] - interval of time between two runs of the konnector (default: weekly)
+ * @property {String} [icon] - path to the icon for the cozy-home
+ * @property {string[]} [langs] - available languages (may differ from local)
+ * @property {object} [locales] - an object with language slug as property, each name property is an object of localized informations
+ * @property {String} [language] - konnector development language used (ex: node)
+ * @property {String} [manifest_version] - current manifest version number
+ * @property {String[]} [measures] - list of message identifiers, which can be used to display information in known zones
+ * @property {String} name - name of the konnector
+ * @property {String} [name_prefix] - prefix to display with the name
+ * @property {object} [oauth] - object containing oAuth information, like scope
+ * @property {object} [parameters] - additional parameters which should be passed to the konnector
+ * @property {object} [partnership] - object to provide informations about a partnership related to the konnector
+ * @property {object} [permissions] - map of permissions needed by the konnector
+ * @property {String[]} [qualification_labels] - list of one or more cozy-client qualification labels that the connector will associate with the files it retrieves
+ * @property {String[]} [screenshots] - 	an array of paths to the screenshots of the konnector (paths in the build)
+ * @property {String} slug - slug of the konnector
+ * @property {String} state -	installation state of the konnector
+ * @property {String} [source] - where the files of the konnector can be downloaded (default: build branch)
+ * @property {object} [terms] - object defining properties for terms that need to be displayed/accepted by the user when installing the konnector
+ * @property {number[]} [time_interval] - list of two values, first is the interval start hour, second is the interval end hour (ex: [15, 21]) based on GMT time zone
+ * @property {String} type - type of application (konnector or webapp)
+ * @property {String} [vendor_link] - Store the installation state of the konnector
+ * @property {String} version - current version number of the konnector
  * @typedef {CozyClientDocument & KonnectorsDocument} IOCozyKonnector - An io.cozy.konnectors document
  */
 
@@ -44,7 +77,7 @@ import { QueryDefinition } from './queries/dsl'
  * @property {object} message - Parameters to pass to the the worker. For example, when the worker is set to konnector, message contains the related konnector and the related account.
  * @property {TriggerState} [current_state] - state of the last executed jobs related to this trigger
  * @property {String} [arguments] - Arguments related to the type attribute. For example it's a cron configuration when the type is set to @cron.
- * @typedef {CozyClientDocument & TriggersDocument} IOCozyTrigger - An io.cozy.konnectors document
+ * @typedef {CozyClientDocument & TriggersDocument} IOCozyTrigger - An io.cozy.triggers document
  */
 
 /**
