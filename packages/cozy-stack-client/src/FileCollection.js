@@ -35,6 +35,7 @@ import logger from './logger'
  * @property {string} dirId - Id of the parent directory.
  * @property {boolean} name - Name of the created directory.
  * @property {boolean} executable - Indicates whether the file will be executable.
+ * @property {object} [metadata] io.cozy.files.metadata to attach to the directory
  */
 
 /**
@@ -830,7 +831,14 @@ class FileCollection extends DocumentCollection {
    * @throws {Error} - explaining reason why creation failed
    */
   async createDirectory(attributes = {}) {
-    const { name, dirId, lastModifiedDate } = attributes
+    const { name, dirId, lastModifiedDate, metadata } = attributes
+
+    let metadataId = ''
+    if (metadata) {
+      const meta = await this.createFileMetadata(metadata)
+      metadataId = meta.data.id
+    }
+
     const safeName = sanitizeAndValidateFileName(name)
 
     const lastModified =
@@ -841,7 +849,7 @@ class FileCollection extends DocumentCollection {
 
     const resp = await this.stackClient.fetchJSON(
       'POST',
-      uri`/files/${dirId}?Name=${safeName}&Type=directory`,
+      uri`/files/${dirId}?Name=${safeName}&Type=directory&MetadataID=${metadataId}`,
       undefined,
       {
         headers: {

@@ -1874,7 +1874,7 @@ describe('file creation', () => {
     expect(doc._id).toEqual('1337')
     expect(client.stackClient.fetchJSON).toHaveBeenCalledWith(
       'POST',
-      '/files/dirid1337?Name=toto.pdf&Type=directory',
+      '/files/dirid1337?Name=toto.pdf&Type=directory&MetadataID=',
       undefined,
       { headers: { Date: '' } }
     )
