@@ -2297,6 +2297,7 @@ Attributes used for directory creation
 | dirId | <code>string</code> | Id of the parent directory. |
 | name | <code>boolean</code> | Name of the created directory. |
 | executable | <code>boolean</code> | Indicates whether the file will be executable. |
+| [metadata] | <code>object</code> | io.cozy.files.metadata to attach to the directory |
 
 <a name="FileAttributes"></a>
 

@@ -41,6 +41,13 @@ const CREATE_DIRECTORY_RESPONSE = {
   }
 }
 
+const CREATE_METADATA_RESPONSE = {
+  data: {
+    type: 'io.cozy.files.metadata',
+    id: 'fd1c512a8cc1ff7aeb9566c3ee523325'
+  }
+}
+
 describe('FileCollection', () => {
   const client = new CozyStackClient()
   const collection = new FileCollection('io.cozy.files', client)
@@ -291,21 +298,55 @@ describe('FileCollection', () => {
       lastModifiedDate: 'Wed, 01 Feb 2017 10:24:42 GMT'
     }
 
-    beforeAll(() => {
+    const NEW_DIR_WITH_METADATA = {
+      name: 'notes',
+      dirId: '12345',
+      lastModifiedDate: 'Wed, 01 Feb 2017 10:24:42 GMT',
+      metadata: { toto: 'toto' }
+    }
+
+    beforeEach(() => {
       client.fetchJSON.mockReturnValue(
         Promise.resolve(CREATE_DIRECTORY_RESPONSE)
       )
     })
 
-    afterAll(() => {
+    afterEach(() => {
       client.fetchJSON.mockReset()
     })
 
-    it('should call the right route', async () => {
+    it('should call the right route to create directory', async () => {
       await collection.createDirectory(NEW_DIR)
+
+      expect(client.fetchJSON).toHaveBeenCalledTimes(1)
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'POST',
-        '/files/12345?Name=notes&Type=directory',
+        '/files/12345?Name=notes&Type=directory&MetadataID=',
+        undefined,
+        { headers: { Date: 'Wed, 01 Feb 2017 10:24:42 GMT' } }
+      )
+    })
+
+    it('should call the right route to create metadata and directory', async () => {
+      client.fetchJSON.mockReturnValueOnce(
+        Promise.resolve(CREATE_METADATA_RESPONSE)
+      )
+
+      await collection.createDirectory(NEW_DIR_WITH_METADATA)
+
+      expect(client.fetchJSON).toHaveBeenCalledTimes(2)
+      expect(client.fetchJSON).toHaveBeenNthCalledWith(
+        1,
+        'POST',
+        '/files/upload/metadata',
+        {
+          data: { attributes: { toto: 'toto' }, type: 'io.cozy.files.metadata' }
+        }
+      )
+      expect(client.fetchJSON).toHaveBeenNthCalledWith(
+        2,
+        'POST',
+        '/files/12345?Name=notes&Type=directory&MetadataID=fd1c512a8cc1ff7aeb9566c3ee523325',
         undefined,
         { headers: { Date: 'Wed, 01 Feb 2017 10:24:42 GMT' } }
       )
