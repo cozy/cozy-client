@@ -26,6 +26,7 @@ const getBoundT = lang => {
 
   return (label, opts = {}) => {
     const newOpts = {
+      ...opts,
       smart_count: opts?.smart_count || 1
     }
     const emojiCountry = getEmojiByCountry(opts?.country, t)

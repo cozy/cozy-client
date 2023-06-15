@@ -13,6 +13,11 @@ describe('getBoundT', () => {
 
     expect(res).toBe('IBAN')
   })
+  it('should return "default value" option', () => {
+    const res = t('Scan.items.unknown_key', { _: 'default value' })
+
+    expect(res).toBe('default value')
+  })
 
   it.each`
     translationKey                   | country       | smart_count  | lang    | expected
