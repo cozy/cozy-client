@@ -870,6 +870,15 @@ class FileCollection extends DocumentCollection {
     return this.specialDirectories[path]
   }
 
+  /**
+   * Get a directory or create it
+   *
+   * @private
+   * @param  {string} name - Name of the directory we want to get or create
+   * @param  {FileDocument} parentDirectory - Parent directory of the directory we want to get or create
+   * @returns {Promise}
+   * @throws {Error} - explaining reason why creation failed
+   */
   async getDirectoryOrCreate(name, parentDirectory) {
     if (parentDirectory && !parentDirectory.attributes)
       throw new Error('Malformed parent directory')
