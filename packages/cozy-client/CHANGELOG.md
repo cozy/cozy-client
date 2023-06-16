@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [38.6.0](https://github.com/cozy/cozy-client/compare/v38.5.1...v38.6.0) (2023-06-16)
+
+
+### Features
+
+* Add instance name in certification failure ([ef3fa99](https://github.com/cozy/cozy-client/commit/ef3fa996e7fd6351706dc135a728265f34257bd5))
+
+
+
+
+
 ## [38.5.1](https://github.com/cozy/cozy-client/compare/v38.5.0...v38.5.1) (2023-06-15)
 
 
