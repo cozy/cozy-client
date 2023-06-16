@@ -2,7 +2,6 @@ import { certifyFlagship } from './flagship-certification'
 import { createMockClient } from '../mock'
 
 import { getAppAttestationFromStore } from './store-attestation'
-import logger from '../logger'
 
 jest.mock('./store-attestation', () => ({
   getAppAttestationFromStore: jest.fn()
@@ -18,6 +17,8 @@ const getClientMock = () => {
       oauth: {}
     }
   })
+
+  client.stackClient.uri = 'http://cozy.tools:8080'
 
   client.stackClient.oauthOptions = {
     clientID: 'SOME_CLIENT_ID',
@@ -60,10 +61,17 @@ const getFetchJsonPostParams = (url, body = null) => {
   ]
 }
 
+const consoleWarn = console.warn
+
 describe('certifyFlagship', () => {
   afterEach(() => {
     jest.restoreAllMocks()
     getAppAttestationFromStore.mockReset()
+    console.warn = jest.fn()
+  })
+
+  afterAll(() => {
+    console.warn = consoleWarn
   })
 
   it('should ask challenge to cozy-stack, call the store API and then send the result to the stack', async () => {
@@ -136,10 +144,10 @@ describe('certifyFlagship', () => {
       ...getFetchJsonPostParams(`/auth/clients/SOME_CLIENT_ID/challenge`)
     )
 
-    expect(logger.warn).toHaveBeenCalledWith(
-      '[FLAGSHIP_CERTIFICATION] Certification failed but the cozy-stack will continue with 2FA certification'
+    expect(console.warn).toHaveBeenCalledWith(
+      '[FLAGSHIP_CERTIFICATION] Certification for URI "http://cozy.tools:8080" failed but the cozy-stack will continue with 2FA certification'
     )
-    expect(logger.warn).toHaveBeenCalledWith(
+    expect(console.warn).toHaveBeenCalledWith(
       '[FLAGSHIP_CERTIFICATION] Something went wrong while requesting a challenge from CozyStack:\nSOME_STACK_CHALLENGE_ERROR'
     )
   })
@@ -166,10 +174,10 @@ describe('certifyFlagship', () => {
       androidSafetyNetApiKey: 'SOME_ANDROID_SAFETY_NET_API_KEY'
     })
 
-    expect(logger.warn).toHaveBeenCalledWith(
-      '[FLAGSHIP_CERTIFICATION] Certification failed but the cozy-stack will continue with 2FA certification'
+    expect(console.warn).toHaveBeenCalledWith(
+      '[FLAGSHIP_CERTIFICATION] Certification for URI "http://cozy.tools:8080" failed but the cozy-stack will continue with 2FA certification'
     )
-    expect(logger.warn).toHaveBeenCalledWith('SOME_STORE_API_ERROR')
+    expect(console.warn).toHaveBeenCalledWith('SOME_STORE_API_ERROR')
   })
 
   it('should ask challenge to cozy-stack, call the store API, send the result to the stack and then handle cozy-stack certification failure', async () => {
@@ -205,10 +213,10 @@ describe('certifyFlagship', () => {
       })
     )
 
-    expect(logger.warn).toHaveBeenCalledWith(
-      '[FLAGSHIP_CERTIFICATION] Certification failed but the cozy-stack will continue with 2FA certification'
+    expect(console.warn).toHaveBeenCalledWith(
+      '[FLAGSHIP_CERTIFICATION] Certification for URI "http://cozy.tools:8080" failed but the cozy-stack will continue with 2FA certification'
     )
-    expect(logger.warn).toHaveBeenCalledWith(
+    expect(console.warn).toHaveBeenCalledWith(
       '[FLAGSHIP_CERTIFICATION] Something went wrong while giving attestation to CozyStack:\nSOME_STACK_CERTIFICATION_ERROR'
     )
   })
