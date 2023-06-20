@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [38.7.0](https://github.com/cozy/cozy-client/compare/v38.6.0...v38.7.0) (2023-06-20)
+
+
+### Features
+
+* Add metadata attributes to createDirectory ([f06425a](https://github.com/cozy/cozy-client/commit/f06425a9e05cbba80c4dd9f703dffba19583e5bb))
+
+
+
+
+
 # [38.6.0](https://github.com/cozy/cozy-client/compare/v38.5.1...v38.6.0) (2023-06-16)
 
 
