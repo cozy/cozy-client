@@ -1,5 +1,137 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`FileCollection create directory - should not sanitize the filename if asked not to 1`] = `
+Array [
+  "POST",
+  "/files/undefined?Name=Name%20&Type=directory&MetadataID=",
+  undefined,
+  Object {
+    "headers": Object {
+      "Date": "",
+    },
+  },
+]
+`;
+
+exports[`FileCollection create directory - should sanitize the filename 1`] = `
+Array [
+  "POST",
+  "/files/undefined?Name=Name&Type=directory&MetadataID=",
+  undefined,
+  Object {
+    "headers": Object {
+      "Date": "",
+    },
+  },
+]
+`;
+
+exports[`FileCollection create file - should not sanitize the filename if asked not to 1`] = `
+Array [
+  "POST",
+  "/files/?Name=Name%20&Type=file&Executable=false&Encrypted=false&MetadataID=&Size=&SourceAccount=&SourceAccountIdentifier=",
+  "content",
+  Object {
+    "headers": Object {
+      "Content-Type": "text/plain",
+    },
+    "onUploadProgress": undefined,
+  },
+]
+`;
+
+exports[`FileCollection create file - should sanitize the filename 1`] = `
+Array [
+  "POST",
+  "/files/?Name=Name&Type=file&Executable=false&Encrypted=false&MetadataID=&Size=&SourceAccount=&SourceAccountIdentifier=",
+  "content",
+  Object {
+    "headers": Object {
+      "Content-Type": "text/plain",
+    },
+    "onUploadProgress": undefined,
+  },
+]
+`;
+
+exports[`FileCollection createDirectory should not sanitize the filename if asked not to 1`] = `
+Array [
+  "POST",
+  "/files/12345?Name=Name%20&Type=directory&MetadataID=",
+  undefined,
+  Object {
+    "headers": Object {
+      "Date": "Wed, 01 Feb 2017 10:24:42 GMT",
+    },
+  },
+]
+`;
+
+exports[`FileCollection createDirectory should sanitize the filename 1`] = `
+Array [
+  "POST",
+  "/files/12345?Name=Name&Type=directory&MetadataID=",
+  undefined,
+  Object {
+    "headers": Object {
+      "Date": "Wed, 01 Feb 2017 10:24:42 GMT",
+    },
+  },
+]
+`;
+
+exports[`FileCollection createDirectoryByPath should not sanitize the filename if asked not to 1`] = `
+Array [
+  Object {
+    "dirId": "7c217f9bf5e7118a34627f1ab800243b",
+    "name": " baz ",
+  },
+  Object {
+    "sanitizeName": false,
+  },
+]
+`;
+
+exports[`FileCollection createDirectoryByPath should sanitize the filename 1`] = `
+Array [
+  Object {
+    "dirId": "9c217f9bf5e7118a34627f1ab800243b",
+    "name": "baz",
+  },
+  Object {
+    "sanitizeName": true,
+  },
+]
+`;
+
+exports[`FileCollection createFile should not sanitize the filename if asked not to 1`] = `
+Array [
+  "POST",
+  "/files/41686c35-9d8e?Name=%20mydoc%20.epub&Type=file&Executable=false&Encrypted=false&MetadataID=&Size=&SourceAccount=&SourceAccountIdentifier=&UpdatedAt=2021-01-01T00:00:00.000Z&CreatedAt=2021-01-01T00:00:00.000Z",
+  File {},
+  Object {
+    "headers": Object {
+      "Content-Type": "application/epub+zip",
+    },
+    "onUploadProgress": undefined,
+  },
+]
+`;
+
+exports[`FileCollection createFile should sanitize the filename 1`] = `
+Array [
+  "POST",
+  "/files/41686c35-9d8e?Name=mydoc%20.epub&Type=file&Executable=false&Encrypted=false&MetadataID=&Size=&SourceAccount=&SourceAccountIdentifier=&UpdatedAt=2021-01-01T00:00:00.000Z&CreatedAt=2021-01-01T00:00:00.000Z",
+  File {},
+  Object {
+    "headers": Object {
+      "Content-Type": "application/epub+zip",
+    },
+    "onUploadProgress": undefined,
+  },
+]
+`;
+
 exports[`FileCollection createFileMetadata should call the right route 1`] = `
 Array [
   "POST",
@@ -199,6 +331,62 @@ exports[`FileCollection synchronization directories exclusions should remove a d
 }
 `;
 
+exports[`FileCollection update should not sanitize the filename if asked not to 1`] = `
+Array [
+  Blob {},
+  Object {
+    "fileId": undefined,
+    "name": " thoughts .txt",
+    "type": "file",
+  },
+  Object {
+    "sanitizeName": false,
+  },
+]
+`;
+
+exports[`FileCollection update should not sanitize the filename if asked not to 2`] = `
+Array [
+  undefined,
+  Object {
+    "fileId": "123",
+    "name": " thoughts .txt",
+    "type": "file",
+  },
+  Object {
+    "sanitizeName": false,
+  },
+]
+`;
+
+exports[`FileCollection update should sanitize the filename 1`] = `
+Array [
+  Blob {},
+  Object {
+    "fileId": undefined,
+    "name": " thoughts .txt",
+    "type": "file",
+  },
+  Object {
+    "sanitizeName": true,
+  },
+]
+`;
+
+exports[`FileCollection update should sanitize the filename 2`] = `
+Array [
+  undefined,
+  Object {
+    "fileId": "123",
+    "name": " thoughts .txt",
+    "type": "file",
+  },
+  Object {
+    "sanitizeName": true,
+  },
+]
+`;
+
 exports[`FileCollection updateAttributes should call the right route 1`] = `
 Array [
   "PATCH",
@@ -208,6 +396,23 @@ Array [
       "attributes": Object {
         "dir_id": "123",
         "name": "correct-name",
+      },
+      "id": "42",
+      "type": "io.cozy.files",
+    },
+  },
+]
+`;
+
+exports[`FileCollection updateAttributes should not sanitize the filename if asked not to 1`] = `
+Array [
+  "PATCH",
+  "/files/42",
+  Object {
+    "data": Object {
+      "attributes": Object {
+        "dir_id": "123",
+        "name": "Name ",
       },
       "id": "42",
       "type": "io.cozy.files",
@@ -229,6 +434,38 @@ Array [
       "id": "42",
       "type": "io.cozy.files",
     },
+  },
+]
+`;
+
+exports[`FileCollection updateFile should not sanitize the filename if asked not to 1`] = `
+Array [
+  "PUT",
+  "/files/59140416-b95f?Name=%20mydoc%20.epub&Type=file&Executable=false&Encrypted=false&Size=1234&UpdatedAt=2021-01-01T00:00:00.000Z&CreatedAt=2021-01-01T00:00:00.000Z",
+  File {},
+  Object {
+    "headers": Object {
+      "Content-Length": "1234",
+      "Content-MD5": "a6dabd99832b270468e254814df2ed20",
+      "Content-Type": "application/epub+zip",
+    },
+    "onUploadProgress": undefined,
+  },
+]
+`;
+
+exports[`FileCollection updateFile should sanitize the filename 1`] = `
+Array [
+  "PUT",
+  "/files/59140416-b95f?Name=mydoc%20.epub&Type=file&Executable=false&Encrypted=false&Size=1234&UpdatedAt=2021-01-01T00:00:00.000Z&CreatedAt=2021-01-01T00:00:00.000Z",
+  File {},
+  Object {
+    "headers": Object {
+      "Content-Length": "1234",
+      "Content-MD5": "a6dabd99832b270468e254814df2ed20",
+      "Content-Type": "application/epub+zip",
+    },
+    "onUploadProgress": undefined,
   },
 ]
 `;
