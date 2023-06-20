@@ -231,6 +231,20 @@ describe('FileCollection', () => {
   })
 
   describe('create', () => {
+    beforeEach(() => {
+      client.fetchJSON.mockResolvedValue({
+        ...STAT_BY_ID_RESPONSE,
+
+        links: {
+          related: 'http://foo'
+        }
+      })
+    })
+
+    afterEach(() => {
+      client.fetchJSON.mockReset()
+    })
+
     it('file - should throw illegal characters errors when invalid file name', async () => {
       expect.assertions(1)
       try {
@@ -259,6 +273,29 @@ describe('FileCollection', () => {
       }
     })
 
+    it('file - should sanitize the filename', async () => {
+      await collection.create({
+        name: 'Name ',
+        data: 'content'
+      })
+      expect(
+        client.fetchJSON.mock.calls[client.fetchJSON.mock.calls.length - 1]
+      ).toMatchSnapshot()
+    })
+
+    it('file - should not sanitize the filename if asked not to', async () => {
+      await collection.create(
+        {
+          name: 'Name ',
+          data: 'content'
+        },
+        { sanitizeName: false }
+      )
+      expect(
+        client.fetchJSON.mock.calls[client.fetchJSON.mock.calls.length - 1]
+      ).toMatchSnapshot()
+    })
+
     it('directory - should throw illegal characters errors when invalid file name', async () => {
       expect.assertions(1)
       try {
@@ -272,6 +309,7 @@ describe('FileCollection', () => {
         )
       }
     })
+
     it('directory - should throw missing name errors when name is multiple spaces', async () => {
       expect.assertions(1)
       try {
@@ -288,6 +326,29 @@ describe('FileCollection', () => {
       } catch (error) {
         expect(error.message).toEqual('Invalid filename: ..')
       }
+    })
+
+    it('directory - should sanitize the filename', async () => {
+      await collection.create({
+        name: 'Name ',
+        type: 'directory'
+      })
+      expect(
+        client.fetchJSON.mock.calls[client.fetchJSON.mock.calls.length - 1]
+      ).toMatchSnapshot()
+    })
+
+    it('directory - should not sanitize the filename if asked not to', async () => {
+      await collection.create(
+        {
+          name: 'Name ',
+          type: 'directory'
+        },
+        { sanitizeName: false }
+      )
+      expect(
+        client.fetchJSON.mock.calls[client.fetchJSON.mock.calls.length - 1]
+      ).toMatchSnapshot()
     })
   })
 
@@ -360,6 +421,29 @@ describe('FileCollection', () => {
     it('should return normalized documents', async () => {
       const resp = await collection.createDirectory(NEW_DIR)
       expect(resp.data).toHaveDocumentIdentity()
+    })
+
+    it('should sanitize the filename', async () => {
+      await collection.createDirectory({
+        ...NEW_DIR,
+        name: 'Name '
+      })
+      expect(
+        client.fetchJSON.mock.calls[client.fetchJSON.mock.calls.length - 1]
+      ).toMatchSnapshot()
+    })
+
+    it('should not sanitize the filename if asked not to', async () => {
+      await collection.createDirectory(
+        {
+          ...NEW_DIR,
+          name: 'Name '
+        },
+        { sanitizeName: false }
+      )
+      expect(
+        client.fetchJSON.mock.calls[client.fetchJSON.mock.calls.length - 1]
+      ).toMatchSnapshot()
     })
   })
 
@@ -442,10 +526,33 @@ describe('FileCollection', () => {
       expect(resp.data._id).toBe('7c217f9bf5e7118a34627f1ab800243b')
       expect(collection.statByPath).toHaveBeenCalledTimes(3)
       expect(collection.createDirectory).toHaveBeenCalledTimes(2)
-      expect(collection.createDirectory).toHaveBeenLastCalledWith({
-        dirId: '9c217f9bf5e7118a34627f1ab800243b',
-        name: 'baz'
+      expect(collection.createDirectory).toHaveBeenLastCalledWith(
+        {
+          dirId: '9c217f9bf5e7118a34627f1ab800243b',
+          name: 'baz'
+        },
+        { sanitizeName: true }
+      )
+    })
+
+    it('should sanitize the filename', async () => {
+      await collection.createDirectoryByPath('/foo / bar/ baz ')
+      expect(
+        collection.createDirectory.mock.calls[
+          collection.createDirectory.mock.calls.length - 1
+        ]
+      ).toMatchSnapshot()
+    })
+
+    it('should not sanitize the filename if asked not to', async () => {
+      await collection.createDirectoryByPath('/foo / bar/ baz ', {
+        sanitizeName: false
       })
+      expect(
+        collection.createDirectory.mock.calls[
+          collection.createDirectory.mock.calls.length - 1
+        ]
+      ).toMatchSnapshot()
     })
   })
 
@@ -619,6 +726,7 @@ describe('FileCollection', () => {
       await collection.update(atts)
       expect(spyUpdateFile).toHaveBeenCalled()
     })
+
     it('should fail when a data param is passed for a directory', async () => {
       expect.assertions(1)
       try {
@@ -635,6 +743,7 @@ describe('FileCollection', () => {
         )
       }
     })
+
     it('should update attributes when no data param is passed', async () => {
       const atts = {
         _id: '123',
@@ -642,7 +751,59 @@ describe('FileCollection', () => {
         name: 'thoughts.txt'
       }
       await collection.update(atts)
-      expect(spyUpdateAttributes).toHaveBeenCalledWith(atts._id, atts)
+      expect(spyUpdateAttributes).toHaveBeenCalledWith(atts._id, atts, {
+        sanitizeName: true
+      })
+    })
+
+    it('should sanitize the filename', async () => {
+      const attrsWithContent = {
+        fileId: '123',
+        type: 'file',
+        name: ' thoughts .txt',
+        data: new Blob()
+      }
+      await collection.update(attrsWithContent)
+      expect(
+        spyUpdateFile.mock.calls[spyUpdateFile.mock.calls.length - 1]
+      ).toMatchSnapshot()
+
+      const attrs = {
+        fileId: '123',
+        type: 'file',
+        name: ' thoughts .txt'
+      }
+      await collection.update(attrs)
+      expect(
+        spyUpdateAttributes.mock.calls[
+          spyUpdateAttributes.mock.calls.length - 1
+        ]
+      ).toMatchSnapshot()
+    })
+
+    it('should not sanitize the filename if asked not to', async () => {
+      const attrsWithContent = {
+        fileId: '123',
+        type: 'file',
+        name: ' thoughts .txt',
+        data: new Blob()
+      }
+      await collection.update(attrsWithContent, { sanitizeName: false })
+      expect(
+        spyUpdateFile.mock.calls[spyUpdateFile.mock.calls.length - 1]
+      ).toMatchSnapshot()
+
+      const attrs = {
+        fileId: '123',
+        type: 'file',
+        name: ' thoughts .txt'
+      }
+      await collection.update(attrs, { sanitizeName: false })
+      expect(
+        spyUpdateAttributes.mock.calls[
+          spyUpdateAttributes.mock.calls.length - 1
+        ]
+      ).toMatchSnapshot()
     })
   })
 
@@ -717,6 +878,20 @@ describe('FileCollection', () => {
         dir_id: '123',
         name: 'Name '
       })
+      expect(
+        client.fetchJSON.mock.calls[client.fetchJSON.mock.calls.length - 1]
+      ).toMatchSnapshot()
+    })
+
+    it('should not sanitize the filename if asked not to', async () => {
+      await collection.updateAttributes(
+        '42',
+        {
+          dir_id: '123',
+          name: 'Name '
+        },
+        { sanitizeName: false }
+      )
       expect(
         client.fetchJSON.mock.calls[client.fetchJSON.mock.calls.length - 1]
       ).toMatchSnapshot()
@@ -938,6 +1113,7 @@ describe('FileCollection', () => {
         }
       })
     })
+
     it('should have a file name', async () => {
       let data = new File([''], '')
       const params = {
@@ -978,6 +1154,34 @@ describe('FileCollection', () => {
         expectedOptions
       )
     })
+
+    it('should sanitize the filename', async () => {
+      await collection.updateFile(new File([''], ' mydoc .epub'), {
+        fileId: '59140416-b95f',
+        checksum: 'a6dabd99832b270468e254814df2ed20',
+        contentLength: 1234,
+        lastModifiedDate: new Date('2021-01-01')
+      })
+      expect(
+        client.fetchJSON.mock.calls[client.fetchJSON.mock.calls.length - 1]
+      ).toMatchSnapshot()
+    })
+
+    it('should not sanitize the filename if asked not to', async () => {
+      await collection.updateFile(
+        new File([''], ' mydoc .epub'),
+        {
+          fileId: '59140416-b95f',
+          checksum: 'a6dabd99832b270468e254814df2ed20',
+          contentLength: 1234,
+          lastModifiedDate: new Date('2021-01-01')
+        },
+        { sanitizeName: false }
+      )
+      expect(
+        client.fetchJSON.mock.calls[client.fetchJSON.mock.calls.length - 1]
+      ).toMatchSnapshot()
+    })
   })
 
   describe('emptyTrash', () => {
@@ -1013,6 +1217,10 @@ describe('FileCollection', () => {
   })
 
   describe('copy', () => {
+    afterEach(() => {
+      client.fetchJSON.mockClear()
+    })
+
     it('should copy a file', async () => {
       const FILE_ID = 'd04ab491-2fc6'
       const COPIED_FILE_ID = '59140416-b95f'
@@ -1060,7 +1268,90 @@ describe('FileCollection', () => {
       )
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'POST',
-        '/files/d04ab491-2fc6/copy'
+        '/files/d04ab491-2fc6/copy?name=newName&DirID=41686c35-9d8e'
+      )
+      expect(result).toEqual({
+        data: {
+          id: COPIED_FILE_ID,
+          type: 'io.cozy.files',
+          _id: COPIED_FILE_ID,
+          _rev: undefined,
+          _type: 'io.cozy.files',
+          name: COPIED_FILE_NAME,
+          dir_id: COPIED_DIR_ID,
+          attributes: {
+            name: COPIED_FILE_NAME,
+            dir_id: COPIED_DIR_ID
+          }
+        }
+      })
+    })
+
+    it("should remove leading and trailing spaces from the copy's given name", async () => {
+      const FILE_ID = 'd04ab491-2fc6'
+      const COPIED_FILE_ID = '59140416-b95f'
+      const COPIED_FILE_NAME = ' newName '
+      const COPIED_DIR_ID = '41686c35-9d8e'
+      client.fetchJSON.mockReturnValue({
+        data: {
+          id: COPIED_FILE_ID,
+          type: 'io.cozy.files',
+          attributes: {
+            name: COPIED_FILE_NAME,
+            dir_id: COPIED_DIR_ID
+          }
+        }
+      })
+      const result = await collection.copy(
+        FILE_ID,
+        COPIED_FILE_NAME,
+        COPIED_DIR_ID
+      )
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/files/d04ab491-2fc6/copy?name=newName&DirID=41686c35-9d8e'
+      )
+      expect(result).toEqual({
+        data: {
+          id: COPIED_FILE_ID,
+          type: 'io.cozy.files',
+          _id: COPIED_FILE_ID,
+          _rev: undefined,
+          _type: 'io.cozy.files',
+          name: COPIED_FILE_NAME,
+          dir_id: COPIED_DIR_ID,
+          attributes: {
+            name: COPIED_FILE_NAME,
+            dir_id: COPIED_DIR_ID
+          }
+        }
+      })
+    })
+
+    it("should not modify the copy's given name if sanitization is disabled", async () => {
+      const FILE_ID = 'd04ab491-2fc6'
+      const COPIED_FILE_ID = '59140416-b95f'
+      const COPIED_FILE_NAME = ' newName '
+      const COPIED_DIR_ID = '41686c35-9d8e'
+      client.fetchJSON.mockReturnValue({
+        data: {
+          id: COPIED_FILE_ID,
+          type: 'io.cozy.files',
+          attributes: {
+            name: COPIED_FILE_NAME,
+            dir_id: COPIED_DIR_ID
+          }
+        }
+      })
+      const result = await collection.copy(
+        FILE_ID,
+        COPIED_FILE_NAME,
+        COPIED_DIR_ID,
+        { sanitizeName: false }
+      )
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/files/d04ab491-2fc6/copy?name=%20newName%20&DirID=41686c35-9d8e'
       )
       expect(result).toEqual({
         data: {
@@ -1301,6 +1592,30 @@ describe('FileCollection', () => {
           dir_id: dirId
         }
       })
+    })
+
+    it('should sanitize the filename', async () => {
+      await collection.createFile(new File([''], ' mydoc .epub'), {
+        dirId,
+        lastModifiedDate: new Date('2021-01-01')
+      })
+      expect(
+        client.fetchJSON.mock.calls[client.fetchJSON.mock.calls.length - 1]
+      ).toMatchSnapshot()
+    })
+
+    it('should not sanitize the filename if asked not to', async () => {
+      await collection.createFile(
+        new File([''], ' mydoc .epub'),
+        {
+          dirId,
+          lastModifiedDate: new Date('2021-01-01')
+        },
+        { sanitizeName: false }
+      )
+      expect(
+        client.fetchJSON.mock.calls[client.fetchJSON.mock.calls.length - 1]
+      ).toMatchSnapshot()
     })
   })
 

@@ -408,11 +408,12 @@ class FileCollection extends DocumentCollection {
    * Sends file to trash and removes references to it
    *
    * @param  {FileDocument} file - File that will be sent to trash
+   * @param  {object} [options] - Optionnal request options
    * @returns {Promise} - Resolves when references have been removed
    * and file has been sent to trash
    */
   async destroy(file, { ifMatch = '' } = {}) {
-    const { _id, relationships } = file
+    const { _id, relationships, referenced_by } = file
 
     const resp = await this.stackClient.fetchJSON(
       'DELETE',
@@ -425,12 +426,8 @@ class FileCollection extends DocumentCollection {
       }
     )
     // needed because we had a bug in cozy-stack https://github.com/cozy/cozy-stack/pull/3566
-    // to remove once the code is deployed everywhere
-    const references = get(
-      relationships,
-      'referenced_by.data',
-      file.referenced_by
-    )
+    // FIXME: to remove once the code is deployed everywhere
+    const references = get(relationships, 'referenced_by.data', referenced_by)
     if (Array.isArray(references)) {
       await this.removeReferencedBy(file, references)
     }
@@ -438,10 +435,10 @@ class FileCollection extends DocumentCollection {
       data: normalizeFile(resp.data)
     }
   }
+
   /**
    * Empty the Trash
    */
-
   emptyTrash() {
     return this.stackClient.fetchJSON('DELETE', '/files/trash')
   }
@@ -464,13 +461,19 @@ class FileCollection extends DocumentCollection {
    * @param {string} id   - The file's id
    * @param {string} [name]   - The file copy name
    * @param {string} [dirId]   - The destination directory id
+   * @param {object} [options] - Optionnal request options
    * @returns {Promise<object>}   - A promise that returns the copied file if resolved.
    * @throws {FetchError}
    *
    */
-  async copy(id, name, dirId) {
+  async copy(id, name, dirId, { sanitizeName = true } = {}) {
+    let sanitizedName = name
+    if (sanitizedName != null && sanitizeName) {
+      sanitizedName = sanitizeAndValidateFileName(sanitizedName)
+    }
+
     const params = {
-      name: name === undefined ? undefined : sanitizeAndValidateFileName(name),
+      name: sanitizedName,
       DirID: dirId
     }
     const path = uri`/files/${id}/copy`
@@ -505,11 +508,12 @@ class FileCollection extends DocumentCollection {
   /**
    * @param {File|Blob|Stream|string|ArrayBuffer} data file to be uploaded
    * @param {string} dirPath Path to upload the file to. ie : /Administative/XXX/
+   * @param {object} [options] Optionnal request options
    * @returns {Promise<object>} Created io.cozy.files
    */
-  async upload(data, dirPath) {
-    const dirId = await this.ensureDirectoryExists(dirPath)
-    return this.createFile(data, { dirId })
+  async upload(data, dirPath, { sanitizeName = true } = {}) {
+    const dirId = await this.ensureDirectoryExists(dirPath, { sanitizeName })
+    return this.createFile(data, { dirId }, { sanitizeName })
   }
 
   /**
@@ -518,14 +522,15 @@ class FileCollection extends DocumentCollection {
    *
    * @param {FileAttributes|DirectoryAttributes} attributes - Attributes of the created file/directory
    * @param {File|Blob|string|ArrayBuffer} attributes.data Will be used as content of the created file
+   * @param {object} [options] Optionnal request options
    * @throws {Error} - explaining reason why creation failed
    */
-  async create(attributes) {
+  async create(attributes, { sanitizeName = true } = {}) {
     if (attributes.type === 'directory') {
-      return this.createDirectory(attributes)
+      return this.createDirectory(attributes, { sanitizeName })
     } else {
       const { data, ...createFileOptions } = attributes
-      return this.createFile(data, createFileOptions)
+      return this.createFile(data, createFileOptions, { sanitizeName })
     }
   }
 
@@ -538,10 +543,11 @@ class FileCollection extends DocumentCollection {
    * @param {object} attributes
    * @param {FileAttributes} attributes.file - The file with its new content
    * @param {File|Blob|string|ArrayBuffer} attributes.data Will be used as content of the updated file
+   * @param {object} [options] Optionnal request options
    * @returns {Promise<FileAttributes>} Updated document
    * @throws {Error} - explaining reason why update failed
    */
-  async update(attributes) {
+  async update(attributes, { sanitizeName = true } = {}) {
     const { data, ...updateFileOptions } = attributes
     const fileId = attributes.id || attributes._id
     if (data) {
@@ -549,9 +555,9 @@ class FileCollection extends DocumentCollection {
         throw new Error('You cannot pass a data object for a directory')
       }
       updateFileOptions.fileId = fileId
-      return this.updateFile(data, updateFileOptions)
+      return this.updateFile(data, updateFileOptions, { sanitizeName })
     }
-    return this.updateAttributes(fileId, attributes)
+    return this.updateAttributes(fileId, attributes, { sanitizeName })
   }
 
   /**
@@ -561,7 +567,8 @@ class FileCollection extends DocumentCollection {
    * @private
    * @param {File|Blob|Stream|string|ArrayBuffer} data file to be uploaded
    * @param {FileAttributes & SpecificFileAttributesForKonnector} params Additional parameters
-   * @param  {object}  params.options     Options to pass to doUpload method (additional headers)
+   * @param {object} params.options Options to pass to doUpload method (additional headers)
+   * @param {object} [options] Optionnal request options
    * @throws {Error} - explaining reason why creation failed
    */
   async createFile(
@@ -575,7 +582,8 @@ class FileCollection extends DocumentCollection {
       sourceAccount = '',
       sourceAccountIdentifier = '',
       ...options
-    } = {}
+    } = {},
+    { sanitizeName = true } = {}
   ) {
     let name = nameOption
     // handle case where data is a file and contains the name
@@ -583,7 +591,9 @@ class FileCollection extends DocumentCollection {
       name = data.name
     }
 
-    name = sanitizeAndValidateFileName(name)
+    if (sanitizeName) {
+      name = sanitizeAndValidateFileName(name)
+    }
 
     let metadataId = ''
     if (metadata) {
@@ -602,9 +612,9 @@ class FileCollection extends DocumentCollection {
    * updateFile - Updates a file's data
    *
    * @param {File|Blob|Stream|string|ArrayBuffer} data file to be uploaded
-   * @param {FileAttributes} params       Additional parameters
-   * @param  {object}  params.options     Options to pass to doUpload method (additional headers)
-   * @returns {object}                    Updated document
+   * @param {FileAttributes} params       File attributes to update and doUpload options (additional headers)
+   * @param  {object}  options            Request Options
+   * @returns {Promise<FileAttributes>}   Updated document
    * @throws {Error} - explaining reason why update failed
    */
   async updateFile(
@@ -616,7 +626,8 @@ class FileCollection extends DocumentCollection {
       name = '',
       metadata,
       ...options
-    } = {}
+    } = {},
+    { sanitizeName = true } = {}
   ) {
     if (!fileId || typeof fileId !== 'string') {
       throw new Error('missing fileId argument')
@@ -626,7 +637,9 @@ class FileCollection extends DocumentCollection {
     if (!fileName || typeof fileName !== 'string') {
       throw new Error('missing name in data argument')
     }
-    const sanitizedName = sanitizeAndValidateFileName(fileName)
+    const sanitizedName = sanitizeName
+      ? sanitizeAndValidateFileName(fileName)
+      : fileName
     /**
      * We already use the body to send the content of the file. So we have 2 choices :
      * Use an object in a query string to send the metadata
@@ -902,10 +915,11 @@ class FileCollection extends DocumentCollection {
    *
    * @private
    * @param  {DirectoryAttributes} attributes - Attributes of the directory
+   * @param {object} [options] - Optionnal request options
    * @returns {Promise}
    * @throws {Error} - explaining reason why creation failed
    */
-  async createDirectory(attributes = {}) {
+  async createDirectory(attributes = {}, { sanitizeName = true } = {}) {
     const { name, dirId, lastModifiedDate, metadata } = attributes
 
     let metadataId = ''
@@ -914,7 +928,7 @@ class FileCollection extends DocumentCollection {
       metadataId = meta.data.id
     }
 
-    const safeName = sanitizeAndValidateFileName(name)
+    const safeName = sanitizeName ? sanitizeAndValidateFileName(name) : name
 
     const lastModified =
       lastModifiedDate &&
@@ -937,9 +951,9 @@ class FileCollection extends DocumentCollection {
     }
   }
 
-  async ensureDirectoryExists(path) {
+  async ensureDirectoryExists(path, { sanitizeName = true } = {}) {
     if (!this.specialDirectories[path]) {
-      const resp = await this.createDirectoryByPath(path)
+      const resp = await this.createDirectoryByPath(path, { sanitizeName })
       this.specialDirectories[path] = resp.data._id
     }
     return this.specialDirectories[path]
@@ -951,14 +965,19 @@ class FileCollection extends DocumentCollection {
    * @private
    * @param  {string} name - Name of the directory we want to get or create
    * @param  {FileDocument} parentDirectory - Parent directory of the directory we want to get or create
+   * @param  {object} [options] - Optionnal request options
    * @returns {Promise}
    * @throws {Error} - explaining reason why creation failed
    */
-  async getDirectoryOrCreate(name, parentDirectory) {
+  async getDirectoryOrCreate(
+    name,
+    parentDirectory,
+    { sanitizeName = true } = {}
+  ) {
     if (parentDirectory && !parentDirectory.attributes)
       throw new Error('Malformed parent directory')
 
-    const safeName = sanitizeFileName(name)
+    const safeName = sanitizeName ? sanitizeFileName(name) : name
     const path = `${
       parentDirectory._id === ROOT_DIR_ID ? '' : parentDirectory.attributes.path
     }/${safeName}`
@@ -970,10 +989,15 @@ class FileCollection extends DocumentCollection {
       const parsedError = JSON.parse(error.message)
       const errors = parsedError.errors
       if (errors && errors.length && errors[0].status === '404') {
-        return this.createDirectory({
-          name: safeName,
-          dirId: parentDirectory && parentDirectory._id
-        })
+        return this.createDirectory(
+          {
+            name: safeName,
+            dirId: parentDirectory && parentDirectory._id
+          },
+          {
+            sanitizeName
+          }
+        )
       }
       throw errors
     }
@@ -983,15 +1007,18 @@ class FileCollection extends DocumentCollection {
    * async createDirectoryByPath - Creates one or more folders until the given path exists
    *
    * @param  {string} path - Path of the created directory
+   * @param  {object} [options] - Optionnal request options
    * @returns {object} The document corresponding to the last segment of the path
    */
-  async createDirectoryByPath(path) {
+  async createDirectoryByPath(path, { sanitizeName = true } = {}) {
     const parts = path.split('/').filter(part => part !== '')
     const root = await this.statById(ROOT_DIR_ID)
     if (!parts.length) return root
     let parentDir = root
     for (const part of parts) {
-      parentDir = await this.getDirectoryOrCreate(part, parentDir.data)
+      parentDir = await this.getDirectoryOrCreate(part, parentDir.data, {
+        sanitizeName
+      })
     }
     return parentDir
   }
@@ -1013,13 +1040,14 @@ class FileCollection extends DocumentCollection {
    * @private You shoud use update() directly.
    * @param  {string} id         File id
    * @param  {object} attributes New file attributes
-   * @returns {object}            Updated document
+   * @param  {object} [options]  Optionnal request options
+   * @returns {object}           Updated document
    * @throws {Error} - explaining reason why update failed
    */
-  async updateAttributes(id, attributes) {
+  async updateAttributes(id, attributes, { sanitizeName = true } = {}) {
     const sanitizedAttributes = { ...attributes }
 
-    if (attributes.name) {
+    if (attributes.name && sanitizeName) {
       sanitizedAttributes.name = sanitizeAndValidateFileName(attributes.name)
     }
 

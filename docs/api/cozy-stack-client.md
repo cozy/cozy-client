@@ -756,14 +756,14 @@ files associated to a specific document
     * [.removeReferencedBy(document, documents)](#FileCollection+removeReferencedBy) ⇒ <code>Promise.&lt;{data, meta}&gt;</code>
     * [.addReferencesTo(document, documents)](#FileCollection+addReferencesTo)
     * [.removeReferencesTo(document, documents)](#FileCollection+removeReferencesTo)
-    * [.destroy(file)](#FileCollection+destroy) ⇒ <code>Promise</code>
+    * [.destroy(file, [options])](#FileCollection+destroy) ⇒ <code>Promise</code>
     * [.emptyTrash()](#FileCollection+emptyTrash)
     * [.restore(id)](#FileCollection+restore) ⇒ <code>Promise</code>
-    * [.copy(id, [name], [dirId])](#FileCollection+copy) ⇒ <code>Promise.&lt;object&gt;</code>
+    * [.copy(id, [name], [dirId], [options])](#FileCollection+copy) ⇒ <code>Promise.&lt;object&gt;</code>
     * [.deleteFilePermanently(id)](#FileCollection+deleteFilePermanently) ⇒ <code>Promise.&lt;object&gt;</code>
-    * [.upload(data, dirPath)](#FileCollection+upload) ⇒ <code>Promise.&lt;object&gt;</code>
-    * [.create(attributes)](#FileCollection+create)
-    * [.updateFile(data, params)](#FileCollection+updateFile) ⇒ <code>object</code>
+    * [.upload(data, dirPath, [options])](#FileCollection+upload) ⇒ <code>Promise.&lt;object&gt;</code>
+    * [.create(attributes, [options])](#FileCollection+create)
+    * [.updateFile(data, params, options)](#FileCollection+updateFile) ⇒ [<code>Promise.&lt;FileAttributes&gt;</code>](#FileAttributes)
     * [.download(file, versionId, filename)](#FileCollection+download)
     * [.fetchFileContentById(id)](#FileCollection+fetchFileContentById)
     * [.getBeautifulSize(file, decimal)](#FileCollection+getBeautifulSize)
@@ -772,7 +772,7 @@ files associated to a specific document
     * [.createArchiveLinkByIds(params)](#FileCollection+createArchiveLinkByIds) ⇒ <code>Promise.&lt;string&gt;</code>
     * [.isChildOf(child, parent)](#FileCollection+isChildOf) ⇒ <code>boolean</code>
     * [.statById(id, options)](#FileCollection+statById) ⇒ <code>object</code>
-    * [.createDirectoryByPath(path)](#FileCollection+createDirectoryByPath) ⇒ <code>object</code>
+    * [.createDirectoryByPath(path, [options])](#FileCollection+createDirectoryByPath) ⇒ <code>object</code>
     * [.createFileMetadata(attributes)](#FileCollection+createFileMetadata) ⇒ <code>Promise.&lt;object&gt;</code>
     * [.updateMetadataAttribute(id, metadata)](#FileCollection+updateMetadataAttribute) ⇒ <code>Promise.&lt;object&gt;</code>
     * [.getFileTypeFromName(name)](#FileCollection+getFileTypeFromName) ⇒ <code>string</code>
@@ -924,7 +924,7 @@ Remove files references to a document — see https://docs.cozy.io/en/cozy-stack
 
 <a name="FileCollection+destroy"></a>
 
-### fileCollection.destroy(file) ⇒ <code>Promise</code>
+### fileCollection.destroy(file, [options]) ⇒ <code>Promise</code>
 Sends file to trash and removes references to it
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
@@ -934,6 +934,7 @@ and file has been sent to trash
 | Param | Type | Description |
 | --- | --- | --- |
 | file | [<code>FileDocument</code>](#FileDocument) | File that will be sent to trash |
+| [options] | <code>object</code> | Optionnal request options |
 
 <a name="FileCollection+emptyTrash"></a>
 
@@ -959,7 +960,7 @@ Restores a trashed file.
 
 <a name="FileCollection+copy"></a>
 
-### fileCollection.copy(id, [name], [dirId]) ⇒ <code>Promise.&lt;object&gt;</code>
+### fileCollection.copy(id, [name], [dirId], [options]) ⇒ <code>Promise.&lt;object&gt;</code>
 Copy a file.
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
@@ -974,6 +975,7 @@ Copy a file.
 | id | <code>string</code> | The file's id |
 | [name] | <code>string</code> | The file copy name |
 | [dirId] | <code>string</code> | The destination directory id |
+| [options] | <code>object</code> | Optionnal request options |
 
 <a name="FileCollection+deleteFilePermanently"></a>
 
@@ -989,7 +991,7 @@ async deleteFilePermanently - Definitely delete a file
 
 <a name="FileCollection+upload"></a>
 
-### fileCollection.upload(data, dirPath) ⇒ <code>Promise.&lt;object&gt;</code>
+### fileCollection.upload(data, dirPath, [options]) ⇒ <code>Promise.&lt;object&gt;</code>
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
 **Returns**: <code>Promise.&lt;object&gt;</code> - Created io.cozy.files  
 
@@ -997,10 +999,11 @@ async deleteFilePermanently - Definitely delete a file
 | --- | --- | --- |
 | data | <code>File</code> \| <code>Blob</code> \| [<code>Stream</code>](#Stream) \| <code>string</code> \| <code>ArrayBuffer</code> | file to be uploaded |
 | dirPath | <code>string</code> | Path to upload the file to. ie : /Administative/XXX/ |
+| [options] | <code>object</code> | Optionnal request options |
 
 <a name="FileCollection+create"></a>
 
-### fileCollection.create(attributes)
+### fileCollection.create(attributes, [options])
 Creates directory or file.
 - Used by StackLink to support CozyClient.create('io.cozy.files', options)
 
@@ -1014,14 +1017,15 @@ Creates directory or file.
 | --- | --- | --- |
 | attributes | [<code>FileAttributes</code>](#FileAttributes) \| [<code>DirectoryAttributes</code>](#DirectoryAttributes) | Attributes of the created file/directory |
 | attributes.data | <code>File</code> \| <code>Blob</code> \| <code>string</code> \| <code>ArrayBuffer</code> | Will be used as content of the created file |
+| [options] | <code>object</code> | Optionnal request options |
 
 <a name="FileCollection+updateFile"></a>
 
-### fileCollection.updateFile(data, params) ⇒ <code>object</code>
+### fileCollection.updateFile(data, params, options) ⇒ [<code>Promise.&lt;FileAttributes&gt;</code>](#FileAttributes)
 updateFile - Updates a file's data
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
-**Returns**: <code>object</code> - Updated document  
+**Returns**: [<code>Promise.&lt;FileAttributes&gt;</code>](#FileAttributes) - Updated document  
 **Throws**:
 
 - <code>Error</code> - explaining reason why update failed
@@ -1030,8 +1034,8 @@ updateFile - Updates a file's data
 | Param | Type | Description |
 | --- | --- | --- |
 | data | <code>File</code> \| <code>Blob</code> \| [<code>Stream</code>](#Stream) \| <code>string</code> \| <code>ArrayBuffer</code> | file to be uploaded |
-| params | [<code>FileAttributes</code>](#FileAttributes) | Additional parameters |
-| params.options | <code>object</code> | Options to pass to doUpload method (additional headers) |
+| params | [<code>FileAttributes</code>](#FileAttributes) | File attributes to update and doUpload options (additional headers) |
+| options | <code>object</code> | Request Options |
 
 <a name="FileCollection+download"></a>
 
@@ -1141,7 +1145,7 @@ statById - Fetches the metadata about a document. For folders, the results inclu
 
 <a name="FileCollection+createDirectoryByPath"></a>
 
-### fileCollection.createDirectoryByPath(path) ⇒ <code>object</code>
+### fileCollection.createDirectoryByPath(path, [options]) ⇒ <code>object</code>
 async createDirectoryByPath - Creates one or more folders until the given path exists
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
@@ -1150,6 +1154,7 @@ async createDirectoryByPath - Creates one or more folders until the given path e
 | Param | Type | Description |
 | --- | --- | --- |
 | path | <code>string</code> | Path of the created directory |
+| [options] | <code>object</code> | Optionnal request options |
 
 <a name="FileCollection+createFileMetadata"></a>
 
