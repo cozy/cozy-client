@@ -1658,6 +1658,7 @@ Implements `DocumentCollection` API to interact with the /settings endpoint of t
 * [SettingsCollection](#SettingsCollection)
     * [.get(id)](#SettingsCollection+get) ⇒ <code>object</code>
     * [.update(document)](#SettingsCollection+update)
+    * [.updateLastSynced()](#SettingsCollection+updateLastSynced)
 
 <a name="SettingsCollection+get"></a>
 
@@ -1682,6 +1683,12 @@ Updates a settings document
 | --- | --- | --- |
 | document | <code>object</code> | Document to update. Do not forget the _id attribute |
 
+<a name="SettingsCollection+updateLastSynced"></a>
+
+### settingsCollection.updateLastSynced()
+Updates the current OAuth client's last synchronization date
+
+**Kind**: instance method of [<code>SettingsCollection</code>](#SettingsCollection)  
 <a name="SharingCollection"></a>
 
 ## SharingCollection
