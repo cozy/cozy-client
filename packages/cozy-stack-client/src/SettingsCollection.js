@@ -87,6 +87,13 @@ class SettingsCollection extends DocumentCollection {
       data: normalizeSettings(resp.data)
     }
   }
+
+  /**
+   * Updates the current OAuth client's last synchronization date
+   */
+  async updateLastSynced() {
+    return this.stackClient.fetchJSON('POST', '/settings/synchronized')
+  }
 }
 
 SettingsCollection.normalizeDoctype = normalizeDoctypeJsonApi
