@@ -23,6 +23,7 @@ import { fetchWithXMLHttpRequest, shouldXMLHTTPRequestBeUsed } from './xhrFetch'
 import MicroEE from 'microee'
 import { FetchError } from './errors'
 import logger from './logger'
+import PromiseCache from './promise-cache'
 
 const normalizeUri = uriArg => {
   let uri = uriArg
@@ -50,6 +51,7 @@ class CozyStackClient {
 
     this.konnectors = new KonnectorCollection(this)
     this.jobs = new JobCollection(this)
+    this._promiseCache = new PromiseCache()
   }
 
   /**
@@ -245,7 +247,10 @@ class CozyStackClient {
         errors.INVALID_TOKEN.test(e.message)
       ) {
         try {
-          await this.refreshToken()
+          await this._promiseCache.exec(
+            () => this.refreshToken(),
+            () => 'refreshToken'
+          )
         } catch (refreshError) {
           throw e
         }

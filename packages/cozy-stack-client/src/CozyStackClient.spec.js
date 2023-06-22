@@ -597,6 +597,77 @@ describe('CozyStackClient', () => {
       const newToken = client.refreshToken()
       await expect(newToken).rejects.toThrow()
     })
+
+    it(`should NOT try to refresh several times in parallel`, async () => {
+      const client = new CozyStackClient(FAKE_INIT_OPTIONS)
+      jest.spyOn(client, 'refreshToken')
+      jest.spyOn(client, 'fetch')
+      jest.spyOn(client._promiseCache, 'exec')
+      global.fetch.mockResponse(() => {
+        return Promise.resolve({
+          headers: {
+            'content-type': 'application/json; charset=UTF-8'
+          },
+          body: JSON.stringify({
+            error: 'Expired token'
+          }),
+          ok: false,
+          status: 403,
+          statusText: '',
+          type: 'default',
+          url: 'http://cozy.tools:8080/settings/capabilities'
+        })
+      })
+
+      try {
+        await Promise.all([
+          client.fetchJSON('GET', '/test'),
+          client.fetchJSON('GET', '/test')
+        ])
+      } catch (e) {
+        expect(e).toBeInstanceOf(FetchError)
+        expect(client.fetch).toHaveBeenCalledTimes(2)
+      }
+      expect(client.refreshToken).toHaveBeenCalledTimes(1)
+      const token = client.getAccessToken()
+      expect(token).toEqual(FAKE_INIT_OPTIONS.token)
+      expect(client._promiseCache.exec).toHaveBeenCalledTimes(2)
+    })
+  })
+
+  it(`should call refresh token several times if needed`, async () => {
+    const client = new CozyStackClient(FAKE_INIT_OPTIONS)
+    jest.spyOn(client, 'refreshToken')
+    jest.spyOn(client, 'fetch')
+    global.fetch.mockResponse(() => {
+      return Promise.resolve({
+        headers: {
+          'content-type': 'application/json; charset=UTF-8'
+        },
+        body: JSON.stringify({
+          error: 'Expired token'
+        }),
+        ok: false,
+        status: 403,
+        statusText: '',
+        type: 'default',
+        url: 'http://cozy.tools:8080/settings/capabilities'
+      })
+    })
+
+    try {
+      await client.fetchJSON('GET', '/test')
+    } catch (e) {
+      expect(e).toBeInstanceOf(FetchError)
+    }
+    try {
+      await client.fetchJSON('GET', '/test')
+    } catch (e) {
+      expect(e).toBeInstanceOf(FetchError)
+    }
+
+    expect(client.refreshToken).toHaveBeenCalledTimes(2)
+    expect(client.fetch).toHaveBeenCalledTimes(2)
   })
 
   describe('getAccessToken', () => {
