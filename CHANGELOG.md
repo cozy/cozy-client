@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [38.7.1](https://github.com/cozy/cozy-client/compare/v38.7.0...v38.7.1) (2023-06-22)
+
+
+### Bug Fixes
+
+* Do not call refreshToken several times in parallel ([22cbe8d](https://github.com/cozy/cozy-client/commit/22cbe8dd77cd2c3661735689fb08ef0375e964ba))
+* Handle fetch errors with no Response Body ([890db21](https://github.com/cozy/cozy-client/commit/890db211d2b976cea82934b90e58ec154ef1e13b))
+
+
+
+
+
 # [38.7.0](https://github.com/cozy/cozy-client/compare/v38.6.0...v38.7.0) (2023-06-20)
 
 
