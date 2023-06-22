@@ -34,6 +34,10 @@ through OAuth.</p>
 <dt><a href="#PermissionCollection">PermissionCollection</a></dt>
 <dd><p>Implements <code>DocumentCollection</code> API along with specific methods for <code>io.cozy.permissions</code>.</p>
 </dd>
+<dt><a href="#PromiseCache">PromiseCache</a></dt>
+<dd><p>Caches promises while they are pending
+Serves to dedupe equal queries requested at the same time</p>
+</dd>
 <dt><a href="#SettingsCollection">SettingsCollection</a></dt>
 <dd><p>Implements <code>DocumentCollection</code> API to interact with the /settings endpoint of the stack</p>
 </dd>
@@ -1647,6 +1651,48 @@ Destroy a sharing link and the related permissions
 | Param | Type | Description |
 | --- | --- | --- |
 | document | <code>object</code> | document to revoke sharing link |
+
+<a name="PromiseCache"></a>
+
+## PromiseCache
+Caches promises while they are pending
+Serves to dedupe equal queries requested at the same time
+
+**Kind**: global class  
+
+* [PromiseCache](#PromiseCache)
+    * [.pending](#PromiseCache+pending) : <code>Object.&lt;string, Promise&gt;</code>
+    * [.exec(promiseFunc, keyFunc)](#PromiseCache+exec) ⇒ <code>Promise.&lt;T&gt;</code>
+    * [.get(keyFunc)](#PromiseCache+get) ⇒ <code>Promise</code> \| <code>null</code>
+
+<a name="PromiseCache+pending"></a>
+
+### promiseCache.pending : <code>Object.&lt;string, Promise&gt;</code>
+Holds pending promises
+
+**Kind**: instance property of [<code>PromiseCache</code>](#PromiseCache)  
+<a name="PromiseCache+exec"></a>
+
+### promiseCache.exec(promiseFunc, keyFunc) ⇒ <code>Promise.&lt;T&gt;</code>
+Tries to find a pending promise corresponding to the result of keyFunc
+- If not found, promiseFunc is executed and the resulting promise is stored while it's pending
+- If found, it is immediately returned
+
+**Kind**: instance method of [<code>PromiseCache</code>](#PromiseCache)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| promiseFunc | <code>function</code> | Not executed only if an "equal" promise is already pending. |
+| keyFunc | <code>function</code> | Returns a key to find in cache to find a pending promise. |
+
+<a name="PromiseCache+get"></a>
+
+### promiseCache.get(keyFunc) ⇒ <code>Promise</code> \| <code>null</code>
+**Kind**: instance method of [<code>PromiseCache</code>](#PromiseCache)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| keyFunc | <code>function</code> | Returns a key to find in cache to find a pending promise. |
 
 <a name="SettingsCollection"></a>
 
