@@ -16,7 +16,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:7](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L7)
+[packages/cozy-client/src/models/instance.js:9](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L9)
 
 ***
 
@@ -26,7 +26,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:8](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L8)
+[packages/cozy-client/src/models/instance.js:10](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L10)
 
 ***
 
@@ -36,7 +36,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:6](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L6)
+[packages/cozy-client/src/models/instance.js:8](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L8)
 
 ## Functions
 
@@ -56,7 +56,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:22](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L22)
+[packages/cozy-client/src/models/instance.js:24](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L24)
 
 ***
 
@@ -78,7 +78,7 @@ Returns the link to the Premium page on the Cozy's Manager
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:69](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L69)
+[packages/cozy-client/src/models/instance.js:71](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L71)
 
 ***
 
@@ -98,7 +98,7 @@ Returns the link to the Premium page on the Cozy's Manager
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:31](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L31)
+[packages/cozy-client/src/models/instance.js:33](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L33)
 
 ***
 
@@ -122,7 +122,31 @@ Does the cozy have offers
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:55](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L55)
+[packages/cozy-client/src/models/instance.js:57](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L57)
+
+***
+
+### hasPasswordDefinedAttribute
+
+▸ **hasPasswordDefinedAttribute**(`client`): `Promise`<`boolean`>
+
+Checks the value of the password_defined attribute
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `client` | [`CozyClient`](../classes/CozyClient.md) | The CozyClient instance |
+
+*Returns*
+
+`Promise`<`boolean`>
+
+*   Returns the value of the password_defined attribute
+
+*Defined in*
+
+[packages/cozy-client/src/models/instance.js:91](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L91)
 
 ***
 
@@ -142,7 +166,7 @@ Does the cozy have offers
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:27](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L27)
+[packages/cozy-client/src/models/instance.js:29](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L29)
 
 ***
 
@@ -168,7 +192,7 @@ Does the cozy have offers
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:19](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L19)
+[packages/cozy-client/src/models/instance.js:21](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L21)
 
 ***
 
@@ -192,4 +216,4 @@ Should we display offers
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:41](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L41)
+[packages/cozy-client/src/models/instance.js:43](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L43)

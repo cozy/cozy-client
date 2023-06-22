@@ -5,6 +5,7 @@ export function getUuid(instanceInfo: any): any;
 export function shouldDisplayOffers(data: SettingsInfo): boolean;
 export function hasAnOffer(data: SettingsInfo): boolean;
 export function buildPremiumLink(instanceInfo: InstanceInfo): string;
+export function hasPasswordDefinedAttribute(client: import("../CozyClient").default): Promise<boolean>;
 export type InstanceInfo = any;
 export type ContextInfo = any;
 export type DiskUsageInfo = any;
