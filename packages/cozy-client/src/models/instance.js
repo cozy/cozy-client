@@ -1,4 +1,6 @@
 import get from 'lodash/get'
+import { Q } from '../queries/dsl'
+
 const GB = 1000 * 1000 * 1000
 const PREMIUM_QUOTA = 50 * GB
 
@@ -77,5 +79,31 @@ export const buildPremiumLink = instanceInfo => {
     return `${managerUrl}/cozy/instances/${uuid}/premium`
   } else {
     return null
+  }
+}
+
+/**
+ * Checks the value of the password_defined attribute
+ *
+ * @param {import("../CozyClient").default} client - The CozyClient instance
+ * @returns {Promise<boolean>} - Returns the value of the password_defined attribute
+ */
+export const hasPasswordDefinedAttribute = async client => {
+  try {
+    const {
+      data: {
+        attributes: { password_defined }
+      }
+    } = await client.fetchQueryAndGetFromState({
+      definition: Q('io.cozy.settings').getById('io.cozy.settings.instance'),
+      options: {
+        as: 'io.cozy.settings/io.cozy.settings.instance',
+        singleDocData: true
+      }
+    })
+
+    return password_defined
+  } catch {
+    return false
   }
 }
