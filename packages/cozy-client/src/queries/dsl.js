@@ -1,4 +1,3 @@
-import isArray from 'lodash/isArray'
 import findKey from 'lodash/findKey'
 
 import logger from '../logger'
@@ -239,7 +238,7 @@ class QueryDefinition {
    * @returns {QueryDefinition}  The QueryDefinition object.
    */
   sortBy(sort) {
-    if (!isArray(sort)) {
+    if (!Array.isArray(sort)) {
       throw new Error(
         `Invalid sort, should be an array ([{ label: "desc"}, { name: "asc"}]), you passed ${JSON.stringify(
           sort
