@@ -1,5 +1,4 @@
 import flatten from 'lodash/flatten'
-import isArray from 'lodash/isArray'
 import isObject from 'lodash/isObject'
 
 export const getIndexNameFromFields = fields => {
@@ -7,7 +6,7 @@ export const getIndexNameFromFields = fields => {
 }
 
 const getSortKeys = sort => {
-  if (isArray(sort)) {
+  if (Array.isArray(sort)) {
     return flatten(sort.map(x => Object.keys(x)))
   } else if (isObject(sort)) {
     return Object.keys(sort)

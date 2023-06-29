@@ -6,7 +6,6 @@ import concat from 'lodash/concat'
 import isPlainObject from 'lodash/isPlainObject'
 import uniq from 'lodash/uniq'
 import orderBy from 'lodash/orderBy'
-import isArray from 'lodash/isArray'
 import isString from 'lodash/isString'
 import get from 'lodash/get'
 import sift from 'sift'
@@ -325,7 +324,7 @@ export const makeSorterFromDefinition = definition => {
   const sort = definition.sort
   if (!sort) {
     return docs => docs
-  } else if (!isArray(definition.sort)) {
+  } else if (!Array.isArray(definition.sort)) {
     logger.warn(
       'Correct update of queries with a sort that is not an array is not supported. Use an array as argument of QueryDefinition::sort'
     )
