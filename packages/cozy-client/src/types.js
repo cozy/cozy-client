@@ -411,25 +411,25 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
- * @typedef {'identity_photo'|'national_id_card'|'passport'|'residence_permit'|'family_record_book'|'birth_certificate'|'driver_license'|'other_identity_document'|'citizen_registration_certificate'|'personal_sporting_licence'|'electoral_card'} IdentityLabel
+ * @typedef {'identity_photo'|'national_id_card'|'passport'|'residence_permit'|'family_record_book'|'birth_certificate'|'driver_license'|'other_identity_document'|'citizen_registration_certificate'|'personal_sporting_licence'|'electoral_card'|'note_identity_document'} IdentityLabel
  *
- * @typedef {'family_record_book'|'birth_certificate'|'wedding'|'pacs'|'divorce'|'large_family_card'|'caf'|'other_family_document'|'payment_proof_family_allowance'|'single_parent_benefit'} FamilyLabel
+ * @typedef {'family_record_book'|'birth_certificate'|'wedding'|'pacs'|'divorce'|'large_family_card'|'caf'|'other_family_document'|'payment_proof_family_allowance'|'single_parent_benefit'|'note_family_document'} FamilyLabel
  *
- * @typedef {'diploma'|'work_contract'|'pay_sheet'|'unemployment_benefit'|'pension'|'gradebook'|'student_card'|'resume'|'motivation_letter'|'other_work_document'|'work_disability_recognition'|'school_attendance_certificate'|'employment_center_certificate'|'school_insurance_certificate'} WorkStudyLabels
+ * @typedef {'diploma'|'work_contract'|'pay_sheet'|'unemployment_benefit'|'pension'|'gradebook'|'student_card'|'resume'|'motivation_letter'|'other_work_document'|'work_disability_recognition'|'school_attendance_certificate'|'employment_center_certificate'|'school_insurance_certificate'|'note_work_document'} WorkStudyLabels
  *
- * @typedef {'health_certificate'|'health_book'|'national_health_insurance_card'|'health_insurance_card'|'prescription'|'health_invoice'|'national_health_insurance_right_certificate'|'work_disability_recognition'|'pregnancy_medical_certificate'|'other_health_document'} HealthLabels
+ * @typedef {'health_certificate'|'health_book'|'national_health_insurance_card'|'health_insurance_card'|'prescription'|'health_invoice'|'national_health_insurance_right_certificate'|'work_disability_recognition'|'pregnancy_medical_certificate'|'other_health_document'|'note_health_document'} HealthLabels
  *
- * @typedef {'phone_invoice'|'isp_invoice'|'telecom_invoice'|'energy_invoice'|'water_invoice'|'other_invoice'|'house_sale_agreeement'|'building_permit'|'technical_diagnostic_record'|'lease'|'rent_receipt'|'house_insurance'|'work_quote'|'work_invoice'|'other_house_document'|'unfit_for_habitation_declaration'|'accommodation_proof'} HomeLabels
+ * @typedef {'phone_invoice'|'isp_invoice'|'telecom_invoice'|'energy_invoice'|'water_invoice'|'other_invoice'|'house_sale_agreeement'|'building_permit'|'technical_diagnostic_record'|'lease'|'rent_receipt'|'house_insurance'|'work_quote'|'work_invoice'|'other_house_document'|'unfit_for_habitation_declaration'|'accommodation_proof'|'note_house_document'} HomeLabels
  *
- * @typedef {'driver_license'|'vehicle_registration'|'car_insurance'|'mechanic_invoice'|'transport_invoice'|'other_transport_document'|'transport_card'} TransportLabels
+ * @typedef {'driver_license'|'vehicle_registration'|'car_insurance'|'mechanic_invoice'|'transport_invoice'|'other_transport_document'|'transport_card'|'note_transport_document'} TransportLabels
  *
- * @typedef {'tax_return'|'tax_notice'|'tax_timetable'|'pay_sheet'|'receipt'|'other_tax_document'|'bank_details'|'bank_statement'|'loan_agreement'|'other_bank_document'|'payment_proof_family_allowance'|'other_revenue'|'single_parent_benefit'|'real_estate_tax'} FinanceLabels
+ * @typedef {'tax_return'|'tax_notice'|'tax_timetable'|'pay_sheet'|'receipt'|'other_tax_document'|'bank_details'|'bank_statement'|'loan_agreement'|'other_bank_document'|'payment_proof_family_allowance'|'other_revenue'|'single_parent_benefit'|'real_estate_tax'|'note_finance'} FinanceLabels
  *
- * @typedef {'phone_invoice'|'isp_invoice'|'telecom_invoice'|'energy_invoice'|'water_invoice'|'appliance_invoice'|'web_service_invoice'|'restaurant_invoice'|'work_invoice'|'transport_invoice'|'health_invoice'|'other_invoice'} InvoiceLabels
+ * @typedef {'phone_invoice'|'isp_invoice'|'telecom_invoice'|'energy_invoice'|'water_invoice'|'appliance_invoice'|'web_service_invoice'|'restaurant_invoice'|'work_invoice'|'transport_invoice'|'health_invoice'|'other_invoice'|'note_invoice'} InvoiceLabels
  *
- * @typedef {'personal_sporting_licence'|'other_activity_document'|'fidelity_card'|'library_card'} ActivityLabels
+ * @typedef {'personal_sporting_licence'|'other_activity_document'|'fidelity_card'|'library_card'|'note_activity_document'} ActivityLabels
  *
- * @typedef {'other_administrative_document'} OthersLabels
+ * @typedef {'other_administrative_document'|'note_other'} OthersLabels
  *
  * @typedef {IdentityLabel|FamilyLabel|WorkStudyLabels|HealthLabels|HomeLabels|TransportLabels|FinanceLabels|InvoiceLabels|ActivityLabels|OthersLabels} ItemsLabels
  */

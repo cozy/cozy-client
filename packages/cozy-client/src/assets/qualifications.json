@@ -490,6 +490,33 @@
     },
     {
       "label": "other_administrative_document"
+    },
+    {
+      "label": "note_identity_document"
+    },
+    {
+      "label": "note_family_document"
+    },
+    {
+      "label": "note_work_document"
+    },
+    {
+      "label": "note_health_document"
+    },
+    {
+      "label": "note_house_document"
+    },
+    {
+      "label": "note_transport_document"
+    },
+    {
+      "label": "note_activity_document"
+    },
+    {
+      "label": "note_finance"
+    },
+    {
+      "label": "note_invoice"
     }
   ],
   "purposeKnownValues": [
