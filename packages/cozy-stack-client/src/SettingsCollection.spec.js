@@ -1,4 +1,4 @@
-import SettingsCollection from './SettingsCollection'
+import SettingsCollection, { normalizeSettings } from './SettingsCollection'
 import CozyStackClient from './CozyStackClient'
 
 describe('SettingsCollection', () => {
@@ -102,6 +102,19 @@ describe('SettingsCollection', () => {
         '/data/io.cozy.settings/instance',
         { _id: 'instance' }
       )
+    })
+  })
+
+  describe('normalize a document', () => {
+    it('should flatten attributes', () => {
+      const resp = {
+        attributes: {
+          public_name: 'John'
+        }
+      }
+      const normDoc = normalizeSettings(resp)
+      expect(normDoc.public_name).toBe('John')
+      expect(normDoc.attributes.public_name).toBe('John')
     })
   })
 })
