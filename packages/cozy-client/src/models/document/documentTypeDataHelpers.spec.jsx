@@ -1,4 +1,4 @@
-import { getThemeByItem } from './documentTypeDataHelpers'
+import { getThemeByItem, isQualificationNote } from './documentTypeDataHelpers'
 
 describe('DocumentTypeDataHelpers', () => {
   it('should test getThemeByItem and return defaultTheme', () => {
@@ -24,5 +24,19 @@ describe('DocumentTypeDataHelpers', () => {
     }
     const theme = getThemeByItem(item)
     expect(theme.id).toBe('theme1')
+  })
+
+  describe('isQualificationNote', () => {
+    it('should return true for a qualification with a label starting with "note_"', () => {
+      const qualification = { label: 'note_example' }
+      const result = isQualificationNote(qualification)
+      expect(result).toBe(true)
+    })
+
+    it('should return false for a qualification with a label not starting with "note_"', () => {
+      const qualification = { label: 'example_note' }
+      const result = isQualificationNote(qualification)
+      expect(result).toBe(false)
+    })
   })
 })

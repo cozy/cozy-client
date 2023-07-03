@@ -31,6 +31,7 @@ const identityLabels = [
   'birth_certificate',
   'driver_license',
   'citizen_registration_certificate',
+  'note_identity_document',
   'other_identity_document'
 ]
 
@@ -47,6 +48,7 @@ const familyLabels = [
   'large_family_card',
   'caf',
   'payment_proof_family_allowance',
+  'note_family_document',
   'other_family_document'
 ]
 
@@ -67,6 +69,7 @@ const workStudyLabels = [
   'school_insurance_certificate',
   'resume',
   'motivation_letter',
+  'note_work_document',
   'other_work_document'
 ]
 
@@ -83,6 +86,7 @@ const healthLabels = [
   'health_invoice',
   'work_disability_recognition',
   'pregnancy_medical_certificate',
+  'note_health_document',
   'other_health_document'
 ]
 
@@ -106,6 +110,7 @@ const homeLabels = [
   'accommodation_proof',
   'house_insurance',
   'work_quote',
+  'note_house_document',
   'other_house_document'
 ]
 
@@ -119,6 +124,7 @@ const transportLabels = [
   'transport_card',
   'mechanic_invoice',
   'transport_invoice',
+  'note_transport_document',
   'other_transport_document'
 ]
 
@@ -129,6 +135,7 @@ const activityLabels = [
   'personal_sporting_licence',
   'fidelity_card',
   'library_card',
+  'note_activity_document',
   'other_activity_document'
 ]
 
@@ -148,6 +155,7 @@ const financeLabels = [
   'bank_statement',
   'loan_agreement',
   'payment_proof_family_allowance',
+  'note_finance',
   'other_bank_document',
   'other_revenue'
 ]
@@ -167,6 +175,7 @@ const invoiceLabels = [
   'work_invoice',
   'transport_invoice',
   'health_invoice',
+  'note_invoice',
   'other_invoice'
 ]
 
