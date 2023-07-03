@@ -105,6 +105,9 @@ query to work</p>
 <dt><a href="#getPermissionsFor">getPermissionsFor</a> ⇒ <code>object</code></dt>
 <dd><p>Build a permission set</p>
 </dd>
+<dt><a href="#normalizeSettings">normalizeSettings</a> ⇒ <code>object</code></dt>
+<dd><p>Normalizing a document for SettingsCollection context</p>
+</dd>
 <dt><a href="#getSharingRules">getSharingRules</a> ⇒ <code><a href="#Rule">Array.&lt;Rule&gt;</a></code></dt>
 <dd><p>Rules determine the behavior of the sharing when changes are made to the shared document
 See <a href="https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing">https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing</a></p>
@@ -2135,6 +2138,18 @@ Build a permission set
 | publicLink | <code>boolean</code> | are the permissions for a public link ? |
 | options | <code>object</code> | options |
 | options.verbs | <code>Array.&lt;string&gt;</code> | explicit permissions to use |
+
+<a name="normalizeSettings"></a>
+
+## normalizeSettings ⇒ <code>object</code>
+Normalizing a document for SettingsCollection context
+
+**Kind**: global constant  
+**Returns**: <code>object</code> - normalized document  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doc | <code>object</code> | Document to normalize |
 
 <a name="getSharingRules"></a>
 

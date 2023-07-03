@@ -5,6 +5,20 @@ import { uri } from './utils'
 export const SETTINGS_DOCTYPE = 'io.cozy.settings'
 
 /**
+ * Normalizing a document for SettingsCollection context
+ *
+ * @param {object} doc - Document to normalize
+ * @returns {object} normalized document
+ */
+export const normalizeSettings = doc => {
+  const normDoc = normalizeDoc(doc, SETTINGS_DOCTYPE)
+  return {
+    ...normDoc,
+    ...normDoc.attributes
+  }
+}
+
+/**
  * Implements `DocumentCollection` API to interact with the /settings endpoint of the stack
  */
 class SettingsCollection extends DocumentCollection {
@@ -50,10 +64,7 @@ class SettingsCollection extends DocumentCollection {
 
     const resp = await this.stackClient.fetchJSON('GET', `/settings/${path}`)
     return {
-      data: DocumentCollection.normalizeDoctypeJsonApi(SETTINGS_DOCTYPE)(
-        { id: `/settings/${path}`, ...resp.data },
-        resp
-      )
+      data: normalizeSettings({ id: `/settings/${path}`, ...resp.data })
     }
   }
 
@@ -80,7 +91,7 @@ class SettingsCollection extends DocumentCollection {
     }
 
     return {
-      data: normalizeDoc(resp.data, this.doctype)
+      data: normalizeSettings(resp.data)
     }
   }
 }
