@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [38.9.2](https://github.com/cozy/cozy-client/compare/v38.9.1...v38.9.2) (2023-07-04)
+
+
+### Bug Fixes
+
+* **SettingsCollection:** Normalize a document spreads attributes to root ([9140116](https://github.com/cozy/cozy-client/commit/91401164bb9a0f55033e4609861e95dd4d5b0975)), closes [#1118](https://github.com/cozy/cozy-client/issues/1118)
+
+
+
+
+
 ## [38.9.1](https://github.com/cozy/cozy-client/compare/v38.9.0...v38.9.1) (2023-07-04)
 
 
