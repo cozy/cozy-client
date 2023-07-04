@@ -111,6 +111,33 @@ describe('queries reducer', () => {
       // Then
       expect(state.a.isFetching).toBe(null)
     })
+
+    it('should override the previous result if the querie is refetched when backgroundFetching is enabled', () => {
+      // Given
+      const queryDefinition = Q('io.cozy.todos')
+      applyAction(initQuery('a', queryDefinition))
+
+      // When
+      applyAction(
+        receiveQueryResult('a', {
+          data: [TODO_1, TODO_2]
+        })
+      )
+      // Then
+      expect(state.a.data).toEqual([TODO_1._id, TODO_2._id])
+
+      applyAction(
+        receiveQueryResult(
+          'a',
+          {
+            data: [TODO_1]
+          },
+          { backgroundFetching: true }
+        )
+      )
+
+      expect(state.a.data).toEqual([TODO_1._id])
+    })
   })
 
   describe('RECEIVE_QUERY_ERROR', () => {

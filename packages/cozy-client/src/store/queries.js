@@ -199,6 +199,17 @@ const query = (state = queryInitialState, action, documents) => {
         response.meta && response.meta.count
           ? response.meta.count
           : response.data.length
+      if (action.backgroundFetching) {
+        return {
+          ...state,
+          ...common,
+          bookmark: response.bookmark || null,
+          hasMore: response.next !== undefined ? response.next : state.hasMore,
+          count,
+          data: response.data.map(properId)
+        }
+      }
+
       const fetchedPagesCount = state.fetchedPagesCount + 1
       const data = updateQueryDataFromResponse(state, response, documents, {
         count,
