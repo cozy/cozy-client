@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [38.9.1](https://github.com/cozy/cozy-client/compare/v38.9.0...v38.9.1) (2023-07-04)
+
+
+### Bug Fixes
+
+* Set the fresh data after getting a new query result ([d589bae](https://github.com/cozy/cozy-client/commit/d589bae138c3092021179c7066e045e26357ef09))
+
+
+
+
+
 # [38.9.0](https://github.com/cozy/cozy-client/compare/v38.8.1...v38.9.0) (2023-07-04)
 
 
