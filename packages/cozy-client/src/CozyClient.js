@@ -1531,7 +1531,11 @@ instantiation of the client.`
    * Returns whether the client has been revoked on the server
    */
   async checkForRevocation() {
-    return this.stackClient.checkForRevocation()
+    if (this.stackClient instanceof OAuthClient) {
+      return this.stackClient.checkForRevocation()
+    } else {
+      throw 'checkForRevocation is only implemented for OAutClient'
+    }
   }
 
   /** Sets public attribute and emits event related to revocation */
