@@ -34,10 +34,6 @@ const normalizeUri = uriArg => {
   return uri
 }
 
-const isRevocationError = err => {
-  return err.message && errors.CLIENT_NOT_FOUND.test(err.message)
-}
-
 /**
  * Main API against the `cozy-stack` server.
  */
@@ -53,7 +49,9 @@ class CozyStackClient {
     this.jobs = new JobCollection(this)
     this._promiseCache = new PromiseCache()
   }
-
+  isRevocationError(err) {
+    return err.message && errors.CLIENT_NOT_FOUND.test(err.message)
+  }
   /**
    * Creates a {@link DocumentCollection} instance.
    *
@@ -141,7 +139,7 @@ class CozyStackClient {
       }
       return response
     } catch (err) {
-      if (isRevocationError(err)) {
+      if (this.isRevocationError(err)) {
         this.onRevocationChange(true)
       }
       throw err
@@ -157,18 +155,6 @@ class CozyStackClient {
   onRevocationChange(state) {
     if (this.options && this.options.onRevocationChange) {
       this.options.onRevocationChange(state)
-    }
-  }
-
-  /**
-   * Returns whether the client has been revoked on the server
-   */
-  async checkForRevocation() {
-    try {
-      await this.fetchInformation()
-      return false
-    } catch (err) {
-      return isRevocationError(err)
     }
   }
 
@@ -244,7 +230,8 @@ class CozyStackClient {
     } catch (e) {
       if (
         errors.EXPIRED_TOKEN.test(e.message) ||
-        errors.INVALID_TOKEN.test(e.message)
+        errors.INVALID_TOKEN.test(e.message) ||
+        /invalid_token/.test(e)
       ) {
         try {
           await this._promiseCache.exec(
