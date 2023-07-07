@@ -13,6 +13,7 @@ import * as timeseries from './timeseries'
 import * as sharing from './sharing'
 import * as dacc from './dacc'
 import * as paper from './paper'
+import * as user from './user'
 
 // For backward compatibility before 9.0.0
 const triggers = trigger
@@ -35,5 +36,6 @@ export {
   timeseries,
   sharing,
   dacc,
-  paper
+  paper,
+  user
 }
