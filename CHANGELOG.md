@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [38.10.0](https://github.com/cozy/cozy-client/compare/v38.9.2...v38.10.0) (2023-07-10)
+
+
+### Bug Fixes
+
+* Missing user helper documentation ([bf2c241](https://github.com/cozy/cozy-client/commit/bf2c241219614b40fcf78becd9c41323cd2f1e9d))
+
+
+### Features
+
+* **instance:** Add makeDiskInfos helper ([b8ced4b](https://github.com/cozy/cozy-client/commit/b8ced4b5eb84d06c6becef074526ff7e59367f88))
+
+
+
+
+
 ## [38.9.2](https://github.com/cozy/cozy-client/compare/v38.9.1...v38.9.2) (2023-07-04)
 
 
