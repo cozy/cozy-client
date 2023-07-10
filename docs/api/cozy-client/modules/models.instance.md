@@ -6,6 +6,8 @@
 
 ## Interfaces
 
+*   [DiskInfos](../interfaces/models.instance.DiskInfos.md)
+*   [DiskInfosRaw](../interfaces/models.instance.DiskInfosRaw.md)
 *   [SettingsInfo](../interfaces/models.instance.SettingsInfo.md)
 
 ## Type aliases
@@ -16,7 +18,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:9](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L9)
+[packages/cozy-client/src/models/instance.js:10](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L10)
 
 ***
 
@@ -26,7 +28,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:10](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L10)
+[packages/cozy-client/src/models/instance.js:11](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L11)
 
 ***
 
@@ -36,7 +38,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:8](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L8)
+[packages/cozy-client/src/models/instance.js:9](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L9)
 
 ## Functions
 
@@ -56,7 +58,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:24](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L24)
+[packages/cozy-client/src/models/instance.js:25](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L25)
 
 ***
 
@@ -78,7 +80,7 @@ Returns the link to the Premium page on the Cozy's Manager
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:71](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L71)
+[packages/cozy-client/src/models/instance.js:72](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L72)
 
 ***
 
@@ -98,7 +100,7 @@ Returns the link to the Premium page on the Cozy's Manager
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:33](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L33)
+[packages/cozy-client/src/models/instance.js:34](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L34)
 
 ***
 
@@ -122,7 +124,7 @@ Does the cozy have offers
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:57](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L57)
+[packages/cozy-client/src/models/instance.js:58](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L58)
 
 ***
 
@@ -146,7 +148,7 @@ Checks the value of the password_defined attribute
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:91](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L91)
+[packages/cozy-client/src/models/instance.js:92](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L92)
 
 ***
 
@@ -166,7 +168,7 @@ Checks the value of the password_defined attribute
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:29](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L29)
+[packages/cozy-client/src/models/instance.js:30](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L30)
 
 ***
 
@@ -192,7 +194,32 @@ Checks the value of the password_defined attribute
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:21](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L21)
+[packages/cozy-client/src/models/instance.js:22](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L22)
+
+***
+
+### makeDiskInfos
+
+▸ **makeDiskInfos**(`usage`, `quota`): [`DiskInfos`](../interfaces/models.instance.DiskInfos.md)
+
+Make human readable information from disk information (usage, quota)
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `usage` | `string` | `number` | Value in bytes representing the space used |
+| `quota` | `string` | `number` | - |
+
+*Returns*
+
+[`DiskInfos`](../interfaces/models.instance.DiskInfos.md)
+
+*   Return a set of human readable information about disk
+
+*Defined in*
+
+[packages/cozy-client/src/models/instance.js:164](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L164)
 
 ***
 
@@ -216,4 +243,4 @@ Should we display offers
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:43](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L43)
+[packages/cozy-client/src/models/instance.js:44](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L44)

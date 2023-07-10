@@ -1,6 +1,7 @@
 import get from 'lodash/get'
 import { Q } from '../queries/dsl'
 
+const FallbackQuota = 1e11
 const GB = 1000 * 1000 * 1000
 const PREMIUM_QUOTA = 50 * GB
 
@@ -105,5 +106,69 @@ export const hasPasswordDefinedAttribute = async client => {
     return password_defined
   } catch {
     return false
+  }
+}
+
+/**
+ * @typedef DiskInfosRaw
+ * @property diskQuota {number} - Space used in GB
+ * @property diskUsage {number} -  Maximum space available in GB
+ * @property percentUsage {number} - Usage percent of the disk
+ */
+
+/**
+ * @typedef DiskInfos
+ * @property humanDiskQuota {string} - Space used in GB rounded
+ * @property humanDiskUsage {string} - Maximum space available in GB rounded
+ * @property percentUsage {string} - Usage percent of the disk rounded
+ */
+
+/**
+ * Convert input value into GB
+ *
+ * @param {number} bytes - Value in bytes
+ * @returns {number} - Returns the value in GB
+ */
+const convertBytesToGB = bytes => bytes * 1e-9
+
+/**
+ * Computes `value` rounded to `fractionDigits`.
+ *
+ * @param {number} value - Value to format
+ * @param {number} fractionDigits - Number of decimal numbers
+ * @returns {string} - Returns the rounded number as a string
+ */
+const formatDecimals = (value, fractionDigits = 2) =>
+  `${value % 1 ? value.toFixed(fractionDigits) : value}`
+
+/**
+ * Transform bytes data to GB data and compute percent usage
+ *
+ * @param {number} usage - Value in bytes representing the space used
+ * @param {number} quota - Value in bytes representing the maximum space available
+ * @returns {DiskInfosRaw} - Returns an transform data to GB and usage percent of the disk
+ */
+const computeDiskInfos = (usage, quota = FallbackQuota) => ({
+  diskQuota: convertBytesToGB(quota),
+  diskUsage: convertBytesToGB(usage),
+  percentUsage: (usage / quota) * 100
+})
+
+/**
+ * Make human readable information from disk information (usage, quota)
+ *
+ * @param {number|string} usage - Value in bytes representing the space used
+ * @param {number|string} [quota] - Value in bytes representing the maximum space available
+ * @returns {DiskInfos} - Return a set of human readable information about disk
+ */
+export const makeDiskInfos = (usage, quota) => {
+  const { diskQuota, diskUsage, percentUsage } = computeDiskInfos(
+    +usage,
+    quota ? +quota : undefined
+  )
+  return {
+    humanDiskQuota: formatDecimals(diskQuota),
+    humanDiskUsage: formatDecimals(diskUsage),
+    percentUsage: Math.round(percentUsage).toString()
   }
 }
