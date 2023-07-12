@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [38.11.0](https://github.com/cozy/cozy-client/compare/v38.10.0...v38.11.0) (2023-07-12)
+
+
+### Features
+
+* Update wording of note qualifications ([b9400a3](https://github.com/cozy/cozy-client/commit/b9400a3a36196b48b65cb90c2fb80e8017e0a19e))
+
+
+
+
+
 # [38.10.0](https://github.com/cozy/cozy-client/compare/v38.9.2...v38.10.0) (2023-07-10)
 
 
