@@ -1,6 +1,8 @@
 import { generateWebLink } from '../helpers'
 import logger from '../logger'
 
+export const RETURN_URL_KEY = 'returnUrl'
+
 /**
  *
  * @param {string} notesAppUrl URL to the Notes App (https://notes.foo.mycozy.cloud)
@@ -55,4 +57,24 @@ export const fetchURL = async (client, file) => {
       hash: `/n/${note_id}`
     })
   }
+}
+
+/**
+ * Create the URL to be used to edit a note
+ *
+ * @param {object} client CozyClient instance
+ * @param {object} file io.cozy.file object
+ * @param {string} returnUrl URL to use as returnUrl if you don't want the current location
+ * @returns {Promise<string>} URL where one can edit the note
+ */
+export const generateReturnUrlToNotesIndex = async (
+  client,
+  file,
+  returnUrl
+) => {
+  const rawUrl = fetchURL(client, file)
+  const back = window.location.toString()
+  const dest = new URL(await rawUrl)
+  dest.searchParams.set(RETURN_URL_KEY, returnUrl || back)
+  return dest.toString()
 }

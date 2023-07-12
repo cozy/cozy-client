@@ -4,6 +4,16 @@
 
 [models](models.md).note
 
+## Variables
+
+### RETURN_URL_KEY
+
+• `Const` **RETURN_URL_KEY**: `"returnUrl"`
+
+*Defined in*
+
+[packages/cozy-client/src/models/note.js:4](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/note.js#L4)
+
 ## Functions
 
 ### fetchURL
@@ -27,7 +37,7 @@ url
 
 *Defined in*
 
-[packages/cozy-client/src/models/note.js:31](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/note.js#L31)
+[packages/cozy-client/src/models/note.js:33](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/note.js#L33)
 
 ***
 
@@ -49,7 +59,33 @@ url
 
 *Defined in*
 
-[packages/cozy-client/src/models/note.js:9](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/note.js#L9)
+[packages/cozy-client/src/models/note.js:11](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/note.js#L11)
+
+***
+
+### generateReturnUrlToNotesIndex
+
+▸ **generateReturnUrlToNotesIndex**(`client`, `file`, `returnUrl`): `Promise`<`string`>
+
+Create the URL to be used to edit a note
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `client` | `any` | CozyClient instance |
+| `file` | `any` | io.cozy.file object |
+| `returnUrl` | `string` | URL to use as returnUrl if you don't want the current location |
+
+*Returns*
+
+`Promise`<`string`>
+
+URL where one can edit the note
+
+*Defined in*
+
+[packages/cozy-client/src/models/note.js:70](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/note.js#L70)
 
 ***
 
@@ -70,4 +106,4 @@ url
 
 *Defined in*
 
-[packages/cozy-client/src/models/note.js:18](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/note.js#L18)
+[packages/cozy-client/src/models/note.js:20](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/note.js#L20)

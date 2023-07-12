@@ -1,4 +1,18 @@
-import { note } from './'
+import {
+  generatePrivateUrl,
+  fetchURL,
+  generateReturnUrlToNotesIndex
+} from './note'
+
+// see https://remarkablemark.org/blog/2018/11/17/mock-window-location/
+const { location } = window
+function setLocation(url) {
+  delete window.location
+  window.location = url
+}
+function restoreLocation() {
+  window.location = location
+}
 
 describe('note model', () => {
   it('should generate the right link to a note', () => {
@@ -8,7 +22,7 @@ describe('note model', () => {
     }
     const notesAppUrl = 'http://notes.cozy.tools/'
 
-    expect(note.generatePrivateUrl(notesAppUrl, noteDocument)).toEqual(
+    expect(generatePrivateUrl(notesAppUrl, noteDocument)).toEqual(
       `http://notes.cozy.tools/#/n/${noteDocument._id}`
     )
   })
@@ -26,7 +40,7 @@ describe('note model', () => {
       fetchURLspy.mockResolvedValue({
         data: { note_id: 1, protocol: 'https', instance: 'foo.mycozy' }
       })
-      const generatedUrl = await note.fetchURL(mockedClient, {
+      const generatedUrl = await fetchURL(mockedClient, {
         id: 1
       })
 
@@ -40,7 +54,7 @@ describe('note model', () => {
           sharecode: 'hahaha'
         }
       })
-      const generatedUrl2 = await note.fetchURL(mockedClient, {
+      const generatedUrl2 = await fetchURL(mockedClient, {
         id: 1
       })
 
@@ -57,7 +71,7 @@ describe('note model', () => {
           public_name: 'Crash'
         }
       })
-      const generatedUrl3 = await note.fetchURL(mockedClient, {
+      const generatedUrl3 = await fetchURL(mockedClient, {
         id: 1
       })
 
@@ -69,7 +83,7 @@ describe('note model', () => {
 
   describe('generatePrivateUrl', () => {
     it('should generate an URL with the returnkey', () => {
-      const generatedUrl = note.generatePrivateUrl(
+      const generatedUrl = generatePrivateUrl(
         'https://notes.cozy.foo',
         {
           id: 1,
@@ -82,5 +96,55 @@ describe('note model', () => {
         'https://notes.cozy.foo/?returnUrl=https%3A%2F%2Fdrive.cozy.foo%2F%23%2Ffolder%2F1#/n/1'
       )
     })
+  })
+})
+
+describe('generateReturnUrlToNotesIndex', () => {
+  function createFetchUrl() {
+    return jest.fn().mockImplementation(({ _id }) => ({
+      data: {
+        type: 'io.cozy.notes.url',
+        id: _id,
+        note_id: _id,
+        subdomain: 'flat',
+        protocol: 'https',
+        instance: 'alice.cozy.example',
+        public_name: 'Bob'
+      }
+    }))
+  }
+
+  function createClient() {
+    return {
+      getStackClient: () => ({
+        collection: () => ({ fetchURL: createFetchUrl() })
+      })
+    }
+  }
+
+  function createNote(id = '12345') {
+    return { id, type: 'io.cozy.files' }
+  }
+
+  afterEach(() => {
+    restoreLocation()
+  })
+
+  it('returns an URL string', async () => {
+    const client = createClient()
+    const note = createNote()
+    const urlString = await generateReturnUrlToNotesIndex(client, note)
+    const url = new URL(urlString)
+    expect(url.toString()).toEqual(urlString)
+  })
+
+  it('has a returnUrl key', async () => {
+    const location = 'htt://google.com/index?param=value#hash'
+    setLocation(location)
+    const client = createClient()
+    const note = createNote()
+    const urlString = await generateReturnUrlToNotesIndex(client, note)
+    const url = new URL(urlString)
+    expect(url.searchParams.get('returnUrl')).toEqual(location)
   })
 })
