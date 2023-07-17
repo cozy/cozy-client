@@ -80,24 +80,26 @@ export default class HasManyFiles extends HasMany {
 
   async addById(idsArg) {
     const ids = Array.isArray(idsArg) ? idsArg : [idsArg]
+
+    this.addTargetRelationships(ids)
+
     const relations = ids.map(id => ({
       _id: id,
       _type: this.doctype
     }))
     await this.mutate(this.addReferences(relations))
-
-    this.addTargetRelationships(ids)
   }
 
   async removeById(idsArg) {
     const ids = Array.isArray(idsArg) ? idsArg : [idsArg]
+
+    this.removeTargetRelationships(idsArg)
+
     const references = ids.map(id => ({
       _id: id,
       _type: this.doctype
     }))
     await this.mutate(this.removeReferences(references))
-
-    this.removeTargetRelationships(ids)
   }
 
   addReferences(referencedDocs) {
