@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [38.11.1](https://github.com/cozy/cozy-client/compare/v38.11.0...v38.11.1) (2023-07-17)
+
+
+### Bug Fixes
+
+* **HasManyFiles:** Update after removing a relation ([a6a59c4](https://github.com/cozy/cozy-client/commit/a6a59c410a8b6b6098c6f8f9a42d5edd4d8b5416))
+
+
+
+
+
 # [38.11.0](https://github.com/cozy/cozy-client/compare/v38.10.0...v38.11.0) (2023-07-12)
 
 
