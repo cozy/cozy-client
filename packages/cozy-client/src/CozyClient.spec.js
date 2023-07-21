@@ -2060,3 +2060,34 @@ describe('document creation', () => {
     expect(updatedDoc.data.relationships.authors.data[0]._id).toBe(1)
   })
 })
+
+describe('CozyClient revocation handling', () => {
+  let client
+  let mockCallback
+
+  beforeEach(() => {
+    client = new CozyClient({})
+    client.stackClient.refreshToken = jest.fn().mockImplementation(() => {
+      client.stackClient.onRevocationChange(true)
+    })
+
+    mockCallback = jest.fn()
+    client.on('revoked', mockCallback)
+  })
+
+  it('should call "revoked" event when token is expired', async () => {
+    await client.stackClient.refreshToken()
+
+    expect(mockCallback).toHaveBeenCalledTimes(1)
+  })
+
+  it('should not call "revoked" event when token is not expired', async () => {
+    client.stackClient.refreshToken = jest.fn().mockImplementation(() => {
+      client.stackClient.onRevocationChange(false)
+    })
+
+    await client.stackClient.refreshToken()
+
+    expect(mockCallback).not.toHaveBeenCalled()
+  })
+})
