@@ -308,7 +308,6 @@ Main API against the `cozy-stack` server.
 * [CozyStackClient](#CozyStackClient)
     * [.collection(doctype)](#CozyStackClient+collection) ⇒ [<code>DocumentCollection</code>](#DocumentCollection)
     * [.fetch(method, path, [body], [opts])](#CozyStackClient+fetch) ⇒ <code>object</code>
-    * [.checkForRevocation()](#CozyStackClient+checkForRevocation)
     * [.refreshToken()](#CozyStackClient+refreshToken) ⇒ <code>Promise</code>
     * [.fetchJSON(method, path, body, options)](#CozyStackClient+fetchJSON) ⇒ <code>object</code>
     * [.setToken(token)](#CozyStackClient+setToken)
@@ -343,12 +342,6 @@ Fetches an endpoint in an authorized way.
 | [body] | <code>object</code> |  | The payload. |
 | [opts] | <code>object</code> | <code>{}</code> | Options for fetch |
 
-<a name="CozyStackClient+checkForRevocation"></a>
-
-### cozyStackClient.checkForRevocation()
-Returns whether the client has been revoked on the server
-
-**Kind**: instance method of [<code>CozyStackClient</code>](#CozyStackClient)  
 <a name="CozyStackClient+refreshToken"></a>
 
 ### cozyStackClient.refreshToken() ⇒ <code>Promise</code>
@@ -1267,6 +1260,7 @@ through OAuth.
     * [.setOAuthOptions(options)](#OAuthClient+setOAuthOptions)
     * [.resetClient()](#OAuthClient+resetClient)
     * [.setPassphraseFlagship(params)](#OAuthClient+setPassphraseFlagship) ⇒ <code>object</code>
+    * [.checkForRevocation()](#OAuthClient+checkForRevocation) ⇒ <code>Promise.&lt;boolean&gt;</code>
 
 <a name="OAuthClient+doRegistration"></a>
 
@@ -1495,6 +1489,18 @@ More info: https://docs.cozy.io/en/cozy-stack/settings/#post-settingspassphrasef
 | params.publicKey | <code>string</code> | public key used for sharing ciphers from the vault |
 | params.privateKey | <code>string</code> | private key (crypted) used for sharing ciphers from the vault |
 | params.iterations | <code>string</code> | number of KDF iterations applied when hashing the master password |
+
+<a name="OAuthClient+checkForRevocation"></a>
+
+### oAuthClient.checkForRevocation() ⇒ <code>Promise.&lt;boolean&gt;</code>
+Check if the OAuth client'shas been revoked.
+If this is the case, call the onRevocationChange callback
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+**Returns**: <code>Promise.&lt;boolean&gt;</code> - A Promise that resolves to `false` if client is still valid, or `true` if it has been revoked.  
+**Throws**:
+
+- <code>Error</code> If an error occurs while fetching the client information.
 
 <a name="OAuthClientsCollection"></a>
 
@@ -2434,6 +2440,7 @@ Document representing a io.cozy.oauth.clients
     * [.setOAuthOptions(options)](#OAuthClient+setOAuthOptions)
     * [.resetClient()](#OAuthClient+resetClient)
     * [.setPassphraseFlagship(params)](#OAuthClient+setPassphraseFlagship) ⇒ <code>object</code>
+    * [.checkForRevocation()](#OAuthClient+checkForRevocation) ⇒ <code>Promise.&lt;boolean&gt;</code>
 
 <a name="OAuthClient+doRegistration"></a>
 
@@ -2662,6 +2669,18 @@ More info: https://docs.cozy.io/en/cozy-stack/settings/#post-settingspassphrasef
 | params.publicKey | <code>string</code> | public key used for sharing ciphers from the vault |
 | params.privateKey | <code>string</code> | private key (crypted) used for sharing ciphers from the vault |
 | params.iterations | <code>string</code> | number of KDF iterations applied when hashing the master password |
+
+<a name="OAuthClient+checkForRevocation"></a>
+
+### oAuthClient.checkForRevocation() ⇒ <code>Promise.&lt;boolean&gt;</code>
+Check if the OAuth client'shas been revoked.
+If this is the case, call the onRevocationChange callback
+
+**Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
+**Returns**: <code>Promise.&lt;boolean&gt;</code> - A Promise that resolves to `false` if client is still valid, or `true` if it has been revoked.  
+**Throws**:
+
+- <code>Error</code> If an error occurs while fetching the client information.
 
 <a name="FetchChangesReturnValue"></a>
 
@@ -2894,7 +2913,6 @@ Define a recipient that can be used as target of a sharing
 * [CozyStackClient](#CozyStackClient) : <code>object</code>
     * [.collection(doctype)](#CozyStackClient+collection) ⇒ [<code>DocumentCollection</code>](#DocumentCollection)
     * [.fetch(method, path, [body], [opts])](#CozyStackClient+fetch) ⇒ <code>object</code>
-    * [.checkForRevocation()](#CozyStackClient+checkForRevocation)
     * [.refreshToken()](#CozyStackClient+refreshToken) ⇒ <code>Promise</code>
     * [.fetchJSON(method, path, body, options)](#CozyStackClient+fetchJSON) ⇒ <code>object</code>
     * [.setToken(token)](#CozyStackClient+setToken)
@@ -2929,12 +2947,6 @@ Fetches an endpoint in an authorized way.
 | [body] | <code>object</code> |  | The payload. |
 | [opts] | <code>object</code> | <code>{}</code> | Options for fetch |
 
-<a name="CozyStackClient+checkForRevocation"></a>
-
-### cozyStackClient.checkForRevocation()
-Returns whether the client has been revoked on the server
-
-**Kind**: instance method of [<code>CozyStackClient</code>](#CozyStackClient)  
 <a name="CozyStackClient+refreshToken"></a>
 
 ### cozyStackClient.refreshToken() ⇒ <code>Promise</code>
