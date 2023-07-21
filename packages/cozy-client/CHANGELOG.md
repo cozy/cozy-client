@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [39.0.0](https://github.com/cozy/cozy-client/compare/v38.11.1...v39.0.0) (2023-07-21)
+
+
+### Bug Fixes
+
+* Handle `503 Blocked` response when calling `rootCozyUrl` ([603cb08](https://github.com/cozy/cozy-client/commit/603cb08c3d173fe1b58129c972eec18cd055b764))
+
+
+### BREAKING CHANGES
+
+* rootCozyUrl() can now throw a BlockedCozyError
+exception if the target Cozy is blocked
+
+
+
+
+
 ## [38.11.1](https://github.com/cozy/cozy-client/compare/v38.11.0...v38.11.1) (2023-07-17)
 
 
