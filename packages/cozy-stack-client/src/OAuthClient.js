@@ -494,8 +494,12 @@ class OAuthClient extends CozyStackClient {
    * @returns {Promise} A promise that resolves with a new AccessToken object
    */
   async refreshToken() {
-    if (!this.isRegistered()) throw new NotRegisteredException()
-    if (!this.token) throw new Error('No token to refresh')
+    if (!this.isRegistered()) {
+      throw new NotRegisteredException()
+    }
+    if (!this.token) {
+      throw new Error('No token to refresh')
+    }
 
     const data = {
       grant_type: 'refresh_token',
@@ -504,7 +508,7 @@ class OAuthClient extends CozyStackClient {
       client_secret: this.oauthOptions.clientSecret
     }
     try {
-      const result = await super.fetchJSON(
+      const result = await this.fetchJSONWithCurrentToken(
         'POST',
         '/auth/access_token',
         this.dataToQueryString(data),
@@ -512,6 +516,17 @@ class OAuthClient extends CozyStackClient {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }
       )
+        // Have to catch early to check for revocation because it seems the error is not caught by the catch below in some cases (e.g. when the client is not registered, even if it should be)
+        .catch(async e => {
+          if (await this.checkForRevocation()) {
+            throw new Error(
+              'Client has been revoked. Please authenticate again.'
+            )
+          } else {
+            throw e
+          }
+        })
+
       const newToken = new AccessToken({
         refresh_token: this.token.refreshToken,
         ...result
@@ -528,11 +543,13 @@ class OAuthClient extends CozyStackClient {
       if (
         errors.EXPIRED_TOKEN.test(e.message) ||
         errors.INVALID_TOKEN.test(e.message) ||
-        /invalid_token/.test(e)
+        errors.INVALID_TOKEN_ALT.test(e.message)
       ) {
-        // If the client has been revoked, then checkForRevocation will throw the error
-        // if not, then throw the real error
-        this.checkForRevocation()
+        const revoked = await this.checkForRevocation()
+
+        if (revoked) {
+          throw new Error('Client has been revoked. Please authenticate again.')
+        }
       }
       throw e
     }

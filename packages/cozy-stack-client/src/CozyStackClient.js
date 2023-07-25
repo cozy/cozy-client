@@ -230,7 +230,7 @@ class CozyStackClient {
       if (
         errors.EXPIRED_TOKEN.test(e.message) ||
         errors.INVALID_TOKEN.test(e.message) ||
-        /invalid_token/.test(e)
+        errors.INVALID_TOKEN_ALT.test(e.message)
       ) {
         try {
           await this._promiseCache.exec(

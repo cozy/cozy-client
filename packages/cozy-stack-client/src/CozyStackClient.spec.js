@@ -489,7 +489,7 @@ describe('CozyStackClient', () => {
       )
     })
 
-    it(`should NOT try to refresh the current token when receiving a 'forbidden' response with 'invalid token' error in 'www-authenticate' (not expired token)`, async () => {
+    it(`should try to refresh the current token when receiving a 'forbidden' response with 'invalid token' error in 'www-authenticate' (not expired token)`, async () => {
       const client = new CozyStackClient(FAKE_INIT_OPTIONS)
       jest.spyOn(client, 'refreshToken')
       global.fetch.mockResponseOnce(() => {
@@ -515,7 +515,7 @@ describe('CozyStackClient', () => {
       } catch (e) {
         expect(e).toBeInstanceOf(FetchError)
         expect(e.message).toBe('Invalid token')
-        expect(client.refreshToken).not.toHaveBeenCalled()
+        expect(client.refreshToken).toHaveBeenCalled()
         const token = client.getAccessToken()
         expect(token).toEqual(FAKE_INIT_OPTIONS.token)
       }
