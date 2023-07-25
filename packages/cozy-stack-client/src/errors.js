@@ -1,11 +1,13 @@
 const EXPIRED_TOKEN = /Expired token/
 const CLIENT_NOT_FOUND = /Client not found/
 const INVALID_TOKEN = /Invalid JWT token/
+const INVALID_TOKEN_ALT = /Invalid token/
 
 export default {
   EXPIRED_TOKEN,
   CLIENT_NOT_FOUND,
-  INVALID_TOKEN
+  INVALID_TOKEN,
+  INVALID_TOKEN_ALT
 }
 
 const getWwwAuthenticateErrorMessage = response => {

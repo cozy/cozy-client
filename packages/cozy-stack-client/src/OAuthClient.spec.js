@@ -1,5 +1,6 @@
 import OAuthClient from './OAuthClient'
 import AccessToken from './AccessToken'
+import { FetchError } from './errors'
 
 const CLIENT_INIT_OPTIONS = {
   uri: 'http://cozy.tools:8080',
@@ -278,6 +279,40 @@ describe('OAuthClient', () => {
         scope: 'io.cozy.todos'
       })
       expect(client.getAccessToken()).toBe('accessToken-abcd')
+    })
+  })
+
+  describe('getRefreshToken', () => {
+    it('should call onRevocation', async () => {
+      client = new OAuthClient(REGISTERED_CLIENT_INIT_OPTIONS)
+      client.setToken({
+        tokenType: 'type',
+        accessToken: 'accessToken-abcd',
+        refreshToken: 'refresh-789',
+        scope: 'io.cozy.todos'
+      })
+      client.fetchJSONWithCurrentToken = jest
+        .fn()
+        .mockImplementationOnce(async () => {
+          throw new FetchError('Invalid token', 'Invalid token')
+        })
+        .mockImplementation(async () => {
+          throw new Error('Client not found')
+        })
+
+      const revocationSpy = jest.spyOn(client, 'onRevocationChange')
+      const refreshSpy = jest.spyOn(client, 'refreshToken')
+
+      try {
+        await client.fetchInformation()
+      } catch (error) {
+        expect(refreshSpy).toHaveBeenCalled()
+        expect(revocationSpy).toHaveBeenCalledWith(true)
+      }
+
+      // Clean up our spies
+      refreshSpy.mockRestore()
+      revocationSpy.mockRestore()
     })
   })
 })
