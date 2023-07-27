@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [40.0.0](https://github.com/cozy/cozy-client/compare/v39.0.0...v40.0.0) (2023-07-27)
+
+
+### Bug Fixes
+
+* Update tests for unregistered error handling ([0e9b96b](https://github.com/cozy/cozy-client/commit/0e9b96b0a97fa3525a695bce32bf326fe16580a7))
+
+
+### Features
+
+* Add Oauth test and catch early ([6fb6108](https://github.com/cozy/cozy-client/commit/6fb61088b3c5c2236870b171168e7d51c3b09a51))
+* CheckForRevocation automatically after an invalid token ([82d4ac3](https://github.com/cozy/cozy-client/commit/82d4ac3cce69613b659fe5fe47dd20331b2d2703))
+
+
+### BREAKING CHANGES
+
+* checkForRevocation() is only callable when dealing
+with an OAuthClient.
+
+It should not break your app, since if you called this method on a
+stackClient before, it should have crashed your app.
+
+
+
+
+
 # [39.0.0](https://github.com/cozy/cozy-client/compare/v38.11.1...v39.0.0) (2023-07-21)
 
 **Note:** Version bump only for package cozy-stack-client

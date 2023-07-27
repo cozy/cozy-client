@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [40.0.0](https://github.com/cozy/cozy-client/compare/v39.0.0...v40.0.0) (2023-07-27)
+
+
+### Features
+
+* Add unit test to revocation event emitter ([83e26cb](https://github.com/cozy/cozy-client/commit/83e26cb382c7966c2063865251f0d91535ffa928))
+* CheckForRevocation automatically after an invalid token ([82d4ac3](https://github.com/cozy/cozy-client/commit/82d4ac3cce69613b659fe5fe47dd20331b2d2703))
+
+
+### BREAKING CHANGES
+
+* checkForRevocation() is only callable when dealing
+with an OAuthClient.
+
+It should not break your app, since if you called this method on a
+stackClient before, it should have crashed your app.
+
+
+
+
+
 # [39.0.0](https://github.com/cozy/cozy-client/compare/v38.11.1...v39.0.0) (2023-07-21)
 
 
