@@ -1,6 +1,5 @@
 import {
   isMatchingIndex,
-  isInconsistentIndex,
   getIndexFields,
   getIndexNameFromFields
 } from './mangoIndex'
@@ -100,49 +99,6 @@ describe('matching index', () => {
       { partialFilter }
     )
     expect(isMatchingIndex(matchingIndex, ['foo', 'bar'])).toEqual(false)
-  })
-})
-
-describe('inconsistent index', () => {
-  it('should detect inconsistent index', () => {
-    const index = buildDesignDoc(
-      { foo: 'asc', bar: 'asc' },
-      { id: '_design/by_bar_and_foo' }
-    )
-    expect(isInconsistentIndex(index)).toBe(true)
-  })
-
-  it('should not detect consistent index', () => {
-    const index1 = buildDesignDoc(
-      { bar: 'asc', foo: 'asc' },
-      { id: '_design/by_bar_and_foo' }
-    )
-    const index2 = buildDesignDoc(
-      { foo: 'asc', bar: 'asc' },
-      { id: '/design/1234' }
-    )
-    expect(isInconsistentIndex(index1)).toBe(false)
-    expect(isInconsistentIndex(index2)).toBe(false)
-  })
-  it('should not detect consistent index with partial filter', () => {
-    const index = buildDesignDoc(
-      { bar: 'asc', foo: 'asc' },
-      {
-        id: '_design/by_bar_and_foo_filter_trashed',
-        partialFilter: { trashed: { $ne: false } }
-      }
-    )
-    expect(isInconsistentIndex(index)).toBe(false)
-  })
-  it('should detect index with partial filter but without fields in name', () => {
-    const index = buildDesignDoc(
-      { bar: 'asc', foo: 'asc' },
-      {
-        id: '_design/by_bar_and_foo',
-        partialFilter: { trashed: { $ne: false } }
-      }
-    )
-    expect(isInconsistentIndex(index)).toBe(true)
   })
 })
 

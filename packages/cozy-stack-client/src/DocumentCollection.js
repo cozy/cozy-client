@@ -26,7 +26,6 @@ import {
   transformSort,
   getIndexFields,
   isMatchingIndex,
-  isInconsistentIndex,
   normalizeDesignDoc
 } from './mangoIndex'
 import * as querystring from './querystring'
@@ -726,32 +725,9 @@ The returned documents are paginated by the stack.
     const existingIndex = indexes.find(index => {
       return isMatchingIndex(index, fieldsToIndex, partialFilter)
     })
-    // Since we have fetched all the existing indexes
-    // let's clean them up.
-    // This is a safeguard for potential inconsistent indexes
-    this.removeInconsistentIndex(indexes)
     return existingIndex
   }
-  /**
-   *
-   * @param {DesignDoc[]} indexes Index to remove
-   */
-  async removeInconsistentIndex(indexes) {
-    for (const index of indexes) {
-      // Since we use this as a safeguard and only for
-      // this case, then we don't want to throw if an
-      // error is raised.
-      if (isInconsistentIndex(index)) {
-        try {
-          await this.destroyIndex(index)
-        } catch (error) {
-          logger.warn(
-            `Destroy index has errored for ${index} with the following error: ${error?.toString()}`
-          )
-        }
-      }
-    }
-  }
+
   /**
    * Calls _changes route from CouchDB
    * No further treatment is done contrary to fetchchanges
