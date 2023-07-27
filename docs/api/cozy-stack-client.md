@@ -92,13 +92,6 @@ Serves to dedupe equal queries requested at the same time</p>
 <dd><p>Compute fields that should be indexed for a mango
 query to work</p>
 </dd>
-<dt><a href="#isInconsistentIndex">isInconsistentIndex</a> ⇒ <code>boolean</code></dt>
-<dd><p>Check if an index is in an inconsistent state, i.e. it evaluates one of these:</p>
-<ul>
-<li>its name contains the indexed attributes which are not in correct order</li>
-<li>it contains a partial filter, but the fields are not in the name</li>
-</ul>
-</dd>
 <dt><a href="#isMatchingIndex">isMatchingIndex</a> ⇒ <code>boolean</code></dt>
 <dd><p>Check if an index is matching the given fields</p>
 </dd>
@@ -423,7 +416,6 @@ Abstracts a collection of documents of the same doctype, providing CRUD methods 
         * [.fetchAllMangoIndexes()](#DocumentCollection+fetchAllMangoIndexes) ⇒ <code>Promise.&lt;Array.&lt;DesignDoc&gt;&gt;</code>
         * [.destroyIndex(index)](#DocumentCollection+destroyIndex) ⇒ <code>Promise.&lt;object&gt;</code>
         * [.copyIndex(existingIndex, newIndexName)](#DocumentCollection+copyIndex) ⇒ [<code>Promise.&lt;DesignDoc&gt;</code>](#DesignDoc)
-        * [.removeInconsistentIndex(indexes)](#DocumentCollection+removeInconsistentIndex)
         * [.fetchChangesRaw(couchOptions)](#DocumentCollection+fetchChangesRaw)
     * _static_
         * [.normalizeDoctype(doctype)](#DocumentCollection.normalizeDoctype) ⇒ <code>function</code>
@@ -657,15 +649,6 @@ having to recompute the existing index.
 | --- | --- | --- |
 | existingIndex | [<code>DesignDoc</code>](#DesignDoc) | The design doc to copy |
 | newIndexName | <code>string</code> | The name of the copy |
-
-<a name="DocumentCollection+removeInconsistentIndex"></a>
-
-### documentCollection.removeInconsistentIndex(indexes)
-**Kind**: instance method of [<code>DocumentCollection</code>](#DocumentCollection)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| indexes | [<code>Array.&lt;DesignDoc&gt;</code>](#DesignDoc) | Index to remove |
 
 <a name="DocumentCollection+fetchChangesRaw"></a>
 
@@ -2096,20 +2079,6 @@ query to work
 
 **Kind**: global constant  
 **Returns**: <code>Array</code> - - Fields to index  
-<a name="isInconsistentIndex"></a>
-
-## isInconsistentIndex ⇒ <code>boolean</code>
-Check if an index is in an inconsistent state, i.e. it evaluates one of these:
-- its name contains the indexed attributes which are not in correct order
-- it contains a partial filter, but the fields are not in the name
-
-**Kind**: global constant  
-**Returns**: <code>boolean</code> - True if the index is inconsistent  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| index | [<code>DesignDoc</code>](#DesignDoc) | The index to check |
-
 <a name="isMatchingIndex"></a>
 
 ## isMatchingIndex ⇒ <code>boolean</code>
