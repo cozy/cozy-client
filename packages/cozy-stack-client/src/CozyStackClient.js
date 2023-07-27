@@ -49,7 +49,15 @@ class CozyStackClient {
     this._promiseCache = new PromiseCache()
   }
   isRevocationError(err) {
-    return err.message && errors.CLIENT_NOT_FOUND.test(err.message)
+    const message = err?.message
+
+    if (!message) return false
+
+    if (
+      errors.CLIENT_NOT_FOUND.test(err.message) ||
+      errors.UNREGISTERED_CLIENT.test(err.message)
+    )
+      return true
   }
   /**
    * Creates a {@link DocumentCollection} instance.
