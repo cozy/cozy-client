@@ -2,6 +2,7 @@ import CozyStackClient from './CozyStackClient'
 import AccessToken from './AccessToken'
 import logDeprecate from './logDeprecate'
 import errors from './errors'
+import logger from './logger'
 
 /**
  * @typedef {string} SessionCode
@@ -516,16 +517,6 @@ class OAuthClient extends CozyStackClient {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }
       )
-        // Have to catch early to check for revocation because it seems the error is not caught by the catch below in some cases (e.g. when the client is not registered, even if it should be)
-        .catch(async e => {
-          if (await this.checkForRevocation()) {
-            throw new Error(
-              'Client has been revoked. Please authenticate again.'
-            )
-          } else {
-            throw e
-          }
-        })
 
       const newToken = new AccessToken({
         refresh_token: this.token.refreshToken,
@@ -540,6 +531,12 @@ class OAuthClient extends CozyStackClient {
 
       return newToken
     } catch (e) {
+      if (this.isRevocationError(e)) {
+        this.onRevocationChange(true)
+        logger.warn('Client has been revoked. Please authenticate again.')
+        throw e
+      }
+
       if (
         errors.EXPIRED_TOKEN.test(e.message) ||
         errors.INVALID_TOKEN.test(e.message) ||
@@ -548,7 +545,8 @@ class OAuthClient extends CozyStackClient {
         const revoked = await this.checkForRevocation()
 
         if (revoked) {
-          throw new Error('Client has been revoked. Please authenticate again.')
+          logger.warn('Client has been revoked. Please authenticate again.')
+          throw e
         }
       }
       throw e
@@ -663,12 +661,11 @@ class OAuthClient extends CozyStackClient {
   }
 
   /**
-   * Check if the OAuth client'shas been revoked.
+   * Check if the OAuth client's has been revoked.
    * If this is the case, call the onRevocationChange callback
    *
    * @async
    * @returns {Promise<boolean>} A Promise that resolves to `false` if client is still valid, or `true` if it has been revoked.
-   * @throws {Error} If an error occurs while fetching the client information.
    */
   async checkForRevocation() {
     try {

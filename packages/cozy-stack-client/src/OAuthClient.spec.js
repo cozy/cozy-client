@@ -294,10 +294,10 @@ describe('OAuthClient', () => {
       client.fetchJSONWithCurrentToken = jest
         .fn()
         .mockImplementationOnce(async () => {
-          throw new FetchError('Invalid token', 'Invalid token')
+          throw new FetchError({}, 'Invalid JWT token')
         })
         .mockImplementation(async () => {
-          throw new Error('Client not found')
+          throw new FetchError({}, 'the client must be registered')
         })
 
       const revocationSpy = jest.spyOn(client, 'onRevocationChange')
@@ -308,6 +308,7 @@ describe('OAuthClient', () => {
       } catch (error) {
         expect(refreshSpy).toHaveBeenCalled()
         expect(revocationSpy).toHaveBeenCalledWith(true)
+        expect(error).toBeInstanceOf(FetchError)
       }
 
       // Clean up our spies

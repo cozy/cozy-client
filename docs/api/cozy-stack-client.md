@@ -1490,15 +1490,11 @@ More info: https://docs.cozy.io/en/cozy-stack/settings/#post-settingspassphrasef
 <a name="OAuthClient+checkForRevocation"></a>
 
 ### oAuthClient.checkForRevocation() ⇒ <code>Promise.&lt;boolean&gt;</code>
-Check if the OAuth client'shas been revoked.
+Check if the OAuth client's has been revoked.
 If this is the case, call the onRevocationChange callback
 
 **Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
 **Returns**: <code>Promise.&lt;boolean&gt;</code> - A Promise that resolves to `false` if client is still valid, or `true` if it has been revoked.  
-**Throws**:
-
-- <code>Error</code> If an error occurs while fetching the client information.
-
 <a name="OAuthClientsCollection"></a>
 
 ## OAuthClientsCollection
@@ -2658,15 +2654,11 @@ More info: https://docs.cozy.io/en/cozy-stack/settings/#post-settingspassphrasef
 <a name="OAuthClient+checkForRevocation"></a>
 
 ### oAuthClient.checkForRevocation() ⇒ <code>Promise.&lt;boolean&gt;</code>
-Check if the OAuth client'shas been revoked.
+Check if the OAuth client's has been revoked.
 If this is the case, call the onRevocationChange callback
 
 **Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
 **Returns**: <code>Promise.&lt;boolean&gt;</code> - A Promise that resolves to `false` if client is still valid, or `true` if it has been revoked.  
-**Throws**:
-
-- <code>Error</code> If an error occurs while fetching the client information.
-
 <a name="FetchChangesReturnValue"></a>
 
 ## FetchChangesReturnValue ⇒ [<code>FetchChangesReturnValue</code>](#FetchChangesReturnValue)

@@ -2,41 +2,50 @@ const EXPIRED_TOKEN = /Expired token/
 const CLIENT_NOT_FOUND = /Client not found/
 const INVALID_TOKEN = /Invalid JWT token/
 const INVALID_TOKEN_ALT = /Invalid token/
+const UNREGISTERED_CLIENT = /the client must be registered/
 
 export default {
   EXPIRED_TOKEN,
   CLIENT_NOT_FOUND,
   INVALID_TOKEN,
-  INVALID_TOKEN_ALT
+  INVALID_TOKEN_ALT,
+  UNREGISTERED_CLIENT
 }
 
+const invalidTokenRegex = /invalid_token/
+const expiredTokenRegex = /access_token_expired/
+
 const getWwwAuthenticateErrorMessage = response => {
-  const invalidTokenRegex = /invalid_token/
-  const expiredTokenRegex = /access token expired/
-  const wwwAuthenticateHeader =
-    response.headers && response.headers.get('www-authenticate')
+  const wwwAuthenticateHeader = response.headers?.get('www-authenticate')
 
-  if (!wwwAuthenticateHeader) {
-    return undefined
-  }
+  if (!wwwAuthenticateHeader) return undefined
 
-  if (expiredTokenRegex.test(wwwAuthenticateHeader)) {
-    return 'Expired token'
-  }
+  if (expiredTokenRegex.test(wwwAuthenticateHeader)) return 'Expired token'
 
-  if (invalidTokenRegex.test(wwwAuthenticateHeader)) {
-    return 'Invalid token'
-  }
+  if (invalidTokenRegex.test(wwwAuthenticateHeader)) return 'Invalid token'
+}
 
-  return undefined
+const getReasonMessage = (reason, wwwAuthenticateErrorMessage) => {
+  // As for now we only want to use `reason.error` over `reason.message` if it's an unregistered client error
+  // For other scenarios, we want to still use `reason.message` over `JSON.stringify(reason)` for better backward compatibility
+  const isUnregisteredError =
+    typeof reason.error === 'string' && UNREGISTERED_CLIENT.test(reason.error)
+      ? reason.error
+      : undefined
+
+  return (
+    isUnregisteredError ||
+    reason.message ||
+    wwwAuthenticateErrorMessage ||
+    (typeof reason === 'string' ? reason : JSON.stringify(reason))
+  )
 }
 
 export class FetchError extends Error {
   constructor(response, reason) {
     super()
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, this.constructor)
-    }
+    Error.captureStackTrace?.(this, this.constructor)
+
     // WARN We have to hardcode this because babel doesn't play nice when extending Error
     this.name = 'FetchError'
     this.response = response
@@ -44,19 +53,16 @@ export class FetchError extends Error {
     this.status = response.status
     this.reason = reason
 
-    let wwwAuthenticateErrorMessage = getWwwAuthenticateErrorMessage(response)
-
     if (reason === null) {
       throw new Error(
         `FetchError received a ${response.status} error without a Response Body when calling ${response.url}`
       )
     }
 
+    let wwwAuthenticateErrorMessage = getWwwAuthenticateErrorMessage(response)
+
     Object.defineProperty(this, 'message', {
-      value:
-        reason.message ||
-        wwwAuthenticateErrorMessage ||
-        (typeof reason === 'string' ? reason : JSON.stringify(reason))
+      value: getReasonMessage(reason, wwwAuthenticateErrorMessage)
     })
   }
 }
