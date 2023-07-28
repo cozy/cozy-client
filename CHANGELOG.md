@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [40.0.1](https://github.com/cozy/cozy-client/compare/v40.0.0...v40.0.1) (2023-07-28)
+
+
+### Bug Fixes
+
+* Stop destroying inconsistent index ([fd6d6a4](https://github.com/cozy/cozy-client/commit/fd6d6a487f845718e8a709fdd9e4cf74ea47a04c))
+
+
+
+
+
 # [40.0.0](https://github.com/cozy/cozy-client/compare/v39.0.0...v40.0.0) (2023-07-27)
 
 
