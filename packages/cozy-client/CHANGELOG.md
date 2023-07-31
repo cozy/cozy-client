@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [40.1.0](https://github.com/cozy/cozy-client/compare/v40.0.1...v40.1.0) (2023-07-31)
+
+
+### Features
+
+* Replace Reminder by Note ([3035ed8](https://github.com/cozy/cozy-client/commit/3035ed8ecfb32929fa3e5e5ed79bd07d84de87eb))
+
+
+
+
+
 ## [40.0.1](https://github.com/cozy/cozy-client/compare/v40.0.0...v40.0.1) (2023-07-28)
 
 **Note:** Version bump only for package cozy-client
