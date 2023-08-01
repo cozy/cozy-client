@@ -73,6 +73,11 @@ class AppCollection extends DocumentCollection {
           return res
         }
 
+        logger.warn(
+          `The use of source registry is deprecated since it can polute the io.cozy.apps slice. For exemple, if we request data from the registry, than the app will be present in the io.cozy.apps slice and then the isInstalled() will return true.\n
+            Use Q('io.cozy.apps_registry) instead`
+        )
+
         const data = transformRegistryFormatToStackFormat(res)
         return { data: normalizeApp(data, this.doctype) }
       } catch (err) {
