@@ -188,6 +188,24 @@ describe(`AppCollection`, () => {
         expect(data.id).toBe('fromRegistry')
       })
     })
+
+    describe('deprecated get call with "registry" source', () => {
+      beforeEach(() => {
+        jest.spyOn(logger, 'warn').mockImplementation(() => {})
+      })
+      afterEach(() => {
+        logger.warn.mockRestore()
+      })
+
+      it('should call the right route (deprecated call with registry source)', async () => {
+        await collection.get('io.cozy.apps/fakeid', { sources: ['registry'] })
+        expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/registry/fakeid')
+        expect(logger.warn).toHaveBeenCalledWith(
+          `The use of source registry is deprecated since it can polute the io.cozy.apps slice. For exemple, if we request data from the registry, than the app will be present in the io.cozy.apps slice and then the isInstalled() will return true.\n
+            Use Q('io.cozy.apps_registry) instead`
+        )
+      })
+    })
   })
 
   describe('create', () => {

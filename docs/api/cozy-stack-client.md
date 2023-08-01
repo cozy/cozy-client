@@ -4,6 +4,9 @@
 <dt><a href="#AppCollection">AppCollection</a></dt>
 <dd><p>Extends <code>DocumentCollection</code> API along with specific methods for <code>io.cozy.apps</code>.</p>
 </dd>
+<dt><a href="#AppsRegistryCollection">AppsRegistryCollection</a></dt>
+<dd><p>Extends <code>DocumentCollection</code> API along with specific methods for <code>io.cozy.apps_registry</code>.</p>
+</dd>
 <dt><a href="#Collection">Collection</a></dt>
 <dd><p>Utility class to abstract an regroup identical methods and logics for
 specific collections.</p>
@@ -266,6 +269,28 @@ The returned documents are not paginated by the stack.
 **Throws**:
 
 - <code>FetchError</code> 
+
+<a name="AppsRegistryCollection"></a>
+
+## AppsRegistryCollection
+Extends `DocumentCollection` API along with specific methods for `io.cozy.apps_registry`.
+
+**Kind**: global class  
+<a name="AppsRegistryCollection+get"></a>
+
+### appsRegistryCollection.get(slug) ⇒ <code>Promise.&lt;{data: object}&gt;</code>
+Fetches an app from the registry.
+
+**Kind**: instance method of [<code>AppsRegistryCollection</code>](#AppsRegistryCollection)  
+**Returns**: <code>Promise.&lt;{data: object}&gt;</code> - JsonAPI response containing normalized document as data attribute  
+**Throws**:
+
+- <code>FetchError</code> 
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| slug | <code>string</code> | Slug of the app |
 
 <a name="Collection"></a>
 

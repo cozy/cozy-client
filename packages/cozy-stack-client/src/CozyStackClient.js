@@ -16,6 +16,9 @@ import OAuthClientsCollection, {
 } from './OAuthClientsCollection'
 import ShortcutsCollection, { SHORTCUTS_DOCTYPE } from './ShortcutsCollection'
 import ContactsCollection, { CONTACTS_DOCTYPE } from './ContactsCollection'
+import AppsRegistryCollection, {
+  APPS_REGISTRY_DOCTYPE
+} from './AppsRegistryCollection'
 import getIconURL from './getIconURL'
 import logDeprecate from './logDeprecate'
 import { fetchWithXMLHttpRequest, shouldXMLHTTPRequestBeUsed } from './xhrFetch'
@@ -95,6 +98,8 @@ class CozyStackClient {
         return new OAuthClientsCollection(this)
       case SHORTCUTS_DOCTYPE:
         return new ShortcutsCollection(this)
+      case APPS_REGISTRY_DOCTYPE:
+        return new AppsRegistryCollection(this)
       default:
         return new DocumentCollection(doctype, this)
     }
