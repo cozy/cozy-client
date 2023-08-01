@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [40.2.0](https://github.com/cozy/cozy-client/compare/v40.1.0...v40.2.0) (2023-08-01)
+
+
+### Features
+
+* Add AppsRegistryCollection ([9d010a9](https://github.com/cozy/cozy-client/commit/9d010a9943d295b4eeb789bd188d4b4988164382))
+
+
+
+
+
 ## [40.0.1](https://github.com/cozy/cozy-client/compare/v40.0.0...v40.0.1) (2023-07-28)
 
 
