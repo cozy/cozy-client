@@ -93,7 +93,11 @@ describe('SettingsCollection', () => {
       expect(stackClient.fetchJSON).toHaveBeenCalledWith(
         'PUT',
         '/settings/instance',
-        { _id: 'io.cozy.settings.instance' }
+        {
+          data: {
+            _id: 'io.cozy.settings.instance'
+          }
+        }
       )
 
       await collection.update({ _id: 'instance' })
