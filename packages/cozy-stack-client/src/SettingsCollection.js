@@ -77,11 +77,9 @@ class SettingsCollection extends DocumentCollection {
     let resp
 
     if (document._id === 'io.cozy.settings.instance') {
-      resp = await this.stackClient.fetchJSON(
-        'PUT',
-        '/settings/instance',
-        document
-      )
+      resp = await this.stackClient.fetchJSON('PUT', '/settings/instance', {
+        data: document
+      })
     } else {
       resp = await this.stackClient.fetchJSON(
         'PUT',
