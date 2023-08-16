@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [40.2.1](https://github.com/cozy/cozy-client/compare/v40.2.0...v40.2.1) (2023-08-16)
+
+
+### Bug Fixes
+
+* Document has to be wrap into a data object to update instance ([b83bf51](https://github.com/cozy/cozy-client/commit/b83bf519e9a6db9a2797751c08d7967e8b40878f))
+
+
+
+
+
 # [40.2.0](https://github.com/cozy/cozy-client/compare/v40.1.0...v40.2.0) (2023-08-01)
 
 
