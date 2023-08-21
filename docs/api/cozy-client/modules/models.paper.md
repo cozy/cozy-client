@@ -36,7 +36,7 @@ Expiration date
 
 *Defined in*
 
-[packages/cozy-client/src/models/paper.js:89](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L89)
+[packages/cozy-client/src/models/paper.js:91](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L91)
 
 ***
 
@@ -60,7 +60,7 @@ Expiration notice date
 
 *Defined in*
 
-[packages/cozy-client/src/models/paper.js:125](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L125)
+[packages/cozy-client/src/models/paper.js:127](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L127)
 
 ***
 
@@ -84,7 +84,7 @@ Expiration notice link
 
 *Defined in*
 
-[packages/cozy-client/src/models/paper.js:144](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L144)
+[packages/cozy-client/src/models/paper.js:146](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L146)
 
 ***
 
@@ -106,7 +106,7 @@ Expiration notice link
 
 *Defined in*
 
-[packages/cozy-client/src/models/paper.js:156](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L156)
+[packages/cozy-client/src/models/paper.js:158](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L158)
 
 ***
 
@@ -128,7 +128,7 @@ Expiration notice link
 
 *Defined in*
 
-[packages/cozy-client/src/models/paper.js:71](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L71)
+[packages/cozy-client/src/models/paper.js:73](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L73)
 
 ***
 
@@ -150,4 +150,4 @@ Expiration notice link
 
 *Defined in*
 
-[packages/cozy-client/src/models/paper.js:168](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L168)
+[packages/cozy-client/src/models/paper.js:170](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L170)
