@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [40.3.0](https://github.com/cozy/cozy-client/compare/v40.2.1...v40.3.0) (2023-08-21)
+
+
+### Features
+
+* Add link for driver_license expiration note ([226cba8](https://github.com/cozy/cozy-client/commit/226cba80edc9ef8fd627ca63e5ed5d81defdd68a))
+
+
+
+
+
 ## [40.2.1](https://github.com/cozy/cozy-client/compare/v40.2.0...v40.2.1) (2023-08-16)
 
 **Note:** Version bump only for package cozy-client
