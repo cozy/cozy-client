@@ -59,6 +59,11 @@ describe('Expiration', () => {
     expirationDate: '2022-09-23T11:35:58.118Z',
     noticePeriod: '90'
   })
+  const fakeDriverLicense = buildMockFile({
+    qualificationLabel: 'driver_license',
+    expirationDate: '2022-09-23T11:35:58.118Z',
+    noticePeriod: '90'
+  })
 
   describe('computeExpirationDate', () => {
     it('should return expirationDate', () => {
@@ -109,6 +114,7 @@ describe('Expiration', () => {
       ${fakeNationalIdCardFile}  | ${'https://www.service-public.fr/particuliers/vosdroits/N358'}
       ${fakeResidencePermitFile} | ${'https://www.service-public.fr/particuliers/vosdroits/N110'}
       ${fakePassportFile}        | ${'https://www.service-public.fr/particuliers/vosdroits/N360'}
+      ${fakeDriverLicense}       | ${'https://permisdeconduire.ants.gouv.fr/demarches-en-ligne/perte-vol-deterioration-fin-de-validite-ou-changement-d-etat-civil'}
     `(
       `should return "$link" link for an file with "$file.metadata.qualification.label" qualification label`,
       ({ file, link }) => {

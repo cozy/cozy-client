@@ -10,7 +10,9 @@ const PERSONAL_SPORTING_LICENCE_NOTICE_PERIOD_DAYS = 15
 const EXPIRATION_LINK_BY_LABEL = {
   national_id_card: 'https://www.service-public.fr/particuliers/vosdroits/N358',
   residence_permit: 'https://www.service-public.fr/particuliers/vosdroits/N110',
-  passport: 'https://www.service-public.fr/particuliers/vosdroits/N360'
+  passport: 'https://www.service-public.fr/particuliers/vosdroits/N360',
+  driver_license:
+    'https://permisdeconduire.ants.gouv.fr/demarches-en-ligne/perte-vol-deterioration-fin-de-validite-ou-changement-d-etat-civil'
 }
 
 /**
