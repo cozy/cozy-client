@@ -5,6 +5,7 @@ import AppCollection from './AppCollection'
 import { APPS_DOCTYPE } from './AppCollection'
 import { ALL_APPS_RESPONSE, GET_APPS_RESPONSE } from './__tests__/fixtures/apps'
 import logger from './logger'
+import { FetchError } from './errors'
 const FIXTURES = {
   ALL_APPS_RESPONSE,
   GET_APPS_RESPONSE
@@ -68,6 +69,53 @@ describe(`AppCollection`, () => {
       const resp = await collection.get('io.cozy.apps/fakeid')
       expect(resp.data).toHaveDocumentIdentity()
       expect(resp.data._type).toEqual(APPS_DOCTYPE)
+    })
+
+    it('should not throw if the app is not found', async () => {
+      const originalResp = {
+        ok: false,
+        redirected: false,
+        status: 404,
+        statusText: 'Not Found'
+      }
+      const dataResp = {
+        errors: [
+          {
+            status: '404',
+            title: 'Not Found',
+            detail: 'Application is not installed',
+            source: {}
+          }
+        ]
+      }
+      jest
+        .spyOn(client, 'fetchJSON')
+        .mockRejectedValueOnce(new FetchError(originalResp, dataResp))
+      const resp = await collection.get('io.cozy.apps/fakeid')
+      expect(resp.data).toEqual(null)
+    })
+
+    it('should throw if the error is not about "not found"', async () => {
+      const originalResp = {
+        ok: false,
+        redirected: false,
+        status: 500,
+        statusText: 'Internal Error'
+      }
+      const dataResp = {
+        errors: [
+          {
+            status: '500',
+            title: 'Internal Error',
+            detail: 'ERROR',
+            source: {}
+          }
+        ]
+      }
+      jest
+        .spyOn(client, 'fetchJSON')
+        .mockRejectedValueOnce(new FetchError(originalResp, dataResp))
+      await expect(collection.get('io.cozy.apps/fakeid')).rejects.toThrow()
     })
 
     describe('deprecated get call without <doctype>/', () => {
@@ -141,6 +189,32 @@ describe(`AppCollection`, () => {
           .spyOn(client, 'fetchJSON')
           .mockRejectedValueOnce(new Error('Bad request'))
 
+        await collection.get('io.cozy.apps/fakeid', query)
+
+        expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/apps/fakeid')
+        expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/registry/fakeid')
+      })
+
+      it('should fetch /registry/fakeid if the /apps/fakeid returns a not found', async () => {
+        const originalResp = {
+          ok: false,
+          redirected: false,
+          status: 404,
+          statusText: 'Not Found'
+        }
+        const dataResp = {
+          errors: [
+            {
+              status: '404',
+              title: 'Not Found',
+              detail: 'Application is not installed',
+              source: {}
+            }
+          ]
+        }
+        jest
+          .spyOn(client, 'fetchJSON')
+          .mockRejectedValueOnce(new FetchError(originalResp, dataResp))
         await collection.get('io.cozy.apps/fakeid', query)
 
         expect(client.fetchJSON).toHaveBeenCalledWith('GET', '/apps/fakeid')

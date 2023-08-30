@@ -9,7 +9,8 @@ import { CozyStackClient } from './types'
  * found" error.
  */
 export const dontThrowNotFoundError = (error, data = []) => {
-  if (error.message.match(/not_found/)) {
+  // not_found is for JSON API response, Not Found is for /apps or /konnectors route
+  if (error.message.match(/not_found/) || error.toString().match(/Not Found/)) {
     const expectsCollection = Array.isArray(data)
     // Return expected JsonAPI attributes : collections are expecting
     // meta, skip and next attribute
@@ -88,13 +89,18 @@ export class Collection {
    * @param  {Function}    options.normalize Callback to normalize response data
    * (default `data => data`)
    * @param  {string}  [options.method=GET]  -  HTTP method
+   * @param {object} [options.dataForNotFound] - Data to return in case of not found
    * @returns {Promise<object>}  JsonAPI response containing normalized
    * document as data attribute
    */
   static async get(
     stackClient,
     endpoint,
-    { normalize = (data, response) => data, method = 'GET' }
+    {
+      normalize = (data, response) => data,
+      method = 'GET',
+      dataForNotFound = null
+    }
   ) {
     try {
       const resp = await stackClient.fetchJSON(method, endpoint)
@@ -102,7 +108,7 @@ export class Collection {
         data: normalize(resp.data, resp)
       }
     } catch (error) {
-      return dontThrowNotFoundError(error, null)
+      return dontThrowNotFoundError(error, dataForNotFound)
     }
   }
 }

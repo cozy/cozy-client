@@ -60,7 +60,8 @@ class AppCollection extends DocumentCollection {
           this.stackClient,
           `${this.endpoint}${encodeURIComponent(id)}`,
           {
-            normalize: data => normalizeApp(data, this.doctype)
+            normalize: data => normalizeApp(data, this.doctype),
+            dataForNotFound: null
           }
         ),
       registry: () => this.stackClient.fetchJSON('GET', registryEndpoint + id)
@@ -69,7 +70,13 @@ class AppCollection extends DocumentCollection {
     for (const source of sources) {
       try {
         const res = await dataFetchers[source]()
-        if (source !== 'registry') {
+        // TODO Code to remove after the end of the depreciation of the `sources` attributes
+        // If we only have `stack` as sources, let's return it's result
+        if (source === 'stack' && sources.length === 1) {
+          return res
+        }
+        // If we have a response from the stack even if there is several sources, let's return it
+        if (source === 'stack' && res.data !== null) {
           return res
         }
 
@@ -77,9 +84,11 @@ class AppCollection extends DocumentCollection {
           `The use of source registry is deprecated since it can polute the io.cozy.apps slice. For exemple, if we request data from the registry, than the app will be present in the io.cozy.apps slice and then the isInstalled() will return true.\n
             Use Q('io.cozy.apps_registry) instead`
         )
-
-        const data = transformRegistryFormatToStackFormat(res)
-        return { data: normalizeApp(data, this.doctype) }
+        // If we have a response from the registry let's return it.
+        if (source === 'registry') {
+          const data = transformRegistryFormatToStackFormat(res)
+          return { data: normalizeApp(data, this.doctype) }
+        }
       } catch (err) {
         if (source === sources[sources.length - 1]) {
           throw err

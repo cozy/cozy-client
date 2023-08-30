@@ -315,6 +315,7 @@ document as data attribute
 | options | <code>object</code> |  | Options of the collection |
 | options.normalize | <code>function</code> |  | Callback to normalize response data (default `data => data`) |
 | [options.method] | <code>string</code> | <code>&quot;GET&quot;</code> | HTTP method |
+| [options.dataForNotFound] | <code>object</code> |  | Data to return in case of not found |
 
 <a name="CozyStackClient"></a>
 
