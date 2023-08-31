@@ -1676,7 +1676,7 @@ instantiation of the client.`
   /**
    * loadInstanceOptionsFromStack - Loads the instance options from cozy-stack and exposes it through getInstanceOptions
    *
-   * For now only retrieving capabilities is supported
+   * This method is not iso with loadInstanceOptionsFromDOM for now.
    *
    * @returns {Promise<void>}
    */
@@ -1685,8 +1685,14 @@ instantiation of the client.`
       Q('io.cozy.settings').getById('io.cozy.settings.capabilities')
     )
 
+    const { data: instanceData } = await this.query(
+      Q('io.cozy.settings').getById('io.cozy.settings.instance')
+    )
+
     this.instanceOptions = {
-      capabilities: data.attributes
+      capabilities: data.attributes,
+      locale: instanceData.attributes?.locale,
+      tracking: instanceData.attributes?.tracking
     }
 
     this.capabilities = this.instanceOptions.capabilities || null
