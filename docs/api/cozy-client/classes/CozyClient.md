@@ -1099,7 +1099,7 @@ loadInstanceOptionsFromDOM - Loads the dataset injected by the Stack in web page
 
 loadInstanceOptionsFromStack - Loads the instance options from cozy-stack and exposes it through getInstanceOptions
 
-For now only retrieving capabilities is supported
+This method is not iso with loadInstanceOptionsFromDOM for now.
 
 *Returns*
 
@@ -1604,7 +1604,7 @@ Saves multiple documents in one batch
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1729](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1729)
+[packages/cozy-client/src/CozyClient.js:1735](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1735)
 
 ***
 
@@ -1628,7 +1628,7 @@ set some data in the store.
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1702](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1702)
+[packages/cozy-client/src/CozyClient.js:1708](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1708)
 
 ***
 
@@ -1652,7 +1652,7 @@ At any time put an error function
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1715](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1715)
+[packages/cozy-client/src/CozyClient.js:1721](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1721)
 
 ***
 
@@ -1728,7 +1728,7 @@ Contains the fetched token and the client information. These should be stored an
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1722](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1722)
+[packages/cozy-client/src/CozyClient.js:1728](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1728)
 
 ***
 

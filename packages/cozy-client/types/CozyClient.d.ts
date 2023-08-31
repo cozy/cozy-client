@@ -687,7 +687,7 @@ declare class CozyClient {
     /**
      * loadInstanceOptionsFromStack - Loads the instance options from cozy-stack and exposes it through getInstanceOptions
      *
-     * For now only retrieving capabilities is supported
+     * This method is not iso with loadInstanceOptionsFromDOM for now.
      *
      * @returns {Promise<void>}
      */
