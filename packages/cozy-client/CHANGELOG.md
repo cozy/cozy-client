@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [40.4.0](https://github.com/cozy/cozy-client/compare/v40.3.0...v40.4.0) (2023-09-01)
+
+
+### Features
+
+* Add instance data in loadInstanceOptionsFromStack ([3f3b0d8](https://github.com/cozy/cozy-client/commit/3f3b0d8e7174ca74c4410a73457a88c55493cda2))
+
+
+
+
+
 # [40.3.0](https://github.com/cozy/cozy-client/compare/v40.2.1...v40.3.0) (2023-08-21)
 
 
