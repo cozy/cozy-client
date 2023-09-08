@@ -103,7 +103,7 @@ export const hasPasswordDefinedAttribute = async client => {
       }
     })
 
-    return password_defined
+    return Boolean(password_defined)
   } catch {
     return false
   }
