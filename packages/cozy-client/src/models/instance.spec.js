@@ -147,4 +147,34 @@ describe('instance', () => {
       })
     })
   })
+
+  describe('hasPasswordDefinedAttribute', () => {
+    const setup = async (data = {}) => {
+      const client = {
+        fetchQueryAndGetFromState: jest
+          .fn()
+          .mockImplementation(() => Promise.resolve({ data }))
+      }
+      return await instance.hasPasswordDefinedAttribute(client)
+    }
+    it('should return false if attribute password_defined does not exist', async () => {
+      const res = await setup()
+      expect(res).toBe(false)
+    })
+
+    it('should return false if attribute password_defined is undefined', async () => {
+      const res = await setup({ attributes: { password_defined: undefined } })
+      expect(res).toBe(false)
+    })
+
+    it('should return false if attribute password_defined is false', async () => {
+      const res = await setup({ attributes: { password_defined: false } })
+      expect(res).toBe(false)
+    })
+
+    it('should return true if attribute password_defined is true', async () => {
+      const res = await setup({ attributes: { password_defined: true } })
+      expect(res).toBe(true)
+    })
+  })
 })
