@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [40.4.1](https://github.com/cozy/cozy-client/compare/v40.4.0...v40.4.1) (2023-09-08)
+
+
+### Bug Fixes
+
+* Manage when password_defined value is undefined ([f887f5d](https://github.com/cozy/cozy-client/commit/f887f5d159efd830c22cf39fd0faee50aa074f94))
+
+
+
+
+
 # [40.4.0](https://github.com/cozy/cozy-client/compare/v40.3.0...v40.4.0) (2023-09-01)
 
 
