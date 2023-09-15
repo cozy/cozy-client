@@ -21,7 +21,7 @@
     "items": {
       "accommodation_proof": "Proof of accommodation |||| Proof of accommodations",
       "appliance_invoice": "Appliance invoice |||| Appliance invoices",
-      "bank_details": "IBAN",
+      "bank_details": "Bank detail |||| Bank details",
       "bank_statement": "Bank statement |||| Bank statements",
       "birth_certificate": "Birth certificate |||| Birth certificates",
       "building_permit": "Building permit |||| Building permits",
