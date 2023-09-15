@@ -9,9 +9,9 @@ describe('getBoundT', () => {
     expect(res).toBe('ID card')
   })
   it('should return translation if it has no pluralization pipes', () => {
-    const res = t('Scan.items.bank_details')
+    const res = t('Scan.items.health')
 
-    expect(res).toBe('IBAN')
+    expect(res).toBe('Health')
   })
   it('should return "default value" option', () => {
     const res = t('Scan.items.unknown_key', { _: 'default value' })
