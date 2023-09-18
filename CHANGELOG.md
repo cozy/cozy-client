@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [40.5.0](https://github.com/cozy/cozy-client/compare/v40.4.1...v40.5.0) (2023-09-18)
+
+
+### Features
+
+* Rename IBAN to RIB ([6d876ba](https://github.com/cozy/cozy-client/commit/6d876ba83cd7f1d45d93f27c56d431cd81b73aec))
+
+
+
+
+
 ## [40.4.1](https://github.com/cozy/cozy-client/compare/v40.4.0...v40.4.1) (2023-09-08)
 
 
