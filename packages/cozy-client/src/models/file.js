@@ -398,9 +398,31 @@ export const overrideFileForPath = async (client, dirPath, file, metadata) => {
  * Method to generate a new filename if there is a conflict
  *
  * @param {string} filenameWithoutExtension - A filename without the extension
+ * @param {string} [type] - 'parenthesis' to add " (X)" default to "_X"
  * @returns {string} A filename with the right suffix
  */
-export const generateNewFileNameOnConflict = filenameWithoutExtension => {
+export const generateNewFileNameOnConflict = (
+  filenameWithoutExtension,
+  type
+) => {
+  if (type === 'parenthesis') {
+    //Check if the string ends by (1)
+    const regex = new RegExp(' [(]([0-9]+)[)]$')
+    const matches = filenameWithoutExtension.match(regex)
+    if (matches) {
+      let versionNumber = parseInt(matches[1])
+      //increment versionNumber
+      versionNumber++
+      const newFilenameWithoutExtension = filenameWithoutExtension.replace(
+        new RegExp(' [(]([0-9]+)[)]$'),
+        ` (${versionNumber})`
+      )
+      return newFilenameWithoutExtension
+    } else {
+      return `${filenameWithoutExtension} (1)`
+    }
+  }
+
   //Check if the string ends by _1
   const regex = new RegExp('(_)([0-9]+)$')
   const matches = filenameWithoutExtension.match(regex)

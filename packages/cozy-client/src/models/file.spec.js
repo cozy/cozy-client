@@ -561,7 +561,7 @@ describe('File Model', () => {
     })
   })
 
-  describe('generateNewFileNameOnConflict', () => {
+  describe('generateNewFileNameOnConflict with underscore', () => {
     it('should generate the right file name with _X', () => {
       const filename1 = fileModel.generateNewFileNameOnConflict('test')
       expect(filename1).toEqual('test_1')
@@ -571,6 +571,31 @@ describe('File Model', () => {
       expect(filename3).toEqual('test_1_1_test_1')
       const filename4 = fileModel.generateNewFileNameOnConflict('test_')
       expect(filename4).toEqual('test__1')
+    })
+  })
+
+  describe('generateNewFileNameOnConflict with parenthesis', () => {
+    it('should generate the right file name with (X)', () => {
+      const filename1 = fileModel.generateNewFileNameOnConflict(
+        'test',
+        'parenthesis'
+      )
+      expect(filename1).toEqual('test (1)')
+      const filename2 = fileModel.generateNewFileNameOnConflict(
+        'test (1)',
+        'parenthesis'
+      )
+      expect(filename2).toEqual('test (2)')
+      const filename3 = fileModel.generateNewFileNameOnConflict(
+        'test(1)test',
+        'parenthesis'
+      )
+      expect(filename3).toEqual('test(1)test (1)')
+      const filename4 = fileModel.generateNewFileNameOnConflict(
+        'test(',
+        'parenthesis'
+      )
+      expect(filename4).toEqual('test( (1)')
     })
   })
 
