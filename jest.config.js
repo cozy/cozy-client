@@ -8,7 +8,10 @@ const commonConfig = {
   modulePathIgnorePatterns: ['<rootDir>/packages/.*/dist/'],
   transformIgnorePatterns: ['node_modules/(?!(cozy-ui))'],
   testEnvironment: 'jest-environment-jsdom-sixteen',
-  moduleFileExtensions: ['js', 'jsx', 'json']
+  moduleFileExtensions: ['js', 'jsx', 'json'],
+  moduleNameMapper: {
+    '.(png|gif|jpe?g)$': '<rootDir>/jestHelpers/mocks/fileMock.js'
+  }
 }
 
 module.exports = {
