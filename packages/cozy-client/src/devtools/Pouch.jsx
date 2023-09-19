@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useCallback, useEffect } from 'react'
 import CozyPouchLink from 'cozy-pouch-link'
 import get from 'lodash/get'
-import Button from 'cozy-ui/transpiled/react/MuiCozyTheme/Buttons'
+import Button from 'cozy-ui/transpiled/react/Button'
 import Typography from 'cozy-ui/transpiled/react/Typography'
 import format from 'date-fns/format'
 
