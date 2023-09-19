@@ -8,7 +8,7 @@ import Box from '@material-ui/core/Box'
 import Slide from '@material-ui/core/Slide'
 import { useTheme, makeStyles } from '@material-ui/core/styles'
 
-import CozyTheme from 'cozy-ui/transpiled/react/CozyTheme'
+import CozyTheme from 'cozy-ui/transpiled/react/providers/CozyTheme'
 import Icon from 'cozy-ui/transpiled/react/Icon'
 import List from 'cozy-ui/transpiled/react/List'
 import Typography from 'cozy-ui/transpiled/react/Typography'
