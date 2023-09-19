@@ -17,7 +17,7 @@ import Paper from '@material-ui/core/Paper'
 import { withStyles } from '@material-ui/core/styles'
 
 import Typography from 'cozy-ui/transpiled/react/Typography'
-import ListItem from 'cozy-ui/transpiled/react/MuiCozyTheme/ListItem'
+import ListItem from 'cozy-ui/transpiled/react/ListItem'
 import ListItemText from 'cozy-ui/transpiled/react/ListItemText'
 
 import CozyContext from '../context'
