@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import QuotaAlert from 'cozy-ui/transpiled/react/QuotaAlert'
+import QuotaAlert from 'cozy-ui/transpiled/react/deprecated/QuotaAlert'
 import filter from 'lodash/filter'
 import { FetchError } from 'cozy-stack-client'
 import { useClient } from './'
