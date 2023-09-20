@@ -276,6 +276,28 @@ The returned documents are not paginated by the stack.
 Extends `DocumentCollection` API along with specific methods for `io.cozy.apps_registry`.
 
 **Kind**: global class  
+
+* [AppsRegistryCollection](#AppsRegistryCollection)
+    * [.all([option])](#AppsRegistryCollection+all) ⇒ <code>Promise.&lt;{data, meta, skip, next}&gt;</code>
+    * [.get(slug)](#AppsRegistryCollection+get) ⇒ <code>Promise.&lt;{data: object}&gt;</code>
+
+<a name="AppsRegistryCollection+all"></a>
+
+### appsRegistryCollection.all([option]) ⇒ <code>Promise.&lt;{data, meta, skip, next}&gt;</code>
+Fetches all apps from the registry.
+
+**Kind**: instance method of [<code>AppsRegistryCollection</code>](#AppsRegistryCollection)  
+**Returns**: <code>Promise.&lt;{data, meta, skip, next}&gt;</code> - The JSON API conformant response.  
+**Throws**:
+
+- <code>FetchError</code> 
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [option] | <code>object</code> | The fetch option |
+| [option.limit] | <code>number</code> | Limit of apps to fetch |
+
 <a name="AppsRegistryCollection+get"></a>
 
 ### appsRegistryCollection.get(slug) ⇒ <code>Promise.&lt;{data: object}&gt;</code>

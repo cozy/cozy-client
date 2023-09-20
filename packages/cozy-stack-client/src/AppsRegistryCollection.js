@@ -21,6 +21,36 @@ class AppsRegistryCollection extends DocumentCollection {
   }
 
   /**
+   * Fetches all apps from the registry.
+   *
+   * @param  {object} [option] - The fetch option
+   * @param  {number} [option.limit] - Limit of apps to fetch
+   * @returns {Promise<{data, meta, skip, next}>} The JSON API conformant response.
+   * @throws {FetchError}
+   */
+  async all({ limit = 1000 } = {}) {
+    const resp = await this.stackClient.fetchJSON(
+      'GET',
+      `${this.endpoint}?limit=${limit}`
+    )
+    const dataNormalized = resp.data.map(d => {
+      return normalizeAppFromRegistry(
+        transformRegistryFormatToStackFormat(d),
+        this.doctype
+      )
+    })
+
+    return {
+      data: dataNormalized,
+      meta: {
+        count: resp.meta.count
+      },
+      skip: 0,
+      next: false
+    }
+  }
+
+  /**
    * Fetches an app from the registry.
    *
    * @param  {string} slug - Slug of the app

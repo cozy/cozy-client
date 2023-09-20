@@ -8,6 +8,57 @@ import AppsRegistryCollection, {
 describe(`AppsRegistryCollection`, () => {
   const client = new CozyStackClient()
 
+  describe('all', () => {
+    const collection = new AppsRegistryCollection(client)
+
+    beforeAll(() => {
+      client.fetchJSON.mockReturnValue(
+        Promise.resolve({
+          data: [
+            {
+              id: 'git://github.com/konnectors/alan.git',
+              _id: 'git://github.com/konnectors/alan.git',
+              _type: 'io.cozy.apps_registry',
+              latest_version: {
+                manifest: {
+                  source: 'git://github.com/konnectors/alan.git'
+                }
+              }
+            }
+          ],
+          meta: { count: 1 }
+        })
+      )
+    })
+
+    it('should call the right default route', async () => {
+      await collection.all()
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/registry/?limit=1000'
+      )
+    })
+
+    it('should call the right route with custom limit', async () => {
+      await collection.all({ limit: 10 })
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/registry/?limit=10'
+      )
+    })
+
+    it('should return a correct JSON API response', async () => {
+      const resp = await collection.all()
+      expect(resp).toConformToJSONAPI()
+    })
+
+    it('should return normalized documents', async () => {
+      const resp = await collection.all()
+      expect(resp.data[0]).toHaveDocumentIdentity()
+      expect(resp.data[0]._type).toEqual(APPS_REGISTRY_DOCTYPE)
+    })
+  })
+
   describe('get', () => {
     const collection = new AppsRegistryCollection(client)
 
