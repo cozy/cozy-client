@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [41.0.0](https://github.com/cozy/cozy-client/compare/v40.6.0...v41.0.0) (2023-09-20)
+
+
+### Features
+
+* Add cozy-intent as cozy-ui request it in the peer dependencies ([f948870](https://github.com/cozy/cozy-client/commit/f9488700f4c793710e96f8e3575083589d90b430))
+* Update cozy-ui from 48.0.0 to 93.1.1 ([f8541dc](https://github.com/cozy/cozy-client/commit/f8541dc57aa82f35c189286f834ac156b4882e22))
+
+
+### BREAKING CHANGES
+
+* you need cozy-intent >= 1.3.0
+* you need cozy-ui >= 93.1.1
+
+
+
+
+
 # [40.6.0](https://github.com/cozy/cozy-client/compare/v40.5.0...v40.6.0) (2023-09-20)
 
 
