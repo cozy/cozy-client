@@ -8,6 +8,66 @@ import AppsRegistryCollection, {
 describe(`AppsRegistryCollection`, () => {
   const client = new CozyStackClient()
 
+  describe('getAll', () => {
+    const collection = new AppsRegistryCollection(client)
+    const slugs = ['alan', 'caf']
+
+    beforeAll(() => {
+      client.fetchJSON.mockReturnValue(
+        Promise.resolve({
+          data: [
+            {
+              id: 'git://github.com/konnectors/alan.git',
+              slug: 'alan',
+              _type: 'io.cozy.apps_registry',
+              latest_version: {
+                manifest: {
+                  source: 'git://github.com/konnectors/alan.git'
+                }
+              }
+            },
+            {
+              id: 'git://github.com/konnectors/caf.git',
+              slug: 'caf',
+              _type: 'io.cozy.apps_registry',
+              latest_version: {
+                manifest: {
+                  source: 'git://github.com/konnectors/caf.git'
+                }
+              }
+            }
+          ],
+          meta: { count: 2 }
+        })
+      )
+    })
+
+    it('should call the right route', async () => {
+      await collection.getAll(slugs)
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'GET',
+        '/registry/?limit=1000'
+      )
+    })
+
+    it('should return the correct data', async () => {
+      const resp = await collection.getAll(slugs)
+      expect(resp.data.length).toBeLessThanOrEqual(slugs.length)
+      expect(resp.data.every(d => slugs.includes(d.slug))).toBe(true)
+    })
+
+    it('should return a correct JSON API response', async () => {
+      const resp = await collection.getAll(slugs)
+      expect(resp).toConformToJSONAPI()
+    })
+
+    it('should return normalized documents', async () => {
+      const resp = await collection.getAll(slugs)
+      expect(resp.data[0]).toHaveDocumentIdentity()
+      expect(resp.data[0]._type).toEqual(APPS_REGISTRY_DOCTYPE)
+    })
+  })
+
   describe('all', () => {
     const collection = new AppsRegistryCollection(client)
 

@@ -279,6 +279,7 @@ Extends `DocumentCollection` API along with specific methods for `io.cozy.apps_r
 
 * [AppsRegistryCollection](#AppsRegistryCollection)
     * [.all([option])](#AppsRegistryCollection+all) ⇒ <code>Promise.&lt;{data, meta, skip, next}&gt;</code>
+    * [.getAll(slugs)](#AppsRegistryCollection+getAll) ⇒ <code>Promise.&lt;{data, meta, skip, next}&gt;</code>
     * [.get(slug)](#AppsRegistryCollection+get) ⇒ <code>Promise.&lt;{data: object}&gt;</code>
 
 <a name="AppsRegistryCollection+all"></a>
@@ -297,6 +298,22 @@ Fetches all apps from the registry.
 | --- | --- | --- |
 | [option] | <code>object</code> | The fetch option |
 | [option.limit] | <code>number</code> | Limit of apps to fetch |
+
+<a name="AppsRegistryCollection+getAll"></a>
+
+### appsRegistryCollection.getAll(slugs) ⇒ <code>Promise.&lt;{data, meta, skip, next}&gt;</code>
+Fetches many apps from the registry by ids.
+
+**Kind**: instance method of [<code>AppsRegistryCollection</code>](#AppsRegistryCollection)  
+**Returns**: <code>Promise.&lt;{data, meta, skip, next}&gt;</code> - The JSON API conformant response.  
+**Throws**:
+
+- <code>FetchError</code> 
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| slugs | <code>Array.&lt;string&gt;</code> | The slugs of the apps to fetch |
 
 <a name="AppsRegistryCollection+get"></a>
 
