@@ -202,6 +202,14 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
+ * @typedef {object} UseMutationReturnValue
+ * @property {Function} mutate - Function to save the document
+ * @property {QueryFetchStatus} mutationStatus - Status of the current mutation
+ * @property {object} [error] - Error if the mutation failed
+ * @property {object} [data] - Data return after the mutation
+ */
+
+/**
  * A reference to a document
  *
  * @typedef {object} ReferencedByRelationship
@@ -532,6 +540,13 @@ import { QueryDefinition } from './queries/dsl'
  * @property {string} slug - The redirect link's slug (i.e. 'drive')
  * @property {string} pathname - The redirect link's path (i.e. 'public')
  * @property {string} hash - The redirect link's path (i.e. '/folder/SOME_FOLDER_ID')
+ */
+
+/**
+ * Template to type useState
+ *
+ * @template T
+ * @typedef {[T, import('react').Dispatch<import('react').SetStateAction<T>>]} useState
  */
 
 export default {}
