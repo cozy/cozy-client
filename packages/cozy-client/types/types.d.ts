@@ -365,6 +365,24 @@ export type FetchAble = {
     fetch: Function;
 };
 export type UseQueryReturnValue = QueryState & FetchMoreAble & FetchAble;
+export type UseMutationReturnValue = {
+    /**
+     * - Function to save the document
+     */
+    mutate: Function;
+    /**
+     * - Status of the current mutation
+     */
+    mutationStatus: QueryFetchStatus;
+    /**
+     * - Error if the mutation failed
+     */
+    error?: object;
+    /**
+     * - Data return after the mutation
+     */
+    data?: object;
+};
 /**
  * A reference to a document
  */
@@ -879,4 +897,8 @@ export type RedirectLinkData = {
      */
     hash: string;
 };
+/**
+ * Template to type useState
+ */
+export type useState<T> = [T, import("react").Dispatch<import("react").SetStateAction<T>>];
 import { QueryDefinition } from "./queries/dsl";

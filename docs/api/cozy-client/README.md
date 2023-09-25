@@ -6,6 +6,7 @@ cozy-client
 
 *   [manifest](modules/manifest.md)
 *   [models](modules/models.md)
+*   [useMutation](modules/useMutation.md)
 
 ## Classes
 
@@ -106,6 +107,40 @@ Use those fetch policies with `<Query />` to limit the number of re-fetch.
 *Defined in*
 
 [packages/cozy-client/src/policies.js:11](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/policies.js#L11)
+
+***
+
+### useMutation
+
+• `Const` **useMutation**: `Object`
+
+#### Call signature
+
+▸ (`__namedParameters`): `UseMutationReturnValue`
+
+This hook manages the state during the saving of a document
+
+*Parameters*
+
+| Name | Type |
+| :------ | :------ |
+| `__namedParameters` | `Object` |
+
+*Returns*
+
+`UseMutationReturnValue`
+
+*Type declaration*
+
+| Name | Type |
+| :------ | :------ |
+| `propTypes` | { `onError`: `Requireable`<(...`args`: `any`\[]) => `any`> = PropTypes.func; `onSuccess`: `Requireable`<(...`args`: `any`\[]) => `any`> = PropTypes.func } |
+| `propTypes.onError` | `Requireable`<(...`args`: `any`\[]) => `any`> |
+| `propTypes.onSuccess` | `Requireable`<(...`args`: `any`\[]) => `any`> |
+
+*Defined in*
+
+[packages/cozy-client/src/hooks/useMutation.jsx:11](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useMutation.jsx#L11)
 
 ## Functions
 

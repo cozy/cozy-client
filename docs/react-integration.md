@@ -10,11 +10,13 @@ Once connected, your components will receive the requesting data and a fetch sta
   - [1.a Initialize a CozyClient provider](#1a-initialize-a-cozyclient-provider)
     - [1.b Use your own Redux store](#1b-use-your-own-redux-store)
 - [2. Usage](#2-usage)
-  - [2.a Requesting data with ``](#2a-requesting-data-with-)
+  - [2.a Requesting data with `useQuery`](#2a-requesting-data-with-)
   - [2.b Requesting data with the `queryConnect` HOC](#2b-requesting-data-with-the-queryconnect-hoc)
   - [2.c Using a fetch policy to decrease network requests](#2c-using-a-fetch-policy-to-decrease-network-requests)
   - [2.d Keeping data up to date in real time](#2d-keeping-data-up-to-date-in-real-time)
   - [3. Mutating data](#3-mutating-data)
+  - [3.a Mutating data with `useMutation`](#3a-mutating-data-with-usemutation)
+  - [3.b Mutating data with `Query`](#3a-mutating-data-with-query)
   - [4. Testing](#4-testing)
 
 <!-- /MarkdownTOC -->
@@ -325,15 +327,15 @@ You subscribe to changes for an entire doctype using `RealTimeQueries`, and as l
 
 ### 3. Mutating data
 
-The simplest way is to use the `withClient` high order component. It will inject a `client` in your props with the CozyClient instance you gave to the `<CozyProvider />` upper.
+The simplest way is to use the hook `useClient` to get the CozyClient instance you gave to the `<CozyProvider />` upper.
 
 ```jsx
-import { withClient } from 'cozy-client'
+import { useClient } from 'cozy-client'
 
 function TodoList(props) {
-  const { client } = props
+  const client = useClient()
   const createNewTodo = e => client.create(
-    'io.cozy.todos', 
+    'io.cozy.todos',
     { label: e.target.elements['new-todo'], checked: false }
   )
   return (
@@ -349,9 +351,48 @@ function TodoList(props) {
     </>
   )
 }
-
-const ConnectedTodoList = withClient(TodoList)
 ```
+
+### 3.a Mutating data with `useMutation`
+
+We also provides a hook to manage `client.save` mutation state called `useMutation`.
+
+```jsx
+import { useMutation } from 'cozy-client'
+
+function TodoLabelInlineEdit({ todo }) {
+  const [label, setLabel] = useState(todo.label)
+  const { mutate, mutationStatus } = useMutation()
+
+  const handleChange = event => {
+    setLabel(event.target.value)
+  }
+
+  const handleBlur = () => {
+    mutate({
+      ...todo,
+      label
+    })
+  }
+
+  return (
+    <div style={{ display: 'flex' }}>
+      <input
+        type="text"
+        aria-label="Label"
+        style={{ marginRight: '1rem' }}
+        value={label}
+        onChange={handleChange}
+        onBlur={handleBlur}
+      />
+      {mutationStatus === 'loaded' ? '✓' : null}
+      {mutationStatus === 'failed' ? '✗' : null}
+    </div>
+  )
+}
+```
+
+### 3.b Mutating data with `Query`
 
 `<Query />` also takes a `mutations` optional props. It should have a function that will receive the CozyClient instance, the query requested and the rest of props given to the component, and should return a keyed object which will be added to the props of your wrapped component.
 
