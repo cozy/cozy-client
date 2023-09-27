@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [41.1.1](https://github.com/cozy/cozy-client/compare/v41.1.0...v41.1.1) (2023-09-27)
+
+
+### Bug Fixes
+
+* **useMutation:** Making parameters optional ([b085cc7](https://github.com/cozy/cozy-client/commit/b085cc77a8b2d46938d9b4116c97c9e147480a6f))
+
+
+
+
+
 # [41.1.0](https://github.com/cozy/cozy-client/compare/v41.0.0...v41.1.0) (2023-09-27)
 
 
