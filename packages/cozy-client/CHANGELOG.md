@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [41.1.0](https://github.com/cozy/cozy-client/compare/v41.0.0...v41.1.0) (2023-09-27)
+
+
+### Features
+
+* Add useMutation hook ([58b1afb](https://github.com/cozy/cozy-client/commit/58b1afbf01222e11984f0d6e010acfd6ddbf4c26))
+
+
+
+
+
 # [41.0.0](https://github.com/cozy/cozy-client/compare/v40.6.0...v41.0.0) (2023-09-20)
 
 
