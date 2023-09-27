@@ -98,6 +98,25 @@ const CREATE_RESPONSE_FIXTURE = {
   }
 }
 
+const UPDATE_RESPONSE_FIXTURE = {
+  data: {
+    type: 'io.cozy.triggers',
+    id: 'b926bd6657614b82b7d6d4e63bd7c0c0',
+    attributes: {
+      type: '@client',
+      worker: 'client',
+      message: {
+        konnector: 'edf',
+        account: 'accountid',
+        folder_to_save: 'newfolderid'
+      }
+    },
+    links: {
+      self: '/jobs/triggers/b926bd6657614b82b7d6d4e63bd7c0c0'
+    }
+  }
+}
+
 describe('TriggerCollection', () => {
   const stackClient = new CozyStackClient()
   const collection = new TriggerCollection(stackClient)
@@ -332,6 +351,70 @@ describe('TriggerCollection', () => {
     })
   })
 
+  describe('update', () => {
+    const collection = new TriggerCollection(stackClient)
+
+    beforeEach(() => {
+      stackClient.fetchJSON.mockResolvedValue(UPDATE_RESPONSE_FIXTURE)
+    })
+    afterEach(() => {
+      jest.resetAllMocks()
+    })
+
+    it('should call the right route', async () => {
+      await collection.update({
+        _id: 'b926bd6657614b82b7d6d4e63bd7c0c0',
+        message: {
+          konnector: 'edf',
+          account: 'accountid',
+          folder_to_save: 'newfolderid'
+        }
+      })
+      expect(stackClient.fetchJSON).toHaveBeenCalledWith(
+        'PATCH',
+        '/jobs/triggers/b926bd6657614b82b7d6d4e63bd7c0c0',
+        {
+          data: {
+            attributes: {
+              message: {
+                konnector: 'edf',
+                account: 'accountid',
+                folder_to_save: 'newfolderid'
+              }
+            }
+          }
+        }
+      )
+    })
+
+    it('should return a correct JSON API response', async () => {
+      const resp = await collection.update({
+        message: {
+          konnector: 'edf',
+          account: 'accountid',
+          folder_to_save: 'newfolderid'
+        }
+      })
+      expect(resp).toConformToJSONAPI()
+    })
+
+    it('should return normalized documents', async () => {
+      const resp = await collection.update({
+        message: {
+          konnector: 'edf',
+          account: 'accountid',
+          folder_to_save: 'newfolderid'
+        }
+      })
+      expect(resp.data).toHaveDocumentIdentity()
+    })
+    it('should refuse to update a document with non conform attributes', async () => {
+      await expect(
+        collection.update({ _id: 'triggerid', notaccepted: 'anyvalue' })
+      ).rejects.toThrowError()
+    })
+  })
+
   describe('launch', () => {
     const LAUNCH_RESPONSE_FIXTURE = {
       data: {
@@ -388,14 +471,6 @@ describe('TriggerCollection', () => {
     it('should return normalized documents', async () => {
       const resp = await collection.launch(trigger)
       expect(resp.data).toHaveDocumentIdentity()
-    })
-  })
-
-  describe('update', () => {
-    it('should throw error', async () => {
-      expect(collection.update()).rejects.toThrowError(
-        'update() method is not available for triggers'
-      )
     })
   })
 })
