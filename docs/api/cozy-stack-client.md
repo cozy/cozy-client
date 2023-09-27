@@ -1879,6 +1879,7 @@ Implements `DocumentCollection` API along with specific methods for `io.cozy.tri
     * [.destroy(document)](#TriggerCollection+destroy) ⇒ <code>object</code>
     * [.find(selector, options)](#TriggerCollection+find) ⇒ <code>Object</code>
     * [.launch(trigger)](#TriggerCollection+launch) ⇒ <code>object</code>
+    * [.update(trigger)](#TriggerCollection+update) ⇒ <code>object</code>
 
 <a name="TriggerCollection+all"></a>
 
@@ -1955,6 +1956,18 @@ Force given trigger execution.
 | Param | Type | Description |
 | --- | --- | --- |
 | trigger | <code>object</code> | Trigger to launch |
+
+<a name="TriggerCollection+update"></a>
+
+### triggerCollection.update(trigger) ⇒ <code>object</code>
+Updates a Trigger document. Only updatable attributes plus _id are allowed.
+
+**Kind**: instance method of [<code>TriggerCollection</code>](#TriggerCollection)  
+**Returns**: <code>object</code> - Stack response, containing resulting trigger document under `data` attribute.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| trigger | <code>object</code> | Trigger's attributes to update + id |
 
 <a name="dontThrowNotFoundError"></a>
 

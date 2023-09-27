@@ -171,8 +171,47 @@ class TriggerCollection extends DocumentCollection {
     }
   }
 
-  async update() {
-    throw new Error('update() method is not available for triggers')
+  /**
+   * Updates a Trigger document. Only updatable attributes plus _id are allowed.
+   *
+   * @param  {object}  trigger Trigger's attributes to update + id
+   * @returns {object}  Stack response, containing resulting trigger document under `data` attribute.
+   */
+  async update(trigger) {
+    for (const key in trigger) {
+      if (
+        ![
+          '_id',
+          '_rev',
+          '_type',
+          'arguments',
+          'message',
+          'cozyMetadata'
+        ].includes(key)
+      ) {
+        throw new Error(
+          `TriggerCollection.update only works for 'arguments', and 'message' attributes.`
+        )
+      }
+    }
+
+    const attributes = {
+      ...(trigger.arguments ? { arguments: trigger.arguments } : {}),
+      ...(trigger.message ? { message: trigger.message } : {})
+    }
+
+    const triggerUpdateResult = await this.stackClient.fetchJSON(
+      'PATCH',
+      `/jobs/triggers/${trigger._id}`,
+      {
+        data: {
+          attributes
+        }
+      }
+    )
+    return {
+      data: normalizeTrigger(triggerUpdateResult.data)
+    }
   }
 }
 
