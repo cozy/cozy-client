@@ -64,7 +64,7 @@ Cozy-Client [predefines](https://github.com/cozy/cozy-client/blob/master/package
 
 #### Files relations
 
-The files implements a special type of relation: `'io.cozy.files:has-many'`. This relation name is `referenced_by`, which is an array of references, just like the `'has-many'` relation. 
+The files implements a special type of relation: `'io.cozy.files:has-many'`. This relation name is `referenced_by`, which is an array of references, just like the `'has-many'` relation.
 
 The stack implements routes to handle this kind of relation on the `/files` endpoint. See the [stack documentation](https://docs.cozy.io/en/cozy-stack/references-docs-in-vfs/).
 
@@ -77,7 +77,7 @@ You are free to create your own relation type if you need a special behaviour.
 
 For instance, [Banks doctypes](https://github.com/cozy/cozy-banks/blob/master/src/doctypes.js) implements `HasManyBills` or `HasManyReimbursements`.
 
-#### Old relation types 
+#### Old relation types
 
 Note there are two others basic relations, that are here for backward compatibility:
 
@@ -110,6 +110,25 @@ const book = {
 }
 ```
 
+### Metadata
+
+It is possible to assign metadatas to relationships. You need to modify the content of the document relationships somehow and save the modified document.
+
+```javascript
+const doc = {
+  _id: "mobydick",
+  relationships: {
+    authors: {
+      data: [{
+        _id: "hermanmelville",
+        _type: "io.cozy.contacts"
+      }]
+    }
+  }
+}
+doc.relationships.authors.data[0].metadata = { addressId: "123" }
+await client.save(doc)
+```
 
 ## Usage
 
@@ -123,9 +142,9 @@ const query = Q('io.cozy.books')
   .limitBy(20)
 ```
 
-You will then find your relations under the `data` attribute: 
+You will then find your relations under the `data` attribute:
 
-```javascript 
+```javascript
 const response = await client.query(query)
 const docs = response.data
 const firstDoc = docs[0]
