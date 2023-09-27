@@ -52,7 +52,7 @@ export type Document = {
     _type: string;
     type: string;
 };
-export type PermissionVerb = "POST" | "DELETE" | "PUT" | "GET" | "ALL" | "PATCH";
+export type PermissionVerb = "POST" | "DELETE" | "PUT" | "GET" | "PATCH" | "ALL";
 export type PermissionItem = {
     /**
      * - ALL, GET, PUT, PATCH, DELETE, POST…
