@@ -8,7 +8,7 @@ import useClient from './useClient'
  *
  * @returns {import("../types").UseMutationReturnValue}
  */
-const useMutation = ({ onSuccess, onError }) => {
+const useMutation = ({ onSuccess = undefined, onError = undefined } = {}) => {
   const client = useClient()
 
   /** @type {import("../types").useState<import("../types").QueryFetchStatus>} */

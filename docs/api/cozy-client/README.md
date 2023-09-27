@@ -116,7 +116,7 @@ Use those fetch policies with `<Query />` to limit the number of re-fetch.
 
 #### Call signature
 
-▸ (`__namedParameters`): `UseMutationReturnValue`
+▸ (`__namedParameters?`): `UseMutationReturnValue`
 
 This hook manages the state during the saving of a document
 
@@ -125,6 +125,8 @@ This hook manages the state during the saving of a document
 | Name | Type |
 | :------ | :------ |
 | `__namedParameters` | `Object` |
+| `__namedParameters.onError` | `any` |
+| `__namedParameters.onSuccess` | `any` |
 
 *Returns*
 
