@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [41.2.0](https://github.com/cozy/cozy-client/compare/v41.1.1...v41.2.0) (2023-09-28)
+
+
+### Features
+
+* Now allow to update a trigger with cozy-client ([3eea1dd](https://github.com/cozy/cozy-client/commit/3eea1dd4d77a0837440bd02f128e5e0dadf0a940))
+
+
+
+
+
 ## [41.1.1](https://github.com/cozy/cozy-client/compare/v41.1.0...v41.1.1) (2023-09-27)
 
 
