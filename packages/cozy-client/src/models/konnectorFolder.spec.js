@@ -100,4 +100,38 @@ describe('ensureKonnectorFolder', () => {
     )
     expect(mockClient.createDirectoryByPath).not.toHaveBeenCalled()
   })
+  it('should recreate a folder when the destination folder is in the trash', async () => {
+    mockClient.statByPath.mockResolvedValueOnce({
+      data: {
+        _id: 'folderintrash',
+        trashed: true
+      }
+    })
+    mockClient.createDirectoryByPath.mockResolvedValueOnce({
+      data: {
+        _id: 'createdfolderid'
+      }
+    })
+    const result = await ensureKonnectorFolder(mockClient, {
+      konnector,
+      account
+    })
+    expect(result).toStrictEqual({ _id: 'createdfolderid' })
+    expect(mockClient.statByPath).toHaveBeenCalledWith(
+      '/Administrative/konnectorName/testAccountName'
+    )
+    expect(mockClient.createDirectoryByPath).toHaveBeenCalledWith(
+      '/Administrative/konnectorName/testAccountName'
+    )
+    expect(mockClient.add).toHaveBeenCalledWith(konnector, {
+      saveFolder: {
+        type: 'io.cozy.files',
+        values: ['createdfolderid'],
+        verbs: ['GET', 'PATCH', 'POST']
+      }
+    })
+    expect(mockClient.addReferencesTo).toHaveBeenCalledWith(konnector, [
+      { _id: 'createdfolderid' }
+    ])
+  })
 })

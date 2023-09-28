@@ -64,6 +64,9 @@ export const createDirectoryByPath = async (client, path) => {
 export const statDirectoryByPath = async (client, path) => {
   try {
     const response = await client.collection(FILES_DOCTYPE).statByPath(path)
+    if (response.data.trashed) {
+      return null
+    }
     return response.data
   } catch (error) {
     if (error && error.status === 404) return null

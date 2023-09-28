@@ -44,7 +44,7 @@ The result path
 
 *Defined in*
 
-[packages/cozy-client/src/models/konnectorFolder.js:98](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L98)
+[packages/cozy-client/src/models/konnectorFolder.js:101](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L101)
 
 ***
 
@@ -69,7 +69,7 @@ Permission object
 
 *Defined in*
 
-[packages/cozy-client/src/models/konnectorFolder.js:214](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L214)
+[packages/cozy-client/src/models/konnectorFolder.js:217](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L217)
 
 ***
 
