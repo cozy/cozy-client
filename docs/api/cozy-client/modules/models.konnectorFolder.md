@@ -69,7 +69,7 @@ Permission object
 
 *Defined in*
 
-[packages/cozy-client/src/models/konnectorFolder.js:217](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L217)
+[packages/cozy-client/src/models/konnectorFolder.js:213](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L213)
 
 ***
 

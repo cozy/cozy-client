@@ -1,12 +1,12 @@
-import get from 'lodash/get'
-import trim from 'lodash/trim'
+import { ensureMagicFolder, MAGIC_FOLDERS } from './folder'
 
 import CozyClient from '../CozyClient'
-import { ensureMagicFolder, MAGIC_FOLDERS } from './folder'
 import { getAccountName } from './account'
 
 const FILES_DOCTYPE = 'io.cozy.files'
 const PERMISSIONS_DOCTYPE = 'io.cozy.permissions'
+
+// Default name for base directory
 const DEFAULT_LOCALIZED_BASE_DIR = 'Administrative'
 
 /**
@@ -99,12 +99,8 @@ export const statDirectoryByPath = async (client, path) => {
  */
 
 export const buildFolderPath = (konnector, account, magicFolders = {}) => {
-  const fullPath = get(
-    konnector,
-    // For now konnectors are only defining one folder in their folders array
-    'folders[0].defaultDir',
-    '$administrative/$konnector/$account'
-  )
+  const fullPath =
+    konnector?.folders?.[0]?.defaultDir || '$administrative/$konnector/$account'
   // Trim `/` and avoid multiple `/` characters with regexp
   let sanitizedPath = trim(fullPath.replace(/(\/+)/g, '/'), '/')
   // If the konnector doesn't have any of our base dir, we set it to $administrative
@@ -164,20 +160,20 @@ const buildSubDir = (fullPath, defaultDir) => {
 }
 
 /**
- * Render base directory, based on given folders object.
+ * Render base directory, based on given magicFolders object.
  * For example, it will render `$administrative` with the given value passed in
  * folders object. We expect to find in folders a localized value.
  *
  * @param  {String} baseDir base directory variable, expects `$administrative`
  * or `$photos`
- * @param  {Object} folders Object indexing base directory variable with
+ * @param  {Object} magicFolders Object indexing base directory variable with
  * corresponding localized name.
  * @returns {String}         Localized directory
  */
-const renderBaseDir = (baseDir, folders = {}) => {
+const renderBaseDir = (baseDir, magicFolders = {}) => {
   // Look for variable name into folders but without $ prefix
   const renderedBaseDir =
-    folders[baseDir.slice(1)] || DEFAULT_LOCALIZED_BASE_DIR
+    magicFolders[baseDir.slice(1)] || DEFAULT_LOCALIZED_BASE_DIR
   // Trim `/` and avoid multiple `/` characters with regexp
   return trim(renderedBaseDir.replace(/(\/+)/g, '/'), '/')
 }
@@ -224,3 +220,6 @@ export const buildFolderPermission = folder => {
     }
   }
 }
+
+const trim = (str, c = '\\s') =>
+  str.replace(new RegExp(`^([${c}]*)(.*?)([${c}]*)$`), '$2')
