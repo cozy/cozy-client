@@ -144,5 +144,9 @@
       "undefined": "Undefined",
       "work_study": "Work & Study"
     }
+  },
+  "MagicFolders": {
+    "administrative": "Administrative",
+    "photos": "Photos"
   }
 }

@@ -40,3 +40,25 @@
 *Defined in*
 
 [packages/cozy-client/src/models/document/locales/index.js:23](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/locales/index.js#L23)
+
+***
+
+### getLocalizer
+
+▸ **getLocalizer**(`lang`): `Function`
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `lang` | `string` | fr, en, etc |
+
+*Returns*
+
+`Function`
+
+*   localization function
+
+*Defined in*
+
+[packages/cozy-client/src/models/document/locales/index.js:43](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/locales/index.js#L43)

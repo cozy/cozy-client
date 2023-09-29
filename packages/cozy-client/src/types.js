@@ -305,6 +305,7 @@ import { QueryDefinition } from './queries/dsl'
  * @property {string} name - Name of the folder
  * @property {object} metadata - Metadata of the folder
  * @property {object} type - Type of the folder
+ * @property {string} path - Folder path
  * @typedef {CozyClientDocument & FolderDocument} IOCozyFolder - An io.cozy.files document
  */
 
