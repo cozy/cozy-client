@@ -579,6 +579,10 @@ export type FolderDocument = {
      * - Type of the folder
      */
     type: object;
+    /**
+     * - Folder path
+     */
+    path: string;
 };
 /**
  * - An io.cozy.files document

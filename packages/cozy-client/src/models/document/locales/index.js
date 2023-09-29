@@ -21,8 +21,7 @@ for (const lang of langs) {
  * @returns {(label: string, opts?: {country?: string, smart_count?: number}) => string}
  */
 const getBoundT = lang => {
-  const polyglot = polyglots[lang] || polyglots['en']
-  const t = polyglot.t.bind(polyglot)
+  const t = getLocalizer(lang)
 
   return (label, opts = {}) => {
     const newOpts = {
@@ -37,4 +36,14 @@ const getBoundT = lang => {
   }
 }
 
-export { getBoundT }
+/**
+ * @param {string} lang - fr, en, etc
+ * @returns {Function} - localization function
+ */
+const getLocalizer = lang => {
+  const polyglot = polyglots[lang] || polyglots['en']
+  const t = polyglot.t.bind(polyglot)
+  return t
+}
+
+export { getBoundT, getLocalizer }

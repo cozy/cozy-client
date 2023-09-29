@@ -34,7 +34,7 @@ If no konnectors.folders\[0].defaultDir is set, the default dir used is
 | :------ | :------ | :------ |
 | `konnector` | `IOCozyKonnector` | Konnector document |
 | `account` | `IOCozyAccount` | Account document |
-| `magicFolders` | `any` | Object containing a mapping from folder identifiers (ex: $administrative) to their localized values (ex: Administratif). |
+| `magicFolders` | `Object` | Object containing a mapping from folder identifiers (ex: $administrative) to their localized values (ex: Administratif). |
 
 *Returns*
 
@@ -44,7 +44,7 @@ The result path
 
 *Defined in*
 
-[packages/cozy-client/src/models/konnectorFolder.js:101](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L101)
+[packages/cozy-client/src/models/konnectorFolder.js:115](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L115)
 
 ***
 
@@ -69,13 +69,13 @@ Permission object
 
 *Defined in*
 
-[packages/cozy-client/src/models/konnectorFolder.js:213](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L213)
+[packages/cozy-client/src/models/konnectorFolder.js:227](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L227)
 
 ***
 
 ### createDirectoryByPath
 
-▸ **createDirectoryByPath**(`client`, `path`): `Promise`<`FileDocument`>
+▸ **createDirectoryByPath**(`client`, `path`): `Promise`<`IOCozyFolder`>
 
 Creates a directory from a given path
 
@@ -88,13 +88,13 @@ Creates a directory from a given path
 
 *Returns*
 
-`Promise`<`FileDocument`>
+`Promise`<`IOCozyFolder`>
 
 Directory attributes
 
 *Defined in*
 
-[packages/cozy-client/src/models/konnectorFolder.js:50](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L50)
+[packages/cozy-client/src/models/konnectorFolder.js:63](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L63)
 
 ***
 
@@ -109,9 +109,10 @@ Ensures the destination folder of a konnector exists and is initiated with prope
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `client` | [`CozyClient`](../classes/CozyClient.md) | CozyClient instance |
-| `options` | `Object` | options objet |
+| `options` | `Object` | options object |
 | `options.account` | `IOCozyAccount` | io.cozy.accounts document |
 | `options.konnector` | `IOCozyKonnector` | io.cozy.konnectors document |
+| `options.lang` | `string` | instance current language. ex: 'fr' |
 
 *Returns*
 
@@ -119,15 +120,17 @@ Ensures the destination folder of a konnector exists and is initiated with prope
 
 *Defined in*
 
-[packages/cozy-client/src/models/konnectorFolder.js:21](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L21)
+[packages/cozy-client/src/models/konnectorFolder.js:25](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L25)
 
 ***
 
 ### statDirectoryByPath
 
-▸ **statDirectoryByPath**(`client`, `path`): `Promise`<`FileDocument`>
+▸ **statDirectoryByPath**(`client`, `path`): `Promise`<`IOCozyFolder`>
 
 Retrieves a directory from its path
+
+**`throws`** will throw an error on any error without status === 404
 
 *Parameters*
 
@@ -138,10 +141,10 @@ Retrieves a directory from its path
 
 *Returns*
 
-`Promise`<`FileDocument`>
+`Promise`<`IOCozyFolder`>
 
 Created io.cozy.files document
 
 *Defined in*
 
-[packages/cozy-client/src/models/konnectorFolder.js:64](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L64)
+[packages/cozy-client/src/models/konnectorFolder.js:78](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L78)

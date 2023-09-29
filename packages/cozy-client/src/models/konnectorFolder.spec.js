@@ -11,9 +11,7 @@ describe('ensureKonnectorFolder', () => {
   }
   const existingMagicFolder = [
     {
-      attributes: {
-        path: '/Administrative'
-      },
+      path: '/Administratif',
       created_at: '2023-03-02T14:57:07.661588+01:00'
     }
   ]
@@ -46,14 +44,15 @@ describe('ensureKonnectorFolder', () => {
     })
     const result = await ensureKonnectorFolder(mockClient, {
       konnector,
-      account
+      account,
+      lang: 'fr'
     })
     expect(result).toStrictEqual({ _id: 'createdfolderid' })
     expect(mockClient.statByPath).toHaveBeenCalledWith(
-      '/Administrative/konnectorName/testAccountName'
+      '/Administratif/konnectorName/testAccountName'
     )
     expect(mockClient.createDirectoryByPath).toHaveBeenCalledWith(
-      '/Administrative/konnectorName/testAccountName'
+      '/Administratif/konnectorName/testAccountName'
     )
     expect(mockClient.add).toHaveBeenCalledWith(konnector, {
       saveFolder: {
@@ -69,9 +68,7 @@ describe('ensureKonnectorFolder', () => {
   it('should not create a folder if it already exist', async () => {
     const existingMagicFolder = [
       {
-        attributes: {
-          path: '/Administrative'
-        },
+        path: '/Administratif',
         created_at: '2023-03-02T14:57:07.661588+01:00'
       }
     ]
@@ -92,11 +89,12 @@ describe('ensureKonnectorFolder', () => {
           }
         ]
       },
-      account: { auth: { accountName: 'testAccountName' } }
+      account: { auth: { accountName: 'testAccountName' } },
+      lang: 'fr'
     })
     expect(result).toStrictEqual({ _id: 'alreadyexistingfolderid' })
     expect(mockClient.statByPath).toHaveBeenCalledWith(
-      '/Administrative/konnectorName/testAccountName'
+      '/Administratif/konnectorName/testAccountName'
     )
     expect(mockClient.createDirectoryByPath).not.toHaveBeenCalled()
   })
@@ -114,14 +112,15 @@ describe('ensureKonnectorFolder', () => {
     })
     const result = await ensureKonnectorFolder(mockClient, {
       konnector,
-      account
+      account,
+      lang: 'fr'
     })
     expect(result).toStrictEqual({ _id: 'createdfolderid' })
     expect(mockClient.statByPath).toHaveBeenCalledWith(
-      '/Administrative/konnectorName/testAccountName'
+      '/Administratif/konnectorName/testAccountName'
     )
     expect(mockClient.createDirectoryByPath).toHaveBeenCalledWith(
-      '/Administrative/konnectorName/testAccountName'
+      '/Administratif/konnectorName/testAccountName'
     )
     expect(mockClient.add).toHaveBeenCalledWith(konnector, {
       saveFolder: {

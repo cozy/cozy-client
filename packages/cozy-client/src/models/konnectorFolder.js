@@ -1,7 +1,10 @@
+//@ts-check
 import { ensureMagicFolder, MAGIC_FOLDERS } from './folder'
 
 import CozyClient from '../CozyClient'
 import { getAccountName } from './account'
+
+import { getLocalizer } from './document/locales'
 
 const FILES_DOCTYPE = 'io.cozy.files'
 const PERMISSIONS_DOCTYPE = 'io.cozy.permissions'
@@ -13,22 +16,32 @@ const DEFAULT_LOCALIZED_BASE_DIR = 'Administrative'
  * Ensures the destination folder of a konnector exists and is initiated with proper permissions and references
  *
  * @param {CozyClient} client - CozyClient instance
- * @param {Object} options - options objet
+ * @param {Object} options - options object
  * @param {import('../types').IOCozyKonnector} options.konnector - io.cozy.konnectors document
  * @param {import('../types').IOCozyAccount} options.account - io.cozy.accounts document
+ * @param {String} options.lang - instance current language. ex: 'fr'
  * @returns {Promise<import('../types').IOCozyFolder>}
  */
-export const ensureKonnectorFolder = async (client, { konnector, account }) => {
+export const ensureKonnectorFolder = async (
+  client,
+  { konnector, account, lang }
+) => {
   const permissions = client.collection(PERMISSIONS_DOCTYPE)
   const files = client.collection(FILES_DOCTYPE)
-  const adminFolder = await ensureMagicFolder(
-    client,
-    MAGIC_FOLDERS.ADMINISTRATIVE,
-    '/Administratif'
-  )
+
+  const t = getLocalizer(lang)
+  const [adminFolder, photosFolder] = await Promise.all([
+    ensureMagicFolder(
+      client,
+      MAGIC_FOLDERS.ADMINISTRATIVE,
+      t('MagicFolders.administrative')
+    ),
+    ensureMagicFolder(client, MAGIC_FOLDERS.PHOTOS, t('MagicFolders.photos'))
+  ])
+
   const path = buildFolderPath(konnector, account, {
-    // @ts-ignore
-    administrative: adminFolder.path
+    administrative: adminFolder.path,
+    photos: photosFolder.path
   })
   const folder =
     (await statDirectoryByPath(client, path)) ||
@@ -45,7 +58,7 @@ export const ensureKonnectorFolder = async (client, { konnector, account }) => {
  *
  * @param  {CozyClient}  client CozyClient
  * @param  {string}  path   Directory path
- * @returns {Promise<import('../types').FileDocument>}         Directory attributes
+ * @returns {Promise<import('../types').IOCozyFolder>}         Directory attributes
  */
 export const createDirectoryByPath = async (client, path) => {
   const { data } = await client
@@ -59,7 +72,8 @@ export const createDirectoryByPath = async (client, path) => {
  *
  * @param  {CozyClient}  client CozyClient
  * @param  {string}  path   Directory path
- * @returns {Promise<import('../types').FileDocument>}        Created io.cozy.files document
+ * @returns {Promise<import('../types').IOCozyFolder|null>}        Created io.cozy.files document
+ * @throws will throw an error on any error without status === 404
  */
 export const statDirectoryByPath = async (client, path) => {
   try {
@@ -92,7 +106,7 @@ export const statDirectoryByPath = async (client, path) => {
  *
  * @param  {import('../types').IOCozyKonnector} konnector Konnector document
  * @param  {import('../types').IOCozyAccount} account   Account document
- * @param  {Object} magicFolders   Object containing a mapping from folder
+ * @param  {Object<string, string>} magicFolders   Object containing a mapping from folder
  * identifiers (ex: $administrative) to their localized values (ex:
  * Administratif).
  * @returns {String}           The result path
@@ -166,7 +180,7 @@ const buildSubDir = (fullPath, defaultDir) => {
  *
  * @param  {String} baseDir base directory variable, expects `$administrative`
  * or `$photos`
- * @param  {Object} magicFolders Object indexing base directory variable with
+ * @param  {Object<string, string>} magicFolders Object indexing base directory variable with
  * corresponding localized name.
  * @returns {String}         Localized directory
  */
@@ -185,7 +199,7 @@ const renderBaseDir = (baseDir, magicFolders = {}) => {
  *
  * @param  {String} path      Path to render : ex '/Administratif/$konnector/$account'
  * @param  {Object} variables Object mapping variable to actual values
- * @param  {String} variables.konnector - konnector name
+ * @param  {import('../types').IOCozyKonnector['name']} variables.konnector - konnector name
  * @param  {String} variables.account - account name
  * @returns {String}           Rendered path
  */
@@ -221,5 +235,12 @@ export const buildFolderPermission = folder => {
   }
 }
 
+/**
+ * Replacer of the lodash/trim function
+ *
+ * @param {String} str - Input string
+ * @param {String} c - String to trim from the input string
+ * @returns {String}
+ */
 const trim = (str, c = '\\s') =>
   str.replace(new RegExp(`^([${c}]*)(.*?)([${c}]*)$`), '$2')
