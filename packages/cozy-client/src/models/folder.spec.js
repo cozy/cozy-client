@@ -29,15 +29,11 @@ describe('Folder model', () => {
     it('should return first existing magic folder', async () => {
       const existingMagicFolders = [
         {
-          attributes: {
-            path: '/Administrative'
-          },
+          path: '/Administrative',
           created_at: '2020-03-02T14:57:07.661588+01:00'
         },
         {
-          attributes: {
-            path: '/Administrative2'
-          },
+          path: '/Administrative2',
           created_at: '2019-03-02T14:57:07.661588+01:00'
         }
       ]
@@ -96,15 +92,11 @@ describe('Folder model', () => {
   describe('getReferencedFolder', () => {
     it('should filter trashed folders', async () => {
       const referencedFolder = {
-        attributes: {
-          path: '/Reference/Folder'
-        }
+        path: '/Reference/Folder'
       }
 
       const trashFolder = {
-        attributes: {
-          path: '/.cozy_trash/Old/Reference/Folder'
-        }
+        path: '/.cozy_trash/Old/Reference/Folder'
       }
 
       mockClient.findReferencedBy.mockResolvedValue({
@@ -118,15 +110,11 @@ describe('Folder model', () => {
 
     it('should return the most recently created folder', async () => {
       const oldFolder = {
-        attributes: {
-          path: '/Old/folder'
-        },
+        path: '/Old/folder',
         created_at: '2019-03-02T14:57:07.661588+01:00'
       }
       const recentFolder = {
-        attributes: {
-          path: '/Recent/folder'
-        },
+        path: '/Recent/folder',
         created_at: '2020-03-02T14:57:07.661588+01:00'
       }
 
