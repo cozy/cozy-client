@@ -92,7 +92,7 @@ export const getReferencedFolder = async (client, document) => {
     .collection(DOCTYPE_FILES)
     .findReferencedBy(document)
   const foldersOutsideTrash = included.filter(
-    folder => !/^\/\.cozy_trash/.test(folder.attributes.path)
+    folder => !/^\/\.cozy_trash/.test(folder.path)
   )
 
   // there can be multiple folders with the same reference in some edge cases
