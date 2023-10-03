@@ -263,7 +263,7 @@ describe('CozyClient initialization', () => {
         token: 'SOME_TOKEN'
       })
 
-      expect(client.options.uri).toBe('https://cozy.tools/')
+      expect(client.options.uri).toBe('https://cozy.tools')
     })
 
     it('should NOT secure the URL if window.cozy.isSecureProtocol is false', () => {
