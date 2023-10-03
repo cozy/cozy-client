@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [41.2.1](https://github.com/cozy/cozy-client/compare/v41.2.0...v41.2.1) (2023-10-03)
+
+
+### Bug Fixes
+
+* Remove the trailing slash for the URI ([5cdc880](https://github.com/cozy/cozy-client/commit/5cdc880027adc12265e4f47e8a6bd9cbcdc6c4e6))
+
+
+
+
+
 # [41.2.0](https://github.com/cozy/cozy-client/compare/v41.1.1...v41.2.0) (2023-09-28)
 
 **Note:** Version bump only for package cozy-client
