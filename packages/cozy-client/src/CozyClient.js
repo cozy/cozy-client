@@ -70,7 +70,12 @@ const referencesUnsupportedError = relationshipClassName => {
     `The "${relationshipClassName}" relationship does not support references. If you need to add references to a document, its relationship class must have the methods {add,remove}References`
   )
 }
-
+const removeTrailingSlash = str => {
+  if (str.endsWith('/')) {
+    return str.slice(0, -1)
+  }
+  return str
+}
 const securiseUri = uri => {
   if (
     uri &&
@@ -80,7 +85,7 @@ const securiseUri = uri => {
     const secureUrl = new URL(uri)
     secureUrl.protocol = 'https:'
 
-    return secureUrl.toString()
+    return removeTrailingSlash(secureUrl.toString())
   }
 
   return uri
