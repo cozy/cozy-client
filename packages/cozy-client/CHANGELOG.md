@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [41.3.0](https://github.com/cozy/cozy-client/compare/v41.2.1...v41.3.0) (2023-10-04)
+
+
+### Bug Fixes
+
+* Recreate folder if destination folder is in trash ([552406f](https://github.com/cozy/cozy-client/commit/552406fab1651f50c379f496ad54386d792f8104))
+* Remove the use of attributes attribute in folder lib ([e57f01b](https://github.com/cozy/cozy-client/commit/e57f01b8d122b9e509e765bd9f1a00ba65c92a01))
+
+
+### Features
+
+* Add konnectorFolder model ([9b815ba](https://github.com/cozy/cozy-client/commit/9b815baa104d18612eb21ff509401fa78f500034))
+* Add localization of magic folders in ensureKonnectorFolder ([ede8b51](https://github.com/cozy/cozy-client/commit/ede8b510e262125d9f2f4d741c13148e12948048))
+
+
+
+
+
 ## [41.2.1](https://github.com/cozy/cozy-client/compare/v41.2.0...v41.2.1) (2023-10-03)
 
 
