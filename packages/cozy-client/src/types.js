@@ -487,6 +487,12 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
+ * @typedef {object} Coordinates
+ * @property {number} lat - The latitude, in decimal degrees
+ * @property {number} lon - The longitude, in decimal degrees
+ */
+
+/**
  * Receives the URL to present to the user as a parameter, and should return a promise that resolves with the URL the user was redirected to after accepting the permissions.
  *
  * @callback OpenURLCallback
