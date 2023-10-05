@@ -1,3 +1,6 @@
+const EARTH_RADIUS_M = 6378137
+const EARTH_CIRCUMFERENCE_M = 40075000
+
 /**
  * Compute the speed from distance and duration
  *
@@ -14,6 +17,15 @@ export const computeSpeed = (distance, duration) => {
 
 const degreesToRadians = degrees => {
   return (degrees * Math.PI) / 180
+}
+
+const radiansToDegrees = radians => {
+  return (radians * 180) / Math.PI
+}
+
+const roundToNDecimals = (value, n) => {
+  const multiplier = Math.pow(10, n)
+  return Math.round(value * multiplier) / multiplier
 }
 
 /**
@@ -54,7 +66,91 @@ export const geodesicDistance = (point1, point2) => {
   const a = aLat + Math.cos(lat1) * Math.cos(lat2) * aLon
   const c = 2 * Math.asin(Math.sqrt(a))
 
-  // Radius of earth is 6371 km
-  const distance = 6371 * 1000 * c
-  return Math.round(distance * 100) / 100
+  const distance = EARTH_RADIUS_M * c
+  return roundToNDecimals(distance, 2)
+}
+
+/**
+ * Compute the geographical center of the given points
+ *
+ * This consists of finding the centroid of a set of points
+ * in a sphere.
+ * Note this assumes the Earth is a perfect sphere, which is not,
+ * but the approximation should be good enough.
+ *
+ * @param {Array<import("../types").Coordinates>} coordinates - The geo points
+ * @returns {import("../types").Coordinates} The center point
+ */
+export const computeSphericalCenter = coordinates => {
+  if (coordinates.length < 1) {
+    return null
+  }
+  if (coordinates.length === 1) {
+    return coordinates[0]
+  }
+  let totalX = 0
+  let totalY = 0
+  let totalZ = 0
+
+  for (const coord of coordinates) {
+    let lon = degreesToRadians(coord.lon)
+    let lat = degreesToRadians(coord.lat)
+
+    // Convert spherical coordinates to Cartesian coordinates
+    let x = Math.cos(lat) * Math.cos(lon)
+    let y = Math.cos(lat) * Math.sin(lon)
+    let z = Math.sin(lat)
+
+    totalX += x
+    totalY += y
+    totalZ += z
+  }
+
+  const avgX = totalX / coordinates.length
+  const avgY = totalY / coordinates.length
+  const avgZ = totalZ / coordinates.length
+
+  // Don't forget to convert Cartesian coordinates back to spherical
+  const centralLon = radiansToDegrees(Math.atan2(avgY, avgX))
+  const hyp = Math.sqrt(avgX * avgX + avgY * avgY)
+  const centralLat = radiansToDegrees(Math.atan2(avgZ, hyp))
+  return {
+    lat: roundToNDecimals(centralLat, 13),
+    lon: roundToNDecimals(centralLon, 13)
+  }
+}
+
+/**
+ * Compute the longitude delta from a distance, in meters.
+ *
+ * This requires the latitude: we want to compute the horizontal delta
+ * on the Earth surface. As it is a sphere (kind of), this delta won't be
+ * the same depending on whether it is on the equator (min variation)
+ * or on the poles (max variation), for instance.
+ *
+ * @param {number} latitude - The latitude
+ * @param {number} distance - The distance in meters
+ * @returns {number} the longitude delta degrees
+ */
+export const deltaLongitude = (latitude, distance) => {
+  const phi = degreesToRadians(latitude)
+  const deltaLambda = distance / (EARTH_RADIUS_M * Math.cos(phi))
+
+  return roundToNDecimals(radiansToDegrees(deltaLambda), 13)
+}
+
+/**
+ * Compute the latitude delta from a distance, in meters.
+ *
+ * The reasoning is rather simple: there are 360° of latitudes of same distance.
+ * Then, it consists of computing 1 degree distance, and divide the
+ * given distance by this value.
+ *
+ * @param {number} distance - The distance in meters
+ * @returns {number} The delta latitude degrees
+ */
+export const deltaLatitude = distance => {
+  const distOneLatDegree = EARTH_CIRCUMFERENCE_M / 360 // 111 319 meters per degree
+  const deltaLat = distance / distOneLatDegree
+  return roundToNDecimals(deltaLat, 13)
 }
