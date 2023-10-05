@@ -1,18 +1,16 @@
 import Polyglot from 'node-polyglot'
 
 import { getEmojiByCountry } from '../emojiCountry'
+import enLocale from './en.json'
+import frLocale from './fr.json'
+
+const locales = { en: enLocale, fr: frLocale }
 
 const polyglots = {}
 const langs = ['fr', 'en']
 for (const lang of langs) {
-  let locales = {}
-  try {
-    locales = require(`./${lang}.json`)
-  } catch (e) {
-    // eslint-disable-line no-empty-block
-  }
   const polyglot = new Polyglot()
-  polyglot.extend(locales)
+  polyglot.extend(locales[lang])
   polyglots[lang] = polyglot
 }
 
