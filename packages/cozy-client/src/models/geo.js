@@ -1,3 +1,4 @@
+// @ts-check
 const EARTH_RADIUS_M = 6378137
 const EARTH_CIRCUMFERENCE_M = 40075000
 
@@ -15,14 +16,33 @@ export const computeSpeed = (distance, duration) => {
   return Math.round((distance / duration) * 100) / 100
 }
 
+/**
+ * Convert degrees to radians
+ *
+ * @param {number} degrees - The degrees to convert
+ * @returns {number} The converted radians
+ */
 const degreesToRadians = degrees => {
   return (degrees * Math.PI) / 180
 }
 
+/**
+ * Convert radians to degrees
+ *
+ * @param {number} radians - The radians to convert
+ * @returns {number} The converted degrees
+ */
 const radiansToDegrees = radians => {
   return (radians * 180) / Math.PI
 }
 
+/**
+ * Round the value to the n decimal
+ *
+ * @param {number} value - The value to round
+ * @param {number} n - The number of decimals
+ * @returns {number} The rounded value
+ */
 const roundToNDecimals = (value, n) => {
   const multiplier = Math.pow(10, n)
   return Math.round(value * multiplier) / multiplier
