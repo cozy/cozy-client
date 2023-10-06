@@ -17,4 +17,5 @@ import * as sharing from "./sharing";
 import * as dacc from "./dacc";
 import * as paper from "./paper";
 import * as user from "./user";
-export { trigger, instance, applications, file, folder, konnectorFolder, note, account, permission, utils, contact, document, timeseries, sharing, dacc, paper, user };
+import * as geo from "./geo";
+export { trigger, instance, applications, file, folder, konnectorFolder, note, account, permission, utils, contact, document, timeseries, sharing, dacc, paper, user, geo };
