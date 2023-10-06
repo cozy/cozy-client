@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [41.5.0](https://github.com/cozy/cozy-client/compare/v41.4.1...v41.5.0) (2023-10-06)
+
+
+### Features
+
+* Add geographic methods ([9eb7541](https://github.com/cozy/cozy-client/commit/9eb754163f10998085dd2353be78082cd063b01f))
+
+
+
+
+
 ## [41.4.1](https://github.com/cozy/cozy-client/compare/v41.4.0...v41.4.1) (2023-10-05)
 
 
