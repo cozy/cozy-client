@@ -197,7 +197,12 @@ export type TriggersDocument = {
     /**
      * - Parameters to pass to the the worker. For example, when the worker is set to konnector, message contains the related konnector and the related account.
      */
-    message: object;
+    message: {
+        account: IOCozyAccount['id'];
+        konnector: IOCozyKonnector['slug'];
+        folder_to_save: IOCozyFolder['_id'];
+        Data: string;
+    };
     /**
      * - state of the last executed jobs related to this trigger
      */
