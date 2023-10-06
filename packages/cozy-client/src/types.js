@@ -75,6 +75,10 @@ import { QueryDefinition } from './queries/dsl'
  * @property {String} type - type of the trigger. Can be "at", "cron", "event", "every", "in", "webhook", "client"
  * @property {String} worker - type of worker. Can be "konnector" or "sendmail"
  * @property {object} message - Parameters to pass to the the worker. For example, when the worker is set to konnector, message contains the related konnector and the related account.
+ * @property {IOCozyAccount['id']} [message.account] - Id of the account associated to this trigger, if any
+ * @property {IOCozyKonnector['slug']} [message.konnector] - Slug of the konnector associated to this trigger, if any
+ * @property {IOCozyFolder['_id']} [message.folder_to_save] - Id of the destination folder of the konnector associated to this trigger, if any
+ * @property {String} [message.Data] - Legacy, same message data but encoded in base64 json string
  * @property {TriggerState} [current_state] - state of the last executed jobs related to this trigger
  * @property {String} [arguments] - Arguments related to the type attribute. For example it's a cron configuration when the type is set to @cron.
  * @typedef {CozyClientDocument & TriggersDocument} IOCozyTrigger - An io.cozy.triggers document
