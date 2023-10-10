@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [41.6.1](https://github.com/cozy/cozy-client/compare/v41.6.0...v41.6.1) (2023-10-10)
+
+
+### Bug Fixes
+
+* Add trigger message details documentation ([892a720](https://github.com/cozy/cozy-client/commit/892a720997ba321dd6320f2f67df8a603606b3c0))
+
+
+
+
+
 # [41.6.0](https://github.com/cozy/cozy-client/compare/v41.5.0...v41.6.0) (2023-10-06)
 
 
