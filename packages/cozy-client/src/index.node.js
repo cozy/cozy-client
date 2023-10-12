@@ -17,6 +17,7 @@ export {
   HasManyInPlace,
   HasManyTriggers
 } from './associations'
+export { getReferencedBy } from './associations/helpers'
 export {
   deconstructCozyWebLinkWithSlug,
   deconstructRedirectLink,
