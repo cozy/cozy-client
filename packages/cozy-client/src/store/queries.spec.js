@@ -208,7 +208,23 @@ describe('queries reducer', () => {
       )
       expect(state).toMatchSnapshot()
     })
-
+    it('should update a query with a partiel index', () => {
+      applyAction(initQuery('a', Q('io.cozy.todos')))
+      applyAction(
+        initQuery(
+          'b',
+          Q('io.cozy.todos').partialIndex({
+            done: false
+          })
+        )
+      )
+      applyAction(
+        receiveQueryResult('a', {
+          data: [TODO_1, TODO_2, TODO_3]
+        })
+      )
+      expect(state).toMatchSnapshot()
+    })
     it('should correctly update a sorted query with a deleted document', () => {
       const query = Q('io.cozy.todos')
       applyAction(
