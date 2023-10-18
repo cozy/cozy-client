@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [41.8.1](https://github.com/cozy/cozy-client/compare/v41.8.0...v41.8.1) (2023-10-18)
+
+
+### Bug Fixes
+
+* Inconsistency in Flagship flag ([a77383f](https://github.com/cozy/cozy-client/commit/a77383fa2e783a55d80e0c709415e6a7367c611b))
+
+
+
+
+
 # [41.8.0](https://github.com/cozy/cozy-client/compare/v41.7.1...v41.8.0) (2023-10-18)
 
 
