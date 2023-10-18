@@ -30,13 +30,13 @@ export const getCreatedByApp = doc => get(doc, 'cozyMetadata.createdByApp')
  */
 export const getFlagshipDownloadLink = lang => {
   if (isAndroid()) {
-    const id = flag('flagship.playstore_id') || 'io.cozy.flagship.mobile'
+    const id = flag('flagship.playstore-id') || 'io.cozy.flagship.mobile'
     return `https://play.google.com/store/apps/details?id=${id}&hl=${lang}`
   }
   if (isIOS()) {
-    const id = flag('flagship.appstore_id') || 'id1600636174'
+    const id = flag('flagship.appstore-id') || 'id1600636174'
     return `https://apps.apple.com/${lang}/app/${id}`
   }
 
-  return flag('flagship.download_link') || `https://cozy.io/${lang}/download`
+  return flag('flagship.download-link') || `https://cozy.io/${lang}/download`
 }
