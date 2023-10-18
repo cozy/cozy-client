@@ -1,2 +1,3 @@
-export function hasBeenUpdatedByApp(doc: any, appSlug: any): boolean;
-export function getCreatedByApp(doc: any): any;
+export function hasBeenUpdatedByApp(doc: object, appSlug: string): boolean;
+export function getCreatedByApp(doc: object): string;
+export function getFlagshipDownloadLink(lang: string): string;
