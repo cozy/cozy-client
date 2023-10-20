@@ -43,7 +43,30 @@ describe(`AppsRegistryCollection`, () => {
       expect(resp.data).toHaveDocumentIdentity()
       expect(resp.data._type).toEqual(APPS_REGISTRY_DOCTYPE)
     })
+
+    it('should return list of apps in maintenance', async () => {
+      client.fetchJSON.mockReturnValue(
+        Promise.resolve([
+          {
+            slug: 'app1',
+            type: 'webapp',
+            maintenance_activated: true
+          },
+          {
+            maintenance_activated: true,
+            slug: 'konnector1',
+            type: 'konnector'
+          }
+        ])
+      )
+
+      const resp = await collection.get('maintenance')
+
+      expect(resp.data).toHaveLength(2)
+      expect(resp.data[0]._type).toEqual(APPS_REGISTRY_DOCTYPE)
+    })
   })
+
   describe('create', () => {
     const collection = new AppsRegistryCollection(client)
 
@@ -53,6 +76,7 @@ describe(`AppsRegistryCollection`, () => {
       )
     })
   })
+
   describe('destroy', () => {
     const collection = new AppsRegistryCollection(client)
 

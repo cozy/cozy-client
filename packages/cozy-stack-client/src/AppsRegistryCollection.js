@@ -28,12 +28,24 @@ class AppsRegistryCollection extends DocumentCollection {
    * @throws {FetchError}
    */
   async get(slug) {
-    const app = await this.stackClient.fetchJSON(
+    const resp = await this.stackClient.fetchJSON(
       'GET',
       `${this.endpoint}${slug}`
     )
 
-    const data = transformRegistryFormatToStackFormat(app)
+    // The "maintenance" keyword calls a specific route in the stack
+    // that returns a table of all applications under maintenance.
+    // We processed it independently so that it could be stored in the cache.
+    if (slug === 'maintenance') {
+      return {
+        data: resp.map(app => ({
+          _type: APPS_REGISTRY_DOCTYPE,
+          ...app
+        }))
+      }
+    }
+
+    const data = transformRegistryFormatToStackFormat(resp)
     return { data: normalizeAppFromRegistry(data, this.doctype) }
   }
 
