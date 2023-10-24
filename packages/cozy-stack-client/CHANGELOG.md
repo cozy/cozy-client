@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [41.9.0](https://github.com/cozy/cozy-client/compare/v41.8.1...v41.9.0) (2023-10-24)
+
+
+### Features
+
+* Cache the result of /registry/maintenance from cozy-stack ([d6bd6e2](https://github.com/cozy/cozy-client/commit/d6bd6e23cf67d69015abd3d6caa54a81b80ec7ae))
+
+
+
+
+
 # [41.2.0](https://github.com/cozy/cozy-client/compare/v41.1.1...v41.2.0) (2023-09-28)
 
 
