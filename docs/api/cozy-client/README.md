@@ -687,15 +687,9 @@ The root Cozy URL
 
 ### useAppsInMaintenance
 
-▸ **useAppsInMaintenance**(`client`): `"io.cozy.apps"`\[]
+▸ **useAppsInMaintenance**(): `"io.cozy.apps"`\[]
 
 Returns all apps in maintenance
-
-*Parameters*
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `client` | [`CozyClient`](classes/CozyClient.md) | CozyClient instance |
 
 *Returns*
 
