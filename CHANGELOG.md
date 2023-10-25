@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [42.0.0](https://github.com/cozy/cozy-client/compare/v41.9.0...v42.0.0) (2023-10-25)
+
+
+### Features
+
+* Benefit from the cache for the apps in maintenance ([0cd00f5](https://github.com/cozy/cozy-client/commit/0cd00f5ee6e464e54bcd09e3cf1752bc83b22a57))
+
+
+### BREAKING CHANGES
+
+* useAppsInMaintenance no longer requires a cozy-client instance but to be placed within a CozyProvider
+
+
+
+
+
 # [41.9.0](https://github.com/cozy/cozy-client/compare/v41.8.1...v41.9.0) (2023-10-24)
 
 
