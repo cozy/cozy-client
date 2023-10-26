@@ -36,12 +36,18 @@ class AppsRegistryCollection extends DocumentCollection {
     // The "maintenance" keyword calls a specific route in the stack
     // that returns a table of all applications under maintenance.
     // We processed it independently so that it could be stored in the cache.
+    // The stack returns some app without an id, so we use the slug as id.
     if (slug === 'maintenance') {
       return {
-        data: resp.map(app => ({
-          _type: APPS_REGISTRY_DOCTYPE,
-          ...app
-        }))
+        data: resp.map(app =>
+          normalizeAppFromRegistry(
+            {
+              _id: app._id || app.slug,
+              ...app
+            },
+            this.doctype
+          )
+        )
       }
     }
 

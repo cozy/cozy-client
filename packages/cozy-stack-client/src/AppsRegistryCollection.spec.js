@@ -48,6 +48,7 @@ describe(`AppsRegistryCollection`, () => {
       client.fetchJSON.mockReturnValue(
         Promise.resolve([
           {
+            _id: 'app1',
             slug: 'app1',
             type: 'webapp',
             maintenance_activated: true
@@ -63,7 +64,24 @@ describe(`AppsRegistryCollection`, () => {
       const resp = await collection.get('maintenance')
 
       expect(resp.data).toHaveLength(2)
-      expect(resp.data[0]._type).toEqual(APPS_REGISTRY_DOCTYPE)
+      expect(resp.data).toStrictEqual([
+        {
+          _id: 'app1',
+          _type: 'io.cozy.apps_registry',
+          id: 'app1',
+          slug: 'app1',
+          type: 'webapp',
+          maintenance_activated: true
+        },
+        {
+          _id: 'konnector1',
+          _type: 'io.cozy.apps_registry',
+          id: 'konnector1',
+          maintenance_activated: true,
+          slug: 'konnector1',
+          type: 'konnector'
+        }
+      ])
     })
   })
 
