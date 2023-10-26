@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [42.0.1](https://github.com/cozy/cozy-client/compare/v42.0.0...v42.0.1) (2023-10-26)
+
+
+### Bug Fixes
+
+* Handle maintenance app without id ([db7a3f9](https://github.com/cozy/cozy-client/commit/db7a3f9835604db9e03141236abf207924cca1f6))
+
+
+
+
+
 # [42.0.0](https://github.com/cozy/cozy-client/compare/v41.9.0...v42.0.0) (2023-10-25)
 
 **Note:** Version bump only for package cozy-stack-client
