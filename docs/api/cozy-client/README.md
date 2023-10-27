@@ -336,7 +336,7 @@ Deconstructed link
 
 ### dispatchCreate
 
-▸ **dispatchCreate**(`client`, `doctype`, `couchDBDoc`): `void`
+▸ **dispatchCreate**(`client`, `doctype`, `couchDBDoc`, `options?`): `Promise`<`void`>
 
 Dispatches a create action for a document to update CozyClient store from realtime callbacks.
 
@@ -347,20 +347,21 @@ Dispatches a create action for a document to update CozyClient store from realti
 | `client` | `any` | CozyClient instance |
 | `doctype` | `string` | Doctype of the document to create |
 | `couchDBDoc` | `CouchDBDocument` | Document to create |
+| `options` | `DispatchOptions` | - |
 
 *Returns*
 
-`void`
+`Promise`<`void`>
 
 *Defined in*
 
-[packages/cozy-client/src/store/realtime.js:58](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/store/realtime.js#L58)
+[packages/cozy-client/src/store/realtime.js:76](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/store/realtime.js#L76)
 
 ***
 
 ### dispatchDelete
 
-▸ **dispatchDelete**(`client`, `doctype`, `couchDBDoc`): `void`
+▸ **dispatchDelete**(`client`, `doctype`, `couchDBDoc`, `options?`): `Promise`<`void`>
 
 Dispatches a delete action for a document to update CozyClient store from realtime callbacks.
 
@@ -371,20 +372,21 @@ Dispatches a delete action for a document to update CozyClient store from realti
 | `client` | `any` | CozyClient instance |
 | `doctype` | `string` | Doctype of the document to create |
 | `couchDBDoc` | `CouchDBDocument` | Document to create |
+| `options` | `DispatchOptions` | - |
 
 *Returns*
 
-`void`
+`Promise`<`void`>
 
 *Defined in*
 
-[packages/cozy-client/src/store/realtime.js:80](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/store/realtime.js#L80)
+[packages/cozy-client/src/store/realtime.js:120](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/store/realtime.js#L120)
 
 ***
 
 ### dispatchUpdate
 
-▸ **dispatchUpdate**(`client`, `doctype`, `couchDBDoc`): `void`
+▸ **dispatchUpdate**(`client`, `doctype`, `couchDBDoc`, `options?`): `Promise`<`void`>
 
 Dispatches a update action for a document to update CozyClient store from realtime callbacks.
 
@@ -395,14 +397,15 @@ Dispatches a update action for a document to update CozyClient store from realti
 | `client` | `any` | CozyClient instance |
 | `doctype` | `string` | Doctype of the document to create |
 | `couchDBDoc` | `CouchDBDocument` | Document to create |
+| `options` | `DispatchOptions` | - |
 
 *Returns*
 
-`void`
+`Promise`<`void`>
 
 *Defined in*
 
-[packages/cozy-client/src/store/realtime.js:69](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/store/realtime.js#L69)
+[packages/cozy-client/src/store/realtime.js:98](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/store/realtime.js#L98)
 
 ***
 
