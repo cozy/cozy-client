@@ -70,6 +70,98 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
+ * @typedef {Object} Developer - name and url for the developer
+ * @property {string} name
+ * @property {string} url
+ */
+
+/**
+ * @typedef {Object} Intent - (application specific) a list of intents provided by this app
+ * @property {string} action
+ * @property {string[]} type
+ * @property {string} href
+ */
+
+/**
+ * @typedef {Object} Locale - an object with language slug as property, each name property is an object of localized informations
+ * @property {string} long_description
+ * @property {string[]} screenshots
+ * @property {string} short_description
+ */
+
+/**
+ * @typedef {Object} Permission - a map of permissions needed by the app
+ * @property {string} type
+ * @property {string} [description]
+ * @property {string[]} [verbs]
+ * @property {string} [selector]
+ * @property {string[]} [values]
+ */
+
+/**
+ * @typedef {Object} Route - (application specific) a map of routes for the app
+ * @property {string} folder
+ * @property {string} index
+ * @property {boolean} public
+ */
+
+/**
+ * @typedef {Object} Service - (application specific) a map of the services associated with the app (see cozy-stack services doc for more details)
+ * @property {string} type
+ * @property {string} file
+ * @property {string} [debounce]
+ * @property {string} trigger
+ * @property {string} trigger_id
+ */
+
+/**
+ * @typedef {Object} Terms - 	an object defining properties for terms that need to be displayed/accepted by the user when installing the application
+ * @property {string} url
+ * @property {string} version
+ */
+
+/**
+ * @typedef {Object} AcceptDocumentsFromFlagship - The acceptance document details from cozy-flagship.
+ * @property {string[]} accepted_mime_types
+ * @property {number} max_number_of_files
+ * @property {number} max_size_per_file_in_MB
+ * @property {string} route_to_upload - The route provided by the cozy-app to trigger the upload user flow
+ */
+
+/**
+ * @typedef {Object} AppsDocument
+ * See https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.apps/
+ *
+ * @property {AcceptDocumentsFromFlagship} [accept_documents_from_flagship] - The acceptance document details from flagship.
+ * @property {boolean} [accept_from_flagship] - Whether to accept file upload from cozy-flagship.
+ * @property {string[]} categories - array of categories for your apps (see authorized categories), it will be ['others'] by default if empty
+ * @property {string} checksum
+ * @property {string} created_at
+ * @property {Developer} developer - name and url for the developer
+ * @property {string} editor - the editor’s name to display on the cozy-bar
+ * @property {string} icon - path to the icon for the home
+ * @property {Intent[]} intents - (application specific) a list of intents provided by this app
+ * @property {string[]} langs - 	Languages available in the app
+ * @property {string} licence - the SPDX license identifier
+ * @property {Object.<string, Locale>} locales - an object with language slug as property, each name property is an object of localized informations
+ * @property {string} name - the name to display on the home
+ * @property {string} name_prefix - the prefix to display with the name
+ * @property {null} notifications
+ * @property {Object.<string, Permission>} permissions - a map of permissions needed by the app
+ * @property {Object.<string, Route>} routes - (application specific) a map of routes for the app
+ * @property {string[]} screenshots - an array of paths to the screenshots of the application
+ * @property {Object.<string, Service>} services - 	(application specific) a map of the services associated with the app
+ * @property {string} slug - the default slug that should never change (alpha-numeric lowercase)
+ * @property {string} source - where the files of the app can be downloaded
+ * @property {string} state
+ * @property {Terms} terms - an object defining properties for terms that need to be displayed/accepted by the user when installing the application
+ * @property {"webapp"} type - type of application
+ * @property {string} updated_at
+ * @property {string} version - the current version number
+ * @typedef {CozyClientDocument & AppsDocument} IOCozyApp - An io.cozy.apps document
+ */
+
+/**
  * @typedef {object} TriggersDocument
  * @property {String} [_id] - document identifier
  * @property {String} type - type of the trigger. Can be "at", "cron", "event", "every", "in", "webhook", "client"

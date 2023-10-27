@@ -181,6 +181,182 @@ export type KonnectorsDocument = {
  * - An io.cozy.konnectors document
  */
 export type IOCozyKonnector = CozyClientDocument & KonnectorsDocument;
+/**
+ * - name and url for the developer
+ */
+export type Developer = {
+    name: string;
+    url: string;
+};
+/**
+ * - (application specific) a list of intents provided by this app
+ */
+export type Intent = {
+    action: string;
+    type: string[];
+    href: string;
+};
+/**
+ * - an object with language slug as property, each name property is an object of localized informations
+ */
+export type Locale = {
+    long_description: string;
+    screenshots: string[];
+    short_description: string;
+};
+/**
+ * - a map of permissions needed by the app
+ */
+export type Permission = {
+    type: string;
+    description?: string;
+    verbs?: string[];
+    selector?: string;
+    values?: string[];
+};
+/**
+ * - (application specific) a map of routes for the app
+ */
+export type Route = {
+    folder: string;
+    index: string;
+    public: boolean;
+};
+/**
+ * - (application specific) a map of the services associated with the app (see cozy-stack services doc for more details)
+ */
+export type Service = {
+    type: string;
+    file: string;
+    debounce?: string;
+    trigger: string;
+    trigger_id: string;
+};
+/**
+ * - 	an object defining properties for terms that need to be displayed/accepted by the user when installing the application
+ */
+export type Terms = {
+    url: string;
+    version: string;
+};
+/**
+ * - The acceptance document details from cozy-flagship.
+ */
+export type AcceptDocumentsFromFlagship = {
+    accepted_mime_types: string[];
+    max_number_of_files: number;
+    max_size_per_file_in_MB: number;
+    /**
+     * - The route provided by the cozy-app to trigger the upload user flow
+     */
+    route_to_upload: string;
+};
+/**
+ * See https://docs.cozy.io/en/cozy-doctypes/docs/io.cozy.apps/
+ */
+export type AppsDocument = {
+    /**
+     * - The acceptance document details from flagship.
+     */
+    accept_documents_from_flagship?: AcceptDocumentsFromFlagship;
+    /**
+     * - Whether to accept file upload from cozy-flagship.
+     */
+    accept_from_flagship?: boolean;
+    /**
+     * - array of categories for your apps (see authorized categories), it will be ['others'] by default if empty
+     */
+    categories: string[];
+    checksum: string;
+    created_at: string;
+    /**
+     * - name and url for the developer
+     */
+    developer: Developer;
+    /**
+     * - the editor’s name to display on the cozy-bar
+     */
+    editor: string;
+    /**
+     * - path to the icon for the home
+     */
+    icon: string;
+    /**
+     * - (application specific) a list of intents provided by this app
+     */
+    intents: Intent[];
+    /**
+     * - 	Languages available in the app
+     */
+    langs: string[];
+    /**
+     * - the SPDX license identifier
+     */
+    licence: string;
+    /**
+     * - an object with language slug as property, each name property is an object of localized informations
+     */
+    locales: {
+        [x: string]: Locale;
+    };
+    /**
+     * - the name to display on the home
+     */
+    name: string;
+    /**
+     * - the prefix to display with the name
+     */
+    name_prefix: string;
+    notifications: null;
+    /**
+     * - a map of permissions needed by the app
+     */
+    permissions: {
+        [x: string]: Permission;
+    };
+    /**
+     * - (application specific) a map of routes for the app
+     */
+    routes: {
+        [x: string]: Route;
+    };
+    /**
+     * - an array of paths to the screenshots of the application
+     */
+    screenshots: string[];
+    /**
+     * - 	(application specific) a map of the services associated with the app
+     */
+    services: {
+        [x: string]: Service;
+    };
+    /**
+     * - the default slug that should never change (alpha-numeric lowercase)
+     */
+    slug: string;
+    /**
+     * - where the files of the app can be downloaded
+     */
+    source: string;
+    state: string;
+    /**
+     * - an object defining properties for terms that need to be displayed/accepted by the user when installing the application
+     */
+    terms: Terms;
+    /**
+     * - type of application
+     */
+    type: "webapp";
+    updated_at: string;
+    /**
+     * - the current version number
+     */
+    version: string;
+};
+/**
+ * - An io.cozy.apps document
+ */
+export type IOCozyApp = CozyClientDocument & AppsDocument;
 export type TriggersDocument = {
     /**
      * - document identifier
