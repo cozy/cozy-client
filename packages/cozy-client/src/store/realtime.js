@@ -8,6 +8,7 @@ import { receiveMutationResult } from './mutations'
  *
  * @public
  * @param {import("../types").CouchDBDocument} couchDBDoc - object representing the document
+ * @param {string} doctype - Doctype of the document
  * @returns {import("../types").CozyClientDocument} full normalized document
  */
 const normalizeDoc = (couchDBDoc, doctype) => {
@@ -19,23 +20,34 @@ const normalizeDoc = (couchDBDoc, doctype) => {
 }
 
 /**
+ * Enhances a document with additional attributes
+ *
+ * @async
+ * @param {import("../types").CozyClientDocument} doc - The document to enhance
+ * @param {Object} options - Options for enhancing the document
+ * @param {Function} [options.enhanceDocFn] - Function to enhance document attributes
+ * @param {object} options.client - CozyClient instance
+ * @returns {Promise<import("../types").CozyClientDocument>} Enhanced document
+ */
+const enhanceDoc = async (doc, options) => {
+  if (typeof options.enhanceDocFn === 'function') {
+    return await options.enhanceDocFn(doc, {
+      client: options.client
+    })
+  }
+  return doc
+}
+
+/**
  * DispatchChange
  *
- * @param {object} client CozyClient instane
- * @param {import("../types").Doctype} doctype Doctype of the document to update
- * @param {import("../types").CouchDBDocument} couchDBDoc Document to update
+ * @param {object} client CozyClient instance
+ * @param {import("../types").CozyClientDocument} document Document to update
  * @param {import("../types").Mutation} mutationDefinitionCreator Mutation to apply
+ *
  */
-const dispatchChange = (
-  client,
-  doctype,
-  couchDBDoc,
-  mutationDefinitionCreator
-) => {
-  const data = normalizeDoc(couchDBDoc, doctype)
-  const response = {
-    data
-  }
+const dispatchChange = (client, document, mutationDefinitionCreator) => {
+  const response = { data: document }
 
   const options = {}
   client.dispatch(
@@ -43,10 +55,15 @@ const dispatchChange = (
       client.generateRandomId(),
       response,
       options,
-      mutationDefinitionCreator(data)
+      mutationDefinitionCreator(document)
     )
   )
 }
+
+/**
+ * @typedef {Object} DispatchOptions
+ * @property {function} [enhanceDocFn] Optional function to enhance the document attributes before dispatch
+ */
 
 /**
  * Dispatches a create action for a document to update CozyClient store from realtime callbacks.
@@ -54,9 +71,20 @@ const dispatchChange = (
  * @param {object} client - CozyClient instance
  * @param {import("../types").Doctype} doctype - Doctype of the document to create
  * @param {import("../types").CouchDBDocument} couchDBDoc - Document to create
+ * @param {DispatchOptions} [options] Options
  */
-export const dispatchCreate = (client, doctype, couchDBDoc) => {
-  dispatchChange(client, doctype, couchDBDoc, Mutations.createDocument)
+export const dispatchCreate = async (
+  client,
+  doctype,
+  couchDBDoc,
+  options = {}
+) => {
+  const normalizedDoc = normalizeDoc(couchDBDoc, doctype)
+  const enhancedDoc = await enhanceDoc(normalizedDoc, {
+    client,
+    enhanceDocFn: options?.enhanceDocFn
+  })
+  dispatchChange(client, enhancedDoc, Mutations.createDocument)
 }
 
 /**
@@ -65,9 +93,20 @@ export const dispatchCreate = (client, doctype, couchDBDoc) => {
  * @param {object} client - CozyClient instance
  * @param {import("../types").Doctype} doctype - Doctype of the document to create
  * @param {import("../types").CouchDBDocument} couchDBDoc - Document to create
+ * @param {DispatchOptions} [options] Options
  */
-export const dispatchUpdate = (client, doctype, couchDBDoc) => {
-  dispatchChange(client, doctype, couchDBDoc, Mutations.updateDocument)
+export const dispatchUpdate = async (
+  client,
+  doctype,
+  couchDBDoc,
+  options = {}
+) => {
+  const normalizedDoc = normalizeDoc(couchDBDoc, doctype)
+  const enhancedDoc = await enhanceDoc(normalizedDoc, {
+    client,
+    enhanceDocFn: options?.enhanceDocFn
+  })
+  dispatchChange(client, enhancedDoc, Mutations.updateDocument)
 }
 
 /**
@@ -76,12 +115,18 @@ export const dispatchUpdate = (client, doctype, couchDBDoc) => {
  * @param {object} client - CozyClient instance
  * @param {import("../types").Doctype} doctype - Doctype of the document to create
  * @param {import("../types").CouchDBDocument} couchDBDoc - Document to create
+ * @param {DispatchOptions} [options] Options
  */
-export const dispatchDelete = (client, doctype, couchDBDoc) => {
-  dispatchChange(
+export const dispatchDelete = async (
+  client,
+  doctype,
+  couchDBDoc,
+  options = {}
+) => {
+  const normalizedDoc = normalizeDoc({ ...couchDBDoc, _deleted: true }, doctype)
+  const enhancedDoc = await enhanceDoc(normalizedDoc, {
     client,
-    doctype,
-    { ...couchDBDoc, _deleted: true },
-    Mutations.deleteDocument
-  )
+    enhanceDocFn: options?.enhanceDocFn
+  })
+  dispatchChange(client, enhancedDoc, Mutations.deleteDocument)
 }
