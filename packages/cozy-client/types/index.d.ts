@@ -20,5 +20,5 @@ export { QueryDefinition, Q, Mutations, MutationTypes, getDoctypeFromOperation }
 export { Association, HasMany, HasOne, HasOneInPlace, HasManyInPlace, HasManyTriggers } from "./associations";
 export { isReferencedBy, isReferencedById, getReferencedBy, getReferencedById } from "./associations/helpers";
 export { deconstructCozyWebLinkWithSlug, deconstructRedirectLink, dehydrate, generateWebLink, ensureFirstSlash, rootCozyUrl, InvalidRedirectLinkError, InvalidCozyUrlError, InvalidProtocolError, BlockedCozyError } from "./helpers";
-export { cancelable, isQueryLoading, hasQueryBeenLoaded } from "./utils";
+export { cancelable, isQueryLoading, hasQueryBeenLoaded, isQueriesLoading, hasQueriesBeenLoaded } from "./utils";
 export { queryConnect, queryConnectFlat, withClient } from "./hoc";

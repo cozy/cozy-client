@@ -50,3 +50,21 @@ export const isQueryLoading = col => {
 export const hasQueryBeenLoaded = col => {
   return col.lastFetch
 }
+
+/**
+ * Returns whether the result of queries are loading
+ */
+export const isQueriesLoading = queriesResults => {
+  return Object.values(queriesResults).some(queryResult =>
+    isQueryLoading(queryResult)
+  )
+}
+
+/**
+ * Returns whether queries have been loaded at least once
+ */
+export const hasQueriesBeenLoaded = queriesResults => {
+  return Object.values(queriesResults).some(queryResult =>
+    hasQueryBeenLoaded(queryResult)
+  )
+}
