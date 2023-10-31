@@ -489,6 +489,19 @@
       "subjects": ["permit", "invoice"]
     },
     {
+      "label": "real_estate_insurance",
+      "purpose": "contract",
+      "sourceCategory": "insurance",
+      "sourceSubCategory": "real_estate",
+      "subjects": ["insurance"]
+    },
+    {
+      "label": "person_insurance",
+      "purpose": "contract",
+      "sourceCategory": "insurance",
+      "subjects": ["insurance"]
+    },
+    {
       "label": "other_administrative_document"
     },
     {

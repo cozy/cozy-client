@@ -49,7 +49,8 @@ const familyLabels = [
   'caf',
   'payment_proof_family_allowance',
   'note_family_document',
-  'other_family_document'
+  'other_family_document',
+  'person_insurance'
 ]
 
 /**
@@ -112,7 +113,8 @@ const homeLabels = [
   'house_insurance',
   'work_quote',
   'note_house_document',
-  'other_house_document'
+  'other_house_document',
+  'real_estate_insurance'
 ]
 
 /**
