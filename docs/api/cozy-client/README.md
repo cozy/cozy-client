@@ -449,6 +449,28 @@ Array of the reference found
 
 ***
 
+### hasQueriesBeenLoaded
+
+▸ **hasQueriesBeenLoaded**(`queriesResults`): `boolean`
+
+Returns whether queries have been loaded at least once
+
+*Parameters*
+
+| Name | Type |
+| :------ | :------ |
+| `queriesResults` | `any` |
+
+*Returns*
+
+`boolean`
+
+*Defined in*
+
+[packages/cozy-client/src/utils.js:66](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/utils.js#L66)
+
+***
+
 ### hasQueryBeenLoaded
 
 ▸ **hasQueryBeenLoaded**(`col`): `any`
@@ -468,6 +490,28 @@ Returns whether a query has been loaded at least once
 *Defined in*
 
 [packages/cozy-client/src/utils.js:50](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/utils.js#L50)
+
+***
+
+### isQueriesLoading
+
+▸ **isQueriesLoading**(`queriesResults`): `boolean`
+
+Returns whether the result of queries are loading
+
+*Parameters*
+
+| Name | Type |
+| :------ | :------ |
+| `queriesResults` | `any` |
+
+*Returns*
+
+`boolean`
+
+*Defined in*
+
+[packages/cozy-client/src/utils.js:57](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/utils.js#L57)
 
 ***
 

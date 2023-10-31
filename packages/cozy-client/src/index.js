@@ -35,7 +35,13 @@ export {
   InvalidProtocolError,
   BlockedCozyError
 } from './helpers'
-export { cancelable, isQueryLoading, hasQueryBeenLoaded } from './utils'
+export {
+  cancelable,
+  isQueryLoading,
+  hasQueryBeenLoaded,
+  isQueriesLoading,
+  hasQueriesBeenLoaded
+} from './utils'
 export { getQueryFromState } from './store'
 export { default as Registry } from './registry'
 export { default as RealTimeQueries } from './RealTimeQueries'

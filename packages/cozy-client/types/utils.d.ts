@@ -1,5 +1,7 @@
 export function isQueryLoading(col: any): boolean;
 export function hasQueryBeenLoaded(col: any): any;
+export function isQueriesLoading(queriesResults: any): boolean;
+export function hasQueriesBeenLoaded(queriesResults: any): boolean;
 export type CancelablePromise = Promise<any>;
 /**
  * @typedef {Promise} CancelablePromise
