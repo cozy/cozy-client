@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [42.2.0](https://github.com/cozy/cozy-client/compare/v42.1.0...v42.2.0) (2023-10-31)
+
+
+### Features
+
+* Add and export isQueriesLoading and hasQueriesBeenLoaded ([d22c713](https://github.com/cozy/cozy-client/commit/d22c713006864895df0f51ab01211667cc070cdb))
+* Export useQueries ([b170d2e](https://github.com/cozy/cozy-client/commit/b170d2ef1f03ab5e939284de5e5969ba262d8f7a))
+
+
+
+
+
 # [42.1.0](https://github.com/cozy/cozy-client/compare/v42.0.1...v42.1.0) (2023-10-26)
 
 
