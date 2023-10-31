@@ -773,6 +773,26 @@ Returns the cozy client from the context
 
 ***
 
+### useQueries
+
+▸ **useQueries**(`querySpecs`): `Object`
+
+*Parameters*
+
+| Name | Type |
+| :------ | :------ |
+| `querySpecs` | `any` |
+
+*Returns*
+
+`Object`
+
+*Defined in*
+
+[packages/cozy-client/src/hooks/useQuery.js:93](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useQuery.js#L93)
+
+***
+
 ### useQuery
 
 ▸ **useQuery**(`queryDefinition`, `options`): `UseQueryReturnValue`
