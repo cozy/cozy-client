@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [43.0.0](https://github.com/cozy/cozy-client/compare/v42.2.0...v43.0.0) (2023-11-03)
+
+
+### Bug Fixes
+
+* Actually validate result in rootCozyUrl specs ([dbf6516](https://github.com/cozy/cozy-client/commit/dbf6516d85fe8291b2fa27a5adffa5610a967b6f))
+* Always return URL instance from rootCozyUrl ([665d421](https://github.com/cozy/cozy-client/commit/665d421693f5e3ba84fbb1f1d0d501eec91ca8d6))
+* Handle URLs that redirect in rootCozyUrl ([d38381d](https://github.com/cozy/cozy-client/commit/d38381d694f5893ff88268ef32b79d1e1370ec81)), closes [/github.com/cozy/cozy-stack/blob/299968d43914066c3147276eea2463ebb292d527/web/apps/serve.go#L101-L108](https://github.com//github.com/cozy/cozy-stack/blob/299968d43914066c3147276eea2463ebb292d527/web/apps/serve.go/issues/L101-L108)
+
+
+### BREAKING CHANGES
+
+* rootCozyUrl will no longer return the provided URL
+  when its origin is a valid Cozy domain.
+
+  e.g. :
+  ```javascript
+  // Before
+  await rootCozyUrl(new URL('https://example.mycozy.cloud/some-path'))
+  // URL('https://example.mycozy.cloud/some-path')
+
+  // Now
+  await rootCozyUrl(new URL('https://example.mycozy.cloud/some-path'))
+  // URL('https://example.mycozy.cloud/')
+  ```
+
+
+
+
+
 # [42.2.0](https://github.com/cozy/cozy-client/compare/v42.1.0...v42.2.0) (2023-10-31)
 
 
