@@ -201,10 +201,7 @@ const wellKnownUrl = url => uri(url) + '/.well-known/change-password'
  *   Cozy's root or to a specifc slug. The caller is responsible to handle that exception
  * - another status means there aren't any Cozy behind to the given origin
  *
- * @param {object} url          Object of URL elements
- * @param {string} url.protocol Protocol to use in the origin (e.g. http)
- * @param {string} url.hostname Hostname to use in the origin (e.g. claude.mycozy.cloud)
- * @param {string} url.port     Port to use in the origin (e.g. 8080)
+ * @param {URL} url URL to validate
  *
  * @returns {Promise<boolean>} True if we believe there's a Cozy behind the given origin
  * @throws {InvalidCozyUrlError} Thrown when we know for sure there aren't any Cozy behind the given origin
@@ -273,7 +270,9 @@ export const rootCozyUrl = async url => {
 
   // If the entered URL is good, use it
   if (await isValidOrigin(url)) {
-    return url
+    return new URL(
+      uri({ protocol: url.protocol, hostname: url.hostname, port: url.port })
+    )
   }
 
   // If the entered URL's lowest sub-domain contains a dash, remove it and
@@ -282,10 +281,11 @@ export const rootCozyUrl = async url => {
     const [subDomain, ...domain] = url.hostname.split('.')
     const hostname = [subDomain.replace(/-.+/, ''), ...domain].join('.')
 
-    if (
-      await isValidOrigin({ protocol: url.protocol, hostname, port: url.port })
-    ) {
-      return new URL(uri({ protocol: url.protocol, hostname, port: url.port }))
+    const noSlugUrl = new URL(
+      uri({ protocol: url.protocol, hostname, port: url.port })
+    )
+    if (await isValidOrigin(noSlugUrl)) {
+      return noSlugUrl
     }
   }
 
@@ -295,10 +295,11 @@ export const rootCozyUrl = async url => {
     .split('.')
     .splice(1)
     .join('.')
-  if (
-    await isValidOrigin({ protocol: url.protocol, hostname, port: url.port })
-  ) {
-    return new URL(uri({ protocol: url.protocol, hostname, port: url.port }))
+  const noSubUrl = new URL(
+    uri({ protocol: url.protocol, hostname, port: url.port })
+  )
+  if (await isValidOrigin(noSubUrl)) {
+    return noSubUrl
   }
 
   // At this point, we've tried everything we could to correct the user's URL
