@@ -209,7 +209,7 @@ const wellKnownUrl = url => uri(url) + '/.well-known/change-password'
  */
 const isValidOrigin = async url => {
   const response = await fetch(wellKnownUrl(url))
-  const { status } = response
+  const { status, url: responseUri } = response
 
   if (status === 404) {
     throw new InvalidCozyUrlError(url)
@@ -219,7 +219,9 @@ const isValidOrigin = async url => {
     throw new BlockedCozyError(url)
   }
 
-  return status === 200
+  const wasRedirected = url.origin !== new URL(responseUri).origin
+
+  return status === 200 && !wasRedirected
 }
 
 /**

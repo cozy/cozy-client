@@ -205,7 +205,10 @@ describe('rootCozyUrl', () => {
     fetch.mockOnceIf(
       'https://camillenimbus.mycozy.cloud/.well-known/change-password',
       {},
-      { status: 200 }
+      {
+        status: 200,
+        url: 'https://camillenimbus.mycozy.cloud/.well-known/change-password'
+      }
     )
 
     await expect(
@@ -217,7 +220,10 @@ describe('rootCozyUrl', () => {
     fetch.mockOnceIf(
       'https://camillenimbus.mycozy.cloud/.well-known/change-password',
       {},
-      { status: 200 }
+      {
+        status: 200,
+        url: 'https://camillenimbus.mycozy.cloud/.well-known/change-password'
+      }
     )
 
     await expect(
@@ -229,7 +235,10 @@ describe('rootCozyUrl', () => {
     fetch.mockOnceIf(
       'https://camillenimbus.mycozy.cloud/.well-known/change-password',
       {},
-      { status: 200 }
+      {
+        status: 200,
+        url: 'https://camillenimbus.mycozy.cloud/.well-known/change-password'
+      }
     )
 
     await expect(
@@ -241,12 +250,19 @@ describe('rootCozyUrl', () => {
     fetch.mockOnceIf(
       'https://camillenimbus-drive.mycozy.cloud/.well-known/change-password',
       {},
-      { status: 401 }
+      {
+        status: 401,
+        url:
+          'https://camillenimbus-drive.mycozy.cloud/.well-known/change-password'
+      }
     )
     fetch.mockOnceIf(
       'https://camillenimbus.mycozy.cloud/.well-known/change-password',
       {},
-      { status: 200 }
+      {
+        status: 200,
+        url: 'https://camillenimbus.mycozy.cloud/.well-known/change-password'
+      }
     )
 
     await expect(
@@ -258,12 +274,19 @@ describe('rootCozyUrl', () => {
     fetch.mockOnceIf(
       'https://camillenimbus-photos.mycozy.cloud/.well-known/change-password',
       {},
-      { status: 401 }
+      {
+        status: 401,
+        url:
+          'https://camillenimbus-photos.mycozy.cloud/.well-known/change-password'
+      }
     )
     fetch.mockOnceIf(
       'https://camillenimbus.mycozy.cloud/.well-known/change-password',
       {},
-      { status: 200 }
+      {
+        status: 200,
+        url: 'https://camillenimbus.mycozy.cloud/.well-known/change-password'
+      }
     )
 
     await expect(
@@ -279,12 +302,19 @@ describe('rootCozyUrl', () => {
     fetch.mockOnceIf(
       'https://camillenimbus-drive.mycozy.cloud/.well-known/change-password',
       {},
-      { status: 401 }
+      {
+        status: 401,
+        url:
+          'https://camillenimbus-drive.mycozy.cloud/.well-known/change-password'
+      }
     )
     fetch.mockOnceIf(
       'https://camillenimbus.mycozy.cloud/.well-known/change-password',
       {},
-      { status: 200 }
+      {
+        status: 200,
+        url: 'https://camillenimbus.mycozy.cloud/.well-known/change-password'
+      }
     )
 
     await expect(
@@ -292,11 +322,41 @@ describe('rootCozyUrl', () => {
     ).resolves.toHaveProperty('href', 'https://camillenimbus.mycozy.cloud/')
   })
 
+  it('should handle cozy-hosted special app name', async () => {
+    // XXX: `cozy-stack` redirects requests for deprecated apps (e.g.
+    // `onboarding`) to the Home app (via the login page if the user is not
+    // logged in).
+    fetch.mockOnceIf(
+      'https://camillenimbus-onboarding.mycozy.cloud/.well-known/change-password',
+      {},
+      {
+        status: 200,
+        url:
+          'https://camillenimbus.mycozy.cloud/auth/login?redirect=https%3A%2F%2Fcamillenimbus-home.mycozy.cloud%2F'
+      }
+    )
+    fetch.mockOnceIf(
+      'https://camillenimbus.mycozy.cloud/.well-known/change-password',
+      {},
+      {
+        status: 200,
+        url: 'https://camillenimbus.mycozy.cloud/.well-known/change-password'
+      }
+    )
+
+    await expect(
+      rootCozyUrl(new URL('https://camillenimbus-onboarding.mycozy.cloud'))
+    ).resolves.toHaveProperty('href', 'https://camillenimbus.mycozy.cloud/')
+  })
+
   it('should handle self-hosted https', async () => {
     fetch.mockOnceIf(
       'https://camillenimbus.com/.well-known/change-password',
       {},
-      { status: 200 }
+      {
+        status: 200,
+        url: 'https://camillenimbus.com/.well-known/change-password'
+      }
     )
 
     await expect(
@@ -309,7 +369,8 @@ describe('rootCozyUrl', () => {
       'https://camille-nimbus.com/.well-known/change-password',
       {},
       {
-        status: 200
+        status: 200,
+        url: 'https://camille-nimbus.com/.well-known/change-password'
       }
     )
 
@@ -323,7 +384,8 @@ describe('rootCozyUrl', () => {
       'http://camille-nimbus.com/.well-known/change-password',
       {},
       {
-        status: 200
+        status: 200,
+        url: 'http://camille-nimbus.com/.well-known/change-password'
       }
     )
 
@@ -337,7 +399,8 @@ describe('rootCozyUrl', () => {
       'https://camillenimbus.com:666/.well-known/change-password',
       {},
       {
-        status: 200
+        status: 200,
+        url: 'https://camillenimbus.com:666/.well-known/change-password'
       }
     )
 
@@ -351,14 +414,16 @@ describe('rootCozyUrl', () => {
       'https://drive.camillenimbus.com/.well-known/change-password',
       {},
       {
-        status: 401
+        status: 401,
+        url: 'https://drive.camillenimbus.com/.well-known/change-password'
       }
     )
     fetch.mockOnceIf(
       'https://camillenimbus.com/.well-known/change-password',
       {},
       {
-        status: 200
+        status: 200,
+        url: 'https://camillenimbus.com/.well-known/change-password'
       }
     )
 
@@ -372,14 +437,16 @@ describe('rootCozyUrl', () => {
       'https://camille-drive.nimbus.com/.well-known/change-password',
       {},
       {
-        status: 401
+        status: 401,
+        url: 'https://camille-drive.nimbus.com/.well-known/change-password'
       }
     )
     fetch.mockOnceIf(
       'https://camille.nimbus.com/.well-known/change-password',
       {},
       {
-        status: 200
+        status: 200,
+        url: 'https://camille.nimbus.com/.well-known/change-password'
       }
     )
 
@@ -389,6 +456,14 @@ describe('rootCozyUrl', () => {
   })
 
   it('should handle cozy.localhost', async () => {
+    fetch.mockOnceIf(
+      'http://cozy.localhost:8080/.well-known/change-password',
+      {},
+      {
+        status: 200,
+        url: 'http://cozy.localhost:8080/.well-known/change-password'
+      }
+    )
     await expect(
       rootCozyUrl(new URL('http://cozy.localhost:8080'))
     ).resolves.toHaveProperty('href', 'http://cozy.localhost:8080/')
@@ -399,7 +474,8 @@ describe('rootCozyUrl', () => {
       'ftp://camillenimbus.com/.well-known/change-password',
       {},
       {
-        status: 200
+        status: 200,
+        url: 'ftp://camillenimbus.com/.well-known/change-password'
       }
     )
 
@@ -413,7 +489,8 @@ describe('rootCozyUrl', () => {
       'https://missing.mycozy.cloud/.well-known/change-password',
       {},
       {
-        status: 404
+        status: 404,
+        url: 'https://missing.mycozy.cloud/.well-known/change-password'
       }
     )
 

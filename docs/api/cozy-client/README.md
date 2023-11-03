@@ -697,7 +697,7 @@ The root Cozy URL
 
 *Defined in*
 
-[packages/cozy-client/src/helpers/urlHelper.js:266](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L266)
+[packages/cozy-client/src/helpers/urlHelper.js:268](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L268)
 
 ***
 
