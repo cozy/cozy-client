@@ -210,7 +210,7 @@ describe('rootCozyUrl', () => {
 
     await expect(
       rootCozyUrl(new URL('https://camillenimbus.mycozy.cloud'))
-    ).resolves.toEqual(new URL('https://camillenimbus.mycozy.cloud'))
+    ).resolves.toHaveProperty('href', 'https://camillenimbus.mycozy.cloud/')
   })
 
   it('should handle cozy-hosted https trailing slash', async () => {
@@ -222,7 +222,7 @@ describe('rootCozyUrl', () => {
 
     await expect(
       rootCozyUrl(new URL('https://camillenimbus.mycozy.cloud/'))
-    ).resolves.toEqual(new URL('https://camillenimbus.mycozy.cloud'))
+    ).resolves.toHaveProperty('href', 'https://camillenimbus.mycozy.cloud/')
   })
 
   it('should handle cozy-hosted https trailing path', async () => {
@@ -234,7 +234,7 @@ describe('rootCozyUrl', () => {
 
     await expect(
       rootCozyUrl(new URL('https://camillenimbus.mycozy.cloud/some-path'))
-    ).resolves.toEqual(new URL('https://camillenimbus.mycozy.cloud'))
+    ).resolves.toHaveProperty('href', 'https://camillenimbus.mycozy.cloud/')
   })
 
   it('should handle cozy-hosted drive web app url', async () => {
@@ -251,7 +251,7 @@ describe('rootCozyUrl', () => {
 
     await expect(
       rootCozyUrl(new URL('https://camillenimbus-drive.mycozy.cloud/#/folder'))
-    ).resolves.toEqual(new URL('https://camillenimbus.mycozy.cloud'))
+    ).resolves.toHaveProperty('href', 'https://camillenimbus.mycozy.cloud/')
   })
 
   it('should handle cozy-hosted photos album url', async () => {
@@ -272,7 +272,7 @@ describe('rootCozyUrl', () => {
           'https://camillenimbus-photos.mycozy.cloud/#/albums/68b5cda502ae29f5fa73fd89f1be4f92'
         )
       )
-    ).resolves.toEqual(new URL('https://camillenimbus.mycozy.cloud'))
+    ).resolves.toHaveProperty('href', 'https://camillenimbus.mycozy.cloud/')
   })
 
   it('should handle cozy-hosted app name', async () => {
@@ -289,7 +289,7 @@ describe('rootCozyUrl', () => {
 
     await expect(
       rootCozyUrl(new URL('https://camillenimbus-drive.mycozy.cloud'))
-    ).resolves.toEqual(new URL('https://camillenimbus.mycozy.cloud'))
+    ).resolves.toHaveProperty('href', 'https://camillenimbus.mycozy.cloud/')
   })
 
   it('should handle self-hosted https', async () => {
@@ -301,7 +301,7 @@ describe('rootCozyUrl', () => {
 
     await expect(
       rootCozyUrl(new URL('https://camillenimbus.com'))
-    ).resolves.toEqual(new URL('https://camillenimbus.com'))
+    ).resolves.toHaveProperty('href', 'https://camillenimbus.com/')
   })
 
   it('should handle self-hosted with dash', async () => {
@@ -315,7 +315,7 @@ describe('rootCozyUrl', () => {
 
     await expect(
       rootCozyUrl(new URL('https://camille-nimbus.com'))
-    ).resolves.toEqual(new URL('https://camille-nimbus.com'))
+    ).resolves.toHaveProperty('href', 'https://camille-nimbus.com/')
   })
 
   it('should handle self-hosted http', async () => {
@@ -329,7 +329,7 @@ describe('rootCozyUrl', () => {
 
     await expect(
       rootCozyUrl(new URL('http://camille-nimbus.com'))
-    ).resolves.toEqual(new URL('http://camille-nimbus.com'))
+    ).resolves.toHaveProperty('href', 'http://camille-nimbus.com/')
   })
 
   it('should handle self-hosted https with port', async () => {
@@ -343,7 +343,7 @@ describe('rootCozyUrl', () => {
 
     await expect(
       rootCozyUrl(new URL('https://camillenimbus.com:666'))
-    ).resolves.toEqual(new URL('https://camillenimbus.com:666'))
+    ).resolves.toHaveProperty('href', 'https://camillenimbus.com:666/')
   })
 
   it('should handle self-hosted nested drive web app url', async () => {
@@ -364,7 +364,7 @@ describe('rootCozyUrl', () => {
 
     await expect(
       rootCozyUrl(new URL('https://drive.camillenimbus.com/#/folder'))
-    ).resolves.toEqual(new URL('https://camillenimbus.com'))
+    ).resolves.toHaveProperty('href', 'https://camillenimbus.com/')
   })
 
   it('should handle self-hosted flat drive web app url', async () => {
@@ -385,13 +385,13 @@ describe('rootCozyUrl', () => {
 
     await expect(
       rootCozyUrl(new URL('https://camille-drive.nimbus.com/#/folder'))
-    ).resolves.toEqual(new URL('https://camille.nimbus.com'))
+    ).resolves.toHaveProperty('href', 'https://camille.nimbus.com/')
   })
 
   it('should handle cozy.localhost', async () => {
     await expect(
       rootCozyUrl(new URL('http://cozy.localhost:8080'))
-    ).resolves.toEqual(new URL('http://cozy.localhost:8080'))
+    ).resolves.toHaveProperty('href', 'http://cozy.localhost:8080/')
   })
 
   it('expects an http or https protocol', async () => {
