@@ -225,7 +225,7 @@ Creates a client suitable for use in tests
 
 *Defined in*
 
-[packages/cozy-client/src/mock.js:41](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/mock.js#L41)
+[packages/cozy-client/src/mock.js:45](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/mock.js#L45)
 
 ***
 

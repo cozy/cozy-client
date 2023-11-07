@@ -1,18 +1,22 @@
 import CozyClient from './CozyClient'
-import { receiveQueryResult, initQuery } from './store'
+import { receiveQueryResult, receiveQueryError, initQuery } from './store'
 import { normalizeDoc } from 'cozy-stack-client'
 
 import { Q } from './queries/dsl'
 
 const fillQueryInsideClient = (client, queryName, queryOptions) => {
-  const { definition, doctype, data, ...queryResult } = queryOptions
+  const { definition, doctype, data, queryError, ...queryResult } = queryOptions
   client.store.dispatch(initQuery(queryName, definition || Q(doctype)))
-  client.store.dispatch(
-    receiveQueryResult(queryName, {
-      data: data ? data.map(doc => normalizeDoc(doc, doctype)) : data,
-      ...queryResult
-    })
-  )
+  if (queryError) {
+    client.store.dispatch(receiveQueryError(queryName, queryError))
+  } else {
+    client.store.dispatch(
+      receiveQueryResult(queryName, {
+        data: data ? data.map(doc => normalizeDoc(doc, doctype)) : data,
+        ...queryResult
+      })
+    )
+  }
 }
 
 const mockedQueryFromMockedRemoteData = remoteData => qdef => {

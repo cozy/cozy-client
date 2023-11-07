@@ -425,47 +425,55 @@ Say we want to test the following component:
 
 ```jsx
 import React from 'react'
-import { queryConnect, Q } from 'cozy-client'
+import { useQuery, Q } from 'cozy-client'
 
-function DumbTodoList(props) {
-  const { data, fetchStatus } = props.todos
-  if (fetchStatus !== 'loaded') {
+function TodoList() {
+  const { data, fetchStatus, lastError } = useQuery(Q('io.cozy.todos'), {
+    as: 'todos'
+  })
+
+  if (fetchStatus === 'failed') {
+    return <h1>An error occurred : {lastError.message}</h1>
+  } else if (fetchStatus !== 'loaded') {
     return <h1>Loading...</h1>
   } else {
-    return <ul>
-      {data.map(todo => (
-              <li key={todo.id}>{todo.label}</li>
-      ))}
-    </ul>
+    return (
+      <>
+        <h1 id="todos-heading">Todos</h1>
+        <ul aria-labelledby="todos-heading">
+          {data.map(todo => (
+            <li key={todo.id}>{todo.label}</li>
+          ))}
+        </ul>
+      </>
+    )
   }
 }
-
-const TodoList = queryConnect({
-  todos: {
-    as: 'todos',
-    query: () => Q('io.cozy.todos')
-  }
-})(DumbTodoList)
 
 export default TodoList
 ```
 
 We want to make sure the component renders correctly. In our test, we can
-create a mocked client with predefined data for the `todos` query, and snapshot
-it:
+create a mocked client with predefined data for the `todos` query, and test
+it with [testing-library](https://testing-library.com/) :
 
 ```jsx
 import React from 'react'
-import {
-  createMockClient,
-  CozyProvider,
-} from 'cozy-client'
-import { mount } from 'enzyme'
+import { createMockClient, CozyProvider } from 'cozy-client'
+import { render, screen, within } from '@testing-library/react'
 import TodoList from './TodoList'
 
 describe('TodoList', () => {
+  const setup = client => {
+    return render(
+      <CozyProvider client={client}>
+        <TodoList />
+      </CozyProvider>
+    )
+  }
+
   it('should show the todos', () => {
-    const client = createMockClient({
+    const mockClient = createMockClient({
       queries: {
         todos: {
           doctype: 'io.cozy.todos',
@@ -479,13 +487,29 @@ describe('TodoList', () => {
       }
     })
 
-    const wrapper = mount(
-      <CozyProvider client={client}>
-        <TodoList />
-      </CozyProvider>
-    )
+    setup(mockClient)
 
-    expect(wrapper.html()).toMatchSnapshot()
+    const list = screen.getByRole('list', {
+      name: /todos/i
+    })
+    const { getAllByRole } = within(list)
+    const items = getAllByRole('listitem')
+    expect(items.length).toBe(4)
+  })
+
+  it('should display the error message', () => {
+    const mockClient = createMockClient({
+      queries: {
+        todos: {
+          doctype: 'io.cozy.todos',
+          queryError: new Error('Network error')
+        }
+      }
+    })
+
+    setup(mockClient)
+
+    expect(screen.getByText(/network error/i)).toBeDefined()
   })
 })
 ```
