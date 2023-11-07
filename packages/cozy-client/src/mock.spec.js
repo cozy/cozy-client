@@ -14,6 +14,10 @@ describe('createMockClient', () => {
         simpsons: {
           data: simpsonsFixture,
           doctype: 'io.cozy.simpsons'
+        },
+        simpsonsError: {
+          doctype: 'io.cozy.simpsons',
+          queryError: new Error('some error')
         }
       }
     })
@@ -24,6 +28,9 @@ describe('createMockClient', () => {
       'homer',
       'marge'
     ])
+    const errorQuery = client.getQueryFromState('simpsonsError')
+    expect(errorQuery.fetchStatus).toBe('failed')
+    expect(errorQuery.lastError).toStrictEqual(new Error('some error'))
   })
 
   it('should mock query with data passed in "remote" option', async () => {
