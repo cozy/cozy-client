@@ -920,4 +920,155 @@ export type RedirectLinkData = {
  * Template to type useState
  */
 export type useState<T> = [T, import("react").Dispatch<import("react").SetStateAction<T>>];
+/**
+ * Represents the Cozy's instance parameters
+ */
+export type InstanceData = {
+    /**
+     * - The email of the instance
+     */
+    email: string;
+    /**
+     * - The locale used on the server
+     */
+    locale: string;
+    /**
+     * - The public displayed name of the instance
+     */
+    public_name?: string;
+    /**
+     * - UUID associated with the instance
+     */
+    uuid?: string;
+    /**
+     * - The name of the context attached to the instance
+     */
+    context?: string;
+    /**
+     * - Redirect to a specific route after the login (format: 'appslug/#/path/to/route'). This value has priority over the Context's default_redirection
+     */
+    default_redirection?: string;
+    /**
+     * - Whether or not the onboarding is complete
+     */
+    onboarding_finished?: boolean;
+    /**
+     * - Whether or not the Cozy has a password defined (i.e. may be false for OIDC instances)
+     */
+    password_defined?: boolean;
+    /**
+     * - Authentication type (basic or 2FA)
+     */
+    auth_mode?: 'basic' | 'two_factor_mail';
+    /**
+     * - An identifier to check authentication from OIDC
+     */
+    oidc_id?: string;
+    /**
+     * - Terms of Service signed version
+     */
+    tos?: string;
+    /**
+     * - Terms of Service latest version
+     */
+    tos_latest?: string;
+};
+/**
+ * Represents the Cozy's instance parameters
+ */
+export type Instance = {
+    /**
+     * - data from Instance Query
+     */
+    data: InstanceData;
+};
+/**
+ * Represents the Cozy's context parameters
+ */
+export type ContextData = {
+    /**
+     * - Redirect to a specific route after the login (format: 'appslug/#/path/to/route')
+     */
+    default_redirection?: string;
+    /**
+     * - Redirect to a specific route after the onboarding (format: appslug/#/path/to/route')
+     */
+    onboarded_redirection?: string;
+    /**
+     * - Link that the user can use to get help (i.e. 'https://forum.cozy.io/')
+     */
+    help_link?: string;
+    /**
+     * - Url of the instance's Manager that can be use to enable/disable premium features
+     */
+    manager_url?: string;
+    /**
+     * - Whether or not the Cozy can show links to the Manager in order to enable/disable premium features
+     */
+    enable_premium_links?: boolean;
+};
+/**
+ * Represents the Cozy's context parameters
+ */
+export type Context = {
+    /**
+     * - data from Context Query
+     */
+    data: ContextData;
+};
+/**
+ * Represents the Cozy's disk usage
+ */
+export type DiskUsageData = {
+    /**
+     * - Value in bytes representing the maximum space available. Omitted means unlimited
+     */
+    quota?: string;
+    /**
+     * - Value in bytes representing the space used
+     */
+    used: string;
+    /**
+     * - Value in bytes representing the space used by files in their last version
+     */
+    files: string;
+    /**
+     * - Value in bytes representing the space used by files in their older version
+     */
+    versions: string;
+    /**
+     * - Value in bytes representing the space used by files in the trash
+     */
+    trash?: string;
+};
+/**
+ * Represents the Cozy's disk usage
+ */
+export type DiskUsage = {
+    /**
+     * - data from DiskUsage Query
+     */
+    data: DiskUsageData;
+};
+/**
+ * Represents the Cozy's instance info (instance level parameters, context level parameters and disk usage)
+ */
+export type InstanceInfo = {
+    /**
+     * - Whether or not the queries have been loaded
+     */
+    isLoaded: boolean;
+    /**
+     * - The Cozy's instance parameters
+     */
+    instance: Instance;
+    /**
+     * - The Cozy's context parameters
+     */
+    context: Context;
+    /**
+     * - The Cozy's disk usage
+     */
+    diskUsage: DiskUsage;
+};
 import { QueryDefinition } from "./queries/dsl";

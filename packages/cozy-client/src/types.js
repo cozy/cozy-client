@@ -560,4 +560,75 @@ import { QueryDefinition } from './queries/dsl'
  * @typedef {[T, import('react').Dispatch<import('react').SetStateAction<T>>]} useState
  */
 
+/**
+ * Represents the Cozy's instance parameters
+ *
+ * @typedef {object} InstanceData
+ * @property {string} email - The email of the instance
+ * @property {string} locale - The locale used on the server
+ * @property {string} [public_name] - The public displayed name of the instance
+ * @property {string} [uuid] - UUID associated with the instance
+ * @property {string} [context] - The name of the context attached to the instance
+ * @property {string} [default_redirection] - Redirect to a specific route after the login (format: 'appslug/#/path/to/route'). This value has priority over the Context's default_redirection
+ * @property {boolean} [onboarding_finished] - Whether or not the onboarding is complete
+ * @property {boolean} [password_defined] - Whether or not the Cozy has a password defined (i.e. may be false for OIDC instances)
+ * @property {'basic' | 'two_factor_mail'} [auth_mode] - Authentication type (basic or 2FA)
+ * @property {string} [oidc_id] - An identifier to check authentication from OIDC
+ * @property {string} [tos] - Terms of Service signed version
+ * @property {string} [tos_latest] - Terms of Service latest version
+ */
+
+/**
+ * Represents the Cozy's instance parameters
+ *
+ * @typedef {object} Instance
+ * @property {InstanceData} data - data from Instance Query
+ */
+
+/**
+ * Represents the Cozy's context parameters
+ *
+ * @typedef {object} ContextData
+ * @property {string} [default_redirection] - Redirect to a specific route after the login (format: 'appslug/#/path/to/route')
+ * @property {string} [onboarded_redirection] - Redirect to a specific route after the onboarding (format: appslug/#/path/to/route')
+ * @property {string} [help_link] - Link that the user can use to get help (i.e. 'https://forum.cozy.io/')
+ * @property {string} [manager_url] - Url of the instance's Manager that can be use to enable/disable premium features
+ * @property {boolean} [enable_premium_links] - Whether or not the Cozy can show links to the Manager in order to enable/disable premium features
+ */
+
+/**
+ * Represents the Cozy's context parameters
+ *
+ * @typedef {object} Context
+ * @property {ContextData} data - data from Context Query
+ */
+
+/**
+ * Represents the Cozy's disk usage
+ *
+ * @typedef {object} DiskUsageData
+ * @property {string} [quota] - Value in bytes representing the maximum space available. Omitted means unlimited
+ * @property {string} used - Value in bytes representing the space used
+ * @property {string} files - Value in bytes representing the space used by files in their last version
+ * @property {string} versions - Value in bytes representing the space used by files in their older version
+ * @property {string} [trash] - Value in bytes representing the space used by files in the trash
+ */
+
+/**
+ * Represents the Cozy's disk usage
+ *
+ * @typedef {object} DiskUsage
+ * @property {DiskUsageData} data - data from DiskUsage Query
+ */
+
+/**
+ * Represents the Cozy's instance info (instance level parameters, context level parameters and disk usage)
+ *
+ * @typedef {object} InstanceInfo
+ * @property {boolean} isLoaded - Whether or not the queries have been loaded
+ * @property {Instance} instance - The Cozy's instance parameters
+ * @property {Context} context - The Cozy's context parameters
+ * @property {DiskUsage} diskUsage - The Cozy's disk usage
+ */
+
 export default {}
