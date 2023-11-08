@@ -817,6 +817,22 @@ Returns the cozy client from the context
 
 ***
 
+### useInstanceInfo
+
+▸ **useInstanceInfo**(): `InstanceInfo`
+
+Retrieve intance info like context, uuid, disk usage etc
+
+*Returns*
+
+`InstanceInfo`
+
+*Defined in*
+
+[packages/cozy-client/src/hooks/useInstanceInfo.js:11](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useInstanceInfo.js#L11)
+
+***
+
 ### useQueries
 
 ▸ **useQueries**(`querySpecs`): `Object`

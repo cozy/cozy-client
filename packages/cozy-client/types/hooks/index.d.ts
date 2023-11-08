@@ -5,4 +5,5 @@ export { default as useClient } from "./useClient";
 export { default as useAppsInMaintenance } from "./useAppsInMaintenance";
 export { default as useQueryAll } from "./useQueryAll";
 export { useMutation } from "./useMutation";
+export { useInstanceInfo } from "./useInstanceInfo";
 export { default as useQuery, useQueries } from "./useQuery";
