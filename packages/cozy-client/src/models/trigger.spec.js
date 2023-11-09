@@ -86,6 +86,22 @@ describe('trigger model', () => {
     }
   }
 
+  const cliskTrigger = {
+    _rev: '1-31eb8f0da1db0f3196ccf0d4329ea554',
+    prefix: 'toto.mycozy.cloud',
+    arguments: '0 35 0 * * 3',
+    message: {
+      account: '4cbfe8f3d89edf60542d5fe9cdcac7b1',
+      konnector: 'orangemobile'
+    },
+    _id: 'fa4c076914ce46a92fa3e7e5f0672ca5',
+    domain: 'claire.mycozy.cloud',
+    worker: 'client',
+    debounce: '',
+    options: null,
+    type: '@client'
+  }
+
   describe('getKonnectorFromTrigger', () => {
     it('should work with normal triggers', () => {
       expect(triggerModel.getKonnector(normalTrigger)).toBe('orangemobile')
@@ -93,6 +109,10 @@ describe('trigger model', () => {
 
     it('should work with legacy triggers', () => {
       expect(triggerModel.getKonnector(legacyTrigger)).toBe('ameli')
+    })
+
+    it('should work with clisk triggers', () => {
+      expect(triggerModel.getKonnector(cliskTrigger)).toBe('orangemobile')
     })
   })
 

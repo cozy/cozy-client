@@ -72,6 +72,8 @@ const triggers = {
    */
   isKonnectorWorker: trigger => trigger.worker === 'konnector',
 
+  isKonnector: trigger =>
+    trigger.worker === 'konnector' || trigger.worker === 'client',
   /**
    * Returns the konnector slug that executed a trigger
    *
@@ -80,7 +82,7 @@ const triggers = {
    * @returns {string|void} A konnector slug
    */
   getKonnector: trigger => {
-    if (!triggers.isKonnectorWorker(trigger)) {
+    if (!triggers.isKonnector(trigger)) {
       return null
     }
     if (trigger.message && trigger.message.konnector) {
