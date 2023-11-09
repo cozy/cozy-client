@@ -40,6 +40,7 @@ Trigger states come from /jobs/triggers
 | `getAccountId` | (`trigger`: `IOCozyTrigger`) => `string` |
 | `getKonnector` | (`trigger`: `IOCozyTrigger`) => `string` | `void` |
 | `hasActionableError` | (`trigger`: `IOCozyTrigger`) => `boolean` |
+| `isKonnector` | (`trigger`: `any`) => `boolean` |
 | `isKonnectorWorker` | (`trigger`: `IOCozyTrigger`) => `boolean` |
 | `isLatestErrorMuted` | (`trigger`: `IOCozyTrigger`, `account`: `IOCozyAccount`) => `boolean` |
 

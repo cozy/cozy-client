@@ -7,6 +7,7 @@ export namespace triggerStates {
 }
 export namespace triggers {
     function isKonnectorWorker(trigger: import("../types").IOCozyTrigger): boolean;
+    function isKonnector(trigger: any): boolean;
     function getKonnector(trigger: import("../types").IOCozyTrigger): string | void;
     function getAccountId(trigger: import("../types").IOCozyTrigger): string;
     function isLatestErrorMuted(trigger: import("../types").IOCozyTrigger, account: import("../types").IOCozyAccount): boolean;
