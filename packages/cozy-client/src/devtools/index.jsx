@@ -18,7 +18,7 @@ import GearIcon from 'cozy-ui/transpiled/react/Icons/Gear'
 import CrossMedium from 'cozy-ui/transpiled/react/Icons/CrossMedium'
 
 import Queries from './Queries'
-import Flags from './Flags'
+import Flags from './Flags/Flags'
 import LibraryVersions from './LibraryVersions'
 import { NavSecondaryAction, ListGridItem } from './common'
 import useLocalState from './useLocalState'
