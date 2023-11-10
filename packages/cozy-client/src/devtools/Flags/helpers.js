@@ -14,6 +14,7 @@ export const computeFlags = () => {
     return {
       key: `flag__${name}`,
       name,
+      type: typeof value,
       humanName: human(name),
       value,
       humanValue: makeHumanValue(value)

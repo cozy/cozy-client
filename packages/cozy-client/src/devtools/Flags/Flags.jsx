@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 import Typography from 'cozy-ui/transpiled/react/Typography'
+import List from 'cozy-ui/transpiled/react/List'
 
 import PanelContent from '../PanelContent'
 import { FlagEdit } from './FlagEdit'
@@ -26,14 +27,16 @@ const Flags = () => {
   return (
     <PanelContent>
       <Typography variant="subtitle1">Flags</Typography>
-      {flags.map(flag => (
-        <FlagItem
-          key={flag.key}
-          flag={flag}
-          onEdit={handleEdit}
-          onTrash={handleTrash}
-        />
-      ))}
+      <List dense className="u-maw-6">
+        {flags.map(flag => (
+          <FlagItem
+            key={flag.key}
+            flag={flag}
+            onEdit={handleEdit}
+            onTrash={handleTrash}
+          />
+        ))}
+      </List>
       <FlagEdit flag={edited} />
     </PanelContent>
   )
