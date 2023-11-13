@@ -492,6 +492,10 @@
       "label": "other_administrative_document"
     },
     {
+      "label": "expense_claim",
+      "purpose": "invoice"
+    },
+    {
       "label": "note_identity_document"
     },
     {

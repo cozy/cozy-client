@@ -69,6 +69,7 @@ const workStudyLabels = [
   'school_insurance_certificate',
   'resume',
   'motivation_letter',
+  'expense_claim',
   'note_work_document',
   'other_work_document'
 ]
@@ -156,6 +157,7 @@ const financeLabels = [
   'loan_agreement',
   'payment_proof_family_allowance',
   'note_finance',
+  'expense_claim',
   'other_bank_document',
   'other_revenue'
 ]
@@ -176,6 +178,7 @@ const invoiceLabels = [
   'transport_invoice',
   'health_invoice',
   'note_invoice',
+  'expense_claim',
   'other_invoice'
 ]
 
