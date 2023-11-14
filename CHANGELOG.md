@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [43.2.0](https://github.com/cozy/cozy-client/compare/v43.1.0...v43.2.0) (2023-11-14)
+
+
+### Features
+
+* Add expense claim qualification for invoice, finance and workstudy ([7c3cb25](https://github.com/cozy/cozy-client/commit/7c3cb25712ac5cf607385758dd46f35128704704))
+
+
+
+
+
 # [43.1.0](https://github.com/cozy/cozy-client/compare/v43.0.0...v43.1.0) (2023-11-07)
 
 
