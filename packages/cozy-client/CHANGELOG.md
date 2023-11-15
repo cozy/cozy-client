@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [43.3.0](https://github.com/cozy/cozy-client/compare/v43.2.0...v43.3.0) (2023-11-15)
+
+
+### Features
+
+* Add useInstanceInfo hook ([86c8365](https://github.com/cozy/cozy-client/commit/86c8365fa19d5bfa174ff676691f819c54455d4d))
+
+
+
+
+
 # [43.2.0](https://github.com/cozy/cozy-client/compare/v43.1.0...v43.2.0) (2023-11-14)
 
 
