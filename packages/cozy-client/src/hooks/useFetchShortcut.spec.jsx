@@ -27,6 +27,32 @@ describe('useFetchShortcut', () => {
           }
         ]
       },
+      'io.cozy.files.shortcuts/linkToCozyApp': {
+        doctype: 'io.cozy.files.shortcuts',
+        definition: {
+          doctype: 'io.cozy.files.shortcuts',
+          id: 'io.cozy.files.shortcuts/linkToCozyApp'
+        },
+        data: [
+          {
+            type: 'io.cozy.files.shortcuts',
+            id: 'linkToCozyApp',
+            attributes: {
+              _id: '',
+              name: 'cozy.url',
+              dir_id: '8034db0016d0548ded99b9627e003270',
+              url: 'https://cozy.io',
+              metadata: {
+                extractor_version: 2,
+                target: {
+                  app: 'notes'
+                }
+              }
+            },
+            meta: { rev: '1-60e1359e63fa7fa9fa000a2726d5d4c7' }
+          }
+        ]
+      },
       'io.cozy.files.shortcuts/no-found': {
         doctype: 'io.cozy.files.shortcuts',
         queryError: new Error('not found')
@@ -81,6 +107,17 @@ describe('useFetchShortcut', () => {
     })
     expect(result.current.shortcutImg).toEqual(
       `${mockClient.getStackClient().uri}/bitwarden/icons/cozy.io/icon.png`
+    )
+  })
+
+  it('should return shortcutImg for the targeted application icon when available', async () => {
+    const { result, waitForNextUpdate } = renderHook(() =>
+      useFetchShortcut(mockClient, 'linkToCozyApp')
+    )
+
+    await waitForNextUpdate()
+    expect(result.current.shortcutImg).toEqual(
+      `${mockClient.getStackClient().uri}/registry/notes/icon`
     )
   })
 })
