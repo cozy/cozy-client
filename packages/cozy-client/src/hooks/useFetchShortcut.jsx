@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react'
 
+import { Q } from '../queries/dsl'
+import CozyClient from '../CozyClient'
+
+const DEFAULT_CACHE_TIMEOUT_QUERIES = 10 * 60 * 1000 // 10 minutes
+
 const useFetchShortcut = (client, id) => {
   const [shortcutInfos, setShortcutInfos] = useState(null)
   const [shortcutImg, setShortcutImg] = useState(null)
@@ -8,9 +13,17 @@ const useFetchShortcut = (client, id) => {
     const fetchData = async () => {
       setFetchStatus('loading')
       try {
-        const shortcutInfosResult = await client
-          .getStackClient()
-          .fetchJSON('GET', `/shortcuts/${id}`)
+        const shortcutInfosResult = await client.fetchQueryAndGetFromState({
+          definition: Q('io.cozy.files.shortcuts').getById(id),
+          options: {
+            as: `io.cozy.files.shortcuts/${id}`,
+            fetchPolicy: CozyClient.fetchPolicies.olderThan(
+              DEFAULT_CACHE_TIMEOUT_QUERIES
+            ),
+            singleDocData: true
+          }
+        })
+
         const shortcutRemoteUrl = new URL(
           shortcutInfosResult.data.attributes.url
         )
@@ -20,7 +33,7 @@ const useFetchShortcut = (client, id) => {
         }/icon.png`
 
         setShortcutImg(imgUrl)
-        setShortcutInfos(shortcutInfosResult)
+        setShortcutInfos({ data: shortcutInfosResult.data })
         setFetchStatus('loaded')
       } catch (e) {
         setFetchStatus('failed')

@@ -813,7 +813,7 @@ Returns the cozy client from the context
 
 *Defined in*
 
-[packages/cozy-client/src/hooks/useFetchShortcut.jsx:3](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useFetchShortcut.jsx#L3)
+[packages/cozy-client/src/hooks/useFetchShortcut.jsx:8](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useFetchShortcut.jsx#L8)
 
 ***
 
