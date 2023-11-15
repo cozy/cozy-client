@@ -24,15 +24,26 @@ const useFetchShortcut = (client, id) => {
           }
         })
 
-        const shortcutRemoteUrl = new URL(
-          shortcutInfosResult.data.attributes.url
-        )
+        const targetApp =
+          shortcutInfosResult?.data?.attributes?.metadata?.target?.app
+        if (targetApp) {
+          const targetAppIconUrl = await client.getStackClient().getIconURL({
+            type: 'app',
+            slug: targetApp,
+            priority: 'stack'
+          })
+          setShortcutImg(targetAppIconUrl)
+        } else {
+          const shortcutRemoteUrl = new URL(
+            shortcutInfosResult.data.attributes.url
+          )
 
-        const imgUrl = `${client.getStackClient().uri}/bitwarden/icons/${
-          shortcutRemoteUrl.host
-        }/icon.png`
+          const imgUrl = `${client.getStackClient().uri}/bitwarden/icons/${
+            shortcutRemoteUrl.host
+          }/icon.png`
 
-        setShortcutImg(imgUrl)
+          setShortcutImg(imgUrl)
+        }
         setShortcutInfos({ data: shortcutInfosResult.data })
         setFetchStatus('loaded')
       } catch (e) {
