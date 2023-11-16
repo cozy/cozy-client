@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [43.4.0](https://github.com/cozy/cozy-client/compare/v43.3.0...v43.4.0) (2023-11-16)
+
+
+### Features
+
+* Improve design with ListItem ([938bd89](https://github.com/cozy/cozy-client/commit/938bd897edfcfdf6674e9baaf0b5dd2873a5baed))
+* Improve management of flag ([3937b77](https://github.com/cozy/cozy-client/commit/3937b77ce09bb22ad652b284e6a18233ca50fa2e))
+
+
+
+
+
 # [43.3.0](https://github.com/cozy/cozy-client/compare/v43.2.0...v43.3.0) (2023-11-15)
 
 
