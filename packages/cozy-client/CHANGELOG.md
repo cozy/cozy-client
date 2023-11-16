@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [43.4.1](https://github.com/cozy/cozy-client/compare/v43.4.0...v43.4.1) (2023-11-16)
+
+
+### Bug Fixes
+
+* Get shortcut img for links from applications in the same cozy ([0196470](https://github.com/cozy/cozy-client/commit/01964703d3ed0a4a414bfeaf8daf168c02d1e200))
+
+
+
+
+
 # [43.4.0](https://github.com/cozy/cozy-client/compare/v43.3.0...v43.4.0) (2023-11-16)
 
 
