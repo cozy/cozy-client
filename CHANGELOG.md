@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [43.5.0](https://github.com/cozy/cozy-client/compare/v43.4.1...v43.5.0) (2023-11-17)
+
+
+### Features
+
+* Add IOCozyApp typings ([7e692bb](https://github.com/cozy/cozy-client/commit/7e692bba49c695d8960c502b344ac2de7f5ac51a))
+
+
+
+
+
 ## [43.4.1](https://github.com/cozy/cozy-client/compare/v43.4.0...v43.4.1) (2023-11-16)
 
 
