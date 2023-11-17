@@ -26,9 +26,11 @@ export const generateUrlForNote = (notesAppUrl, file) => {
  *
  * @param {object} client CozyClient instance
  * @param {object} file io.cozy.file object
+ * @param {object} options Options
+ * @param {string} [options.pathname] Pathname to use in the URL
  * @returns {Promise<string>} url
  */
-export const fetchURL = async (client, file) => {
+export const fetchURL = async (client, file, options = {}) => {
   const {
     data: { note_id, subdomain, protocol, instance, sharecode, public_name }
   } = await client
@@ -42,14 +44,14 @@ export const fetchURL = async (client, file) => {
     return generateWebLink({
       cozyUrl: `${protocol}://${instance}`,
       searchParams,
-      pathname: '/public/',
+      pathname: options.pathname ?? '/public/',
       slug: 'notes',
       subDomainType: subdomain
     })
   } else {
     return generateWebLink({
       cozyUrl: `${protocol}://${instance}`,
-      pathname: '',
+      pathname: options.pathname ?? '',
       slug: 'notes',
       subDomainType: subdomain,
       hash: `/n/${note_id}`
