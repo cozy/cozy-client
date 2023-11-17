@@ -8,7 +8,7 @@
 
 ### fetchURL
 
-▸ **fetchURL**(`client`, `file`): `Promise`<`string`>
+▸ **fetchURL**(`client`, `file`, `options?`): `Promise`<`string`>
 
 Fetch and build an URL to open a note.
 
@@ -18,6 +18,8 @@ Fetch and build an URL to open a note.
 | :------ | :------ | :------ |
 | `client` | `any` | CozyClient instance |
 | `file` | `any` | io.cozy.file object |
+| `options` | `Object` | Options |
+| `options.pathname` | `string` | - |
 
 *Returns*
 
@@ -27,7 +29,7 @@ url
 
 *Defined in*
 
-[packages/cozy-client/src/models/note.js:31](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/note.js#L31)
+[packages/cozy-client/src/models/note.js:33](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/note.js#L33)
 
 ***
 
