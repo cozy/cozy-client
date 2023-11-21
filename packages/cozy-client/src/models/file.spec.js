@@ -569,8 +569,12 @@ describe('File Model', () => {
       expect(filename2).toEqual('test_2')
       const filename3 = fileModel.generateNewFileNameOnConflict('test_1_1_test')
       expect(filename3).toEqual('test_1_1_test_1')
-      const filename4 = fileModel.generateNewFileNameOnConflict('test_')
-      expect(filename4).toEqual('test__1')
+      const filename4 = fileModel.generateNewFileNameOnConflict(
+        'test_1_1_test_1'
+      )
+      expect(filename4).toEqual('test_1_1_test_2')
+      const filename5 = fileModel.generateNewFileNameOnConflict('test_')
+      expect(filename5).toEqual('test__1')
     })
   })
 
