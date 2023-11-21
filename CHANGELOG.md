@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [43.6.0](https://github.com/cozy/cozy-client/compare/v43.5.1...v43.6.0) (2023-11-21)
+
+
+### Features
+
+* Add qualifications for real estate and person insurance ([3afa209](https://github.com/cozy/cozy-client/commit/3afa209469bb8c215f395ac3aae6a900f556d7a4))
+
+
+
+
+
 ## [43.5.1](https://github.com/cozy/cozy-client/compare/v43.5.0...v43.5.1) (2023-11-21)
 
 
