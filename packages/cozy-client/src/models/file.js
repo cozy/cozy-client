@@ -398,26 +398,13 @@ export const overrideFileForPath = async (client, dirPath, file, metadata) => {
  * Method to generate a new filename if there is a conflict
  *
  * @param {string} filenameWithoutExtension - A filename without the extension
- * @param {RegExp} [originalNameFormatRegex] - A regex to check if the name is still in his original format
  * @returns {string} A filename with the right suffix
  */
-export const generateNewFileNameOnConflict = (
-  filenameWithoutExtension,
-  originalNameFormatRegex
-) => {
-  let isOriginalNameFormat = false
-  if (
-    originalNameFormatRegex &&
-    originalNameFormatRegex.test(filenameWithoutExtension)
-  ) {
-    isOriginalNameFormat = true
-  }
-
+export const generateNewFileNameOnConflict = filenameWithoutExtension => {
   //Check if the string ends by _1
   const regex = new RegExp('(_)([0-9]+)$')
   const matches = filenameWithoutExtension.match(regex)
-  const shouldIncrement = matches && !isOriginalNameFormat
-  if (shouldIncrement) {
+  if (matches) {
     let versionNumber = parseInt(matches[2])
     //increment versionNumber
     versionNumber++
