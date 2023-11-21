@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [43.5.1](https://github.com/cozy/cozy-client/compare/v43.5.0...v43.5.1) (2023-11-21)
+
+
+### Bug Fixes
+
+* Generate types for Flags DevTools panel ([121cde9](https://github.com/cozy/cozy-client/commit/121cde9ba35121b070efcc78c64adb4de9c408a3))
+* Preview URL for notes ([08a8fa8](https://github.com/cozy/cozy-client/commit/08a8fa83ead35f1125e2df47e1c88c1519f27eec))
+
+
+
+
+
 # [43.5.0](https://github.com/cozy/cozy-client/compare/v43.4.1...v43.5.0) (2023-11-17)
 
 
