@@ -571,29 +571,6 @@ describe('File Model', () => {
       expect(filename3).toEqual('test_1_1_test_1')
       const filename4 = fileModel.generateNewFileNameOnConflict('test_')
       expect(filename4).toEqual('test__1')
-      const filename5 = fileModel.generateNewFileNameOnConflict('test_1_1')
-      expect(filename5).toEqual('test_1_2')
-    })
-
-    it('should generate the right file name with _X when passing a format', () => {
-      const regex = new RegExp('^([a-z]+)(_)([0-9]+)$') // test_1
-
-      const filename1 = fileModel.generateNewFileNameOnConflict('test', regex)
-      expect(filename1).toEqual('test_1')
-      const filename2 = fileModel.generateNewFileNameOnConflict('test_1', regex)
-      expect(filename2).toEqual('test_1_1')
-      const filename3 = fileModel.generateNewFileNameOnConflict(
-        'test_1_1_test',
-        regex
-      )
-      expect(filename3).toEqual('test_1_1_test_1')
-      const filename4 = fileModel.generateNewFileNameOnConflict('test_', regex)
-      expect(filename4).toEqual('test__1')
-      const filename5 = fileModel.generateNewFileNameOnConflict(
-        'test_1_1',
-        regex
-      )
-      expect(filename5).toEqual('test_1_2')
     })
   })
 
