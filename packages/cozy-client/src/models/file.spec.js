@@ -576,6 +576,38 @@ describe('File Model', () => {
       const filename5 = fileModel.generateNewFileNameOnConflict('test_')
       expect(filename5).toEqual('test__1')
     })
+
+    it('should generate the right file name with _cozyX', () => {
+      const conflictOptions = {
+        delimiter: '_cozy'
+      }
+
+      const filename1 = fileModel.generateNewFileNameOnConflict(
+        'test',
+        conflictOptions
+      )
+      expect(filename1).toEqual('test_cozy1')
+      const filename2 = fileModel.generateNewFileNameOnConflict(
+        'test_cozy1',
+        conflictOptions
+      )
+      expect(filename2).toEqual('test_cozy2')
+      const filename3 = fileModel.generateNewFileNameOnConflict(
+        'test_cozy1_test',
+        conflictOptions
+      )
+      expect(filename3).toEqual('test_cozy1_test_cozy1')
+      const filename4 = fileModel.generateNewFileNameOnConflict(
+        'test_cozy1_test_cozy1',
+        conflictOptions
+      )
+      expect(filename4).toEqual('test_cozy1_test_cozy2')
+      const filename5 = fileModel.generateNewFileNameOnConflict(
+        'test_',
+        conflictOptions
+      )
+      expect(filename5).toEqual('test__cozy1')
+    })
   })
 
   describe('generateFileNameForRevision', () => {

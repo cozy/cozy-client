@@ -52,7 +52,7 @@ export function move(client: CozyClient, fileId: string, destination: {
     path: string;
 }, force?: boolean): Promise<any>;
 export function overrideFileForPath(client: CozyClient, dirPath: string, file: object, metadata: object): Promise<import("../types").IOCozyFile>;
-export function generateNewFileNameOnConflict(filenameWithoutExtension: string): string;
+export function generateNewFileNameOnConflict(filenameWithoutExtension: string, conflictOptions?: import('../types').ConflictOptions): string;
 export function generateFileNameForRevision(file: import("../types").IOCozyFile, revision: object, f: Function): string;
 export function uploadFileWithConflictStrategy(client: CozyClient, file: string | ArrayBuffer, options: FileUploadOptions): any;
 export function readMobileFile(fileURL: string): Promise<any>;

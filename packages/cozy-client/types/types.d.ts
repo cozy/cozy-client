@@ -1093,6 +1093,15 @@ export type RedirectLinkData = {
     hash: string;
 };
 /**
+ * Represents available options of generateNewFileNameOnConflict method
+ */
+export type ConflictOptions = {
+    /**
+     * - Delimiter before the incremented number. Default to '_'
+     */
+    delimiter?: string;
+};
+/**
  * Template to type useState
  */
 export type useState<T> = [T, import("react").Dispatch<import("react").SetStateAction<T>>];
