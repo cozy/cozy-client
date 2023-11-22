@@ -6,6 +6,18 @@
 
 ## Properties
 
+### conflictOptions
+
+• **conflictOptions**: `ConflictOptions`
+
+Conflict options
+
+*Defined in*
+
+[packages/cozy-client/src/models/file.js:449](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L449)
+
+***
+
 ### conflictStrategy
 
 • **conflictStrategy**: `string`

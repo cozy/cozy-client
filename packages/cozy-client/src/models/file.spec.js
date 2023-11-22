@@ -687,6 +687,33 @@ describe('File Model', () => {
       })
     })
 
+    it('should rename the file with "_cozyX" if there is a conflict', async () => {
+      const dirId = 'toto'
+      //first call we return an existing file => conflict
+      //second call, we reject as not found
+      statByPathSpy
+        .mockReturnValueOnce({
+          data: {
+            _id: 'file_id',
+            _type: 'io.cozy.files'
+          }
+        })
+        .mockRejectedValueOnce(new Error('Not Found'))
+
+      const opts = {
+        name: 'filename',
+        dirId,
+        conflictStrategy: 'rename',
+        conflictOptions: { delimiter: '_cozy' },
+        contentType: 'image/jpeg'
+      }
+      await fileModel.uploadFileWithConflictStrategy(cozyClient, '', opts)
+      expect(createFileSpy).toHaveBeenCalledWith('', {
+        ...opts,
+        name: 'filename_cozy1'
+      })
+    })
+
     it('should erase the file if there is a conflict', async () => {
       const dirId = 'toto'
       //first call we return an existing file => conflict

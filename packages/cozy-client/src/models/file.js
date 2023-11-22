@@ -446,6 +446,7 @@ export const generateFileNameForRevision = (file, revision, f) => {
  * @property {object} [metadata]          - An object containing the metadata to attach
  * @property {string} [contentType]       - The file Content-Type
  * @property {string} [conflictStrategy]  - Erase / rename
+ * @property {import('../types').ConflictOptions} [conflictOptions] - Conflict options
  */
 
 /**
@@ -464,7 +465,7 @@ export const generateFileNameForRevision = (file, revision, f) => {
  * @param {FileUploadOptions} options - The upload options
  */
 export const uploadFileWithConflictStrategy = async (client, file, options) => {
-  const { name, dirId, conflictStrategy } = options
+  const { name, dirId, conflictStrategy, conflictOptions } = options
 
   try {
     const path = await getFullpath(client, dirId, name)
@@ -482,7 +483,8 @@ export const uploadFileWithConflictStrategy = async (client, file, options) => {
         name,
         type: 'file'
       })
-      const newFileName = generateNewFileNameOnConflict(filename) + extension
+      const newFileName =
+        generateNewFileNameOnConflict(filename, conflictOptions) + extension
       //recall itself with the newFilename.
       return uploadFileWithConflictStrategy(client, file, {
         ...options,

@@ -83,5 +83,9 @@ export type FileUploadOptions = {
      * - Erase / rename
      */
     conflictStrategy?: string;
+    /**
+     * - Conflict options
+     */
+    conflictOptions?: import('../types').ConflictOptions;
 };
 import CozyClient from "../CozyClient";
