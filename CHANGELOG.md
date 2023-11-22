@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [44.0.0](https://github.com/cozy/cozy-client/compare/v43.6.0...v44.0.0) (2023-11-22)
+
+
+### Features
+
+* Allow to customize delimiter in generateNewFileNameOnConflict ([cfce692](https://github.com/cozy/cozy-client/commit/cfce692e53d347a81630c96a74a60829d4573448))
+
+
+### Reverts
+
+* Revert "feat: Allow to pass a name format regex to avoid bad renaming" ([2686695](https://github.com/cozy/cozy-client/commit/2686695b68f2265c97d836895272cdb4fc6747d2))
+
+
+### BREAKING CHANGES
+
+* It is not possible anymore to pass a name format regex to generateNewFileNameOnConflict
+
+
+
+
+
 # [43.6.0](https://github.com/cozy/cozy-client/compare/v43.5.1...v43.6.0) (2023-11-21)
 
 
