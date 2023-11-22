@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [44.1.0](https://github.com/cozy/cozy-client/compare/v44.0.0...v44.1.0) (2023-11-22)
+
+
+### Features
+
+* Improve uploadFileWithConflictStrategy ([7a468f5](https://github.com/cozy/cozy-client/commit/7a468f575915183f05b2f4a8f66a92804408948a)), closes [#1425](https://github.com/cozy/cozy-client/issues/1425)
+* Supports clisk for getKonnector ([5b31fc1](https://github.com/cozy/cozy-client/commit/5b31fc1fb11239bb9720f5db36cb466b62f029ba))
+
+
+
+
+
 # [44.0.0](https://github.com/cozy/cozy-client/compare/v43.6.0...v44.0.0) (2023-11-22)
 
 
