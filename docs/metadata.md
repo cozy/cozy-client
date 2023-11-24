@@ -91,7 +91,7 @@ To save those attributes, you can pass them directly to the save method, like th
 const client = new client()
 client.save({
   _type: 'io.cozy.files',
-  sourceAcount: '12ab3c',
+  sourceAccount: '12ab3c',
   sourceAccountIdentifier: 'john@example.org',
   ...
 })
