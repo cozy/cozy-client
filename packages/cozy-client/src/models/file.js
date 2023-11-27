@@ -19,7 +19,7 @@ const FILENAME_WITH_EXTENSION_REGEX = /(.+)(\..*)$/
  * Returns base filename and extension
  *
  * @param {import("../types").IOCozyFile} file An io.cozy.files
- * @returns {object}  {filename, extension}
+ * @returns {{filename: string, extension: string}}
  */
 export const splitFilename = file => {
   if (!isString(file.name)) throw new Error('file should have a name property')

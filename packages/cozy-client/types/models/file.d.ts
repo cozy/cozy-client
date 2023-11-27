@@ -25,7 +25,10 @@ export function ensureFilePath(file: object, parent: object): object;
  */
 export function getParentFolderId(file: object): string | null;
 export const ALBUMS_DOCTYPE: "io.cozy.photos.albums";
-export function splitFilename(file: import("../types").IOCozyFile): object;
+export function splitFilename(file: import("../types").IOCozyFile): {
+    filename: string;
+    extension: string;
+};
 export function isFile(file: import("../types").IOCozyFile): boolean;
 export function isDirectory(file: import("../types").IOCozyFile): boolean;
 export function isNote(file: import("../types").IOCozyFile): boolean;
