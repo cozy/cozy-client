@@ -767,7 +767,7 @@ But we want to exclude .txt and .md because the CozyUI Viewer can already show t
 
 ### splitFilename
 
-▸ **splitFilename**(`file`): `any`
+▸ **splitFilename**(`file`): `Object`
 
 Returns base filename and extension
 
@@ -779,9 +779,12 @@ Returns base filename and extension
 
 *Returns*
 
-`any`
+`Object`
 
-{filename, extension}
+| Name | Type |
+| :------ | :------ |
+| `extension` | `string` |
+| `filename` | `string` |
 
 *Defined in*
 
