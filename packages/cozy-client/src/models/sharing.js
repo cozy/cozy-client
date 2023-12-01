@@ -7,10 +7,9 @@ import { generateWebLink } from '../helpers'
  *
  * @param {CozyClient} client - Instance of CozyClient
  * @param {string[]} filesIds - Array of io.cozy.files ids
- * @param {boolean} [isFlatDomain] -
  * @returns {Promise<string>} Shared link
  */
-export const getSharingLink = async (client, filesIds, isFlatDomain) => {
+export const getSharingLink = async (client, filesIds) => {
   const PERMS = {
     _type: DOCTYPE_PERMISSIONS,
     permissions: {
@@ -24,7 +23,7 @@ export const getSharingLink = async (client, filesIds, isFlatDomain) => {
     searchParams: [['sharecode', sharedLink?.attributes?.shortcodes?.code]],
     pathname: '/public',
     slug: 'drive',
-    subDomainType: isFlatDomain ? 'flat' : 'nested'
+    subDomainType: client.capabilities.flat_subdomains ? 'flat' : 'nested'
   })
 
   return webLink
