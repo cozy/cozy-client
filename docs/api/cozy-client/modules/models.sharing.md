@@ -8,7 +8,7 @@
 
 ### getSharingLink
 
-▸ **getSharingLink**(`client`, `filesIds`): `Promise`<`string`>
+▸ **getSharingLink**(`client`, `filesIds`, `options?`): `Promise`<`string`>
 
 Generate Sharing link for one or many files
 
@@ -18,6 +18,9 @@ Generate Sharing link for one or many files
 | :------ | :------ | :------ |
 | `client` | [`CozyClient`](../classes/CozyClient.md) | Instance of CozyClient |
 | `filesIds` | `string`\[] | Array of io.cozy.files ids |
+| `options` | `Object` | Options |
+| `options.password` | `string` | - |
+| `options.ttl` | `string` | - |
 
 *Returns*
 
@@ -27,4 +30,4 @@ Shared link
 
 *Defined in*
 
-[packages/cozy-client/src/models/sharing.js:12](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/sharing.js#L12)
+[packages/cozy-client/src/models/sharing.js:15](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/sharing.js#L15)
