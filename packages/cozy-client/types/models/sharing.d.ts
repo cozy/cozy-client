@@ -1,2 +1,5 @@
-export function getSharingLink(client: CozyClient, filesIds: string[]): Promise<string>;
+export function getSharingLink(client: CozyClient, filesIds: string[], { ttl, password }?: {
+    ttl: string;
+    password: string;
+}): Promise<string>;
 import CozyClient from "../CozyClient";
