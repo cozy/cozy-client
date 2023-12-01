@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [45.0.0](https://github.com/cozy/cozy-client/compare/v44.1.1...v45.0.0) (2023-12-01)
+
+
+### Features
+
+* Add `ttl` & `password` parameters in `getSharingLink` ([1daa4d9](https://github.com/cozy/cozy-client/commit/1daa4d9e3049e203b2c266f26604659b88dad6f1))
+* Remove `isFlatDomain` from `getSharingLink` ([7d768de](https://github.com/cozy/cozy-client/commit/7d768de8842cf6ec95554abcae0900c9ccca97e0))
+
+
+### BREAKING CHANGES
+
+* The client already carries this information,
+if need to change this value, please update the client.
+
+
+
+
+
 ## [44.1.1](https://github.com/cozy/cozy-client/compare/v44.1.0...v44.1.1) (2023-11-28)
 
 **Note:** Version bump only for package cozy-client
