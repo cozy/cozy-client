@@ -2,17 +2,18 @@ import { getSharingLink } from './sharing'
 
 describe('getSharingLink', () => {
   const mockSharecode = { attributes: { shortcodes: { code: 'shortcode' } } }
-  const mockClient = {
+  const mockClient = ({ isFlatDomain = false } = {}) => ({
     save: jest.fn(() => ({ data: mockSharecode })),
-    getStackClient: jest.fn(() => ({ uri: 'http://cozy.cloud' }))
-  }
+    getStackClient: jest.fn(() => ({ uri: 'http://cozy.cloud' })),
+    capabilities: { flat_subdomains: isFlatDomain }
+  })
   const mockFiles = [
     { id: 'fileId01', name: 'File 01' },
     { id: 'fileId02', name: 'File 02' }
   ]
 
   it('should generate the right share link if "isFlatDomain" param is not defined', async () => {
-    const sharingLink = await getSharingLink(mockClient, mockFiles)
+    const sharingLink = await getSharingLink(mockClient(), mockFiles)
 
     expect(sharingLink).toBe(
       'http://drive.cozy.cloud/public?sharecode=shortcode#/'
@@ -20,11 +21,9 @@ describe('getSharingLink', () => {
   })
 
   it('should generate the right share link to a nested cozy', async () => {
-    const isFlatDomain = false
     const sharingLink = await getSharingLink(
-      mockClient,
-      mockFiles,
-      isFlatDomain
+      mockClient({ isFlatDomain: false }),
+      mockFiles
     )
 
     expect(sharingLink).toBe(
@@ -33,11 +32,9 @@ describe('getSharingLink', () => {
   })
 
   it('should generate the right share link to a flat cozy', async () => {
-    const isFlatDomain = true
     const sharingLink = await getSharingLink(
-      mockClient,
-      mockFiles,
-      isFlatDomain
+      mockClient({ isFlatDomain: true }),
+      mockFiles
     )
 
     expect(sharingLink).toBe(
@@ -46,7 +43,7 @@ describe('getSharingLink', () => {
   })
 
   it('should generate the right share link with an correct sharecode', async () => {
-    const sharingLink = await getSharingLink(mockClient, mockFiles)
+    const sharingLink = await getSharingLink(mockClient(), mockFiles)
 
     expect(sharingLink).toContain('sharecode=shortcode')
   })
