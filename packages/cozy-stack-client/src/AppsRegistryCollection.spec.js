@@ -44,6 +44,43 @@ describe(`AppsRegistryCollection`, () => {
       expect(resp.data._type).toEqual(APPS_REGISTRY_DOCTYPE)
     })
 
+    it('should always return an id', async () => {
+      client.fetchJSON.mockReturnValue(
+        Promise.resolve({
+          slug: 'dummy',
+          type: 'konnector',
+          maintenance_activated: true,
+          latest_version: {
+            manifest: {
+              manifestVersion: 1,
+              source: 'git://github.com/konnectors/dummy.git'
+            }
+          }
+        })
+      )
+
+      const resp = await collection.get('app')
+
+      expect(resp.data).toStrictEqual({
+        _id: 'io.cozy.konnectors/dummy',
+        id: 'io.cozy.konnectors/dummy',
+        _type: 'io.cozy.apps_registry',
+        attributes: {
+          manifestVersion: 1,
+          source: 'git://github.com/konnectors/dummy.git'
+        },
+        maintenance_activated: true,
+        slug: 'dummy',
+        type: 'konnector',
+        latest_version: {
+          manifest: {
+            manifestVersion: 1,
+            source: 'git://github.com/konnectors/dummy.git'
+          }
+        }
+      })
+    })
+
     it('should return list of apps in maintenance', async () => {
       client.fetchJSON.mockReturnValue(
         Promise.resolve([
@@ -66,20 +103,22 @@ describe(`AppsRegistryCollection`, () => {
       expect(resp.data).toHaveLength(2)
       expect(resp.data).toStrictEqual([
         {
-          _id: 'app1',
+          _id: 'io.cozy.apps/app1',
           _type: 'io.cozy.apps_registry',
-          id: 'app1',
+          id: 'io.cozy.apps/app1',
           slug: 'app1',
           type: 'webapp',
-          maintenance_activated: true
+          maintenance_activated: true,
+          attributes: {}
         },
         {
-          _id: 'konnector1',
+          _id: 'io.cozy.konnectors/konnector1',
           _type: 'io.cozy.apps_registry',
-          id: 'konnector1',
+          id: 'io.cozy.konnectors/konnector1',
           maintenance_activated: true,
           slug: 'konnector1',
-          type: 'konnector'
+          type: 'konnector',
+          attributes: {}
         }
       ])
     })

@@ -1,13 +1,29 @@
-import { transformRegistryFormatToStackFormat } from 'cozy-client/dist/registry'
-
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
-import { FetchError } from './errors'
 
 export const APPS_REGISTRY_DOCTYPE = 'io.cozy.apps_registry'
 
-export const normalizeAppFromRegistry = (app, doctype) => {
+export const normalizeAppFromRegistry = (data, doctype) => {
+  // The registry don't return a id, so we use the slug as id.
+  // Without id the document can't be stored in the cache.
+  const id = `${
+    data.type === 'webapp' ? 'io.cozy.apps' : 'io.cozy.konnectors'
+  }/${data.slug}`
+
+  const attributes = {
+    ...data.attributes,
+    ...data.latest_version?.manifest
+  }
+
   return {
-    ...normalizeDoc(app, doctype)
+    ...normalizeDoc(
+      {
+        ...data,
+        attributes,
+        id,
+        _id: id
+      },
+      doctype
+    )
   }
 }
 
@@ -36,23 +52,12 @@ class AppsRegistryCollection extends DocumentCollection {
     // The "maintenance" keyword calls a specific route in the stack
     // that returns a table of all applications under maintenance.
     // We processed it independently so that it could be stored in the cache.
-    // The stack returns some app without an id, so we use the slug as id.
     if (slug === 'maintenance') {
       return {
-        data: resp.map(app =>
-          normalizeAppFromRegistry(
-            {
-              _id: app._id || app.slug,
-              ...app
-            },
-            this.doctype
-          )
-        )
+        data: resp.map(data => normalizeAppFromRegistry(data, this.doctype))
       }
     }
-
-    const data = transformRegistryFormatToStackFormat(resp)
-    return { data: normalizeAppFromRegistry(data, this.doctype) }
+    return { data: normalizeAppFromRegistry(resp, this.doctype) }
   }
 
   async create() {
