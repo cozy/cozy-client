@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [45.0.1](https://github.com/cozy/cozy-client/compare/v45.0.0...v45.0.1) (2023-12-06)
+
+
+### Bug Fixes
+
+* **AppsRegistryCollection:** Make sure we always have an id ([4b73718](https://github.com/cozy/cozy-client/commit/4b73718fbe19e4e4d04a735bc43a77c29424fd31))
+
+
+
+
+
 # [45.0.0](https://github.com/cozy/cozy-client/compare/v44.1.1...v45.0.0) (2023-12-01)
 
 **Note:** Version bump only for package cozy-stack-client
