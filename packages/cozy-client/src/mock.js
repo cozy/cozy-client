@@ -1,3 +1,5 @@
+import merge from 'lodash/merge'
+
 import CozyClient from './CozyClient'
 import { receiveQueryResult, receiveQueryError, initQuery } from './store'
 import { normalizeDoc } from 'cozy-stack-client'
@@ -19,7 +21,7 @@ const fillQueryInsideClient = (client, queryName, queryOptions) => {
   }
 }
 
-const mockedQueryFromMockedRemoteData = remoteData => qdef => {
+const mockedQueryFromMockedRemoteData = remoteData => async qdef => {
   if (!remoteData) {
     return { data: null }
   }
@@ -40,9 +42,59 @@ const mockedQueryFromMockedRemoteData = remoteData => qdef => {
  * @param  {object} [options.queries] Prefill queries inside the store
  * @param  {object} [options.remote] Mock data from the server
  * @param  {object} [options.clientOptions] Options passed to the client
+ * @param  {object} [options.clientFunctions] Functions to overide client functions
  * @returns {CozyClient}
  */
-const createMockClient = ({ queries, remote, clientOptions }) => {
+const createMockClient = ({
+  queries,
+  remote,
+  clientOptions,
+  clientFunctions
+} = {}) => {
+  const mockedQuery = jest
+    .fn()
+    .mockImplementation(mockedQueryFromMockedRemoteData(remote))
+
+  const clientFunctionsMerge = merge(
+    {
+      query: mockedQuery,
+      save: jest.fn(),
+      saveAll: jest.fn(),
+      stackClient: {
+        fetchJSON: jest.fn()
+      }
+    },
+    clientFunctions
+  )
+
+  return createFakeClient({
+    queries,
+    remote,
+    clientOptions,
+    clientFunctions: clientFunctionsMerge
+  })
+}
+
+/**
+ * Creates a client with pre-filled store
+ * This can be useful for demo in documentation (e.g. storybook)
+ *
+ * - client.{query,save} are replaced with empty functions
+ * - client.stackClient.fetchJSON is replaced with empty functions
+ *
+ * @param  {object} options Options
+ * @param  {object} [options.queries] Prefill queries inside the store
+ * @param  {object} [options.remote] Mock data from the server
+ * @param  {object} [options.clientOptions] Options passed to the client
+ * @param  {object} [options.clientFunctions] Functions to overide client functions useful for testing
+ * @returns {CozyClient}
+ */
+const createFakeClient = ({
+  queries,
+  remote,
+  clientOptions,
+  clientFunctions
+} = {}) => {
   const client = new CozyClient(clientOptions || {})
   client.ensureStore()
 
@@ -50,15 +102,11 @@ const createMockClient = ({ queries, remote, clientOptions }) => {
     fillQueryInsideClient(client, queryName, queryOptions)
   }
 
-  client.query = jest
-    .fn()
-    .mockImplementation(mockedQueryFromMockedRemoteData(remote))
+  client.query = mockedQueryFromMockedRemoteData(remote)
 
-  client.save = jest.fn()
-  client.saveAll = jest.fn()
-  client.stackClient.fetchJSON = jest.fn()
+  merge(client, clientFunctions)
 
   return client
 }
 
-export { createMockClient }
+export { createMockClient, createFakeClient }
