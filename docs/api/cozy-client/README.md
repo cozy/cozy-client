@@ -201,9 +201,39 @@ Rejects with canceled: true as soon as cancel is called
 
 ***
 
+### createFakeClient
+
+▸ **createFakeClient**(`options?`): [`CozyClient`](classes/CozyClient.md)
+
+Creates a client with pre-filled store
+This can be useful for demo in documentation (e.g. storybook)
+
+*   client.{query,save} are replaced with empty functions
+*   client.stackClient.fetchJSON is replaced with empty functions
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `options` | `Object` | Options |
+| `options.clientFunctions` | `any` | - |
+| `options.clientOptions` | `any` | - |
+| `options.queries` | `any` | - |
+| `options.remote` | `any` | - |
+
+*Returns*
+
+[`CozyClient`](classes/CozyClient.md)
+
+*Defined in*
+
+[packages/cozy-client/src/mock.js:92](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/mock.js#L92)
+
+***
+
 ### createMockClient
 
-▸ **createMockClient**(`options`): [`CozyClient`](classes/CozyClient.md)
+▸ **createMockClient**(`options?`): [`CozyClient`](classes/CozyClient.md)
 
 Creates a client suitable for use in tests
 
@@ -215,6 +245,7 @@ Creates a client suitable for use in tests
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `options` | `Object` | Options |
+| `options.clientFunctions` | `any` | - |
 | `options.clientOptions` | `any` | - |
 | `options.queries` | `any` | - |
 | `options.remote` | `any` | - |
@@ -225,7 +256,7 @@ Creates a client suitable for use in tests
 
 *Defined in*
 
-[packages/cozy-client/src/mock.js:45](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/mock.js#L45)
+[packages/cozy-client/src/mock.js:48](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/mock.js#L48)
 
 ***
 

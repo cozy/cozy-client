@@ -1,15 +1,15 @@
-import { createMockClient } from './mock'
+import { createFakeClient, createMockClient } from './mock'
 
 import { Q } from 'cozy-client'
 
-describe('createMockClient', () => {
+describe('createFakeClient', () => {
   const simpsonsFixture = [
     { _id: 'homer', name: 'Homer' },
     { _id: 'marge', name: 'Marge' }
   ]
 
   it('should mock queries inside the store', () => {
-    const client = createMockClient({
+    const client = createFakeClient({
       queries: {
         simpsons: {
           data: simpsonsFixture,
@@ -34,7 +34,7 @@ describe('createMockClient', () => {
   })
 
   it('should mock query with data passed in "remote" option', async () => {
-    const client = createMockClient({
+    const client = createFakeClient({
       remote: {
         'io.cozy.simpsons': simpsonsFixture
       }
@@ -44,12 +44,39 @@ describe('createMockClient', () => {
   })
 
   it('should mock query even if the doctype has not been mocked', async () => {
-    const client = createMockClient({
+    const client = createFakeClient({
       remote: {
         'io.cozy.simpsons': simpsonsFixture
       }
     })
     const simpsons = await client.query(Q('io.cozy.adams'))
     await expect(simpsons.data.map(x => x._id)).toEqual([])
+  })
+
+  it('should mock function with clientFunctions', async () => {
+    const client = createFakeClient({
+      clientFunctions: {
+        stackClient: {
+          fetchJSON: () =>
+            Promise.resolve({ data: [{ _id: 'homer', name: 'Homer' }] })
+        }
+      }
+    })
+
+    const simpsons = await client.stackClient.fetchJSON('io.cozy.simpsons')
+    expect(simpsons.data).toEqual([{ _id: 'homer', name: 'Homer' }])
+  })
+
+  describe('createMockClient', () => {
+    it('should mock basic client functions', async () => {
+      const client = createMockClient()
+
+      expect(JSON.stringify(client.query)).toEqual(JSON.stringify(jest.fn()))
+      expect(JSON.stringify(client.save)).toEqual(JSON.stringify(jest.fn()))
+      expect(JSON.stringify(client.saveAll)).toEqual(JSON.stringify(jest.fn()))
+      expect(JSON.stringify(client.stackClient.fetchJSON)).toEqual(
+        JSON.stringify(jest.fn())
+      )
+    })
   })
 })
