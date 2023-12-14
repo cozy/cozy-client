@@ -1245,6 +1245,7 @@ class FileCollection extends DocumentCollection {
         'fields',
         'includeDocs',
         'includeFilePath',
+        'signal',
         'skipDeleted',
         'skipTrashed'
       ]),
@@ -1260,7 +1261,9 @@ class FileCollection extends DocumentCollection {
       last_seq: newLastSeq,
       pending,
       results
-    } = await this.stackClient.fetchJSON('GET', url)
+    } = await this.stackClient.fetchJSON('GET', url, null, {
+      signal: opts.signal
+    })
 
     return { newLastSeq, pending, results }
   }
