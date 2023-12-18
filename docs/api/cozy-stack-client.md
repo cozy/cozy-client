@@ -1181,11 +1181,24 @@ Implements `DocumentCollection` API to interact with the /notes endpoint of the 
 **Kind**: global class  
 
 * [NotesCollection](#NotesCollection)
+    * [.get(id)](#NotesCollection+get) ⇒ <code>Object</code>
     * [.all()](#NotesCollection+all) ⇒ <code>Object</code>
     * [.destroy(note)](#NotesCollection+destroy) ⇒ <code>Object</code>
     * [.create(options)](#NotesCollection+create) ⇒ <code>Object</code>
     * [.fetchURL(note)](#NotesCollection+fetchURL) ⇒ <code>Object</code>
     * [.getDefaultSchema()](#NotesCollection+getDefaultSchema) ⇒ <code>object</code>
+
+<a name="NotesCollection+get"></a>
+
+### notesCollection.get(id) ⇒ <code>Object</code>
+Fetches the note data
+
+**Kind**: instance method of [<code>NotesCollection</code>](#NotesCollection)  
+**Returns**: <code>Object</code> - Information about the note  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | Note id |
 
 <a name="NotesCollection+all"></a>
 

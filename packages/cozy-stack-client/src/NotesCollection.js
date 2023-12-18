@@ -24,6 +24,20 @@ class NotesCollection extends DocumentCollection {
   }
 
   /**
+   * Fetches the note data
+   *
+   * @param {string} id Note id
+   * @returns {{data}} Information about the note
+   */
+  async get(id) {
+    const resp = await this.stackClient.fetchJSON('GET', `/notes/${id}`)
+
+    return {
+      data: normalizeNote(resp.data)
+    }
+  }
+
+  /**
    * Fetches all notes
    *
    * @returns {{data, links, meta}} The JSON API conformant response.
