@@ -145,7 +145,7 @@ describe('certifyFlagship', () => {
     )
 
     expect(console.warn).toHaveBeenCalledWith(
-      '[FLAGSHIP_CERTIFICATION] Certification for URI "http://cozy.tools:8080" failed but the cozy-stack will continue with 2FA certification'
+      '[FLAGSHIP_CERTIFICATION] Automatic certification for URI "http://cozy.tools:8080" failed. This is expected on dev environments and non-official phones. Cozy-stack will continue with manual certification through 2FA'
     )
     expect(console.warn).toHaveBeenCalledWith(
       '[FLAGSHIP_CERTIFICATION] Something went wrong while requesting a challenge from CozyStack:\nSOME_STACK_CHALLENGE_ERROR'
@@ -175,7 +175,7 @@ describe('certifyFlagship', () => {
     })
 
     expect(console.warn).toHaveBeenCalledWith(
-      '[FLAGSHIP_CERTIFICATION] Certification for URI "http://cozy.tools:8080" failed but the cozy-stack will continue with 2FA certification'
+      '[FLAGSHIP_CERTIFICATION] Automatic certification for URI "http://cozy.tools:8080" failed. This is expected on dev environments and non-official phones. Cozy-stack will continue with manual certification through 2FA'
     )
     expect(console.warn).toHaveBeenCalledWith('SOME_STORE_API_ERROR')
   })
@@ -214,7 +214,7 @@ describe('certifyFlagship', () => {
     )
 
     expect(console.warn).toHaveBeenCalledWith(
-      '[FLAGSHIP_CERTIFICATION] Certification for URI "http://cozy.tools:8080" failed but the cozy-stack will continue with 2FA certification'
+      '[FLAGSHIP_CERTIFICATION] Automatic certification for URI "http://cozy.tools:8080" failed. This is expected on dev environments and non-official phones. Cozy-stack will continue with manual certification through 2FA'
     )
     expect(console.warn).toHaveBeenCalledWith(
       '[FLAGSHIP_CERTIFICATION] Something went wrong while giving attestation to CozyStack:\nSOME_STACK_CERTIFICATION_ERROR'

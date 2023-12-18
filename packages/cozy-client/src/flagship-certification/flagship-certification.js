@@ -92,7 +92,7 @@ export const certifyFlagship = async (certificationConfig, client) => {
     await giveAppAttestationToStack(appAttestation, stackChallengeNonce, client)
   } catch (e) {
     console.warn(
-      `[FLAGSHIP_CERTIFICATION] Certification for URI "${client.stackClient.uri}" failed but the cozy-stack will continue with 2FA certification`
+      `[FLAGSHIP_CERTIFICATION] Automatic certification for URI "${client.stackClient.uri}" failed. This is expected on dev environments and non-official phones. Cozy-stack will continue with manual certification through 2FA`
     )
     console.warn(e.message)
   }
