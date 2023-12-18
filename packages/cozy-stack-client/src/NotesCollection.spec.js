@@ -17,6 +17,37 @@ describe('NotesCollection', () => {
     jest.restoreAllMocks()
   })
 
+  describe('get', () => {
+    const { stackClient, collection } = setup()
+
+    it('should call the appropriate route', async () => {
+      jest.spyOn(stackClient, 'fetchJSON').mockResolvedValue({
+        data: [],
+        links: {},
+        meta: { count: 0 }
+      })
+
+      await collection.get('id123')
+      expect(stackClient.fetchJSON).toHaveBeenCalledWith('GET', '/notes/id123')
+    })
+
+    it('should normalize document', async () => {
+      jest.spyOn(stackClient, 'fetchJSON').mockResolvedValue({
+        data: { _id: '1', attributes: { title: 'Test Note' } },
+        links: {},
+        meta: { count: 0 }
+      })
+      const result = await collection.get('id123')
+      expect(result.data).toEqual({
+        _id: '1',
+        _type: 'io.cozy.notes',
+        id: '1',
+        title: 'Test Note',
+        attributes: { title: 'Test Note' }
+      })
+    })
+  })
+
   describe('all', () => {
     const { stackClient, collection } = setup()
 
