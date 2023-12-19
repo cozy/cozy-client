@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [45.2.0](https://github.com/cozy/cozy-client/compare/v45.1.0...v45.2.0) (2023-12-19)
+
+
+### Features
+
+* **NotesCollection:** Add get method ([72574fb](https://github.com/cozy/cozy-client/commit/72574fb6f478751cf22805bf561aaad69168bb61))
+
+
+
+
+
 ## [45.0.1](https://github.com/cozy/cozy-client/compare/v45.0.0...v45.0.1) (2023-12-06)
 
 
