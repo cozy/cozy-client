@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [45.3.0](https://github.com/cozy/cozy-client/compare/v45.2.0...v45.3.0) (2023-12-20)
+
+
+### Features
+
+* Rename FR translation of real_estate_tax ([af79a4c](https://github.com/cozy/cozy-client/commit/af79a4cdf19052194d94af92128ae46266df4ec2))
+
+
+
+
+
 # [45.2.0](https://github.com/cozy/cozy-client/compare/v45.1.0...v45.2.0) (2023-12-19)
 
 **Note:** Version bump only for package cozy-client
