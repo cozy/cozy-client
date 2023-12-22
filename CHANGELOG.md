@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [45.4.0](https://github.com/cozy/cozy-client/compare/v45.3.0...v45.4.0) (2023-12-22)
+
+
+### Features
+
+* Update warning message when Flagship certification fails ([5063df1](https://github.com/cozy/cozy-client/commit/5063df1d593eeabff827338d83eba291821368a8))
+
+
+
+
+
 # [45.3.0](https://github.com/cozy/cozy-client/compare/v45.2.0...v45.3.0) (2023-12-20)
 
 
