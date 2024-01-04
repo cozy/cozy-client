@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [45.5.0](https://github.com/cozy/cozy-client/compare/v45.4.0...v45.5.0) (2024-01-04)
+
+
+### Features
+
+* Rename translation of other_bank_document ([a72cb69](https://github.com/cozy/cozy-client/commit/a72cb694b53c9f1477d4a21451b725b5289a1292))
+
+
+
+
+
 # [45.4.0](https://github.com/cozy/cozy-client/compare/v45.3.0...v45.4.0) (2023-12-22)
 
 
