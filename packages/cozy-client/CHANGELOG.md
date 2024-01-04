@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [45.6.0](https://github.com/cozy/cozy-client/compare/v45.5.0...v45.6.0) (2024-01-04)
+
+
+### Features
+
+* Rename translation of birth_certificate ([b1b754c](https://github.com/cozy/cozy-client/commit/b1b754c618a1b88623f65152ad6ed0cacedde398))
+
+
+
+
+
 # [45.5.0](https://github.com/cozy/cozy-client/compare/v45.4.0...v45.5.0) (2024-01-04)
 
 
