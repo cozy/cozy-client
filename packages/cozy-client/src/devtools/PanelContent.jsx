@@ -1,5 +1,6 @@
 import React from 'react'
-import Box from '@material-ui/core/Box'
+
+import Box from 'cozy-ui/transpiled/react/Box'
 
 const PanelContent = ({ children }) => (
   <Box p={1} overflow="scroll" width="100%">

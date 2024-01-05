@@ -1,8 +1,9 @@
 import React from 'react'
+
+import Grid from 'cozy-ui/transpiled/react/Grid'
 import Icon from 'cozy-ui/transpiled/react/Icon'
+import ListItemSecondaryAction from 'cozy-ui/transpiled/react/ListItemSecondaryAction'
 import RightIcon from 'cozy-ui/transpiled/react/Icons/Right'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import Grid from '@material-ui/core/Grid'
 
 /**
  * @type {Object.<string, React.CSSProperties>}
