@@ -4955,17 +4955,24 @@ cozy-device-helper@2.7.0:
   dependencies:
     lodash "^4.17.19"
 
-cozy-flags@2.10.2:
-  version "2.10.2"
-  resolved "https://registry.yarnpkg.com/cozy-flags/-/cozy-flags-2.10.2.tgz#af9c257c5406abbd465a6796dc39a404efd3f4aa"
-  integrity sha512-mWbFG6qpDt9FS0T+3u0lZFty9KX7Po93LnlDmoufIluBW9qVU1qLMAkT1BqMe239B8WBJdvZhREdvQJ9HAOzNw==
+cozy-device-helper@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/cozy-device-helper/-/cozy-device-helper-3.0.0.tgz#c6316b7877c48ba9b343f80b13275b42027717bc"
+  integrity sha512-dkwQ8I0B2TiGs6MDdvSWOJKHMUwTHJegr67E3hpsupy5G9Z52dyjYtbK6bfoj0ykhit15fVI7bi8ivDyoM1oRg==
+  dependencies:
+    lodash "^4.17.19"
+
+cozy-flags@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/cozy-flags/-/cozy-flags-3.2.1.tgz#27b0c752fd9a5b5c4f1e61c2d1c69d57980ebb82"
+  integrity sha512-G8SBF4OcWMXdhEOvGNyZWHMYMcxuFADKUC6/MbKb3fwgtwE5I+O3GaBGnUgjxat7IueGZmN0U2vY2b3d1ky7Ww==
   dependencies:
     microee "^0.0.6"
 
-cozy-intent@1.17.3:
-  version "1.17.3"
-  resolved "https://registry.yarnpkg.com/cozy-intent/-/cozy-intent-1.17.3.tgz#dcf8085a9c561ce56ab0c7afc69474243e4f9e9c"
-  integrity sha512-Qko/tUJlXWh5wYLfw+CknbIm+KeAW4F3lAk/n1CA+uKwcseua+LCoNIypC/04ttm9g6ntbEogb/u4h6d5+H6lg==
+cozy-intent@^2.19.1:
+  version "2.19.1"
+  resolved "https://registry.yarnpkg.com/cozy-intent/-/cozy-intent-2.19.1.tgz#bc7b4e65b38a65ced5db4b8716d1fe30d617aed8"
+  integrity sha512-7zw3l+Dn6IVjBBjNkj0D+bDc4XDTrT7+72PdX55NbjLUpxJh88Vyv5DihTw/JRcwQVwdFlTO1O29z0oOildmTQ==
   dependencies:
     post-me "0.4.5"
 
@@ -4974,18 +4981,18 @@ cozy-interapp@^0.5.4:
   resolved "https://registry.yarnpkg.com/cozy-interapp/-/cozy-interapp-0.5.7.tgz#75cafe1732ad660e2caf1ccf412f302594705f39"
   integrity sha512-laIL/ATYV9oZnmqS+LMoO9qzk8XjJ1v2/YrA1Po2rI8ia/MDgjYO07424x2RuvHhNOBPGjD+JmqwQ0rNDlLW+Q==
 
-cozy-logger@1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/cozy-logger/-/cozy-logger-1.7.0.tgz#945ff84df66f7e7e9640db00f8c632d4ff776fc8"
-  integrity sha512-JBOAmfgujZZASE4TCRfeNvHoDnxPwFbLMO3G6UReByjR3Ix1/RSEtOL9b4hReuG2XX0BsPokfLWCZEWRgGN4TQ==
+cozy-logger@^1.10.3:
+  version "1.10.3"
+  resolved "https://registry.yarnpkg.com/cozy-logger/-/cozy-logger-1.10.3.tgz#77addf3e1835ac403faa09245736a1097101fe6a"
+  integrity sha512-ZPg9U549mzAl1ReTgRUhHjZ6JpODhkDuuQkkwHq4HLAXbkifvxnQxWDOfCOdajCSVgyRv3qiqVvjXlQ8Bu0dEA==
   dependencies:
     chalk "^2.4.2"
     json-stringify-safe "5.0.1"
 
-cozy-ui@93.1.1:
-  version "93.1.1"
-  resolved "https://registry.yarnpkg.com/cozy-ui/-/cozy-ui-93.1.1.tgz#a09512a53a55a0b8ecab21e0572bbd12678ad128"
-  integrity sha512-vrfW9KZRyyRmxV/FqeUlUdtFUeiy/NSdMmiP0xVEZ1HqmwqQAJ46haZzHlIAyUDRjGy37c9k4J9V3ztu+SQHzQ==
+cozy-ui@^100.2.0:
+  version "100.2.0"
+  resolved "https://registry.yarnpkg.com/cozy-ui/-/cozy-ui-100.2.0.tgz#7b5290f56314a2ab1d2c4d8ff2dbb579c3015436"
+  integrity sha512-J+vP9wZjabxEFz4tPIJHccxg+uVgghyJbSNGaulUW6vXAfY7Q78jUM/tFH1wdfZVPfTBaagcC2Q9AGmX8g8DuA==
   dependencies:
     "@babel/runtime" "^7.3.4"
     "@material-ui/core" "4.12.3"

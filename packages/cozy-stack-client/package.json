@@ -23,9 +23,9 @@
   },
   "devDependencies": {
     "@babel/cli": "7.12.8",
-    "cozy-flags": "2.10.2"
+    "cozy-flags": "^3.2.1"
   },
   "peerDependencies": {
-    "cozy-flags": ">2.8.6"
+    "cozy-flags": ">=3.2.1"
   }
 }
