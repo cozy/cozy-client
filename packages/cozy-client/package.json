@@ -51,7 +51,7 @@
     "cozy-device-helper": "2.7.0",
     "cozy-flags": "2.10.2",
     "cozy-intent": "1.17.3",
-    "cozy-logger": "1.7.0",
+    "cozy-logger": "1.10.4",
     "cozy-ui": "93.1.1",
     "jsdoc-plugin-intersection": "1.0.4",
     "mockdate": "2.0.5",
