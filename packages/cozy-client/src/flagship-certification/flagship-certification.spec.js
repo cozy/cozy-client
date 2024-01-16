@@ -44,7 +44,7 @@ const mockCorrectStoreApiRequest = () => {
 
 const mockCorrectCertificationConfig = () => {
   return {
-    androidSafetyNetApiKey: 'SOME_ANDROID_SAFETY_NET_API_KEY'
+    cloudProjectNumber: 'SOME_CLOUD_PROJECT_NUMBER'
   }
 }
 
@@ -90,7 +90,7 @@ describe('certifyFlagship', () => {
     )
 
     expect(getAppAttestationFromStore).toHaveBeenCalledWith('SOME_NONCE', {
-      androidSafetyNetApiKey: 'SOME_ANDROID_SAFETY_NET_API_KEY'
+      cloudProjectNumber: 'SOME_CLOUD_PROJECT_NUMBER'
     })
 
     expect(client.stackClient.fetchJSON).toHaveBeenCalledWith(
@@ -171,7 +171,7 @@ describe('certifyFlagship', () => {
     )
 
     expect(getAppAttestationFromStore).toHaveBeenCalledWith('SOME_NONCE', {
-      androidSafetyNetApiKey: 'SOME_ANDROID_SAFETY_NET_API_KEY'
+      cloudProjectNumber: 'SOME_CLOUD_PROJECT_NUMBER'
     })
 
     expect(console.warn).toHaveBeenCalledWith(
@@ -201,7 +201,7 @@ describe('certifyFlagship', () => {
     )
 
     expect(getAppAttestationFromStore).toHaveBeenCalledWith('SOME_NONCE', {
-      androidSafetyNetApiKey: 'SOME_ANDROID_SAFETY_NET_API_KEY'
+      cloudProjectNumber: 'SOME_CLOUD_PROJECT_NUMBER'
     })
 
     expect(client.stackClient.fetchJSON).toHaveBeenCalledWith(

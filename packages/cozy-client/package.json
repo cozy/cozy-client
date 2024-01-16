@@ -70,9 +70,9 @@
     "cozy-ui": ">=93.1.1",
     "react": "^16.7.0",
     "react-native": "^0.65.0",
-    "react-native-google-safetynet": "npm:cozy-react-native-google-safetynet@^1.0.0",
     "react-native-inappbrowser-reborn": "^3.5.1",
-    "react-native-ios11-devicecheck": "https://github.com/cozy/react-native-devicecheck#app-attest-v0.1"
+    "react-native-ios11-devicecheck": "https://github.com/cozy/react-native-devicecheck#app-attest-v0.1",
+    "react-native-google-play-integrity": "github:cozy/react-native-google-play-integrity#1.0.1"
   },
   "sideEffects": false
 }

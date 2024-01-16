@@ -20,5 +20,5 @@ export type AttestationResult = {
  * - Configuration to access the stores certification API
  */
 export type CertificationConfig = {
-    androidSafetyNetApiKey: string;
+    cloudProjectNumber: string;
 };
