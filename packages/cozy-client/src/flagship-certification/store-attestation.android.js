@@ -1,5 +1,5 @@
-//@ts-ignore next-line
-import RNGoogleSafetyNet from 'react-native-google-safetynet'
+//@ts-ignore next-line - this is a react-native module that is not installed in the monorepo, only in the consumer app
+import PlayIntegrity from 'react-native-google-play-integrity'
 
 /**
  * Retrieve the app's attestation from the Google Play store
@@ -13,18 +13,18 @@ export const getAppAttestationFromStore = async (
   certificationConfig
 ) => {
   try {
-    const attestationResult = await RNGoogleSafetyNet.sendAttestationRequestJWT(
+    const integrityToken = await PlayIntegrity.requestIntegrityToken(
       nonce,
-      certificationConfig.androidSafetyNetApiKey
+      certificationConfig.cloudProjectNumber
     )
 
     return {
       platform: 'android',
-      attestation: attestationResult
+      attestation: integrityToken
     }
   } catch (e) {
     throw new Error(
-      '[FLAGSHIP_CERTIFICATION] Something went wrong while requesting an attestation from Google Safetynet:\n' +
+      '[FLAGSHIP_CERTIFICATION] Something went wrong while requesting an attestation from Google Play Integrity API:\n' +
         e.message
     )
   }

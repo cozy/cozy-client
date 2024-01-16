@@ -11,32 +11,27 @@ This verification is done by querying an app certificate from the app store (App
 - `attestation`: result from the `store certification`
 - `challenge`: unique token given to the app by `cozy-stack` that may be encrypted in the `attestation` as a proof of authenticity
 - `nonce`: data type used to store the `challenge` token
-- `SafetyNet`: Google's implementation of the `store certification`
+- `Play Integrity API`: Google's implementation of the `store certification`
 - `AppAttest`: Apple's implementation of the `store certification`
 
 ## Android certification
 
-Android certification is based on [SafetyNet](https://developer.android.com/training/safetynet/index.html).
+Android certification is based on [Play Integrity API](https://developer.android.com/google/play/integrity/overview).
 
-This process requires to query a `challenge` from `cozy-stack` and to use it to init the `store certification` process through `SafetyNet`. Then the received `attestation` is send to `cozy-stack` for verification.
+This process requires to query a `challenge` from `cozy-stack` and to use it to init the `store certification` process through `Play Integrity API`. Then the received `attestation` is send to `cozy-stack` for verification.
 
 The resulting `attestation` is in the form of a `JSON Web Signature` that embbed the following `JSON`:
-```json
+```js
 {
-    "apkCertificateDigestSha256": [
-        "base64 encoded, SHA-256 hash of the certificate used to sign requesting app="
-    ],
-    "apkDigestSha256": "kNv83tJLFqwliYQ/6HUPCeGkBzLLCX/nvT+EF3OEB2I=",
-    "apkPackageName": "com.package.name.of.requesting.app",
-    "basicIntegrity": true,
-    "ctsProfileMatch": true, 
-    "evaluationType": "BASIC",
-    "nonce": "R2Rra24fVm5xa2Mg",
-    "timestampMs": 9860437986543
+  requestDetails: { ... }
+  appIntegrity: { ... }
+  deviceIntegrity: { ... }
+  accountDetails: { ... }
+  environmentDetails: { ... }
 }
 ```
 
-The `attestation`'s content is described in the SafetyNet's documentation: https://developer.android.com/training/safetynet/attestation#use-response-server
+The `attestation`'s content is described in the Play Integrity API's documentation: https://developer.android.com/google/play/integrity/verdicts#returned-verdict-format
 
 ## iOS certification
 
@@ -65,7 +60,7 @@ const client = await initClient(uri, {
       clientName: 'YOUR_APP_NAME',
       shouldRequireFlagshipPermissions: true,
       certificationConfig: {
-        androidSafetyNetApiKey: 'YOUR_GOOGLE_SAFETY_NET_API_KEY'
+        cloudProjectNumber: 'YOUR_CLOUD_PROJECT_NUMBER'
       }
     },
 ```
