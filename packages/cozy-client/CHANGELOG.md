@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [45.7.0](https://github.com/cozy/cozy-client/compare/v45.6.0...v45.7.0) (2024-01-17)
+
+
+### Bug Fixes
+
+* Add store issuer in attestation request ([1bf5ce6](https://github.com/cozy/cozy-client/commit/1bf5ce639e359e4577efa3212b4516a2f2d42201))
+
+
+### Features
+
+* Migrate from safetynet to playintegrity ([d8ae50f](https://github.com/cozy/cozy-client/commit/d8ae50fbf8a82023b0695eecaff4ea75c0af2c90))
+
+
+
+
+
 # [45.6.0](https://github.com/cozy/cozy-client/compare/v45.5.0...v45.6.0) (2024-01-04)
 
 
