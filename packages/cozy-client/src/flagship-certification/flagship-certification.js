@@ -40,7 +40,7 @@ const getStackChallenge = async client => {
  */
 const giveAppAttestationToStack = async (appAttestation, nonce, client) => {
   try {
-    const { platform, attestation, keyId } = appAttestation
+    const { platform, attestation, keyId, issuer } = appAttestation
 
     const stackClient = client.getStackClient()
 
@@ -51,7 +51,8 @@ const giveAppAttestationToStack = async (appAttestation, nonce, client) => {
         platform: platform,
         attestation: attestation,
         challenge: nonce,
-        keyId: keyId
+        keyId: keyId,
+        issuer: issuer
       },
       {
         headers: {

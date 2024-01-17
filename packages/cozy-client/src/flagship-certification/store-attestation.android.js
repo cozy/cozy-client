@@ -20,7 +20,8 @@ export const getAppAttestationFromStore = async (
 
     return {
       platform: 'android',
-      attestation: integrityToken
+      attestation: integrityToken,
+      issuer: 'playintegrity'
     }
   } catch (e) {
     throw new Error(

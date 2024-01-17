@@ -15,6 +15,7 @@ export type AttestationResult = {
     platform: string;
     attestation: jws | base64string;
     keyId?: string;
+    issuer?: string;
 };
 /**
  * - Configuration to access the stores certification API
