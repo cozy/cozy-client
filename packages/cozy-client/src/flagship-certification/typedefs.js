@@ -11,6 +11,7 @@
  * @property {string} platform
  * @property {jws|base64string} attestation
  * @property {string} [keyId]
+ * @property {string} [issuer]
  */
 
 /**
