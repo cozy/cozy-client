@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [45.8.0](https://github.com/cozy/cozy-client/compare/v45.7.0...v45.8.0) (2024-01-26)
+
+
+### Features
+
+* Make account model use identifier attribute ([d275c2c](https://github.com/cozy/cozy-client/commit/d275c2c102d27057ef9724dd2ced1cd3df8a1549))
+
+
+
+
+
 # [45.7.0](https://github.com/cozy/cozy-client/compare/v45.6.0...v45.7.0) (2024-01-17)
 
 
