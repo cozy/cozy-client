@@ -27,7 +27,7 @@ io.cozy.accounts attributes
 
 *Defined in*
 
-[packages/cozy-client/src/models/account.js:110](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/account.js#L110)
+[packages/cozy-client/src/models/account.js:113](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/account.js#L113)
 
 ***
 
@@ -75,7 +75,7 @@ Get the account name from a given account
 
 *Defined in*
 
-[packages/cozy-client/src/models/account.js:94](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/account.js#L94)
+[packages/cozy-client/src/models/account.js:97](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/account.js#L97)
 
 ***
 
@@ -147,7 +147,7 @@ Look if the given account has an associated trigger or not.
 
 *Defined in*
 
-[packages/cozy-client/src/models/account.js:126](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/account.js#L126)
+[packages/cozy-client/src/models/account.js:129](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/account.js#L129)
 
 ***
 

@@ -209,6 +209,33 @@ describe('account model', () => {
     })
   })
 
+  describe('getAccountLogin', () => {
+    it('should return account.identifier field if defined', () => {
+      expect(
+        getAccountLogin({
+          _id: 'accountid',
+          auth: {
+            login: 'loginfield',
+            other: 'identifierfield'
+          },
+          identifier: 'other'
+        })
+      ).toStrictEqual('identifierfield')
+    })
+
+    it('should return login field if no identifier is defined', () => {
+      expect(
+        getAccountLogin({
+          _id: 'accountid',
+          auth: {
+            login: 'loginfield',
+            other: 'identifierfield'
+          }
+        })
+      ).toStrictEqual('loginfield')
+    })
+  })
+
   describe('getAccountName', () => {
     it('should return auth.accountName in priority', () => {
       expect(
