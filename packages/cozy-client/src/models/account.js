@@ -77,6 +77,9 @@ export const setContractSyncStatusInAccount = (
  * @returns {String|null} - Account login
  */
 export const getAccountLogin = account => {
+  if (account.identifier) {
+    return account.auth[account.identifier]
+  }
   if (account && account.auth) {
     for (const fieldName of legacyLoginFields) {
       if (account.auth[fieldName]) return account.auth[fieldName]
