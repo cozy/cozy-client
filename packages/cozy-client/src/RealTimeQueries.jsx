@@ -13,11 +13,12 @@ import CozyClient from './CozyClient'
  * @param {import("./types").CouchDBDocument} couchDBDoc - object representing the document
  * @returns {import("./types").CozyClientDocument} full normalized document
  */
-const normalizeDoc = (couchDBDoc, doctype) => {
+const normalizeDoc = (couchDBDoc, doctype, customNormalization) => {
+  const normalizedDoc = customNormalization(couchDBDoc)
   return {
-    id: couchDBDoc._id,
+    id: normalizedDoc._id,
     _type: doctype,
-    ...couchDBDoc
+    ...normalizedDoc
   }
 }
 
@@ -33,9 +34,10 @@ const dispatchChange = (
   client,
   doctype,
   couchDBDoc,
-  mutationDefinitionCreator
+  mutationDefinitionCreator,
+  customNormalization
 ) => {
-  const data = normalizeDoc(couchDBDoc, doctype)
+  const data = normalizeDoc(couchDBDoc, doctype, customNormalization)
   const response = {
     data
   }
@@ -55,11 +57,12 @@ const dispatchChange = (
  * Component that subscribes to a doctype changes and keep the
  * internal store updated.
  *
- * @param  {object} options - Options
- * @param  {import("./types").Doctype} options.doctype - The doctype to watch
+ * @param {object} options - Options
+ * @param {import("./types").Doctype} options.doctype - The doctype to watch
+ * @param {Function} options.customNormalization - Function to call before dispatching the change
  * @returns {null} The component does not display anything.
  */
-const RealTimeQueries = ({ doctype }) => {
+const RealTimeQueries = ({ doctype, customNormalization }) => {
   const client = useClient()
 
   useEffect(() => {
@@ -72,17 +75,30 @@ const RealTimeQueries = ({ doctype }) => {
     }
 
     const dispatchCreate = couchDBDoc => {
-      dispatchChange(client, doctype, couchDBDoc, Mutations.createDocument)
+      dispatchChange(
+        client,
+        doctype,
+        couchDBDoc,
+        Mutations.createDocument,
+        customNormalization
+      )
     }
     const dispatchUpdate = couchDBDoc => {
-      dispatchChange(client, doctype, couchDBDoc, Mutations.updateDocument)
+      dispatchChange(
+        client,
+        doctype,
+        couchDBDoc,
+        Mutations.updateDocument,
+        customNormalization
+      )
     }
     const dispatchDelete = couchDBDoc => {
       dispatchChange(
         client,
         doctype,
         { ...couchDBDoc, _deleted: true },
-        Mutations.deleteDocument
+        Mutations.deleteDocument,
+        customNormalization
       )
     }
 
@@ -98,7 +114,7 @@ const RealTimeQueries = ({ doctype }) => {
       realtime.unsubscribe('updated', doctype, dispatchUpdate)
       realtime.unsubscribe('deleted', doctype, dispatchDelete)
     }
-  }, [client, doctype])
+  }, [client, customNormalization, doctype])
 
   return null
 }
