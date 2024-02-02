@@ -36,12 +36,24 @@ export class Qualification {
       /**
        * @type {string?}
        */
-      this.purpose = attributes.purpose || qualification.purpose
-      this.sourceCategory =
+      const purpose = attributes.purpose || qualification.purpose
+      if (purpose) {
+        this.purpose = purpose
+      }
+      const sourceCategory =
         attributes.sourceCategory || qualification.sourceCategory
-      this.sourceSubCategory =
+      if (sourceCategory) {
+        this.sourceCategory = sourceCategory
+      }
+      const sourceSubCategory =
         attributes.sourceSubCategory || qualification.sourceSubCategory
-      this.subjects = attributes.subjects || qualification.subjects
+      if (sourceSubCategory) {
+        this.sourceSubCategory = sourceSubCategory
+      }
+      const subjects = attributes.subjects || qualification.subjects
+      if (subjects) {
+        this.subjects = subjects
+      }
     } else {
       throw new Error(`No qualification found for the label ${label}`)
     }

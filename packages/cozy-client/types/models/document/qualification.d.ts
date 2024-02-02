@@ -25,10 +25,7 @@ export class Qualification {
      * @type {string?}
      */
     label: string | null;
-    /**
-     * @type {string?}
-     */
-    purpose: string | null;
+    purpose: string;
     sourceCategory: string;
     sourceSubCategory: string;
     subjects: string[];

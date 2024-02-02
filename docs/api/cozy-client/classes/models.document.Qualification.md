@@ -47,7 +47,7 @@ the checkValueAttributes method.
 
 *Defined in*
 
-[packages/cozy-client/src/models/document/qualification.js:39](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L39)
+[packages/cozy-client/src/models/document/qualification.js:41](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L41)
 
 ***
 
@@ -57,7 +57,7 @@ the checkValueAttributes method.
 
 *Defined in*
 
-[packages/cozy-client/src/models/document/qualification.js:40](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L40)
+[packages/cozy-client/src/models/document/qualification.js:46](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L46)
 
 ***
 
@@ -67,7 +67,7 @@ the checkValueAttributes method.
 
 *Defined in*
 
-[packages/cozy-client/src/models/document/qualification.js:42](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L42)
+[packages/cozy-client/src/models/document/qualification.js:51](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L51)
 
 ***
 
@@ -77,7 +77,7 @@ the checkValueAttributes method.
 
 *Defined in*
 
-[packages/cozy-client/src/models/document/qualification.js:44](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L44)
+[packages/cozy-client/src/models/document/qualification.js:55](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L55)
 
 ## Methods
 
@@ -108,7 +108,7 @@ Check the given qualification attributes respects the following rules:
 
 *Defined in*
 
-[packages/cozy-client/src/models/document/qualification.js:63](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L63)
+[packages/cozy-client/src/models/document/qualification.js:75](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L75)
 
 ***
 
@@ -132,7 +132,7 @@ The Qualification object.
 
 *Defined in*
 
-[packages/cozy-client/src/models/document/qualification.js:146](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L146)
+[packages/cozy-client/src/models/document/qualification.js:158](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L158)
 
 ***
 
@@ -156,7 +156,7 @@ The Qualification object.
 
 *Defined in*
 
-[packages/cozy-client/src/models/document/qualification.js:156](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L156)
+[packages/cozy-client/src/models/document/qualification.js:168](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L168)
 
 ***
 
@@ -180,7 +180,7 @@ The Qualification object.
 
 *Defined in*
 
-[packages/cozy-client/src/models/document/qualification.js:169](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L169)
+[packages/cozy-client/src/models/document/qualification.js:181](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L181)
 
 ***
 
@@ -204,7 +204,7 @@ The Qualification object.
 
 *Defined in*
 
-[packages/cozy-client/src/models/document/qualification.js:182](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L182)
+[packages/cozy-client/src/models/document/qualification.js:194](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L194)
 
 ***
 
@@ -222,7 +222,7 @@ The qualification attributes
 
 *Defined in*
 
-[packages/cozy-client/src/models/document/qualification.js:194](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L194)
+[packages/cozy-client/src/models/document/qualification.js:206](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L206)
 
 ***
 
@@ -246,4 +246,4 @@ Returns the qualification associated to a label.
 
 *Defined in*
 
-[packages/cozy-client/src/models/document/qualification.js:211](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L211)
+[packages/cozy-client/src/models/document/qualification.js:223](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L223)
