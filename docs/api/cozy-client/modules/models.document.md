@@ -36,7 +36,7 @@ Helper to get the qualification from a document
 
 *Defined in*
 
-[packages/cozy-client/src/models/document/qualification.js:239](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L239)
+[packages/cozy-client/src/models/document/qualification.js:251](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L251)
 
 ***
 
@@ -61,4 +61,4 @@ Set the qualification to the document metadata
 
 *Defined in*
 
-[packages/cozy-client/src/models/document/qualification.js:222](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L222)
+[packages/cozy-client/src/models/document/qualification.js:234](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L234)
