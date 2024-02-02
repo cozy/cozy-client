@@ -15,10 +15,10 @@ export const useInstanceInfo = () => {
     instanceQuery.options
   )
 
-  const contextQuery = buildSettingsByIdQuery('context')
+  const contextQuery = buildSettingsByIdQuery('io.cozy.settings.context')
   const contextResult = useQuery(contextQuery.definition, contextQuery.options)
 
-  const diskUsageQuery = buildSettingsByIdQuery('disk-usage')
+  const diskUsageQuery = buildSettingsByIdQuery('io.cozy.settings.disk-usage')
   const diskUsageResult = useQuery(
     diskUsageQuery.definition,
     diskUsageQuery.options
