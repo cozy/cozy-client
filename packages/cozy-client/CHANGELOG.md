@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [45.8.1](https://github.com/cozy/cozy-client/compare/v45.8.0...v45.8.1) (2024-02-02)
+
+
+### Bug Fixes
+
+* Use complete settings id in useInstanceInfo ([87acffb](https://github.com/cozy/cozy-client/commit/87acffb0691b1444e1f675c0e08706b66264d7d3))
+
+
+
+
+
 # [45.8.0](https://github.com/cozy/cozy-client/compare/v45.7.0...v45.8.0) (2024-01-26)
 
 
