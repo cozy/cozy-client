@@ -33,25 +33,34 @@ export class Qualification {
        * @type {string?}
        */
       this.label = qualification.label
-      /**
-       * @type {string?}
-       */
       const purpose = attributes.purpose || qualification.purpose
       if (purpose) {
+        /**
+         * @type {string?}
+         */
         this.purpose = purpose
       }
       const sourceCategory =
         attributes.sourceCategory || qualification.sourceCategory
       if (sourceCategory) {
+        /**
+         * @type {string?}
+         */
         this.sourceCategory = sourceCategory
       }
       const sourceSubCategory =
         attributes.sourceSubCategory || qualification.sourceSubCategory
       if (sourceSubCategory) {
+        /**
+         * @type {string?}
+         */
         this.sourceSubCategory = sourceSubCategory
       }
       const subjects = attributes.subjects || qualification.subjects
       if (subjects) {
+        /**
+         * @type {Array<string>?}
+         */
         this.subjects = subjects
       }
     } else {

@@ -25,10 +25,22 @@ export class Qualification {
      * @type {string?}
      */
     label: string | null;
-    purpose: string;
-    sourceCategory: string;
-    sourceSubCategory: string;
-    subjects: string[];
+    /**
+     * @type {string?}
+     */
+    purpose: string | null;
+    /**
+     * @type {string?}
+     */
+    sourceCategory: string | null;
+    /**
+     * @type {string?}
+     */
+    sourceSubCategory: string | null;
+    /**
+     * @type {Array<string>?}
+     */
+    subjects: Array<string> | null;
     /**
      * Check the given qualification attributes respects the following rules:
      *   - For the given label, if a purpose, sourceCategory or sourceSubCategory
