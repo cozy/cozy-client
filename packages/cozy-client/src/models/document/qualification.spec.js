@@ -6,6 +6,42 @@ import {
 import * as qualificationModel from '../../assets/qualifications.json'
 import logger from '../../logger'
 
+jest.mock('../../assets/qualifications.json', () => ({
+  qualifications: [
+    {
+      label: 'isp_invoice',
+      purpose: 'invoice',
+      sourceCategory: 'telecom',
+      sourceSubCategory: 'internet',
+      subjects: ['subscription']
+    },
+    {
+      label: 'national_id_card',
+      purpose: 'attestation',
+      sourceCategory: 'gov',
+      sourceSubCategory: 'civil_registration',
+      subjects: ['identity']
+    },
+    {
+      label: 'health_invoice',
+      purpose: 'invoice',
+      sourceCategory: 'health'
+    },
+    {
+      label: 'other_identity_document',
+      purpose: 'attestation',
+      subjects: ['identity']
+    },
+    {
+      label: 'dummy_empty'
+    }
+  ],
+  purposeKnownValues: ['attestation', 'invoice'],
+  sourceCategoryKnownValues: ['telecom', 'health', 'gov'],
+  sourceSubCategoryKnownValues: ['civil_registration', 'internet'],
+  subjectsKnownValues: ['identity', 'subscription']
+}))
+
 describe('document qualification', () => {
   beforeEach(() => {
     jest.spyOn(logger, 'warn').mockImplementation(() => jest.fn())
@@ -130,6 +166,17 @@ describe('qualifications items', () => {
   it('should always define a label', () => {
     qualificationModel.qualifications.forEach(q => {
       expect(q).toHaveProperty('label')
+    })
+  })
+
+  it('should not have undefined attributes', () => {
+    const qualification = Qualification.getByLabel('dummy_empty')
+    expect(Object.hasOwn(qualification, 'purpose')).toBe(false)
+    expect(Object.hasOwn(qualification, 'sourceCategory')).toBe(false)
+    expect(Object.hasOwn(qualification, 'sourceSubCategory')).toBe(false)
+    expect(Object.hasOwn(qualification, 'subjects')).toBe(false)
+    Object.keys(qualification).forEach(key => {
+      expect(qualification[key]).toBeDefined()
     })
   })
 
