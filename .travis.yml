@@ -2,6 +2,7 @@ dist: focal
 language: node_js
 node_js:
   - '20'
+  - '16'
 cache:
   yarn: true
   directories:
