@@ -745,6 +745,10 @@ export type FolderDocument = {
      */
     _id: string;
     /**
+     * - Parent folder
+     */
+    dir_id: string;
+    /**
      * - Doctype of the folder
      */
     _type: FilesDoctype;
