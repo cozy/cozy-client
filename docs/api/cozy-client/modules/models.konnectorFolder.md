@@ -44,7 +44,7 @@ The result path
 
 *Defined in*
 
-[packages/cozy-client/src/models/konnectorFolder.js:115](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L115)
+[packages/cozy-client/src/models/konnectorFolder.js:154](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L154)
 
 ***
 
@@ -69,7 +69,7 @@ Permission object
 
 *Defined in*
 
-[packages/cozy-client/src/models/konnectorFolder.js:227](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L227)
+[packages/cozy-client/src/models/konnectorFolder.js:266](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L266)
 
 ***
 
@@ -94,7 +94,7 @@ Directory attributes
 
 *Defined in*
 
-[packages/cozy-client/src/models/konnectorFolder.js:63](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L63)
+[packages/cozy-client/src/models/konnectorFolder.js:102](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L102)
 
 ***
 
@@ -120,7 +120,32 @@ Ensures the destination folder of a konnector exists and is initiated with prope
 
 *Defined in*
 
-[packages/cozy-client/src/models/konnectorFolder.js:25](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L25)
+[packages/cozy-client/src/models/konnectorFolder.js:27](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L27)
+
+***
+
+### findKonnectorAccountFolderByReference
+
+▸ **findKonnectorAccountFolderByReference**(`options`): `Promise`<`IOCozyFolder`>
+
+try to find a konnector account folder using file references
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `options` | `Object` | options object |
+| `options.client` | [`CozyClient`](../classes/CozyClient.md) | CozyClient instance |
+| `options.slug` | `string` | konnector slug |
+| `options.sourceAccountIdentifier` | `string` | source account identifier |
+
+*Returns*
+
+`Promise`<`IOCozyFolder`>
+
+*Defined in*
+
+[packages/cozy-client/src/models/konnectorFolder.js:374](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L374)
 
 ***
 
@@ -147,4 +172,4 @@ Created io.cozy.files document
 
 *Defined in*
 
-[packages/cozy-client/src/models/konnectorFolder.js:78](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L78)
+[packages/cozy-client/src/models/konnectorFolder.js:117](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L117)
