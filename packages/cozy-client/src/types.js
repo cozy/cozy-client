@@ -397,6 +397,7 @@ import { QueryDefinition } from './queries/dsl'
 /**
  * @typedef {object} FolderDocument - An io.cozy.files document
  * @property {string} _id - Id of the folder
+ * @property {string} dir_id - Parent folder
  * @property {FilesDoctype} _type - Doctype of the folder
  * @property {string} name - Name of the folder
  * @property {object} metadata - Metadata of the folder
