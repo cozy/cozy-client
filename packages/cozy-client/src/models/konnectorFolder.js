@@ -6,6 +6,8 @@ import { getAccountName } from './account'
 
 import { getLocalizer } from './document/locales'
 
+import { Q } from '../queries/dsl'
+
 const FILES_DOCTYPE = 'io.cozy.files'
 const PERMISSIONS_DOCTYPE = 'io.cozy.permissions'
 
@@ -27,7 +29,7 @@ export const ensureKonnectorFolder = async (
   { konnector, account, lang }
 ) => {
   const permissions = client.collection(PERMISSIONS_DOCTYPE)
-  const files = client.collection(FILES_DOCTYPE)
+  const fileCollection = client.collection(FILES_DOCTYPE)
 
   const t = getLocalizer(lang)
   const [adminFolder, photosFolder] = await Promise.all([
@@ -39,6 +41,30 @@ export const ensureKonnectorFolder = async (
     ensureMagicFolder(client, MAGIC_FOLDERS.PHOTOS, t('MagicFolders.photos'))
   ])
 
+  const sourceAccountIdentifier = getAccountName(account)
+
+  const alreadyExistingAccountFolder = await findKonnectorAccountFolderByReference(
+    { client, slug: konnector.slug, sourceAccountIdentifier }
+  )
+  if (alreadyExistingAccountFolder) {
+    return alreadyExistingAccountFolder
+  }
+
+  const alreadyExistingKonnectorMainFolder = await findKonnectorMainFolderByReference(
+    { client, slug: konnector.slug }
+  )
+
+  if (alreadyExistingKonnectorMainFolder) {
+    // save account folder as a child of main konnector account folder
+    return await saveKonnectorAccountFolder({
+      client,
+      mainFolder: alreadyExistingKonnectorMainFolder,
+      konnector,
+      sourceAccountIdentifier
+    })
+  }
+
+  // if the previous shortcuts did not work, create the folders like we did before but with proper references
   const path = buildFolderPath(konnector, account, {
     administrative: adminFolder.path,
     photos: photosFolder.path
@@ -47,8 +73,21 @@ export const ensureKonnectorFolder = async (
     (await statDirectoryByPath(client, path)) ||
     (await createDirectoryByPath(client, path))
 
-  await permissions.add(konnector, buildFolderPermission(folder))
-  await files.addReferencesTo(konnector, [folder])
+  const { data: konnectorFolder } = await fileCollection.statById(folder.dir_id)
+  await Promise.all([
+    permissions.add(konnector, buildFolderPermission(folder)),
+    ensureKonnectorReference({ client, folder, konnector }),
+    ensureSourceAccountIdentifierReference({
+      client,
+      folder,
+      sourceAccountIdentifier
+    }),
+    ensureKonnectorReference({
+      client,
+      folder: konnectorFolder,
+      konnector
+    })
+  ])
 
   return folder
 }
@@ -228,7 +267,7 @@ export const buildFolderPermission = folder => {
   return {
     // Legacy name
     saveFolder: {
-      type: 'io.cozy.files',
+      type: FILES_DOCTYPE,
       values: [folder._id],
       verbs: ['GET', 'PATCH', 'POST']
     }
@@ -244,3 +283,157 @@ export const buildFolderPermission = folder => {
  */
 const trim = (str, c = '\\s') =>
   str.replace(new RegExp(`^([${c}]*)(.*?)([${c}]*)$`), '$2')
+
+/**
+ * Test if a given folder has a given konnector reference
+ *
+ * @param {import('../types').IOCozyFolder} folder - folder to test
+ * @param {string} slug -  konnector slug
+ * @returns {boolean}
+ */
+const hasKonnectorReference = (folder, slug) =>
+  Boolean(
+    folder.referenced_by?.find(
+      ref =>
+        ref.type === 'io.cozy.konnectors' &&
+        ref.id === 'io.cozy.konnectors/' + slug
+    )
+  )
+
+/**
+ * Test if a given folder has a given source account identifier reference
+ *
+ * @param {import('../types').IOCozyFolder} folder - folder to test
+ * @param {string} [sourceAccountIdentifier] - source account identifier
+ * @returns {boolean}
+ */
+const hasSourceAccountIdentifierReference = (
+  folder,
+  sourceAccountIdentifier
+) => {
+  return Boolean(
+    folder.referenced_by?.find(
+      ref =>
+        ref.type === 'io.cozy.accounts.sourceAccountIdentifier' &&
+        (sourceAccountIdentifier ? ref.id === sourceAccountIdentifier : true)
+    )
+  )
+}
+
+/**
+ * Ensure that a given folder has the given konnector reference
+ *
+ * @param {object} options - options object
+ * @param {CozyClient} options.client - CozyClient instance
+ * @param {import('../types').IOCozyFolder} options.folder - folder to test
+ * @param {import('../types').IOCozyKonnector} options.konnector - konnector to which we want the reference
+ * @returns {Promise<void>}
+ */
+const ensureKonnectorReference = async ({ client, folder, konnector }) => {
+  const fileCollection = client.collection(FILES_DOCTYPE)
+  if (!hasKonnectorReference(folder, konnector.slug)) {
+    await fileCollection.addReferencesTo(konnector, [folder])
+  }
+}
+
+/**
+ * Ensure that a given folder has the given source account identifier reference
+ *
+ * @param {object} options - options object
+ * @param {CozyClient} options.client - CozyClient instance
+ * @param {import('../types').IOCozyFolder} options.folder - folder to test
+ * @param {string} options.sourceAccountIdentifier - source account identifier to which we want the reference
+ * @returns {Promise<void>}
+ */
+const ensureSourceAccountIdentifierReference = async ({
+  client,
+  folder,
+  sourceAccountIdentifier
+}) => {
+  const fileCollection = client.collection(FILES_DOCTYPE)
+  if (!hasSourceAccountIdentifierReference(folder, sourceAccountIdentifier)) {
+    await fileCollection.addReferencesTo(
+      {
+        _id: sourceAccountIdentifier,
+        _type: 'io.cozy.accounts.sourceAccountIdentifier'
+      },
+      [folder]
+    )
+  }
+}
+
+/**
+ * try to find a konnector account folder using file references
+ *
+ * @param {object} options - options object
+ * @param {CozyClient} options.client - CozyClient instance
+ * @param {string} options.slug - konnector slug
+ * @param {string} options.sourceAccountIdentifier - source account identifier
+ * @returns {Promise<import('../types').IOCozyFolder>}
+ */
+export const findKonnectorAccountFolderByReference = async ({
+  client,
+  slug,
+  sourceAccountIdentifier
+}) => {
+  const { included: folders } = await client.query(
+    Q(FILES_DOCTYPE)
+      .partialIndex({ type: 'directory', trashed: false })
+      .referencedBy({
+        _type: 'io.cozy.konnectors',
+        _id: `io.cozy.konnectors/${slug}`
+      })
+  )
+  return folders.find(folder =>
+    hasSourceAccountIdentifierReference(folder, sourceAccountIdentifier)
+  )
+}
+
+/**
+ * try to find a konnector main folder using file references
+ *
+ * @param {object} options - options object
+ * @param {CozyClient} options.client - CozyClient instance
+ * @param {string} options.slug - konnector slug
+ * @returns {Promise<import('../types').IOCozyFolder>}
+ */
+const findKonnectorMainFolderByReference = async ({ client, slug }) => {
+  const { included: files } = await client.query(
+    Q(FILES_DOCTYPE)
+      .partialIndex({ type: 'directory', trashed: false })
+      .referencedBy({
+        _type: 'io.cozy.konnectors',
+        _id: `io.cozy.konnectors/${slug}`
+      })
+  )
+  return files.find(file => !hasSourceAccountIdentifierReference(file))
+}
+
+/**
+ * Will create or update an account folder with proper references
+ *
+ * @param {object} options - options object
+ * @param {CozyClient} options.client - CozyClient instance
+ * @param {import('../types').IOCozyFolder} options.mainFolder - Main konnector folder where the account folder may be created
+ * @param {import('../types').IOCozyKonnector} options.konnector - Konnector associated to the main folder
+ * @param {string} options.sourceAccountIdentifier - source account identifier
+ * @returns {Promise<import('../types').IOCozyFolder>}
+ */
+async function saveKonnectorAccountFolder({
+  client,
+  mainFolder,
+  konnector,
+  sourceAccountIdentifier
+}) {
+  const path = mainFolder.path + '/' + sourceAccountIdentifier
+  const folder =
+    (await statDirectoryByPath(client, path)) ||
+    (await createDirectoryByPath(client, path))
+  await ensureKonnectorReference({ client, folder, konnector })
+  await ensureSourceAccountIdentifierReference({
+    client,
+    folder,
+    sourceAccountIdentifier
+  })
+  return folder
+}

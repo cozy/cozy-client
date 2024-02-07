@@ -9,4 +9,9 @@ export function buildFolderPath(konnector: import('../types').IOCozyKonnector, a
     [x: string]: string;
 }): string;
 export function buildFolderPermission(folder: import('../types').IOCozyFolder): any;
+export function findKonnectorAccountFolderByReference({ client, slug, sourceAccountIdentifier }: {
+    client: CozyClient;
+    slug: string;
+    sourceAccountIdentifier: string;
+}): Promise<import('../types').IOCozyFolder>;
 import CozyClient from "../CozyClient";
