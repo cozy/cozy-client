@@ -2,6 +2,8 @@ import sortBy from 'lodash/sortBy'
 import CozyClient from '../CozyClient'
 import { DOCTYPE_FILES } from '../const'
 
+import { Q } from '../queries/dsl'
+
 const APP_DOCTYPE = 'io.cozy.apps'
 const administrative = 'administrative'
 const photos = 'photos'
@@ -88,16 +90,13 @@ export const createFolderWithReference = async (client, path, document) => {
  * @returns {Promise<import("../types").IOCozyFolder>} Folder referenced by the given document
  */
 export const getReferencedFolder = async (client, document) => {
-  const { included } = await client
-    .collection(DOCTYPE_FILES)
-    .findReferencedBy(document)
-  const foldersOutsideTrash = included.filter(
-    folder => !/^\/\.cozy_trash/.test(folder.path)
+  const { included: folders } = await client.query(
+    Q(DOCTYPE_FILES)
+      .partialIndex({ type: 'directory', trashed: false })
+      .referencedBy(document)
   )
 
   // there can be multiple folders with the same reference in some edge cases
   // when this happens we return the most recent one
-  return foldersOutsideTrash.length > 0
-    ? sortBy(foldersOutsideTrash, 'created_at').pop()
-    : null
+  return folders.length > 0 ? sortBy(folders, 'created_at').pop() : null
 }

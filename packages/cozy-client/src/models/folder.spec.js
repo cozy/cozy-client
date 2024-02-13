@@ -3,6 +3,7 @@ import { MAGIC_FOLDERS, ensureMagicFolder, getReferencedFolder } from './folder'
 describe('Folder model', () => {
   const mockClient = {
     collection: () => mockClient,
+    query: jest.fn(),
     findReferencedBy: jest.fn(),
     ensureDirectoryExists: jest.fn(),
     addReferencesTo: jest.fn(),
@@ -38,7 +39,7 @@ describe('Folder model', () => {
         }
       ]
 
-      mockClient.findReferencedBy.mockResolvedValue({
+      mockClient.query.mockResolvedValueOnce({
         included: existingMagicFolders
       })
 
@@ -66,10 +67,9 @@ describe('Folder model', () => {
     })
 
     it('should create magic folder', async () => {
-      mockClient.findReferencedBy.mockResolvedValue({
+      mockClient.query.mockResolvedValueOnce({
         included: []
       })
-
       mockClient.ensureDirectoryExists.mockResolvedValue('dir-id')
       mockClient.get.mockResolvedValue({ data: {} })
 
@@ -90,24 +90,6 @@ describe('Folder model', () => {
   })
 
   describe('getReferencedFolder', () => {
-    it('should filter trashed folders', async () => {
-      const referencedFolder = {
-        path: '/Reference/Folder'
-      }
-
-      const trashFolder = {
-        path: '/.cozy_trash/Old/Reference/Folder'
-      }
-
-      mockClient.findReferencedBy.mockResolvedValue({
-        included: [referencedFolder, trashFolder]
-      })
-
-      const result = await getReferencedFolder(mockClient, 'ref')
-
-      expect(result).toBe(referencedFolder)
-    })
-
     it('should return the most recently created folder', async () => {
       const oldFolder = {
         path: '/Old/folder',
@@ -118,7 +100,7 @@ describe('Folder model', () => {
         created_at: '2020-03-02T14:57:07.661588+01:00'
       }
 
-      mockClient.findReferencedBy.mockResolvedValue({
+      mockClient.query.mockResolvedValueOnce({
         included: [oldFolder, recentFolder]
       })
 
