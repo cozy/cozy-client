@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [45.9.0](https://github.com/cozy/cozy-client/compare/v45.8.1...v45.9.0) (2024-02-14)
+
+
+### Bug Fixes
+
+* Add test on undefined qualification attributes ([778907f](https://github.com/cozy/cozy-client/commit/778907fb3c5aa517be7245d5ed6a4d62c0321129))
+* Types are now ok ([da7f975](https://github.com/cozy/cozy-client/commit/da7f97561f7b9a89924f7f84f4ee4ce2a93aaa6a))
+
+
+### Features
+
+* Remove undefined properties in qualification object ([98ac997](https://github.com/cozy/cozy-client/commit/98ac9970bc4d50a038d1cbfd804a568a0b92393c))
+
+
+
+
+
 ## [45.8.1](https://github.com/cozy/cozy-client/compare/v45.8.0...v45.8.1) (2024-02-02)
 
 
