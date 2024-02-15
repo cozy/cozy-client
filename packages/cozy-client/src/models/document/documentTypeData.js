@@ -146,6 +146,7 @@ const activityLabels = [
  * @type {Array<import("../../types").FinanceLabels>}
  */
 const financeLabels = [
+  'fine',
   'tax_return',
   'tax_notice',
   'tax_timetable',
