@@ -509,6 +509,11 @@
       "purpose": "invoice"
     },
     {
+      "label": "fine",
+      "purpose": "invoice",
+      "sourceCategory": "gov"
+    },
+    {
       "label": "note_identity_document"
     },
     {
