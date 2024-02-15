@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [45.10.0](https://github.com/cozy/cozy-client/compare/v45.9.0...v45.10.0) (2024-02-15)
+
+
+### Features
+
+* Add fine qualification in finance theme ([743546c](https://github.com/cozy/cozy-client/commit/743546c3beb46b90940e73ba8e4d3d0c8c1f6219))
+
+
+
+
+
 # [45.9.0](https://github.com/cozy/cozy-client/compare/v45.8.1...v45.9.0) (2024-02-14)
 
 
