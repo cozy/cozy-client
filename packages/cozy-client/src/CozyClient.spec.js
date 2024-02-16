@@ -11,6 +11,7 @@ import {
   APP_NAME,
   APP_VERSION,
   SOURCE_ACCOUNT_ID,
+  SOURCE_ACCOUNT_IDENTIFIER,
   FILE_1
 } from './__tests__/fixtures'
 import { withIgnoreConsoleWarn } from './__tests__/console'
@@ -708,6 +709,7 @@ describe('CozyClient', () => {
       appMetadata: {
         slug: APP_NAME,
         sourceAccount: SOURCE_ACCOUNT_ID,
+        sourceAccountIdentifier: SOURCE_ACCOUNT_IDENTIFIER,
         version: APP_VERSION
       }
     })
@@ -1079,7 +1081,8 @@ describe('CozyClient', () => {
                 version: APP_VERSION
               }
             ],
-            sourceAccount: SOURCE_ACCOUNT_ID
+            sourceAccount: SOURCE_ACCOUNT_ID,
+            sourceAccountIdentifier: SOURCE_ACCOUNT_IDENTIFIER
           }
         }
       })
@@ -1099,6 +1102,7 @@ describe('CozyClient', () => {
         doctypeVersion: DOCTYPE_VERSION,
         createdByApp: APP_NAME,
         sourceAccount: SOURCE_ACCOUNT_ID,
+        sourceAccountIdentifier: SOURCE_ACCOUNT_IDENTIFIER,
         createdByAppVersion: APP_VERSION,
         updatedByApps: [
           {
@@ -1128,6 +1132,7 @@ describe('CozyClient', () => {
         doctypeVersion: 42,
         createdByApp: 'My great app',
         sourceAccount: SOURCE_ACCOUNT_ID,
+        sourceAccountIdentifier: SOURCE_ACCOUNT_IDENTIFIER,
         createdByAppVersion: APP_VERSION,
         updatedByApps: [
           {
