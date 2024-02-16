@@ -693,7 +693,12 @@ client.query(Q('io.cozy.bills'))`)
       doctypeVersion = get(schema, 'doctypeVersion')
     }
 
-    const { slug, sourceAccount, version } = this.appMetadata
+    const {
+      slug,
+      sourceAccount,
+      sourceAccountIdentifier,
+      version
+    } = this.appMetadata
 
     const now = new Date().toISOString()
 
@@ -704,6 +709,7 @@ client.query(Q('io.cozy.bills'))`)
         doctypeVersion,
         createdByApp: slug,
         sourceAccount,
+        sourceAccountIdentifier,
         createdAt: now,
         createdByAppVersion: version,
         updatedAt: now,

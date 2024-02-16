@@ -119,6 +119,7 @@ export const APP_NAME: "cozy-client-test";
 export const APP_VERSION: 2;
 export const DOCTYPE_VERSION: 1;
 export const SOURCE_ACCOUNT_ID: "123-456-abc";
+export const SOURCE_ACCOUNT_IDENTIFIER: "testSourceAccountIdentifier";
 export namespace SCHEMA {
     export namespace todos {
         const doctype_2: string;
