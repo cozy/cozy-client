@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [45.12.0](https://github.com/cozy/cozy-client/compare/v45.11.0...v45.12.0) (2024-02-19)
+
+
+### Features
+
+* Allow CozyClient to get sourceAccountIdentifier in appMetadatas ([77d3852](https://github.com/cozy/cozy-client/commit/77d3852f05d4bfdfd0b2907f36fe6a8cca96d04b))
+
+
+
+
+
 # [45.11.0](https://github.com/cozy/cozy-client/compare/v45.10.0...v45.11.0) (2024-02-19)
 
 
