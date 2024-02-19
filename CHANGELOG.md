@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [45.11.0](https://github.com/cozy/cozy-client/compare/v45.10.0...v45.11.0) (2024-02-19)
+
+
+### Bug Fixes
+
+* Use client.query in models.folder ([af2bb58](https://github.com/cozy/cozy-client/commit/af2bb58ee75e30e171b4411b99958be6d3eb15b5))
+
+
+### Features
+
+* New strategy for ensureKonnectorFolder ([e803e68](https://github.com/cozy/cozy-client/commit/e803e68207c19d2baed1e3a9a87b9075a0c4e9ff))
+
+
+
+
+
 # [45.10.0](https://github.com/cozy/cozy-client/compare/v45.9.0...v45.10.0) (2024-02-15)
 
 
