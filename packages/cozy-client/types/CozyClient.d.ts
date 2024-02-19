@@ -145,7 +145,7 @@ declare class CozyClient {
      * Cozy-Client will automatically call `this.login()` if provided with a token and an uri
      */
     constructor(rawOptions?: ClientOptions);
-    appMetadata: any;
+    appMetadata: import("./types").AppMetadata;
     loginPromise: Promise<void>;
     options: {
         client?: object;

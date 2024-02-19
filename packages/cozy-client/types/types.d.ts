@@ -813,7 +813,24 @@ export type FilePlugin = {
 export type InAppBrowser = {
     open: Function;
 };
-export type AppMetadata = any;
+export type AppMetadata = {
+    /**
+     * - slug of the application/konnector which created this data
+     */
+    slug?: string;
+    /**
+     * - version of the application/konnector which created this data
+     */
+    version?: string;
+    /**
+     * - id of the account associated to the konnector which created this data
+     */
+    sourceAccount?: string;
+    /**
+     * - source account identifier account associated to the konnector which created this data
+     */
+    sourceAccountIdentifier?: string;
+};
 export type ClientCapabilities = {
     /**
      * - Whether OIDC login is possible with this Cozy

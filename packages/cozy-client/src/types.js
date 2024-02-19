@@ -444,6 +444,10 @@ import { QueryDefinition } from './queries/dsl'
 
 /**
  * @typedef {object} AppMetadata
+ * @property {string} [slug] - slug of the application/konnector which created this data
+ * @property {string} [version] - version of the application/konnector which created this data
+ * @property {string} [sourceAccount] - id of the account associated to the konnector which created this data
+ * @property {string} [sourceAccountIdentifier] - source account identifier account associated to the konnector which created this data
  */
 
 /**
