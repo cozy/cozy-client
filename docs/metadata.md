@@ -26,9 +26,10 @@ Cozy documents have a [`cozyMetadata`](https://github.com/cozy/cozy-doctypes/tre
 
 This cozyMetadata block is managed by the apps themselves. Cozy-Client is able to manage some parts of cozyMetadata automatically. For this it needs an `appMetadata` parameter with a few informations:
 
-* `slug`: the slug of the app or connector (will be used in `createdByApp` and `updatedByApps`)
+* `slug`: the slug of the app or konnector (will be used in `createdByApp` and `updatedByApps`)
 * `version`: version of the app (will be used in `createdByAppVersion` and `updatedByApps`)
-* when in a connector, `sourceAccount`: the id of the io.cozy.accounts document that triggered the current execution (it will help to know which documents belong or are created by which account)
+* when in a konnector, `sourceAccount`: the id of the io.cozy.accounts document that triggered the current execution (it will help to know which documents belong or are created by which account)
+* when in a konnector, `sourceAccountIdentifier`: identifier unique to the account targetted by the konnector. It is the user login most of the time
 
 ```
 const client = new CozyClient({

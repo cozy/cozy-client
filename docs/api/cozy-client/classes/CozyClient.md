@@ -49,7 +49,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 ### appMetadata
 
-• **appMetadata**: `any`
+• **appMetadata**: `AppMetadata`
 
 *Defined in*
 
@@ -1596,7 +1596,7 @@ Saves multiple documents in one batch
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `newAppMetadata` | `any` | AppMetadata to update |
+| `newAppMetadata` | `AppMetadata` | AppMetadata to update |
 
 *Returns*
 
