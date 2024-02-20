@@ -2817,6 +2817,7 @@ Attributes representing a design doc
 
 | Name | Type | Description |
 | --- | --- | --- |
+| email_verified_code | <code>string</code> | The email verified code to skip 2FA |
 | access_token | <code>string</code> | The OAuth access token |
 | refresh_token | <code>string</code> | The OAuth refresh token |
 | token_type | <code>string</code> | The OAuth token type |
