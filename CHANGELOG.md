@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [45.13.0](https://github.com/cozy/cozy-client/compare/v45.12.0...v45.13.0) (2024-02-20)
+
+
+### Features
+
+* Add email_verified_code in loginFlagship ([cd59daa](https://github.com/cozy/cozy-client/commit/cd59daab16436eb22d0543d166f81dfa56cec16a))
+
+
+
+
+
 # [45.12.0](https://github.com/cozy/cozy-client/compare/v45.11.0...v45.12.0) (2024-02-19)
 
 
