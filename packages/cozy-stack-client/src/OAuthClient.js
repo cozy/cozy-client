@@ -451,6 +451,7 @@ class OAuthClient extends CozyStackClient {
 
   /**
    * @typedef AccessTokenRes
+   * @property {string} email_verified_code The email verified code to skip 2FA
    * @property {string} access_token The OAuth access token
    * @property {string} refresh_token The OAuth refresh token
    * @property {string} token_type The OAuth token type
@@ -474,6 +475,7 @@ class OAuthClient extends CozyStackClient {
    * @returns {Promise<AccessTokenRes|TwoFactorNeededRes|SessionCodeRes>} A promise that resolves with an access token, a session_code or a 2FA code
    */
   async loginFlagship({
+    emailVerifiedCode = undefined,
     passwordHash,
     twoFactorToken = undefined,
     twoFactorPasscode = undefined
@@ -481,6 +483,7 @@ class OAuthClient extends CozyStackClient {
     return this.fetchJSON('POST', '/auth/login/flagship', {
       client_id: this.oauthOptions.clientID,
       client_secret: this.oauthOptions.clientSecret,
+      email_verified_code: emailVerifiedCode,
       passphrase: passwordHash,
       two_factor_token: twoFactorToken,
       two_factor_passcode: twoFactorPasscode
