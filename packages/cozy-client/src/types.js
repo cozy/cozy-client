@@ -529,7 +529,7 @@ import { QueryDefinition } from './queries/dsl'
  *
  * @typedef {'health_certificate'|'health_book'|'national_health_insurance_card'|'health_insurance_card'|'prescription'|'health_invoice'|'national_health_insurance_right_certificate'|'work_disability_recognition'|'pregnancy_medical_certificate'|'other_health_document'|'note_health_document'} HealthLabels
  *
- * @typedef {'phone_invoice'|'isp_invoice'|'telecom_invoice'|'energy_invoice'|'water_invoice'|'other_invoice'|'house_sale_agreeement'|'building_permit'|'technical_diagnostic_record'|'lease'|'rent_receipt'|'house_insurance'|'work_quote'|'work_invoice'|'other_house_document'|'unfit_for_habitation_declaration'|'accommodation_proof'|'note_house_document'|'real_estate_insurance'} HomeLabels
+ * @typedef {'phone_invoice'|'isp_invoice'|'telecom_invoice'|'energy_invoice'|'water_invoice'|'other_invoice'|'house_sale_agreeement'|'building_permit'|'technical_diagnostic_record'|'lease'|'rent_receipt'|'house_insurance'|'work_quote'|'work_invoice'|'other_house_document'|'unfit_for_habitation_declaration'|'accommodation_proof'|'note_house_document'|'real_estate_insurance'|'condition_report'} HomeLabels
  *
  * @typedef {'driver_license'|'vehicle_registration'|'car_insurance'|'mechanic_invoice'|'transport_invoice'|'other_transport_document'|'transport_card'|'note_transport_document'} TransportLabels
  *

@@ -112,6 +112,7 @@ const homeLabels = [
   'accommodation_proof',
   'house_insurance',
   'work_quote',
+  'condition_report',
   'note_house_document',
   'other_house_document',
   'real_estate_insurance'
