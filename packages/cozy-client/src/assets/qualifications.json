@@ -514,6 +514,12 @@
       "sourceCategory": "gov"
     },
     {
+      "label": "condition_report",
+      "purpose": "contract",
+      "sourceCategory": "real_estate",
+      "subjects": ["house"]
+    },
+    {
       "label": "note_identity_document"
     },
     {
