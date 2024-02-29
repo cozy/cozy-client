@@ -414,11 +414,11 @@ declare class CozyClient {
      * `getQueryFromState` or directly using `<Query />`. `<Query />` automatically
      * executes its query when mounted if no fetch policy has been indicated.
      *
-     * @param  {QueryDefinition} queryDefinition - Definition that will be executed
+     * @param  {QueryDefinition|(() => QueryDefinition)} queryDefinition - Definition that will be executed
      * @param  {import("./types").QueryOptions} [options] - Options
      * @returns {Promise<import("./types").QueryResult>}
      */
-    query(queryDefinition: QueryDefinition, { update, ...options }?: import("./types").QueryOptions): Promise<import("./types").QueryResult>;
+    query(queryDefinition: QueryDefinition | (() => QueryDefinition), { update, ...options }?: import("./types").QueryOptions): Promise<import("./types").QueryResult>;
     /**
      * Will fetch all documents for a `queryDefinition`, automatically fetching more
      * documents if the total of documents is superior to the pagination limit. Can
