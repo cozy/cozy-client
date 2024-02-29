@@ -1226,6 +1226,12 @@ describe('CozyClient', () => {
       query = Q('io.cozy.todos')
       fakeResponse = { data: 'FAKE!!!' }
     })
+    it('should pass queryDefinion function', async () => {
+      requestHandler.mockResolvedValueOnce(fakeResponse)
+      await client.query(query)
+      expect(requestHandler).toHaveBeenCalledTimes(1)
+      expect(requestHandler.mock.calls[0][0]).toBe(query)
+    })
     it('should throw an error if the option.enabled is not a boolean', async () => {
       await expect(
         client.query(query, { as: 'allTodos', enabled: '' })
