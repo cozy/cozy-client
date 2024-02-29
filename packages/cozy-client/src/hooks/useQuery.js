@@ -21,7 +21,7 @@ const generateFetchMoreQueryDefinition = queryResult => {
 /**
  * Fetches a queryDefinition and returns the queryState
  *
- * @param {QueryDefinition} queryDefinition - Definition created with Q()
+ * @param {QueryDefinition|(() => QueryDefinition)} queryDefinition - Definition created with Q()
  * @param {import("../types").QueryOptions} options - Options created with Q()
  * @returns {import("../types").UseQueryReturnValue}
  */
@@ -51,6 +51,7 @@ const useQuery = (queryDefinition, options) => {
 
   const client = useClient()
   const queryState = useSelector(() => {
+    // @ts-ignore
     if (options.singleDocData === undefined && queryDefinition.id) {
       logger.warn(
         'useQuery options.singleDocData will pass to true in a next version of cozy-client, please add it now to prevent any problem in the future.'
