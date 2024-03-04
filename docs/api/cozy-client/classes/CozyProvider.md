@@ -27,7 +27,7 @@ Component.constructor
 
 *Defined in*
 
-[packages/cozy-client/src/Provider.jsx:18](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/Provider.jsx#L18)
+[packages/cozy-client/src/Provider.jsx:21](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/Provider.jsx#L21)
 
 ## Properties
 
@@ -44,7 +44,7 @@ Component.constructor
 
 *Defined in*
 
-[packages/cozy-client/src/Provider.jsx:28](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/Provider.jsx#L28)
+[packages/cozy-client/src/Provider.jsx:31](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/Provider.jsx#L31)
 
 ***
 
@@ -60,7 +60,7 @@ Component.constructor
 
 *Defined in*
 
-[packages/cozy-client/src/Provider.jsx:33](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/Provider.jsx#L33)
+[packages/cozy-client/src/Provider.jsx:36](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/Provider.jsx#L36)
 
 ***
 
@@ -72,7 +72,7 @@ Component.constructor
 
 | Name | Type |
 | :------ | :------ |
-| `children` | `Validator`<`ReactElementLike`> |
+| `children` | `Validator`<`ReactElementLike` | `ReactElementLike`\[]> |
 | `client` | `Validator`<`object`> |
 | `store` | `Requireable`<`InferProps`<{ `dispatch`: `Validator`<(...`args`: `any`\[]) => `any`> = PropTypes.func.isRequired; `getState`: `Validator`<(...`args`: `any`\[]) => `any`> = PropTypes.func.isRequired; `subscribe`: `Validator`<(...`args`: `any`\[]) => `any`> = PropTypes.func.isRequired }>> |
 
@@ -97,7 +97,7 @@ Component.constructor
 
 *Defined in*
 
-[packages/cozy-client/src/Provider.jsx:37](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/Provider.jsx#L37)
+[packages/cozy-client/src/Provider.jsx:40](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/Provider.jsx#L40)
 
 ***
 
@@ -115,4 +115,4 @@ Component.render
 
 *Defined in*
 
-[packages/cozy-client/src/Provider.jsx:44](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/Provider.jsx#L44)
+[packages/cozy-client/src/Provider.jsx:47](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/Provider.jsx#L47)

@@ -6,7 +6,7 @@ export default class CozyProvider extends React.Component<any, any, any> {
             getState: PropTypes.Validator<(...args: any[]) => any>;
         }>>;
         client: PropTypes.Validator<object>;
-        children: PropTypes.Validator<PropTypes.ReactElementLike>;
+        children: PropTypes.Validator<PropTypes.ReactElementLike | PropTypes.ReactElementLike[]>;
     };
     static childContextTypes: {
         store: PropTypes.Requireable<object>;
