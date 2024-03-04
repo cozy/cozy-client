@@ -12,7 +12,10 @@ export default class CozyProvider extends Component {
   static propTypes = {
     store: storePropType,
     client: PropTypes.object.isRequired,
-    children: PropTypes.element.isRequired
+    children: PropTypes.oneOfType([
+      PropTypes.element,
+      PropTypes.arrayOf(PropTypes.element)
+    ]).isRequired
   }
 
   constructor(props, context) {
