@@ -219,4 +219,33 @@ describe('Expiration', () => {
       expect(res).toEqual(computedMetadata)
     })
   })
+
+  describe('formatInformationMetadataValue', () => {
+    it('should return value with suffix locale', () => {
+      const res = paperModel.formatInformationMetadataValue('88', {
+        name: 'noticePeriod',
+        lang: 'en'
+      })
+
+      expect(res).toEqual('88 days')
+    })
+
+    it('should return "noInfo" value', () => {
+      const res = paperModel.formatInformationMetadataValue('', {
+        name: 'metadataName',
+        lang: 'en'
+      })
+
+      expect(res).toEqual('No information')
+    })
+
+    it('should return value if not in other case', () => {
+      const res = paperModel.formatInformationMetadataValue('metadataValue', {
+        name: 'metadataName',
+        lang: 'en'
+      })
+
+      expect(res).toEqual('metadataValue')
+    })
+  })
 })
