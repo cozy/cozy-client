@@ -15,6 +15,31 @@ const EXPIRATION_LINK_BY_LABEL = {
     'https://permisdeconduire.ants.gouv.fr/demarches-en-ligne/perte-vol-deterioration-fin-de-validite-ou-changement-d-etat-civil'
 }
 
+export const KNOWN_DATE_METADATA_NAMES = [
+  'AObtentionDate',
+  'BObtentionDate',
+  'CObtentionDate',
+  'DObtentionDate',
+  'obtentionDate',
+  'expirationDate',
+  'referencedDate',
+  'issueDate',
+  'shootingDate',
+  'date',
+  'datetime'
+]
+export const KNOWN_INFORMATION_METADATA_NAMES = [
+  'number',
+  'bicNumber',
+  'country',
+  'refTaxIncome',
+  'contractType',
+  'netSocialAmount',
+  'employerName',
+  'noticePeriod'
+]
+export const KNOWN_OTHER_METADATA_NAMES = ['contact', 'page', 'qualification']
+
 /**
  * @param {IOCozyFile} file - io.cozy.files document
  * @returns {boolean}
@@ -177,4 +202,59 @@ export const isExpiringSoon = file => {
     expirationNoticeDate <= now &&
     now < expirationDate
   return isExpiringSoon
+}
+
+const makeMetadataQualification = ({ metadata, knownMetadataName, value }) => {
+  const shouldReturnThisMetadata = Object.keys(metadata).includes(
+    knownMetadataName
+  )
+
+  if (shouldReturnThisMetadata || knownMetadataName === 'contact') {
+    return { name: knownMetadataName, value: value || null }
+  }
+
+  return null
+}
+
+/**
+ * @param {Object} metadata - An io.cozy.files metadata object
+ * @returns {{ name: string, value: string | null }[]} Array of displayable metadata
+ * @description Select and format displayable metadata of a paper
+ */
+export const formatMetadataQualification = metadata => {
+  const dates = KNOWN_DATE_METADATA_NAMES.map(dateName =>
+    makeMetadataQualification({
+      metadata,
+      knownMetadataName: dateName,
+      value: metadata[dateName]
+    })
+  )
+    .filter(Boolean)
+    .filter((data, _, arr) => {
+      if (arr.length > 1) return data.name !== 'datetime'
+      return data
+    })
+
+  const informations = KNOWN_INFORMATION_METADATA_NAMES.map(numberName =>
+    makeMetadataQualification({
+      metadata,
+      knownMetadataName: numberName,
+      value: metadata[numberName]
+    })
+  ).filter(Boolean)
+
+  const others = KNOWN_OTHER_METADATA_NAMES.map(otherName => {
+    const value =
+      otherName === 'qualification'
+        ? metadata[otherName]?.label
+        : metadata[otherName]
+
+    return makeMetadataQualification({
+      metadata,
+      knownMetadataName: otherName,
+      value
+    })
+  }).filter(Boolean)
+
+  return [...dates, ...informations, ...others]
 }
