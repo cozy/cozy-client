@@ -11,4 +11,6 @@ export function formatMetadataQualification(metadata: any): {
     name: string;
     value: string | null;
 }[];
+export function getMetadataQualificationType(metadataName: string): MetadataQualificationType | null;
 export type IOCozyFile = import("../types").CozyClientDocument & import("../types").FileDocument;
+export type MetadataQualificationType = "other" | "date" | "contact" | "information";

@@ -258,3 +258,31 @@ export const formatMetadataQualification = metadata => {
 
   return [...dates, ...informations, ...others]
 }
+
+/**
+ * @typedef {('date' | 'information' | 'contact' | 'other')} MetadataQualificationType
+ */
+
+/**
+ * @param {string} metadataName - A metadata name
+ * @returns {MetadataQualificationType | null} The type of the metadata
+ * @description Returns the type of the metatada from a metadata name
+ */
+export const getMetadataQualificationType = metadataName => {
+  if (KNOWN_DATE_METADATA_NAMES.includes(metadataName)) {
+    return 'date'
+  }
+
+  if (KNOWN_INFORMATION_METADATA_NAMES.includes(metadataName)) {
+    return 'information'
+  }
+
+  if (KNOWN_OTHER_METADATA_NAMES.includes(metadataName)) {
+    if (metadataName === 'contact') {
+      return 'contact'
+    }
+    return 'other'
+  }
+
+  return null
+}
