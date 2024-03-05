@@ -148,6 +148,24 @@
       "transport": "Transport",
       "undefined": "Indéfini",
       "work_study": "Travail & Études"
+    },
+    "qualification": {
+      "date": {
+        "title": {
+          "datetime": "Ajouté le",
+          "AObtentionDate": "Permis A, délivré le",
+          "BObtentionDate": "Permis B, délivré le",
+          "CObtentionDate": "Permis C, délivré le",
+          "DObtentionDate": "Permis D, délivré le",
+          "issueDate": "Délivré le",
+          "expirationDate": "Date d'expiration",
+          "referencedDate": "Date de référence",
+          "shootingDate": "Date de prise de vue",
+          "obtentionDate": "Date d'obtention",
+          "date": "Date du document"
+        }
+      },
+      "noInfo": "Non renseigné(e)"
     }
   },
   "MagicFolders": {

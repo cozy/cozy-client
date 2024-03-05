@@ -1,5 +1,6 @@
 import add from 'date-fns/add'
 import sub from 'date-fns/sub'
+import { getLocalizer } from './document/locales'
 
 /**
  * @typedef {import("../types").IOCozyFile} IOCozyFile
@@ -285,4 +286,36 @@ export const getMetadataQualificationType = metadataName => {
   }
 
   return null
+}
+
+/**
+ * @param {string} name - The name of a metadata of type date like 'expirationDate' or 'shootingDate'
+ * @param {Object} options - Options
+ * @param {string} options.lang - Lang requested for the translation like 'fr' or 'en'
+ * @returns {string} Translated name for the metadata
+ */
+export const getTranslatedNameForDateMetadata = (name, { lang }) => {
+  const t = getLocalizer(lang)
+
+  return t(`Scan.qualification.date.title.${name}`)
+}
+
+/**
+ * @param {string} value - The value of a metadata of type date
+ * @param {Object} options - Options
+ * @param {string} options.lang - Lang requested for the translation
+ * @param {function} options.f - Date formatting function
+ * @returns {string} Formatted and translated value for the metadata
+ */
+export const formatDateMetadataValue = (value, { lang, f }) => {
+  const t = getLocalizer(lang)
+
+  if (value) {
+    if (lang === 'en') {
+      return f(value, 'MM/DD/YYYY')
+    }
+    return f(value, 'DD/MM/YYYY')
+  } else {
+    return t('Scan.qualification.noInfo')
+  }
 }
