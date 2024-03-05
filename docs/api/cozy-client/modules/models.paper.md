@@ -14,6 +14,36 @@
 
 [packages/cozy-client/src/models/paper.js:5](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L5)
 
+## Variables
+
+### KNOWN_DATE_METADATA_NAMES
+
+• `Const` **KNOWN_DATE_METADATA_NAMES**: `string`\[]
+
+*Defined in*
+
+[packages/cozy-client/src/models/paper.js:18](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L18)
+
+***
+
+### KNOWN_INFORMATION_METADATA_NAMES
+
+• `Const` **KNOWN_INFORMATION_METADATA_NAMES**: `string`\[]
+
+*Defined in*
+
+[packages/cozy-client/src/models/paper.js:31](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L31)
+
+***
+
+### KNOWN_OTHER_METADATA_NAMES
+
+• `Const` **KNOWN_OTHER_METADATA_NAMES**: `string`\[]
+
+*Defined in*
+
+[packages/cozy-client/src/models/paper.js:41](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L41)
+
 ## Functions
 
 ### computeExpirationDate
@@ -36,7 +66,7 @@ Expiration date
 
 *Defined in*
 
-[packages/cozy-client/src/models/paper.js:91](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L91)
+[packages/cozy-client/src/models/paper.js:116](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L116)
 
 ***
 
@@ -60,7 +90,7 @@ Expiration notice date
 
 *Defined in*
 
-[packages/cozy-client/src/models/paper.js:127](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L127)
+[packages/cozy-client/src/models/paper.js:152](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L152)
 
 ***
 
@@ -84,7 +114,31 @@ Expiration notice link
 
 *Defined in*
 
-[packages/cozy-client/src/models/paper.js:146](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L146)
+[packages/cozy-client/src/models/paper.js:171](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L171)
+
+***
+
+### formatMetadataQualification
+
+▸ **formatMetadataQualification**(`metadata`): { `name`: `string` ; `value`: `string`  }\[]
+
+**`description`** Computes and returns the displayable metadata of a paper
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `metadata` | `any` | An io.cozy.files metadata object |
+
+*Returns*
+
+{ `name`: `string` ; `value`: `string`  }\[]
+
+\[]} Array of formated metadata
+
+*Defined in*
+
+[packages/cozy-client/src/models/paper.js:224](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L224)
 
 ***
 
@@ -106,7 +160,7 @@ Expiration notice link
 
 *Defined in*
 
-[packages/cozy-client/src/models/paper.js:158](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L158)
+[packages/cozy-client/src/models/paper.js:183](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L183)
 
 ***
 
@@ -128,7 +182,7 @@ Expiration notice link
 
 *Defined in*
 
-[packages/cozy-client/src/models/paper.js:73](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L73)
+[packages/cozy-client/src/models/paper.js:98](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L98)
 
 ***
 
@@ -150,4 +204,4 @@ Expiration notice link
 
 *Defined in*
 
-[packages/cozy-client/src/models/paper.js:170](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L170)
+[packages/cozy-client/src/models/paper.js:195](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L195)
