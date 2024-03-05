@@ -14,6 +14,16 @@
 
 [packages/cozy-client/src/models/paper.js:5](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L5)
 
+***
+
+### MetadataQualificationType
+
+Ƭ **MetadataQualificationType**<>: `"date"` | `"information"` | `"contact"` | `"other"`
+
+*Defined in*
+
+[packages/cozy-client/src/models/paper.js:263](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L263)
+
 ## Variables
 
 ### KNOWN_DATE_METADATA_NAMES
@@ -139,6 +149,30 @@ Expiration notice link
 *Defined in*
 
 [packages/cozy-client/src/models/paper.js:224](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L224)
+
+***
+
+### getMetadataQualificationType
+
+▸ **getMetadataQualificationType**(`metadataName`): [`MetadataQualificationType`](models.paper.md#metadataqualificationtype)
+
+**`description`** Computes and returns the displayable metadata of a paper
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `metadataName` | `string` | An io.cozy.files metadata object |
+
+*Returns*
+
+[`MetadataQualificationType`](models.paper.md#metadataqualificationtype)
+
+Array of formated metadata
+
+*Defined in*
+
+[packages/cozy-client/src/models/paper.js:271](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L271)
 
 ***
 
