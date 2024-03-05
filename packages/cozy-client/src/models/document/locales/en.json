@@ -148,6 +148,24 @@
       "transport": "Transport",
       "undefined": "Undefined",
       "work_study": "Work & Study"
+    },
+    "qualification": {
+      "date": {
+        "title": {
+          "datetime": "Added on",
+          "AObtentionDate": "License A, delivered on",
+          "BObtentionDate": "License B, delivered on",
+          "CObtentionDate": "License C, delivered on",
+          "DObtentionDate": "License D, delivered on",
+          "issueDate": "Delivered on",
+          "expirationDate": "Expiration date",
+          "referencedDate": "Referenced date",
+          "shootingDate": "Shooting date",
+          "obtentionDate": "Date obtained",
+          "date": "Document date"
+        }
+      },
+      "noInfo": "No information"
     }
   },
   "MagicFolders": {
