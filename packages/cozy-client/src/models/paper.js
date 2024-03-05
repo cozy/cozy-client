@@ -319,3 +319,62 @@ export const formatDateMetadataValue = (value, { lang, f }) => {
     return t('Scan.qualification.noInfo')
   }
 }
+
+/**
+ * @param {string} name - The name of a metadata of type information like 'national_id_card' or 'fine'
+ * @param {Object} options - Options
+ * @param {string} options.lang - Lang requested for the translation
+ * @param {string} options.qualificationLabel - The qualification label of the metadata
+ * @returns {string} Translated name for the metadata
+ */
+export const getTranslatedNameForInformationMetadata = (
+  name,
+  { lang, qualificationLabel }
+) => {
+  const t = getLocalizer(lang)
+
+  if (name === 'number') {
+    return t(
+      `Scan.qualification.information.title.${qualificationLabel}.${name}`
+    )
+  } else {
+    return t(`Scan.qualification.information.title.${name}`)
+  }
+}
+
+/**
+ * @param {string} value - The value of a metadata of type information
+ * @param {Object} options - Options
+ * @param {string} options.lang - Lang requested for the translation
+ * @param {string} options.name - The name of the metadata
+ * @param {string} options.qualificationLabel - The qualification label of the metadata
+ * @returns {string} Formatted and translated value for the metadata
+ */
+export const formatInformationMetadataValue = (
+  value,
+  { lang, name, qualificationLabel }
+) => {
+  const t = getLocalizer(lang)
+
+  if (typeof value !== 'number' && !value) {
+    return t('Scan.qualification.noInfo')
+  }
+
+  if (name === 'noticePeriod') {
+    return `${value} ${t('Scan.qualification.information.day', {
+      smart_count: value
+    })}`
+  }
+  if (name === 'contractType') {
+    return t(`Scan.attributes.contractType.${value}`, { _: value })
+  }
+  if (
+    name === 'refTaxIncome' ||
+    name === 'netSocialAmount' ||
+    (name === 'number' && qualificationLabel === 'pay_sheet')
+  ) {
+    return `${value} €`
+  }
+
+  return value
+}
