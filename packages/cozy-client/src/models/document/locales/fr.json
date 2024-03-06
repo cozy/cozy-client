@@ -225,6 +225,11 @@
         },
         "day": "jour |||| jours"
       },
+      "contact": "Titulaire",
+      "page": "Face du document",
+      "front": "Face avant",
+      "back": "Face arrière",
+      "qualification": "Qualification",
       "noInfo": "Non renseigné(e)"
     }
   },

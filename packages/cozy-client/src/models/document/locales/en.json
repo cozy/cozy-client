@@ -225,6 +225,11 @@
         },
         "day": "day |||| days"
       },
+      "contact": "Owner",
+      "page": "Side of the document",
+      "front": "Front side",
+      "back": "Back side",
+      "qualification": "Qualification",
       "noInfo": "No information"
     }
   },

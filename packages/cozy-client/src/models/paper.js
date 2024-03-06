@@ -378,3 +378,32 @@ export const formatInformationMetadataValue = (
 
   return value
 }
+
+/**
+ * @param {string} name - The name of a metadata of type other like 'page' or 'qualification'
+ * @param {Object} options - Options
+ * @param {string} options.lang - Lang requested for the translation
+ * @returns {string} Translated name for the metadata
+ */
+export const getTranslatedNameForOtherMetadata = (name, { lang }) => {
+  const t = getLocalizer(lang)
+
+  return t(`Scan.qualification.${name}`)
+}
+
+/**
+ * @param {string} value - The value of a metadata of type other
+ * @param {Object} options - Options
+ * @param {string} options.lang - Lang requested for the translation
+ * @param {string} options.name - The name of the metadata
+ * @returns {string} Formatted and translated value for the metadata
+ */
+export const formatOtherMetadataValue = (value, { lang, name }) => {
+  const t = getLocalizer(lang)
+
+  if (name === 'qualification') {
+    return t(`Scan.items.${value}`, { smart_count: 1 })
+  } else {
+    return t(`Scan.qualification.${value}`)
+  }
+}
