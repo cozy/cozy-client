@@ -1,6 +1,7 @@
 import add from 'date-fns/add'
 import sub from 'date-fns/sub'
 import { getLocalizer } from './document/locales'
+import { getDisplayName } from './contact'
 
 /**
  * @typedef {import("../types").IOCozyFile} IOCozyFile
@@ -406,4 +407,25 @@ export const formatOtherMetadataValue = (value, { lang, name }) => {
   } else {
     return t(`Scan.qualification.${value}`)
   }
+}
+
+/**
+ * @param {Object} options - Options
+ * @param {string} options.lang - Lang requested for the translation
+ * @returns {string} Translated name for contact
+ */
+export const getTranslatedNameForContact = ({ lang }) => {
+  const t = getLocalizer(lang)
+
+  return t('Scan.qualification.contact')
+}
+
+/**
+ * @param {object[]} contacts - An array of contact
+ * @returns {string} Formatted and translated value of an array of contact
+ */
+export const formatContactValue = contacts => {
+  return contacts && contacts.length > 0
+    ? contacts.map(contact => `${getDisplayName(contact)}`).join(', ')
+    : ''
 }
