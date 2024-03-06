@@ -12,5 +12,32 @@ export function formatMetadataQualification(metadata: any): {
     value: string | null;
 }[];
 export function getMetadataQualificationType(metadataName: string): MetadataQualificationType | null;
+export function getTranslatedNameForDateMetadata(name: string, { lang }: {
+    lang: string;
+}): string;
+export function formatDateMetadataValue(value: string, { lang, f }: {
+    lang: string;
+    f: Function;
+}): string;
+export function getTranslatedNameForInformationMetadata(name: string, { lang, qualificationLabel }: {
+    lang: string;
+    qualificationLabel: string;
+}): string;
+export function formatInformationMetadataValue(value: string, { lang, name, qualificationLabel }: {
+    lang: string;
+    name: string;
+    qualificationLabel: string;
+}): string;
+export function getTranslatedNameForOtherMetadata(name: string, { lang }: {
+    lang: string;
+}): string;
+export function formatOtherMetadataValue(value: string, { lang, name }: {
+    lang: string;
+    name: string;
+}): string;
+export function getTranslatedNameForContact({ lang }: {
+    lang: string;
+}): string;
+export function formatContactValue(contacts: object[]): string;
 export type IOCozyFile = import("../types").CozyClientDocument & import("../types").FileDocument;
 export type MetadataQualificationType = "other" | "date" | "contact" | "information";
