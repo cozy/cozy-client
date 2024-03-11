@@ -129,6 +129,21 @@ class QueryDefinition {
         Selector: ${JSON.stringify(selector)}`
       )
     }
+
+    const nestedArrayKey = findKey(selector, value => Array.isArray(value))
+    const hasNestedArrayWithoutOperator =
+      nestedArrayKey && !nestedArrayKey.startsWith('$')
+    if (hasNestedArrayWithoutOperator) {
+      throw new Error(
+        `You pass ${JSON.stringify(
+          selector
+        )}, this is a valid mango operation, \n
+        but sift doesn't support it so CozyClient can not evaluate \n
+        the request in memory. You must use a MongoDB operator \n
+        like $in or $or operator instead, preferably in a partial index, \n
+        to avoid costly full-scan`
+      )
+    }
   }
 
   /**
