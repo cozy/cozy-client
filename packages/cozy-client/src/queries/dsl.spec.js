@@ -108,7 +108,18 @@ describe('QueryDefinition', () => {
     Q('io.cozy.files').where({ _id: { $ne: 'io.cozy.root-id' } })
     expect(logger.info).toHaveBeenCalledTimes(1)
   })
-
+  it('should throw when using a selector with an array without an $operator', () => {
+    const query = () =>
+      Q('io.cozy.files').where({ worker: ['worker1', 'worker2'] })
+    expect(() => query()).toThrow()
+  })
+  it('should not throw an error when we make a selector on multiple value with a mango operator', () => {
+    const query = () =>
+      Q('io.cozy.files').where({
+        worker: { $in: ['konnector', 'client'] }
+      })
+    expect(() => query()).not.toThrow()
+  })
   it('should throw an error when there is a select without all the fields in selector', () => {
     const query = () =>
       Q('io.cozy.files')
