@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [45.15.0](https://github.com/cozy/cozy-client/compare/v45.14.1...v45.15.0) (2024-03-12)
+
+
+### Features
+
+* **paper:** Add formatMetadataQualification and ([c813ab2](https://github.com/cozy/cozy-client/commit/c813ab26ff0dcf478babd95420f8eda6cf982875))
+* **paper:** Add getMetadataQualificationType ([8466b66](https://github.com/cozy/cozy-client/commit/8466b66176671196cb8069ec6f70f0f567c76e43))
+* **paper:** Format contact in cozy-client ([7576895](https://github.com/cozy/cozy-client/commit/75768952cb004f8bc95968bae6af8e8d60df4683))
+* **paper:** Format date metadata qualification on cozy-client ([a86335c](https://github.com/cozy/cozy-client/commit/a86335c0b0f3cfa46be01b228aa3a37960071f85))
+* **paper:** Format information metadata qualification in cozy-client ([ba1339d](https://github.com/cozy/cozy-client/commit/ba1339da72cbba52253ba6cb6682514f866586f5))
+* **paper:** Format other metadata qualification in cozy-client ([e1be6bc](https://github.com/cozy/cozy-client/commit/e1be6bc2dbc95f16c07272f57e87da17dc189b3a))
+
+
+
+
+
 ## [45.14.1](https://github.com/cozy/cozy-client/compare/v45.14.0...v45.14.1) (2024-03-05)
 
 **Note:** Version bump only for package cozy-client
