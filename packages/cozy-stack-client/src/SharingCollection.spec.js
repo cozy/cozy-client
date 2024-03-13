@@ -449,6 +449,21 @@ describe('SharingCollection', () => {
     })
   })
 
+  describe('revokeGroup', () => {
+    beforeEach(() => {
+      client.fetch.mockReset()
+      client.fetchJSON.mockResolvedValue({ data: [] })
+    })
+
+    it('should call the right route', async () => {
+      await collection.revokeGroup(SHARING, 1)
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'DELETE',
+        `/sharings/${SHARING._id}/groups/1`
+      )
+    })
+  })
+
   describe('addRecipients', () => {
     beforeEach(() => {
       client.fetch.mockReset()
