@@ -18,21 +18,26 @@ const normalizeSharing = sharing => normalizeDoc(sharing, SHARING_DOCTYPE)
  * @property {string=} update
  * @property {string=} remove
  */
+
 /**
  * @typedef {object} Recipient An io.cozy.contact
  */
+
 /**
  * @typedef {object} Sharing An io.cozy.sharings document
  */
+
 /**
  * @typedef {object} SharingPolicy Define the add/update/remove policies for a sharing
  * @property {string} add
  * @property {string} update
  * @property {string} remove
  */
+
 /**
  * @typedef {(undefined|'one-way'|'two-way')} SharingType Define how a document is synced between sharing's owner and receivers.
  */
+
 /**
  * @typedef {object} RelationshipItem Define a recipient that can be used as target of a sharing
  * @property {string} id - Recipient's ID
@@ -205,7 +210,7 @@ class SharingCollection extends DocumentCollection {
   /**
    * Revoke only one recipient of the sharing.
    *
-   * @param {object} sharing Sharing Object
+   * @param {Sharing} sharing Sharing Object
    * @param {number} recipientIndex Index of this recipient in the members array of the sharing
    */
   revokeRecipient(sharing, recipientIndex) {
@@ -214,10 +219,24 @@ class SharingCollection extends DocumentCollection {
       uri`/sharings/${sharing._id}/recipients/${recipientIndex}`
     )
   }
+
+  /**
+   * Revoke only one group of the sharing.
+   *
+   * @param {Sharing} sharing Sharing Object
+   * @param {number} groupIndex Index of this group in the groups array of the sharing
+   */
+  revokeGroup(sharing, groupIndex) {
+    return this.stackClient.fetchJSON(
+      'DELETE',
+      uri`/sharings/${sharing._id}/groups/${groupIndex}`
+    )
+  }
+
   /**
    * Remove self from the sharing.
    *
-   * @param {object} sharing Sharing Object
+   * @param {Sharing} sharing Sharing Object
    */
   revokeSelf(sharing) {
     return this.stackClient.fetchJSON(
@@ -229,7 +248,7 @@ class SharingCollection extends DocumentCollection {
    * Revoke the sharing for all the members. Must be called
    * from the owner's cozy
    *
-   * @param {object} sharing Sharing Objects
+   * @param {Sharing} sharing Sharing Objects
    */
   revokeAllRecipients(sharing) {
     return this.stackClient.fetchJSON(

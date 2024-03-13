@@ -1769,6 +1769,7 @@ Implements the `DocumentCollection` API along with specific methods for
     * [.getDiscoveryLink(sharingId, sharecode)](#SharingCollection+getDiscoveryLink) ⇒ <code>string</code>
     * [.addRecipients(options)](#SharingCollection+addRecipients)
     * [.revokeRecipient(sharing, recipientIndex)](#SharingCollection+revokeRecipient)
+    * [.revokeGroup(sharing, groupIndex)](#SharingCollection+revokeGroup)
     * [.revokeSelf(sharing)](#SharingCollection+revokeSelf)
     * [.revokeAllRecipients(sharing)](#SharingCollection+revokeAllRecipients)
 
@@ -1853,8 +1854,20 @@ Revoke only one recipient of the sharing.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| sharing | <code>object</code> | Sharing Object |
+| sharing | [<code>Sharing</code>](#Sharing) | Sharing Object |
 | recipientIndex | <code>number</code> | Index of this recipient in the members array of the sharing |
+
+<a name="SharingCollection+revokeGroup"></a>
+
+### sharingCollection.revokeGroup(sharing, groupIndex)
+Revoke only one group of the sharing.
+
+**Kind**: instance method of [<code>SharingCollection</code>](#SharingCollection)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| sharing | [<code>Sharing</code>](#Sharing) | Sharing Object |
+| groupIndex | <code>number</code> | Index of this group in the groups array of the sharing |
 
 <a name="SharingCollection+revokeSelf"></a>
 
@@ -1865,7 +1878,7 @@ Remove self from the sharing.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| sharing | <code>object</code> | Sharing Object |
+| sharing | [<code>Sharing</code>](#Sharing) | Sharing Object |
 
 <a name="SharingCollection+revokeAllRecipients"></a>
 
@@ -1877,7 +1890,7 @@ from the owner's cozy
 
 | Param | Type | Description |
 | --- | --- | --- |
-| sharing | <code>object</code> | Sharing Objects |
+| sharing | [<code>Sharing</code>](#Sharing) | Sharing Objects |
 
 <a name="TriggerCollection"></a>
 
