@@ -147,4 +147,19 @@ describe('QueryDefinition', () => {
         .select(['date', 'size', 'name', 'trashed'])
     expect(() => query()).not.toThrow()
   })
+
+  it('should throw an error when we make a selector on multiple value without using mango operator', () => {
+    const query = () =>
+      Q('io.cozy.triggers').where({ worker: ['client', 'konnector'] })
+    expect(() => query()).toThrow()
+  })
+
+  it('should not throw an error when we make a selector on multiple value with a mango operator', () => {
+    const query = () =>
+      Q('io.cozy.files').where({
+        worker: { $or: ['konnector', 'client'] }
+      })
+
+    expect(() => query()).not.toThrow()
+  })
 })

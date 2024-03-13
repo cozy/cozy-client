@@ -1,6 +1,7 @@
 import findKey from 'lodash/findKey'
 
 import logger from '../logger'
+import { isArray } from 'lodash'
 
 /**
  * @typedef PartialQueryDefinition
@@ -115,6 +116,19 @@ class QueryDefinition {
    * @returns {void}
    */
   checkSelector(selector) {
+    const keys = Object.keys(selector)
+    keys.forEach(key => {
+      if (isArray(selector[key])) {
+        throw new Error(
+          `You pass ${JSON.stringify(
+            selector
+          )}, this is a valid mango operation, \n
+           but sift doesn't support it so CozyClient can not evaluate \n
+           the request in memory. You have to use mango operator \n
+           like $and...`
+        )
+      }
+    })
     const hasExistsFalse = findKey(selector, ['$exists', false])
     if (hasExistsFalse) {
       logger.warn(
