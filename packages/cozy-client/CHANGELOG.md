@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [46.0.0](https://github.com/cozy/cozy-client/compare/v45.15.0...v46.0.0) (2024-03-15)
+
+
+### Features
+
+* Prevent array selector without operator before ([cdfc2ab](https://github.com/cozy/cozy-client/commit/cdfc2ab3d7c97bd4f9f287f2930c41e96c8dd3c4))
+
+
+### BREAKING CHANGES
+
+* You must use a MongoDB operator like $in or $or operator instead, preferably in a partial index, to avoid costly full-scan.
+
+Co-authored-by: Quentin Valmori <quentin.valmori@gmail.com>
+
+
+
+
+
 # [45.15.0](https://github.com/cozy/cozy-client/compare/v45.14.1...v45.15.0) (2024-03-12)
 
 

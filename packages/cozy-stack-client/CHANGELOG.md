@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [46.0.0](https://github.com/cozy/cozy-client/compare/v45.15.0...v46.0.0) (2024-03-15)
+
+**Note:** Version bump only for package cozy-stack-client
+
+
+
+
+
 # [45.13.0](https://github.com/cozy/cozy-client/compare/v45.12.0...v45.13.0) (2024-02-20)
 
 
