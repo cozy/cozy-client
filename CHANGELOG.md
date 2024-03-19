@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [46.1.0](https://github.com/cozy/cozy-client/compare/v46.0.0...v46.1.0) (2024-03-19)
+
+
+### Features
+
+* **SharingCollection:** Add revokeGroup ([9f7b3b8](https://github.com/cozy/cozy-client/commit/9f7b3b891bb2dca32d2a951b4dce4af601027b82))
+
+
+
+
+
 # [46.0.0](https://github.com/cozy/cozy-client/compare/v45.15.0...v46.0.0) (2024-03-15)
 
 
