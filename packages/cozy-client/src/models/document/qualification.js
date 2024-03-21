@@ -1,4 +1,5 @@
-import { get, set, difference } from 'lodash'
+import set from 'lodash/set'
+import difference from 'lodash/difference'
 import * as qualificationModel from '../../assets/qualifications.json'
 import logger from '../../logger'
 /**
@@ -254,14 +255,16 @@ export const setQualification = (document, qualification) => {
  * Helper to get the qualification from a document
  *
  * @param {object} document - The document
- * @returns {Qualification} - The document qualification
- *
+ * @returns {Qualification|null} - The document qualification
  */
 export const getQualification = document => {
-  const docQualification = get(document, 'metadata.qualification')
-  const qualification = new Qualification(
-    docQualification.label,
-    docQualification.qualification
-  )
-  return qualification.toQualification()
+  const docQualification = document?.metadata?.qualification
+  if (docQualification) {
+    const qualification = new Qualification(
+      docQualification.label,
+      docQualification.qualification
+    )
+    return qualification.toQualification()
+  }
+  return null
 }

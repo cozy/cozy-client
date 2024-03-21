@@ -77,6 +77,14 @@ describe('document qualification', () => {
     const fileQualification = getQualification(fileDoc)
     expect(fileQualification).toEqual(qualification)
   })
+  it("should return null if the file qualification doesn't exist", () => {
+    const fileDoc = {
+      _id: '123',
+      metadata: {}
+    }
+    const fileQualification = getQualification(fileDoc)
+    expect(fileQualification).toEqual(null)
+  })
 
   it('should set the correct qualification', () => {
     const fileDoc = {

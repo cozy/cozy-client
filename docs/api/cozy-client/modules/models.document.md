@@ -61,4 +61,4 @@ Set the qualification to the document metadata
 
 *Defined in*
 
-[packages/cozy-client/src/models/document/qualification.js:243](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L243)
+[packages/cozy-client/src/models/document/qualification.js:244](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/qualification.js#L244)
