@@ -94,7 +94,7 @@ export namespace Qualification {
     function getByLabel(label: string): Qualification;
 }
 export function setQualification(document: object, qualification: Qualification): object;
-export function getQualification(document: object): Qualification;
+export function getQualification(document: object): Qualification | null;
 export type QualificationAttributes = {
     /**
      * - The qualification label.
