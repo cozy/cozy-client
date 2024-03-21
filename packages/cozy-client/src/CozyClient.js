@@ -90,6 +90,9 @@ const securiseUri = uri => {
 
   return uri
 }
+const resolveToValue = fnOrValue => {
+  return typeof fnOrValue === 'function' ? fnOrValue() : fnOrValue
+}
 
 const DOC_CREATION = 'creation'
 const DOC_UPDATE = 'update'
@@ -905,20 +908,20 @@ client.query(Q('io.cozy.bills'))`)
    * `getQueryFromState` or directly using `<Query />`. `<Query />` automatically
    * executes its query when mounted if no fetch policy has been indicated.
    *
-   * @param  {QueryDefinition} queryDefinition - Definition that will be executed
+   * @param  {QueryDefinition|(() => QueryDefinition)} queryDefinition - Definition that will be executed
    * @param  {import("./types").QueryOptions} [options] - Options
    * @returns {Promise<import("./types").QueryResult>}
    */
   async query(queryDefinition, { update, ...options } = {}) {
     this.ensureStore()
-    const queryId =
-      options.as || this.queryIdGenerator.generateId(queryDefinition)
+    const definition = resolveToValue(queryDefinition)
+    const queryId = options.as || this.queryIdGenerator.generateId(definition)
     const existingQuery = this.getQueryFromState(queryId, options)
     if (options.enabled !== undefined) {
       if ('boolean' !== typeof options.enabled) {
         throw new Error(
           `option.enabled should be a boolean for this query: ${JSON.stringify(
-            queryDefinition
+            definition
           )}`
         )
       }
@@ -939,10 +942,10 @@ client.query(Q('io.cozy.bills'))`)
     // have in the promiseCache
     if (existingQuery && Object.keys(existingQuery).length > 0) {
       if (existingQuery.fetchStatus === 'loading') {
-        return this._promiseCache.get(() => stringify(queryDefinition))
+        return this._promiseCache.get(() => stringify(definition))
       }
     }
-    this.ensureQueryExists(queryId, queryDefinition, options)
+    this.ensureQueryExists(queryId, definition, options)
 
     try {
       const backgroundFetching =
@@ -952,8 +955,8 @@ client.query(Q('io.cozy.bills'))`)
       this.dispatch(loadQuery(queryId, { backgroundFetching }))
 
       const response = await this._promiseCache.exec(
-        () => this.requestQuery(queryDefinition),
-        () => stringify(queryDefinition)
+        () => this.requestQuery(definition),
+        () => stringify(definition)
       )
 
       this.dispatch(
