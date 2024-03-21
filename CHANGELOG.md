@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [46.1.1](https://github.com/cozy/cozy-client/compare/v46.1.0...v46.1.1) (2024-03-21)
+
+
+### Bug Fixes
+
+* The getQualification function should not crash if no qualification ([a58a378](https://github.com/cozy/cozy-client/commit/a58a3789ebc93de3627e761869a44e4c83cacfa4))
+
+
+
+
+
 # [46.1.0](https://github.com/cozy/cozy-client/compare/v46.0.0...v46.1.0) (2024-03-19)
 
 
