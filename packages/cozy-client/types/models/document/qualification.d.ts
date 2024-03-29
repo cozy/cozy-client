@@ -1,5 +1,6 @@
 /**
  * @typedef {object} QualificationAttributes
+ * @property {string} [icon] - The qualification icon.
  * @property {string} [label] - The qualification label.
  * @property {string} [purpose] - The document purpose.
  * @property {string} [sourceCategory] - The activity field of the document source.
@@ -21,6 +22,10 @@ export class Qualification {
      * @param {QualificationAttributes} attributes - Qualification's attributes
      */
     constructor(label: string, attributes?: QualificationAttributes);
+    /**
+     * @type {string}
+     */
+    icon: string;
     /**
      * @type {string?}
      */
@@ -84,6 +89,13 @@ export class Qualification {
      */
     setSubjects(subjects: any[]): Qualification;
     /**
+     * Set icon to the qualification.
+     *
+     * @param {string} icon - The icon to set.
+     * @returns {Qualification} The Qualification object.
+     */
+    setIcon(icon: string): Qualification;
+    /**
      * Returns the qualification attributes
      *
      * @returns {object} The qualification attributes
@@ -95,7 +107,12 @@ export namespace Qualification {
 }
 export function setQualification(document: object, qualification: Qualification): object;
 export function getQualification(document: object): Qualification | null;
+export function getIconByLabel(label: string): import('../../types').IconQualificationLabels | string;
 export type QualificationAttributes = {
+    /**
+     * - The qualification icon.
+     */
+    icon?: string;
     /**
      * - The qualification label.
      */

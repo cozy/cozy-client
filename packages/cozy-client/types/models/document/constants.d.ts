@@ -38,3 +38,7 @@ export const THEME_INVOICE_LABELS: Array<import("../../types").InvoiceLabels>;
  * @type {Array<import("../../types").OthersLabels>}
  */
 export const THEME_OTHERS_LABELS: Array<import("../../types").OthersLabels>;
+/**
+ * @type {Array<import("../../types").iconLabelPairs>}
+ */
+export const iconLabelPairs: Array<import("../../types").iconLabelPairs>;
