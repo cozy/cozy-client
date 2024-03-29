@@ -164,6 +164,8 @@ export const THEME_INVOICE_LABELS = [
   'health_invoice',
   'note_invoice',
   'expense_claim',
+  'energy_contract',
+  'grocery_invoice',
   'other_invoice'
 ]
 
