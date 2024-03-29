@@ -64,6 +64,7 @@ describe('document qualification', () => {
   })
   it('should get the file qualification', () => {
     const qualification = {
+      icon: 'telecom',
       label: 'isp_invoice',
       purpose: 'invoice',
       sourceCategory: 'telecom',
@@ -104,6 +105,7 @@ describe('document qualification', () => {
       metadata: {
         datetime: '2020-01-01T20:38:04Z',
         qualification: {
+          icon: 'heart',
           label: 'health_invoice',
           purpose: 'invoice',
           sourceCategory: 'health'
@@ -116,12 +118,14 @@ describe('document qualification', () => {
       .setSourceCategory('gov')
       .setSourceSubCategory('civil_registration')
       .setSubjects(['identity'])
+      .setIcon('people')
     setQualification(fileDoc, qualification)
     expect(fileDoc).toEqual({
       _id: '123',
       metadata: {
         datetime: '2020-01-01T20:38:04Z',
         qualification: {
+          icon: 'people',
           label: 'other_identity_document',
           purpose: 'attestation',
           sourceCategory: 'gov',

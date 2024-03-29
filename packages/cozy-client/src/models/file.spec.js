@@ -832,6 +832,7 @@ describe('File qualification', () => {
       metadata: {
         datetime: '2020-01-01T20:38:04Z',
         qualification: {
+          icon: 'heart',
           label: 'health_invoice',
           sourceCategory: 'health',
           purpose: 'invoice'

@@ -545,6 +545,78 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
+ * @typedef {'national_id_card'|'other_identity_document'|'resume'|'work_disability_recognition'} iconPeopleLabels
+ *
+ * @typedef {'employment_center_certificate'|'motivation_letter'|'other_work_document'|'school_attendance_certificate'|'school_insurance_certificate'|'student_card'|'unemployment_benefit'|'work_contract'} iconWorkLabels
+ *
+ * @typedef {'fine'} iconJusticeLabels
+ *
+ * @typedef {'residence_permit'} iconGlobeLabels
+ *
+ * @typedef {'passport'} iconPlaneLabels
+ *
+ * @typedef {'library_card'} iconLibraryLabels
+ *
+ * @typedef {'identity_photo'} iconImageLabels
+ *
+ * @typedef {'fidelity_card'|'grocery_invoice'} iconShopLabels
+ *
+ * @typedef {'electoral_card'} iconGouvLabels
+ *
+ * @typedef {'diploma'|'gradebook'} iconSchoolLabels
+ *
+ * @typedef {'birth_certificate'} iconChildLabels
+ *
+ * @typedef {'receipt'} iconEmailLabels
+ *
+ * @typedef {'appliance_invoice'} iconLaudryLabels
+ *
+ * @typedef {'accommodation_proof'|'building_permit'|'condition_report'|'house_insurance'|'house_sale_agreeement'|'lease'|'mechanic_invoice'|'other_house_document'|'real_estate_insurance'|'rent_receipt'|'technical_diagnostic_record'|'unfit_for_habitation_declaration'|'work_invoice'|'work_quote'} iconHomeLabels
+ *
+ * @typedef {'loan_agreement'|'other_revenue'|'pay_sheet'|'payment_proof_family_allowance'|'pension'} iconBenefitLabels
+ *
+ * @typedef {'other_bank_document'} iconEuroLabels
+ *
+ * @typedef {'bank_details'} iconBankCheckLabels
+ *
+ * @typedef {'other_administrative_document'|'other_tax_document'|'real_estate_tax'|'tax_notice'|'tax_return'|'tax_timetable'} iconBankLabels
+ *
+ * @typedef {'car_insurance'|'driver_license'|'other_transport_document'|'transport_card'|'transport_invoice'|'vehicle_registration'} iconCarLabels
+ *
+ * @typedef {'energy_contract'|'energy_invoice'} iconLightningLabels
+ *
+ * @typedef {'isp_invoice'|'telecom_invoice'|'web_service_invoice'} iconTelecomLabels
+ *
+ * @typedef {'phone_invoice'} iconTelephoneLabels
+ *
+ * @typedef {'water_invoice'} iconWaterLabels
+ *
+ * @typedef {'expense_claim'} iconRemboursementLabels
+ *
+ * @typedef {'restaurant_invoice'} iconRestaurantLabels
+ *
+ * @typedef {'other_invoice'} iconBillLabels
+ *
+ * @typedef {'caf'|'citizen_registration_certificate'|'divorce'|'family_record_book'|'large_family_card'|'other_family_document'|'pacs'|'single_parent_benefit'|'wedding'} iconTeamLabels
+ *
+ * @typedef {'other_activity_document'|'personal_sporting_licence'} iconFitnessLabels
+ *
+ * @typedef {'health_book'|'health_certificate'|'health_insurance_card'|'health_invoice'|'national_health_insurance_card'|'national_health_insurance_right_certificate'|'other_health_document'|'person_insurance'|'pregnancy_medical_certificate'|'prescription'} iconHeartLabels
+ *
+ * @typedef {'bank_statement'} iconExchangeLabels
+ *
+ * @typedef {'note_activity_document'|'note_family_document'|'note_finance'|'note_health_document'|'note_house_document'|'note_identity_document'|'note_invoice'|'note_transport_document'|'note_work_document'} iconFileTypeNoteLabels
+ */
+
+/**
+ * @typedef {'bank-check'|'bank'|'benefit'|'bill'|'car'|'child'|'email'|'euro'|'exchange'|'file-type-note'|'fitness'|'globe'|'gouv'|'heart'|'home'|'image'|'justice'|'laudry'|'library'|'lightning'|'people'|'plane'|'remboursement'|'restaurant'|'school'|'shop'|'team'|'telecom'|'telephone'|'water'|'work'} IconQualificationLabels
+ */
+
+/**
+ * @typedef {{ icon: IconQualificationLabels, labels: Array<string> }} iconLabelPairs
+ */
+
+/**
  * @typedef {object} DACCMeasure
  * See https://github.com/cozy/DACC
  *
