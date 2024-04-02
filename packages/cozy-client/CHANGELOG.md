@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [46.3.0](https://github.com/cozy/cozy-client/compare/v46.2.0...v46.3.0) (2024-04-02)
+
+
+### Features
+
+* We don't want to concatenate `additionalName` in the `displayName` ([6a03a1c](https://github.com/cozy/cozy-client/commit/6a03a1c05745c563bdeba54c7e124a9473abcda0))
+
+
+
+
+
 # [46.2.0](https://github.com/cozy/cozy-client/compare/v46.1.1...v46.2.0) (2024-04-02)
 
 
