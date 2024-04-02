@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [46.2.0](https://github.com/cozy/cozy-client/compare/v46.1.1...v46.2.0) (2024-04-02)
+
+
+### Features
+
+* Add an icon in each qualifications by mapping ([f3c80cf](https://github.com/cozy/cozy-client/commit/f3c80cf234939d525f35f6dd89ab06792c25560b))
+* Add missing qualifications in Theme Invoice ([ddf38d9](https://github.com/cozy/cozy-client/commit/ddf38d906b63a4e10a168e037b710a75c7daa2fc))
+
+
+
+
+
 ## [46.1.1](https://github.com/cozy/cozy-client/compare/v46.1.0...v46.1.1) (2024-03-21)
 
 
