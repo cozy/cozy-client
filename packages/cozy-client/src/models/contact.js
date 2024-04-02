@@ -5,6 +5,10 @@ import logger from '../logger'
 
 export const CONTACTS_DOCTYPE = 'io.cozy.contacts'
 
+/**
+ * @typedef {'namePrefix'|'givenName'|'additionalName'|'familyName'|'nameSuffix'} FullnameAttributes
+ */
+
 export const getPrimaryOrFirst = property => obj =>
   !obj[property] || obj[property].length === 0
     ? ''
@@ -93,20 +97,28 @@ export const getPrimaryAddress = contact =>
   getPrimaryOrFirst('address')(contact).formattedAddress || ''
 
 /**
+ * @type {FullnameAttributes[]}
+ */
+const defaultFullnameAttributes = [
+  'namePrefix',
+  'givenName',
+  'additionalName',
+  'familyName',
+  'nameSuffix'
+]
+
+/**
  * Makes fullname from contact name
  *
- * @param {*} contact - A contact
+ * @param {object} contact - A contact
+ * @param {{ attributesFullname: FullnameAttributes[] }} [opts] - Options
  * @returns {string} - The contact's fullname
  */
-export const makeFullname = contact => {
+export const makeFullname = (contact, opts) => {
+  const fullnameAttributes =
+    opts?.attributesFullname || defaultFullnameAttributes
   if (contact.name) {
-    return [
-      'namePrefix',
-      'givenName',
-      'additionalName',
-      'familyName',
-      'nameSuffix'
-    ]
+    return fullnameAttributes
       .map(part => contact.name[part])
       .filter(part => part !== undefined)
       .join(' ')
@@ -134,10 +146,11 @@ export const getFullname = contact => {
  * Makes displayName from contact data
  *
  * @param {*} contact - A contact
+ * @param {{ attributesFullname: FullnameAttributes[] }} [opts] - Options
  * @returns {string} - The contact's displayName
  */
-export const makeDisplayName = contact => {
-  const fullname = makeFullname(contact)
+export const makeDisplayName = (contact, opts) => {
+  const fullname = makeFullname(contact, opts)
   const primaryEmail = getPrimaryEmail(contact)
   const primaryCozyDomain = getPrimaryCozyDomain(contact)
 

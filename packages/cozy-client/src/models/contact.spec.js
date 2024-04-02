@@ -247,6 +247,22 @@ describe('makeFullname', () => {
     )
   })
 
+  it('should combine all name parts passed as options', () => {
+    const contact = {
+      name: {
+        namePrefix: 'The Mother of Dragons',
+        givenName: 'Daenerys',
+        additionalName: 'The Unburnt',
+        familyName: 'Targaryen',
+        nameSuffix: 'Breaker of Chains'
+      }
+    }
+    const result = makeFullname(contact, {
+      attributesFullname: ['givenName', 'additionalName', 'familyName']
+    })
+    expect(result).toEqual('Daenerys The Unburnt Targaryen')
+  })
+
   it("should return contact's givenName if no familyName", () => {
     const contact = {
       name: {
