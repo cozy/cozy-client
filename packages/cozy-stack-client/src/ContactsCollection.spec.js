@@ -1,5 +1,6 @@
 import CozyStackClient from './CozyStackClient'
 import ContactsCollection from './ContactsCollection'
+import DocumentCollection from './DocumentCollection'
 
 const stackMyselfResponse = {
   data: {
@@ -76,6 +77,75 @@ describe('ContactsCollection', () => {
         '/data/io.cozy.contacts/_find',
         expect.objectContaining({ selector: { name: 'Alice' } })
       )
+    })
+  })
+
+  describe('destroy', () => {
+    const setup = () => {
+      const stackClient = new CozyStackClient({})
+      const col = new ContactsCollection('io.cozy.contacts', stackClient)
+      return { col }
+    }
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it('should delete a contact with no sources', async () => {
+      const { col } = setup()
+
+      const documentCollectionDestroySpy = jest
+        .spyOn(DocumentCollection.prototype, 'destroy')
+        .mockImplementation()
+
+      const contact = {
+        _id: '123',
+        _rev: '1',
+        cozyMetadata: {
+          sync: {}
+        }
+      }
+
+      await col.destroy(contact)
+      expect(documentCollectionDestroySpy).toHaveBeenCalledWith(contact)
+
+      const contactWithoutMetadata = {
+        _id: '456',
+        _rev: '1'
+      }
+      await col.destroy(contactWithoutMetadata)
+      expect(documentCollectionDestroySpy).toHaveBeenCalledWith(
+        contactWithoutMetadata
+      )
+    })
+
+    it('should flag a contact with sources as trashed', async () => {
+      const { col } = setup()
+
+      const documentCollectionDestroySpy = jest
+        .spyOn(DocumentCollection.prototype, 'destroy')
+        .mockImplementation()
+      const documentCollectionUpdateSpy = jest
+        .spyOn(DocumentCollection.prototype, 'update')
+        .mockImplementation()
+
+      const contact = {
+        _id: '123',
+        cozyMetadata: {
+          sync: {
+            456: {
+              id: 'people/657623'
+            }
+          }
+        }
+      }
+
+      await col.destroy(contact)
+      expect(documentCollectionDestroySpy).not.toHaveBeenCalled()
+      expect(documentCollectionUpdateSpy).toHaveBeenCalledWith({
+        ...contact,
+        trashed: true
+      })
     })
   })
 })

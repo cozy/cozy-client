@@ -31,6 +31,28 @@ class ContactsCollection extends DocumentCollection {
     }
     return col
   }
+
+  /**
+   * Destroys a contact
+   *
+   * If the contact is linked to accounts, it will be trashed instead of being
+   * destroyed.
+   *
+   * @param  {object} contact - Contact to destroy. IT MUST BE THE FULL CONTACT OBJECT
+   * @returns {Promise} - Resolves when contact has been destroyed
+   */
+  async destroy(contact) {
+    const syncData = contact?.cozyMetadata?.sync || {}
+    const isLinkedToAccounts = Object.keys(syncData).length > 0
+    if (isLinkedToAccounts) {
+      return super.update({
+        ...contact,
+        trashed: true
+      })
+    } else {
+      return super.destroy(contact)
+    }
+  }
 }
 
 export const CONTACTS_DOCTYPE = 'io.cozy.contacts'
