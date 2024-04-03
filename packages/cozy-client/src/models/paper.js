@@ -2,6 +2,7 @@ import add from 'date-fns/add'
 import sub from 'date-fns/sub'
 import { getLocalizer } from './document/locales'
 import { getDisplayName } from './contact'
+import get from 'lodash/get'
 
 /**
  * @typedef {import("../types").IOCozyFile} IOCozyFile
@@ -38,6 +39,8 @@ export const KNOWN_INFORMATION_METADATA_NAMES = [
   'contractType',
   'netSocialAmount',
   'employerName',
+  'vehicle.licenseNumber',
+  'vehicle.confidentialNumber',
   'noticePeriod'
 ]
 export const KNOWN_OTHER_METADATA_NAMES = ['contact', 'page', 'qualification']
@@ -206,13 +209,22 @@ export const isExpiringSoon = file => {
   return isExpiringSoon
 }
 
+/**
+ * @param {Object} params -
+ * @param {Object} params.metadata - An io.cozy.files metadata object
+ * @param {string} params.knownMetadataName - Name of the metadata
+ * @param {string | null} [params.value] - Value of the metadata
+ * @returns {{ name: string, value: string | null }} displayable metadata
+ */
 const makeMetadataQualification = ({ metadata, knownMetadataName, value }) => {
-  const shouldReturnThisMetadata = Object.keys(metadata).includes(
-    knownMetadataName
-  )
+  const _value = value || get(metadata, knownMetadataName, null)
+  const shouldReturnThisMetadata = !!_value
 
   if (shouldReturnThisMetadata || knownMetadataName === 'contact') {
-    return { name: knownMetadataName, value: value || null }
+    return {
+      name: knownMetadataName,
+      value: _value
+    }
   }
 
   return null
@@ -225,11 +237,7 @@ const makeMetadataQualification = ({ metadata, knownMetadataName, value }) => {
  */
 export const formatMetadataQualification = metadata => {
   const dates = KNOWN_DATE_METADATA_NAMES.map(dateName =>
-    makeMetadataQualification({
-      metadata,
-      knownMetadataName: dateName,
-      value: metadata[dateName]
-    })
+    makeMetadataQualification({ metadata, knownMetadataName: dateName })
   )
     .filter(Boolean)
     .filter((data, _, arr) => {
@@ -237,12 +245,8 @@ export const formatMetadataQualification = metadata => {
       return data
     })
 
-  const informations = KNOWN_INFORMATION_METADATA_NAMES.map(numberName =>
-    makeMetadataQualification({
-      metadata,
-      knownMetadataName: numberName,
-      value: metadata[numberName]
-    })
+  const informations = KNOWN_INFORMATION_METADATA_NAMES.map(infoName =>
+    makeMetadataQualification({ metadata, knownMetadataName: infoName })
   ).filter(Boolean)
 
   const others = KNOWN_OTHER_METADATA_NAMES.map(otherName => {
