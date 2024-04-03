@@ -425,6 +425,103 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
+ * @typedef {object} ContactName
+ * @property {string} [familyName] - The family name (example: "House")
+ * @property {string} [givenName] - The given name (example: "Gregory")
+ * @property {string} [additionalName] - The additional name (example: "J.")
+ * @property {string} [namePrefix] - The name prefix (example: "Dr.")
+ * @property {string} [nameSuffix] - The name suffix (example: "III")
+ */
+
+/**
+ * @typedef {object} ContactEmail
+ * @property {string} address - Email address
+ * @property {string} [type] - A user-provided localized type of email address (example: "Work", "Home", "Other")
+ * @property {boolean} [primary] - Indicates a preferred-use address
+ */
+
+/**
+ * @typedef {object} ContactExtendedAddress
+ * @property {string} [locality] - Locality name
+ * @property {string} [building] - Building number
+ * @property {string} [stairs] - Stairs number
+ * @property {string} [floor] - Apartment floor
+ * @property {string} [apartment] - Apartment number
+ * @property {string} [entrycode] - Entry code
+ */
+
+/**
+ * @typedef {object} ContactGeo
+ * @property {Array<number>} [geo] - Coordinates of the address, must be [long, lat]
+ * @property {"home"|"work"} [cozyCategory] - The category of the address type
+ */
+
+/**
+ * @typedef {object} ContactAddress
+ * @property {string} [id] - Id of the address
+ * @property {string} [street] - Street name
+ * @property {string} [pobox] - P.O Box number
+ * @property {string} [city] - City name
+ * @property {string} [region] - Region name
+ * @property {string} [number] - Lane number
+ * @property {string} [code] - Postal code
+ * @property {string} [country] - Country name
+ * @property {string} [type] - A user-provided localized type of address (example: "Work", "Home", "Other")
+ * @property {boolean} [primary] - Indicates a preferred-use address
+ * @property {ContactExtendedAddress} [extendedAddress]
+ * @property {string} [formattedAddress] - Unstructured version of the address
+ * @property {ContactGeo} [geo]
+ */
+
+/**
+ * @typedef {object} ContactPhone
+ * @property {string} number - Phone number
+ * @property {string} [type] - A user-provided localized type of phone number (example: "Work", "Home", "Other")
+ * @property {boolean} [primary] - Indicates a preferred-use number
+ *
+ */
+
+/**
+ * @typedef {object} ContactCozy
+ * @property {string} url
+ * @property {string} [label] - A user-provided localized type of instance
+ * @property {boolean} [primary] - Indicates a preferred-use instance
+ *
+ */
+
+/**
+ * @typedef {object} ContactMetadata
+ * @property {boolean} cozy - Whether the contact has been created by cozy
+ * @property {object} google - Google metadata
+ * @property {number} version - Used for migrations. Current version is 1
+ *
+ */
+
+/**
+ * @typedef {object} ContactDocument
+ * @property {object} indexes - Used to sort contacts in different ways
+ * @property {string} indexes.byFamilyNameGivenNameEmailCozyUrl - Index for sorting
+ * @property {string} displayName - Displayed name in cozy applications
+ * @property {string} [fullname] - Unstructured representation of the name (example: "Dr. Gregory House, M.D.")
+ * @property {ContactName} [name] - Structured representation of the name
+ * @property {string} [birthday] - Birthday (example: "1959-05-15")
+ * @property {string} [note] - Note
+ * @property {Array<ContactEmail>} [email] - Email addresses
+ * @property {Array<ContactAddress>} [address] - Addresses
+ * @property {Array<ContactPhone>} [phone] - Phone numbers
+ * @property {Array<ContactCozy>} [cozy] - Cozy instances
+ * @property {string} company - Company
+ * @property {string} jobTitle - Job title
+ * @property {boolean} [trashed] - true if the contact is marked for removal and will be deleted soon (e.g. after remote deletion is confirmed)
+ * @property {boolean} me - Whether the contact matches the cozy owner (defaults to false)
+ * @property {Array<string>} [nationalities] - 2-letter iso3166 country codes (can be set in io.cozy.identities for legal reasons in Banks)
+ * @property {string} [birthcity] - City of birth of a contact (can be set in io.cozy.identities for legal reasons in Banks)
+ * @property {string} [birthcountry] - Country of birth of a contact (can be set in io.cozy.identities for legal reasons in Banks)
+ * @property {ContactMetadata} metadata - Previous metadata information
+ * @typedef {CozyClientDocument & ContactDocument} IOCozyContact - An io.cozy.contacts document
+ */
+
+/**
  * @typedef {object} ClientError
  * @property {string} [status]
  */
