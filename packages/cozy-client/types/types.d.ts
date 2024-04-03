@@ -801,6 +801,245 @@ export type OAuthClientDocument = {
  * - An io.cozy.oauth.clients document
  */
 export type IOCozyOAuthClient = CozyClientDocument & OAuthClientDocument;
+export type ContactName = {
+    /**
+     * - The family name (example: "House")
+     */
+    familyName?: string;
+    /**
+     * - The given name (example: "Gregory")
+     */
+    givenName?: string;
+    /**
+     * - The additional name (example: "J.")
+     */
+    additionalName?: string;
+    /**
+     * - The name prefix (example: "Dr.")
+     */
+    namePrefix?: string;
+    /**
+     * - The name suffix (example: "III")
+     */
+    nameSuffix?: string;
+};
+export type ContactEmail = {
+    /**
+     * - Email address
+     */
+    address: string;
+    /**
+     * - A user-provided localized type of email address (example: "Work", "Home", "Other")
+     */
+    type?: string;
+    /**
+     * - Indicates a preferred-use address
+     */
+    primary?: boolean;
+};
+export type ContactExtendedAddress = {
+    /**
+     * - Locality name
+     */
+    locality?: string;
+    /**
+     * - Building number
+     */
+    building?: string;
+    /**
+     * - Stairs number
+     */
+    stairs?: string;
+    /**
+     * - Apartment floor
+     */
+    floor?: string;
+    /**
+     * - Apartment number
+     */
+    apartment?: string;
+    /**
+     * - Entry code
+     */
+    entrycode?: string;
+};
+export type ContactGeo = {
+    /**
+     * - Coordinates of the address, must be [long, lat]
+     */
+    geo?: Array<number>;
+    /**
+     * - The category of the address type
+     */
+    cozyCategory?: "home" | "work";
+};
+export type ContactAddress = {
+    /**
+     * - Id of the address
+     */
+    id?: string;
+    /**
+     * - Street name
+     */
+    street?: string;
+    /**
+     * - P.O Box number
+     */
+    pobox?: string;
+    /**
+     * - City name
+     */
+    city?: string;
+    /**
+     * - Region name
+     */
+    region?: string;
+    /**
+     * - Lane number
+     */
+    number?: string;
+    /**
+     * - Postal code
+     */
+    code?: string;
+    /**
+     * - Country name
+     */
+    country?: string;
+    /**
+     * - A user-provided localized type of address (example: "Work", "Home", "Other")
+     */
+    type?: string;
+    /**
+     * - Indicates a preferred-use address
+     */
+    primary?: boolean;
+    extendedAddress?: ContactExtendedAddress;
+    /**
+     * - Unstructured version of the address
+     */
+    formattedAddress?: string;
+    geo?: ContactGeo;
+};
+export type ContactPhone = {
+    /**
+     * - Phone number
+     */
+    number: string;
+    /**
+     * - A user-provided localized type of phone number (example: "Work", "Home", "Other")
+     */
+    type?: string;
+    /**
+     * - Indicates a preferred-use number
+     */
+    primary?: boolean;
+};
+export type ContactCozy = {
+    url: string;
+    /**
+     * - A user-provided localized type of instance
+     */
+    label?: string;
+    /**
+     * - Indicates a preferred-use instance
+     */
+    primary?: boolean;
+};
+export type ContactMetadata = {
+    /**
+     * - Whether the contact has been created by cozy
+     */
+    cozy: boolean;
+    /**
+     * - Google metadata
+     */
+    google: object;
+    /**
+     * - Used for migrations. Current version is 1
+     */
+    version: number;
+};
+export type ContactDocument = {
+    /**
+     * - Used to sort contacts in different ways
+     */
+    indexes: {
+        byFamilyNameGivenNameEmailCozyUrl: string;
+    };
+    /**
+     * - Displayed name in cozy applications
+     */
+    displayName: string;
+    /**
+     * - Unstructured representation of the name (example: "Dr. Gregory House, M.D.")
+     */
+    fullname?: string;
+    /**
+     * - Structured representation of the name
+     */
+    name?: ContactName;
+    /**
+     * - Birthday (example: "1959-05-15")
+     */
+    birthday?: string;
+    /**
+     * - Note
+     */
+    note?: string;
+    /**
+     * - Email addresses
+     */
+    email?: Array<ContactEmail>;
+    /**
+     * - Addresses
+     */
+    address?: Array<ContactAddress>;
+    /**
+     * - Phone numbers
+     */
+    phone?: Array<ContactPhone>;
+    /**
+     * - Cozy instances
+     */
+    cozy?: Array<ContactCozy>;
+    /**
+     * - Company
+     */
+    company: string;
+    /**
+     * - Job title
+     */
+    jobTitle: string;
+    /**
+     * - true if the contact is marked for removal and will be deleted soon (e.g. after remote deletion is confirmed)
+     */
+    trashed?: boolean;
+    /**
+     * - Whether the contact matches the cozy owner (defaults to false)
+     */
+    me: boolean;
+    /**
+     * - 2-letter iso3166 country codes (can be set in io.cozy.identities for legal reasons in Banks)
+     */
+    nationalities?: Array<string>;
+    /**
+     * - City of birth of a contact (can be set in io.cozy.identities for legal reasons in Banks)
+     */
+    birthcity?: string;
+    /**
+     * - Country of birth of a contact (can be set in io.cozy.identities for legal reasons in Banks)
+     */
+    birthcountry?: string;
+    /**
+     * - Previous metadata information
+     */
+    metadata: ContactMetadata;
+};
+/**
+ * - An io.cozy.contacts document
+ */
+export type IOCozyContact = CozyClientDocument & ContactDocument;
 export type ClientError = {
     status?: string;
 };

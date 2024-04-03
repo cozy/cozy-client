@@ -1,4 +1,6 @@
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
+// @ts-ignore Need to import it to be used in jsdoc
+import { IOCozyContact } from 'cozy-client/dist/types'
 
 const normalizeMyselfResp = resp => {
   return {
@@ -38,8 +40,8 @@ class ContactsCollection extends DocumentCollection {
    * If the contact is linked to accounts, it will be trashed instead of being
    * destroyed.
    *
-   * @param  {object} contact - Contact to destroy. IT MUST BE THE FULL CONTACT OBJECT
-   * @returns {Promise} - Resolves when contact has been destroyed
+   * @param  {IOCozyContact} contact - Contact to destroy. IT MUST BE THE FULL CONTACT OBJECT
+   * @returns {Promise<{ data: IOCozyContact }>} - Resolves when contact has been destroyed
    */
   async destroy(contact) {
     const syncData = contact?.cozyMetadata?.sync || {}
