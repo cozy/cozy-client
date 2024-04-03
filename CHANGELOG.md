@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [46.5.0](https://github.com/cozy/cozy-client/compare/v46.4.0...v46.5.0) (2024-04-03)
+
+
+### Features
+
+* Add a destroy method in ContactsCollection ([4dd9c59](https://github.com/cozy/cozy-client/commit/4dd9c598386a08bc78f602854ce079faa5e769f3))
+
+
+
+
+
 # [46.4.0](https://github.com/cozy/cozy-client/compare/v46.3.0...v46.4.0) (2024-04-03)
 
 
