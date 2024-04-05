@@ -24,6 +24,8 @@ const USER_CANCELED = 'USER_CANCELED'
 
 export const authenticateWithReactNativeInAppBrowser = async url => {
   return new Promise((resolve, reject) => {
+    let linkingSubscription = null
+
     InAppBrowser.open(url, {
       // iOS Properties
       readerMode: false,
@@ -53,9 +55,6 @@ export const authenticateWithReactNativeInAppBrowser = async url => {
         reject(USER_CANCELED)
       }
     })
-    const removeListener = () => {
-      Linking.removeEventListener('url', linkListener)
-    }
 
     const linkListener = ({ url }) => {
       let sanitizedUrl = url
@@ -79,14 +78,14 @@ export const authenticateWithReactNativeInAppBrowser = async url => {
           }
         }
         resolve(sanitizedUrl)
-        removeListener()
+        linkingSubscription.remove()
         InAppBrowser.close()
       } else if (closeSignal) {
         reject(USER_CANCELED)
       }
     }
 
-    Linking.addEventListener('url', linkListener)
+    linkingSubscription = Linking.addEventListener('url', linkListener)
   })
 }
 
