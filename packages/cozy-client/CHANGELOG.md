@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [46.6.0](https://github.com/cozy/cozy-client/compare/v46.5.0...v46.6.0) (2024-04-05)
+
+
+### Features
+
+* Remove deprecated Linking.removeEventListener ([9544207](https://github.com/cozy/cozy-client/commit/9544207d64698a6858dbe9aecd1740054576a17f))
+
+
+
+
+
 # [46.5.0](https://github.com/cozy/cozy-client/compare/v46.4.0...v46.5.0) (2024-04-03)
 
 **Note:** Version bump only for package cozy-client
