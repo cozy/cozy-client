@@ -243,7 +243,7 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
- * @typedef {object} QueryState
+ * @typedef {object} QueryStateWithoutData
  * @property {string} id
  * @property {QueryDefinition} definition
  * @property {QueryFetchStatus} fetchStatus
@@ -255,10 +255,18 @@ import { QueryDefinition } from './queries/dsl'
  * @property {boolean} hasMore
  * @property {number} count
  * @property {number} fetchedPagesCount
- * @property {object|Array} data
  * @property {string} bookmark
  * @property {object} [execution_stats]
  * @property {QueryOptions} [options]
+ */
+
+/**
+ * @typedef {object} QueryStateData
+ * @property {object|Array} data
+ */
+
+/**
+ * @typedef {QueryStateWithoutData & QueryStateData} QueryState
  */
 
 /**
@@ -304,11 +312,34 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
- * @typedef {object} UseMutationReturnValue
- * @property {Function} mutate - Function to save the document
+ * @typedef {object} UseMutationWithoutMutate
  * @property {QueryFetchStatus} mutationStatus - Status of the current mutation
  * @property {object} [error] - Error if the mutation failed
  * @property {object} [data] - Data return after the mutation
+ */
+
+/**
+ * @typedef {object} UseMutationMutate
+ * @property {Function} mutate - Function to save the document
+ */
+
+/**
+ * @typedef {UseMutationWithoutMutate & UseMutationMutate} UseMutationReturnValue
+ */
+
+/**
+ * Update the setting with corresponding value and save it.
+ *
+ * @callback SaveSettingFunction
+ * @param {any} value - The new setting's value
+ */
+
+/**
+ * @typedef {object} UseSettingReturnValue
+ * @property {any} value - The setting's value
+ * @property {SaveSettingFunction} save - Function to edit the setting
+ * @property {QueryStateWithoutData} query - Function to edit the setting
+ * @property {UseMutationWithoutMutate} mutation - Status of the current mutation
  */
 
 /**

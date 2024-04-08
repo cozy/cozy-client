@@ -481,7 +481,7 @@ export type IndexedDocuments = {
 export type DocumentsStateSlice = {
     [x: string]: Record<string, CozyClientDocument>;
 };
-export type QueryState = {
+export type QueryStateWithoutData = {
     id: string;
     definition: QueryDefinition;
     fetchStatus: QueryFetchStatus;
@@ -493,11 +493,14 @@ export type QueryState = {
     hasMore: boolean;
     count: number;
     fetchedPagesCount: number;
-    data: object | any[];
     bookmark: string;
     execution_stats?: object;
     options?: QueryOptions;
 };
+export type QueryStateData = {
+    data: object | any[];
+};
+export type QueryState = QueryStateWithoutData & QueryStateData;
 export type AutoUpdateOptions = any;
 export type QueryOptions = {
     /**
@@ -549,12 +552,8 @@ export type FetchMoreAble = {
 export type FetchAble = {
     fetch: Function;
 };
-export type UseQueryReturnValue = QueryState & FetchMoreAble & FetchAble;
-export type UseMutationReturnValue = {
-    /**
-     * - Function to save the document
-     */
-    mutate: Function;
+export type UseQueryReturnValue = QueryStateWithoutData & QueryStateData & FetchMoreAble & FetchAble;
+export type UseMutationWithoutMutate = {
     /**
      * - Status of the current mutation
      */
@@ -567,6 +566,35 @@ export type UseMutationReturnValue = {
      * - Data return after the mutation
      */
     data?: object;
+};
+export type UseMutationMutate = {
+    /**
+     * - Function to save the document
+     */
+    mutate: Function;
+};
+export type UseMutationReturnValue = UseMutationWithoutMutate & UseMutationMutate;
+/**
+ * Update the setting with corresponding value and save it.
+ */
+export type SaveSettingFunction = (value: any) => any;
+export type UseSettingReturnValue = {
+    /**
+     * - The setting's value
+     */
+    value: any;
+    /**
+     * - Function to edit the setting
+     */
+    save: SaveSettingFunction;
+    /**
+     * - Function to edit the setting
+     */
+    query: QueryStateWithoutData;
+    /**
+     * - Status of the current mutation
+     */
+    mutation: UseMutationWithoutMutate;
 };
 /**
  * A reference to a document

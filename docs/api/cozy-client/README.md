@@ -930,6 +930,35 @@ Fetches a queryDefinition and run fetchMore on the query until the query is full
 
 ***
 
+### useSetting
+
+▸ **useSetting**(`slug`, `key`): `UseSettingReturnValue`
+
+Query the cozy-app settings corresponding to the given slug and
+return:
+
+*   the value corresponding to the given `key`
+*   the `save()` method that can be used to edit the setting's value
+*   the query that manages the state during the fetching of the setting
+*   the mutation that manages the state during the saving of the setting
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `slug` | `string` | the cozy-app's slug containing the setting (can be 'instance' for global settings) |
+| `key` | `string` | The name of the setting to retrieve |
+
+*Returns*
+
+`UseSettingReturnValue`
+
+*Defined in*
+
+[packages/cozy-client/src/hooks/useSetting.js:20](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useSetting.js#L20)
+
+***
+
 ### withClient
 
 ▸ **withClient**(`WrappedComponent`): `Function`
