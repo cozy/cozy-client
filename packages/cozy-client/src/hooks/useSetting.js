@@ -21,7 +21,7 @@ export const useSetting = (slug, key) => {
   const query = getQuery(slug)
 
   const { data: settingsData, ...settingsQuery } = useQuery(
-    query.definition(),
+    query.definition,
     query.options
   )
 

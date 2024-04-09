@@ -17,7 +17,7 @@ export const getSetting = async (client, slug, key) => {
   const query = getQuery(slug)
 
   const currentSettingsResult = await client.fetchQueryAndGetFromState({
-    definition: query.definition(),
+    definition: query.definition,
     options: query.options
   })
 
@@ -47,7 +47,7 @@ export const saveAfterFetchSetting = async (
   const query = getQuery(slug)
 
   const currentSettingsResult = await client.fetchQueryAndGetFromState({
-    definition: query.definition(),
+    definition: query.definition,
     options: query.options
   })
 
@@ -143,7 +143,7 @@ export const getQuery = slug => {
 const getRootSettings = slug => {
   const settingsDoctype = getDoctype(slug)
   const query = {
-    definition: () => Q(settingsDoctype).limitBy(1),
+    definition: Q(settingsDoctype).limitBy(1),
     options: {
       as: settingsDoctype,
       fetchPolicy: defaultFetchPolicy,
@@ -158,7 +158,7 @@ const getNestedSettings = slug => {
   const doctype = `io.cozy.settings`
   const subDoctype = getDoctype(slug)
   const query = {
-    definition: () => Q(doctype).getById(subDoctype),
+    definition: Q(doctype).getById(subDoctype),
     options: {
       as: `${doctype}/${subDoctype}`,
       fetchPolicy: defaultFetchPolicy,
