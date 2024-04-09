@@ -905,6 +905,10 @@ client.query(Q('io.cozy.bills'))`)
    * `getQueryFromState` or directly using `<Query />`. `<Query />` automatically
    * executes its query when mounted if no fetch policy has been indicated.
    *
+   * If the query is called under the fetch policy's delay, then the query
+   * is not executed and nothing is returned. If you need a result anyway,
+   * please use `fetchQueryAndGetFromState` instead
+   *
    * @param  {QueryDefinition} queryDefinition - Definition that will be executed
    * @param  {import("./types").QueryOptions} [options] - Options
    * @returns {Promise<import("./types").QueryResult>}
