@@ -543,7 +543,7 @@ export type QueryOptions = {
     singleDocData?: boolean;
 };
 export type Query = {
-    definition: () => QueryDefinition;
+    definition: QueryDefinition;
     options: QueryOptions;
 };
 export type FetchMoreAble = {
