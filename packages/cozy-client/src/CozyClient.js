@@ -17,7 +17,7 @@ import {
   responseToRelationship,
   attachRelationships
 } from './associations/helpers'
-import { dehydrate } from './helpers'
+import { dehydrate, getSetting, saveAfterFetchSetting } from './helpers'
 import { QueryDefinition, Mutations, Q } from './queries/dsl'
 import { authFunction } from './authentication/mobile'
 import optimizeQueryDefinitions from './queries/optimize'
@@ -1748,6 +1748,33 @@ instantiation of the client.`
       ...this.appMetadata,
       ...newAppMetadata
     }
+  }
+
+  /**
+   * Query the cozy-app settings corresponding to the given slug and
+   * extract the value corresponding to the given `key`
+   *
+   * @param {string} slug - the cozy-app's slug containing the setting (can be 'instance' for global settings)
+   * @param {string} key - The name of the setting to retrieve
+   * @returns {Promise<any>} - The value of the requested setting
+   */
+  async getSetting(slug, key) {
+    return getSetting(this, slug, key)
+  }
+
+  /**
+   * Save the given value into the corresponding cozy-app setting
+   *
+   * This methods will first query the cozy-app's settings before injecting the new value and then
+   * save the new resulting settings into database
+   *
+   * @param {string} slug - the cozy-app's slug containing the setting (can be 'instance' for global settings)
+   * @param {string} key - The new value of the setting to save
+   * @param {any | ((oldValue) => any)} valueOrSetter - The new value of the setting to save. It can be the raw value, or a callback that should return a new value
+   * @returns {Promise<any>} - The result of the `client.save()` call
+   */
+  async saveAfterFetchSetting(slug, key, valueOrSetter) {
+    return saveAfterFetchSetting(this, slug, key, valueOrSetter)
   }
 }
 

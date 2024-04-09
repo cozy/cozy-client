@@ -284,6 +284,12 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
+ * @typedef {object} Query
+ * @property {() => QueryDefinition} definition
+ * @property {QueryOptions} options
+ */
+
+/**
  * @typedef {object} FetchMoreAble
  * @property {Function} fetchMore
  */

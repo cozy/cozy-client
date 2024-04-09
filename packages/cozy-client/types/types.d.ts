@@ -539,6 +539,10 @@ export type QueryOptions = {
      */
     singleDocData?: boolean;
 };
+export type Query = {
+    definition: () => QueryDefinition;
+    options: QueryOptions;
+};
 export type FetchMoreAble = {
     fetchMore: Function;
 };
