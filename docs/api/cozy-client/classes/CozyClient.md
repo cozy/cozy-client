@@ -927,6 +927,32 @@ the store up, which in turn will update the `<Query>`s and re-render the data.
 
 ***
 
+### getSetting
+
+▸ **getSetting**(`slug`, `key`): `Promise`<`any`>
+
+Query the cozy-app settings corresponding to the given slug and
+extract the value corresponding to the given `key`
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `slug` | `string` | the cozy-app's slug containing the setting (can be 'instance' for global settings) |
+| `key` | `string` | The name of the setting to retrieve |
+
+*Returns*
+
+`Promise`<`any`>
+
+*   The value of the requested setting
+
+*Defined in*
+
+[packages/cozy-client/src/CozyClient.js:1761](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1761)
+
+***
+
 ### getStackClient
 
 ▸ **getStackClient**(): `any`
@@ -1556,6 +1582,35 @@ Create or update a document on the server
 *Defined in*
 
 [packages/cozy-client/src/CozyClient.js:634](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L634)
+
+***
+
+### saveAfterFetchSetting
+
+▸ **saveAfterFetchSetting**(`slug`, `key`, `valueOrSetter`): `Promise`<`any`>
+
+Save the given value into the corresponding cozy-app setting
+
+This methods will first query the cozy-app's settings before injecting the new value and then
+save the new resulting settings into database
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `slug` | `string` | the cozy-app's slug containing the setting (can be 'instance' for global settings) |
+| `key` | `string` | The new value of the setting to save |
+| `valueOrSetter` | `any` | The new value of the setting to save. It can be the raw value, or a callback that should return a new value |
+
+*Returns*
+
+`Promise`<`any`>
+
+*   The result of the `client.save()` call
+
+*Defined in*
+
+[packages/cozy-client/src/CozyClient.js:1776](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1776)
 
 ***
 

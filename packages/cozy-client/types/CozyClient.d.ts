@@ -713,6 +713,27 @@ declare class CozyClient {
      * @param {import("./types").AppMetadata} newAppMetadata AppMetadata to update
      */
     setAppMetadata(newAppMetadata: import("./types").AppMetadata): void;
+    /**
+     * Query the cozy-app settings corresponding to the given slug and
+     * extract the value corresponding to the given `key`
+     *
+     * @param {string} slug - the cozy-app's slug containing the setting (can be 'instance' for global settings)
+     * @param {string} key - The name of the setting to retrieve
+     * @returns {Promise<any>} - The value of the requested setting
+     */
+    getSetting(slug: string, key: string): Promise<any>;
+    /**
+     * Save the given value into the corresponding cozy-app setting
+     *
+     * This methods will first query the cozy-app's settings before injecting the new value and then
+     * save the new resulting settings into database
+     *
+     * @param {string} slug - the cozy-app's slug containing the setting (can be 'instance' for global settings)
+     * @param {string} key - The new value of the setting to save
+     * @param {any | ((oldValue) => any)} valueOrSetter - The new value of the setting to save. It can be the raw value, or a callback that should return a new value
+     * @returns {Promise<any>} - The result of the `client.save()` call
+     */
+    saveAfterFetchSetting(slug: string, key: string, valueOrSetter: any): Promise<any>;
 }
 declare namespace CozyClient {
     export const hooks: {};
