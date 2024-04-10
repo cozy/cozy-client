@@ -13,7 +13,7 @@ describe('settings', () => {
     it('should get settings for cozy-home', async () => {
       const client = mocks.client()
 
-      client.query.mockResolvedValue({
+      client.fetchQueryAndGetFromState.mockResolvedValue({
         data: [
           {
             some_key: 'some_value'
@@ -32,14 +32,17 @@ describe('settings', () => {
           singleDocData: true
         }
       }
-      expect(client.query).toHaveBeenCalledWith(query.definition, query.options)
+      expect(client.fetchQueryAndGetFromState).toHaveBeenCalledWith({
+        definition: query.definition,
+        options: query.options
+      })
       expect(result).toEqual('some_value')
     })
 
     it('should get settings for mespapiers', async () => {
       const client = mocks.client()
 
-      client.query.mockResolvedValue({
+      client.fetchQueryAndGetFromState.mockResolvedValue({
         data: [
           {
             some_mespapiers_key: 'some_mespapiers_value'
@@ -62,14 +65,17 @@ describe('settings', () => {
           singleDocData: true
         }
       }
-      expect(client.query).toHaveBeenCalledWith(query.definition, query.options)
+      expect(client.fetchQueryAndGetFromState).toHaveBeenCalledWith({
+        definition: query.definition,
+        options: query.options
+      })
       expect(result).toEqual('some_mespapiers_value')
     })
 
     it('should get settings for instance', async () => {
       const client = mocks.client()
 
-      client.query.mockResolvedValue({
+      client.fetchQueryAndGetFromState.mockResolvedValue({
         data: [
           {
             some_global_key: 'some_global_value'
@@ -88,14 +94,17 @@ describe('settings', () => {
           singleDocData: true
         }
       }
-      expect(client.query).toHaveBeenCalledWith(query.definition, query.options)
+      expect(client.fetchQueryAndGetFromState).toHaveBeenCalledWith({
+        definition: query.definition,
+        options: query.options
+      })
       expect(result).toEqual('some_global_value')
     })
 
     it('should get settings for passwords', async () => {
       const client = mocks.client()
 
-      client.query.mockResolvedValue({
+      client.fetchQueryAndGetFromState.mockResolvedValue({
         data: [
           {
             some_pass_key: 'some_pass_value'
@@ -114,7 +123,10 @@ describe('settings', () => {
           singleDocData: true
         }
       }
-      expect(client.query).toHaveBeenCalledWith(query.definition, query.options)
+      expect(client.fetchQueryAndGetFromState).toHaveBeenCalledWith({
+        definition: query.definition,
+        options: query.options
+      })
       expect(result).toEqual('some_pass_value')
     })
   })
@@ -123,7 +135,7 @@ describe('settings', () => {
     it('should set settings for instance', async () => {
       const client = mocks.client()
 
-      client.query.mockResolvedValue({
+      client.fetchQueryAndGetFromState.mockResolvedValue({
         data: [
           {
             id: 'io.cozy.settings.instance',
@@ -159,7 +171,10 @@ describe('settings', () => {
           singleDocData: true
         }
       }
-      expect(client.query).toHaveBeenCalledWith(query.definition, query.options)
+      expect(client.fetchQueryAndGetFromState).toHaveBeenCalledWith({
+        definition: query.definition,
+        options: query.options
+      })
       expect(client.save).toHaveBeenCalledWith({
         id: 'io.cozy.settings.instance',
         _id: 'io.cozy.settings.instance',
@@ -181,7 +196,7 @@ describe('settings', () => {
     it('should set settings for passwords', async () => {
       const client = mocks.client()
 
-      client.query.mockResolvedValue({
+      client.fetchQueryAndGetFromState.mockResolvedValue({
         data: [
           {
             _type: 'io.cozy.passwords.settings',
@@ -206,7 +221,10 @@ describe('settings', () => {
           singleDocData: true
         }
       }
-      expect(client.query).toHaveBeenCalledWith(query.definition, query.options)
+      expect(client.fetchQueryAndGetFromState).toHaveBeenCalledWith({
+        definition: query.definition,
+        options: query.options
+      })
       expect(client.save).toHaveBeenCalledWith({
         _type: 'io.cozy.passwords.settings',
         some_pass_key: 'some_new_pass_value'
@@ -216,7 +234,7 @@ describe('settings', () => {
     it('should set settings for passwords even if key does not exist', async () => {
       const client = mocks.client()
 
-      client.query.mockResolvedValue({
+      client.fetchQueryAndGetFromState.mockResolvedValue({
         data: [
           {
             _type: 'io.cozy.passwords.settings',
@@ -241,7 +259,10 @@ describe('settings', () => {
           singleDocData: true
         }
       }
-      expect(client.query).toHaveBeenCalledWith(query.definition, query.options)
+      expect(client.fetchQueryAndGetFromState).toHaveBeenCalledWith({
+        definition: query.definition,
+        options: query.options
+      })
       expect(client.save).toHaveBeenCalledWith({
         _type: 'io.cozy.passwords.settings',
         some_existing_pass_key: 'some_pass_value',
@@ -252,7 +273,7 @@ describe('settings', () => {
     it('should set settings for passwords using method', async () => {
       const client = mocks.client()
 
-      client.query.mockResolvedValue({
+      client.fetchQueryAndGetFromState.mockResolvedValue({
         data: [
           {
             _type: 'io.cozy.passwords.settings',
@@ -277,7 +298,10 @@ describe('settings', () => {
           singleDocData: true
         }
       }
-      expect(client.query).toHaveBeenCalledWith(query.definition, query.options)
+      expect(client.fetchQueryAndGetFromState).toHaveBeenCalledWith({
+        definition: query.definition,
+        options: query.options
+      })
       expect(client.save).toHaveBeenCalledWith({
         _type: 'io.cozy.passwords.settings',
         some_pass_key: 2

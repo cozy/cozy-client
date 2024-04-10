@@ -22,7 +22,8 @@ export const client = implementations => {
     makeObservableQuery: jest.fn(),
     requestQuery: jest.fn(),
     all: jest.fn(),
-    setStore: jest.fn()
+    setStore: jest.fn(),
+    fetchQueryAndGetFromState: jest.fn()
   }
   mockImplementations(base, implementations)
   return base

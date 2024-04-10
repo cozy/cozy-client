@@ -8,6 +8,7 @@ export function client(implementations: any): {
     requestQuery: jest.Mock<any, any>;
     all: jest.Mock<any, any>;
     setStore: jest.Mock<any, any>;
+    fetchQueryAndGetFromState: jest.Mock<any, any>;
 };
 export function observableQuery(implementations: any): {
     currentResult: jest.Mock<any, any>;
