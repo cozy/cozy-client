@@ -16,10 +16,10 @@ const defaultFetchPolicy = fetchPolicies.olderThan(60 * 60 * 1000)
 export const getSetting = async (client, slug, key) => {
   const query = getQuery(slug)
 
-  const currentSettingsResult = await client.query(
-    query.definition(),
-    query.options
-  )
+  const currentSettingsResult = await client.fetchQueryAndGetFromState({
+    definition: query.definition(),
+    options: query.options
+  })
 
   const currentSettings = normalizeSettings(currentSettingsResult.data)
 
@@ -46,10 +46,10 @@ export const saveAfterFetchSetting = async (
 ) => {
   const query = getQuery(slug)
 
-  const currentSettingsResult = await client.query(
-    query.definition(),
-    query.options
-  )
+  const currentSettingsResult = await client.fetchQueryAndGetFromState({
+    definition: query.definition(),
+    options: query.options
+  })
 
   const currentSettings = normalizeSettings(currentSettingsResult.data)
 
