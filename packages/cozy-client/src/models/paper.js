@@ -212,17 +212,19 @@ export const isExpiringSoon = file => {
 /**
  * @param {Object} params -
  * @param {Object} params.metadata - An io.cozy.files metadata object
- * @param {string} params.knownMetadataName - Name of the metadata
+ * @param {string} params.knownMetadataPath - Path of the metadata
  * @param {string | null} [params.value] - Value of the metadata
  * @returns {{ name: string, value: string | null }} displayable metadata
  */
-const makeMetadataQualification = ({ metadata, knownMetadataName, value }) => {
-  const _value = value || get(metadata, knownMetadataName, null)
-  const shouldReturnThisMetadata = !!_value
+const makeMetadataQualification = ({ metadata, knownMetadataPath, value }) => {
+  const _value = value || get(metadata, knownMetadataPath, null) || null
+  const shouldReturnThisMetadata = Object.keys(metadata).some(val =>
+    knownMetadataPath.startsWith(val)
+  )
 
-  if (shouldReturnThisMetadata || knownMetadataName === 'contact') {
+  if (shouldReturnThisMetadata || knownMetadataPath === 'contact') {
     return {
-      name: knownMetadataName,
+      name: knownMetadataPath,
       value: _value
     }
   }
@@ -237,7 +239,7 @@ const makeMetadataQualification = ({ metadata, knownMetadataName, value }) => {
  */
 export const formatMetadataQualification = metadata => {
   const dates = KNOWN_DATE_METADATA_NAMES.map(dateName =>
-    makeMetadataQualification({ metadata, knownMetadataName: dateName })
+    makeMetadataQualification({ metadata, knownMetadataPath: dateName })
   )
     .filter(Boolean)
     .filter((data, _, arr) => {
@@ -246,7 +248,7 @@ export const formatMetadataQualification = metadata => {
     })
 
   const informations = KNOWN_INFORMATION_METADATA_NAMES.map(infoName =>
-    makeMetadataQualification({ metadata, knownMetadataName: infoName })
+    makeMetadataQualification({ metadata, knownMetadataPath: infoName })
   ).filter(Boolean)
 
   const others = KNOWN_OTHER_METADATA_NAMES.map(otherName => {
@@ -257,7 +259,7 @@ export const formatMetadataQualification = metadata => {
 
     return makeMetadataQualification({
       metadata,
-      knownMetadataName: otherName,
+      knownMetadataPath: otherName,
       value
     })
   }).filter(Boolean)
