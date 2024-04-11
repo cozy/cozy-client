@@ -196,7 +196,8 @@ describe('Expiration', () => {
         datetime: '2029-12-10T23:00:00.000Z',
         qualification: { label: 'fake_label' },
         page: 'front',
-        contact: 'Alice Durand'
+        contact: 'Alice Durand',
+        noticePeriod: ''
       }
 
       const computedMetadata = [
@@ -210,6 +211,7 @@ describe('Expiration', () => {
         { name: 'shootingDate', value: '2029-12-08T23:00:00.000Z' },
         { name: 'date', value: '2029-12-09T23:00:00.000Z' },
         { name: 'number', value: '111111' },
+        { name: 'noticePeriod', value: null },
         { name: 'contact', value: 'Alice Durand' },
         { name: 'page', value: 'front' },
         { name: 'qualification', value: 'fake_label' }
