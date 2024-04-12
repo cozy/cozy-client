@@ -129,6 +129,40 @@ describe('settings', () => {
       })
       expect(result).toEqual('some_pass_value')
     })
+
+    it('should return undefined if no setting is found in database', async () => {
+      const client = mocks.client()
+
+      client.fetchQueryAndGetFromState.mockResolvedValue({
+        data: [
+          {
+            some_other_key: 'some_other_value'
+          }
+        ]
+      })
+
+      // @ts-ignore
+      const result = await getSetting(client, 'home', 'some_key')
+
+      expect(result).toBeUndefined()
+    })
+
+    it('should return defaultValue if corresponding parameter is passed and no setting is found in database', async () => {
+      const client = mocks.client()
+
+      client.fetchQueryAndGetFromState.mockResolvedValue({
+        data: [
+          {
+            some_other_key: 'some_other_value'
+          }
+        ]
+      })
+
+      // @ts-ignore
+      const result = await getSetting(client, 'home', 'some_key', 0)
+
+      expect(result).toEqual(0)
+    })
   })
 
   describe('saveAfterFetchSetting', () => {

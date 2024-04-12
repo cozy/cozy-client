@@ -4,6 +4,7 @@ import { editSettings, getQuery, normalizeSettings } from '../helpers'
 
 import { useMutation } from './useMutation'
 import useQuery from './useQuery'
+import { hasQueryBeenLoaded } from '../utils'
 
 /**
  * Query the cozy-app settings corresponding to the given slug and
@@ -15,9 +16,10 @@ import useQuery from './useQuery'
  *
  * @param {string} slug - the cozy-app's slug containing the setting (can be 'instance' for global settings)
  * @param {string} key - The name of the setting to retrieve
+ * @param {any} [defaultValue] - The default value of the setting if it does not exist
  * @returns {import("../types").UseSettingReturnValue}
  */
-export const useSetting = (slug, key) => {
+export const useSetting = (slug, key, defaultValue = undefined) => {
   const query = getQuery(slug)
 
   const { data: settingsData, ...settingsQuery } = useQuery(
@@ -40,9 +42,13 @@ export const useSetting = (slug, key) => {
 
   const settings = normalizeSettings(settingsData)
 
+  const settingValue = hasQueryBeenLoaded(settingsQuery)
+    ? settings?.[key] ?? defaultValue
+    : undefined
+
   return {
     query: settingsQuery,
-    value: settings?.[key],
+    value: settingValue,
     save,
     mutation
   }
