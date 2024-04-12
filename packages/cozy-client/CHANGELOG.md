@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [46.6.1](https://github.com/cozy/cozy-client/compare/v46.6.0...v46.6.1) (2024-04-12)
+
+
+### Bug Fixes
+
+* Metadata present but whose value is not specified ([cbe12b7](https://github.com/cozy/cozy-client/commit/cbe12b79b0dfc626e86691ff763fd78dd7e0a658))
+
+
+
+
+
 # [46.6.0](https://github.com/cozy/cozy-client/compare/v46.5.0...v46.6.0) (2024-04-05)
 
 
