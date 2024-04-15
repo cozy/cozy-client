@@ -11,15 +11,9 @@ const defaultFetchPolicy = fetchPolicies.olderThan(60 * 60 * 1000)
  * @param {CozyClient} client - Cozy client instance
  * @param {string} slug - the cozy-app's slug containing the setting (can be 'instance' for global settings)
  * @param {string} key - The name of the setting to retrieve
- * @param {any} [defaultValue] - The default value of the setting if it does not exist
  * @returns {Promise<any>} - The value of the requested setting
  */
-export const getSetting = async (
-  client,
-  slug,
-  key,
-  defaultValue = undefined
-) => {
+export const getSetting = async (client, slug, key) => {
   const query = getQuery(slug)
 
   const currentSettingsResult = await client.fetchQueryAndGetFromState({
@@ -29,7 +23,7 @@ export const getSetting = async (
 
   const currentSettings = normalizeSettings(currentSettingsResult.data)
 
-  return currentSettings[key] ?? defaultValue
+  return currentSettings[key]
 }
 
 /**

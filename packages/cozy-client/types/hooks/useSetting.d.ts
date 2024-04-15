@@ -1,1 +1,1 @@
-export function useSetting(slug: string, key: string, defaultValue?: any): import("../types").UseSettingReturnValue;
+export function useSetting(slug: string, key: string): import("../types").UseSettingReturnValue;
