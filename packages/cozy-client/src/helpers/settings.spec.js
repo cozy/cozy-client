@@ -1,15 +1,15 @@
 import {
   editSettings,
-  getSetting,
+  getSettings,
   normalizeSettings,
-  saveAfterFetchSetting
+  saveAfterFetchSettings
 } from './settings'
 import { Q } from '../queries/dsl'
 
 import * as mocks from '../__tests__/mocks'
 
 describe('settings', () => {
-  describe('getSetting', () => {
+  describe('getSettings', () => {
     it('should get settings for cozy-home', async () => {
       const client = mocks.client()
 
@@ -22,7 +22,7 @@ describe('settings', () => {
       })
 
       // @ts-ignore
-      const result = await getSetting(client, 'home', 'some_key')
+      const result = await getSettings(client, 'home', ['some_key'])
 
       const query = {
         definition: Q('io.cozy.home.settings').limitBy(1),
@@ -36,7 +36,7 @@ describe('settings', () => {
         definition: query.definition,
         options: query.options
       })
-      expect(result).toEqual('some_value')
+      expect(result.some_key).toEqual('some_value')
     })
 
     it('should get settings for mespapiers', async () => {
@@ -50,11 +50,11 @@ describe('settings', () => {
         ]
       })
 
-      const result = await getSetting(
+      const result = await getSettings(
         // @ts-ignore
         client,
         'mespapiers',
-        'some_mespapiers_key'
+        ['some_mespapiers_key']
       )
 
       const query = {
@@ -69,7 +69,7 @@ describe('settings', () => {
         definition: query.definition,
         options: query.options
       })
-      expect(result).toEqual('some_mespapiers_value')
+      expect(result.some_mespapiers_key).toEqual('some_mespapiers_value')
     })
 
     it('should get settings for instance', async () => {
@@ -84,7 +84,7 @@ describe('settings', () => {
       })
 
       // @ts-ignore
-      const result = await getSetting(client, 'instance', 'some_global_key')
+      const result = await getSettings(client, 'instance', ['some_global_key'])
 
       const query = {
         definition: Q('io.cozy.settings').getById('io.cozy.settings.instance'),
@@ -98,7 +98,7 @@ describe('settings', () => {
         definition: query.definition,
         options: query.options
       })
-      expect(result).toEqual('some_global_value')
+      expect(result.some_global_key).toEqual('some_global_value')
     })
 
     it('should get settings for passwords', async () => {
@@ -113,7 +113,7 @@ describe('settings', () => {
       })
 
       // @ts-ignore
-      const result = await getSetting(client, 'passwords', 'some_pass_key')
+      const result = await getSettings(client, 'passwords', ['some_pass_key'])
 
       const query = {
         definition: Q('io.cozy.settings').getById('io.cozy.settings.bitwarden'),
@@ -127,7 +127,7 @@ describe('settings', () => {
         definition: query.definition,
         options: query.options
       })
-      expect(result).toEqual('some_pass_value')
+      expect(result.some_pass_key).toEqual('some_pass_value')
     })
 
     it('should return undefined if no setting is found in database', async () => {
@@ -142,13 +142,50 @@ describe('settings', () => {
       })
 
       // @ts-ignore
-      const result = await getSetting(client, 'home', 'some_key')
+      const result = await getSettings(client, 'home', ['some_key'])
 
-      expect(result).toBeUndefined()
+      expect(result.some_key).toBeUndefined()
+    })
+
+    it('should get settings for multiple keys', async () => {
+      const client = mocks.client()
+
+      client.fetchQueryAndGetFromState.mockResolvedValue({
+        data: [
+          {
+            some_key_1: 'some_value_1',
+            some_key_2: 'some_value_2',
+            some_key_3: 'some_value_3'
+          }
+        ]
+      })
+
+      // @ts-ignore
+      const result = await getSettings(client, 'home', [
+        'some_key_1',
+        'some_key_2'
+      ])
+
+      const query = {
+        definition: Q('io.cozy.home.settings').limitBy(1),
+        options: {
+          as: 'io.cozy.home.settings',
+          fetchPolicy: expect.anything(),
+          singleDocData: true
+        }
+      }
+      expect(client.fetchQueryAndGetFromState).toHaveBeenCalledWith({
+        definition: query.definition,
+        options: query.options
+      })
+      expect(result.some_key_1).toEqual('some_value_1')
+      expect(result.some_key_2).toEqual('some_value_2')
+      // @ts-ignore
+      expect(result.some_key_3).toBeUndefined()
     })
   })
 
-  describe('saveAfterFetchSetting', () => {
+  describe('saveAfterFetchSettings', () => {
     it('should set settings for instance', async () => {
       const client = mocks.client()
 
@@ -172,12 +209,13 @@ describe('settings', () => {
         ]
       })
 
-      await saveAfterFetchSetting(
+      await saveAfterFetchSettings(
         // @ts-ignore
         client,
         'instance',
-        'some_instance_key',
-        'some_new_instance_value'
+        {
+          some_instance_key: 'some_new_instance_value'
+        }
       )
 
       const query = {
@@ -222,12 +260,11 @@ describe('settings', () => {
         ]
       })
 
-      await saveAfterFetchSetting(
+      await saveAfterFetchSettings(
         // @ts-ignore
         client,
         'passwords',
-        'some_pass_key',
-        'some_new_pass_value'
+        { some_pass_key: 'some_new_pass_value' }
       )
 
       const query = {
@@ -260,12 +297,11 @@ describe('settings', () => {
         ]
       })
 
-      await saveAfterFetchSetting(
+      await saveAfterFetchSettings(
         // @ts-ignore
         client,
         'passwords',
-        'some_new_pass_key',
-        'some_new_pass_value'
+        { some_new_pass_key: 'some_new_pass_value' }
       )
 
       const query = {
@@ -299,12 +335,15 @@ describe('settings', () => {
         ]
       })
 
-      await saveAfterFetchSetting(
+      await saveAfterFetchSettings(
         // @ts-ignore
         client,
         'passwords',
-        'some_pass_key',
-        currentValue => currentValue + 1
+        currentValue => ({
+          ...currentValue,
+          some_pass_key: currentValue.some_pass_key + 1
+        }),
+        ['some_pass_key']
       )
 
       const query = {
@@ -403,8 +442,7 @@ describe('settings', () => {
           _type: 'io.cozy.passwords.settings',
           some_pass_key: 'some_pass_value'
         },
-        'some_pass_key',
-        'some_new_pass_value'
+        { some_pass_key: 'some_new_pass_value' }
       )
 
       expect(result).toStrictEqual({
@@ -431,8 +469,7 @@ describe('settings', () => {
           some_setting: 'some_setting_value',
           some_instance_key: 'some_instance_value'
         },
-        'some_instance_key',
-        'some_new_instance_value'
+        { some_instance_key: 'some_new_instance_value' }
       )
 
       expect(result).toStrictEqual({

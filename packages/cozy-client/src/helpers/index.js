@@ -15,7 +15,7 @@ export { dehydrate } from './dehydrateHelper'
 export {
   editSettings,
   getQuery,
-  getSetting,
+  getSettings,
   normalizeSettings,
-  saveAfterFetchSetting
+  saveAfterFetchSettings
 } from './settings'
