@@ -6,14 +6,16 @@ const defaultFetchPolicy = fetchPolicies.olderThan(60 * 60 * 1000)
 
 /**
  * Query the cozy-app settings corresponding to the given slug and
- * extract the value corresponding to the given `key`
+ * extract the values corresponding to the given `keys`
+ *
+ * @template {string} T
  *
  * @param {CozyClient} client - Cozy client instance
  * @param {string} slug - the cozy-app's slug containing the setting (can be 'instance' for global settings)
- * @param {string} key - The name of the setting to retrieve
- * @returns {Promise<any>} - The value of the requested setting
+ * @param {T[]} keys - The names of the settings to retrieve
+ * @returns {Promise<Record<T, any>>} - The values of the requested settings
  */
-export const getSetting = async (client, slug, key) => {
+export const getSettings = async (client, slug, keys) => {
   const query = getQuery(slug)
 
   const currentSettingsResult = await client.fetchQueryAndGetFromState({
@@ -23,7 +25,8 @@ export const getSetting = async (client, slug, key) => {
 
   const currentSettings = normalizeSettings(currentSettingsResult.data)
 
-  return currentSettings[key]
+  // @ts-ignore
+  return extractKeys(currentSettings, keys)
 }
 
 /**
@@ -32,17 +35,19 @@ export const getSetting = async (client, slug, key) => {
  * This methods will first query the cozy-app's settings before injecting the new value and then
  * save the new resulting settings into database
  *
+ * @template {string} T
+ *
  * @param {CozyClient} client - Cozy client instance
  * @param {string} slug - the cozy-app's slug containing the setting (can be 'instance' for global settings)
- * @param {string} key - The new value of the setting to save
- * @param {any | ((oldValue) => any)} valueOrSetter - The new value of the setting to save. It can be the raw value, or a callback that should return a new value
+ * @param {Record<string, any> | ((oldValue) => Record<T, any>)} itemsOrSetter - The new values of the settings to save. It can be a raw dictionnary, or a callback that should return a new dictionnary
+ * @param {T[]=} setterKeys - The new values of the settings to save. It can be a raw dictionnary, or a callback that should return a new dictionnary
  * @returns {Promise<any>} - The result of the `client.save()` call
  */
-export const saveAfterFetchSetting = async (
+export const saveAfterFetchSettings = async (
   client,
   slug,
-  key,
-  valueOrSetter
+  itemsOrSetter,
+  setterKeys
 ) => {
   const query = getQuery(slug)
 
@@ -53,14 +58,22 @@ export const saveAfterFetchSetting = async (
 
   const currentSettings = normalizeSettings(currentSettingsResult.data)
 
-  let value = undefined
-  if (typeof valueOrSetter === 'function') {
-    value = valueOrSetter(currentSettings[key])
+  let items = undefined
+  if (typeof itemsOrSetter === 'function') {
+    const currentItems = extractKeys(currentSettings, setterKeys)
+    items = itemsOrSetter(currentItems)
   } else {
-    value = valueOrSetter
+    const currentItems = extractKeys(
+      currentSettings,
+      Object.keys(itemsOrSetter)
+    )
+    items = {
+      ...currentItems,
+      ...itemsOrSetter
+    }
   }
 
-  const newSettings = editSettings(slug, currentSettings, key, value)
+  const newSettings = editSettings(slug, currentSettings, items)
 
   return await client.save(newSettings)
 }
@@ -85,41 +98,70 @@ export const normalizeSettings = data => {
  *
  * @param {string} slug - the cozy-app's slug containing the setting (can be 'instance' for global settings)
  * @param {Object} currentSettings - the Setting object (ideally from a `client.query()` or a `useQuery()` and normalized using `normalizeSettings`)
- * @param {string} key - The name of the setting to edit
- * @param {any} value - The new value for the setting
+ * @param {Record<string, unknown>} items - The new values for the settings
  * @returns {Object} a new Setting object containing the new value
  */
-export const editSettings = (slug, currentSettings, key, value) => {
+export const editSettings = (slug, currentSettings, items) => {
   const type = getDoctype(slug)
 
   const newSettings =
     slug === 'instance'
-      ? mergeInstance(currentSettings, key, value)
-      : mergeSettings(currentSettings, type, key, value)
+      ? mergeInstance(currentSettings, items)
+      : mergeSettings(currentSettings, type, items)
 
   return newSettings
 }
 
-const mergeInstance = (currentSettings, key, value) => {
-  return {
+const mergeInstance = (currentSettings, items) => {
+  const newSettings = {
     _id: currentSettings._id,
     _type: currentSettings._type,
     _rev: currentSettings.meta.rev,
     ...currentSettings,
     attributes: {
-      ...currentSettings.attributes,
-      [key]: value
-    },
-    [key]: value
+      ...currentSettings.attributes
+    }
   }
+
+  for (const [key, value] of Object.entries(items)) {
+    newSettings[key] = value
+    newSettings.attributes[key] = value
+  }
+
+  return newSettings
 }
 
-const mergeSettings = (currentSettings, type, key, value) => {
-  return {
+const mergeSettings = (currentSettings, type, items) => {
+  const newSettings = {
     _type: type,
-    ...currentSettings,
-    [key]: value
+    ...currentSettings
   }
+
+  for (const [key, value] of Object.entries(items)) {
+    newSettings[key] = value
+  }
+
+  return newSettings
+}
+
+/**
+ * Extract values from given settings for requested keys
+ *
+ * @template {string} T
+ *
+ * @param {Record<T, any>} settings - the Setting object (ideally from a `client.query()` or a `useQuery()` and normalized using `normalizeSettings`)
+ * @param {T[]} keys - The names of the settings to extract
+ * @returns {Record<T, any>} - Dictionnary containing the values for the requested keys
+ */
+export const extractKeys = (settings, keys) => {
+  let result = {}
+  for (const key of keys) {
+    // @ts-ignore
+    result[key] = settings[key]
+  }
+
+  // @ts-ignore
+  return result
 }
 
 /**

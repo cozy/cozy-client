@@ -5,20 +5,23 @@ import { editSettings, getQuery, normalizeSettings } from '../helpers'
 import { useMutation } from './useMutation'
 import useQuery from './useQuery'
 import { hasQueryBeenLoaded } from '../utils'
+import { extractKeys } from '../helpers/settings'
 
 /**
  * Query the cozy-app settings corresponding to the given slug and
  * return:
- * - the value corresponding to the given `key`
+ * - the values corresponding to the given `keys`
  * - the `save()` method that can be used to edit the setting's value
  * - the query that manages the state during the fetching of the setting
  * - the mutation that manages the state during the saving of the setting
  *
+ * @template {string} T
+ *
  * @param {string} slug - the cozy-app's slug containing the setting (can be 'instance' for global settings)
- * @param {string} key - The name of the setting to retrieve
- * @returns {import("../types").UseSettingReturnValue}
+ * @param {T[]} keys - The name of the setting to retrieve
+ * @returns {import("../types").UseSettingsReturnValue<T>}
  */
-export const useSetting = (slug, key) => {
+export const useSettings = (slug, keys) => {
   const query = getQuery(slug)
 
   const { data: settingsData, ...settingsQuery } = useQuery(
@@ -29,25 +32,25 @@ export const useSetting = (slug, key) => {
   const { mutate, ...mutation } = useMutation()
 
   const save = useCallback(
-    value => {
+    items => {
       const settings = normalizeSettings(settingsData)
 
-      const newSettings = editSettings(slug, settings, key, value)
+      const newSettings = editSettings(slug, settings, items)
 
       return mutate(newSettings)
     },
-    [key, mutate, settingsData, slug]
+    [mutate, settingsData, slug]
   )
 
   const settings = normalizeSettings(settingsData)
 
   const settingValue = hasQueryBeenLoaded(settingsQuery)
-    ? settings?.[key]
+    ? extractKeys(settings, keys)
     : undefined
 
   return {
     query: settingsQuery,
-    value: settingValue,
+    values: settingValue,
     save,
     mutation
   }

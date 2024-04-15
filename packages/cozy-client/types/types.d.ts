@@ -577,16 +577,16 @@ export type UseMutationReturnValue = UseMutationWithoutMutate & UseMutationMutat
 /**
  * Update the setting with corresponding value and save it.
  */
-export type SaveSettingFunction = (value: any) => any;
-export type UseSettingReturnValue = {
+export type SaveSettingsFunction<T extends string> = (items: Partial<Record<T, any>>) => any;
+export type UseSettingsReturnValue<T extends string> = {
     /**
      * - The setting's value
      */
-    value: any;
+    values: Record<T, any>;
     /**
      * - Function to edit the setting
      */
-    save: SaveSettingFunction;
+    save: SaveSettingsFunction<T>;
     /**
      * - Function to edit the setting
      */

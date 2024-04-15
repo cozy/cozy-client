@@ -927,19 +927,25 @@ the store up, which in turn will update the `<Query>`s and re-render the data.
 
 ***
 
-### getSetting
+### getSettings
 
-▸ **getSetting**(`slug`, `key`): `Promise`<`any`>
+▸ **getSettings**<`T`>(`slug`, `keys`): `Promise`<`any`>
 
 Query the cozy-app settings corresponding to the given slug and
 extract the value corresponding to the given `key`
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends `string` |
 
 *Parameters*
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `slug` | `string` | the cozy-app's slug containing the setting (can be 'instance' for global settings) |
-| `key` | `string` | The name of the setting to retrieve |
+| `keys` | `T`\[] | The names of the settings to retrieve |
 
 *Returns*
 
@@ -949,7 +955,7 @@ extract the value corresponding to the given `key`
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1765](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1765)
+[packages/cozy-client/src/CozyClient.js:1767](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1767)
 
 ***
 
@@ -1589,22 +1595,28 @@ Create or update a document on the server
 
 ***
 
-### saveAfterFetchSetting
+### saveAfterFetchSettings
 
-▸ **saveAfterFetchSetting**(`slug`, `key`, `valueOrSetter`): `Promise`<`any`>
+▸ **saveAfterFetchSettings**<`T`>(`slug`, `itemsOrSetter`, `setterKeys`): `Promise`<`any`>
 
 Save the given value into the corresponding cozy-app setting
 
 This methods will first query the cozy-app's settings before injecting the new value and then
 save the new resulting settings into database
 
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends `string` |
+
 *Parameters*
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `slug` | `string` | the cozy-app's slug containing the setting (can be 'instance' for global settings) |
-| `key` | `string` | The new value of the setting to save |
-| `valueOrSetter` | `any` | The new value of the setting to save. It can be the raw value, or a callback that should return a new value |
+| `itemsOrSetter` | `Record`<`string`, `any`> | (`oldValue`: `any`) => `Record`<`T`, `any`> | The new values of the settings to save. It can be a raw dictionnary, or a callback that should return a new dictionnary |
+| `setterKeys` | `T`\[] | The new values of the settings to save. It can be a raw dictionnary, or a callback that should return a new dictionnary |
 
 *Returns*
 
@@ -1614,7 +1626,7 @@ save the new resulting settings into database
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1780](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1780)
+[packages/cozy-client/src/CozyClient.js:1784](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1784)
 
 ***
 

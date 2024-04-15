@@ -1,1 +1,1 @@
-export function useSetting(slug: string, key: string): import("../types").UseSettingReturnValue;
+export function useSettings<T extends string>(slug: string, keys: T[]): import("../types").UseSettingsReturnValue<T>;

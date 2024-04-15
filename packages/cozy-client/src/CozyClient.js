@@ -17,7 +17,7 @@ import {
   responseToRelationship,
   attachRelationships
 } from './associations/helpers'
-import { dehydrate, getSetting, saveAfterFetchSetting } from './helpers'
+import { dehydrate, getSettings, saveAfterFetchSettings } from './helpers'
 import { QueryDefinition, Mutations, Q } from './queries/dsl'
 import { authFunction } from './authentication/mobile'
 import optimizeQueryDefinitions from './queries/optimize'
@@ -1758,12 +1758,14 @@ instantiation of the client.`
    * Query the cozy-app settings corresponding to the given slug and
    * extract the value corresponding to the given `key`
    *
+   * @template {string} T
+   *
    * @param {string} slug - the cozy-app's slug containing the setting (can be 'instance' for global settings)
-   * @param {string} key - The name of the setting to retrieve
+   * @param {T[]} keys - The names of the settings to retrieve
    * @returns {Promise<any>} - The value of the requested setting
    */
-  async getSetting(slug, key) {
-    return getSetting(this, slug, key)
+  async getSettings(slug, keys) {
+    return getSettings(this, slug, keys)
   }
 
   /**
@@ -1772,13 +1774,15 @@ instantiation of the client.`
    * This methods will first query the cozy-app's settings before injecting the new value and then
    * save the new resulting settings into database
    *
+   * @template {string} T
+   *
    * @param {string} slug - the cozy-app's slug containing the setting (can be 'instance' for global settings)
-   * @param {string} key - The new value of the setting to save
-   * @param {any | ((oldValue) => any)} valueOrSetter - The new value of the setting to save. It can be the raw value, or a callback that should return a new value
+   * @param {Record<string, any> | ((oldValue) => Record<T, any>)} itemsOrSetter - The new values of the settings to save. It can be a raw dictionnary, or a callback that should return a new dictionnary
+   * @param {T[]=} setterKeys - The new values of the settings to save. It can be a raw dictionnary, or a callback that should return a new dictionnary
    * @returns {Promise<any>} - The result of the `client.save()` call
    */
-  async saveAfterFetchSetting(slug, key, valueOrSetter) {
-    return saveAfterFetchSetting(this, slug, key, valueOrSetter)
+  async saveAfterFetchSettings(slug, itemsOrSetter, setterKeys) {
+    return saveAfterFetchSettings(this, slug, itemsOrSetter, setterKeys)
   }
 }
 

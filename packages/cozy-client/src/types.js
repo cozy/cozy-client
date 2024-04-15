@@ -330,14 +330,17 @@ import { QueryDefinition } from './queries/dsl'
 /**
  * Update the setting with corresponding value and save it.
  *
- * @callback SaveSettingFunction
- * @param {any} value - The new setting's value
+ * @template {string} T
+ *
+ * @callback SaveSettingsFunction
+ * @param {Partial<Record<T, any>>} items - The new setting's value
  */
 
 /**
- * @typedef {object} UseSettingReturnValue
- * @property {any} value - The setting's value
- * @property {SaveSettingFunction} save - Function to edit the setting
+ * @template {string} T
+ * @typedef {object} UseSettingsReturnValue
+ * @property {Record<T, any> | undefined} values - The setting's value
+ * @property {SaveSettingsFunction<T>} save - Function to edit the setting
  * @property {QueryStateWithoutData} query - Function to edit the setting
  * @property {UseMutationWithoutMutate} mutation - Status of the current mutation
  */
