@@ -932,7 +932,7 @@ Fetches a queryDefinition and run fetchMore on the query until the query is full
 
 ### useSetting
 
-▸ **useSetting**(`slug`, `key`, `defaultValue?`): `UseSettingReturnValue`
+▸ **useSetting**(`slug`, `key`): `UseSettingReturnValue`
 
 Query the cozy-app settings corresponding to the given slug and
 return:
@@ -944,11 +944,10 @@ return:
 
 *Parameters*
 
-| Name | Type | Default value | Description |
-| :------ | :------ | :------ | :------ |
-| `slug` | `string` | `undefined` | the cozy-app's slug containing the setting (can be 'instance' for global settings) |
-| `key` | `string` | `undefined` | The name of the setting to retrieve |
-| `defaultValue` | `any` | `undefined` | - |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `slug` | `string` | the cozy-app's slug containing the setting (can be 'instance' for global settings) |
+| `key` | `string` | The name of the setting to retrieve |
 
 *Returns*
 
@@ -956,7 +955,7 @@ return:
 
 *Defined in*
 
-[packages/cozy-client/src/hooks/useSetting.js:22](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useSetting.js#L22)
+[packages/cozy-client/src/hooks/useSetting.js:21](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useSetting.js#L21)
 
 ***
 

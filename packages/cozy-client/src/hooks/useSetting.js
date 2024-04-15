@@ -16,10 +16,9 @@ import { hasQueryBeenLoaded } from '../utils'
  *
  * @param {string} slug - the cozy-app's slug containing the setting (can be 'instance' for global settings)
  * @param {string} key - The name of the setting to retrieve
- * @param {any} [defaultValue] - The default value of the setting if it does not exist
  * @returns {import("../types").UseSettingReturnValue}
  */
-export const useSetting = (slug, key, defaultValue = undefined) => {
+export const useSetting = (slug, key) => {
   const query = getQuery(slug)
 
   const { data: settingsData, ...settingsQuery } = useQuery(
@@ -43,7 +42,7 @@ export const useSetting = (slug, key, defaultValue = undefined) => {
   const settings = normalizeSettings(settingsData)
 
   const settingValue = hasQueryBeenLoaded(settingsQuery)
-    ? settings?.[key] ?? defaultValue
+    ? settings?.[key]
     : undefined
 
   return {
