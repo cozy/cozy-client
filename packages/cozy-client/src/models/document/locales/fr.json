@@ -134,6 +134,14 @@
         "alternate": "Alternance",
         "internship": "Stage",
         "other": "Autre"
+      },
+      "noticePeriod": {
+        "oneWeek": "1 semaine avant",
+        "oneMonth": "1 mois avant",
+        "threeMonth": "3 mois avant",
+        "oneYear": "1 an avant",
+        "custom": "Personnalisé",
+        "noAlert": "Ne pas être alerté"
       }
     },
     "themes": {
