@@ -134,7 +134,7 @@ Returns the initials of the contact.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `contact` | `any` | A contact |
+| `contact` | `IOCozyContact` | A contact |
 
 *Returns*
 

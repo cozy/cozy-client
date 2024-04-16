@@ -1,6 +1,6 @@
 export const CONTACTS_DOCTYPE: "io.cozy.contacts";
 export function getPrimaryOrFirst(property: any): (obj: any) => any;
-export function getInitials(contact: object): string;
+export function getInitials(contact: import('../types').IOCozyContact): string;
 export function getPrimaryEmail(contact: object): string;
 export function getPrimaryCozy(contact: object): string;
 export function getPrimaryCozyDomain(contact: object): string;

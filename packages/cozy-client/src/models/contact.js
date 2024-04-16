@@ -17,11 +17,11 @@ export const getPrimaryOrFirst = property => obj =>
 /**
  * Returns the initials of the contact.
  *
- * @param {object} contact - A contact
+ * @param {import('../types').IOCozyContact} contact - A contact
  * @returns {string} - the contact's initials
  */
 export const getInitials = contact => {
-  if (contact.name && !isEmpty(contact.name)) {
+  if (contact?.name?.givenName || contact?.name?.familyName) {
     return ['givenName', 'familyName']
       .map(part => get(contact, ['name', part, 0], ''))
       .join('')
