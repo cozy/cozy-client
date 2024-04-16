@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [46.7.0](https://github.com/cozy/cozy-client/compare/v46.6.1...v46.7.0) (2024-04-16)
+
+
+### Features
+
+* Add translation for MesPapiers app ([419bc24](https://github.com/cozy/cozy-client/commit/419bc24c4f469060a925bba180e6c930d3419052))
+
+
+
+
+
 ## [46.6.1](https://github.com/cozy/cozy-client/compare/v46.6.0...v46.6.1) (2024-04-12)
 
 
