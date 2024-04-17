@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [46.8.0](https://github.com/cozy/cozy-client/compare/v46.7.1...v46.8.0) (2024-04-17)
+
+
+### Features
+
+* Rename `national_health_insurance_right_certificate` qualification ([bddf378](https://github.com/cozy/cozy-client/commit/bddf378f310678801cfb09c5f32f9bab387331a2))
+
+
+
+
+
 ## [46.7.1](https://github.com/cozy/cozy-client/compare/v46.7.0...v46.7.1) (2024-04-17)
 
 
