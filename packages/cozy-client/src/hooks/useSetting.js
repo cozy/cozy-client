@@ -17,7 +17,7 @@ import { extractKeys } from '../helpers/settings'
  *
  * @template {string} T
  *
- * @param {string} slug - the cozy-app's slug containing the setting (can be 'instance' for global settings)
+ * @param {string} slug - the cozy-app's slug containing the setting (special cases are: 'instance' for global settings and 'passwords' for bitwarden settings)
  * @param {T[]} keys - The name of the setting to retrieve
  * @returns {import("../types").UseSettingsReturnValue<T>}
  */
