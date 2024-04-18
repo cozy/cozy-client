@@ -952,7 +952,7 @@ return:
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `slug` | `string` | the cozy-app's slug containing the setting (can be 'instance' for global settings) |
+| `slug` | `string` | the cozy-app's slug containing the setting (special cases are: 'instance' for global settings and 'passwords' for bitwarden settings) |
 | `keys` | `T`\[] | The name of the setting to retrieve |
 
 *Returns*

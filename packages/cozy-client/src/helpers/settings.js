@@ -38,7 +38,7 @@ export const getSettings = async (client, slug, keys) => {
  * @template {string} T
  *
  * @param {CozyClient} client - Cozy client instance
- * @param {string} slug - the cozy-app's slug containing the setting (can be 'instance' for global settings)
+ * @param {string} slug - the cozy-app's slug containing the setting (special cases are: 'instance' for global settings and 'bitwarden' for cozy-pass)
  * @param {Record<string, any> | ((oldValue) => Record<T, any>)} itemsOrSetter - The new values of the settings to save. It can be a raw dictionnary, or a callback that should return a new dictionnary
  * @param {T[]=} setterKeys - The new values of the settings to save. It can be a raw dictionnary, or a callback that should return a new dictionnary
  * @returns {Promise<any>} - The result of the `client.save()` call
@@ -167,7 +167,7 @@ export const extractKeys = (settings, keys) => {
 /**
  * Create a Query that can be used to fetch the cozy-app settings for the given slug
  *
- * @param {string} slug - the cozy-app's slug containing the setting (can be 'instance' for global settings)
+ * @param {string} slug - the cozy-app's slug containing the setting (special cases are: 'instance' for global settings and 'passwords' for bitwarden settings)
  * @returns {import('../types').Query} - the Query that can be used to fetch the cozy-app settings
  */
 export const getQuery = slug => {
