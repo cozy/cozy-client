@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [46.9.1](https://github.com/cozy/cozy-client/compare/v46.9.0...v46.9.1) (2024-04-19)
+
+
+### Bug Fixes
+
+* Set correct returned type for CozyClient's `getSettings` ([0766fdd](https://github.com/cozy/cozy-client/commit/0766fdd860dd8a7b660785895ae2f8048ce7045a))
+
+
+
+
+
 # [46.9.0](https://github.com/cozy/cozy-client/compare/v46.8.0...v46.9.0) (2024-04-19)
 
 
