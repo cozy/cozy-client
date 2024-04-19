@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [46.9.0](https://github.com/cozy/cozy-client/compare/v46.8.0...v46.9.0) (2024-04-19)
+
+
+### Bug Fixes
+
+* Use `.fetchQueryAndGetFromState` instead of `.query` in settings ([16a4b93](https://github.com/cozy/cozy-client/commit/16a4b93a1a542f99464dcf50a49df9714226f063))
+* Use object instead of method in settings queries ([cbd85ca](https://github.com/cozy/cozy-client/commit/cbd85caa470c206e8a3142fc8d16deed6859c7d7))
+
+
+### Features
+
+* Add `getSetting` and `saveAfterFetchSetting` methods to CozyClient ([9c1700d](https://github.com/cozy/cozy-client/commit/9c1700dc1f2ad9e516881edb8ec3c69e3de21365))
+* Add `useSetting` hook ([172a0d3](https://github.com/cozy/cozy-client/commit/172a0d35b136068eba6254f8f03f4dd53e0f20d3))
+* Add defaultValue parameter to `getSetting()` and to `useSetting()` ([7ba3928](https://github.com/cozy/cozy-client/commit/7ba39282981448ebf227368aa59d7420be798df9))
+* Allow to get or set multiple settings in a single call ([b75bae8](https://github.com/cozy/cozy-client/commit/b75bae8423b70d2566de451b8dfb72a506c1956e))
+* Remove defaultValue parameter from `getSetting()` & `useSetting()` ([ef9241a](https://github.com/cozy/cozy-client/commit/ef9241acbc8d22934c011f1fff404bfd016fca25))
+
+
+
+
+
 # [46.8.0](https://github.com/cozy/cozy-client/compare/v46.7.1...v46.8.0) (2024-04-17)
 
 
