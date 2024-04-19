@@ -725,9 +725,9 @@ declare class CozyClient {
      *
      * @param {string} slug - the cozy-app's slug containing the setting (can be 'instance' for global settings)
      * @param {T[]} keys - The names of the settings to retrieve
-     * @returns {Promise<any>} - The value of the requested setting
+     * @returns {Promise<Record<T, any>>} - The value of the requested setting
      */
-    getSettings<T extends string>(slug: string, keys: T[]): Promise<any>;
+    getSettings<T extends string>(slug: string, keys: T[]): Promise<Record<T, any>>;
     /**
      * Save the given value into the corresponding cozy-app setting
      *
@@ -741,7 +741,7 @@ declare class CozyClient {
      * @param {T[]=} setterKeys - The new values of the settings to save. It can be a raw dictionnary, or a callback that should return a new dictionnary
      * @returns {Promise<any>} - The result of the `client.save()` call
      */
-    saveAfterFetchSettings<T_1 extends string>(slug: string, itemsOrSetter: Record<string, any> | ((oldValue: any) => Record<T_1, any>), setterKeys?: T_1[]): Promise<any>;
+    saveAfterFetchSettings<T_2 extends string>(slug: string, itemsOrSetter: Record<string, any> | ((oldValue: any) => Record<T_2, any>), setterKeys?: T_2[]): Promise<any>;
 }
 declare namespace CozyClient {
     export const hooks: {};
