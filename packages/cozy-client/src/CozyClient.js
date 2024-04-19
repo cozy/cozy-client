@@ -1762,7 +1762,7 @@ instantiation of the client.`
    *
    * @param {string} slug - the cozy-app's slug containing the setting (can be 'instance' for global settings)
    * @param {T[]} keys - The names of the settings to retrieve
-   * @returns {Promise<any>} - The value of the requested setting
+   * @returns {Promise<Record<T, any>>} - The value of the requested setting
    */
   async getSettings(slug, keys) {
     return getSettings(this, slug, keys)

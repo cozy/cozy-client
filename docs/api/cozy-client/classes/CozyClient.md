@@ -929,7 +929,7 @@ the store up, which in turn will update the `<Query>`s and re-render the data.
 
 ### getSettings
 
-▸ **getSettings**<`T`>(`slug`, `keys`): `Promise`<`any`>
+▸ **getSettings**<`T`>(`slug`, `keys`): `Promise`<`Record`<`T`, `any`>>
 
 Query the cozy-app settings corresponding to the given slug and
 extract the value corresponding to the given `key`
@@ -949,7 +949,7 @@ extract the value corresponding to the given `key`
 
 *Returns*
 
-`Promise`<`any`>
+`Promise`<`Record`<`T`, `any`>>
 
 *   The value of the requested setting
 
