@@ -861,9 +861,13 @@ export type ContactEmail = {
      */
     address: string;
     /**
-     * - A user-provided localized type of email address (example: "Work", "Home", "Other")
+     * - A user-provided localized type (example: `"Personal"`, `"Professional"`, `"Other"`)
      */
     type?: string;
+    /**
+     * - A keyword to identify the type, must be `work|home`
+     */
+    label?: 'work' | 'home';
     /**
      * - Indicates a preferred-use address
      */
@@ -939,9 +943,13 @@ export type ContactAddress = {
      */
     country?: string;
     /**
-     * - A user-provided localized type of address (example: "Work", "Home", "Other")
+     * - A user-provided localized type (example: `"Personal"`, `"Professional"`, `"Other"`)
      */
     type?: string;
+    /**
+     * - A keyword to identify the type, must be `work|home`
+     */
+    label?: 'work' | 'home';
     /**
      * - Indicates a preferred-use address
      */
@@ -959,9 +967,13 @@ export type ContactPhone = {
      */
     number: string;
     /**
-     * - A user-provided localized type of phone number (example: "Work", "Home", "Other")
+     * - A user-provided localized type (example: `"Personal"`, `"Professional"`, `"Other"`), could be provided by Contacts app too as `voice|fax|cell`
      */
     type?: string;
+    /**
+     * - A keyword to identify the type, must be `work|home`
+     */
+    label?: 'work' | 'home';
     /**
      * - Indicates a preferred-use number
      */
@@ -970,9 +982,13 @@ export type ContactPhone = {
 export type ContactCozy = {
     url: string;
     /**
-     * - A user-provided localized type of instance
+     * - A user-provided localized type (example: `"Personal"`, `"Professional"`, `"Other"`)
      */
-    label?: string;
+    type?: string;
+    /**
+     * - A keyword to identify the type, must be `work|home`
+     */
+    label?: 'work' | 'home';
     /**
      * - Indicates a preferred-use instance
      */
@@ -1016,6 +1032,10 @@ export type ContactDocument = {
      */
     birthday?: string;
     /**
+     * - Gender (example: "female")
+     */
+    gender?: 'male' | 'female';
+    /**
      * - Note
      */
     note?: string;
@@ -1035,6 +1055,10 @@ export type ContactDocument = {
      * - Cozy instances
      */
     cozy?: Array<ContactCozy>;
+    /**
+     * - Cozy instance url (deprecated)
+     */
+    url?: string;
     /**
      * - Company
      */

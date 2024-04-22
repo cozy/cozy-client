@@ -476,7 +476,8 @@ import { QueryDefinition } from './queries/dsl'
 /**
  * @typedef {object} ContactEmail
  * @property {string} address - Email address
- * @property {string} [type] - A user-provided localized type of email address (example: "Work", "Home", "Other")
+ * @property {string} [type] - A user-provided localized type (example: `"Personal"`, `"Professional"`, `"Other"`)
+ * @property {'work'|'home'} [label] - A keyword to identify the type, must be `work|home`
  * @property {boolean} [primary] - Indicates a preferred-use address
  */
 
@@ -506,7 +507,8 @@ import { QueryDefinition } from './queries/dsl'
  * @property {string} [number] - Lane number
  * @property {string} [code] - Postal code
  * @property {string} [country] - Country name
- * @property {string} [type] - A user-provided localized type of address (example: "Work", "Home", "Other")
+ * @property {string} [type] - A user-provided localized type (example: `"Personal"`, `"Professional"`, `"Other"`)
+ * @property {'work'|'home'} [label] - A keyword to identify the type, must be `work|home`
  * @property {boolean} [primary] - Indicates a preferred-use address
  * @property {ContactExtendedAddress} [extendedAddress]
  * @property {string} [formattedAddress] - Unstructured version of the address
@@ -516,7 +518,8 @@ import { QueryDefinition } from './queries/dsl'
 /**
  * @typedef {object} ContactPhone
  * @property {string} number - Phone number
- * @property {string} [type] - A user-provided localized type of phone number (example: "Work", "Home", "Other")
+ * @property {string} [type] - A user-provided localized type (example: `"Personal"`, `"Professional"`, `"Other"`), could be provided by Contacts app too as `voice|fax|cell`
+ * @property {'work'|'home'} [label] - A keyword to identify the type, must be `work|home`
  * @property {boolean} [primary] - Indicates a preferred-use number
  *
  */
@@ -524,7 +527,8 @@ import { QueryDefinition } from './queries/dsl'
 /**
  * @typedef {object} ContactCozy
  * @property {string} url
- * @property {string} [label] - A user-provided localized type of instance
+ * @property {string} [type] - A user-provided localized type (example: `"Personal"`, `"Professional"`, `"Other"`)
+ * @property {'work'|'home'} [label] - A keyword to identify the type, must be `work|home`
  * @property {boolean} [primary] - Indicates a preferred-use instance
  *
  */
@@ -545,11 +549,13 @@ import { QueryDefinition } from './queries/dsl'
  * @property {string} [fullname] - Unstructured representation of the name (example: "Dr. Gregory House, M.D.")
  * @property {ContactName} [name] - Structured representation of the name
  * @property {string} [birthday] - Birthday (example: "1959-05-15")
+ * @property {'male'|'female'} [gender] - Gender (example: "female")
  * @property {string} [note] - Note
  * @property {Array<ContactEmail>} [email] - Email addresses
  * @property {Array<ContactAddress>} [address] - Addresses
  * @property {Array<ContactPhone>} [phone] - Phone numbers
  * @property {Array<ContactCozy>} [cozy] - Cozy instances
+ * @property {string} [url] - Cozy instance url (deprecated)
  * @property {string} company - Company
  * @property {string} jobTitle - Job title
  * @property {boolean} [trashed] - true if the contact is marked for removal and will be deleted soon (e.g. after remote deletion is confirmed)
