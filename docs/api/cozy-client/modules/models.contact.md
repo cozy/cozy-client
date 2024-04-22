@@ -36,7 +36,7 @@ Returns 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `contact` | `any` | A contact |
+| `contact` | `IOCozyContact` | A contact |
 
 *Returns*
 
@@ -60,7 +60,7 @@ Returns a display name for the contact
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `contact` | `any` | A contact |
+| `contact` | `IOCozyContact` | A contact |
 
 *Returns*
 
@@ -84,7 +84,7 @@ Returns the contact's fullname
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `contact` | `any` | A contact |
+| `contact` | `IOCozyContact` | A contact |
 
 *Returns*
 
@@ -110,7 +110,7 @@ Returns 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `contact` | `any` | A contact |
+| `contact` | `IOCozyContact` | A contact |
 
 *Returns*
 
@@ -158,7 +158,7 @@ Returns the contact's main address
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `contact` | `any` | A contact |
+| `contact` | `IOCozyContact` | A contact |
 
 *Returns*
 
@@ -182,7 +182,7 @@ Returns the contact's main cozy
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `contact` | `any` | A contact |
+| `contact` | `IOCozyContact` | A contact |
 
 *Returns*
 
@@ -206,7 +206,7 @@ Returns the contact's main cozy url without protocol
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `contact` | `any` | A contact |
+| `contact` | `IOCozyContact` | A contact |
 
 *Returns*
 
@@ -230,7 +230,7 @@ Returns the contact's main email
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `contact` | `any` | A contact |
+| `contact` | `IOCozyContact` | A contact |
 
 *Returns*
 
@@ -286,7 +286,7 @@ Returns the contact's main phone number
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `contact` | `any` | A contact |
+| `contact` | `IOCozyContact` | A contact |
 
 *Returns*
 
@@ -332,7 +332,7 @@ Makes 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `contact` | `any` | A contact |
+| `contact` | `IOCozyContact` | A contact |
 
 *Returns*
 
@@ -356,7 +356,7 @@ Makes displayName from contact data
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `contact` | `any` | A contact |
+| `contact` | `IOCozyContact` | A contact |
 | `opts` | `Object` | - |
 | `opts.attributesFullname` | [`FullnameAttributes`](models.contact.md#fullnameattributes)\[] | - |
 
@@ -382,7 +382,7 @@ Makes fullname from contact name
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `contact` | `any` | A contact |
+| `contact` | `IOCozyContact` | A contact |
 | `opts` | `Object` | - |
 | `opts.attributesFullname` | [`FullnameAttributes`](models.contact.md#fullnameattributes)\[] | - |
 
