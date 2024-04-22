@@ -1,21 +1,21 @@
 export const CONTACTS_DOCTYPE: "io.cozy.contacts";
 export function getPrimaryOrFirst(property: any): (obj: any) => any;
 export function getInitials(contact: import('../types').IOCozyContact): string;
-export function getPrimaryEmail(contact: object): string;
-export function getPrimaryCozy(contact: object): string;
-export function getPrimaryCozyDomain(contact: object): string;
-export function getPrimaryPhone(contact: object): string;
-export function getPrimaryAddress(contact: object): string;
-export function makeFullname(contact: object, opts?: {
+export function getPrimaryEmail(contact: import('../types').IOCozyContact): string;
+export function getPrimaryCozy(contact: import('../types').IOCozyContact): string;
+export function getPrimaryCozyDomain(contact: import('../types').IOCozyContact): string;
+export function getPrimaryPhone(contact: import('../types').IOCozyContact): string;
+export function getPrimaryAddress(contact: import('../types').IOCozyContact): string;
+export function makeFullname(contact: import('../types').IOCozyContact, opts?: {
     attributesFullname: FullnameAttributes[];
 }): string;
-export function getFullname(contact: object): string;
-export function makeDisplayName(contact: any, opts?: {
+export function getFullname(contact: import('../types').IOCozyContact): string;
+export function makeDisplayName(contact: import('../types').IOCozyContact, opts?: {
     attributesFullname: FullnameAttributes[];
 }): string;
-export function getDisplayName(contact: object): string;
-export function makeDefaultSortIndexValue(contact: object): string;
-export function getDefaultSortIndexValue(contact: object): string;
-export function getIndexByFamilyNameGivenNameEmailCozyUrl(contact: object): string;
+export function getDisplayName(contact: import('../types').IOCozyContact): string;
+export function makeDefaultSortIndexValue(contact: import('../types').IOCozyContact): string;
+export function getDefaultSortIndexValue(contact: import('../types').IOCozyContact): string;
+export function getIndexByFamilyNameGivenNameEmailCozyUrl(contact: import('../types').IOCozyContact): string;
 export function isContact(doc: object): boolean;
 export type FullnameAttributes = "namePrefix" | "givenName" | "additionalName" | "familyName" | "nameSuffix";

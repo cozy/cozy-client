@@ -44,7 +44,7 @@ export const getInitials = contact => {
 /**
  * Returns the contact's main email
  *
- * @param {object} contact - A contact
+ * @param {import('../types').IOCozyContact} contact - A contact
  * @returns {string} - The contact's main email
  */
 export const getPrimaryEmail = contact =>
@@ -55,7 +55,7 @@ export const getPrimaryEmail = contact =>
 /**
  * Returns the contact's main cozy
  *
- * @param {object} contact - A contact
+ * @param {import('../types').IOCozyContact} contact - A contact
  * @returns {string} - The contact's main cozy
  */
 export const getPrimaryCozy = contact =>
@@ -66,7 +66,7 @@ export const getPrimaryCozy = contact =>
 /**
  * Returns the contact's main cozy url without protocol
  *
- * @param {object} contact - A contact
+ * @param {import('../types').IOCozyContact} contact - A contact
  * @returns {string} - The contact's main cozy url
  */
 export const getPrimaryCozyDomain = contact => {
@@ -81,7 +81,7 @@ export const getPrimaryCozyDomain = contact => {
 /**
  * Returns the contact's main phone number
  *
- * @param {object} contact - A contact
+ * @param {import('../types').IOCozyContact} contact - A contact
  * @returns {string} - The contact's main phone number
  */
 export const getPrimaryPhone = contact =>
@@ -90,7 +90,7 @@ export const getPrimaryPhone = contact =>
 /**
  * Returns the contact's main address
  *
- * @param {object} contact - A contact
+ * @param {import('../types').IOCozyContact} contact - A contact
  * @returns {string} - The contact's main address
  */
 export const getPrimaryAddress = contact =>
@@ -110,7 +110,7 @@ const defaultFullnameAttributes = [
 /**
  * Makes fullname from contact name
  *
- * @param {object} contact - A contact
+ * @param {import('../types').IOCozyContact} contact - A contact
  * @param {{ attributesFullname: FullnameAttributes[] }} [opts] - Options
  * @returns {string} - The contact's fullname
  */
@@ -131,7 +131,7 @@ export const makeFullname = (contact, opts) => {
 /**
  * Returns the contact's fullname
  *
- * @param {object} contact - A contact
+ * @param {import('../types').IOCozyContact} contact - A contact
  * @returns {string} - The contact's fullname
  */
 export const getFullname = contact => {
@@ -145,7 +145,7 @@ export const getFullname = contact => {
 /**
  * Makes displayName from contact data
  *
- * @param {*} contact - A contact
+ * @param {import('../types').IOCozyContact} contact - A contact
  * @param {{ attributesFullname: FullnameAttributes[] }} [opts] - Options
  * @returns {string} - The contact's displayName
  */
@@ -170,7 +170,7 @@ export const makeDisplayName = (contact, opts) => {
 /**
  * Returns a display name for the contact
  *
- * @param {object} contact - A contact
+ * @param {import('../types').IOCozyContact} contact - A contact
  * @returns {string} - the contact's display name
  **/
 export const getDisplayName = contact => {
@@ -184,7 +184,7 @@ export const getDisplayName = contact => {
 /**
  * Makes 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
  *
- * @param {object} contact - A contact
+ * @param {import('../types').IOCozyContact} contact - A contact
  * @returns {string} - the contact's 'byFamilyNameGivenNameEmailCozyUrl' index
  */
 export const makeDefaultSortIndexValue = contact => {
@@ -208,7 +208,7 @@ export const makeDefaultSortIndexValue = contact => {
 /**
  * Returns 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
  *
- * @param {object} contact - A contact
+ * @param {import('../types').IOCozyContact} contact - A contact
  * @returns {string} - the contact's 'byFamilyNameGivenNameEmailCozyUrl' index
  */
 export const getDefaultSortIndexValue = contact => {
@@ -229,7 +229,7 @@ export const getDefaultSortIndexValue = contact => {
  * Returns 'byFamilyNameGivenNameEmailCozyUrl' index of a contact
  *
  * @deprecated Prefer to use getDefaultSortIndexValue.
- * @param {object} contact - A contact
+ * @param {import('../types').IOCozyContact} contact - A contact
  * @returns {string} - the contact's 'byFamilyNameGivenNameEmailCozyUrl' index
  */
 export const getIndexByFamilyNameGivenNameEmailCozyUrl = contact => {
