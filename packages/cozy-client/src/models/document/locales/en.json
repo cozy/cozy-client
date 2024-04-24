@@ -157,6 +157,11 @@
       "undefined": "Undefined",
       "work_study": "Work & Study"
     },
+    "expiration": {
+      "expired": "Expired",
+      "expiresIn": "Expires in %{duration}",
+      "description": "This document expires in %{duration}, consider renewing it"
+    },
     "qualification": {
       "date": {
         "title": {
