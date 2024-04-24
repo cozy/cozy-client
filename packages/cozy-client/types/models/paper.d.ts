@@ -39,5 +39,14 @@ export function getTranslatedNameForContact({ lang }: {
     lang: string;
 }): string;
 export function formatContactValue(contacts: object[]): string;
+export function makeExpiredMessage({ lang }: {
+    lang: string;
+}): string;
+export function makeExpiresInMessage(expirationDate: string, { lang }: {
+    lang: string;
+}): string;
+export function makeExpirationDescription(expirationDate: string, { lang }: {
+    lang: string;
+}): string;
 export type IOCozyFile = import("../types").CozyClientDocument & import("../types").FileDocument;
 export type MetadataQualificationType = "other" | "date" | "contact" | "information";

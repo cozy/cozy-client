@@ -1,5 +1,7 @@
 import add from 'date-fns/add'
 import sub from 'date-fns/sub'
+import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict'
+import fr from 'date-fns/locale/fr'
 import { getLocalizer } from './document/locales'
 import { getDisplayName } from './contact'
 import get from 'lodash/get'
@@ -434,4 +436,47 @@ export const formatContactValue = contacts => {
   return contacts && contacts.length > 0
     ? contacts.map(contact => `${getDisplayName(contact)}`).join(', ')
     : ''
+}
+
+/**
+ * @param {Object} options - Options
+ * @param {string} options.lang - Lang requested for the translation
+ * @returns {string}
+ */
+export const makeExpiredMessage = ({ lang }) => {
+  const t = getLocalizer(lang)
+
+  return t('Scan.expiration.expired')
+}
+
+/**
+ * @param {string} expirationDate - Expiration date
+ * @param {Object} options - Options
+ * @param {string} options.lang - Lang requested for the translation
+ * @returns {string}
+ */
+export const makeExpiresInMessage = (expirationDate, { lang }) => {
+  const t = getLocalizer(lang)
+
+  const distance = formatDistanceToNowStrict(new Date(expirationDate), {
+    locale: lang === 'fr' ? fr : undefined // fallbacks to english if undefined
+  })
+
+  return t('Scan.expiration.expiresIn', { duration: distance })
+}
+
+/**
+ * @param {string} expirationDate - Expiration date
+ * @param {Object} options - Options
+ * @param {string} options.lang - Lang requested for the translation
+ * @returns {string}
+ */
+export const makeExpirationDescription = (expirationDate, { lang }) => {
+  const t = getLocalizer(lang)
+
+  const distance = formatDistanceToNowStrict(new Date(expirationDate), {
+    locale: lang === 'fr' ? fr : undefined // fallbacks to english if undefined
+  })
+
+  return t('Scan.expiration.description', { duration: distance })
 }
