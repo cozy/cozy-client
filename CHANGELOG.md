@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [46.10.0](https://github.com/cozy/cozy-client/compare/v46.9.1...v46.10.0) (2024-04-24)
+
+
+### Features
+
+* Add helpers to generate paper expiration date message ([b3a5a30](https://github.com/cozy/cozy-client/commit/b3a5a30e752afd28ec786eda63336e5faf757849))
+* Add missing types in ContactDocument ([382a319](https://github.com/cozy/cozy-client/commit/382a319cb342b37019cc49b38d63dd31a582b7cb))
+
+
+
+
+
 ## [46.9.1](https://github.com/cozy/cozy-client/compare/v46.9.0...v46.9.1) (2024-04-19)
 
 
