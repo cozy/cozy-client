@@ -15,6 +15,12 @@ import {
 } from './contact'
 
 describe('getPrimaryOrFirst', () => {
+  it('should not crash if array is undefined, or contents null/undefined', () => {
+    expect(getPrimaryOrFirst('email')({ email: undefined })).toEqual('')
+    expect(getPrimaryOrFirst('email')({ email: [null] })).toEqual('')
+    expect(getPrimaryOrFirst('email')({ email: [undefined] })).toEqual('')
+  })
+
   it("should return the first contact's email address if no primary", () => {
     const contact = {
       email: [
@@ -136,6 +142,12 @@ describe('getInitials', () => {
 })
 
 describe('getPrimaryCozy', () => {
+  it('should not crash if array is undefined, or contents null/undefined', () => {
+    expect(getPrimaryCozy({ cozy: undefined })).toEqual(undefined)
+    expect(getPrimaryCozy({ cozy: [null] })).toEqual('')
+    expect(getPrimaryCozy({ cozy: [undefined] })).toEqual('')
+  })
+
   it('should return the main cozy', () => {
     const contact = {
       cozy: [
@@ -178,6 +190,12 @@ describe('getPrimaryCozy', () => {
 })
 
 describe('getPrimaryPhone', () => {
+  it('should not crash if array is undefined, or contents null/undefined', () => {
+    expect(getPrimaryPhone({ phone: undefined })).toEqual('')
+    expect(getPrimaryPhone({ phone: [null] })).toEqual('')
+    expect(getPrimaryPhone({ phone: [undefined] })).toEqual('')
+  })
+
   it('should return the main phone number', () => {
     const contact = {
       phone: [
@@ -192,6 +210,12 @@ describe('getPrimaryPhone', () => {
 })
 
 describe('getPrimaryAddress', () => {
+  it('should not crash if array is undefined, or contents null/undefined', () => {
+    expect(getPrimaryAddress({ address: undefined })).toEqual('')
+    expect(getPrimaryAddress({ address: [null] })).toEqual('')
+    expect(getPrimaryAddress({ address: [undefined] })).toEqual('')
+  })
+
   it('should return the main address', () => {
     const contact = {
       name: {
@@ -438,6 +462,12 @@ describe('makeDisplayName', () => {
 })
 
 describe('getPrimaryEmail', () => {
+  it('should not crash if array is undefined, or contents null/undefined', () => {
+    expect(getPrimaryEmail({ email: undefined })).toEqual(undefined)
+    expect(getPrimaryEmail({ email: [null] })).toEqual('')
+    expect(getPrimaryEmail({ email: [undefined] })).toEqual('')
+  })
+
   it('should return the main email', () => {
     const contact = {
       email: [
@@ -609,6 +639,12 @@ describe('makeDefaultSortIndexValue', () => {
 })
 
 describe('getPrimaryCozyDomain', () => {
+  it('should not crash if array is undefined, or contents null/undefined', () => {
+    expect(getPrimaryCozyDomain({ cozy: undefined })).toEqual(undefined)
+    expect(getPrimaryCozyDomain({ cozy: [null] })).toEqual('')
+    expect(getPrimaryCozyDomain({ cozy: [undefined] })).toEqual('')
+  })
+
   it('should returns empty string if no cozy url', () => {
     const contact = {
       cozy: [{ url: '' }]

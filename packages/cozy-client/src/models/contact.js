@@ -10,7 +10,7 @@ export const CONTACTS_DOCTYPE = 'io.cozy.contacts'
  */
 
 export const getPrimaryOrFirst = property => obj =>
-  !obj[property] || obj[property].length === 0
+  !obj || !obj[property] || obj[property].length === 0 || !obj[property][0]
     ? ''
     : obj[property].find(property => property.primary) || obj[property][0]
 
