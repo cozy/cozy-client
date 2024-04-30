@@ -1,3 +1,10 @@
+import {
+  HasMany,
+  HasManyFiles,
+  HasManyInPlace,
+  HasOne,
+  HasOneInPlace
+} from './associations'
 import { QueryDefinition } from './queries/dsl'
 
 /**
@@ -948,6 +955,17 @@ import { QueryDefinition } from './queries/dsl'
  * @property {Instance} instance - The Cozy's instance parameters
  * @property {Context} context - The Cozy's context parameters
  * @property {DiskUsage} diskUsage - The Cozy's disk usage
+ */
+
+/**
+ * @typedef {HasMany|HasManyInPlace|HasOne|HasOneInPlace|HasManyFiles} AssociationTypes
+ */
+
+/**
+ * @typedef {object} SchemaRelationships
+ * @property {string} doctype - The doctype of the relationship
+ * @property {string} name - The name of the relationship
+ * @property {AssociationTypes} type - The name of the relationship
  */
 
 export default {}

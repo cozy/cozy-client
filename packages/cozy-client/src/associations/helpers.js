@@ -84,6 +84,24 @@ export const resolveClass = (doctype, type) => {
   }
 }
 
+/**
+ * Filters all `schema.relationships` which do not have data (not present in the `relationships` of the document).
+ * This is useful to avoid adding unnecessary attributes (HasMany/HasOne) to the document.
+ *
+ * @param {import("../types").CozyClientDocument} document - The document to filter
+ * @param {import('../types').SchemaRelationships|{}} schemaRelationships - The relationships from the schema
+ * @returns {import('../types').SchemaRelationships|{}} The filtered relationships
+ */
+export const filterSchemaRelationships = (document, schemaRelationships) => {
+  return Object.entries(schemaRelationships).reduce((acc, [key, value]) => {
+    if (!document?.relationships?.[key]) {
+      return acc
+    }
+    acc[key] = value
+    return acc
+  }, {})
+}
+
 export const create = (target, { name, type, doctype }, accessors) => {
   if (target[name] instanceof Association) {
     throw new Error(`Association ${name} already exists`)

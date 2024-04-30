@@ -32,7 +32,7 @@ import {
   getRawQueryFromState,
   loadQuery
 } from './store'
-import { HasManyFiles, Association, HasMany } from './associations'
+import { HasManyFiles, Association } from './associations'
 import mapValues from 'lodash/mapValues'
 import FileCollection from 'cozy-stack-client/dist/FileCollection'
 import logger from './logger'
@@ -1779,14 +1779,13 @@ describe('CozyClient', () => {
         )
         .shift()
       expect(doc.attachments).toBeInstanceOf(HasManyFiles)
-      expect(doc.authors).toBeInstanceOf(HasMany)
+      expect(doc.authors).toBeUndefined()
     })
 
     it('makes new documents', () => {
       const newTodo = client.makeNewDocument('io.cozy.todos')
       expect(newTodo._type).toBe('io.cozy.todos')
-      expect(newTodo.attachments).not.toBe(undefined)
-      expect(newTodo.attachments instanceof HasManyFiles).toBe(true)
+      expect(newTodo.attachments).toBe(undefined)
     })
 
     it('should not fail on null (when getting absent documents from the store)', () => {

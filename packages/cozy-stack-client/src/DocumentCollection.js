@@ -295,7 +295,7 @@ class DocumentCollection {
 
   /**
    * Returns a filtered list of documents using a Mango selector.
-   
+
 The returned documents are paginated by the stack.
    *
    * @param {MangoSelector} selector The Mango selector.

@@ -15,7 +15,8 @@ import StackLink from './StackLink'
 import { create as createAssociation } from './associations'
 import {
   responseToRelationship,
-  attachRelationships
+  attachRelationships,
+  filterSchemaRelationships
 } from './associations/helpers'
 import { dehydrate, getSettings, saveAfterFetchSettings } from './helpers'
 import { QueryDefinition, Mutations, Q } from './queries/dsl'
@@ -1242,9 +1243,20 @@ client.query(Q('io.cozy.bills'))`)
     }
   }
 
+  /**
+   * Create the instance of the specified type (HasmOne, HasMany, ...)
+   *
+   * @param {import("./types").CozyClientDocument} document - Document to hydrate
+   * @param {import('./types').SchemaRelationships|{}} schemaRelationships - App schema relationships
+   * @returns {{[relationName: string]: import('./types').AssociationTypes}}
+   */
   hydrateRelationships(document, schemaRelationships) {
     const methods = this.getRelationshipStoreAccessors()
-    return mapValues(schemaRelationships, (assoc, name) =>
+    const filteredSchemaRelationships = filterSchemaRelationships(
+      document,
+      schemaRelationships
+    )
+    return mapValues(filteredSchemaRelationships, (assoc, name) =>
       createAssociation(document, assoc, methods)
     )
   }
