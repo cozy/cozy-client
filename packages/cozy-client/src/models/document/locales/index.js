@@ -26,10 +26,14 @@ const getBoundT = lang => {
       ...opts,
       smart_count: opts?.smart_count || 1
     }
-    const emojiCountry = getEmojiByCountry(opts?.country, t)
+    const country = opts?.country
 
-    return emojiCountry
-      ? `${t(label, newOpts)} ${emojiCountry}`
+    const emojiCountry =
+      country !== 'stranger' ? getEmojiByCountry(country) : null
+    const strangerLabel = country === 'stranger' ? t('country.stranger') : null
+
+    return emojiCountry || strangerLabel
+      ? `${t(label, newOpts)} ${emojiCountry || strangerLabel}`
       : t(label, newOpts)
   }
 }

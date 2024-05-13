@@ -61,4 +61,4 @@
 
 *Defined in*
 
-[packages/cozy-client/src/models/document/locales/index.js:41](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/locales/index.js#L41)
+[packages/cozy-client/src/models/document/locales/index.js:45](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/document/locales/index.js#L45)

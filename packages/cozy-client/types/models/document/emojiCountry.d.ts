@@ -1,1 +1,1 @@
-export function getEmojiByCountry(country: string, t: Function): string;
+export function getEmojiByCountry(countryCode: string): string;
