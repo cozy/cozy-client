@@ -1,26 +1,34 @@
 import { getEmojiByCountry } from './emojiCountry'
+import logger from '../../logger'
 
 describe('getEmojiByCountry', () => {
-  const mockT = jest.fn(key => key)
-  it('should return fr flag', () => {
-    const res = getEmojiByCountry('fr', mockT)
+  beforeEach(() => {
+    jest.spyOn(logger, 'error').mockImplementation(() => jest.fn())
+  })
+  afterEach(() => {
+    logger.error.mockRestore()
+  })
+
+  it('should return French flag', () => {
+    const res = getEmojiByCountry('fr')
 
     expect(res).toBe('🇫🇷')
   })
-  it('should return "stranger" string (key: country.stranger)', () => {
-    const mockT = jest.fn(key => key)
-    const res = getEmojiByCountry('stranger', mockT)
+  it('should return Belgian flag', () => {
+    const res = getEmojiByCountry('be')
 
-    expect(res).toBe('country.stranger')
+    expect(res).toBe('🇧🇪')
   })
-  it('should return "undefined" if the country is not "fr"', () => {
-    const res = getEmojiByCountry('en', mockT)
+  it('should return "null" if the country is not ISO 3166-1 alpha-2 string', () => {
+    const res = getEmojiByCountry('fra')
 
-    expect(res).toBe(undefined)
+    expect(logger.error).toHaveBeenCalledTimes(1)
+    expect(res).toBe(null)
   })
-  it('should return "undefined" if the country is undefined', () => {
-    const res = getEmojiByCountry(undefined, mockT)
+  it('should return "null" if the country is undefined', () => {
+    const res = getEmojiByCountry(undefined)
 
-    expect(res).toBe(undefined)
+    expect(logger.error).not.toHaveBeenCalled()
+    expect(res).toBe(null)
   })
 })
