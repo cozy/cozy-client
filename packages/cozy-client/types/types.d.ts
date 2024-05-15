@@ -1608,4 +1608,22 @@ export type InstanceInfo = {
      */
     diskUsage: DiskUsage;
 };
+export type CountryISO = {
+    /**
+     * - ISO 3166-1 alpha-2
+     */
+    code2: string;
+    /**
+     * - ISO 3166-1 alpha-3
+     */
+    code3: string;
+    /**
+     * - Country name
+     */
+    name: string;
+    /**
+     * - ISO 3166-1 numeric
+     */
+    number: string;
+};
 import { QueryDefinition } from "./queries/dsl";
