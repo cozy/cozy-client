@@ -950,4 +950,12 @@ import { QueryDefinition } from './queries/dsl'
  * @property {DiskUsage} diskUsage - The Cozy's disk usage
  */
 
+/**
+ * @typedef {Object} CountryISO
+ * @property {string} code2 - ISO 3166-1 alpha-2
+ * @property {string} code3 - ISO 3166-1 alpha-3
+ * @property {string} name - Country name
+ * @property {string} number - ISO 3166-1 numeric
+ */
+
 export default {}

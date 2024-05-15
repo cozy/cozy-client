@@ -1,18 +1,10 @@
 // https://gist.github.com/incredimike/1469814
 
 /**
- * @typedef {Object} CountryISO
- * @property {string} code2 - ISO 3166-1 alpha-2
- * @property {string} code3 - ISO 3166-1 alpha-3
- * @property {string} name - Country name
- * @property {string} number - ISO 3166-1 numeric
- */
-
-/**
  * List of countries with their ISO codes
  *
  * @constant
- * @type {CountryISO[]}
+ * @type {import('../../types').CountryISO[]}
  */
 export const COUNTRIES_ISO = [
   { code2: 'AF', code3: 'AFG', name: 'Afghanistan', number: '004' },
