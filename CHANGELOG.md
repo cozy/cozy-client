@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [46.11.0](https://github.com/cozy/cozy-client/compare/v46.10.1...v46.11.0) (2024-05-15)
+
+
+### Features
+
+* Update getEmojiByCountry function ([12ffdd2](https://github.com/cozy/cozy-client/commit/12ffdd2580311a45776be0ec6349b51d54d26fde))
+
+
+
+
+
 ## [46.10.1](https://github.com/cozy/cozy-client/compare/v46.10.0...v46.10.1) (2024-04-25)
 
 
