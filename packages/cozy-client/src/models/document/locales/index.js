@@ -1,8 +1,8 @@
 import Polyglot from 'node-polyglot'
 
-import { getEmojiByCountry } from '../emojiCountry'
 import enLocale from './en.json'
 import frLocale from './fr.json'
+import { getEmojiByCountry } from '../../country/countries'
 
 const locales = { en: enLocale, fr: frLocale }
 
