@@ -389,6 +389,17 @@ export const getEmojiByCountry = countryCode => {
     )
     return null
   }
+
+  const existingCountry = COUNTRIES_ISO.find(
+    country => country.code2 === countryCode.toUpperCase()
+  )
+  if (!existingCountry) {
+    logger.error(
+      `Country with code ${countryCode} not found in the list of countries`
+    )
+    return null
+  }
+
   const codePoints = [...countryCode.toUpperCase()].map(
     letter => letter.codePointAt(0) + UNICODE_OFFSET
   )

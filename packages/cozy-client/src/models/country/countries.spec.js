@@ -137,21 +137,31 @@ describe('getEmojiByCountry', () => {
 
     expect(res).toBe('🇫🇷')
   })
+
   it('should return Belgian flag', () => {
     const res = getEmojiByCountry('be')
 
     expect(res).toBe('🇧🇪')
   })
+
   it('should return "null" if the country is not ISO 3166-1 alpha-2 string', () => {
     const res = getEmojiByCountry('fra')
 
     expect(logger.error).toHaveBeenCalledTimes(1)
     expect(res).toBe(null)
   })
+
   it('should return "null" if the country is undefined', () => {
     const res = getEmojiByCountry(undefined)
 
     expect(logger.error).not.toHaveBeenCalled()
+    expect(res).toBe(null)
+  })
+
+  it('should return "null" if the country is ISO 3166-1 alpha-2 string but not found in COUNTRIES_ISO list', () => {
+    const res = getEmojiByCountry('aa')
+
+    expect(logger.error).toHaveBeenCalledTimes(1)
     expect(res).toBe(null)
   })
 })
