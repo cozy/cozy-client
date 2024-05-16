@@ -26,6 +26,10 @@ import MicroEE from 'microee'
 import errors, { FetchError } from './errors'
 import logger from './logger'
 import PromiseCache from './promise-cache'
+import {
+  NEXTCLOUD_FILES_DOCTYPE,
+  NextcloudFilesCollection
+} from './NextcloudFilesCollection'
 
 const normalizeUri = uriArg => {
   let uri = uriArg
@@ -100,6 +104,8 @@ class CozyStackClient {
         return new ShortcutsCollection(this)
       case APPS_REGISTRY_DOCTYPE:
         return new AppsRegistryCollection(this)
+      case NEXTCLOUD_FILES_DOCTYPE:
+        return new NextcloudFilesCollection(this)
       default:
         return new DocumentCollection(doctype, this)
     }
