@@ -1618,12 +1618,30 @@ export type CountryISO = {
      */
     code3: string;
     /**
-     * - Country name
+     * - ISO 3166-1 numeric
      */
-    name: string;
+    number: string;
+};
+export type Country = {
+    /**
+     * - ISO 3166-1 alpha-2
+     */
+    code2: string;
+    /**
+     * - ISO 3166-1 alpha-3
+     */
+    code3: string;
     /**
      * - ISO 3166-1 numeric
      */
     number: string;
+    /**
+     * - Country name
+     */
+    name: string;
+    /**
+     * - Nationality name
+     */
+    nationality: string;
 };
 import { QueryDefinition } from "./queries/dsl";
