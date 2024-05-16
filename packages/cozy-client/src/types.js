@@ -954,8 +954,16 @@ import { QueryDefinition } from './queries/dsl'
  * @typedef {Object} CountryISO
  * @property {string} code2 - ISO 3166-1 alpha-2
  * @property {string} code3 - ISO 3166-1 alpha-3
- * @property {string} name - Country name
  * @property {string} number - ISO 3166-1 numeric
+ */
+
+/**
+ * @typedef {Object} Country
+ * @property {string} code2 - ISO 3166-1 alpha-2
+ * @property {string} code3 - ISO 3166-1 alpha-3
+ * @property {string} number - ISO 3166-1 numeric
+ * @property {string} name - Country name
+ * @property {string} nationality - Nationality name
  */
 
 export default {}
