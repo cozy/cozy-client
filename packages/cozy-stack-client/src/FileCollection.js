@@ -6,7 +6,7 @@ import pick from 'lodash/pick'
 import { MangoQueryOptions } from './mangoIndex'
 
 import DocumentCollection, { normalizeDoc } from './DocumentCollection'
-import { uri, slugify, formatBytes } from './utils'
+import { uri, slugify, formatBytes, forceDownload } from './utils'
 import { FetchError } from './errors'
 import { dontThrowNotFoundError } from './Collection'
 import { getIllegalCharacters } from './getIllegalCharacter'
@@ -659,13 +659,7 @@ class FileCollection extends DocumentCollection {
    * @param {string} filename - The file name to download
    */
   forceFileDownload = (href, filename) => {
-    const element = document.createElement('a')
-    element.setAttribute('href', href)
-    element.setAttribute('download', filename)
-    element.style.display = 'none'
-    document.body.appendChild(element)
-    element.click()
-    document.body.removeChild(element)
+    forceDownload(href, filename)
   }
 
   /**

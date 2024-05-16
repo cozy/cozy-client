@@ -1,4 +1,5 @@
 import DocumentCollection from './DocumentCollection'
+import { forceDownload } from './utils'
 
 const NEXTCLOUD_FILES_DOCTYPE = 'io.cozy.remote.nextcloud.files'
 
@@ -40,6 +41,21 @@ class NextcloudFilesCollection extends DocumentCollection {
       }
     }
     throw new Error('Not implemented')
+  }
+
+  /**
+   * Download a file from a Nextcloud server
+   *
+   */
+  async download(file) {
+    const res = await this.stackClient.fetch(
+      'GET',
+      `/remote/nextcloud/${file.cozyMetadata.sourceAccount}/${file.path}?Dl=1`
+    )
+    const blob = await res.blob()
+    const href = URL.createObjectURL(blob)
+    const filename = file.path.split('/').pop()
+    forceDownload(href, filename)
   }
 }
 

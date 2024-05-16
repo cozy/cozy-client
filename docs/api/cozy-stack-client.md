@@ -108,6 +108,9 @@ query to work</p>
 <dd><p>Rules determine the behavior of the sharing when changes are made to the shared document
 See <a href="https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing">https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing</a></p>
 </dd>
+<dt><a href="#forceDownload">forceDownload</a></dt>
+<dd><p>Force a download from the given href</p>
+</dd>
 </dl>
 
 ## Functions
@@ -2199,6 +2202,18 @@ See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing
 | --- | --- | --- |
 | document | [<code>Sharing</code>](#Sharing) | The document to share. Should have and _id and a name |
 | sharingType | [<code>SharingType</code>](#SharingType) | The type of the sharing |
+
+<a name="forceDownload"></a>
+
+## forceDownload
+Force a download from the given href
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| href | <code>string</code> | The link to download |
+| filename | <code>string</code> | The file name to download |
 
 <a name="getAccessToken"></a>
 
