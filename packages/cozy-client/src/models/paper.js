@@ -6,6 +6,7 @@ import { getLocalizer as localizerDocument } from './document/locales'
 import { getLocalizer as localizerCountry } from './country/locales'
 import { getDisplayName } from './contact'
 import get from 'lodash/get'
+import { checkCountryCode } from './country/countries'
 
 /**
  * @typedef {import("../types").IOCozyFile} IOCozyFile
@@ -387,7 +388,7 @@ export const formatInformationMetadataValue = (
     return `${value} €`
   }
 
-  if (name === 'country') {
+  if (name === 'country' && checkCountryCode(value)) {
     return tCountry(`nationalities.${value}`)
   }
 
