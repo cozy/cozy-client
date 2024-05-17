@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [47.1.0](https://github.com/cozy/cozy-client/compare/v47.0.0...v47.1.0) (2024-05-17)
+
+
+### Features
+
+* **models/paper:** Add translation of "country" metadata ([1be7f48](https://github.com/cozy/cozy-client/commit/1be7f488b6a91e41d031d965b366abe83422fc7a))
+
+
+
+
+
 # [47.0.0](https://github.com/cozy/cozy-client/compare/v46.11.0...v47.0.0) (2024-05-17)
 
 
