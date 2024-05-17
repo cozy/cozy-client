@@ -3,6 +3,49 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [47.0.0](https://github.com/cozy/cozy-client/compare/v46.11.0...v47.0.0) (2024-05-17)
+
+
+### Features
+
+* **countries:** COUNTRIES_ISO has ISO codes only ([8a76d13](https://github.com/cozy/cozy-client/commit/8a76d139d783311af3725f532a0223c32c7cfe97))
+* **countries:** The `getEmojiByCountry` return null ([7ab15f2](https://github.com/cozy/cozy-client/commit/7ab15f2c8bc03e692f384693a7492d346e7f4409))
+* **models:** Move the "countries" file to a specific folder ([ef87f93](https://github.com/cozy/cozy-client/commit/ef87f936922a6808b595abd29f7d9dd564d1b9b7))
+* Move `getEmojiByCountry` to country model ([f25874e](https://github.com/cozy/cozy-client/commit/f25874ef9df335304936c1a0145a5f7e792fa19c))
+
+
+### BREAKING CHANGES
+
+* Please replace your import paths
+Before:
+```
+import { getEmojiByCountry } from "cozy-client/dist/models/document/emojiCountry"
+```
+After:
+```
+import { getEmojiByCountry } from "cozy-client/dist/models/country/countries"
+```
+* **countries:** To manage the different translations
+of country names, it's best to extract the `name` attribute.
+If you're using the `COUNTRIES_ISO` constant
+to retrieve country names,
+please use the `getAllCountryNames` function now.
+* **models:** Please replace your import paths
+Before:
+```
+import { COUNTRIES_ISO, checkCountryCode } from "cozy-client/dist/models/countries"
+```
+After:
+```
+import { COUNTRIES_ISO, checkCountryCode } from "cozy-client/dist/models/country/countries"
+```
+
+For future needs (translation), it is preferable to move this file.
+
+
+
+
+
 # [46.11.0](https://github.com/cozy/cozy-client/compare/v46.10.1...v46.11.0) (2024-05-15)
 
 
