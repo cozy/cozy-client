@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [47.1.2](https://github.com/cozy/cozy-client/compare/v47.1.1...v47.1.2) (2024-05-17)
+
+
+### Bug Fixes
+
+* **models/document:** Rename "stranger" locale ([38a0f68](https://github.com/cozy/cozy-client/commit/38a0f68b1274e079415a1f7352be71ffdef12148))
+
+
+
+
+
 ## [47.1.1](https://github.com/cozy/cozy-client/compare/v47.1.0...v47.1.1) (2024-05-17)
 
 
