@@ -249,5 +249,14 @@ describe('Expiration', () => {
 
       expect(res).toEqual('metadataValue')
     })
+
+    it('should return nationality', () => {
+      const res = paperModel.formatInformationMetadataValue('FR', {
+        name: 'country',
+        lang: 'en'
+      })
+
+      expect(res).toEqual('French')
+    })
   })
 })

@@ -2,7 +2,8 @@ import add from 'date-fns/add'
 import sub from 'date-fns/sub'
 import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict'
 import fr from 'date-fns/locale/fr'
-import { getLocalizer } from './document/locales'
+import { getLocalizer as localizerDocument } from './document/locales'
+import { getLocalizer as localizerCountry } from './country/locales'
 import { getDisplayName } from './contact'
 import get from 'lodash/get'
 
@@ -304,7 +305,7 @@ export const getMetadataQualificationType = metadataName => {
  * @returns {string} Translated name for the metadata
  */
 export const getTranslatedNameForDateMetadata = (name, { lang }) => {
-  const t = getLocalizer(lang)
+  const t = localizerDocument(lang)
 
   return t(`Scan.qualification.date.title.${name}`)
 }
@@ -317,7 +318,7 @@ export const getTranslatedNameForDateMetadata = (name, { lang }) => {
  * @returns {string} Formatted and translated value for the metadata
  */
 export const formatDateMetadataValue = (value, { lang, f }) => {
-  const t = getLocalizer(lang)
+  const t = localizerDocument(lang)
 
   if (value) {
     if (lang === 'en') {
@@ -340,7 +341,7 @@ export const getTranslatedNameForInformationMetadata = (
   name,
   { lang, qualificationLabel }
 ) => {
-  const t = getLocalizer(lang)
+  const t = localizerDocument(lang)
 
   if (name === 'number') {
     return t(
@@ -363,19 +364,20 @@ export const formatInformationMetadataValue = (
   value,
   { lang, name, qualificationLabel }
 ) => {
-  const t = getLocalizer(lang)
+  const tDoc = localizerDocument(lang)
+  const tCountry = localizerCountry(lang)
 
   if (typeof value !== 'number' && !value) {
-    return t('Scan.qualification.noInfo')
+    return tDoc('Scan.qualification.noInfo')
   }
 
   if (name === 'noticePeriod') {
-    return `${value} ${t('Scan.qualification.information.day', {
+    return `${value} ${tDoc('Scan.qualification.information.day', {
       smart_count: value
     })}`
   }
   if (name === 'contractType') {
-    return t(`Scan.attributes.contractType.${value}`, { _: value })
+    return tDoc(`Scan.attributes.contractType.${value}`, { _: value })
   }
   if (
     name === 'refTaxIncome' ||
@@ -383,6 +385,10 @@ export const formatInformationMetadataValue = (
     (name === 'number' && qualificationLabel === 'pay_sheet')
   ) {
     return `${value} €`
+  }
+
+  if (name === 'country') {
+    return tCountry(`nationalities.${value}`)
   }
 
   return value
@@ -395,7 +401,7 @@ export const formatInformationMetadataValue = (
  * @returns {string} Translated name for the metadata
  */
 export const getTranslatedNameForOtherMetadata = (name, { lang }) => {
-  const t = getLocalizer(lang)
+  const t = localizerDocument(lang)
 
   return t(`Scan.qualification.${name}`)
 }
@@ -408,7 +414,7 @@ export const getTranslatedNameForOtherMetadata = (name, { lang }) => {
  * @returns {string} Formatted and translated value for the metadata
  */
 export const formatOtherMetadataValue = (value, { lang, name }) => {
-  const t = getLocalizer(lang)
+  const t = localizerDocument(lang)
 
   if (name === 'qualification') {
     return t(`Scan.items.${value}`, { smart_count: 1 })
@@ -423,7 +429,7 @@ export const formatOtherMetadataValue = (value, { lang, name }) => {
  * @returns {string} Translated name for contact
  */
 export const getTranslatedNameForContact = ({ lang }) => {
-  const t = getLocalizer(lang)
+  const t = localizerDocument(lang)
 
   return t('Scan.qualification.contact')
 }
@@ -444,7 +450,7 @@ export const formatContactValue = contacts => {
  * @returns {string}
  */
 export const makeExpiredMessage = ({ lang }) => {
-  const t = getLocalizer(lang)
+  const t = localizerDocument(lang)
 
   return t('Scan.expiration.expired')
 }
@@ -456,7 +462,7 @@ export const makeExpiredMessage = ({ lang }) => {
  * @returns {string}
  */
 export const makeExpiresInMessage = (expirationDate, { lang }) => {
-  const t = getLocalizer(lang)
+  const t = localizerDocument(lang)
 
   const distance = formatDistanceToNowStrict(new Date(expirationDate), {
     locale: lang === 'fr' ? fr : undefined // fallbacks to english if undefined
@@ -472,7 +478,7 @@ export const makeExpiresInMessage = (expirationDate, { lang }) => {
  * @returns {string}
  */
 export const makeExpirationDescription = (expirationDate, { lang }) => {
-  const t = getLocalizer(lang)
+  const t = localizerDocument(lang)
 
   const distance = formatDistanceToNowStrict(new Date(expirationDate), {
     locale: lang === 'fr' ? fr : undefined // fallbacks to english if undefined
