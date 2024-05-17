@@ -1,6 +1,6 @@
 {
   "country": {
-    "stranger": "Étranger"
+    "foreign": "Étranger"
   },
   "Scan": {
     "scan_a_doc": "Numériser un doc",

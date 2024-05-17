@@ -29,8 +29,8 @@ const getBoundT = lang => {
     const country = opts?.country
 
     const emojiCountry =
-      country !== 'stranger' ? getEmojiByCountry(country) : null
-    const strangerLabel = country === 'stranger' ? t('country.stranger') : null
+      country !== 'foreign' ? getEmojiByCountry(country) : null
+    const strangerLabel = country === 'foreign' ? t('country.foreign') : null
 
     return emojiCountry || strangerLabel
       ? `${t(label, newOpts)} ${emojiCountry || strangerLabel}`
