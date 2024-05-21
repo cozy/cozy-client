@@ -5,6 +5,9 @@
  * @type {import('../../types').CountryISO[]}
  */
 export const COUNTRIES_ISO: import('../../types').CountryISO[];
+export function isValidCountryCodeTranslation(lang: string, val: string): boolean;
+export function isCountryCodeAlpha3(code: string): boolean;
+export function isCountryCodeAlpha2(code: string): boolean;
 export function checkCountryCode(code: string): boolean;
 export function getAllCountries(lang: string): import('../../types').Country[];
 export function getCountryNameByCodeISO(code: string | number, { lang }?: {
