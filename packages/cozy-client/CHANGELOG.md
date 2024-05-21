@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [47.2.0](https://github.com/cozy/cozy-client/compare/v47.1.2...v47.2.0) (2024-05-21)
+
+
+### Features
+
+* We make sure that the translation key matches to an alpha-2 code ([c70466f](https://github.com/cozy/cozy-client/commit/c70466fe086c63bd2993b522c04b6c776cc297fd))
+
+
+
+
+
 ## [47.1.2](https://github.com/cozy/cozy-client/compare/v47.1.1...v47.1.2) (2024-05-17)
 
 
