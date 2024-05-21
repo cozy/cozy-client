@@ -15,10 +15,10 @@ for (const lang of langs) {
 
 /**
  * @param {string} lang - fr, en, etc
- * @returns {Function} - localization function
+ * @returns {{ t: Function, polyglot: object, lang: string }}
  */
 export const getLocalizer = lang => {
   const polyglot = polyglots[lang] || polyglots['en']
   const t = polyglot.t.bind(polyglot)
-  return t
+  return { t, polyglot, lang }
 }

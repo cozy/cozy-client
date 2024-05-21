@@ -258,19 +258,55 @@ export const COUNTRIES_ISO = [
 ]
 
 /**
+ * Check if a country code translation is valid
+ *
+ * @param {string} lang - Language of country names and nationalities
+ * @param {string} val - Country code
+ * @returns {boolean} - True if the translation is valid, false otherwise
+ */
+export const isValidCountryCodeTranslation = (lang, val) => {
+  const { polyglot } = getLocalizer(lang)
+  return (
+    isCountryCodeAlpha2(val) &&
+    polyglot.has(`nationalities.${val}`) &&
+    polyglot.has(`countries.${val}`)
+  )
+}
+
+/**
+ * Check if a country code is an ISO 3166-1 alpha-3 code
+ *
+ * @param {string} code - The country code
+ * @returns {boolean} - True if the code is an ISO 3166-1 alpha-3 code, false otherwise
+ */
+export const isCountryCodeAlpha3 = code => {
+  if (!code) return false
+
+  const codeUpperCase = code.toUpperCase()
+  return COUNTRIES_ISO.some(c => c.code3 === codeUpperCase)
+}
+
+/**
+ * Check if a country code is an ISO 3166-1 alpha-2 code
+ *
+ * @param {string} code - The country code
+ * @returns {boolean} - True if the code is an ISO 3166-1 alpha-2 code, false otherwise
+ */
+export const isCountryCodeAlpha2 = code => {
+  if (!code) return false
+
+  const codeUpperCase = code.toUpperCase()
+  return COUNTRIES_ISO.some(c => c.code2 === codeUpperCase)
+}
+
+/**
  * Check if a country code is valid
  *
  * @param {string} code - The country code
  * @returns {boolean} - True if the code is valid, false otherwise
  */
 export const checkCountryCode = code => {
-  if (!code) return false
-  const codeUpperCase = code.toUpperCase()
-  const foundCountry = COUNTRIES_ISO.find(
-    country =>
-      country.code2 === codeUpperCase || country.code3 === codeUpperCase
-  )
-  return !!foundCountry
+  return isCountryCodeAlpha2(code) || isCountryCodeAlpha3(code)
 }
 
 /**
@@ -280,7 +316,7 @@ export const checkCountryCode = code => {
  * @returns {import('../../types').Country[]} - List of countries
  */
 export const getAllCountries = lang => {
-  const t = getLocalizer(lang)
+  const { t } = getLocalizer(lang)
 
   return COUNTRIES_ISO.map(country => ({
     code2: country.code2,

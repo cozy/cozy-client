@@ -4,7 +4,9 @@ import {
   getAllCountryNames,
   getAllNationalities,
   getCountryNameByCodeISO,
-  getEmojiByCountry
+  getEmojiByCountry,
+  isCountryCodeAlpha2,
+  isCountryCodeAlpha3
 } from './countries'
 import logger from '../../logger'
 
@@ -163,5 +165,39 @@ describe('getEmojiByCountry', () => {
 
     expect(logger.error).toHaveBeenCalledTimes(1)
     expect(res).toBe(null)
+  })
+})
+
+describe('isCountryCodeAlpha3', () => {
+  it('should return true for valid country codes', () => {
+    expect(isCountryCodeAlpha3('FRA')).toBe(true)
+    expect(isCountryCodeAlpha3('fra')).toBe(true)
+    expect(isCountryCodeAlpha3('USA')).toBe(true)
+    expect(isCountryCodeAlpha3('usa')).toBe(true)
+  })
+
+  it('should return false for invalid country codes', () => {
+    expect(isCountryCodeAlpha3(undefined)).toBe(false)
+    expect(isCountryCodeAlpha3(null)).toBe(false)
+    expect(isCountryCodeAlpha3('')).toBe(false)
+    expect(isCountryCodeAlpha3('AAA')).toBe(false)
+    expect(isCountryCodeAlpha3('FR')).toBe(false)
+  })
+})
+
+describe('isCountryCodeAlpha2', () => {
+  it('should return true for valid country codes', () => {
+    expect(isCountryCodeAlpha2('FR')).toBe(true)
+    expect(isCountryCodeAlpha2('fr')).toBe(true)
+    expect(isCountryCodeAlpha2('US')).toBe(true)
+    expect(isCountryCodeAlpha2('us')).toBe(true)
+  })
+
+  it('should return false for invalid country codes', () => {
+    expect(isCountryCodeAlpha2(undefined)).toBe(false)
+    expect(isCountryCodeAlpha2(null)).toBe(false)
+    expect(isCountryCodeAlpha2('')).toBe(false)
+    expect(isCountryCodeAlpha2('AA')).toBe(false)
+    expect(isCountryCodeAlpha2('FRA')).toBe(false)
   })
 })

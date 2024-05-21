@@ -1,1 +1,5 @@
-export function getLocalizer(lang: string): Function;
+export function getLocalizer(lang: string): {
+    t: Function;
+    polyglot: object;
+    lang: string;
+};
