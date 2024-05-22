@@ -894,7 +894,7 @@ Fetches a queryDefinition and returns the queryState
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `queryDefinition` | [`QueryDefinition`](classes/QueryDefinition.md) | Definition created with Q() |
+| `queryDefinition` | [`QueryDefinition`](classes/QueryDefinition.md) | () => [`QueryDefinition`](classes/QueryDefinition.md) | Definition created with Q() |
 | `options` | `QueryOptions` | Options created with Q() |
 
 *Returns*
