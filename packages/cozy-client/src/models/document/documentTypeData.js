@@ -51,7 +51,7 @@ export const themesList = [
   {
     id: 'theme3',
     label: 'work_study',
-    icon: 'company',
+    icon: 'work',
     items: buildItemsByLabel(THEME_WORK_STUDY_LABELS)
   },
   {
@@ -76,7 +76,7 @@ export const themesList = [
   {
     id: 'theme7',
     label: 'activity',
-    icon: 'compass',
+    icon: 'chess',
     items: buildItemsByLabel(THEME_ACTIVITY_LABELS)
   },
   {
