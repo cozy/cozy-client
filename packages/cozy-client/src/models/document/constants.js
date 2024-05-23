@@ -129,6 +129,7 @@ export const THEME_ACTIVITY_LABELS = [
  */
 export const THEME_FINANCE_LABELS = [
   'fine',
+  'tax_certificate',
   'tax_return',
   'tax_notice',
   'tax_timetable',
@@ -303,6 +304,7 @@ const ICON_BANK_LABELS = [
   'other_administrative_document',
   'other_tax_document',
   'real_estate_tax',
+  'tax_certificate',
   'tax_notice',
   'tax_return',
   'tax_timetable'
