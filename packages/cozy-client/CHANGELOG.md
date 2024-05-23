@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [47.3.0](https://github.com/cozy/cozy-client/compare/v47.2.0...v47.3.0) (2024-05-23)
+
+
+### Features
+
+* **Qualification:** Change work & activity themes icon ([89035ea](https://github.com/cozy/cozy-client/commit/89035ea79ac165a4495140932ed56af7f79e197d))
+
+
+
+
+
 # [47.2.0](https://github.com/cozy/cozy-client/compare/v47.1.2...v47.2.0) (2024-05-21)
 
 
