@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [47.4.0](https://github.com/cozy/cozy-client/compare/v47.3.0...v47.4.0) (2024-05-23)
+
+
+### Bug Fixes
+
+* **useQuery:** Add function type for definition prop ([21fca5c](https://github.com/cozy/cozy-client/commit/21fca5c91990741ac5930ef41b437399135fa80d))
+
+
+
+
+
 # [47.3.0](https://github.com/cozy/cozy-client/compare/v47.2.0...v47.3.0) (2024-05-23)
 
 

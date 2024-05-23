@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [47.4.0](https://github.com/cozy/cozy-client/compare/v47.3.0...v47.4.0) (2024-05-23)
+
+
+### Features
+
+* Add a collection to access files into a Nextcloud ([332ce42](https://github.com/cozy/cozy-client/commit/332ce42080769586861cccf17d4bf78aec3195bf))
+* **nextcloud:** Download a file ([df1dc7f](https://github.com/cozy/cozy-client/commit/df1dc7ff22ffed517e45958e6beb882864e2e83a))
+
+
+
+
+
 # [47.0.0](https://github.com/cozy/cozy-client/compare/v46.11.0...v47.0.0) (2024-05-17)
 
 **Note:** Version bump only for package cozy-stack-client
