@@ -676,7 +676,7 @@ import { QueryDefinition } from './queries/dsl'
  *
  * @typedef {'driver_license'|'vehicle_registration'|'car_insurance'|'mechanic_invoice'|'transport_invoice'|'other_transport_document'|'transport_card'|'note_transport_document'} TransportLabels
  *
- * @typedef {'fine'|'tax_return'|'tax_notice'|'tax_timetable'|'pay_sheet'|'receipt'|'other_tax_document'|'bank_details'|'bank_statement'|'loan_agreement'|'other_bank_document'|'payment_proof_family_allowance'|'other_revenue'|'single_parent_benefit'|'real_estate_tax'|'note_finance'|'expense_claim'} FinanceLabels
+ * @typedef {'fine'|'tax_certificate'|'tax_return'|'tax_notice'|'tax_timetable'|'pay_sheet'|'receipt'|'other_tax_document'|'bank_details'|'bank_statement'|'loan_agreement'|'other_bank_document'|'payment_proof_family_allowance'|'other_revenue'|'single_parent_benefit'|'real_estate_tax'|'note_finance'|'expense_claim'} FinanceLabels
  *
  * @typedef {'phone_invoice'|'isp_invoice'|'telecom_invoice'|'energy_invoice'|'water_invoice'|'appliance_invoice'|'web_service_invoice'|'restaurant_invoice'|'work_invoice'|'transport_invoice'|'health_invoice'|'other_invoice'|'note_invoice'|'expense_claim'|'energy_contract'|'grocery_invoice'} InvoiceLabels
  *
@@ -722,7 +722,7 @@ import { QueryDefinition } from './queries/dsl'
  *
  * @typedef {'bank_details'} iconBankCheckLabels
  *
- * @typedef {'other_administrative_document'|'other_tax_document'|'real_estate_tax'|'tax_notice'|'tax_return'|'tax_timetable'} iconBankLabels
+ * @typedef {'other_administrative_document'|'other_tax_document'|'real_estate_tax'|'tax_certificate'|'tax_notice'|'tax_return'|'tax_timetable'} iconBankLabels
  *
  * @typedef {'car_insurance'|'driver_license'|'other_transport_document'|'transport_card'|'transport_invoice'|'vehicle_registration'} iconCarLabels
  *

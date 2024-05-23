@@ -388,6 +388,12 @@
       "purpose": "invoice"
     },
     {
+      "label": "tax_certificate",
+      "purpose": "attestation",
+      "sourceCategory": "gov",
+      "subjects": ["tax"]
+    },
+    {
       "label": "tax_return",
       "purpose": "report",
       "sourceCategory": "gov",
