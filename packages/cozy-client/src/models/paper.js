@@ -48,6 +48,7 @@ export const KNOWN_INFORMATION_METADATA_NAMES = [
   'noticePeriod'
 ]
 export const KNOWN_OTHER_METADATA_NAMES = ['contact', 'page', 'qualification']
+export const KNOWN_BILLS_ATTRIBUTES_NAMES = ['amount', 'subtype', 'employer']
 
 /**
  * @param {IOCozyFile} file - io.cozy.files document
@@ -272,7 +273,7 @@ export const formatMetadataQualification = metadata => {
 }
 
 /**
- * @typedef {('date' | 'information' | 'contact' | 'other')} MetadataQualificationType
+ * @typedef {('date' | 'information' | 'contact' | 'other' | 'bills')} MetadataQualificationType
  */
 
 /**
@@ -294,6 +295,10 @@ export const getMetadataQualificationType = metadataName => {
       return 'contact'
     }
     return 'other'
+  }
+
+  if (KNOWN_BILLS_ATTRIBUTES_NAMES.includes(metadataName)) {
+    return 'bills'
   }
 
   return null
@@ -383,6 +388,7 @@ export const formatInformationMetadataValue = (
   if (
     name === 'refTaxIncome' ||
     name === 'netSocialAmount' ||
+    name === 'amount' ||
     (name === 'number' && qualificationLabel === 'pay_sheet')
   ) {
     return `${value} €`

@@ -239,6 +239,9 @@
           "noticePeriod": "Alerte d’expiration",
           "netSocialAmount": "Montant net social",
           "employerName": "Nom de l'employeur",
+          "employer": "Nom de l'employeur",
+          "amount": "Montant de la dépense",
+          "subtype": "Objet de la dépense",
           "bicNumber": "Numéro BIC"
         },
         "day": "jour |||| jours"
