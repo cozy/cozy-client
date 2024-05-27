@@ -239,6 +239,9 @@
           "noticePeriod": "Expiration alert",
           "netSocialAmount": "Net social amount",
           "employerName": "Name of employer",
+          "employer": "Name of employer",
+          "amount": "Amount of expenditure",
+          "subtype": "Purpose of expenditure",
           "bicNumber": "BIC number"
         },
         "day": "day |||| days"

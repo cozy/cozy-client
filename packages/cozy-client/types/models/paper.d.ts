@@ -1,6 +1,7 @@
 export const KNOWN_DATE_METADATA_NAMES: string[];
 export const KNOWN_INFORMATION_METADATA_NAMES: string[];
 export const KNOWN_OTHER_METADATA_NAMES: string[];
+export const KNOWN_BILLS_ATTRIBUTES_NAMES: string[];
 export function isExpiring(file: IOCozyFile): boolean;
 export function computeExpirationDate(file: IOCozyFile): Date | null;
 export function computeExpirationNoticeDate(file: IOCozyFile): Date | null;
@@ -49,4 +50,4 @@ export function makeExpirationDescription(expirationDate: string, { lang }: {
     lang: string;
 }): string;
 export type IOCozyFile = import("../types").CozyClientDocument & import("../types").FileDocument;
-export type MetadataQualificationType = "other" | "date" | "contact" | "information";
+export type MetadataQualificationType = "other" | "date" | "contact" | "information" | "bills";
