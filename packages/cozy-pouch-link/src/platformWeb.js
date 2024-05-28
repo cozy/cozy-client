@@ -1,5 +1,14 @@
 import PouchDB from 'pouchdb-browser'
 
+const events = {
+  addEventListener: (eventName, handler) => {
+    document.addEventListener(eventName, handler)
+  },
+  removeEventListener: (eventName, handler) => {
+    document.removeEventListener(eventName, handler)
+  }
+}
+
 const storage = {
   getItem: async key => {
     return window.localStorage.getItem(key)
@@ -18,6 +27,7 @@ const isOnline = async () => {
 
 export const platformWeb = {
   storage,
+  events,
   pouchAdapter: PouchDB,
   isOnline
 }
