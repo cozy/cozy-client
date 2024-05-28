@@ -25,6 +25,7 @@
 /**
  * @typedef {object} LinkPlatform
  * @property {LocalStorage} storage Methods to access local storage
+ * @property {any} pouchAdapter PouchDB class (can be pouchdb-core or pouchdb-browser)
  */
 
 export default {}
