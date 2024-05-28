@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [47.6.0](https://github.com/cozy/cozy-client/compare/v47.5.0...v47.6.0) (2024-05-28)
+
+
+### Features
+
+* Add support for io.cozy.bills in models/paper ([fe7ac2d](https://github.com/cozy/cozy-client/commit/fe7ac2dabc426200f19995e4544f590e7b04df6d))
+
+
+
+
+
 # [47.5.0](https://github.com/cozy/cozy-client/compare/v47.4.0...v47.5.0) (2024-05-23)
 
 
