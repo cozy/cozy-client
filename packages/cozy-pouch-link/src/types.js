@@ -11,4 +11,8 @@
  * @typedef {CancelablePromise[] & Cancelable} CancelablePromises
  */
 
+/** @typedef {object} SyncInfo
+ * @property {string} Date
+ */
+
 export default {}

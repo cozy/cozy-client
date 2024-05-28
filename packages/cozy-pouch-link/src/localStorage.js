@@ -7,182 +7,212 @@ export const LOCALSTORAGE_LASTREPLICATEDDOCID_KEY =
   'cozy-client-pouch-link-lastreplicateddocid'
 export const LOCALSTORAGE_ADAPTERNAME = 'cozy-client-pouch-link-adaptername'
 
-/**
- * Persist the last replicated doc id for a doctype
- *
- * @param {string} doctype - The replicated doctype
- * @param {string} id - The docid
- */
-export const persistLastReplicatedDocID = (doctype, id) => {
-  const docids = getAllLastReplicatedDocID()
-  docids[doctype] = id
+export class PouchLocalStorage {
+  /**
+   * Persist the last replicated doc id for a doctype
+   *
+   * @param {string} doctype - The replicated doctype
+   * @param {string} id - The docid
+   *
+   * @returns {Promise<void>}
+   */
+  async persistLastReplicatedDocID(doctype, id) {
+    const docids = await this.getAllLastReplicatedDocID()
+    docids[doctype] = id
 
-  window.localStorage.setItem(
-    LOCALSTORAGE_LASTREPLICATEDDOCID_KEY,
-    JSON.stringify(docids)
-  )
-}
-
-export const getAllLastReplicatedDocID = () => {
-  const item = window.localStorage.getItem(LOCALSTORAGE_LASTREPLICATEDDOCID_KEY)
-  return item ? JSON.parse(item) : {}
-}
-
-/**
- * Get the last replicated doc id for a doctype
- *
- * @param {string} doctype - The doctype
- * @returns {string} The last replicated docid
- */
-export const getLastReplicatedDocID = doctype => {
-  const docids = getAllLastSequences()
-  return docids[doctype]
-}
-
-/**
- * Destroy all the replicated doc id
- */
-export const destroyAllLastReplicatedDocID = () => {
-  window.localStorage.removeItem(LOCALSTORAGE_LASTREPLICATEDDOCID_KEY)
-}
-
-/**
- * Persist the synchronized doctypes
- *
- * @typedef {object} SyncInfo
- * @property {string} Date
- *
- * @param {Record<string, SyncInfo>} syncedDoctypes - The sync doctypes
- */
-export const persistSyncedDoctypes = syncedDoctypes => {
-  window.localStorage.setItem(
-    LOCALSTORAGE_SYNCED_KEY,
-    JSON.stringify(syncedDoctypes)
-  )
-}
-
-/**
- * Get the persisted doctypes
- *
- * @returns {object} The synced doctypes
- */
-export const getPersistedSyncedDoctypes = () => {
-  const item = window.localStorage.getItem(LOCALSTORAGE_SYNCED_KEY)
-  const parsed = item ? JSON.parse(item) : {}
-  if (typeof parsed !== 'object') {
-    return {}
+    await window.localStorage.setItem(
+      LOCALSTORAGE_LASTREPLICATEDDOCID_KEY,
+      JSON.stringify(docids)
+    )
   }
-  return parsed
-}
 
-/**
- * Destroy the synced doctypes
- *
- */
-export const destroySyncedDoctypes = () => {
-  window.localStorage.removeItem(LOCALSTORAGE_SYNCED_KEY)
-}
-
-/**
- * Persist the last CouchDB sequence for a synced doctype
- *
- * @param {string} doctype - The synced doctype
- * @param {string} sequence - The sequence hash
- */
-export const persistDoctypeLastSequence = (doctype, sequence) => {
-  const seqs = getAllLastSequences()
-  seqs[doctype] = sequence
-
-  window.localStorage.setItem(
-    LOCALSTORAGE_LASTSEQUENCES_KEY,
-    JSON.stringify(seqs)
-  )
-}
-
-export const getAllLastSequences = () => {
-  const item = window.localStorage.getItem(LOCALSTORAGE_LASTSEQUENCES_KEY)
-  return item ? JSON.parse(item) : {}
-}
-
-/**
- * Get the last CouchDB sequence for a doctype
- *
- * @param {string} doctype - The doctype
- * @returns {string} the last sequence
- */
-export const getDoctypeLastSequence = doctype => {
-  const seqs = getAllLastSequences()
-  return seqs[doctype]
-}
-
-/**
- * Destroy all the last sequence
- */
-export const destroyAllDoctypeLastSequence = () => {
-  window.localStorage.removeItem(LOCALSTORAGE_LASTSEQUENCES_KEY)
-}
-
-/**
- * Destroy the last sequence for a doctype
- *
- * @param {string} doctype - The doctype
- */
-export const destroyDoctypeLastSequence = doctype => {
-  const seqs = getAllLastSequences()
-  delete seqs[doctype]
-  window.localStorage.setItem(
-    LOCALSTORAGE_LASTSEQUENCES_KEY,
-    JSON.stringify(seqs)
-  )
-}
-
-/**
- * Persist the warmed up queries
- *
- * @param {object} warmedUpQueries - The warmedup queries
- */
-export const persistWarmedUpQueries = warmedUpQueries => {
-  window.localStorage.setItem(
-    LOCALSTORAGE_WARMUPEDQUERIES_KEY,
-    JSON.stringify(warmedUpQueries)
-  )
-}
-
-/**
- * Get the warmed up queries
- *
- * @returns {object} the warmed up queries
- */
-export const getPersistedWarmedUpQueries = () => {
-  const item = window.localStorage.getItem(LOCALSTORAGE_WARMUPEDQUERIES_KEY)
-  if (!item) {
-    return {}
+  /**
+   * @returns {Promise<Record<string, string>>}
+   */
+  async getAllLastReplicatedDocID() {
+    const item = await window.localStorage.getItem(
+      LOCALSTORAGE_LASTREPLICATEDDOCID_KEY
+    )
+    return item ? JSON.parse(item) : {}
   }
-  return JSON.parse(item)
-}
 
-/**
- * Destroy the warmed queries
- *
- */
-export const destroyWarmedUpQueries = () => {
-  window.localStorage.removeItem(LOCALSTORAGE_WARMUPEDQUERIES_KEY)
-}
+  /**
+   * Get the last replicated doc id for a doctype
+   *
+   * @param {string} doctype - The doctype
+   * @returns {Promise<string>} The last replicated docid
+   */
+  async getLastReplicatedDocID(doctype) {
+    const docids = await this.getAllLastSequences()
+    return docids[doctype]
+  }
 
-/**
- * Get the adapter name
- *
- * @returns {string} The adapter name
- */
-export const getAdapterName = () => {
-  return window.localStorage.getItem(LOCALSTORAGE_ADAPTERNAME)
-}
+  /**
+   * Destroy all the replicated doc id
+   *
+   * @returns {Promise<void>}
+   */
+  async destroyAllLastReplicatedDocID() {
+    await window.localStorage.removeItem(LOCALSTORAGE_LASTREPLICATEDDOCID_KEY)
+  }
 
-/**
- * Persist the adapter name
- *
- * @param {string} adapter - The adapter name
- */
-export const persistAdapterName = adapter => {
-  window.localStorage.setItem(LOCALSTORAGE_ADAPTERNAME, adapter)
+  /**
+   * Persist the synchronized doctypes
+   *
+   * @param {Record<string, import("./types").SyncInfo>} syncedDoctypes - The sync doctypes
+   *
+   * @returns {Promise<void>}
+   */
+  async persistSyncedDoctypes(syncedDoctypes) {
+    await window.localStorage.setItem(
+      LOCALSTORAGE_SYNCED_KEY,
+      JSON.stringify(syncedDoctypes)
+    )
+  }
+
+  /**
+   * Get the persisted doctypes
+   *
+   * @returns {Promise<object>} The synced doctypes
+   */
+  async getPersistedSyncedDoctypes() {
+    const item = await window.localStorage.getItem(LOCALSTORAGE_SYNCED_KEY)
+    const parsed = item ? JSON.parse(item) : {}
+    if (typeof parsed !== 'object') {
+      return {}
+    }
+    return parsed
+  }
+
+  /**
+   * Destroy the synced doctypes
+   *
+   * @returns {Promise<void>}
+   */
+  async destroySyncedDoctypes() {
+    await window.localStorage.removeItem(LOCALSTORAGE_SYNCED_KEY)
+  }
+
+  /**
+   * Persist the last CouchDB sequence for a synced doctype
+   *
+   * @param {string} doctype - The synced doctype
+   * @param {string} sequence - The sequence hash
+   *
+   * @returns {Promise<void>}
+   */
+  async persistDoctypeLastSequence(doctype, sequence) {
+    const seqs = await this.getAllLastSequences()
+    seqs[doctype] = sequence
+
+    await window.localStorage.setItem(
+      LOCALSTORAGE_LASTSEQUENCES_KEY,
+      JSON.stringify(seqs)
+    )
+  }
+
+  /**
+   * @returns {Promise<object>}
+   */
+  async getAllLastSequences() {
+    const item = await window.localStorage.getItem(
+      LOCALSTORAGE_LASTSEQUENCES_KEY
+    )
+    return item ? JSON.parse(item) : {}
+  }
+
+  /**
+   * Get the last CouchDB sequence for a doctype
+   *
+   * @param {string} doctype - The doctype
+   *
+   * @returns {Promise<string>} the last sequence
+   */
+  async getDoctypeLastSequence(doctype) {
+    const seqs = await this.getAllLastSequences()
+    return seqs[doctype]
+  }
+
+  /**
+   * Destroy all the last sequence
+   *
+   * @returns {Promise<void>}
+   */
+  async destroyAllDoctypeLastSequence() {
+    await window.localStorage.removeItem(LOCALSTORAGE_LASTSEQUENCES_KEY)
+  }
+
+  /**
+   * Destroy the last sequence for a doctype
+   *
+   * @param {string} doctype - The doctype
+   *
+   * @returns {Promise<void>}
+   */
+  async destroyDoctypeLastSequence(doctype) {
+    const seqs = await this.getAllLastSequences()
+    delete seqs[doctype]
+    await window.localStorage.setItem(
+      LOCALSTORAGE_LASTSEQUENCES_KEY,
+      JSON.stringify(seqs)
+    )
+  }
+
+  /**
+   * Persist the warmed up queries
+   *
+   * @param {object} warmedUpQueries - The warmedup queries
+   *
+   * @returns {Promise<void>}
+   */
+  async persistWarmedUpQueries(warmedUpQueries) {
+    await window.localStorage.setItem(
+      LOCALSTORAGE_WARMUPEDQUERIES_KEY,
+      JSON.stringify(warmedUpQueries)
+    )
+  }
+
+  /**
+   * Get the warmed up queries
+   *
+   * @returns {Promise<object>} the warmed up queries
+   */
+  async getPersistedWarmedUpQueries() {
+    const item = await window.localStorage.getItem(
+      LOCALSTORAGE_WARMUPEDQUERIES_KEY
+    )
+    if (!item) {
+      return {}
+    }
+    return JSON.parse(item)
+  }
+
+  /**
+   * Destroy the warmed queries
+   *
+   * @returns {Promise<void>}
+   */
+  async destroyWarmedUpQueries() {
+    await window.localStorage.removeItem(LOCALSTORAGE_WARMUPEDQUERIES_KEY)
+  }
+
+  /**
+   * Get the adapter name
+   *
+   * @returns {Promise<string>} The adapter name
+   */
+  async getAdapterName() {
+    return await window.localStorage.getItem(LOCALSTORAGE_ADAPTERNAME)
+  }
+
+  /**
+   * Persist the adapter name
+   *
+   * @param {string} adapter - The adapter name
+   *
+   * @returns {Promise<void>}
+   */
+  async persistAdapterName(adapter) {
+    await window.localStorage.setItem(LOCALSTORAGE_ADAPTERNAME, adapter)
+  }
 }

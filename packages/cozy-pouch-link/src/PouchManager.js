@@ -7,6 +7,7 @@ import zip from 'lodash/zip'
 import startsWith from 'lodash/startsWith'
 import { isMobileApp } from 'cozy-device-helper'
 
+import { PouchLocalStorage } from './localStorage'
 import Loop from './loop'
 import logger from './logger'
 import { fetchRemoteLastSequence } from './remote'
@@ -34,20 +35,26 @@ const getQueryAlias = query => {
 class PouchManager {
   constructor(doctypes, options) {
     this.options = options
-    const pouchPlugins = get(options, 'pouch.plugins', [])
-    const pouchOptions = get(options, 'pouch.options', {})
+    this.doctypes = doctypes
 
-    forEach(pouchPlugins, plugin => PouchDB.plugin(plugin))
+    this.storage = new PouchLocalStorage()
+  }
+
+  async init() {
+    const pouchPlugins = get(this.options, 'pouch.plugins', [])
+    const pouchOptions = get(this.options, 'pouch.options', {})
+
     this.pouches = fromPairs(
-      doctypes.map(doctype => [
+      this.doctypes.map(doctype => [
         doctype,
-        new PouchDB(getDatabaseName(options.prefix, doctype), pouchOptions)
+        new PouchDB(getDatabaseName(this.options.prefix, doctype), pouchOptions)
       ])
     )
-    this.syncedDoctypes = localStorage.getPersistedSyncedDoctypes()
-    this.warmedUpQueries = localStorage.getPersistedWarmedUpQueries()
-    this.getReplicationURL = options.getReplicationURL
-    this.doctypesReplicationOptions = options.doctypesReplicationOptions || {}
+    this.syncedDoctypes = await this.storage.getPersistedSyncedDoctypes()
+    this.warmedUpQueries = await this.storage.getPersistedWarmedUpQueries()
+    this.getReplicationURL = this.options.getReplicationURL
+    this.doctypesReplicationOptions =
+      this.options.doctypesReplicationOptions || {}
     this.listenerLaunched = false
 
     // We must ensure databases exist on the remote before
@@ -84,13 +91,13 @@ class PouchManager {
     }
   }
 
-  destroy() {
+  async destroy() {
     this.stopReplicationLoop()
     this.removeListeners()
-    this.clearSyncedDoctypes()
-    this.clearWarmedUpQueries()
-    localStorage.destroyAllDoctypeLastSequence()
-    localStorage.destroyAllLastReplicatedDocID()
+    await this.clearSyncedDoctypes()
+    await this.clearWarmedUpQueries()
+    await this.storage.destroyAllDoctypeLastSequence()
+    await this.storage.destroyAllLastReplicatedDocID()
 
     return Promise.all(
       Object.values(this.pouches).map(pouch => pouch.destroy())
@@ -189,9 +196,9 @@ class PouchManager {
         // Before the first replication, get the last remote sequence,
         // which will be used as a checkpoint for the next replication
         const lastSeq = await fetchRemoteLastSequence(getReplicationURL())
-        localStorage.persistDoctypeLastSequence(doctype, lastSeq)
+        await this.storage.persistDoctypeLastSequence(doctype, lastSeq)
       } else {
-        seq = localStorage.getDoctypeLastSequence(doctype)
+        seq = await this.storage.getDoctypeLastSequence(doctype)
       }
 
       const replicationOptions = get(
@@ -210,15 +217,16 @@ class PouchManager {
       const res = await startReplication(
         pouch,
         replicationOptions,
-        getReplicationURL
+        getReplicationURL,
+        this.storage
       )
       if (seq) {
         // We only need the sequence for the second replication, as PouchDB
         // will use a local checkpoint for the next runs.
-        localStorage.destroyDoctypeLastSequence(doctype)
+        await this.storage.destroyDoctypeLastSequence(doctype)
       }
 
-      this.updateSyncInfo(doctype)
+      await this.updateSyncInfo(doctype)
       this.checkToWarmupDoctype(doctype, replicationOptions)
       if (this.options.onDoctypeSyncEnd) {
         this.options.onDoctypeSyncEnd(doctype)
@@ -281,9 +289,9 @@ class PouchManager {
     return this.pouches[doctype]
   }
 
-  updateSyncInfo(doctype) {
+  async updateSyncInfo(doctype) {
     this.syncedDoctypes[doctype] = { date: new Date().toISOString() }
-    localStorage.persistSyncedDoctypes(this.syncedDoctypes)
+    await this.storage.persistSyncedDoctypes(this.syncedDoctypes)
   }
 
   getSyncInfo(doctype) {
@@ -295,9 +303,9 @@ class PouchManager {
     return info ? !!info.date : false
   }
 
-  clearSyncedDoctypes() {
+  async clearSyncedDoctypes() {
     this.syncedDoctypes = {}
-    localStorage.destroySyncedDoctypes()
+    await this.storage.destroySyncedDoctypes()
   }
 
   async warmupQueries(doctype, queries) {
@@ -312,7 +320,7 @@ class PouchManager {
           }
         })
       )
-      localStorage.persistWarmedUpQueries(this.warmedUpQueries)
+      await this.storage.persistWarmedUpQueries(this.warmedUpQueries)
       logger.log('PouchManager: warmupQueries for ' + doctype + ' are done')
     } catch (err) {
       logger.error(
@@ -332,8 +340,8 @@ class PouchManager {
     }
   }
 
-  areQueriesWarmedUp(doctype, queries) {
-    const persistWarmedUpQueries = localStorage.getPersistedWarmedUpQueries()
+  async areQueriesWarmedUp(doctype, queries) {
+    const persistWarmedUpQueries = await this.storage.getPersistedWarmedUpQueries()
     return queries.every(
       query =>
         persistWarmedUpQueries[doctype] &&
@@ -341,9 +349,9 @@ class PouchManager {
     )
   }
 
-  clearWarmedUpQueries() {
+  async clearWarmedUpQueries() {
     this.warmedUpQueries = {}
-    localStorage.destroyWarmedUpQueries()
+    await this.storage.destroyWarmedUpQueries()
   }
 }
 
