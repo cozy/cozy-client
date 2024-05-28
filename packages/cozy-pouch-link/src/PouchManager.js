@@ -41,6 +41,7 @@ class PouchManager {
     )
     this.PouchDB = options.platform?.pouchAdapter || platformWeb.pouchAdapter
     this.isOnline = options.platform?.isOnline || platformWeb.isOnline
+    this.events = options.platform?.events || platformWeb.events
   }
 
   async init() {
@@ -77,11 +78,11 @@ class PouchManager {
   addListeners() {
     if (!this.listenerLaunched) {
       if (isMobileApp()) {
-        document.addEventListener('pause', this.stopReplicationLoop)
-        document.addEventListener('resume', this.startReplicationLoop)
+        this.events.addEventListener('pause', this.stopReplicationLoop)
+        this.events.addEventListener('resume', this.startReplicationLoop)
       }
-      document.addEventListener('online', this.startReplicationLoop)
-      document.addEventListener('offline', this.stopReplicationLoop)
+      this.events.addEventListener('online', this.startReplicationLoop)
+      this.events.addEventListener('offline', this.stopReplicationLoop)
       this.listenerLaunched = true
     }
   }
@@ -89,11 +90,11 @@ class PouchManager {
   removeListeners() {
     if (this.listenerLaunched) {
       if (isMobileApp()) {
-        document.removeEventListener('pause', this.stopReplicationLoop)
-        document.removeEventListener('resume', this.startReplicationLoop)
+        this.events.removeEventListener('pause', this.stopReplicationLoop)
+        this.events.removeEventListener('resume', this.startReplicationLoop)
       }
-      document.removeEventListener('online', this.startReplicationLoop)
-      document.removeEventListener('offline', this.stopReplicationLoop)
+      this.events.removeEventListener('online', this.startReplicationLoop)
+      this.events.removeEventListener('offline', this.stopReplicationLoop)
       this.listenerLaunched = false
     }
   }
