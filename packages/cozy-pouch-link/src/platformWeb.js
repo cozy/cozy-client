@@ -1,3 +1,5 @@
+import PouchDB from 'pouchdb-browser'
+
 const storage = {
   getItem: async key => {
     return window.localStorage.getItem(key)
@@ -11,5 +13,6 @@ const storage = {
 }
 
 export const platformWeb = {
-  storage
+  storage,
+  pouchAdapter: PouchDB
 }
