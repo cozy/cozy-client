@@ -1,4 +1,3 @@
-import PouchDB from 'pouchdb-browser'
 import fromPairs from 'lodash/fromPairs'
 import forEach from 'lodash/forEach'
 import get from 'lodash/get'
@@ -40,16 +39,21 @@ class PouchManager {
     this.storage = new PouchLocalStorage(
       options.platform?.storage || platformWeb.storage
     )
+    this.PouchDB = options.platform?.pouchAdapter || platformWeb.pouchAdapter
   }
 
   async init() {
     const pouchPlugins = get(this.options, 'pouch.plugins', [])
     const pouchOptions = get(this.options, 'pouch.options', {})
 
+    forEach(pouchPlugins, plugin => this.PouchDB.plugin(plugin))
     this.pouches = fromPairs(
       this.doctypes.map(doctype => [
         doctype,
-        new PouchDB(getDatabaseName(this.options.prefix, doctype), pouchOptions)
+        new this.PouchDB(
+          getDatabaseName(this.options.prefix, doctype),
+          pouchOptions
+        )
       ])
     )
     this.syncedDoctypes = await this.storage.getPersistedSyncedDoctypes()
