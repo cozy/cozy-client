@@ -408,6 +408,11 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
+ * @typedef {object} CozyClientDocumentMeta - Meta object as specified by JSON-API (https://jsonapi.org/format/#document-meta)
+ * @property {string} [rev] - Current revision of the document
+ */
+
+/**
  * @typedef {object} CozyClientDocument - A document
  * @property {string} [_id] - Id of the document
  * @property {string} [id] - Id of the document
@@ -417,6 +422,8 @@ import { QueryDefinition } from './queries/dsl'
  * @property {ReferencedByRelationship} [relationships] - Relationships of the document
  * @property {Reference[]} [referenced_by] - referenced by of another document
  * @property {CozyMetadata} [cozyMetadata] - Cozy Metadata
+ * @property {CozyClientDocumentMeta} [meta] - Pouch Metadata
+ * @property {boolean} [cozyLocalOnly] - When true the document should NOT be replicated to the remote database
  */
 
 /**
