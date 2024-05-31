@@ -41,6 +41,7 @@ class PouchManager {
       options.platform?.storage || platformWeb.storage
     )
     this.PouchDB = options.platform?.pouchAdapter || platformWeb.pouchAdapter
+    this.isOnline = options.platform?.isOnline || platformWeb.isOnline
   }
 
   async init() {
@@ -170,7 +171,7 @@ class PouchManager {
 
   /** Starts replication */
   async replicateOnce() {
-    if (!window.navigator.onLine) {
+    if (!(await this.isOnline())) {
       logger.info(
         'PouchManager: The device is offline so the replication has been skipped'
       )
