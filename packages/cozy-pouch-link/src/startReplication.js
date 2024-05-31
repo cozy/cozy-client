@@ -62,7 +62,12 @@ export const startReplication = (
     } = replicationOptions
     const options = {
       batch_size: BATCH_SIZE,
-      ...customReplicationOptions
+      ...customReplicationOptions,
+      selector: {
+        cozyLocalOnly: {
+          $exists: false
+        }
+      }
     }
     let replication
     if (initialReplication && strategy !== 'toRemote') {
