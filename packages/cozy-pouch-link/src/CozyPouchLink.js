@@ -19,6 +19,7 @@ import PouchManager from './PouchManager'
 import { PouchLocalStorage } from './localStorage'
 import logger from './logger'
 import { migratePouch } from './migrations/adapter'
+import { platformWeb } from './platformWeb'
 import { getDatabaseName, getPrefix } from './utils'
 
 PouchDB.plugin(PouchDBFind)
@@ -74,6 +75,7 @@ class PouchLink extends CozyLink {
    * @param {number} [opts.replicationInterval] Milliseconds between replications
    * @param {string[]} opts.doctypes Doctypes to replicate
    * @param {object[]} opts.doctypesReplicationOptions A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote")
+   * @param {import('./types').LinkPlatform} opts.platform Platform specific adapters and methods
    */
 
   constructor(opts) {
@@ -89,7 +91,9 @@ class PouchLink extends CozyLink {
     this.doctypes = doctypes
     this.doctypesReplicationOptions = doctypesReplicationOptions
     this.indexes = {}
-    this.storage = new PouchLocalStorage()
+    this.storage = new PouchLocalStorage(
+      options.platform?.storage || platformWeb.storage
+    )
 
     /** @type {Record<string, SyncStatus>} - Stores replication states per doctype */
     this.replicationStatus = this.replicationStatus || {}
@@ -99,10 +103,11 @@ class PouchLink extends CozyLink {
    * Return the PouchDB adapter name.
    * Should be IndexedDB for newest adapters.
    *
+   * @param {import('./types').LocalStorage} localStorage Methods to access local storage
    * @returns {Promise<string>} The adapter name
    */
-  static getPouchAdapterName = () => {
-    const storage = new PouchLocalStorage()
+  static getPouchAdapterName = localStorage => {
+    const storage = new PouchLocalStorage(localStorage || platformWeb.storage)
     return storage.getAdapterName()
   }
 
@@ -205,7 +210,8 @@ class PouchLink extends CozyLink {
       onDoctypeSyncStart: this.handleDoctypeSyncStart.bind(this),
       onDoctypeSyncEnd: this.handleDoctypeSyncEnd.bind(this),
       prefix,
-      executeQuery: this.executeQuery.bind(this)
+      executeQuery: this.executeQuery.bind(this),
+      platform: this.options.platform
     })
     await this.pouches.init()
 
