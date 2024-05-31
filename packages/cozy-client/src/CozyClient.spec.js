@@ -693,7 +693,8 @@ describe('CozyClient login', () => {
 
 describe('CozyClient', () => {
   const requestHandler = jest.fn()
-  const link = new CozyLink(requestHandler)
+  const persistHandler = jest.fn()
+  const link = new CozyLink(requestHandler, persistHandler)
 
   const MOCKED_DATE = '2018-05-05T09:09:00.115Z'
 
@@ -724,6 +725,7 @@ describe('CozyClient', () => {
 
   afterEach(() => {
     requestHandler.mockReset()
+    persistHandler.mockReset()
   })
   describe('setAppMetadata', () => {
     it('should update the appMetadata', () => {
@@ -1384,6 +1386,7 @@ describe('CozyClient', () => {
 
     it('should return the same result if the query is run while she is already in loading status whithout requesting the query twice', async () => {
       jest.spyOn(client, 'requestQuery')
+      requestHandler.mockResolvedValue({})
 
       const [resp, resp2] = await Promise.all([
         client.query(query, { as: 'allTodos' }),
@@ -1398,6 +1401,69 @@ describe('CozyClient', () => {
       await client.query(query, { executeFromStore: true })
       expect(requestHandler).toHaveBeenCalledTimes(0)
       expect(executeQueryFromState).toHaveBeenCalledTimes(1)
+    })
+
+    it('should persist virtual document when no meta.rev', async () => {
+      jest.spyOn(client, 'requestQuery')
+      requestHandler.mockResolvedValue({
+        data: {
+          _id: 'some_id'
+        }
+      })
+
+      await client.query(query, { as: 'allTodos' })
+
+      expect(persistHandler).toHaveBeenCalledWith(
+        {
+          _id: 'some_id'
+        },
+        expect.anything()
+      )
+    })
+
+    it('should persist array of virtual documents when no meta.rev', async () => {
+      jest.spyOn(client, 'requestQuery')
+      requestHandler.mockResolvedValue({
+        data: [
+          {
+            _id: 'some_id'
+          },
+          {
+            _id: 'some_id2'
+          }
+        ]
+      })
+
+      await client.query(query, { as: 'allTodos' })
+
+      expect(persistHandler).toHaveBeenCalledWith(
+        {
+          _id: 'some_id'
+        },
+        expect.anything()
+      )
+      expect(persistHandler).toHaveBeenCalledWith(
+        {
+          _id: 'some_id2'
+        },
+        expect.anything()
+      )
+    })
+
+    it('should not persist virtual documents if cozyLocalOnly', async () => {
+      jest.spyOn(client, 'requestQuery')
+      requestHandler.mockResolvedValue({
+        data: [
+          {
+            _id: 'some_id',
+            cozyLocalOnly: true
+          }
+        ]
+      })
+
+      await client.query(query, { as: 'allTodos' })
+
+      expect(persistHandler).not.toHaveBeenCalled()
     })
 
     describe('relationship with query failure', () => {
