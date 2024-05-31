@@ -5,6 +5,7 @@ import CozyLink from './CozyLink'
 import { DOCTYPE_FILES } from './const'
 import { BulkEditError } from './errors'
 import logger from './logger'
+import { isReactNativeOfflineError } from './utils'
 
 /**
  *
@@ -84,10 +85,17 @@ export default class StackLink extends CozyLink {
       return forward(operation)
     }
 
-    if (operation.mutationType) {
-      return this.executeMutation(operation, result, forward)
+    try {
+      if (operation.mutationType) {
+        return await this.executeMutation(operation, result, forward)
+      }
+      return await this.executeQuery(operation)
+    } catch (err) {
+      if (isReactNativeOfflineError(err)) {
+        return forward(operation)
+      }
+      throw err
     }
-    return this.executeQuery(operation)
   }
 
   async persistData(data, forward) {
