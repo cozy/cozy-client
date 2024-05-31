@@ -98,6 +98,8 @@ const DOC_CREATION = 'creation'
 const DOC_UPDATE = 'update'
 
 /**
+ * @typedef {import("./types").CozyClientDocument} CozyClientDocument
+ *
  * @typedef {object} ClientOptions
  * @property {object} [client]
  * @property {object} [link]
@@ -1090,6 +1092,9 @@ client.query(Q('io.cozy.bills'))`)
    */
   async requestQuery(definition) {
     const mainResponse = await this.chain.request(definition)
+
+    this.persistVirtualDocuments(mainResponse.data)
+
     if (!definition.includes) {
       return mainResponse
     }
@@ -1098,6 +1103,36 @@ client.query(Q('io.cozy.bills'))`)
       this.getIncludesRelationships(definition)
     )
     return withIncluded
+  }
+
+  /**
+   * Save the document or array of documents into the persisted storage (if any)
+   *
+   * @private
+   * @param {CozyClientDocument | Array<CozyClientDocument>} data - Document or array of documents to be saved
+   * @returns {Promise<void>}
+   */
+  async persistVirtualDocuments(data) {
+    if (!Array.isArray(data)) {
+      await this.persistVirtualDocument(data)
+    } else {
+      for (const document of data) {
+        await this.persistVirtualDocument(document)
+      }
+    }
+  }
+
+  /**
+   * Save the document or array of documents into the persisted storage (if any)
+   *
+   * @private
+   * @param {CozyClientDocument} document - Document to be saved
+   * @returns {Promise<void>}
+   */
+  async persistVirtualDocument(document) {
+    if (document && !document.meta?.rev && !document.cozyLocalOnly) {
+      await this.chain.persistData(document)
+    }
   }
 
   /**
