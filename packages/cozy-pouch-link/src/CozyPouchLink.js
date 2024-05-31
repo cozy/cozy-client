@@ -59,6 +59,8 @@ const normalizeAll = (docs, doctype) => {
 }
 
 /**
+ * @typedef {import('cozy-client/src/types').CozyClientDocument} CozyClientDocument
+ *
  * @typedef {"idle"|"replicating"} SyncStatus
  */
 
@@ -384,6 +386,44 @@ class PouchLink extends CozyLink {
       return this.executeQuery(operation)
     }
   }
+
+  async persistData(data, forward = doNothing) {
+    const docWithoutType = sanitized(data)
+    docWithoutType.cozyLocalOnly = true
+
+    const oldDoc = await this.getExistingDocument(data._id, data._type)
+    if (oldDoc) {
+      docWithoutType._rev = oldDoc._rev
+    }
+
+    const db = this.pouches.getPouch(data._type)
+    await db.put(docWithoutType)
+  }
+
+  /**
+   * Retrieve the existing document from Pouch
+   *
+   * @private
+   * @param {*} id - ID of the document to retrieve
+   * @param {*} type - Doctype of the document to retrieve
+   * @param {*} throwIfNotFound - If true the method will throw when the document is not found. Otherwise it will return null
+   * @returns {Promise<CozyClientDocument | null>}
+   */
+  async getExistingDocument(id, type, throwIfNotFound = false) {
+    try {
+      const db = this.pouches.getPouch(type)
+      const existingDoc = await db.get(id)
+
+      return existingDoc
+    } catch (err) {
+      if (err.name === 'not_found' && !throwIfNotFound) {
+        return null
+      } else {
+        throw err
+      }
+    }
+  }
+
   /**
    *
    * Check if there is warmup queries for this doctype
