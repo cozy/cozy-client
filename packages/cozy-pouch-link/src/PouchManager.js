@@ -11,9 +11,9 @@ import { QueryDefinition } from 'cozy-client'
 import { PouchLocalStorage } from './localStorage'
 import Loop from './loop'
 import logger from './logger'
+import { platformWeb } from './platformWeb'
 import { fetchRemoteLastSequence } from './remote'
 import { startReplication } from './startReplication'
-import * as localStorage from './localStorage'
 import { getDatabaseName } from './utils'
 
 const DEFAULT_DELAY = 30 * 1000
@@ -38,7 +38,9 @@ class PouchManager {
     this.options = options
     this.doctypes = doctypes
 
-    this.storage = new PouchLocalStorage()
+    this.storage = new PouchLocalStorage(
+      options.platform?.storage || platformWeb.storage
+    )
   }
 
   async init() {

@@ -8,6 +8,10 @@ export const LOCALSTORAGE_LASTREPLICATEDDOCID_KEY =
 export const LOCALSTORAGE_ADAPTERNAME = 'cozy-client-pouch-link-adaptername'
 
 export class PouchLocalStorage {
+  constructor(storageEngine) {
+    this.storageEngine = storageEngine
+  }
+
   /**
    * Persist the last replicated doc id for a doctype
    *
@@ -20,7 +24,7 @@ export class PouchLocalStorage {
     const docids = await this.getAllLastReplicatedDocID()
     docids[doctype] = id
 
-    await window.localStorage.setItem(
+    await this.storageEngine.setItem(
       LOCALSTORAGE_LASTREPLICATEDDOCID_KEY,
       JSON.stringify(docids)
     )
@@ -30,7 +34,7 @@ export class PouchLocalStorage {
    * @returns {Promise<Record<string, string>>}
    */
   async getAllLastReplicatedDocID() {
-    const item = await window.localStorage.getItem(
+    const item = await this.storageEngine.getItem(
       LOCALSTORAGE_LASTREPLICATEDDOCID_KEY
     )
     return item ? JSON.parse(item) : {}
@@ -53,7 +57,7 @@ export class PouchLocalStorage {
    * @returns {Promise<void>}
    */
   async destroyAllLastReplicatedDocID() {
-    await window.localStorage.removeItem(LOCALSTORAGE_LASTREPLICATEDDOCID_KEY)
+    await this.storageEngine.removeItem(LOCALSTORAGE_LASTREPLICATEDDOCID_KEY)
   }
 
   /**
@@ -64,7 +68,7 @@ export class PouchLocalStorage {
    * @returns {Promise<void>}
    */
   async persistSyncedDoctypes(syncedDoctypes) {
-    await window.localStorage.setItem(
+    await this.storageEngine.setItem(
       LOCALSTORAGE_SYNCED_KEY,
       JSON.stringify(syncedDoctypes)
     )
@@ -76,7 +80,7 @@ export class PouchLocalStorage {
    * @returns {Promise<object>} The synced doctypes
    */
   async getPersistedSyncedDoctypes() {
-    const item = await window.localStorage.getItem(LOCALSTORAGE_SYNCED_KEY)
+    const item = await this.storageEngine.getItem(LOCALSTORAGE_SYNCED_KEY)
     const parsed = item ? JSON.parse(item) : {}
     if (typeof parsed !== 'object') {
       return {}
@@ -90,7 +94,7 @@ export class PouchLocalStorage {
    * @returns {Promise<void>}
    */
   async destroySyncedDoctypes() {
-    await window.localStorage.removeItem(LOCALSTORAGE_SYNCED_KEY)
+    await this.storageEngine.removeItem(LOCALSTORAGE_SYNCED_KEY)
   }
 
   /**
@@ -105,7 +109,7 @@ export class PouchLocalStorage {
     const seqs = await this.getAllLastSequences()
     seqs[doctype] = sequence
 
-    await window.localStorage.setItem(
+    await this.storageEngine.setItem(
       LOCALSTORAGE_LASTSEQUENCES_KEY,
       JSON.stringify(seqs)
     )
@@ -115,7 +119,7 @@ export class PouchLocalStorage {
    * @returns {Promise<object>}
    */
   async getAllLastSequences() {
-    const item = await window.localStorage.getItem(
+    const item = await this.storageEngine.getItem(
       LOCALSTORAGE_LASTSEQUENCES_KEY
     )
     return item ? JSON.parse(item) : {}
@@ -139,7 +143,7 @@ export class PouchLocalStorage {
    * @returns {Promise<void>}
    */
   async destroyAllDoctypeLastSequence() {
-    await window.localStorage.removeItem(LOCALSTORAGE_LASTSEQUENCES_KEY)
+    await this.storageEngine.removeItem(LOCALSTORAGE_LASTSEQUENCES_KEY)
   }
 
   /**
@@ -152,7 +156,7 @@ export class PouchLocalStorage {
   async destroyDoctypeLastSequence(doctype) {
     const seqs = await this.getAllLastSequences()
     delete seqs[doctype]
-    await window.localStorage.setItem(
+    await this.storageEngine.setItem(
       LOCALSTORAGE_LASTSEQUENCES_KEY,
       JSON.stringify(seqs)
     )
@@ -166,7 +170,7 @@ export class PouchLocalStorage {
    * @returns {Promise<void>}
    */
   async persistWarmedUpQueries(warmedUpQueries) {
-    await window.localStorage.setItem(
+    await this.storageEngine.setItem(
       LOCALSTORAGE_WARMUPEDQUERIES_KEY,
       JSON.stringify(warmedUpQueries)
     )
@@ -178,7 +182,7 @@ export class PouchLocalStorage {
    * @returns {Promise<object>} the warmed up queries
    */
   async getPersistedWarmedUpQueries() {
-    const item = await window.localStorage.getItem(
+    const item = await this.storageEngine.getItem(
       LOCALSTORAGE_WARMUPEDQUERIES_KEY
     )
     if (!item) {
@@ -193,7 +197,7 @@ export class PouchLocalStorage {
    * @returns {Promise<void>}
    */
   async destroyWarmedUpQueries() {
-    await window.localStorage.removeItem(LOCALSTORAGE_WARMUPEDQUERIES_KEY)
+    await this.storageEngine.removeItem(LOCALSTORAGE_WARMUPEDQUERIES_KEY)
   }
 
   /**
@@ -202,7 +206,7 @@ export class PouchLocalStorage {
    * @returns {Promise<string>} The adapter name
    */
   async getAdapterName() {
-    return await window.localStorage.getItem(LOCALSTORAGE_ADAPTERNAME)
+    return await this.storageEngine.getItem(LOCALSTORAGE_ADAPTERNAME)
   }
 
   /**
@@ -213,6 +217,6 @@ export class PouchLocalStorage {
    * @returns {Promise<void>}
    */
   async persistAdapterName(adapter) {
-    await window.localStorage.setItem(LOCALSTORAGE_ADAPTERNAME, adapter)
+    await this.storageEngine.setItem(LOCALSTORAGE_ADAPTERNAME, adapter)
   }
 }
