@@ -12,7 +12,12 @@ const storage = {
   }
 }
 
+const isOnline = async () => {
+  return window.navigator.onLine
+}
+
 export const platformWeb = {
   storage,
-  pouchAdapter: PouchDB
+  pouchAdapter: PouchDB,
+  isOnline
 }
