@@ -26,6 +26,7 @@
  * @typedef {object} LinkPlatform
  * @property {LocalStorage} storage Methods to access local storage
  * @property {any} pouchAdapter PouchDB class (can be pouchdb-core or pouchdb-browser)
+ * @property {function(): Promise<boolean>} isOnline Method that check if the app is connected to internet
  */
 
 export default {}
