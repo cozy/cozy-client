@@ -24,10 +24,11 @@ import {
   LOCALSTORAGE_WARMUPEDQUERIES_KEY,
   PouchLocalStorage
 } from './localStorage'
+import { platformWeb } from './platformWeb'
 
 import { fetchRemoteLastSequence, fetchRemoteInstance } from './remote'
 
-const ls = new PouchLocalStorage()
+const ls = new PouchLocalStorage(platformWeb.storage)
 
 const sleep = delay => {
   return new Promise(resolve => {
