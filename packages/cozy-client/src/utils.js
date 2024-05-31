@@ -68,3 +68,15 @@ export const hasQueriesBeenLoaded = queriesResults => {
     hasQueryBeenLoaded(queryResult)
   )
 }
+
+/**
+ * Check is the error is about ReactNative not having access to internet
+ *
+ * @param {Error} err - The error to check
+ * @returns {boolean} True if the error is a network error, otherwise false
+ */
+export const isReactNativeOfflineError = err => {
+  // This error message is specific to ReactNative
+  // Network errors on a browser would produce another error.message
+  return err.message === 'Network request failed'
+}
