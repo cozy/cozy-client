@@ -1,15 +1,16 @@
 import DocumentCollection from './DocumentCollection'
-import { forceDownload } from './utils'
+import { forceDownload, joinPath } from './utils'
 
 const NEXTCLOUD_FILES_DOCTYPE = 'io.cozy.remote.nextcloud.files'
 
 const normalizeDoc = DocumentCollection.normalizeDoctypeJsonApi(
   NEXTCLOUD_FILES_DOCTYPE
 )
-const normalizeNextcloudFile = (sourceAccount, path) => file => {
+const normalizeNextcloudFile = (sourceAccount, parentPath) => file => {
   const extendedAttributes = {
     ...file.attributes,
-    path: `${path}${path.endsWith('/') ? '' : '/'}${file.attributes.name}`,
+    parentPath,
+    path: joinPath(parentPath, file.attributes.name),
     cozyMetadata: {
       ...file.attributes.cozyMetadata,
       sourceAccount
@@ -28,15 +29,20 @@ class NextcloudFilesCollection extends DocumentCollection {
   }
 
   async find(selector) {
-    if (selector.sourceAccount && selector.path) {
+    if (selector['cozyMetadata.sourceAccount'] && selector.parentPath) {
       const resp = await this.stackClient.fetchJSON(
         'GET',
-        `/remote/nextcloud/${selector.sourceAccount}/${selector.path}`
+        `/remote/nextcloud/${selector['cozyMetadata.sourceAccount']}${
+          selector.parentPath
+        }`
       )
 
       return {
         data: resp.data.map(
-          normalizeNextcloudFile(selector.sourceAccount, selector.path)
+          normalizeNextcloudFile(
+            selector['cozyMetadata.sourceAccount'],
+            selector.parentPath
+          )
         )
       }
     }
@@ -50,7 +56,7 @@ class NextcloudFilesCollection extends DocumentCollection {
   async download(file) {
     const res = await this.stackClient.fetch(
       'GET',
-      `/remote/nextcloud/${file.cozyMetadata.sourceAccount}/${file.path}?Dl=1`
+      `/remote/nextcloud/${file.cozyMetadata.sourceAccount}${file.path}?Dl=1`
     )
     const blob = await res.blob()
     const href = URL.createObjectURL(blob)

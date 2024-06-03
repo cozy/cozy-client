@@ -85,3 +85,14 @@ export const forceDownload = (href, filename) => {
   element.click()
   document.body.removeChild(element)
 }
+
+/**
+ * Join two paths together ensuring there is only one slash between them
+ *
+ * @param {string} start The starting part of the path
+ * @param {string} end The ending part of the path
+ * @returns {string} The joined path
+ */
+export function joinPath(start, end) {
+  return `${start}${start.endsWith('/') ? '' : '/'}${end}`
+}
