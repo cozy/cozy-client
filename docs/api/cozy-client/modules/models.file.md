@@ -40,7 +40,7 @@ Upload a file on a mobile
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:554](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L554)
+[packages/cozy-client/src/models/file.js:604](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L604)
 
 ***
 
@@ -86,7 +86,7 @@ file object with path attribute
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:600](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L600)
+[packages/cozy-client/src/models/file.js:650](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L650)
 
 ***
 
@@ -135,7 +135,7 @@ Generate a file name for a revision
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:434](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L434)
+[packages/cozy-client/src/models/file.js:484](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L484)
 
 ***
 
@@ -160,7 +160,7 @@ A filename with the right suffix
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:404](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L404)
+[packages/cozy-client/src/models/file.js:454](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L454)
 
 ***
 
@@ -302,7 +302,7 @@ The mime-type of the target file, or an empty string is the target is not a file
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:580](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L580)
+[packages/cozy-client/src/models/file.js:630](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L630)
 
 ***
 
@@ -346,7 +346,7 @@ Whether the file's metadata attribute exists
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:572](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L572)
+[packages/cozy-client/src/models/file.js:622](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L622)
 
 ***
 
@@ -428,7 +428,7 @@ Whether the file is client-side encrypted
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:591](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L591)
+[packages/cozy-client/src/models/file.js:641](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L641)
 
 ***
 
@@ -493,7 +493,7 @@ Whether the file is supported by Only Office
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:564](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L564)
+[packages/cozy-client/src/models/file.js:614](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L614)
 
 ***
 
@@ -613,30 +613,36 @@ true if the file is a shortcut
 
 ### move
 
-▸ **move**(`client`, `fileId`, `destination`, `force?`): `Promise`<`any`>
+▸ **move**(`client`, `file`, `destination`, `options?`): `Promise`<{ `deleted`: `string`\[] ; `moved`: `IOCozyFile`  }>
 
 Move file to destination.
+Manage 4 cases :
+
+*   Move inside a Cozy server
+*   Move inside a Nextcloud server
+*   Move from a Nextcloud server to Cozy
+*   Move from Cozy to a Nextcloud server
 
 *Parameters*
 
-| Name | Type | Default value | Description |
-| :------ | :------ | :------ | :------ |
-| `client` | [`CozyClient`](../classes/CozyClient.md) | `undefined` | The CozyClient instance |
-| `fileId` | `string` | `undefined` | The file's id (required) |
-| `destination` | `Object` | `undefined` | The destination object containing: |
-| `destination.folderId` | `string` | `undefined` | The destination folder's id (required) |
-| `destination.path` | `string` | `undefined` | The file's path after the move (optional, used to optimize performance in case of conflict) |
-| `force` | `boolean` | `false` | Whether we should overwrite, i.e. put to trash, the destination in case of conflict (defaults to false). |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `client` | [`CozyClient`](../classes/CozyClient.md) | The CozyClient instance |
+| `file` | `IOCozyFile` | `NextcloudFile` | The file to move (required) |
+| `destination` | `NextcloudFile` | `IOCozyFolder` | The destination folder (required) |
+| `options` | `Object` | The options |
+| `options.force` | `boolean` | Whether we should overwrite, i.e. put to trash, the destination in case of conflict (defaults to false). |
 
 *Returns*
 
-`Promise`<`any`>
+`Promise`<{ `deleted`: `string`\[] ; `moved`: `IOCozyFile`  }>
 
-*   A promise that returns the move action response and the deleted file id (if any) if resolved or an Error if rejected
+> } - A promise that returns the move action response (if any)
+> and the deleted file id (if any) if resolved or an Error if rejected
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:315](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L315)
+[packages/cozy-client/src/models/file.js:320](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L320)
 
 ***
 
@@ -689,7 +695,7 @@ The overrided file
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:370](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L370)
+[packages/cozy-client/src/models/file.js:420](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L420)
 
 ***
 
@@ -711,7 +717,7 @@ Read a file on a mobile
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:507](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L507)
+[packages/cozy-client/src/models/file.js:557](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L557)
 
 ***
 
@@ -821,4 +827,4 @@ If there is a conflict, then we apply the conflict strategy : `erase` or `rename
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:467](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L467)
+[packages/cozy-client/src/models/file.js:517](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L517)

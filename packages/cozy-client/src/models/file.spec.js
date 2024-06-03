@@ -16,6 +16,9 @@ const updateFileMetadataSpy = jest.fn().mockName('updateFileMetadata')
 const createFileSpy = jest.fn().mockName('createFileSpy')
 const updateFileSpy = jest.fn().mockName('updateFileSpy')
 const fetchFileContentByIdSpy = jest.fn().mockName('fetchFileContentById')
+const moveSpy = jest.fn().mockName('move')
+const moveToCozySpy = jest.fn().mockName('moveToCozy')
+const moveFromCozySpy = jest.fn().mockName('moveFromCozy')
 
 beforeAll(() => {
   cozyClient.stackClient.collection.mockReturnValue({
@@ -25,7 +28,10 @@ beforeAll(() => {
     updateFileMetadata: updateFileMetadataSpy,
     createFile: createFileSpy,
     updateFile: updateFileSpy,
-    fetchFileContentById: fetchFileContentByIdSpy
+    fetchFileContentById: fetchFileContentByIdSpy,
+    move: moveSpy,
+    moveToCozy: moveToCozySpy,
+    moveFromCozy: moveFromCozySpy
   })
 })
 
@@ -439,23 +445,46 @@ describe('File Model', () => {
   })
 
   describe('move', () => {
-    const fileId = 'file-2295478c'
-    const folderId = 'dir-b1e1c256'
+    const cozyFile = {
+      _id: 'file-2295478c',
+      _type: 'io.cozy.files',
+      name: 'mydoc.odt',
+      dir_id: 'io.cozy.files.root-dir'
+    }
+    const cozyFolder = {
+      _id: 'dir-b1e1c256',
+      _type: 'io.cozy.files',
+      dir_id: 'io.cozy.files.root-dir',
+      path: '/'
+    }
+    const nextcloudFolder = {
+      _id: 'folder-12435',
+      _type: 'io.cozy.remote.nextcloud.files',
+      path: '/Photos',
+      name: 'Photos'
+    }
+
+    const nextcloudFile = {
+      _id: 'file-12345',
+      _type: 'io.cozy.remote.nextcloud.files',
+      path: '/Photos/Penguins.jpg',
+      name: 'Penguins.jpg'
+    }
 
     afterEach(() => {
       jest.restoreAllMocks()
       jest.clearAllMocks()
     })
 
-    it('should move a file to another destination', async () => {
+    it('should move a io.cozy.file to another io.cozy.file', async () => {
       updateFileMetadataSpy.mockResolvedValue({
         data: {
-          id: fileId,
-          dir_id: folderId,
+          id: cozyFile._id,
+          dir_id: cozyFolder._id,
           _type: 'io.cozy.files'
         }
       })
-      const result = await fileModel.move(cozyClient, fileId, { folderId })
+      const result = await fileModel.move(cozyClient, cozyFile, cozyFolder)
       expect(updateFileMetadataSpy).toHaveBeenCalled()
       expect(result).toEqual({
         deleted: null,
@@ -472,7 +501,7 @@ describe('File Model', () => {
         status: 409
       })
       try {
-        await fileModel.move(cozyClient, fileId, { folderId })
+        await fileModel.move(cozyClient, cozyFile, cozyFolder)
       } catch (e) {
         expect(e).toEqual({ status: 409 })
       }
@@ -486,14 +515,14 @@ describe('File Model', () => {
       })
       updateFileMetadataSpy.mockResolvedValue({
         data: {
-          id: fileId,
-          dir_id: folderId,
+          id: cozyFile._id,
+          dir_id: cozyFolder._id,
           _type: 'io.cozy.files'
         }
       })
       getSpy.mockResolvedValue({
         data: {
-          id: fileId,
+          id: cozyFile._id,
           name: 'mydoc.odt',
           _type: 'io.cozy.files'
         }
@@ -504,12 +533,9 @@ describe('File Model', () => {
           _type: 'io.cozy.files'
         }
       })
-      const result = await fileModel.move(
-        cozyClient,
-        fileId,
-        { folderId },
-        true
-      )
+      const result = await fileModel.move(cozyClient, cozyFile, cozyFolder, {
+        force: true
+      })
       expect(updateFileMetadataSpy).toHaveBeenCalled()
       expect(destroySpy).toHaveBeenCalled()
       expect(result).toEqual({
@@ -522,41 +548,34 @@ describe('File Model', () => {
       })
     })
 
-    it('should use destination.path if it is given', async () => {
-      const DELETED_FILE_ID = 'deleted-c097ffca'
-
-      updateFileMetadataSpy.mockRejectedValueOnce({
-        status: 409
-      })
-      updateFileMetadataSpy.mockResolvedValue({
-        data: {
-          id: fileId,
-          dir_id: folderId,
-          _type: 'io.cozy.files'
-        }
-      })
-      statByPathSpy.mockResolvedValue({
-        data: {
-          id: DELETED_FILE_ID,
-          _type: 'io.cozy.files'
-        }
-      })
+    it('should move a Nextcloud file inside a Nextcloud folder', async () => {
       const result = await fileModel.move(
         cozyClient,
-        fileId,
-        { folderId, path: '/mydir/mydoc.odt' },
-        true
+        nextcloudFile,
+        nextcloudFolder
       )
-      expect(getSpy).not.toHaveBeenCalled()
-      expect(updateFileMetadataSpy).toHaveBeenCalled()
-      expect(destroySpy).toHaveBeenCalled()
+      expect(moveSpy).toBeCalledWith(nextcloudFile, nextcloudFolder)
       expect(result).toEqual({
-        deleted: DELETED_FILE_ID,
-        moved: {
-          id: 'file-2295478c',
-          dir_id: 'dir-b1e1c256',
-          _type: 'io.cozy.files'
-        }
+        deleted: null,
+        moved: undefined
+      })
+    })
+
+    it('should move a Nexcloud file into a Cozy folder', async () => {
+      const result = await fileModel.move(cozyClient, nextcloudFile, cozyFolder)
+      expect(moveToCozySpy).toBeCalledWith(nextcloudFile, cozyFolder)
+      expect(result).toEqual({
+        deleted: null,
+        moved: undefined
+      })
+    })
+
+    it('should move a Cozy file to a Nextcloud folder', async () => {
+      const result = await fileModel.move(cozyClient, cozyFile, nextcloudFolder)
+      expect(moveFromCozySpy).toBeCalledWith(nextcloudFolder, cozyFile)
+      expect(result).toEqual({
+        deleted: null,
+        moved: undefined
       })
     })
   })

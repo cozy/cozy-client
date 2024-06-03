@@ -50,10 +50,12 @@ export function hasMetadataAttribute({ file, attribute }: {
     attribute: string;
 }): boolean;
 export function getFullpath(client: CozyClient, dirId: string, name: string): Promise<string>;
-export function move(client: CozyClient, fileId: string, destination: {
-    folderId: string;
-    path: string;
-}, force?: boolean): Promise<any>;
+export function move(client: CozyClient, file: import('../types').IOCozyFile | import('../types').NextcloudFile, destination: import('../types').IOCozyFolder | import('../types').NextcloudFile, { force }?: {
+    force: boolean;
+}): Promise<{
+    moved: undefined | import('../types').IOCozyFile;
+    deleted: null | string[];
+}>;
 export function overrideFileForPath(client: CozyClient, dirPath: string, file: object, metadata: object): Promise<import("../types").IOCozyFile>;
 export function generateNewFileNameOnConflict(filenameWithoutExtension: string, conflictOptions?: import('../types').ConflictOptions): string;
 export function generateFileNameForRevision(file: import("../types").IOCozyFile, revision: object, f: Function): string;
