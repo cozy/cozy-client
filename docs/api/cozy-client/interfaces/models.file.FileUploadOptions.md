@@ -14,7 +14,7 @@ Conflict options
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:449](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L449)
+[packages/cozy-client/src/models/file.js:499](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L499)
 
 ***
 
@@ -26,7 +26,7 @@ Erase / rename
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:448](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L448)
+[packages/cozy-client/src/models/file.js:498](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L498)
 
 ***
 
@@ -38,7 +38,7 @@ The file Content-Type
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:447](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L447)
+[packages/cozy-client/src/models/file.js:497](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L497)
 
 ***
 
@@ -50,7 +50,7 @@ The dirId to upload the file to
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:445](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L445)
+[packages/cozy-client/src/models/file.js:495](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L495)
 
 ***
 
@@ -62,7 +62,7 @@ An object containing the metadata to attach
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:446](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L446)
+[packages/cozy-client/src/models/file.js:496](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L496)
 
 ***
 
@@ -74,4 +74,4 @@ The file name to upload
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:444](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L444)
+[packages/cozy-client/src/models/file.js:494](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L494)

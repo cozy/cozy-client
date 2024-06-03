@@ -302,23 +302,73 @@ export const getFullpath = async (client, dirId, name) => {
 
 /**
  * Move file to destination.
+ * Manage 4 cases :
+ * - Move inside a Cozy server
+ * - Move inside a Nextcloud server
+ * - Move from a Nextcloud server to Cozy
+ * - Move from Cozy to a Nextcloud server
  *
- * @param {CozyClient} client             - The CozyClient instance
- * @param   {string} fileId               - The file's id (required)
- * @param   {object} destination          - The destination object containing:
- * @param   {string} destination.folderId - The destination folder's id (required)
- * @param   {string} destination.path     - The file's path after the move (optional, used to optimize performance in case of conflict)
- * @param   {boolean} force               - Whether we should overwrite, i.e. put to trash, the destination in case of conflict (defaults to false).
- * @returns {Promise}                     - A promise that returns the move action response and the deleted file id (if any) if resolved or an Error if rejected
- *
+ * @param {CozyClient} client                                                                    - The CozyClient instance
+ * @param {import('../types').IOCozyFile | import('../types').NextcloudFile} file                - The file to move (required)
+ * @param {import('../types').IOCozyFolder | import('../types').NextcloudFile} destination       - The destination folder (required)
+ * @param {object} options                                                                       - The options
+ * @param {boolean} options.force                                                                - Whether we should overwrite,
+ * i.e. put to trash, the destination in case of conflict (defaults to false).
+ * @returns {Promise<{moved: undefined|import('../types').IOCozyFile, deleted: null|string[] }>} - A promise that returns the move action response (if any)
+ * and the deleted file id (if any) if resolved or an Error if rejected
  */
-export const move = async (client, fileId, destination, force = false) => {
-  const { folderId, path } = destination
+export const move = async (
+  client,
+  file,
+  destination,
+  { force } = { force: false }
+) => {
+  try {
+    if (file._type === 'io.cozy.remote.nextcloud.files') {
+      // Move inside a Nextcloud server
+      if (destination._type === 'io.cozy.remote.nextcloud.files') {
+        await client
+          .collection('io.cozy.remote.nextcloud.files')
+          .move(file, destination)
+
+        return {
+          moved: undefined,
+          deleted: null
+        }
+      }
+
+      // Move from a Nextcloud server to Cozy
+      await client
+        .collection('io.cozy.remote.nextcloud.files')
+        .moveToCozy(file, destination)
+
+      return {
+        moved: undefined,
+        deleted: null
+      }
+    }
+
+    // Move from a Cozy to a Nextcloud server
+    if (destination._type === 'io.cozy.remote.nextcloud.files') {
+      await client
+        .collection('io.cozy.remote.nextcloud.files')
+        .moveFromCozy(destination, file)
+
+      return {
+        moved: undefined,
+        deleted: null
+      }
+    }
+  } catch (e) {
+    throw e
+  }
+
+  // Move inside a Cozy server
   try {
     const resp = await client
       .collection(DOCTYPE_FILES)
-      .updateFileMetadata(fileId, {
-        dir_id: folderId
+      .updateFileMetadata(file._id, {
+        dir_id: destination._id
       })
 
     return {
@@ -328,14 +378,14 @@ export const move = async (client, fileId, destination, force = false) => {
   } catch (e) {
     if (e.status === 409 && force) {
       let destinationPath
-      if (path) {
-        destinationPath = path
+      if (destination.path) {
+        destinationPath = destination.path
       } else {
         const { data: movedFile } = await client.query(
-          Q(DOCTYPE_FILES).getById(fileId)
+          Q(DOCTYPE_FILES).getById(file._id)
         )
         const filename = movedFile.name
-        destinationPath = await getFullpath(client, folderId, filename)
+        destinationPath = await getFullpath(client, destination._id, filename)
       }
       const conflictResp = await client
         .collection(DOCTYPE_FILES)
@@ -343,8 +393,8 @@ export const move = async (client, fileId, destination, force = false) => {
       await client.collection(DOCTYPE_FILES).destroy(conflictResp.data)
       const resp = await client
         .collection(DOCTYPE_FILES)
-        .updateFileMetadata(fileId, {
-          dir_id: folderId
+        .updateFileMetadata(file._id, {
+          dir_id: destination._id
         })
 
       return {

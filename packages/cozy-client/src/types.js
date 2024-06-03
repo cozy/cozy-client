@@ -13,6 +13,7 @@ import { QueryDefinition } from './queries/dsl'
  * @typedef {"io.cozy.account"} AccountsDoctype
  * @typedef {"io.cozy.konnectors"} KonnectorsDoctype
  * @typedef {"io.cozy.triggers"} TriggersDoctype
+ * @typedef {"io.cozy.remote.nextcloud.files"} NextcloudFilesDoctype
  * @typedef {AccountsDoctype|TriggersDoctype|KonnectorsDoctype|NotesDoctype|AppsDoctype|SettingsDoctype|OAuthClientsDoctype|FilesDoctype} KnownDoctype
  * @typedef {KnownDoctype|string} Doctype
  */
@@ -444,6 +445,19 @@ import { QueryDefinition } from './queries/dsl'
  * @property {object} type - Type of the folder
  * @property {string} path - Folder path
  * @typedef {CozyClientDocument & FolderDocument} IOCozyFolder - An io.cozy.files document
+ */
+
+/**
+ * @typedef {object} NextcloudFile - An io.cozy.remote.nextcloud document after normalization
+ * @property {string} [_id] - Id of the file
+ * @property {string} [id] - Id of the file
+ * @property {NextcloudFilesDoctype} _type - Doctype of the folder
+ * @property {string} name - Name of the file
+ * @property {string} path - Path to the file
+ * @property {string} parentPath - Path to the folder containing the file
+ * @property {'file'|'directory'} type - Type of the file
+ * @property {object} cozyMetadata - Mime of the file
+ * @property {string} cozyMetadata.sourceAccount - Id of the io.cozy.account associated to the Nextcloud
  */
 
 /**

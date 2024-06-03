@@ -9,6 +9,7 @@ export type FilesDoctype = "io.cozy.files";
 export type AccountsDoctype = "io.cozy.account";
 export type KonnectorsDoctype = "io.cozy.konnectors";
 export type TriggersDoctype = "io.cozy.triggers";
+export type NextcloudFilesDoctype = "io.cozy.remote.nextcloud.files";
 export type KnownDoctype = "io.cozy.files" | "io.cozy.account" | "io.cozy.triggers" | "io.cozy.konnectors" | "io.cozy.notes" | "io.cozy.apps" | "io.cozy.settings" | "io.cozy-oauth.clients";
 export type Doctype = string;
 export type AccountsDocument = {
@@ -805,6 +806,45 @@ export type FolderDocument = {
  * - An io.cozy.files document
  */
 export type IOCozyFolder = CozyClientDocument & FolderDocument;
+/**
+ * - An io.cozy.remote.nextcloud document after normalization
+ */
+export type NextcloudFile = {
+    /**
+     * - Id of the file
+     */
+    _id?: string;
+    /**
+     * - Id of the file
+     */
+    id?: string;
+    /**
+     * - Doctype of the folder
+     */
+    _type: NextcloudFilesDoctype;
+    /**
+     * - Name of the file
+     */
+    name: string;
+    /**
+     * - Path to the file
+     */
+    path: string;
+    /**
+     * - Path to the folder containing the file
+     */
+    parentPath: string;
+    /**
+     * - Type of the file
+     */
+    type: 'file' | 'directory';
+    /**
+     * - Mime of the file
+     */
+    cozyMetadata: {
+        sourceAccount: string;
+    };
+};
 /**
  * - An io.cozy.oauth.clients document
  */
