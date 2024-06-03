@@ -156,6 +156,9 @@ or using preloaded url when blob not needed</p>
 <dt><a href="#getCozyURL">getCozyURL()</a></dt>
 <dd><p>Get a uniform formatted URL and SSL information according to a provided URL</p>
 </dd>
+<dt><a href="#joinPath">joinPath(start, end)</a> ⇒ <code>string</code></dt>
+<dd><p>Join two paths together ensuring there is only one slash between them</p>
+</dd>
 </dl>
 
 ## Typedefs
@@ -2343,6 +2346,19 @@ Compute the RelationshipItem that can be referenced as a sharing recipient
 Get a uniform formatted URL and SSL information according to a provided URL
 
 **Kind**: global function  
+<a name="joinPath"></a>
+
+## joinPath(start, end) ⇒ <code>string</code>
+Join two paths together ensuring there is only one slash between them
+
+**Kind**: global function  
+**Returns**: <code>string</code> - The joined path  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| start | <code>string</code> | The starting part of the path |
+| end | <code>string</code> | The ending part of the path |
+
 <a name="FetchChangesReturnValue"></a>
 
 ## FetchChangesReturnValue ⇒ [<code>Promise.&lt;FetchChangesReturnValue&gt;</code>](#FetchChangesReturnValue)
