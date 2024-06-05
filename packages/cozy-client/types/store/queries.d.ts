@@ -13,6 +13,7 @@ export function initQuery(queryId: string, queryDefinition: QueryDefinition, opt
 export function loadQuery(queryId: string, options?: import("../types").QueryOptions): object;
 export function receiveQueryResult(queryId: string, response: object, options?: import("../types").QueryOptions): object;
 export function receiveQueryError(queryId: string, error: object, options?: import("../types").QueryOptions): object;
+export function resetQuery(queryId: string): object;
 export function getQueryFromSlice(state: any, queryId: any, documents: any): any;
 export class QueryIDGenerator {
     idCounter: number;

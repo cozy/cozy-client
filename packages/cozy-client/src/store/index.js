@@ -118,6 +118,7 @@ export const getRawQueryFromState = (state, queryId) =>
 export {
   initQuery,
   loadQuery,
+  resetQuery,
   receiveQueryResult,
   receiveQueryError
 } from './queries'

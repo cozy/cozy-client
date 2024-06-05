@@ -30,7 +30,8 @@ import {
   receiveMutationError,
   getQueryFromState,
   getRawQueryFromState,
-  loadQuery
+  loadQuery,
+  resetQuery
 } from './store'
 import { HasManyFiles, Association, HasMany } from './associations'
 import mapValues from 'lodash/mapValues'
@@ -1870,6 +1871,37 @@ describe('CozyClient', () => {
           _id: 'resultFromState'
         }
       })
+    })
+  })
+
+  describe('resetQuery', () => {
+    const fakeResponse = {
+      data: [TODO_1, TODO_2, TODO_3]
+    }
+
+    afterEach(() => {
+      jest.restoreAllMocks()
+    })
+
+    it('should reset the query state and refetch it', async () => {
+      requestHandler.mockResolvedValue(fakeResponse)
+      const queryDefinition = Q('io.cozy.todos')
+      const queryId = 'allTodos'
+      getQueryFromState.mockReturnValue({
+        definition: queryDefinition,
+        id: queryId,
+        data: fakeResponse
+      })
+
+      await client.resetQuery(queryId)
+
+      const dispatchCalls = client.store.dispatch.mock.calls
+      const firstDispatchCall = dispatchCalls[0]
+      expect(firstDispatchCall[0]).toEqual(resetQuery(queryId))
+      const lastDispatchCall = dispatchCalls[dispatchCalls.length - 1]
+      expect(lastDispatchCall[0]).toEqual(
+        receiveQueryResult('allTodos', fakeResponse)
+      )
     })
   })
 })
