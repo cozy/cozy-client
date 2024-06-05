@@ -22,6 +22,7 @@ const INIT_QUERY = 'INIT_QUERY'
 const LOAD_QUERY = 'LOAD_QUERY'
 const RECEIVE_QUERY_RESULT = 'RECEIVE_QUERY_RESULT'
 const RECEIVE_QUERY_ERROR = 'RECEIVE_QUERY_ERROR'
+const RESET_QUERY = 'RESET_QUERY'
 
 // Read if the devtools are open to store the execution time
 // This is done at runtime to not read the value everytime
@@ -30,9 +31,13 @@ const RECEIVE_QUERY_ERROR = 'RECEIVE_QUERY_ERROR'
 const executionStatsEnabled = flag('debug')
 
 export const isQueryAction = action =>
-  [INIT_QUERY, LOAD_QUERY, RECEIVE_QUERY_RESULT, RECEIVE_QUERY_ERROR].indexOf(
-    action.type
-  ) !== -1
+  [
+    INIT_QUERY,
+    LOAD_QUERY,
+    RECEIVE_QUERY_RESULT,
+    RECEIVE_QUERY_ERROR,
+    RESET_QUERY
+  ].indexOf(action.type) !== -1
 
 export const isReceivingData = action => action.type === RECEIVE_QUERY_RESULT
 
@@ -232,6 +237,13 @@ const query = (state = queryInitialState, action, documents) => {
         isFetching: action.backgroundFetching ? false : null,
         lastError: action.error,
         lastErrorUpdate: Date.now()
+      }
+    case RESET_QUERY:
+      return {
+        ...queryInitialState,
+        id: action.queryId,
+        definition: state.definition,
+        options: state.options
       }
     default:
       return state
@@ -561,6 +573,17 @@ export const receiveQueryError = (queryId, error, options = {}) => ({
   queryId,
   error,
   ...options
+})
+
+/**
+ * Reset the query state to its initial state
+ *
+ * @param {string} queryId - id of the query
+ * @returns {object} - Redux action to dispatch
+ */
+export const resetQuery = queryId => ({
+  type: RESET_QUERY,
+  queryId
 })
 
 // selectors

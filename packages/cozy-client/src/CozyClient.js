@@ -26,6 +26,7 @@ import {
   createStore,
   initQuery,
   loadQuery,
+  resetQuery,
   receiveQueryResult,
   receiveQueryError,
   initMutation,
@@ -1783,6 +1784,26 @@ instantiation of the client.`
    */
   async saveAfterFetchSettings(slug, itemsOrSetter, setterKeys) {
     return saveAfterFetchSettings(this, slug, itemsOrSetter, setterKeys)
+  }
+
+  /**
+   * Reset a query
+   *
+   * This method will reset the query state to its initial state and refetch it.
+   *
+   * @param {string} queryId - Query id
+   * @returns {Promise<import("./types").QueryState>} - Query state
+   */
+  async resetQuery(queryId) {
+    try {
+      this.dispatch(resetQuery(queryId))
+      const query = this.getQueryFromState(queryId)
+      return await this.query(query.definition, {
+        as: queryId
+      })
+    } catch (error) {
+      throw error
+    }
   }
 }
 

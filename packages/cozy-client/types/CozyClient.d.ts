@@ -742,6 +742,15 @@ declare class CozyClient {
      * @returns {Promise<any>} - The result of the `client.save()` call
      */
     saveAfterFetchSettings<T_2 extends string>(slug: string, itemsOrSetter: Record<string, any> | ((oldValue: any) => Record<T_2, any>), setterKeys?: T_2[]): Promise<any>;
+    /**
+     * Reset a query
+     *
+     * This method will reset the query state to its initial state and refetch it.
+     *
+     * @param {string} queryId - Query id
+     * @returns {Promise<import("./types").QueryState>} - Query state
+     */
+    resetQuery(queryId: string): Promise<import("./types").QueryState>;
 }
 declare namespace CozyClient {
     export const hooks: {};
