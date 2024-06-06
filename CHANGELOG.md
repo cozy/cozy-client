@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [48.1.0](https://github.com/cozy/cozy-client/compare/v48.0.0...v48.1.0) (2024-06-06)
+
+
+### Features
+
+* **models/document:** Change translation of confidentialNumber ([987a00a](https://github.com/cozy/cozy-client/commit/987a00a5564da0d6f92ac41f1cdf587a16c47ce1))
+
+
+
+
+
 # [48.0.0](https://github.com/cozy/cozy-client/compare/v47.6.0...v48.0.0) (2024-06-06)
 
 
