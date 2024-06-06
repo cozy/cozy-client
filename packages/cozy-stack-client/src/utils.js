@@ -96,3 +96,20 @@ export const forceDownload = (href, filename) => {
 export function joinPath(start, end) {
   return `${start}${start.endsWith('/') ? '' : '/'}${end}`
 }
+
+/**
+ * Encode a path for use in a URL by encoding special characters but keeping slashes
+ *
+ * @param {string} path - The path to encode
+ * @returns {string} - The encoded path with special characters for parentheses and spaces
+ */
+export const encodePath = path => {
+  return path
+    .split('/')
+    .map(segment =>
+      encodeURIComponent(segment)
+        .replace(/\(/g, '%28')
+        .replace(/\)/g, '%29')
+    )
+    .join('/')
+}

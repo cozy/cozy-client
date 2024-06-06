@@ -111,6 +111,9 @@ See <a href="https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a
 <dt><a href="#forceDownload">forceDownload</a></dt>
 <dd><p>Force a download from the given href</p>
 </dd>
+<dt><a href="#encodePath">encodePath</a> ⇒ <code>string</code></dt>
+<dd><p>Encode a path for use in a URL by encoding special characters but keeping slashes</p>
+</dd>
 </dl>
 
 ## Functions
@@ -2217,6 +2220,18 @@ Force a download from the given href
 | --- | --- | --- |
 | href | <code>string</code> | The link to download |
 | filename | <code>string</code> | The file name to download |
+
+<a name="encodePath"></a>
+
+## encodePath ⇒ <code>string</code>
+Encode a path for use in a URL by encoding special characters but keeping slashes
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - - The encoded path with special characters for parentheses and spaces  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| path | <code>string</code> | The path to encode |
 
 <a name="getAccessToken"></a>
 

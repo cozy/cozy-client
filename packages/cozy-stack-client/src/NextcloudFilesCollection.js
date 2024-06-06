@@ -1,5 +1,5 @@
 import DocumentCollection from './DocumentCollection'
-import { forceDownload, joinPath } from './utils'
+import { forceDownload, joinPath, encodePath } from './utils'
 import { FetchError } from './errors'
 
 const NEXTCLOUD_FILES_DOCTYPE = 'io.cozy.remote.nextcloud.files'
@@ -33,9 +33,9 @@ class NextcloudFilesCollection extends DocumentCollection {
     if (selector['cozyMetadata.sourceAccount'] && selector.parentPath) {
       const resp = await this.stackClient.fetchJSON(
         'GET',
-        `/remote/nextcloud/${selector['cozyMetadata.sourceAccount']}${
-          selector.parentPath
-        }`
+        `/remote/nextcloud/${
+          selector['cozyMetadata.sourceAccount']
+        }${encodePath(selector.parentPath)}`
       )
 
       return {
@@ -57,7 +57,9 @@ class NextcloudFilesCollection extends DocumentCollection {
   async download(file) {
     const res = await this.stackClient.fetch(
       'GET',
-      `/remote/nextcloud/${file.cozyMetadata.sourceAccount}${file.path}?Dl=1`
+      `/remote/nextcloud/${file.cozyMetadata.sourceAccount}${encodePath(
+        file.path
+      )}?Dl=1`
     )
     const blob = await res.blob()
     const href = URL.createObjectURL(blob)
@@ -75,7 +77,9 @@ class NextcloudFilesCollection extends DocumentCollection {
     const newPath = joinPath(to.path, file.name)
     const resp = await this.stackClient.fetch(
       'POST',
-      `/remote/nextcloud/${file.cozyMetadata.sourceAccount}/move${file.path}?To=${newPath}`
+      `/remote/nextcloud/${file.cozyMetadata.sourceAccount}/move${encodePath(
+        file.path
+      )}?To=${encodePath(newPath)}`
     )
     if (resp.status === 204) {
       return resp
@@ -93,7 +97,9 @@ class NextcloudFilesCollection extends DocumentCollection {
   async moveToCozy(file, to) {
     const resp = await this.stackClient.fetch(
       'POST',
-      `/remote/nextcloud/${file.cozyMetadata.sourceAccount}/downstream${file.path}?To=${to._id}`
+      `/remote/nextcloud/${
+        file.cozyMetadata.sourceAccount
+      }/downstream${encodePath(file.path)}?To=${to._id}`
     )
     if (resp.status === 201) {
       return resp
@@ -112,7 +118,9 @@ class NextcloudFilesCollection extends DocumentCollection {
     const newPath = joinPath(file.path, from.name)
     const resp = await this.stackClient.fetch(
       'POST',
-      `/remote/nextcloud/${file.cozyMetadata.sourceAccount}/upstream${newPath}?From=${from._id}`
+      `/remote/nextcloud/${
+        file.cozyMetadata.sourceAccount
+      }/upstream${encodePath(newPath)}?From=${from._id}`
     )
     if (resp.status === 204) {
       return resp
