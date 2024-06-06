@@ -195,7 +195,7 @@
           },
           "vehicle": {
             "licenseNumber": "Plaque d'immatriculation",
-            "confidentialNumber": "Code confidentiel"
+            "confidentialNumber": "Code confidentiel de la carte grise"
           },
           "vehicle_registration": {
             "number": "Numéro de la carte grise (VIN)"
