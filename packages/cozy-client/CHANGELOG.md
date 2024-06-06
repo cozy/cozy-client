@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [48.0.0](https://github.com/cozy/cozy-client/compare/v47.6.0...v48.0.0) (2024-06-06)
+
+
+### Features
+
+*  Reset a query based on its id ([877f99b](https://github.com/cozy/cozy-client/commit/877f99b44221af8d97a8b97ece7a74146fac6196))
+* **nextcloud:** Move a Nextcloud file within the server or with a Cozy ([709f868](https://github.com/cozy/cozy-client/commit/709f8686c866cd547cc27a2ed1e569daae8ad8b8))
+
+
+### BREAKING CHANGES
+
+* **nextcloud:** You should pass object directly not only props
+
+Before: `move(client, "fileId1234", { folderId: "folderId1234" }, true)`
+
+After:
+```
+move(
+  client,
+  { _id: "fileId1234", _type: "io.cozy.files" },
+  { _id: "folderId1234", _type: "io.cozy.files", type: "directory" },
+  { force: true }
+)
+```
+
+
+
+
+
 # [47.6.0](https://github.com/cozy/cozy-client/compare/v47.5.0...v47.6.0) (2024-05-28)
 
 
