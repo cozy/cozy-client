@@ -195,7 +195,7 @@
           },
           "vehicle": {
             "licenseNumber": "Vehicle registration number",
-            "confidentialNumber": "Confidential code"
+            "confidentialNumber": "Confidential vehicle registration code"
           },
           "vehicle_registration": {
             "number": "Vehicle registration number (VIN)"
