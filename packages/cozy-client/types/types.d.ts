@@ -813,11 +813,11 @@ export type NextcloudFile = {
     /**
      * - Id of the file
      */
-    _id?: string;
+    _id: string;
     /**
      * - Id of the file
      */
-    id?: string;
+    id: string;
     /**
      * - Doctype of the folder
      */

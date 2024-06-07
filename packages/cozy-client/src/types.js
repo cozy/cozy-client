@@ -449,8 +449,8 @@ import { QueryDefinition } from './queries/dsl'
 
 /**
  * @typedef {object} NextcloudFile - An io.cozy.remote.nextcloud document after normalization
- * @property {string} [_id] - Id of the file
- * @property {string} [id] - Id of the file
+ * @property {string} _id - Id of the file
+ * @property {string} id - Id of the file
  * @property {NextcloudFilesDoctype} _type - Doctype of the folder
  * @property {string} name - Name of the file
  * @property {string} path - Path to the file

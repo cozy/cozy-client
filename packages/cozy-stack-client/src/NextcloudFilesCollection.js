@@ -51,8 +51,42 @@ class NextcloudFilesCollection extends DocumentCollection {
   }
 
   /**
+   *  Move a file to the trash
+   *
+   * @param {object} file - The `io.cozy.remote.nextcloud.files` file to move to the trash
+   * @returns {Promise<object>}
+   * @throws {FetchError}
+   */
+  async destroy(file) {
+    const resp = await this.stackClient.fetch(
+      'DELETE',
+      `/remote/nextcloud/${file.cozyMetadata.sourceAccount}${encodePath(
+        file.path
+      )}`
+    )
+    if (resp.status === 204) {
+      return resp
+    }
+    throw new FetchError(resp, resp.json())
+  }
+
+  /**
+   * Move to the trash multiple files
+   *
+   * @param {object[]} files - `io.cozy.remote.nextcloud.files` files to move to the trash
+   * @returns {Promise<any>}
+   * @throws {FetchError}
+   */
+  async destroyAll(files) {
+    for (const file of files) {
+      await this.destroy(file)
+    }
+  }
+
+  /**
    * Download a file from a Nextcloud server
    *
+   * @param {object} file - The `io.cozy.remote.nextcloud.files` file to download
    */
   async download(file) {
     const res = await this.stackClient.fetch(
@@ -70,8 +104,8 @@ class NextcloudFilesCollection extends DocumentCollection {
   /**
    * Move a file inside a Nextcloud server
    *
-   * @param {object} file - The file to move
-   * @param {object} to - The destination path
+   * @param {object} file - The `io.cozy.remote.nextcloud.files` file to move
+   * @param {object} to - The `io.cozy.remote.nextcloud.files` folder to move the file to
    */
   async move(file, to) {
     const newPath = joinPath(to.path, file.name)
@@ -90,8 +124,8 @@ class NextcloudFilesCollection extends DocumentCollection {
   /**
    * Move a file from a Nextcloud server to a Cozy
    *
-   * @param {object} file - The file to move
-   * @param {object} to - The destination folder
+   * @param {object} file - The `io.cozy.remote.nextcloud.files` file to move
+   * @param {object} to - The `io.cozy.files` folder to move the file to
    *
    */
   async moveToCozy(file, to) {
@@ -110,8 +144,8 @@ class NextcloudFilesCollection extends DocumentCollection {
   /**
    * Move a file from a Cozy to a Nextcloud server
    *
-   * @param {object} file - The destination folder
-   * @param {object} from - The file to move
+   * @param {object} file - The `io.cozy.remote.nextcloud.files` folder to move the file to
+   * @param {object} from - The `io.cozy.files` file to move
    * @throws {FetchError}
    */
   async moveFromCozy(file, from) {
