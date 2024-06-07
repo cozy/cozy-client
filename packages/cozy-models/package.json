@@ -1,0 +1,50 @@
+{
+  "name": "cozy-models",
+  "description": "To know more information about the device platform",
+  "version": "1.0.0",
+  "author": "Cozy",
+  "bugs": {
+    "url": "https://github.com/cozy/cozy-client/issues"
+  },
+  "types": "types/index.d.ts",
+  "files": [
+    "types",
+    "dist"
+  ],
+  "dependencies": {
+    "@cozy/minilog": "1.0.0",
+    "btoa": "^1.2.1",
+    "cozy-stack-client": "^48.0.0",
+    "date-fns": "2.29.3",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.12.8",
+    "@cozy/codemods": "1.14.4",
+    "@types/jest": "^26.0.20",
+    "@types/lodash": "^4.14.170",
+    "babel-plugin-search-and-replace": "1.1.1",
+    "cozy-device-helper": "^2.7.0",
+    "cozy-flags": "^2.10.2",
+    "cozy-intent": "^1.17.3",
+    "cozy-logger": "^1.7.0",
+    "jsdoc-plugin-intersection": "1.0.4",
+    "mockdate": "2.0.5",
+    "server-destroy": "1.0.1",
+    "typescript": "4.1.5"
+  },
+  "jest": {
+    "testURL": "http://localhost"
+  },
+  "license": "MIT",
+  "main": "dist/index.js",
+  "repository": "git+https://github.com/cozy/cozy-libs.git",
+  "scripts": {
+    "build": "../../bin/build",
+    "clean": "rm -rf ./dist",
+    "prepublishOnly": "yarn run build",
+    "watch": "yarn run build --watch",
+    "types": "tsc -p tsconfig.json"
+  },
+  "sideEffects": false
+}

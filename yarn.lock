@@ -5023,7 +5023,7 @@ cosmiconfig@^7, cosmiconfig@^7.0.0:
     path-type "^4.0.0"
     yaml "^1.10.0"
 
-cozy-device-helper@2.7.0:
+cozy-device-helper@2.7.0, cozy-device-helper@^2.7.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/cozy-device-helper/-/cozy-device-helper-2.7.0.tgz#573749997f18e5a1f11f720faec8c9bf2406beeb"
   integrity sha512-jMzW7s4IDuMivbsP8fo1IWW1z5l0wJ0u440E0fQmdsi+Zm/L9GXFKthLuuceYqXlH6c/APUCfpozJqjFMMHU1A==
@@ -5037,7 +5037,14 @@ cozy-flags@2.10.2:
   dependencies:
     microee "^0.0.6"
 
-cozy-intent@1.17.3:
+cozy-flags@^2.10.2:
+  version "2.12.0"
+  resolved "https://registry.yarnpkg.com/cozy-flags/-/cozy-flags-2.12.0.tgz#bc3d689db9c91389c28f053223142d4684573ef1"
+  integrity sha512-s0et8aWChaqY4rMKkNKDACflU2h5s6s9UVU1guU3Il9GqktSPrhvMo+ntHLnQb2l+yLL6xV1S6/rK0qniR1q0A==
+  dependencies:
+    microee "^0.0.6"
+
+cozy-intent@1.17.3, cozy-intent@^1.17.3:
   version "1.17.3"
   resolved "https://registry.yarnpkg.com/cozy-intent/-/cozy-intent-1.17.3.tgz#dcf8085a9c561ce56ab0c7afc69474243e4f9e9c"
   integrity sha512-Qko/tUJlXWh5wYLfw+CknbIm+KeAW4F3lAk/n1CA+uKwcseua+LCoNIypC/04ttm9g6ntbEogb/u4h6d5+H6lg==
@@ -5053,6 +5060,14 @@ cozy-logger@1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/cozy-logger/-/cozy-logger-1.7.0.tgz#945ff84df66f7e7e9640db00f8c632d4ff776fc8"
   integrity sha512-JBOAmfgujZZASE4TCRfeNvHoDnxPwFbLMO3G6UReByjR3Ix1/RSEtOL9b4hReuG2XX0BsPokfLWCZEWRgGN4TQ==
+  dependencies:
+    chalk "^2.4.2"
+    json-stringify-safe "5.0.1"
+
+cozy-logger@^1.7.0:
+  version "1.10.4"
+  resolved "https://registry.yarnpkg.com/cozy-logger/-/cozy-logger-1.10.4.tgz#8a55a0b1fc23db9cf90524043d959c274d376c24"
+  integrity sha512-zDpG+edSqghx6HAIh6wIWmqQ49IX85anv+Y4P5pjHs4w697n5yI13UzhW7NczhFlflVF9ibxeKXqBNYvb4DW+Q==
   dependencies:
     chalk "^2.4.2"
     json-stringify-safe "5.0.1"
@@ -13838,7 +13853,7 @@ serve-static@^1.12.4:
     parseurl "~1.3.3"
     send "0.17.1"
 
-server-destroy@^1.0.1:
+server-destroy@1.0.1, server-destroy@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/server-destroy/-/server-destroy-1.0.1.tgz#f13bf928e42b9c3e79383e61cc3998b5d14e6cdd"
   integrity sha1-8Tv5KOQrnD55OD5hzDmYtdFObN0=

@@ -1,0 +1,261 @@
+{
+  "country": {
+    "foreign": "Foreign"
+  },
+  "Scan": {
+    "scan_a_doc": "Scan a doc",
+    "save_doc": "Save the doc",
+    "filename": "Filename",
+    "save": "Save",
+    "cancel": "Cancel",
+    "qualify": "Describe",
+    "apply": "Apply",
+    "error": {
+      "offline": "You are currently offline and you can't use this functionality. Please, try again later.",
+      "uploading": "You are already uploading a file. Please wait until the end of this upload and try again.",
+      "generic": "Something went wrong. Please try again."
+    },
+    "successful": {
+      "qualified_ok": "You just have successfully described your file! "
+    },
+    "items": {
+      "accommodation_proof": "Proof of accommodation |||| Proof of accommodations",
+      "appliance_invoice": "Appliance invoice |||| Appliance invoices",
+      "bank_details": "Bank detail |||| Bank details",
+      "bank_statement": "Bank statement |||| Bank statements",
+      "birth_certificate": "Birth certificate |||| Birth certificates",
+      "building_permit": "Building permit |||| Building permits",
+      "caf": "Social benefit rate |||| Social benefit rates",
+      "car_insurance": "Car insurance certificate |||| Car insurance certificates",
+      "citizen_registration_certificate": "Certificate of citizen registration |||| Certificates of citizen registration",
+      "condition_report": "Condition report |||| Condition reports",
+      "diploma": "Diploma |||| Diplomas",
+      "divorce": "Divorce |||| Divorces",
+      "driver_license": "Driving license |||| Driving licenses",
+      "electoral_card": "Electoral card |||| Electoral cards",
+      "employment_center_certificate": "Employment center certificate |||| Employment center certificates",
+      "energy_contract": "Energy provider contract |||| Energy provider contracts",
+      "energy_invoice": "Energy invoice |||| Energy invoices",
+      "expense_claim": "Expense claim |||| Expense claims",
+      "family_record_book": "Family record book |||| Family record books",
+      "family": "Family",
+      "fidelity_card": "Fidelity card |||| Fidelity cards",
+      "fine": "Fine |||| Fines",
+      "gradebook": "Gradebook |||| Gradebooks",
+      "grocery_invoice": "Grocery invoice |||| Grocery invoices",
+      "health_book": "Health book |||| Health books",
+      "health_certificate": "Health/Vaccination certificate |||| Health/Vaccination certificates",
+      "health_insurance_card": "Insurance card |||| Insurance cards",
+      "health_invoice": "Health invoice |||| Health invoices",
+      "health": "Health",
+      "home": "Home",
+      "house_insurance": "Home insurance |||| Home insurances",
+      "house_sale_agreeement": "House sale agreement |||| House sale agreements",
+      "identity_photo": "Identity photo |||| Identity photos",
+      "identity": "Identity",
+      "invoice": "Invoice |||| Invoices",
+      "isp_invoice": "ISP invoice |||| ISP invoices",
+      "large_family_card": " Large Family Card |||| Large Family Cards",
+      "lease": "Lease |||| Leases",
+      "library_card": "library card |||| library cards",
+      "loan_agreement": "Loan agreement |||| Loan agreements",
+      "mechanic_invoice": "Repair bill |||| Repair bills",
+      "motivation_letter": "Motivation letter |||| Motivation letters",
+      "national_health_insurance_card": "National health insurance card |||| National health insurance cards",
+      "national_health_insurance_right_certificate": "National health insurance right certificate |||| National health insurance right certificates",
+      "national_id_card": "ID card |||| ID cards",
+      "note_identity_document": "Note Identity |||| Notes Identity",
+      "note_family_document": "Note Family |||| Notes Family",
+      "note_work_document": "Note Work & Study |||| Notes Work & Study",
+      "note_health_document": "Note Health |||| Notes Health",
+      "note_house_document": "Note Home |||| Notes Home",
+      "note_transport_document": "Note Transport |||| Notes Transport",
+      "note_activity_document": "Note Activities |||| Notes Activities",
+      "note_finance": "Note Finance |||| Notes Finance",
+      "note_invoice": "Note Invoice |||| Notes Invoice",
+      "other_activity_document": "Other sports document |||| Other sports documents",
+      "other_bank_document": "Other financial document |||| Other financial documents",
+      "other_family_document": "Other family document |||| Other family documents",
+      "other_health_document": "Other health document |||| Other health documents",
+      "other_house_document": "Other house document |||| Other house documents",
+      "other_identity_document": "Other document of identity |||| Other documents of identity",
+      "other_invoice": "Other invoice |||| Other invoices",
+      "other_revenue": "Other revenue |||| Other revenues",
+      "other_tax_document": "Other tax document |||| Other tax documents",
+      "other_transport_document": "Other transport document |||| Other transport documents",
+      "other_work_document": "Other work document |||| Other work documents",
+      "other_administrative_document": "Other administrative document |||| Other administrative documents",
+      "others": "Others",
+      "pacs": "Civil union |||| Civil unions",
+      "passport": "Passeport |||| Passeports",
+      "pay_sheet": "Pay sheet |||| Pay sheets",
+      "payment_proof_family_allowance": "family allowance payment proof |||| family allowance payment proofs",
+      "pension": "Pension |||| Pensions",
+      "person_insurance": "Individual insurance certificate |||| Individual insurance certificates",
+      "personal_sporting_licence": "Sporting licence |||| Sporting licences",
+      "phone_invoice": "Phone invoice |||| Phone invoices",
+      "pregnancy_medical_certificate": "Certificate of pregnancy |||| Certificates of pregnancy",
+      "prescription": "Prescription |||| Prescriptions",
+      "real_estate_insurance" : "Real estate insurance certificate |||| Real estate insurance certificates",
+      "real_estate_tax": "Real estate tax |||| Real estate taxes",
+      "receipt": "Receipt |||| Receipts",
+      "rent_receipt": "Rent receipt |||| Rent receipts",
+      "residence_permit": "Residence permit |||| Residence permits",
+      "restaurant_invoice": "Restaurant invoice |||| Restaurant invoices",
+      "resume": "Resume |||| Resumes",
+      "school_attendance_certificate": "Certificate of school attendance |||| Certificates of school attendance",
+      "school_insurance_certificate": "Certificate of school insurance |||| Certificates of school insurance",
+      "single_parent_benefit": "Single parent benefit |||| Single parent benefits",
+      "student_card": "Student card |||| Student cards",
+      "tax_certificate": "Tax certificate |||| Tax certificates",
+      "tax_notice": "Tax notice |||| Tax notices",
+      "tax_return": "Tax return |||| Tax returns",
+      "tax_timetable": "Payment Plans Installment Agreement |||| Payment Plans Installment Agreements",
+      "technical_diagnostic_record": "Technical diagnostic record |||| Technical diagnostic records",
+      "telecom_invoice": "Telecom invoice |||| Telecom invoices",
+      "transport_card": "Transport card |||| Transport cards",
+      "transport_invoice": "Transport invoice |||| Transport invoices",
+      "transport": "Transport",
+      "unemployment_benefit": "Unemployment benefit |||| Unemployment benefits",
+      "unfit_for_habitation_declaration": "Declaration of unfit for habitation |||| Declarations of unfit for habitation",
+      "vehicle_registration": "Vehicle registration |||| Vehicle registrations",
+      "water_invoice": "Water invoice |||| Water invoices",
+      "web_service_invoice": "Web service invoice |||| Web service invoices",
+      "wedding": "Wedding contract |||| Wedding contracts",
+      "work_contract": "Work contract |||| Work contracts",
+      "work_disability_recognition": "Recognition of disability |||| Recognitions of disability",
+      "work_invoice": "Work invoice |||| Work invoices",
+      "work_quote": "Work quote |||| Work quotes",
+      "work_study": "Work & Study"
+    },
+    "attributes":{
+      "contractType": {
+        "cdi": "CDI",
+        "cdd": "CDD",
+        "alternate": "Alternate",
+        "internship": "Internship",
+        "other": "Other"
+      },
+      "noticePeriod": {
+        "oneWeek": "1 week before",
+        "oneMonth": "1 month before",
+        "threeMonth": "3 months before",
+        "oneYear": "1 year before",
+        "custom": "Custom",
+        "noAlert": "Do not be alerted"
+      }
+    },
+    "themes": {
+      "activity": "Activities",
+      "family": "Family",
+      "finance": "Finance",
+      "health": "Health",
+      "home": "Home",
+      "identity": "Identity",
+      "invoice": "Invoice",
+      "others": "Others",
+      "transport": "Transport",
+      "undefined": "Undefined",
+      "work_study": "Work & Study"
+    },
+    "expiration": {
+      "expired": "Expired",
+      "expiresIn": "Expires in %{duration}",
+      "description": "This document expires in %{duration}, consider renewing it"
+    },
+    "qualification": {
+      "date": {
+        "title": {
+          "datetime": "Added on",
+          "AObtentionDate": "License A, delivered on",
+          "BObtentionDate": "License B, delivered on",
+          "CObtentionDate": "License C, delivered on",
+          "DObtentionDate": "License D, delivered on",
+          "issueDate": "Delivered on",
+          "expirationDate": "Expiration date",
+          "referencedDate": "Referenced date",
+          "shootingDate": "Shooting date",
+          "obtentionDate": "Date obtained",
+          "date": "Document date"
+        }
+      },
+      "information": {
+        "title": {
+          "fine": {
+            "number": "Amount of the fine"
+          },
+          "fidelity_card": {
+            "number": "Card number"
+          },
+          "caf": {
+            "number": "CAF file number"
+          },
+          "payment_proof_family_allowance": {
+            "number":"CAF file number"
+          },
+          "vehicle": {
+            "licenseNumber": "Vehicle registration number",
+            "confidentialNumber": "Confidential vehicle registration code"
+          },
+          "vehicle_registration": {
+            "number": "Vehicle registration number (VIN)"
+          },
+          "national_id_card": {
+            "number": "National ID card number"
+          },
+          "bank_details": {
+            "number": "IBAN number"
+          },
+          "passport": {
+            "number": "Passport number"
+          },
+          "driver_license": {
+            "number": "License number"
+          },
+          "residence_permit": {
+            "number": "License number"
+          },
+          "national_health_insurance_card": {
+            "number": "National health insurance card number"
+          },
+          "pay_sheet": {
+            "number": "Gross remuneration"
+          },
+          "tax_return": {
+            "number": "Reference tax number"
+          },
+          "tax_notice": {
+            "number": "Reference tax number"
+          },
+          "real_estate_tax": {
+            "number": "Reference tax number"
+          },
+          "tax_timetable": {
+            "number": "Reference tax number"
+          },
+          "country": "Beneficiary nationality",
+          "refTaxIncome": "Reference tax income",
+          "contractType": "Contract type",
+          "noticePeriod": "Expiration alert",
+          "netSocialAmount": "Net social amount",
+          "employerName": "Name of employer",
+          "employer": "Name of employer",
+          "amount": "Amount of expenditure",
+          "subtype": "Purpose of expenditure",
+          "bicNumber": "BIC number"
+        },
+        "day": "day |||| days"
+      },
+      "contact": "Owner",
+      "page": "Side of the document",
+      "front": "Front side",
+      "back": "Back side",
+      "qualification": "Qualification",
+      "noInfo": "No information"
+    }
+  },
+  "MagicFolders": {
+    "administrative": "Administrative",
+    "photos": "Photos"
+  }
+}
