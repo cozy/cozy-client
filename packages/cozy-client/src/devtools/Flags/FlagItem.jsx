@@ -40,14 +40,10 @@ const FlagItem = ({ flag, onEdit, onTrash }) => {
         }
       />
       <ListItemSecondaryAction>
-        <IconButton size="small" onClick={() => onEdit(flag)}>
+        <IconButton onClick={() => onEdit(flag)}>
           <Icon icon={PenIcon} />
         </IconButton>
-        <IconButton
-          className="u-ml-1"
-          size="small"
-          onClick={() => onTrash(flag)}
-        >
+        <IconButton onClick={() => onTrash(flag)}>
           <Icon icon={TrashIcon} />
         </IconButton>
       </ListItemSecondaryAction>

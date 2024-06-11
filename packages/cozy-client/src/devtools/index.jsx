@@ -45,16 +45,16 @@ const useStyles = makeStyles(theme => ({
     top: '0',
     right: '0.5rem',
     transform: 'translateY(-66%)',
-    background: 'white',
+    background: 'var(--paperBackgroundColor)',
     border: `2px solid ${theme.palette.primary.main}`,
-    boxShadow: '2px 2px 2px rgba(0, 0, 0, 0.5)',
+    boxShadow: 'var(--shadow1)',
     zIndex: 1,
     '&:hover': {
-      background: '#efefef'
+      background: 'var(--paperBackgroundColor)'
     }
   },
   panelContainer: {
-    background: 'white',
+    background: 'var(--paperBackgroundColor)',
     height: '100%',
     flexWrap: 'nowrap',
     overflowX: 'scroll'
