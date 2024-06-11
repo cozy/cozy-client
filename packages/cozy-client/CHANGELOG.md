@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [48.1.1](https://github.com/cozy/cozy-client/compare/v48.1.0...v48.1.1) (2024-06-11)
+
+
+### Bug Fixes
+
+* Adjust color of devtools to be dark mode compliant ([0954cd8](https://github.com/cozy/cozy-client/commit/0954cd8bdaa777caf8ddb987c7505f6d3d5e2b2b))
+
+
+
+
+
 # [48.1.0](https://github.com/cozy/cozy-client/compare/v48.0.0...v48.1.0) (2024-06-06)
 
 
