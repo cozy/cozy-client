@@ -15,7 +15,7 @@ const styles = {
     flexBasis: 240,
     flexShrink: 0,
     flexGrow: 0,
-    boxShadow: '4px 0 8px rgba(0, 0, 0, 0.10)'
+    boxShadow: 'var(--shadow1)'
   }
 }
 
