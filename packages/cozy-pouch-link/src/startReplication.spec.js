@@ -1,6 +1,7 @@
 import { fetchRemoteLastSequence, fetchRemoteInstance } from './remote'
 
 import { replicateAllDocs } from './startReplication'
+import { insertBulkDocs } from './helpers'
 
 jest.mock('./remote', () => ({
   fetchRemoteLastSequence: jest.fn(),
@@ -28,6 +29,7 @@ const storage = {
 
 describe('startReplication', () => {
   beforeEach(() => {
+    jest.resetAllMocks()
     fetchRemoteLastSequence.mockResolvedValue('10-xyz')
   })
 
@@ -40,6 +42,8 @@ describe('startReplication', () => {
       const rep = await replicateAllDocs(null, url, undefined, storage)
       const expectedDocs = dummyDocs.map(doc => doc.doc)
       expect(rep).toEqual(expectedDocs)
+      expect(fetchRemoteInstance).toHaveBeenCalledTimes(1)
+      expect(insertBulkDocs).toHaveBeenCalledTimes(1)
     })
 
     it('should replicate all docs when it gets more docs than the batch limit', async () => {
@@ -55,6 +59,8 @@ describe('startReplication', () => {
       const rep = await replicateAllDocs(null, url, undefined, storage)
       const expectedDocs = dummyDocs.map(doc => doc.doc)
       expect(rep).toEqual(expectedDocs)
+      expect(fetchRemoteInstance).toHaveBeenCalledTimes(2)
+      expect(insertBulkDocs).toHaveBeenCalledTimes(2)
     })
 
     it('should replicate from the last saved doc id', async () => {
@@ -70,6 +76,8 @@ describe('startReplication', () => {
         limit: 1000,
         startkey_docid: '5'
       })
+      expect(fetchRemoteInstance).toHaveBeenCalledTimes(1)
+      expect(insertBulkDocs).toHaveBeenCalledTimes(1)
       const expectedDocs = dummyDocs.map(doc => doc.doc).slice(6, 11)
       expect(rep).toEqual(expectedDocs)
     })
