@@ -1,6 +1,7 @@
+import MicroEE from 'microee'
 import { fetchRemoteLastSequence, fetchRemoteInstance } from './remote'
 
-import { replicateAllDocs } from './startReplication'
+import { replicateAllDocs, startReplication } from './startReplication'
 import { insertBulkDocs } from './helpers'
 
 jest.mock('./remote', () => ({
@@ -26,6 +27,10 @@ const storage = {
   getLastReplicatedDocID: jest.fn(),
   persistLastReplicatedDocID: jest.fn()
 }
+
+function ReplicationOnMock() {}
+MicroEE.mixin(ReplicationOnMock)
+const mockReplicationOn = new ReplicationOnMock()
 
 describe('startReplication', () => {
   beforeEach(() => {
@@ -82,4 +87,83 @@ describe('startReplication', () => {
       expect(rep).toEqual(expectedDocs)
     })
   })
+
+  describe('startReplication', () => {
+    it('should call replicateAllDocs on initial replication', async () => {
+      const replicationOptions = getReplicationOptionsMock()
+      replicationOptions.initialReplication = true
+
+      const getReplicationURL = () =>
+        'https://user:SOME_TOKEN@claude.mycozy.cloud/data/io.cozy.files'
+
+      const dummyDocs = generateDocs(2)
+      fetchRemoteInstance.mockResolvedValue({ rows: dummyDocs })
+
+      const pouch = getPouchMock()
+
+      await startReplication(
+        pouch,
+        replicationOptions,
+        getReplicationURL,
+        storage
+      )
+
+      expect(fetchRemoteInstance).toHaveBeenCalledWith(
+        new URL(
+          'https://user:SOME_TOKEN@claude.mycozy.cloud/data/io.cozy.files/_all_docs'
+        ),
+        { include_docs: true, limit: 1000 }
+      )
+      expect(pouch.replicate.from).not.toHaveBeenCalled()
+      expect(pouch.replicate.to).not.toHaveBeenCalled()
+      expect(pouch.sync).not.toHaveBeenCalled()
+    })
+
+    it('should call Pouch replication on non-initial replications', async () => {
+      const replicationOptions = getReplicationOptionsMock()
+      replicationOptions.initialReplication = false
+
+      const getReplicationURL = () =>
+        'https://user:SOME_TOKEN@claude.mycozy.cloud/data/io.cozy.files'
+
+      const pouch = getPouchMock()
+
+      const promise = startReplication(
+        pouch,
+        replicationOptions,
+        getReplicationURL,
+        storage
+      )
+      mockReplicationOn.emit('complete')
+      await promise
+
+      expect(fetchRemoteInstance).not.toHaveBeenCalled()
+      expect(pouch.replicate.from).toHaveBeenCalledWith(
+        'https://user:SOME_TOKEN@claude.mycozy.cloud/data/io.cozy.files',
+        { batch_size: 1000, selector: { cozyLocalOnly: { $exists: false } } }
+      )
+    })
+  })
+})
+
+const getPouchMock = () => {
+  const pouch = {
+    replicate: {
+      from: jest.fn(),
+      to: jest.fn()
+    },
+    sync: jest.fn()
+  }
+  pouch.replicate.from.mockReturnValue(mockReplicationOn)
+  pouch.replicate.to.mockReturnValue(mockReplicationOn)
+  pouch.sync.mockReturnValue(mockReplicationOn)
+
+  return pouch
+}
+
+const getReplicationOptionsMock = () => ({
+  strategy: 'fromRemote',
+  initialReplication: false,
+  warmupQueries: {},
+  doctype: 'io.cozy.files'
 })
