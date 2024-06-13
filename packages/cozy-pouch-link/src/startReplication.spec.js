@@ -10,6 +10,7 @@ jest.mock('./remote', () => ({
 }))
 
 jest.mock('./helpers', () => ({
+  ...jest.requireActual('./helpers').default,
   insertBulkDocs: jest.fn()
 }))
 
@@ -31,6 +32,9 @@ const storage = {
 function ReplicationOnMock() {}
 MicroEE.mixin(ReplicationOnMock)
 const mockReplicationOn = new ReplicationOnMock()
+mockReplicationOn.cancel = () => {
+  mockReplicationOn.emit('complete')
+}
 
 describe('startReplication', () => {
   beforeEach(() => {
@@ -138,10 +142,190 @@ describe('startReplication', () => {
       await promise
 
       expect(fetchRemoteInstance).not.toHaveBeenCalled()
+      expect(pouch.replicate.to).not.toHaveBeenCalled()
+      expect(pouch.sync).not.toHaveBeenCalled()
       expect(pouch.replicate.from).toHaveBeenCalledWith(
         'https://user:SOME_TOKEN@claude.mycozy.cloud/data/io.cozy.files',
         { batch_size: 1000, selector: { cozyLocalOnly: { $exists: false } } }
       )
+    })
+
+    it(`should call Pouch replication on initial replications AND strategy is 'toRemote'`, async () => {
+      const replicationOptions = getReplicationOptionsMock()
+      replicationOptions.initialReplication = true
+      replicationOptions.strategy = 'toRemote'
+
+      const getReplicationURL = () =>
+        'https://user:SOME_TOKEN@claude.mycozy.cloud/data/io.cozy.files'
+
+      const pouch = getPouchMock()
+
+      const promise = startReplication(
+        pouch,
+        replicationOptions,
+        getReplicationURL,
+        storage
+      )
+      mockReplicationOn.emit('complete')
+      await promise
+
+      expect(fetchRemoteInstance).not.toHaveBeenCalled()
+      expect(pouch.replicate.from).not.toHaveBeenCalled()
+      expect(pouch.sync).not.toHaveBeenCalled()
+      expect(pouch.replicate.to).toHaveBeenCalledWith(
+        'https://user:SOME_TOKEN@claude.mycozy.cloud/data/io.cozy.files',
+        { batch_size: 1000, selector: { cozyLocalOnly: { $exists: false } } }
+      )
+    })
+
+    it(`should handle error result when Pouch replication`, async () => {
+      const replicationOptions = getReplicationOptionsMock()
+      replicationOptions.initialReplication = false
+
+      const getReplicationURL = () =>
+        'https://user:SOME_TOKEN@claude.mycozy.cloud/data/io.cozy.files'
+
+      const pouch = getPouchMock()
+
+      const promise = startReplication(
+        pouch,
+        replicationOptions,
+        getReplicationURL,
+        storage
+      )
+      mockReplicationOn.emit('error', 'some_error_message')
+      await expect(promise).rejects.toEqual('some_error_message')
+    })
+
+    it(`should handle change event with Sync format and Replication format when Pouch replication`, async () => {
+      const replicationOptions = getReplicationOptionsMock()
+      replicationOptions.initialReplication = false
+
+      const getReplicationURL = () =>
+        'https://user:SOME_TOKEN@claude.mycozy.cloud/data/io.cozy.files'
+
+      const pouch = getPouchMock()
+
+      const promise = startReplication(
+        pouch,
+        replicationOptions,
+        getReplicationURL,
+        storage
+      )
+      // Sync format
+      mockReplicationOn.emit('change', {
+        change: {
+          docs: [
+            {
+              _id: 'SOME_DOCUMENT_ID_1',
+              some_property: 'some_value'
+            }
+          ]
+        }
+      })
+      // Replicaiton format
+      mockReplicationOn.emit('change', {
+        docs: [
+          {
+            _id: 'SOME_DOCUMENT_ID_2',
+            some_property: 'some_value'
+          }
+        ]
+      })
+      mockReplicationOn.emit('complete')
+      const result = await promise
+
+      expect(result).toStrictEqual([
+        {
+          _id: 'SOME_DOCUMENT_ID_1',
+          some_property: 'some_value'
+        },
+        {
+          _id: 'SOME_DOCUMENT_ID_2',
+          some_property: 'some_value'
+        }
+      ])
+    })
+
+    it(`should filter design document from change event when Pouch replication`, async () => {
+      const replicationOptions = getReplicationOptionsMock()
+      replicationOptions.initialReplication = false
+
+      const getReplicationURL = () =>
+        'https://user:SOME_TOKEN@claude.mycozy.cloud/data/io.cozy.files'
+
+      const pouch = getPouchMock()
+
+      const promise = startReplication(
+        pouch,
+        replicationOptions,
+        getReplicationURL,
+        storage
+      )
+      mockReplicationOn.emit('change', {
+        change: {
+          docs: [
+            {
+              _id: 'SOME_DOCUMENT_ID_1',
+              some_property: 'some_value'
+            },
+            {
+              _id: '_design_SOME_DOCUMENT_ID_2',
+              some_property: 'some_value'
+            }
+          ]
+        }
+      })
+      mockReplicationOn.emit('complete')
+      const result = await promise
+
+      expect(result).toStrictEqual([
+        {
+          _id: 'SOME_DOCUMENT_ID_1',
+          some_property: 'some_value'
+        }
+      ])
+    })
+
+    it(`should filter deleted document from change event when Pouch replication`, async () => {
+      const replicationOptions = getReplicationOptionsMock()
+      replicationOptions.initialReplication = false
+
+      const getReplicationURL = () =>
+        'https://user:SOME_TOKEN@claude.mycozy.cloud/data/io.cozy.files'
+
+      const pouch = getPouchMock()
+
+      const promise = startReplication(
+        pouch,
+        replicationOptions,
+        getReplicationURL,
+        storage
+      )
+      mockReplicationOn.emit('change', {
+        change: {
+          docs: [
+            {
+              _id: 'SOME_DOCUMENT_ID_1',
+              some_property: 'some_value'
+            },
+            {
+              _id: 'SOME_DOCUMENT_ID_2',
+              some_property: 'some_value',
+              _deleted: true
+            }
+          ]
+        }
+      })
+      mockReplicationOn.emit('complete')
+      const result = await promise
+
+      expect(result).toStrictEqual([
+        {
+          _id: 'SOME_DOCUMENT_ID_1',
+          some_property: 'some_value'
+        }
+      ])
     })
   })
 })
