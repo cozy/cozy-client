@@ -327,6 +327,48 @@ describe('startReplication', () => {
         }
       ])
     })
+
+    it(`should allow to cancel promise when Pouch replication`, async () => {
+      const replicationOptions = getReplicationOptionsMock()
+      replicationOptions.initialReplication = false
+
+      const getReplicationURL = () =>
+        'https://user:SOME_TOKEN@claude.mycozy.cloud/data/io.cozy.files'
+
+      const pouch = getPouchMock()
+
+      const promise = startReplication(
+        pouch,
+        replicationOptions,
+        getReplicationURL,
+        storage
+      )
+
+      expect(promise.cancel).toBeDefined()
+
+      promise.cancel()
+
+      // this change should be ignored
+      mockReplicationOn.emit('change', {
+        change: {
+          docs: [
+            {
+              _id: 'SOME_DOCUMENT_ID_1',
+              some_property: 'some_value'
+            },
+            {
+              _id: 'SOME_DOCUMENT_ID_2',
+              some_property: 'some_value',
+              _deleted: true
+            }
+          ]
+        }
+      })
+
+      const result = await promise
+
+      expect(result).toStrictEqual([])
+    })
   })
 })
 
