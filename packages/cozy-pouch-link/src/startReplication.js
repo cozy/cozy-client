@@ -83,6 +83,7 @@ export const startReplication = (
         }
         return resolve(docs)
       })()
+      return
     }
     if (strategy === 'fromRemote') {
       replication = pouch.replicate.from(url, options)
