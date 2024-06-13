@@ -172,6 +172,9 @@ describe('PouchManager', () => {
     const writeOnlyPouch = manager.getPouch('io.cozy.writeonly')
     writeOnlyPouch.replicate = {}
     writeOnlyPouch.replicate.to = jest.fn()
+    manager.updateSyncInfo('io.cozy.todos')
+    manager.updateSyncInfo('io.cozy.readonly')
+    manager.updateSyncInfo('io.cozy.writeonly')
     manager.startReplicationLoop()
     await sleep(1000)
     expect(readOnlyPouch.replicate.from).toHaveBeenCalled()
@@ -224,6 +227,7 @@ describe('PouchManager', () => {
   it('should call on sync with doctype updates', async () => {
     jest.spyOn(manager, 'replicateOnce')
     onSync.mockReset()
+    manager.updateSyncInfo('io.cozy.todos')
     await manager.replicateOnce()
     expect(onSync).toHaveBeenCalledWith({
       'io.cozy.todos': [
