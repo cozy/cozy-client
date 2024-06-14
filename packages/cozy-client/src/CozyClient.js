@@ -1081,14 +1081,15 @@ client.query(Q('io.cozy.bills'))`)
    * @param  {QueryDefinition} definition QueryDefinition to be executed
    * @returns {Promise<import("./types").ClientResponse>}
    */
-  async requestQuery(definition) {
-    const mainResponse = await this.chain.request(definition)
+  async requestQuery(definition, options = {}) {
+    const mainResponse = await this.chain.request(definition, options)
     if (!definition.includes) {
       return mainResponse
     }
     const withIncluded = await this.fetchRelationships(
       mainResponse,
-      this.getIncludesRelationships(definition)
+      this.getIncludesRelationships(definition),
+      options
     )
     return withIncluded
   }

@@ -77,19 +77,20 @@ export default class StackLink extends CozyLink {
     this.stackClient = null
   }
 
-  request(operation, result, forward) {
+  request(operation, result, forward, options = {}) {
     if (operation.mutationType) {
       return this.executeMutation(operation, result, forward)
     }
-    return this.executeQuery(operation)
+    return this.executeQuery(operation, options)
   }
   /**
    *
    * @param {QueryDefinition} query - Query to execute
    * @returns {Promise<import("./types").ClientResponse>}
    */
-  executeQuery(query) {
-    const { doctype, selector, id, ids, referenced, ...options } = query
+  executeQuery(query, options = {}) {
+    const { doctype, selector, id, ids, referenced, ...opts } = query
+    const mergedOptions = { ...opts, ...options }
     if (!doctype) {
       logger.warn('Bad query', query)
       throw new Error('No doctype found in a query definition')
@@ -102,12 +103,12 @@ export default class StackLink extends CozyLink {
       return collection.getAll(ids)
     }
     if (referenced) {
-      return collection.findReferencedBy(referenced, options)
+      return collection.findReferencedBy(referenced, mergedOptions)
     }
     if (hasFindOptions(query)) {
-      return collection.find(selector, options)
+      return collection.find(selector, mergedOptions)
     } else {
-      return collection.all(options)
+      return collection.all(mergedOptions)
     }
   }
 
