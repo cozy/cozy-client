@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [48.2.0](https://github.com/cozy/cozy-client/compare/v48.1.1...v48.2.0) (2024-06-17)
+
+
+### Features
+
+* **nextcloud:** Delete files ([896ca16](https://github.com/cozy/cozy-client/commit/896ca167ab07b7700cebc3e083f60ce197cb354b))
+
+
+
+
+
 # [48.0.0](https://github.com/cozy/cozy-client/compare/v47.6.0...v48.0.0) (2024-06-06)
 
 
