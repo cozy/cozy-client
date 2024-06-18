@@ -226,7 +226,8 @@ describe('Expiration', () => {
     it('should return value with suffix locale', () => {
       const res = paperModel.formatInformationMetadataValue('88', {
         name: 'noticePeriod',
-        lang: 'en'
+        lang: 'en',
+        qualificationLabel: 'national_id_card'
       })
 
       expect(res).toEqual('88 days')
@@ -235,7 +236,8 @@ describe('Expiration', () => {
     it('should return "noInfo" value', () => {
       const res = paperModel.formatInformationMetadataValue('', {
         name: 'metadataName',
-        lang: 'en'
+        lang: 'en',
+        qualificationLabel: 'national_id_card'
       })
 
       expect(res).toEqual('No information')
@@ -244,7 +246,8 @@ describe('Expiration', () => {
     it('should return value if not in other case', () => {
       const res = paperModel.formatInformationMetadataValue('metadataValue', {
         name: 'metadataName',
-        lang: 'en'
+        lang: 'en',
+        qualificationLabel: 'national_id_card'
       })
 
       expect(res).toEqual('metadataValue')
@@ -253,10 +256,11 @@ describe('Expiration', () => {
     it('should return nationality', () => {
       const res = paperModel.formatInformationMetadataValue('FR', {
         name: 'country',
-        lang: 'en'
+        lang: 'en',
+        qualificationLabel: 'national_id_card'
       })
 
-      expect(res).toEqual('French')
+      expect(res).toEqual('France')
     })
   })
 })
