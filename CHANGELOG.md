@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [48.3.0](https://github.com/cozy/cozy-client/compare/v48.2.0...v48.3.0) (2024-06-18)
+
+
+### Features
+
+* **Document:** Update countries translation in Viewer informations ([3597335](https://github.com/cozy/cozy-client/commit/35973352762650331226f3b9bddd858a0004db6b))
+
+
+
+
+
 # [48.2.0](https://github.com/cozy/cozy-client/compare/v48.1.1...v48.2.0) (2024-06-17)
 
 
