@@ -395,7 +395,7 @@ export const formatInformationMetadataValue = (
   }
 
   if (name === 'country' && isValidCountryCodeTranslation(lang, value)) {
-    return tCountry(`nationalities.${value}`)
+    return tCountry(`countries.${value}`)
   }
 
   return value

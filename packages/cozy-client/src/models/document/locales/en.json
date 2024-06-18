@@ -233,7 +233,7 @@
           "tax_timetable": {
             "number": "Reference tax number"
           },
-          "country": "Beneficiary nationality",
+          "country": "Document issuing country",
           "refTaxIncome": "Reference tax income",
           "contractType": "Contract type",
           "noticePeriod": "Expiration alert",

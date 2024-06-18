@@ -233,7 +233,7 @@
           "tax_timetable": {
             "number": "Numéro fiscal de référence"
           },
-          "country": "Nationalité du bénéficiaire",
+          "country": "Pays émetteur du document",
           "refTaxIncome": "Revenu fiscal de référence",
           "contractType": "Type de contrat",
           "noticePeriod": "Alerte d’expiration",
