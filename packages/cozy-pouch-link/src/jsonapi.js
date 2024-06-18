@@ -13,6 +13,7 @@ export const normalizeDoc = (doc, doctype) => {
     _id: id,
     _rev,
     _type: doctype,
+    cozyFromPouch: true,
     relationships: {
       ...relationships,
       referenced_by

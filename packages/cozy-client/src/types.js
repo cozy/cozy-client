@@ -402,6 +402,7 @@ import { QueryDefinition } from './queries/dsl'
  * @property {object} [cozyMetadata] - Cozy Metadata
  * @property {CozyClientDocumentMeta} [meta] - Pouch Metadata
  * @property {boolean} [cozyLocalOnly] - When true the document should NOT be replicated to the remote database
+ * @property {boolean} [cozyFromPouch] - When true the document has been retrieved from a local PouchDB
  */
 
 /**
