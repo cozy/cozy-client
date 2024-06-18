@@ -1124,7 +1124,12 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {Promise<void>}
    */
   async persistVirtualDocument(document) {
-    if (document && !document.meta?.rev && !document.cozyLocalOnly) {
+    if (
+      document &&
+      !document.meta?.rev &&
+      !document.cozyLocalOnly &&
+      !document.cozyFromPouch
+    ) {
       await this.chain.persistData(document)
     }
   }
