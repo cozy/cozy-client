@@ -45,7 +45,10 @@ describe('doc normalization', () => {
       _type: 'io.cozy.contacts',
       cozyFromPouch: true,
       firstName: 'Bobba',
-      lastName: 'Fett'
+      lastName: 'Fett',
+      relationships: {
+        referenced_by: undefined
+      }
     })
   })
 })
