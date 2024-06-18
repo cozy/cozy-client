@@ -10,7 +10,8 @@ export const normalizeDoc = (doc, doctype) => {
     id,
     _id: id,
     _rev,
-    _type: doctype
+    _type: doctype,
+    cozyFromPouch: true
   }
   if (normalizedDoc.rev) {
     delete normalizedDoc.rev
