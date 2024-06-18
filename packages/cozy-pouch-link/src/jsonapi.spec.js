@@ -43,6 +43,7 @@ describe('doc normalization', () => {
       id: 1234,
       _rev: '4-cffee',
       _type: 'io.cozy.contacts',
+      cozyFromPouch: true,
       firstName: 'Bobba',
       lastName: 'Fett'
     })
