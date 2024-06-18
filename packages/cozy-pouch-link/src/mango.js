@@ -1,18 +1,13 @@
-import flatten from 'lodash/flatten'
-import isObject from 'lodash/isObject'
+import head from 'lodash/head'
 
-export const getIndexNameFromFields = fields => {
-  return `by_${fields.join('_and_')}`
-}
-
-const getSortKeys = sort => {
-  if (Array.isArray(sort)) {
-    return flatten(sort.map(x => Object.keys(x)))
-  } else if (isObject(sort)) {
-    return Object.keys(sort)
-  } else {
-    throw new Error('Get sort key can only be called on Arrays or Objects')
-  }
+export const getIndexNameFromFields = (
+  fields,
+  { partialFilterFields } = {}
+) => {
+  const indexName = `by_${fields.join('_and_')}`
+  return partialFilterFields
+    ? `${indexName}_filter_${partialFilterFields.join('_and_')}`
+    : indexName
 }
 
 /**
@@ -25,6 +20,16 @@ const getSortKeys = sort => {
  * @returns {Array} - Fields to index
  */
 const defaultSelector = { _id: { $gt: null } }
-export const getIndexFields = ({ selector = defaultSelector, sort = {} }) => {
-  return Array.from(new Set([...Object.keys(selector), ...getSortKeys(sort)]))
+export const getIndexFields = ({
+  selector = defaultSelector,
+  sort = [],
+  partialFilter
+}) => {
+  return Array.from(
+    new Set([
+      ...sort.map(sortOption => head(Object.keys(sortOption))),
+      ...(selector ? Object.keys(selector) : []),
+      ...(partialFilter ? Object.keys(partialFilter) : [])
+    ])
+  )
 }
