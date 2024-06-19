@@ -450,30 +450,83 @@ class PouchLink extends CozyLink {
     return Boolean(this.indexes[name])
   }
 
-  async ensureIndex(doctype, query) {
-    let { indexedFields, partialFilter } = query
-    const fields = indexedFields || getIndexFields(query)
+  /**
+   * Create the PouchDB index if not existing
+   *
+   * @param {Array} fields - Fields to index
+   * @param {object} indexOption - Options for the index
+   * @param {object} [indexOption.partialFilter] - partialFilter
+   * @param {string} [indexOption.indexName] - indexName
+   * @param {string} [indexOption.doctype] - doctype
+   * @returns {Promise<import('./types').PouchDbIndex>}
+   */
+  async createIndex(fields, { partialFilter, indexName, doctype } = {}) {
+    const absName = `${doctype}/${indexName}`
+    const db = this.pouches.getPouch(doctype)
+
+    const index = await db.createIndex({
+      index: {
+        fields,
+        ddoc: indexName,
+        indexName,
+        partial_filter_selector: partialFilter
+      }
+    })
+    this.indexes[absName] = index
+    return index
+  }
+
+  /**
+   * Retrieve the PouchDB index if exist, undefined otherwise
+   *
+   * @param {string} doctype - The query's doctype
+   * @param {import('./types').MangoQueryOptions} options - The find options
+   * @param {string} indexName - The index name
+   * @returns {import('./types').PouchDbIndex | undefined}
+   */
+  findExistingIndex(doctype, options, indexName) {
+    const absName = `${doctype}/${indexName}`
+    return this.indexes[absName]
+  }
+
+  /**
+   * Handle index creation if it is missing.
+   *
+   * When an index is missing, we first check if there is one with a different
+   * name but the same definition. If there is none, we create the new index.
+   *
+   * /!\ Warning: this method is similar to DocumentCollection.handleMissingIndex()
+   * If you edit this method, please check if the change is also needed in DocumentCollection
+   *
+   * @param {string} doctype The mango selector
+   * @param {import('./types').MangoQueryOptions} options The find options
+   * @returns {Promise<import('./types').PouchDbIndex>} index
+   * @private
+   */
+  async ensureIndex(doctype, options) {
+    let { indexedFields, partialFilter } = options
+
+    let fields = indexedFields
+    if (!indexedFields) {
+      fields = getIndexFields(options)
+    }
     const partialFilterFields = partialFilter
       ? getIndexFields({ selector: {}, partialFilter })
       : null
-    const name = getIndexNameFromFields(fields, {
+
+    const indexName = getIndexNameFromFields(fields, {
       partialFilterFields
     })
-    const absName = `${doctype}/${name}`
-    const db = this.pouches.getPouch(doctype)
-    if (this.indexes[absName]) {
-      return this.indexes[absName]
-    } else {
-      const index = await db.createIndex({
-        index: {
-          fields,
-          ddoc: name,
-          name,
-          partial_filter_selector: partialFilter
-        }
+
+    const existingIndex = this.findExistingIndex(doctype, options, indexName)
+    if (!existingIndex) {
+      return await this.createIndex(indexedFields, {
+        partialFilter,
+        indexName,
+        doctype
       })
-      this.indexes[absName] = index
-      return index
+    } else {
+      return existingIndex
     }
   }
 

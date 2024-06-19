@@ -296,28 +296,6 @@ describe('CozyPouchLink', () => {
       })
     })
 
-    it('should merge selector and partial filter definitions', () => {
-      const selector = { _id: { $gt: null } }
-      expect(link.mergePartialIndexInSelector(selector, {})).toEqual(selector)
-
-      const partialFilter = {
-        trashed: {
-          $exists: false
-        }
-      }
-      const expectedMergedSelector = {
-        _id: {
-          $gt: null
-        },
-        trashed: {
-          $exists: false
-        }
-      }
-      expect(link.mergePartialIndexInSelector(selector, partialFilter)).toEqual(
-        expectedMergedSelector
-      )
-    })
-
     it("should add _id in the selected fields since CozyClient' store needs it", async () => {
       find.mockReturnValue({ docs: [TODO_3, TODO_4] })
       await setup()
@@ -589,16 +567,31 @@ describe('CozyPouchLink', () => {
         .where({})
         .sortBy([{ name: 'asc' }])
       await link.request(query)
-      expect(spy).toHaveBeenCalledWith({ index: { fields: ['name'] } })
+      expect(spy).toHaveBeenCalledWith({
+        index: {
+          ddoc: 'by_name',
+          fields: ['name'],
+          indexName: 'by_name',
+          partial_filter_selector: undefined
+        }
+      })
     })
 
     it('uses indexFields if provided', async () => {
       spy = jest.spyOn(PouchDB.prototype, 'createIndex').mockReturnValue({})
       await setup()
-      link.ensureIndex(TODO_DOCTYPE, {
+      await link.ensureIndex(TODO_DOCTYPE, {
         indexedFields: ['myIndex']
       })
-      expect(spy).toHaveBeenCalledWith({ index: { fields: ['myIndex'] } })
+      expect(spy).toHaveBeenCalled()
+      expect(spy).toHaveBeenCalledWith({
+        index: {
+          ddoc: 'by_myIndex',
+          fields: ['myIndex'],
+          indexName: 'by_myIndex',
+          partial_filter_selector: undefined
+        }
+      })
     })
 
     it('uses the specified index', async () => {
@@ -615,9 +608,14 @@ describe('CozyPouchLink', () => {
       })
       const params = {
         sort: undefined,
-        selector: {},
+        selector: {
+          myIndex2: {
+            $gt: null
+          }
+        },
         fields: undefined,
         limit: undefined,
+        partialFilter: undefined,
         skip: undefined
       }
 
