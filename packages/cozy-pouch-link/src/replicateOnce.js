@@ -5,7 +5,7 @@ import startsWith from 'lodash/startsWith'
 import zip from 'lodash/zip'
 
 import logger from './logger'
-import { fetchRemoteLastSequence } from './remote'
+import { fetchRemoteLastSequence, isDatabaseNotFoundError } from './remote'
 import { startReplication } from './startReplication'
 
 /**
@@ -84,15 +84,54 @@ export const replicateOnce = async pouchManager => {
   const doctypes = Object.keys(pouchManager.pouches)
   const promises = Object.values(pouchManager.replications)
   try {
-    const res = await Promise.all(promises)
+    const res = await allSettled(promises)
 
     if (process.env.NODE_ENV !== 'production') {
       logger.info('PouchManager: Replication ended')
     }
 
     if (pouchManager.options.onSync) {
-      const doctypeUpdates = fromPairs(zip(doctypes, res))
-      pouchManager.options.onSync(doctypeUpdates)
+      const zippedDoctypes = zip(doctypes, res)
+      const successZippedDoctypes = zippedDoctypes
+        .filter(d => d[1].status === 'fulfilled')
+        .map(d => {
+          return [d[0], d[1].value]
+        })
+      const failedZippedDoctypes = zippedDoctypes
+        .filter(d => d[1].status === 'rejected')
+        .map(d => {
+          return [d[0], d[1].value]
+        })
+
+      const blockingErrors = res.filter(
+        r => r.status === 'rejected' && !isDatabaseNotFoundError(r.reason)
+      )
+
+      if (blockingErrors.length > 0) {
+        const errors = blockingErrors.map(err => err.reason)
+        const reasons = errors.join('\n')
+        logger.debug(
+          `ReplicateOnce's promises failed with the following errors`,
+          reasons
+        )
+        // @ts-ignore
+        // eslint-disable-next-line no-undef
+        throw new AggregateError(errors, 'Failed with blocking errors')
+      } else {
+        logger.debug(`ReplicateOnce's promises succeed with no blocking errors`)
+      }
+
+      const doctypeUpdated = fromPairs(successZippedDoctypes)
+      const doctypeFailed = fromPairs(failedZippedDoctypes)
+      logger.debug(
+        'Doctypes replications in error: ',
+        Object.keys(doctypeFailed)
+      )
+      logger.debug(
+        'Doctypes replications in success: ',
+        Object.keys(doctypeUpdated)
+      )
+      pouchManager.options.onSync(doctypeUpdated)
     }
 
     // @ts-ignore
@@ -102,4 +141,45 @@ export const replicateOnce = async pouchManager => {
   } catch (err) {
     pouchManager.handleReplicationError(err)
   }
+}
+
+/**
+ * @typedef {object} FulfilledPromise
+ * @property {'fulfilled'} status - The status of the promise
+ * @property {undefined} reason - The Error rejected by the promise (undefined when fulfilled)
+ * @property {any} value - The resolved value of the promise
+ */
+
+/**
+ * @typedef {object} RejectedPromise
+ * @property {'rejected'} status - The status of the promise
+ * @property {Error} reason - The Error rejected by the promise
+ * @property {undefined} value - The resolved value of the promise (undefined when rejected)
+ */
+
+/**
+ * Takes an iterable of promises as input and returns a single Promise.
+ * This returned promise fulfills when all of the input's promises settle (including
+ * when an empty iterable is passed), with an array of objects that describe the
+ * outcome of each promise.
+ *
+ * @param {Promise[]} promises - Promise to be awaited
+ * @returns {Promise<(FulfilledPromise|RejectedPromise)[]>}
+ */
+const allSettled = promises => {
+  return Promise.all(
+    promises.map(promise =>
+      promise
+        .then(value => /** @type {FulfilledPromise} */ ({
+          status: 'fulfilled',
+          value
+        }))
+        .catch((
+          /** @type {Error} */ reason
+        ) => /** @type {RejectedPromise} */ ({
+          status: 'rejected',
+          reason
+        }))
+    )
+  )
 }
