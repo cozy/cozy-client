@@ -8,7 +8,7 @@ import Loop from './loop'
 import logger from './logger'
 import { platformWeb } from './platformWeb'
 import { replicateOnce } from './replicateOnce'
-import { getDatabaseName } from './utils'
+import { formatAggregatedError, getDatabaseName } from './utils'
 
 const DEFAULT_DELAY = 30 * 1000
 
@@ -179,7 +179,15 @@ class PouchManager {
   }
 
   handleReplicationError(err) {
-    logger.warn('PouchManager: Error during replication', err)
+    let aggregatedMessage = ''
+    // @ts-ignore
+    // eslint-disable-next-line no-undef
+    if (err instanceof AggregateError) {
+      aggregatedMessage = formatAggregatedError(err)
+    }
+    logger.warn(
+      `PouchManager: Error during replication - ${err.message}${aggregatedMessage}`
+    )
     // On error, replication stops, it needs to be started
     // again manually by the owner of PouchManager
     this.stopReplicationLoop()
