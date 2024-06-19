@@ -6,7 +6,11 @@ import zip from 'lodash/zip'
 
 import AggregateError from './AggregateError'
 import logger from './logger'
-import { fetchRemoteLastSequence, isDatabaseNotFoundError } from './remote'
+import {
+  fetchRemoteLastSequence,
+  isDatabaseNotFoundError,
+  isDatabaseUnradableError
+} from './remote'
 import { startReplication } from './startReplication'
 
 /**
@@ -105,7 +109,10 @@ export const replicateOnce = async pouchManager => {
         })
 
       const blockingErrors = res.filter(
-        r => r.status === 'rejected' && !isDatabaseNotFoundError(r.reason)
+        r =>
+          r.status === 'rejected' &&
+          !isDatabaseNotFoundError(r.reason) &&
+          !isDatabaseUnradableError(r.reason)
       )
 
       if (blockingErrors.length > 0) {
