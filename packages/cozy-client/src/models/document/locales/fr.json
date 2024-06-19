@@ -194,7 +194,7 @@
             "number":"Numéro de dossier CAF"
           },
           "vehicle": {
-            "licenseNumber": "Plaque d'immatriculation",
+            "licenseNumber": "Numéro d'immatriculation",
             "confidentialNumber": "Code confidentiel de la carte grise"
           },
           "vehicle_registration": {
