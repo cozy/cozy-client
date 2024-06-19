@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [48.4.0](https://github.com/cozy/cozy-client/compare/v48.3.0...v48.4.0) (2024-06-19)
+
+
+### Features
+
+* Update french wording of the vehicle registration license number ([7afc7aa](https://github.com/cozy/cozy-client/commit/7afc7aafdca5ee8d93055dfb8b9083326313fd28))
+
+
+
+
+
 # [48.3.0](https://github.com/cozy/cozy-client/compare/v48.2.0...v48.3.0) (2024-06-18)
 
 
