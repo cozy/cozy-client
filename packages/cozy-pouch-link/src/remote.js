@@ -1,5 +1,12 @@
 import AccessToken from './AccessToken'
 
+export const DATABASE_NOT_FOUND_ERROR = 'Database does not exist'
+
+export const isDatabaseNotFoundError = error => {
+  return error.message === DATABASE_NOT_FOUND_ERROR
+}
+
+
 /**
  * Fetch remote instance
  *
@@ -25,7 +32,16 @@ export const fetchRemoteInstance = async (url, params = {}) => {
   if (resp.ok) {
     return data
   }
-  return null
+
+  if (resp.status === 404) {
+    throw new Error(DATABASE_NOT_FOUND_ERROR)
+  }
+
+  throw new Error(
+    `Error (${resp.status}) while fetching remote instance: ${JSON.stringify(
+      data
+    )}`
+  )
 }
 
 /**
