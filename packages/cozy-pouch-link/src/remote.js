@@ -5,7 +5,7 @@ import AccessToken from './AccessToken'
  *
  * @param {URL} url - The remote instance URL, including the credentials
  * @param {object} params - The params to query the remote instance
- * @returns {object} The instance response
+ * @returns {Promise<object>} The instance response
  */
 export const fetchRemoteInstance = async (url, params = {}) => {
   const access = new AccessToken({ accessToken: url.password })
@@ -32,7 +32,7 @@ export const fetchRemoteInstance = async (url, params = {}) => {
  * Fetch last sequence from remote instance
  *
  * @param {string} baseUrl - The base URL of the remote instance
- * @returns {string} The last sequence
+ * @returns {Promise<string>} The last sequence
  */
 export const fetchRemoteLastSequence = async baseUrl => {
   const remoteUrl = new URL(`${baseUrl}/_changes`)
