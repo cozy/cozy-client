@@ -2,6 +2,7 @@ import { enableFetchMocks, disableFetchMocks } from 'jest-fetch-mock'
 
 import {
   DATABASE_NOT_FOUND_ERROR,
+  DATABASE_RESERVED_DOCTYPE_ERROR,
   fetchRemoteInstance,
   fetchRemoteLastSequence
 } from './remote'
@@ -141,6 +142,17 @@ describe('remote', () => {
       )
     })
 
+    it('Shoud throw dedicated error when Reserved Doctype error', async () => {
+      const remoteUrl =
+        'https://user:SOME_TOKEN@claude.mycozy.cloud/data/io.cozy.accounts'
+      mockDatabaseReservedDoctypeOn(
+        'https://claude.mycozy.cloud/data/io.cozy.accounts/_changes?limit=1&descending=true'
+      )
+
+      await expect(fetchRemoteLastSequence(remoteUrl)).rejects.toThrow(
+        DATABASE_RESERVED_DOCTYPE_ERROR
+      )
+    })
   })
 })
 
@@ -151,6 +163,19 @@ const mockDatabaseNotFoundOn = url => {
     reason: 'Database does not exist.',
     status: 404
   })
+}
+
+const mockDatabaseReservedDoctypeOn = url => {
+  fetch.mockOnceIf(
+    url,
+    JSON.stringify({
+      error: 'code=403, message=reserved doctype io.cozy.sharings unreadable'
+    }),
+    {
+      ok: false,
+      status: 403
+    }
+  )
 }
 
 const mockUnknownErrorOn = url => {
