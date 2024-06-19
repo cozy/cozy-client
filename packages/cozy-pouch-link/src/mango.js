@@ -16,15 +16,17 @@ export const getIndexNameFromFields = (
  * query to work
  *
  * @private
- * @param  {object} options - Mango query options
+ * @param  {import('./types').MangoQueryOptions} options - Mango query options
  * @returns {Array} - Fields to index
  */
 const defaultSelector = { _id: { $gt: null } }
-export const getIndexFields = ({
-  selector = defaultSelector,
-  sort = [],
-  partialFilter
-}) => {
+export const getIndexFields = (
+  /** @type {import('./types').MangoQueryOptions} */ {
+    selector = defaultSelector,
+    sort = [],
+    partialFilter
+  }
+) => {
   return Array.from(
     new Set([
       ...sort.map(sortOption => head(Object.keys(sortOption))),

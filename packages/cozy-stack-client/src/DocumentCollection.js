@@ -226,6 +226,9 @@ class DocumentCollection {
    * name but the same definition. If yes, it means we found an old unamed
    * index, so we migrate it. If there is none, we create the new index.
    *
+   * /!\ Warning: this method is similar to CozyPouchLink.ensureIndex()
+   * If you edit this method, please check if the change is also needed in CozyPouchLink
+   *
    * @param {object} selector The mango selector
    * @param {MangoQueryOptions} options The find options
    * @private
@@ -240,10 +243,11 @@ class DocumentCollection {
       ? getIndexFields({ partialFilter })
       : null
 
-    const existingIndex = await this.findExistingIndex(selector, options)
     const indexName = getIndexNameFromFields(indexedFields, {
       partialFilterFields
     })
+
+    const existingIndex = await this.findExistingIndex(selector, options)
     if (!existingIndex) {
       await this.createIndex(indexedFields, {
         partialFilter,
