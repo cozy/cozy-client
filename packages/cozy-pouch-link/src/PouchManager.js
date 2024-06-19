@@ -1,9 +1,6 @@
 import fromPairs from 'lodash/fromPairs'
 import forEach from 'lodash/forEach'
 import get from 'lodash/get'
-import map from 'lodash/map'
-import zip from 'lodash/zip'
-import startsWith from 'lodash/startsWith'
 import { isMobileApp } from 'cozy-device-helper'
 import { QueryDefinition } from 'cozy-client'
 
@@ -11,8 +8,7 @@ import { PouchLocalStorage } from './localStorage'
 import Loop from './loop'
 import logger from './logger'
 import { platformWeb } from './platformWeb'
-import { fetchRemoteLastSequence } from './remote'
-import { startReplication } from './startReplication'
+import { replicateOnce } from './replicateOnce'
 import { getDatabaseName } from './utils'
 
 const DEFAULT_DELAY = 30 * 1000
@@ -172,89 +168,7 @@ class PouchManager {
 
   /** Starts replication */
   async replicateOnce() {
-    if (!(await this.isOnline())) {
-      logger.info(
-        'PouchManager: The device is offline so the replication has been skipped'
-      )
-      return Promise.resolve()
-    }
-
-    logger.info('PouchManager: Starting replication iteration')
-
-    // Creating each replication
-    this.replications = map(this.pouches, async (pouch, doctype) => {
-      logger.info('PouchManager: Starting replication for ' + doctype)
-
-      const getReplicationURL = () => this.getReplicationURL(doctype)
-
-      const initialReplication = !this.isSynced(doctype)
-      const replicationFilter = doc => {
-        return !startsWith(doc._id, '_design')
-      }
-      let seq = ''
-      if (initialReplication) {
-        // Before the first replication, get the last remote sequence,
-        // which will be used as a checkpoint for the next replication
-        const lastSeq = await fetchRemoteLastSequence(getReplicationURL())
-        await this.storage.persistDoctypeLastSequence(doctype, lastSeq)
-      } else {
-        seq = await this.storage.getDoctypeLastSequence(doctype)
-      }
-
-      const replicationOptions = get(
-        this.doctypesReplicationOptions,
-        doctype,
-        {}
-      )
-      replicationOptions.initialReplication = initialReplication
-      replicationOptions.filter = replicationFilter
-      replicationOptions.since = seq
-      replicationOptions.doctype = doctype
-
-      if (this.options.onDoctypeSyncStart) {
-        this.options.onDoctypeSyncStart(doctype)
-      }
-      const res = await startReplication(
-        pouch,
-        replicationOptions,
-        getReplicationURL,
-        this.storage
-      )
-      if (seq) {
-        // We only need the sequence for the second replication, as PouchDB
-        // will use a local checkpoint for the next runs.
-        await this.storage.destroyDoctypeLastSequence(doctype)
-      }
-
-      await this.updateSyncInfo(doctype)
-      this.checkToWarmupDoctype(doctype, replicationOptions)
-      if (this.options.onDoctypeSyncEnd) {
-        this.options.onDoctypeSyncEnd(doctype)
-      }
-      return res
-    })
-
-    // Waiting on each replication
-    const doctypes = Object.keys(this.pouches)
-    const promises = Object.values(this.replications)
-    try {
-      const res = await Promise.all(promises)
-
-      if (process.env.NODE_ENV !== 'production') {
-        logger.info('PouchManager: Replication ended')
-      }
-
-      if (this.options.onSync) {
-        const doctypeUpdates = fromPairs(zip(doctypes, res))
-        this.options.onSync(doctypeUpdates)
-      }
-
-      res.cancel = this.cancelCurrentReplications
-
-      return res
-    } catch (err) {
-      this.handleReplicationError(err)
-    }
+    return replicateOnce(this)
   }
 
   handleReplicationError(err) {
