@@ -1,6 +1,7 @@
 import { enableFetchMocks, disableFetchMocks } from 'jest-fetch-mock'
 
 import {
+  DATABASE_NOT_FOUND_ERROR,
   fetchRemoteInstance,
   fetchRemoteLastSequence
 } from './remote'
@@ -89,7 +90,7 @@ describe('remote', () => {
       )
     })
 
-    it('Should return null when 404 error', async () => {
+    it('Should throw when 404 error', async () => {
       const remoteUrl =
         'https://user:SOME_TOKEN@claude.mycozy.cloud/data/io.cozy.accounts/_changes?limit=1&descending=true'
 
@@ -97,9 +98,9 @@ describe('remote', () => {
         'https://claude.mycozy.cloud/data/io.cozy.accounts/_changes?limit=1&descending=true'
       )
 
-      const result = await fetchRemoteInstance(new URL(remoteUrl))
-
-      expect(result).toBeNull()
+      await expect(fetchRemoteInstance(new URL(remoteUrl))).rejects.toThrow(
+        DATABASE_NOT_FOUND_ERROR
+      )
     })
   })
 
@@ -116,15 +117,30 @@ describe('remote', () => {
       expect(result).toBe('97-SOME_SEQ_VALUE')
     })
 
-    it('Shoud throw when 404 error', async () => {
+    it('Shoud throw when HTTP error', async () => {
+      const remoteUrl =
+        'https://user:SOME_TOKEN@claude.mycozy.cloud/data/io.cozy.accounts'
+      mockUnknownErrorOn(
+        'https://claude.mycozy.cloud/data/io.cozy.accounts/_changes?limit=1&descending=true'
+      )
+
+      await expect(fetchRemoteLastSequence(remoteUrl)).rejects.toThrow(
+        'Error (503) while fetching remote instance: {"error":"code=503, message=SOME UNKNOWN ERROR"}'
+      )
+    })
+
+    it('Shoud throw dedicated error when 404 error', async () => {
       const remoteUrl =
         'https://user:SOME_TOKEN@claude.mycozy.cloud/data/io.cozy.accounts'
       mockDatabaseNotFoundOn(
         'https://claude.mycozy.cloud/data/io.cozy.accounts/_changes?limit=1&descending=true'
       )
 
-      await expect(fetchRemoteLastSequence(remoteUrl)).rejects.toThrow()
+      await expect(fetchRemoteLastSequence(remoteUrl)).rejects.toThrow(
+        DATABASE_NOT_FOUND_ERROR
+      )
     })
+
   })
 })
 
@@ -135,6 +151,19 @@ const mockDatabaseNotFoundOn = url => {
     reason: 'Database does not exist.',
     status: 404
   })
+}
+
+const mockUnknownErrorOn = url => {
+  fetch.mockOnceIf(
+    url,
+    JSON.stringify({
+      error: 'code=503, message=SOME UNKNOWN ERROR'
+    }),
+    {
+      ok: false,
+      status: 503
+    }
+  )
 }
 
 const mockDatabaseOn = url => {
