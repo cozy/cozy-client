@@ -721,20 +721,70 @@ class FileCollection extends DocumentCollection {
     return formatBytes(parseInt(file.size), decimal)
   }
 
-  async downloadArchive(fileIds, notSecureFilename = 'files') {
-    const filename = slugify(notSecureFilename)
-    const href = await this.getArchiveLinkByIds(fileIds, filename)
+  /**
+   * Attributes used for create archive link by ids
+   *
+   * @typedef {object} ArchivePages
+   * @property {string} id - Id of the file
+   * @property {number} page - The page number. PDF files only (1 is the first page)
+   */
+
+  /**
+   * Download an archive of the files
+   *
+   * @param {string[]} fileIds - List of file ids
+   * @param {string} [notSecureFilename] - Name of the archive (default: 'files')
+   * @param {object} [options] - Additional options
+   * @param {ArchivePages[]} [options.pages] - Array of objects, with `id` the file identifier, and `page` the page number (1 is the first page)
+   */
+  async downloadArchive(fileIds, notSecureFilename, { pages } = {}) {
+    const filename = notSecureFilename ? slugify(notSecureFilename) : 'files'
+    const href = await this.createArchiveLinkByIds({
+      ids: fileIds,
+      name: filename,
+      pages
+    })
     const fullpath = this.stackClient.fullpath(href)
     this.forceFileDownload(fullpath, filename + '.zip')
   }
 
+  /**
+   * @deprecated Use createArchiveLinkByIds instead
+   */
   async getArchiveLinkByIds(ids, name = 'files') {
+    logger.warn(
+      'CozyClient FileCollection getArchiveLinkByIds method is deprecated. Use createArchiveLinkByIds instead'
+    )
     const resp = await this.stackClient.fetchJSON('POST', '/files/archive', {
       data: {
         type: 'io.cozy.archives',
         attributes: {
           name,
           ids
+        }
+      }
+    })
+    return resp.links.related
+  }
+
+  /**
+   * Create the archive link for a list of files
+   * The generated archive is temporary and is not persisted
+   *
+   * @param {object} params - Parameters
+   * @param {string[]} params.ids - List of file ids
+   * @param {string} [params.name] - Name of the archive (default: 'files')
+   * @param {ArchivePages[]} [params.pages] - Array of objects, with `id` the file identifier, and `page` the page number (1 is the first page)
+   * @returns {Promise<string>} - The archive link
+   */
+  async createArchiveLinkByIds({ ids, name = 'files', pages }) {
+    const resp = await this.stackClient.fetchJSON('POST', '/files/archive', {
+      data: {
+        type: 'io.cozy.archives',
+        attributes: {
+          name,
+          ids,
+          ...(pages && { pages })
         }
       }
     })

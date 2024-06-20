@@ -1850,4 +1850,98 @@ describe('FileCollection', () => {
       )
     })
   })
+
+  describe('createArchiveLinkByIds', () => {
+    beforeEach(() => {
+      client.fetchJSON.mockResolvedValue({ links: { related: 'link' } })
+    })
+    afterEach(() => {
+      client.fetchJSON.mockReset()
+    })
+
+    it('should call the right route', async () => {
+      const ids = ['42', '43']
+      await collection.createArchiveLinkByIds({ ids })
+      expect(client.fetchJSON).toHaveBeenCalledWith('POST', '/files/archive', {
+        data: {
+          attributes: {
+            ids,
+            name: 'files'
+          },
+          type: 'io.cozy.archives'
+        }
+      })
+    })
+    it('should call the right route with a custom name', async () => {
+      const ids = ['42', '43']
+      const name = 'my-archive'
+      await collection.createArchiveLinkByIds({ ids, name })
+      expect(client.fetchJSON).toHaveBeenCalledWith('POST', '/files/archive', {
+        data: {
+          attributes: {
+            ids,
+            name
+          },
+          type: 'io.cozy.archives'
+        }
+      })
+    })
+    it('should call the right route with a specific page by file', async () => {
+      const ids = ['42', '43']
+      const pages = [{ id: '42', page: 1 }, { id: '43', page: 2 }]
+      await collection.createArchiveLinkByIds({ ids, pages })
+      expect(client.fetchJSON).toHaveBeenCalledWith('POST', '/files/archive', {
+        data: {
+          attributes: {
+            ids,
+            name: 'files',
+            pages
+          },
+          type: 'io.cozy.archives'
+        }
+      })
+    })
+  })
+
+  describe('downloadArchive', () => {
+    beforeEach(() => {
+      client.fetchJSON.mockResolvedValue({ links: { related: 'link' } })
+    })
+    afterEach(() => {
+      client.fetchJSON.mockReset()
+    })
+
+    it('should call the right route', async () => {
+      const ids = ['42']
+      await collection.downloadArchive(ids)
+      expect(client.fetchJSON).toHaveBeenCalledWith('POST', '/files/archive', {
+        data: {
+          attributes: { ids, name: 'files' },
+          type: 'io.cozy.archives'
+        }
+      })
+    })
+    it('should call the right route with a custom name', async () => {
+      const ids = ['42']
+      const name = 'my-archive'
+      await collection.downloadArchive(ids, name)
+      expect(client.fetchJSON).toHaveBeenCalledWith('POST', '/files/archive', {
+        data: {
+          attributes: { ids, name },
+          type: 'io.cozy.archives'
+        }
+      })
+    })
+    it('should call the right route with a specific page by file', async () => {
+      const ids = ['42']
+      const pages = [{ id: '42', page: 1 }]
+      await collection.downloadArchive(ids, undefined, { pages })
+      expect(client.fetchJSON).toHaveBeenCalledWith('POST', '/files/archive', {
+        data: {
+          attributes: { ids, name: 'files', pages },
+          type: 'io.cozy.archives'
+        }
+      })
+    })
+  })
 })

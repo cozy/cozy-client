@@ -197,6 +197,9 @@ Deleted and design docs are filtered by default, thus documents are retrieved in
 <dt><a href="#OAuthClient">OAuthClient</a> : <code>object</code></dt>
 <dd><p>Document representing a io.cozy.oauth.clients</p>
 </dd>
+<dt><a href="#ArchivePages">ArchivePages</a> : <code>object</code></dt>
+<dd><p>Attributes used for create archive link by ids</p>
+</dd>
 <dt><a href="#FetchChangesReturnValue">FetchChangesReturnValue</a> ⇒ <code><a href="#FetchChangesReturnValue">FetchChangesReturnValue</a></code></dt>
 <dd><p>Use cozy-stack&#39;s _changes API for io.cozy.files
 Design docs are filtered by default, thus documents are retrieved in the
@@ -739,6 +742,9 @@ files associated to a specific document
     * [.download(file, versionId, filename)](#FileCollection+download)
     * [.fetchFileContentById(id)](#FileCollection+fetchFileContentById)
     * [.getBeautifulSize(file, decimal)](#FileCollection+getBeautifulSize)
+    * [.downloadArchive(fileIds, [notSecureFilename], [options])](#FileCollection+downloadArchive)
+    * ~~[.getArchiveLinkByIds()](#FileCollection+getArchiveLinkByIds)~~
+    * [.createArchiveLinkByIds(params)](#FileCollection+createArchiveLinkByIds) ⇒ <code>Promise.&lt;string&gt;</code>
     * [.isChildOf(child, parent)](#FileCollection+isChildOf) ⇒ <code>boolean</code>
     * [.statById(id, options)](#FileCollection+statById) ⇒ <code>object</code>
     * [.createDirectoryByPath(path)](#FileCollection+createDirectoryByPath) ⇒ <code>object</code>
@@ -1030,6 +1036,42 @@ Get a beautified size for a given file
 | --- | --- | --- |
 | file | <code>object</code> | io.cozy.files object |
 | decimal | <code>number</code> | number of decimal |
+
+<a name="FileCollection+downloadArchive"></a>
+
+### fileCollection.downloadArchive(fileIds, [notSecureFilename], [options])
+Download an archive of the files
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| fileIds | <code>Array.&lt;string&gt;</code> | List of file ids |
+| [notSecureFilename] | <code>string</code> | Name of the archive (default: 'files') |
+| [options] | <code>object</code> | Additional options |
+| [options.pages] | [<code>Array.&lt;ArchivePages&gt;</code>](#ArchivePages) | Array of objects, with `id` the file identifier, and `page` the page number (1 is the first page) |
+
+<a name="FileCollection+getArchiveLinkByIds"></a>
+
+### ~~fileCollection.getArchiveLinkByIds()~~
+***Deprecated***
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+<a name="FileCollection+createArchiveLinkByIds"></a>
+
+### fileCollection.createArchiveLinkByIds(params) ⇒ <code>Promise.&lt;string&gt;</code>
+Create the archive link for a list of files
+The generated archive is temporary and is not persisted
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+**Returns**: <code>Promise.&lt;string&gt;</code> - - The archive link  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>object</code> | Parameters |
+| params.ids | <code>Array.&lt;string&gt;</code> | List of file ids |
+| [params.name] | <code>string</code> | Name of the archive (default: 'files') |
+| [params.pages] | [<code>Array.&lt;ArchivePages&gt;</code>](#ArchivePages) | Array of objects, with `id` the file identifier, and `page` the page number (1 is the first page) |
 
 <a name="FileCollection+isChildOf"></a>
 
@@ -2753,6 +2795,19 @@ If this is the case, call the onRevocationChange callback
 
 **Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
 **Returns**: <code>Promise.&lt;boolean&gt;</code> - A Promise that resolves to `false` if client is still valid, or `true` if it has been revoked.  
+<a name="ArchivePages"></a>
+
+## ArchivePages : <code>object</code>
+Attributes used for create archive link by ids
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | Id of the file |
+| page | <code>number</code> | The page number. PDF files only (1 is the first page) |
+
 <a name="FetchChangesReturnValue"></a>
 
 ## FetchChangesReturnValue ⇒ [<code>FetchChangesReturnValue</code>](#FetchChangesReturnValue)
