@@ -16,15 +16,11 @@ import { default as helpers } from './helpers'
 import { getIndexNameFromFields, getIndexFields } from './mango'
 import * as jsonapi from './jsonapi'
 import PouchManager from './PouchManager'
+import { PouchLocalStorage } from './localStorage'
 import logger from './logger'
 import { migratePouch } from './migrations/adapter'
+import { platformWeb } from './platformWeb'
 import { getDatabaseName, getPrefix } from './utils'
-import {
-  getPersistedSyncedDoctypes,
-  persistAdapterName,
-  getAdapterName,
-  destroyWarmedUpQueries
-} from './localStorage'
 
 PouchDB.plugin(PouchDBFind)
 
@@ -79,6 +75,7 @@ class PouchLink extends CozyLink {
    * @param {number} [opts.replicationInterval] Milliseconds between replications
    * @param {string[]} opts.doctypes Doctypes to replicate
    * @param {object[]} opts.doctypesReplicationOptions A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote")
+   * @param {import('./types').LinkPlatform} opts.platform Platform specific adapters and methods
    * @returns {object} The PouchLink instance
    */
 
@@ -95,6 +92,9 @@ class PouchLink extends CozyLink {
     this.doctypes = doctypes
     this.doctypesReplicationOptions = doctypesReplicationOptions
     this.indexes = {}
+    this.storage = new PouchLocalStorage(
+      options.platform?.storage || platformWeb.storage
+    )
 
     /** @type {Record<string, SyncStatus>} - Stores replication states per doctype */
     this.replicationStatus = this.replicationStatus || {}
@@ -104,10 +104,12 @@ class PouchLink extends CozyLink {
    * Return the PouchDB adapter name.
    * Should be IndexedDB for newest adapters.
    *
-   * @returns {string} The adapter name
+   * @param {import('./types').LocalStorage} localStorage Methods to access local storage
+   * @returns {Promise<string>} The adapter name
    */
-  static getPouchAdapterName = () => {
-    return getAdapterName()
+  static getPouchAdapterName = localStorage => {
+    const storage = new PouchLocalStorage(localStorage || platformWeb.storage)
+    return storage.getAdapterName()
   }
 
   getReplicationURL(doctype) {
@@ -149,15 +151,15 @@ class PouchLink extends CozyLink {
       for (const plugin of plugins) {
         PouchDB.plugin(plugin)
       }
-      const doctypes = getPersistedSyncedDoctypes()
+      const doctypes = await this.storage.getPersistedSyncedDoctypes()
       for (const doctype of Object.keys(doctypes)) {
         const prefix = getPrefix(url)
         const dbName = getDatabaseName(prefix, doctype)
 
         await migratePouch({ dbName, fromAdapter, toAdapter })
-        destroyWarmedUpQueries() // force recomputing indexes
+        await this.storage.destroyWarmedUpQueries() // force recomputing indexes
       }
-      persistAdapterName('indexeddb')
+      await this.storage.persistAdapterName('indexeddb')
     } catch (err) {
       console.error('PouchLink: PouchDB migration failed. ', err)
     }
@@ -195,9 +197,9 @@ class PouchLink extends CozyLink {
       logger.log('Create pouches with ' + prefix + ' prefix')
     }
 
-    if (!getAdapterName()) {
+    if (!(await this.storage.getAdapterName())) {
       const adapter = get(this.options, 'pouch.options.adapter')
-      persistAdapterName(adapter)
+      await this.storage.persistAdapterName(adapter)
     }
 
     this.pouches = new PouchManager(this.doctypes, {
@@ -209,8 +211,10 @@ class PouchLink extends CozyLink {
       onDoctypeSyncStart: this.handleDoctypeSyncStart.bind(this),
       onDoctypeSyncEnd: this.handleDoctypeSyncEnd.bind(this),
       prefix,
-      executeQuery: this.executeQuery.bind(this)
+      executeQuery: this.executeQuery.bind(this),
+      platform: this.options.platform
     })
+    await this.pouches.init()
 
     if (this.client && this.options.initialSync) {
       this.startReplication()
@@ -334,7 +338,7 @@ class PouchLink extends CozyLink {
     return !!this.getPouch(impactedDoctype)
   }
 
-  request(operation, result = null, forward = doNothing) {
+  async request(operation, result = null, forward = doNothing) {
     const doctype = getDoctypeFromOperation(operation)
 
     if (!this.pouches) {
@@ -356,7 +360,7 @@ class PouchLink extends CozyLink {
       return forward(operation)
     }
 
-    if (this.needsToWaitWarmup(doctype)) {
+    if (await this.needsToWaitWarmup(doctype)) {
       if (process.env.NODE_ENV !== 'production') {
         logger.info(
           `Tried to access local ${doctype} but not warmuped yet. Forwarding the operation to next link`
@@ -387,18 +391,18 @@ class PouchLink extends CozyLink {
    * and return if those queries are already warmed up or not
    *
    * @param {string} doctype - Doctype to check
-   * @returns {boolean} the need to wait for the warmup
+   * @returns {Promise<boolean>} the need to wait for the warmup
    */
-  needsToWaitWarmup(doctype) {
+  async needsToWaitWarmup(doctype) {
     if (
       this.doctypesReplicationOptions &&
       this.doctypesReplicationOptions[doctype] &&
       this.doctypesReplicationOptions[doctype].warmupQueries
     ) {
-      return !this.pouches.areQueriesWarmedUp(
+      return !(await this.pouches.areQueriesWarmedUp(
         doctype,
         this.doctypesReplicationOptions[doctype].warmupQueries
-      )
+      ))
     }
     return false
   }

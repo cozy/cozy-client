@@ -62,8 +62,9 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.createManager()
-    this.displayDocs()
+    this.createManager().then(() => {
+      this.displayDocs()
+    })
   }
 
   componentWillUnmount() {
@@ -83,7 +84,7 @@ class App extends React.Component {
     })
   }
 
-  createManager() {
+  async createManager() {
     this.manager = new PouchManager([DOCTYPE], {
       replicationDelay: 2 * 1000,
       getReplicationURL: this.getReplicationURL,
@@ -101,6 +102,7 @@ class App extends React.Component {
         this.displayDocs()
       }
     })
+    await this.manager.init()
   }
 
   async displayDocs() {
