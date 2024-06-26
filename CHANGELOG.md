@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [48.5.0](https://github.com/cozy/cozy-client/compare/v48.4.0...v48.5.0) (2024-06-26)
+
+
+### Features
+
+* **FileCollection:** Create archive link by file ids with specific page ([df94e82](https://github.com/cozy/cozy-client/commit/df94e82cbe049788f2532c5d91a236bd743faf1c))
+
+
+
+
+
 # [48.4.0](https://github.com/cozy/cozy-client/compare/v48.3.0...v48.4.0) (2024-06-19)
 
 
