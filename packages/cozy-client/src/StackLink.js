@@ -5,6 +5,7 @@ import CozyLink from './CozyLink'
 import { DOCTYPE_FILES } from './const'
 import { BulkEditError } from './errors'
 import logger from './logger'
+import { isReactNativeOfflineError } from './utils'
 
 /**
  *
@@ -58,8 +59,9 @@ export default class StackLink extends CozyLink {
    * @param {object} [options] - Options
    * @param  {object} [options.stackClient] - A StackClient
    * @param  {object} [options.client] - A StackClient (deprecated)
+   * @param {import('cozy-pouch-link/dist/types').LinkPlatform} [options.platform] Platform specific adapters and methods
    */
-  constructor({ client, stackClient } = {}) {
+  constructor({ client, stackClient, platform } = {}) {
     super()
     if (client) {
       logger.warn(
@@ -67,6 +69,7 @@ export default class StackLink extends CozyLink {
       )
     }
     this.stackClient = stackClient || client
+    this.isOnline = platform?.isOnline
   }
 
   registerClient(client) {
@@ -77,11 +80,26 @@ export default class StackLink extends CozyLink {
     this.stackClient = null
   }
 
-  request(operation, result, forward) {
-    if (operation.mutationType) {
-      return this.executeMutation(operation, result, forward)
+  async request(operation, result, forward) {
+    if (this.isOnline && !(await this.isOnline())) {
+      return forward(operation)
     }
-    return this.executeQuery(operation)
+
+    try {
+      if (operation.mutationType) {
+        return await this.executeMutation(operation, result, forward)
+      }
+      return await this.executeQuery(operation)
+    } catch (err) {
+      if (isReactNativeOfflineError(err)) {
+        return forward(operation)
+      }
+      throw err
+    }
+  }
+
+  async persistData(data, forward) {
+    return forward(data)
   }
   /**
    *
