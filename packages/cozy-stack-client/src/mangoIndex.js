@@ -47,6 +47,102 @@ export const normalizeDesignDoc = designDoc => {
 }
 
 /**
+ * Process a condition to generate a string key
+ *
+ * @param {object} condition - An object representing tcondition
+ * @param {number} [depth] - Level of recursion
+ * @returns {string} - The string key of the processed condition
+ */
+export const processCondition = (condition, depth = 0) => {
+  if (condition.$or && depth < 3) {
+    return `(${condition.$or
+      .map(subCondition => processCondition(subCondition, depth + 1))
+      .join('_or_')})`
+  } else if (condition.$and && depth < 3) {
+    return `(${condition.$and
+      .map(subCondition => processCondition(subCondition, depth + 1))
+      .join('_and_')})`
+  } else {
+    return Object.keys(condition)
+      .map(key => (key.startsWith('$') ? key.slice(1) : key))
+      .join('_and_')
+  }
+}
+
+/**
+ * Process a selector to generate a string key
+ *
+ * @example
+ * // returns `field1_and_(field2_or_field3)_and_field4`
+ * processCondition({
+ *  field1: 'value1',
+ *  $or: [{ field2: 'value2' }, { field3: 'value3' }],
+ *  field4: 'value4'
+ * });
+ *
+ * @param {object} selector - An object representing the selector
+ * @returns {string} - The string key of the processed selector
+ */
+export const processSelector = selector => {
+  const conditions = Object.entries(selector).map(([key, value]) =>
+    processCondition({ [key]: value })
+  )
+  return conditions.join('_and_')
+}
+
+/**
+ * Flatten an object
+ *
+ * @param {*} obj - The object to flatten
+ * @param {*} parent - The parent key
+ * @param {*} res - The result object
+ * @returns {object} - And object with only one level of depth
+ */
+export const flattenObject = (obj, parent = '', res = {}) => {
+  Object.entries(obj).forEach(([key, value]) => {
+    const cleanedKey = key.startsWith('$') ? key.slice(1) : key
+    const propName = parent ? `${parent}_${cleanedKey}` : cleanedKey
+    if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+      flattenObject(value, propName, res)
+    } else {
+      res[propName] = value
+    }
+  })
+  return res
+}
+
+/**
+ * Process a partial filter to generate a string key
+ *
+ * @param {object} partialFilter - An object representing the partial filter
+ * @returns {string} - The string key of the processed partial filter
+ */
+export const processPartialFilter = partialFilter => {
+  const flatPartialFilter = flattenObject(partialFilter)
+  return `(${Object.keys(flatPartialFilter)
+    .map(key => {
+      if (Array.isArray(flatPartialFilter[key])) {
+        return `${key}_${flatPartialFilter[key].join('_')}`
+      } else {
+        return `${key}_${flatPartialFilter[key]}`
+      }
+    })
+    .join(')_and_(')})`
+}
+
+export const getNewIndexName = (selector, options = {}) => {
+  let baseName = processSelector(selector)
+
+  if (options.partialFilter) {
+    return `by_${baseName}_filter_${processPartialFilter(
+      options.partialFilter
+    )}`
+  }
+
+  return `by_${baseName}`
+}
+
+/**
  * Name an index, based on its indexed fields and partial filter.
  *
  * It follows this naming convention:
@@ -66,6 +162,7 @@ export const getIndexNameFromFields = (
     ? `${indexName}_filter_${partialFilterFields.join('_and_')}`
     : indexName
 }
+
 /**
  * Transform sort into Array
  *
