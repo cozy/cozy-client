@@ -26,7 +26,8 @@ import {
   transformSort,
   getIndexFields,
   isMatchingIndex,
-  normalizeDesignDoc
+  normalizeDesignDoc,
+  getNewIndexName
 } from './mangoIndex'
 import * as querystring from './querystring'
 import { FetchError } from './errors'
@@ -219,6 +220,19 @@ class DocumentCollection {
     }
   }
 
+  async migrateOldNamedIndex(
+    indexedFields,
+    partialFilter,
+    existingIndex,
+    indexName
+  ) {
+    await this.destroyIndex(existingIndex)
+    await this.createIndex(indexedFields, {
+      partialFilter,
+      indexName
+    })
+  }
+
   /**
    * Handle index creation if it is missing.
    *
@@ -240,15 +254,25 @@ class DocumentCollection {
       ? getIndexFields({ partialFilter })
       : null
 
-    const existingIndex = await this.findExistingIndex(selector, options)
-    const indexName = getIndexNameFromFields(indexedFields, {
+    const oldName = `_design/${getIndexNameFromFields(indexedFields, {
       partialFilterFields
-    })
+    })}`
+
+    const existingIndex = await this.findExistingIndex(selector, options)
+
+    const indexName = getNewIndexName(selector, { partialFilter })
     if (!existingIndex) {
       await this.createIndex(indexedFields, {
         partialFilter,
         indexName
       })
+    } else if (existingIndex._id === oldName) {
+      await this.migrateOldNamedIndex(
+        indexedFields,
+        partialFilter,
+        existingIndex,
+        indexName
+      )
     } else if (existingIndex._id !== `_design/${indexName}`) {
       await this.migrateUnamedIndex(existingIndex, indexName)
     } else {
@@ -493,7 +517,7 @@ The returned documents are paginated by the stack.
    * @returns {MangoQueryOptions} Mango options
    */
   toMangoOptions(selector, options = {}) {
-    let { sort, indexedFields, partialFilter } = options
+    let { sort, indexedFields, partialFilter, partialIndex } = options
     const { fields, skip = 0, limit, bookmark } = options
 
     sort = transformSort(sort)
@@ -508,14 +532,14 @@ The returned documents are paginated by the stack.
       ? indexedFields
       : getIndexFields({ sort, selector })
 
-    const partialFilterFields = partialFilter
-      ? getIndexFields({ partialFilter })
-      : null
     const indexName =
       options.indexId ||
-      `_design/${getIndexNameFromFields(indexedFields, {
-        partialFilterFields
+      `_design/${getNewIndexName(selector, {
+        partialFilter
       })}`
+
+    console.log('indexName', indexName)
+
     if (sort) {
       const sortOrders = uniq(
         sort.map(sortOption => head(Object.values(sortOption)))
@@ -714,6 +738,7 @@ The returned documents are paginated by the stack.
   async findExistingIndex(selector, options) {
     let { sort, indexedFields, partialFilter } = options
     const indexes = await this.fetchAllMangoIndexes()
+    console.log('indexes', indexes)
     if (indexes.length < 1) {
       return null
     }
@@ -725,7 +750,29 @@ The returned documents are paginated by the stack.
     const existingIndex = indexes.find(index => {
       return isMatchingIndex(index, fieldsToIndex, partialFilter)
     })
-    return existingIndex
+
+    if (existingIndex) {
+      return existingIndex
+    }
+
+    const partialFilterFields = partialFilter
+      ? getIndexFields({ partialFilter })
+      : null
+
+    const oldName = `_design/${getIndexNameFromFields(indexedFields, {
+      partialFilterFields
+    })}`
+
+    const existingIndexWithOldName = indexes.find(
+      index => index._id === oldName
+    )
+
+    if (existingIndexWithOldName) {
+      console.log('existingIndexWithOldName', existingIndexWithOldName)
+      return existingIndexWithOldName
+    }
+
+    return null
   }
 
   /**
