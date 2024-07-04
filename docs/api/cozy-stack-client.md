@@ -101,6 +101,9 @@ query to work</p>
 <dt><a href="#isMatchingIndex">isMatchingIndex</a> ⇒ <code>boolean</code></dt>
 <dd><p>Check if an index is matching the given fields</p>
 </dd>
+<dt><a href="#makeOperatorsExplicit">makeOperatorsExplicit</a> ⇒ <code>object</code></dt>
+<dd><p>Transform a query to make all operators explicit</p>
+</dd>
 <dt><a href="#getPermissionsFor">getPermissionsFor</a> ⇒ <code>object</code></dt>
 <dd><p>Build a permission set</p>
 </dd>
@@ -131,6 +134,10 @@ See <a href="https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a
 <dt><a href="#getIconURL">getIconURL()</a></dt>
 <dd><p>Get Icon URL using blob mechanism if OAuth connected
 or using preloaded url when blob not needed</p>
+</dd>
+<dt><a href="#handleNorOperator">handleNorOperator(conditions)</a> ⇒ <code>Array</code></dt>
+<dd><p>Handle the $nor operator in a query
+CouchDB transforms $nor into $and with $ne operators</p>
 </dd>
 <dt><a href="#garbageCollect">garbageCollect()</a></dt>
 <dd><p>Delete outdated results from cache</p>
@@ -2224,6 +2231,19 @@ Check if an index is matching the given fields
 | fields | <code>Array</code> | The fields that the index must have |
 | partialFilter | <code>object</code> | An optional partial filter |
 
+<a name="makeOperatorsExplicit"></a>
+
+## makeOperatorsExplicit ⇒ <code>object</code>
+Transform a query to make all operators explicit
+
+**Kind**: global constant  
+**Returns**: <code>object</code> - - The transformed query with all operators explicit  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| query | <code>object</code> | The query to transform |
+| reverseEq | <code>boolean</code> | If true, $eq will be transformed to $ne (useful for manage $nor) |
+
 <a name="getPermissionsFor"></a>
 
 ## getPermissionsFor ⇒ <code>object</code>
@@ -2312,6 +2332,19 @@ Get Icon URL using blob mechanism if OAuth connected
 or using preloaded url when blob not needed
 
 **Kind**: global function  
+<a name="handleNorOperator"></a>
+
+## handleNorOperator(conditions) ⇒ <code>Array</code>
+Handle the $nor operator in a query
+CouchDB transforms $nor into $and with $ne operators
+
+**Kind**: global function  
+**Returns**: <code>Array</code> - - The reversed conditions  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| conditions | <code>Array</code> | The conditions inside the $nor operator |
+
 <a name="garbageCollect"></a>
 
 ## garbageCollect()
