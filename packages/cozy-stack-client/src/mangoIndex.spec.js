@@ -1,7 +1,8 @@
 import {
   isMatchingIndex,
   getIndexFields,
-  getIndexNameFromFields
+  getIndexNameFromFields,
+  makeOperatorsExplicit
 } from './mangoIndex'
 
 const buildDesignDoc = (fields, { partialFilter, id } = {}) => {
@@ -260,5 +261,165 @@ describe('getIndexNameFromFields', () => {
     expect(getIndexNameFromFields(fields, partialFilter)).toEqual(
       'by_dir_id_and_type_and_name_filter_((type_$eq_directory)_$nor_(dir_id_id1234)_$nor_(metadata.notifiedAt_$exists_false))'
     )
+  })
+})
+
+describe('makeOperatorsExplicit', () => {
+  it('Transforms implicit $eq operator to explicit', () => {
+    const query = { name: 'test' }
+    const expected = { name: { $eq: 'test' } }
+    expect(makeOperatorsExplicit(query)).toEqual(expected)
+  })
+
+  it('Transforms implicit $and operator to explicit', () => {
+    const query = { name: 'test', age: 42 }
+    const expected = { $and: [{ name: { $eq: 'test' } }, { age: { $eq: 42 } }] }
+    expect(makeOperatorsExplicit(query)).toEqual(expected)
+  })
+
+  it('Maintains explicit $eq operator', () => {
+    const query = { name: { $eq: 'test' } }
+    const expected = { name: { $eq: 'test' } }
+    expect(makeOperatorsExplicit(query)).toEqual(expected)
+  })
+
+  it('Maintains explicit $and operator', () => {
+    const query = { $and: [{ name: 'test' }, { age: 42 }] }
+    const expected = { $and: [{ name: { $eq: 'test' } }, { age: { $eq: 42 } }] }
+    expect(makeOperatorsExplicit(query)).toEqual(expected)
+  })
+
+  it('Handles nested implicit $eq operators', () => {
+    const query = { user: { name: 'test', age: 42 } }
+    const expected = {
+      user: { $and: [{ name: { $eq: 'test' } }, { age: { $eq: 42 } }] }
+    }
+    expect(makeOperatorsExplicit(query)).toEqual(expected)
+  })
+
+  it('Handles nested explicit operators', () => {
+    const query = { user: { $or: [{ name: 'test' }, { age: { $ne: 42 } }] } }
+    const expected = {
+      user: { $or: [{ name: { $eq: 'test' } }, { age: { $ne: 42 } }] }
+    }
+    expect(makeOperatorsExplicit(query)).toEqual(expected)
+  })
+
+  it('Handles mixed implicit and explicit operators', () => {
+    const query = { name: 'test', age: { $ne: 42 } }
+    const expected = { $and: [{ name: { $eq: 'test' } }, { age: { $ne: 42 } }] }
+    expect(makeOperatorsExplicit(query)).toEqual(expected)
+  })
+
+  it('Handles operator with string array', () => {
+    const query = {
+      _id: {
+        $nin: ['id123', 'id456']
+      },
+      type: 'file'
+    }
+    const expected = {
+      $and: [
+        {
+          _id: {
+            $nin: ['id123', 'id456']
+          }
+        },
+        { type: { $eq: 'file' } }
+      ]
+    }
+    expect(makeOperatorsExplicit(query)).toEqual(expected)
+  })
+
+  it('Handles $or operator with string array', () => {
+    const query = {
+      type: {
+        $or: ['konnector', 'worker']
+      }
+    }
+    const expected = {
+      $or: [{ type: { $eq: 'konnector' } }, { type: { $eq: 'worker' } }]
+    }
+    expect(makeOperatorsExplicit(query)).toEqual(expected)
+  })
+
+  it('Handles $or operator with object array', () => {
+    const query = {
+      type: 'file',
+      $or: [
+        {
+          trashed: {
+            $exists: false
+          }
+        },
+        {
+          trashed: false
+        }
+      ]
+    }
+    const expected = {
+      $and: [
+        { type: { $eq: 'file' } },
+        { $or: [{ trashed: { $exists: false } }, { trashed: { $eq: false } }] }
+      ]
+    }
+    expect(makeOperatorsExplicit(query)).toEqual(expected)
+  })
+
+  it('Handles explicit $and operator with nested object to make explicit', () => {
+    const query = {
+      type: 'file',
+      trashed: true,
+      'metadata.notifiedAt': {
+        $exists: false
+      }
+    }
+    const expected = {
+      $and: [
+        { type: { $eq: 'file' } },
+        { trashed: { $eq: true } },
+        { 'metadata.notifiedAt': { $exists: false } }
+      ]
+    }
+    expect(makeOperatorsExplicit(query)).toEqual(expected)
+  })
+
+  it('Handles explicit $nor operator', () => {
+    const query = {
+      $nor: [
+        {
+          type: {
+            $eq: 'directory'
+          }
+        },
+        { dir_id: 'id1234' },
+        {
+          'metadata.notifiedAt': {
+            $exists: false
+          }
+        }
+      ]
+    }
+    const expected = {
+      $and: [
+        {
+          type: {
+            $ne: 'directory'
+          }
+        },
+        {
+          dir_id: {
+            $ne: 'id1234'
+          }
+        },
+        {
+          'metadata.notifiedAt': {
+            $exists: false
+          }
+        }
+      ]
+    }
+
+    expect(makeOperatorsExplicit(query)).toEqual(expected)
   })
 })

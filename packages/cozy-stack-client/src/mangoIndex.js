@@ -1,6 +1,7 @@
 import head from 'lodash/head'
 import get from 'lodash/get'
 import isEqual from 'lodash/isEqual'
+import isObject from 'lodash/isObject'
 
 /**
  * @typedef {Object} MangoPartialFilter
@@ -148,9 +149,73 @@ export const isMatchingIndex = (index, fields, partialFilter) => {
     if (!partialFilter && !partialFilterInIndex) {
       return true
     }
-    if (isEqual(partialFilter, partialFilterInIndex)) {
+
+    const explicitPartialFilter = makeOperatorsExplicit(partialFilter ?? {})
+    if (isEqual(explicitPartialFilter, partialFilterInIndex)) {
       return true
     }
   }
+
   return false
+}
+
+/**
+ * Handle the $nor operator in a query
+ * CouchDB transforms $nor into $and with $ne operators
+ *
+ * @param {Array} conditions - The conditions inside the $nor operator
+ * @returns {Array} - The reversed conditions
+ */
+const handleNorOperator = conditions => {
+  return conditions.map(condition =>
+    Object.entries(condition).reduce((acc, [key, value]) => {
+      if (typeof value === 'string') {
+        acc[key] = { $ne: value }
+      } else {
+        acc[key] = makeOperatorsExplicit(value, true)
+      }
+      return acc
+    }, {})
+  )
+}
+
+/**
+ * Transform a query to make all operators explicit
+ *
+ * @param {object} query - The query to transform
+ * @param {boolean} reverseEq - If true, $eq will be transformed to $ne (useful for manage $nor)
+ * @returns {object} - The transformed query with all operators explicit
+ */
+export const makeOperatorsExplicit = (query, reverseEq = false) => {
+  const explicitQuery = Object.entries(query).reduce((acc, [key, value]) => {
+    if (key === '$nor') {
+      acc['$and'] = handleNorOperator(value)
+    } else if (value['$or']?.every(v => typeof v === 'string')) {
+      acc['$or'] = value['$or'].map(v =>
+        makeOperatorsExplicit({ [key]: v }, reverseEq)
+      ) // To manage $or with list of strings
+    } else if (Array.isArray(value) && value.every(isObject)) {
+      acc[key] = value.map(v => makeOperatorsExplicit(v, reverseEq)) // To manage $and and $or with multiple conditions inside
+    } else if (isObject(value) && !Array.isArray(value)) {
+      acc[key] = makeOperatorsExplicit(value, reverseEq) // To manage nested objects
+    } else if (reverseEq && key === '$eq') {
+      acc['$ne'] = value
+    } else if (!key.startsWith('$')) {
+      acc[key] = { $eq: value } // To manage implicit $eq
+    } else {
+      acc[key] = value // To manage explicit operators
+    }
+    return acc
+  }, {})
+
+  const explicitQueryKeys = Object.keys(explicitQuery)
+  if (explicitQueryKeys.length === 1) {
+    return explicitQuery
+  }
+
+  return {
+    $and: explicitQueryKeys.map(key => ({
+      [key]: explicitQuery[key]
+    }))
+  }
 }
