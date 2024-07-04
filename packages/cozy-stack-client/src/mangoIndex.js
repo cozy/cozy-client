@@ -47,25 +47,56 @@ export const normalizeDesignDoc = designDoc => {
 }
 
 /**
+ * Process a partial filter to generate a string key
+ *
+ * @param {object} condition - An object representing the partial filter or a sub-condition of the partial filter
+ * @returns {string} - The string key of the processed partial filter
+ */
+export const makeKeyFromPartialFilter = condition => {
+  if (typeof condition !== 'object' || condition === null) {
+    return String(condition)
+  }
+
+  const conditions = Object.entries(condition).map(([key, value]) => {
+    if (
+      Array.isArray(value) &&
+      value.every(subObj => typeof subObj === 'string')
+    ) {
+      return `${key}_(${value.join('_')})`
+    } else if (Array.isArray(value)) {
+      return `(${value
+        .map(subCondition => `${makeKeyFromPartialFilter(subCondition)}`)
+        .join(`)_${key}_(`)})`
+    } else if (typeof value === 'object') {
+      return `${key}_${makeKeyFromPartialFilter(value)}`
+    } else {
+      return `${key}_${value}`
+    }
+  })
+
+  return conditions.join(')_and_(')
+}
+
+/**
  * Name an index, based on its indexed fields and partial filter.
  *
  * It follows this naming convention:
- * `by_{indexed_field1}_and_{indexed_field2}_filter_{partial_filter_field1}_and_{partial_filter_field2}
+ * `by_{indexed_field1}_and_{indexed_field2}_filter_({partial_filter.key1}_{partial_filter.value1})_and_({partial_filter.key2}_{partial_filter.value2})`
  *
  * @param {Array<string>} fields - The indexed fields
- * @param {object} params - The additional params
- * @param {Array<string>=} params.partialFilterFields - The partial filter fields
+ * @param {object} [partialFilter] - The partial filter
  * @returns {string} The index name, built from the fields
  */
-export const getIndexNameFromFields = (
-  fields,
-  { partialFilterFields } = {}
-) => {
+export const getIndexNameFromFields = (fields, partialFilter) => {
   const indexName = `by_${fields.join('_and_')}`
-  return partialFilterFields
-    ? `${indexName}_filter_${partialFilterFields.join('_and_')}`
-    : indexName
+
+  if (partialFilter) {
+    return `${indexName}_filter_(${makeKeyFromPartialFilter(partialFilter)})`
+  }
+
+  return indexName
 }
+
 /**
  * Transform sort into Array
  *

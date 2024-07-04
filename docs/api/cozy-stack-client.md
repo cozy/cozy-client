@@ -83,10 +83,13 @@ Serves to dedupe equal queries requested at the same time</p>
 <dt><a href="#getIllegalCharacters">getIllegalCharacters</a> ⇒ <code>string</code></dt>
 <dd><p>Get the list of illegal characters in the file name</p>
 </dd>
+<dt><a href="#makeKeyFromPartialFilter">makeKeyFromPartialFilter</a> ⇒ <code>string</code></dt>
+<dd><p>Process a partial filter to generate a string key</p>
+</dd>
 <dt><a href="#getIndexNameFromFields">getIndexNameFromFields</a> ⇒ <code>string</code></dt>
 <dd><p>Name an index, based on its indexed fields and partial filter.</p>
 <p>It follows this naming convention:
-`by_{indexed_field1}<em>and</em>{indexed_field2}<em>filter</em>{partial_filter_field1}<em>and</em>{partial_filter_field2}</p>
+<code>by_{indexed_field1}_and_{indexed_field2}_filter_({partial_filter.key1}_{partial_filter.value1})_and_({partial_filter.key2}_{partial_filter.value2})</code></p>
 </dd>
 <dt><a href="#transformSort">transformSort</a> ⇒ <code><a href="#MangoSort">MangoSort</a></code></dt>
 <dd><p>Transform sort into Array</p>
@@ -2160,13 +2163,25 @@ Get the list of illegal characters in the file name
 | --- | --- | --- |
 | name | <code>string</code> | the file name |
 
+<a name="makeKeyFromPartialFilter"></a>
+
+## makeKeyFromPartialFilter ⇒ <code>string</code>
+Process a partial filter to generate a string key
+
+**Kind**: global constant  
+**Returns**: <code>string</code> - - The string key of the processed partial filter  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| condition | <code>object</code> | An object representing the partial filter or a sub-condition of the partial filter |
+
 <a name="getIndexNameFromFields"></a>
 
 ## getIndexNameFromFields ⇒ <code>string</code>
 Name an index, based on its indexed fields and partial filter.
 
 It follows this naming convention:
-`by_{indexed_field1}_and_{indexed_field2}_filter_{partial_filter_field1}_and_{partial_filter_field2}
+`by_{indexed_field1}_and_{indexed_field2}_filter_({partial_filter.key1}_{partial_filter.value1})_and_({partial_filter.key2}_{partial_filter.value2})`
 
 **Kind**: global constant  
 **Returns**: <code>string</code> - The index name, built from the fields  
@@ -2174,8 +2189,7 @@ It follows this naming convention:
 | Param | Type | Description |
 | --- | --- | --- |
 | fields | <code>Array.&lt;string&gt;</code> | The indexed fields |
-| params | <code>object</code> | The additional params |
-| [params.partialFilterFields] | <code>Array.&lt;string&gt;</code> | The partial filter fields |
+| [partialFilter] | <code>object</code> | The partial filter |
 
 <a name="transformSort"></a>
 
