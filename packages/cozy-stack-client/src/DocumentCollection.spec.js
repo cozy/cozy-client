@@ -804,7 +804,7 @@ describe('DocumentCollection', () => {
         .mockResolvedValueOnce({ rows: [index] })
         .mockReturnValueOnce(
           Promise.resolve({
-            id: '_design/by_label_and_done_filter_trashed',
+            id: '_design/by_label_and_done_filter_(trashed_false)',
             ok: true,
             rev: '1-123'
           })
@@ -834,7 +834,7 @@ describe('DocumentCollection', () => {
         skip: 0,
         selector: { done: { $exists: true }, trashed: false },
         sort: [{ label: 'desc' }, { done: 'desc' }],
-        use_index: '_design/by_label_and_done_filter_trashed'
+        use_index: '_design/by_label_and_done_filter_(trashed_false)'
       }
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'POST',
@@ -851,7 +851,11 @@ describe('DocumentCollection', () => {
         'POST',
         '/data/io.cozy.todos/_design/123456/copy?rev=1-123',
         null,
-        { headers: { Destination: '_design/by_label_and_done_filter_trashed' } }
+        {
+          headers: {
+            Destination: '_design/by_label_and_done_filter_(trashed_false)'
+          }
+        }
       )
       expect(client.fetchJSON).toHaveBeenNthCalledWith(
         4,
@@ -1316,7 +1320,7 @@ describe('DocumentCollection', () => {
 
     beforeEach(() => {
       collection.findExistingIndex = jest.fn()
-      collection.migrateUnamedIndex = jest.fn()
+      collection.migrateIndex = jest.fn()
       collection.createIndex = jest.fn()
     })
 
@@ -1335,13 +1339,13 @@ describe('DocumentCollection', () => {
         _id: '123'
       }
       collection.findExistingIndex.mockResolvedValue(existingIndex)
-      collection.migrateUnamedIndex.mockResolvedValue({})
+      collection.migrateIndex.mockResolvedValue({})
 
       await collection.handleMissingIndex(selector, {
         indexedFields: undefined,
         sort: undefined
       })
-      expect(collection.migrateUnamedIndex).toHaveBeenCalledWith(
+      expect(collection.migrateIndex).toHaveBeenCalledWith(
         existingIndex,
         'by_message.account'
       )
@@ -1349,7 +1353,7 @@ describe('DocumentCollection', () => {
       await collection.handleMissingIndex(selector, {
         indexedFields: ['message.account']
       })
-      expect(collection.migrateUnamedIndex).toHaveBeenCalledWith(
+      expect(collection.migrateIndex).toHaveBeenCalledWith(
         existingIndex,
         'by_message.account'
       )
@@ -1470,7 +1474,9 @@ describe('DocumentCollection', () => {
         }
       }
       const opts = collection.toMangoOptions(selector, { partialFilter })
-      expect(opts.use_index).toEqual('_design/by_name_and_date_filter_trashed')
+      expect(opts.use_index).toEqual(
+        '_design/by_name_and_date_filter_(trashed_$ne_true)'
+      )
     })
 
     it('should merge selector and partialFilter', () => {

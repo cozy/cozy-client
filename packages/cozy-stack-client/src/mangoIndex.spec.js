@@ -162,16 +162,103 @@ describe('getIndexFields', () => {
 })
 
 describe('getIndexNameFromFields', () => {
+  const fields = ['dir_id', 'type', 'name']
+
   it('should return index fields', () => {
-    const fields = ['_id', 'name']
-    expect(getIndexNameFromFields(fields)).toEqual('by__id_and_name')
+    expect(getIndexNameFromFields(fields)).toEqual(
+      'by_dir_id_and_type_and_name'
+    )
   })
 
   it('should return index fields with partial filter', () => {
-    const fields = ['_id', 'name']
-    const partialFilterFields = ['date', 'trashed']
-    expect(getIndexNameFromFields(fields, { partialFilterFields })).toEqual(
-      'by__id_and_name_filter_date_and_trashed'
+    const partialFilter = {
+      trashed: false
+    }
+
+    expect(getIndexNameFromFields(fields, partialFilter)).toEqual(
+      'by_dir_id_and_type_and_name_filter_(trashed_false)'
+    )
+  })
+
+  it('should return index fields with partial filter with multiple conditions', () => {
+    const partialFilter = {
+      type: 'file',
+      classe: 'image',
+      trashed: true
+    }
+
+    expect(getIndexNameFromFields(fields, partialFilter)).toEqual(
+      'by_dir_id_and_type_and_name_filter_(type_file)_and_(classe_image)_and_(trashed_true)'
+    )
+  })
+
+  it('should return index fields with partial filter with nested conditions', () => {
+    const partialFilter = {
+      type: 'file',
+      trashed: true,
+      'metadata.notifiedAt': {
+        $exists: false
+      }
+    }
+
+    expect(getIndexNameFromFields(fields, partialFilter)).toEqual(
+      'by_dir_id_and_type_and_name_filter_(type_file)_and_(trashed_true)_and_(metadata.notifiedAt_$exists_false)'
+    )
+  })
+
+  it('should return index fields with partial filter with $or and $and at root', () => {
+    const partialFilter = {
+      type: 'file',
+      $or: [
+        {
+          trashed: {
+            $exists: false
+          }
+        },
+        {
+          trashed: false
+        },
+        {
+          class: 'image'
+        }
+      ]
+    }
+
+    expect(getIndexNameFromFields(fields, partialFilter)).toEqual(
+      'by_dir_id_and_type_and_name_filter_(type_file)_and_((trashed_$exists_false)_$or_(trashed_false)_$or_(class_image))'
+    )
+  })
+
+  it('should return index fields with partial filter with $or inside sub condition', () => {
+    const partialFilter = {
+      worker: { $or: ['konnector', 'client'] },
+      state: 'running'
+    }
+
+    expect(getIndexNameFromFields(fields, partialFilter)).toEqual(
+      'by_dir_id_and_type_and_name_filter_(worker_$or_(konnector_client))_and_(state_running)'
+    )
+  })
+
+  it('should return index fields with partial filter with $nor inside sub condition', () => {
+    const partialFilter = {
+      $nor: [
+        {
+          type: {
+            $eq: 'directory'
+          }
+        },
+        { dir_id: 'id1234' },
+        {
+          'metadata.notifiedAt': {
+            $exists: false
+          }
+        }
+      ]
+    }
+
+    expect(getIndexNameFromFields(fields, partialFilter)).toEqual(
+      'by_dir_id_and_type_and_name_filter_((type_$eq_directory)_$nor_(dir_id_id1234)_$nor_(metadata.notifiedAt_$exists_false))'
     )
   })
 })

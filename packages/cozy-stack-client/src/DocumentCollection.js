@@ -193,17 +193,18 @@ class DocumentCollection {
   }
 
   /**
-   * Migrate an existing unamed index to a named one.
+   * Migrate an existing index to a new one with a different name.
    *
    * Index migration became necessary for optimistic index, because
    * we started to use named index while we used to have unamed index,
-   * i.e. indexes with CouchDB-generated ID.
+   * i.e. indexes with CouchDB-generated ID. This can also be used to
+   * migrate an index to a new name.
    *
    * @param {object} sourceIndex - The index to migrate
    * @param {string} targetIndexName - The new index name
    * @private
    */
-  async migrateUnamedIndex(sourceIndex, targetIndexName) {
+  async migrateIndex(sourceIndex, targetIndexName) {
     try {
       await this.copyIndex(sourceIndex, targetIndexName)
       await this.destroyIndex(sourceIndex)
@@ -236,21 +237,18 @@ class DocumentCollection {
     if (!indexedFields) {
       indexedFields = getIndexFields({ sort: options.sort, selector })
     }
-    const partialFilterFields = partialFilter
-      ? getIndexFields({ partialFilter })
-      : null
 
     const existingIndex = await this.findExistingIndex(selector, options)
-    const indexName = getIndexNameFromFields(indexedFields, {
-      partialFilterFields
-    })
+
+    const indexName = getIndexNameFromFields(indexedFields, partialFilter)
+
     if (!existingIndex) {
       await this.createIndex(indexedFields, {
         partialFilter,
         indexName
       })
     } else if (existingIndex._id !== `_design/${indexName}`) {
-      await this.migrateUnamedIndex(existingIndex, indexName)
+      await this.migrateIndex(existingIndex, indexName)
     } else {
       throw new Error(`Index unusable for query, index used: ${indexName}`)
     }
@@ -508,14 +506,10 @@ The returned documents are paginated by the stack.
       ? indexedFields
       : getIndexFields({ sort, selector })
 
-    const partialFilterFields = partialFilter
-      ? getIndexFields({ partialFilter })
-      : null
     const indexName =
       options.indexId ||
-      `_design/${getIndexNameFromFields(indexedFields, {
-        partialFilterFields
-      })}`
+      `_design/${getIndexNameFromFields(indexedFields, partialFilter)}`
+
     if (sort) {
       const sortOrders = uniq(
         sort.map(sortOption => head(Object.values(sortOption)))
