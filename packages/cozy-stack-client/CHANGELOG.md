@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [48.6.0](https://github.com/cozy/cozy-client/compare/v48.5.0...v48.6.0) (2024-07-08)
+
+
+### Features
+
+* Integrate partialFilter values into index naming ([ec6eb46](https://github.com/cozy/cozy-client/commit/ec6eb46e3f90ef1b0da6b20e50db38fabfd1435e))
+* Remove the implicit inside partialFilter to find existing index ([5da0d55](https://github.com/cozy/cozy-client/commit/5da0d55ab8cce0a77c881da4a7745f006c6c1465))
+
+
+
+
+
 # [48.5.0](https://github.com/cozy/cozy-client/compare/v48.4.0...v48.5.0) (2024-06-26)
 
 
