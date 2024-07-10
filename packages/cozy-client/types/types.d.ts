@@ -638,6 +638,62 @@ export type MutationOptions = {
     update?: Function;
     updateQueries?: Function;
 };
+export type UpdatedByApp = {
+    /**
+     * - Slug of the app that updated the document
+     */
+    slug: string;
+    /**
+     * - Date of the update
+     */
+    date: string;
+    /**
+     * - Version of the app that updated the document
+     */
+    version: number;
+};
+export type CozyMetadata = {
+    /**
+     * - Version of the doctype
+     */
+    doctypeVersion?: number;
+    /**
+     * - Version of the metadata
+     */
+    metadataVersion?: number;
+    /**
+     * - Date of creation
+     */
+    createdAt?: string;
+    /**
+     * - Slug of the app that created the document
+     */
+    createdByApp?: string;
+    /**
+     * - Version of the app that created the document
+     */
+    createdByAppVersion?: string;
+    /**
+     * - Date of the last update
+     */
+    updatedAt?: string;
+    /**
+     * - List of apps that updated the document
+     */
+    updatedByApps?: UpdatedByApp[];
+    /**
+     * - Id of the account associated to the document
+     */
+    sourceAccount?: string;
+    /**
+     * - Identifier of the source account
+     */
+    sourceAccountIdentifier?: string;
+    /**
+     * - Whether the document is marked as favorite
+     */
+    favorite?: boolean;
+};
 /**
  * - A document
  */
@@ -673,7 +729,7 @@ export type CozyClientDocument = {
     /**
      * - Cozy Metadata
      */
-    cozyMetadata?: object;
+    cozyMetadata?: CozyMetadata;
 };
 /**
  * - A io.cozy.files document's metadata
@@ -719,6 +775,10 @@ export type FileMetadata = {
      * - Image EXIF date, if relevant
      */
     datetime?: string;
+    /**
+     * - Name of the instance
+     */
+    instanceName?: string;
 };
 /**
  * - An io.cozy.files document
@@ -732,6 +792,14 @@ export type FileDocument = {
      * - Doctype of the file
      */
     _type: FilesDoctype;
+    /**
+     * - Id of the parent folder
+     */
+    dir_id: string;
+    /**
+     * - Path of the file
+     */
+    path?: string;
     /**
      * - Name of the file
      */

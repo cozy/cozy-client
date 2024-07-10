@@ -387,6 +387,27 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
+ * @typedef {object} UpdatedByApp
+ * @property {string} slug - Slug of the app that updated the document
+ * @property {string} date - Date of the update
+ * @property {number} version - Version of the app that updated the document
+ */
+
+/**
+ * @typedef {object} CozyMetadata
+ * @property {number} [doctypeVersion] - Version of the doctype
+ * @property {number} [metadataVersion] - Version of the metadata
+ * @property {string} [createdAt] - Date of creation
+ * @property {string} [createdByApp] - Slug of the app that created the document
+ * @property {string} [createdByAppVersion] - Version of the app that created the document
+ * @property {string} [updatedAt] - Date of the last update
+ * @property {UpdatedByApp[]} [updatedByApps] - List of apps that updated the document
+ * @property {string} [sourceAccount] - Id of the account associated to the document
+ * @property {string} [sourceAccountIdentifier] - Identifier of the source account
+ * @property {boolean} [favorite] - Whether the document is marked as favorite
+ */
+
+/**
  * @typedef {object} CozyClientDocument - A document
  * @property {string} [_id] - Id of the document
  * @property {string} [id] - Id of the document
@@ -395,7 +416,7 @@ import { QueryDefinition } from './queries/dsl'
  * @property {boolean} [_deleted] - When the document has been deleted
  * @property {ReferencedByRelationship} [relationships] - Relationships of the document
  * @property {Reference[]} [referenced_by] - referenced by of another document
- * @property {object} [cozyMetadata] - Cozy Metadata
+ * @property {CozyMetadata} [cozyMetadata] - Cozy Metadata
  */
 
 /**
@@ -418,12 +439,15 @@ import { QueryDefinition } from './queries/dsl'
  * @property {string} [referencedDate] - Reference date of the paper
  * @property {string} [noticePeriod] - Notice period of the paper, in days
  * @property {string} [datetime] - Image EXIF date, if relevant
+ * @property {string} [instanceName] - Name of the instance
  */
 
 /**
  * @typedef {object} FileDocument - An io.cozy.files document
  * @property {string} _id - Id of the file
  * @property {FilesDoctype} _type - Doctype of the file
+ * @property {string} dir_id - Id of the parent folder
+ * @property {string} [path] - Path of the file
  * @property {string} name - Name of the file
  * @property {FileMetadata} metadata - Metadata of the file
  * @property {string} type - Type of the file
