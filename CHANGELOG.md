@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [48.7.0](https://github.com/cozy/cozy-client/compare/v48.6.0...v48.7.0) (2024-07-10)
+
+
+### Features
+
+* Add missing types for IOCozyFile ([54761c9](https://github.com/cozy/cozy-client/commit/54761c989d98f8b62be411023262fb7e916f108d))
+
+
+
+
+
 # [48.6.0](https://github.com/cozy/cozy-client/compare/v48.5.0...v48.6.0) (2024-07-08)
 
 
