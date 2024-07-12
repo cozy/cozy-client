@@ -22,6 +22,20 @@ export const normalizeDoc = (doc, doctype) => {
 const filterDeletedDocumentsFromRows = doc => !!doc
 
 export const fromPouchResult = (res, withRows, doctype) => {
+  // Sometimes, queries are transformed by Collections and they call a dedicated
+  // cozy-stack route. When this is the case, we want to be able to replicate the same
+  // query from cozy-pouch-link. It is not possible as-is because the received data
+  // is not the same as the one stored in the Couch database
+  // To handle this, we store the received data in the Pouch with a dedicated id and
+  // we store the query result in a `cozyPouchData` attribute
+  // So when `cozyPouchData` attribute exists, we know that we want to return its content
+  // as the result of the query
+  if (res.cozyPouchData) {
+    return {
+      data: res.cozyPouchData
+    }
+  }
+
   if (withRows) {
     const docs = res.rows
       ? res.rows.map(row => row.doc).filter(filterDeletedDocumentsFromRows)
