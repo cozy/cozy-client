@@ -493,3 +493,14 @@ export const makeExpirationDescription = (expirationDate, { lang }) => {
 
   return t('Scan.expiration.description', { duration: distance })
 }
+
+/**
+ * @param {IOCozyFile} file - io.cozy.files document
+ * @returns {boolean}
+ */
+export const isForeignPaper = file => {
+  if (file.metadata?.country) {
+    return file.metadata.country.toLowerCase() !== 'fr'
+  }
+  return false
+}
