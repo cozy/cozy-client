@@ -446,6 +446,26 @@ Translated name for the metadata
 
 ***
 
+### isForeignPaper
+
+▸ **isForeignPaper**(`file`): `boolean`
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `file` | `IOCozyFile` | io.cozy.files document |
+
+*Returns*
+
+`boolean`
+
+*Defined in*
+
+[packages/cozy-client/src/models/paper.js:501](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/paper.js#L501)
+
+***
+
 ### makeExpirationDescription
 
 ▸ **makeExpirationDescription**(`expirationDate`, `options`): `string`

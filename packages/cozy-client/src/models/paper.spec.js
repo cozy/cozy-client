@@ -9,17 +9,20 @@ import * as paperModel from './paper'
  * @param {string} [param.expirationDate] - expiration date of file
  * @param {string} [param.referencedDate] - reference date of file
  * @param {string} [param.noticePeriod] - period before send notification
+ * @param {object} [param.metadata] - metadata of file
  */
 const buildMockFile = ({
   qualificationLabel,
   expirationDate,
   referencedDate,
-  noticePeriod
+  noticePeriod,
+  metadata = {}
 }) => {
   return /** @type {import('../types').IOCozyFile} */ ({
     name: qualificationLabel,
     created_at: '2022-09-01T00:00:00.000Z',
     metadata: {
+      ...metadata,
       qualification: { label: qualificationLabel },
       ...(expirationDate && { expirationDate }),
       ...(referencedDate && { referencedDate }),
@@ -43,7 +46,18 @@ describe('Expiration', () => {
   const fakeNationalIdCardFile = buildMockFile({
     qualificationLabel: 'national_id_card',
     expirationDate: '2022-09-23T11:35:58.118Z',
-    noticePeriod: '90'
+    noticePeriod: '90',
+    metadata: {
+      country: 'FR'
+    }
+  })
+  const fakeForeignNationalIdCardFile = buildMockFile({
+    qualificationLabel: 'national_id_card',
+    expirationDate: '2022-09-23T11:35:58.118Z',
+    noticePeriod: '90',
+    metadata: {
+      country: 'BE'
+    }
   })
   const fakePassportFile = buildMockFile({
     qualificationLabel: 'passport',
@@ -261,6 +275,20 @@ describe('Expiration', () => {
       })
 
       expect(res).toEqual('France')
+    })
+  })
+
+  describe('isForeignPaper', () => {
+    it('should return true if the paper is a foreign paper', () => {
+      const res = paperModel.isForeignPaper(fakeForeignNationalIdCardFile)
+
+      expect(res).toBe(true)
+    })
+
+    it('should return false if the paper is not a foreign paper', () => {
+      const res = paperModel.isForeignPaper(fakeNationalIdCardFile)
+
+      expect(res).toBe(false)
     })
   })
 })
