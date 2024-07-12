@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [48.8.0](https://github.com/cozy/cozy-client/compare/v48.7.0...v48.8.0) (2024-07-12)
+
+
+### Features
+
+* **models/paper:** Add isForeignPaper helper ([dc454e6](https://github.com/cozy/cozy-client/commit/dc454e62098ca88fe0e69736c68ee5aa1b5e05f1))
+
+
+
+
+
 # [48.7.0](https://github.com/cozy/cozy-client/compare/v48.6.0...v48.7.0) (2024-07-10)
 
 
