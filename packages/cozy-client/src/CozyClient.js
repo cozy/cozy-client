@@ -1087,7 +1087,7 @@ client.query(Q('io.cozy.bills'))`)
   async requestQuery(definition) {
     const mainResponse = await this.chain.request(definition)
 
-    this.persistVirtualDocuments(mainResponse.data)
+    this.persistVirtualDocuments(definition, mainResponse.data)
 
     if (!definition.includes) {
       return mainResponse
@@ -1106,7 +1106,21 @@ client.query(Q('io.cozy.bills'))`)
    * @param {CozyClientDocument | Array<CozyClientDocument>} data - Document or array of documents to be saved
    * @returns {Promise<void>}
    */
-  async persistVirtualDocuments(data) {
+  async persistVirtualDocuments(definition, data) {
+    if (definition.doctype === 'io.cozy.apps_registry') {
+      // io.cozy.apps_registry has a dedicated `maintenance` endpoint on cozy-stack that
+      // returns data different than the one stored in database
+      // As we want to have transparent queries, whether it uses the stack API or Pouch,
+      // we store the full response into a single doc, with a `maintenance` _id
+      // and a special `cozyPouchData` attribute, to highlight this special case
+      return await this.persistVirtualDocument({
+        _type: 'io.cozy.apps_registry',
+        _id: 'maintenance',
+        // @ts-ignore
+        cozyPouchData: data
+      })
+    }
+
     if (!Array.isArray(data)) {
       await this.persistVirtualDocument(data)
     } else {
