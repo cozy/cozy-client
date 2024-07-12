@@ -47,7 +47,7 @@ export class PouchLocalStorage {
    * @returns {Promise<string>} The last replicated docid
    */
   async getLastReplicatedDocID(doctype) {
-    const docids = await this.getAllLastSequences()
+    const docids = await this.getAllLastReplicatedDocID()
     return docids[doctype]
   }
 
