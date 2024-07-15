@@ -506,15 +506,14 @@ class PouchLink extends CozyLink {
   async ensureIndex(doctype, options) {
     let { indexedFields, partialFilter } = options
 
-    let fields = indexedFields
     if (!indexedFields) {
-      fields = getIndexFields(options)
+      indexedFields = getIndexFields(options)
     }
     const partialFilterFields = partialFilter
       ? getIndexFields({ selector: {}, partialFilter })
       : null
 
-    const indexName = getIndexNameFromFields(fields, {
+    const indexName = getIndexNameFromFields(indexedFields, {
       partialFilterFields
     })
 
