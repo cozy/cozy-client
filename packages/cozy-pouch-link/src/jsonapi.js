@@ -1,4 +1,6 @@
-export const normalizeDoc = (doc, doctype) => {
+import { generateWebLink } from 'cozy-client'
+
+export const normalizeDoc = (doc, doctype, client) => {
   const id = doc._id || doc.id
 
   const { relationships, referenced_by } = doc
@@ -22,12 +24,36 @@ export const normalizeDoc = (doc, doctype) => {
   if (normalizedDoc.rev) {
     delete normalizedDoc.rev
   }
+
+  normalizeLinks(normalizedDoc, doctype, client)
+
   return normalizedDoc
+}
+
+const normalizeLinks = (docRef, doctype, client) => {
+  if (doctype !== 'io.cozy.apps') {
+    return
+  }
+
+  const webLink = generateWebLink({
+    cozyUrl: client.getStackClient().uri,
+    slug: docRef.slug,
+    subDomainType: client.capabilities.flat_subdomains ? 'flat' : 'nested',
+    pathname: '',
+    hash: '',
+    searchParams: []
+  })
+
+  docRef.links = {
+    self: `/apps/${docRef.slug}`,
+    related: webLink,
+    icon: `/apps/${docRef.slug}/icon/${docRef.version}`
+  }
 }
 
 const filterDeletedDocumentsFromRows = doc => !!doc
 
-export const fromPouchResult = (res, withRows, doctype) => {
+export const fromPouchResult = (res, withRows, doctype, client) => {
   // Sometimes, queries are transformed by Collections and they call a dedicated
   // cozy-stack route. When this is the case, we want to be able to replicate the same
   // query from cozy-pouch-link. It is not possible as-is because the received data
@@ -49,7 +75,7 @@ export const fromPouchResult = (res, withRows, doctype) => {
     const offset = res.offset || 0
 
     return {
-      data: docs.map(doc => normalizeDoc(doc, doctype)),
+      data: docs.map(doc => normalizeDoc(doc, doctype, client)),
       meta: { count: docs.length },
       skip: offset,
       next: offset + docs.length < res.total_rows || docs.length >= res.limit
@@ -57,8 +83,8 @@ export const fromPouchResult = (res, withRows, doctype) => {
   } else {
     return {
       data: Array.isArray(res)
-        ? res.map(doc => normalizeDoc(doc, doctype))
-        : normalizeDoc(res, doctype)
+        ? res.map(doc => normalizeDoc(doc, doctype, client))
+        : normalizeDoc(res, doctype, client)
     }
   }
 }
