@@ -28,17 +28,21 @@ const DELETED_DOC_FIXTURE = {
 
 describe('doc normalization', () => {
   it('keeps the highest between rev and _rev and removes the rev attribute', () => {
-    const normalized = normalizeDoc({
-      _id: 1234,
-      _rev: '3-deadbeef',
-      rev: '4-cffee',
-      firstName: 'Bobba',
-      lastName: 'Fett'
-    })
+    const normalized = normalizeDoc(
+      {
+        _id: 1234,
+        _rev: '3-deadbeef',
+        rev: '4-cffee',
+        firstName: 'Bobba',
+        lastName: 'Fett'
+      },
+      'io.cozy.contacts'
+    )
     expect(normalized).toEqual({
       _id: 1234,
       id: 1234,
       _rev: '4-cffee',
+      _type: 'io.cozy.contacts',
       firstName: 'Bobba',
       lastName: 'Fett'
     })
