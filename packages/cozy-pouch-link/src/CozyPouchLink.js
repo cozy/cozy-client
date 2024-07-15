@@ -54,8 +54,8 @@ export const isExpiredTokenError = pouchError => {
   return expiredTokenError.test(pouchError.error)
 }
 
-const normalizeAll = (docs, doctype) => {
-  return docs.map(doc => jsonapi.normalizeDoc(doc, doctype))
+const normalizeAll = client => (docs, doctype) => {
+  return docs.map(doc => jsonapi.normalizeDoc(doc, doctype, client))
 }
 
 /**
@@ -239,7 +239,7 @@ class PouchLink extends CozyLink {
    * Emits an event (pouchlink:sync:end) when the sync (all doctypes) is done
    */
   handleOnSync(doctypeUpdates) {
-    const normalizedData = mapValues(doctypeUpdates, normalizeAll)
+    const normalizedData = mapValues(doctypeUpdates, normalizeAll(this.client))
     if (this.client) {
       this.client.setData(normalizedData)
     }
@@ -590,7 +590,7 @@ class PouchLink extends CozyLink {
       res.limit = limit
       withRows = true
     }
-    return jsonapi.fromPouchResult(res, withRows, doctype)
+    return jsonapi.fromPouchResult(res, withRows, doctype, this.client)
   }
 
   async executeMutation(mutation, result, forward) {
@@ -618,7 +618,8 @@ class PouchLink extends CozyLink {
     return jsonapi.fromPouchResult(
       pouchRes,
       false,
-      getDoctypeFromOperation(mutation)
+      getDoctypeFromOperation(mutation),
+      this.client
     )
   }
 
