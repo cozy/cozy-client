@@ -61,7 +61,7 @@ const normalizeAll = (docs, doctype) => {
 /**
  * @typedef {import('cozy-client/src/types').CozyClientDocument} CozyClientDocument
  *
- * @typedef {"idle"|"replicating"} SyncStatus
+ * @typedef {"idle"|"replicating"} ReplicationStatus
  */
 
 /**
@@ -97,7 +97,7 @@ class PouchLink extends CozyLink {
       options.platform?.storage || platformWeb.storage
     )
 
-    /** @type {Record<string, SyncStatus>} - Stores replication states per doctype */
+    /** @type {Record<string, ReplicationStatus>} - Stores replication states per doctype */
     this.replicationStatus = this.replicationStatus || {}
   }
 
@@ -352,7 +352,7 @@ class PouchLink extends CozyLink {
       return forward(operation)
     }
 
-    if (!this.pouches.isSynced(doctype)) {
+    if (this.pouches.getSyncStatus(doctype) === 'not_synced') {
       if (process.env.NODE_ENV !== 'production') {
         logger.info(
           `Tried to access local ${doctype} but Cozy Pouch is not synced yet. Forwarding the operation to next link`
