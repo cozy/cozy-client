@@ -26,6 +26,7 @@ const humanTimeDelta = timeMs => {
   str = `${cur}${lastUnit[0]}` + str
   return str
 }
+/** @type {[string, number][]} */
 const TIME_UNITS = [['ms', 1000], ['s', 60], ['m', 60], ['h', 24]]
 
 /**
@@ -37,9 +38,10 @@ const TIME_UNITS = [['ms', 1000], ['s', 60], ['m', 60], ['h', 24]]
  * @param {string} replicationOptions.strategy The direction of the replication. Can be "fromRemote",  "toRemote" or "sync"
  * @param {boolean} replicationOptions.initialReplication Whether or not this is an initial replication
  * @param {string} replicationOptions.doctype The doctype to replicate
+ * @param {import('cozy-client/types/types').Query[]} replicationOptions.warmupQueries The queries to warmup
  * @param {Function} getReplicationURL A function that should return the remote replication URL
  *
- * @returns {Promise} A cancelable promise that resolves at the end of the replication
+ * @returns {import('./types').CancelablePromise} A cancelable promise that resolves at the end of the replication
  */
 export const startReplication = (
   pouch,
@@ -49,6 +51,7 @@ export const startReplication = (
   let replication
   let docs = {}
   const start = new Date()
+  /** @type {import('./types').CancelablePromise} */
   const promise = new Promise((resolve, reject) => {
     const url = getReplicationURL()
     const {
@@ -73,7 +76,7 @@ export const startReplication = (
         if (process.env.NODE_ENV !== 'production') {
           logger.info(
             `PouchManager: initial replication with all_docs for ${url} took ${humanTimeDelta(
-              end - start
+              end.getTime() - start.getTime()
             )}`
           )
         }
@@ -108,7 +111,7 @@ export const startReplication = (
       if (process.env.NODE_ENV !== 'production') {
         logger.info(
           `PouchManager: replication for ${url} took ${humanTimeDelta(
-            end - start
+            end.getTime() - start.getTime()
           )}`
         )
       }
@@ -141,7 +144,7 @@ const filterDocs = docs => {
  * @param {object} db - Pouch instance
  * @param {string} baseUrl - The remote instance
  * @param {string} doctype - The doctype to replicate
- * @returns {Array} The retrieved documents
+ * @returns {Promise<Array>} The retrieved documents
  */
 export const replicateAllDocs = async (db, baseUrl, doctype) => {
   const remoteUrlAllDocs = new URL(`${baseUrl}/_all_docs`)
