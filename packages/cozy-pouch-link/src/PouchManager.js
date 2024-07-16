@@ -6,7 +6,6 @@ import map from 'lodash/map'
 import zip from 'lodash/zip'
 import startsWith from 'lodash/startsWith'
 import { isMobileApp } from 'cozy-device-helper'
-import { QueryDefinition } from 'cozy-client'
 
 import Loop from './loop'
 import logger from './logger'
@@ -18,7 +17,7 @@ import { getDatabaseName } from './utils'
 const DEFAULT_DELAY = 30 * 1000
 
 /**
- * @param {QueryDefinition} query The query definition whose name we're getting
+ * @param {import('cozy-client/types/types').Query} query The query definition whose name we're getting
  *
  * @returns {string} alias
  */
@@ -115,7 +114,11 @@ class PouchManager {
     })
   }
 
-  /** Starts periodic syncing of the pouches */
+  /**
+   * Starts periodic syncing of the pouches
+   *
+   * @returns {Promise<Loop | void>}
+   */
   async startReplicationLoop() {
     await this.ensureDatabasesExist()
 
@@ -167,7 +170,11 @@ class PouchManager {
 
     logger.info('PouchManager: Starting replication iteration')
 
-    // Creating each replication
+    /**
+     * Creating each replication
+     *
+     * @type {import('./types').CancelablePromises}
+     */
     this.replications = map(this.pouches, async (pouch, doctype) => {
       logger.info('PouchManager: Starting replication for ' + doctype)
 
@@ -223,6 +230,7 @@ class PouchManager {
     const doctypes = Object.keys(this.pouches)
     const promises = Object.values(this.replications)
     try {
+      /** @type {import('./types').CancelablePromises} */
       const res = await Promise.all(promises)
 
       if (process.env.NODE_ENV !== 'production') {
