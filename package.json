@@ -44,7 +44,8 @@
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "clean": "rm -rf packages/*/dist",
     "cleanTypes": "rm -rf packages/*/types",
-    "docs": "node scripts/docs.js && yarn docs:cozy-client && yarn docs:cozy-pouch-link",
+    "cleanDocsApi": "rm -rf docs/api",
+    "docs": "yarn cleanDocsApi && node scripts/docs.js && yarn docs:cozy-client && yarn docs:cozy-pouch-link",
     "docs:cozy-client": "yarn typedoc --readme none --hideInPageTOC --excludeExternals --excludePrivate --tsconfig packages/cozy-client/tsconfig.json packages/cozy-client/src/index.js --out docs/api/cozy-client --gitRevision master && yarn remark -o -u ./scripts/strip-typedoc-headings.mjs docs/api/cozy-client/",
     "docs:cozy-pouch-link": "yarn typedoc --readme none --hideInPageTOC --excludeExternals --excludePrivate --tsconfig packages/cozy-pouch-link/tsconfig.json packages/cozy-pouch-link/src/index.js --out docs/api/cozy-pouch-link --gitRevision master && yarn remark -o -u ./scripts/strip-typedoc-headings.mjs docs/api/cozy-pouch-link/",
     "types": "yarn cleanTypes && cd packages/cozy-client && yarn typecheck && cd ../cozy-pouch-link && yarn typecheck"
