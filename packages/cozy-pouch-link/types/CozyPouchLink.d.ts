@@ -1,8 +1,11 @@
 export function getReplicationURL(uri: any, token: any, doctype: any): string;
 export function isExpiredTokenError(pouchError: any): boolean;
 export default PouchLink;
+export type CozyClientDocument = any;
 export type SyncStatus = "idle" | "replicating";
 /**
+ * @typedef {import('cozy-client/src/types').CozyClientDocument} CozyClientDocument
+ *
  * @typedef {"idle"|"replicating"} SyncStatus
  */
 /**
@@ -118,6 +121,16 @@ declare class PouchLink extends CozyLink {
     getPouch(doctype: any): any;
     supportsOperation(operation: any): boolean;
     /**
+     * Retrieve the existing document from Pouch
+     *
+     * @private
+     * @param {*} id - ID of the document to retrieve
+     * @param {*} type - Doctype of the document to retrieve
+     * @param {*} throwIfNotFound - If true the method will throw when the document is not found. Otherwise it will return null
+     * @returns {Promise<CozyClientDocument | null>}
+     */
+    private getExistingDocument;
+    /**
      *
      * Check if there is warmup queries for this doctype
      * and return if those queries are already warmed up or not
@@ -142,16 +155,16 @@ declare class PouchLink extends CozyLink {
         partialFilter: any;
     }): Promise<{
         data: any;
+        meta?: undefined;
+        skip?: undefined;
+        next?: undefined;
+    } | {
+        data: any;
         meta: {
             count: any;
         };
         skip: any;
         next: boolean;
-    } | {
-        data: any;
-        meta?: undefined;
-        skip?: undefined;
-        next?: undefined;
     }>;
     executeMutation(mutation: any, result: any, forward: any): Promise<any>;
     createDocument(mutation: any): Promise<any>;
