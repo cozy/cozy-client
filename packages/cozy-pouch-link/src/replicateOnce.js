@@ -36,7 +36,8 @@ export const replicateOnce = async pouchManager => {
 
       const getReplicationURL = () => pouchManager.getReplicationURL(doctype)
 
-      const initialReplication = !pouchManager.isSynced(doctype)
+      const initialReplication =
+        pouchManager.getSyncStatus(doctype) !== 'synced'
       const replicationFilter = doc => {
         return !startsWith(doc._id, '_design')
       }
@@ -104,7 +105,7 @@ export const replicateOnce = async pouchManager => {
       const failedZippedDoctypes = zippedDoctypes
         .filter(d => d[1].status === 'rejected')
         .map(d => {
-          return [d[0], d[1].value]
+          return [d[0], d[1].reason]
         })
 
       const blockingErrors = res.filter(
@@ -113,6 +114,16 @@ export const replicateOnce = async pouchManager => {
           !isDatabaseNotFoundError(r.reason) &&
           !isDatabaseUnradableError(r.reason)
       )
+
+      const unblockingErrors = failedZippedDoctypes.filter(
+        r => isDatabaseNotFoundError(r[1]) || isDatabaseUnradableError(r[1])
+      )
+
+      for (const unblockingError of unblockingErrors) {
+        const doctype = unblockingError[0]
+        // @ts-ignore
+        await pouchManager.updateSyncInfo(doctype, 'not_complete')
+      }
 
       if (blockingErrors.length > 0) {
         const errors = blockingErrors.map(err => err.reason)

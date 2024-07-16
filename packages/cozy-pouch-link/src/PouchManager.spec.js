@@ -320,13 +320,16 @@ describe('PouchManager', () => {
       await manager.updateSyncInfo('io.cozy.todos')
       expect(localStorage.__STORE__[LOCALSTORAGE_SYNCED_KEY]).toEqual(
         JSON.stringify({
-          'io.cozy.todos': { date: '2021-08-01T00:00:00.000Z' }
+          'io.cozy.todos': {
+            date: '2021-08-01T00:00:00.000Z',
+            status: 'synced'
+          }
         })
       )
     })
   })
 
-  describe('isSynced', () => {
+  describe('getSyncStatus', () => {
     let manager
 
     beforeEach(async () => {
@@ -334,13 +337,18 @@ describe('PouchManager', () => {
       await manager.init()
     })
 
-    it('should return true if the doctype is synced', async () => {
+    it(`should return 'synced' if the doctype is synced`, async () => {
       await manager.updateSyncInfo('io.cozy.todos')
-      expect(manager.isSynced('io.cozy.todos')).toBe(true)
+      expect(manager.getSyncStatus('io.cozy.todos')).toBe('synced')
     })
 
-    it('should return false if the doctype is not synced', () => {
-      expect(manager.isSynced('io.cozy.todos')).toBe(false)
+    it(`should return 'not_synced' if the doctype is not synced`, () => {
+      expect(manager.getSyncStatus('io.cozy.todos')).toBe('not_synced')
+    })
+
+    it('should return status if updateSyncInfo was called with custom status', async () => {
+      await manager.updateSyncInfo('io.cozy.todos', 'not_complete')
+      expect(manager.getSyncStatus('io.cozy.todos')).toBe('not_complete')
     })
   })
 

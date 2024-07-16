@@ -11,8 +11,14 @@
  * @typedef {CancelablePromise[] & Cancelable} CancelablePromises
  */
 
-/** @typedef {object} SyncInfo
- * @property {string} Date
+/**
+ * @typedef {"synced"|"not_synced"|"not_complete"} SyncStatus
+ */
+
+/**
+ * @typedef {object} SyncInfo
+ * @property {string} date - The date of the last synchronization
+ * @property {SyncStatus} status - The current synchronization status
  */
 
 /**
