@@ -3,7 +3,9 @@
   "version": "48.25.0",
   "license": "MIT",
   "main": "dist/index.js",
+  "types": "types/index.d.ts",
   "files": [
+    "types",
     "dist"
   ],
   "repository": {
@@ -23,7 +25,8 @@
     "parcel": "1.12.4",
     "pouchdb-adapter-memory": "7.2.2",
     "react": "16.14.0",
-    "react-dom": "16.14.0"
+    "react-dom": "16.14.0",
+    "typescript": "4.1.5"
   },
   "peerDependencies": {
     "@cozy/minilog": "1.0.0",
@@ -32,7 +35,8 @@
   "scripts": {
     "build": "../../bin/build",
     "watch": "yarn run build --watch",
-    "prepublishOnly": "yarn run build"
+    "prepublishOnly": "yarn run build",
+    "typecheck": "tsc -p tsconfig.json"
   },
   "sideEffects": false
 }
