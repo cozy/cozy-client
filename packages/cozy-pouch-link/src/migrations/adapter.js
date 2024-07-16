@@ -13,7 +13,7 @@ const getNewIndexedDBDatabaseName = dbName => {
  * @property {string} [toAdapter] - The new adapter type, e.g. 'indexeddb'
  *
  * @param {MigrationParams} params - The migration params
- * @returns {object} - The migrated pouch
+ * @returns {Promise<object>} - The migrated pouch
  */
 export const migratePouch = async ({ dbName, fromAdapter, toAdapter }) => {
   let oldPouch = new PouchDB(dbName, {
