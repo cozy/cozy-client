@@ -47,6 +47,7 @@
     "docs": "node scripts/docs.js && yarn docs:cozy-client",
     "docs:cozy-client": "yarn typedoc --readme none --hideInPageTOC --excludeExternals --excludePrivate --tsconfig packages/cozy-client/tsconfig.json packages/cozy-client/src/index.js --out docs/api/cozy-client --gitRevision master && yarn remark -o -u ./scripts/strip-typedoc-headings.mjs docs/api/cozy-client/",
     "types": "yarn cleanTypes && cd packages/cozy-client && yarn typecheck"
+    "types": "yarn cleanTypes && cd packages/cozy-client && yarn typecheck && cd ../cozy-pouch-link && yarn typecheck"
   },
   "commitlint": {
     "extends": [

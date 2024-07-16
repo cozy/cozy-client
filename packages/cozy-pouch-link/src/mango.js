@@ -10,6 +10,8 @@ const getSortKeys = sort => {
     return flatten(sort.map(x => Object.keys(x)))
   } else if (isObject(sort)) {
     return Object.keys(sort)
+  } else {
+    throw new Error('Get sort key can only be called on Arrays or Objects')
   }
 }
 
