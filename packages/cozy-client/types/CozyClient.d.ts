@@ -1,4 +1,50 @@
 export default CozyClient;
+export type CozyClientDocument = {
+    /**
+     * - Id of the document
+     */
+    _id?: string;
+    /**
+     * - Id of the document
+     */
+    id?: string;
+    /**
+     * - Type of the document
+     */
+    _type?: string;
+    /**
+     * - Current revision of the document
+     */
+    _rev?: string;
+    /**
+     * - When the document has been deleted
+     */
+    _deleted?: boolean;
+    /**
+     * - Relationships of the document
+     */
+    relationships?: import("./types").ReferencedByRelationship;
+    /**
+     * - referenced by of another document
+     */
+    referenced_by?: import("./types").Reference[];
+    /**
+     * - Cozy Metadata
+     */
+    cozyMetadata?: import("./types").CozyMetadata;
+    /**
+     * - Pouch Metadata
+     */
+    meta?: import("./types").CozyClientDocumentMeta;
+    /**
+     * - When true the document should NOT be replicated to the remote database
+     */
+    cozyLocalOnly?: boolean;
+    /**
+     * - When true the document has been retrieved from a local PouchDB
+     */
+    cozyFromPouch?: boolean;
+};
 export type ClientOptions = {
     client?: object;
     link?: object;
@@ -36,6 +82,8 @@ export type ClientOptions = {
     store?: boolean;
 };
 /**
+ * @typedef {import("./types").CozyClientDocument} CozyClientDocument
+ *
  * @typedef {object} ClientOptions
  * @property {object} [client]
  * @property {object} [link]
@@ -458,6 +506,23 @@ declare class CozyClient {
      * @returns {Promise<import("./types").ClientResponse>}
      */
     private requestQuery;
+    /**
+     * Save the document or array of documents into the persisted storage (if any)
+     *
+     * @private
+     * @param {CozyClientDocument | Array<CozyClientDocument>} data - Document or array of documents to be saved
+     * @returns {Promise<void>}
+     */
+    private persistVirtualDocuments;
+    /**
+     * Save the document or array of documents into the persisted storage (if any)
+     *
+     * @private
+     * @param {CozyClientDocument} document - Document to be saved
+     * @param {boolean} enforce - When true, save the document even if `meta.rev` or `_rev` exist
+     * @returns {Promise<void>}
+     */
+    private persistVirtualDocument;
     /**
      * Fetch relationships for a response (can be several docs).
      * Fills the `relationships` attribute of each documents.
