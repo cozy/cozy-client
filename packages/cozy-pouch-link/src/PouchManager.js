@@ -54,6 +54,7 @@ class PouchManager {
         )
       ])
     )
+    /** @type {Record<string, import('./types').SyncInfo>} - Stores synchronization info per doctype */
     this.syncedDoctypes = await this.storage.getPersistedSyncedDoctypes()
     this.warmedUpQueries = await this.storage.getPersistedWarmedUpQueries()
     this.getReplicationURL = this.options.getReplicationURL
@@ -217,18 +218,36 @@ class PouchManager {
     return this.pouches[doctype]
   }
 
-  async updateSyncInfo(doctype) {
-    this.syncedDoctypes[doctype] = { date: new Date().toISOString() }
+  /**
+   * Update the Sync info for the specifed doctype
+   *
+   * @param {string} doctype - The doctype to update
+   * @param {import('./types').SyncStatus} status - The new Sync status for the doctype
+   */
+  async updateSyncInfo(doctype, status = 'synced') {
+    this.syncedDoctypes[doctype] = { date: new Date().toISOString(), status }
     await this.storage.persistSyncedDoctypes(this.syncedDoctypes)
   }
 
+  /**
+   * Get the Sync info for the specified doctype
+   *
+   * @param {string} doctype - The doctype to check
+   * @returns {import('./types').SyncInfo}
+   */
   getSyncInfo(doctype) {
     return this.syncedDoctypes && this.syncedDoctypes[doctype]
   }
 
-  isSynced(doctype) {
+  /**
+   * Get the Sync status for the specified doctype
+   *
+   * @param {string} doctype - The doctype to check
+   * @returns {import('./types').SyncStatus}
+   */
+  getSyncStatus(doctype) {
     const info = this.getSyncInfo(doctype)
-    return info ? !!info.date : false
+    return info?.status || 'not_synced'
   }
 
   async clearSyncedDoctypes() {
