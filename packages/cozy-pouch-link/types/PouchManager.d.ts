@@ -8,6 +8,12 @@ export default PouchManager;
 declare class PouchManager {
     constructor(doctypes: any, options: any);
     options: any;
+    doctypes: any;
+    storage: PouchLocalStorage;
+    PouchDB: any;
+    isOnline: any;
+    events: any;
+    init(): Promise<void>;
     pouches: import("lodash").Dictionary<any>;
     syncedDoctypes: any;
     warmedUpQueries: any;
@@ -52,13 +58,14 @@ declare class PouchManager {
     cancelCurrentReplications(): void;
     waitForCurrentReplications(): Promise<void> | Promise<any[]>;
     getPouch(doctype: any): any;
-    updateSyncInfo(doctype: any): void;
+    updateSyncInfo(doctype: any): Promise<void>;
     getSyncInfo(doctype: any): any;
     isSynced(doctype: any): boolean;
-    clearSyncedDoctypes(): void;
+    clearSyncedDoctypes(): Promise<void>;
     warmupQueries(doctype: any, queries: any): Promise<void>;
     checkToWarmupDoctype(doctype: any, replicationOptions: any): void;
-    areQueriesWarmedUp(doctype: any, queries: any): any;
-    clearWarmedUpQueries(): void;
+    areQueriesWarmedUp(doctype: any, queries: any): Promise<any>;
+    clearWarmedUpQueries(): Promise<void>;
 }
+import { PouchLocalStorage } from "./localStorage";
 import Loop from "./loop";
