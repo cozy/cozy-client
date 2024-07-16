@@ -695,6 +695,15 @@ export type CozyMetadata = {
     favorite?: boolean;
 };
 /**
+ * - Meta object as specified by JSON-API (https://jsonapi.org/format/#document-meta)
+ */
+export type CozyClientDocumentMeta = {
+    /**
+     * - Current revision of the document
+     */
+    rev?: string;
+};
+/**
  * - A document
  */
 export type CozyClientDocument = {
@@ -730,6 +739,18 @@ export type CozyClientDocument = {
      * - Cozy Metadata
      */
     cozyMetadata?: CozyMetadata;
+    /**
+     * - Pouch Metadata
+     */
+    meta?: CozyClientDocumentMeta;
+    /**
+     * - When true the document should NOT be replicated to the remote database
+     */
+    cozyLocalOnly?: boolean;
+    /**
+     * - When true the document has been retrieved from a local PouchDB
+     */
+    cozyFromPouch?: boolean;
 };
 /**
  * - A io.cozy.files document's metadata
