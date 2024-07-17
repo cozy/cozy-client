@@ -21,8 +21,7 @@ fi
 set -e
 
 set +e # The following command relies on exit 1
-cd packages/cozy-client
-yarn typecheck
+yarn types
 [ $? -eq 0 ] || exit 1
 git diff --exit-code
 types_status=$?
