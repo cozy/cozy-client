@@ -9,12 +9,15 @@ export default class StackLink extends CozyLink {
      * @param {object} [options] - Options
      * @param  {object} [options.stackClient] - A StackClient
      * @param  {object} [options.client] - A StackClient (deprecated)
+     * @param {import('cozy-pouch-link/dist/types').LinkPlatform} [options.platform] Platform specific adapters and methods
      */
-    constructor({ client, stackClient }?: {
+    constructor({ client, stackClient, platform }?: {
         stackClient: object;
         client: object;
+        platform: import('cozy-pouch-link/dist/types').LinkPlatform;
     });
     stackClient: any;
+    isOnline: any;
     registerClient(client: any): void;
     reset(): void;
     /**
