@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [48.10.0](https://github.com/cozy/cozy-client/compare/v48.9.0...v48.10.0) (2024-07-18)
+
+
+### Features
+
+* Improve type of NextcloudFile ([077e6f8](https://github.com/cozy/cozy-client/commit/077e6f81faee198eebb8ac1a427840c075c5a9d0))
+
+
+
+
+
 # [48.9.0](https://github.com/cozy/cozy-client/compare/v48.8.0...v48.9.0) (2024-07-18)
 
 **Note:** Version bump only for package cozy-client
