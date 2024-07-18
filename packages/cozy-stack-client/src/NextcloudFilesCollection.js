@@ -188,6 +188,25 @@ class NextcloudFilesCollection extends DocumentCollection {
     }
     throw new FetchError(resp, resp.json())
   }
+
+  /**
+   * Empties the trash for the specified source account.
+   *
+   * @param {string} sourceAccount - The source account to empty the trash for.
+   * @returns {Promise<Response>} - A promise that resolves to the response from the server.
+   * @throws {FetchError} - If the server returns an error response.
+   */
+  async emptyTrash(sourceAccount) {
+    const resp = await this.stackClient.fetch(
+      'DELETE',
+      `/remote/nextcloud/${sourceAccount}/trash`
+    )
+    if (resp.status === 204) {
+      return resp
+    }
+    throw new FetchError(resp, resp.json())
+  }
+
 }
 
 export { NextcloudFilesCollection, NEXTCLOUD_FILES_DOCTYPE }
