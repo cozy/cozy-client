@@ -7,11 +7,17 @@ const NEXTCLOUD_FILES_DOCTYPE = 'io.cozy.remote.nextcloud.files'
 const normalizeDoc = DocumentCollection.normalizeDoctypeJsonApi(
   NEXTCLOUD_FILES_DOCTYPE
 )
-const normalizeNextcloudFile = (sourceAccount, parentPath) => file => {
+const normalizeNextcloudFile = (
+  sourceAccount,
+  parentPath,
+  { fromTrash = false } = {}
+) => file => {
   const extendedAttributes = {
     ...file.attributes,
     parentPath,
-    path: joinPath(parentPath, file.attributes.name),
+    path: fromTrash
+      ? file.attributes.path
+      : joinPath(parentPath, file.attributes.name),
     cozyMetadata: {
       ...file.attributes.cozyMetadata,
       sourceAccount
@@ -42,7 +48,8 @@ class NextcloudFilesCollection extends DocumentCollection {
         data: resp.data.map(
           normalizeNextcloudFile(
             selector['cozyMetadata.sourceAccount'],
-            selector.parentPath
+            selector.parentPath,
+            { fromTrash: selector.trashed }
           )
         )
       }
