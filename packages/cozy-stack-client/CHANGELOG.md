@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [48.9.0](https://github.com/cozy/cozy-client/compare/v48.8.0...v48.9.0) (2024-07-18)
+
+
+### Features
+
+* **nextcloud:** Access content inside nextcloud trash ([c63112f](https://github.com/cozy/cozy-client/commit/c63112f7a6e09a12d5b44ed9edfbdf9213968440))
+* **nextcloud:** Add deletePermanently method ([98f9c33](https://github.com/cozy/cozy-client/commit/98f9c33fb29285a60bd535ae401266030d8c6b8b))
+* **nextcloud:** Add emptyTrash method ([83da9e3](https://github.com/cozy/cozy-client/commit/83da9e317eda9b0bbea9a339c68453fa17cc15da))
+* **nextcloud:** Add restore method ([1468f19](https://github.com/cozy/cozy-client/commit/1468f197a1fc4b3753a9f3e58b04fc50edef624c))
+
+
+
+
+
 # [48.6.0](https://github.com/cozy/cozy-client/compare/v48.5.0...v48.6.0) (2024-07-08)
 
 
