@@ -168,6 +168,26 @@ class NextcloudFilesCollection extends DocumentCollection {
     }
     throw new FetchError(resp, resp.json())
   }
+
+  /**
+   * Restores a file from the Nextcloud server.
+   *
+   * @param {Object} file - The file to restore.
+   * @returns {Promise<Response>} - A promise that resolves to the response from the server.
+   * @throws {FetchError} - If the server response is not successful.
+   */
+  async restore(file) {
+    const resp = await this.stackClient.fetch(
+      'POST',
+      `/remote/nextcloud/${file.cozyMetadata.sourceAccount}/restore${encodePath(
+        file.path
+      )}`
+    )
+    if (resp.status === 204) {
+      return resp
+    }
+    throw new FetchError(resp, resp.json())
+  }
 }
 
 export { NextcloudFilesCollection, NEXTCLOUD_FILES_DOCTYPE }
