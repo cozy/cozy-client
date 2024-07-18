@@ -207,6 +207,25 @@ class NextcloudFilesCollection extends DocumentCollection {
     throw new FetchError(resp, resp.json())
   }
 
+  /**
+   * Deletes a file permanently from the Nextcloud server.
+   *
+   * @param {Object} file - The file object to be deleted.
+   * @returns {Promise<Response>} - A promise that resolves to the response from the server.
+   * @throws {FetchError} - If the server returns an error response.
+   */
+  async deletePermanently(file) {
+    const resp = await this.stackClient.fetch(
+      'DELETE',
+      `/remote/nextcloud/${file.cozyMetadata.sourceAccount}${encodePath(
+        file.path
+      )}`
+    )
+    if (resp.status === 204) {
+      return resp
+    }
+    throw new FetchError(resp, resp.json())
+  }
 }
 
 export { NextcloudFilesCollection, NEXTCLOUD_FILES_DOCTYPE }
