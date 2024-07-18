@@ -482,6 +482,7 @@ import { QueryDefinition } from './queries/dsl'
  * @property {'file'|'directory'} type - Type of the file
  * @property {object} cozyMetadata - Mime of the file
  * @property {string} cozyMetadata.sourceAccount - Id of the io.cozy.account associated to the Nextcloud
+ * @property {{self: string}} links - Links to the file into nextcloud server
  */
 
 /**

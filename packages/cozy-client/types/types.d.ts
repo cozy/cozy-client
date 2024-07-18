@@ -912,6 +912,12 @@ export type NextcloudFile = {
     cozyMetadata: {
         sourceAccount: string;
     };
+    /**
+     * - Links to the file into nextcloud server
+     */
+    links: {
+        self: string;
+    };
 };
 /**
  * - An io.cozy.oauth.clients document
