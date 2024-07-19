@@ -479,6 +479,7 @@ import { QueryDefinition } from './queries/dsl'
  * @property {string} name - Name of the file
  * @property {string} path - Path to the file
  * @property {string} parentPath - Path to the folder containing the file
+ * @property {string} [restore_path] - Old path when the file is in the trash
  * @property {'file'|'directory'} type - Type of the file
  * @property {object} cozyMetadata - Mime of the file
  * @property {string} cozyMetadata.sourceAccount - Id of the io.cozy.account associated to the Nextcloud

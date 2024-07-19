@@ -903,6 +903,10 @@ export type NextcloudFile = {
      */
     parentPath: string;
     /**
+     * - Old path when the file is in the trash
+     */
+    restore_path?: string;
+    /**
      * - Type of the file
      */
     type: 'file' | 'directory';
