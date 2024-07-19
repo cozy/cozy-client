@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [48.11.0](https://github.com/cozy/cozy-client/compare/v48.10.0...v48.11.0) (2024-07-19)
+
+
+### Features
+
+* Add restore_path to NextcloudFile type ([3d2f7f9](https://github.com/cozy/cozy-client/commit/3d2f7f9488d549e460fe54e031482947d61b76b4))
+
+
+
+
+
 # [48.10.0](https://github.com/cozy/cozy-client/compare/v48.9.0...v48.10.0) (2024-07-18)
 
 
