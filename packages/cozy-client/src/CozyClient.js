@@ -1107,24 +1107,31 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {Promise<void>}
    */
   async persistVirtualDocuments(definition, data) {
+    const enforceList = ['io.cozy.files.shortcuts']
+
+    const enforce = enforceList.includes(definition.doctype)
+
     if (definition.doctype === 'io.cozy.apps_registry') {
       // io.cozy.apps_registry has a dedicated endpoint on cozy-stack that
       // returns data different than the one stored in database
       // We want to store the full answer data under the `maintenance` id
       // so we can query it from the Pouch the same way we query it from the stack
-      return await this.persistVirtualDocument({
-        _type: 'io.cozy.apps_registry',
-        _id: 'maintenance',
-        // @ts-ignore
-        cozyPouchData: data
-      })
+      return await this.persistVirtualDocument(
+        {
+          _type: 'io.cozy.apps_registry',
+          _id: 'maintenance',
+          // @ts-ignore
+          cozyPouchData: data
+        },
+        enforce
+      )
     }
 
     if (!Array.isArray(data)) {
-      await this.persistVirtualDocument(data)
+      await this.persistVirtualDocument(data, enforce)
     } else {
       for (const document of data) {
-        await this.persistVirtualDocument(document)
+        await this.persistVirtualDocument(document, enforce)
       }
     }
   }
@@ -1134,12 +1141,12 @@ client.query(Q('io.cozy.bills'))`)
    *
    * @private
    * @param {CozyClientDocument} document - Document to be saved
+   * @param {boolean} enforce - When true, save the document even if `meta.rev` exists
    * @returns {Promise<void>}
    */
-  async persistVirtualDocument(document) {
+  async persistVirtualDocument(document, enforce) {
     if (
-      document &&
-      !document.meta?.rev &&
+      ((document && !document.meta?.rev) || enforce) &&
       !document.cozyLocalOnly &&
       !document.cozyFromPouch
     ) {
