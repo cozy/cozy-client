@@ -1466,6 +1466,25 @@ describe('CozyClient', () => {
       expect(persistHandler).not.toHaveBeenCalled()
     })
 
+    it('should enforce persisting io.cozy.files.shortcuts as virtual documents even if meta.rev exists', async () => {
+      jest.spyOn(client, 'requestQuery')
+      requestHandler.mockResolvedValue({
+        data: [
+          {
+            _id: 'some_id',
+            meta: {
+              rev: 'SOME_REV'
+            }
+          }
+        ]
+      })
+      const shortcutsQuery = Q('io.cozy.files.shortcuts')
+
+      await client.query(shortcutsQuery, { as: 'allShortcuts' })
+
+      expect(persistHandler).toHaveBeenCalled()
+    })
+
     describe('relationship with query failure', () => {
       beforeEach(() => {
         jest.spyOn(HasManyFiles, 'query').mockImplementation(() => {
