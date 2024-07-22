@@ -30,6 +30,7 @@ import {
   receiveMutationError,
   getQueryFromState,
   getRawQueryFromState,
+  isQueryExisting,
   loadQuery,
   resetQuery
 } from './store'
@@ -51,6 +52,7 @@ const METADATA_VERSION = 1
 
 jest.mock('./store', () => ({
   ...jest.requireActual('./store'),
+  isQueryExisting: jest.fn().mockReturnValue(false),
   getQueryFromState: jest.fn().mockReturnValue({}),
   getRawQueryFromState: jest.fn().mockReturnValue({})
 }))
@@ -1878,15 +1880,16 @@ describe('CozyClient', () => {
     const fakeResponse = {
       data: [TODO_1, TODO_2, TODO_3]
     }
+    const queryId = 'allTodos'
 
     afterEach(() => {
       jest.restoreAllMocks()
     })
 
     it('should reset the query state and refetch it', async () => {
+      isQueryExisting.mockReturnValue(true)
       requestHandler.mockResolvedValue(fakeResponse)
       const queryDefinition = Q('io.cozy.todos')
-      const queryId = 'allTodos'
       getQueryFromState.mockReturnValue({
         definition: queryDefinition,
         id: queryId,
@@ -1902,6 +1905,12 @@ describe('CozyClient', () => {
       expect(lastDispatchCall[0]).toEqual(
         receiveQueryResult('allTodos', fakeResponse)
       )
+    })
+
+    it('should return null when the query is not found', async () => {
+      isQueryExisting.mockReturnValue(false)
+      const res = await client.resetQuery(queryId)
+      expect(res).toBe(null)
     })
   })
 })

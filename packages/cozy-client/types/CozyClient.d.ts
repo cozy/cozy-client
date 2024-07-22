@@ -748,9 +748,9 @@ declare class CozyClient {
      * This method will reset the query state to its initial state and refetch it.
      *
      * @param {string} queryId - Query id
-     * @returns {Promise<import("./types").QueryState>} - Query state
+     * @returns {Promise<import("./types").QueryState|null>} - Query state or null if the query does not exist
      */
-    resetQuery(queryId: string): Promise<import("./types").QueryState>;
+    resetQuery(queryId: string): Promise<import("./types").QueryState | null>;
 }
 declare namespace CozyClient {
     export const hooks: {};

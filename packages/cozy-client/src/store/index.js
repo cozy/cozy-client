@@ -115,6 +115,9 @@ export const getQueryFromState = (state, queryId) =>
 export const getRawQueryFromState = (state, queryId) =>
   getQueryFromSlice(getStateRoot(state).queries, queryId)
 
+export const isQueryExisting = (state, queryId) =>
+  getStateRoot(state).queries[queryId] !== undefined
+
 export {
   initQuery,
   loadQuery,
