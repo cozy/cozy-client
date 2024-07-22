@@ -50,6 +50,9 @@ export const normalizeDesignDoc = designDoc => {
 /**
  * Process a partial filter to generate a string key
  *
+ * /!\ Warning: this method is similar to cozy-pouch-link mango.makeKeyFromPartialFilter()
+ * If you edit this method, please check if the change is also needed in mango file
+ *
  * @param {object} condition - An object representing the partial filter or a sub-condition of the partial filter
  * @returns {string} - The string key of the processed partial filter
  */
@@ -83,6 +86,9 @@ export const makeKeyFromPartialFilter = condition => {
  *
  * It follows this naming convention:
  * `by_{indexed_field1}_and_{indexed_field2}_filter_({partial_filter.key1}_{partial_filter.value1})_and_({partial_filter.key2}_{partial_filter.value2})`
+ *
+ * /!\ Warning: this method is similar to cozy-pouch-link mango.getIndexNameFromFields()
+ * If you edit this method, please check if the change is also needed in mango file
  *
  * @param {Array<string>} fields - The indexed fields
  * @param {object} [partialFilter] - The partial filter
