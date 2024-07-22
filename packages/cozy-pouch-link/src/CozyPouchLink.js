@@ -509,13 +509,8 @@ class PouchLink extends CozyLink {
     if (!indexedFields) {
       indexedFields = getIndexFields(options)
     }
-    const partialFilterFields = partialFilter
-      ? getIndexFields({ selector: {}, partialFilter })
-      : null
 
-    const indexName = getIndexNameFromFields(indexedFields, {
-      partialFilterFields
-    })
+    const indexName = getIndexNameFromFields(indexedFields, partialFilter)
 
     const existingIndex = this.findExistingIndex(doctype, options, indexName)
     if (!existingIndex) {
