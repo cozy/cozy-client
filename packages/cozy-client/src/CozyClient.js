@@ -36,7 +36,8 @@ import {
   getRawQueryFromState,
   getCollectionFromState,
   getDocumentFromState,
-  resetState
+  resetState,
+  isQueryExisting
 } from './store'
 import fetchPolicies from './policies'
 import Schema from './Schema'
@@ -1792,10 +1793,13 @@ instantiation of the client.`
    * This method will reset the query state to its initial state and refetch it.
    *
    * @param {string} queryId - Query id
-   * @returns {Promise<import("./types").QueryState>} - Query state
+   * @returns {Promise<import("./types").QueryState|null>} - Query state or null if the query does not exist
    */
   async resetQuery(queryId) {
     try {
+      if (!isQueryExisting(this.store.getState(), queryId)) {
+        return Promise.resolve(null)
+      }
       this.dispatch(resetQuery(queryId))
       const query = this.getQueryFromState(queryId)
       return await this.query(query.definition, {
