@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [48.11.1](https://github.com/cozy/cozy-client/compare/v48.11.0...v48.11.1) (2024-07-23)
+
+
+### Bug Fixes
+
+* **resetQuery:** Return null when the query is not found ([0ff4cf0](https://github.com/cozy/cozy-client/commit/0ff4cf008dbd45f03c84a36acec20c34ef296423))
+
+
+
+
+
 # [48.11.0](https://github.com/cozy/cozy-client/compare/v48.10.0...v48.11.0) (2024-07-19)
 
 
