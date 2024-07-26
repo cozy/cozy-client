@@ -20,6 +20,34 @@
 
 ## Functions
 
+### copy
+
+▸ **copy**(`client`, `file`, `destination`): `Promise`<`any`>
+
+Copies a file to a specified destination.
+
+**`throws`** {Error} - If an error occurs during the API request.
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `client` | `any` | The client object used for making API requests. |
+| `file` | `any` | The file object to be copied. |
+| `destination` | `any` | The destination object where the file will be copied to. |
+
+*Returns*
+
+`Promise`<`any`>
+
+*   A promise that resolves with the response from the API.
+
+*Defined in*
+
+[packages/cozy-client/src/models/file.js:667](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L667)
+
+***
+
 ### doMobileUpload
 
 ▸ **doMobileUpload**(`client`, `fileURL`, `options`): `Promise`<`any`>
