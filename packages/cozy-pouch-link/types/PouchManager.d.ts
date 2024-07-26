@@ -15,7 +15,8 @@ declare class PouchManager {
     events: any;
     init(): Promise<void>;
     pouches: import("lodash").Dictionary<any>;
-    syncedDoctypes: any;
+    /** @type {Record<string, import('./types').SyncInfo>} - Stores synchronization info per doctype */
+    syncedDoctypes: Record<string, import('./types').SyncInfo>;
     warmedUpQueries: any;
     getReplicationURL: any;
     doctypesReplicationOptions: any;
@@ -30,8 +31,10 @@ declare class PouchManager {
     /** Stop periodic syncing of the pouches */
     stopReplicationLoop(): void;
     /** Starts replication */
-    replicateOnce(): Promise<void | import("./types").CancelablePromises>;
+    replicateOnce(): Promise<any>;
     executeQuery: any;
+    /** @type {import('./types').CancelablePromise[]} - Stores replication promises */
+    replications: import('./types').CancelablePromise[];
     addListeners(): void;
     removeListeners(): void;
     destroy(): Promise<any[]>;
@@ -48,19 +51,31 @@ declare class PouchManager {
      * immediately
      */
     syncImmediately(): void;
-    /**
-     * Creating each replication
-     *
-     * @type {import('./types').CancelablePromises}
-     */
-    replications: import('./types').CancelablePromises;
     handleReplicationError(err: any): void;
     cancelCurrentReplications(): void;
     waitForCurrentReplications(): Promise<void> | Promise<any[]>;
     getPouch(doctype: any): any;
-    updateSyncInfo(doctype: any): Promise<void>;
-    getSyncInfo(doctype: any): any;
-    isSynced(doctype: any): boolean;
+    /**
+     * Update the Sync info for the specifed doctype
+     *
+     * @param {string} doctype - The doctype to update
+     * @param {import('./types').SyncStatus} status - The new Sync status for the doctype
+     */
+    updateSyncInfo(doctype: string, status?: import('./types').SyncStatus): Promise<void>;
+    /**
+     * Get the Sync info for the specified doctype
+     *
+     * @param {string} doctype - The doctype to check
+     * @returns {import('./types').SyncInfo}
+     */
+    getSyncInfo(doctype: string): import('./types').SyncInfo;
+    /**
+     * Get the Sync status for the specified doctype
+     *
+     * @param {string} doctype - The doctype to check
+     * @returns {import('./types').SyncStatus}
+     */
+    getSyncStatus(doctype: string): import('./types').SyncStatus;
     clearSyncedDoctypes(): Promise<void>;
     warmupQueries(doctype: any, queries: any): Promise<void>;
     checkToWarmupDoctype(doctype: any, replicationOptions: any): void;
