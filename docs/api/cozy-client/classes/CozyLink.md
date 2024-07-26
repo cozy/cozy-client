@@ -8,6 +8,8 @@
 
     ↳ [`StackLink`](StackLink.md)
 
+    ↳ [`FlagshipLink`](FlagshipLink.md)
+
 ## Constructors
 
 ### constructor
