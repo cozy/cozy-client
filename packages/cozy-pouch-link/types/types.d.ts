@@ -8,8 +8,16 @@ export type Cancelable = {
 };
 export type CancelablePromise = Promise<any> & Cancelable;
 export type CancelablePromises = CancelablePromise[] & Cancelable;
+export type SyncStatus = "synced" | "not_synced" | "not_complete";
 export type SyncInfo = {
-    Date: string;
+    /**
+     * - The date of the last synchronization
+     */
+    date: string;
+    /**
+     * - The current synchronization status
+     */
+    status: SyncStatus;
 };
 export type LocalStorage = {
     getItem: (arg0: string) => Promise<string | null>;
