@@ -69,7 +69,7 @@ export const startReplication = (
         }
       }
     }
-    let replication
+
     if (initialReplication && strategy !== 'toRemote') {
       ;(async () => {
         // For the first remote->local replication, we manually replicate all docs
@@ -86,6 +86,7 @@ export const startReplication = (
         }
         return resolve(docs)
       })()
+      return
     }
     if (strategy === 'fromRemote') {
       replication = pouch.replicate.from(url, options)

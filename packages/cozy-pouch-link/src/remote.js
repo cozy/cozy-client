@@ -1,5 +1,16 @@
 import AccessToken from './AccessToken'
 
+export const DATABASE_NOT_FOUND_ERROR = 'Database does not exist'
+export const DATABASE_RESERVED_DOCTYPE_ERROR = 'Reserved doctype'
+
+export const isDatabaseNotFoundError = error => {
+  return error.message === DATABASE_NOT_FOUND_ERROR
+}
+
+export const isDatabaseUnradableError = error => {
+  return error.message === DATABASE_RESERVED_DOCTYPE_ERROR
+}
+
 /**
  * Fetch remote instance
  *
@@ -25,7 +36,20 @@ export const fetchRemoteInstance = async (url, params = {}) => {
   if (resp.ok) {
     return data
   }
-  return null
+
+  if (resp.status === 404) {
+    throw new Error(DATABASE_NOT_FOUND_ERROR)
+  }
+
+  if (resp.status === 403 && data.error.includes('message=reserved doctype')) {
+    throw new Error(DATABASE_RESERVED_DOCTYPE_ERROR)
+  }
+
+  throw new Error(
+    `Error (${resp.status}) while fetching remote instance: ${JSON.stringify(
+      data
+    )}`
+  )
 }
 
 /**

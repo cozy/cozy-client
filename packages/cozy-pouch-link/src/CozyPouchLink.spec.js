@@ -120,7 +120,7 @@ describe('CozyPouchLink', () => {
           'io.cozy.files': { warmupQueries: [query1(), query2()] }
         }
       })
-      link.pouches.isSynced = jest.fn().mockReturnValue(true)
+      link.pouches.getSyncStatus = jest.fn().mockReturnValue('synced')
 
       const query = Q(TODO_DOCTYPE)
       expect.assertions(0)
@@ -174,7 +174,7 @@ describe('CozyPouchLink', () => {
           'io.cozy.todos': { strategy: 'fromRemote' }
         }
       })
-      link.pouches.isSynced = jest.fn().mockReturnValue(true)
+      link.pouches.getSyncStatus = jest.fn().mockReturnValue('synced')
       await link.request(
         {
           doctype: TODO_DOCTYPE,
@@ -194,7 +194,7 @@ describe('CozyPouchLink', () => {
           'io.cozy.todos': { strategy: 'fromRemote' }
         }
       })
-      link.pouches.isSynced = jest.fn().mockReturnValue(true)
+      link.pouches.getSyncStatus = jest.fn().mockReturnValue('synced')
       const mock = jest.fn()
       await link.request(Q(TODO_DOCTYPE), null, mock)
       expect(mock).not.toHaveBeenCalled()
@@ -210,7 +210,7 @@ describe('CozyPouchLink', () => {
     const docs = [TODO_1, TODO_2, TODO_3, TODO_4]
     it('should be able to execute a query', async () => {
       await setup()
-      link.pouches.isSynced = jest.fn().mockReturnValue(true)
+      link.pouches.getSyncStatus = jest.fn().mockReturnValue('synced')
       const db = link.getPouch(TODO_DOCTYPE)
       db.post({
         label: 'Make PouchDB link work',
@@ -223,7 +223,7 @@ describe('CozyPouchLink', () => {
 
     it('should be possible to query only one doc', async () => {
       await setup()
-      link.pouches.isSynced = jest.fn().mockReturnValue(true)
+      link.pouches.getSyncStatus = jest.fn().mockReturnValue('synced')
       const db = link.getPouch(TODO_DOCTYPE)
       db.post({
         _id: 'deadbeef',
@@ -238,7 +238,7 @@ describe('CozyPouchLink', () => {
     it('should be possible to explicitly index fields', async () => {
       find.mockReturnValue({ docs: [TODO_3, TODO_4] })
       await setup()
-      link.pouches.isSynced = jest.fn().mockReturnValue(true)
+      link.pouches.getSyncStatus = jest.fn().mockReturnValue('synced')
       const db = link.getPouch(TODO_DOCTYPE)
       await db.bulkDocs(docs.map(x => omit(x, '_type')))
       const query = Q(TODO_DOCTYPE)
@@ -253,7 +253,7 @@ describe('CozyPouchLink', () => {
     it('should be possible to query multiple docs', async () => {
       withoutDesignDocuments.mockReturnValue({ docs: [TODO_1, TODO_3] })
       await setup()
-      link.pouches.isSynced = jest.fn().mockReturnValue(true)
+      link.pouches.getSyncStatus = jest.fn().mockReturnValue('synced')
       const db = link.getPouch(TODO_DOCTYPE)
       await db.bulkDocs(docs.map(x => omit(x, '_type')))
       const ids = [TODO_1._id, TODO_3._id]
@@ -268,7 +268,7 @@ describe('CozyPouchLink', () => {
     it('should be possible to select', async () => {
       find.mockReturnValue({ docs: [TODO_3, TODO_4] })
       await setup()
-      link.pouches.isSynced = jest.fn().mockReturnValue(true)
+      link.pouches.getSyncStatus = jest.fn().mockReturnValue('synced')
       const db = link.getPouch(TODO_DOCTYPE)
       await db.bulkDocs(docs.map(x => omit(x, '_type')))
       const query = Q(TODO_DOCTYPE)
@@ -321,7 +321,7 @@ describe('CozyPouchLink', () => {
     it("should add _id in the selected fields since CozyClient' store needs it", async () => {
       find.mockReturnValue({ docs: [TODO_3, TODO_4] })
       await setup()
-      link.pouches.isSynced = jest.fn().mockReturnValue(true)
+      link.pouches.getSyncStatus = jest.fn().mockReturnValue('synced')
       const db = link.getPouch(TODO_DOCTYPE)
       await db.bulkDocs(docs.map(x => omit(x, '_type')))
       const query = Q(TODO_DOCTYPE)
@@ -342,7 +342,7 @@ describe('CozyPouchLink', () => {
   describe('mutations', () => {
     it('should be possible to save a new document', async () => {
       await setup()
-      link.pouches.isSynced = jest.fn().mockReturnValue(true)
+      link.pouches.getSyncStatus = jest.fn().mockReturnValue('synced')
       const { _id, ...NEW_TODO } = TODO_3
       const mutation = client.getDocumentSavePlan(NEW_TODO)
       const res = await link.request(mutation)
@@ -360,7 +360,7 @@ describe('CozyPouchLink', () => {
 
     it('should be possible to save multiple documents', async () => {
       await setup()
-      link.pouches.isSynced = jest.fn().mockReturnValue(true)
+      link.pouches.getSyncStatus = jest.fn().mockReturnValue('synced')
       const { _id, ...NEW_TODO } = TODO_3
       const res = await client.saveAll([TODO_3, TODO_4, NEW_TODO])
       expect(link.executeMutation).toHaveBeenCalled()
@@ -394,7 +394,7 @@ describe('CozyPouchLink', () => {
           { ok: true, id: '3', rev: '1-cffeebabe' }
         ]
       }
-      link.pouches.isSynced = jest.fn().mockReturnValue(true)
+      link.pouches.getSyncStatus = jest.fn().mockReturnValue('synced')
       const { _id, ...NEW_TODO } = TODO_3
       let err
       try {
@@ -412,7 +412,7 @@ describe('CozyPouchLink', () => {
 
     it('should be possible to update a document', async () => {
       await setup()
-      link.pouches.isSynced = jest.fn().mockReturnValue(true)
+      link.pouches.getSyncStatus = jest.fn().mockReturnValue('synced')
       const { _id, ...NEW_TODO } = TODO_3
       const saveMutation = client.getDocumentSavePlan(NEW_TODO)
       const saved = (await link.request(saveMutation)).data
@@ -584,7 +584,7 @@ describe('CozyPouchLink', () => {
     it('uses the default index, the one from the sort', async () => {
       spy = jest.spyOn(PouchDB.prototype, 'createIndex')
       await setup()
-      link.pouches.isSynced = jest.fn().mockReturnValue(true)
+      link.pouches.getSyncStatus = jest.fn().mockReturnValue('synced')
       const query = Q(TODO_DOCTYPE)
         .where({})
         .sortBy([{ name: 'asc' }])

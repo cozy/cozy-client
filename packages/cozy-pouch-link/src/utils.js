@@ -19,3 +19,11 @@ export const getDatabaseName = (prefix, doctype) => {
 export const getPrefix = uri => {
   return uri.replace(/^https?:\/\//, '')
 }
+
+export const formatAggregatedError = aggregatedError => {
+  const strings = aggregatedError.errors.map((e, index) => {
+    return '\n[' + index + ']: ' + e.message + '\n' + e.stack
+  })
+
+  return strings.join('\n')
+}
