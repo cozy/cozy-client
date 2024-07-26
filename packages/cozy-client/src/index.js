@@ -1,6 +1,7 @@
 export { default } from './CozyClient'
 export { default as CozyLink } from './CozyLink'
 export { default as StackLink } from './StackLink'
+export { default as FlagshipLink } from './FlagshipLink'
 export { default as compose } from 'lodash/flow'
 export {
   QueryDefinition,
