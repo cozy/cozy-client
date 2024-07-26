@@ -102,7 +102,7 @@ CozyLink.constructor
 
 ### replicationStatus
 
-• **replicationStatus**: `Record`<`string`, `SyncStatus`>
+• **replicationStatus**: `Record`<`string`, `ReplicationStatus`>
 
 *Defined in*
 
