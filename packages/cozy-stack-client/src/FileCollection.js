@@ -440,7 +440,7 @@ class FileCollection extends DocumentCollection {
   async copy(id, name, dirId) {
     const params = {
       name: name === undefined ? undefined : sanitizeAndValidateFileName(name),
-      dirId
+      DirID: dirId
     }
     const path = uri`/files/${id}/copy`
     const url = querystring.buildURL(path, params)
