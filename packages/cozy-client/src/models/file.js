@@ -649,3 +649,50 @@ export const fetchBlobFileById = async (client, fileId) => {
 
   return fileBlob
 }
+
+/**
+ * Copies a file to a specified destination.
+ *
+ * @param {object} client - The client object used for making API requests.
+ * @param {object} file - The file object to be copied.
+ * @param {object} destination - The destination object where the file will be copied to.
+ * @returns {Promise} - A promise that resolves with the response from the API.
+ * @throws {Error} - If an error occurs during the API request.
+ */
+export const copy = async (client, file, destination) => {
+  try {
+    if (
+      file._type === 'io.cozy.remote.nextcloud.files' &&
+      destination._type === 'io.cozy.remote.nextcloud.files'
+    ) {
+      const resp = await client
+        .collection('io.cozy.remote.nextcloud.files')
+        .copy(file, destination)
+      return resp
+    }
+
+    if (
+      file._type === 'io.cozy.remote.nextcloud.files' &&
+      destination._type === 'io.cozy.files'
+    ) {
+      const resp = await client
+        .collection('io.cozy.remote.nextcloud.files')
+        .moveToCozy(file, destination, { copy: true })
+      return resp
+    }
+
+    if (destination._type === 'io.cozy.remote.nextcloud.files') {
+      const resp = await client
+        .collection('io.cozy.remote.nextcloud.files')
+        .moveFromCozy(destination, file, { copy: true })
+      return resp
+    }
+
+    const resp = await client
+      .collection(DOCTYPE_FILES)
+      .copy(file._id, undefined, destination._id)
+    return resp
+  } catch (e) {
+    throw e
+  }
+}

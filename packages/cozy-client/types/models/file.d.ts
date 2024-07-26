@@ -67,6 +67,7 @@ export function hasQualifications(file: import("../types").IOCozyFile): boolean;
 export function hasCertifications(file: import("../types").IOCozyFile): boolean;
 export function isFromKonnector(file: import("../types").IOCozyFile): boolean;
 export function fetchBlobFileById(client: CozyClient, fileId: string): Promise<Blob>;
+export function copy(client: object, file: object, destination: object): Promise<any>;
 export type FileUploadOptions = {
     /**
      * - The file name to upload
