@@ -133,14 +133,17 @@ class NextcloudFilesCollection extends DocumentCollection {
    *
    * @param {object} file - The `io.cozy.remote.nextcloud.files` file to move
    * @param {object} to - The `io.cozy.files` folder to move the file to
-   *
+   * @param {object} [options] - Options
+   * @param {boolean} [options.copy] - Whether to copy the file instead of moving it
    */
-  async moveToCozy(file, to) {
+  async moveToCozy(file, to, { copy = false } = {}) {
     const resp = await this.stackClient.fetch(
       'POST',
       `/remote/nextcloud/${
         file.cozyMetadata.sourceAccount
-      }/downstream${encodePath(file.path)}?To=${to._id}`
+      }/downstream${encodePath(file.path)}?To=${to._id}${
+        copy ? '&Copy=true' : ''
+      }`
     )
     if (resp.status === 201) {
       return resp
@@ -153,15 +156,19 @@ class NextcloudFilesCollection extends DocumentCollection {
    *
    * @param {object} file - The `io.cozy.remote.nextcloud.files` folder to move the file to
    * @param {object} from - The `io.cozy.files` file to move
+   * @param {object} [options] - Options
+   * @param {boolean} [options.copy] - Whether to copy the file instead of moving it
    * @throws {FetchError}
    */
-  async moveFromCozy(file, from) {
+  async moveFromCozy(file, from, { copy = false } = {}) {
     const newPath = joinPath(file.path, from.name)
     const resp = await this.stackClient.fetch(
       'POST',
       `/remote/nextcloud/${
         file.cozyMetadata.sourceAccount
-      }/upstream${encodePath(newPath)}?From=${from._id}`
+      }/upstream${encodePath(newPath)}?From=${from._id}${
+        copy ? '&Copy=true' : ''
+      }`
     )
     if (resp.status === 204) {
       return resp
@@ -225,6 +232,21 @@ class NextcloudFilesCollection extends DocumentCollection {
       return resp
     }
     throw new FetchError(resp, resp.json())
+  }
+
+  /**
+   * Copy a file or folder to another path on the same Nextcloud server
+   *
+   * @param {object} file - The `io.cozy.remote.nextcloud.files` file to copy
+   * @param {object} to - Whether to copy the file
+   */
+  async copy(file, to) {
+    return await this.stackClient.fetchJSON(
+      'POST',
+      `/remote/nextcloud/${file.cozyMetadata.sourceAccount}/copy/${file.path}${
+        to ? `?Path=${to.path}/${file.name}` : ''
+      }`
+    )
   }
 }
 
