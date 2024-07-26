@@ -15,9 +15,10 @@ declare class PouchLink extends CozyLink {
      * Return the PouchDB adapter name.
      * Should be IndexedDB for newest adapters.
      *
-     * @returns {string} The adapter name
+     * @param {import('./types').LocalStorage} localStorage Methods to access local storage
+     * @returns {Promise<string>} The adapter name
      */
-    static getPouchAdapterName: () => string;
+    static getPouchAdapterName: (localStorage: import('./types').LocalStorage) => Promise<string>;
     /**
      * constructor - Initializes a new PouchLink
      *
@@ -25,11 +26,13 @@ declare class PouchLink extends CozyLink {
      * @param {number} [opts.replicationInterval] Milliseconds between replications
      * @param {string[]} opts.doctypes Doctypes to replicate
      * @param {object[]} opts.doctypesReplicationOptions A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote")
+     * @param {import('./types').LinkPlatform} opts.platform Platform specific adapters and methods
      */
     constructor(opts?: {
         replicationInterval: number;
         doctypes: string[];
         doctypesReplicationOptions: object[];
+        platform: import('./types').LinkPlatform;
     });
     options: {
         replicationInterval: number;
@@ -37,10 +40,12 @@ declare class PouchLink extends CozyLink {
         replicationInterval?: number;
         doctypes: string[];
         doctypesReplicationOptions: object[];
+        platform: import('./types').LinkPlatform;
     };
     doctypes: string[];
     doctypesReplicationOptions: any[];
     indexes: {};
+    storage: PouchLocalStorage;
     /** @type {Record<string, SyncStatus>} - Stores replication states per doctype */
     replicationStatus: Record<string, SyncStatus>;
     getReplicationURL(doctype: any): string;
@@ -118,9 +123,9 @@ declare class PouchLink extends CozyLink {
      * and return if those queries are already warmed up or not
      *
      * @param {string} doctype - Doctype to check
-     * @returns {boolean} the need to wait for the warmup
+     * @returns {Promise<boolean>} the need to wait for the warmup
      */
-    needsToWaitWarmup(doctype: string): boolean;
+    needsToWaitWarmup(doctype: string): Promise<boolean>;
     hasIndex(name: any): boolean;
     mergePartialIndexInSelector(selector: any, partialFilter: any): any;
     ensureIndex(doctype: any, query: any): Promise<any>;
@@ -158,4 +163,5 @@ declare class PouchLink extends CozyLink {
     syncImmediately(): Promise<void>;
 }
 import { CozyLink } from "cozy-client";
+import { PouchLocalStorage } from "./localStorage";
 import PouchManager from "./PouchManager";
