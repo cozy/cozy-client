@@ -83,6 +83,10 @@ export default class StackLink extends CozyLink {
     }
     return this.executeQuery(operation)
   }
+
+  async persistData(data, forward) {
+    return forward(data)
+  }
   /**
    *
    * @param {QueryDefinition} query - Query to execute

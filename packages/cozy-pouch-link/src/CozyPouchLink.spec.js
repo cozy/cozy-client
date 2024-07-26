@@ -473,6 +473,7 @@ describe('CozyPouchLink', () => {
             _id: '1',
             _rev: '1-deadbeef',
             _type: 'io.cozy.todos',
+            cozyFromPouch: true,
             done: false,
             id: '1',
             label: 'Buy bread'

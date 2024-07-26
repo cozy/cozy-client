@@ -62,7 +62,7 @@ Transfers queries and mutations to a remote stack
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:114](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L114)
+[packages/cozy-client/src/StackLink.js:118](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L118)
 
 ***
 
@@ -82,7 +82,32 @@ Transfers queries and mutations to a remote stack
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:91](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L91)
+[packages/cozy-client/src/StackLink.js:95](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L95)
+
+***
+
+### persistData
+
+▸ **persistData**(`data`, `forward`): `Promise`<`any`>
+
+*Parameters*
+
+| Name | Type |
+| :------ | :------ |
+| `data` | `any` |
+| `forward` | `any` |
+
+*Returns*
+
+`Promise`<`any`>
+
+*Overrides*
+
+[CozyLink](CozyLink.md).[persistData](CozyLink.md#persistdata)
+
+*Defined in*
+
+[packages/cozy-client/src/StackLink.js:87](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L87)
 
 ***
 
