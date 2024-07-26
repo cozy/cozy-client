@@ -2,11 +2,11 @@ export function getReplicationURL(uri: any, token: any, doctype: any): string;
 export function isExpiredTokenError(pouchError: any): boolean;
 export default PouchLink;
 export type CozyClientDocument = any;
-export type SyncStatus = "idle" | "replicating";
+export type ReplicationStatus = "idle" | "replicating";
 /**
  * @typedef {import('cozy-client/src/types').CozyClientDocument} CozyClientDocument
  *
- * @typedef {"idle"|"replicating"} SyncStatus
+ * @typedef {"idle"|"replicating"} ReplicationStatus
  */
 /**
  * Link to be passed to a `CozyClient` instance to support CouchDB. It instantiates
@@ -49,8 +49,8 @@ declare class PouchLink extends CozyLink {
     doctypesReplicationOptions: any[];
     indexes: {};
     storage: PouchLocalStorage;
-    /** @type {Record<string, SyncStatus>} - Stores replication states per doctype */
-    replicationStatus: Record<string, SyncStatus>;
+    /** @type {Record<string, ReplicationStatus>} - Stores replication states per doctype */
+    replicationStatus: Record<string, ReplicationStatus>;
     getReplicationURL(doctype: any): string;
     registerClient(client: any): Promise<void>;
     client: any;
@@ -117,7 +117,7 @@ declare class PouchLink extends CozyLink {
      */
     public stopReplication(): void;
     onSyncError(error: any): Promise<void>;
-    getSyncInfo(doctype: any): any;
+    getSyncInfo(doctype: any): import("./types").SyncInfo;
     getPouch(doctype: any): any;
     supportsOperation(operation: any): boolean;
     /**
