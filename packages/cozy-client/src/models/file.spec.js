@@ -455,8 +455,11 @@ describe('File Model', () => {
       _id: 'dir-b1e1c256',
       _type: 'io.cozy.files',
       dir_id: 'io.cozy.files.root-dir',
-      path: '/'
+      type: 'directory',
+      name: 'Photos',
+      path: '/Photos'
     }
+
     const nextcloudFolder = {
       _id: 'folder-12435',
       _type: 'io.cozy.remote.nextcloud.files',
@@ -517,13 +520,6 @@ describe('File Model', () => {
         data: {
           id: cozyFile._id,
           dir_id: cozyFolder._id,
-          _type: 'io.cozy.files'
-        }
-      })
-      getSpy.mockResolvedValue({
-        data: {
-          id: cozyFile._id,
-          name: 'mydoc.odt',
           _type: 'io.cozy.files'
         }
       })

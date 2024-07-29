@@ -40,7 +40,7 @@ Upload a file on a mobile
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:604](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L604)
+[packages/cozy-client/src/models/file.js:599](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L599)
 
 ***
 
@@ -86,7 +86,7 @@ file object with path attribute
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:650](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L650)
+[packages/cozy-client/src/models/file.js:645](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L645)
 
 ***
 
@@ -135,7 +135,7 @@ Generate a file name for a revision
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:484](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L484)
+[packages/cozy-client/src/models/file.js:479](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L479)
 
 ***
 
@@ -160,7 +160,7 @@ A filename with the right suffix
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:454](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L454)
+[packages/cozy-client/src/models/file.js:449](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L449)
 
 ***
 
@@ -302,7 +302,7 @@ The mime-type of the target file, or an empty string is the target is not a file
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:630](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L630)
+[packages/cozy-client/src/models/file.js:625](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L625)
 
 ***
 
@@ -346,7 +346,7 @@ Whether the file's metadata attribute exists
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:622](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L622)
+[packages/cozy-client/src/models/file.js:617](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L617)
 
 ***
 
@@ -428,7 +428,7 @@ Whether the file is client-side encrypted
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:641](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L641)
+[packages/cozy-client/src/models/file.js:636](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L636)
 
 ***
 
@@ -493,7 +493,7 @@ Whether the file is supported by Only Office
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:614](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L614)
+[packages/cozy-client/src/models/file.js:609](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L609)
 
 ***
 
@@ -695,7 +695,7 @@ The overrided file
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:420](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L420)
+[packages/cozy-client/src/models/file.js:415](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L415)
 
 ***
 
@@ -717,7 +717,7 @@ Read a file on a mobile
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:557](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L557)
+[packages/cozy-client/src/models/file.js:552](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L552)
 
 ***
 
@@ -827,4 +827,4 @@ If there is a conflict, then we apply the conflict strategy : `erase` or `rename
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:517](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L517)
+[packages/cozy-client/src/models/file.js:512](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L512)

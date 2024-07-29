@@ -377,16 +377,11 @@ export const move = async (
     }
   } catch (e) {
     if (e.status === 409 && force) {
-      let destinationPath
-      if (destination.path) {
-        destinationPath = destination.path
-      } else {
-        const { data: movedFile } = await client.query(
-          Q(DOCTYPE_FILES).getById(file._id)
-        )
-        const filename = movedFile.name
-        destinationPath = await getFullpath(client, destination._id, filename)
-      }
+      const destinationPath = await getFullpath(
+        client,
+        destination._id,
+        file.name
+      )
       const conflictResp = await client
         .collection(DOCTYPE_FILES)
         .statByPath(destinationPath)
