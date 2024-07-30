@@ -65,6 +65,14 @@ const normalizeAll = client => (docs, doctype) => {
  */
 
 /**
+ * @typedef {object} PouchLinkOptions
+ * @property {number} [replicationInterval] Milliseconds between replications
+ * @property {string[]} doctypes Doctypes to replicate
+ * @property {object[]} doctypesReplicationOptions A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote")
+ * @property {import('./types').LinkPlatform} platform Platform specific adapters and methods
+ */
+
+/**
  * Link to be passed to a `CozyClient` instance to support CouchDB. It instantiates
  * PouchDB collections for each doctype that it supports and knows how
  * to respond to queries and mutations.
@@ -73,11 +81,7 @@ class PouchLink extends CozyLink {
   /**
    * constructor - Initializes a new PouchLink
    *
-   * @param {object} [opts={}]
-   * @param {number} [opts.replicationInterval] Milliseconds between replications
-   * @param {string[]} opts.doctypes Doctypes to replicate
-   * @param {object[]} opts.doctypesReplicationOptions A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote")
-   * @param {import('./types').LinkPlatform} opts.platform Platform specific adapters and methods
+   * @param {PouchLinkOptions} [opts={}]
    */
 
   constructor(opts) {

@@ -52,14 +52,18 @@ export const transformBulkDocsResponse = (bulkResponse, originalDocuments) => {
 }
 
 /**
+ * @typedef {object} StackLinkOptions
+ * @property {object} [stackClient] - A StackClient
+ * @property {object} [client] - A StackClient (deprecated)
+ * @property {import('cozy-pouch-link/dist/types').LinkPlatform} [platform] - Platform specific adapters and methods
+ */
+
+/**
  * Transfers queries and mutations to a remote stack
  */
 export default class StackLink extends CozyLink {
   /**
-   * @param {object} [options] - Options
-   * @param  {object} [options.stackClient] - A StackClient
-   * @param  {object} [options.client] - A StackClient (deprecated)
-   * @param {import('cozy-pouch-link/dist/types').LinkPlatform} [options.platform] Platform specific adapters and methods
+   * @param {StackLinkOptions} [options] - Options
    */
   constructor({ client, stackClient, platform } = {}) {
     super()
