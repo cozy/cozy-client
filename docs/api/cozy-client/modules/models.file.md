@@ -44,7 +44,7 @@ Copies a file to a specified destination.
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:667](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L667)
+[packages/cozy-client/src/models/file.js:662](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L662)
 
 ***
 
