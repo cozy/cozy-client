@@ -54,8 +54,8 @@ export const isExpiredTokenError = pouchError => {
   return expiredTokenError.test(pouchError.error)
 }
 
-const normalizeAll = (docs, doctype) => {
-  return docs.map(doc => jsonapi.normalizeDoc(doc, doctype))
+const normalizeAll = client => (docs, doctype) => {
+  return docs.map(doc => jsonapi.normalizeDoc(doc, doctype, client))
 }
 
 /**
@@ -83,7 +83,7 @@ class PouchLink extends CozyLink {
   constructor(opts) {
     const options = defaults({}, opts, DEFAULT_OPTIONS)
     super(options)
-    const { doctypes, doctypesReplicationOptions } = options
+    const { doctypes, doctypesReplicationOptions, ignoreWarmup } = options
     this.options = options
     if (!doctypes) {
       throw new Error(
@@ -96,6 +96,7 @@ class PouchLink extends CozyLink {
     this.storage = new PouchLocalStorage(
       options.platform?.storage || platformWeb.storage
     )
+    this.ignoreWarmup = ignoreWarmup
 
     /** @type {Record<string, ReplicationStatus>} - Stores replication states per doctype */
     this.replicationStatus = this.replicationStatus || {}
@@ -239,7 +240,7 @@ class PouchLink extends CozyLink {
    * Emits an event (pouchlink:sync:end) when the sync (all doctypes) is done
    */
   handleOnSync(doctypeUpdates) {
-    const normalizedData = mapValues(doctypeUpdates, normalizeAll)
+    const normalizedData = mapValues(doctypeUpdates, normalizeAll(this.client))
     if (this.client) {
       this.client.setData(normalizedData)
     }
@@ -361,7 +362,7 @@ class PouchLink extends CozyLink {
       return forward(operation)
     }
 
-    if (await this.needsToWaitWarmup(doctype)) {
+    if (!this.ignoreWarmup && (await this.needsToWaitWarmup(doctype))) {
       if (process.env.NODE_ENV !== 'production') {
         logger.info(
           `Tried to access local ${doctype} but not warmuped yet. Forwarding the operation to next link`
@@ -450,35 +451,77 @@ class PouchLink extends CozyLink {
     return Boolean(this.indexes[name])
   }
 
-  // This merge is necessary because PouchDB does not support partial indexes
-  mergePartialIndexInSelector(selector, partialFilter) {
-    if (partialFilter) {
-      logger.info(
-        `PouchLink: The query contains a partial index but PouchDB does not support it. ` +
-          `Hence, the partial index definition is used in the selector for in-memory evaluation, ` +
-          `which might impact expected performances. If this support is important in your use-case, ` +
-          `please let us know or help us contribute to PouchDB!`
-      )
-      return { ...selector, ...partialFilter }
-    }
-    return selector
+  /**
+   * Create the PouchDB index if not existing
+   *
+   * @param {Array} fields - Fields to index
+   * @param {object} indexOption - Options for the index
+   * @param {object} [indexOption.partialFilter] - partialFilter
+   * @param {string} [indexOption.indexName] - indexName
+   * @param {string} [indexOption.doctype] - doctype
+   * @returns {Promise<import('./types').PouchDbIndex>}
+   */
+  async createIndex(fields, { partialFilter, indexName, doctype } = {}) {
+    const absName = `${doctype}/${indexName}`
+    const db = this.pouches.getPouch(doctype)
+
+    const index = await db.createIndex({
+      index: {
+        fields,
+        ddoc: indexName,
+        indexName,
+        partial_filter_selector: partialFilter
+      }
+    })
+    this.indexes[absName] = index
+    return index
   }
 
-  async ensureIndex(doctype, query) {
-    const fields = query.indexedFields || getIndexFields(query)
-    const name = getIndexNameFromFields(fields)
-    const absName = `${doctype}/${name}`
-    const db = this.pouches.getPouch(doctype)
-    if (this.indexes[absName]) {
-      return this.indexes[absName]
-    } else {
-      const index = await db.createIndex({
-        index: {
-          fields
-        }
+  /**
+   * Retrieve the PouchDB index if exist, undefined otherwise
+   *
+   * @param {string} doctype - The query's doctype
+   * @param {import('./types').MangoQueryOptions} options - The find options
+   * @param {string} indexName - The index name
+   * @returns {import('./types').PouchDbIndex | undefined}
+   */
+  findExistingIndex(doctype, options, indexName) {
+    const absName = `${doctype}/${indexName}`
+    return this.indexes[absName]
+  }
+
+  /**
+   * Handle index creation if it is missing.
+   *
+   * When an index is missing, we first check if there is one with a different
+   * name but the same definition. If there is none, we create the new index.
+   *
+   * /!\ Warning: this method is similar to DocumentCollection.handleMissingIndex()
+   * If you edit this method, please check if the change is also needed in DocumentCollection
+   *
+   * @param {string} doctype The mango selector
+   * @param {import('./types').MangoQueryOptions} options The find options
+   * @returns {Promise<import('./types').PouchDbIndex>} index
+   * @private
+   */
+  async ensureIndex(doctype, options) {
+    let { indexedFields, partialFilter } = options
+
+    if (!indexedFields) {
+      indexedFields = getIndexFields(options)
+    }
+
+    const indexName = getIndexNameFromFields(indexedFields, partialFilter)
+
+    const existingIndex = this.findExistingIndex(doctype, options, indexName)
+    if (!existingIndex) {
+      return await this.createIndex(indexedFields, {
+        partialFilter,
+        indexName,
+        doctype
       })
-      this.indexes[absName] = index
-      return index
+    } else {
+      return existingIndex
     }
   }
 
@@ -495,11 +538,6 @@ class PouchLink extends CozyLink {
     partialFilter
   }) {
     const db = this.getPouch(doctype)
-    // The partial index is not supported by PouchDB, so we ensure the selector includes it
-    const mergedSelector = this.mergePartialIndexInSelector(
-      selector,
-      partialFilter
-    )
     let res, withRows
     if (id) {
       res = await db.get(id)
@@ -509,14 +547,33 @@ class PouchLink extends CozyLink {
       res = withoutDesignDocuments(res)
       res.total_rows = null // pouch indicates the total number of docs in res.total_rows, even though we use "keys". Setting it to null avoids cozy-client thinking there are more docs to fetch.
       withRows = true
-    } else if (!mergedSelector && !fields && !sort) {
+    } else if (!selector && !partialFilter && !fields && !sort) {
       res = await allDocs(db, { include_docs: true, limit })
       res = withoutDesignDocuments(res)
       withRows = true
     } else {
+      let findSelector = selector
+      const shouldAddId = !findSelector
+      if (shouldAddId) {
+        findSelector = {}
+      }
+      if (indexedFields) {
+        for (const indexedField of indexedFields) {
+          if (!Object.keys(findSelector).includes(indexedField)) {
+            findSelector[indexedField] = {
+              $gt: null
+            }
+          }
+        }
+      }
+      if (shouldAddId) {
+        findSelector['_id'] = {
+          $gt: null
+        }
+      }
       const findOpts = {
         sort,
-        selector: mergedSelector,
+        selector: findSelector,
         // same selector as Document Collection. We force _id.
         // Fix https://github.com/cozy/cozy-client/issues/985
         fields: fields ? [...fields, '_id', '_type', 'class'] : undefined,
@@ -525,7 +582,8 @@ class PouchLink extends CozyLink {
       }
       const index = await this.ensureIndex(doctype, {
         ...findOpts,
-        indexedFields
+        indexedFields,
+        partialFilter
       })
       findOpts.use_index = index.id
       res = await find(db, findOpts)
@@ -533,7 +591,7 @@ class PouchLink extends CozyLink {
       res.limit = limit
       withRows = true
     }
-    return jsonapi.fromPouchResult(res, withRows, doctype)
+    return jsonapi.fromPouchResult(res, withRows, doctype, this.client)
   }
 
   async executeMutation(mutation, result, forward) {
@@ -561,7 +619,8 @@ class PouchLink extends CozyLink {
     return jsonapi.fromPouchResult(
       pouchRes,
       false,
-      getDoctypeFromOperation(mutation)
+      getDoctypeFromOperation(mutation),
+      this.client
     )
   }
 
