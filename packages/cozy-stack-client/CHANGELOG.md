@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [48.12.0](https://github.com/cozy/cozy-client/compare/v48.11.2...v48.12.0) (2024-07-30)
+
+
+### Bug Fixes
+
+* **FileCollection:** Copy to a specific folder ([b39a498](https://github.com/cozy/cozy-client/commit/b39a498a338ebf0a2e4cf9dfa8c86d56aee990bd))
+
+
+### Features
+
+* **NextcloudFilesCollection:** Add copy ([55a5f5c](https://github.com/cozy/cozy-client/commit/55a5f5c768bbdc6f3e544bc7705ae29595599302))
+
+
+
+
+
 # [48.9.0](https://github.com/cozy/cozy-client/compare/v48.8.0...v48.9.0) (2024-07-18)
 
 

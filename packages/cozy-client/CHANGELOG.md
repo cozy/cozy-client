@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [48.12.0](https://github.com/cozy/cozy-client/compare/v48.11.2...v48.12.0) (2024-07-30)
+
+
+### Features
+
+* Make helper function to copy file to either Cozy or Nextcloud ([8bff5f7](https://github.com/cozy/cozy-client/commit/8bff5f7a9dcb48793cc7d8e705292e623d30f2de))
+
+
+
+
+
 ## [48.11.2](https://github.com/cozy/cozy-client/compare/v48.11.1...v48.11.2) (2024-07-30)
 
 
