@@ -85,11 +85,15 @@ Serves to dedupe equal queries requested at the same time</p>
 </dd>
 <dt><a href="#makeKeyFromPartialFilter">makeKeyFromPartialFilter</a> ⇒ <code>string</code></dt>
 <dd><p>Process a partial filter to generate a string key</p>
+<p>/!\ Warning: this method is similar to cozy-pouch-link mango.makeKeyFromPartialFilter()
+If you edit this method, please check if the change is also needed in mango file</p>
 </dd>
 <dt><a href="#getIndexNameFromFields">getIndexNameFromFields</a> ⇒ <code>string</code></dt>
 <dd><p>Name an index, based on its indexed fields and partial filter.</p>
 <p>It follows this naming convention:
 <code>by_{indexed_field1}_and_{indexed_field2}_filter_({partial_filter.key1}_{partial_filter.value1})_and_({partial_filter.key2}_{partial_filter.value2})</code></p>
+<p>/!\ Warning: this method is similar to cozy-pouch-link mango.getIndexNameFromFields()
+If you edit this method, please check if the change is also needed in mango file</p>
 </dd>
 <dt><a href="#transformSort">transformSort</a> ⇒ <code><a href="#MangoSort">MangoSort</a></code></dt>
 <dd><p>Transform sort into Array</p>
@@ -2175,6 +2179,9 @@ Get the list of illegal characters in the file name
 ## makeKeyFromPartialFilter ⇒ <code>string</code>
 Process a partial filter to generate a string key
 
+/!\ Warning: this method is similar to cozy-pouch-link mango.makeKeyFromPartialFilter()
+If you edit this method, please check if the change is also needed in mango file
+
 **Kind**: global constant  
 **Returns**: <code>string</code> - - The string key of the processed partial filter  
 
@@ -2189,6 +2196,9 @@ Name an index, based on its indexed fields and partial filter.
 
 It follows this naming convention:
 `by_{indexed_field1}_and_{indexed_field2}_filter_({partial_filter.key1}_{partial_filter.value1})_and_({partial_filter.key2}_{partial_filter.value2})`
+
+/!\ Warning: this method is similar to cozy-pouch-link mango.getIndexNameFromFields()
+If you edit this method, please check if the change is also needed in mango file
 
 **Kind**: global constant  
 **Returns**: <code>string</code> - The index name, built from the fields  
