@@ -556,18 +556,28 @@ class PouchLink extends CozyLink {
       res = withoutDesignDocuments(res)
       withRows = true
     } else {
+      let findSelector = selector
+      const shouldAddId = !findSelector
+      if (shouldAddId) {
+        findSelector = {}
+      }
       if (indexedFields) {
         for (const indexedField of indexedFields) {
-          if (!Object.keys(selector).includes(indexedField)) {
-            selector[indexedField] = {
+          if (!Object.keys(findSelector).includes(indexedField)) {
+            findSelector[indexedField] = {
               $gt: null
             }
           }
         }
       }
+      if (shouldAddId) {
+        findSelector['_id'] = {
+          $gt: null
+        }
+      }
       const findOpts = {
         sort,
-        selector,
+        selector: findSelector,
         // same selector as Document Collection. We force _id.
         // Fix https://github.com/cozy/cozy-client/issues/985
         fields: fields ? [...fields, '_id', '_type', 'class'] : undefined,
