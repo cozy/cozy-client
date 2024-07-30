@@ -290,6 +290,7 @@ import { QueryDefinition } from './queries/dsl'
  * @property {boolean} [singleDocData] - If true, the "data" returned will be
  * a single doc instead of an array for single doc queries. Defaults to false for backward
  * compatibility but will be set to true in the future.
+ * @property {boolean} [executeFromStore=false] - If set to true, the query will be run directly on the current store's state
  */
 
 /**

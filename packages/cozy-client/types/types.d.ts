@@ -542,6 +542,10 @@ export type QueryOptions = {
      * compatibility but will be set to true in the future.
      */
     singleDocData?: boolean;
+    /**
+     * - If set to true, the query will be run directly on the current store's state
+     */
+    executeFromStore?: boolean;
 };
 export type Query = {
     definition: QueryDefinition;

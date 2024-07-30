@@ -123,7 +123,8 @@ export {
   loadQuery,
   resetQuery,
   receiveQueryResult,
-  receiveQueryError
+  receiveQueryError,
+  executeQueryFromState
 } from './queries'
 
 export { resetState }
