@@ -3,10 +3,35 @@ export function isExpiredTokenError(pouchError: any): boolean;
 export default PouchLink;
 export type CozyClientDocument = any;
 export type ReplicationStatus = "idle" | "replicating";
+export type PouchLinkOptions = {
+    /**
+     * Milliseconds between replications
+     */
+    replicationInterval?: number;
+    /**
+     * Doctypes to replicate
+     */
+    doctypes: string[];
+    /**
+     * A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote")
+     */
+    doctypesReplicationOptions: Record<string, object>;
+    /**
+     * Platform specific adapters and methods
+     */
+    platform: import('./types').LinkPlatform;
+};
 /**
  * @typedef {import('cozy-client/src/types').CozyClientDocument} CozyClientDocument
  *
  * @typedef {"idle"|"replicating"} ReplicationStatus
+ */
+/**
+ * @typedef {object} PouchLinkOptions
+ * @property {number} [replicationInterval] Milliseconds between replications
+ * @property {string[]} doctypes Doctypes to replicate
+ * @property {Record<string, object>} doctypesReplicationOptions A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote")
+ * @property {import('./types').LinkPlatform} platform Platform specific adapters and methods
  */
 /**
  * Link to be passed to a `CozyClient` instance to support CouchDB. It instantiates
@@ -25,28 +50,14 @@ declare class PouchLink extends CozyLink {
     /**
      * constructor - Initializes a new PouchLink
      *
-     * @param {object} [opts={}]
-     * @param {number} [opts.replicationInterval] Milliseconds between replications
-     * @param {string[]} opts.doctypes Doctypes to replicate
-     * @param {object[]} opts.doctypesReplicationOptions A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote")
-     * @param {import('./types').LinkPlatform} opts.platform Platform specific adapters and methods
+     * @param {PouchLinkOptions} [opts={}]
      */
-    constructor(opts?: {
-        replicationInterval: number;
-        doctypes: string[];
-        doctypesReplicationOptions: object[];
-        platform: import('./types').LinkPlatform;
-    });
+    constructor(opts?: PouchLinkOptions);
     options: {
         replicationInterval: number;
-    } & {
-        replicationInterval?: number;
-        doctypes: string[];
-        doctypesReplicationOptions: object[];
-        platform: import('./types').LinkPlatform;
-    };
+    } & PouchLinkOptions;
     doctypes: string[];
-    doctypesReplicationOptions: any[];
+    doctypesReplicationOptions: Record<string, any>;
     indexes: {};
     storage: PouchLocalStorage;
     ignoreWarmup: any;
