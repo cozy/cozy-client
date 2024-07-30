@@ -556,6 +556,15 @@ class PouchLink extends CozyLink {
       res = withoutDesignDocuments(res)
       withRows = true
     } else {
+      if (indexedFields) {
+        for (const indexedField of indexedFields) {
+          if (!Object.keys(selector).includes(indexedField)) {
+            selector[indexedField] = {
+              $gt: null
+            }
+          }
+        }
+      }
       const findOpts = {
         sort,
         selector,
