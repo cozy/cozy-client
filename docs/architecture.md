@@ -359,4 +359,11 @@ We rely on [sift.js](https://github.com/crcn/sift.js) for the in-memory query ev
 
 💡 If you want to know more about our query system and syntax, please check [this documentation](https://docs.cozy.io/en/tutorials/data/queries/).
 
-⚠️ Please not that there is not a perfect matching between mango operators and sift, see [this issue](https://github.com/cozy/cozy-client/issues/1132) for instance.
+⚠️ Please note that there is not a perfect matching between mango operators and sift, see [this issue](https://github.com/cozy/cozy-client/issues/1132) for instance.
+
+ℹ️ You can also directly run a query on the store's `documents`, and never actually use the database. This is useful when you know you have already the documents, typically after a sync. Simply use the `executeFromStore` option:
+
+```js
+await client.query(queryDef, { executeFromStore: true})
+```
+

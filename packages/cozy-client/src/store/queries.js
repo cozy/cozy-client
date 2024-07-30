@@ -12,7 +12,7 @@ import sift from 'sift'
 
 import flag from 'cozy-flags'
 
-import { getDocumentFromSlice } from './documents'
+import { getCollectionFromSlice, getDocumentFromSlice } from './documents'
 import { isReceivingMutationResult } from './mutations'
 import { properId } from './helpers'
 import { isAGetByIdQuery, QueryDefinition } from '../queries/dsl'
@@ -308,22 +308,46 @@ const getSelectorFilterFn = queryDefinition => {
 }
 
 /**
+ * Execute the given query against the document state.
+ *
+ * @param {import('../types').DocumentsStateSlice} state - The documents state
+ * @param {QueryDefinition} queryDefinition - The query definition to execute
+ * @returns {import("../types").QueryStateData} - The returned documents from the query
+ */
+export const executeQueryFromState = (state, queryDefinition) => {
+  const documents = getCollectionFromSlice(state, queryDefinition.doctype)
+  const isSingleObjectResponse = !!queryDefinition.id
+  if (!documents) {
+    return { data: isSingleObjectResponse ? null : [] }
+  }
+  const res = documents.filter(makeFilterDocumentFn(queryDefinition))
+  if (isSingleObjectResponse) {
+    return {
+      data: res.length > 0 ? res[0] : null
+    }
+  }
+  return {
+    data: res
+  }
+}
+
+/**
  *
  * Returns a predicate function that checks if a document should be
  * included in the result of the query.
  *
- * @param  {import("../types").QueryState} query - Definition of the query
+ * @param  {QueryDefinition} queryDefinition - Definition of the query
  * @returns {function(import("../types").CozyClientDocument): boolean} Predicate function
  */
-const getQueryDocumentsChecker = query => {
-  const qdoctype = query.definition.doctype
-  const selectorFilterFn = getSelectorFilterFn(query.definition)
+const makeFilterDocumentFn = queryDefinition => {
+  const qdoctype = queryDefinition.doctype
+  const selectorFilterFn = getSelectorFilterFn(queryDefinition)
   return datum => {
     const ddoctype = datum._type
     if (ddoctype !== qdoctype) return false
     if (datum._deleted) return false
-    if (!selectorFilterFn) return true
-    return !!selectorFilterFn(datum)
+    if (!selectorFilterFn) return true // no selector: query all the docs
+    return !!selectorFilterFn(datum) // evaluate the sift function
   }
 }
 
@@ -371,7 +395,7 @@ export const makeSorterFromDefinition = definition => {
  * @returns {import("../types").QueryState} - Updated query state
  */
 export const updateData = (query, newData, documents) => {
-  const belongsToQuery = getQueryDocumentsChecker(query)
+  const belongsToQuery = makeFilterDocumentFn(query.definition)
   const res = mapValues(groupBy(newData, belongsToQuery), docs =>
     docs.map(properId)
   )

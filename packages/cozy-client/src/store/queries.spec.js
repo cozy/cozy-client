@@ -7,7 +7,8 @@ import queries, {
   sortAndLimitDocsIds,
   loadQuery,
   receiveQueryError,
-  updateData
+  updateData,
+  executeQueryFromState
 } from './queries'
 import { Q } from '../queries/dsl'
 import { TODO_1, TODO_2, TODO_3 } from '../__tests__/fixtures'
@@ -669,5 +670,123 @@ describe('updateData', () => {
     const updatedDataToCheck = updateData(queryState, newData, documents)
     expect(updatedDataToCheck.data.length).toEqual(1)
     expect(updatedDataToCheck.count).toEqual(1)
+  })
+})
+
+describe('execute query from state', () => {
+  const docState = {
+    'io.cozy.files': {
+      '123': {
+        _id: '123',
+        _type: 'io.cozy.files',
+        name: 'well',
+        created_at: '2024-01-01'
+      },
+      '456': {
+        _id: '456',
+        _type: 'io.cozy.files',
+        name: 'hello',
+        created_at: '2024-02-01'
+      },
+      '789': {
+        _id: '789',
+        _type: 'io.cozy.files',
+        name: 'there',
+        created_at: '2024-03-01'
+      }
+    }
+  }
+  it('should get the correct filtered results from state thanks to selector', () => {
+    const query1 = {
+      doctype: 'io.cozy.files',
+      selector: {
+        created_at: {
+          $gt: '2024-01-31'
+        }
+      }
+    }
+    const res1 = executeQueryFromState(docState, query1)
+    expect(res1.data.length).toEqual(2)
+    expect(res1.data[0]).toEqual(docState['io.cozy.files']['456'])
+    expect(res1.data[1]).toEqual(docState['io.cozy.files']['789'])
+
+    const query2 = {
+      doctype: 'io.cozy.files',
+      selector: {
+        name: 'well'
+      }
+    }
+    const res2 = executeQueryFromState(docState, query2)
+    expect(res2.data.length).toEqual(1)
+    expect(res2.data[0]).toEqual(docState['io.cozy.files']['123'])
+
+    const query3 = {
+      doctype: 'io.cozy.files',
+      selector: {
+        created_at: {
+          $gt: '2024-01-31'
+        },
+        name: 'hello'
+      }
+    }
+    const res3 = executeQueryFromState(docState, query3)
+    expect(res3.data.length).toEqual(1)
+    expect(res3.data[0]).toEqual(docState['io.cozy.files']['456'])
+
+    const query4 = {
+      doctype: 'io.cozy.files',
+      selector: {
+        created_at: {
+          $gt: '2024-01-30',
+          $lt: '2024-01-31'
+        }
+      }
+    }
+    const res4 = executeQueryFromState(docState, query4)
+    expect(res4.data.length).toEqual(0)
+  })
+
+  it('should get the correct filtered results from state thanks to id', () => {
+    const query1 = {
+      doctype: 'io.cozy.files',
+      id: '123'
+    }
+    const res1 = executeQueryFromState(docState, query1)
+    expect(res1.data).toEqual(docState['io.cozy.files']['123'])
+
+    const query2 = {
+      doctype: 'io.cozy.files',
+      ids: ['123', '789']
+    }
+    const res2 = executeQueryFromState(docState, query2)
+    expect(res2.data.length).toEqual(2)
+    expect(res2.data[0]).toEqual(docState['io.cozy.files']['123'])
+    expect(res2.data[1]).toEqual(docState['io.cozy.files']['789'])
+
+    const query3 = {
+      doctype: 'io.cozy.files',
+      id: '-1'
+    }
+    const res3 = executeQueryFromState(docState, query3)
+    expect(res3.data).toEqual(null)
+  })
+
+  it('should get all the docs from state for the doctype when no filter', () => {
+    const query1 = {
+      doctype: 'io.cozy.files'
+    }
+    const res1 = executeQueryFromState(docState, query1)
+    expect(res1.data.length).toEqual(3)
+  })
+
+  it('should correctly return when no doc is available', () => {
+    const res1 = executeQueryFromState({}, { doctype: 'io.cozy.files' })
+    expect(res1.data).toEqual([])
+
+    const res2 = executeQueryFromState(
+      {},
+      { doctype: 'io.cozy.files', id: '123' }
+    )
+    expect(res2.data).toEqual(null)
   })
 })

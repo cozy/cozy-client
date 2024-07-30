@@ -25,5 +25,5 @@ declare function combinedReducer(state: {
 export function resetState(): {
     type: string;
 };
-export { initQuery, loadQuery, resetQuery, receiveQueryResult, receiveQueryError } from "./queries";
+export { initQuery, loadQuery, resetQuery, receiveQueryResult, receiveQueryError, executeQueryFromState } from "./queries";
 export { initMutation, receiveMutationResult, receiveMutationError } from "./mutations";

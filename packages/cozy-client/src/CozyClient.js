@@ -37,7 +37,8 @@ import {
   getCollectionFromState,
   getDocumentFromState,
   resetState,
-  isQueryExisting
+  isQueryExisting,
+  executeQueryFromState
 } from './store'
 import fetchPolicies from './policies'
 import Schema from './Schema'
@@ -915,7 +916,7 @@ client.query(Q('io.cozy.bills'))`)
    * @param  {import("./types").QueryOptions} [options] - Options
    * @returns {Promise<import("./types").QueryResult>}
    */
-  async query(queryDefinition, { update, ...options } = {}) {
+  async query(queryDefinition, { update, executeFromStore, ...options } = {}) {
     this.ensureStore()
     const queryId =
       options.as || this.queryIdGenerator.generateId(queryDefinition)
@@ -957,9 +958,14 @@ client.query(Q('io.cozy.bills'))`)
           : this.options.backgroundFetching
       this.dispatch(loadQuery(queryId, { backgroundFetching }))
 
-      const response = await this._promiseCache.exec(
-        () => this.requestQuery(queryDefinition),
-        () => stringify(queryDefinition)
+      const requestFn = executeFromStore
+        ? () =>
+            Promise.resolve(
+              executeQueryFromState(this.store.getState(), queryDefinition)
+            )
+        : () => this.requestQuery(queryDefinition)
+      const response = await this._promiseCache.exec(requestFn, () =>
+        stringify(queryDefinition)
       )
 
       this.dispatch(

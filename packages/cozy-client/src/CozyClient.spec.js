@@ -1,5 +1,4 @@
 import MockDate from 'mockdate'
-
 import {
   SCHEMA,
   TODO_1,
@@ -32,12 +31,14 @@ import {
   getRawQueryFromState,
   isQueryExisting,
   loadQuery,
-  resetQuery
+  resetQuery,
+  executeQueryFromState
 } from './store'
 import { HasManyFiles, Association, HasMany } from './associations'
 import mapValues from 'lodash/mapValues'
 import FileCollection from 'cozy-stack-client/dist/FileCollection'
 import logger from './logger'
+
 const normalizeData = data =>
   mapValues(data, (docs, doctype) => {
     return docs.map(doc => ({
@@ -54,7 +55,8 @@ jest.mock('./store', () => ({
   ...jest.requireActual('./store'),
   isQueryExisting: jest.fn().mockReturnValue(false),
   getQueryFromState: jest.fn().mockReturnValue({}),
-  getRawQueryFromState: jest.fn().mockReturnValue({})
+  getRawQueryFromState: jest.fn().mockReturnValue({}),
+  executeQueryFromState: jest.fn().mockReturnValue([])
 }))
 
 describe('CozyClient initialization', () => {
@@ -1228,6 +1230,7 @@ describe('CozyClient', () => {
     beforeEach(() => {
       query = Q('io.cozy.todos')
       fakeResponse = { data: 'FAKE!!!' }
+      jest.clearAllMocks()
     })
     it('should throw an error if the option.enabled is not a boolean', async () => {
       await expect(
@@ -1388,6 +1391,13 @@ describe('CozyClient', () => {
       ])
       expect(resp).toStrictEqual(resp2)
       expect(client.requestQuery).toHaveBeenCalledTimes(1)
+    })
+
+    it('should handle the executeFromStore option', async () => {
+      executeQueryFromState.mockReturnValueOnce([])
+      await client.query(query, { executeFromStore: true })
+      expect(requestHandler).toHaveBeenCalledTimes(0)
+      expect(executeQueryFromState).toHaveBeenCalledTimes(1)
     })
 
     describe('relationship with query failure', () => {
