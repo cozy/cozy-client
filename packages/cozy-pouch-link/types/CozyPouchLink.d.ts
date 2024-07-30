@@ -49,6 +49,7 @@ declare class PouchLink extends CozyLink {
     doctypesReplicationOptions: any[];
     indexes: {};
     storage: PouchLocalStorage;
+    ignoreWarmup: any;
     /** @type {Record<string, ReplicationStatus>} - Stores replication states per doctype */
     replicationStatus: Record<string, ReplicationStatus>;
     getReplicationURL(doctype: any): string;
@@ -140,8 +141,45 @@ declare class PouchLink extends CozyLink {
      */
     needsToWaitWarmup(doctype: string): Promise<boolean>;
     hasIndex(name: any): boolean;
-    mergePartialIndexInSelector(selector: any, partialFilter: any): any;
-    ensureIndex(doctype: any, query: any): Promise<any>;
+    /**
+     * Create the PouchDB index if not existing
+     *
+     * @param {Array} fields - Fields to index
+     * @param {object} indexOption - Options for the index
+     * @param {object} [indexOption.partialFilter] - partialFilter
+     * @param {string} [indexOption.indexName] - indexName
+     * @param {string} [indexOption.doctype] - doctype
+     * @returns {Promise<import('./types').PouchDbIndex>}
+     */
+    createIndex(fields: any[], { partialFilter, indexName, doctype }?: {
+        partialFilter: object;
+        indexName: string;
+        doctype: string;
+    }): Promise<import('./types').PouchDbIndex>;
+    /**
+     * Retrieve the PouchDB index if exist, undefined otherwise
+     *
+     * @param {string} doctype - The query's doctype
+     * @param {import('./types').MangoQueryOptions} options - The find options
+     * @param {string} indexName - The index name
+     * @returns {import('./types').PouchDbIndex | undefined}
+     */
+    findExistingIndex(doctype: string, options: import('./types').MangoQueryOptions, indexName: string): import('./types').PouchDbIndex | undefined;
+    /**
+     * Handle index creation if it is missing.
+     *
+     * When an index is missing, we first check if there is one with a different
+     * name but the same definition. If there is none, we create the new index.
+     *
+     * /!\ Warning: this method is similar to DocumentCollection.handleMissingIndex()
+     * If you edit this method, please check if the change is also needed in DocumentCollection
+     *
+     * @param {string} doctype The mango selector
+     * @param {import('./types').MangoQueryOptions} options The find options
+     * @returns {Promise<import('./types').PouchDbIndex>} index
+     * @private
+     */
+    private ensureIndex;
     executeQuery({ doctype, selector, sort, fields, limit, id, ids, skip, indexedFields, partialFilter }: {
         doctype: any;
         selector: any;

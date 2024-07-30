@@ -38,3 +38,67 @@ export type LinkPlatform = {
      */
     isOnline: () => Promise<boolean>;
 };
+export type MangoPartialFilter = any;
+export type MangoSelector = any;
+export type MangoSort = any[];
+export type MangoQueryOptions = {
+    /**
+     * Selector
+     */
+    selector?: MangoSelector;
+    /**
+     * The sorting parameters
+     */
+    sort?: MangoSort;
+    /**
+     * The fields to return
+     */
+    fields?: Array<string>;
+    /**
+     * The partial filter fields
+     */
+    partialFilterFields?: Array<string>;
+    /**
+     * For pagination, the number of results to return
+     */
+    limit?: number | null;
+    /**
+     * For skip-based pagination, the number of referenced files to skip
+     */
+    skip?: number | null;
+    /**
+     * The _id of the CouchDB index to use for this request
+     */
+    indexId?: string | null;
+    /**
+     * For bookmark-based pagination, the document _id to start from
+     */
+    bookmark?: string | null;
+    indexedFields?: Array<string>;
+    /**
+     * Name of the index to use
+     */
+    use_index?: string;
+    /**
+     * If true, we request the stats from Couch
+     */
+    execution_stats?: boolean;
+    /**
+     * An optional partial filter
+     */
+    partialFilter?: MangoPartialFilter | null;
+};
+export type PouchDbIndex = {
+    /**
+     * - The ddoc's id
+     */
+    id: string;
+    /**
+     * - The ddoc's name
+     */
+    name: string;
+    /**
+     * - If the index has been created or if it already exists
+     */
+    result: 'exists' | 'created';
+};
