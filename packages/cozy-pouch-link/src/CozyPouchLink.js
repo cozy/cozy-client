@@ -68,7 +68,7 @@ const normalizeAll = client => (docs, doctype) => {
  * @typedef {object} PouchLinkOptions
  * @property {number} [replicationInterval] Milliseconds between replications
  * @property {string[]} doctypes Doctypes to replicate
- * @property {object[]} doctypesReplicationOptions A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote")
+ * @property {Record<string, object>} doctypesReplicationOptions A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote")
  * @property {import('./types').LinkPlatform} platform Platform specific adapters and methods
  */
 
