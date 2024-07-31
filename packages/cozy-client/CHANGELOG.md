@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [48.12.1](https://github.com/cozy/cozy-client/compare/v48.12.0...v48.12.1) (2024-07-31)
+
+
+### Bug Fixes
+
+* UseInstanceInfo `isLoaded` return was wrong ([ab10975](https://github.com/cozy/cozy-client/commit/ab109752117b7f6271b0104c4a2cdba4b64653c3))
+
+
+
+
+
 # [48.12.0](https://github.com/cozy/cozy-client/compare/v48.11.2...v48.12.0) (2024-07-30)
 
 
