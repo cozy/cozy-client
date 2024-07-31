@@ -26,9 +26,9 @@ export const useInstanceInfo = () => {
 
   return {
     isLoaded:
-      !!hasQueryBeenLoaded(instanceResult) !== null &&
-      !!hasQueryBeenLoaded(contextResult) !== null &&
-      !!hasQueryBeenLoaded(diskUsageResult) !== null,
+      hasQueryBeenLoaded(instanceResult) !== null &&
+      hasQueryBeenLoaded(contextResult) !== null &&
+      hasQueryBeenLoaded(diskUsageResult) !== null,
     instance: { data: instanceResult.data },
     context: { data: contextResult.data },
     diskUsage: { data: diskUsageResult.data }
