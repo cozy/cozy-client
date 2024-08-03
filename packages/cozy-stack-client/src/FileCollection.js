@@ -57,6 +57,7 @@ import logger from './logger'
  *
  * @typedef {object} FileDocument
  * @property {string} _id - Id of the file
+ * @property {string} _rev - Rev of the file
  * @property {FileAttributes} attributes - Attributes of the file
  * @property {object} meta - Meta
  * @property {object} relationships - Relationships
