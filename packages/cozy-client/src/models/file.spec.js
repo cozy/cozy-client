@@ -1,3 +1,5 @@
+import { isFlagshipApp } from 'cozy-device-helper'
+
 import * as fileModel from './file'
 import { Qualification } from './document/qualification'
 import { QueryDefinition } from '../queries/dsl'
@@ -5,6 +7,9 @@ const CozyClient = require('cozy-client/dist/CozyClient').default
 const CozyStackClient = require('cozy-stack-client').default
 
 jest.mock('cozy-stack-client')
+jest.mock('cozy-device-helper', () => ({
+  isFlagshipApp: jest.fn()
+}))
 
 const cozyClient = new CozyClient({
   stackClient: new CozyStackClient()
@@ -19,6 +24,8 @@ const fetchFileContentByIdSpy = jest.fn().mockName('fetchFileContentById')
 const moveSpy = jest.fn().mockName('move')
 const moveToCozySpy = jest.fn().mockName('moveToCozy')
 const moveFromCozySpy = jest.fn().mockName('moveFromCozy')
+const downloadFromCozySpy = jest.fn().mockName('downloadFromCozy')
+const forceFileDownloadFromCozySpy = jest.fn().mockName('forceFileDownload')
 
 beforeAll(() => {
   cozyClient.stackClient.collection.mockReturnValue({
@@ -31,8 +38,14 @@ beforeAll(() => {
     fetchFileContentById: fetchFileContentByIdSpy,
     move: moveSpy,
     moveToCozy: moveToCozySpy,
-    moveFromCozy: moveFromCozySpy
+    moveFromCozy: moveFromCozySpy,
+    download: downloadFromCozySpy,
+    forceFileDownload: forceFileDownloadFromCozySpy
   })
+})
+
+beforeEach(() => {
+  jest.clearAllMocks()
 })
 
 describe('File Model', () => {
@@ -854,5 +867,80 @@ describe('File qualification', () => {
         }
       }
     })
+  })
+})
+
+describe('downloadFile', () => {
+  it('should handle download in web page', async () => {
+    const file = {
+      _id: 'SOME_FILE_ID',
+      _type: 'io.cozy.file',
+      name: 'SOME_FILE_NAME'
+    }
+
+    await fileModel.downloadFile({
+      // @ts-ignore
+      client: cozyClient,
+      // @ts-ignore
+      file,
+      webviewIntent: null
+    })
+
+    expect(downloadFromCozySpy).toHaveBeenCalledWith(file)
+  })
+
+  it('should handle download in Flagship app', async () => {
+    isFlagshipApp.mockReturnValue(true)
+    const webviewIntent = {
+      call: jest.fn()
+    }
+
+    const file = {
+      _id: 'SOME_FILE_ID',
+      _type: 'io.cozy.file',
+      name: 'SOME_FILE_NAME'
+    }
+
+    await fileModel.downloadFile({
+      // @ts-ignore
+      client: cozyClient,
+      // @ts-ignore
+      file,
+      // @ts-ignore
+      webviewIntent
+    })
+
+    expect(downloadFromCozySpy).not.toHaveBeenCalled()
+    expect(webviewIntent.call).toHaveBeenCalledWith('downloadFile', file)
+  })
+
+  it('should download encrypted files from web page as this is not supported yet by Flagship app', async () => {
+    isFlagshipApp.mockReturnValue(true)
+    const webviewIntent = {
+      call: jest.fn()
+    }
+
+    const file = {
+      _id: 'SOME_FILE_ID',
+      _type: 'io.cozy.file',
+      name: 'SOME_FILE_NAME',
+      encrypted: true
+    }
+
+    await fileModel.downloadFile({
+      // @ts-ignore
+      client: cozyClient,
+      // @ts-ignore
+      file,
+      url: 'SOME_URL',
+      // @ts-ignore
+      webviewIntent
+    })
+
+    expect(forceFileDownloadFromCozySpy).toHaveBeenCalledWith(
+      'SOME_URL',
+      'SOME_FILE_NAME'
+    )
+    expect(webviewIntent.call).not.toHaveBeenCalled()
   })
 })
