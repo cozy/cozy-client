@@ -1,3 +1,5 @@
+import { isFlagshipApp } from 'cozy-device-helper'
+
 import get from 'lodash/get'
 import isString from 'lodash/isString'
 import has from 'lodash/has'
@@ -653,4 +655,33 @@ export const fetchBlobFileById = async (client, fileId) => {
   const fileBlob = await fileBin.blob()
 
   return fileBlob
+}
+
+/**
+ * Download the requested file
+ *
+ * This method can be used in a web page context or in a WebView hosted by a Flagship app
+ *
+ * When used in a FlagshipApp WebView context, then the action is redirected to the host app
+ * that will process the download
+ *
+ * @param {object} params - The download parameters
+ * @param {CozyClient} params.client - Instance of CozyClient
+ * @param {import("../types").IOCozyFile} params.file - io.cozy.files metadata of the document to downloaded
+ * @param {string} [params.url] - Blob url that should be used to download encrypted files
+ * @param {import('cozy-intent').WebviewService} [params.webviewIntent] - webviewIntent that can be used to redirect the download to host Flagship app
+ *
+ * @returns {Promise<any>}
+ */
+export const downloadFile = async ({ client, file, url, webviewIntent }) => {
+  const filesCollection = client.collection(DOCTYPE_FILES)
+
+  if (isFlagshipApp() && webviewIntent && !isEncrypted(file)) {
+    return await webviewIntent.call('downloadFile', file)
+  }
+
+  if (isEncrypted(file)) {
+    return filesCollection.forceFileDownload(url, file.name)
+  }
+  return filesCollection.download(file)
 }
