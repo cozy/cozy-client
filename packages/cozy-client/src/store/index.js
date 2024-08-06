@@ -8,11 +8,8 @@ import {
 } from 'redux'
 import thunk from 'redux-thunk'
 
-import documents, {
-  getCollectionFromSlice,
-  getDocumentFromSlice
-} from './documents'
-import queries, { getQueryFromSlice, isQueryAction } from './queries'
+import documents from './documents'
+import queries, { isQueryAction } from './queries'
 import { isMutationAction } from './mutations'
 
 const RESET_ACTION_TYPE = 'COZY_CLIENT.RESET_STATE'
@@ -94,29 +91,15 @@ export const createStore = () =>
     composedEnhancer(applyMiddleware(thunk))
   )
 
-export const getStateRoot = state => state.cozy || {}
-
-export const getCollectionFromState = (state, doctype) =>
-  getCollectionFromSlice(getStateRoot(state).documents, doctype)
-
-export const getDocumentFromState = (state, doctype, id) =>
-  getDocumentFromSlice(getStateRoot(state).documents, doctype, id)
-
-export const getQueryFromStore = (store, queryId) =>
-  getQueryFromState(store.getState(), queryId)
-
-export const getQueryFromState = (state, queryId) =>
-  getQueryFromSlice(
-    getStateRoot(state).queries,
-    queryId,
-    getStateRoot(state).documents
-  )
-
-export const getRawQueryFromState = (state, queryId) =>
-  getQueryFromSlice(getStateRoot(state).queries, queryId)
-
-export const isQueryExisting = (state, queryId) =>
-  getStateRoot(state).queries[queryId] !== undefined
+export {
+  getStateRoot,
+  getCollectionFromState,
+  getDocumentFromState,
+  getQueryFromStore,
+  getQueryFromState,
+  getRawQueryFromState,
+  isQueryExisting
+} from './stateHelpers'
 
 export {
   initQuery,

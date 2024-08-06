@@ -8,13 +8,6 @@ export class StoreProxy {
 }
 export default combinedReducer;
 export function createStore(): any;
-export function getStateRoot(state: any): any;
-export function getCollectionFromState(state: any, doctype: any): any[];
-export function getDocumentFromState(state: any, doctype: any, id: any): any;
-export function getQueryFromStore(store: any, queryId: any): any;
-export function getQueryFromState(state: any, queryId: any): any;
-export function getRawQueryFromState(state: any, queryId: any): any;
-export function isQueryExisting(state: any, queryId: any): boolean;
 declare function combinedReducer(state: {
     documents: {};
     queries: {};
@@ -25,5 +18,6 @@ declare function combinedReducer(state: {
 export function resetState(): {
     type: string;
 };
+export { getStateRoot, getCollectionFromState, getDocumentFromState, getQueryFromStore, getQueryFromState, getRawQueryFromState, isQueryExisting } from "./stateHelpers";
 export { initQuery, loadQuery, resetQuery, receiveQueryResult, receiveQueryError, executeQueryFromState } from "./queries";
 export { initMutation, receiveMutationResult, receiveMutationError } from "./mutations";
