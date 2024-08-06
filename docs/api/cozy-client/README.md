@@ -425,7 +425,7 @@ Generated URL
 
 *Defined in*
 
-[packages/cozy-client/src/store/index.js:108](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/store/index.js#L108)
+packages/cozy-client/src/store/stateHelpers.js:15
 
 ***
 
