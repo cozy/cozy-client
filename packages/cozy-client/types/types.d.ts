@@ -467,6 +467,13 @@ export type ManifestField = {
      */
     encrypted?: boolean;
 };
+export type CozyState = {
+    documents: DocumentsStateSlice;
+    queries: QueriesStateSlice;
+};
+export type CozyStore = {
+    cozy: CozyState;
+};
 export type ManifestFields = {
     [key: string]: ManifestField;
 };

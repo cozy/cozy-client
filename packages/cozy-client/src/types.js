@@ -214,6 +214,17 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
+ * @typedef {object} CozyState
+ * @property {DocumentsStateSlice} documents
+ * @property {QueriesStateSlice} queries
+ */
+
+/**
+ * @typedef {object} CozyStore
+ * @property {CozyState} cozy
+ */
+
+/**
  * @typedef {{
  *   [key: string]: ManifestField;
  * }} ManifestFields
