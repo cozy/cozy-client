@@ -696,6 +696,15 @@ describe('execute query from state', () => {
       }
     }
   }
+  const state = {
+    cozy: {
+      documents: {
+        ...docState
+      },
+      queries: {}
+    }
+  }
+
   it('should get the correct filtered results from state thanks to selector', () => {
     const query1 = {
       doctype: 'io.cozy.files',
@@ -705,7 +714,7 @@ describe('execute query from state', () => {
         }
       }
     }
-    const res1 = executeQueryFromState(docState, query1)
+    const res1 = executeQueryFromState(state, query1)
     expect(res1.data.length).toEqual(2)
     expect(res1.data[0]).toEqual(docState['io.cozy.files']['456'])
     expect(res1.data[1]).toEqual(docState['io.cozy.files']['789'])
@@ -716,7 +725,7 @@ describe('execute query from state', () => {
         name: 'well'
       }
     }
-    const res2 = executeQueryFromState(docState, query2)
+    const res2 = executeQueryFromState(state, query2)
     expect(res2.data.length).toEqual(1)
     expect(res2.data[0]).toEqual(docState['io.cozy.files']['123'])
 
@@ -729,7 +738,7 @@ describe('execute query from state', () => {
         name: 'hello'
       }
     }
-    const res3 = executeQueryFromState(docState, query3)
+    const res3 = executeQueryFromState(state, query3)
     expect(res3.data.length).toEqual(1)
     expect(res3.data[0]).toEqual(docState['io.cozy.files']['456'])
 
@@ -742,7 +751,7 @@ describe('execute query from state', () => {
         }
       }
     }
-    const res4 = executeQueryFromState(docState, query4)
+    const res4 = executeQueryFromState(state, query4)
     expect(res4.data.length).toEqual(0)
   })
 
@@ -751,14 +760,14 @@ describe('execute query from state', () => {
       doctype: 'io.cozy.files',
       id: '123'
     }
-    const res1 = executeQueryFromState(docState, query1)
+    const res1 = executeQueryFromState(state, query1)
     expect(res1.data).toEqual(docState['io.cozy.files']['123'])
 
     const query2 = {
       doctype: 'io.cozy.files',
       ids: ['123', '789']
     }
-    const res2 = executeQueryFromState(docState, query2)
+    const res2 = executeQueryFromState(state, query2)
     expect(res2.data.length).toEqual(2)
     expect(res2.data[0]).toEqual(docState['io.cozy.files']['123'])
     expect(res2.data[1]).toEqual(docState['io.cozy.files']['789'])
@@ -767,7 +776,7 @@ describe('execute query from state', () => {
       doctype: 'io.cozy.files',
       id: '-1'
     }
-    const res3 = executeQueryFromState(docState, query3)
+    const res3 = executeQueryFromState(state, query3)
     expect(res3.data).toEqual(null)
   })
 
@@ -775,7 +784,7 @@ describe('execute query from state', () => {
     const query1 = {
       doctype: 'io.cozy.files'
     }
-    const res1 = executeQueryFromState(docState, query1)
+    const res1 = executeQueryFromState(state, query1)
     expect(res1.data.length).toEqual(3)
   })
 

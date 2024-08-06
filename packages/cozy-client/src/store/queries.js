@@ -12,11 +12,12 @@ import sift from 'sift'
 
 import flag from 'cozy-flags'
 
-import { getCollectionFromSlice, getDocumentFromSlice } from './documents'
+import { getDocumentFromSlice } from './documents'
 import { isReceivingMutationResult } from './mutations'
 import { properId } from './helpers'
 import { isAGetByIdQuery, QueryDefinition } from '../queries/dsl'
 import logger from '../logger'
+import { getCollectionFromState } from './stateHelpers'
 
 const INIT_QUERY = 'INIT_QUERY'
 const LOAD_QUERY = 'LOAD_QUERY'
@@ -310,12 +311,12 @@ const getSelectorFilterFn = queryDefinition => {
 /**
  * Execute the given query against the document state.
  *
- * @param {import('../types').DocumentsStateSlice} state - The documents state
+ * @param {import('../types').CozyStore} state - The cozy state
  * @param {QueryDefinition} queryDefinition - The query definition to execute
  * @returns {import("../types").QueryStateData} - The returned documents from the query
  */
 export const executeQueryFromState = (state, queryDefinition) => {
-  const documents = getCollectionFromSlice(state, queryDefinition.doctype)
+  const documents = getCollectionFromState(state, queryDefinition.doctype)
   const isSingleObjectResponse = !!queryDefinition.id
   if (!documents) {
     return { data: isSingleObjectResponse ? null : [] }
