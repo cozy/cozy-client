@@ -52,7 +52,7 @@ export const getReplicationURL = (uri, token, doctype) => {
   return `${authenticatedURL}/data/${doctype}`
 }
 
-const doNothing = () => {}
+const doNothing = (operation, result = null) => {}
 const expiredTokenError = /Expired token/
 export const isExpiredTokenError = pouchError => {
   return expiredTokenError.test(pouchError.error)
@@ -79,10 +79,9 @@ class PouchLink extends CozyLink {
    * @param {number} [opts.replicationInterval] Milliseconds between replications
    * @param {string[]} opts.doctypes Doctypes to replicate
    * @param {object[]} opts.doctypesReplicationOptions A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote")
-   * @returns {object} The PouchLink instance
    */
 
-  constructor(opts = {}) {
+  constructor(opts) {
     const options = defaults({}, opts, DEFAULT_OPTIONS)
     super(options)
     const { doctypes, doctypesReplicationOptions } = options
@@ -559,6 +558,10 @@ class PouchLink extends CozyLink {
       _deleted: true
     }
     return parseMutationResult(document, res)
+  }
+
+  async addReferencesTo(mutation) {
+    throw new Error('addReferencesTo is not implemented in CozyPouchLink')
   }
 
   async dbMethod(method, mutation) {
