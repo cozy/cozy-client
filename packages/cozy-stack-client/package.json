@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@babel/cli": "7.12.8",
-    "cozy-flags": "2.10.2"
+    "cozy-flags": "2.12.0"
   },
   "peerDependencies": {
     "cozy-flags": ">2.8.6"
