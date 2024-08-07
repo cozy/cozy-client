@@ -52,7 +52,7 @@
     "cozy-flags": "2.10.2",
     "cozy-intent": "1.17.3",
     "cozy-logger": "1.7.0",
-    "cozy-ui": "93.1.1",
+    "cozy-ui": "93.5.0",
     "jsdoc-plugin-intersection": "1.0.4",
     "mockdate": "2.0.5",
     "react": "16.14.0",
