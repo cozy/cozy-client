@@ -44,6 +44,7 @@
       "bank.recipients": "Bénéficiaires de virements bancaires",
       "bank.recurrence": "Groupes de récurrence bancaire",
       "bills": "Factures",
+      "calendar": "Calendrier",
       "certified.carbon_copy": "Copie carbone",
       "certified.electronic_safe": "Coffre-fort numérique",
       "coachco2.settings": "Paramètres de l'application CoachCO2",
@@ -68,6 +69,7 @@
       "sharings": "Partage",
       "tags": "Tags",
       "timeseries.geojson": "Déplacements",
+      "timeseries.grades": "Notes",
       "triggers": "Planification de tâches à exécuter dans le futur"
     }
   },

@@ -45,6 +45,7 @@
       "bank.recipients": "Banking transfer recipients",
       "bank.recurrence": "Banks recurrence groups",
       "bills": "Bills",
+      "calendar": "Calendar",
       "certified.carbon_copy": "Carbon copy",
       "certified.electronic_safe": "Electronic safe",
       "coachco2.settings": "CoachCO2 app settings",
@@ -69,6 +70,7 @@
       "sharings": "Sharing",
       "tags": "Tags",
       "timeseries.geojson": "Trips",
+      "timeseries.grades": "Grades",
       "triggers": "Scheduling jobs"
     }
   },
