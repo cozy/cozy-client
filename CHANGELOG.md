@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [48.13.1](https://github.com/cozy/cozy-client/compare/v48.13.0...v48.13.1) (2024-08-07)
+
+
+### Bug Fixes
+
+* Support executing queries from store ([75d3228](https://github.com/cozy/cozy-client/commit/75d3228be1fe598e27898d4ab93d1b0ac632c21d))
+
+
+
+
+
 # [48.13.0](https://github.com/cozy/cozy-client/compare/v48.12.1...v48.13.0) (2024-07-31)
 
 
