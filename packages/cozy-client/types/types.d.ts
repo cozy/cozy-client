@@ -783,6 +783,20 @@ export type FileMetadata = {
      * - Name of the instance
      */
     instanceName?: string;
+    /**
+     * - Information of the target of the shortcut
+     */
+    target?: {
+        title: string;
+        description: string;
+        category: string;
+    };
+    /**
+     * - Additional information to maintain link with external data source
+     */
+    externalDataSource?: {
+        source: string;
+    };
 };
 /**
  * - An io.cozy.files document

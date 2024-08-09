@@ -441,6 +441,12 @@ import { QueryDefinition } from './queries/dsl'
  * @property {string} [noticePeriod] - Notice period of the paper, in days
  * @property {string} [datetime] - Image EXIF date, if relevant
  * @property {string} [instanceName] - Name of the instance
+ * @property {object} [target] - Information of the target of the shortcut
+ * @property {string} [target.title] - The title of the application to which the shortcut redirects
+ * @property {string} [target.description] - A brief description of the application
+ * @property {string} [target.category] - The category of the application
+ * @property {object} [externalDataSource] - Additional information to maintain link with external data source
+ * @property {string} [externalDataSource.source] - The space to which the application belongs
  */
 
 /**
