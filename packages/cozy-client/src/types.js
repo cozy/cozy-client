@@ -441,6 +441,7 @@ import { QueryDefinition } from './queries/dsl'
  * @property {string} [noticePeriod] - Notice period of the paper, in days
  * @property {string} [datetime] - Image EXIF date, if relevant
  * @property {string} [instanceName] - Name of the instance
+ * @property {string} [type] - Type of the file (mainly used for shortcuts categories)
  */
 
 /**

@@ -783,6 +783,10 @@ export type FileMetadata = {
      * - Name of the instance
      */
     instanceName?: string;
+    /**
+     * - Type of the file (mainly used for shortcuts categories)
+     */
+    type?: string;
 };
 /**
  * - An io.cozy.files document
