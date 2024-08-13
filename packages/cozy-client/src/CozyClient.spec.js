@@ -1393,7 +1393,7 @@ describe('CozyClient', () => {
       expect(client.requestQuery).toHaveBeenCalledTimes(1)
     })
 
-    it('should persist virtual document when no meta.rev', async () => {
+    it('should persist virtual document when no meta.rev nor _rev', async () => {
       jest.spyOn(client, 'requestQuery')
       requestHandler.mockResolvedValue({
         data: {
@@ -1411,7 +1411,37 @@ describe('CozyClient', () => {
       )
     })
 
-    it('should persist array of virtual documents when no meta.rev', async () => {
+    it('should not persist virtual document when meta.rev', async () => {
+      jest.spyOn(client, 'requestQuery')
+      requestHandler.mockResolvedValue({
+        data: {
+          _id: 'some_id',
+          meta: {
+            rev: 'SOME_REV'
+          }
+        }
+      })
+
+      await client.query(query, { as: 'allTodos' })
+
+      expect(persistHandler).not.toHaveBeenCalled()
+    })
+
+    it('should not persist virtual document when _rev', async () => {
+      jest.spyOn(client, 'requestQuery')
+      requestHandler.mockResolvedValue({
+        data: {
+          _id: 'some_id',
+          _rev: 'SOME_REV'
+        }
+      })
+
+      await client.query(query, { as: 'allTodos' })
+
+      expect(persistHandler).not.toHaveBeenCalled()
+    })
+
+    it('should persist array of virtual documents when no meta.rev nor _rev', async () => {
       jest.spyOn(client, 'requestQuery')
       requestHandler.mockResolvedValue({
         data: [
