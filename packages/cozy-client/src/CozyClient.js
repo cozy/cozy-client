@@ -1148,15 +1148,15 @@ client.query(Q('io.cozy.bills'))`)
    *
    * @private
    * @param {CozyClientDocument} document - Document to be saved
-   * @param {boolean} enforce - When true, save the document even if `meta.rev` exists
+   * @param {boolean} enforce - When true, save the document even if `meta.rev` or `_rev` exist
    * @returns {Promise<void>}
    */
   async persistVirtualDocument(document, enforce) {
-    if (
-      ((document && !document.meta?.rev) || enforce) &&
-      !document.cozyLocalOnly &&
-      !document.cozyFromPouch
-    ) {
+    if (!document || document.cozyLocalOnly || document.cozyFromPouch) {
+      return
+    }
+
+    if ((!document.meta?.rev && !document._rev) || enforce) {
       await this.chain.persistData(document)
     }
   }
