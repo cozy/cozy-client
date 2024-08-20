@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [48.14.0](https://github.com/cozy/cozy-client/compare/v48.13.1...v48.14.0) (2024-08-20)
+
+
+### Features
+
+* Force _rev for queries with .select fields ([75a2259](https://github.com/cozy/cozy-client/commit/75a2259c53bdd0f35fe2ae3f0755bade2f6de28d))
+
+
+
+
+
 # [48.12.0](https://github.com/cozy/cozy-client/compare/v48.11.2...v48.12.0) (2024-07-30)
 
 
