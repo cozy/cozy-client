@@ -532,8 +532,8 @@ The returned documents are paginated by the stack.
     return {
       selector: mergedSelector,
       use_index: indexName,
-      // TODO: type and class should not be necessary, it's just a temp fix for a stack bug
-      fields: fields ? [...fields, '_id', '_type', 'class'] : undefined,
+      // _id is necessary for the store, and _rev is required for offline. See https://github.com/cozy/cozy-client/blob/95978d39546023920b0c01d689fed5dd41577a02/packages/cozy-client/src/CozyClient.js#L1153
+      fields: fields ? [...fields, '_id', '_rev'] : undefined,
       limit,
       skip,
       bookmark: options.bookmark || bookmark,
