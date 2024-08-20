@@ -1527,13 +1527,21 @@ describe('DocumentCollection', () => {
       })
       expect(opts.sort).toEqual([{ name: 'asc' }, { date: 'asc' }])
     })
+
     it('should raise warning when there is a selector and no indexFields', () => {
       collection.toMangoOptions({ name: 'toto' }, {})
       expect(warnSpy).toHaveBeenCalled()
     })
+
     it('should not raise warning when there is a selector and indexFields', () => {
       collection.toMangoOptions({ name: 'toto' }, { indexedFields: ['name'] })
       expect(warnSpy).not.toHaveBeenCalled()
+    })
+
+    it('should add mandatory attributes when specifying fields', () => {
+      const fields = ['date']
+      const opts = collection.toMangoOptions({}, { fields })
+      expect(opts.fields).toEqual(['date', '_id', '_rev'])
     })
   })
 })
