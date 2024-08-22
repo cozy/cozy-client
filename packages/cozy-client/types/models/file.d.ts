@@ -67,6 +67,12 @@ export function hasQualifications(file: import("../types").IOCozyFile): boolean;
 export function hasCertifications(file: import("../types").IOCozyFile): boolean;
 export function isFromKonnector(file: import("../types").IOCozyFile): boolean;
 export function fetchBlobFileById(client: CozyClient, fileId: string): Promise<Blob>;
+export function downloadFile({ client, file, url, webviewIntent }: {
+    client: CozyClient;
+    file: import("../types").IOCozyFile;
+    url: string;
+    webviewIntent: import('cozy-intent').WebviewService;
+}): Promise<any>;
 export type FileUploadOptions = {
     /**
      * - The file name to upload
