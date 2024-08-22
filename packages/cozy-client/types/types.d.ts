@@ -835,6 +835,10 @@ export type FileDocument = {
      */
     _id: string;
     /**
+     * - Rev of the file
+     */
+    _rev: string;
+    /**
      * - Doctype of the file
      */
     _type: FilesDoctype;
