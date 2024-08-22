@@ -2570,6 +2570,7 @@ Document representing a io.cozy.files
 | Name | Type | Description |
 | --- | --- | --- |
 | _id | <code>string</code> | Id of the file |
+| _rev | <code>string</code> | Rev of the file |
 | attributes | [<code>FileAttributes</code>](#FileAttributes) | Attributes of the file |
 | meta | <code>object</code> | Meta |
 | relationships | <code>object</code> | Relationships |
