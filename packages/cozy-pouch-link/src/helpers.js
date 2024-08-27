@@ -61,4 +61,21 @@ helpers.insertBulkDocs = async (db, docs) => {
   return db.bulkDocs(docs, { new_edits: false })
 }
 
+helpers.normalizeFindSelector = (selector, indexedFields) => {
+  let findSelector = selector || {}
+  if (indexedFields) {
+    for (const indexedField of indexedFields) {
+      if (!Object.keys(findSelector).includes(indexedField)) {
+        findSelector[indexedField] = {
+          $gt: null
+        }
+      }
+    }
+  }
+
+  return Object.keys(findSelector).length > 0
+    ? findSelector
+    : { _id: { $gt: null } } // PouchDB does not accept empty selector
+}
+
 export default helpers
