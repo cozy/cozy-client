@@ -48,7 +48,12 @@ describe('startReplication', () => {
       const dummyDocs = generateDocs(2)
       fetchRemoteInstance.mockResolvedValue({ rows: dummyDocs })
 
-      const rep = await replicateAllDocs(null, url, undefined, storage)
+      const rep = await replicateAllDocs({
+        db: null,
+        baseUrl: url,
+        doctype: undefined,
+        storage
+      })
       const expectedDocs = dummyDocs.map(doc => doc.doc)
       expect(rep).toEqual(expectedDocs)
       expect(fetchRemoteInstance).toHaveBeenCalledTimes(1)
@@ -65,7 +70,12 @@ describe('startReplication', () => {
         rows: dummyDocs.slice(1000, 1002)
       })
 
-      const rep = await replicateAllDocs(null, url, undefined, storage)
+      const rep = await replicateAllDocs({
+        db: null,
+        baseUrl: url,
+        doctype: undefined,
+        storage
+      })
       const expectedDocs = dummyDocs.map(doc => doc.doc)
       expect(rep).toEqual(expectedDocs)
       expect(fetchRemoteInstance).toHaveBeenCalledTimes(2)
@@ -77,7 +87,12 @@ describe('startReplication', () => {
       const dummyDocs = generateDocs(10)
       fetchRemoteInstance.mockResolvedValue({ rows: dummyDocs.slice(5, 11) })
 
-      const rep = await replicateAllDocs(null, url, undefined, storage)
+      const rep = await replicateAllDocs({
+        db: null,
+        baseUrl: url,
+        doctype: undefined,
+        storage
+      })
 
       const calledUrl = new URL(`${url}/_all_docs`)
       expect(fetchRemoteInstance).toHaveBeenCalledWith(calledUrl, {
