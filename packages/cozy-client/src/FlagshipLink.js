@@ -1,30 +1,21 @@
 import CozyLink from './CozyLink'
-import logger from './logger'
 
 export default class FlagshipLink extends CozyLink {
   /**
    * @param {object} [options] - Options
-   * @param  {object} [options.stackClient] - A StackClient
-   * @param  {object} [options.client] - A StackClient (deprecated)
    * @param  {import('cozy-intent').WebviewService} [options.webviewIntent] - The webview's intent reference
    */
-  constructor({ client, stackClient, webviewIntent } = {}) {
+  constructor({ webviewIntent } = {}) {
     super()
-    if (client) {
-      logger.warn(
-        'Using options.client is deprecated, prefer options.stackClient'
-      )
-    }
-    this.stackClient = stackClient || client
     this.webviewIntent = webviewIntent
   }
 
   registerClient(client) {
-    this.stackClient = client.stackClient || client.client
+    // does nothing, we don't need any client for this kind of link
   }
 
   reset() {
-    this.stackClient = null
+    // does nothing, we don't need any client for this kind of link
   }
 
   async request(operation, result, forward) {
