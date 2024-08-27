@@ -595,7 +595,12 @@ class PouchLink extends CozyLink {
       res.limit = limit
       withRows = true
     }
-    return jsonapi.fromPouchResult(res, withRows, doctype, this.client)
+    return jsonapi.fromPouchResult({
+      res,
+      withRows,
+      doctype,
+      client: this.client
+    })
   }
 
   async executeMutation(mutation, result, forward) {
@@ -620,12 +625,12 @@ class PouchLink extends CozyLink {
         return forward(mutation, result)
     }
 
-    return jsonapi.fromPouchResult(
-      pouchRes,
-      false,
-      getDoctypeFromOperation(mutation),
-      this.client
-    )
+    return jsonapi.fromPouchResult({
+      res: pouchRes,
+      withRows: false,
+      doctype: getDoctypeFromOperation(mutation),
+      client: this.client
+    })
   }
 
   async createDocument(mutation) {
