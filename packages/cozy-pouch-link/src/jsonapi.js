@@ -53,7 +53,7 @@ const normalizeLinks = (docRef, doctype, client) => {
 
 const filterDeletedDocumentsFromRows = doc => !!doc
 
-export const fromPouchResult = (res, withRows, doctype, client) => {
+export const fromPouchResult = ({ res, withRows, doctype, client }) => {
   // Sometimes, queries are transformed by Collections and they call a dedicated
   // cozy-stack route. When this is the case, we want to be able to replicate the same
   // query from cozy-pouch-link. It is not possible as-is because the received data
