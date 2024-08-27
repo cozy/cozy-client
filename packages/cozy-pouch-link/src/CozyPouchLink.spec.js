@@ -4,6 +4,8 @@ import { find, allDocs, withoutDesignDocuments } from './helpers'
 jest.mock('./helpers', () => ({
   find: jest.fn(),
   allDocs: jest.fn(),
+  normalizeFindSelector: jest.requireActual('./helpers').default
+    .normalizeFindSelector,
   withoutDesignDocuments: jest.fn()
 }))
 
