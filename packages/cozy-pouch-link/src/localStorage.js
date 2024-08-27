@@ -9,6 +9,7 @@ export const LOCALSTORAGE_ADAPTERNAME = 'cozy-client-pouch-link-adaptername'
 
 export class PouchLocalStorage {
   constructor(storageEngine) {
+    checkStorageEngine(storageEngine)
     this.storageEngine = storageEngine
   }
 
@@ -218,5 +219,25 @@ export class PouchLocalStorage {
    */
   async persistAdapterName(adapter) {
     await this.storageEngine.setItem(LOCALSTORAGE_ADAPTERNAME, adapter)
+  }
+}
+
+/**
+ * Throw if the given storage engine does not implement the expected Interface
+ *
+ * @param {*} storageEngine - Object containing storage access methods
+ */
+const checkStorageEngine = storageEngine => {
+  const requiredMethods = ['setItem', 'getItem', 'removeItem']
+
+  const missingMethods = requiredMethods.filter(
+    requiredMethod => !storageEngine[requiredMethod]
+  )
+
+  if (missingMethods.length > 0) {
+    const missingMethodsString = missingMethods.join(', ')
+    throw new Error(
+      `Provided storageEngine is missing the following methods: ${missingMethodsString}`
+    )
   }
 }
