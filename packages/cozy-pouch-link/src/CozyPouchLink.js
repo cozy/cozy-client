@@ -556,25 +556,11 @@ class PouchLink extends CozyLink {
       res = withoutDesignDocuments(res)
       withRows = true
     } else {
-      let findSelector = selector
-      const shouldAddId = !findSelector
-      if (shouldAddId) {
-        findSelector = {}
-      }
-      if (indexedFields) {
-        for (const indexedField of indexedFields) {
-          if (!Object.keys(findSelector).includes(indexedField)) {
-            findSelector[indexedField] = {
-              $gt: null
-            }
-          }
-        }
-      }
-      if (shouldAddId) {
-        findSelector['_id'] = {
-          $gt: null
-        }
-      }
+      const findSelector = helpers.normalizeFindSelector(
+        selector,
+        indexedFields
+      )
+
       const findOpts = {
         sort,
         selector: findSelector,

@@ -1,5 +1,10 @@
 import helpers from './helpers'
-const { withoutDesignDocuments, isDeletedDocument, isDesignDocument } = helpers
+const {
+  withoutDesignDocuments,
+  isDeletedDocument,
+  isDesignDocument,
+  normalizeFindSelector
+} = helpers
 
 import PouchDB from 'pouchdb-browser'
 import PouchDBFind from 'pouchdb-find'
@@ -111,6 +116,39 @@ describe('Helpers', () => {
 
     it('should return false when given a non deleted document', () => {
       expect(isDeletedDocument({ _id: 'notdeleted' })).toBeFalsy()
+    })
+  })
+
+  describe('normalizeFindSelector', () => {
+    it('should add indexed fields in the selector if they are missing', () => {
+      const selector = {
+        SOME_FIELD: { $gt: null }
+      }
+      const indexedFields = ['SOME_INDEXED_FIELD']
+
+      const findSelector = normalizeFindSelector(selector, indexedFields)
+      expect(findSelector).toStrictEqual({
+        SOME_FIELD: { $gt: null },
+        SOME_INDEXED_FIELD: { $gt: null }
+      })
+    })
+
+    it('should prevent empty selector by adding a selector on _id when no selector is provided', () => {
+      const selector = undefined
+      const indexedFields = undefined
+
+      const findSelector = normalizeFindSelector(selector, indexedFields)
+      expect(findSelector).toStrictEqual({ _id: { $gt: null } })
+    })
+
+    it('should not add selector on _id when no selector is provided but there are some indexed fields', () => {
+      const selector = undefined
+      const indexedFields = ['SOME_INDEXED_FIELD']
+
+      const findSelector = normalizeFindSelector(selector, indexedFields)
+      expect(findSelector).toStrictEqual({
+        SOME_INDEXED_FIELD: { $gt: null }
+      })
     })
   })
 })
