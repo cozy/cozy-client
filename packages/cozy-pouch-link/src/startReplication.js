@@ -75,7 +75,12 @@ export const startReplication = (
         // For the first remote->local replication, we manually replicate all docs
         // as it avoids to replicate all revs history, which can lead to
         // performances issues
-        docs = await replicateAllDocs(pouch, url, doctype, storage)
+        docs = await replicateAllDocs({
+          db: pouch,
+          baseUrl: url,
+          doctype,
+          storage
+        })
         const end = new Date()
         if (process.env.NODE_ENV !== 'production') {
           logger.info(
@@ -146,13 +151,14 @@ const filterDocs = docs => {
  * Note it saves the last replicated _id for each run and
  * starts from there in case the process stops before the end.
  *
- * @param {object} db - Pouch instance
- * @param {string} baseUrl - The remote instance
- * @param {string} doctype - The doctype to replicate
- * @param {import('./localStorage').PouchLocalStorage} storage - Methods to access local storage
+ * @param {object} params - The replications parameters
+ * @param {object} params.db - Pouch instance
+ * @param {string} params.baseUrl - The remote instance
+ * @param {string} params.doctype - The doctype to replicate
+ * @param {import('./localStorage').PouchLocalStorage} params.storage - Methods to access local storage
  * @returns {Promise<Array>} The retrieved documents
  */
-export const replicateAllDocs = async (db, baseUrl, doctype, storage) => {
+export const replicateAllDocs = async ({ db, baseUrl, doctype, storage }) => {
   const remoteUrlAllDocs = new URL(`${baseUrl}/_all_docs`)
   const batchSize = BATCH_SIZE
   let hasMore = true
