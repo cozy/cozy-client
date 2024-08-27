@@ -1,5 +1,7 @@
 import startsWith from 'lodash/startsWith'
 
+import logger from './logger'
+
 const helpers = {}
 
 // https://github.com/pouchdb/pouchdb/issues/7011
@@ -66,6 +68,10 @@ helpers.normalizeFindSelector = (selector, indexedFields) => {
   if (indexedFields) {
     for (const indexedField of indexedFields) {
       if (!Object.keys(findSelector).includes(indexedField)) {
+        const selectorJson = JSON.stringify(selector)
+        logger.warn(
+          `${indexedField} was missing in selector, it has been automatically added from indexed fields. Please consider adding this field to your query's selector as required by PouchDB. The query's selector is: ${selectorJson}`
+        )
         findSelector[indexedField] = {
           $gt: null
         }
