@@ -391,17 +391,44 @@ class PouchLink extends CozyLink {
     }
   }
 
-  async persistData(data, forward = doNothing) {
+  sanitizeJsonApi(data) {
     const docWithoutType = sanitized(data)
-    docWithoutType.cozyLocalOnly = true
+
+    /*
+    We persist in the local Pouch database all the documents that do not
+    exist on the remote Couch database
+
+    Those documents are computed by the cozy-stack then are sent to the
+    client using JSON-API format containing `attributes` and `meta`
+    attributes
+
+    Then the cozy-stack-client would normalize those documents by spreading
+    `attributes` and `meta` content into the document's root
+
+    So we don't need to store `attributes` and `meta` data into the Pouch
+    database as their data already exists in the document's root
+
+    Note that this is also the case for `links` and `relationships`
+    attributes, but we don't remove them for now. They are also part of the
+    JSON-API, but the normalization do not spread them in the document's
+    root, so we have to check their usefulnes first
+    */
+    const sanitizedDoc = omit(docWithoutType, ['attributes', 'meta'])
+
+    return sanitizedDoc
+  }
+
+  async persistCozyData(data, forward = doNothing) {
+    const sanitizedDoc = this.sanitizeJsonApi(data)
+    sanitizedDoc.cozyLocalOnly = true
 
     const oldDoc = await this.getExistingDocument(data._id, data._type)
     if (oldDoc) {
-      docWithoutType._rev = oldDoc._rev
+      sanitizedDoc._rev = oldDoc._rev
     }
 
     const db = this.pouches.getPouch(data._type)
-    await db.put(docWithoutType)
+    await db.put(sanitizedDoc)
   }
 
   /**
