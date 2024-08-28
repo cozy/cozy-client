@@ -63,7 +63,7 @@ helpers.insertBulkDocs = async (db, docs) => {
   return db.bulkDocs(docs, { new_edits: false })
 }
 
-helpers.normalizeFindSelector = (selector, indexedFields) => {
+helpers.normalizeFindSelector = ({ selector, sort, indexedFields }) => {
   let findSelector = selector || {}
   if (indexedFields) {
     for (const indexedField of indexedFields) {
@@ -73,6 +73,21 @@ helpers.normalizeFindSelector = (selector, indexedFields) => {
           `${indexedField} was missing in selector, it has been automatically added from indexed fields. Please consider adding this field to your query's selector as required by PouchDB. The query's selector is: ${selectorJson}`
         )
         findSelector[indexedField] = {
+          $gt: null
+        }
+      }
+    }
+  }
+
+  if (sort) {
+    const sortedFields = sort.flatMap(s => Object.keys(s))
+    for (const sortedField of sortedFields) {
+      if (!Object.keys(findSelector).includes(sortedField)) {
+        const selectorJson = JSON.stringify(selector)
+        logger.warn(
+          `${sortedField} was missing in selector, it has been automatically added from sorted fields. Please consider adding this field to your query's selector as required by PouchDB. The query's selector is: ${selectorJson}`
+        )
+        findSelector[sortedField] = {
           $gt: null
         }
       }
