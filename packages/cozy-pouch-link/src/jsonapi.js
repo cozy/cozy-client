@@ -25,12 +25,12 @@ export const normalizeDoc = (doc, doctype, client) => {
     delete normalizedDoc.rev
   }
 
-  normalizeLinks(normalizedDoc, doctype, client)
+  normalizeAppsLinks(normalizedDoc, doctype, client)
 
   return normalizedDoc
 }
 
-const normalizeLinks = (docRef, doctype, client) => {
+const normalizeAppsLinks = (docRef, doctype, client) => {
   if (doctype !== 'io.cozy.apps') {
     return
   }
