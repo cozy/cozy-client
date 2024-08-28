@@ -1151,7 +1151,7 @@ client.query(Q('io.cozy.bills'))`)
     }
 
     if ((!document.meta?.rev && !document._rev) || enforce) {
-      await this.chain.persistData(document)
+      await this.chain.persistCozyData(document)
     }
   }
 
