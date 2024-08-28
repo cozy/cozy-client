@@ -22,7 +22,7 @@ export default class FlagshipLink extends CozyLink {
     return this.webviewIntent.call('flagshipLinkRequest', operation)
   }
 
-  async persistData(data, forward) {
+  async persistCozyData(data, forward) {
     // Persist data should do nothing here as data is already persisted on Flagship side
     return
   }
