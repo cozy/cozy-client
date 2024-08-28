@@ -817,7 +817,7 @@ Returns the cozy client from the context
 
 *Defined in*
 
-[packages/cozy-client/src/hooks/useClient.js:9](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useClient.js#L9)
+[packages/cozy-client/src/hooks/useClient.js:10](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useClient.js#L10)
 
 ***
 
