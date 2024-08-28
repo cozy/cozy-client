@@ -556,10 +556,11 @@ class PouchLink extends CozyLink {
       res = withoutDesignDocuments(res)
       withRows = true
     } else {
-      const findSelector = helpers.normalizeFindSelector(
+      const findSelector = helpers.normalizeFindSelector({
         selector,
+        sort,
         indexedFields
-      )
+      })
 
       const findOpts = {
         sort,

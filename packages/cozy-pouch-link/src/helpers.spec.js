@@ -124,28 +124,74 @@ describe('Helpers', () => {
       const selector = {
         SOME_FIELD: { $gt: null }
       }
+      const sort = undefined
       const indexedFields = ['SOME_INDEXED_FIELD']
 
-      const findSelector = normalizeFindSelector(selector, indexedFields)
+      const findSelector = normalizeFindSelector({
+        selector,
+        sort,
+        indexedFields
+      })
       expect(findSelector).toStrictEqual({
         SOME_FIELD: { $gt: null },
         SOME_INDEXED_FIELD: { $gt: null }
       })
     })
 
-    it('should prevent empty selector by adding a selector on _id when no selector is provided', () => {
-      const selector = undefined
+    it('should add sorted fields in the selector if they are missing', () => {
+      const selector = {}
+      const sort = [{ SOME_SORTED_FIELD: 'asc' }]
       const indexedFields = undefined
 
-      const findSelector = normalizeFindSelector(selector, indexedFields)
+      const findSelector = normalizeFindSelector({
+        selector,
+        sort,
+        indexedFields
+      })
+      expect(findSelector).toStrictEqual({
+        SOME_SORTED_FIELD: { $gt: null }
+      })
+    })
+
+    it('should add indexed fields AND sorted fields in the selector if they are missing', () => {
+      const selector = undefined
+      const sort = [{ SOME_SORTED_FIELD: 'asc' }]
+      const indexedFields = ['SOME_INDEXED_FIELD']
+
+      const findSelector = normalizeFindSelector({
+        selector,
+        sort,
+        indexedFields
+      })
+      expect(findSelector).toStrictEqual({
+        SOME_INDEXED_FIELD: { $gt: null },
+        SOME_SORTED_FIELD: { $gt: null }
+      })
+    })
+
+    it('should prevent empty selector by adding a selector on _id when no selector is provided', () => {
+      const selector = undefined
+      const sort = undefined
+      const indexedFields = undefined
+
+      const findSelector = normalizeFindSelector({
+        selector,
+        sort,
+        indexedFields
+      })
       expect(findSelector).toStrictEqual({ _id: { $gt: null } })
     })
 
     it('should not add selector on _id when no selector is provided but there are some indexed fields', () => {
       const selector = undefined
+      const sort = undefined
       const indexedFields = ['SOME_INDEXED_FIELD']
 
-      const findSelector = normalizeFindSelector(selector, indexedFields)
+      const findSelector = normalizeFindSelector({
+        selector,
+        sort,
+        indexedFields
+      })
       expect(findSelector).toStrictEqual({
         SOME_INDEXED_FIELD: { $gt: null }
       })
