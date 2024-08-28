@@ -5,7 +5,7 @@ export default class CozyLink {
     }
 
     if (typeof persistHandler === 'function') {
-      this.persistData = persistHandler
+      this.persistCozyData = persistHandler
     }
   }
 
@@ -13,8 +13,8 @@ export default class CozyLink {
     throw new Error('request is not implemented')
   }
 
-  persistData(data, forward) {
-    throw new Error('persistData is not implemented')
+  persistCozyData(data, forward) {
+    throw new Error('persistCozyData is not implemented')
   }
 }
 
@@ -52,9 +52,9 @@ const concat = (firstLink, nextLink) => {
 
   const persistHandler = (data, forward) => {
     const nextForward = d => {
-      return nextLink.persistData(d, forward)
+      return nextLink.persistCozyData(d, forward)
     }
-    return firstLink.persistData(data, nextForward)
+    return firstLink.persistCozyData(data, nextForward)
   }
 
   return new CozyLink(requestHandler, persistHandler)
