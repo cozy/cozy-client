@@ -313,7 +313,7 @@ describe('CozyPouchLink', () => {
       expect(find).toHaveBeenLastCalledWith(
         expect.anything(),
         expect.objectContaining({
-          fields: ['label', 'done', '_id', '_type', 'class']
+          fields: ['label', 'done', '_id', '_rev']
         })
       )
     })
