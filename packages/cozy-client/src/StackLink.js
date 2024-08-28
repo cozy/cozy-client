@@ -102,7 +102,7 @@ export default class StackLink extends CozyLink {
     }
   }
 
-  async persistData(data, forward) {
+  async persistCozyData(data, forward) {
     return forward(data)
   }
   /**
