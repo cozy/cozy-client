@@ -564,9 +564,9 @@ class PouchLink extends CozyLink {
       const findOpts = {
         sort,
         selector: findSelector,
-        // same selector as Document Collection. We force _id.
-        // Fix https://github.com/cozy/cozy-client/issues/985
-        fields: fields ? [...fields, '_id', '_type', 'class'] : undefined,
+        // same selector as Document Collection.
+        // _id is necessary for the store, and _rev is required for offline. See https://github.com/cozy/cozy-client/blob/95978d39546023920b0c01d689fed5dd41577a02/packages/cozy-client/src/CozyClient.js#L1153
+        fields: fields ? [...fields, '_id', '_rev'] : undefined,
         limit,
         skip
       }
