@@ -7,6 +7,7 @@ const NEXTCLOUD_FILES_DOCTYPE = 'io.cozy.remote.nextcloud.files'
 const normalizeDoc = DocumentCollection.normalizeDoctypeJsonApi(
   NEXTCLOUD_FILES_DOCTYPE
 )
+
 const normalizeNextcloudFile = (
   sourceAccount,
   parentPath,
