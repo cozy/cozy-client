@@ -1,6 +1,6 @@
 {
   "name": "cozy-client",
-  "version": "48.15.0",
+  "version": "48.16.0",
   "license": "MIT",
   "main": "dist/index.node.js",
   "browser": "dist/index.js",
@@ -18,7 +18,7 @@
     "@types/jest": "^26.0.20",
     "@types/lodash": "^4.14.170",
     "btoa": "^1.2.1",
-    "cozy-stack-client": "^48.14.0",
+    "cozy-stack-client": "^48.16.0",
     "date-fns": "2.29.3",
     "json-stable-stringify": "^1.0.1",
     "lodash": "^4.17.13",

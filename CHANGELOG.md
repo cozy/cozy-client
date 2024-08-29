@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [48.16.0](https://github.com/cozy/cozy-client/compare/v48.15.0...v48.16.0) (2024-08-29)
+
+
+### Features
+
+* **NextcloudFilesCollection:** Add spacing ([3e49c5d](https://github.com/cozy/cozy-client/commit/3e49c5d90d0a46bc64cb1a6cf0f489b159c48e37))
+
+
+
+
+
 # [48.15.0](https://github.com/cozy/cozy-client/compare/v48.14.1...v48.15.0) (2024-08-29)
 
 
