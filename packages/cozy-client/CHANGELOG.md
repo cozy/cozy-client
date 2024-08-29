@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [48.15.0](https://github.com/cozy/cozy-client/compare/v48.14.1...v48.15.0) (2024-08-29)
+
+
+### Features
+
+* Add spacing ([4121015](https://github.com/cozy/cozy-client/commit/412101596e55a10c7f3e4e7e768ed119dffdfeca))
+
+
+
+
+
 ## [48.14.1](https://github.com/cozy/cozy-client/compare/v48.14.0...v48.14.1) (2024-08-21)
 
 **Note:** Version bump only for package cozy-client
