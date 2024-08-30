@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [48.17.0](https://github.com/cozy/cozy-client/compare/v48.16.0...v48.17.0) (2024-08-30)
+
+
+### Features
+
+* Sort document when using executeFromStore option ([fbd44b8](https://github.com/cozy/cozy-client/commit/fbd44b8604757822d31d1b5fd06e8b1d9d4bfbad))
+
+
+
+
+
 # [48.16.0](https://github.com/cozy/cozy-client/compare/v48.15.0...v48.16.0) (2024-08-29)
 
 
