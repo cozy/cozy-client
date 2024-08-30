@@ -798,4 +798,26 @@ describe('execute query from state', () => {
     )
     expect(res2.data).toEqual(null)
   })
+
+  it('should get all the docs from state for the doctype and sort result', () => {
+    const query1 = {
+      doctype: 'io.cozy.files',
+      sort: [{ created_at: 'asc' }]
+    }
+
+    const res1 = executeQueryFromState(state, query1)
+    expect(res1.data[0]._id).toEqual('123')
+    expect(res1.data[1]._id).toEqual('456')
+    expect(res1.data[2]._id).toEqual('789')
+
+    const query2 = {
+      doctype: 'io.cozy.files',
+      sort: [{ created_at: 'desc' }]
+    }
+
+    const res2 = executeQueryFromState(state, query2)
+    expect(res2.data[0]._id).toEqual('789')
+    expect(res2.data[1]._id).toEqual('456')
+    expect(res2.data[2]._id).toEqual('123')
+  })
 })

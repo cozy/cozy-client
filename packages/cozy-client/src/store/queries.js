@@ -327,8 +327,10 @@ export const executeQueryFromState = (state, queryDefinition) => {
       data: res.length > 0 ? res[0] : null
     }
   }
+  const sorter = makeSorterFromDefinition(queryDefinition)
+  const sortedDocuments = sorter(res)
   return {
-    data: res
+    data: sortedDocuments
   }
 }
 
