@@ -16,7 +16,7 @@
     "pouchdb-find": "^7.2.2"
   },
   "devDependencies": {
-    "@babel/cli": "7.12.8",
+    "@babel/cli": "7.25.6",
     "@cozy/minilog": "1.0.0",
     "cozy-device-helper": "2.7.0",
     "jest-localstorage-mock": "2.4.19",
