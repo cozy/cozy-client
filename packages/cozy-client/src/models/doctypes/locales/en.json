@@ -22,7 +22,9 @@
       "dacc": "Anonymous aggregated statistics",
       "dacc_v2": "Anonymous aggregated statistics",
       "dacc.dev": "Anonymous aggregated statistics for development",
-      "dacc.dev_v2": "Anonymous aggregated statistics for development"
+      "dacc.dev_v2": "Anonymous aggregated statistics for development",
+      "announcements.dev": "Announcements for development",
+      "announcements.dev.uploads": "Images of announcements for development"
     }
   },
   "eu": {
