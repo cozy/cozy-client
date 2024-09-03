@@ -1774,9 +1774,9 @@ instantiation of the client.`
     )
 
     this.instanceOptions = {
-      capabilities: data.attributes,
-      locale: instanceData.attributes?.locale,
-      tracking: instanceData.attributes?.tracking
+      capabilities: data,
+      locale: instanceData.locale,
+      tracking: instanceData.tracking
     }
 
     this.capabilities = this.instanceOptions.capabilities || null
