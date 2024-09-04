@@ -87,7 +87,7 @@ class PouchLink extends CozyLink {
   constructor(opts) {
     const options = defaults({}, opts, DEFAULT_OPTIONS)
     super(options)
-    const { doctypes, doctypesReplicationOptions, ignoreWarmup } = options
+    const { doctypes, doctypesReplicationOptions } = options
     this.options = options
     if (!doctypes) {
       throw new Error(
@@ -100,7 +100,6 @@ class PouchLink extends CozyLink {
     this.storage = new PouchLocalStorage(
       options.platform?.storage || platformWeb.storage
     )
-    this.ignoreWarmup = ignoreWarmup
 
     /** @type {Record<string, ReplicationStatus>} - Stores replication states per doctype */
     this.replicationStatus = this.replicationStatus || {}
@@ -366,7 +365,7 @@ class PouchLink extends CozyLink {
       return forward(operation)
     }
 
-    if (!this.ignoreWarmup && (await this.needsToWaitWarmup(doctype))) {
+    if (await this.needsToWaitWarmup(doctype)) {
       if (process.env.NODE_ENV !== 'production') {
         logger.info(
           `Tried to access local ${doctype} but not warmuped yet. Forwarding the operation to next link`
