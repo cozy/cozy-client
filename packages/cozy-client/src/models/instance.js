@@ -20,19 +20,17 @@ const PREMIUM_QUOTA = 50 * GB
 
 // If manager URL is present, then the instance is not self-hosted
 export const isSelfHosted = instanceInfo => {
-  return get(instanceInfo, 'context.data.attributes.manager_url') ? false : true
+  return get(instanceInfo, 'context.data.manager_url') ? false : true
 }
 export const arePremiumLinksEnabled = instanceInfo => {
-  return get(instanceInfo, 'context.data.attributes.enable_premium_links')
-    ? true
-    : false
+  return get(instanceInfo, 'context.data.enable_premium_links') ? true : false
 }
 export const isFreemiumUser = instanceInfo => {
-  const quota = get(instanceInfo, 'diskUsage.data.attributes.quota', false)
+  const quota = get(instanceInfo, 'diskUsage.data.quota', false)
   return parseInt(quota) <= PREMIUM_QUOTA
 }
 export const getUuid = instanceInfo => {
-  return get(instanceInfo, 'instance.data.attributes.uuid')
+  return get(instanceInfo, 'instance.data.uuid')
 }
 
 /**
@@ -70,11 +68,7 @@ export const hasAnOffer = data => {
  * @param {InstanceInfo} instanceInfo - Instance information
  */
 export const buildPremiumLink = instanceInfo => {
-  const managerUrl = get(
-    instanceInfo,
-    'context.data.attributes.manager_url',
-    false
-  )
+  const managerUrl = get(instanceInfo, 'context.data.manager_url', false)
   const uuid = getUuid(instanceInfo)
   if (managerUrl && uuid) {
     return `${managerUrl}/cozy/instances/${uuid}/premium`
@@ -92,9 +86,7 @@ export const buildPremiumLink = instanceInfo => {
 export const hasPasswordDefinedAttribute = async client => {
   try {
     const {
-      data: {
-        attributes: { password_defined }
-      }
+      data: { password_defined }
     } = await client.fetchQueryAndGetFromState({
       definition: Q('io.cozy.settings').getById('io.cozy.settings.instance'),
       options: {
