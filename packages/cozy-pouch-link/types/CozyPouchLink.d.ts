@@ -131,7 +131,7 @@ declare class PouchLink extends CozyLink {
     getSyncInfo(doctype: any): import("./types").SyncInfo;
     getPouch(doctype: any): any;
     supportsOperation(operation: any): boolean;
-    persistData(data: any, forward?: (operation: any, result?: any) => void): Promise<void>;
+    sanitizeJsonApi(data: any): Pick<Pick<any, string | number | symbol>, string | number | symbol>;
     /**
      * Retrieve the existing document from Pouch
      *

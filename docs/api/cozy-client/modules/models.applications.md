@@ -27,7 +27,7 @@ Name of the app suitable for display
 
 *Defined in*
 
-[packages/cozy-client/src/models/applications.js:73](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/applications.js#L73)
+[packages/cozy-client/src/models/applications.js:71](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/applications.js#L71)
 
 ***
 
@@ -99,7 +99,7 @@ url to the app
 
 *Defined in*
 
-[packages/cozy-client/src/models/applications.js:61](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/applications.js#L61)
+[packages/cozy-client/src/models/applications.js:59](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/applications.js#L59)
 
 ***
 
