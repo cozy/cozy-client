@@ -57,7 +57,7 @@ export default class HasManyFiles extends HasMany {
         lastRelationship._type,
         lastRelationship._id
       )
-      const lastDatetime = getFileDatetime(lastRelDoc.attributes)
+      const lastDatetime = getFileDatetime(lastRelDoc)
       // cursor-based pagination
       const cursor = newCursor(
         [this.target._type, this.target._id, lastDatetime],
