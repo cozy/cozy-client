@@ -4,4 +4,9 @@ export function startReplication(pouch: object, replicationOptions: {
     doctype: string;
     warmupQueries: import('cozy-client/types/types').Query[];
 }, getReplicationURL: Function, storage: import('./localStorage').PouchLocalStorage): import('./types').CancelablePromise;
-export function replicateAllDocs(db: object, baseUrl: string, doctype: string, storage: import('./localStorage').PouchLocalStorage): Promise<any[]>;
+export function replicateAllDocs({ db, baseUrl, doctype, storage }: {
+    db: object;
+    baseUrl: string;
+    doctype: string;
+    storage: import('./localStorage').PouchLocalStorage;
+}): Promise<any[]>;

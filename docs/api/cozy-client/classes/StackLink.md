@@ -94,9 +94,9 @@ Transfers queries and mutations to a remote stack
 
 ***
 
-### persistData
+### persistCozyData
 
-▸ **persistData**(`data`, `forward`): `Promise`<`any`>
+▸ **persistCozyData**(`data`, `forward`): `Promise`<`any`>
 
 *Parameters*
 
@@ -111,7 +111,7 @@ Transfers queries and mutations to a remote stack
 
 *Overrides*
 
-[CozyLink](CozyLink.md).[persistData](CozyLink.md#persistdata)
+[CozyLink](CozyLink.md).[persistCozyData](CozyLink.md#persistcozydata)
 
 *Defined in*
 

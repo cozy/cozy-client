@@ -60,7 +60,6 @@ declare class PouchLink extends CozyLink {
     doctypesReplicationOptions: Record<string, any>;
     indexes: {};
     storage: PouchLocalStorage;
-    ignoreWarmup: any;
     /** @type {Record<string, ReplicationStatus>} - Stores replication states per doctype */
     replicationStatus: Record<string, ReplicationStatus>;
     getReplicationURL(doctype: any): string;
@@ -132,6 +131,7 @@ declare class PouchLink extends CozyLink {
     getSyncInfo(doctype: any): import("./types").SyncInfo;
     getPouch(doctype: any): any;
     supportsOperation(operation: any): boolean;
+    persistData(data: any, forward?: (operation: any, result?: any) => void): Promise<void>;
     /**
      * Retrieve the existing document from Pouch
      *
