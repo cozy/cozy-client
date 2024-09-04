@@ -19,8 +19,6 @@
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `[options]` | `Object` | Options |
-| `[options].client` | `any` | - |
-| `[options].stackClient` | `any` | - |
 | `[options].webviewIntent` | `WebviewService` | - |
 
 *Overrides*
@@ -29,19 +27,9 @@
 
 *Defined in*
 
-[packages/cozy-client/src/FlagshipLink.js:11](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/FlagshipLink.js#L11)
+[packages/cozy-client/src/FlagshipLink.js:8](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/FlagshipLink.js#L8)
 
 ## Properties
-
-### stackClient
-
-• **stackClient**: `any`
-
-*Defined in*
-
-[packages/cozy-client/src/FlagshipLink.js:18](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/FlagshipLink.js#L18)
-
-***
 
 ### webviewIntent
 
@@ -49,13 +37,13 @@
 
 *Defined in*
 
-[packages/cozy-client/src/FlagshipLink.js:19](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/FlagshipLink.js#L19)
+[packages/cozy-client/src/FlagshipLink.js:10](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/FlagshipLink.js#L10)
 
 ## Methods
 
-### persistData
+### persistCozyData
 
-▸ **persistData**(`data`, `forward`): `Promise`<`void`>
+▸ **persistCozyData**(`data`, `forward`): `Promise`<`void`>
 
 *Parameters*
 
@@ -70,11 +58,11 @@
 
 *Overrides*
 
-[CozyLink](CozyLink.md).[persistData](CozyLink.md#persistdata)
+[CozyLink](CozyLink.md).[persistCozyData](CozyLink.md#persistcozydata)
 
 *Defined in*
 
-[packages/cozy-client/src/FlagshipLink.js:34](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/FlagshipLink.js#L34)
+[packages/cozy-client/src/FlagshipLink.js:25](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/FlagshipLink.js#L25)
 
 ***
 
@@ -94,7 +82,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/FlagshipLink.js:22](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/FlagshipLink.js#L22)
+[packages/cozy-client/src/FlagshipLink.js:13](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/FlagshipLink.js#L13)
 
 ***
 
@@ -120,7 +108,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/FlagshipLink.js:30](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/FlagshipLink.js#L30)
+[packages/cozy-client/src/FlagshipLink.js:21](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/FlagshipLink.js#L21)
 
 ***
 
@@ -134,4 +122,4 @@
 
 *Defined in*
 
-[packages/cozy-client/src/FlagshipLink.js:26](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/FlagshipLink.js#L26)
+[packages/cozy-client/src/FlagshipLink.js:17](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/FlagshipLink.js#L17)
