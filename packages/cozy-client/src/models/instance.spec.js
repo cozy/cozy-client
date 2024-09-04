@@ -3,39 +3,29 @@ import { instance } from './'
 const noSelfHostedInstance = {
   context: {
     data: {
-      attributes: {
-        manager_url: 'https://manager.cozy.cc',
-        enable_premium_links: true
-      }
+      manager_url: 'https://manager.cozy.cc',
+      enable_premium_links: true
     }
   },
   instance: {
     data: {
-      attributes: {
-        uuid: '1234'
-      }
+      uuid: '1234'
     }
   },
   diskUsage: {
     data: {
-      attributes: {
-        quota: '400000000'
-      }
+      quota: '400000000'
     }
   }
 }
 
 const selftHostedInstance = {
   context: {
-    data: {
-      attributes: {}
-    }
+    data: {}
   },
   diskUsage: {
     data: {
-      attributes: {
-        quota: '6000000000000'
-      }
+      quota: '6000000000000'
     }
   }
 }
@@ -43,24 +33,18 @@ const selftHostedInstance = {
 const hadAnOfferInstance = {
   context: {
     data: {
-      attributes: {
-        manager_url: 'https://manager.cozy.cc',
-        enable_premium_links: true
-      }
+      manager_url: 'https://manager.cozy.cc',
+      enable_premium_links: true
     }
   },
   instance: {
     data: {
-      attributes: {
-        uuid: '1234'
-      }
+      uuid: '1234'
     }
   },
   diskUsage: {
     data: {
-      attributes: {
-        quota: '60000000000'
-      }
+      quota: '60000000000'
     }
   }
 }
@@ -163,17 +147,17 @@ describe('instance', () => {
     })
 
     it('should return false if attribute password_defined is undefined', async () => {
-      const res = await setup({ attributes: { password_defined: undefined } })
+      const res = await setup({ password_defined: undefined })
       expect(res).toBe(false)
     })
 
     it('should return false if attribute password_defined is false', async () => {
-      const res = await setup({ attributes: { password_defined: false } })
+      const res = await setup({ password_defined: false })
       expect(res).toBe(false)
     })
 
     it('should return true if attribute password_defined is true', async () => {
-      const res = await setup({ attributes: { password_defined: true } })
+      const res = await setup({ password_defined: true })
       expect(res).toBe(true)
     })
   })
