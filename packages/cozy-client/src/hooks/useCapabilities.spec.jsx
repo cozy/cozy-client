@@ -33,7 +33,8 @@ describe('useCapabilities', () => {
       data: {
         type: 'io.cozy.settings',
         id: 'io.cozy.settings.capabilities',
-        attributes: { file_versioning: true, flat_subdomains: true },
+        file_versioning: true,
+        flat_subdomains: true,
         meta: {},
         links: { self: '/settings/capabilities' }
       }
@@ -44,8 +45,12 @@ describe('useCapabilities', () => {
 
     await waitForNextUpdate()
     expect(result.current.capabilities).toEqual({
+      type: 'io.cozy.settings',
+      id: 'io.cozy.settings.capabilities',
       file_versioning: true,
-      flat_subdomains: true
+      flat_subdomains: true,
+      meta: {},
+      links: { self: '/settings/capabilities' }
     })
   })
 
