@@ -16,13 +16,11 @@ describe('useFetchShortcut', () => {
           {
             type: 'io.cozy.files.shortcuts',
             id: 'b7470059d40c88e4bd30031d5e0109d3',
-            attributes: {
-              _id: '',
-              name: 'cozy.url',
-              dir_id: '8034db0016d0548ded99b9627e003270',
-              url: 'https://cozy.io',
-              metadata: { extractor_version: 2 }
-            },
+            _id: 'b7470059d40c88e4bd30031d5e0109d3',
+            name: 'cozy.url',
+            dir_id: '8034db0016d0548ded99b9627e003270',
+            url: 'https://cozy.io',
+            metadata: { extractor_version: 2 },
             meta: { rev: '1-60e1359e63fa7fa9fa000a2726d5d4c7' }
           }
         ]
@@ -37,16 +35,14 @@ describe('useFetchShortcut', () => {
           {
             type: 'io.cozy.files.shortcuts',
             id: 'linkToCozyApp',
-            attributes: {
-              _id: '',
-              name: 'cozy.url',
-              dir_id: '8034db0016d0548ded99b9627e003270',
-              url: 'https://cozy.io',
-              metadata: {
-                extractor_version: 2,
-                target: {
-                  app: 'notes'
-                }
+            _id: '',
+            name: 'cozy.url',
+            dir_id: '8034db0016d0548ded99b9627e003270',
+            url: 'https://cozy.io',
+            metadata: {
+              extractor_version: 2,
+              target: {
+                app: 'notes'
               }
             },
             meta: { rev: '1-60e1359e63fa7fa9fa000a2726d5d4c7' }
@@ -93,15 +89,12 @@ describe('useFetchShortcut', () => {
       data: {
         _id: 'b7470059d40c88e4bd30031d5e0109d3',
         _type: 'io.cozy.files.shortcuts',
-        type: 'io.cozy.files.shortcuts',
         id: 'b7470059d40c88e4bd30031d5e0109d3',
-        attributes: {
-          _id: '',
-          name: 'cozy.url',
-          dir_id: '8034db0016d0548ded99b9627e003270',
-          url: 'https://cozy.io',
-          metadata: { extractor_version: 2 }
-        },
+        type: 'io.cozy.files.shortcuts',
+        name: 'cozy.url',
+        dir_id: '8034db0016d0548ded99b9627e003270',
+        url: 'https://cozy.io',
+        metadata: { extractor_version: 2 },
         meta: { rev: '1-60e1359e63fa7fa9fa000a2726d5d4c7' }
       }
     })
