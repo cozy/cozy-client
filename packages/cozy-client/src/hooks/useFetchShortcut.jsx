@@ -24,8 +24,7 @@ const useFetchShortcut = (client, id) => {
           }
         })
 
-        const targetApp =
-          shortcutInfosResult?.data?.attributes?.metadata?.target?.app
+        const targetApp = shortcutInfosResult?.data?.metadata?.target?.app
         if (targetApp) {
           const targetAppIconUrl = await client.getStackClient().getIconURL({
             type: 'app',
@@ -34,9 +33,7 @@ const useFetchShortcut = (client, id) => {
           })
           setShortcutImg(targetAppIconUrl)
         } else {
-          const shortcutRemoteUrl = new URL(
-            shortcutInfosResult.data.attributes.url
-          )
+          const shortcutRemoteUrl = new URL(shortcutInfosResult.data.url)
 
           const imgUrl = `${client.getStackClient().uri}/bitwarden/icons/${
             shortcutRemoteUrl.host
