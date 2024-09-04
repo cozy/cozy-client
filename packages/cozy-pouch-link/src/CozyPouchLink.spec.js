@@ -599,6 +599,28 @@ describe('CozyPouchLink', () => {
       })
     })
 
+    it('should handle partial filters', async () => {
+      spy = jest.spyOn(PouchDB.prototype, 'createIndex').mockReturnValue({})
+      await setup()
+      await link.ensureIndex(TODO_DOCTYPE, {
+        indexedFields: ['myIndex'],
+        partialFilter: { SOME_FIELD: { $exists: true } }
+      })
+      expect(spy).toHaveBeenCalled()
+      expect(spy).toHaveBeenCalledWith({
+        index: {
+          ddoc: 'by_myIndex_filter_(SOME_FIELD_$exists_true)',
+          fields: ['myIndex'],
+          indexName: 'by_myIndex_filter_(SOME_FIELD_$exists_true)',
+          partial_filter_selector: {
+            SOME_FIELD: {
+              $exists: true
+            }
+          }
+        }
+      })
+    })
+
     it('uses the specified index', async () => {
       let spyIndex = jest
         .spyOn(CozyPouchLink.prototype, 'ensureIndex')
