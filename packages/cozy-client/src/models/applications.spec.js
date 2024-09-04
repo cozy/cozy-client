@@ -94,9 +94,7 @@ describe('applications model', () => {
     describe('when the store app is installed', () => {
       it('should return the store url for the given app', () => {
         const storeApp = {
-          attributes: {
-            slug: 'store'
-          },
+          slug: 'store',
           links: {
             related: 'http://store.cozy.tools:8080/'
           }
@@ -120,9 +118,7 @@ describe('applications model', () => {
     describe('when the store app is installed', () => {
       it('should return the store installation url for the given app', () => {
         const storeApp = {
-          attributes: {
-            slug: 'store'
-          },
+          slug: 'store',
           links: {
             related: 'http://store.cozy.tools:8080/'
           }
