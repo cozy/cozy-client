@@ -80,7 +80,7 @@ Returns the link to the Premium page on the Cozy's Manager
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:72](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L72)
+[packages/cozy-client/src/models/instance.js:70](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L70)
 
 ***
 
@@ -100,7 +100,7 @@ Returns the link to the Premium page on the Cozy's Manager
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:34](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L34)
+[packages/cozy-client/src/models/instance.js:32](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L32)
 
 ***
 
@@ -124,7 +124,7 @@ Does the cozy have offers
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:58](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L58)
+[packages/cozy-client/src/models/instance.js:56](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L56)
 
 ***
 
@@ -148,7 +148,7 @@ Checks the value of the password_defined attribute
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:92](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L92)
+[packages/cozy-client/src/models/instance.js:86](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L86)
 
 ***
 
@@ -168,7 +168,7 @@ Checks the value of the password_defined attribute
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:30](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L30)
+[packages/cozy-client/src/models/instance.js:28](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L28)
 
 ***
 
@@ -219,7 +219,7 @@ Make human readable information from disk information (usage, quota)
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:164](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L164)
+[packages/cozy-client/src/models/instance.js:156](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L156)
 
 ***
 
@@ -243,4 +243,4 @@ Should we display offers
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:44](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L44)
+[packages/cozy-client/src/models/instance.js:42](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L42)
