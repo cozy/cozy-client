@@ -13,7 +13,7 @@ const useCapabilities = client => {
           Q('io.cozy.settings').getById('io.cozy.settings.capabilities')
         )
 
-        setCapabilities(get(capabilitiesResult, 'data.attributes', {}))
+        setCapabilities(get(capabilitiesResult, 'data', {}))
         setFetchStatus('loaded')
       } catch (e) {
         setFetchStatus('failed')
