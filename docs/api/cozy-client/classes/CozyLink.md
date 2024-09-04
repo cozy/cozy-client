@@ -29,9 +29,9 @@
 
 ## Methods
 
-### persistData
+### persistCozyData
 
-▸ **persistData**(`data`, `forward`): `void`
+▸ **persistCozyData**(`data`, `forward`): `void`
 
 *Parameters*
 

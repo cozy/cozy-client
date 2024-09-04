@@ -40,10 +40,6 @@ export type CozyClientDocument = {
      * - When true the document should NOT be replicated to the remote database
      */
     cozyLocalOnly?: boolean;
-    /**
-     * - When true the document has been retrieved from a local PouchDB
-     */
-    cozyFromPouch?: boolean;
 };
 export type ClientOptions = {
     client?: object;
