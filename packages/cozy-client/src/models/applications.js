@@ -48,9 +48,7 @@ export const getStoreInstallationURL = (appData = [], app = {}) => {
  * @returns {object} The io.cozy.app is installed or undefined if not
  */
 export const isInstalled = (apps = [], wantedApp = {}) => {
-  return apps.find(
-    app => app.attributes && app.attributes.slug === wantedApp.slug
-  )
+  return apps.find(app => app.slug === wantedApp.slug)
 }
 
 /**
