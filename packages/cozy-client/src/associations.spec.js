@@ -7,7 +7,8 @@ import { SCHEMA, TODO_1, TODO_2 } from './__tests__/fixtures'
 
 describe('Associations', () => {
   const requestHandler = jest.fn()
-  const link = new CozyLink(requestHandler)
+  const persistHandler = jest.fn()
+  const link = new CozyLink(requestHandler, persistHandler)
   const client = new CozyClient({ links: [link], schema: SCHEMA })
 
   const getTodo = id =>
