@@ -585,7 +585,8 @@ class PouchLink extends CozyLink {
       const findSelector = helpers.normalizeFindSelector({
         selector,
         sort,
-        indexedFields
+        indexedFields,
+        partialFilter
       })
 
       const findOpts = {
