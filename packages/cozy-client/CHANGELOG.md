@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [48.20.0](https://github.com/cozy/cozy-client/compare/v48.19.0...v48.20.0) (2024-09-11)
+
+
+### Features
+
+* Rename other_activity_document label ([f29b4ae](https://github.com/cozy/cozy-client/commit/f29b4aec491569f527968ba1d37d3eed06304cca))
+
+
+
+
+
 # [48.19.0](https://github.com/cozy/cozy-client/compare/v48.18.0...v48.19.0) (2024-09-11)
 
 
