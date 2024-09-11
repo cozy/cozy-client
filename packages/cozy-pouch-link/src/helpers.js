@@ -1,3 +1,4 @@
+import merge from 'lodash/merge'
 import startsWith from 'lodash/startsWith'
 
 import logger from './logger'
@@ -63,7 +64,12 @@ helpers.insertBulkDocs = async (db, docs) => {
   return db.bulkDocs(docs, { new_edits: false })
 }
 
-helpers.normalizeFindSelector = ({ selector, sort, indexedFields }) => {
+helpers.normalizeFindSelector = ({
+  selector,
+  sort,
+  indexedFields,
+  partialFilter
+}) => {
   let findSelector = selector || {}
   if (indexedFields) {
     for (const indexedField of indexedFields) {
@@ -94,8 +100,12 @@ helpers.normalizeFindSelector = ({ selector, sort, indexedFields }) => {
     }
   }
 
-  return Object.keys(findSelector).length > 0
-    ? findSelector
+  const mergedSelector = partialFilter
+    ? merge({ ...findSelector }, partialFilter)
+    : findSelector
+
+  return Object.keys(mergedSelector).length > 0
+    ? mergedSelector
     : { _id: { $gt: null } } // PouchDB does not accept empty selector
 }
 
