@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [48.19.0](https://github.com/cozy/cozy-client/compare/v48.18.0...v48.19.0) (2024-09-11)
+
+
+### Features
+
+* Rename "numéro de la carte vitale" in "sécurité sociale" ([26a12cf](https://github.com/cozy/cozy-client/commit/26a12cfbb689c07fcdd470864272fe7ccd91450f))
+
+
+
+
+
 # [48.18.0](https://github.com/cozy/cozy-client/compare/v48.17.0...v48.18.0) (2024-09-03)
 
 
