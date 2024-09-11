@@ -1093,7 +1093,7 @@ client.query(Q('io.cozy.bills'))`)
   async requestQuery(definition) {
     const mainResponse = await this.chain.request(definition)
 
-    this.persistVirtualDocuments(definition, mainResponse.data)
+    await this.persistVirtualDocuments(definition, mainResponse.data)
 
     if (!definition.includes) {
       return mainResponse
