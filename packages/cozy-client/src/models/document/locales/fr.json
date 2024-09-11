@@ -216,7 +216,7 @@
             "number": "Numéro du permis"
           },
           "national_health_insurance_card": {
-            "number": "Numéro de la carte vitale"
+            "number": "Numéro de sécurité sociale"
           },
           "pay_sheet": {
             "number": "Rémunération brute"
