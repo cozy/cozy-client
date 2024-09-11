@@ -892,7 +892,7 @@ describe('downloadFile', () => {
   it('should handle download in Flagship app', async () => {
     isFlagshipApp.mockReturnValue(true)
     const webviewIntent = {
-      call: jest.fn()
+      call: jest.fn().mockResolvedValue(true)
     }
 
     const file = {
@@ -911,7 +911,40 @@ describe('downloadFile', () => {
     })
 
     expect(downloadFromCozySpy).not.toHaveBeenCalled()
+    expect(webviewIntent.call).toHaveBeenCalledWith(
+      'isAvailable',
+      'downloadFile'
+    )
     expect(webviewIntent.call).toHaveBeenCalledWith('downloadFile', file)
+  })
+
+  it('should download files from web page in old Flagship app versions', async () => {
+    isFlagshipApp.mockReturnValue(true)
+    const webviewIntent = {
+      call: jest.fn().mockResolvedValue(false) // `isAvailable` returns `false` when not implemented
+    }
+
+    const file = {
+      _id: 'SOME_FILE_ID',
+      _type: 'io.cozy.file',
+      name: 'SOME_FILE_NAME'
+    }
+
+    await fileModel.downloadFile({
+      // @ts-ignore
+      client: cozyClient,
+      // @ts-ignore
+      file,
+      // @ts-ignore
+      webviewIntent
+    })
+
+    expect(downloadFromCozySpy).toHaveBeenCalled()
+    expect(webviewIntent.call).toHaveBeenCalledWith(
+      'isAvailable',
+      'downloadFile'
+    )
+    expect(webviewIntent.call).not.toHaveBeenCalledWith('downloadFile', file)
   })
 
   it('should download encrypted files from web page as this is not supported yet by Flagship app', async () => {

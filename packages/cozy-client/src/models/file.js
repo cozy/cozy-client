@@ -719,7 +719,12 @@ export const downloadFile = async ({ client, file, url, webviewIntent }) => {
   const filesCollection = client.collection(DOCTYPE_FILES)
 
   if (isFlagshipApp() && webviewIntent && !isEncrypted(file)) {
-    return await webviewIntent.call('downloadFile', file)
+    const isFlagshipDownloadAvailable =
+      (await webviewIntent?.call('isAvailable', 'downloadFile')) ?? false
+
+    if (isFlagshipDownloadAvailable) {
+      return await webviewIntent.call('downloadFile', file)
+    }
   }
 
   if (isEncrypted(file)) {
