@@ -732,7 +732,7 @@ import { QueryDefinition } from './queries/dsl'
  *
  * @typedef {'phone_invoice'|'isp_invoice'|'telecom_invoice'|'energy_invoice'|'water_invoice'|'appliance_invoice'|'web_service_invoice'|'restaurant_invoice'|'work_invoice'|'transport_invoice'|'health_invoice'|'other_invoice'|'note_invoice'|'expense_claim'|'energy_contract'|'grocery_invoice'} InvoiceLabels
  *
- * @typedef {'personal_sporting_licence'|'other_activity_document'|'fidelity_card'|'library_card'|'note_activity_document'} ActivityLabels
+ * @typedef {'personal_sporting_licence'|'other_activity_document'|'fidelity_card'|'note_activity_document'} ActivityLabels
  *
  * @typedef {'other_administrative_document'|'note_other'} OthersLabels
  *
@@ -749,8 +749,6 @@ import { QueryDefinition } from './queries/dsl'
  * @typedef {'residence_permit'} iconGlobeLabels
  *
  * @typedef {'passport'} iconPlaneLabels
- *
- * @typedef {'library_card'} iconLibraryLabels
  *
  * @typedef {'identity_photo'} iconImageLabels
  *
@@ -804,7 +802,7 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
- * @typedef {'bank-check'|'bank'|'benefit'|'bill'|'car'|'child'|'email'|'euro'|'exchange'|'file-type-note'|'fitness'|'globe'|'gouv'|'heart'|'home'|'image'|'justice'|'laudry'|'library'|'lightning'|'people'|'plane'|'remboursement'|'restaurant'|'school'|'shop'|'team'|'telecom'|'telephone'|'water'|'work'} IconQualificationLabels
+ * @typedef {'bank-check'|'bank'|'benefit'|'bill'|'car'|'child'|'email'|'euro'|'exchange'|'file-type-note'|'fitness'|'globe'|'gouv'|'heart'|'home'|'image'|'justice'|'laudry'|'lightning'|'people'|'plane'|'remboursement'|'restaurant'|'school'|'shop'|'team'|'telecom'|'telephone'|'water'|'work'} IconQualificationLabels
  */
 
 /**

@@ -113,10 +113,6 @@
       "sourceCategory": "shopping"
     },
     {
-      "label": "library_card",
-      "sourceCategory": "individual"
-    },
-    {
       "label": "single_parent_benefit",
       "purpose": "attestation",
       "sourceCategory": "gov",
