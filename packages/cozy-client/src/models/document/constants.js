@@ -119,7 +119,6 @@ export const THEME_TRANSPORT_LABELS = [
 export const THEME_ACTIVITY_LABELS = [
   'personal_sporting_licence',
   'fidelity_card',
-  'library_card',
   'note_activity_document',
   'other_activity_document'
 ]
@@ -215,11 +214,6 @@ const ICON_GLOBE_LABELS = ['residence_permit']
  * @type {Array<import("../../types").iconPlaneLabels>}
  */
 const ICON_PLANE_LABELS = ['passport']
-
-/**
- * @type {Array<import("../../types").iconLibraryLabels>}
- */
-const ICON_LIBRARY_LABELS = ['library_card']
 
 /**
  * @type {Array<import("../../types").iconImageLabels>}
@@ -442,7 +436,6 @@ export const iconLabelPairs = [
   { icon: 'image', labels: ICON_IMAGE_LABELS },
   { icon: 'justice', labels: ICON_JUSTICE_LABELS },
   { icon: 'laudry', labels: ICON_LAUDRY_LABELS },
-  { icon: 'library', labels: ICON_LIBRARY_LABELS },
   { icon: 'lightning', labels: ICON_LIGHTNING_LABELS },
   { icon: 'people', labels: ICON_PEOPLE_LABELS },
   { icon: 'plane', labels: ICON_PLANE_LABELS },
