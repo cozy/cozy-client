@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [48.21.0](https://github.com/cozy/cozy-client/compare/v48.20.0...v48.21.0) (2024-09-12)
+
+
+### Features
+
+* Change fidelity card label ([4a966f7](https://github.com/cozy/cozy-client/commit/4a966f7b73a9372ccca0991fe29560aa853ddab1))
+* Remove library_card from qualification ([64e8a45](https://github.com/cozy/cozy-client/commit/64e8a45bedf435372cfc3772f0eda7dc99f17e83))
+
+
+
+
+
 # [48.20.0](https://github.com/cozy/cozy-client/compare/v48.19.0...v48.20.0) (2024-09-11)
 
 
