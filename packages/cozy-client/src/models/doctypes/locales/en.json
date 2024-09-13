@@ -23,8 +23,10 @@
       "dacc_v2": "Anonymous aggregated statistics",
       "dacc.dev": "Anonymous aggregated statistics for development",
       "dacc.dev_v2": "Anonymous aggregated statistics for development",
-      "announcements.dev": "Announcements for development",
-      "announcements.dev.uploads": "Images of announcements for development"
+      "announcements": "API to retrieve announcements",
+      "announcements.uploads": "API to retrieve announcement images",
+      "announcements.dev": "API to retrieve announcements (development)",
+      "announcements.dev.uploads": "API to retrieve announcement images (development)"
     }
   },
   "eu": {

@@ -23,8 +23,10 @@
       "dacc_v2": "Statistiques agrégées anonymes",
       "dacc.dev": "Statistiques agrégées anonymes pour le développement",
       "dacc.dev_v2": "Statistiques agrégées anonymes pour le développement",
-      "announcements.dev": "Annonces pour le développement",
-      "announcements.dev.uploads": "Images des annonces pour le développement"
+      "announcements": "API pour récupérer les annonces",
+      "announcements.uploads": "API pour récupérer les images des annonces",
+      "announcements.dev": "API pour récupérer les annonces (développement)",
+      "announcements.dev.uploads": "API pour récupérer les images des annonces (développement)"
     }
   },
   "eu": {
