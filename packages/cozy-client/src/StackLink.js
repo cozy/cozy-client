@@ -80,7 +80,7 @@ export default class StackLink extends CozyLink {
     this.stackClient = client.stackClient || client.client
   }
 
-  reset() {
+  async reset() {
     this.stackClient = null
   }
 
