@@ -14,7 +14,7 @@ export default class FlagshipLink extends CozyLink {
     // does nothing, we don't need any client for this kind of link
   }
 
-  reset() {
+  async reset() {
     // does nothing, we don't need any client for this kind of link
   }
 

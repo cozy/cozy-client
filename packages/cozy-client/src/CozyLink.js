@@ -9,12 +9,36 @@ export default class CozyLink {
     }
   }
 
-  request(operation, result, forward) {
+  /**
+   * Request the given operation from the link
+   *
+   * @param {any} operation - The operation to request
+   * @param {any} result - The result from the previous request of the chain
+   * @param {any} forward - The next request of the chain
+   * @returns {Promise<any>}
+   */
+  async request(operation, result, forward) {
     throw new Error('request is not implemented')
   }
 
-  persistCozyData(data, forward) {
+  /**
+   * Persist the given data into the links storage
+   *
+   * @param {any} data - The document to persist
+   * @param {any} forward - The next persistCozyData of the chain
+   * @returns {Promise<any>}
+   */
+  async persistCozyData(data, forward) {
     throw new Error('persistCozyData is not implemented')
+  }
+
+  /**
+   * Reset the link data
+   *
+   * @returns {Promise<any>}
+   */
+  async reset() {
+    throw new Error('reset is not implemented')
   }
 }
 
