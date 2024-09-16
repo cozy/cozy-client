@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [48.22.0](https://github.com/cozy/cozy-client/compare/v48.21.0...v48.22.0) (2024-09-16)
+
+
+### Features
+
+* Rename `pôle emploi` in `France Travail` ([4eaaac7](https://github.com/cozy/cozy-client/commit/4eaaac78c445fa733a836acc90d522adf60bed70))
+
+
+
+
+
 # [48.21.0](https://github.com/cozy/cozy-client/compare/v48.20.0...v48.21.0) (2024-09-12)
 
 
