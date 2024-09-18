@@ -118,4 +118,4 @@ export {
   receiveMutationError
 } from './mutations'
 
-export { dispatchCreate, dispatchUpdate, dispatchDelete } from './realtimes'
+export { dispatchCreate, dispatchUpdate, dispatchDelete } from './realtime'

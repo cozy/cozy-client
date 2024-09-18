@@ -21,4 +21,4 @@ export function resetState(): {
 export { getStateRoot, getCollectionFromState, getDocumentFromState, getQueryFromStore, getQueryFromState, getRawQueryFromState, isQueryExisting } from "./stateHelpers";
 export { initQuery, loadQuery, resetQuery, receiveQueryResult, receiveQueryError, executeQueryFromState } from "./queries";
 export { initMutation, receiveMutationResult, receiveMutationError } from "./mutations";
-export { dispatchCreate, dispatchUpdate, dispatchDelete } from "./realtimes";
+export { dispatchCreate, dispatchUpdate, dispatchDelete } from "./realtime";
