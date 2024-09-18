@@ -42,7 +42,12 @@ export {
   isQueriesLoading,
   hasQueriesBeenLoaded
 } from './utils'
-export { getQueryFromState } from './store'
+export {
+  getQueryFromState,
+  dispatchCreate,
+  dispatchUpdate,
+  dispatchDelete
+} from './store'
 export { default as Registry } from './registry'
 export { default as RealTimeQueries } from './RealTimeQueries'
 

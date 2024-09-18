@@ -333,6 +333,78 @@ Deconstructed link
 
 ***
 
+### dispatchCreate
+
+▸ **dispatchCreate**(`client`, `doctype`, `couchDBDoc`): `void`
+
+Dispatches a create action for a document to update CozyClient store from realtime callbacks.
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `client` | [`CozyClient`](classes/CozyClient.md) | CozyClient instance |
+| `doctype` | `string` | Doctype of the document to create |
+| `couchDBDoc` | `CouchDBDocument` | Document to create |
+
+*Returns*
+
+`void`
+
+*Defined in*
+
+[packages/cozy-client/src/store/realtimes.js:59](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/store/realtimes.js#L59)
+
+***
+
+### dispatchDelete
+
+▸ **dispatchDelete**(`client`, `doctype`, `couchDBDoc`): `void`
+
+Dispatches a delete action for a document to update CozyClient store from realtime callbacks.
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `client` | [`CozyClient`](classes/CozyClient.md) | CozyClient instance |
+| `doctype` | `string` | Doctype of the document to create |
+| `couchDBDoc` | `CouchDBDocument` | Document to create |
+
+*Returns*
+
+`void`
+
+*Defined in*
+
+[packages/cozy-client/src/store/realtimes.js:81](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/store/realtimes.js#L81)
+
+***
+
+### dispatchUpdate
+
+▸ **dispatchUpdate**(`client`, `doctype`, `couchDBDoc`): `void`
+
+Dispatches a update action for a document to update CozyClient store from realtime callbacks.
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `client` | [`CozyClient`](classes/CozyClient.md) | CozyClient instance |
+| `doctype` | `string` | Doctype of the document to create |
+| `couchDBDoc` | `CouchDBDocument` | Document to create |
+
+*Returns*
+
+`void`
+
+*Defined in*
+
+[packages/cozy-client/src/store/realtimes.js:70](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/store/realtimes.js#L70)
+
+***
+
 ### ensureFirstSlash
 
 ▸ **ensureFirstSlash**(`path`): `any`
