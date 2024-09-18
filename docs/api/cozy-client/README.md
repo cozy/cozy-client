@@ -353,7 +353,7 @@ Dispatches a create action for a document to update CozyClient store from realti
 
 *Defined in*
 
-[packages/cozy-client/src/store/realtimes.js:58](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/store/realtimes.js#L58)
+[packages/cozy-client/src/store/realtime.js:58](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/store/realtime.js#L58)
 
 ***
 
@@ -377,7 +377,7 @@ Dispatches a delete action for a document to update CozyClient store from realti
 
 *Defined in*
 
-[packages/cozy-client/src/store/realtimes.js:80](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/store/realtimes.js#L80)
+[packages/cozy-client/src/store/realtime.js:80](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/store/realtime.js#L80)
 
 ***
 
@@ -401,7 +401,7 @@ Dispatches a update action for a document to update CozyClient store from realti
 
 *Defined in*
 
-[packages/cozy-client/src/store/realtimes.js:69](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/store/realtimes.js#L69)
+[packages/cozy-client/src/store/realtime.js:69](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/store/realtime.js#L69)
 
 ***
 

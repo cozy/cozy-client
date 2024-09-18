@@ -4,7 +4,7 @@ import {
   dispatchCreate,
   dispatchDelete,
   dispatchUpdate
-} from './store/realtimes'
+} from './store/realtime'
 
 /**
  * Component that subscribes to a doctype changes and keep the
