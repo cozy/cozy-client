@@ -1,55 +1,10 @@
 import { memo, useEffect } from 'react'
 import useClient from './hooks/useClient'
-import { Mutations } from './queries/dsl'
-import { receiveMutationResult } from './store'
-import CozyClient from './CozyClient'
-
-/**
- * Normalizes an object representing a CouchDB document
- *
- * Ensures existence of `_type`
- *
- * @public
- * @param {import("./types").CouchDBDocument} couchDBDoc - object representing the document
- * @returns {import("./types").CozyClientDocument} full normalized document
- */
-const normalizeDoc = (couchDBDoc, doctype) => {
-  return {
-    id: couchDBDoc._id,
-    _type: doctype,
-    ...couchDBDoc
-  }
-}
-
-/**
- * DispatchChange
- *
- * @param {CozyClient} client CozyClient instane
- * @param {import("./types").Doctype} doctype Doctype of the document to update
- * @param {import("./types").CouchDBDocument} couchDBDoc Document to update
- * @param {import("./types").Mutation} mutationDefinitionCreator Mutation to apply
- */
-const dispatchChange = (
-  client,
-  doctype,
-  couchDBDoc,
-  mutationDefinitionCreator
-) => {
-  const data = normalizeDoc(couchDBDoc, doctype)
-  const response = {
-    data
-  }
-
-  const options = {}
-  client.dispatch(
-    receiveMutationResult(
-      client.generateRandomId(),
-      response,
-      options,
-      mutationDefinitionCreator(data)
-    )
-  )
-}
+import {
+  dispatchCreate,
+  dispatchDelete,
+  dispatchUpdate
+} from './store/realtimes'
 
 /**
  * Component that subscribes to a doctype changes and keep the
@@ -71,25 +26,16 @@ const RealTimeQueries = ({ doctype }) => {
       )
     }
 
-    const dispatchCreate = couchDBDoc => {
-      dispatchChange(client, doctype, couchDBDoc, Mutations.createDocument)
-    }
-    const dispatchUpdate = couchDBDoc => {
-      dispatchChange(client, doctype, couchDBDoc, Mutations.updateDocument)
-    }
-    const dispatchDelete = couchDBDoc => {
-      dispatchChange(
-        client,
-        doctype,
-        { ...couchDBDoc, _deleted: true },
-        Mutations.deleteDocument
-      )
-    }
-
     const subscribe = async () => {
-      await realtime.subscribe('created', doctype, dispatchCreate)
-      await realtime.subscribe('updated', doctype, dispatchUpdate)
-      await realtime.subscribe('deleted', doctype, dispatchDelete)
+      await realtime.subscribe('created', doctype, data =>
+        dispatchCreate(client, doctype, data)
+      )
+      await realtime.subscribe('updated', doctype, data =>
+        dispatchUpdate(client, doctype, data)
+      )
+      await realtime.subscribe('deleted', doctype, data =>
+        dispatchDelete(client, doctype, data)
+      )
     }
     subscribe()
 

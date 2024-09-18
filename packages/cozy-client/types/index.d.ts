@@ -2,7 +2,6 @@ export { default } from "./CozyClient";
 export { default as CozyLink } from "./CozyLink";
 export { default as StackLink } from "./StackLink";
 export { default as compose } from "lodash/flow";
-export { getQueryFromState } from "./store";
 export { default as Registry } from "./registry";
 export { default as RealTimeQueries } from "./RealTimeQueries";
 export { default as CozyProvider } from "./Provider";
@@ -21,4 +20,5 @@ export { Association, HasMany, HasOne, HasOneInPlace, HasManyInPlace, HasManyTri
 export { isReferencedBy, isReferencedById, getReferencedBy, getReferencedById } from "./associations/helpers";
 export { deconstructCozyWebLinkWithSlug, deconstructRedirectLink, dehydrate, generateWebLink, ensureFirstSlash, rootCozyUrl, InvalidRedirectLinkError, InvalidCozyUrlError, InvalidProtocolError, BlockedCozyError } from "./helpers";
 export { cancelable, isQueryLoading, hasQueryBeenLoaded, isQueriesLoading, hasQueriesBeenLoaded } from "./utils";
+export { getQueryFromState, dispatchCreate, dispatchUpdate, dispatchDelete } from "./store";
 export { queryConnect, queryConnectFlat, withClient } from "./hoc";
