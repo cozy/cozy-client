@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [48.23.0](https://github.com/cozy/cozy-client/compare/v48.22.0...v48.23.0) (2024-09-18)
+
+
+### Features
+
+* Add announcements remote doctype for production ([5dc3d8a](https://github.com/cozy/cozy-client/commit/5dc3d8af4e8a2b2edc7a08e72630fa3aac387528))
+
+
+
+
+
 # [48.22.0](https://github.com/cozy/cozy-client/compare/v48.21.0...v48.22.0) (2024-09-16)
 
 
