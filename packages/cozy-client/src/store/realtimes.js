@@ -1,6 +1,5 @@
 import { Mutations } from '../queries/dsl'
 import { receiveMutationResult } from './mutations'
-import CozyClient from '../CozyClient'
 
 /**
  * Normalizes an object representing a CouchDB document
@@ -22,7 +21,7 @@ const normalizeDoc = (couchDBDoc, doctype) => {
 /**
  * DispatchChange
  *
- * @param {CozyClient} client CozyClient instane
+ * @param {object} client CozyClient instane
  * @param {import("../types").Doctype} doctype Doctype of the document to update
  * @param {import("../types").CouchDBDocument} couchDBDoc Document to update
  * @param {import("../types").Mutation} mutationDefinitionCreator Mutation to apply
@@ -52,7 +51,7 @@ const dispatchChange = (
 /**
  * Dispatches a create action for a document to update CozyClient store from realtime callbacks.
  *
- * @param {CozyClient} client - CozyClient instance
+ * @param {object} client - CozyClient instance
  * @param {import("../types").Doctype} doctype - Doctype of the document to create
  * @param {import("../types").CouchDBDocument} couchDBDoc - Document to create
  */
@@ -63,7 +62,7 @@ export const dispatchCreate = (client, doctype, couchDBDoc) => {
 /**
  * Dispatches a update action for a document to update CozyClient store from realtime callbacks.
  *
- * @param {CozyClient} client - CozyClient instance
+ * @param {object} client - CozyClient instance
  * @param {import("../types").Doctype} doctype - Doctype of the document to create
  * @param {import("../types").CouchDBDocument} couchDBDoc - Document to create
  */
@@ -74,7 +73,7 @@ export const dispatchUpdate = (client, doctype, couchDBDoc) => {
 /**
  * Dispatches a delete action for a document to update CozyClient store from realtime callbacks.
  *
- * @param {CozyClient} client - CozyClient instance
+ * @param {object} client - CozyClient instance
  * @param {import("../types").Doctype} doctype - Doctype of the document to create
  * @param {import("../types").CouchDBDocument} couchDBDoc - Document to create
  */
