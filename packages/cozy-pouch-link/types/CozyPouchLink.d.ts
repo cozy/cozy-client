@@ -96,7 +96,6 @@ declare class PouchLink extends CozyLink {
     }): Promise<void>;
     onLogin(): Promise<void>;
     pouches: PouchManager;
-    reset(): Promise<void>;
     /**
      * Receives PouchDB updates (documents grouped by doctype).
      * Normalizes the data (.id -> ._id, .rev -> _rev).

@@ -98,6 +98,8 @@ Transfers queries and mutations to a remote stack
 
 ▸ **persistCozyData**(`data`, `forward`): `Promise`<`any`>
 
+Persist the given data into the links storage
+
 *Parameters*
 
 | Name | Type |
@@ -143,6 +145,8 @@ Transfers queries and mutations to a remote stack
 
 ▸ **request**(`operation`, `result`, `forward`): `Promise`<`any`>
 
+Request the given operation from the link
+
 *Parameters*
 
 | Name | Type |
@@ -167,11 +171,17 @@ Transfers queries and mutations to a remote stack
 
 ### reset
 
-▸ **reset**(): `void`
+▸ **reset**(): `Promise`<`void`>
+
+Reset the link data
 
 *Returns*
 
-`void`
+`Promise`<`void`>
+
+*Overrides*
+
+[CozyLink](CozyLink.md).[reset](CozyLink.md#reset)
 
 *Defined in*
 
