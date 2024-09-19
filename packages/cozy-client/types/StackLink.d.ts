@@ -18,7 +18,6 @@ export default class StackLink extends CozyLink {
     stackClient: any;
     isOnline: any;
     registerClient(client: any): void;
-    reset(): void;
     /**
      *
      * @param {QueryDefinition} query - Query to execute
