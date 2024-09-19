@@ -8,6 +8,5 @@ export default class FlagshipLink extends CozyLink {
     });
     webviewIntent: import("cozy-intent").WebviewService;
     registerClient(client: any): void;
-    reset(): void;
 }
 import CozyLink from "./CozyLink";

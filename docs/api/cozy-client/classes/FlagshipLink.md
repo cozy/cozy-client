@@ -45,6 +45,8 @@
 
 ▸ **persistCozyData**(`data`, `forward`): `Promise`<`void`>
 
+Persist the given data into the links storage
+
 *Parameters*
 
 | Name | Type |
@@ -90,6 +92,8 @@
 
 ▸ **request**(`operation`, `result`, `forward`): `Promise`<`boolean`>
 
+Request the given operation from the link
+
 *Parameters*
 
 | Name | Type |
@@ -114,11 +118,17 @@
 
 ### reset
 
-▸ **reset**(): `void`
+▸ **reset**(): `Promise`<`void`>
+
+Reset the link data
 
 *Returns*
 
-`void`
+`Promise`<`void`>
+
+*Overrides*
+
+[CozyLink](CozyLink.md).[reset](CozyLink.md#reset)
 
 *Defined in*
 
