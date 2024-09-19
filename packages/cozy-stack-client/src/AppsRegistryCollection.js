@@ -27,6 +27,16 @@ export const normalizeAppFromRegistry = (data, doctype) => {
   }
 }
 
+const fetchKonnectorsByChannel = async (channel, doctype, stackClient) => {
+  const resp = await stackClient.fetchJSON(
+    'GET',
+    `/registry?versionsChannel=${channel}&filter[type]=konnector&limit=500`
+  )
+  return {
+    data: resp.data.map(data => normalizeAppFromRegistry(data, doctype))
+  }
+}
+
 /**
  * Extends `DocumentCollection` API along with specific methods for `io.cozy.apps_registry`.
  */
@@ -44,6 +54,12 @@ class AppsRegistryCollection extends DocumentCollection {
    * @throws {FetchError}
    */
   async get(slug) {
+    if (slug.startsWith('konnectors/')) {
+      const channel = slug.split('/')[1]
+
+      return fetchKonnectorsByChannel(channel, this.doctype, this.stackClient)
+    }
+
     const resp = await this.stackClient.fetchJSON(
       'GET',
       `${this.endpoint}${slug}`

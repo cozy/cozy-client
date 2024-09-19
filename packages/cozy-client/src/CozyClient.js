@@ -1126,7 +1126,7 @@ client.query(Q('io.cozy.bills'))`)
       return await this.persistVirtualDocument(
         {
           _type: 'io.cozy.apps_registry',
-          _id: 'maintenance',
+          _id: definition.id,
           // @ts-ignore
           cozyPouchData: data
         },
