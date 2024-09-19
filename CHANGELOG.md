@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [48.24.0](https://github.com/cozy/cozy-client/compare/v48.23.0...v48.24.0) (2024-09-19)
+
+
+### Bug Fixes
+
+* Remove ref to CozyClient as it breaks tests (circular dependency) ([36a97e6](https://github.com/cozy/cozy-client/commit/36a97e61cc4024b2fcb427ae02baa6fc3ecc3a85))
+
+
+### Features
+
+* Expose real time dispatch changes function ([783ff77](https://github.com/cozy/cozy-client/commit/783ff77d5e65b3a2292a1076c1948d4e41dadfe8))
+
+
+
+
+
 # [48.23.0](https://github.com/cozy/cozy-client/compare/v48.22.0...v48.23.0) (2024-09-18)
 
 
