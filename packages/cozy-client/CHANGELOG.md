@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [48.24.1](https://github.com/cozy/cozy-client/compare/v48.24.0...v48.24.1) (2024-09-19)
+
+
+### Bug Fixes
+
+* Remove realtimes.d.ts ([e79b85b](https://github.com/cozy/cozy-client/commit/e79b85b4a5021a7d765def034ed859131d4d22be))
+
+
+
+
+
 # [48.24.0](https://github.com/cozy/cozy-client/compare/v48.23.0...v48.24.0) (2024-09-19)
 
 
