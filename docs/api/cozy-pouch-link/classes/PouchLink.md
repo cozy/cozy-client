@@ -603,6 +603,10 @@ CozyLink.request
 
 `Promise`<`void`>
 
+*Overrides*
+
+CozyLink.reset
+
 *Defined in*
 
 [CozyPouchLink.js:229](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L229)
