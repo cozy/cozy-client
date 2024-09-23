@@ -1,6 +1,6 @@
 import CozyLink from './CozyLink'
 
-export default class FlagshipLink extends CozyLink {
+export default class WebFlagshipLink extends CozyLink {
   /**
    * @param {object} [options] - Options
    * @param  {import('cozy-intent').WebviewService} [options.webviewIntent] - The webview's intent reference
