@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [48.25.0](https://github.com/cozy/cozy-client/compare/v48.24.1...v48.25.0) (2024-09-23)
+
+
+### Features
+
+* Update file metadata types ([fb1bbf0](https://github.com/cozy/cozy-client/commit/fb1bbf0d60ae9bad9e869de5f947bb88ebd7562d))
+
+
+
+
+
 ## [48.24.1](https://github.com/cozy/cozy-client/compare/v48.24.0...v48.24.1) (2024-09-19)
 
 
