@@ -8,7 +8,7 @@
 
     ↳ [`StackLink`](StackLink.md)
 
-    ↳ [`FlagshipLink`](FlagshipLink.md)
+    ↳ [`WebFlagshipLink`](WebFlagshipLink.md)
 
 ## Constructors
 

@@ -1,18 +1,18 @@
-[cozy-client](../README.md) / FlagshipLink
+[cozy-client](../README.md) / WebFlagshipLink
 
-# Class: FlagshipLink
+# Class: WebFlagshipLink
 
 ## Hierarchy
 
 *   [`CozyLink`](CozyLink.md)
 
-    ↳ **`FlagshipLink`**
+    ↳ **`WebFlagshipLink`**
 
 ## Constructors
 
 ### constructor
 
-• **new FlagshipLink**(`[options]?`)
+• **new WebFlagshipLink**(`[options]?`)
 
 *Parameters*
 
@@ -27,7 +27,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/FlagshipLink.js:8](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/FlagshipLink.js#L8)
+[packages/cozy-client/src/WebFlagshipLink.js:8](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/WebFlagshipLink.js#L8)
 
 ## Properties
 
@@ -37,7 +37,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/FlagshipLink.js:10](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/FlagshipLink.js#L10)
+[packages/cozy-client/src/WebFlagshipLink.js:10](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/WebFlagshipLink.js#L10)
 
 ## Methods
 
@@ -64,7 +64,7 @@ Persist the given data into the links storage
 
 *Defined in*
 
-[packages/cozy-client/src/FlagshipLink.js:25](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/FlagshipLink.js#L25)
+[packages/cozy-client/src/WebFlagshipLink.js:25](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/WebFlagshipLink.js#L25)
 
 ***
 
@@ -84,7 +84,7 @@ Persist the given data into the links storage
 
 *Defined in*
 
-[packages/cozy-client/src/FlagshipLink.js:13](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/FlagshipLink.js#L13)
+[packages/cozy-client/src/WebFlagshipLink.js:13](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/WebFlagshipLink.js#L13)
 
 ***
 
@@ -112,7 +112,7 @@ Request the given operation from the link
 
 *Defined in*
 
-[packages/cozy-client/src/FlagshipLink.js:21](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/FlagshipLink.js#L21)
+[packages/cozy-client/src/WebFlagshipLink.js:21](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/WebFlagshipLink.js#L21)
 
 ***
 
@@ -132,4 +132,4 @@ Reset the link data
 
 *Defined in*
 
-[packages/cozy-client/src/FlagshipLink.js:17](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/FlagshipLink.js#L17)
+[packages/cozy-client/src/WebFlagshipLink.js:17](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/WebFlagshipLink.js#L17)
