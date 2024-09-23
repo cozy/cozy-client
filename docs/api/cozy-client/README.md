@@ -16,7 +16,6 @@ cozy-client
 *   [CozyClient](classes/CozyClient.md)
 *   [CozyLink](classes/CozyLink.md)
 *   [CozyProvider](classes/CozyProvider.md)
-*   [FlagshipLink](classes/FlagshipLink.md)
 *   [HasMany](classes/HasMany.md)
 *   [HasManyInPlace](classes/HasManyInPlace.md)
 *   [HasManyTriggers](classes/HasManyTriggers.md)
@@ -29,6 +28,7 @@ cozy-client
 *   [QueryDefinition](classes/QueryDefinition.md)
 *   [Registry](classes/Registry.md)
 *   [StackLink](classes/StackLink.md)
+*   [WebFlagshipLink](classes/WebFlagshipLink.md)
 
 ## Properties
 

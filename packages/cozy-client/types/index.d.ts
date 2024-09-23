@@ -1,7 +1,7 @@
 export { default } from "./CozyClient";
 export { default as CozyLink } from "./CozyLink";
 export { default as StackLink } from "./StackLink";
-export { default as FlagshipLink } from "./FlagshipLink";
+export { default as WebFlagshipLink } from "./WebFlagshipLink";
 export { default as compose } from "lodash/flow";
 export { default as Registry } from "./registry";
 export { default as RealTimeQueries } from "./RealTimeQueries";
