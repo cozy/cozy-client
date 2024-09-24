@@ -3,6 +3,45 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 49.0.0 (2024-09-24)
+
+
+### Bug Fixes
+
+* Await for `persistVirtualDocuments` result before finishing request ([0a4816c](https://github.com/cozy/cozy-client/commit/0a4816c1a0343e747bb844fe492138921601b7e2)), closes [#1486](https://github.com/cozy/cozy-client/issues/1486)
+* Check for Flagship's downloadFile method support before calling it ([6f36af5](https://github.com/cozy/cozy-client/commit/6f36af5b1730b18a18623a8954699bd62bf43fd7)), closes [#1518](https://github.com/cozy/cozy-client/issues/1518)
+* Don't use attributes on HasManyFiles ([65a6058](https://github.com/cozy/cozy-client/commit/65a6058c1b21a65e676b635eebb7c0b3c8072038))
+* Don't use attributes on loadInstanceOptionsFromStack ([88633b3](https://github.com/cozy/cozy-client/commit/88633b3c821e6d13dc67746d29dddce9c18c5204))
+* Don't use attributes on models/applications ([857cc87](https://github.com/cozy/cozy-client/commit/857cc8766c4287287aaff6016c9553fbbb9c864b))
+* Don't use attributes on models/instance ([ccc197e](https://github.com/cozy/cozy-client/commit/ccc197e621aff4427f67674bf941b1f49867b389))
+* Don't use attributes on useCapabilities ([3425899](https://github.com/cozy/cozy-client/commit/34258994c84a58be495be41123d51379223def4c))
+* Don't use attributes on useFetchShortctut ([29b96af](https://github.com/cozy/cozy-client/commit/29b96afd2d16acdbb745dd8e62d90c1641caae48))
+
+
+### Features
+
+* Add `downloadFile` method in `file` model ([9c3b2f2](https://github.com/cozy/cozy-client/commit/9c3b2f2e26ea8bf06d3b4ec0531e26260fd342a4))
+* Handle queries that fetch Konnectors by channel ([374782f](https://github.com/cozy/cozy-client/commit/374782f25c4afac3aafffda8b76787f47031d20d)), closes [cozy/cozy-home#2186](https://github.com/cozy/cozy-home/issues/2186)
+* Implement FlagshipLink ([cd9b46c](https://github.com/cozy/cozy-client/commit/cd9b46c7fc027f3bfd07e1281bd50511424e8a10))
+* Improve CozyLink typing and add `reset()` method ([d2ece7e](https://github.com/cozy/cozy-client/commit/d2ece7e69bfe48af10b535c99adf41fc7cae7c8f))
+* Rename FlagshipLink to WebFlagshipLink ([e06163c](https://github.com/cozy/cozy-client/commit/e06163ce4e4e8ade30a20da8e7bd54bb92ea84e1))
+* Upgrade cozy-intent to `2.23.0` ([16965b8](https://github.com/cozy/cozy-client/commit/16965b8c12dc5dee14c4be235e667f4a968ae936)), closes [cozy/cozy-libs#2562](https://github.com/cozy/cozy-libs/issues/2562)
+
+
+### Reverts
+
+* Remove `cozyFromPouch` guard ([43be3e7](https://github.com/cozy/cozy-client/commit/43be3e7007e4ddb4326f44ed9c4d7edb75993343)), closes [/github.com/cozy/cozy-client/pull/1486#discussion_r1713802232](https://github.com//github.com/cozy/cozy-client/pull/1486/issues/discussion_r1713802232)
+
+
+### BREAKING CHANGES
+
+* cozy-client now requires cozy-intent >= 2.23.0 (used
+for offline support)
+
+
+
+
+
 # [48.25.0](https://github.com/cozy/cozy-client/compare/v48.24.1...v48.25.0) (2024-09-23)
 
 

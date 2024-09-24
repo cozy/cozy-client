@@ -3,6 +3,39 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 49.0.0 (2024-09-24)
+
+
+### Bug Fixes
+
+* **cozy-pouch-link:** Merge partialFilter into selector on `find` query ([102999b](https://github.com/cozy/cozy-client/commit/102999b2740c17923ab496022f7de6c4c888b349)), closes [/github.com/cozy/cozy-client/commit/7c69838d2962be8f59ada6806d65761dbfe47082#diff-41848dd46551544674c134f359a5d7cddea46dd1e47c21da6814e1d1d585173dR482-R489](https://github.com//github.com/cozy/cozy-client/commit/7c69838d2962be8f59ada6806d65761dbfe47082/issues/diff-41848dd46551544674c134f359a5d7cddea46dd1e47c21da6814e1d1d585173dR482-R489)
+* **pouch-link:** Add relationships to jsonapi's normalizeDoc ([bf6ecb8](https://github.com/cozy/cozy-client/commit/bf6ecb893caca25ce381300dd45cb681ad94b641))
+* **pouch-link:** Make CozyPouchLink use native partial indexes ([8777f7e](https://github.com/cozy/cozy-client/commit/8777f7e81ab4352bafb4e6c4a61d1192d52306ba))
+* Remove `attributes` and `meta` attributes before persisting docs ([a0f2be6](https://github.com/cozy/cozy-client/commit/a0f2be663f49b74c4a213cce152a57fc5090c886)), closes [/github.com/cozy/cozy-client/pull/1486#discussion_r1713788468](https://github.com//github.com/cozy/cozy-client/pull/1486/issues/discussion_r1713788468)
+
+
+### Features
+
+* Add a warning when an indexedField is missing in query selector ([29ca22c](https://github.com/cozy/cozy-client/commit/29ca22c5d473146344696d40ad47fb37920664bd)), closes [/github.com/cozy/cozy-client/pull/1506#discussion_r1716484732](https://github.com//github.com/cozy/cozy-client/pull/1506/issues/discussion_r1716484732)
+* Ensure storageEngine implements correct interface ([b70fe5b](https://github.com/cozy/cozy-client/commit/b70fe5b38703d1596077a3971ba244228568849b)), closes [/github.com/cozy/cozy-client/pull/1483#discussion_r1626141973](https://github.com//github.com/cozy/cozy-client/pull/1483/issues/discussion_r1626141973)
+* Force _rev for queries with .select fields ([15f8dc4](https://github.com/cozy/cozy-client/commit/15f8dc4bff947f026cbf08dc1b086b0f08c25956)), closes [#1517](https://github.com/cozy/cozy-client/issues/1517) [#1486](https://github.com/cozy/cozy-client/issues/1486)
+* **pouch-link:** Add links to jsonapi's normalizeDoc ([c0fb776](https://github.com/cozy/cozy-client/commit/c0fb776268c5deadd568b74b84b9fbf6baac602e))
+* **pouch-link:** Allow to ignore warmup ([5e6b843](https://github.com/cozy/cozy-client/commit/5e6b84348e6cec15ced5e602f573dab9e7257b74))
+* **pouch-link:** Apply new index naming algorithm on CozyPouchLink ([63990b8](https://github.com/cozy/cozy-client/commit/63990b8df9a621f383f3bef825e8404de4f0388d)), closes [#1495](https://github.com/cozy/cozy-client/issues/1495)
+* **pouch-link:** Handle missing selector predicates for indexed values ([bc0e444](https://github.com/cozy/cozy-client/commit/bc0e44420c7c3cd39d33747458dd0fd4a10c86e9))
+* **pouch-link:** Handle missing selector predicates for sorted values ([0169bcb](https://github.com/cozy/cozy-client/commit/0169bcb4004a225ca929ccca5f450540a98e43f4))
+* **pouch-link:** Support empty selector for PouchDB ([40ea4c1](https://github.com/cozy/cozy-client/commit/40ea4c11e0e7784db147d252f5cc925bbabef34e))
+
+
+### Reverts
+
+* Remove `cozyFromPouch` guard ([43be3e7](https://github.com/cozy/cozy-client/commit/43be3e7007e4ddb4326f44ed9c4d7edb75993343)), closes [/github.com/cozy/cozy-client/pull/1486#discussion_r1713802232](https://github.com//github.com/cozy/cozy-client/pull/1486/issues/discussion_r1713802232)
+* Remove `ignoreWarmup` option ([930b9e7](https://github.com/cozy/cozy-client/commit/930b9e76f44c1c22c4f7af74ea2af937345707d4)), closes [/github.com/cozy/cozy-client/pull/1506#discussion_r1716561921](https://github.com//github.com/cozy/cozy-client/pull/1506/issues/discussion_r1716561921)
+
+
+
+
+
 # [48.25.0](https://github.com/cozy/cozy-client/compare/v48.24.1...v48.25.0) (2024-09-23)
 
 **Note:** Version bump only for package cozy-pouch-link

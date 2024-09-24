@@ -3,6 +3,59 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 49.0.0 (2024-09-24)
+
+
+### Bug Fixes
+
+* Await for `persistVirtualDocuments` result before finishing request ([0a4816c](https://github.com/cozy/cozy-client/commit/0a4816c1a0343e747bb844fe492138921601b7e2)), closes [#1486](https://github.com/cozy/cozy-client/issues/1486)
+* Check for Flagship's downloadFile method support before calling it ([6f36af5](https://github.com/cozy/cozy-client/commit/6f36af5b1730b18a18623a8954699bd62bf43fd7)), closes [#1518](https://github.com/cozy/cozy-client/issues/1518)
+* **cozy-pouch-link:** Merge partialFilter into selector on `find` query ([102999b](https://github.com/cozy/cozy-client/commit/102999b2740c17923ab496022f7de6c4c888b349)), closes [/github.com/cozy/cozy-client/commit/7c69838d2962be8f59ada6806d65761dbfe47082#diff-41848dd46551544674c134f359a5d7cddea46dd1e47c21da6814e1d1d585173dR482-R489](https://github.com//github.com/cozy/cozy-client/commit/7c69838d2962be8f59ada6806d65761dbfe47082/issues/diff-41848dd46551544674c134f359a5d7cddea46dd1e47c21da6814e1d1d585173dR482-R489)
+* Don't use attributes on HasManyFiles ([65a6058](https://github.com/cozy/cozy-client/commit/65a6058c1b21a65e676b635eebb7c0b3c8072038))
+* Don't use attributes on loadInstanceOptionsFromStack ([88633b3](https://github.com/cozy/cozy-client/commit/88633b3c821e6d13dc67746d29dddce9c18c5204))
+* Don't use attributes on models/applications ([857cc87](https://github.com/cozy/cozy-client/commit/857cc8766c4287287aaff6016c9553fbbb9c864b))
+* Don't use attributes on models/instance ([ccc197e](https://github.com/cozy/cozy-client/commit/ccc197e621aff4427f67674bf941b1f49867b389))
+* Don't use attributes on useCapabilities ([3425899](https://github.com/cozy/cozy-client/commit/34258994c84a58be495be41123d51379223def4c))
+* Don't use attributes on useFetchShortctut ([29b96af](https://github.com/cozy/cozy-client/commit/29b96afd2d16acdbb745dd8e62d90c1641caae48))
+* **pouch-link:** Add relationships to jsonapi's normalizeDoc ([bf6ecb8](https://github.com/cozy/cozy-client/commit/bf6ecb893caca25ce381300dd45cb681ad94b641))
+* **pouch-link:** Make CozyPouchLink use native partial indexes ([8777f7e](https://github.com/cozy/cozy-client/commit/8777f7e81ab4352bafb4e6c4a61d1192d52306ba))
+* Remove `attributes` and `meta` attributes before persisting docs ([a0f2be6](https://github.com/cozy/cozy-client/commit/a0f2be663f49b74c4a213cce152a57fc5090c886)), closes [/github.com/cozy/cozy-client/pull/1486#discussion_r1713788468](https://github.com//github.com/cozy/cozy-client/pull/1486/issues/discussion_r1713788468)
+
+
+### Features
+
+* Add `downloadFile` method in `file` model ([9c3b2f2](https://github.com/cozy/cozy-client/commit/9c3b2f2e26ea8bf06d3b4ec0531e26260fd342a4))
+* Add a warning when an indexedField is missing in query selector ([29ca22c](https://github.com/cozy/cozy-client/commit/29ca22c5d473146344696d40ad47fb37920664bd)), closes [/github.com/cozy/cozy-client/pull/1506#discussion_r1716484732](https://github.com//github.com/cozy/cozy-client/pull/1506/issues/discussion_r1716484732)
+* Ensure storageEngine implements correct interface ([b70fe5b](https://github.com/cozy/cozy-client/commit/b70fe5b38703d1596077a3971ba244228568849b)), closes [/github.com/cozy/cozy-client/pull/1483#discussion_r1626141973](https://github.com//github.com/cozy/cozy-client/pull/1483/issues/discussion_r1626141973)
+* Force _rev for queries with .select fields ([15f8dc4](https://github.com/cozy/cozy-client/commit/15f8dc4bff947f026cbf08dc1b086b0f08c25956)), closes [#1517](https://github.com/cozy/cozy-client/issues/1517) [#1486](https://github.com/cozy/cozy-client/issues/1486)
+* Handle queries that fetch Konnectors by channel ([374782f](https://github.com/cozy/cozy-client/commit/374782f25c4afac3aafffda8b76787f47031d20d)), closes [cozy/cozy-home#2186](https://github.com/cozy/cozy-home/issues/2186)
+* Implement FlagshipLink ([cd9b46c](https://github.com/cozy/cozy-client/commit/cd9b46c7fc027f3bfd07e1281bd50511424e8a10))
+* Improve CozyLink typing and add `reset()` method ([d2ece7e](https://github.com/cozy/cozy-client/commit/d2ece7e69bfe48af10b535c99adf41fc7cae7c8f))
+* **pouch-link:** Add links to jsonapi's normalizeDoc ([c0fb776](https://github.com/cozy/cozy-client/commit/c0fb776268c5deadd568b74b84b9fbf6baac602e))
+* **pouch-link:** Allow to ignore warmup ([5e6b843](https://github.com/cozy/cozy-client/commit/5e6b84348e6cec15ced5e602f573dab9e7257b74))
+* **pouch-link:** Apply new index naming algorithm on CozyPouchLink ([63990b8](https://github.com/cozy/cozy-client/commit/63990b8df9a621f383f3bef825e8404de4f0388d)), closes [#1495](https://github.com/cozy/cozy-client/issues/1495)
+* **pouch-link:** Handle missing selector predicates for indexed values ([bc0e444](https://github.com/cozy/cozy-client/commit/bc0e44420c7c3cd39d33747458dd0fd4a10c86e9))
+* **pouch-link:** Handle missing selector predicates for sorted values ([0169bcb](https://github.com/cozy/cozy-client/commit/0169bcb4004a225ca929ccca5f450540a98e43f4))
+* **pouch-link:** Support empty selector for PouchDB ([40ea4c1](https://github.com/cozy/cozy-client/commit/40ea4c11e0e7784db147d252f5cc925bbabef34e))
+* Rename FlagshipLink to WebFlagshipLink ([e06163c](https://github.com/cozy/cozy-client/commit/e06163ce4e4e8ade30a20da8e7bd54bb92ea84e1))
+* Upgrade cozy-intent to `2.23.0` ([16965b8](https://github.com/cozy/cozy-client/commit/16965b8c12dc5dee14c4be235e667f4a968ae936)), closes [cozy/cozy-libs#2562](https://github.com/cozy/cozy-libs/issues/2562)
+
+
+### Reverts
+
+* Remove `cozyFromPouch` guard ([43be3e7](https://github.com/cozy/cozy-client/commit/43be3e7007e4ddb4326f44ed9c4d7edb75993343)), closes [/github.com/cozy/cozy-client/pull/1486#discussion_r1713802232](https://github.com//github.com/cozy/cozy-client/pull/1486/issues/discussion_r1713802232)
+* Remove `ignoreWarmup` option ([930b9e7](https://github.com/cozy/cozy-client/commit/930b9e76f44c1c22c4f7af74ea2af937345707d4)), closes [/github.com/cozy/cozy-client/pull/1506#discussion_r1716561921](https://github.com//github.com/cozy/cozy-client/pull/1506/issues/discussion_r1716561921)
+
+
+### BREAKING CHANGES
+
+* cozy-client now requires cozy-intent >= 2.23.0 (used
+for offline support)
+
+
+
+
+
 # [48.25.0](https://github.com/cozy/cozy-client/compare/v48.24.1...v48.25.0) (2024-09-23)
 
 

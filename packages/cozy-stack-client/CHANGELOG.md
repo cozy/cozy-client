@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 49.0.0 (2024-09-24)
+
+
+### Features
+
+* Add `downloadFile` method in `file` model ([9c3b2f2](https://github.com/cozy/cozy-client/commit/9c3b2f2e26ea8bf06d3b4ec0531e26260fd342a4))
+* Handle queries that fetch Konnectors by channel ([374782f](https://github.com/cozy/cozy-client/commit/374782f25c4afac3aafffda8b76787f47031d20d)), closes [cozy/cozy-home#2186](https://github.com/cozy/cozy-home/issues/2186)
+* **pouch-link:** Apply new index naming algorithm on CozyPouchLink ([63990b8](https://github.com/cozy/cozy-client/commit/63990b8df9a621f383f3bef825e8404de4f0388d)), closes [#1495](https://github.com/cozy/cozy-client/issues/1495)
+
+
+
+
+
 # [48.16.0](https://github.com/cozy/cozy-client/compare/v48.15.0...v48.16.0) (2024-08-29)
 
 
