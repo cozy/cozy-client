@@ -539,6 +539,19 @@ class PouchLink extends CozyLink {
 
     if (!indexedFields) {
       indexedFields = getIndexFields(options)
+    } else if (partialFilter) {
+      // Some pouch adapters does not support partialIndex, e.g. with websql in react-native
+      // Therefore, we need to force the indexing the partialIndex fields to ensure they will be
+      // included in the actual index. Thanks to this, docs with missing fields will be excluded
+      // from the index.
+      // Note the $exists: false case should be handled in-memory.
+      indexedFields = Array.from(
+        new Set([...indexedFields, ...Object.keys(partialFilter)])
+      )
+      // FIXME: should properly handle n-level attributes
+      indexedFields = indexedFields.filter(
+        field => field !== '$and' && field !== '$or'
+      )
     }
 
     const indexName = getIndexNameFromFields(indexedFields, partialFilter)

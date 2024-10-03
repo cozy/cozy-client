@@ -608,13 +608,46 @@ describe('CozyPouchLink', () => {
       expect(spy).toHaveBeenCalled()
       expect(spy).toHaveBeenCalledWith({
         index: {
-          ddoc: 'by_myIndex_filter_(SOME_FIELD_$exists_true)',
-          fields: ['myIndex'],
-          indexName: 'by_myIndex_filter_(SOME_FIELD_$exists_true)',
+          ddoc: 'by_myIndex_and_SOME_FIELD_filter_(SOME_FIELD_$exists_true)',
+          fields: ['myIndex', 'SOME_FIELD'],
+          indexName:
+            'by_myIndex_and_SOME_FIELD_filter_(SOME_FIELD_$exists_true)',
           partial_filter_selector: {
             SOME_FIELD: {
               $exists: true
             }
+          }
+        }
+      })
+    })
+
+    it('should exclude $and and $or operators from fields with partialIndex', async () => {
+      spy = jest.spyOn(PouchDB.prototype, 'createIndex').mockReturnValue({})
+      await setup()
+      await link.ensureIndex(TODO_DOCTYPE, {
+        indexedFields: ['myIndex'],
+        partialFilter: {
+          $and: [
+            { SOME_FIELD: { $exists: true } },
+            { SOME_FIELD: { $gt: null } }
+          ],
+          $or: [{ SOME_FIELD: { $eq: '1' } }, { SOME_FIELD: { $eq: '2' } }]
+        }
+      })
+      expect(spy).toHaveBeenCalled()
+      expect(spy).toHaveBeenCalledWith({
+        index: {
+          ddoc:
+            'by_myIndex_filter_((SOME_FIELD_$exists_true)_$and_(SOME_FIELD_$gt_null))_and_((SOME_FIELD_$eq_1)_$or_(SOME_FIELD_$eq_2))',
+          fields: ['myIndex'],
+          indexName:
+            'by_myIndex_filter_((SOME_FIELD_$exists_true)_$and_(SOME_FIELD_$gt_null))_and_((SOME_FIELD_$eq_1)_$or_(SOME_FIELD_$eq_2))',
+          partial_filter_selector: {
+            $and: [
+              { SOME_FIELD: { $exists: true } },
+              { SOME_FIELD: { $gt: null } }
+            ],
+            $or: [{ SOME_FIELD: { $eq: '1' } }, { SOME_FIELD: { $eq: '2' } }]
           }
         }
       })
