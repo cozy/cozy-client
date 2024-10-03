@@ -12,6 +12,10 @@ import { formatAggregatedError, getDatabaseName } from './utils'
 
 const DEFAULT_DELAY = 30 * 1000
 
+// See view_update_changes_batch_size in https://pouchdb.com/api.html#create_database
+// PouchDB default is 50, which badly hurt performances for large databases
+const DEFAULT_VIEW_UPDATE_BATCH = 1000
+
 /**
  * @param {import('cozy-client/types/types').Query} query The query definition whose name we're getting
  *
@@ -43,6 +47,9 @@ class PouchManager {
   async init() {
     const pouchPlugins = get(this.options, 'pouch.plugins', [])
     const pouchOptions = get(this.options, 'pouch.options', {})
+    if (!pouchOptions.view_update_changes_batch_size) {
+      pouchOptions.view_update_changes_batch_size = DEFAULT_VIEW_UPDATE_BATCH
+    }
 
     forEach(pouchPlugins, plugin => this.PouchDB.plugin(plugin))
     this.pouches = fromPairs(
