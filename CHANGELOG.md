@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [49.1.0](https://github.com/cozy/cozy-client/compare/v49.0.0...v49.1.0) (2024-10-03)
+
+
+### Features
+
+* Improve PouchDB query performances with partialIndex ([c6315e6](https://github.com/cozy/cozy-client/commit/c6315e644c90e03504991686e5270919c8d066e1)), closes [e456faaa00dcefef13c6eee88459caffcac4f2d4/src/queries/index.js#L64-L105](https://github.com/e456faaa00dcefef13c6eee88459caffcac4f2d4/src/queries/index.js/issues/L64-L105)
+* Increase PouchdDB default batch size for view updates ([5b0b12d](https://github.com/cozy/cozy-client/commit/5b0b12d969ec30e5ebc0e14b8fc4b4720e5a2b09))
+
+
+
+
+
 # 49.0.0 (2024-09-24)
 
 
