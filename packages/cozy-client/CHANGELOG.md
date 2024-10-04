@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [49.1.1](https://github.com/cozy/cozy-client/compare/v49.1.0...v49.1.1) (2024-10-04)
+
+
+### Bug Fixes
+
+* Revert some updates to file metadata types ([b4c32a5](https://github.com/cozy/cozy-client/commit/b4c32a5cb3a15111c85d0e361e0cf3825dd27bb7))
+
+
+
+
+
 # 49.0.0 (2024-09-24)
 
 
