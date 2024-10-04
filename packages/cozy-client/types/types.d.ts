@@ -776,6 +776,10 @@ export type FileMetadata = {
      */
     title?: string;
     /**
+     * - A brief description of the file
+     */
+    description?: string;
+    /**
      * - Number of a note
      */
     version?: number;
@@ -812,7 +816,6 @@ export type FileMetadata = {
      */
     target?: {
         title: string;
-        description: string;
         category: string;
     };
     /**

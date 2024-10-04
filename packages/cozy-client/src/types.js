@@ -451,6 +451,7 @@ import { QueryDefinition } from './queries/dsl'
  * @property {object} [content] - The Note's content. See https://prosemirror.net/docs/ref/#model for more informations
  * @property {object} [schema] - the schema used by prosemirror (with notes and marks serialized as arrays to preserve the order).
  * @property {string} [title] - the initial title of the note (that will also be used for the file name)
+ * @property {string} [description] - A brief description of the file
  * @property {number} [version] - Number of a note
  * @property {Qualification} [qualification] - Qualification of the file
  * @property {string} [country] - Country of the paper
@@ -461,7 +462,6 @@ import { QueryDefinition } from './queries/dsl'
  * @property {string} [instanceName] - Name of the instance
  * @property {object} [target] - Information of the target of the shortcut
  * @property {string} [target.title] - The title of the application to which the shortcut redirects
- * @property {string} [target.description] - A brief description of the application
  * @property {string} [target.category] - The category of the application
  * @property {object} [externalDataSource] - Additional information to maintain link with external data source
  * @property {string} [externalDataSource.source] - The space to which the application belongs
