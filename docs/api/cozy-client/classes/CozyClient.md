@@ -1641,8 +1641,8 @@ save the new resulting settings into database
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `slug` | `string` | the cozy-app's slug containing the setting (can be 'instance' for global settings) |
-| `itemsOrSetter` | `Record`<`string`, `any`> | (`oldValue`: `any`) => `Record`<`T`, `any`> | The new values of the settings to save. It can be a raw dictionnary, or a callback that should return a new dictionnary |
-| `setterKeys` | `T`\[] | The new values of the settings to save. It can be a raw dictionnary, or a callback that should return a new dictionnary |
+| `itemsOrSetter` | `Record`<`string`, `any`> | (`oldValue`: `any`) => `Record`<`T`, `any`> | The new values of the settings to save. It can be a raw dictionary, or a callback that should return a new dictionary |
+| `setterKeys` | `T`\[] | The new values of the settings to save. It can be a raw dictionary, or a callback that should return a new dictionary |
 
 *Returns*
 

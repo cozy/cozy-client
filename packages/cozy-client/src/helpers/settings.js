@@ -39,8 +39,8 @@ export const getSettings = async (client, slug, keys) => {
  *
  * @param {CozyClient} client - Cozy client instance
  * @param {string} slug - the cozy-app's slug containing the setting (special cases are: 'instance' for global settings and 'bitwarden' for cozy-pass)
- * @param {Record<string, any> | ((oldValue) => Record<T, any>)} itemsOrSetter - The new values of the settings to save. It can be a raw dictionnary, or a callback that should return a new dictionnary
- * @param {T[]=} setterKeys - The new values of the settings to save. It can be a raw dictionnary, or a callback that should return a new dictionnary
+ * @param {Record<string, any> | ((oldValue) => Record<T, any>)} itemsOrSetter - The new values of the settings to save. It can be a raw dictionary, or a callback that should return a new dictionary
+ * @param {T[]=} setterKeys - The new values of the settings to save. It can be a raw dictionary, or a callback that should return a new dictionary
  * @returns {Promise<any>} - The result of the `client.save()` call
  */
 export const saveAfterFetchSettings = async (
