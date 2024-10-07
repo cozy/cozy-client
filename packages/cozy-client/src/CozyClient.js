@@ -1846,8 +1846,8 @@ instantiation of the client.`
    * @template {string} T
    *
    * @param {string} slug - the cozy-app's slug containing the setting (can be 'instance' for global settings)
-   * @param {Record<string, any> | ((oldValue) => Record<T, any>)} itemsOrSetter - The new values of the settings to save. It can be a raw dictionnary, or a callback that should return a new dictionnary
-   * @param {T[]=} setterKeys - The new values of the settings to save. It can be a raw dictionnary, or a callback that should return a new dictionnary
+   * @param {Record<string, any> | ((oldValue) => Record<T, any>)} itemsOrSetter - The new values of the settings to save. It can be a raw dictionary, or a callback that should return a new dictionary
+   * @param {T[]=} setterKeys - The new values of the settings to save. It can be a raw dictionary, or a callback that should return a new dictionary
    * @returns {Promise<any>} - The result of the `client.save()` call
    */
   async saveAfterFetchSettings(slug, itemsOrSetter, setterKeys) {
