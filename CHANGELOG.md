@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [49.2.0](https://github.com/cozy/cozy-client/compare/v49.1.1...v49.2.0) (2024-10-08)
+
+
+### Features
+
+* Apply data enhancement to realtime results for specific doctypes ([7984d6d](https://github.com/cozy/cozy-client/commit/7984d6de74783f04e34005d59900e36768e24499))
+
+
+
+
+
 ## [49.1.1](https://github.com/cozy/cozy-client/compare/v49.1.0...v49.1.1) (2024-10-04)
 
 
