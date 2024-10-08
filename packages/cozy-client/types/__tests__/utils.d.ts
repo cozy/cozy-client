@@ -11,5 +11,5 @@ export function createTestAssets(): {
     store: any;
     link: CozyLink;
 };
-import CozyClient from "../CozyClient";
-import CozyLink from "../CozyLink";
+import CozyClient from '../CozyClient';
+import CozyLink from '../CozyLink';

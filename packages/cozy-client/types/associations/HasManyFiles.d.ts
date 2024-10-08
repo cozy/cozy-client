@@ -5,13 +5,9 @@ export function getFileDatetime(file: import('../types').IOCozyFile): string;
  *  by datetime, with a cursor-based pagination.
  */
 export default class HasManyFiles extends HasMany {
-    constructor(target: any, name: string, doctype: string, options: {
-        get: Function;
-        query: Function;
-        mutate: Function;
-        save: Function;
-        dispatch: Function;
-    });
+    fetchMore(): Promise<void>;
+    addById(idsArg: any): Promise<void>;
+    removeById(idsArg: any): Promise<void>;
     addReferences(referencedDocs: any): {
         mutationType: string;
         referencedDocuments: any;
@@ -23,4 +19,4 @@ export default class HasManyFiles extends HasMany {
         document: any;
     };
 }
-import HasMany from "./HasMany";
+import HasMany from './HasMany';

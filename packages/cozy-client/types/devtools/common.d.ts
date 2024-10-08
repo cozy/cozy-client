@@ -1,4 +1,4 @@
-export function NavSecondaryAction(): JSX.Element;
+export function NavSecondaryAction(): any;
 export function ListGridItem({ children }: {
     children: any;
-}): JSX.Element;
+}): any;

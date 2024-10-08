@@ -1,7 +1,7 @@
 /**
  * Setups a client suitable for testing
  */
-export type MockQueryOptions = any;
+export type MockQueryOptions = object;
 /**
  * Setups a client suitable for testing
  *
@@ -12,7 +12,7 @@ export type MockQueryOptions = any;
  * @returns {CozyClient}
  */
 export function setupClient({ queries }?: {
-    queries: MockQueryOptions;
+    queries?: MockQueryOptions;
 }): CozyClient;
 /**
  * @private
@@ -20,4 +20,4 @@ export function setupClient({ queries }?: {
  * @returns {any}
  */
 export function makeWrapper(client: CozyClient): any;
-import CozyClient from "../CozyClient";
+import CozyClient from '../CozyClient';

@@ -12,10 +12,10 @@
  * @returns {CozyClient}
  */
 export function createMockClient({ queries, remote, clientOptions, clientFunctions }?: {
-    queries: object;
-    remote: object;
-    clientOptions: object;
-    clientFunctions: object;
+    queries?: object;
+    remote?: object;
+    clientOptions?: object;
+    clientFunctions?: object;
 }): CozyClient;
 /**
  * Creates a client with pre-filled store
@@ -32,9 +32,9 @@ export function createMockClient({ queries, remote, clientOptions, clientFunctio
  * @returns {CozyClient}
  */
 export function createFakeClient({ queries, remote, clientOptions, clientFunctions }?: {
-    queries: object;
-    remote: object;
-    clientOptions: object;
-    clientFunctions: object;
+    queries?: object;
+    remote?: object;
+    clientOptions?: object;
+    clientFunctions?: object;
 }): CozyClient;
-import CozyClient from "./CozyClient";
+import CozyClient from './CozyClient';

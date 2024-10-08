@@ -25,7 +25,7 @@
  * @returns {boolean} true if the note should be displayed read-only
  */
 export function isReadOnly(perm: PermissionItem, options?: {
-    writability: PermissionVerb[];
+    writability?: PermissionVerb[];
 }): boolean;
 /**
  * Fetches the list of permissions blocks
@@ -52,7 +52,7 @@ export type Document = {
     _type: string;
     type: string;
 };
-export type PermissionVerb = "POST" | "DELETE" | "PUT" | "GET" | "PATCH" | "ALL";
+export type PermissionVerb = ('ALL' | 'GET' | 'PATCH' | 'POST' | 'PUT' | 'DELETE');
 export type PermissionItem = {
     /**
      * - ALL, GET, PUT, PATCH, DELETE, POST…
@@ -90,4 +90,4 @@ export type Permission = {
      */
     included: any[];
 };
-import CozyClient from "../CozyClient";
+import CozyClient from '../CozyClient';

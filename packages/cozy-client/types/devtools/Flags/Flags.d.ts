@@ -1,2 +1,2 @@
 export default Flags;
-declare function Flags(): JSX.Element;
+declare function Flags(): any;

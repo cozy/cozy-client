@@ -1,4 +1,2 @@
-declare var _default: import("react").MemoExoticComponent<({ doctype }: {
-    doctype: import("./types").Doctype;
-}) => null>;
+declare const _default: any;
 export default _default;

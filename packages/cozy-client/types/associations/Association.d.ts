@@ -221,4 +221,4 @@ declare class Association {
      */
     get data(): any;
 }
-import { QueryDefinition } from "../queries/dsl";
+import { QueryDefinition } from '../queries/dsl';

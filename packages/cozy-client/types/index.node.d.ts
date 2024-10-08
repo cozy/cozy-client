@@ -1,7 +1,6 @@
 export { default } from "./CozyClient";
 export { default as CozyLink } from "./CozyLink";
 export { default as StackLink } from "./StackLink";
-export { default as compose } from "lodash/flow";
 export { getReferencedBy } from "./associations/helpers";
 export { cancelable } from "./utils";
 export { getQueryFromState } from "./store";
@@ -10,8 +9,8 @@ export * from "./mock";
 export * from "./cli";
 export { BulkEditError } from "./errors";
 export { default as fetchPolicies } from "./policies";
-import * as manifest from "./models/manifest";
-import * as models from "./models";
+import * as manifest from './models/manifest';
+import * as models from './models';
 export { manifest, models };
 export { QueryDefinition, Mutations, MutationTypes, getDoctypeFromOperation, Q } from "./queries/dsl";
 export { Association, HasMany, HasOne, HasOneInPlace, HasManyInPlace, HasManyTriggers } from "./associations";

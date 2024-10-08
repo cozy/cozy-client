@@ -1,2 +1,2 @@
 export default Versions;
-declare function Versions(): JSX.Element;
+declare function Versions(): any;

@@ -7,9 +7,9 @@ export function hasAnOffer(data: SettingsInfo): boolean;
 export function buildPremiumLink(instanceInfo: InstanceInfo): string;
 export function hasPasswordDefinedAttribute(client: import("../CozyClient").default): Promise<boolean>;
 export function makeDiskInfos(usage: number | string, quota?: number | string): DiskInfos;
-export type InstanceInfo = any;
-export type ContextInfo = any;
-export type DiskUsageInfo = any;
+export type InstanceInfo = object;
+export type ContextInfo = object;
+export type DiskUsageInfo = object;
 export type SettingsInfo = {
     /**
      * - Object returned by /settings/context

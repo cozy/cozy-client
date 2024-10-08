@@ -1,8 +1,6 @@
 export default Schema;
-export type DoctypeSchema = any;
-export type SchemaDefinition = {
-    [x: string]: any;
-};
+export type DoctypeSchema = object;
+export type SchemaDefinition = Record<string, DoctypeSchema>;
 /**
  * Stores information on a particular doctype.
  *

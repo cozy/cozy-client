@@ -15,8 +15,8 @@ export function getNativeFile(file: object): Promise<any>;
 export function openOfflineFile(file: object): Promise<any>;
 export function openFileWith(client: CozyClient, file: object): Promise<void>;
 export default fsnative;
-export type FilesystemEntry = any;
-import CozyClient from "../CozyClient";
+export type FilesystemEntry = object;
+import CozyClient from '../CozyClient';
 declare namespace fsnative {
     export { saveAndOpenWithCordova };
 }

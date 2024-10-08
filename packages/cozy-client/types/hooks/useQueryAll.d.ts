@@ -7,4 +7,4 @@ export default useQueryAll;
  * @returns {import("../types").UseQueryReturnValue}
  */
 declare function useQueryAll(queryDefinition: QueryDefinition, options: import("../types").QueryOptions): import("../types").UseQueryReturnValue;
-import { QueryDefinition } from "../queries/dsl";
+import { QueryDefinition } from '../queries/dsl';

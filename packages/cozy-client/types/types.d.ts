@@ -1,4 +1,4 @@
-declare var _default: {};
+declare const _default: {};
 export default _default;
 export type Qualification = import("./models/document/qualification").Qualification;
 export type NotesDoctype = "io.cozy.notes";
@@ -10,8 +10,8 @@ export type AccountsDoctype = "io.cozy.account";
 export type KonnectorsDoctype = "io.cozy.konnectors";
 export type TriggersDoctype = "io.cozy.triggers";
 export type NextcloudFilesDoctype = "io.cozy.remote.nextcloud.files";
-export type KnownDoctype = "io.cozy.files" | "io.cozy.account" | "io.cozy.triggers" | "io.cozy.konnectors" | "io.cozy.notes" | "io.cozy.apps" | "io.cozy.settings" | "io.cozy-oauth.clients";
-export type Doctype = string;
+export type KnownDoctype = AccountsDoctype | TriggersDoctype | KonnectorsDoctype | NotesDoctype | AppsDoctype | SettingsDoctype | OAuthClientsDoctype | FilesDoctype;
+export type Doctype = KnownDoctype | string;
 export type AccountsDocument = {
     /**
      * - document identifier
@@ -66,8 +66,8 @@ export type KonnectorsDocument = {
      * - identity information on the connector developer
      */
     developer?: {
-        name: string;
-        url: string;
+        name?: string;
+        url?: string;
     };
     /**
      * - name of the editor
@@ -375,10 +375,10 @@ export type TriggersDocument = {
      * - Parameters to pass to the the worker. For example, when the worker is set to konnector, message contains the related konnector and the related account.
      */
     message: {
-        account: IOCozyAccount['id'];
-        konnector: IOCozyKonnector['slug'];
-        folder_to_save: IOCozyFolder['_id'];
-        Data: string;
+        account?: IOCozyAccount['id'];
+        konnector?: IOCozyKonnector['slug'];
+        folder_to_save?: IOCozyFolder['_id'];
+        Data?: string;
     };
     /**
      * - state of the last executed jobs related to this trigger
@@ -435,16 +435,16 @@ export type TriggerState = {
      */
     last_error: string;
 };
-export type Link = any;
-export type Mutation = any;
-export type DocumentCollection = any;
-export type QueryResult = any;
-export type HydratedDocument = any;
-export type ReduxStore = any;
-export type Token = any;
-export type ClientResponse = any;
-export type Manifest = any;
-export type SanitizedManifest = any;
+export type Link = object;
+export type Mutation = object;
+export type DocumentCollection = object;
+export type QueryResult = object;
+export type HydratedDocument = object;
+export type ReduxStore = object;
+export type Token = object;
+export type ClientResponse = object;
+export type Manifest = object;
+export type SanitizedManifest = object;
 export type ManifestField = {
     /**
      * - field type : can be "text" or "hidden" or "date" or "dropdown" or "password"
@@ -477,18 +477,12 @@ export type CozyStore = {
 export type ManifestFields = {
     [key: string]: ManifestField;
 };
-export type OldCozyClient = any;
-export type NodeEnvironment = any;
-export type QueryFetchStatus = "failed" | "loading" | "pending" | "loaded";
-export type QueriesStateSlice = {
-    [x: string]: QueryState;
-};
-export type IndexedDocuments = {
-    [x: string]: CozyClientDocument;
-};
-export type DocumentsStateSlice = {
-    [x: string]: Record<string, CozyClientDocument>;
-};
+export type OldCozyClient = object;
+export type NodeEnvironment = object;
+export type QueryFetchStatus = "loading" | "loaded" | "pending" | "failed";
+export type QueriesStateSlice = Record<Doctype, QueryState>;
+export type IndexedDocuments = Record<string, CozyClientDocument>;
+export type DocumentsStateSlice = Record<Doctype, IndexedDocuments>;
 export type QueryStateWithoutData = {
     id: string;
     definition: QueryDefinition;
@@ -509,7 +503,7 @@ export type QueryStateData = {
     data: object | any[];
 };
 export type QueryState = QueryStateWithoutData & QueryStateData;
-export type AutoUpdateOptions = any;
+export type AutoUpdateOptions = object;
 export type QueryOptions = {
     /**
      * - Name of the query
@@ -564,7 +558,7 @@ export type FetchMoreAble = {
 export type FetchAble = {
     fetch: Function;
 };
-export type UseQueryReturnValue = QueryStateWithoutData & QueryStateData & FetchMoreAble & FetchAble;
+export type UseQueryReturnValue = QueryState & FetchMoreAble & FetchAble;
 export type UseMutationWithoutMutate = {
     /**
      * - Status of the current mutation
@@ -594,7 +588,7 @@ export type UseSettingsReturnValue<T extends string> = {
     /**
      * - The setting's value
      */
-    values: Record<T, any>;
+    values: Record<T, any> | undefined;
     /**
      * - Function to edit the setting
      */
@@ -642,7 +636,7 @@ export type Reference = {
     type: string;
 };
 export type ReferenceMap = {
-    [x: string]: Reference[];
+    [x: string]: Array<Reference>;
 };
 export type MutationOptions = {
     as?: string;
@@ -815,14 +809,14 @@ export type FileMetadata = {
      * - Information of the target of the shortcut
      */
     target?: {
-        title: string;
-        category: string;
+        title?: string;
+        category?: string;
     };
     /**
      * - Additional information to maintain link with external data source
      */
     externalDataSource?: {
-        source: string;
+        source?: string;
     };
 };
 /**
@@ -1363,9 +1357,9 @@ export type CouchDBBulkResult = {
      */
     reason: string | null;
 };
-export type ViewKey = string | string[];
+export type ViewKey = Array<string> | string;
 export type DocId = string;
-export type CouchDBViewCursor = [string | string[], string];
+export type CouchDBViewCursor = [ViewKey, DocId];
 export type Theme = {
     id: string;
     label: string;
@@ -1373,8 +1367,8 @@ export type Theme = {
     items: Array<QualificationAttributes>;
     defaultItems?: Array<string>;
 };
-export type ThemesList = Theme[];
-export type ThemesLabels = "transport" | "identity" | "family" | "health" | "invoice" | "home" | "work_study" | "finance" | "others";
+export type ThemesList = Array<Theme>;
+export type ThemesLabels = 'identity' | 'family' | 'work_study' | 'health' | 'home' | 'transport' | 'finance' | 'invoice' | 'others';
 export type QualificationAttributes = {
     label: string;
     purpose?: string;
@@ -1382,48 +1376,48 @@ export type QualificationAttributes = {
     sourceSubCategory?: string;
     subjects?: Array<string>;
 };
-export type IdentityLabel = "identity_photo" | "national_id_card" | "passport" | "residence_permit" | "family_record_book" | "birth_certificate" | "driver_license" | "other_identity_document" | "electoral_card" | "citizen_registration_certificate" | "personal_sporting_licence" | "note_identity_document";
-export type FamilyLabel = "family_record_book" | "birth_certificate" | "wedding" | "pacs" | "divorce" | "large_family_card" | "caf" | "other_family_document" | "single_parent_benefit" | "payment_proof_family_allowance" | "person_insurance" | "note_family_document";
-export type WorkStudyLabels = "resume" | "diploma" | "work_contract" | "pay_sheet" | "employment_center_certificate" | "unemployment_benefit" | "pension" | "gradebook" | "student_card" | "motivation_letter" | "other_work_document" | "work_disability_recognition" | "school_attendance_certificate" | "school_insurance_certificate" | "expense_claim" | "note_work_document";
-export type HealthLabels = "health_book" | "health_certificate" | "pregnancy_medical_certificate" | "work_disability_recognition" | "national_health_insurance_card" | "national_health_insurance_right_certificate" | "health_insurance_card" | "prescription" | "health_invoice" | "other_health_document" | "note_health_document";
-export type HomeLabels = "house_sale_agreeement" | "building_permit" | "technical_diagnostic_record" | "lease" | "rent_receipt" | "house_insurance" | "work_quote" | "work_invoice" | "other_house_document" | "phone_invoice" | "isp_invoice" | "telecom_invoice" | "energy_invoice" | "water_invoice" | "other_invoice" | "unfit_for_habitation_declaration" | "accommodation_proof" | "real_estate_insurance" | "condition_report" | "note_house_document";
-export type TransportLabels = "driver_license" | "transport_card" | "vehicle_registration" | "car_insurance" | "mechanic_invoice" | "transport_invoice" | "other_transport_document" | "note_transport_document";
-export type FinanceLabels = "pay_sheet" | "single_parent_benefit" | "other_revenue" | "real_estate_tax" | "tax_certificate" | "tax_return" | "tax_notice" | "tax_timetable" | "other_tax_document" | "bank_details" | "bank_statement" | "loan_agreement" | "other_bank_document" | "receipt" | "payment_proof_family_allowance" | "expense_claim" | "fine" | "note_finance";
-export type InvoiceLabels = "health_invoice" | "transport_invoice" | "work_invoice" | "phone_invoice" | "isp_invoice" | "telecom_invoice" | "energy_invoice" | "water_invoice" | "energy_contract" | "appliance_invoice" | "web_service_invoice" | "restaurant_invoice" | "grocery_invoice" | "other_invoice" | "expense_claim" | "note_invoice";
-export type ActivityLabels = "fidelity_card" | "personal_sporting_licence" | "other_activity_document" | "note_activity_document";
-export type OthersLabels = "other_administrative_document" | "note_other";
-export type ItemsLabels = "resume" | "identity_photo" | "national_id_card" | "passport" | "residence_permit" | "family_record_book" | "birth_certificate" | "driver_license" | "other_identity_document" | "wedding" | "pacs" | "divorce" | "large_family_card" | "caf" | "other_family_document" | "diploma" | "work_contract" | "pay_sheet" | "fidelity_card" | "single_parent_benefit" | "transport_card" | "electoral_card" | "employment_center_certificate" | "unemployment_benefit" | "pension" | "other_revenue" | "gradebook" | "student_card" | "motivation_letter" | "other_work_document" | "health_book" | "health_certificate" | "pregnancy_medical_certificate" | "work_disability_recognition" | "national_health_insurance_card" | "national_health_insurance_right_certificate" | "health_insurance_card" | "prescription" | "health_invoice" | "other_health_document" | "vehicle_registration" | "car_insurance" | "mechanic_invoice" | "transport_invoice" | "other_transport_document" | "house_sale_agreeement" | "real_estate_tax" | "building_permit" | "technical_diagnostic_record" | "lease" | "rent_receipt" | "house_insurance" | "work_quote" | "work_invoice" | "other_house_document" | "phone_invoice" | "isp_invoice" | "telecom_invoice" | "energy_invoice" | "water_invoice" | "energy_contract" | "appliance_invoice" | "web_service_invoice" | "restaurant_invoice" | "grocery_invoice" | "other_invoice" | "tax_certificate" | "tax_return" | "tax_notice" | "tax_timetable" | "other_tax_document" | "bank_details" | "bank_statement" | "loan_agreement" | "other_bank_document" | "receipt" | "payment_proof_family_allowance" | "school_attendance_certificate" | "school_insurance_certificate" | "unfit_for_habitation_declaration" | "accommodation_proof" | "citizen_registration_certificate" | "personal_sporting_licence" | "other_activity_document" | "real_estate_insurance" | "person_insurance" | "other_administrative_document" | "expense_claim" | "fine" | "condition_report" | "note_identity_document" | "note_family_document" | "note_work_document" | "note_health_document" | "note_house_document" | "note_transport_document" | "note_activity_document" | "note_finance" | "note_invoice" | "note_other";
-export type iconPeopleLabels = "resume" | "national_id_card" | "other_identity_document" | "work_disability_recognition";
-export type iconWorkLabels = "work_contract" | "employment_center_certificate" | "unemployment_benefit" | "student_card" | "motivation_letter" | "other_work_document" | "school_attendance_certificate" | "school_insurance_certificate";
-export type iconJusticeLabels = "fine";
-export type iconGlobeLabels = "residence_permit";
-export type iconPlaneLabels = "passport";
-export type iconImageLabels = "identity_photo";
-export type iconShopLabels = "fidelity_card" | "grocery_invoice";
-export type iconGouvLabels = "electoral_card";
-export type iconSchoolLabels = "diploma" | "gradebook";
-export type iconChildLabels = "birth_certificate";
-export type iconEmailLabels = "receipt";
-export type iconLaudryLabels = "appliance_invoice";
-export type iconHomeLabels = "mechanic_invoice" | "house_sale_agreeement" | "building_permit" | "technical_diagnostic_record" | "lease" | "rent_receipt" | "house_insurance" | "work_quote" | "work_invoice" | "other_house_document" | "unfit_for_habitation_declaration" | "accommodation_proof" | "real_estate_insurance" | "condition_report";
-export type iconBenefitLabels = "pay_sheet" | "pension" | "other_revenue" | "loan_agreement" | "payment_proof_family_allowance";
-export type iconEuroLabels = "other_bank_document";
-export type iconBankCheckLabels = "bank_details";
-export type iconBankLabels = "real_estate_tax" | "tax_certificate" | "tax_return" | "tax_notice" | "tax_timetable" | "other_tax_document" | "other_administrative_document";
-export type iconCarLabels = "driver_license" | "transport_card" | "vehicle_registration" | "car_insurance" | "transport_invoice" | "other_transport_document";
-export type iconLightningLabels = "energy_invoice" | "energy_contract";
-export type iconTelecomLabels = "isp_invoice" | "telecom_invoice" | "web_service_invoice";
-export type iconTelephoneLabels = "phone_invoice";
-export type iconWaterLabels = "water_invoice";
-export type iconRemboursementLabels = "expense_claim";
-export type iconRestaurantLabels = "restaurant_invoice";
-export type iconBillLabels = "other_invoice";
-export type iconTeamLabels = "family_record_book" | "wedding" | "pacs" | "divorce" | "large_family_card" | "caf" | "other_family_document" | "single_parent_benefit" | "citizen_registration_certificate";
-export type iconFitnessLabels = "personal_sporting_licence" | "other_activity_document";
-export type iconHeartLabels = "health_book" | "health_certificate" | "pregnancy_medical_certificate" | "national_health_insurance_card" | "national_health_insurance_right_certificate" | "health_insurance_card" | "prescription" | "health_invoice" | "other_health_document" | "person_insurance";
-export type iconExchangeLabels = "bank_statement";
-export type iconFileTypeNoteLabels = "note_identity_document" | "note_family_document" | "note_work_document" | "note_health_document" | "note_house_document" | "note_transport_document" | "note_activity_document" | "note_finance" | "note_invoice";
-export type IconQualificationLabels = "image" | "work" | "car" | "telecom" | "water" | "bank" | "child" | "bank-check" | "benefit" | "bill" | "email" | "euro" | "exchange" | "file-type-note" | "fitness" | "globe" | "gouv" | "heart" | "home" | "justice" | "laudry" | "lightning" | "people" | "plane" | "remboursement" | "restaurant" | "school" | "shop" | "team" | "telephone";
+export type IdentityLabel = 'identity_photo' | 'national_id_card' | 'passport' | 'residence_permit' | 'family_record_book' | 'birth_certificate' | 'driver_license' | 'other_identity_document' | 'citizen_registration_certificate' | 'personal_sporting_licence' | 'electoral_card' | 'note_identity_document';
+export type FamilyLabel = 'family_record_book' | 'birth_certificate' | 'wedding' | 'pacs' | 'divorce' | 'large_family_card' | 'caf' | 'other_family_document' | 'payment_proof_family_allowance' | 'single_parent_benefit' | 'note_family_document' | 'person_insurance';
+export type WorkStudyLabels = 'diploma' | 'work_contract' | 'pay_sheet' | 'unemployment_benefit' | 'pension' | 'gradebook' | 'student_card' | 'resume' | 'motivation_letter' | 'other_work_document' | 'work_disability_recognition' | 'school_attendance_certificate' | 'employment_center_certificate' | 'school_insurance_certificate' | 'note_work_document' | 'expense_claim';
+export type HealthLabels = 'health_certificate' | 'health_book' | 'national_health_insurance_card' | 'health_insurance_card' | 'prescription' | 'health_invoice' | 'national_health_insurance_right_certificate' | 'work_disability_recognition' | 'pregnancy_medical_certificate' | 'other_health_document' | 'note_health_document';
+export type HomeLabels = 'phone_invoice' | 'isp_invoice' | 'telecom_invoice' | 'energy_invoice' | 'water_invoice' | 'other_invoice' | 'house_sale_agreeement' | 'building_permit' | 'technical_diagnostic_record' | 'lease' | 'rent_receipt' | 'house_insurance' | 'work_quote' | 'work_invoice' | 'other_house_document' | 'unfit_for_habitation_declaration' | 'accommodation_proof' | 'note_house_document' | 'real_estate_insurance' | 'condition_report';
+export type TransportLabels = 'driver_license' | 'vehicle_registration' | 'car_insurance' | 'mechanic_invoice' | 'transport_invoice' | 'other_transport_document' | 'transport_card' | 'note_transport_document';
+export type FinanceLabels = 'fine' | 'tax_certificate' | 'tax_return' | 'tax_notice' | 'tax_timetable' | 'pay_sheet' | 'receipt' | 'other_tax_document' | 'bank_details' | 'bank_statement' | 'loan_agreement' | 'other_bank_document' | 'payment_proof_family_allowance' | 'other_revenue' | 'single_parent_benefit' | 'real_estate_tax' | 'note_finance' | 'expense_claim';
+export type InvoiceLabels = 'phone_invoice' | 'isp_invoice' | 'telecom_invoice' | 'energy_invoice' | 'water_invoice' | 'appliance_invoice' | 'web_service_invoice' | 'restaurant_invoice' | 'work_invoice' | 'transport_invoice' | 'health_invoice' | 'other_invoice' | 'note_invoice' | 'expense_claim' | 'energy_contract' | 'grocery_invoice';
+export type ActivityLabels = 'personal_sporting_licence' | 'other_activity_document' | 'fidelity_card' | 'note_activity_document';
+export type OthersLabels = 'other_administrative_document' | 'note_other';
+export type ItemsLabels = IdentityLabel | FamilyLabel | WorkStudyLabels | HealthLabels | HomeLabels | TransportLabels | FinanceLabels | InvoiceLabels | ActivityLabels | OthersLabels;
+export type iconPeopleLabels = 'national_id_card' | 'other_identity_document' | 'resume' | 'work_disability_recognition';
+export type iconWorkLabels = 'employment_center_certificate' | 'motivation_letter' | 'other_work_document' | 'school_attendance_certificate' | 'school_insurance_certificate' | 'student_card' | 'unemployment_benefit' | 'work_contract';
+export type iconJusticeLabels = 'fine';
+export type iconGlobeLabels = 'residence_permit';
+export type iconPlaneLabels = 'passport';
+export type iconImageLabels = 'identity_photo';
+export type iconShopLabels = 'fidelity_card' | 'grocery_invoice';
+export type iconGouvLabels = 'electoral_card';
+export type iconSchoolLabels = 'diploma' | 'gradebook';
+export type iconChildLabels = 'birth_certificate';
+export type iconEmailLabels = 'receipt';
+export type iconLaudryLabels = 'appliance_invoice';
+export type iconHomeLabels = 'accommodation_proof' | 'building_permit' | 'condition_report' | 'house_insurance' | 'house_sale_agreeement' | 'lease' | 'mechanic_invoice' | 'other_house_document' | 'real_estate_insurance' | 'rent_receipt' | 'technical_diagnostic_record' | 'unfit_for_habitation_declaration' | 'work_invoice' | 'work_quote';
+export type iconBenefitLabels = 'loan_agreement' | 'other_revenue' | 'pay_sheet' | 'payment_proof_family_allowance' | 'pension';
+export type iconEuroLabels = 'other_bank_document';
+export type iconBankCheckLabels = 'bank_details';
+export type iconBankLabels = 'other_administrative_document' | 'other_tax_document' | 'real_estate_tax' | 'tax_certificate' | 'tax_notice' | 'tax_return' | 'tax_timetable';
+export type iconCarLabels = 'car_insurance' | 'driver_license' | 'other_transport_document' | 'transport_card' | 'transport_invoice' | 'vehicle_registration';
+export type iconLightningLabels = 'energy_contract' | 'energy_invoice';
+export type iconTelecomLabels = 'isp_invoice' | 'telecom_invoice' | 'web_service_invoice';
+export type iconTelephoneLabels = 'phone_invoice';
+export type iconWaterLabels = 'water_invoice';
+export type iconRemboursementLabels = 'expense_claim';
+export type iconRestaurantLabels = 'restaurant_invoice';
+export type iconBillLabels = 'other_invoice';
+export type iconTeamLabels = 'caf' | 'citizen_registration_certificate' | 'divorce' | 'family_record_book' | 'large_family_card' | 'other_family_document' | 'pacs' | 'single_parent_benefit' | 'wedding';
+export type iconFitnessLabels = 'other_activity_document' | 'personal_sporting_licence';
+export type iconHeartLabels = 'health_book' | 'health_certificate' | 'health_insurance_card' | 'health_invoice' | 'national_health_insurance_card' | 'national_health_insurance_right_certificate' | 'other_health_document' | 'person_insurance' | 'pregnancy_medical_certificate' | 'prescription';
+export type iconExchangeLabels = 'bank_statement';
+export type iconFileTypeNoteLabels = 'note_activity_document' | 'note_family_document' | 'note_finance' | 'note_health_document' | 'note_house_document' | 'note_identity_document' | 'note_invoice' | 'note_transport_document' | 'note_work_document';
+export type IconQualificationLabels = 'bank-check' | 'bank' | 'benefit' | 'bill' | 'car' | 'child' | 'email' | 'euro' | 'exchange' | 'file-type-note' | 'fitness' | 'globe' | 'gouv' | 'heart' | 'home' | 'image' | 'justice' | 'laudry' | 'lightning' | 'people' | 'plane' | 'remboursement' | 'restaurant' | 'school' | 'shop' | 'team' | 'telecom' | 'telephone' | 'water' | 'work';
 export type iconLabelPairs = {
     icon: IconQualificationLabels;
     labels: Array<string>;
@@ -1481,7 +1475,7 @@ export type DACCAggregatesParams = {
 /**
  * See https://github.com/cozy/DACC
  */
-export type DACCAggregatesResponse = DACCAggregate[];
+export type DACCAggregatesResponse = Array<DACCAggregate>;
 /**
  * See https://github.com/cozy/DACC
  */
@@ -1559,7 +1553,7 @@ export type PKCECodes = {
  * Example of 'flat' domain: https://claude-notes.somedomain.fr
  * Example of 'nested' domain: https://notes.claude.somedomain.fr
  */
-export type SubdomainType = "flat" | "nested";
+export type SubdomainType = 'flat' | 'nested';
 /**
  * Represents the different parts of a deconstructed Cozy link
  */
@@ -1622,7 +1616,7 @@ export type ConflictOptions = {
 /**
  * Template to type useState
  */
-export type useState<T> = [T, import("react").Dispatch<import("react").SetStateAction<T>>];
+export type useState<T> = [T, any];
 /**
  * Represents the Cozy's instance parameters
  */
@@ -1810,4 +1804,4 @@ export type Country = {
      */
     nationality: string;
 };
-import { QueryDefinition } from "./queries/dsl";
+import { QueryDefinition } from './queries/dsl';
