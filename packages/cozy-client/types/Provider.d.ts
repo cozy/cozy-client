@@ -1,25 +1,20 @@
-export default class CozyProvider extends React.Component<any, any, any> {
+export default class CozyProvider {
     static propTypes: {
-        store: PropTypes.Requireable<PropTypes.InferProps<{
-            subscribe: PropTypes.Validator<(...args: any[]) => any>;
-            dispatch: PropTypes.Validator<(...args: any[]) => any>;
-            getState: PropTypes.Validator<(...args: any[]) => any>;
-        }>>;
-        client: PropTypes.Validator<object>;
-        children: PropTypes.Validator<PropTypes.ReactElementLike | PropTypes.ReactElementLike[]>;
+        store: any;
+        client: any;
+        children: any;
     };
     static childContextTypes: {
-        store: PropTypes.Requireable<object>;
-        client: PropTypes.Validator<object>;
+        store: any;
+        client: any;
     };
     static contextTypes: {
-        store: PropTypes.Requireable<object>;
+        store: any;
     };
     constructor(props: any, context: any);
     getChildContext(): {
         store: any;
         client: any;
     };
+    render(): any;
 }
-import React from "react";
-import PropTypes from "prop-types";

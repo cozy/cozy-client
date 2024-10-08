@@ -1,4 +1,4 @@
 export namespace APP_TYPE {
-    const KONNECTOR: string;
-    const WEBAPP: string;
+    let KONNECTOR: string;
+    let WEBAPP: string;
 }

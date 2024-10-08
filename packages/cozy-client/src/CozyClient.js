@@ -1,26 +1,26 @@
-import mapValues from 'lodash/mapValues'
-import fromPairs from 'lodash/fromPairs'
-import flatten from 'lodash/flatten'
-import uniqBy from 'lodash/uniqBy'
-import zip from 'lodash/zip'
-import forEach from 'lodash/forEach'
-import get from 'lodash/get'
-import MicroEE from 'microee'
+import mapValues from "lodash/mapValues";
+import fromPairs from "lodash/fromPairs";
+import flatten from "lodash/flatten";
+import uniqBy from "lodash/uniqBy";
+import zip from "lodash/zip";
+import forEach from "lodash/forEach";
+import get from "lodash/get";
+import MicroEE from "microee";
 
-import CozyStackClient, { OAuthClient } from 'cozy-stack-client'
+import CozyStackClient, { OAuthClient } from "cozy-stack-client";
 
-import { REGISTRATION_ABORT } from './const'
+import { REGISTRATION_ABORT } from "./const";
 
-import StackLink from './StackLink'
-import { create as createAssociation } from './associations'
+import StackLink from "./StackLink";
+import { create as createAssociation } from "./associations";
 import {
   responseToRelationship,
-  attachRelationships
-} from './associations/helpers'
-import { dehydrate, getSettings, saveAfterFetchSettings } from './helpers'
-import { QueryDefinition, Mutations, Q } from './queries/dsl'
-import { authFunction } from './authentication/mobile'
-import optimizeQueryDefinitions from './queries/optimize'
+  attachRelationships,
+} from "./associations/helpers";
+import { dehydrate, getSettings, saveAfterFetchSettings } from "./helpers";
+import { QueryDefinition, Mutations, Q } from "./queries/dsl";
+import { authFunction } from "./authentication/mobile";
+import optimizeQueryDefinitions from "./queries/optimize";
 import {
   default as reducer,
   createStore,
@@ -38,64 +38,64 @@ import {
   getDocumentFromState,
   resetState,
   isQueryExisting,
-  executeQueryFromState
-} from './store'
-import fetchPolicies from './policies'
-import Schema from './Schema'
-import { chain } from './CozyLink'
-import ObservableQuery from './ObservableQuery'
-import { CozyClient as SnapshotClient } from './testing/snapshots'
-import logger from './logger'
-import { QueryIDGenerator } from './store/queries'
-import stringify from 'json-stable-stringify'
-import PromiseCache from './promise-cache'
+  executeQueryFromState,
+} from "./store";
+import fetchPolicies from "./policies";
+import Schema from "./Schema";
+import { chain } from "./CozyLink";
+import ObservableQuery from "./ObservableQuery";
+import { CozyClient as SnapshotClient } from "./testing/snapshots";
+import logger from "./logger";
+import { QueryIDGenerator } from "./store/queries";
+import stringify from "json-stable-stringify";
+import PromiseCache from "./promise-cache";
 
-import { certifyFlagship } from './flagship-certification/flagship-certification'
+import { certifyFlagship } from "./flagship-certification/flagship-certification";
 
-const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
+const ensureArray = (arr) => (Array.isArray(arr) ? arr : [arr]);
 
-const deprecatedHandler = msg => ({
+const deprecatedHandler = (msg) => ({
   get(target, prop) {
-    logger.warn(msg)
-    return target[prop]
-  }
-})
+    logger.warn(msg);
+    return target[prop];
+  },
+});
 
-const supportsReferences = relationshipClass => {
+const supportsReferences = (relationshipClass) => {
   return (
     relationshipClass.prototype.addReferences &&
     relationshipClass.prototype.removeReferences
-  )
-}
+  );
+};
 
-const referencesUnsupportedError = relationshipClassName => {
+const referencesUnsupportedError = (relationshipClassName) => {
   return new Error(
     `The "${relationshipClassName}" relationship does not support references. If you need to add references to a document, its relationship class must have the methods {add,remove}References`
-  )
-}
-const removeTrailingSlash = str => {
-  if (str.endsWith('/')) {
-    return str.slice(0, -1)
+  );
+};
+const removeTrailingSlash = (str) => {
+  if (str.endsWith("/")) {
+    return str.slice(0, -1);
   }
-  return str
-}
-const securiseUri = uri => {
+  return str;
+};
+const securiseUri = (uri) => {
   if (
     uri &&
-    typeof window !== 'undefined' &&
-    window['cozy']?.isSecureProtocol
+    typeof window !== "undefined" &&
+    window["cozy"]?.isSecureProtocol
   ) {
-    const secureUrl = new URL(uri)
-    secureUrl.protocol = 'https:'
+    const secureUrl = new URL(uri);
+    secureUrl.protocol = "https:";
 
-    return removeTrailingSlash(secureUrl.toString())
+    return removeTrailingSlash(secureUrl.toString());
   }
 
-  return uri
-}
+  return uri;
+};
 
-const DOC_CREATION = 'creation'
-const DOC_UPDATE = 'update'
+const DOC_CREATION = "creation";
+const DOC_UPDATE = "update";
 
 /**
  * @typedef {import("./types").CozyClientDocument} CozyClientDocument
@@ -160,47 +160,47 @@ class CozyClient {
       appMetadata = {},
       capabilities,
       ...options
-    } = rawOptions
+    } = rawOptions;
     if (link) {
-      logger.warn('`link` is deprecated, use `links`')
+      logger.warn("`link` is deprecated, use `links`");
     }
 
-    this.appMetadata = appMetadata
-    this.loginPromise = null
-    options.uri = securiseUri(options.uri)
+    this.appMetadata = appMetadata;
+    this.loginPromise = null;
+    options.uri = securiseUri(options.uri);
 
-    this.options = options
+    this.options = options;
 
-    this.queryIdGenerator = new QueryIDGenerator()
-    this.isLogged = false
-    this.instanceOptions = {}
+    this.queryIdGenerator = new QueryIDGenerator();
+    this.isLogged = false;
+    this.instanceOptions = {};
 
     // Bind handlers
-    this.handleRevocationChange = this.handleRevocationChange.bind(this)
-    this.handleTokenRefresh = this.handleTokenRefresh.bind(this)
+    this.handleRevocationChange = this.handleRevocationChange.bind(this);
+    this.handleTokenRefresh = this.handleTokenRefresh.bind(this);
 
-    this.createClient()
-    const stackClient = this.getStackClient()
-    stackClient.on('error', (...args) => this.emit('error', ...args))
+    this.createClient();
+    const stackClient = this.getStackClient();
+    stackClient.on("error", (...args) => this.emit("error", ...args));
 
-    this.links = ensureArray(link || links || new StackLink())
-    this.registerClientOnLinks()
+    this.links = ensureArray(link || links || new StackLink());
+    this.registerClientOnLinks();
 
-    this.chain = chain(this.links)
+    this.chain = chain(this.links);
 
-    this.schema = new Schema(schema, stackClient)
+    this.schema = new Schema(schema, stackClient);
 
     /**
      * @type {import("./types").ClientCapabilities}
      */
-    this.capabilities = capabilities || null
+    this.capabilities = capabilities || null;
 
     // Instances of plugins registered with registerPlugin
-    this.plugins = {}
+    this.plugins = {};
 
     if (!(this.stackClient instanceof OAuthClient)) {
       try {
-        this.loadInstanceOptionsFromDOM()
+        this.loadInstanceOptionsFromDOM();
       } catch (err) {
         // not a critical error, we may be in node or the instance options are not on the default HTML element
       }
@@ -212,19 +212,19 @@ class CozyClient {
      * @private
      * @type {PromiseCache}
      */
-    this._promiseCache = new PromiseCache()
+    this._promiseCache = new PromiseCache();
 
     if (options.uri && options.token) {
-      this.login()
+      this.login();
     }
 
     /**
      * @type {object}
      */
-    this.storeAccesors = null
+    this.storeAccesors = null;
 
     if (options.store !== false) {
-      this.ensureStore()
+      this.ensureStore();
     }
   }
 
@@ -289,17 +289,17 @@ class CozyClient {
   registerPlugin(Plugin, options) {
     if (!Plugin.pluginName) {
       throw new Error(
-        'Cannot register a plugin whose class does not have `pluginName` attribute.'
-      )
+        "Cannot register a plugin whose class does not have `pluginName` attribute."
+      );
     }
     if (this.plugins[Plugin.pluginName]) {
       throw new Error(
         `Cannot register plugin ${Plugin.pluginName}. A plugin with the same name has already been registered.`
-      )
+      );
     }
-    const instance = new Plugin(this, options)
-    this.plugins[Plugin.pluginName] = instance
-    return instance
+    const instance = new Plugin(this, options);
+    this.plugins[Plugin.pluginName] = instance;
+    return instance;
   }
 
   /**
@@ -314,8 +314,8 @@ class CozyClient {
     return new CozyClient({
       uri: oldClient._url,
       token: oldClient._token.token,
-      ...options
-    })
+      ...options,
+    });
   }
 
   /**
@@ -330,25 +330,25 @@ class CozyClient {
    */
   static async fromOldOAuthClient(oldClient, options) {
     if (oldClient._oauth) {
-      const credentials = await oldClient.authorize()
+      const credentials = await oldClient.authorize();
       const oauthOptions = {
         oauth: credentials.client,
         token: credentials.token,
-        scope: credentials.token.scope
-      }
+        scope: credentials.token.scope,
+      };
       const client = new CozyClient({
         uri: oldClient._url,
         ...oauthOptions,
-        ...options
-      })
+        ...options,
+      });
       if (client.loginPromise) {
-        await client.loginPromise
+        await client.loginPromise;
       }
-      return client
+      return client;
     } else {
       throw new Error(
-        'Cannot instantiate a new client: old client is not an OAuth client. CozyClient.fromOldClient might be more suitable.'
-      )
+        "Cannot instantiate a new client: old client is not an OAuth client. CozyClient.fromOldClient might be more suitable."
+      );
     }
   }
 
@@ -361,24 +361,24 @@ class CozyClient {
    * @returns {CozyClient}
    */
   static fromEnv(envArg, options = {}) {
-    const env = envArg || (typeof process !== 'undefined' ? process.env : {})
-    const { COZY_URL, COZY_CREDENTIALS } = env
+    const env = envArg || (typeof process !== "undefined" ? process.env : {});
+    const { COZY_URL, COZY_CREDENTIALS } = env;
     if (!COZY_URL || !COZY_CREDENTIALS) {
       throw new Error(
-        'Env used to instantiate CozyClient must have COZY_URL and COZY_CREDENTIALS'
-      )
+        "Env used to instantiate CozyClient must have COZY_URL and COZY_CREDENTIALS"
+      );
     }
 
     try {
-      options.oauth = JSON.parse(COZY_CREDENTIALS)
+      options.oauth = JSON.parse(COZY_CREDENTIALS);
     } catch (err) {
-      options.token = COZY_CREDENTIALS.trim()
+      options.token = COZY_CREDENTIALS.trim();
     }
-    options.uri = COZY_URL.trim()
+    options.uri = COZY_URL.trim();
 
     return new CozyClient({
-      ...options
-    })
+      ...options,
+    });
   }
 
   /**
@@ -389,50 +389,52 @@ class CozyClient {
    * @param  {string}   selector - Options
    * @returns {CozyClient} - CozyClient instance
    */
-  static fromDOM(options = {}, selector = '[role=application]') {
-    const root = document.querySelector(selector)
+  static fromDOM(options = {}, selector = "[role=application]") {
+    const root = document.querySelector(selector);
     if (!(root instanceof HTMLElement)) {
-      throw new Error(`Cannot find an HTMLElement corresponding to ${selector}`)
+      throw new Error(
+        `Cannot find an HTMLElement corresponding to ${selector}`
+      );
     }
     if (!root || !root.dataset) {
-      throw new Error(`Found no data in ${selector} to instantiate cozyClient`)
+      throw new Error(`Found no data in ${selector} to instantiate cozyClient`);
     }
 
     const data = root.dataset.cozy
       ? JSON.parse(root.dataset.cozy)
-      : { ...root.dataset }
+      : { ...root.dataset };
 
-    let { domain, token } = data
+    let { domain, token } = data;
     if (!domain || !token) {
-      domain = domain || data.cozyDomain
-      token = token || data.cozyToken
+      domain = domain || data.cozyDomain;
+      token = token || data.cozyToken;
     }
 
     if (!domain || !token) {
       throw new Error(
         `Found no data in ${root.dataset} to instantiate cozyClient`
-      )
+      );
     }
 
     return new CozyClient({
       uri: `${window.location.protocol}//${domain}`,
       token: token,
       capabilities: data.capabilities,
-      ...options
-    })
+      ...options,
+    });
   }
 
   addSchema(schemaDefinition) {
-    this.schema.add(schemaDefinition)
+    this.schema.add(schemaDefinition);
   }
 
   registerClientOnLinks() {
     for (const link of this.links) {
       if (link.registerClient) {
         try {
-          link.registerClient(this)
+          link.registerClient(this);
         } catch (e) {
-          logger.warn(e)
+          logger.warn(e);
         }
       }
     }
@@ -460,40 +462,40 @@ class CozyClient {
     // This allows us to autoLogin in constructor without breaking any compatibility
     // with codes that uses an explicit login.
     if (this.isLogged && !this.isRevoked) {
-      logger.warn(`CozyClient is already logged.`)
-      return this.loginPromise
+      logger.warn(`CozyClient is already logged.`);
+      return this.loginPromise;
     }
-    return (this.loginPromise = this._login(options))
+    return (this.loginPromise = this._login(options));
   }
 
   async _login(options) {
-    this.emit('beforeLogin')
+    this.emit("beforeLogin");
 
-    this.registerClientOnLinks()
+    this.registerClientOnLinks();
 
     if (options) {
       if (options.uri) {
-        this.stackClient.setUri(options.uri)
+        this.stackClient.setUri(options.uri);
       }
       if (options.token) {
-        this.stackClient.setToken(options.token)
+        this.stackClient.setToken(options.token);
       }
     }
 
     for (const link of this.links) {
       if (link.onLogin) {
-        await link.onLogin()
+        await link.onLogin();
       }
     }
 
-    this.isLogged = true
-    this.isRevoked = false
+    this.isLogged = true;
+    this.isRevoked = false;
 
     if (this.stackClient instanceof OAuthClient) {
-      await this.loadInstanceOptionsFromStack()
+      await this.loadInstanceOptionsFromStack();
     }
 
-    this.emit('login')
+    this.emit("login");
   }
 
   /**
@@ -508,12 +510,12 @@ class CozyClient {
    */
   async logout() {
     if (!this.isLogged) {
-      logger.warn(`CozyClient isn't logged.`)
-      return
+      logger.warn(`CozyClient isn't logged.`);
+      return;
     }
 
-    this.emit('beforeLogout')
-    this.isLogged = false
+    this.emit("beforeLogout");
+    this.isLogged = false;
 
     if (this.stackClient instanceof OAuthClient) {
       try {
@@ -522,16 +524,16 @@ class CozyClient {
           this.stackClient.unregister &&
           (!this.stackClient.isRegistered || this.stackClient.isRegistered())
         ) {
-          await this.stackClient.unregister()
+          await this.stackClient.unregister();
         }
       } catch (err) {
-        logger.warn(`Impossible to unregister client on stack: ${err}`)
+        logger.warn(`Impossible to unregister client on stack: ${err}`);
       }
     } else {
       try {
-        await this.stackClient.fetch('DELETE', '/auth/login')
+        await this.stackClient.fetch("DELETE", "/auth/login");
       } catch (err) {
-        logger.warn(`Impossible to log out: ${err}`)
+        logger.warn(`Impossible to log out: ${err}`);
       }
     }
 
@@ -539,17 +541,17 @@ class CozyClient {
     for (const link of this.links) {
       if (link.reset) {
         try {
-          await link.reset()
+          await link.reset();
         } catch (e) {
-          logger.warn(e)
+          logger.warn(e);
         }
       }
     }
 
     if (this.store) {
-      this.dispatch(resetState())
+      this.dispatch(resetState());
     }
-    this.emit('logout')
+    this.emit("logout");
   }
 
   /**
@@ -560,11 +562,11 @@ class CozyClient {
    * @returns {import("./types").DocumentCollection} Collection corresponding to the doctype
    */
   collection(doctype) {
-    return this.getStackClient().collection(doctype)
+    return this.getStackClient().collection(doctype);
   }
 
   fetch(method, path, body, options = {}) {
-    return this.getStackClient().fetch(method, path, body, options)
+    return this.getStackClient().fetch(method, path, body, options);
   }
 
   all(doctype) {
@@ -572,22 +574,22 @@ class CozyClient {
 client.all is deprecated, prefer to use the Q helper to build a new QueryDefinition.
 
 import { Q } from 'cozy-client'
-client.query(Q('io.cozy.bills'))`)
-    return Q(doctype)
+client.query(Q('io.cozy.bills'))`);
+    return Q(doctype);
   }
 
   find(doctype, selector = undefined) {
     logger.warn(
-      'client.find(doctype, selector) is deprecated, please use Q(doctype).where(selector) to build the same query.'
-    )
-    return new QueryDefinition({ doctype, selector })
+      "client.find(doctype, selector) is deprecated, please use Q(doctype).where(selector) to build the same query."
+    );
+    return new QueryDefinition({ doctype, selector });
   }
 
   get(doctype, id) {
     logger.warn(
       `client.get(${doctype}, id) is deprecated, please use Q(${doctype}).getById(id) to build the same query.`
-    )
-    return new QueryDefinition({ doctype, id })
+    );
+    return new QueryDefinition({ doctype, id });
   }
 
   /**
@@ -615,18 +617,18 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {Promise}
    */
   async create(type, doc, references, options = {}) {
-    const { _type, ...attributes } = doc
-    const normalizedDoc = { _type: type, ...attributes }
-    const ret = await this.schema.validate(normalizedDoc)
-    if (ret !== true) throw new Error('Validation failed')
+    const { _type, ...attributes } = doc;
+    const normalizedDoc = { _type: type, ...attributes };
+    const ret = await this.schema.validate(normalizedDoc);
+    if (ret !== true) throw new Error("Validation failed");
     return this.mutate(
       this.getDocumentSavePlan(normalizedDoc, references),
       options
-    )
+    );
   }
 
   validate(document) {
-    return this.schema.validate(document)
+    return this.schema.validate(document);
   }
 
   /**
@@ -637,12 +639,15 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {Promise}
    */
   async save(doc, mutationOptions = {}) {
-    const { _type, ...attributes } = doc
-    if (!_type) throw new Error('The document must have a `_type` property')
-    const normalizedDoc = { _type, ...attributes }
-    const ret = await this.schema.validate(normalizedDoc)
-    if (ret !== true) throw new Error('Validation failed')
-    return this.mutate(this.getDocumentSavePlan(normalizedDoc), mutationOptions)
+    const { _type, ...attributes } = doc;
+    if (!_type) throw new Error("The document must have a `_type` property");
+    const normalizedDoc = { _type, ...attributes };
+    const ret = await this.schema.validate(normalizedDoc);
+    if (ret !== true) throw new Error("Validation failed");
+    return this.mutate(
+      this.getDocumentSavePlan(normalizedDoc),
+      mutationOptions
+    );
   }
 
   /**
@@ -658,25 +663,25 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {Promise<void>}
    */
   async saveAll(docs, mutationOptions = {}) {
-    const doctypes = Array.from(new Set(docs.map(x => x._type)))
+    const doctypes = Array.from(new Set(docs.map((x) => x._type)));
     if (doctypes.length !== 1) {
-      throw new Error('saveAll can only save documents with the same doctype')
+      throw new Error("saveAll can only save documents with the same doctype");
     }
     const validations = await Promise.all(
-      docs.map(d => this.schema.validate(d))
-    )
-    const errors = validations.filter(validation => validation !== true)
+      docs.map((d) => this.schema.validate(d))
+    );
+    const errors = validations.filter((validation) => validation !== true);
     if (errors.length > 0) {
       logger.warn(
-        'There has been some validation errors while bulk saving',
+        "There has been some validation errors while bulk saving",
         errors
-      )
-      throw new Error('Validation failed for at least one doc')
+      );
+      throw new Error("Validation failed for at least one doc");
     }
 
-    const toSaveDocs = docs.map(d => this.prepareDocumentForSave(d))
-    const mutation = Mutations.updateDocuments(toSaveDocs)
-    return this.mutate(mutation, mutationOptions)
+    const toSaveDocs = docs.map((d) => this.prepareDocumentForSave(d));
+    const mutation = Mutations.updateDocuments(toSaveDocs);
+    return this.mutate(mutation, mutationOptions);
   }
   /**
    * @param  {import("./types").CozyClientDocument} document - Document that will be saved
@@ -687,27 +692,23 @@ client.query(Q('io.cozy.bills'))`)
   ensureCozyMetadata(
     document,
     options = {
-      event: DOC_CREATION
+      event: DOC_CREATION,
     }
   ) {
-    const METADATA_VERSION = 1
-    if (this.appMetadata === undefined) return document
-    let doctypeVersion
+    const METADATA_VERSION = 1;
+    if (this.appMetadata === undefined) return document;
+    let doctypeVersion;
     if (document._type) {
-      const schema = this.schema.getDoctypeSchema(document._type)
-      doctypeVersion = get(schema, 'doctypeVersion')
+      const schema = this.schema.getDoctypeSchema(document._type);
+      doctypeVersion = get(schema, "doctypeVersion");
     }
 
-    const {
-      slug,
-      sourceAccount,
-      sourceAccountIdentifier,
-      version
-    } = this.appMetadata
+    const { slug, sourceAccount, sourceAccountIdentifier, version } =
+      this.appMetadata;
 
-    const now = new Date().toISOString()
+    const now = new Date().toISOString();
 
-    let cozyMetadata = get(document, 'cozyMetadata', {})
+    let cozyMetadata = get(document, "cozyMetadata", {});
     if (options.event === DOC_CREATION) {
       cozyMetadata = {
         metadataVersion: METADATA_VERSION,
@@ -723,29 +724,29 @@ client.query(Q('io.cozy.bills'))`)
               {
                 date: now,
                 slug,
-                version
-              }
+                version,
+              },
             ]
           : [],
-        ...cozyMetadata // custom metadata that are set by the app
-      }
+        ...cozyMetadata, // custom metadata that are set by the app
+      };
     } else if (options.event === DOC_UPDATE) {
       cozyMetadata = {
         ...cozyMetadata,
         updatedAt: now,
         updatedByApps: [
           { date: now, slug, version },
-          ...get(document, 'cozyMetadata.updatedByApps', []).filter(
-            info => info.slug !== slug
-          )
-        ]
-      }
+          ...get(document, "cozyMetadata.updatedByApps", []).filter(
+            (info) => info.slug !== slug
+          ),
+        ],
+      };
     }
 
     return {
       ...document,
-      cozyMetadata
-    }
+      cozyMetadata,
+    };
   }
 
   /**
@@ -755,11 +756,11 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {import("./types").CozyClientDocument}
    */
   prepareDocumentForSave(doc) {
-    const isNewDoc = !doc._rev
+    const isNewDoc = !doc._rev;
     const dehydratedDoc = this.ensureCozyMetadata(dehydrate(doc), {
-      event: isNewDoc ? DOC_CREATION : DOC_UPDATE
-    })
-    return dehydratedDoc
+      event: isNewDoc ? DOC_CREATION : DOC_UPDATE,
+    });
+    return dehydratedDoc;
   }
 
   /**
@@ -784,51 +785,51 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {import("./types").Mutation[]|import("./types").Mutation}  One or more mutation to execute
    */
   getDocumentSavePlan(document, referencesByName) {
-    const isNewDoc = !document._rev
-    const docToSave = this.prepareDocumentForSave(document)
+    const isNewDoc = !document._rev;
+    const docToSave = this.prepareDocumentForSave(document);
 
     const saveMutation = isNewDoc
       ? Mutations.createDocument(docToSave)
-      : Mutations.updateDocument(docToSave)
+      : Mutations.updateDocument(docToSave);
 
     const hasReferences =
       referencesByName &&
-      Object.values(referencesByName).filter(references => {
-        return Array.isArray(references) ? references.length > 0 : references
-      }).length > 0
+      Object.values(referencesByName).filter((references) => {
+        return Array.isArray(references) ? references.length > 0 : references;
+      }).length > 0;
 
     if (!hasReferences) {
-      return saveMutation
+      return saveMutation;
     } else {
       for (let relName of Object.keys(referencesByName)) {
-        const doctype = document._type
+        const doctype = document._type;
         const doctypeRelationship = this.schema.getRelationship(
           doctype,
           relName
-        )
-        const relationshipClass = doctypeRelationship.type
+        );
+        const relationshipClass = doctypeRelationship.type;
         if (!supportsReferences(relationshipClass)) {
-          throw referencesUnsupportedError(doctypeRelationship.name)
+          throw referencesUnsupportedError(doctypeRelationship.name);
         }
       }
     }
 
     if (referencesByName && !isNewDoc) {
       throw new Error(
-        'Unable to save external relationships on a not-new document'
-      )
+        "Unable to save external relationships on a not-new document"
+      );
     }
 
     return [
       saveMutation,
-      response => {
-        const doc = this.hydrateDocument(response.data)
+      (response) => {
+        const doc = this.hydrateDocument(response.data);
         return Object.entries(referencesByName).map(([relName, references]) => {
-          const relationship = doc[relName]
-          return relationship.addReferences(references)
-        })
-      }
-    ]
+          const relationship = doc[relName];
+          return relationship.addReferences(references);
+        });
+      },
+    ];
   }
 
   /**
@@ -850,17 +851,17 @@ client.query(Q('io.cozy.bills'))`)
    * @param  {Function} fn      - Callback to be executed
    */
   static registerHook(doctype, name, fn) {
-    const hooks = (CozyClient.hooks[doctype] = CozyClient.hooks[doctype] || {})
-    hooks[name] = hooks[name] || []
-    hooks[name].push(fn)
+    const hooks = (CozyClient.hooks[doctype] = CozyClient.hooks[doctype] || {});
+    hooks[name] = hooks[name] || [];
+    hooks[name].push(fn);
   }
 
   triggerHook(name, document) {
-    if (!CozyClient.hooks) return
-    const allHooks = CozyClient.hooks[document._type] || {}
-    const hooks = allHooks[name] || []
+    if (!CozyClient.hooks) return;
+    const allHooks = CozyClient.hooks[document._type] || {};
+    const hooks = allHooks[name] || [];
     for (let h of hooks) {
-      h(this, document)
+      h(this, document);
     }
   }
 
@@ -871,17 +872,17 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {Promise<import("./types").CozyClientDocument>} The document that has been deleted
    */
   async destroy(document, mutationOptions = {}) {
-    await this.triggerHook('before:destroy', document)
+    await this.triggerHook("before:destroy", document);
     const res = await this.mutate(
       Mutations.deleteDocument(document),
       mutationOptions
-    )
-    await this.triggerHook('after:destroy', document)
-    return res
+    );
+    await this.triggerHook("after:destroy", document);
+    return res;
   }
 
   upload(file, dirPath, mutationOptions = {}) {
-    return this.mutate(Mutations.uploadFile(file, dirPath), mutationOptions)
+    return this.mutate(Mutations.uploadFile(file, dirPath), mutationOptions);
   }
 
   /**
@@ -892,14 +893,14 @@ client.query(Q('io.cozy.bills'))`)
    * @param  {import("./types").QueryOptions} [options] - Additional options
    */
   ensureQueryExists(queryId, queryDefinition, options) {
-    this.ensureStore()
-    const existingQuery = getQueryFromState(this.store.getState(), queryId)
+    this.ensureStore();
+    const existingQuery = getQueryFromState(this.store.getState(), queryId);
     // Don't trigger the INIT_QUERY for fetchMore() calls
     if (
-      existingQuery.fetchStatus !== 'loaded' ||
+      existingQuery.fetchStatus !== "loaded" ||
       (!queryDefinition.skip && !queryDefinition.bookmark)
     ) {
-      this.dispatch(initQuery(queryId, queryDefinition, options))
+      this.dispatch(initQuery(queryId, queryDefinition, options));
     }
   }
 
@@ -919,74 +920,74 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {Promise<import("./types").QueryResult>}
    */
   async query(queryDefinition, { update, executeFromStore, ...options } = {}) {
-    this.ensureStore()
+    this.ensureStore();
     const queryId =
-      options.as || this.queryIdGenerator.generateId(queryDefinition)
-    const existingQuery = this.getQueryFromState(queryId, options)
+      options.as || this.queryIdGenerator.generateId(queryDefinition);
+    const existingQuery = this.getQueryFromState(queryId, options);
     if (options.enabled !== undefined) {
-      if ('boolean' !== typeof options.enabled) {
+      if ("boolean" !== typeof options.enabled) {
         throw new Error(
           `option.enabled should be a boolean for this query: ${JSON.stringify(
             queryDefinition
           )}`
-        )
+        );
       }
     }
     if (options.fetchPolicy) {
       if (!options.as) {
         throw new Error(
-          'Cannot use `fetchPolicy` without naming the query, please use `as` to name the query'
-        )
+          "Cannot use `fetchPolicy` without naming the query, please use `as` to name the query"
+        );
       }
-      const shouldFetch = options.fetchPolicy(existingQuery)
+      const shouldFetch = options.fetchPolicy(existingQuery);
       if (!shouldFetch) {
-        return
+        return;
       }
     }
     // If we already have the same query in loading state, no
     // need to refetch it. We return the promise we already
     // have in the promiseCache
     if (existingQuery && Object.keys(existingQuery).length > 0) {
-      if (existingQuery.fetchStatus === 'loading') {
-        return this._promiseCache.get(() => stringify(queryDefinition))
+      if (existingQuery.fetchStatus === "loading") {
+        return this._promiseCache.get(() => stringify(queryDefinition));
       }
     }
-    this.ensureQueryExists(queryId, queryDefinition, options)
+    this.ensureQueryExists(queryId, queryDefinition, options);
 
     try {
       const backgroundFetching =
         options.backgroundFetching !== undefined
           ? options.backgroundFetching
-          : this.options.backgroundFetching
-      this.dispatch(loadQuery(queryId, { backgroundFetching }))
+          : this.options.backgroundFetching;
+      this.dispatch(loadQuery(queryId, { backgroundFetching }));
 
       const requestFn = executeFromStore
         ? () =>
             Promise.resolve(
               executeQueryFromState(this.store.getState(), queryDefinition)
             )
-        : () => this.requestQuery(queryDefinition)
+        : () => this.requestQuery(queryDefinition);
       const response = await this._promiseCache.exec(requestFn, () =>
         stringify(queryDefinition)
-      )
+      );
 
       this.dispatch(
         receiveQueryResult(queryId, response, {
           update,
-          backgroundFetching
+          backgroundFetching,
         })
-      )
-      return response
+      );
+      return response;
     } catch (error) {
-      this.dispatch(receiveQueryError(queryId, error))
+      this.dispatch(receiveQueryError(queryId, error));
       // specific onError
       if (options.onError) {
-        options.onError(error)
+        options.onError(error);
         // defaulted onError
       } else if (this.options.onError) {
-        this.options.onError(error)
+        this.options.onError(error);
       } else {
-        throw error
+        throw error;
       }
     }
   }
@@ -1002,50 +1003,50 @@ client.query(Q('io.cozy.bills'))`)
    */
   async queryAll(queryDefinition, options = {}) {
     const queryId =
-      options.as || this.queryIdGenerator.generateId(queryDefinition)
-    const mergedOptions = { ...options, as: queryId }
+      options.as || this.queryIdGenerator.generateId(queryDefinition);
+    const mergedOptions = { ...options, as: queryId };
     try {
-      let resp = await this.query(queryDefinition, mergedOptions)
-      const documents = resp.data
+      let resp = await this.query(queryDefinition, mergedOptions);
+      const documents = resp.data;
 
       while (resp && resp.next) {
         if (resp.bookmark) {
           resp = await this.query(
             queryDefinition.offsetBookmark(resp.bookmark),
             mergedOptions
-          )
+          );
         } else {
           const currentResult = getRawQueryFromState(
             this.store.getState(),
             queryId
-          )
+          );
           resp = await this.query(
             queryDefinition.offset(currentResult.data.length),
             mergedOptions
-          )
+          );
         }
-        documents.push(...resp.data)
+        documents.push(...resp.data);
       }
-      return documents
+      return documents;
     } catch (e) {
-      logger.log(`queryAll error for ${e.toString()}`)
-      return []
+      logger.log(`queryAll error for ${e.toString()}`);
+      return [];
     }
   }
 
   watchQuery(...args) {
     logger.warn(
-      'client.watchQuery is deprecated, please use client.makeObservableQuery.'
-    )
-    return this.makeObservableQuery(...args)
+      "client.watchQuery is deprecated, please use client.makeObservableQuery."
+    );
+    return this.makeObservableQuery(...args);
   }
 
   makeObservableQuery(queryDefinition, options = {}) {
-    this.ensureStore()
+    this.ensureStore();
     const queryId =
-      options.as || this.queryIdGenerator.generateId(queryDefinition)
-    this.ensureQueryExists(queryId, queryDefinition)
-    return new ObservableQuery(queryId, queryDefinition, this, options)
+      options.as || this.queryIdGenerator.generateId(queryDefinition);
+    this.ensureQueryExists(queryId, queryDefinition);
+    return new ObservableQuery(queryId, queryDefinition, this, options);
   }
 
   /**
@@ -1059,27 +1060,29 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {Promise}
    */
   async mutate(mutationDefinition, { update, updateQueries, ...options } = {}) {
-    this.ensureStore()
+    this.ensureStore();
     const mutationId =
-      options.as || this.queryIdGenerator.generateId(mutationDefinition)
-    this.dispatch(initMutation(mutationId, mutationDefinition))
+      options.as || this.queryIdGenerator.generateId(mutationDefinition);
+    this.dispatch(initMutation(mutationId, mutationDefinition));
     try {
-      const response = await this.requestMutation(mutationDefinition)
+      const response = await this.requestMutation(mutationDefinition);
       this.dispatch(
         receiveMutationResult(
           mutationId,
           response,
           {
             update,
-            updateQueries
+            updateQueries,
           },
           mutationDefinition
         )
-      )
-      return response
+      );
+      return response;
     } catch (error) {
-      this.dispatch(receiveMutationError(mutationId, error, mutationDefinition))
-      throw error
+      this.dispatch(
+        receiveMutationError(mutationId, error, mutationDefinition)
+      );
+      throw error;
     }
   }
 
@@ -1091,18 +1094,18 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {Promise<import("./types").ClientResponse>}
    */
   async requestQuery(definition) {
-    const mainResponse = await this.chain.request(definition)
+    const mainResponse = await this.chain.request(definition);
 
-    await this.persistVirtualDocuments(definition, mainResponse.data)
+    await this.persistVirtualDocuments(definition, mainResponse.data);
 
     if (!definition.includes) {
-      return mainResponse
+      return mainResponse;
     }
     const withIncluded = await this.fetchRelationships(
       mainResponse,
       this.getIncludesRelationships(definition)
-    )
-    return withIncluded
+    );
+    return withIncluded;
   }
 
   /**
@@ -1113,11 +1116,11 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {Promise<void>}
    */
   async persistVirtualDocuments(definition, data) {
-    const enforceList = ['io.cozy.files.shortcuts']
+    const enforceList = ["io.cozy.files.shortcuts"];
 
-    const enforce = enforceList.includes(definition.doctype)
+    const enforce = enforceList.includes(definition.doctype);
 
-    if (definition.doctype === 'io.cozy.apps_registry') {
+    if (definition.doctype === "io.cozy.apps_registry") {
       // io.cozy.apps_registry has a dedicated `maintenance` endpoint on cozy-stack that
       // returns data different than the one stored in database
       // As we want to have transparent queries, whether it uses the stack API or Pouch,
@@ -1125,20 +1128,20 @@ client.query(Q('io.cozy.bills'))`)
       // and a special `cozyPouchData` attribute, to highlight this special case
       return await this.persistVirtualDocument(
         {
-          _type: 'io.cozy.apps_registry',
+          _type: "io.cozy.apps_registry",
           _id: definition.id,
           // @ts-ignore
-          cozyPouchData: data
+          cozyPouchData: data,
         },
         enforce
-      )
+      );
     }
 
     if (!Array.isArray(data)) {
-      await this.persistVirtualDocument(data, enforce)
+      await this.persistVirtualDocument(data, enforce);
     } else {
       for (const document of data) {
-        await this.persistVirtualDocument(document, enforce)
+        await this.persistVirtualDocument(document, enforce);
       }
     }
   }
@@ -1153,11 +1156,11 @@ client.query(Q('io.cozy.bills'))`)
    */
   async persistVirtualDocument(document, enforce) {
     if (!document || document.cozyLocalOnly) {
-      return
+      return;
     }
 
     if ((!document.meta?.rev && !document._rev) || enforce) {
-      await this.chain.persistCozyData(document)
+      await this.chain.persistCozyData(document);
     }
   }
 
@@ -1172,52 +1175,52 @@ client.query(Q('io.cozy.bills'))`)
    * @private
    */
   async fetchRelationships(response, relationshipsByName) {
-    const isSingleDoc = !Array.isArray(response.data)
+    const isSingleDoc = !Array.isArray(response.data);
     if (!isSingleDoc && response.data.length === 0) {
-      return response
+      return response;
     }
-    const responseDocs = isSingleDoc ? [response.data] : response.data
+    const responseDocs = isSingleDoc ? [response.data] : response.data;
 
-    const queryDefToDocIdAndRel = new Map()
-    const documents = []
-    const definitions = []
+    const queryDefToDocIdAndRel = new Map();
+    const documents = [];
+    const definitions = [];
 
-    responseDocs.forEach(doc => {
+    responseDocs.forEach((doc) => {
       return forEach(relationshipsByName, (relationship, relName) => {
         try {
-          const queryDef = relationship.type.query(doc, this, relationship)
-          const docId = doc._id
+          const queryDef = relationship.type.query(doc, this, relationship);
+          const docId = doc._id;
 
           // Used to reattach responses into the relationships attribute of
           // each document
-          queryDefToDocIdAndRel.set(queryDef, [docId, relName])
+          queryDefToDocIdAndRel.set(queryDef, [docId, relName]);
 
           // Relationships can yield "queries" that are already resolved documents.
           // These do not need to go through the usual link request mechanism.
           if (queryDef instanceof QueryDefinition) {
-            definitions.push(queryDef)
+            definitions.push(queryDef);
           } else {
-            documents.push(queryDef)
+            documents.push(queryDef);
           }
         } catch {
           // eslint-disable-next-line
           // We do not crash completely if one the relationship behaves badly and
           // throws
         }
-      })
-    })
+      });
+    });
 
     // Definitions can be in optimized/regrouped in case of HasMany relationships.
-    const optimizedDefinitions = optimizeQueryDefinitions(definitions)
+    const optimizedDefinitions = optimizeQueryDefinitions(definitions);
     const responses = await Promise.all(
-      optimizedDefinitions.map(req => this.chain.request(req))
-    )
+      optimizedDefinitions.map((req) => this.chain.request(req))
+    );
 
     // "Included" documents will be stored in the `documents` store
-    const uniqueDocuments = uniqBy(flatten(documents), '_id')
-    const included = flatten(responses.map(r => r.included || r.data))
+    const uniqueDocuments = uniqBy(flatten(documents), "_id");
+    const included = flatten(responses.map((r) => r.included || r.data))
       .concat(uniqueDocuments)
-      .filter(Boolean)
+      .filter(Boolean);
 
     // Some relationships have the relationship data on the other side of the
     // relationship (ex: io.cozy.photos.albums do not have photo inclusion information,
@@ -1225,47 +1228,47 @@ client.query(Q('io.cozy.bills'))`)
     // Here we take the data received from the relationship queries, and group
     // it so that we can fill the `relationships` attribute of each doc before
     // storing the document. This makes the data easier to manipulate for the front-end.
-    const relationshipsByDocId = {}
+    const relationshipsByDocId = {};
     for (const [def, resp] of zip(optimizedDefinitions, responses)) {
-      const docIdAndRel = queryDefToDocIdAndRel.get(def)
+      const docIdAndRel = queryDefToDocIdAndRel.get(def);
       if (docIdAndRel) {
-        const [docId, relName] = docIdAndRel
-        relationshipsByDocId[docId] = relationshipsByDocId[docId] || {}
-        relationshipsByDocId[docId][relName] = responseToRelationship(resp)
+        const [docId, relName] = docIdAndRel;
+        relationshipsByDocId[docId] = relationshipsByDocId[docId] || {};
+        relationshipsByDocId[docId][relName] = responseToRelationship(resp);
       }
     }
 
     return {
       ...attachRelationships(response, relationshipsByDocId),
-      included
-    }
+      included,
+    };
   }
 
   async requestMutation(definition) {
     if (Array.isArray(definition)) {
-      const [first, ...rest] = definition
-      const firstResponse = await this.requestMutation(first)
+      const [first, ...rest] = definition;
+      const firstResponse = await this.requestMutation(first);
       await Promise.all(
-        rest.map(def => {
+        rest.map((def) => {
           const mutationDef =
-            typeof def === 'function' ? def(firstResponse) : def
-          return this.requestMutation(mutationDef)
+            typeof def === "function" ? def(firstResponse) : def;
+          return this.requestMutation(mutationDef);
         })
-      )
-      return firstResponse
+      );
+      return firstResponse;
     }
-    return this.chain.request(definition)
+    return this.chain.request(definition);
   }
 
   getIncludesRelationships(queryDefinition) {
-    const { includes, doctype } = queryDefinition
-    if (!includes) return {}
+    const { includes, doctype } = queryDefinition;
+    if (!includes) return {};
     return fromPairs(
-      includes.map(relName => [
+      includes.map((relName) => [
         relName,
-        this.schema.getRelationship(doctype, relName)
+        this.schema.getRelationship(doctype, relName),
       ])
-    )
+    );
   }
 
   /**
@@ -1279,14 +1282,14 @@ client.query(Q('io.cozy.bills'))`)
    */
   hydrateDocuments(doctype, documents) {
     if (this.options.autoHydrate === false) {
-      return documents
+      return documents;
     }
-    const schema = this.schema.getDoctypeSchema(doctype)
-    const relationships = schema.relationships
+    const schema = this.schema.getDoctypeSchema(doctype);
+    const relationships = schema.relationships;
     if (relationships) {
-      return documents.map(doc => this.hydrateDocument(doc, schema))
+      return documents.map((doc) => this.hydrateDocument(doc, schema));
     } else {
-      return documents
+      return documents;
     }
   }
 
@@ -1302,20 +1305,20 @@ client.query(Q('io.cozy.bills'))`)
    */
   hydrateDocument(document, schemaArg) {
     if (!document) {
-      return document
+      return document;
     }
-    const schema = schemaArg || this.schema.getDoctypeSchema(document._type)
+    const schema = schemaArg || this.schema.getDoctypeSchema(document._type);
     return {
       ...document,
-      ...this.hydrateRelationships(document, schema.relationships)
-    }
+      ...this.hydrateRelationships(document, schema.relationships),
+    };
   }
 
   hydrateRelationships(document, schemaRelationships) {
-    const methods = this.getRelationshipStoreAccessors()
+    const methods = this.getRelationshipStoreAccessors();
     return mapValues(schemaRelationships, (assoc, name) =>
       createAssociation(document, assoc, methods)
-    )
+    );
   }
 
   /**
@@ -1325,13 +1328,13 @@ client.query(Q('io.cozy.bills'))`)
    */
   makeNewDocument(doctype) {
     const obj = {
-      _type: doctype
-    }
-    return this.hydrateDocument(obj)
+      _type: doctype,
+    };
+    return this.hydrateDocument(obj);
   }
 
   generateRandomId() {
-    return this.queryIdGenerator.generateRandomId()
+    return this.queryIdGenerator.generateRandomId();
   }
 
   /**
@@ -1342,7 +1345,7 @@ client.query(Q('io.cozy.bills'))`)
       document,
       this.schema.getRelationship(document._type, associationName),
       this.getRelationshipStoreAccessors()
-    )
+    );
   }
 
   /**
@@ -1360,10 +1363,10 @@ client.query(Q('io.cozy.bills'))`)
         save: (document, opts) => this.save.call(this, document, opts),
         dispatch: this.dispatch.bind(this),
         query: (def, opts) => this.query.call(this, def, opts),
-        mutate: (def, opts) => this.mutate.call(this, def, opts)
-      }
+        mutate: (def, opts) => this.mutate.call(this, def, opts),
+      };
     }
-    return this.storeAccessors
+    return this.storeAccessors;
   }
 
   /**
@@ -1375,10 +1378,10 @@ client.query(Q('io.cozy.bills'))`)
    */
   getCollectionFromState(type) {
     try {
-      return getCollectionFromState(this.store.getState(), type)
+      return getCollectionFromState(this.store.getState(), type);
     } catch (e) {
-      logger.warn('Could not getCollectionFromState', type, e.message)
-      return null
+      logger.warn("Could not getCollectionFromState", type, e.message);
+      return null;
     }
   }
 
@@ -1392,10 +1395,10 @@ client.query(Q('io.cozy.bills'))`)
    */
   getDocumentFromState(type, id) {
     try {
-      return getDocumentFromState(this.store.getState(), type, id)
+      return getDocumentFromState(this.store.getState(), type, id);
     } catch (e) {
-      logger.warn('Could not getDocumentFromState', type, id, e.message)
-      return null
+      logger.warn("Could not getDocumentFromState", type, id, e.message);
+      return null;
     }
   }
 
@@ -1412,32 +1415,33 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {import("./types").QueryState} - Query state or null if it does not exist.
    */
   getQueryFromState(id, options = {}) {
-    const hydrated = options.hydrated || false
-    const singleDocData = options.singleDocData || false
+    const hydrated = options.hydrated || false;
+    const singleDocData = options.singleDocData || false;
     try {
-      const queryResults = getQueryFromState(this.store.getState(), id)
-      const doctype = queryResults.definition && queryResults.definition.doctype
+      const queryResults = getQueryFromState(this.store.getState(), id);
+      const doctype =
+        queryResults.definition && queryResults.definition.doctype;
       const isSingleDocQuery =
-        queryResults.definition && queryResults.definition.id
+        queryResults.definition && queryResults.definition.id;
 
       if (!hydrated && !singleDocData) {
         // Early return let's us preserve reference equality in the simple case
-        return queryResults
+        return queryResults;
       }
 
       const data =
         hydrated && doctype
           ? this.hydrateDocuments(doctype, queryResults.data)
-          : queryResults.data
+          : queryResults.data;
       return {
         ...queryResults,
-        data: isSingleDocQuery && singleDocData ? data[0] : data
-      }
+        data: isSingleDocQuery && singleDocData ? data[0] : data,
+      };
     } catch (e) {
       logger.warn(
         `Could not get query from state. queryId: ${id}, error: ${e.message}`
-      )
-      return null
+      );
+      return null;
     }
   }
 
@@ -1454,12 +1458,12 @@ client.query(Q('io.cozy.bills'))`)
    */
   fetchQueryAndGetFromState = async ({ definition, options }) => {
     try {
-      await this.query(definition, options)
-      return this.getQueryFromState(options.as, options)
+      await this.query(definition, options);
+      return this.getQueryFromState(options.as, options);
     } catch (error) {
-      throw error
+      throw error;
     }
-  }
+  };
 
   /**
    * Performs a complete OAuth flow using a Cordova webview
@@ -1470,13 +1474,15 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {object}   Contains the fetched token and the client information.
    */
   register(cozyURL) {
-    const stackClient = this.getStackClient()
-    stackClient.setUri(cozyURL)
-    return this.startOAuthFlow(authFunction)
+    const stackClient = this.getStackClient();
+    stackClient.setUri(cozyURL);
+    return this.startOAuthFlow(authFunction);
   }
 
   isReactNative() {
-    return typeof navigator != 'undefined' && navigator.product == 'ReactNative'
+    return (
+      typeof navigator != "undefined" && navigator.product == "ReactNative"
+    );
   }
 
   /**
@@ -1486,12 +1492,12 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {Promise<object>} Contains the fetched token and the client information. These should be stored and used to restore the client.
    */
   async startOAuthFlow(openURLCallback) {
-    const stackClient = this.getStackClient()
-    await stackClient.register()
+    const stackClient = this.getStackClient();
+    await stackClient.register();
 
-    await this.certifyFlagship()
+    await this.certifyFlagship();
 
-    return this.authorize({ openURLCallback })
+    return this.authorize({ openURLCallback });
   }
 
   /**
@@ -1500,10 +1506,10 @@ client.query(Q('io.cozy.bills'))`)
    * This mechanism is described in https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/flagship-certification/README.md
    */
   async certifyFlagship() {
-    const stackClient = this.getStackClient()
+    const stackClient = this.getStackClient();
 
     if (stackClient.oauthOptions.shouldRequireFlagshipPermissions) {
-      await certifyFlagship(stackClient.oauthOptions.certificationConfig, this)
+      await certifyFlagship(stackClient.oauthOptions.certificationConfig, this);
     }
   }
 
@@ -1521,40 +1527,40 @@ client.query(Q('io.cozy.bills'))`)
   async authorize({
     openURLCallback = authFunction,
     sessionCode = undefined,
-    pkceCodes = {}
+    pkceCodes = {},
   } = {}) {
     try {
-      const { codeVerifier, codeChallenge } = pkceCodes
-      const stackClient = this.getStackClient()
-      const stateCode = stackClient.generateStateCode()
+      const { codeVerifier, codeChallenge } = pkceCodes;
+      const stackClient = this.getStackClient();
+      const stateCode = stackClient.generateStateCode();
       const url = stackClient.getAuthCodeURL({
         stateCode: stateCode,
         scopes: undefined,
         sessionCode: sessionCode,
-        codeChallenge: codeChallenge
-      })
-      const redirectedURL = await openURLCallback(url)
-      const code = stackClient.getAccessCodeFromURL(redirectedURL, stateCode)
+        codeChallenge: codeChallenge,
+      });
+      const redirectedURL = await openURLCallback(url);
+      const code = stackClient.getAccessCodeFromURL(redirectedURL, stateCode);
       const token = await stackClient.fetchAccessToken(
         code,
         undefined,
         undefined,
         codeVerifier
-      )
+      );
 
-      stackClient.setToken(token)
+      stackClient.setToken(token);
       return {
         token,
         infos: stackClient.oauthOptions,
-        client: stackClient.oauthOptions // for compat with Authentication comp reasons
-      }
+        client: stackClient.oauthOptions, // for compat with Authentication comp reasons
+      };
     } catch (error) {
       /* if REGISTRATION_ABORT is emited, we have to unregister the client. */
       if (error.message === REGISTRATION_ABORT) {
-        const stackClient = this.getStackClient()
-        stackClient.unregister()
+        const stackClient = this.getStackClient();
+        stackClient.unregister();
       }
-      throw error
+      throw error;
     }
   }
 
@@ -1565,7 +1571,7 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {object}   Contains the fetched token and the client information.
    */
   renewAuthorization() {
-    return this.authorize({ openURLCallback: authFunction })
+    return this.authorize({ openURLCallback: authFunction });
   }
 
   /**
@@ -1592,22 +1598,22 @@ client.query(Q('io.cozy.bills'))`)
    */
   setStore(store, { force = false } = {}) {
     if (store === undefined) {
-      throw new Error('Store is undefined')
+      throw new Error("Store is undefined");
     } else if (this.store && !force) {
       throw new Error(
         `Client already has a store, it is forbidden to change store.
 setStore must be called before any query is executed. Try to
 call setStore earlier in your code, preferably just after the
 instantiation of the client.`
-      )
+      );
     }
 
-    this.store = store
+    this.store = store;
   }
 
   ensureStore() {
     if (!this.store) {
-      this.setStore(createStore())
+      this.setStore(createStore());
     }
   }
 
@@ -1616,31 +1622,31 @@ instantiation of the client.`
    */
   async checkForRevocation() {
     if (this.stackClient instanceof OAuthClient) {
-      return this.stackClient.checkForRevocation()
+      return this.stackClient.checkForRevocation();
     } else {
-      throw 'checkForRevocation is only implemented for OAutClient'
+      throw "checkForRevocation is only implemented for OAutClient";
     }
   }
 
   /** Sets public attribute and emits event related to revocation */
   handleRevocationChange(state) {
     if (state) {
-      this.isRevoked = true
-      this.emit('revoked')
+      this.isRevoked = true;
+      this.emit("revoked");
     } else {
-      this.isRevoked = false
-      this.emit('unrevoked')
+      this.isRevoked = false;
+      this.emit("unrevoked");
     }
   }
 
   /** Emits event when token is refreshed */
   handleTokenRefresh(token) {
-    this.emit('tokenRefreshed')
+    this.emit("tokenRefreshed");
     if (this.options.onTokenRefresh) {
       deprecatedHandler(
         `Using onTokenRefresh is deprecated, please use events like this: cozyClient.on('tokenRefreshed', token => console.log('Token has been refreshed', token)). https://git.io/fj3M3`
-      )
-      this.options.onTokenRefresh(token)
+      );
+      this.options.onTokenRefresh(token);
     }
   }
 
@@ -1655,76 +1661,76 @@ instantiation of the client.`
   createClient() {
     if (this.options.client) {
       logger.warn(
-        'CozyClient: Using options.client is deprecated, please use options.stackClient.'
-      )
+        "CozyClient: Using options.client is deprecated, please use options.stackClient."
+      );
     }
 
     const warningForCustomHandlers =
       this.options.warningForCustomHandlers !== undefined
         ? this.options.warningForCustomHandlers
-        : true
+        : true;
 
-    const stackClient = this.options.client || this.options.stackClient
+    const stackClient = this.options.client || this.options.stackClient;
 
     const handlers = {
       onRevocationChange: this.handleRevocationChange,
-      onTokenRefresh: this.handleTokenRefresh
-    }
+      onTokenRefresh: this.handleTokenRefresh,
+    };
 
     if (stackClient) {
-      this.stackClient = stackClient
+      this.stackClient = stackClient;
       if (!stackClient.options) {
-        stackClient.options = {}
+        stackClient.options = {};
       }
       for (let handlerName of Object.keys(handlers)) {
         if (!stackClient.options[handlerName]) {
-          stackClient.options[handlerName] = handlers[handlerName]
+          stackClient.options[handlerName] = handlers[handlerName];
         } else {
           if (warningForCustomHandlers) {
             logger.warn(
               `You passed a stackClient with its own ${handlerName}. It is not supported, unexpected things might happen.`
-            )
+            );
           }
         }
       }
     } else {
       const options = {
         ...this.options,
-        ...handlers
-      }
+        ...handlers,
+      };
       this.stackClient = this.options.oauth
         ? new OAuthClient(options)
-        : new CozyStackClient(options)
+        : new CozyStackClient(options);
     }
 
     this.client = new Proxy(
       this.stackClient,
       deprecatedHandler(
-        'Using cozyClient.client is deprecated, please use cozyClient.stackClient.'
+        "Using cozyClient.client is deprecated, please use cozyClient.stackClient."
       )
-    )
+    );
   }
 
   getClient() {
     logger.warn(
-      'CozyClient: getClient() is deprecated, please use getStackClient().'
-    )
-    return this.getStackClient()
+      "CozyClient: getClient() is deprecated, please use getStackClient()."
+    );
+    return this.getStackClient();
   }
 
   getStackClient() {
     if (!this.stackClient) {
-      this.createClient()
+      this.createClient();
     }
-    return this.stackClient
+    return this.stackClient;
   }
 
   reducer() {
-    return reducer
+    return reducer;
   }
 
   dispatch(action) {
-    return this.store.dispatch(action)
+    return this.store.dispatch(action);
   }
 
   /**
@@ -1733,7 +1739,7 @@ instantiation of the client.`
    * @returns {object}
    */
   getInstanceOptions() {
-    return this.instanceOptions
+    return this.instanceOptions;
   }
 
   /**
@@ -1743,18 +1749,18 @@ instantiation of the client.`
    *
    * @returns {void}
    */
-  loadInstanceOptionsFromDOM(selector = '[role=application]') {
-    const root = document.querySelector(selector)
+  loadInstanceOptionsFromDOM(selector = "[role=application]") {
+    const root = document.querySelector(selector);
     if (!(root instanceof HTMLElement)) {
       throw new Error(
-        'The selector that is passed does not return an HTMLElement'
-      )
+        "The selector that is passed does not return an HTMLElement"
+      );
     }
 
-    const { cozy = '{}', ...dataset } = root.dataset
-    this.instanceOptions = { ...JSON.parse(cozy), ...dataset }
+    const { cozy = "{}", ...dataset } = root.dataset;
+    this.instanceOptions = { ...JSON.parse(cozy), ...dataset };
 
-    this.capabilities = this.instanceOptions.capabilities || null
+    this.capabilities = this.instanceOptions.capabilities || null;
   }
 
   /**
@@ -1766,20 +1772,20 @@ instantiation of the client.`
    */
   async loadInstanceOptionsFromStack() {
     const { data } = await this.query(
-      Q('io.cozy.settings').getById('io.cozy.settings.capabilities')
-    )
+      Q("io.cozy.settings").getById("io.cozy.settings.capabilities")
+    );
 
     const { data: instanceData } = await this.query(
-      Q('io.cozy.settings').getById('io.cozy.settings.instance')
-    )
+      Q("io.cozy.settings").getById("io.cozy.settings.instance")
+    );
 
     this.instanceOptions = {
       capabilities: data,
       locale: instanceData.locale,
-      tracking: instanceData.tracking
-    }
+      tracking: instanceData.tracking,
+    };
 
-    this.capabilities = this.instanceOptions.capabilities || null
+    this.capabilities = this.instanceOptions.capabilities || null;
   }
 
   /**
@@ -1790,10 +1796,10 @@ instantiation of the client.`
    * @param {object} data - Data that is inserted in the store. Shape: { doctype: [data] }
    */
   setData(data) {
-    this.ensureStore()
+    this.ensureStore();
     Object.entries(data).forEach(([doctype, data]) => {
-      this.dispatch(receiveQueryResult(null, { data }))
-    })
+      this.dispatch(receiveQueryResult(null, { data }));
+    });
   }
 
   /**
@@ -1804,13 +1810,13 @@ instantiation of the client.`
    */
   setOnError(onError) {
     if (this.options && this.options.onError) {
-      throw new Error('On Error is already defined')
+      throw new Error("On Error is already defined");
     }
-    this.options.onError = onError
+    this.options.onError = onError;
   }
 
   toJSON() {
-    return new SnapshotClient({ uri: this.options.uri })
+    return new SnapshotClient({ uri: this.options.uri });
   }
   /**
    *
@@ -1819,8 +1825,8 @@ instantiation of the client.`
   setAppMetadata(newAppMetadata) {
     this.appMetadata = {
       ...this.appMetadata,
-      ...newAppMetadata
-    }
+      ...newAppMetadata,
+    };
   }
 
   /**
@@ -1834,7 +1840,7 @@ instantiation of the client.`
    * @returns {Promise<Record<T, any>>} - The value of the requested setting
    */
   async getSettings(slug, keys) {
-    return getSettings(this, slug, keys)
+    return getSettings(this, slug, keys);
   }
 
   /**
@@ -1846,12 +1852,12 @@ instantiation of the client.`
    * @template {string} T
    *
    * @param {string} slug - the cozy-app's slug containing the setting (can be 'instance' for global settings)
-   * @param {Record<string, any> | ((oldValue) => Record<T, any>)} itemsOrSetter - The new values of the settings to save. It can be a raw dictionnary, or a callback that should return a new dictionnary
-   * @param {T[]=} setterKeys - The new values of the settings to save. It can be a raw dictionnary, or a callback that should return a new dictionnary
+   * @param {Record<string, any> | ((oldValue) => Record<T, any>)} itemsOrSetter - The new values of the settings to save. It can be a raw dictionary, or a callback that should return a new dictionary
+   * @param {T[]=} setterKeys - The new values of the settings to save. It can be a raw dictionary, or a callback that should return a new dictionary
    * @returns {Promise<any>} - The result of the `client.save()` call
    */
   async saveAfterFetchSettings(slug, itemsOrSetter, setterKeys) {
-    return saveAfterFetchSettings(this, slug, itemsOrSetter, setterKeys)
+    return saveAfterFetchSettings(this, slug, itemsOrSetter, setterKeys);
   }
 
   /**
@@ -1865,25 +1871,25 @@ instantiation of the client.`
   async resetQuery(queryId) {
     try {
       if (!isQueryExisting(this.store.getState(), queryId)) {
-        return Promise.resolve(null)
+        return Promise.resolve(null);
       }
-      this.dispatch(resetQuery(queryId))
-      const query = this.getQueryFromState(queryId)
+      this.dispatch(resetQuery(queryId));
+      const query = this.getQueryFromState(queryId);
       return await this.query(query.definition, {
-        as: queryId
-      })
+        as: queryId,
+      });
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 }
 
-CozyClient.hooks = CozyClient.hooks || {}
+CozyClient.hooks = CozyClient.hooks || {};
 
-CozyClient.fetchPolicies = fetchPolicies
+CozyClient.fetchPolicies = fetchPolicies;
 //COZY_CLIENT_VERSION_PACKAGE in replaced by babel. See babel config
-CozyClient.version = 'COZY_CLIENT_VERSION_PACKAGE'
+CozyClient.version = "COZY_CLIENT_VERSION_PACKAGE";
 
-MicroEE.mixin(CozyClient)
+MicroEE.mixin(CozyClient);
 
-export default CozyClient
+export default CozyClient;

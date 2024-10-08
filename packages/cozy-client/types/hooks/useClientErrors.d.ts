@@ -23,7 +23,7 @@
  * @returns {{ClientErrors: Function}} React component
  */
 export default function useClientErrors({ handleExceptions }?: {
-    handleExceptions: boolean;
+    handleExceptions?: boolean;
 }): {
     ClientErrors: Function;
 };

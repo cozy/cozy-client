@@ -1,46 +1,5 @@
 export default CozyClient;
-export type CozyClientDocument = {
-    /**
-     * - Id of the document
-     */
-    _id?: string;
-    /**
-     * - Id of the document
-     */
-    id?: string;
-    /**
-     * - Type of the document
-     */
-    _type?: string;
-    /**
-     * - Current revision of the document
-     */
-    _rev?: string;
-    /**
-     * - When the document has been deleted
-     */
-    _deleted?: boolean;
-    /**
-     * - Relationships of the document
-     */
-    relationships?: import("./types").ReferencedByRelationship;
-    /**
-     * - referenced by of another document
-     */
-    referenced_by?: import("./types").Reference[];
-    /**
-     * - Cozy Metadata
-     */
-    cozyMetadata?: import("./types").CozyMetadata;
-    /**
-     * - Pouch Metadata
-     */
-    meta?: import("./types").CozyClientDocumentMeta;
-    /**
-     * - When true the document should NOT be replicated to the remote database
-     */
-    cozyLocalOnly?: boolean;
-};
+export type CozyClientDocument = import("./types").CozyClientDocument;
 export type ClientOptions = {
     client?: object;
     link?: object;
@@ -531,7 +490,7 @@ declare class CozyClient {
      */
     private fetchRelationships;
     requestMutation(definition: any): any;
-    getIncludesRelationships(queryDefinition: any): import("lodash").Dictionary<any>;
+    getIncludesRelationships(queryDefinition: any): any;
     /**
      * Returns documents with their relationships resolved according to their schema.
      * If related documents are not in the store, they will not be fetched automatically.
@@ -553,9 +512,7 @@ declare class CozyClient {
      * @returns {import("./types").HydratedDocument}
      */
     hydrateDocument(document: import("./types").CozyClientDocument, schemaArg?: Schema): import("./types").HydratedDocument;
-    hydrateRelationships(document: any, schemaRelationships: any): {
-        [x: string]: any;
-    };
+    hydrateRelationships(document: any, schemaRelationships: any): any;
     /**
      * Creates (locally) a new document for the given doctype.
      * This document is hydrated : its relationships are there
@@ -671,7 +628,7 @@ declare class CozyClient {
      * @param {import("./types").PKCECodes} [options.pkceCodes] - code verifier and a code challenge that should be used in the PKCE verification process.
      * @returns {Promise<object>} Contains the fetched token and the client information. These should be stored and used to restore the client.
      */
-    authorize({ openURLCallback, sessionCode, pkceCodes }?: {
+    authorize({ openURLCallback, sessionCode, pkceCodes, }?: {
         openURLCallback?: import("./types").OpenURLCallback;
         sessionCode?: import("./types").SessionCode;
         pkceCodes?: import("./types").PKCECodes;
@@ -731,8 +688,11 @@ declare class CozyClient {
         documents: {};
         queries: {};
     }, action: any) => {
+        documents: {};
+        queries: {};
+    } | {
         documents: any;
-        queries: Record<string, import("./types").QueryState>;
+        queries: import("./types").QueriesStateSlice;
     };
     dispatch(action: any): any;
     /**
@@ -798,11 +758,11 @@ declare class CozyClient {
      * @template {string} T
      *
      * @param {string} slug - the cozy-app's slug containing the setting (can be 'instance' for global settings)
-     * @param {Record<string, any> | ((oldValue) => Record<T, any>)} itemsOrSetter - The new values of the settings to save. It can be a raw dictionnary, or a callback that should return a new dictionnary
-     * @param {T[]=} setterKeys - The new values of the settings to save. It can be a raw dictionnary, or a callback that should return a new dictionnary
+     * @param {Record<string, any> | ((oldValue) => Record<T, any>)} itemsOrSetter - The new values of the settings to save. It can be a raw dictionary, or a callback that should return a new dictionary
+     * @param {T[]=} setterKeys - The new values of the settings to save. It can be a raw dictionary, or a callback that should return a new dictionary
      * @returns {Promise<any>} - The result of the `client.save()` call
      */
-    saveAfterFetchSettings<T_2 extends string>(slug: string, itemsOrSetter: Record<string, any> | ((oldValue: any) => Record<T_2, any>), setterKeys?: T_2[]): Promise<any>;
+    saveAfterFetchSettings<T_1 extends string>(slug: string, itemsOrSetter: Record<string, any> | ((oldValue: any) => Record<T_1, any>), setterKeys?: T_1[]): Promise<any>;
     /**
      * Reset a query
      *
@@ -814,9 +774,9 @@ declare class CozyClient {
     resetQuery(queryId: string): Promise<import("./types").QueryState | null>;
 }
 declare namespace CozyClient {
-    export const hooks: {};
+    export let hooks: {};
     export { fetchPolicies };
-    export const version: string;
+    export let version: string;
 }
 import { QueryIDGenerator } from "./store/queries";
 import Schema from "./Schema";

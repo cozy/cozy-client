@@ -20,4 +20,4 @@ export type Params = {
      */
     endDate?: string;
 };
-import CozyClient from "../CozyClient";
+import CozyClient from '../CozyClient';

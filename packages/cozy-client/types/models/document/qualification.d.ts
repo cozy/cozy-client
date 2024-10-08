@@ -103,6 +103,12 @@ export class Qualification {
     toQualification(): object;
 }
 export namespace Qualification {
+    /**
+     * Returns the qualification associated to a label.
+     *
+     * @param {string} label - The label to qualify
+     * @returns {Qualification} - The qualification
+     */
     function getByLabel(label: string): Qualification;
 }
 export function setQualification(document: object, qualification: Qualification): object;

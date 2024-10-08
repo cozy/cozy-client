@@ -1,5 +1,5 @@
 export function fetchQuery(client: any, query: any): any;
-declare class Query extends Component<any, any, any> {
+declare class Query {
     constructor(props: any, context: any);
     /**
      * Current client
@@ -19,33 +19,35 @@ declare class Query extends Component<any, any, any> {
      * @type {Function}
      */
     queryUnsubscribe: Function;
+    componentDidMount(): void;
     executeQueryRespectingFetchPolicy(): void;
+    componentDidUpdate(prevProps: any): void;
+    componentWillUnmount(): void;
     onQueryChange: () => void;
     recomputeChildrenArgs(): void;
     childrenArgs: any[];
+    render(): any;
 }
 declare namespace Query {
     namespace contextTypes {
-        const client: PropTypes.Requireable<object>;
-        const store: PropTypes.Requireable<object>;
+        let client: any;
+        let store: any;
     }
     namespace propTypes {
-        const query: PropTypes.Validator<object>;
-        const enabled: PropTypes.Requireable<boolean>;
-        const as: PropTypes.Requireable<string>;
-        const children: PropTypes.Validator<(...args: any[]) => any>;
-        const fetchPolicy: PropTypes.Requireable<(...args: any[]) => any>;
+        let query: any;
+        let enabled: any;
+        let as: any;
+        let children: any;
+        let fetchPolicy: any;
     }
     namespace defaultProps {
-        const enabled_1: boolean;
+        let enabled_1: boolean;
         export { enabled_1 as enabled };
     }
 }
 export default Query;
-import { Component } from "react";
-import CozyClient from "./CozyClient";
-import ObservableQuery from "./ObservableQuery";
-import PropTypes from "prop-types";
+import CozyClient from './CozyClient';
+import ObservableQuery from './ObservableQuery';
 /**
  * Get attributes that will be assigned to the instance of a Query
  */

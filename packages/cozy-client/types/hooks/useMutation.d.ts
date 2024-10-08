@@ -9,8 +9,7 @@ export function useMutation({ onSuccess, onError }?: {
 }): import("../types").UseMutationReturnValue;
 export namespace useMutation {
     namespace propTypes {
-        const onSuccess: PropTypes.Requireable<(...args: any[]) => any>;
-        const onError: PropTypes.Requireable<(...args: any[]) => any>;
+        let onSuccess: any;
+        let onError: any;
     }
 }
-import PropTypes from "prop-types";

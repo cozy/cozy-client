@@ -18,6 +18,9 @@ export default class StackLink extends CozyLink {
     stackClient: any;
     isOnline: any;
     registerClient(client: any): void;
+    reset(): Promise<void>;
+    request(operation: any, result: any, forward: any): Promise<any>;
+    persistCozyData(data: any, forward: any): Promise<any>;
     /**
      *
      * @param {QueryDefinition} query - Query to execute
@@ -40,5 +43,5 @@ export type StackLinkOptions = {
      */
     platform?: any;
 };
-import CozyLink from "./CozyLink";
-import { QueryDefinition } from "./queries/dsl";
+import CozyLink from './CozyLink';
+import { QueryDefinition } from './queries/dsl';

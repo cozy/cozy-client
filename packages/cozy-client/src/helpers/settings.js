@@ -1,8 +1,8 @@
-import CozyClient from '../CozyClient'
-import fetchPolicies from '../policies'
-import { Q } from '../queries/dsl'
+import CozyClient from "../CozyClient";
+import fetchPolicies from "../policies";
+import { Q } from "../queries/dsl";
 
-const defaultFetchPolicy = fetchPolicies.olderThan(60 * 60 * 1000)
+const defaultFetchPolicy = fetchPolicies.olderThan(60 * 60 * 1000);
 
 /**
  * Query the cozy-app settings corresponding to the given slug and
@@ -16,18 +16,18 @@ const defaultFetchPolicy = fetchPolicies.olderThan(60 * 60 * 1000)
  * @returns {Promise<Record<T, any>>} - The values of the requested settings
  */
 export const getSettings = async (client, slug, keys) => {
-  const query = getQuery(slug)
+  const query = getQuery(slug);
 
   const currentSettingsResult = await client.fetchQueryAndGetFromState({
     definition: query.definition,
-    options: query.options
-  })
+    options: query.options,
+  });
 
-  const currentSettings = normalizeSettings(currentSettingsResult.data)
+  const currentSettings = normalizeSettings(currentSettingsResult.data);
 
   // @ts-ignore
-  return extractKeys(currentSettings, keys)
-}
+  return extractKeys(currentSettings, keys);
+};
 
 /**
  * Save the given value into the corresponding cozy-app setting
@@ -39,8 +39,8 @@ export const getSettings = async (client, slug, keys) => {
  *
  * @param {CozyClient} client - Cozy client instance
  * @param {string} slug - the cozy-app's slug containing the setting (special cases are: 'instance' for global settings and 'bitwarden' for cozy-pass)
- * @param {Record<string, any> | ((oldValue) => Record<T, any>)} itemsOrSetter - The new values of the settings to save. It can be a raw dictionnary, or a callback that should return a new dictionnary
- * @param {T[]=} setterKeys - The new values of the settings to save. It can be a raw dictionnary, or a callback that should return a new dictionnary
+ * @param {Record<string, any> | ((oldValue) => Record<T, any>)} itemsOrSetter - The new values of the settings to save. It can be a raw dictionary, or a callback that should return a new dictionary
+ * @param {T[]=} setterKeys - The new values of the settings to save. It can be a raw dictionary, or a callback that should return a new dictionary
  * @returns {Promise<any>} - The result of the `client.save()` call
  */
 export const saveAfterFetchSettings = async (
@@ -49,34 +49,34 @@ export const saveAfterFetchSettings = async (
   itemsOrSetter,
   setterKeys
 ) => {
-  const query = getQuery(slug)
+  const query = getQuery(slug);
 
   const currentSettingsResult = await client.fetchQueryAndGetFromState({
     definition: query.definition,
-    options: query.options
-  })
+    options: query.options,
+  });
 
-  const currentSettings = normalizeSettings(currentSettingsResult.data)
+  const currentSettings = normalizeSettings(currentSettingsResult.data);
 
-  let items = undefined
-  if (typeof itemsOrSetter === 'function') {
-    const currentItems = extractKeys(currentSettings, setterKeys)
-    items = itemsOrSetter(currentItems)
+  let items = undefined;
+  if (typeof itemsOrSetter === "function") {
+    const currentItems = extractKeys(currentSettings, setterKeys);
+    items = itemsOrSetter(currentItems);
   } else {
     const currentItems = extractKeys(
       currentSettings,
       Object.keys(itemsOrSetter)
-    )
+    );
     items = {
       ...currentItems,
-      ...itemsOrSetter
-    }
+      ...itemsOrSetter,
+    };
   }
 
-  const newSettings = editSettings(slug, currentSettings, items)
+  const newSettings = editSettings(slug, currentSettings, items);
 
-  return await client.save(newSettings)
-}
+  return await client.save(newSettings);
+};
 
 /**
  * Convert a result from a `client.query()` or a `useQuery()` that can be
@@ -85,11 +85,11 @@ export const saveAfterFetchSettings = async (
  * @param {Array | Object} data - Result from a client.query or a useQuery
  * @returns {Object} A single object containing the setting data
  */
-export const normalizeSettings = data => {
-  const settingsData = Array.isArray(data) ? data[0] : data
+export const normalizeSettings = (data) => {
+  const settingsData = Array.isArray(data) ? data[0] : data;
 
-  return settingsData || {}
-}
+  return settingsData || {};
+};
 
 /**
  * Edit the given settings by injecting `value` into the `key` entry
@@ -102,15 +102,15 @@ export const normalizeSettings = data => {
  * @returns {Object} a new Setting object containing the new value
  */
 export const editSettings = (slug, currentSettings, items) => {
-  const type = getDoctype(slug)
+  const type = getDoctype(slug);
 
   const newSettings =
-    slug === 'instance'
+    slug === "instance"
       ? mergeInstance(currentSettings, items)
-      : mergeSettings(currentSettings, type, items)
+      : mergeSettings(currentSettings, type, items);
 
-  return newSettings
-}
+  return newSettings;
+};
 
 const mergeInstance = (currentSettings, items) => {
   const newSettings = {
@@ -119,30 +119,30 @@ const mergeInstance = (currentSettings, items) => {
     _rev: currentSettings.meta.rev,
     ...currentSettings,
     attributes: {
-      ...currentSettings.attributes
-    }
-  }
+      ...currentSettings.attributes,
+    },
+  };
 
   for (const [key, value] of Object.entries(items)) {
-    newSettings[key] = value
-    newSettings.attributes[key] = value
+    newSettings[key] = value;
+    newSettings.attributes[key] = value;
   }
 
-  return newSettings
-}
+  return newSettings;
+};
 
 const mergeSettings = (currentSettings, type, items) => {
   const newSettings = {
     _type: type,
-    ...currentSettings
-  }
+    ...currentSettings,
+  };
 
   for (const [key, value] of Object.entries(items)) {
-    newSettings[key] = value
+    newSettings[key] = value;
   }
 
-  return newSettings
-}
+  return newSettings;
+};
 
 /**
  * Extract values from given settings for requested keys
@@ -151,18 +151,18 @@ const mergeSettings = (currentSettings, type, items) => {
  *
  * @param {Record<T, any>} settings - the Setting object (ideally from a `client.query()` or a `useQuery()` and normalized using `normalizeSettings`)
  * @param {T[]} keys - The names of the settings to extract
- * @returns {Record<T, any>} - Dictionnary containing the values for the requested keys
+ * @returns {Record<T, any>} - dictionary containing the values for the requested keys
  */
 export const extractKeys = (settings, keys) => {
-  let result = {}
+  let result = {};
   for (const key of keys) {
     // @ts-ignore
-    result[key] = settings[key]
+    result[key] = settings[key];
   }
 
   // @ts-ignore
-  return result
-}
+  return result;
+};
 
 /**
  * Create a Query that can be used to fetch the cozy-app settings for the given slug
@@ -170,55 +170,55 @@ export const extractKeys = (settings, keys) => {
  * @param {string} slug - the cozy-app's slug containing the setting (special cases are: 'instance' for global settings and 'passwords' for bitwarden settings)
  * @returns {import('../types').Query} - the Query that can be used to fetch the cozy-app settings
  */
-export const getQuery = slug => {
-  if (slug === 'instance') {
-    return getNestedSettings(slug)
+export const getQuery = (slug) => {
+  if (slug === "instance") {
+    return getNestedSettings(slug);
   }
 
-  if (slug === 'passwords') {
-    return getNestedSettings('bitwarden')
+  if (slug === "passwords") {
+    return getNestedSettings("bitwarden");
   }
 
-  return getRootSettings(slug)
-}
+  return getRootSettings(slug);
+};
 
-const getRootSettings = slug => {
-  const settingsDoctype = getDoctype(slug)
+const getRootSettings = (slug) => {
+  const settingsDoctype = getDoctype(slug);
   const query = {
     definition: Q(settingsDoctype).limitBy(1),
     options: {
       as: settingsDoctype,
       fetchPolicy: defaultFetchPolicy,
-      singleDocData: true
-    }
-  }
+      singleDocData: true,
+    },
+  };
 
-  return query
-}
+  return query;
+};
 
-const getNestedSettings = slug => {
-  const doctype = `io.cozy.settings`
-  const subDoctype = getDoctype(slug)
+const getNestedSettings = (slug) => {
+  const doctype = `io.cozy.settings`;
+  const subDoctype = getDoctype(slug);
   const query = {
     definition: Q(doctype).getById(subDoctype),
     options: {
       as: `${doctype}/${subDoctype}`,
       fetchPolicy: defaultFetchPolicy,
-      singleDocData: true
-    }
+      singleDocData: true,
+    },
+  };
+
+  return query;
+};
+
+const getDoctype = (slug) => {
+  if (["instance", "bitwarden"].includes(slug)) {
+    return `io.cozy.settings.${slug}`;
   }
 
-  return query
-}
-
-const getDoctype = slug => {
-  if (['instance', 'bitwarden'].includes(slug)) {
-    return `io.cozy.settings.${slug}`
+  if (slug === "passwords") {
+    return "io.cozy.settings.bitwarden";
   }
 
-  if (slug === 'passwords') {
-    return 'io.cozy.settings.bitwarden'
-  }
-
-  return `io.cozy.${slug}.settings`
-}
+  return `io.cozy.${slug}.settings`;
+};

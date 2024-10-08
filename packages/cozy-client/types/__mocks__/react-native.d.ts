@@ -1,3 +1,3 @@
 export namespace reactNative {
-    const Linking: {};
+    let Linking: {};
 }

@@ -10,4 +10,4 @@ export default optimizeQueries;
  * @private
  */
 declare function optimizeQueries(queries: QueryDefinition[]): QueryDefinition[];
-import { QueryDefinition } from "./dsl";
+import { QueryDefinition } from './dsl';

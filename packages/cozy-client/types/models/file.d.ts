@@ -71,8 +71,8 @@ export function copy(client: object, file: object, destination: object): Promise
 export function downloadFile({ client, file, url, webviewIntent }: {
     client: CozyClient;
     file: import("../types").IOCozyFile;
-    url: string;
-    webviewIntent: import('cozy-intent').WebviewService;
+    url?: string;
+    webviewIntent?: any;
 }): Promise<any>;
 export type FileUploadOptions = {
     /**
@@ -100,4 +100,4 @@ export type FileUploadOptions = {
      */
     conflictOptions?: import('../types').ConflictOptions;
 };
-import CozyClient from "../CozyClient";
+import CozyClient from '../CozyClient';

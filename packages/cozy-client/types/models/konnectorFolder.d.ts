@@ -14,4 +14,4 @@ export function findKonnectorAccountFolderByReference({ client, slug, sourceAcco
     slug: string;
     sourceAccountIdentifier: string;
 }): Promise<import('../types').IOCozyFolder>;
-import CozyClient from "../CozyClient";
+import CozyClient from '../CozyClient';

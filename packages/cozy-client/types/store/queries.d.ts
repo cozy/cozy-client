@@ -35,9 +35,9 @@ export class QueryIDGenerator {
     generateId(queryDefinition: QueryDefinition): string;
 }
 export namespace QueryIDGenerator {
-    const UNNAMED: string;
+    let UNNAMED: string;
 }
-import { QueryDefinition } from "../queries/dsl";
+import { QueryDefinition } from '../queries/dsl';
 /**
  * @param  {import("../types").QueriesStateSlice}  state - Redux slice containing all the query states indexed by name
  * @param  {object}  action - Income redux action

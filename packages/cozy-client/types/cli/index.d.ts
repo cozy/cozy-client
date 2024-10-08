@@ -1,7 +1,7 @@
 /**
  * Creates and starts and HTTP server suitable for OAuth authentication
  */
-export type DestroyableServer = any;
+export type DestroyableServer = object;
 /**
  * Creates a client with interactive authentication.
  *
@@ -26,4 +26,4 @@ export type DestroyableServer = any;
  * @returns {Promise<CozyClient>} - A client that is ready with a token
  */
 export function createClientInteractive(clientOptions: object, serverOpts: any): Promise<CozyClient>;
-import CozyClient from "../CozyClient";
+import CozyClient from '../CozyClient';

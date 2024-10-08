@@ -7,7 +7,7 @@ export type RegistryApp = {
     installed: boolean;
     type: string;
 };
-export type RegistryAppChannel = "stable" | "dev" | "beta";
+export type RegistryAppChannel = "dev" | "beta" | "stable";
 /**
  * @typedef {object} RegistryApp
  * @property {string} slug

@@ -43,17 +43,17 @@ export default HasManyInPlace;
  *
  */
 declare class HasManyInPlace extends Association {
-    constructor(target: any, name: string, doctype: string, options: {
-        get: Function;
-        query: Function;
-        mutate: Function;
-        save: Function;
-        dispatch: Function;
-    });
+    /**
+     * Raw property
+     *
+     * @type {Array<string>}
+     */
+    get raw(): string[];
     addById(id: any): void;
     removeById(id: any): void;
     existsById(id: any): boolean;
     getRelationship(): any;
     dehydrate(doc: any): any;
+    get data(): any[];
 }
-import Association from "./Association";
+import Association from './Association';

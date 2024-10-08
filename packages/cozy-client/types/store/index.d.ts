@@ -12,8 +12,11 @@ declare function combinedReducer(state: {
     documents: {};
     queries: {};
 }, action: any): {
+    documents: {};
+    queries: {};
+} | {
     documents: any;
-    queries: Record<string, import("../types").QueryState>;
+    queries: import("../types").QueriesStateSlice;
 };
 export function resetState(): {
     type: string;

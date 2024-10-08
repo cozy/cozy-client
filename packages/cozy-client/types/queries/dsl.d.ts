@@ -71,8 +71,8 @@ export type PartialQueryDefinition = {
     partialFilter?: object;
     fields?: any[];
 };
-export type MangoSelector = any;
-export type MangoPartialFilter = any;
+export type MangoSelector = object;
+export type MangoPartialFilter = object;
 /**
  * @typedef PartialQueryDefinition
  *
@@ -115,20 +115,20 @@ export class QueryDefinition {
      * @param {string} [options.bookmark] - The bookmark to paginate mango queries.
      */
     constructor(options?: {
-        doctype: import('../types').Doctype;
-        id: import('../types').DocId | null;
-        ids: Array<import('../types').DocId>;
-        selector: MangoSelector;
-        fields: Array<string>;
-        indexedFields: Array<string>;
-        partialFilter: MangoPartialFilter;
-        sort: Array<object>;
-        includes: Array<string>;
-        referenced: string | null;
-        limit: number | null;
-        skip: number | null;
-        cursor: import('../types').CouchDBViewCursor;
-        bookmark: string;
+        doctype?: import('../types').Doctype;
+        id?: import('../types').DocId | null;
+        ids?: Array<import('../types').DocId>;
+        selector?: MangoSelector;
+        fields?: Array<string>;
+        indexedFields?: Array<string>;
+        partialFilter?: MangoPartialFilter;
+        sort?: Array<object>;
+        includes?: Array<string>;
+        referenced?: string | null;
+        limit?: number | null;
+        skip?: number | null;
+        cursor?: import('../types').CouchDBViewCursor;
+        bookmark?: string;
     });
     doctype: string;
     id: string;

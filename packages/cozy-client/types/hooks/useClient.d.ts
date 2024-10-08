@@ -5,4 +5,4 @@ export default useClient;
  * @returns {CozyClient|null} - Current cozy client
  */
 declare function useClient(): CozyClient | null;
-import CozyClient from "../CozyClient";
+import CozyClient from '../CozyClient';

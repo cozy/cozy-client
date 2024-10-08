@@ -1,3 +1,3 @@
 export namespace reactNativeInAppBrowser {
-    const InAppBrowser: {};
+    let InAppBrowser: {};
 }

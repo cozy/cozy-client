@@ -6,20 +6,7 @@ export class BulkEditError extends Error {
      * @param  {import("./types").CozyClientDocument[]} updatedDocs - Docs with updated _id and _rev
      */
     constructor(bulkResponse: import("./types").CouchDBBulkResult[], updatedDocs: import("./types").CozyClientDocument[]);
-    results: {
-        doc: import("./types").CozyClientDocument;
-        ok: boolean;
-        id: string;
-        rev: string;
-        /**
-         * ?
-         */
-        error: string;
-        /**
-         * ?
-         */
-        reason: string;
-    }[];
+    results: any;
     /**
      * Get documents that have been correctly updated
      *

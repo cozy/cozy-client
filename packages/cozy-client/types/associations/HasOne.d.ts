@@ -1,11 +1,4 @@
 export default class HasOne extends Association {
-    constructor(target: any, name: string, doctype: string, options: {
-        get: Function;
-        query: Function;
-        mutate: Function;
-        save: Function;
-        dispatch: Function;
-    });
     /**
      * Add the relationship to the target document
      *
@@ -24,4 +17,4 @@ export default class HasOne extends Association {
     unset(): void;
     dehydrate(doc: any): any;
 }
-import Association from "./Association";
+import Association from './Association';

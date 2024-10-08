@@ -67,13 +67,6 @@ export type Relation = {
  * ```
  */
 declare class HasMany extends Association {
-    constructor(target: any, name: string, doctype: string, options: {
-        get: Function;
-        query: Function;
-        mutate: Function;
-        save: Function;
-        dispatch: Function;
-    });
     get hasMore(): any;
     /**
      * Returns the total number of documents in the relationship.
@@ -131,4 +124,4 @@ declare class HasMany extends Association {
     updateRelationshipData: (getUpdatedRelationshipData: any) => (dispatch: any, getState: any) => void;
     dehydrate(doc: any): any;
 }
-import Association from "./Association";
+import Association from './Association';

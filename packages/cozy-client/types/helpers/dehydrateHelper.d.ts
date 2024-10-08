@@ -1,1 +1,1 @@
-export function dehydrate(document: any): {};
+export function dehydrate(document: any): any;
