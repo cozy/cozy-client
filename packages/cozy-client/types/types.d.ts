@@ -823,6 +823,7 @@ export type FileMetadata = {
      */
     externalDataSource?: {
         source: string;
+        creator: string;
     };
 };
 /**
