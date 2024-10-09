@@ -135,6 +135,9 @@ See <a href="https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a
 <dt><a href="#getAccessToken">getAccessToken()</a> ⇒ <code>string</code></dt>
 <dd><p>Get the app token string</p>
 </dd>
+<dt><a href="#normalizeDoctypeJsonApi">normalizeDoctypeJsonApi(doctype)</a> ⇒ <code>function</code></dt>
+<dd><p>Normalizes a document in JSON API format for a specific doctype</p>
+</dd>
 <dt><a href="#getIconURL">getIconURL()</a></dt>
 <dd><p>Get Icon URL using blob mechanism if OAuth connected
 or using preloaded url when blob not needed</p>
@@ -463,6 +466,7 @@ Abstracts a collection of documents of the same doctype, providing CRUD methods 
         * [.fetchChangesRaw(couchOptions)](#DocumentCollection+fetchChangesRaw)
     * _static_
         * [.normalizeDoctype(doctype)](#DocumentCollection.normalizeDoctype) ⇒ <code>function</code>
+        * [.normalizeDoctypeJsonApi(doctype)](#DocumentCollection.normalizeDoctypeJsonApi) ⇒ <code>function</code>
 
 <a name="DocumentCollection+all"></a>
 
@@ -715,6 +719,19 @@ No further treatment is done contrary to fetchchanges
 
 ### DocumentCollection.normalizeDoctype(doctype) ⇒ <code>function</code>
 Provides a callback for `Collection.get`
+
+**Kind**: static method of [<code>DocumentCollection</code>](#DocumentCollection)  
+**Returns**: <code>function</code> - (data, response) => normalizedDocument
+                                       using `normalizeDoc`  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doctype | <code>string</code> | Document doctype |
+
+<a name="DocumentCollection.normalizeDoctypeJsonApi"></a>
+
+### DocumentCollection.normalizeDoctypeJsonApi(doctype) ⇒ <code>function</code>
+`normalizeDoctype` for api end points returning json api responses
 
 **Kind**: static method of [<code>DocumentCollection</code>](#DocumentCollection)  
 **Returns**: <code>function</code> - (data, response) => normalizedDocument
@@ -2335,6 +2352,18 @@ Get the app token string
 **Kind**: global function  
 **Returns**: <code>string</code> - token  
 **See**: CozyStackClient.getAccessToken  
+<a name="normalizeDoctypeJsonApi"></a>
+
+## normalizeDoctypeJsonApi(doctype) ⇒ <code>function</code>
+Normalizes a document in JSON API format for a specific doctype
+
+**Kind**: global function  
+**Returns**: <code>function</code> - A function that normalizes the document  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doctype | <code>string</code> | The document type |
+
 <a name="getIconURL"></a>
 
 ## getIconURL()
