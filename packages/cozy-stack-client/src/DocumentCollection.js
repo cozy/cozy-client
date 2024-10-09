@@ -48,6 +48,26 @@ export function normalizeDoc(doc = {}, doctype) {
   return { id, _id: id, _type: doctype, ...doc }
 }
 
+/**
+ * Normalizes a document in JSON API format for a specific doctype
+ *
+ * @param {string} doctype - The document type
+ * @returns {Function} A function that normalizes the document
+ */
+export function normalizeDoctypeJsonApi(doctype) {
+  /**
+   * @param {object} data - The document from "data" property of the response in JSON API format
+   * @returns {object} The normalized document
+   */
+  return function(data) {
+    const normalizedDoc = normalizeDoc(data, doctype)
+    return {
+      ...normalizedDoc,
+      ...normalizedDoc.attributes
+    }
+  }
+}
+
 const prepareForDeletion = x =>
   Object.assign({}, omit(x, '_type'), { _deleted: true })
 
@@ -76,16 +96,12 @@ class DocumentCollection {
   /**
    * `normalizeDoctype` for api end points returning json api responses
    *
-   * @private
    * @param {string} doctype - Document doctype
    * @returns {Function} (data, response) => normalizedDocument
    *                                        using `normalizeDoc`
    */
   static normalizeDoctypeJsonApi(doctype) {
-    return function(data, response) {
-      // use the "data" attribute of the response
-      return normalizeDoc(data, doctype)
-    }
+    return normalizeDoctypeJsonApi(doctype)
   }
 
   /**
