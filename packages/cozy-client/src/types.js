@@ -465,6 +465,7 @@ import { QueryDefinition } from './queries/dsl'
  * @property {string} [target.category] - The category of the application
  * @property {object} [externalDataSource] - Additional information to maintain link with external data source
  * @property {string} [externalDataSource.source] - The space to which the application belongs
+ * @property {string} [externalDataSource.creator] - The creator of the data source
  */
 
 /**
