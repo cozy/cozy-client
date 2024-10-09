@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [49.3.0](https://github.com/cozy/cozy-client/compare/v49.2.0...v49.3.0) (2024-10-09)
+
+
+### Features
+
+* Add type for externalDataSource.creator ([a3326b8](https://github.com/cozy/cozy-client/commit/a3326b827ca0cf55726de2f69e5567c7f834d599))
+
+
+
+
+
 # [49.2.0](https://github.com/cozy/cozy-client/compare/v49.1.1...v49.2.0) (2024-10-08)
 
 
