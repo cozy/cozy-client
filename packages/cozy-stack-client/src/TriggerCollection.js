@@ -1,5 +1,5 @@
 import Collection, { dontThrowNotFoundError } from './Collection'
-import { normalizeDoctypeJsonApi } from './DocumentCollection'
+import { normalizeDoctypeJsonApi } from './normalize'
 import { normalizeJob } from './JobCollection'
 import { uri } from './utils'
 import DocumentCollection from './DocumentCollection'

@@ -1,4 +1,5 @@
-import DocumentCollection, { normalizeDoc } from './DocumentCollection'
+import DocumentCollection from './DocumentCollection'
+import { normalizeDoc } from './normalize'
 
 export const APPS_REGISTRY_DOCTYPE = 'io.cozy.apps_registry'
 

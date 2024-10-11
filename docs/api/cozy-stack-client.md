@@ -135,9 +135,6 @@ See <a href="https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a
 <dt><a href="#getAccessToken">getAccessToken()</a> ⇒ <code>string</code></dt>
 <dd><p>Get the app token string</p>
 </dd>
-<dt><a href="#normalizeDoctypeJsonApi">normalizeDoctypeJsonApi(doctype)</a> ⇒ <code>function</code></dt>
-<dd><p>Normalizes a document in JSON API format for a specific doctype</p>
-</dd>
 <dt><a href="#getIconURL">getIconURL()</a></dt>
 <dd><p>Get Icon URL using blob mechanism if OAuth connected
 or using preloaded url when blob not needed</p>
@@ -151,6 +148,9 @@ CouchDB transforms $nor into $and with $ne operators</p>
 </dd>
 <dt><a href="#memoize">memoize()</a></dt>
 <dd><p>Memoize with maxDuration and custom key</p>
+</dd>
+<dt><a href="#normalizeDoctypeJsonApi">normalizeDoctypeJsonApi(doctype)</a> ⇒ <code>function</code></dt>
+<dd><p>Normalizes a document in JSON API format for a specific doctype</p>
 </dd>
 <dt><a href="#getSharingRulesForPhotosAlbum">getSharingRulesForPhotosAlbum(document, sharingType)</a> ⇒ <code><a href="#Rule">Array.&lt;Rule&gt;</a></code></dt>
 <dd><p>Compute the rules that define how to share a Photo Album. See <a href="https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing">https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing</a></p>
@@ -2352,18 +2352,6 @@ Get the app token string
 **Kind**: global function  
 **Returns**: <code>string</code> - token  
 **See**: CozyStackClient.getAccessToken  
-<a name="normalizeDoctypeJsonApi"></a>
-
-## normalizeDoctypeJsonApi(doctype) ⇒ <code>function</code>
-Normalizes a document in JSON API format for a specific doctype
-
-**Kind**: global function  
-**Returns**: <code>function</code> - A function that normalizes the document  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| doctype | <code>string</code> | The document type |
-
 <a name="getIconURL"></a>
 
 ## getIconURL()
@@ -2396,6 +2384,18 @@ Delete outdated results from cache
 Memoize with maxDuration and custom key
 
 **Kind**: global function  
+<a name="normalizeDoctypeJsonApi"></a>
+
+## normalizeDoctypeJsonApi(doctype) ⇒ <code>function</code>
+Normalizes a document in JSON API format for a specific doctype
+
+**Kind**: global function  
+**Returns**: <code>function</code> - A function that normalizes the document  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doctype | <code>string</code> | The document type |
+
 <a name="getSharingRulesForPhotosAlbum"></a>
 
 ## getSharingRulesForPhotosAlbum(document, sharingType) ⇒ [<code>Array.&lt;Rule&gt;</code>](#Rule)

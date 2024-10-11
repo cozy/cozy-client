@@ -1,6 +1,5 @@
-import DocumentCollection, {
-  normalizeDoctypeJsonApi
-} from './DocumentCollection'
+import DocumentCollection from './DocumentCollection'
+import { normalizeDoctypeJsonApi } from './normalize'
 import { isFile, isDirectory } from './FileCollection'
 import { uri } from './utils'
 import logger from './logger'

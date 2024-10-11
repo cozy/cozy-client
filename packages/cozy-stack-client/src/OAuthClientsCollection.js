@@ -1,8 +1,7 @@
 import get from 'lodash/get'
 
-import DocumentCollection, {
-  normalizeDoctypeJsonApi
-} from './DocumentCollection'
+import DocumentCollection from './DocumentCollection'
+import { normalizeDoctypeJsonApi } from './normalize'
 import { uri } from './utils'
 import * as querystring from './querystring'
 import { dontThrowNotFoundError } from './Collection'

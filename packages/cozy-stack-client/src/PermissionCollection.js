@@ -1,4 +1,5 @@
-import DocumentCollection, { normalizeDoc } from './DocumentCollection'
+import DocumentCollection from './DocumentCollection'
+import { normalizeDoc } from './normalize'
 import { isFile } from './FileCollection'
 import { uri } from './utils'
 import logger from './logger'

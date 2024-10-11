@@ -5,9 +5,8 @@ import {
 } from 'cozy-client/dist/registry'
 
 import Collection from './Collection'
-import DocumentCollection, {
-  normalizeDoctypeJsonApi
-} from './DocumentCollection'
+import DocumentCollection from './DocumentCollection'
+import { normalizeDoctypeJsonApi } from './normalize'
 import { FetchError } from './errors'
 import logger from './logger'
 

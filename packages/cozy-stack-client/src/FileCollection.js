@@ -5,9 +5,8 @@ import omit from 'lodash/omit'
 import pick from 'lodash/pick'
 import { MangoQueryOptions } from './mangoIndex'
 
-import DocumentCollection, {
-  normalizeDoctypeJsonApi
-} from './DocumentCollection'
+import DocumentCollection from './DocumentCollection'
+import { normalizeDoctypeJsonApi } from './normalize'
 import { uri, slugify, formatBytes, forceDownload } from './utils'
 import { FetchError } from './errors'
 import { dontThrowNotFoundError } from './Collection'

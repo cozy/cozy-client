@@ -1,6 +1,5 @@
-import DocumentCollection, {
-  normalizeDoctypeJsonApi
-} from './DocumentCollection'
+import DocumentCollection from './DocumentCollection'
+import { normalizeDoctypeJsonApi } from './normalize'
 import { uri } from './utils'
 import { getDefaultSchema as modelDefaultSchema } from './NotesSchema'
 export const NOTES_DOCTYPE = 'io.cozy.notes'
