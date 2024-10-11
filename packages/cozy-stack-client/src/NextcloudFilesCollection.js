@@ -1,8 +1,7 @@
-import DocumentCollection, {
-  normalizeDoctypeJsonApi
-} from './DocumentCollection'
+import DocumentCollection from './DocumentCollection'
 import { forceDownload, joinPath, encodePath } from './utils'
 import { FetchError } from './errors'
+import { normalizeDoctypeJsonApi } from './normalize'
 
 const NEXTCLOUD_FILES_DOCTYPE = 'io.cozy.remote.nextcloud.files'
 

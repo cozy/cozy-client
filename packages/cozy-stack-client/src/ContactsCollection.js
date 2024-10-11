@@ -1,6 +1,5 @@
-import DocumentCollection, {
-  normalizeDoctypeJsonApi
-} from './DocumentCollection'
+import DocumentCollection from './DocumentCollection'
+import { normalizeDoctypeJsonApi } from './normalize'
 // @ts-ignore Need to import it to be used in jsdoc
 import { IOCozyContact } from 'cozy-client/dist/types'
 

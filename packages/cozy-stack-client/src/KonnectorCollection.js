@@ -5,7 +5,7 @@ import TriggerCollection, {
   isForKonnector,
   isForAccount
 } from './TriggerCollection'
-import { normalizeDoc } from './DocumentCollection'
+import { normalizeDoc } from './normalize'
 
 export const KONNECTORS_DOCTYPE = 'io.cozy.konnectors'
 
