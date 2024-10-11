@@ -1,13 +1,25 @@
-import DocumentCollection from './DocumentCollection'
+import DocumentCollection, {
+  normalizeDoctypeJsonApi
+} from './DocumentCollection'
 import { uri } from './utils'
 import { getIllegalCharacters } from './getIllegalCharacter'
 
 export const SHORTCUTS_DOCTYPE = 'io.cozy.files.shortcuts'
 
+const normalizeShortcutsJsonApi = normalizeDoctypeJsonApi(SHORTCUTS_DOCTYPE)
+
+const normalizeShortcuts = doc => {
+  return {
+    ...normalizeShortcutsJsonApi(doc),
+    _id: doc._id // Ensures that the _id replaces by _id inside attributes
+  }
+}
+
 class ShortcutsCollection extends DocumentCollection {
   constructor(stackClient) {
     super(SHORTCUTS_DOCTYPE, stackClient)
   }
+
   /**
    * Create a shortcut
    *
@@ -49,10 +61,7 @@ class ShortcutsCollection extends DocumentCollection {
       }
     })
     return {
-      data: DocumentCollection.normalizeDoctypeJsonApi(SHORTCUTS_DOCTYPE)(
-        resp.data,
-        resp
-      )
+      data: normalizeShortcuts(resp.data)
     }
   }
 
@@ -60,10 +69,7 @@ class ShortcutsCollection extends DocumentCollection {
     const path = uri`/shortcuts/${id}`
     const resp = await this.stackClient.fetchJSON('GET', path)
     return {
-      data: DocumentCollection.normalizeDoctypeJsonApi(SHORTCUTS_DOCTYPE)(
-        resp.data,
-        resp
-      )
+      data: normalizeShortcuts(resp.data)
     }
   }
 }

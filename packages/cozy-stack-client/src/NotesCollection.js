@@ -1,19 +1,13 @@
-import DocumentCollection from './DocumentCollection'
+import DocumentCollection, {
+  normalizeDoctypeJsonApi
+} from './DocumentCollection'
 import { uri } from './utils'
 import { getDefaultSchema as modelDefaultSchema } from './NotesSchema'
 export const NOTES_DOCTYPE = 'io.cozy.notes'
 export const NOTES_URL_DOCTYPE = 'io.cozy.notes.url'
 
-const normalizeDoc = DocumentCollection.normalizeDoctypeJsonApi(NOTES_DOCTYPE)
-const normalizeNote = note => ({
-  ...normalizeDoc(note, NOTES_DOCTYPE),
-  ...note.attributes
-})
-
-const normalizeNoteUrl = noteUrl => ({
-  ...DocumentCollection.normalizeDoctypeJsonApi(NOTES_URL_DOCTYPE)(noteUrl),
-  ...noteUrl.attributes
-})
+const normalizeNote = normalizeDoctypeJsonApi(NOTES_DOCTYPE)
+const normalizeNoteUrl = normalizeDoctypeJsonApi(NOTES_URL_DOCTYPE)
 
 /**
  * Implements `DocumentCollection` API to interact with the /notes endpoint of the stack

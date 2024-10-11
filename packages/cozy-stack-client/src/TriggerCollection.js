@@ -1,5 +1,5 @@
 import Collection, { dontThrowNotFoundError } from './Collection'
-import { normalizeDoc } from './DocumentCollection'
+import { normalizeDoctypeJsonApi } from './DocumentCollection'
 import { normalizeJob } from './JobCollection'
 import { uri } from './utils'
 import DocumentCollection from './DocumentCollection'
@@ -8,13 +8,7 @@ import { FetchError } from './errors'
 export const JOBS_DOCTYPE = 'io.cozy.jobs'
 export const TRIGGERS_DOCTYPE = 'io.cozy.triggers'
 
-export const normalizeTrigger = trigger => {
-  return {
-    ...trigger,
-    ...normalizeDoc(trigger, TRIGGERS_DOCTYPE),
-    ...trigger.attributes
-  }
-}
+export const normalizeTrigger = normalizeDoctypeJsonApi(TRIGGERS_DOCTYPE)
 
 export const isForKonnector = (triggerAttrs, slug) => {
   return (
@@ -68,7 +62,7 @@ class TriggerCollection extends DocumentCollection {
       const resp = await this.stackClient.fetchJSON('GET', `/jobs/triggers`)
 
       return {
-        data: resp.data.map(row => normalizeTrigger(row, TRIGGERS_DOCTYPE)),
+        data: resp.data.map(row => normalizeTrigger(row)),
         meta: { count: resp.data.length },
         next: false,
         skip: 0
@@ -137,7 +131,7 @@ class TriggerCollection extends DocumentCollection {
         const resp = await this.stackClient.fetchJSON('GET', url)
 
         return {
-          data: resp.data.map(row => normalizeTrigger(row, TRIGGERS_DOCTYPE)),
+          data: resp.data.map(row => normalizeTrigger(row)),
           meta: { count: resp.data.length },
           next: false,
           skip: 0

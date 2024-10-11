@@ -1,12 +1,17 @@
-import DocumentCollection, { normalizeDoc } from './DocumentCollection'
+import DocumentCollection, {
+  normalizeDoctypeJsonApi
+} from './DocumentCollection'
 // @ts-ignore Need to import it to be used in jsdoc
 import { IOCozyContact } from 'cozy-client/dist/types'
 
-const normalizeMyselfResp = resp => {
+export const CONTACTS_DOCTYPE = 'io.cozy.contacts'
+
+const normalizeContactJsonApi = normalizeDoctypeJsonApi(CONTACTS_DOCTYPE)
+
+const normalizeMyself = contact => {
   return {
-    ...normalizeDoc(resp.data, CONTACTS_DOCTYPE),
-    ...resp.data.attributes,
-    _rev: resp.data.meta.rev
+    ...normalizeContactJsonApi(contact),
+    _rev: contact?.meta?.rev
   }
 }
 
@@ -26,7 +31,7 @@ class ContactsCollection extends DocumentCollection {
   async findMyself() {
     const resp = await this.stackClient.fetchJSON('POST', '/contacts/myself')
     const col = {
-      data: [normalizeMyselfResp(resp)],
+      data: [normalizeMyself(resp.data)],
       next: false,
       meta: null,
       bookmark: false
@@ -56,7 +61,5 @@ class ContactsCollection extends DocumentCollection {
     }
   }
 }
-
-export const CONTACTS_DOCTYPE = 'io.cozy.contacts'
 
 export default ContactsCollection
