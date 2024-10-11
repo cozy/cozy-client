@@ -1,6 +1,8 @@
 import get from 'lodash/get'
 
-import DocumentCollection from './DocumentCollection'
+import DocumentCollection, {
+  normalizeDoctypeJsonApi
+} from './DocumentCollection'
 import { uri } from './utils'
 import * as querystring from './querystring'
 import { dontThrowNotFoundError } from './Collection'
@@ -8,13 +10,7 @@ import { FetchError } from './errors'
 
 export const OAUTH_CLIENTS_DOCTYPE = 'io.cozy.oauth.clients'
 
-const normalizeDoc = DocumentCollection.normalizeDoctypeJsonApi(
-  OAUTH_CLIENTS_DOCTYPE
-)
-const normalizeOAuthClient = client => ({
-  ...normalizeDoc(client, OAUTH_CLIENTS_DOCTYPE),
-  ...client.attributes
-})
+const normalizeOAuthClient = normalizeDoctypeJsonApi(OAUTH_CLIENTS_DOCTYPE)
 
 /**
  * Implements `DocumentCollection` API to interact with the /settings/clients endpoint of the stack

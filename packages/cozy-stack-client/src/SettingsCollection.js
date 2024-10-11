@@ -1,4 +1,6 @@
-import DocumentCollection, { normalizeDoc } from './DocumentCollection'
+import DocumentCollection, {
+  normalizeDoctypeJsonApi
+} from './DocumentCollection'
 import logger from './logger'
 import { uri } from './utils'
 
@@ -10,13 +12,7 @@ export const SETTINGS_DOCTYPE = 'io.cozy.settings'
  * @param {object} doc - Document to normalize
  * @returns {object} normalized document
  */
-export const normalizeSettings = doc => {
-  const normDoc = normalizeDoc(doc, SETTINGS_DOCTYPE)
-  return {
-    ...normDoc,
-    ...normDoc.attributes
-  }
-}
+export const normalizeSettings = normalizeDoctypeJsonApi(SETTINGS_DOCTYPE)
 
 /**
  * Implements `DocumentCollection` API to interact with the /settings endpoint of the stack
@@ -41,10 +37,7 @@ class SettingsCollection extends DocumentCollection {
         '/data/io.cozy.settings/io.cozy.settings.bitwarden'
       )
       return {
-        data: DocumentCollection.normalizeDoctypeJsonApi(SETTINGS_DOCTYPE)(
-          resp,
-          resp
-        )
+        data: normalizeSettings(resp)
       }
     }
 
@@ -64,7 +57,10 @@ class SettingsCollection extends DocumentCollection {
 
     const resp = await this.stackClient.fetchJSON('GET', `/settings/${path}`)
     return {
-      data: normalizeSettings({ id: `/settings/${path}`, ...resp.data })
+      data: normalizeSettings({
+        id: `/settings/${path}`,
+        ...resp.data
+      })
     }
   }
 

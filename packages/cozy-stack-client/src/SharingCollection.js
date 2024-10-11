@@ -1,4 +1,6 @@
-import DocumentCollection, { normalizeDoc } from './DocumentCollection'
+import DocumentCollection, {
+  normalizeDoctypeJsonApi
+} from './DocumentCollection'
 import { isFile, isDirectory } from './FileCollection'
 import { uri } from './utils'
 import logger from './logger'
@@ -7,7 +9,7 @@ export const SHARING_DOCTYPE = 'io.cozy.sharings'
 export const BITWARDEN_ORGANIZATIONS_DOCTYPE = 'com.bitwarden.organizations'
 export const BITWARDEN_CIPHERS_DOCTYPE = 'com.bitwarden.ciphers'
 
-const normalizeSharing = sharing => normalizeDoc(sharing, SHARING_DOCTYPE)
+const normalizeSharing = normalizeDoctypeJsonApi(SHARING_DOCTYPE)
 
 /**
  * @typedef {object} Rule A sharing rule

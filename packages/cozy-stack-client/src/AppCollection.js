@@ -5,17 +5,18 @@ import {
 } from 'cozy-client/dist/registry'
 
 import Collection from './Collection'
-import DocumentCollection, { normalizeDoc } from './DocumentCollection'
+import DocumentCollection, {
+  normalizeDoctypeJsonApi
+} from './DocumentCollection'
 import { FetchError } from './errors'
 import logger from './logger'
 
 export const APPS_DOCTYPE = 'io.cozy.apps'
 
 export const normalizeApp = (app, doctype) => {
+  const normalizedApp = normalizeDoctypeJsonApi(doctype)(app)
   return {
-    ...app.attributes,
-    ...app,
-    ...normalizeDoc(app, doctype),
+    ...normalizedApp,
     id: app.id // ignores any 'id' attribute in the manifest
   }
 }

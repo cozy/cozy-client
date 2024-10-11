@@ -1,10 +1,12 @@
-import DocumentCollection from './DocumentCollection'
+import DocumentCollection, {
+  normalizeDoctypeJsonApi
+} from './DocumentCollection'
 import { forceDownload, joinPath, encodePath } from './utils'
 import { FetchError } from './errors'
 
 const NEXTCLOUD_FILES_DOCTYPE = 'io.cozy.remote.nextcloud.files'
 
-const normalizeDoc = DocumentCollection.normalizeDoctypeJsonApi(
+const normalizeNextcloudFileJsonApi = normalizeDoctypeJsonApi(
   NEXTCLOUD_FILES_DOCTYPE
 )
 
@@ -13,21 +15,18 @@ const normalizeNextcloudFile = (
   parentPath,
   { fromTrash = false } = {}
 ) => file => {
-  const extendedAttributes = {
-    ...file.attributes,
-    parentPath,
-    path: fromTrash
-      ? file.attributes.path
-      : joinPath(parentPath, file.attributes.name),
-    cozyMetadata: {
-      ...file.attributes.cozyMetadata,
-      sourceAccount
-    }
-  }
+  const normalizedDoc = normalizeNextcloudFileJsonApi(file)
 
   return {
-    ...normalizeDoc(file, NEXTCLOUD_FILES_DOCTYPE),
-    ...extendedAttributes
+    ...normalizedDoc,
+    parentPath,
+    path: fromTrash
+      ? normalizedDoc.path
+      : joinPath(parentPath, normalizedDoc.name),
+    cozyMetadata: {
+      ...normalizedDoc.cozyMetadata,
+      sourceAccount
+    }
   }
 }
 

@@ -1,18 +1,14 @@
 import Collection from './Collection'
-import DocumentCollection, { normalizeDoc } from './DocumentCollection'
+import DocumentCollection, {
+  normalizeDoctypeJsonApi
+} from './DocumentCollection'
 import { uri } from './utils'
 
 export const JOBS_DOCTYPE = 'io.cozy.jobs'
 
 const sleep = delay => new Promise(resolve => setTimeout(resolve, delay))
 
-export const normalizeJob = job => {
-  return {
-    ...job,
-    ...normalizeDoc(job, JOBS_DOCTYPE),
-    ...job.attributes
-  }
-}
+export const normalizeJob = normalizeDoctypeJsonApi(JOBS_DOCTYPE)
 
 export const hasJobFinished = job => {
   return job.state === 'done' || job.state === 'errored'

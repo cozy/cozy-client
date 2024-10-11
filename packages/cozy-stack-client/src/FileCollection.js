@@ -5,7 +5,9 @@ import omit from 'lodash/omit'
 import pick from 'lodash/pick'
 import { MangoQueryOptions } from './mangoIndex'
 
-import DocumentCollection, { normalizeDoc } from './DocumentCollection'
+import DocumentCollection, {
+  normalizeDoctypeJsonApi
+} from './DocumentCollection'
 import { uri, slugify, formatBytes, forceDownload } from './utils'
 import { FetchError } from './errors'
 import { dontThrowNotFoundError } from './Collection'
@@ -81,6 +83,8 @@ import logger from './logger'
 const ROOT_DIR_ID = 'io.cozy.files.root-dir'
 const CONTENT_TYPE_OCTET_STREAM = 'application/octet-stream'
 
+const normalizeFileJsonApi = normalizeDoctypeJsonApi('io.cozy.files')
+
 /**
  * Normalize a file, adding document's doctype if needed
  *
@@ -89,8 +93,7 @@ const CONTENT_TYPE_OCTET_STREAM = 'application/octet-stream'
  * @private
  */
 const normalizeFile = file => ({
-  ...normalizeDoc(file, 'io.cozy.files'),
-  ...file.attributes,
+  ...normalizeFileJsonApi(file),
   _rev: file?.meta?.rev // Beware of JSON-API
 })
 
