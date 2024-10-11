@@ -52,9 +52,9 @@ const RealTimeQueries = ({ doctype }) => {
     subscribe()
 
     return () => {
-      realtime.unsubscribe('created', doctype, dispatchCreate)
-      realtime.unsubscribe('updated', doctype, dispatchUpdate)
-      realtime.unsubscribe('deleted', doctype, dispatchDelete)
+      realtime.unsubscribe('created', doctype, handleCreated)
+      realtime.unsubscribe('updated', doctype, handleUpdated)
+      realtime.unsubscribe('deleted', doctype, handleDeleted)
     }
   }, [client, doctype])
 
