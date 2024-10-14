@@ -12,7 +12,7 @@ import {
   MangoPartialFilter,
   DesignDoc
 } from './mangoIndex'
-import { normalizeDoc, normalizeDoctypeJsonApi } from './normalize'
+import { normalizeDoc, normalizeDoctypeRawApi } from './normalize'
 
 import Collection, {
   dontThrowNotFoundError,
@@ -58,33 +58,7 @@ class DocumentCollection {
    *                                        using `normalizeDoc`
    */
   static normalizeDoctype(doctype) {
-    return this.normalizeDoctypeRawApi(doctype)
-  }
-
-  /**
-   * `normalizeDoctype` for api end points returning json api responses
-   *
-   * @param {string} doctype - Document doctype
-   * @returns {Function} (data, response) => normalizedDocument
-   *                                        using `normalizeDoc`
-   */
-  static normalizeDoctypeJsonApi(doctype) {
-    return normalizeDoctypeJsonApi(doctype)
-  }
-
-  /**
-   * `normalizeDoctype` for api end points returning raw documents
-   *
-   * @private
-   * @param {string} doctype - Document doctype
-   * @returns {Function} (data, response) => normalizedDocument
-   *                                        using `normalizeDoc`
-   */
-  static normalizeDoctypeRawApi(doctype) {
-    return function(data, response) {
-      // use the response directly
-      return normalizeDoc(response, doctype)
-    }
+    return normalizeDoctypeRawApi(doctype)
   }
 
   /**

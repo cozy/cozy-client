@@ -280,9 +280,6 @@ export const getPermissionsFor = (
       }
 }
 
-PermissionCollection.normalizeDoctype =
-  DocumentCollection.normalizeDoctypeJsonApi
-
 const isPermissionRelatedTo = (perm, document) => {
   const { _id } = document
   return isFile(document)
