@@ -70,4 +70,25 @@
  * @property {'exists'|'created'} result - If the index has been created or if it already exists
  */
 
+/**
+ * @typedef {object} PouchDBInfo
+ * @param {string} db_name - The database name
+ * @param {number} doc_count - The number of doc in the database
+ * @param {number} update_seq - The sequence number
+ */
+
+/**
+ * @typedef {object} PouchDBChangesResults
+ * @param {Array<PouchDBChanges>} results - The changes results
+ * @param {number} last_seq - The last sequence number
+ */
+
+/**
+ * @typedef {object} PouchDBChanges
+ * @param {string} id - The doc id
+ * @param {boolean} deleted - Whether or not the change is a deleted doc
+ * @param {Array<object>} changes - The list of changes revisions
+ * @param {object} doc - The changed doc
+ */
+
 export default {}
