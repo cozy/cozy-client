@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [49.4.0](https://github.com/cozy/cozy-client/compare/v49.3.1...v49.4.0) (2024-10-14)
+
+
+### Bug Fixes
+
+* **RealTimeQueries:** Unsubscribing from the good functions ([dbeaed7](https://github.com/cozy/cozy-client/commit/dbeaed7b009e871b5575927c7f2336a848d57db2))
+
+
+
+
+
 ## [49.3.1](https://github.com/cozy/cozy-client/compare/v49.3.0...v49.3.1) (2024-10-09)
 
 **Note:** Version bump only for package cozy-client

@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [49.4.0](https://github.com/cozy/cozy-client/compare/v49.3.1...v49.4.0) (2024-10-14)
+
+
+### Bug Fixes
+
+* **RealTimeQueries:** Unsubscribing from the good functions ([dbeaed7](https://github.com/cozy/cozy-client/commit/dbeaed7b009e871b5575927c7f2336a848d57db2))
+
+
+### Features
+
+* Spread attributes from JSON:API at document root ([f9f0ffd](https://github.com/cozy/cozy-client/commit/f9f0ffdcb9f7dfeb60c107501d7d39607fb03df6))
+* Use JSON:API normalizer instead custom ones inside collection ([d86616d](https://github.com/cozy/cozy-client/commit/d86616d8081e75018c37a4f43a8dee95d622ea69))
+* Use normalization from exported modules instead static functions ([259235d](https://github.com/cozy/cozy-client/commit/259235df2b42d2a8d75bb0274046e8765076e5bc))
+
+
+
+
+
 ## [49.3.1](https://github.com/cozy/cozy-client/compare/v49.3.0...v49.3.1) (2024-10-09)
 
 **Note:** Version bump only for package cozy-client
