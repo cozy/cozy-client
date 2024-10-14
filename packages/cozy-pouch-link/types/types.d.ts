@@ -102,3 +102,6 @@ export type PouchDbIndex = {
      */
     result: 'exists' | 'created';
 };
+export type PouchDBInfo = any;
+export type PouchDBChangesResults = any;
+export type PouchDBChanges = any;

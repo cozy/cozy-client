@@ -130,6 +130,23 @@ declare class PouchLink extends CozyLink {
     getSyncInfo(doctype: any): import("./types").SyncInfo;
     getPouch(doctype: any): any;
     supportsOperation(operation: any): boolean;
+    /**
+     * Get PouchDB changes
+     * See https://pouchdb.com/api.html#changes
+     *
+     * @param {string} doctype - The PouchDB database's doctype
+     * @param {object} options - The changes options. See https://pouchdb.com/api.html#changes
+     * @returns {Promise<import('./types').PouchDBChangesResults>} The changes
+     */
+    getChanges(doctype: string, options: object): Promise<import('./types').PouchDBChangesResults>;
+    /**
+     * Get PouchDB database info
+     * See https://pouchdb.com/api.html#database_information
+     *
+     * @param {string} doctype - The PouchDB database's doctype
+     * @returns {Promise<import('./types').PouchDBInfo>} The db info
+     */
+    getDbInfo(doctype: string): Promise<import('./types').PouchDBInfo>;
     sanitizeJsonApi(data: any): Pick<Pick<any, string | number | symbol>, string | number | symbol>;
     /**
      * Retrieve the existing document from Pouch

@@ -391,6 +391,37 @@ class PouchLink extends CozyLink {
     }
   }
 
+  /**
+   * Get PouchDB changes
+   * See https://pouchdb.com/api.html#changes
+   *
+   * @param {string} doctype - The PouchDB database's doctype
+   * @param {object} options - The changes options. See https://pouchdb.com/api.html#changes
+   * @returns {Promise<import('./types').PouchDBChangesResults>} The changes
+   */
+  async getChanges(doctype, options) {
+    if (!doctype) {
+      return null
+    }
+    const pouch = this.getPouch(doctype)
+    return pouch.changes(options)
+  }
+
+  /**
+   * Get PouchDB database info
+   * See https://pouchdb.com/api.html#database_information
+   *
+   * @param {string} doctype - The PouchDB database's doctype
+   * @returns {Promise<import('./types').PouchDBInfo>} The db info
+   */
+  async getDbInfo(doctype) {
+    if (!doctype) {
+      return null
+    }
+    const pouch = this.getPouch(doctype)
+    return pouch.info()
+  }
+
   sanitizeJsonApi(data) {
     const docWithoutType = sanitized(data)
 
