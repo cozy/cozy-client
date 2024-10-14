@@ -114,6 +114,6 @@ class NotesCollection extends DocumentCollection {
   }
 }
 
-NotesCollection.normalizeDoctype = DocumentCollection.normalizeDoctypeJsonApi
+NotesCollection.normalizeDoctype = normalizeDoctypeJsonApi
 
 export default NotesCollection

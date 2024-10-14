@@ -112,7 +112,6 @@ class OAuthClientsCollection extends DocumentCollection {
   }
 }
 
-OAuthClientsCollection.normalizeDoctype =
-  DocumentCollection.normalizeDoctypeJsonApi
+OAuthClientsCollection.normalizeDoctype = normalizeDoctypeJsonApi
 
 export default OAuthClientsCollection

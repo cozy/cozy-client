@@ -89,6 +89,6 @@ class SettingsCollection extends DocumentCollection {
   }
 }
 
-SettingsCollection.normalizeDoctype = DocumentCollection.normalizeDoctypeJsonApi
+SettingsCollection.normalizeDoctype = normalizeDoctypeJsonApi
 
 export default SettingsCollection

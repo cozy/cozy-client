@@ -466,7 +466,6 @@ Abstracts a collection of documents of the same doctype, providing CRUD methods 
         * [.fetchChangesRaw(couchOptions)](#DocumentCollection+fetchChangesRaw)
     * _static_
         * [.normalizeDoctype(doctype)](#DocumentCollection.normalizeDoctype) ⇒ <code>function</code>
-        * [.normalizeDoctypeJsonApi(doctype)](#DocumentCollection.normalizeDoctypeJsonApi) ⇒ <code>function</code>
 
 <a name="DocumentCollection+all"></a>
 
@@ -719,19 +718,6 @@ No further treatment is done contrary to fetchchanges
 
 ### DocumentCollection.normalizeDoctype(doctype) ⇒ <code>function</code>
 Provides a callback for `Collection.get`
-
-**Kind**: static method of [<code>DocumentCollection</code>](#DocumentCollection)  
-**Returns**: <code>function</code> - (data, response) => normalizedDocument
-                                       using `normalizeDoc`  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| doctype | <code>string</code> | Document doctype |
-
-<a name="DocumentCollection.normalizeDoctypeJsonApi"></a>
-
-### DocumentCollection.normalizeDoctypeJsonApi(doctype) ⇒ <code>function</code>
-`normalizeDoctype` for api end points returning json api responses
 
 **Kind**: static method of [<code>DocumentCollection</code>](#DocumentCollection)  
 **Returns**: <code>function</code> - (data, response) => normalizedDocument

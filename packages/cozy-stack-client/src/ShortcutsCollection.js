@@ -73,7 +73,6 @@ class ShortcutsCollection extends DocumentCollection {
   }
 }
 
-ShortcutsCollection.normalizeDoctype =
-  DocumentCollection.normalizeDoctypeJsonApi
+ShortcutsCollection.normalizeDoctype = normalizeDoctypeJsonApi
 
 export default ShortcutsCollection

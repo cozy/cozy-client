@@ -259,7 +259,7 @@ class SharingCollection extends DocumentCollection {
   }
 }
 
-SharingCollection.normalizeDoctype = DocumentCollection.normalizeDoctypeJsonApi
+SharingCollection.normalizeDoctype = normalizeDoctypeJsonApi
 
 const getSharingRulesWithoutWarning = (document, sharingType) => {
   if (isFile(document)) {
