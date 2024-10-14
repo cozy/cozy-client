@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [49.5.0](https://github.com/cozy/cozy-client/compare/v49.4.0...v49.5.0) (2024-10-14)
+
+
+### Features
+
+* Add PouchDB API endpoints ([e2d4187](https://github.com/cozy/cozy-client/commit/e2d4187e0cd598ee8321085cd7ab151c16c881e3))
+
+
+
+
+
 # [49.4.0](https://github.com/cozy/cozy-client/compare/v49.3.1...v49.4.0) (2024-10-14)
 
 **Note:** Version bump only for package cozy-pouch-link
