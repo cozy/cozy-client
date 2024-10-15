@@ -882,6 +882,18 @@ export type FileDocument = {
      * - Creation date of the file
      */
     created_at: string;
+    /**
+     * - Last modification date of the file
+     */
+    updated_at: string;
+    /**
+     * - Size of the file, in bytes
+     */
+    size: number;
+    /**
+     * - Whether the folder is in the trash
+     */
+    trashed: boolean;
 };
 /**
  * - An io.cozy.files document
@@ -949,6 +961,10 @@ export type NextcloudFile = {
      */
     path: string;
     /**
+     * - Size of the file, in bytes
+     */
+    size: number;
+    /**
      * - Path to the folder containing the file
      */
     parentPath: string;
@@ -960,6 +976,10 @@ export type NextcloudFile = {
      * - Type of the file
      */
     type: 'file' | 'directory';
+    /**
+     * - Last modification date of the file
+     */
+    updated_at: string;
     /**
      * - Mime of the file
      */

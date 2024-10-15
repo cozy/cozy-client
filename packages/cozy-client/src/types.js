@@ -483,6 +483,9 @@ import { QueryDefinition } from './queries/dsl'
  * @property {boolean} executable - Whether or not the file is executable
  * @property {boolean} encrypted - Whether or not the file is client-side encrypted
  * @property {string} created_at - Creation date of the file
+ * @property {string} updated_at - Last modification date of the file
+ * @property {number} size - Size of the file, in bytes
+ * @property {boolean} trashed - Whether the folder is in the trash
  * @typedef {CozyClientDocument & FileDocument} IOCozyFile - An io.cozy.files document
  */
 
@@ -505,9 +508,11 @@ import { QueryDefinition } from './queries/dsl'
  * @property {NextcloudFilesDoctype} _type - Doctype of the folder
  * @property {string} name - Name of the file
  * @property {string} path - Path to the file
+ * @property {number} size - Size of the file, in bytes
  * @property {string} parentPath - Path to the folder containing the file
  * @property {string} [restore_path] - Old path when the file is in the trash
  * @property {'file'|'directory'} type - Type of the file
+ * @property {string} updated_at - Last modification date of the file
  * @property {object} cozyMetadata - Mime of the file
  * @property {string} cozyMetadata.sourceAccount - Id of the io.cozy.account associated to the Nextcloud
  * @property {{self: string}} links - Links to the file into nextcloud server
