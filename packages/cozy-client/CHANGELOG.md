@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [49.6.0](https://github.com/cozy/cozy-client/compare/v49.5.0...v49.6.0) (2024-10-15)
+
+
+### Features
+
+* Adding missing attributes inside FileDocument ([f623c80](https://github.com/cozy/cozy-client/commit/f623c80a4b6f2755ab031b21e9010d61640350ff))
+
+
+
+
+
 # [49.4.0](https://github.com/cozy/cozy-client/compare/v49.3.1...v49.4.0) (2024-10-14)
 
 
