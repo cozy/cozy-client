@@ -45,9 +45,18 @@ describe('matching index', () => {
 
   it('should match index with same fields and same partial filter', () => {
     const partialFilter = {
-      baz: {
-        $ne: 'xyz'
-      }
+      $and: [
+        {
+          baz: {
+            $ne: 'xyz'
+          }
+        },
+        {
+          fu: {
+            $eq: true
+          }
+        }
+      ]
     }
     const matchingIndex = buildDesignDoc(
       {
@@ -58,7 +67,12 @@ describe('matching index', () => {
     )
 
     expect(
-      isMatchingIndex(matchingIndex, ['foo', 'bar'], partialFilter)
+      isMatchingIndex(matchingIndex, ['foo', 'bar'], {
+        fu: true,
+        baz: {
+          $ne: 'xyz'
+        }
+      })
     ).toEqual(true)
   })
 
@@ -265,53 +279,53 @@ describe('getIndexNameFromFields', () => {
 })
 
 describe('makeOperatorsExplicit', () => {
-  it('Transforms implicit $eq operator to explicit', () => {
+  it('should transforms implicit $eq operator to explicit', () => {
     const query = { name: 'test' }
     const expected = { name: { $eq: 'test' } }
     expect(makeOperatorsExplicit(query)).toEqual(expected)
   })
 
-  it('Transforms implicit $and operator to explicit', () => {
+  it('should transforms implicit $and operator to explicit', () => {
     const query = { name: 'test', age: 42 }
-    const expected = { $and: [{ name: { $eq: 'test' } }, { age: { $eq: 42 } }] }
+    const expected = { $and: [{ age: { $eq: 42 } }, { name: { $eq: 'test' } }] }
     expect(makeOperatorsExplicit(query)).toEqual(expected)
   })
 
-  it('Maintains explicit $eq operator', () => {
+  it('should maintains explicit $eq operator', () => {
     const query = { name: { $eq: 'test' } }
     const expected = { name: { $eq: 'test' } }
     expect(makeOperatorsExplicit(query)).toEqual(expected)
   })
 
-  it('Maintains explicit $and operator', () => {
+  it('should maintains explicit $and operator', () => {
     const query = { $and: [{ name: 'test' }, { age: 42 }] }
-    const expected = { $and: [{ name: { $eq: 'test' } }, { age: { $eq: 42 } }] }
+    const expected = { $and: [{ age: { $eq: 42 } }, { name: { $eq: 'test' } }] }
     expect(makeOperatorsExplicit(query)).toEqual(expected)
   })
 
-  it('Handles nested implicit $eq operators', () => {
+  it('should handles nested implicit $eq operators', () => {
     const query = { user: { name: 'test', age: 42 } }
     const expected = {
-      user: { $and: [{ name: { $eq: 'test' } }, { age: { $eq: 42 } }] }
+      user: { $and: [{ age: { $eq: 42 } }, { name: { $eq: 'test' } }] }
     }
     expect(makeOperatorsExplicit(query)).toEqual(expected)
   })
 
-  it('Handles nested explicit operators', () => {
+  it('should handles nested explicit operators', () => {
     const query = { user: { $or: [{ name: 'test' }, { age: { $ne: 42 } }] } }
     const expected = {
-      user: { $or: [{ name: { $eq: 'test' } }, { age: { $ne: 42 } }] }
+      user: { $or: [{ age: { $ne: 42 } }, { name: { $eq: 'test' } }] }
     }
     expect(makeOperatorsExplicit(query)).toEqual(expected)
   })
 
-  it('Handles mixed implicit and explicit operators', () => {
+  it('should handles mixed implicit and explicit operators', () => {
     const query = { name: 'test', age: { $ne: 42 } }
-    const expected = { $and: [{ name: { $eq: 'test' } }, { age: { $ne: 42 } }] }
+    const expected = { $and: [{ age: { $ne: 42 } }, { name: { $eq: 'test' } }] }
     expect(makeOperatorsExplicit(query)).toEqual(expected)
   })
 
-  it('Handles operator with string array', () => {
+  it('should handles operator with string array', () => {
     const query = {
       _id: {
         $nin: ['id123', 'id456']
@@ -331,7 +345,7 @@ describe('makeOperatorsExplicit', () => {
     expect(makeOperatorsExplicit(query)).toEqual(expected)
   })
 
-  it('Handles $or operator with string array', () => {
+  it('should handles $or operator with string array', () => {
     const query = {
       type: {
         $or: ['konnector', 'worker']
@@ -343,7 +357,7 @@ describe('makeOperatorsExplicit', () => {
     expect(makeOperatorsExplicit(query)).toEqual(expected)
   })
 
-  it('Handles $or operator with object array', () => {
+  it('should handles $or operator with object array', () => {
     const query = {
       type: 'file',
       $or: [
@@ -359,14 +373,14 @@ describe('makeOperatorsExplicit', () => {
     }
     const expected = {
       $and: [
-        { type: { $eq: 'file' } },
-        { $or: [{ trashed: { $exists: false } }, { trashed: { $eq: false } }] }
+        { $or: [{ trashed: { $exists: false } }, { trashed: { $eq: false } }] },
+        { type: { $eq: 'file' } }
       ]
     }
     expect(makeOperatorsExplicit(query)).toEqual(expected)
   })
 
-  it('Handles explicit $and operator with nested object to make explicit', () => {
+  it('should handles explicit $and operator with nested object to make explicit', () => {
     const query = {
       type: 'file',
       trashed: true,
@@ -376,15 +390,15 @@ describe('makeOperatorsExplicit', () => {
     }
     const expected = {
       $and: [
-        { type: { $eq: 'file' } },
+        { 'metadata.notifiedAt': { $exists: false } },
         { trashed: { $eq: true } },
-        { 'metadata.notifiedAt': { $exists: false } }
+        { type: { $eq: 'file' } }
       ]
     }
     expect(makeOperatorsExplicit(query)).toEqual(expected)
   })
 
-  it('Handles explicit $nor operator', () => {
+  it('should handles explicit $nor operator', () => {
     const query = {
       $nor: [
         {
@@ -403,11 +417,6 @@ describe('makeOperatorsExplicit', () => {
     const expected = {
       $and: [
         {
-          type: {
-            $ne: 'directory'
-          }
-        },
-        {
           dir_id: {
             $ne: 'id1234'
           }
@@ -415,6 +424,62 @@ describe('makeOperatorsExplicit', () => {
         {
           'metadata.notifiedAt': {
             $exists: false
+          }
+        },
+        {
+          type: {
+            $ne: 'directory'
+          }
+        }
+      ]
+    }
+
+    expect(makeOperatorsExplicit(query)).toEqual(expected)
+  })
+
+  it('should order alphabetically object inside arrays compared with their first key', () => {
+    const query = {
+      second: { $exists: true },
+      third: true,
+      first: {
+        $and: [
+          {
+            fourth: true
+          },
+          {
+            fifth: {
+              $exists: true
+            }
+          }
+        ]
+      }
+    }
+    const expected = {
+      $and: [
+        {
+          first: {
+            $and: [
+              {
+                fifth: {
+                  $exists: true
+                }
+              },
+              {
+                fourth: {
+                  $eq: true
+                }
+              }
+            ]
+          }
+        },
+        {
+          second: {
+            $exists: true
+          }
+        },
+        {
+          third: {
+            $eq: true
           }
         }
       ]
