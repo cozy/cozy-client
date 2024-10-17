@@ -66,7 +66,9 @@ const normalizeAll = client => (docs, doctype) => {
 
 /**
  * @typedef {object} PouchLinkOptions
- * @property {number} [replicationInterval] Milliseconds between replications
+ * @property {boolean} initialSync Whether or not a replication process should be started. Default is false
+ * @property {boolean} periodicSync Whether or not the replication should be periodic. Default is true
+ * @property {number} [replicationInterval] Milliseconds between periodic replications
  * @property {string[]} doctypes Doctypes to replicate
  * @property {Record<string, object>} doctypesReplicationOptions A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote")
  * @property {import('./types').LinkPlatform} platform Platform specific adapters and methods
@@ -87,7 +89,12 @@ class PouchLink extends CozyLink {
   constructor(opts) {
     const options = defaults({}, opts, DEFAULT_OPTIONS)
     super(options)
-    const { doctypes, doctypesReplicationOptions } = options
+    const {
+      doctypes,
+      doctypesReplicationOptions,
+      periodicSync,
+      initialSync
+    } = options
     this.options = options
     if (!doctypes) {
       throw new Error(
@@ -100,6 +107,8 @@ class PouchLink extends CozyLink {
     this.storage = new PouchLocalStorage(
       options.platform?.storage || platformWeb.storage
     )
+    this.initialSync = initialSync ?? false
+    this.periodicSync = periodicSync ?? true
 
     /** @type {Record<string, ReplicationStatus>} - Stores replication states per doctype */
     this.replicationStatus = this.replicationStatus || {}
@@ -221,7 +230,7 @@ class PouchLink extends CozyLink {
     })
     await this.pouches.init()
 
-    if (this.client && this.options.initialSync) {
+    if (this.client && this.initialSync) {
       this.startReplication()
     }
   }
@@ -277,7 +286,11 @@ class PouchLink extends CozyLink {
    */
   startReplication() {
     this.client.emit('pouchlink:sync:start')
-    this.pouches.startReplicationLoop()
+    if (this.periodicSync) {
+      this.pouches.startReplicationLoop()
+    } else {
+      this.pouches.replicateOnce()
+    }
     if (this.options.onStartReplication) {
       this.options.onStartReplication.apply(this)
     }
