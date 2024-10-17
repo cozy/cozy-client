@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [49.8.0](https://github.com/cozy/cozy-client/compare/v49.7.1...v49.8.0) (2024-10-17)
+
+
+### Features
+
+* Handle timeout errors for mango queries ([aa1018a](https://github.com/cozy/cozy-client/commit/aa1018a315daceb13c19d5a15a9fe4bc027bbe83))
+
+
+
+
+
 ## [49.7.1](https://github.com/cozy/cozy-client/compare/v49.7.0...v49.7.1) (2024-10-17)
 
 
