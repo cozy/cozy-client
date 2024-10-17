@@ -665,6 +665,24 @@ describe('DocumentCollection', () => {
       ).resolves.toBe(FIND_RESPONSE_FIXTURE)
     })
 
+    it('should not throw an error if is a timeout', async () => {
+      client.fetchJSON.mockRestore()
+      client.fetchJSON
+        .mockRejectedValueOnce(new Error('context deadline exceeded'))
+        .mockResolvedValueOnce({ rows: [] })
+        .mockResolvedValueOnce({})
+        .mockResolvedValueOnce(FIND_RESPONSE_FIXTURE)
+        .mockResolvedValueOnce(FIND_RESPONSE_FIXTURE)
+      const collection = new DocumentCollection('io.cozy.todos', client)
+      await expect(
+        collection.findWithMango(
+          'fakepath',
+          { done: { $exists: true } },
+          { indexedFields: ['label'] }
+        )
+      ).resolves.toBe(FIND_RESPONSE_FIXTURE)
+    })
+
     it('should throw an error if it is not a missing index', async () => {
       client.fetchJSON.mockRestore()
       client.fetchJSON.mockRejectedValueOnce(new Error('custom error'))

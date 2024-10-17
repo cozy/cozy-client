@@ -65,6 +65,17 @@ export const isNoUsableIndexError = error => {
 }
 
 /**
+ * Helper to identify timeout error
+ * See cozy-stack's timeout value for couchdb request: https://github.com/cozy/cozy-stack/blob/669cd694132388ef6b7d1a58cf3d1b5dfb52896a/pkg/config/config/config.go#L963
+ *
+ * @param {Error} error - An error
+ * @returns {Array|null} Whether or not the error is a timeout error
+ */
+export const isTimeoutError = error => {
+  return error.message.match(/context deadline exceeded/)
+}
+
+/**
  * Helper to identify a document conflict
  *
  * @param {Error} error - An error
