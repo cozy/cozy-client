@@ -102,6 +102,45 @@ export type PouchDbIndex = {
      */
     result: 'exists' | 'created';
 };
-export type PouchDBInfo = any;
-export type PouchDBChangesResults = any;
-export type PouchDBChanges = any;
+export type PouchDBInfo = {
+    /**
+     * - The database name
+     */
+    db_name: string;
+    /**
+     * - The number of doc in the database
+     */
+    doc_count: number;
+    /**
+     * - The sequence number
+     */
+    update_seq: number;
+};
+export type PouchDBChangesResults = {
+    /**
+     * - The changes results
+     */
+    results: Array<PouchDBChanges>;
+    /**
+     * - The last sequence number
+     */
+    last_seq: number;
+};
+export type PouchDBChanges = {
+    /**
+     * - The doc id
+     */
+    id: string;
+    /**
+     * - Whether or not the change is a deleted doc
+     */
+    deleted: boolean;
+    /**
+     * - The list of changes revisions
+     */
+    changes: Array<object>;
+    /**
+     * - The changed doc
+     */
+    doc: object;
+};

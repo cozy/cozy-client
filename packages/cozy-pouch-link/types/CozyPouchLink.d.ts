@@ -5,7 +5,15 @@ export type CozyClientDocument = any;
 export type ReplicationStatus = "idle" | "replicating";
 export type PouchLinkOptions = {
     /**
-     * Milliseconds between replications
+     * Whether or not a replication process should be started. Default is false
+     */
+    initialSync: boolean;
+    /**
+     * Whether or not the replication should be periodic. Default is true
+     */
+    periodicSync: boolean;
+    /**
+     * Milliseconds between periodic replications
      */
     replicationInterval?: number;
     /**
@@ -28,7 +36,9 @@ export type PouchLinkOptions = {
  */
 /**
  * @typedef {object} PouchLinkOptions
- * @property {number} [replicationInterval] Milliseconds between replications
+ * @property {boolean} initialSync Whether or not a replication process should be started. Default is false
+ * @property {boolean} periodicSync Whether or not the replication should be periodic. Default is true
+ * @property {number} [replicationInterval] Milliseconds between periodic replications
  * @property {string[]} doctypes Doctypes to replicate
  * @property {Record<string, object>} doctypesReplicationOptions A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote")
  * @property {import('./types').LinkPlatform} platform Platform specific adapters and methods
@@ -60,6 +70,8 @@ declare class PouchLink extends CozyLink {
     doctypesReplicationOptions: Record<string, any>;
     indexes: {};
     storage: PouchLocalStorage;
+    initialSync: boolean;
+    periodicSync: boolean;
     /** @type {Record<string, ReplicationStatus>} - Stores replication states per doctype */
     replicationStatus: Record<string, ReplicationStatus>;
     getReplicationURL(doctype: any): string;
