@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [49.7.0](https://github.com/cozy/cozy-client/compare/v49.6.1...v49.7.0) (2024-10-17)
+
+
+### Bug Fixes
+
+* Pouch types ([972da90](https://github.com/cozy/cozy-client/commit/972da9047228700ed3ca8d65092900ceb238ae47))
+
+
+### Features
+
+* Allow one-shot replication ([e65b8ac](https://github.com/cozy/cozy-client/commit/e65b8ac260698a954d0833454727ae60f732d001))
+
+
+
+
+
 ## [49.6.1](https://github.com/cozy/cozy-client/compare/v49.6.0...v49.6.1) (2024-10-17)
 
 
