@@ -143,6 +143,9 @@ or using preloaded url when blob not needed</p>
 <dd><p>Handle the $nor operator in a query
 CouchDB transforms $nor into $and with $ne operators</p>
 </dd>
+<dt><a href="#sortObjectByKey">sortObjectByKey(a, b)</a> ⇒ <code>number</code></dt>
+<dd><p>Compares two objects based on their first key to determine their order.</p>
+</dd>
 <dt><a href="#garbageCollect">garbageCollect()</a></dt>
 <dd><p>Delete outdated results from cache</p>
 </dd>
@@ -2357,6 +2360,20 @@ CouchDB transforms $nor into $and with $ne operators
 | Param | Type | Description |
 | --- | --- | --- |
 | conditions | <code>Array</code> | The conditions inside the $nor operator |
+
+<a name="sortObjectByKey"></a>
+
+## sortObjectByKey(a, b) ⇒ <code>number</code>
+Compares two objects based on their first key to determine their order.
+
+**Kind**: global function  
+**Returns**: <code>number</code> - - A negative number if the key of `a` should appear before the key of `b`,
+                    a positive number if it should appear after, or 0 if they are equal.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| a | <code>object</code> | The first object to compare |
+| b | <code>object</code> | The second object to compare |
 
 <a name="garbageCollect"></a>
 

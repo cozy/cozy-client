@@ -173,16 +173,18 @@ export const isMatchingIndex = (index, fields, partialFilter) => {
  * @returns {Array} - The reversed conditions
  */
 const handleNorOperator = conditions => {
-  return conditions.map(condition =>
-    Object.entries(condition).reduce((acc, [key, value]) => {
-      if (typeof value === 'string') {
-        acc[key] = { $ne: value }
-      } else {
-        acc[key] = makeOperatorsExplicit(value, true)
-      }
-      return acc
-    }, {})
-  )
+  return conditions
+    .map(condition =>
+      Object.entries(condition).reduce((acc, [key, value]) => {
+        if (typeof value === 'string') {
+          acc[key] = { $ne: value }
+        } else {
+          acc[key] = makeOperatorsExplicit(value, true)
+        }
+        return acc
+      }, {})
+    )
+    .sort(sortObjectByKey)
 }
 
 /**
@@ -197,11 +199,13 @@ export const makeOperatorsExplicit = (query, reverseEq = false) => {
     if (key === '$nor') {
       acc['$and'] = handleNorOperator(value)
     } else if (value['$or']?.every(v => typeof v === 'string')) {
-      acc['$or'] = value['$or'].map(v =>
-        makeOperatorsExplicit({ [key]: v }, reverseEq)
-      ) // To manage $or with list of strings
+      acc['$or'] = value['$or']
+        .map(v => makeOperatorsExplicit({ [key]: v }, reverseEq))
+        .sort(sortObjectByKey) // To manage $or with list of strings
     } else if (Array.isArray(value) && value.every(isObject)) {
-      acc[key] = value.map(v => makeOperatorsExplicit(v, reverseEq)) // To manage $and and $or with multiple conditions inside
+      acc[key] = value
+        .map(v => makeOperatorsExplicit(v, reverseEq))
+        .sort(sortObjectByKey) // To manage $and and $or with multiple conditions inside
     } else if (isObject(value) && !Array.isArray(value)) {
       acc[key] = makeOperatorsExplicit(value, reverseEq) // To manage nested objects
     } else if (reverseEq && key === '$eq') {
@@ -214,7 +218,7 @@ export const makeOperatorsExplicit = (query, reverseEq = false) => {
     return acc
   }, {})
 
-  const explicitQueryKeys = Object.keys(explicitQuery)
+  const explicitQueryKeys = Object.keys(explicitQuery).sort()
   if (explicitQueryKeys.length === 1) {
     return explicitQuery
   }
@@ -224,4 +228,18 @@ export const makeOperatorsExplicit = (query, reverseEq = false) => {
       [key]: explicitQuery[key]
     }))
   }
+}
+
+/**
+ * Compares two objects based on their first key to determine their order.
+ *
+ * @param {object} a - The first object to compare
+ * @param {object} b - The second object to compare
+ * @returns {number} - A negative number if the key of `a` should appear before the key of `b`,
+ *                     a positive number if it should appear after, or 0 if they are equal.
+ */
+const sortObjectByKey = (a, b) => {
+  const keyA = Object.keys(a)[0]
+  const keyB = Object.keys(b)[0]
+  return keyA.localeCompare(keyB)
 }
