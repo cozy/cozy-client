@@ -39,7 +39,8 @@ describe('remote', () => {
       expect(fetch).toHaveBeenCalledWith(
         'https://claude.mycozy.cloud/data/io.cozy.accounts/_changes',
         {
-          headers: expectedHeaders
+          headers: expectedHeaders,
+          credentials: 'include'
         }
       )
     })
