@@ -31,7 +31,7 @@ export const fetchRemoteInstance = async (url, params = {}) => {
   headers.append('Accept', 'application/json')
   headers.append('Content-Type', 'application/json')
   headers.append('Authorization', access.toAuthHeader())
-  const resp = await fetch(fetchUrl, { headers })
+  const resp = await fetch(fetchUrl, { headers, credentials: 'include' })
   const data = await resp.json()
   if (resp.ok) {
     return data
