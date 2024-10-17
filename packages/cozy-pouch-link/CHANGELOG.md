@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [49.6.1](https://github.com/cozy/cozy-client/compare/v49.6.0...v49.6.1) (2024-10-17)
+
+
+### Bug Fixes
+
+* Allow remote request on web environment ([5fc39c8](https://github.com/cozy/cozy-client/commit/5fc39c8320bd7cf9a5f336ad20e1587f316666cc))
+
+
+
+
+
 # [49.6.0](https://github.com/cozy/cozy-client/compare/v49.5.0...v49.6.0) (2024-10-15)
 
 **Note:** Version bump only for package cozy-pouch-link
