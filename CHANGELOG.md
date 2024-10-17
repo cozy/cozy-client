@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [49.7.1](https://github.com/cozy/cozy-client/compare/v49.7.0...v49.7.1) (2024-10-17)
+
+
+### Bug Fixes
+
+* **mango:** Order alphabetically object inside arrays based on 1st key ([0e86883](https://github.com/cozy/cozy-client/commit/0e868830dcb4fb0273dd9acc371914a5bfcb4197))
+
+
+
+
+
 # [49.7.0](https://github.com/cozy/cozy-client/compare/v49.6.1...v49.7.0) (2024-10-17)
 
 
