@@ -71,6 +71,10 @@ Serves to dedupe equal queries requested at the same time</p>
 <dt><a href="#isNoUsableIndexError">isNoUsableIndexError</a> ⇒ <code>Array</code> | <code>null</code></dt>
 <dd><p>Helper to identify a no usable index error</p>
 </dd>
+<dt><a href="#isTimeoutError">isTimeoutError</a> ⇒ <code>Array</code> | <code>null</code></dt>
+<dd><p>Helper to identify timeout error
+See cozy-stack&#39;s timeout value for couchdb request: <a href="https://github.com/cozy/cozy-stack/blob/669cd694132388ef6b7d1a58cf3d1b5dfb52896a/pkg/config/config/config.go#L963">https://github.com/cozy/cozy-stack/blob/669cd694132388ef6b7d1a58cf3d1b5dfb52896a/pkg/config/config/config.go#L963</a></p>
+</dd>
 <dt><a href="#isDocumentUpdateConflict">isDocumentUpdateConflict</a> ⇒ <code>Array</code> | <code>null</code></dt>
 <dd><p>Helper to identify a document conflict</p>
 </dd>
@@ -2123,6 +2127,19 @@ Helper to identify a no usable index error
 
 **Kind**: global constant  
 **Returns**: <code>Array</code> \| <code>null</code> - - Whether or not the error is a no usable index error  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| error | <code>Error</code> | An error |
+
+<a name="isTimeoutError"></a>
+
+## isTimeoutError ⇒ <code>Array</code> \| <code>null</code>
+Helper to identify timeout error
+See cozy-stack's timeout value for couchdb request: https://github.com/cozy/cozy-stack/blob/669cd694132388ef6b7d1a58cf3d1b5dfb52896a/pkg/config/config/config.go#L963
+
+**Kind**: global constant  
+**Returns**: <code>Array</code> \| <code>null</code> - Whether or not the error is a timeout error  
 
 | Param | Type | Description |
 | --- | --- | --- |

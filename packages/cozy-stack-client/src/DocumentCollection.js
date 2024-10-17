@@ -20,7 +20,8 @@ import Collection, {
   isIndexConflictError,
   isNoUsableIndexError,
   isDocumentUpdateConflict,
-  isIndexNotUsedWarning
+  isIndexNotUsedWarning,
+  isTimeoutError
 } from './Collection'
 import {
   getIndexNameFromFields,
@@ -241,11 +242,20 @@ class DocumentCollection {
         throw new Error('no_index')
       }
     } catch (error) {
-      if (!isIndexNotFoundError(error) && !isNoUsableIndexError(error)) {
-        throw error
-      } else {
+      if (
+        isIndexNotFoundError(error) ||
+        isNoUsableIndexError(error) ||
+        isTimeoutError(error)
+      ) {
+        // An error specifying an index not found or not usable is probably because the index
+        // is not yet created.
+        // Likewise, a timeout error might occur when couchdb does not find the index
+        // but tries to run the query anyway, which might result in a timeout.
+        // We do not know how to prevent this behavior, so we handle it like a missing index.
         await this.handleMissingIndex(selector, options)
         resp = await this.fetchDocumentsWithMango(path, selector, options)
+      } else {
+        throw error
       }
     }
     return resp
