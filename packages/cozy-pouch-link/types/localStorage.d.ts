@@ -7,6 +7,12 @@ export class PouchLocalStorage {
     constructor(storageEngine: any);
     storageEngine: any;
     /**
+     * Destroy the storage data
+     *
+     * @returns {Promise<void>}
+     */
+    destroy(): Promise<void>;
+    /**
      * Persist the last replicated doc id for a doctype
      *
      * @param {string} doctype - The replicated doctype

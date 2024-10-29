@@ -18,6 +18,9 @@ const storage = {
   },
   removeItem: async key => {
     return window.localStorage.removeItem(key)
+  },
+  destroy: async () => {
+    return window.localStorage.clear()
   }
 }
 

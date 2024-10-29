@@ -8,6 +8,7 @@ declare namespace storage {
     function getItem(key: any): Promise<string>;
     function setItem(key: any, value: any): Promise<void>;
     function removeItem(key: any): Promise<void>;
+    function destroy(): Promise<void>;
 }
 declare namespace events {
     function addEventListener(eventName: any, handler: any): void;
