@@ -491,7 +491,7 @@ The returned documents are paginated by the stack.
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | options | <code>object</code> |  | The fetch options: pagination & fetch of specific docs. |
-| [options.limit] | <code>number</code> | <code>100</code> | Pagination limit |
+| [options.limit] | <code>number</code> \| <code>null</code> | <code>100</code> | Pagination limit |
 | [options.skip] | <code>number</code> | <code>0</code> | Pagination Skip |
 | [options.bookmark] | <code>string</code> |  | Pagination bookmark |
 | [options.keys] | <code>Array.&lt;string&gt;</code> |  | Keys to query |
