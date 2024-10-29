@@ -5,14 +5,18 @@ export namespace platformWeb {
     export { isOnline };
 }
 declare namespace storage {
-    function getItem(key: any): Promise<string>;
-    function setItem(key: any, value: any): Promise<void>;
-    function removeItem(key: any): Promise<void>;
-    function destroy(): Promise<void>;
+    export { getItem };
+    export { setItem };
+    export { removeItem };
+    export { destroy };
 }
 declare namespace events {
     function addEventListener(eventName: any, handler: any): void;
     function removeEventListener(eventName: any, handler: any): void;
 }
 declare function isOnline(): Promise<boolean>;
+declare function getItem(key: any): Promise<string>;
+declare function setItem(key: any, value: any): Promise<void>;
+declare function removeItem(key: any): Promise<void>;
+declare function destroy(): Promise<void>;
 export {};
