@@ -1,8 +1,10 @@
-export const LOCALSTORAGE_SYNCED_KEY: "cozy-client-pouch-link-synced";
-export const LOCALSTORAGE_WARMUPEDQUERIES_KEY: "cozy-client-pouch-link-warmupedqueries";
-export const LOCALSTORAGE_LASTSEQUENCES_KEY: "cozy-client-pouch-link-lastreplicationsequence";
-export const LOCALSTORAGE_LASTREPLICATEDDOCID_KEY: "cozy-client-pouch-link-lastreplicateddocid";
-export const LOCALSTORAGE_ADAPTERNAME: "cozy-client-pouch-link-adaptername";
+export namespace LOCALSTORAGE_STORAGE_KEYS {
+    const SYNCED: string;
+    const WARMUPEDQUERIES: string;
+    const LASTSEQUENCES: string;
+    const LASTREPLICATEDDOCID: string;
+    const ADAPTERNAME: string;
+}
 export class PouchLocalStorage {
     constructor(storageEngine: any);
     storageEngine: any;

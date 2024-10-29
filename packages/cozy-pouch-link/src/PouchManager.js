@@ -113,7 +113,7 @@ class PouchManager {
     await this.clearWarmedUpQueries()
     await this.storage.destroy()
 
-    await allSettled(Object.values(this.pouches).map(pouch => pouch.destroy()))
+    return allSettled(Object.values(this.pouches).map(pouch => pouch.destroy()))
   }
 
   /**
