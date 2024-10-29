@@ -68,7 +68,7 @@ class DocumentCollection {
    * The returned documents are paginated by the stack.
    *
    * @param {object} options The fetch options: pagination & fetch of specific docs.
-   * @param {number} [options.limit=100] - Pagination limit
+   * @param {number|null} [options.limit=100] - Pagination limit
    * @param {number} [options.skip=0] - Pagination Skip
    * @param {string} [options.bookmark] - Pagination bookmark
    * @param {Array<string>} [options.keys] - Keys to query
