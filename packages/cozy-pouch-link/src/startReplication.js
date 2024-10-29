@@ -75,12 +75,14 @@ export const startReplication = (
         // For the first remote->local replication, we manually replicate all docs
         // as it avoids to replicate all revs history, which can lead to
         // performances issues
+        logger.info(`PouchManager: Start first replication for ${doctype}`)
         docs = await replicateAllDocs({
           db: pouch,
           baseUrl: url,
           doctype,
           storage
         })
+        logger.info(`PouchManager: End first replication for ${doctype}`)
         const end = new Date()
         if (process.env.NODE_ENV !== 'production') {
           logger.info(
