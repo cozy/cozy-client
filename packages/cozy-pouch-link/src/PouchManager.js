@@ -8,7 +8,7 @@ import Loop from './loop'
 import logger from './logger'
 import { platformWeb } from './platformWeb'
 import { replicateOnce } from './replicateOnce'
-import { formatAggregatedError, getDatabaseName } from './utils'
+import { allSettled, formatAggregatedError, getDatabaseName } from './utils'
 
 const DEFAULT_DELAY = 30 * 1000
 
@@ -111,12 +111,9 @@ class PouchManager {
     this.removeListeners()
     await this.clearSyncedDoctypes()
     await this.clearWarmedUpQueries()
-    await this.storage.destroyAllDoctypeLastSequence()
-    await this.storage.destroyAllLastReplicatedDocID()
+    await this.storage.destroy()
 
-    return Promise.all(
-      Object.values(this.pouches).map(pouch => pouch.destroy())
-    )
+    await allSettled(Object.values(this.pouches).map(pouch => pouch.destroy()))
   }
 
   /**

@@ -27,3 +27,47 @@ export const formatAggregatedError = aggregatedError => {
 
   return strings.join('\n')
 }
+
+/**
+ * @typedef {object} FulfilledPromise
+ * @property {'fulfilled'} status - The status of the promise
+ * @property {undefined} reason - The Error rejected by the promise (undefined when fulfilled)
+ * @property {any} value - The resolved value of the promise
+ */
+
+/**
+ * @typedef {object} RejectedPromise
+ * @property {'rejected'} status - The status of the promise
+ * @property {Error} reason - The Error rejected by the promise
+ * @property {undefined} value - The resolved value of the promise (undefined when rejected)
+ */
+
+/**
+ * Takes an iterable of promises as input and returns a single Promise.
+ * This returned promise fulfills when all of the input's promises settle (including
+ * when an empty iterable is passed), with an array of objects that describe the
+ * outcome of each promise.
+ * This implementation is useful for env with no support of the native Promise.allSettled,
+ * typically react-native 0.66
+ *
+ * @param {Promise[]} promises - Promise to be awaited
+ * @returns {Promise<(FulfilledPromise|RejectedPromise)[]>}
+ */
+export const allSettled = promises => {
+  const proms = promises.filter(p => !!p)
+  return Promise.all(
+    proms.map(promise =>
+      promise
+        .then(value => /** @type {FulfilledPromise} */ ({
+          status: 'fulfilled',
+          value
+        }))
+        .catch((
+          /** @type {Error} */ reason
+        ) => /** @type {RejectedPromise} */ ({
+          status: 'rejected',
+          reason
+        }))
+    )
+  )
+}

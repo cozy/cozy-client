@@ -37,7 +37,7 @@ declare class PouchManager {
     replications: import('./types').CancelablePromise[];
     addListeners(): void;
     removeListeners(): void;
-    destroy(): Promise<any[]>;
+    destroy(): Promise<void>;
     /**
      * Via a call to info() we ensure the database exist on the
      * remote side. This is done only once since after the first
