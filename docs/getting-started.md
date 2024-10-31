@@ -140,7 +140,7 @@ await client.save({...doc, checked: true})
 
 `save()` will return a Promise with a `data` attribute containing the saved document.
 
-ℹ️ When mutating data, queries that depend on the mutated document(s) will automatically be refreshed: 
+ℹ️ When mutating data, queries that depend on the mutated document(s) will automatically be refreshed:
 components that depend on these queries will be re-rendered.
 
 ## Mutate several documents in batch
@@ -166,4 +166,4 @@ const { data: updatedDocs } = await client.saveAll([
 [react-integration]: ./react-integration.md
 [query-documentation]: https://docs.cozy.io/en/tutorials/data/queries/
 [cozy-client]: ./api/cozy-client/classes/CozyClient.md
-[devtools]: ./devtools.md
+[devtools]: https://github.com/cozy/cozy-libs/tree/master/packages/cozy-devtools
