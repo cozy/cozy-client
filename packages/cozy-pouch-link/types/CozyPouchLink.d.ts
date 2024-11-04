@@ -13,6 +13,10 @@ export type PouchLinkOptions = {
      */
     periodicSync: boolean;
     /**
+     * Debounce delay (in ms) when calling `startReplicationWithDebounce()` method. Should be used only when periodicSync is false. Default is 10 seconds
+     */
+    syncDebounceDelayInMs?: number;
+    /**
      * Milliseconds between periodic replications
      */
     replicationInterval?: number;
@@ -38,6 +42,7 @@ export type PouchLinkOptions = {
  * @typedef {object} PouchLinkOptions
  * @property {boolean} initialSync Whether or not a replication process should be started. Default is false
  * @property {boolean} periodicSync Whether or not the replication should be periodic. Default is true
+ * @property {number} [syncDebounceDelayInMs] Debounce delay (in ms) when calling `startReplicationWithDebounce()` method. Should be used only when periodicSync is false. Default is 10 seconds
  * @property {number} [replicationInterval] Milliseconds between periodic replications
  * @property {string[]} doctypes Doctypes to replicate
  * @property {Record<string, object>} doctypesReplicationOptions A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote")
@@ -74,6 +79,8 @@ declare class PouchLink extends CozyLink {
     periodicSync: boolean;
     /** @type {Record<string, ReplicationStatus>} - Stores replication states per doctype */
     replicationStatus: Record<string, ReplicationStatus>;
+    /** @private */
+    private startReplicationDebounced;
     getReplicationURL(doctype: any): string;
     registerClient(client: any): Promise<void>;
     client: any;
@@ -119,6 +126,10 @@ declare class PouchLink extends CozyLink {
     handleDoctypeSyncStart(doctype: any): void;
     handleDoctypeSyncEnd(doctype: any): void;
     /**
+     * @private
+     */
+    private _startReplication;
+    /**
      * User of the link can call this to start ongoing replications.
      * Typically, it can be used when the application regains focus.
      *
@@ -128,6 +139,15 @@ declare class PouchLink extends CozyLink {
      * @returns {void}
      */
     public startReplication(): void;
+    /**
+     * Debounced version of startReplication() method
+     *
+     * Debounce delay can be configured through constructor's `syncDebounceDelayInMs` option
+     *
+     * @public
+     * @returns {void}
+     */
+    public startReplicationWithDebounce(): void;
     /**
      * User of the link can call this to stop ongoing replications.
      * Typically, it can be used when the applications loses focus.
