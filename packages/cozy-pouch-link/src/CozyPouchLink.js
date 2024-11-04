@@ -11,6 +11,7 @@ import defaults from 'lodash/defaults'
 import mapValues from 'lodash/mapValues'
 import zipWith from 'lodash/zipWith'
 import get from 'lodash/get'
+import debounce from 'lodash/debounce'
 
 import { default as helpers } from './helpers'
 import { getIndexNameFromFields, getIndexFields } from './mango'
@@ -36,6 +37,8 @@ const parseMutationResult = (original, res) => {
 const DEFAULT_OPTIONS = {
   replicationInterval: 30 * 1000
 }
+
+const DEFAULT_DEBOUNCE_DELAY = 10 * 1000
 
 const addBasicAuth = (url, basicAuth) => {
   return url.replace('//', `//${basicAuth}`)
@@ -68,6 +71,7 @@ const normalizeAll = client => (docs, doctype) => {
  * @typedef {object} PouchLinkOptions
  * @property {boolean} initialSync Whether or not a replication process should be started. Default is false
  * @property {boolean} periodicSync Whether or not the replication should be periodic. Default is true
+ * @property {number} [syncDebounceDelayInMs] Debounce delay (in ms) when calling `startReplicationWithDebounce()` method. Should be used only when periodicSync is false. Default is 10 seconds
  * @property {number} [replicationInterval] Milliseconds between periodic replications
  * @property {string[]} doctypes Doctypes to replicate
  * @property {Record<string, object>} doctypesReplicationOptions A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote")
@@ -93,7 +97,8 @@ class PouchLink extends CozyLink {
       doctypes,
       doctypesReplicationOptions,
       periodicSync,
-      initialSync
+      initialSync,
+      syncDebounceDelayInMs
     } = options
     this.options = options
     if (!doctypes) {
@@ -112,6 +117,12 @@ class PouchLink extends CozyLink {
 
     /** @type {Record<string, ReplicationStatus>} - Stores replication states per doctype */
     this.replicationStatus = this.replicationStatus || {}
+
+    /** @private */
+    this.startReplicationDebounced = debounce(
+      this._startReplication,
+      syncDebounceDelayInMs || DEFAULT_DEBOUNCE_DELAY
+    )
   }
 
   /**
@@ -276,15 +287,9 @@ class PouchLink extends CozyLink {
   }
 
   /**
-   * User of the link can call this to start ongoing replications.
-   * Typically, it can be used when the application regains focus.
-   *
-   * Emits pouchlink:sync:start event when the replication begins
-   *
-   * @public
-   * @returns {void}
+   * @private
    */
-  startReplication() {
+  _startReplication() {
     this.client.emit('pouchlink:sync:start')
     if (this.periodicSync) {
       this.pouches.startReplicationLoop()
@@ -294,6 +299,38 @@ class PouchLink extends CozyLink {
     if (this.options.onStartReplication) {
       this.options.onStartReplication.apply(this)
     }
+  }
+
+  /**
+   * User of the link can call this to start ongoing replications.
+   * Typically, it can be used when the application regains focus.
+   *
+   * Emits pouchlink:sync:start event when the replication begins
+   *
+   * @public
+   * @returns {void}
+   */
+  startReplication() {
+    this.startReplicationDebounced.cancel()
+    return this._startReplication()
+  }
+
+  /**
+   * Debounced version of startReplication() method
+   *
+   * Debounce delay can be configured through constructor's `syncDebounceDelayInMs` option
+   *
+   * @public
+   * @returns {void}
+   */
+  startReplicationWithDebounce() {
+    if (this.periodicSync) {
+      throw new Error(
+        'createDebounceableReplication cannot be called when periodic sync is configured'
+      )
+    }
+
+    return this.startReplicationDebounced()
   }
 
   /**
