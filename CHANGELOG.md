@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [50.1.0](https://github.com/cozy/cozy-client/compare/v50.0.0...v50.1.0) (2024-11-04)
+
+
+### Bug Fixes
+
+* Limit type ([bcf9f58](https://github.com/cozy/cozy-client/commit/bcf9f589538669c7cab0c3fd64485f7004f4d381))
+
+
+### Features
+
+* Add some logs ([ac0c513](https://github.com/cozy/cozy-client/commit/ac0c513553729f02faf79ba9903910f92d0d49cf))
+* Destroy localstorage ([8729bcd](https://github.com/cozy/cozy-client/commit/8729bcd9758f424c78145ed901605ca50e553fe6))
+* Selective localstorage destroy ([e96fdb6](https://github.com/cozy/cozy-client/commit/e96fdb685df79eea64857a5ce58e3ab1e0648924))
+
+
+
+
+
 # [50.0.0](https://github.com/cozy/cozy-client/compare/v49.8.0...v50.0.0) (2024-10-24)
 
 
