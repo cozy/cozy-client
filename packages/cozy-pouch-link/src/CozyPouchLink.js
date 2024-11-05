@@ -39,6 +39,7 @@ const DEFAULT_OPTIONS = {
 }
 
 const DEFAULT_DEBOUNCE_DELAY = 10 * 1000
+const MAX_DEBOUNCE_DELAY = 600 * 1000
 
 const addBasicAuth = (url, basicAuth) => {
   return url.replace('//', `//${basicAuth}`)
@@ -72,6 +73,7 @@ const normalizeAll = client => (docs, doctype) => {
  * @property {boolean} initialSync Whether or not a replication process should be started. Default is false
  * @property {boolean} periodicSync Whether or not the replication should be periodic. Default is true
  * @property {number} [syncDebounceDelayInMs] Debounce delay (in ms) when calling `startReplicationWithDebounce()` method. Should be used only when periodicSync is false. Default is 10 seconds
+ * @property {number} [syncDebounceMaxDelayInMs] The maximum duration (in ms) the `startReplicationWithDebounce()` method can be delayed. Should be used only when periodicSync is false. Default is 10 minutes
  * @property {number} [replicationInterval] Milliseconds between periodic replications
  * @property {string[]} doctypes Doctypes to replicate
  * @property {Record<string, object>} doctypesReplicationOptions A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote")
@@ -98,7 +100,8 @@ class PouchLink extends CozyLink {
       doctypesReplicationOptions,
       periodicSync,
       initialSync,
-      syncDebounceDelayInMs
+      syncDebounceDelayInMs,
+      syncDebounceMaxDelayInMs
     } = options
     this.options = options
     if (!doctypes) {
@@ -121,7 +124,10 @@ class PouchLink extends CozyLink {
     /** @private */
     this.startReplicationDebounced = debounce(
       this._startReplication,
-      syncDebounceDelayInMs || DEFAULT_DEBOUNCE_DELAY
+      syncDebounceDelayInMs || DEFAULT_DEBOUNCE_DELAY,
+      {
+        maxWait: syncDebounceMaxDelayInMs || MAX_DEBOUNCE_DELAY
+      }
     )
   }
 
