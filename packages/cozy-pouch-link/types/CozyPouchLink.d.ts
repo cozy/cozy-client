@@ -17,6 +17,10 @@ export type PouchLinkOptions = {
      */
     syncDebounceDelayInMs?: number;
     /**
+     * The maximum duration (in ms) the `startReplicationWithDebounce()` method can be delayed. Should be used only when periodicSync is false. Default is 10 minutes
+     */
+    syncDebounceMaxDelayInMs?: number;
+    /**
      * Milliseconds between periodic replications
      */
     replicationInterval?: number;
@@ -43,6 +47,7 @@ export type PouchLinkOptions = {
  * @property {boolean} initialSync Whether or not a replication process should be started. Default is false
  * @property {boolean} periodicSync Whether or not the replication should be periodic. Default is true
  * @property {number} [syncDebounceDelayInMs] Debounce delay (in ms) when calling `startReplicationWithDebounce()` method. Should be used only when periodicSync is false. Default is 10 seconds
+ * @property {number} [syncDebounceMaxDelayInMs] The maximum duration (in ms) the `startReplicationWithDebounce()` method can be delayed. Should be used only when periodicSync is false. Default is 10 minutes
  * @property {number} [replicationInterval] Milliseconds between periodic replications
  * @property {string[]} doctypes Doctypes to replicate
  * @property {Record<string, object>} doctypesReplicationOptions A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote")
