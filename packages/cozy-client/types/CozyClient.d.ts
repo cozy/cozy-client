@@ -220,8 +220,6 @@ declare class CozyClient {
     handleRevocationChange(state: any): void;
     /** Emits event when token is refreshed */
     handleTokenRefresh(token: any): void;
-    links: any[];
-    chain: any;
     schema: Schema;
     /**
      * @type {import("./types").ClientCapabilities}
@@ -778,6 +776,16 @@ declare class CozyClient {
      * @param {import("./types").AppMetadata} newAppMetadata AppMetadata to update
      */
     setAppMetadata(newAppMetadata: import("./types").AppMetadata): void;
+    /**
+     * Set links, e.g. PouchLink or StackLink.
+     * When this method is called manually, i.e. after a client instanciation,
+     * we manually call the links onLogin methods
+     *
+     * @param {Array<object>} links - The links to handle
+     */
+    setLinks(links: Array<object>): void;
+    links: any[];
+    chain: any;
     /**
      * Query the cozy-app settings corresponding to the given slug and
      * extract the value corresponding to the given `key`
