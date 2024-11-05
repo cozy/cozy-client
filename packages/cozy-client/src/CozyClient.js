@@ -183,11 +183,7 @@ class CozyClient {
     const stackClient = this.getStackClient()
     stackClient.on('error', (...args) => this.emit('error', ...args))
 
-    this.links = ensureArray(link || links || new StackLink())
-    this.registerClientOnLinks()
-
-    this.chain = chain(this.links)
-
+    this.setLinks(ensureArray(link || links || new StackLink()))
     this.schema = new Schema(schema, stackClient)
 
     /**
@@ -1820,6 +1816,30 @@ instantiation of the client.`
     this.appMetadata = {
       ...this.appMetadata,
       ...newAppMetadata
+    }
+  }
+
+  /**
+   * Set links, e.g. PouchLink or StackLink.
+   * When this method is called manually, i.e. after a client instanciation,
+   * we manually call the links onLogin methods
+   *
+   * @param {Array<object>} links - The links to handle
+   */
+  setLinks(links) {
+    this.links = links ? links : [new StackLink()]
+    this.registerClientOnLinks()
+    this.chain = chain(this.links)
+
+    if (this.isLogged) {
+      // If the client is already logged, it means this method is called manually, after
+      // a client instanciation.
+      // Thus, we call the link's onLogin methods
+      for (const link of this.links) {
+        if (link.onLogin) {
+          link.onLogin()
+        }
+      }
     }
   }
 
