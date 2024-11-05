@@ -749,6 +749,7 @@ files associated to a specific document
 * [FileCollection](#FileCollection)
     * [.forceFileDownload](#FileCollection+forceFileDownload)
     * [.get(id)](#FileCollection+get) ⇒ <code>Object</code>
+    * [.getAll(ids)](#FileCollection+getAll) ⇒ <code>Promise.&lt;{data, meta, execution\_stats}&gt;</code>
     * [.find(selector, options)](#FileCollection+find) ⇒ <code>Promise.&lt;{data, meta, skip, next, bookmark, execution\_stats}&gt;</code>
     * [.findReferencedBy(document, options)](#FileCollection+findReferencedBy) ⇒ <code>Promise.&lt;{data, included, meta, skip, next}&gt;</code>
     * [.addReferencedBy(document, documents)](#FileCollection+addReferencedBy) ⇒ <code>Promise.&lt;{data, meta}&gt;</code>
@@ -803,6 +804,18 @@ Fetches the file's data
 | Param | Type | Description |
 | --- | --- | --- |
 | id | <code>string</code> | File id |
+
+<a name="FileCollection+getAll"></a>
+
+### fileCollection.getAll(ids) ⇒ <code>Promise.&lt;{data, meta, execution\_stats}&gt;</code>
+Get all files by their ids
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+**Returns**: <code>Promise.&lt;{data, meta, execution\_stats}&gt;</code> - JSON API response  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ids | <code>Array.&lt;string&gt;</code> | files ids |
 
 <a name="FileCollection+find"></a>
 
