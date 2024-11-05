@@ -209,6 +209,34 @@ class FileCollection extends DocumentCollection {
     return this.statById(id)
   }
 
+  /**
+   * Get all files by their ids
+   *
+   * @param {Array<string>} ids - files ids
+   * @returns {Promise<{data, meta, execution_stats}>} JSON API response
+   */
+  async getAll(ids) {
+    let resp
+    try {
+      resp = await this.stackClient.fetchJSON(
+        'POST',
+        uri`/files/_all_docs?include_docs=true`,
+        {
+          keys: ids
+        }
+      )
+    } catch (error) {
+      return dontThrowNotFoundError(error)
+    }
+    return {
+      data: resp.data.map(f => normalizeFile(f)),
+      meta: {
+        count: resp.data.length
+      },
+      execution_stats: resp.execution_stats
+    }
+  }
+
   async fetchFindFiles(selector, options) {
     return this.stackClient.fetchJSON(
       'POST',
