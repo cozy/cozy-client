@@ -235,10 +235,10 @@ export class QueryDefinition {
     /**
      * Maximum number of documents returned, useful for pagination. Default is 100.
      *
-     * @param {number} limit The document's limit.
+     * @param {number|null} limit The document's limit.
      * @returns {QueryDefinition}  The QueryDefinition object.
      */
-    limitBy(limit: number): QueryDefinition;
+    limitBy(limit: number | null): QueryDefinition;
     UNSAFE_noLimit(): QueryDefinition;
     /**
      * Skip the first ‘n’ documents, where ‘n’ is the value specified.
