@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [50.2.0](https://github.com/cozy/cozy-client/compare/v50.1.0...v50.2.0) (2024-11-06)
+
+
+### Features
+
+* Add setLinks method ([d59842e](https://github.com/cozy/cozy-client/commit/d59842e2797a2b330b210f2a47c85879cd378e38))
+
+
+
+
+
 # [50.1.0](https://github.com/cozy/cozy-client/compare/v50.0.0...v50.1.0) (2024-11-04)
 
 
