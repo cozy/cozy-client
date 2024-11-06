@@ -281,7 +281,7 @@ class QueryDefinition {
   /**
    * Maximum number of documents returned, useful for pagination. Default is 100.
    *
-   * @param {number} limit The document's limit.
+   * @param {number|null} limit The document's limit.
    * @returns {QueryDefinition}  The QueryDefinition object.
    */
   limitBy(limit) {
