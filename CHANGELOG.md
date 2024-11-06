@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [50.4.0](https://github.com/cozy/cozy-client/compare/v50.3.1...v50.4.0) (2024-11-06)
+
+
+### Features
+
+* **FileCollection:** Add getAll(), and so Q(`io.cozy.files`).getByIds ([8463cc4](https://github.com/cozy/cozy-client/commit/8463cc42407f48a2cb8efd89c025c6dd82714746))
+
+
+
+
+
 ## [50.3.1](https://github.com/cozy/cozy-client/compare/v50.3.0...v50.3.1) (2024-11-06)
 
 
