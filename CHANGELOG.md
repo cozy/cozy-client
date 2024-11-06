@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [50.3.1](https://github.com/cozy/cozy-client/compare/v50.3.0...v50.3.1) (2024-11-06)
+
+
+### Bug Fixes
+
+* Set correct type for `limitBy()` limit argument in DSL ([658ec8c](https://github.com/cozy/cozy-client/commit/658ec8cd9f79c436380fead4b5d6603d9c45f1d8))
+
+
+
+
+
 # [50.3.0](https://github.com/cozy/cozy-client/compare/v50.2.0...v50.3.0) (2024-11-06)
 
 
