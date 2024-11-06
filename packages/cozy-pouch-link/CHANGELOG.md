@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [50.3.0](https://github.com/cozy/cozy-client/compare/v50.2.0...v50.3.0) (2024-11-06)
+
+
+### Features
+
+* **cozy-pouch-link:** Add `startReplicationWithDebounce()` method ([e221a7a](https://github.com/cozy/cozy-client/commit/e221a7ac5966a353837b92ec0e1e7e30b65158cf))
+* **cozy-pouch-link:** Add a `syncDebounceMaxDelayInMs` parameter ([9089ffc](https://github.com/cozy/cozy-client/commit/9089ffcd6c351bf5bc35519236e277414ccf8504))
+
+
+
+
+
 # [50.2.0](https://github.com/cozy/cozy-client/compare/v50.1.0...v50.2.0) (2024-11-06)
 
 **Note:** Version bump only for package cozy-pouch-link
