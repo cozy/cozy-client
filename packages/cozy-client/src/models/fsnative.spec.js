@@ -11,12 +11,6 @@ jest.mock('cozy-device-helper', () => ({
   isMobileApp: jest.fn()
 }))
 
-jest.mock('cozy-ui/transpiled/react/deprecated/Alerter', () => ({
-  success: jest.fn(),
-  error: jest.fn(),
-  info: jest.fn()
-}))
-
 const ANDROID_ROOT_DIRECTORY = 'externalDataDirectory'
 const IOS_ROOT_DIRECTORY = 'dataDirectory'
 const EXTERNAL_CACHE_DIRECTORY = 'externalCacheDirectory'
