@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [51.0.0](https://github.com/cozy/cozy-client/compare/v50.4.0...v51.0.0) (2024-11-07)
+
+
+### Features
+
+* Remove cozy-ui ([2440248](https://github.com/cozy/cozy-client/commit/2440248a9d28d7fe6d3eae17f4d3bc362dadced8))
+* Remove devtools ([01098ed](https://github.com/cozy/cozy-client/commit/01098ed821e5d309a4947a2eb5a5dcf1e0d79713))
+
+
+### BREAKING CHANGES
+
+* you no longer need cozy-ui as dep for cozy-client usage
+* you must change the import of devtools from `import CozyDevtools from 'cozy-client/dist/devtools'` to `import CozyDevtools from 'cozy-devtools'`
+
+
+
+
+
 # [50.4.0](https://github.com/cozy/cozy-client/compare/v50.3.1...v50.4.0) (2024-11-06)
 
 **Note:** Version bump only for package cozy-client
