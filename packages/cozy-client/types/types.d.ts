@@ -705,6 +705,37 @@ export type CozyMetadata = {
      */
     favorite?: boolean;
 };
+export type UploadedBy = {
+    /**
+     * - The slug of the application that has made the upload
+     */
+    slug: string;
+    /**
+     * - The version number of this application
+     */
+    version: string;
+};
+/**
+ * - Extra fields inside cozyMetadata only for io.cozy.files documents
+ */
+export type CozyMetadataFile = {
+    /**
+     * - The instance URL on which the file has created (useful if the file is shared between several cozy instances)
+     */
+    createdOn?: string;
+    /**
+     * - The server date/time of the last upload (when the content was changed)
+     */
+    uploadedAt?: string;
+    /**
+     * - The instance URL on which the file content was changed the last time
+     */
+    uploadedOn?: string;
+    /**
+     * - Information on which app has made the last upload
+     */
+    uploadedBy?: UploadedBy[];
+};
 /**
  * - Meta object as specified by JSON-API (https://jsonapi.org/format/#document-meta)
  */
@@ -894,6 +925,10 @@ export type FileDocument = {
      * - Whether the folder is in the trash
      */
     trashed: boolean;
+    /**
+     * - Cozy Metadata
+     */
+    cozyMetadata?: CozyMetadata & CozyMetadataFile;
 };
 /**
  * - An io.cozy.files document

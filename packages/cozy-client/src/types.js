@@ -420,6 +420,20 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
+ * @typedef {object} UploadedBy
+ * @property {string} slug - The slug of the application that has made the upload
+ * @property {string} version - The version number of this application
+ */
+
+/**
+ * @typedef {object} CozyMetadataFile - Extra fields inside cozyMetadata only for io.cozy.files documents
+ * @property {string} [createdOn] - The instance URL on which the file has created (useful if the file is shared between several cozy instances)
+ * @property {string} [uploadedAt] - The server date/time of the last upload (when the content was changed)
+ * @property {string} [uploadedOn] - The instance URL on which the file content was changed the last time
+ * @property {UploadedBy[]} [uploadedBy] - Information on which app has made the last upload
+ */
+
+/**
  * @typedef {object} CozyClientDocumentMeta - Meta object as specified by JSON-API (https://jsonapi.org/format/#document-meta)
  * @property {string} [rev] - Current revision of the document
  */
@@ -486,6 +500,7 @@ import { QueryDefinition } from './queries/dsl'
  * @property {string} updated_at - Last modification date of the file
  * @property {number} size - Size of the file, in bytes
  * @property {boolean} trashed - Whether the folder is in the trash
+ * @property {CozyMetadata & CozyMetadataFile} [cozyMetadata] - Cozy Metadata
  * @typedef {CozyClientDocument & FileDocument} IOCozyFile - An io.cozy.files document
  */
 
