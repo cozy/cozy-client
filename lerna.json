@@ -1,11 +1,7 @@
 {
-  "lerna": "2.8.0",
-  "packages": [
-    "packages/*"
-  ],
+  "packages": ["packages/*"],
   "version": "51.1.0",
   "npmClient": "yarn",
-  "useWorkspaces": true,
   "command": {
     "version": {
       "conventionalCommits": true,
@@ -14,5 +10,6 @@
     "publish": {
       "conventionalCommits": true
     }
-  }
+  },
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json"
 }
