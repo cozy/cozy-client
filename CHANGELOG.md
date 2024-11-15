@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [51.0.1](https://github.com/cozy/cozy-client/compare/v51.0.0...v51.0.1) (2024-11-15)
+
+
+### Bug Fixes
+
+* Add missing fields on CozyMetadata for io.cozy.files ([2457269](https://github.com/cozy/cozy-client/commit/2457269e6360696cf8cb1ce2c8b998d89b8db9d1))
+
+
+
+
+
 # [51.0.0](https://github.com/cozy/cozy-client/compare/v50.4.0...v51.0.0) (2024-11-07)
 
 
