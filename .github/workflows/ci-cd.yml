@@ -1,0 +1,50 @@
+name: CI/CD
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          fetch-depth: 0
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Lint
+        run: yarn lint
+      - name: Build
+        run: yarn build # before tests since packages rely on dist/ files to be available
+      - name: Test
+        run: yarn test --runInBand
+      - name: Make documentation
+        run: yarn docs
+      - name: Check documentation
+        run: |
+          git diff --exit-code -- docs || (echo "Docs are not up-to-date, please run yarn docs and repush" && exit 1)
+      - name: Make types
+        run: yarn types
+      - name: Check types
+        run: git diff --exit-code || (echo "Types are not up-to-date, please run cd packages/cozy-client && yarn typecheck and repush" && exit 1)
+      - name: Publish to NPM
+        if: github.ref == 'refs/heads/master'
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          git config user.name "Cozy Bot"
+          git config user.email "npm@cozycloud.cc"
+          git remote set-url origin https://cozy-bot:$GH_TOKEN@github.com/cozy/cozy-libs.git
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+          yarn lerna publish --yes
