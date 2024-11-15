@@ -39,7 +39,7 @@
     "lint": "eslint 'packages/*/src/**/*.{js,jsx}' 'packages/*/examples/**/*.{js,jsx}'",
     "test": "jest",
     "watch": "lerna run watch --parallel",
-    "build": "lerna run build --parallel",
+    "build": "lerna run build",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "clean": "rm -rf packages/*/dist",
     "cleanTypes": "rm -rf packages/*/types",
