@@ -1731,6 +1731,10 @@ export type InstanceData = {
      * - Terms of Service latest version
      */
     tos_latest?: string;
+    /**
+     * - URL of the legal notice (given by cozy-stack)
+     */
+    legal_notice_url?: string;
 };
 /**
  * Represents the Cozy's instance parameters
