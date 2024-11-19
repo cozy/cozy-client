@@ -43,8 +43,9 @@
   "devDependencies": {
     "@babel/cli": "7.12.8",
     "@cozy/codemods": "1.14.4",
-    "@testing-library/react": "10.4.9",
-    "@testing-library/react-hooks": "3.7.0",
+    "@testing-library/react": "12.1.5",
+    "@testing-library/react-hooks": "7.0.2",
+    "@testing-library/jest-dom": "6.6.3",
     "babel-plugin-search-and-replace": "1.1.1",
     "btoa": "1.2.1",
     "cozy-device-helper": "2.7.0",

@@ -1,7 +1,8 @@
 const commonConfig = {
   testURL: 'http://localhost',
-  setupFiles: ['./jest.setup.js', 'jest-localstorage-mock'],
+  setupFiles: ['jest-localstorage-mock'],
   setupFilesAfterEnv: [
+    './jest.setup.js',
     '<rootDir>/packages/cozy-stack-client/src/__tests__/setup.js'
   ],
   watchPathIgnorePatterns: ['node_modules'],
