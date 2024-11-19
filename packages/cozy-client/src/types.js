@@ -980,6 +980,7 @@ import { QueryDefinition } from './queries/dsl'
  * @property {string} [oidc_id] - An identifier to check authentication from OIDC
  * @property {string} [tos] - Terms of Service signed version
  * @property {string} [tos_latest] - Terms of Service latest version
+ * @property {string} [legal_notice_url] - URL of the legal notice (given by cozy-stack)
  */
 
 /**
