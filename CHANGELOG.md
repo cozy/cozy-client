@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [51.1.0](https://github.com/cozy/cozy-client/compare/v51.0.1...v51.1.0) (2024-11-19)
+
+
+### Features
+
+* Add legal_notice_url to InstanceData ([12271e1](https://github.com/cozy/cozy-client/commit/12271e197bc3fec850c6244bf912d704223387c1))
+
+
+
+
+
 ## [51.0.1](https://github.com/cozy/cozy-client/compare/v51.0.0...v51.0.1) (2024-11-15)
 
 
