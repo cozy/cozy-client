@@ -45,6 +45,6 @@ jobs:
         run: |
           git config user.name "Cozy Bot"
           git config user.email "npm@cozycloud.cc"
-          git remote set-url origin https://cozy-bot:$GH_TOKEN@github.com/cozy/cozy-libs.git
+          git remote set-url origin https://cozy-bot:$GH_TOKEN@github.com/cozy/cozy-client.git
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
           yarn lerna publish --yes
