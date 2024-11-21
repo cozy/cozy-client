@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [51.2.0](https://github.com/cozy/cozy-client/compare/v51.1.0...v51.2.0) (2024-11-21)
+
+
+### Features
+
+* Remove react-inspector from dependencies ([fac50f1](https://github.com/cozy/cozy-client/commit/fac50f15f3a3f494adda2b3ed53c66d82fedb2f6))
+* Update lerna from 4.0.0 to 8.1.9 ([eb3e14f](https://github.com/cozy/cozy-client/commit/eb3e14fccfdbdbe290a2906b3789c99c04f0c1a6))
+
+
+
+
+
 # [51.1.0](https://github.com/cozy/cozy-client/compare/v51.0.1...v51.1.0) (2024-11-19)
 
 
