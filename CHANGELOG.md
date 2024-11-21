@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [51.3.0](https://github.com/cozy/cozy-client/compare/v51.2.0...v51.3.0) (2024-11-21)
+
+
+### Features
+
+* Remove unused package @material-ui/core ([8c2b582](https://github.com/cozy/cozy-client/commit/8c2b582f221a8d2a8626d32bbc9eba06f14dcb6a))
+
+
+
+
+
 # [51.2.0](https://github.com/cozy/cozy-client/compare/v51.1.0...v51.2.0) (2024-11-21)
 
 
