@@ -73,7 +73,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1832](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1832)
+[packages/cozy-client/src/CozyClient.js:1834](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1834)
 
 ***
 
@@ -123,7 +123,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1830](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1830)
+[packages/cozy-client/src/CozyClient.js:1832](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1832)
 
 ***
 
@@ -955,7 +955,7 @@ extract the value corresponding to the given `key`
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1856](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1856)
+[packages/cozy-client/src/CozyClient.js:1858](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1858)
 
 ***
 
@@ -1594,7 +1594,7 @@ This method will reset the query state to its initial state and refetch it.
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1885](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1885)
+[packages/cozy-client/src/CozyClient.js:1887](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1887)
 
 ***
 
@@ -1652,7 +1652,7 @@ save the new resulting settings into database
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1873](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1873)
+[packages/cozy-client/src/CozyClient.js:1875](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1875)
 
 ***
 
@@ -1701,7 +1701,7 @@ Saves multiple documents in one batch
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1815](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1815)
+[packages/cozy-client/src/CozyClient.js:1817](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1817)
 
 ***
 
@@ -1725,7 +1725,7 @@ set some data in the store.
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1788](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1788)
+[packages/cozy-client/src/CozyClient.js:1790](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1790)
 
 ***
 
@@ -1749,7 +1749,7 @@ we manually call the links onLogin methods
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1829](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1829)
+[packages/cozy-client/src/CozyClient.js:1831](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1831)
 
 ***
 
@@ -1773,7 +1773,7 @@ At any time put an error function
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1801](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1801)
+[packages/cozy-client/src/CozyClient.js:1803](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1803)
 
 ***
 
@@ -1849,7 +1849,7 @@ Contains the fetched token and the client information. These should be stored an
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:1808](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1808)
+[packages/cozy-client/src/CozyClient.js:1810](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L1810)
 
 ***
 
