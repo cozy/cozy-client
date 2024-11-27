@@ -52,5 +52,8 @@
     "extends": [
       "cozy"
     ]
+  },
+  "resolutions": {
+    "@types/react": "17.0.0"
   }
 }
