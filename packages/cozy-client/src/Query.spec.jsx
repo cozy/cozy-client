@@ -1,5 +1,5 @@
 import React from 'react'
-import { mount } from 'enzyme'
+import { screen, render } from '@testing-library/react'
 import CozyProvider from './Provider'
 
 import Query from './Query'
@@ -34,17 +34,24 @@ describe('Query', () => {
 
   describe('lifecycle', () => {
     it('should fire a query fetch when mounted', () => {
-      mount(<Query query={queryDef}>{() => null}</Query>, {
-        context
-      })
+      render(
+        <CozyProvider client={client}>
+          <Query query={queryDef}>{() => null}</Query>
+        </CozyProvider>,
+        {
+          context
+        }
+      )
       expect(observableQuery.fetch).toHaveBeenCalled()
     })
 
     it('should not fire a query fetch when mounted if enabled is set to false', () => {
-      mount(
-        <Query query={queryDef} enabled={false}>
-          {() => null}
-        </Query>,
+      render(
+        <CozyProvider client={client}>
+          <Query query={queryDef} enabled={false}>
+            {() => null}
+          </Query>
+        </CozyProvider>,
         {
           context
         }
@@ -56,10 +63,12 @@ describe('Query', () => {
       const queryState = { lastUpdate: Date.now() }
       client.getQueryFromState = jest.fn().mockReturnValue(queryState)
       const fetchPolicy = jest.fn().mockReturnValue(false)
-      mount(
-        <Query query={queryDef} as="allTodos" fetchPolicy={fetchPolicy}>
-          {() => null}
-        </Query>,
+      render(
+        <CozyProvider client={client}>
+          <Query query={queryDef} as="allTodos" fetchPolicy={fetchPolicy}>
+            {() => null}
+          </Query>
+        </CozyProvider>,
         { context }
       )
       expect(client.getQueryFromState).toHaveBeenCalledWith('allTodos')
@@ -72,7 +81,7 @@ describe('Query', () => {
       const store = assets.store
       const client = assets.client
       const spy = jest.spyOn(store, 'dispatch')
-      mount(
+      render(
         <CozyProvider client={client}>
           <Query query={queryDef}>{() => null}</Query>
         </CozyProvider>
@@ -97,14 +106,14 @@ describe('Query', () => {
   })
 
   describe('data reactions', () => {
-    let store, client, uut
+    let store, client
     beforeEach(async () => {
       const assets = createTestAssets()
       store = assets.store
       client = assets.client
       const noFetch = () => false
       await store.dispatch(initQuery('allTodos', queryDef(client)))
-      uut = mount(
+      render(
         <CozyProvider client={client}>
           <Query fetchPolicy={noFetch} query={queryDef}>
             {({ data }) => (
@@ -120,11 +129,11 @@ describe('Query', () => {
     })
 
     it('should be refreshed when relevant results are updated', async () => {
-      expect(uut.html()).not.toContain('Build stuff')
+      expect(screen.queryByText('Build stuff')).not.toBeInTheDocument()
       const response = queryResultFromData(TODOS)
       const action = receiveQueryResult('allTodos', response)
       await store.dispatch(action)
-      expect(uut.html()).toContain('Build stuff')
+      expect(screen.queryByText('Build stuff')).toBeInTheDocument()
     })
 
     it('should refresh queries concerned by a REMOVE_REFERENCE_TO mutation', async () => {
@@ -166,7 +175,7 @@ describe('Query', () => {
 
     const setup = ({ children }) => {
       const noFetch = () => false
-      mount(
+      render(
         <CozyProvider client={client}>
           <Query fetchPolicy={noFetch} query={queryDef}>
             {children}
@@ -239,7 +248,7 @@ describe('Query', () => {
 
       const noFetch = () => false
 
-      mount(
+      render(
         <CozyProvider client={client}>
           <Query fetchPolicy={noFetch} query={queryDef} mutations={mutations}>
             {(result, mutations) => {
@@ -269,7 +278,7 @@ describe('Query', () => {
 
       const noFetch = () => false
 
-      mount(
+      render(
         <CozyProvider client={client}>
           <Query fetchPolicy={noFetch} query={queryDef} mutations={mutations}>
             {(result, mutations) => {

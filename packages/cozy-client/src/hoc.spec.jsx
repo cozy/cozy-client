@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Provider as ReduxProvider } from 'react-redux'
-import { mount } from 'enzyme'
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import { withClient, queryConnect, queryConnectFlat } from './hoc'
 import { Q } from './queries/dsl'
@@ -12,17 +12,15 @@ import { setupClient } from './testing/utils'
 
 beforeEach(() => {
   jest.spyOn(logger, 'warn').mockImplementation(() => {})
+  Component.mockClear()
 })
 
 afterEach(() => {
   logger.warn.mockRestore()
 })
 
-class Component extends React.Component {
-  render() {
-    return <div />
-  }
-}
+const Component = jest.fn(() => <div>Component</div>)
+Component.displayName = 'Component'
 
 describe('with client', () => {
   it('should give a display name', () => {
@@ -38,12 +36,13 @@ describe('with client', () => {
       getState: jest.fn()
     }
     const WithClientComponent = withClient(Component)
-    const uut = mount(
+    render(
       <Provider client={client} store={store}>
         <WithClientComponent />
       </Provider>
     )
-    expect(uut.find(Component).prop('client')).toBe(client)
+
+    expect(Component).toHaveBeenCalledWith({ client }, {})
   })
 })
 
@@ -75,19 +74,23 @@ describe('queryConnect', () => {
     const context = {
       client
     }
-    const uut = mount(<WithQueries />, { context })
-    expect(
-      uut
-        .find(Component)
-        .prop('simpsons')
-        .data.map(x => x.name)
-    ).toEqual(['Homer', 'Marge'])
-    expect(
-      uut
-        .find(Component)
-        .prop('upperSimpsons')
-        .data.map(x => x.name)
-    ).toEqual(['HOMER', 'MARGE'])
+    render(
+      <Provider client={client}>
+        <WithQueries />
+      </Provider>,
+      { context }
+    )
+
+    const propsPassedToComponent = Component.mock.calls[0][0]
+
+    expect(propsPassedToComponent.simpsons.data.map(x => x.name)).toEqual([
+      'Homer',
+      'Marge'
+    ])
+    expect(propsPassedToComponent.upperSimpsons.data.map(x => x.name)).toEqual([
+      'HOMER',
+      'MARGE'
+    ])
   })
 
   it('should be possible to pass props', () => {
@@ -109,20 +112,23 @@ describe('queryConnect', () => {
         </Provider>
       )
     }
-    const uut = mount(<Wrapper client={client} />)
-    const props = uut.find('Query').props()
-    expect(props.query).toEqual(
+
+    render(<Wrapper client={client} />)
+
+    expect(Component).toHaveBeenCalledWith(
       expect.objectContaining({
-        id: 'marge'
-      })
+        simpsonId: 'marge'
+      }),
+      {}
     )
-    uut.find('button').simulate('click')
-    uut.update()
-    const props2 = uut.find('Query').props()
-    expect(props2.query).toEqual(
+
+    fireEvent.click(screen.getByText('change to homer'))
+
+    expect(Component).toHaveBeenCalledWith(
       expect.objectContaining({
-        id: 'homer'
-      })
+        simpsonId: 'homer'
+      }),
+      {}
     )
   })
 })
@@ -144,38 +150,22 @@ describe('queryConnectFlat', () => {
 
   it('should pass result of query definitions as props', () => {
     const { WithQueries, client } = setup()
-    const uut = mount(
+    render(
       <ReduxProvider store={client.store}>
         <Provider client={client}>
           <WithQueries />
         </Provider>
       </ReduxProvider>
     )
-    expect(
-      uut
-        .find(Component)
-        .prop('simpsons')
-        .data.map(x => x.name)
-    ).toEqual(['Homer', 'Marge'])
-    expect(
-      uut
-        .find(Component)
-        .prop('upperSimpsons')
-        .data.map(x => x.name)
-    ).toEqual(['HOMER', 'MARGE'])
-  })
+    const propsPassedToComponent = Component.mock.calls[0][0]
 
-  it('should have Component as direct children of queryConnectFlag', () => {
-    const { WithQueries, client } = setup()
-    const uut = mount(
-      <ReduxProvider store={client.store}>
-        <Provider client={client}>
-          <WithQueries />
-        </Provider>
-      </ReduxProvider>
-    )
-    const queryConnectFlatComponent = uut.find('queryConnectFlat(Component)')
-    expect(queryConnectFlatComponent.length).toBe(1)
-    expect(queryConnectFlatComponent.children().is('Component')).toBe(true)
+    expect(propsPassedToComponent.simpsons.data.map(x => x.name)).toEqual([
+      'Homer',
+      'Marge'
+    ])
+    expect(propsPassedToComponent.upperSimpsons.data.map(x => x.name)).toEqual([
+      'HOMER',
+      'MARGE'
+    ])
   })
 })
