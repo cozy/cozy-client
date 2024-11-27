@@ -1761,16 +1761,18 @@ instantiation of the client.`
    * @returns {Promise<void>}
    */
   async loadInstanceOptionsFromStack() {
-    const { data } = await this.query(
-      Q('io.cozy.settings').getById('io.cozy.settings.capabilities')
-    )
+    const results = await Promise.all([
+      this.query(
+        Q('io.cozy.settings').getById('io.cozy.settings.capabilities')
+      ),
+      this.query(Q('io.cozy.settings').getById('io.cozy.settings.instance'))
+    ])
 
-    const { data: instanceData } = await this.query(
-      Q('io.cozy.settings').getById('io.cozy.settings.instance')
-    )
+    const { data: capabilitiesData } = results[0]
+    const { data: instanceData } = results[1]
 
     this.instanceOptions = {
-      capabilities: data,
+      capabilities: capabilitiesData,
       locale: instanceData.locale,
       tracking: instanceData.tracking
     }
