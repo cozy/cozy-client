@@ -3,7 +3,7 @@ jest.mock('./CozyClient')
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import configureStore from 'redux-mock-store'
-import { mount, shallow } from 'enzyme'
+import { fireEvent, render } from '@testing-library/react'
 
 import Provider from './Provider'
 import CozyClient from './CozyClient'
@@ -13,12 +13,12 @@ describe('Provider', () => {
   const store = configureStore()({})
 
   it('should renders children when passed in', () => {
-    const wrapper = shallow(
+    const wrapper = render(
       <Provider client={client} store={store}>
-        <div className="unique" />
+        <div>Component</div>
       </Provider>
     )
-    expect(wrapper.contains(<div className="unique" />)).toBe(true)
+    expect(wrapper.getByText('Component')).toBeTruthy()
   })
 
   it('should provide the client in the context', () => {
@@ -33,12 +33,12 @@ describe('Provider', () => {
         return <button onClick={this.onClick} />
       }
     }
-    const wrapper = mount(
+    const wrapper = render(
       <Provider client={client} store={store}>
         <FakeComponent />
       </Provider>
     )
-    wrapper.find('button').simulate('click')
+    fireEvent.click(wrapper.getByRole('button'))
     expect(client.query).toHaveBeenCalledWith('foo')
   })
 })

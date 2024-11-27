@@ -1,7 +1,8 @@
 import React from 'react'
-import { shallow } from 'enzyme'
+import { render } from '@testing-library/react'
 
 import withMutations from './withMutations'
+import Provider from './Provider'
 
 describe('withMutations', () => {
   beforeEach(() => {
@@ -49,21 +50,29 @@ describe('withMutations', () => {
 
     expect(() => {
       const ConnectedFoo = withMutations(mutationsMock)(Foo)
-      shallow(<ConnectedFoo />, {
-        context: { client: clientMock }
-      })
+      render(
+        <Provider client={clientMock}>
+          <ConnectedFoo />
+        </Provider>
+      )
     }).not.toThrowError()
   })
 
   it('should inject base mutations props into wrapped component', async () => {
-    const Foo = () => <div />
+    const Foo = jest.fn(() => <div>Component</div>)
     const ConnectedFoo = withMutations()(Foo)
 
-    const wrapper = shallow(<ConnectedFoo />, {
-      context: { client: clientMock }
-    })
+    render(
+      <Provider client={clientMock}>
+        <ConnectedFoo />
+      </Provider>
+    )
 
-    const { createDocument, saveDocument, deleteDocument } = wrapper.props()
+    const {
+      createDocument,
+      saveDocument,
+      deleteDocument
+    } = Foo.mock.calls[0][0]
 
     expect(typeof createDocument).toBe('function')
     expect(typeof saveDocument).toBe('function')
@@ -71,17 +80,18 @@ describe('withMutations', () => {
   })
 
   it('should inject mutations props from one source into wrapped component', async () => {
-    const Foo = () => <div />
-
+    const Foo = jest.fn(() => <div>Component</div>)
     const ConnectedFoo = withMutations(client => ({
       mutate: client => client.mutate()
     }))(Foo)
 
-    const wrapper = shallow(<ConnectedFoo />, {
-      context: { client: clientMock }
-    })
+    render(
+      <Provider client={clientMock}>
+        <ConnectedFoo />
+      </Provider>
+    )
 
-    const { mutate } = wrapper.props()
+    const { mutate } = Foo.mock.calls[0][0]
     expect(typeof mutate).toBe('function')
 
     mutate(clientMock)
@@ -89,8 +99,7 @@ describe('withMutations', () => {
   })
 
   it('should inject mutations props from several sources into wrapped component', async () => {
-    const Foo = () => <div />
-
+    const Foo = jest.fn(() => <div>Component</div>)
     const mutations = client => ({
       mutate: client => client.mutate()
     })
@@ -101,11 +110,13 @@ describe('withMutations', () => {
 
     const ConnectedFoo = withMutations(mutations, anotherMutations)(Foo)
 
-    const wrapper = shallow(<ConnectedFoo />, {
-      context: { client: clientMock }
-    })
+    render(
+      <Provider client={clientMock}>
+        <ConnectedFoo />
+      </Provider>
+    )
 
-    const { mutate, mutateAsWell } = wrapper.props()
+    const { mutate, mutateAsWell } = Foo.mock.calls[0][0]
 
     expect(typeof mutate).toBe('function')
     expect(typeof mutateAsWell).toBe('function')

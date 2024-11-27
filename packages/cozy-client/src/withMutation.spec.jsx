@@ -1,9 +1,10 @@
 import React from 'react'
-import { shallow } from 'enzyme'
+import { fireEvent, render } from '@testing-library/react'
 
 import CozyClient from './CozyClient'
 import CozyLink from './CozyLink'
 import withMutation from './withMutation'
+import Provider from './Provider'
 
 describe('withMutation', () => {
   const NEW_TODO = {
@@ -25,11 +26,12 @@ describe('withMutation', () => {
     )
     const ConnectedAddButton = withMutation(mutationCreator)(AddButton)
 
-    const wrapper = shallow(<ConnectedAddButton />, { context: { client } })
-    wrapper
-      .dive()
-      .find('button')
-      .simulate('click')
+    const wrapper = render(
+      <Provider client={client}>
+        <ConnectedAddButton />
+      </Provider>
+    )
+    fireEvent.click(wrapper.getByRole('button'))
 
     expect(mutationCreator).toHaveBeenCalledWith(NEW_TODO)
   })
@@ -42,11 +44,12 @@ describe('withMutation', () => {
       name: 'addTodo'
     })(AddButton)
 
-    const wrapper = shallow(<ConnectedAddButton />, { context: { client } })
-    wrapper
-      .dive()
-      .find('button')
-      .simulate('click')
+    const wrapper = render(
+      <Provider client={client}>
+        <ConnectedAddButton />
+      </Provider>
+    )
+    fireEvent.click(wrapper.getByRole('button'))
 
     expect(mutationCreator).toHaveBeenCalledWith(NEW_TODO)
   })

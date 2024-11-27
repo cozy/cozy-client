@@ -1,7 +1,7 @@
 import React from 'react'
 import useClient from './useClient'
 import Provider from '../Provider'
-import { mount } from 'enzyme'
+import { screen, render } from '@testing-library/react'
 
 describe('useClient', () => {
   const Component = () => {
@@ -10,11 +10,12 @@ describe('useClient', () => {
   }
   it('should get the client from the nearest Provider', () => {
     const client = { stackClient: { uri: 'https://test.mycozy.cloud' } }
-    const root = mount(
+    render(
       <Provider client={client}>
         <Component />
       </Provider>
     )
-    expect(root.html()).toBe('<div>https://test.mycozy.cloud</div>')
+
+    screen.getByText('https://test.mycozy.cloud')
   })
 })
