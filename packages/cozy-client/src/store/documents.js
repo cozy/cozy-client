@@ -173,7 +173,6 @@ export const extractAndMergeDocument = (data, updatedStateWithIncluded) => {
 
   let mergedData = Object.assign({}, updatedStateWithIncluded)
   mergedData[doctype] = Object.assign({}, updatedStateWithIncluded[doctype])
-
   Object.values(sortedData).map(data => {
     const id = properId(data)
     if (mergedData[doctype][id]) {

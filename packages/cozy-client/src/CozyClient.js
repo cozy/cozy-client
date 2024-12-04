@@ -1193,7 +1193,7 @@ client.query(Q('io.cozy.bills'))`)
           if (queryDef instanceof QueryDefinition) {
             definitions.push(queryDef)
           } else {
-            documents.push(queryDef)
+            documents.push(doc)
           }
         } catch {
           // eslint-disable-next-line
@@ -1309,6 +1309,8 @@ client.query(Q('io.cozy.bills'))`)
 
   hydrateRelationships(document, schemaRelationships) {
     const methods = this.getRelationshipStoreAccessors()
+    // FIXME: the association is created even though the relationships does not
+    // exist in the document: should we keep this behaviour?
     return mapValues(schemaRelationships, (assoc, name) =>
       createAssociation(document, assoc, methods)
     )
@@ -1421,13 +1423,29 @@ client.query(Q('io.cozy.bills'))`)
         return queryResults
       }
 
-      const data =
+      const hydratedData =
         hydrated && doctype
           ? this.hydrateDocuments(doctype, queryResults.data)
           : queryResults.data
+
+      const relationships = this.schema.getDoctypeSchema(doctype)?.relationships
+      const relationshipNames = relationships
+        ? Object.keys(relationships)
+        : null
+
+      // The `data` array contains the hydrated data with the relationships, if any.
+      // The `storeData` array contains the documents from the store: this is useful to preserve
+      // referential equality, to be later evaluated to determine whether or not the
+      // documents had changed.
       return {
         ...queryResults,
-        data: isSingleDocQuery && singleDocData ? data[0] : data
+        data:
+          isSingleDocQuery && singleDocData ? hydratedData[0] : hydratedData,
+        storeData:
+          isSingleDocQuery && singleDocData
+            ? queryResults.data[0]
+            : queryResults.data,
+        relationshipNames
       }
     } catch (e) {
       logger.warn(
