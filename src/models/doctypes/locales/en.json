@@ -1,0 +1,101 @@
+{
+  "com": {
+    "tricount.expenses": "Expenses Tricount",
+    "splitwise.expenses": "Expenses Splitwise",
+    "bitwarden.profiles": "Password manager profiles",
+    "bitwarden.ciphers": "Password manager entries",
+    "bitwarden.folders": "Password manager folders",
+    "bitwarden.organizations": "Password manager shared folders",
+    "bitwarden.contacts": "Password manager contacts",
+    "grandlyon": {
+      "enedis.*": "Electricity consumption data",
+      "grdf.*": "Gas consumption data",
+      "egl.*": "Water consumption data",
+      "ecolyo.*": "Ecolyo data"
+    }
+  },
+  "cc": {
+    "cozycloud": {
+      "autocategorization": "Categorization model enrichment file",
+      "errors": "The application logs",
+      "sentry": "The application logs",
+      "dacc": "Anonymous aggregated statistics",
+      "dacc_v2": "Anonymous aggregated statistics",
+      "dacc.dev": "Anonymous aggregated statistics for development",
+      "dacc.dev_v2": "Anonymous aggregated statistics for development",
+      "announcements": "API to retrieve announcements",
+      "announcements.uploads": "API to retrieve announcement images",
+      "announcements.dev": "API to retrieve announcements (development)",
+      "announcements.dev.uploads": "API to retrieve announcement images (development)"
+    }
+  },
+  "eu": {
+    "mycozy": {
+      "dacc": "Anonymous aggregated statistics",
+      "dacc_v2": "Anonymous aggregated statistics"
+    }
+  },
+  "io": {
+    "cozy": {
+      "accounts": "Login details",
+      "apps": "List of installed applications",
+      "apps.suggestions": "Application suggestions",
+      "bank.accounts": "Banking accounts",
+      "bank.accounts.stats": "Stats on banking accounts",
+      "bank.balancehistories": "Bank balances",
+      "bank.groups": "Banking groups",
+      "bank.operations": "Bank operations",
+      "bank.settings": "Banks app settings",
+      "bank.recipients": "Banking transfer recipients",
+      "bank.recurrence": "Banks recurrence groups",
+      "bills": "Bills",
+      "calendar": "Calendar",
+      "certified.carbon_copy": "Carbon copy",
+      "certified.electronic_safe": "Electronic safe",
+      "coachco2.settings": "CoachCO2 app settings",
+      "contacts": "Contacts",
+      "contacts.groups": "Contacts groups",
+      "contacts.accounts": "Accounts linked to the contacts",
+      "files": "Files",
+      "files.versions": "Files versions",
+      "files.*": "File-related data (files, folders, versions, ...)",
+      "identities": "Identities",
+      "jobs": "Jobs",
+      "konnectors": "Connectors for importing data",
+      "konnectors.result": "Connectors results",
+      "netflix.views": "Netflix history",
+      "netflix.opinions": "Netflix opinions",
+      "notifications": "Notifications",
+      "oauth.clients": "Connected devices",
+      "permissions": "Delegating permissions",
+      "photos.albums": "Photo albums",
+      "photos.settings": "Photo settings",
+      "settings": "Settings",
+      "sharings": "Sharing",
+      "tags": "Tags",
+      "timeseries.geojson": "Trips",
+      "timeseries.grades": "Grades",
+      "triggers": "Scheduling jobs"
+    }
+  },
+  "fr": {
+    "maif": {
+      "events": "Events (Maif)",
+      "maifuser": {
+        "contrat": "Contract (Maif)",
+        "home": "Home (Maif)",
+        "family": "Family (Maif)",
+        "paymentterms": "Payment terms (Maif)",
+        "sinistre": "Damage (Maif)",
+        "societaire": "Societary (Maif)"
+      }
+    }
+  },
+  "org": {
+    "fing": {
+      "mesinfos": {
+        "insuranceclaim": "Insurance claims (Maif)"
+      }
+    }
+  }
+}
