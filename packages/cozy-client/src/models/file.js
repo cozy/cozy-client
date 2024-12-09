@@ -617,7 +617,7 @@ export const isPlainText = (mimeType = '', fileName = '') => {
  * @returns {boolean}
  */
 export const hasQualifications = file => {
-  return has(file, 'metadata.qualification')
+  return !!get(file, 'metadata.qualification')
 }
 
 /**

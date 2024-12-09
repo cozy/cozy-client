@@ -145,6 +145,7 @@
       }
     },
     "themes": {
+      "none": "Aucun",
       "activity": "Activités & loisirs",
       "family": "Famille",
       "finance": "Finances",
