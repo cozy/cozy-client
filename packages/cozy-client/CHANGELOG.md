@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [51.5.0](https://github.com/cozy/cozy-client/compare/v51.4.0...v51.5.0) (2024-12-10)
+
+
+### Bug Fixes
+
+* Fn hasQualifications was returning true for null / undefined values ([0b7a40a](https://github.com/cozy/cozy-client/commit/0b7a40a93fde5a5b8096f02f253e5d22a0d27d83))
+
+
+### Features
+
+* Add "none" translation in document themes ([ac082de](https://github.com/cozy/cozy-client/commit/ac082ded2c7111bf578b5acb354f2318bd6e005d))
+
+
+
+
+
 # [51.4.0](https://github.com/cozy/cozy-client/compare/v51.3.1...v51.4.0) (2024-11-29)
 
 
