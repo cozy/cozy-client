@@ -260,6 +260,20 @@ describe('TriggerCollection', () => {
         }
       )
     })
+
+    it('should call /data/io.cozy.triggers/_find route if partialFilter is passed', async () => {
+      stackClient.fetchJSON.mockReturnValue(FIND_RESPONSE_FIXTURES)
+      await collection.find({}, { partialFilter: { worker: 'konnector' } })
+      expect(stackClient.fetchJSON).toHaveBeenLastCalledWith(
+        'POST',
+        '/data/io.cozy.triggers/_find',
+        {
+          selector: { worker: 'konnector' },
+          skip: 0,
+          use_index: '_design/by__filter_(worker_konnector)'
+        }
+      )
+    })
   })
 
   describe('destroy', () => {
