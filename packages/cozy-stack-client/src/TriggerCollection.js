@@ -122,7 +122,8 @@ class TriggerCollection extends DocumentCollection {
    */
   async find(selector = {}, options = {}) {
     const { worker, type, ...rest } = selector
-    const hasOnlyWorkerAndType = Object.keys(rest).length === 0
+    const hasOnlyWorkerAndType =
+      Object.keys(rest).length === 0 && !options.partialFilter
     if (hasOnlyWorkerAndType) {
       // @see https://github.com/cozy/cozy-stack/blob/master/docs/jobs.md#get-jobstriggers
       const url = `/jobs/triggers?${buildParamsUrl(worker, type)}`
