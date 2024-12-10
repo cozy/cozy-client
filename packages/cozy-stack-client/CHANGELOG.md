@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [51.6.0](https://github.com/cozy/cozy-client/compare/v51.5.0...v51.6.0) (2024-12-10)
+
+
+### Features
+
+* Do not query /jobs/triggers with a partialFilter ([bb380fa](https://github.com/cozy/cozy-client/commit/bb380fa25a73ce9d268706d6d8f0b62d897f7602))
+
+
+
+
+
 # [51.0.0](https://github.com/cozy/cozy-client/compare/v50.4.0...v51.0.0) (2024-11-07)
 
 **Note:** Version bump only for package cozy-stack-client
