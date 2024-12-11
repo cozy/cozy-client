@@ -5,6 +5,7 @@ import uniqBy from 'lodash/uniqBy'
 import zip from 'lodash/zip'
 import forEach from 'lodash/forEach'
 import get from 'lodash/get'
+import uniqueId from 'lodash/uniqueId'
 import MicroEE from 'microee'
 
 import CozyStackClient, { OAuthClient } from 'cozy-stack-client'
@@ -44,6 +45,7 @@ import fetchPolicies from './policies'
 import Schema from './Schema'
 import { chain } from './CozyLink'
 import ObservableQuery from './ObservableQuery'
+import { defaultPerformances } from './performances/defaultPerformances'
 import { CozyClient as SnapshotClient } from './testing/snapshots'
 import logger from './logger'
 import { QueryIDGenerator } from './store/queries'
@@ -119,6 +121,7 @@ const DOC_UPDATE = 'update'
  * @property  {import("./types").AppMetadata}  [appMetadata] - Metadata about the application that will be used in ensureCozyMetadata
  * @property  {import("./types").ClientCapabilities} [capabilities] - Capabilities sent by the stack
  * @property  {boolean} [store] - If set to false, the client will not instantiate a Redux store automatically. Use this if you want to merge cozy-client's store with your own redux store. See [here](https://docs.cozy.io/en/cozy-client/react-integration/#1b-use-your-own-redux-store) for more information.
+ * @property {import('./performances/types').PerformancesAPI} [performancesApi] - The performance API that can be used to measure performances
  */
 
 /**
@@ -159,11 +162,15 @@ class CozyClient {
       schema = {},
       appMetadata = {},
       capabilities,
+      performancesApi,
       ...options
     } = rawOptions
     if (link) {
       logger.warn('`link` is deprecated, use `links`')
     }
+
+    /** @type {import('./performances/types').PerformancesAPI} */
+    this.performancesApi = performancesApi || defaultPerformances
 
     this.appMetadata = appMetadata
     this.loginPromise = null
@@ -183,7 +190,13 @@ class CozyClient {
     const stackClient = this.getStackClient()
     stackClient.on('error', (...args) => this.emit('error', ...args))
 
-    this.setLinks(ensureArray(link || links || new StackLink()))
+    this.setLinks(
+      ensureArray(
+        link ||
+          links ||
+          new StackLink({ performancesApi: this.performancesApi })
+      )
+    )
     this.schema = new Schema(schema, stackClient)
 
     /**
@@ -915,6 +928,9 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {Promise<import("./types").QueryResult>}
    */
   async query(queryDefinition, { update, executeFromStore, ...options } = {}) {
+    const markQuery = this.performancesApi.mark(
+      `client.query ${queryDefinition.doctype}`
+    )
     this.ensureStore()
     const queryId =
       options.as || this.queryIdGenerator.generateId(queryDefinition)
@@ -928,6 +944,7 @@ client.query(Q('io.cozy.bills'))`)
         )
       }
     }
+
     if (options.fetchPolicy) {
       if (!options.as) {
         throw new Error(
@@ -948,7 +965,6 @@ client.query(Q('io.cozy.bills'))`)
       }
     }
     this.ensureQueryExists(queryId, queryDefinition, options)
-
     try {
       const backgroundFetching =
         options.backgroundFetching !== undefined
@@ -956,24 +972,39 @@ client.query(Q('io.cozy.bills'))`)
           : this.options.backgroundFetching
       this.dispatch(loadQuery(queryId, { backgroundFetching }))
 
+      const markRequest = this.performancesApi.mark(
+        `call requestQuery ${queryDefinition.doctype}`
+      )
       const requestFn = executeFromStore
         ? () =>
             Promise.resolve(
               executeQueryFromState(this.store.getState(), queryDefinition)
             )
         : () => this.requestQuery(queryDefinition)
+      this.performancesApi.measure(markRequest, markRequest)
+
+      const markExecute = this.performancesApi.mark(
+        `call executeQuery ${queryDefinition.doctype}`
+      )
       const response = await this._promiseCache.exec(requestFn, () =>
         stringify(queryDefinition)
       )
+      this.performancesApi.measure(markExecute, markExecute)
 
+      const markDispatch = this.performancesApi.mark(
+        `dispatch result ${queryDefinition.doctype}`
+      )
       this.dispatch(
         receiveQueryResult(queryId, response, {
           update,
           backgroundFetching
         })
       )
+      this.performancesApi.measure(markDispatch, markDispatch)
+      this.performancesApi.measure(`${markQuery} success`, markQuery, undefined, 'primary')
       return response
     } catch (error) {
+      this.performancesApi.measure(`${markQuery} error`, markQuery, undefined, 'error')
       this.dispatch(receiveQueryError(queryId, error))
       // specific onError
       if (options.onError) {
@@ -1087,9 +1118,17 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {Promise<import("./types").ClientResponse>}
    */
   async requestQuery(definition) {
+    const markChainRequest = this.performancesApi.mark(
+      `requestQuery chain.request ${definition.doctype}`
+    )
     const mainResponse = await this.chain.request(definition)
+    this.performancesApi.measure(markChainRequest, markChainRequest)
 
+    const markPersist = this.performancesApi.mark(
+      `requestQuery persist ${definition.doctype}`
+    )
     await this.persistVirtualDocuments(definition, mainResponse.data)
+    this.performancesApi.measure(markPersist, markPersist)
 
     if (!definition.includes) {
       return mainResponse
@@ -1603,7 +1642,7 @@ instantiation of the client.`
 
   ensureStore() {
     if (!this.store) {
-      this.setStore(createStore())
+      this.setStore(createStore(this.performancesApi))
     }
   }
 
@@ -1716,7 +1755,7 @@ instantiation of the client.`
   }
 
   reducer() {
-    return reducer
+    return reducer(this.performancesApi)
   }
 
   dispatch(action) {
@@ -1827,7 +1866,9 @@ instantiation of the client.`
    * @param {Array<object>} links - The links to handle
    */
   setLinks(links) {
-    this.links = links ? links : [new StackLink()]
+    this.links = links
+      ? links
+      : [new StackLink({ performancesApi: this.performancesApi })]
     this.registerClientOnLinks()
     this.chain = chain(this.links)
 

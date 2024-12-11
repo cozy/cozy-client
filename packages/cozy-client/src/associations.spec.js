@@ -1,5 +1,6 @@
 import CozyClient from './CozyClient'
 import CozyLink from './CozyLink'
+import { defaultPerformances } from './performances/defaultPerformances'
 import { createStore, getQueryFromStore } from './store'
 import { receiveQueryResult, initQuery } from './store/queries'
 
@@ -21,7 +22,7 @@ describe('Associations', () => {
       .shift()
 
   beforeEach(async () => {
-    const store = createStore()
+    const store = createStore(defaultPerformances)
     client.setStore(store, { force: true })
     await store.dispatch(initQuery('allTodos', { doctype: 'io.cozy.todos' }))
     await store.dispatch(

@@ -70,3 +70,5 @@ export * from './mock'
 
 export * from './hooks'
 export { BulkEditError } from './errors'
+export { webPerformances } from './performances/webPerformances'
+export { defaultPerformances } from './performances/defaultPerformances'

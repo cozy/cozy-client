@@ -50,6 +50,56 @@ const useQuery = (queryDefinition, options) => {
   }
 
   const client = useClient()
+  const equalityCheckForQuery = (queryResA, queryResB) => {
+    //console.log('Call equality check : ', queryResA, queryResB)
+    if (queryResA === queryResB) {
+      // Referential equality
+      return true
+    }
+  
+    if (
+      typeof queryResA !== 'object' ||
+      queryResA === null ||
+      typeof queryResB !== 'object' ||
+      queryResB === null
+    ) {
+      // queryResA or queryResB is not an object or null
+      return false
+    }
+  
+    if (queryResA.id !== queryResB.id) {
+      return false
+    }
+    if (queryResA.fetchStatus !== queryResB.fetchStatus) {
+      return false
+    }
+  
+    const docsA = queryResA.data
+    const docsB = queryResB.data
+    if (!docsA || !docsB) {
+      // No data to check
+      return false
+    }
+  
+    if (docsA.length !== docsB.length) {
+      // A document was added or removed
+      return false
+    }
+  
+    for (let i = 0; i < docsA.length; i++) {
+      if (docsA[i]._rev !== docsB[i]._rev) {
+        // Let's rely on revision
+        console.log('docs are not the same !', docsA[i], docsB[i]);
+        return false
+      }
+      // if (docsA[i] !== docsB[i]) {
+      //   // References should be the same for non-updated documents
+      //   return false
+      // }
+    }
+    //console.log('docs are same')
+    return true
+  }
   const queryState = useSelector(() => {
     if (options.singleDocData === undefined && definition?.id) {
       logger.warn(
@@ -61,7 +111,7 @@ const useQuery = (queryDefinition, options) => {
       hydrated: get(options, 'hydrated', true),
       singleDocData: get(options, 'singleDocData', false)
     })
-  })
+  }, equalityCheckForQuery)
 
   useEffect(
     () => {

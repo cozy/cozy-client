@@ -1,4 +1,5 @@
 import zipWith from 'lodash/zipWith'
+import uniqueId from 'lodash/uniqueId'
 
 import { MutationTypes, QueryDefinition } from './queries/dsl'
 import CozyLink from './CozyLink'
@@ -6,6 +7,7 @@ import { DOCTYPE_FILES } from './const'
 import { BulkEditError } from './errors'
 import logger from './logger'
 import { isReactNativeOfflineError } from './utils'
+import { defaultPerformances } from './performances/defaultPerformances'
 
 /**
  *
@@ -56,6 +58,7 @@ export const transformBulkDocsResponse = (bulkResponse, originalDocuments) => {
  * @property {object} [stackClient] - A StackClient
  * @property {object} [client] - A StackClient (deprecated)
  * @property {import('cozy-pouch-link/dist/types').LinkPlatform} [platform] - Platform specific adapters and methods
+ * @property {import('./performances/types').PerformancesAPI} [performancesApi] - The performance API that can be used to measure performances
  */
 
 /**
@@ -65,7 +68,7 @@ export default class StackLink extends CozyLink {
   /**
    * @param {StackLinkOptions} [options] - Options
    */
-  constructor({ client, stackClient, platform } = {}) {
+  constructor({ client, stackClient, platform, performancesApi } = {}) {
     super()
     if (client) {
       logger.warn(
@@ -74,6 +77,9 @@ export default class StackLink extends CozyLink {
     }
     this.stackClient = stackClient || client
     this.isOnline = platform?.isOnline
+
+    /** @type {import('./performances/types').PerformancesAPI} */
+    this.performancesApi = performancesApi || defaultPerformances
   }
 
   registerClient(client) {
@@ -93,7 +99,13 @@ export default class StackLink extends CozyLink {
       if (operation.mutationType) {
         return await this.executeMutation(operation, result, forward)
       }
-      return await this.executeQuery(operation)
+      const markName = this.performancesApi.mark(
+        `executeQuery ${operation.doctype}`
+      )
+      const queryResult = await this.executeQuery(operation)
+      this.performancesApi.measure(markName, markName)
+
+      return queryResult
     } catch (err) {
       if (isReactNativeOfflineError(err)) {
         return forward(operation)

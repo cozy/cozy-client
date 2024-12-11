@@ -2,7 +2,8 @@ import {
   MutationTypes,
   CozyLink,
   getDoctypeFromOperation,
-  BulkEditError
+  BulkEditError,
+  defaultPerformances
 } from 'cozy-client'
 import PouchDB from 'pouchdb-browser'
 import PouchDBFind from 'pouchdb-find'
@@ -78,6 +79,7 @@ const normalizeAll = client => (docs, doctype) => {
  * @property {string[]} doctypes Doctypes to replicate
  * @property {Record<string, object>} doctypesReplicationOptions A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote")
  * @property {import('./types').LinkPlatform} platform Platform specific adapters and methods
+ * @property {import('cozy-client/src/performances/types').PerformancesAPI} [performancesApi] - The performance API that can be used to measure performances
  */
 
 /**
@@ -101,7 +103,8 @@ class PouchLink extends CozyLink {
       periodicSync,
       initialSync,
       syncDebounceDelayInMs,
-      syncDebounceMaxDelayInMs
+      syncDebounceMaxDelayInMs,
+      performancesApi
     } = options
     this.options = options
     if (!doctypes) {
@@ -129,6 +132,9 @@ class PouchLink extends CozyLink {
         maxWait: syncDebounceMaxDelayInMs || MAX_DEBOUNCE_DELAY
       }
     )
+
+    /** @type {import('cozy-client/src/performances/types').PerformancesAPI} */
+    this.performancesApi = performancesApi || defaultPerformances
   }
 
   /**
