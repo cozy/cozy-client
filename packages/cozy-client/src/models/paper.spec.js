@@ -194,6 +194,66 @@ describe('Expiration', () => {
     )
   })
 
+  describe('makeMetadataQualification', () => {
+    it('should return formatted metadata', () => {
+      const fakeMetadata = {
+        number: '111111',
+        AObtentionDate: '2029-12-01T23:00:00.000Z',
+        expirationDate: '2029-12-05T23:00:00.000Z'
+      }
+
+      const res = paperModel.makeMetadataQualification({
+        metadata: fakeMetadata,
+        knownMetadataPath: 'expirationDate'
+      })
+
+      expect(res).toEqual({
+        name: 'expirationDate',
+        value: '2029-12-05T23:00:00.000Z'
+      })
+    })
+
+    it('should return formatted metadata only if matching label', () => {
+      const fakeMetadata = {
+        number: '111111',
+        AObtentionDate: '2029-12-01T23:00:00.000Z',
+        BObtentionDate: '2029-12-02T23:00:00.000Z',
+        CObtentionDate: '2029-12-03T23:00:00.000Z',
+        expirationDate: '2029-12-05T23:00:00.000Z',
+        referencedDate: '2029-12-06T23:00:00.000Z',
+        issueDate: '2029-12-07T23:00:00.000Z',
+        shootingDate: '2029-12-08T23:00:00.000Z',
+        date: '2029-12-09T23:00:00.000Z',
+        datetime: '2029-12-10T23:00:00.000Z',
+        qualification: { label: 'fake_label' },
+        page: 'front',
+        contact: 'Alice Durand',
+        noticePeriod: ''
+      }
+
+      const metadataLabels = [
+        'AObtentionDate',
+        'BObtentionDate',
+        'CObtentionDate',
+        'DObtentionDate'
+      ]
+
+      const res = metadataLabels.map(dateName =>
+        paperModel.makeMetadataQualification({
+          metadata: fakeMetadata,
+          knownMetadataPath: dateName
+        })
+      )
+
+      expect(res).toEqual([
+        { name: 'AObtentionDate', value: '2029-12-01T23:00:00.000Z' },
+        { name: 'BObtentionDate', value: '2029-12-02T23:00:00.000Z' },
+        { name: 'CObtentionDate', value: '2029-12-03T23:00:00.000Z' },
+        null
+      ])
+    })
+  })
+
   describe('formatMetadataQualification', () => {
     it('should return correctly formatted metadata', () => {
       const fakeMetadata = {

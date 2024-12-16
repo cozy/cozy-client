@@ -221,7 +221,11 @@ export const isExpiringSoon = file => {
  * @param {string | null} [params.value] - Value of the metadata
  * @returns {{ name: string, value: string | null }} displayable metadata
  */
-const makeMetadataQualification = ({ metadata, knownMetadataPath, value }) => {
+export const makeMetadataQualification = ({
+  metadata,
+  knownMetadataPath,
+  value
+}) => {
   const _value = value || get(metadata, knownMetadataPath, null) || null
   const shouldReturnThisMetadata = Object.keys(metadata).some(val =>
     knownMetadataPath.startsWith(val)
