@@ -44,7 +44,7 @@ The result path
 
 *Defined in*
 
-[packages/cozy-client/src/models/konnectorFolder.js:154](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L154)
+[packages/cozy-client/src/models/konnectorFolder.js:158](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L158)
 
 ***
 
@@ -69,7 +69,47 @@ Permission object
 
 *Defined in*
 
-[packages/cozy-client/src/models/konnectorFolder.js:266](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L266)
+[packages/cozy-client/src/models/konnectorFolder.js:314](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L314)
+
+***
+
+### buildMainFolderPath
+
+▸ **buildMainFolderPath**(`konnector`, `magicFolders?`): `string`
+
+Build konnector main folder path for a given konnector.
+
+If konnector.folders\[0].defaultDir exists, it is used as default directory.
+
+Occurrences of following strings in base directory are replaced by:
+
+*   `$administrative`: Administrative folder
+*   `$photos`: Photos folder
+
+Occurrences of following strings in path are replaced by:
+
+*   `$konnector`: Konnector name
+
+If no konnectors.folders\[0].defaultDir is set, the default dir used is
+
+*   `$administrative/$konnector`
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `konnector` | `IOCozyKonnector` | Konnector document |
+| `magicFolders` | `Object` | Object containing a mapping from folder identifiers (ex: $administrative) to their localized values (ex: Administratif). |
+
+*Returns*
+
+`string`
+
+The result path
+
+*Defined in*
+
+[packages/cozy-client/src/models/konnectorFolder.js:204](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L204)
 
 ***
 
@@ -94,7 +134,7 @@ Directory attributes
 
 *Defined in*
 
-[packages/cozy-client/src/models/konnectorFolder.js:102](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L102)
+[packages/cozy-client/src/models/konnectorFolder.js:107](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L107)
 
 ***
 
@@ -145,7 +185,7 @@ try to find a konnector account folder using file references
 
 *Defined in*
 
-[packages/cozy-client/src/models/konnectorFolder.js:374](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L374)
+[packages/cozy-client/src/models/konnectorFolder.js:422](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L422)
 
 ***
 
@@ -172,4 +212,4 @@ Created io.cozy.files document
 
 *Defined in*
 
-[packages/cozy-client/src/models/konnectorFolder.js:117](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L117)
+[packages/cozy-client/src/models/konnectorFolder.js:122](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/konnectorFolder.js#L122)
