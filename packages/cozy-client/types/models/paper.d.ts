@@ -8,6 +8,14 @@ export function computeExpirationNoticeDate(file: IOCozyFile): Date | null;
 export function computeExpirationNoticeLink(file: IOCozyFile): string | null;
 export function isExpired(file: IOCozyFile): boolean;
 export function isExpiringSoon(file: IOCozyFile): boolean;
+export function makeMetadataQualification({ metadata, knownMetadataPath, value }: {
+    metadata: any;
+    knownMetadataPath: string;
+    value: string | null;
+}): {
+    name: string;
+    value: string | null;
+};
 export function formatMetadataQualification(metadata: any): {
     name: string;
     value: string | null;
