@@ -29,8 +29,6 @@ export const ensureKonnectorFolder = async (
   { konnector, account, lang }
 ) => {
   const permissions = client.collection(PERMISSIONS_DOCTYPE)
-  const fileCollection = client.collection(FILES_DOCTYPE)
-
   const t = getLocalizer(lang)
   const [adminFolder, photosFolder] = await Promise.all([
     ensureMagicFolder(
@@ -64,6 +62,19 @@ export const ensureKonnectorFolder = async (
     })
   }
 
+  const mainPath = buildMainFolderPath(konnector, {
+    administrative: adminFolder.path,
+    photos: photosFolder.path
+  })
+  const mainFolder =
+    (await statDirectoryByPath(client, mainPath)) ||
+    (await createDirectoryByPath(client, mainPath))
+
+  ensureKonnectorReference({
+    client,
+    folder: mainFolder,
+    konnector
+  })
   // if the previous shortcuts did not work, create the folders like we did before but with proper references
   const path = buildFolderPath(konnector, account, {
     administrative: adminFolder.path,
@@ -73,7 +84,6 @@ export const ensureKonnectorFolder = async (
     (await statDirectoryByPath(client, path)) ||
     (await createDirectoryByPath(client, path))
 
-  const { data: konnectorFolder } = await fileCollection.statById(folder.dir_id)
   await Promise.all([
     permissions.add(konnector, buildFolderPermission(folder)),
     ensureKonnectorReference({ client, folder, konnector }),
@@ -81,11 +91,6 @@ export const ensureKonnectorFolder = async (
       client,
       folder,
       sourceAccountIdentifier
-    }),
-    ensureKonnectorReference({
-      client,
-      folder: konnectorFolder,
-      konnector
     })
   ])
 
@@ -150,7 +155,6 @@ export const statDirectoryByPath = async (client, path) => {
  * Administratif).
  * @returns {String}           The result path
  */
-
 export const buildFolderPath = (konnector, account, magicFolders = {}) => {
   const fullPath =
     konnector?.folders?.[0]?.defaultDir || '$administrative/$konnector/$account'
@@ -174,6 +178,50 @@ export const buildFolderPath = (konnector, account, magicFolders = {}) => {
     // of `renderSubDir` function up to date.
     konnector: konnector.name,
     account: getAccountName(account).replace(sanitizeAccountIdentifierRx, '-')
+  })
+  return `/${renderedBaseDir}/${renderedPath}`
+}
+
+/**
+ * Build konnector main folder path for a given konnector.
+ *
+ * If konnector.folders[0].defaultDir exists, it is used as default directory.
+ *
+ * Occurrences of following strings in base directory are replaced by:
+ * * `$administrative`: Administrative folder
+ * * `$photos`: Photos folder
+ *
+ * Occurrences of following strings in path are replaced by:
+ * * `$konnector`: Konnector name
+ *
+ * If no konnectors.folders[0].defaultDir is set, the default dir used is
+ * *  `$administrative/$konnector`
+ *
+ * @param  {import('../types').IOCozyKonnector} konnector Konnector document
+ * @param  {Object<string, string>} magicFolders   Object containing a mapping from folder identifiers (ex: $administrative) to their localized values (ex: Administratif).
+ * @returns {String}           The result path
+ */
+export const buildMainFolderPath = (konnector, magicFolders = {}) => {
+  const fullPath =
+    konnector?.folders?.[0]?.defaultDir
+      ?.split('/')
+      ?.slice(0, -1)
+      ?.join('/') || '$administrative/$konnector'
+  let sanitizedPath = trim(fullPath.replace(/(\/+)/g, '/'), '/')
+  if (!hasBaseDir(sanitizedPath)) {
+    sanitizedPath = '$administrative/' + sanitizedPath
+  }
+  /**
+   * Now that we have our sanitizedPath, we can split it in two strings
+   * * `baseDir` containing the baseDir path
+   * * `buildedSubDir` containing the rest of the path (ie the path without baseDir)
+   */
+  const baseDir = sanitizedPath.split('/', 1)
+  const buildedSubDir = buildSubDir(sanitizedPath, baseDir[0])
+
+  const renderedBaseDir = renderBaseDir(baseDir[0], magicFolders)
+  const renderedPath = renderSubDir(buildedSubDir, {
+    konnector: konnector.name
   })
   return `/${renderedBaseDir}/${renderedPath}`
 }
@@ -239,7 +287,7 @@ const renderBaseDir = (baseDir, magicFolders = {}) => {
  * @param  {String} path      Path to render : ex '/Administratif/$konnector/$account'
  * @param  {Object} variables Object mapping variable to actual values
  * @param  {import('../types').IOCozyKonnector['name']} variables.konnector - konnector name
- * @param  {String} variables.account - account name
+ * @param  {String} [variables.account] - account name
  * @returns {String}           Rendered path
  */
 const renderSubDir = (path, variables) => {

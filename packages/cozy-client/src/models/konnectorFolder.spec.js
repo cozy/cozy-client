@@ -44,9 +44,15 @@ describe('ensureKonnectorFolder', () => {
     mockClient.query.mockResolvedValue({
       included: []
     })
-    mockClient.statByPath.mockRejectedValueOnce({ status: 404 })
+    mockClient.statByPath.mockRejectedValue({ status: 404 })
     mockClient.statById.mockResolvedValueOnce({
       data: { _id: 'parentfolderid' }
+    })
+    mockClient.createDirectoryByPath.mockResolvedValueOnce({
+      data: {
+        _id: 'createdfolderid',
+        dir_id: 'parentfolderid'
+      }
     })
     mockClient.createDirectoryByPath.mockResolvedValueOnce({
       data: {
@@ -220,6 +226,12 @@ describe('ensureKonnectorFolder', () => {
         dir_id: 'parentfolderid'
       }
     })
+    mockClient.statByPath.mockResolvedValueOnce({
+      data: {
+        _id: 'alreadyexistingfolderid',
+        dir_id: 'parentfolderid'
+      }
+    })
     const result = await ensureKonnectorFolder(mockClient, {
       konnector: {
         name: 'konnectorName',
@@ -251,9 +263,21 @@ describe('ensureKonnectorFolder', () => {
         trashed: true
       }
     })
+    mockClient.statByPath.mockResolvedValueOnce({
+      data: {
+        _id: 'folderintrash',
+        trashed: true
+      }
+    })
     mockClient.statById.mockResolvedValueOnce({
       data: {
         _id: 'parentfolderid'
+      }
+    })
+    mockClient.createDirectoryByPath.mockResolvedValueOnce({
+      data: {
+        _id: 'createdfolderid',
+        dir_id: 'parentfolderid'
       }
     })
     mockClient.createDirectoryByPath.mockResolvedValueOnce({
@@ -287,5 +311,97 @@ describe('ensureKonnectorFolder', () => {
     expect(mockClient.addReferencesTo).toHaveBeenCalledWith(konnector, [
       { _id: 'createdfolderid', dir_id: 'parentfolderid' }
     ])
+  })
+  it('should add proper references to konnector folder with proper name if any', async () => {
+    const existingKonnectorFolder = {
+      _id: 'konnectorFolderId',
+      path: '/Administratif/' + konnector.name,
+      type: 'directory',
+      referenced_by: []
+    }
+    const createdAccountFolder = {
+      _id: 'accountfolderid',
+      path: '/Administratif/' + konnector.name + '/testAccountName',
+      type: 'directory',
+      referenced_by: []
+    }
+    mockClient.query.mockResolvedValue({
+      included: []
+    })
+    mockClient.statByPath
+      .mockResolvedValueOnce({
+        data: existingKonnectorFolder
+      })
+      .mockResolvedValueOnce({ data: false })
+    mockClient.createDirectoryByPath.mockResolvedValueOnce({
+      data: createdAccountFolder
+    })
+
+    await ensureKonnectorFolder(mockClient, {
+      konnector,
+      account,
+      lang: 'fr'
+    })
+    expect(mockClient.addReferencesTo).toHaveBeenNthCalledWith(1, konnector, [
+      existingKonnectorFolder
+    ])
+    expect(mockClient.addReferencesTo).toHaveBeenNthCalledWith(2, konnector, [
+      createdAccountFolder
+    ])
+    expect(mockClient.addReferencesTo).toHaveBeenNthCalledWith(
+      3,
+      {
+        _id: 'testAccountName',
+        _type: 'io.cozy.accounts.sourceAccountIdentifier'
+      },
+      [createdAccountFolder]
+    )
+    expect(mockClient.addReferencesTo).toHaveBeenCalledTimes(3)
+  })
+
+  it('should add proper references to konnector folder even if account folder has konnector reference', async () => {
+    const existingKonnectorFolder = {
+      _id: 'konnectorFolderId',
+      path: '/Administratif/' + konnector.name,
+      type: 'directory',
+      referenced_by: []
+    }
+    const existingAccountFolder = {
+      _id: 'accountfolderid',
+      path: '/Administratif/' + konnector.name + '/testAccountName',
+      type: 'directory',
+      referenced_by: [
+        {
+          type: 'io.cozy.konnectors',
+          id: 'io.cozy.konnectors/konnectorSlug'
+        }
+      ]
+    }
+    mockClient.query.mockResolvedValue({
+      included: []
+    })
+    mockClient.statByPath
+      .mockResolvedValueOnce({
+        data: existingKonnectorFolder
+      })
+      .mockResolvedValueOnce({ data: existingAccountFolder })
+    await ensureKonnectorFolder(mockClient, {
+      konnector,
+      account,
+      lang: 'fr'
+    })
+    expect(mockClient.addReferencesTo).toHaveBeenCalledTimes(2)
+    expect(mockClient.addReferencesTo).toHaveBeenNthCalledWith(1, konnector, [
+      existingKonnectorFolder
+    ])
+    expect(mockClient.addReferencesTo).toHaveBeenNthCalledWith(
+      2,
+      {
+        _id: 'testAccountName',
+        _type: 'io.cozy.accounts.sourceAccountIdentifier'
+      },
+      [existingAccountFolder]
+    )
+    expect(mockClient.createDirectoryByPath).not.toHaveBeenCalled()
   })
 })
