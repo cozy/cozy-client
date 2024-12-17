@@ -121,8 +121,8 @@ const DOC_UPDATE = 'update'
  * @property  {import("./types").AppMetadata}  [appMetadata] - Metadata about the application that will be used in ensureCozyMetadata
  * @property  {import("./types").ClientCapabilities} [capabilities] - Capabilities sent by the stack
  * @property  {boolean} [useCustomStore=false] - If set to true, the client will not instantiate a Redux store automatically. Use this if you want to merge cozy-client's store with your own redux store. Note will have to call `setStore` eventually. See [here](https://docs.cozy.io/en/cozy-client/react-integration/#1b-use-your-own-redux-store) for more information.
- * @property  {boolean} [disableStoreForQueries=false] - If set to true, the client will not leverage the redux store to execute queries and store data. 
- 
+ * @property  {boolean} [disableStoreForQueries=false] - If set to true, the client will not leverage the redux store to execute queries and store data.
+ * @property  {boolean} [forceHydratation] - If set to true, all documents will be hydrated w.r.t. the provided schema's relationships, even if the relationship does not exist on the doc.
  * @property {import('./performances/types').PerformanceAPI} [performanceApi] - The performance API that can be used to measure performances
  */
 
@@ -237,6 +237,7 @@ class CozyClient {
       this.ensureStore()
     }
     this.disableStoreForQueries = options.disableStoreForQueries || false
+    this.forceHydratation = options.forceHydratation || false
   }
 
   /**
@@ -1402,17 +1403,23 @@ client.query(Q('io.cozy.bills'))`)
       return document
     }
     const schema = schemaArg || this.schema.getDoctypeSchema(document._type)
+    const hydratedRelationships = this.hydrateRelationships(
+      document,
+      schema.relationships
+    )
     return {
       ...document,
-      ...this.hydrateRelationships(document, schema.relationships)
+      ...hydratedRelationships
     }
   }
 
   hydrateRelationships(document, schemaRelationships) {
     const methods = this.getRelationshipStoreAccessors()
-    return mapValues(schemaRelationships, (assoc, name) =>
-      createAssociation(document, assoc, methods)
-    )
+    return mapValues(schemaRelationships, (assoc, name) => {
+      if (this.options?.forceHydratation || document.relationships?.[name]) {
+        return createAssociation(document, assoc, methods)
+      }
+    })
   }
 
   generateRandomId() {
