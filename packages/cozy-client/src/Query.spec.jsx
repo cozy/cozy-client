@@ -195,6 +195,8 @@ describe('Query', () => {
           count: 0,
           fetchedPagesCount: 0,
           data: [],
+          storeData: [],
+          relationshipNames: null,
           definition: { doctype: 'io.cozy.todos' },
           fetch: expect.any(Function),
           fetchMore: expect.any(Function),
