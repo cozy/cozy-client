@@ -5,6 +5,7 @@ import useClient from './useClient'
 import logger from '../logger'
 import { clientContext } from '../context'
 import { QueryDefinition } from '../queries/dsl'
+import { equalityCheckForQuery } from '../store/selector'
 
 // @ts-ignore We use our own store in with Redux
 const useSelector = createSelectorHook(clientContext)
@@ -62,7 +63,7 @@ const useQuery = (queryDefinition, options) => {
       hydrated: get(options, 'hydrated', true),
       singleDocData: get(options, 'singleDocData', false)
     })
-  })
+  }, equalityCheckForQuery)
 
   useEffect(
     () => {

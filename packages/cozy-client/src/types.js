@@ -269,16 +269,22 @@ import { QueryDefinition } from './queries/dsl'
  * @property {number} fetchedPagesCount
  * @property {string} bookmark
  * @property {object} [execution_stats]
+ * @property {Array<string>} relationshipNames - The relationships names, used to check hydrated documents
  * @property {QueryOptions} [options]
  */
 
 /**
  * @typedef {object} QueryStateData
- * @property {object|Array} data
+ * @property {object|Array} data - Collection of hydrated documents
  */
 
 /**
- * @typedef {QueryStateWithoutData & QueryStateData} QueryState
+ * @typedef {object} QueryStateStoreData
+ * @property {object|Array} storeData - Collection of store's documents
+ */
+
+/**
+ * @typedef {QueryStateWithoutData & QueryStateData & QueryStateStoreData} QueryState
  */
 
 /**
