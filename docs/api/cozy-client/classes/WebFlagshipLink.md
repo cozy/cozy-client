@@ -90,7 +90,7 @@ Persist the given data into the links storage
 
 ### request
 
-▸ **request**(`operation`, `result`, `forward`): `Promise`<`boolean`>
+▸ **request**(`operation`, `options`, `result`, `forward`): `Promise`<`boolean`>
 
 Request the given operation from the link
 
@@ -99,6 +99,7 @@ Request the given operation from the link
 | Name | Type |
 | :------ | :------ |
 | `operation` | `any` |
+| `options` | `any` |
 | `result` | `any` |
 | `forward` | `any` |
 
