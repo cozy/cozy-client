@@ -6,6 +6,7 @@ import { DOCTYPE_FILES } from './const'
 import { BulkEditError } from './errors'
 import logger from './logger'
 import { isReactNativeOfflineError } from './utils'
+import { defaultPerformanceApi } from './performances/defaultPerformanceApi'
 
 /**
  *
@@ -56,6 +57,7 @@ export const transformBulkDocsResponse = (bulkResponse, originalDocuments) => {
  * @property {object} [stackClient] - A StackClient
  * @property {object} [client] - A StackClient (deprecated)
  * @property {import('cozy-pouch-link/dist/types').LinkPlatform} [platform] - Platform specific adapters and methods
+ * @property {import('./performances/types').PerformanceAPI} [performanceApi] - The performance API that can be used to measure performances
  */
 
 /**
@@ -65,7 +67,7 @@ export default class StackLink extends CozyLink {
   /**
    * @param {StackLinkOptions} [options] - Options
    */
-  constructor({ client, stackClient, platform } = {}) {
+  constructor({ client, stackClient, platform, performanceApi } = {}) {
     super()
     if (client) {
       logger.warn(
@@ -74,6 +76,9 @@ export default class StackLink extends CozyLink {
     }
     this.stackClient = stackClient || client
     this.isOnline = platform?.isOnline
+
+    /** @type {import('./performances/types').PerformanceAPI} */
+    this.performanceApi = performanceApi || defaultPerformanceApi
   }
 
   registerClient(client) {
