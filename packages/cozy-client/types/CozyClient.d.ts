@@ -76,6 +76,10 @@ export type ClientOptions = {
      * - If set to false, the client will not instantiate a Redux store automatically. Use this if you want to merge cozy-client's store with your own redux store. See [here](https://docs.cozy.io/en/cozy-client/react-integration/#1b-use-your-own-redux-store) for more information.
      */
     store?: boolean;
+    /**
+     * - The performance API that can be used to measure performances
+     */
+    performanceApi?: import('./performances/types').PerformanceAPI;
 };
 /**
  * @typedef {import("./types").CozyClientDocument} CozyClientDocument
@@ -99,6 +103,7 @@ export type ClientOptions = {
  * @property  {import("./types").AppMetadata}  [appMetadata] - Metadata about the application that will be used in ensureCozyMetadata
  * @property  {import("./types").ClientCapabilities} [capabilities] - Capabilities sent by the stack
  * @property  {boolean} [store] - If set to false, the client will not instantiate a Redux store automatically. Use this if you want to merge cozy-client's store with your own redux store. See [here](https://docs.cozy.io/en/cozy-client/react-integration/#1b-use-your-own-redux-store) for more information.
+ * @property {import('./performances/types').PerformanceAPI} [performanceApi] - The performance API that can be used to measure performances
  */
 /**
  * Responsible for
@@ -189,6 +194,8 @@ declare class CozyClient {
      * Cozy-Client will automatically call `this.login()` if provided with a token and an uri
      */
     constructor(rawOptions?: ClientOptions);
+    /** @type {import('./performances/types').PerformanceAPI} */
+    performanceApi: import('./performances/types').PerformanceAPI;
     appMetadata: import("./types").AppMetadata;
     loginPromise: Promise<void>;
     options: {

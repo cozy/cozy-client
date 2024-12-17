@@ -10,6 +10,8 @@ export * from "./mock";
 export * from "./cli";
 export { BulkEditError } from "./errors";
 export { default as fetchPolicies } from "./policies";
+export { webPerformanceApi } from "./performances/webPerformanceApi";
+export { defaultPerformanceApi } from "./performances/defaultPerformanceApi";
 import * as manifest from "./models/manifest";
 import * as models from "./models";
 export { manifest, models };
