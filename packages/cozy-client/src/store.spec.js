@@ -1,6 +1,7 @@
 import { createStore, combineReducers } from 'redux'
 import sortBy from 'lodash/sortBy'
 
+import { defaultPerformanceApi } from './performances/defaultPerformanceApi'
 import reducer, {
   initQuery,
   getCollectionFromState,
@@ -25,7 +26,9 @@ import {
 describe('Store', () => {
   let store
   beforeEach(() => {
-    store = createStore(combineReducers({ cozy: reducer }))
+    store = createStore(
+      combineReducers({ cozy: reducer(defaultPerformanceApi) })
+    )
   })
 
   describe('documents state', () => {

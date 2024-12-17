@@ -49,33 +49,65 @@ export class StoreProxy {
 
 const initialState = { documents: {}, queries: {} }
 
-const combinedReducer = (state = initialState, action) => {
+const combinedReducer = performanceApi => (state = initialState, action) => {
+  const markName = performanceApi.mark('combinedReducer')
+
   if (action.type == RESET_ACTION_TYPE) {
+    performanceApi.measure({
+      markName: markName,
+      measureName: `${markName} reset`,
+      category: 'CozyClientStore'
+    })
     return initialState
   }
   if (!isQueryAction(action) && !isMutationAction(action)) {
+    performanceApi.measure({
+      markName: markName,
+      measureName: `${markName} no query nor mutate action`,
+      category: 'CozyClientStore'
+    })
     return state
   }
   if (action.update) {
     const proxy = new StoreProxy(state)
     action.update(proxy, action.response)
-    return {
+    const newState = {
       documents: proxy.getState().documents,
       queries: queries(
+        performanceApi,
         proxy.getState().queries,
         action,
         proxy.getState().documents
       )
     }
+    performanceApi.measure({
+      markName: markName,
+      measureName: `${markName} update action`,
+      category: 'CozyClientStore'
+    })
+    return newState
   }
 
   const nextDocuments = documents(state.documents, action)
   const haveDocumentsChanged = nextDocuments !== state.documents
 
-  return {
+  const queriesResult = {
     documents: nextDocuments,
-    queries: queries(state.queries, action, nextDocuments, haveDocumentsChanged)
+    queries: queries(
+      performanceApi,
+      state.queries,
+      action,
+      nextDocuments,
+      haveDocumentsChanged
+    )
   }
+
+  performanceApi.measure({
+    markName: markName,
+    measureName: `${markName} queries`,
+    category: 'CozyClientStore'
+  })
+  return queriesResult
 }
 export default combinedReducer
 
@@ -85,9 +117,9 @@ const composedEnhancer =
   // see https://github.com/reduxjs/redux-devtools/tree/main/extension#11-basic-store
   (flag('debug') && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose
 
-export const createStore = () =>
+export const createStore = performanceApi =>
   createReduxStore(
-    combineReducers({ cozy: combinedReducer }),
+    combineReducers({ cozy: combinedReducer(performanceApi) }),
     composedEnhancer(applyMiddleware(thunk))
   )
 

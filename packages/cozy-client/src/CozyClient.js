@@ -1622,7 +1622,7 @@ instantiation of the client.`
 
   ensureStore() {
     if (!this.store) {
-      this.setStore(createStore())
+      this.setStore(createStore(this.performanceApi))
     }
   }
 
@@ -1735,7 +1735,7 @@ instantiation of the client.`
   }
 
   reducer() {
-    return reducer
+    return reducer(this.performanceApi)
   }
 
   dispatch(action) {
