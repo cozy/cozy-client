@@ -89,19 +89,19 @@ export default class StackLink extends CozyLink {
     this.stackClient = null
   }
 
-  async request(operation, result, forward) {
-    if (this.isOnline && !(await this.isOnline())) {
-      return forward(operation)
+  async request(operation, options, result, forward) {
+    if (!options?.forceStack && this.isOnline && !(await this.isOnline())) {
+      return forward(operation, options)
     }
 
     try {
       if (operation.mutationType) {
-        return await this.executeMutation(operation, result, forward)
+        return await this.executeMutation(operation, options, result, forward)
       }
       return await this.executeQuery(operation)
     } catch (err) {
-      if (isReactNativeOfflineError(err)) {
-        return forward(operation)
+      if (!options?.forceStack && isReactNativeOfflineError(err)) {
+        return forward(operation, options)
       }
       throw err
     }
@@ -138,7 +138,7 @@ export default class StackLink extends CozyLink {
     }
   }
 
-  async executeMutation(mutation, result, forward) {
+  async executeMutation(mutation, options, result, forward) {
     const { mutationType, document: doc, documents: docs, ...props } = mutation
     switch (mutationType) {
       case MutationTypes.CREATE_DOCUMENT:
@@ -182,7 +182,7 @@ export default class StackLink extends CozyLink {
           .collection(DOCTYPE_FILES)
           .upload(props.file, props.dirPath)
       default:
-        return forward(mutation, result)
+        return forward(mutation, options, result)
     }
   }
 }

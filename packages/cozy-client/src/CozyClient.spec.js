@@ -64,13 +64,13 @@ describe('CozyClient initialization', () => {
 
   beforeEach(() => {
     links = [
-      new CozyLink((operation, result = '', forward) => {
-        return forward(operation, result + 'foo')
+      new CozyLink((operation, options, result = '', forward) => {
+        return forward(operation, options, result + 'foo')
       }),
-      new CozyLink((operation, result, forward) => {
-        return forward(operation, result + 'bar')
+      new CozyLink((operation, options, result, forward) => {
+        return forward(operation, options, result + 'bar')
       }),
-      (operation, result) => {
+      (operation, options, result) => {
         return result + 'baz'
       }
     ]
@@ -475,13 +475,13 @@ describe('CozyClient logout', () => {
 
   beforeEach(() => {
     links = [
-      new CozyLink((operation, result = '', forward) => {
-        return forward(operation, result + 'foo')
+      new CozyLink((operation, options, result = '', forward) => {
+        return forward(operation, options, result + 'foo')
       }),
-      new CozyLink((operation, result, forward) => {
-        return forward(operation, result + 'bar')
+      new CozyLink((operation, options, result, forward) => {
+        return forward(operation, options, result + 'bar')
       }),
-      (operation, result) => {
+      (operation, options, result) => {
         return result + 'baz'
       }
     ]
@@ -632,13 +632,13 @@ describe('CozyClient login', () => {
 
   beforeEach(() => {
     links = [
-      new CozyLink((operation, result = '', forward) => {
-        return forward(operation, result + 'foo')
+      new CozyLink((operation, options, result = '', forward) => {
+        return forward(operation, options, result + 'foo')
       }),
-      new CozyLink((operation, result, forward) => {
-        return forward(operation, result + 'bar')
+      new CozyLink((operation, options, result, forward) => {
+        return forward(operation, options, result + 'bar')
       }),
-      (operation, result) => {
+      (operation, options, result) => {
         return result + 'baz'
       }
     ]
