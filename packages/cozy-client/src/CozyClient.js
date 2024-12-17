@@ -1217,7 +1217,7 @@ client.query(Q('io.cozy.bills'))`)
           if (queryDef instanceof QueryDefinition) {
             definitions.push(queryDef)
           } else {
-            documents.push(queryDef)
+            documents.push(doc)
           }
         } catch {
           // eslint-disable-next-line
