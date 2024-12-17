@@ -18,8 +18,8 @@ export default class WebFlagshipLink extends CozyLink {
     // does nothing, we don't need any client for this kind of link
   }
 
-  async request(operation, result, forward) {
-    return this.webviewIntent.call('flagshipLinkRequest', operation)
+  async request(operation, options, result, forward) {
+    return this.webviewIntent.call('flagshipLinkRequest', operation, options)
   }
 
   async persistCozyData(data, forward) {
