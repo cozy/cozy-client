@@ -2,7 +2,8 @@ import {
   MutationTypes,
   CozyLink,
   getDoctypeFromOperation,
-  BulkEditError
+  BulkEditError,
+  defaultPerformanceApi
 } from 'cozy-client'
 import PouchDB from 'pouchdb-browser'
 import PouchDBFind from 'pouchdb-find'
@@ -78,6 +79,7 @@ const normalizeAll = client => (docs, doctype) => {
  * @property {string[]} doctypes Doctypes to replicate
  * @property {Record<string, object>} doctypesReplicationOptions A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote")
  * @property {import('./types').LinkPlatform} platform Platform specific adapters and methods
+ * @property {import('cozy-client/src/performances/types').PerformanceAPI} [performanceApi] - The performance API that can be used to measure performances
  */
 
 /**
@@ -101,7 +103,8 @@ class PouchLink extends CozyLink {
       periodicSync,
       initialSync,
       syncDebounceDelayInMs,
-      syncDebounceMaxDelayInMs
+      syncDebounceMaxDelayInMs,
+      performanceApi
     } = options
     this.options = options
     if (!doctypes) {
@@ -129,6 +132,9 @@ class PouchLink extends CozyLink {
         maxWait: syncDebounceMaxDelayInMs || MAX_DEBOUNCE_DELAY
       }
     )
+
+    /** @type {import('cozy-client/src/performances/types').PerformanceAPI} */
+    this.performanceApi = performanceApi || defaultPerformanceApi
   }
 
   /**
@@ -201,6 +207,7 @@ class PouchLink extends CozyLink {
       logger.warn("PouchLink: no client registered, can't login")
       return
     }
+    const markName = this.performanceApi.mark('onLogin')
 
     const prefix = getPrefix(this.client.stackClient.uri)
 
@@ -250,6 +257,10 @@ class PouchLink extends CozyLink {
     if (this.client && this.initialSync) {
       this.startReplication()
     }
+    this.performanceApi.measure({
+      markName: markName,
+      category: 'CozyPouchLink'
+    })
   }
 
   async reset() {
@@ -506,6 +517,7 @@ class PouchLink extends CozyLink {
   }
 
   async persistCozyData(data, forward = doNothing) {
+    const markName = this.performanceApi.mark('persistCozyData')
     const sanitizedDoc = this.sanitizeJsonApi(data)
     sanitizedDoc.cozyLocalOnly = true
 
@@ -516,6 +528,7 @@ class PouchLink extends CozyLink {
 
     const db = this.pouches.getPouch(data._type)
     await db.put(sanitizedDoc)
+    this.performanceApi.measure({ markName, category: 'CozyPouchLink' })
   }
 
   /**
@@ -530,7 +543,12 @@ class PouchLink extends CozyLink {
   async getExistingDocument(id, type, throwIfNotFound = false) {
     try {
       const db = this.pouches.getPouch(type)
+
+      const markName = this.performanceApi.mark(
+        'db.get from getExistingDocument'
+      )
       const existingDoc = await db.get(id)
+      this.performanceApi.measure({ markName, category: 'PouchDB' })
 
       return existingDoc
     } catch (err) {
@@ -667,18 +685,27 @@ class PouchLink extends CozyLink {
     indexedFields,
     partialFilter
   }) {
+    const markName = this.performanceApi.mark('executeQuery')
     const db = this.getPouch(doctype)
     let res, withRows
     if (id) {
+      const markName = this.performanceApi.mark('db.get from executeQuery')
       res = await db.get(id)
+      this.performanceApi.measure({ markName, category: 'PouchDB' })
       withRows = false
     } else if (ids) {
+      const markName = this.performanceApi.mark(
+        'allDocs from executeQuery with ids'
+      )
       res = await allDocs(db, { include_docs: true, keys: ids })
+      this.performanceApi.measure({ markName, category: 'PouchDB' })
       res = withoutDesignDocuments(res)
       res.total_rows = null // pouch indicates the total number of docs in res.total_rows, even though we use "keys". Setting it to null avoids cozy-client thinking there are more docs to fetch.
       withRows = true
     } else if (!selector && !partialFilter && !fields && !sort) {
+      const markName = this.performanceApi.mark('allDocs from executeQuery')
       res = await allDocs(db, { include_docs: true, limit })
+      this.performanceApi.measure({ markName, category: 'PouchDB' })
       res = withoutDesignDocuments(res)
       withRows = true
     } else {
@@ -704,20 +731,30 @@ class PouchLink extends CozyLink {
         partialFilter
       })
       findOpts.use_index = index.id
+      const markName = this.performanceApi.mark('find from executeQuery')
       res = await find(db, findOpts)
+      this.performanceApi.measure({ markName, category: 'PouchDB' })
       res.offset = skip
       res.limit = limit
       withRows = true
     }
-    return jsonapi.fromPouchResult({
+    const jsonResult = jsonapi.fromPouchResult({
       res,
       withRows,
       doctype,
       client: this.client
     })
+
+    this.performanceApi.measure({
+      markName: markName,
+      category: 'CozyPouchLink'
+    })
+
+    return jsonResult
   }
 
   async executeMutation(mutation, result, forward) {
+    const markName = this.performanceApi.mark('executeMutation')
     let pouchRes
     switch (mutation.mutationType) {
       case MutationTypes.CREATE_DOCUMENT:
@@ -739,12 +776,19 @@ class PouchLink extends CozyLink {
         return forward(mutation, result)
     }
 
-    return jsonapi.fromPouchResult({
+    const jsonResult = jsonapi.fromPouchResult({
       res: pouchRes,
       withRows: false,
       doctype: getDoctypeFromOperation(mutation),
       client: this.client
     })
+
+    this.performanceApi.measure({
+      markName: markName,
+      category: 'CozyPouchLink'
+    })
+
+    return jsonResult
   }
 
   async createDocument(mutation) {
@@ -791,6 +835,7 @@ class PouchLink extends CozyLink {
   }
 
   async dbMethod(method, mutation) {
+    const markName = this.performanceApi.mark(`dbMethod ${method}`)
     const doctype = getDoctypeFromOperation(mutation)
     const { document: doc, documents: docs } = mutation
     const db = this.getPouch(doctype)
@@ -806,8 +851,15 @@ class PouchLink extends CozyLink {
           'A mutation should either have document or documents member.'
         )
       }
+      this.performanceApi.measure({ markName, category: 'PouchDB' })
       return res
     } catch (e) {
+      this.performanceApi.measure({
+        markName,
+        measureName: `${markName} error`,
+        category: 'PouchDB',
+        color: 'error'
+      })
       throw new Error(`Coud not apply mutation: ${e.message}`)
     }
   }
