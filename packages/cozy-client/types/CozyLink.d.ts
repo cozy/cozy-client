@@ -4,11 +4,12 @@ export default class CozyLink {
      * Request the given operation from the link
      *
      * @param {any} operation - The operation to request
+     * @param {any} options - The request options
      * @param {any} result - The result from the previous request of the chain
      * @param {any} forward - The next request of the chain
      * @returns {Promise<any>}
      */
-    request(operation: any, result: any, forward: any): Promise<any>;
+    request(operation: any, options: any, result: any, forward: any): Promise<any>;
     /**
      * Persist the given data into the links storage
      *

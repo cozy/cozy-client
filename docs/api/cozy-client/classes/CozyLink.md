@@ -48,13 +48,13 @@ Persist the given data into the links storage
 
 *Defined in*
 
-[packages/cozy-client/src/CozyLink.js:31](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyLink.js#L31)
+[packages/cozy-client/src/CozyLink.js:32](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyLink.js#L32)
 
 ***
 
 ### request
 
-▸ **request**(`operation`, `result`, `forward`): `Promise`<`any`>
+▸ **request**(`operation`, `options`, `result`, `forward`): `Promise`<`any`>
 
 Request the given operation from the link
 
@@ -63,6 +63,7 @@ Request the given operation from the link
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `operation` | `any` | The operation to request |
+| `options` | `any` | The request options |
 | `result` | `any` | The result from the previous request of the chain |
 | `forward` | `any` | The next request of the chain |
 
@@ -72,7 +73,7 @@ Request the given operation from the link
 
 *Defined in*
 
-[packages/cozy-client/src/CozyLink.js:20](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyLink.js#L20)
+[packages/cozy-client/src/CozyLink.js:21](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyLink.js#L21)
 
 ***
 
@@ -88,4 +89,4 @@ Reset the link data
 
 *Defined in*
 
-[packages/cozy-client/src/CozyLink.js:40](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyLink.js#L40)
+[packages/cozy-client/src/CozyLink.js:41](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyLink.js#L41)

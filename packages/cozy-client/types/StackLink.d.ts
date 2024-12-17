@@ -27,7 +27,7 @@ export default class StackLink extends CozyLink {
      * @returns {Promise<import("./types").ClientResponse>}
      */
     executeQuery(query: QueryDefinition): Promise<import("./types").ClientResponse>;
-    executeMutation(mutation: any, result: any, forward: any): Promise<any>;
+    executeMutation(mutation: any, options: any, result: any, forward: any): Promise<any>;
 }
 export type StackLinkOptions = {
     /**

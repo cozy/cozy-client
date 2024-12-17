@@ -553,6 +553,10 @@ export type QueryOptions = {
      * - If set to true, the query will be run directly on the current store's state
      */
     executeFromStore?: boolean;
+    /**
+     * - If set to true, the query will be executed through StackLink only even if there are other links available
+     */
+    forceStack?: boolean;
 };
 export type Query = {
     definition: QueryDefinition;
