@@ -189,7 +189,11 @@ class CozyClient {
     const stackClient = this.getStackClient()
     stackClient.on('error', (...args) => this.emit('error', ...args))
 
-    this.setLinks(ensureArray(link || links || new StackLink()))
+    this.setLinks(
+      ensureArray(
+        link || links || new StackLink({ performanceApi: this.performanceApi })
+      )
+    )
     this.schema = new Schema(schema, stackClient)
 
     /**
@@ -1848,7 +1852,9 @@ instantiation of the client.`
    * @param {Array<object>} links - The links to handle
    */
   setLinks(links) {
-    this.links = links ? links : [new StackLink()]
+    this.links = links
+      ? links
+      : [new StackLink({ performanceApi: this.performanceApi })]
     this.registerClientOnLinks()
     this.chain = chain(this.links)
 
