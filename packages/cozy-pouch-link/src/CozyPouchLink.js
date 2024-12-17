@@ -410,7 +410,7 @@ class PouchLink extends CozyLink {
     return !!this.getPouch(impactedDoctype)
   }
 
-  async request(operation, result = null, forward = doNothing) {
+  async request(operation, options, result = null, forward = doNothing) {
     const doctype = getDoctypeFromOperation(operation)
 
     if (!this.pouches) {
@@ -420,7 +420,7 @@ class PouchLink extends CozyLink {
         )
       }
 
-      return forward(operation)
+      return forward(operation, options)
     }
 
     if (this.pouches.getSyncStatus(doctype) === 'not_synced') {
@@ -429,7 +429,7 @@ class PouchLink extends CozyLink {
           `Tried to access local ${doctype} but Cozy Pouch is not synced yet. Forwarding the operation to next link`
         )
       }
-      return forward(operation)
+      return forward(operation, options)
     }
 
     if (await this.needsToWaitWarmup(doctype)) {
@@ -438,7 +438,7 @@ class PouchLink extends CozyLink {
           `Tried to access local ${doctype} but not warmuped yet. Forwarding the operation to next link`
         )
       }
-      return forward(operation)
+      return forward(operation, options)
     }
 
     // Forwards if doctype not supported
@@ -448,11 +448,11 @@ class PouchLink extends CozyLink {
           `The doctype '${doctype}' is not supported. Forwarding the operation to next link`
         )
       }
-      return forward(operation)
+      return forward(operation, options)
     }
 
     if (operation.mutationType) {
-      return this.executeMutation(operation, result, forward)
+      return this.executeMutation(operation, options, result, forward)
     } else {
       return this.executeQuery(operation)
     }
@@ -753,7 +753,7 @@ class PouchLink extends CozyLink {
     return jsonResult
   }
 
-  async executeMutation(mutation, result, forward) {
+  async executeMutation(mutation, options, result, forward) {
     const markName = this.performanceApi.mark('executeMutation')
     let pouchRes
     switch (mutation.mutationType) {
@@ -773,7 +773,7 @@ class PouchLink extends CozyLink {
         pouchRes = await this.addReferencesTo(mutation)
         break
       default:
-        return forward(mutation, result)
+        return forward(mutation, options, result)
     }
 
     const jsonResult = jsonapi.fromPouchResult({

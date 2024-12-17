@@ -98,7 +98,7 @@ describe('CozyPouchLink', () => {
       await setup()
       const query = Q(TODO_DOCTYPE)
       expect.assertions(1)
-      await link.request(query, null, () => {
+      await link.request(query, null, null, () => {
         expect(true).toBe(true)
       })
     })
@@ -111,7 +111,7 @@ describe('CozyPouchLink', () => {
       })
       const query = Q(TODO_DOCTYPE)
       expect.assertions(1)
-      await link.request(query, null, () => {
+      await link.request(query, null, null, () => {
         expect(true).toBe(true)
       })
     })
