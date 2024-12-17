@@ -535,7 +535,7 @@ declare class CozyClient {
      * @private
      */
     private fetchRelationships;
-    requestMutation(definition: any): any;
+    requestMutation(definition: any, options: any): any;
     getIncludesRelationships(queryDefinition: any): import("lodash").Dictionary<any>;
     /**
      * Returns documents with their relationships resolved according to their schema.

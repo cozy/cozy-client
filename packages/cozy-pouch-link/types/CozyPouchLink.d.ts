@@ -275,7 +275,7 @@ declare class PouchLink extends CozyLink {
         skip: any;
         next: boolean;
     }>;
-    executeMutation(mutation: any, result: any, forward: any): Promise<any>;
+    executeMutation(mutation: any, options: any, result: any, forward: any): Promise<any>;
     createDocument(mutation: any): Promise<any>;
     updateDocument(mutation: any): Promise<any>;
     updateDocuments(mutation: any): Promise<any[]>;
