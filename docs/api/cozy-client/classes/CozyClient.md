@@ -148,6 +148,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 | `autoHydrate` | `boolean` | - |
 | `backgroundFetching` | `boolean` | If set to true, backgroundFetching will be enabled by default on every query. Meaning that, when the fetchStatus has already been loaded, it won't be updated during future fetches. Instead, a `isFetching` attribute will be used to indicate when background fetching is started. |
 | `client` | `any` | - |
+| `forceHydratation` | `boolean` | If set to true, all documents will be hydrated w.r.t. the provided schema's relationships, even if the relationship does not exist on the doc. |
 | `oauth` | `any` | - |
 | `onError` | `Function` | Default callback if a query is errored |
 | `onTokenRefresh` | `Function` | - |

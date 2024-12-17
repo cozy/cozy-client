@@ -976,7 +976,7 @@ Retrieve intance info like context, uuid, disk usage etc
 
 *Defined in*
 
-[packages/cozy-client/src/hooks/useQuery.js:93](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useQuery.js#L93)
+[packages/cozy-client/src/hooks/useQuery.js:94](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useQuery.js#L94)
 
 ***
 
@@ -999,7 +999,7 @@ Fetches a queryDefinition and returns the queryState
 
 *Defined in*
 
-[packages/cozy-client/src/hooks/useQuery.js:28](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useQuery.js#L28)
+[packages/cozy-client/src/hooks/useQuery.js:29](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useQuery.js#L29)
 
 ***
 
