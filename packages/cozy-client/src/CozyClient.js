@@ -1517,13 +1517,29 @@ client.query(Q('io.cozy.bills'))`)
         return queryResults
       }
 
-      const data =
+      const hydratedData =
         shouldHydrate && doctype
           ? this.hydrateDocuments(doctype, queryResults.data)
           : queryResults.data
+
+      const relationships = this.schema.getDoctypeSchema(doctype)?.relationships
+      const relationshipNames = relationships
+        ? Object.keys(relationships)
+        : null
+
+      // The `data` array contains the hydrated data with the relationships, if any.
+      // The `storeData` array contains the documents from the store: this is useful to preserve
+      // referential equality, to be later evaluated to determine whether or not the
+      // documents had changed.
       return {
         ...queryResults,
-        data: isSingleDocQuery && singleDocData ? data[0] : data
+        data:
+          isSingleDocQuery && singleDocData ? hydratedData[0] : hydratedData,
+        storeData:
+          isSingleDocQuery && singleDocData
+            ? queryResults.data[0]
+            : queryResults.data,
+        relationshipNames
       }
     } catch (e) {
       logger.warn(
