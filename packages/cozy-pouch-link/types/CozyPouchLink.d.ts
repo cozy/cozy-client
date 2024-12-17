@@ -36,6 +36,10 @@ export type PouchLinkOptions = {
      * Platform specific adapters and methods
      */
     platform: import('./types').LinkPlatform;
+    /**
+     * - The performance API that can be used to measure performances
+     */
+    performanceApi?: any;
 };
 /**
  * @typedef {import('cozy-client/src/types').CozyClientDocument} CozyClientDocument
@@ -52,6 +56,7 @@ export type PouchLinkOptions = {
  * @property {string[]} doctypes Doctypes to replicate
  * @property {Record<string, object>} doctypesReplicationOptions A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote")
  * @property {import('./types').LinkPlatform} platform Platform specific adapters and methods
+ * @property {import('cozy-client/src/performances/types').PerformanceAPI} [performanceApi] - The performance API that can be used to measure performances
  */
 /**
  * Link to be passed to a `CozyClient` instance to support CouchDB. It instantiates
@@ -86,6 +91,8 @@ declare class PouchLink extends CozyLink {
     replicationStatus: Record<string, ReplicationStatus>;
     /** @private */
     private startReplicationDebounced;
+    /** @type {import('cozy-client/src/performances/types').PerformanceAPI} */
+    performanceApi: any;
     getReplicationURL(doctype: any): string;
     registerClient(client: any): Promise<void>;
     client: any;

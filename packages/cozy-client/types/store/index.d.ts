@@ -7,11 +7,11 @@ export class StoreProxy {
     getState(): any;
 }
 export default combinedReducer;
-export function createStore(): any;
-declare function combinedReducer(state: {
+export function createStore(performanceApi: any): any;
+declare function combinedReducer(performanceApi: any): (state: {
     documents: {};
     queries: {};
-}, action: any): {
+}, action: any) => {
     documents: any;
     queries: Record<string, import("../types").QueryState>;
 };

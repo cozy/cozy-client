@@ -86,6 +86,16 @@ cozy-client
 
 ***
 
+### defaultPerformanceApi
+
+• `Const` **defaultPerformanceApi**: `PerformanceAPI`
+
+*Defined in*
+
+[packages/cozy-client/src/performances/defaultPerformanceApi.js:2](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/performances/defaultPerformanceApi.js#L2)
+
+***
+
 ### fetchPolicies
 
 • `Const` **fetchPolicies**: `Object`
@@ -144,6 +154,16 @@ This hook manages the state during the saving of a document
 *Defined in*
 
 [packages/cozy-client/src/hooks/useMutation.jsx:11](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useMutation.jsx#L11)
+
+***
+
+### webPerformanceApi
+
+• `Const` **webPerformanceApi**: `PerformanceAPI`
+
+*Defined in*
+
+[packages/cozy-client/src/performances/webPerformanceApi.js:42](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/performances/webPerformanceApi.js#L42)
 
 ## Functions
 

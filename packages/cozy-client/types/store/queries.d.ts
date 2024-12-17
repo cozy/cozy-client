@@ -39,10 +39,11 @@ export namespace QueryIDGenerator {
 }
 import { QueryDefinition } from "../queries/dsl";
 /**
+ * @param  {import('../performances/types').PerformanceAPI} performanceApi - The performance API that can be used to measure performances
  * @param  {import("../types").QueriesStateSlice}  state - Redux slice containing all the query states indexed by name
  * @param  {object}  action - Income redux action
  * @param  {import("../types").DocumentsStateSlice}  documents - Reference to documents slice
  * @param  {boolean} haveDocumentsChanged - Has the document slice changed with current action
  * @returns {import("../types").QueriesStateSlice}
  */
-declare function queries(state: import("../types").QueriesStateSlice, action: object, documents?: import("../types").DocumentsStateSlice, haveDocumentsChanged?: boolean): import("../types").QueriesStateSlice;
+declare function queries(performanceApi: import('../performances/types').PerformanceAPI, state: import("../types").QueriesStateSlice, action: object, documents?: import("../types").DocumentsStateSlice, haveDocumentsChanged?: boolean): import("../types").QueriesStateSlice;

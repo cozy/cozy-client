@@ -6,6 +6,7 @@ export function transformBulkDocsResponse(bulkResponse: import("./types").CouchD
  * @property {object} [stackClient] - A StackClient
  * @property {object} [client] - A StackClient (deprecated)
  * @property {import('cozy-pouch-link/dist/types').LinkPlatform} [platform] - Platform specific adapters and methods
+ * @property {import('./performances/types').PerformanceAPI} [performanceApi] - The performance API that can be used to measure performances
  */
 /**
  * Transfers queries and mutations to a remote stack
@@ -14,9 +15,11 @@ export default class StackLink extends CozyLink {
     /**
      * @param {StackLinkOptions} [options] - Options
      */
-    constructor({ client, stackClient, platform }?: StackLinkOptions);
+    constructor({ client, stackClient, platform, performanceApi }?: StackLinkOptions);
     stackClient: any;
     isOnline: any;
+    /** @type {import('./performances/types').PerformanceAPI} */
+    performanceApi: import('./performances/types').PerformanceAPI;
     registerClient(client: any): void;
     /**
      *
@@ -39,6 +42,10 @@ export type StackLinkOptions = {
      * - Platform specific adapters and methods
      */
     platform?: any;
+    /**
+     * - The performance API that can be used to measure performances
+     */
+    performanceApi?: import('./performances/types').PerformanceAPI;
 };
 import CozyLink from "./CozyLink";
 import { QueryDefinition } from "./queries/dsl";
