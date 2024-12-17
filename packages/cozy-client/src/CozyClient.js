@@ -119,6 +119,7 @@ const DOC_UPDATE = 'update'
  * @property  {import("./types").AppMetadata}  [appMetadata] - Metadata about the application that will be used in ensureCozyMetadata
  * @property  {import("./types").ClientCapabilities} [capabilities] - Capabilities sent by the stack
  * @property  {boolean} [store] - If set to false, the client will not instantiate a Redux store automatically. Use this if you want to merge cozy-client's store with your own redux store. See [here](https://docs.cozy.io/en/cozy-client/react-integration/#1b-use-your-own-redux-store) for more information.
+ * @property  {boolean} [forceHydratation] - If set to true, all documents will be hydrated w.r.t. the provided schema's relationships, even if the relationship does not exist on the doc.
  */
 
 /**
@@ -1309,9 +1310,11 @@ client.query(Q('io.cozy.bills'))`)
 
   hydrateRelationships(document, schemaRelationships) {
     const methods = this.getRelationshipStoreAccessors()
-    return mapValues(schemaRelationships, (assoc, name) =>
-      createAssociation(document, assoc, methods)
-    )
+    return mapValues(schemaRelationships, (assoc, name) => {
+      if (this.options?.forceHydratation || document.relationships?.[assoc]) {
+        return createAssociation(document, assoc, methods)
+      }
+    })
   }
 
   /**
