@@ -32,6 +32,8 @@ Object {
     "lastFetch": null,
     "lastUpdate": null,
     "options": null,
+    "relationshipNames": Array [],
+    "storeData": Array [],
   },
 }
 `;
@@ -71,6 +73,8 @@ Object {
     "lastFetch": 1337,
     "lastUpdate": 1337,
     "options": null,
+    "relationshipNames": Array [],
+    "storeData": Array [],
   },
 }
 `;
@@ -109,6 +113,8 @@ Object {
     "lastFetch": 1337,
     "lastUpdate": 1337,
     "options": null,
+    "relationshipNames": Array [],
+    "storeData": Array [],
   },
   "b": Object {
     "bookmark": null,
@@ -147,6 +153,8 @@ Object {
     "lastFetch": null,
     "lastUpdate": 1337,
     "options": null,
+    "relationshipNames": Array [],
+    "storeData": Array [],
   },
 }
 `;
@@ -185,6 +193,8 @@ Object {
     "lastFetch": 1337,
     "lastUpdate": 1337,
     "options": null,
+    "relationshipNames": Array [],
+    "storeData": Array [],
   },
   "b": Object {
     "bookmark": null,
@@ -220,6 +230,8 @@ Object {
     "lastFetch": null,
     "lastUpdate": 1337,
     "options": null,
+    "relationshipNames": Array [],
+    "storeData": Array [],
   },
 }
 `;
@@ -264,6 +276,8 @@ Object {
     "lastFetch": 1337,
     "lastUpdate": 1337,
     "options": null,
+    "relationshipNames": Array [],
+    "storeData": Array [],
   },
   "b": Object {
     "bookmark": null,
@@ -297,6 +311,8 @@ Object {
     "lastFetch": null,
     "lastUpdate": null,
     "options": null,
+    "relationshipNames": Array [],
+    "storeData": Array [],
   },
 }
 `;
@@ -336,6 +352,8 @@ Object {
     "lastFetch": 1337,
     "lastUpdate": 1337,
     "options": null,
+    "relationshipNames": Array [],
+    "storeData": Array [],
   },
   "b": Object {
     "bookmark": null,
@@ -370,6 +388,8 @@ Object {
     "lastFetch": null,
     "lastUpdate": 1337,
     "options": null,
+    "relationshipNames": Array [],
+    "storeData": Array [],
   },
 }
 `;
@@ -408,6 +428,8 @@ Object {
     "lastFetch": 1337,
     "lastUpdate": 1337,
     "options": null,
+    "relationshipNames": Array [],
+    "storeData": Array [],
   },
   "b": Object {
     "bookmark": null,
@@ -445,6 +467,8 @@ Object {
         "add": false,
       },
     },
+    "relationshipNames": Array [],
+    "storeData": Array [],
   },
 }
 `;
@@ -481,6 +505,8 @@ Object {
     "lastFetch": null,
     "lastUpdate": null,
     "options": null,
+    "relationshipNames": Array [],
+    "storeData": Array [],
   },
   "b": Object {
     "bookmark": null,
@@ -512,6 +538,8 @@ Object {
     "lastFetch": 1337,
     "lastUpdate": 1337,
     "options": null,
+    "relationshipNames": Array [],
+    "storeData": Array [],
   },
 }
 `;
@@ -550,6 +578,8 @@ Object {
     "lastFetch": 1337,
     "lastUpdate": 1337,
     "options": null,
+    "relationshipNames": Array [],
+    "storeData": Array [],
   },
   "b": Object {
     "bookmark": null,
@@ -589,6 +619,8 @@ Object {
         "remove": false,
       },
     },
+    "relationshipNames": Array [],
+    "storeData": Array [],
   },
 }
 `;
@@ -627,6 +659,8 @@ Object {
     "lastFetch": 1337,
     "lastUpdate": 1337,
     "options": null,
+    "relationshipNames": Array [],
+    "storeData": Array [],
   },
   "b": Object {
     "bookmark": null,
@@ -660,6 +694,8 @@ Object {
     "lastFetch": null,
     "lastUpdate": null,
     "options": null,
+    "relationshipNames": Array [],
+    "storeData": Array [],
   },
 }
 `;
@@ -700,6 +736,8 @@ Object {
     "lastFetch": 1337,
     "lastUpdate": 1337,
     "options": null,
+    "relationshipNames": Array [],
+    "storeData": Array [],
   },
   "b": Object {
     "bookmark": null,
@@ -736,6 +774,8 @@ Object {
     "lastFetch": null,
     "lastUpdate": 1337,
     "options": null,
+    "relationshipNames": Array [],
+    "storeData": Array [],
   },
 }
 `;

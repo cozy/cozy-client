@@ -60,7 +60,9 @@ const queryInitialState = {
   count: 0,
   fetchedPagesCount: 0,
   data: [],
-  bookmark: null
+  storeData: [],
+  bookmark: null,
+  relationshipNames: []
 }
 
 /**

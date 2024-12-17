@@ -408,7 +408,9 @@ describe('Store', () => {
         hasMore: false,
         count: 0,
         fetchedPagesCount: 0,
-        data: null
+        data: null,
+        storeData: [],
+        relationshipNames: []
       })
     })
 
