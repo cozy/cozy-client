@@ -107,7 +107,7 @@ describe('use query', () => {
     })
 
     expect(Object.keys(current)).toEqual(
-      expect.objectContaining([
+      expect.arrayContaining([
         'id',
         'definition',
         'fetchStatus',
@@ -120,6 +120,8 @@ describe('use query', () => {
         'count',
         'fetchedPagesCount',
         'data',
+        'storeData',
+        'relationshipNames',
         'bookmark',
         'options',
         'fetchMore',

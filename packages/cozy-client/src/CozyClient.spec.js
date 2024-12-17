@@ -11,7 +11,8 @@ import {
   APP_VERSION,
   SOURCE_ACCOUNT_ID,
   SOURCE_ACCOUNT_IDENTIFIER,
-  FILE_1
+  FILE_1,
+  TODO_WITH_NONEXISTING_RELATIONSHIP
 } from './__tests__/fixtures'
 import { withIgnoreConsoleWarn } from './__tests__/console'
 
@@ -34,7 +35,7 @@ import {
   resetQuery,
   executeQueryFromState
 } from './store'
-import { HasManyFiles, Association, HasMany } from './associations'
+import { HasManyFiles, Association } from './associations'
 import mapValues from 'lodash/mapValues'
 import FileCollection from 'cozy-stack-client/dist/FileCollection'
 import logger from './logger'
@@ -1016,7 +1017,16 @@ describe('CozyClient', () => {
       const NEW_TODO = {
         _type: 'io.cozy.todos',
         label: 'Buy RAM',
-        attachments: [{ _id: 12345, _type: 'io.cozy.files' }]
+        relationships: {
+          attachments: {
+            data: [
+              {
+                _type: 'io.cozy.files',
+                _id: 1
+              }
+            ]
+          }
+        }
       }
       const EXPECTED_CREATED_TODO = { _id: 67890, ...NEW_TODO }
       const mutation = client.getDocumentSavePlan(NEW_TODO, {
@@ -1040,9 +1050,14 @@ describe('CozyClient', () => {
             id: 67890,
             type: 'io.cozy.files'
           }
-        ]
+        ],
+        relationships: { icons: [{ _id: 67890, _type: 'io.cozy.files' }] }
       }
-      const EXPECTED_CREATED_FILE = { _id: 12345, _type: 'io.cozy.files' }
+      const EXPECTED_CREATED_FILE = {
+        _id: 12345,
+        _type: 'io.cozy.files',
+        relationships: { icons: [{ _id: 67890, _type: 'io.cozy.files' }] }
+      }
       const mutation = client.getDocumentSavePlan(NEW_FILE, {
         icons: [
           {
@@ -1907,7 +1922,6 @@ describe('CozyClient', () => {
         )
         .shift()
       expect(doc.attachments).toBeInstanceOf(HasManyFiles)
-      expect(doc.authors).toBeInstanceOf(HasMany)
     })
 
     it('should not fail on null (when getting absent documents from the store)', () => {
@@ -1915,6 +1929,53 @@ describe('CozyClient', () => {
         .hydrateDocuments('io.cozy.todos', [null], 'allTodos')
         .shift()
       expect(doc).toBe(null)
+    })
+
+    it('should hydrate relationships if the relationship exists', () => {
+      const resp = client.hydrateDocument(TODO_WITH_AUTHOR)
+      expect(resp.authors).not.toBe(undefined)
+      expect(resp.attachments).toBe(undefined)
+    })
+
+    it('should not hydrate relationships if the relationship does not exist', () => {
+      const resp = client.hydrateDocument(TODO_WITH_NONEXISTING_RELATIONSHIP)
+      expect(resp.authors).toBe(undefined)
+      expect(resp.attachments).toBe(undefined)
+      expect(resp.broken).toBe(undefined)
+    })
+
+    it('should not hydrate relationships if not specified', () => {
+      getQueryFromState.mockReturnValueOnce({
+        definition: { doctype: 'io.cozy.todos' },
+        data: [TODO_WITH_AUTHOR]
+      })
+      const resp = client.getQueryFromState('allTodos')
+      expect(resp.data[0].authors).toBe(undefined)
+      expect(resp.data[0].attachments).toBe(undefined)
+    })
+
+    it('should hydrate relationships only if the relationship does exist ', () => {
+      getQueryFromState.mockReturnValueOnce({
+        definition: { doctype: 'io.cozy.todos' },
+        data: [TODO_WITH_AUTHOR]
+      })
+      const resp = client.getQueryFromState('allTodos', { hydrated: true })
+      expect(resp.data[0].authors).not.toBe(undefined)
+      expect(resp.data[0].attachments).toBe(undefined)
+    })
+
+    it('should hydrate relationships if the relationship does not exist but hydration is forced', () => {
+      const newClient = new CozyClient({
+        schema: SCHEMA,
+        autoHydrate: true
+      })
+      getQueryFromState.mockReturnValueOnce({
+        definition: { doctype: 'io.cozy.todos' },
+        data: [TODO_WITH_AUTHOR]
+      })
+      const resp = newClient.getQueryFromState('allTodos')
+      expect(resp.data[0].authors).not.toBe(undefined)
+      expect(resp.data[0].attachments).not.toBe(undefined)
     })
   })
 
@@ -2115,7 +2176,8 @@ describe('file creation', () => {
       .fn()
       .mockResolvedValueOnce({
         data: {
-          _id: '1337'
+          _id: '1337',
+          relationships: { icons: [{ _id: 1, _type: 'io.cozy.files' }] }
         }
       })
       .mockResolvedValueOnce({

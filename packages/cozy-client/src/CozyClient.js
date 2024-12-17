@@ -110,7 +110,7 @@ const DOC_UPDATE = 'update'
  * @property {string} [uri]
  * @property {object} [stackClient]
  * @property {boolean} [warningForCustomHandlers]
- * @property {boolean} [autoHydrate]
+ * @property {boolean} [autoHydrate] - If set to true, all documents will be hydrated w.r.t. the provided schema's relationships, even if the relationship does not exist on the doc.
  * @property {boolean} [backgroundFetching] - If set to true, backgroundFetching will be enabled by default on every query. Meaning that, when the fetchStatus has already been loaded, it won't be updated during future fetches. Instead, a `isFetching` attribute will be used to indicate when background fetching is started.
  * @property {object} [oauth]
  * @property {Function} [onTokenRefresh]
@@ -121,8 +121,7 @@ const DOC_UPDATE = 'update'
  * @property  {import("./types").AppMetadata}  [appMetadata] - Metadata about the application that will be used in ensureCozyMetadata
  * @property  {import("./types").ClientCapabilities} [capabilities] - Capabilities sent by the stack
  * @property  {boolean} [useCustomStore=false] - If set to true, the client will not instantiate a Redux store automatically. Use this if you want to merge cozy-client's store with your own redux store. Note will have to call `setStore` eventually. See [here](https://docs.cozy.io/en/cozy-client/react-integration/#1b-use-your-own-redux-store) for more information.
- * @property  {boolean} [disableStoreForQueries=false] - If set to true, the client will not leverage the redux store to execute queries and store data. 
- 
+ * @property  {boolean} [disableStoreForQueries=false] - If set to true, the client will not leverage the redux store to execute queries and store data.
  * @property {import('./performances/types').PerformanceAPI} [performanceApi] - The performance API that can be used to measure performances
  */
 
@@ -236,6 +235,7 @@ class CozyClient {
     if (this.useCustomStore !== true) {
       this.ensureStore()
     }
+    this.autoHydrate = options.autoHydrate || false
     this.disableStoreForQueries = options.disableStoreForQueries || false
   }
 
@@ -1375,9 +1375,6 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {Array<import("./types").HydratedDocument>}
    */
   hydrateDocuments(doctype, documents) {
-    if (this.options.autoHydrate === false) {
-      return documents
-    }
     const schema = this.schema.getDoctypeSchema(doctype)
     const relationships = schema.relationships
     if (relationships) {
@@ -1402,17 +1399,23 @@ client.query(Q('io.cozy.bills'))`)
       return document
     }
     const schema = schemaArg || this.schema.getDoctypeSchema(document._type)
+    const hydratedRelationships = this.hydrateRelationships(
+      document,
+      schema.relationships
+    )
     return {
       ...document,
-      ...this.hydrateRelationships(document, schema.relationships)
+      ...hydratedRelationships
     }
   }
 
   hydrateRelationships(document, schemaRelationships) {
     const methods = this.getRelationshipStoreAccessors()
-    return mapValues(schemaRelationships, (assoc, name) =>
-      createAssociation(document, assoc, methods)
-    )
+    return mapValues(schemaRelationships, (assoc, name) => {
+      if (this.options?.autoHydrate || document.relationships?.[name]) {
+        return createAssociation(document, assoc, methods)
+      }
+    })
   }
 
   generateRandomId() {
@@ -1489,7 +1492,7 @@ client.query(Q('io.cozy.bills'))`)
    *
    * @param {string} id - Id of the query (set via Query.props.as)
    * @param {object} options - Options
-   * @param {boolean} [options.hydrated] - Whether documents should be returned already hydrated (default: false)
+   * @param {boolean} [options.hydrated] - Whether documents should be returned already hydrated
    * @param  {object} [options.singleDocData] - If true, the "data" returned will be
    * a single doc instead of an array for single doc queries. Defaults to false for backward
    * compatibility but will be set to true in the future.
@@ -1497,21 +1500,25 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {import("./types").QueryState} - Query state or null if it does not exist.
    */
   getQueryFromState(id, options = {}) {
-    const hydrated = options.hydrated || false
     const singleDocData = options.singleDocData || false
+    // `hydrated` has priority over global `autoHydrate`
+    const shouldHydrate =
+      options.hydrated !== undefined
+        ? options.hydrated
+        : this.options.autoHydrate
     try {
       const queryResults = getQueryFromState(this.store.getState(), id)
       const doctype = queryResults.definition && queryResults.definition.doctype
       const isSingleDocQuery =
         queryResults.definition && queryResults.definition.id
 
-      if (!hydrated && !singleDocData) {
+      if (!shouldHydrate && !singleDocData) {
         // Early return let's us preserve reference equality in the simple case
         return queryResults
       }
 
       const data =
-        hydrated && doctype
+        shouldHydrate && doctype
           ? this.hydrateDocuments(doctype, queryResults.data)
           : queryResults.data
       return {

@@ -80,6 +80,24 @@ export const TODO_WITH_AUTHOR = {
   }
 }
 
+export const TODO_WITH_NONEXISTING_RELATIONSHIP = {
+  _id: 5,
+  _rev: '1-7f02bbb542fb4eb0805b130a80b9be1a',
+  _type: 'io.cozy.todos',
+  label: 'Todo with several authors',
+  relationships: {
+    broken: {
+      doctype: 'io.cozy.persons',
+      data: [
+        {
+          _type: 'io.cozy.persons',
+          _id: 1
+        }
+      ]
+    }
+  }
+}
+
 export const FILE_1 = {
   _id: 1,
   _rev: '3-bd9bb7286a094842b954d9e86429090d',
