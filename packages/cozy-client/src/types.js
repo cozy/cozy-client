@@ -278,6 +278,15 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
+ * @typedef {object} QueryStateResult
+ * @property {object|Array} storeData - Collection of store's documents
+ * @property {object|Array} data - Collection of hydrated documents
+ * @property {Array<string>} relationshipNames - The relationships names, used to check hydrated documents
+ * @property {string|number} id - The query id
+ * @property {string} fetchStatus - The query fetching status
+ */
+
+/**
  * @typedef {QueryStateWithoutData & QueryStateData} QueryState
  */
 
