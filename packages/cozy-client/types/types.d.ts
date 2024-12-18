@@ -508,6 +508,28 @@ export type QueryStateWithoutData = {
 export type QueryStateData = {
     data: object | any[];
 };
+export type QueryStateResult = {
+    /**
+     * - Collection of store's documents
+     */
+    storeData: object | any[];
+    /**
+     * - Collection of hydrated documents
+     */
+    data: object | any[];
+    /**
+     * - The relationships names, used to check hydrated documents
+     */
+    relationshipNames: Array<string>;
+    /**
+     * - The query id
+     */
+    id: string | number;
+    /**
+     * - The query fetching status
+     */
+    fetchStatus: string;
+};
 export type QueryState = QueryStateWithoutData & QueryStateData;
 export type AutoUpdateOptions = any;
 export type QueryOptions = {

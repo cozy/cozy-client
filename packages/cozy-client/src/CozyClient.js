@@ -119,6 +119,7 @@ const DOC_UPDATE = 'update'
  * @property  {import("./types").AppMetadata}  [appMetadata] - Metadata about the application that will be used in ensureCozyMetadata
  * @property  {import("./types").ClientCapabilities} [capabilities] - Capabilities sent by the stack
  * @property  {boolean} [store] - If set to false, the client will not instantiate a Redux store automatically. Use this if you want to merge cozy-client's store with your own redux store. See [here](https://docs.cozy.io/en/cozy-client/react-integration/#1b-use-your-own-redux-store) for more information.
+ * @property  {boolean} [forceHydratation] - If set to true, all documents will be hydrated w.r.t. the provided schema's relationships, even if the relationship does not exist on the doc.
  */
 
 /**
@@ -1193,7 +1194,7 @@ client.query(Q('io.cozy.bills'))`)
           if (queryDef instanceof QueryDefinition) {
             definitions.push(queryDef)
           } else {
-            documents.push(queryDef)
+            documents.push(doc)
           }
         } catch {
           // eslint-disable-next-line
@@ -1309,9 +1310,11 @@ client.query(Q('io.cozy.bills'))`)
 
   hydrateRelationships(document, schemaRelationships) {
     const methods = this.getRelationshipStoreAccessors()
-    return mapValues(schemaRelationships, (assoc, name) =>
-      createAssociation(document, assoc, methods)
-    )
+    return mapValues(schemaRelationships, (assoc, name) => {
+      if (this.options?.forceHydratation || document.relationships?.[assoc]) {
+        return createAssociation(document, assoc, methods)
+      }
+    })
   }
 
   /**
@@ -1421,13 +1424,29 @@ client.query(Q('io.cozy.bills'))`)
         return queryResults
       }
 
-      const data =
+      const hydratedData =
         hydrated && doctype
           ? this.hydrateDocuments(doctype, queryResults.data)
           : queryResults.data
+
+      const relationships = this.schema.getDoctypeSchema(doctype)?.relationships
+      const relationshipNames = relationships
+        ? Object.keys(relationships)
+        : null
+
+      // The `data` array contains the hydrated data with the relationships, if any.
+      // The `storeData` array contains the documents from the store: this is useful to preserve
+      // referential equality, to be later evaluated to determine whether or not the
+      // documents had changed.
       return {
         ...queryResults,
-        data: isSingleDocQuery && singleDocData ? data[0] : data
+        data:
+          isSingleDocQuery && singleDocData ? hydratedData[0] : hydratedData,
+        storeData:
+          isSingleDocQuery && singleDocData
+            ? queryResults.data[0]
+            : queryResults.data,
+        relationshipNames
       }
     } catch (e) {
       logger.warn(
