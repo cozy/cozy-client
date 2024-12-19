@@ -70,3 +70,5 @@ export * from './mock'
 
 export * from './hooks'
 export { BulkEditError } from './errors'
+export { webPerformanceApi } from './performances/webPerformanceApi'
+export { defaultPerformanceApi } from './performances/defaultPerformanceApi'

@@ -44,6 +44,7 @@ import fetchPolicies from './policies'
 import Schema from './Schema'
 import { chain } from './CozyLink'
 import ObservableQuery from './ObservableQuery'
+import { defaultPerformanceApi } from './performances/defaultPerformanceApi'
 import { CozyClient as SnapshotClient } from './testing/snapshots'
 import logger from './logger'
 import { QueryIDGenerator } from './store/queries'
@@ -119,6 +120,7 @@ const DOC_UPDATE = 'update'
  * @property  {import("./types").AppMetadata}  [appMetadata] - Metadata about the application that will be used in ensureCozyMetadata
  * @property  {import("./types").ClientCapabilities} [capabilities] - Capabilities sent by the stack
  * @property  {boolean} [store] - If set to false, the client will not instantiate a Redux store automatically. Use this if you want to merge cozy-client's store with your own redux store. See [here](https://docs.cozy.io/en/cozy-client/react-integration/#1b-use-your-own-redux-store) for more information.
+ * @property {import('./performances/types').PerformanceAPI} [performanceApi] - The performance API that can be used to measure performances
  */
 
 /**
@@ -159,11 +161,15 @@ class CozyClient {
       schema = {},
       appMetadata = {},
       capabilities,
+      performanceApi,
       ...options
     } = rawOptions
     if (link) {
       logger.warn('`link` is deprecated, use `links`')
     }
+
+    /** @type {import('./performances/types').PerformanceAPI} */
+    this.performanceApi = performanceApi || defaultPerformanceApi
 
     this.appMetadata = appMetadata
     this.loginPromise = null
@@ -183,7 +189,11 @@ class CozyClient {
     const stackClient = this.getStackClient()
     stackClient.on('error', (...args) => this.emit('error', ...args))
 
-    this.setLinks(ensureArray(link || links || new StackLink()))
+    this.setLinks(
+      ensureArray(
+        link || links || new StackLink({ performanceApi: this.performanceApi })
+      )
+    )
     this.schema = new Schema(schema, stackClient)
 
     /**
@@ -915,6 +925,9 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {Promise<import("./types").QueryResult>}
    */
   async query(queryDefinition, { update, executeFromStore, ...options } = {}) {
+    const markQuery = this.performanceApi.mark(
+      `client.query(${queryDefinition.doctype})`
+    )
     this.ensureStore()
     const queryId =
       options.as || this.queryIdGenerator.generateId(queryDefinition)
@@ -972,8 +985,18 @@ client.query(Q('io.cozy.bills'))`)
           backgroundFetching
         })
       )
+      this.performanceApi.measure({
+        markName: markQuery,
+        measureName: `${markQuery} success`,
+        color: 'primary'
+      })
       return response
     } catch (error) {
+      this.performanceApi.measure({
+        markName: markQuery,
+        measureName: `${markQuery} error`,
+        color: 'error'
+      })
       this.dispatch(receiveQueryError(queryId, error))
       // specific onError
       if (options.onError) {
@@ -1603,7 +1626,7 @@ instantiation of the client.`
 
   ensureStore() {
     if (!this.store) {
-      this.setStore(createStore())
+      this.setStore(createStore(this.performanceApi))
     }
   }
 
@@ -1716,7 +1739,7 @@ instantiation of the client.`
   }
 
   reducer() {
-    return reducer
+    return reducer(this.performanceApi)
   }
 
   dispatch(action) {
@@ -1829,7 +1852,9 @@ instantiation of the client.`
    * @param {Array<object>} links - The links to handle
    */
   setLinks(links) {
-    this.links = links ? links : [new StackLink()]
+    this.links = links
+      ? links
+      : [new StackLink({ performanceApi: this.performanceApi })]
     this.registerClientOnLinks()
     this.chain = chain(this.links)
 

@@ -1,3 +1,4 @@
+import { defaultPerformanceApi } from '../performances/defaultPerformanceApi'
 import queries, {
   initQuery,
   receiveQueryResult,
@@ -19,7 +20,7 @@ describe('queries reducer', () => {
     data: [TODO_1, TODO_2]
   }
   const applyAction = action => {
-    state = queries(state, action)
+    state = queries(defaultPerformanceApi, state, action)
   }
   beforeEach(() => {
     state = {}

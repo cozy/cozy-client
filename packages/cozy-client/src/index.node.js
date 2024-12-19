@@ -45,3 +45,6 @@ import * as models from './models'
 export { models }
 
 export { default as fetchPolicies } from './policies'
+
+export { webPerformanceApi } from './performances/webPerformanceApi'
+export { defaultPerformanceApi } from './performances/defaultPerformanceApi'

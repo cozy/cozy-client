@@ -128,12 +128,18 @@ const updateQueryDataFromResponse = (
 /**
  * Reducer for a query slice
  *
+ * @param  {import('../performances/types').PerformanceAPI} performanceApi - The performance API that can be used to measure performances
  * @param  {import("../types").QueryState} state - Current state
  * @param  {any} action - Redux action
  * @param  {import("../types").DocumentsStateSlice} documents - Reference to the next documents slice
  * @returns {import("../types").QueryState} - Next state
  */
-const query = (state = queryInitialState, action, documents) => {
+const query = (
+  performanceApi,
+  state = queryInitialState,
+  action,
+  documents
+) => {
   switch (action.type) {
     case INIT_QUERY:
       if (
@@ -166,11 +172,17 @@ const query = (state = queryInitialState, action, documents) => {
         fetchStatus: 'loading'
       }
     case RECEIVE_QUERY_RESULT: {
+      const markName = performanceApi.mark('RECEIVE_QUERY_RESULT')
       const response = action.response
       // Data can be null when we get a 404 not found
       // see Collection.get()
       // but we still need to update the fetchStatus.
       if (!response.data) {
+        performanceApi.measure({
+          markName: markName,
+          measureName: `${markName} with no data`,
+          category: 'CozyClientStore'
+        })
         return {
           ...state,
           fetchStatus: 'loaded',
@@ -192,6 +204,11 @@ const query = (state = queryInitialState, action, documents) => {
       }
 
       if (!Array.isArray(response.data)) {
+        performanceApi.measure({
+          markName: markName,
+          measureName: `${markName} with object`,
+          category: 'CozyClientStore'
+        })
         return {
           ...state,
           ...common,
@@ -205,6 +222,11 @@ const query = (state = queryInitialState, action, documents) => {
           ? response.meta.count
           : response.data.length
       if (action.backgroundFetching) {
+        performanceApi.measure({
+          markName: markName,
+          measureName: `${markName} with background fetching`,
+          category: 'CozyClientStore'
+        })
         return {
           ...state,
           ...common,
@@ -219,6 +241,12 @@ const query = (state = queryInitialState, action, documents) => {
       const data = updateQueryDataFromResponse(state, response, documents, {
         count,
         fetchedPagesCount
+      })
+
+      performanceApi.measure({
+        markName: markName,
+        measureName: `${markName} default`,
+        category: 'CozyClientStore'
       })
       return {
         ...state,
@@ -491,6 +519,7 @@ const manualQueryUpdater = (action, documents) => query => {
 }
 
 /**
+ * @param  {import('../performances/types').PerformanceAPI} performanceApi - The performance API that can be used to measure performances
  * @param  {import("../types").QueriesStateSlice}  state - Redux slice containing all the query states indexed by name
  * @param  {object}  action - Income redux action
  * @param  {import("../types").DocumentsStateSlice}  documents - Reference to documents slice
@@ -498,13 +527,19 @@ const manualQueryUpdater = (action, documents) => query => {
  * @returns {import("../types").QueriesStateSlice}
  */
 const queries = (
+  performanceApi,
   state = {},
   action,
   documents = {},
   haveDocumentsChanged = true
 ) => {
   if (action.type == INIT_QUERY) {
-    const newQueryState = query(state[action.queryId], action, documents)
+    const newQueryState = query(
+      performanceApi,
+      state[action.queryId],
+      action,
+      documents
+    )
     // Do not create new object unnecessarily
     if (newQueryState === state[action.queryId]) {
       return state
@@ -518,7 +553,7 @@ const queries = (
     const updater = autoQueryUpdater(action, documents)
     return mapValues(state, queryState => {
       if (queryState.id == action.queryId) {
-        return query(queryState, action, documents)
+        return query(performanceApi, queryState, action, documents)
       } else if (haveDocumentsChanged) {
         return updater(queryState)
       } else {
