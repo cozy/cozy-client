@@ -8,6 +8,9 @@ export function statDirectoryByPath(client: CozyClient, path: string): Promise<i
 export function buildFolderPath(konnector: import('../types').IOCozyKonnector, account: import('../types').IOCozyAccount, magicFolders?: {
     [x: string]: string;
 }): string;
+export function buildMainFolderPath(konnector: import('../types').IOCozyKonnector, magicFolders?: {
+    [x: string]: string;
+}): string;
 export function buildFolderPermission(folder: import('../types').IOCozyFolder): any;
 export function findKonnectorAccountFolderByReference({ client, slug, sourceAccountIdentifier }: {
     client: CozyClient;
