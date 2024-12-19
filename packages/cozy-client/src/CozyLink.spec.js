@@ -3,13 +3,13 @@ import CozyLink, { chain } from './CozyLink'
 describe('CozyLink', () => {
   it('should be chainable', () => {
     const link = chain([
-      new CozyLink((operation, result = '', forward) => {
-        return forward(operation, result + 'foo')
+      new CozyLink((operation, options, result = '', forward) => {
+        return forward(operation, options, result + 'foo')
       }),
-      new CozyLink((operation, result, forward) => {
-        return forward(operation, result + 'bar')
+      new CozyLink((operation, options, result, forward) => {
+        return forward(operation, options, result + 'bar')
       }),
-      (operation, result) => {
+      (operation, options, result) => {
         return result + 'baz'
       }
     ])
@@ -19,8 +19,8 @@ describe('CozyLink', () => {
   describe('default last link', () => {
     it('should throw an error when called without result', () => {
       const link = chain([
-        new CozyLink((operation, result = '', forward) => {
-          return forward(operation)
+        new CozyLink((operation, options, result = '', forward) => {
+          return forward(operation, options)
         })
       ])
       expect(() =>
@@ -28,10 +28,10 @@ describe('CozyLink', () => {
       ).toThrowErrorMatchingSnapshot()
     })
 
-    it('should return the final result if tehre is one', () => {
+    it('should return the final result if there is one', () => {
       const link = chain([
-        new CozyLink((operation, result, forward) => {
-          return forward(operation, 'foo')
+        new CozyLink((operation, options, result, forward) => {
+          return forward(operation, options, 'foo')
         })
       ])
 
@@ -40,8 +40,8 @@ describe('CozyLink', () => {
 
     it('should call the custom execution function', () => {
       const link = chain([
-        new CozyLink((operation, result = '', forward) => {
-          return forward(operation)
+        new CozyLink((operation, options, result = '', forward) => {
+          return forward(operation, options)
         })
       ])
       const spyFn = jest.fn(() => 'bar')

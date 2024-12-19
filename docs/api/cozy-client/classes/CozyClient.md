@@ -1564,13 +1564,14 @@ Contains the fetched token and the client information.
 
 ### requestMutation
 
-▸ **requestMutation**(`definition`): `any`
+▸ **requestMutation**(`definition`, `options`): `any`
 
 *Parameters*
 
 | Name | Type |
 | :------ | :------ |
 | `definition` | `any` |
+| `options` | `any` |
 
 *Returns*
 

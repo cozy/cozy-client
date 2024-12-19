@@ -13,11 +13,12 @@ export default class CozyLink {
    * Request the given operation from the link
    *
    * @param {any} operation - The operation to request
+   * @param {any} options - The request options
    * @param {any} result - The result from the previous request of the chain
    * @param {any} forward - The next request of the chain
    * @returns {Promise<any>}
    */
-  async request(operation, result, forward) {
+  async request(operation, options, result, forward) {
     throw new Error('request is not implemented')
   }
 
@@ -45,7 +46,7 @@ export default class CozyLink {
 const toLink = handler =>
   typeof handler === 'function' ? new CozyLink(handler) : handler
 
-const defaultLinkRequestHandler = (operation, result) => {
+const defaultLinkRequestHandler = (operation, options, result) => {
   if (result) return result
   else if (operation.execute) return operation.execute()
   else
@@ -67,11 +68,11 @@ export const chain = links =>
   [...links, defaultLinkHandler].map(toLink).reduce(concat)
 
 const concat = (firstLink, nextLink) => {
-  const requestHandler = (operation, result, forward) => {
-    const nextForward = (op, res) => {
-      return nextLink.request(op, res, forward)
+  const requestHandler = (operation, options, result, forward) => {
+    const nextForward = (op, opts, res) => {
+      return nextLink.request(op, opts, res, forward)
     }
-    return firstLink.request(operation, result, nextForward)
+    return firstLink.request(operation, options, result, nextForward)
   }
 
   const persistHandler = (data, forward) => {

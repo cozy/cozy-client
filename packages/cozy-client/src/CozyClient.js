@@ -974,7 +974,7 @@ client.query(Q('io.cozy.bills'))`)
             Promise.resolve(
               executeQueryFromState(this.store.getState(), queryDefinition)
             )
-        : () => this.requestQuery(queryDefinition)
+        : () => this.requestQuery(queryDefinition, options)
       const response = await this._promiseCache.exec(requestFn, () =>
         stringify(queryDefinition)
       )
@@ -1083,7 +1083,7 @@ client.query(Q('io.cozy.bills'))`)
       options.as || this.queryIdGenerator.generateId(mutationDefinition)
     this.dispatch(initMutation(mutationId, mutationDefinition))
     try {
-      const response = await this.requestMutation(mutationDefinition)
+      const response = await this.requestMutation(mutationDefinition, options)
       this.dispatch(
         receiveMutationResult(
           mutationId,
@@ -1109,8 +1109,8 @@ client.query(Q('io.cozy.bills'))`)
    * @param  {QueryDefinition} definition QueryDefinition to be executed
    * @returns {Promise<import("./types").ClientResponse>}
    */
-  async requestQuery(definition) {
-    const mainResponse = await this.chain.request(definition)
+  async requestQuery(definition, options) {
+    const mainResponse = await this.chain.request(definition, options)
 
     await this.persistVirtualDocuments(definition, mainResponse.data)
 
@@ -1260,7 +1260,7 @@ client.query(Q('io.cozy.bills'))`)
     }
   }
 
-  async requestMutation(definition) {
+  async requestMutation(definition, options) {
     if (Array.isArray(definition)) {
       const [first, ...rest] = definition
       const firstResponse = await this.requestMutation(first)
@@ -1273,7 +1273,7 @@ client.query(Q('io.cozy.bills'))`)
       )
       return firstResponse
     }
-    return this.chain.request(definition)
+    return this.chain.request(definition, options)
   }
 
   getIncludesRelationships(queryDefinition) {

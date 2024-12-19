@@ -64,13 +64,14 @@ Transfers queries and mutations to a remote stack
 
 ### executeMutation
 
-▸ **executeMutation**(`mutation`, `result`, `forward`): `Promise`<`any`>
+▸ **executeMutation**(`mutation`, `options`, `result`, `forward`): `Promise`<`any`>
 
 *Parameters*
 
 | Name | Type |
 | :------ | :------ |
 | `mutation` | `any` |
+| `options` | `any` |
 | `result` | `any` |
 | `forward` | `any` |
 
@@ -153,7 +154,7 @@ Persist the given data into the links storage
 
 ### request
 
-▸ **request**(`operation`, `result`, `forward`): `Promise`<`any`>
+▸ **request**(`operation`, `options`, `result`, `forward`): `Promise`<`any`>
 
 Request the given operation from the link
 
@@ -162,6 +163,7 @@ Request the given operation from the link
 | Name | Type |
 | :------ | :------ |
 | `operation` | `any` |
+| `options` | `any` |
 | `result` | `any` |
 | `forward` | `any` |
 

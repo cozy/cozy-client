@@ -20,9 +20,9 @@ In the chain example pictured above, the Dedup link would avoid re-fetching the 
 There are two ways of creating a new link. First, you can instantiate a `CozyLink` and pass a request handling function to its constructor:
 
 ```js
-const logLink = new CozyLink((operation, result, forward) => {
+const logLink = new CozyLink((operation, options, result, forward) => {
   console.log(JSON.stringify(operation))
-  return forward(operation, result)
+  return forward(operation, options, result)
 })
 ```
 
@@ -30,9 +30,9 @@ Or you can subclass `CozyLink`:
 
 ```js
 class LogLink extends CozyLink {
-  request(operation, result, forward) {
+  request(operation, options, result, forward) {
     console.log(JSON.stringify(operation))
-    return forward(operation, result)
+    return forward(operation, options, result)
   }
 }
 ```

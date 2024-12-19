@@ -255,13 +255,14 @@ Create the PouchDB index if not existing
 
 ### executeMutation
 
-▸ **executeMutation**(`mutation`, `result`, `forward`): `Promise`<`any`>
+▸ **executeMutation**(`mutation`, `options`, `result`, `forward`): `Promise`<`any`>
 
 *Parameters*
 
 | Name | Type |
 | :------ | :------ |
 | `mutation` | `any` |
+| `options` | `any` |
 | `result` | `any` |
 | `forward` | `any` |
 
@@ -652,13 +653,14 @@ CozyLink.persistCozyData
 
 ### request
 
-▸ **request**(`operation`, `result?`, `forward?`): `Promise`<`any`>
+▸ **request**(`operation`, `options`, `result?`, `forward?`): `Promise`<`any`>
 
 *Parameters*
 
 | Name | Type | Default value |
 | :------ | :------ | :------ |
 | `operation` | `any` | `undefined` |
+| `options` | `any` | `undefined` |
 | `result` | `any` | `null` |
 | `forward` | (`operation`: `any`, `result`: `any`) => `void` | `doNothing` |
 
