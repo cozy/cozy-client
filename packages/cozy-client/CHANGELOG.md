@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [51.7.0](https://github.com/cozy/cozy-client/compare/v51.6.1...v51.7.0) (2024-12-20)
+
+
+### Features
+
+* Add PerformanceApi to CozyClient ([3e42ea4](https://github.com/cozy/cozy-client/commit/3e42ea46b9f1aa44f7ba2e517c9dd3c2bd788a62))
+* Add PerformanceApi to CozyClient's store ([8da242d](https://github.com/cozy/cozy-client/commit/8da242d3831295ecf4448b850cbcbc0aac261f86))
+* Add PerformanceApi to StackLink ([9c4f3b1](https://github.com/cozy/cozy-client/commit/9c4f3b1d1a87b1bd6fb6910e9d5e70b94ffb0f7d))
+
+
+
+
+
 ## [51.6.1](https://github.com/cozy/cozy-client/compare/v51.6.0...v51.6.1) (2024-12-16)
 
 **Note:** Version bump only for package cozy-client

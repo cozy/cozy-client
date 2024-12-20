@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [51.7.0](https://github.com/cozy/cozy-client/compare/v51.6.1...v51.7.0) (2024-12-20)
+
+
+### Features
+
+* Add PerformanceApi to CozyPouchLink ([247db09](https://github.com/cozy/cozy-client/commit/247db09e4567e88d27e816e11ac104b1cfbe5181))
+
+
+
+
+
 ## [51.6.1](https://github.com/cozy/cozy-client/compare/v51.6.0...v51.6.1) (2024-12-16)
 
 **Note:** Version bump only for package cozy-pouch-link
