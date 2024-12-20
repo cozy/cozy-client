@@ -3,6 +3,55 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [52.0.0](https://github.com/cozy/cozy-client/compare/v51.7.0...v52.0.0) (2024-12-20)
+
+
+### Features
+
+* Allow to enforce Stack link on request chain ([6aac845](https://github.com/cozy/cozy-client/commit/6aac845136e6b80b304292fd68657417d32e05ca))
+
+
+### BREAKING CHANGES
+
+* CozyLink's request methods now takes an additional
+`options` argument that can be used to enforce usage of Stack link.
+Although `.request()` is meant to be an internal API, if your code
+calls it, you'll want to introduce a new argument for `options`. This
+is also the case if you instanciate a new CozyLink with a handler
+argument for `request`
+
+Before:
+```
+// Initialization
+new CozyLink((operation, result = '', forward) => {
+  return forward(operation, result + 'foo')
+})
+
+// Call
+link.request(operation)
+
+// Call with result and forward
+link.request(operation, null, () => { /* do stuff */ })
+```
+
+After:
+```
+// Initialization
+new CozyLink((operation, options, result = '', forward) => {
+  return forward(operation, options, result + 'foo')
+})
+
+// Call
+link.request(operation, options)
+
+// Call with result and forward
+link.request(operation, options, null, () => { /* do stuff */ })
+```
+
+
+
+
+
 # [51.7.0](https://github.com/cozy/cozy-client/compare/v51.6.1...v51.7.0) (2024-12-20)
 
 
