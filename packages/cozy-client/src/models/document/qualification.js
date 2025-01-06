@@ -315,3 +315,20 @@ export const getIconByLabel = label => {
   )
   return ''
 }
+
+/**
+ * @param {string} label - The qualification label
+ * @returns {boolean}
+ */
+export const isSupportedQualification = label =>
+  qualificationModel.qualifications.some(qualif => qualif.label === label)
+
+/**
+ * @param {object} document - The document
+ * @returns {boolean}
+ */
+export const hasSupportedQualification = document => {
+  const label = document?.metadata?.qualification?.label
+
+  return isSupportedQualification(label)
+}
