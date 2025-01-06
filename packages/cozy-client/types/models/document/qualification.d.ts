@@ -108,6 +108,8 @@ export namespace Qualification {
 export function setQualification(document: object, qualification: Qualification): object;
 export function getQualification(document: object): Qualification | null;
 export function getIconByLabel(label: string): import('../../types').IconQualificationLabels | string;
+export function isSupportedQualification(label: string): boolean;
+export function hasSupportedQualification(document: object): boolean;
 export type QualificationAttributes = {
     /**
      * - The qualification icon.
