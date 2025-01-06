@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [52.1.0](https://github.com/cozy/cozy-client/compare/v52.0.1...v52.1.0) (2025-01-06)
+
+
+### Features
+
+* Add new qualification helpers ([44688e2](https://github.com/cozy/cozy-client/commit/44688e2dea892a8a295712ce8512c7ef76154e9f))
+
+
+
+
+
 ## [52.0.1](https://github.com/cozy/cozy-client/compare/v52.0.0...v52.0.1) (2025-01-06)
 
 
