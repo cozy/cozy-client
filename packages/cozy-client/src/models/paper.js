@@ -332,9 +332,9 @@ export const formatDateMetadataValue = (value, { lang, f }) => {
 
   if (value) {
     if (lang === 'en') {
-      return f(value, 'MM/DD/YYYY')
+      return f(value, 'LL/dd/yyyy')
     }
-    return f(value, 'DD/MM/YYYY')
+    return f(value, 'dd/LL/yyyy')
   } else {
     return t('Scan.qualification.noInfo')
   }
