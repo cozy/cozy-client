@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [52.1.1](https://github.com/cozy/cozy-client/compare/v52.1.0...v52.1.1) (2025-01-15)
+
+
+### Bug Fixes
+
+* **konnectors:** Avoid creating multiple konnector folders ([14ec6c4](https://github.com/cozy/cozy-client/commit/14ec6c46393fe442d1bc77757922983ccda3c108))
+
+
+
+
+
 # [52.1.0](https://github.com/cozy/cozy-client/compare/v52.0.1...v52.1.0) (2025-01-06)
 
 
