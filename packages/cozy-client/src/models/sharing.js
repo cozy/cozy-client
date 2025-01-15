@@ -10,17 +10,18 @@ import { generateWebLink } from '../helpers'
  * @param {object} options - Options
  * @param {string} [options.ttl] - Time to live (bigduration format, e.g. "4Y3M2D1h30m15s")
  * @param {string} [options.password] - To generate a password-protected link
+ * @param {string[]} [options.verbs] - Array of verbs to allow on the shared link. Default is ['GET']
  * @returns {Promise<string>} Shared link
  */
 export const getSharingLink = async (
   client,
   filesIds,
-  { ttl, password } = {}
+  { ttl, password, verbs = ['GET'] } = {}
 ) => {
   const PERMS = {
     _type: DOCTYPE_PERMISSIONS,
     permissions: {
-      files: { type: DOCTYPE_FILES, values: filesIds, verbs: ['GET'] }
+      files: { type: DOCTYPE_FILES, values: filesIds, verbs }
     },
     ...(ttl && { ttl }),
     ...(password && { password })
