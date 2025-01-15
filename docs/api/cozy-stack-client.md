@@ -1732,7 +1732,11 @@ Create a share link
 | --- | --- | --- |
 | document | <code>Object</code> | cozy document |
 | options | <code>object</code> | options |
-| options.verbs | <code>Array.&lt;string&gt;</code> | explicit permissions to use |
+| [options.ttl] | <code>string</code> | Time to live (bigduration format, e.g. "4Y3M2D1h30m15s") |
+| [options.password] | <code>string</code> | To generate a password-protected link |
+| [options.verbs] | <code>Array.&lt;string&gt;</code> | explicit permissions to use |
+| [options.codes] | <code>string</code> | A comma separed list of values (defaulted to code) |
+| [options.tiny] | <code>boolean</code> | If set to true then the generated shortcode will be 6 digits Cozy-Stack has a few conditions to be able to use this tiny shortcode ATM you have to specifiy a ttl < 1h, but it can change. see https://docs.cozy.io/en/cozy-stack/permissions/#post-permissions for exact informations |
 
 <a name="PermissionCollection+fetchPermissionsByLink"></a>
 
@@ -2305,7 +2309,7 @@ Build a permission set
 | document | <code>Object</code> | cozy document |
 | publicLink | <code>boolean</code> | are the permissions for a public link ? |
 | options | <code>object</code> | options |
-| options.verbs | <code>Array.&lt;string&gt;</code> | explicit permissions to use |
+| [options.verbs] | <code>Array.&lt;string&gt;</code> | explicit permissions to use |
 
 <a name="normalizeSettings"></a>
 
