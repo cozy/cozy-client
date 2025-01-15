@@ -1,4 +1,4 @@
-export function getSharingLink(client: CozyClient, filesIds: string[], { ttl, password, verbs }?: {
+export function makeSharingLink(client: CozyClient, filesIds: string[], { ttl, password, verbs }?: {
     ttl: string;
     password: string;
     verbs: string[];

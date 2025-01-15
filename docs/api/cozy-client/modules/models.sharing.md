@@ -6,9 +6,9 @@
 
 ## Functions
 
-### getSharingLink
+### makeSharingLink
 
-▸ **getSharingLink**(`client`, `filesIds`, `options?`): `Promise`<`string`>
+▸ **makeSharingLink**(`client`, `filesIds`, `options?`): `Promise`<`string`>
 
 Generate Sharing link for one or many files
 
