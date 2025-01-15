@@ -186,7 +186,7 @@ describe('PermissionCollection', () => {
       await collection.createSharingLink(document)
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'POST',
-        '/permissions?codes=email',
+        '/permissions?codes=code',
         {
           data: {
             type: 'io.cozy.permissions',
@@ -211,7 +211,7 @@ describe('PermissionCollection', () => {
       await collection.createSharingLink(document, options)
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'POST',
-        '/permissions?codes=email',
+        '/permissions?codes=code',
         {
           data: {
             type: 'io.cozy.permissions',
@@ -226,6 +226,20 @@ describe('PermissionCollection', () => {
             }
           }
         }
+      )
+    })
+
+    it('Should be call with the right params', async () => {
+      const document = { _type: 'io.cozy.files', _id: '1234' }
+      await collection.createSharingLink(document, {
+        ttl: '1D',
+        tiny: true,
+        codes: 'a,b'
+      })
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/permissions?codes=a%2Cb&ttl=1D&tiny=true',
+        { data: { attributes: {}, type: 'io.cozy.permissions' } }
       )
     })
   })

@@ -143,13 +143,25 @@ class PermissionCollection extends DocumentCollection {
    *
    * @param {{_id, _type}} document - cozy document
    * @param {object} options - options
-   * @param {string[]} options.verbs - explicit permissions to use
+   * @param {string} [options.ttl] - Time to live (bigduration format, e.g. "4Y3M2D1h30m15s")
+   * @param {string} [options.password] - To generate a password-protected link
+   * @param {string[]} [options.verbs] - explicit permissions to use
+   * @param {string} [options.codes] A comma separed list of values (defaulted to code)
+   * @param {boolean} [options.tiny] If set to true then the generated shortcode will be 6 digits
+   * Cozy-Stack has a few conditions to be able to use this tiny shortcode ATM you have to specifiy
+   * a ttl < 1h, but it can change.
+   * see https://docs.cozy.io/en/cozy-stack/permissions/#post-permissions for exact informations
    */
   async createSharingLink(document, options = {}) {
-    const { verbs } = options
+    const { ttl, password, verbs, tiny, codes = 'code' } = options
+    const searchParams = new URLSearchParams()
+    searchParams.append('codes', codes)
+    if (ttl) searchParams.append('ttl', ttl)
+    if (tiny) searchParams.append('tiny', true)
+
     const resp = await this.stackClient.fetchJSON(
       'POST',
-      `/permissions?codes=email`,
+      `/permissions?${searchParams}`,
       {
         data: {
           type: 'io.cozy.permissions',
@@ -158,7 +170,8 @@ class PermissionCollection extends DocumentCollection {
               document,
               true,
               verbs ? { verbs } : {}
-            )
+            ),
+            ...(password && { password })
           }
         }
       }
@@ -245,7 +258,7 @@ class PermissionCollection extends DocumentCollection {
  * @param {{_id, _type}} document - cozy document
  * @param {boolean} publicLink - are the permissions for a public link ?
  * @param {object} options - options
- * @param {string[]} options.verbs - explicit permissions to use
+ * @param {string[]} [options.verbs] - explicit permissions to use
  * @returns {object} permissions object that can be sent through /permissions/*
  */
 export const getPermissionsFor = (
