@@ -1,6 +1,6 @@
-import { getSharingLink } from './sharing'
+import { makeSharingLink } from './sharing'
 
-describe('getSharingLink', () => {
+describe('makeSharingLink', () => {
   const mockSharecode = { attributes: { shortcodes: { code: 'shortcode' } } }
   const mockClient = ({ isFlatDomain = false } = {}) => ({
     save: jest.fn(() => ({ data: mockSharecode })),
@@ -10,7 +10,7 @@ describe('getSharingLink', () => {
   const mockFiles = ['fileId01', 'fileId02']
 
   it('should generate the right share link if "isFlatDomain" param is not defined', async () => {
-    const sharingLink = await getSharingLink(mockClient(), mockFiles)
+    const sharingLink = await makeSharingLink(mockClient(), mockFiles)
 
     expect(sharingLink).toBe(
       'http://drive.cozy.cloud/public?sharecode=shortcode#/'
@@ -18,7 +18,7 @@ describe('getSharingLink', () => {
   })
 
   it('should generate the right share link to a nested cozy', async () => {
-    const sharingLink = await getSharingLink(
+    const sharingLink = await makeSharingLink(
       mockClient({ isFlatDomain: false }),
       mockFiles
     )
@@ -29,7 +29,7 @@ describe('getSharingLink', () => {
   })
 
   it('should generate the right share link to a flat cozy', async () => {
-    const sharingLink = await getSharingLink(
+    const sharingLink = await makeSharingLink(
       mockClient({ isFlatDomain: true }),
       mockFiles
     )
@@ -40,14 +40,14 @@ describe('getSharingLink', () => {
   })
 
   it('should generate the right share link with an correct sharecode', async () => {
-    const sharingLink = await getSharingLink(mockClient(), mockFiles)
+    const sharingLink = await makeSharingLink(mockClient(), mockFiles)
 
     expect(sharingLink).toContain('sharecode=shortcode')
   })
   it('should save called with the "ttl" param', async () => {
     const mockSave = jest.fn().mockReturnValue({ data: mockSharecode })
     const client = { ...mockClient(), save: mockSave }
-    await getSharingLink(client, mockFiles, {
+    await makeSharingLink(client, mockFiles, {
       ttl: '1d'
     })
 
@@ -67,7 +67,7 @@ describe('getSharingLink', () => {
   it('should save called with the "password" param', async () => {
     const mockSave = jest.fn().mockReturnValue({ data: mockSharecode })
     const client = { ...mockClient(), save: mockSave }
-    await getSharingLink(client, mockFiles, {
+    await makeSharingLink(client, mockFiles, {
       password: 'password'
     })
 
@@ -87,7 +87,7 @@ describe('getSharingLink', () => {
   it('should save called with the "verbs" param', async () => {
     const mockSave = jest.fn().mockReturnValue({ data: mockSharecode })
     const client = { ...mockClient(), save: mockSave }
-    await getSharingLink(client, mockFiles, {
+    await makeSharingLink(client, mockFiles, {
       verbs: ['GET', 'POST']
     })
 
@@ -106,7 +106,7 @@ describe('getSharingLink', () => {
   it('should save called without the "ttl" or "password" params', async () => {
     const mockSave = jest.fn().mockReturnValue({ data: mockSharecode })
     const client = { ...mockClient(), save: mockSave }
-    await getSharingLink(client, mockFiles)
+    await makeSharingLink(client, mockFiles)
 
     expect(mockSave).toBeCalledWith({
       _type: 'io.cozy.permissions',

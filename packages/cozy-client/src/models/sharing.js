@@ -13,7 +13,7 @@ import { generateWebLink } from '../helpers'
  * @param {string[]} [options.verbs] - Array of verbs to allow on the shared link. Default is ['GET']
  * @returns {Promise<string>} Shared link
  */
-export const getSharingLink = async (
+export const makeSharingLink = async (
   client,
   filesIds,
   { ttl, password, verbs = ['GET'] } = {}
