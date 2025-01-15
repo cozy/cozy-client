@@ -84,6 +84,25 @@ describe('getSharingLink', () => {
     })
   })
 
+  it('should save called with the "verbs" param', async () => {
+    const mockSave = jest.fn().mockReturnValue({ data: mockSharecode })
+    const client = { ...mockClient(), save: mockSave }
+    await getSharingLink(client, mockFiles, {
+      verbs: ['GET', 'POST']
+    })
+
+    expect(mockSave).toBeCalledWith({
+      _type: 'io.cozy.permissions',
+      permissions: {
+        files: {
+          type: 'io.cozy.files',
+          values: ['fileId01', 'fileId02'],
+          verbs: ['GET', 'POST']
+        }
+      }
+    })
+  })
+
   it('should save called without the "ttl" or "password" params', async () => {
     const mockSave = jest.fn().mockReturnValue({ data: mockSharecode })
     const client = { ...mockClient(), save: mockSave }

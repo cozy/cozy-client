@@ -21,6 +21,7 @@ Generate Sharing link for one or many files
 | `options` | `Object` | Options |
 | `options.password` | `string` | - |
 | `options.ttl` | `string` | - |
+| `options.verbs` | `string`\[] | - |
 
 *Returns*
 
@@ -30,4 +31,4 @@ Shared link
 
 *Defined in*
 
-[packages/cozy-client/src/models/sharing.js:15](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/sharing.js#L15)
+[packages/cozy-client/src/models/sharing.js:16](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/sharing.js#L16)
