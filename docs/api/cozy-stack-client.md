@@ -1667,7 +1667,7 @@ Implements `DocumentCollection` API along with specific methods for `io.cozy.per
 
 * [PermissionCollection](#PermissionCollection)
     * [.create(permission)](#PermissionCollection+create)
-    * [.add(document, permission)](#PermissionCollection+add) ⇒ <code>Promise</code>
+    * [.add(document, permission, options)](#PermissionCollection+add) ⇒ <code>Promise</code>
     * ~~[.findApps()](#PermissionCollection+findApps)~~
     * [.createSharingLink(document, options)](#PermissionCollection+createSharingLink)
     * [.fetchPermissionsByLink(permissions)](#PermissionCollection+fetchPermissionsByLink)
@@ -1692,7 +1692,7 @@ It can also associates one or more codes to it, via the codes parameter
 
 <a name="PermissionCollection+add"></a>
 
-### permissionCollection.add(document, permission) ⇒ <code>Promise</code>
+### permissionCollection.add(document, permission, options) ⇒ <code>Promise</code>
 Adds a permission to the given document. Document type must be
 `io.cozy.apps`, `io.cozy.konnectors` or `io.cozy.permissions`
 
@@ -1702,18 +1702,23 @@ Adds a permission to the given document. Document type must be
 | --- | --- | --- |
 | document | <code>object</code> | Document which receives the permission |
 | permission | <code>object</code> | Describes the permission |
+| options | <code>object</code> | options |
+| [options.expiresAt] | <code>string</code> | Date at which the permission will expire. Set to "" to remove it. |
+| [options.password] | <code>string</code> | To generate a password-protected link. Set to "" to remove it. |
 
 **Example**  
 ```
-const permissions = await client
-  .collection('io.cozy.permissions')
-  .add(konnector, {
+const permissions = await client.collection('io.cozy.permissions').add(
+  konnector,
+  {
     folder: {
       type: 'io.cozy.files',
       verbs: ['GET', 'PUT'],
       values: [`io.cozy.files.bc57b60eb2954537b0dcdc6ebd8e9d23`]
     }
- })
+  },
+  { expiresAt: '2100-01-01T00:00:00Z', password: 'password' }
+)
 ```
 <a name="PermissionCollection+findApps"></a>
 

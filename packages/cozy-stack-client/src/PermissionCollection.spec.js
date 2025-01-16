@@ -99,6 +99,81 @@ describe('PermissionCollection', () => {
         )
       })
 
+      it('should call with options if they are defined and filled in', async () => {
+        await collection.add(
+          {
+            _type: 'io.cozy.permissions',
+            _id: 'a340d5e0d64711e6b66c5fc9ce1e17c6'
+          },
+          fixtures.permission,
+          { expiresAt: '2019-01-01T00:00:00Z', password: 'password' }
+        )
+
+        expect(client.fetchJSON).toHaveBeenCalledWith(
+          'PATCH',
+          '/permissions/a340d5e0d64711e6b66c5fc9ce1e17c6',
+          {
+            data: {
+              type: 'io.cozy.permissions',
+              attributes: {
+                permissions: fixtures.permission,
+                expires_at: '2019-01-01T00:00:00Z',
+                password: 'password'
+              }
+            }
+          }
+        )
+      })
+
+      it('should call with options if they are defined but not filled in', async () => {
+        await collection.add(
+          {
+            _type: 'io.cozy.permissions',
+            _id: 'a340d5e0d64711e6b66c5fc9ce1e17c6'
+          },
+          fixtures.permission,
+          { expiresAt: '', password: '' }
+        )
+
+        expect(client.fetchJSON).toHaveBeenCalledWith(
+          'PATCH',
+          '/permissions/a340d5e0d64711e6b66c5fc9ce1e17c6',
+          {
+            data: {
+              type: 'io.cozy.permissions',
+              attributes: {
+                permissions: fixtures.permission,
+                expires_at: '',
+                password: ''
+              }
+            }
+          }
+        )
+      })
+
+      it('should call without options if they are undefined', async () => {
+        await collection.add(
+          {
+            _type: 'io.cozy.permissions',
+            _id: 'a340d5e0d64711e6b66c5fc9ce1e17c6'
+          },
+          fixtures.permission
+        )
+
+        expect(client.fetchJSON).toHaveBeenCalledWith(
+          'PATCH',
+          '/permissions/a340d5e0d64711e6b66c5fc9ce1e17c6',
+          {
+            data: {
+              type: 'io.cozy.permissions',
+              attributes: {
+                permissions: fixtures.permission
+              }
+            }
+          }
+        )
+      })
+
       it('uses expected apps endpoint', async () => {
         await collection.add(
           {
