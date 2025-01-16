@@ -61,22 +61,27 @@ class PermissionCollection extends DocumentCollection {
    *
    * @param  {object}  document - Document which receives the permission
    * @param  {object}  permission - Describes the permission
+   * @param {object} options - options
+   * @param {string} [options.expiresAt] - Date at which the permission will expire. Set to "" to remove it.
+   * @param {string} [options.password] - To generate a password-protected link. Set to "" to remove it.
    * @returns {Promise}
    *
    * @example
    * ```
-   * const permissions = await client
-   *   .collection('io.cozy.permissions')
-   *   .add(konnector, {
+   * const permissions = await client.collection('io.cozy.permissions').add(
+   *   konnector,
+   *   {
    *     folder: {
    *       type: 'io.cozy.files',
    *       verbs: ['GET', 'PUT'],
    *       values: [`io.cozy.files.bc57b60eb2954537b0dcdc6ebd8e9d23`]
    *     }
-   *  })
+   *   },
+   *   { expiresAt: '2100-01-01T00:00:00Z', password: 'password' }
+   * )
    * ```
    */
-  async add(document, permission) {
+  async add(document, permission, options = {}) {
     let endpoint
     switch (document._type) {
       case 'io.cozy.apps':
@@ -94,11 +99,19 @@ class PermissionCollection extends DocumentCollection {
         )
     }
 
+    const { expiresAt, password } = options
+    // We need to pass password and expires_at even if they are empty strings because the API expects them.
+    // If value is a empty string, the stack will remove the password or expires_at.
+    const hasPassword = password || password === ''
+    const hasExpiresAt = expiresAt || expiresAt === ''
+
     const resp = await this.stackClient.fetchJSON('PATCH', endpoint, {
       data: {
         type: 'io.cozy.permissions',
         attributes: {
-          permissions: permission
+          permissions: permission,
+          ...(hasPassword && { password }),
+          ...(hasExpiresAt && { expires_at: expiresAt })
         }
       }
     })
