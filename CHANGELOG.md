@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [52.2.0](https://github.com/cozy/cozy-client/compare/v52.1.1...v52.2.0) (2025-01-20)
+
+
+### Features
+
+* **SharingColl:** Add `shortcut` option to getDiscoveryLink ([1d45ab2](https://github.com/cozy/cozy-client/commit/1d45ab2ea8c12b464578b320addb1950f8fd1b36)), closes [cozy/cozy-stack#4503](https://github.com/cozy/cozy-stack/issues/4503)
+
+
+
+
+
 ## [52.1.1](https://github.com/cozy/cozy-client/compare/v52.1.0...v52.1.1) (2025-01-15)
 
 
