@@ -169,11 +169,18 @@ class SharingCollection extends DocumentCollection {
    *
    * @param  {string} sharingId - Id of the sharing
    * @param  {string} sharecode - Code of the sharing
+   * @param  {object} [options] - Options
+   * @param  {boolean} [options.shortcut] - If true, add a shortcut to the sharing in the user's cozy and skip the OAuth authorize page.
    * @returns {string}
    */
-  getDiscoveryLink(sharingId, sharecode) {
+  getDiscoveryLink(sharingId, sharecode, options) {
+    const { shortcut } = options || {}
+    const searchParams = new URLSearchParams()
+    searchParams.append('sharecode', sharecode)
+    if (shortcut) searchParams.append('shortcut', true)
+
     return this.stackClient.fullpath(
-      `/sharings/${sharingId}/discovery?sharecode=${sharecode}`
+      `/sharings/${sharingId}/discovery?${searchParams}`
     )
   }
 
@@ -287,8 +294,8 @@ export const getSharingRules = (document, sharingType) => {
     logger.warn(
       `sharingType is deprecated and will be removed. We now set this default rules: ${getSharingRulesWithoutWarning(
         document
-      )}} \n      
-      If this default rules do not fill your need, please set custom rules 
+      )}} \n
+      If this default rules do not fill your need, please set custom rules
       by using the 'rules' object of the SharingCollection.create() method`
     )
   }

@@ -1854,7 +1854,7 @@ Implements the `DocumentCollection` API along with specific methods for
     * [.get(id)](#SharingCollection+get) ⇒ [<code>Sharing</code>](#Sharing)
     * [.create(params)](#SharingCollection+create)
     * ~~[.share(document, recipients, sharingType, description, [previewPath])](#SharingCollection+share)~~
-    * [.getDiscoveryLink(sharingId, sharecode)](#SharingCollection+getDiscoveryLink) ⇒ <code>string</code>
+    * [.getDiscoveryLink(sharingId, sharecode, [options])](#SharingCollection+getDiscoveryLink) ⇒ <code>string</code>
     * [.addRecipients(options)](#SharingCollection+addRecipients)
     * [.revokeRecipient(sharing, recipientIndex)](#SharingCollection+revokeRecipient)
     * [.revokeGroup(sharing, groupIndex)](#SharingCollection+revokeGroup)
@@ -1909,7 +1909,7 @@ Creates a new Sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#post-shar
 
 <a name="SharingCollection+getDiscoveryLink"></a>
 
-### sharingCollection.getDiscoveryLink(sharingId, sharecode) ⇒ <code>string</code>
+### sharingCollection.getDiscoveryLink(sharingId, sharecode, [options]) ⇒ <code>string</code>
 getDiscoveryLink - Returns the URL of the page that can be used to accept a sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#get-sharingssharing-iddiscovery
 
 **Kind**: instance method of [<code>SharingCollection</code>](#SharingCollection)  
@@ -1918,6 +1918,8 @@ getDiscoveryLink - Returns the URL of the page that can be used to accept a shar
 | --- | --- | --- |
 | sharingId | <code>string</code> | Id of the sharing |
 | sharecode | <code>string</code> | Code of the sharing |
+| [options] | <code>object</code> | Options |
+| [options.shortcut] | <code>boolean</code> | If true, add a shortcut to the sharing in the user's cozy and skip the OAuth authorize page. |
 
 <a name="SharingCollection+addRecipients"></a>
 

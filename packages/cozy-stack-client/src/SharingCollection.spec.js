@@ -538,4 +538,21 @@ describe('SharingCollection', () => {
       )
     })
   })
+
+  describe('getDiscoveryLink', () => {
+    it('should call the route without a shortcut param', () => {
+      client.fullpath.mockImplementation(path => path)
+      const result = collection.getDiscoveryLink('sharingID', 'abc123')
+      expect(result).toBe('/sharings/sharingID/discovery?sharecode=abc123')
+    })
+    it('should call the route with a shortcut param', () => {
+      client.fullpath.mockImplementation(path => path)
+      const result = collection.getDiscoveryLink('sharingID', 'abc123', {
+        shortcut: true
+      })
+      expect(result).toBe(
+        '/sharings/sharingID/discovery?sharecode=abc123&shortcut=true'
+      )
+    })
+  })
 })
