@@ -7,7 +7,7 @@ import trimEnd from 'lodash/trimEnd'
 
 import { setQualification } from './document/qualification'
 import { Q } from '../queries/dsl'
-import { DOCTYPE_FILES } from '../const'
+import { DOCTYPE_FILES, DOCTYPE_FILES_ENCRYPTION } from '../const'
 import CozyClient from '../CozyClient'
 import logger from '../logger'
 
@@ -75,6 +75,37 @@ export const isNote = file => {
  */
 export const isEncrypted = file => {
   return !!file.encrypted
+}
+
+/**
+ * Returns folder encryption reference
+ *
+ * @param {import("../types").IOCozyFile} dir  - io.cozy.files document
+ * @returns {boolean}
+ */
+export const getEncryptiondRef = dir => {
+  const refs = get(dir, 'referenced_by', [])
+  return refs.find(ref => ref.type === DOCTYPE_FILES_ENCRYPTION)
+}
+
+/**
+ * Whether the folder is client-side encrypted
+ *
+ * @param {import("../types").IOCozyFile} dir  - io.cozy.files document
+ * @returns {boolean}
+ */
+export const isEncryptedFolder = dir => {
+  return !!getEncryptiondRef(dir)
+}
+
+/**
+ * Whether the file or folder is client-side encrypted
+ *
+ * @param {import("../types").IOCozyFile} fileOrdir  - io.cozy.files document
+ * @returns {boolean}
+ */
+export const isEncryptedFileOrFolder = fileOrdir => {
+  return isEncryptedFolder(fileOrdir) || isEncrypted(fileOrdir)
 }
 
 /**
