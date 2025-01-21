@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [53.0.0](https://github.com/cozy/cozy-client/compare/v52.2.0...v53.0.0) (2025-01-21)
+
+
+### Features
+
+* **models/sharing:** Add verbs param to getSharingLink function ([6a47793](https://github.com/cozy/cozy-client/commit/6a47793c7a6da7f90b7cc7ab78170a1affb82d58))
+* **models/sharing:** Rename getSharingLink to makeSharingLink ([d1f9557](https://github.com/cozy/cozy-client/commit/d1f9557c65b000331f197c957f701bac7331146a))
+* **permissionColl:** Improve add method ([b2d2c73](https://github.com/cozy/cozy-client/commit/b2d2c7346c76ed24f0a1290cfd3d60d074858935))
+* **PermissionColl:** Normalize params between create ([1d7a4a2](https://github.com/cozy/cozy-client/commit/1d7a4a204746c3435bd7127139a26bc2586629d5))
+
+
+### BREAKING CHANGES
+
+* **models/sharing:** Rename getSharingLink to makeSharingLink.
+
+This function creates or updates a share link.
+* **PermissionColl:** By default, the name of the attribute returned
+via `createSharingLink` is no longer `email` but `code`.
+You can either adapt your code accordingly or
+simply add the option `{ codes: 'email' }` when calling `createSharingLink`.
+
+
+
+
+
 # [52.2.0](https://github.com/cozy/cozy-client/compare/v52.1.1...v52.2.0) (2025-01-20)
 
 

@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [53.0.0](https://github.com/cozy/cozy-client/compare/v52.2.0...v53.0.0) (2025-01-21)
+
+
+### Features
+
+* **models/sharing:** Add verbs param to getSharingLink function ([6a47793](https://github.com/cozy/cozy-client/commit/6a47793c7a6da7f90b7cc7ab78170a1affb82d58))
+* **models/sharing:** Rename getSharingLink to makeSharingLink ([d1f9557](https://github.com/cozy/cozy-client/commit/d1f9557c65b000331f197c957f701bac7331146a))
+
+
+### BREAKING CHANGES
+
+* **models/sharing:** Rename getSharingLink to makeSharingLink.
+
+This function creates or updates a share link.
+
+
+
+
+
 # [52.2.0](https://github.com/cozy/cozy-client/compare/v52.1.1...v52.2.0) (2025-01-20)
 
 **Note:** Version bump only for package cozy-client

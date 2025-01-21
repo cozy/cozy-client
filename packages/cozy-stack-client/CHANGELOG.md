@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [53.0.0](https://github.com/cozy/cozy-client/compare/v52.2.0...v53.0.0) (2025-01-21)
+
+
+### Features
+
+* **permissionColl:** Improve add method ([b2d2c73](https://github.com/cozy/cozy-client/commit/b2d2c7346c76ed24f0a1290cfd3d60d074858935))
+* **PermissionColl:** Normalize params between create ([1d7a4a2](https://github.com/cozy/cozy-client/commit/1d7a4a204746c3435bd7127139a26bc2586629d5))
+
+
+### BREAKING CHANGES
+
+* **PermissionColl:** By default, the name of the attribute returned
+via `createSharingLink` is no longer `email` but `code`.
+You can either adapt your code accordingly or
+simply add the option `{ codes: 'email' }` when calling `createSharingLink`.
+
+
+
+
+
 # [52.2.0](https://github.com/cozy/cozy-client/compare/v52.1.1...v52.2.0) (2025-01-20)
 
 
