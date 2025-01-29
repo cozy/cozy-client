@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [53.1.1](https://github.com/cozy/cozy-client/compare/v53.1.0...v53.1.1) (2025-01-29)
+
+
+### Bug Fixes
+
+* Do not read pouch adapter name at login ([b21118e](https://github.com/cozy/cozy-client/commit/b21118e5d5da639791a15172707cf6a3f03d2496))
+* Links' onLogin should be awaited ([8a63504](https://github.com/cozy/cozy-client/commit/8a63504706e6d9a34e5963b7493cc457aa514510))
+
+
+
+
+
 # [53.1.0](https://github.com/cozy/cozy-client/compare/v53.0.0...v53.1.0) (2025-01-21)
 
 
