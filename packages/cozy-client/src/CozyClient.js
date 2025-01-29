@@ -1851,7 +1851,7 @@ instantiation of the client.`
    *
    * @param {Array<object>} links - The links to handle
    */
-  setLinks(links) {
+  async setLinks(links) {
     this.links = links
       ? links
       : [new StackLink({ performanceApi: this.performanceApi })]
@@ -1864,7 +1864,7 @@ instantiation of the client.`
       // Thus, we call the link's onLogin methods
       for (const link of this.links) {
         if (link.onLogin) {
-          link.onLogin()
+          await link.onLogin()
         }
       }
     }
