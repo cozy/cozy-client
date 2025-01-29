@@ -11,7 +11,6 @@ import omit from 'lodash/omit'
 import defaults from 'lodash/defaults'
 import mapValues from 'lodash/mapValues'
 import zipWith from 'lodash/zipWith'
-import get from 'lodash/get'
 import debounce from 'lodash/debounce'
 
 import { default as helpers } from './helpers'
@@ -235,9 +234,11 @@ class PouchLink extends CozyLink {
       logger.log('Create pouches with ' + prefix + ' prefix')
     }
 
-    if (!(await this.storage.getAdapterName())) {
-      const adapter = get(this.options, 'pouch.options.adapter')
-      await this.storage.persistAdapterName(adapter)
+    const adapterName = this.options?.pouch?.options?.adapter
+    if (adapterName) {
+      if (!(await this.storage.getAdapterName())) {
+        await this.storage.persistAdapterName(adapterName)
+      }
     }
 
     this.pouches = new PouchManager(this.doctypes, {
