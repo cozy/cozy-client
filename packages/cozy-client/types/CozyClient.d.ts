@@ -790,7 +790,7 @@ declare class CozyClient {
      *
      * @param {Array<object>} links - The links to handle
      */
-    setLinks(links: Array<object>): void;
+    setLinks(links: Array<object>): Promise<void>;
     links: any[];
     chain: any;
     /**
