@@ -1742,7 +1742,7 @@ set some data in the store.
 
 ### setLinks
 
-▸ **setLinks**(`links`): `void`
+▸ **setLinks**(`links`): `Promise`<`void`>
 
 Set links, e.g. PouchLink or StackLink.
 When this method is called manually, i.e. after a client instanciation,
@@ -1756,7 +1756,7 @@ we manually call the links onLogin methods
 
 *Returns*
 
-`void`
+`Promise`<`void`>
 
 *Defined in*
 
