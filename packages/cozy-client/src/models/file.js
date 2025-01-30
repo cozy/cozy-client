@@ -578,63 +578,6 @@ export const uploadFileWithConflictStrategy = async (client, file, options) => {
 }
 
 /**
- * Read a file on a mobile
- *
- * @param {string} fileURL - The local file path (file://)
- */
-export const readMobileFile = async fileURL => {
-  /** Cordova plugin doesn't support promise since they are supporting Android 4.X.X
-   * so we have to create manually a promise to be able to write beautiful code ;)
-   */
-
-  const p = new Promise((resolve, reject) => {
-    const onResolvedLocalFS = async fileEntry => {
-      fileEntry.file(
-        async file => {
-          const reader = new FileReader()
-          reader.onloadend = async () => {
-            resolve(reader.result)
-          }
-          // Read the file as an ArrayBuffer
-          reader.readAsArrayBuffer(file)
-        },
-        err => {
-          // Since this module is pretty recent, let's have this info in sentry if needed
-          console.error('error getting fileentry file!' + err) // eslint-disable-line no-console
-          reject(err)
-        }
-      )
-    }
-    const onError = error => {
-      reject(error)
-    }
-    /**
-     * file:/// can not be converted to a fileEntry without the Cordova's File plugin.
-     * `resolveLocalFileSystemURL` is provided by this plugin and can resolve the native
-     * path to a fileEntry readable by a `FileReader`
-     *
-     * When we finished to read the fileEntry as buffer, we start the upload process
-     *
-     */
-    // @ts-ignore
-    window.resolveLocalFileSystemURL(fileURL, onResolvedLocalFS, onError)
-  })
-  return p
-}
-
-/**
- * Upload a file on a mobile
- *
- * @param {CozyClient} client         - The CozyClient instance
- * @param {string} fileURL            - The local file path (file://)
- * @param {FileUploadOptions} options - The upload options
- */
-export const doMobileUpload = async (client, fileURL, options) => {
-  const file = await readMobileFile(fileURL)
-  return uploadFileWithConflictStrategy(client, file, options)
-}
-
-/**
  * @param {string} [mimeType=''] - Mime type of file
  * @param {string} [fileName=''] - Name of file
  * @returns {boolean}

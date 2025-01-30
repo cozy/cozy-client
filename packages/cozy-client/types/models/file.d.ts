@@ -63,8 +63,6 @@ export function overrideFileForPath(client: CozyClient, dirPath: string, file: o
 export function generateNewFileNameOnConflict(filenameWithoutExtension: string, conflictOptions?: import('../types').ConflictOptions): string;
 export function generateFileNameForRevision(file: import("../types").IOCozyFile, revision: object, f: Function): string;
 export function uploadFileWithConflictStrategy(client: CozyClient, file: string | ArrayBuffer, options: FileUploadOptions): any;
-export function readMobileFile(fileURL: string): Promise<any>;
-export function doMobileUpload(client: CozyClient, fileURL: string, options: FileUploadOptions): Promise<any>;
 export function isPlainText(mimeType?: string, fileName?: string): boolean;
 export function hasQualifications(file: import("../types").IOCozyFile): boolean;
 export function hasCertifications(file: import("../types").IOCozyFile): boolean;

@@ -247,7 +247,7 @@ describe('PouchManager', () => {
   })
 
   it('should instanciate pouch with options', async () => {
-    const pouchOptions = { adapter: 'cordova-sqlite', location: 'default' }
+    const pouchOptions = { adapter: 'sqlite', location: 'default' }
     const options = { ...managerOptions, pouch: { options: pouchOptions } }
     const manager = new PouchManager(['io.cozy.todos'], options)
     await manager.init()

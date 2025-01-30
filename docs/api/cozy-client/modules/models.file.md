@@ -44,31 +44,7 @@ Copies a file to a specified destination.
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:695](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L695)
-
-***
-
-### doMobileUpload
-
-▸ **doMobileUpload**(`client`, `fileURL`, `options`): `Promise`<`any`>
-
-Upload a file on a mobile
-
-*Parameters*
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `client` | [`CozyClient`](../classes/CozyClient.md) | The CozyClient instance |
-| `fileURL` | `string` | The local file path (file://) |
-| `options` | [`FileUploadOptions`](../interfaces/models.file.FileUploadOptions.md) | The upload options |
-
-*Returns*
-
-`Promise`<`any`>
-
-*Defined in*
-
-[packages/cozy-client/src/models/file.js:632](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L632)
+[packages/cozy-client/src/models/file.js:638](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L638)
 
 ***
 
@@ -99,7 +75,7 @@ that will process the download
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:749](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L749)
+[packages/cozy-client/src/models/file.js:692](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L692)
 
 ***
 
@@ -145,7 +121,7 @@ file object with path attribute
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:678](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L678)
+[packages/cozy-client/src/models/file.js:621](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L621)
 
 ***
 
@@ -383,7 +359,7 @@ The mime-type of the target file, or an empty string is the target is not a file
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:658](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L658)
+[packages/cozy-client/src/models/file.js:601](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L601)
 
 ***
 
@@ -427,7 +403,7 @@ Whether the file's metadata attribute exists
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:650](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L650)
+[packages/cozy-client/src/models/file.js:593](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L593)
 
 ***
 
@@ -553,7 +529,7 @@ Whether the folder is client-side encrypted
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:669](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L669)
+[packages/cozy-client/src/models/file.js:612](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L612)
 
 ***
 
@@ -618,7 +594,7 @@ Whether the file is supported by Only Office
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:642](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L642)
+[packages/cozy-client/src/models/file.js:585](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L585)
 
 ***
 
@@ -821,28 +797,6 @@ The overrided file
 *Defined in*
 
 [packages/cozy-client/src/models/file.js:448](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L448)
-
-***
-
-### readMobileFile
-
-▸ **readMobileFile**(`fileURL`): `Promise`<`any`>
-
-Read a file on a mobile
-
-*Parameters*
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `fileURL` | `string` | The local file path (file://) |
-
-*Returns*
-
-`Promise`<`any`>
-
-*Defined in*
-
-[packages/cozy-client/src/models/file.js:585](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L585)
 
 ***
 
