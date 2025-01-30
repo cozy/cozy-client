@@ -1375,17 +1375,6 @@ export type ClientCapabilities = {
      */
     flat_subdomains?: boolean;
 };
-export type Cordova = {
-    file: FilePlugin;
-    InAppBrowser: InAppBrowser;
-    plugins: object;
-};
-export type CordovaWindow = {
-    cordova: Cordova;
-    SafariViewController: object;
-    resolveLocalFileSystemURL: Function;
-    handleOpenURL: Function;
-};
 /**
  * - A document
  */

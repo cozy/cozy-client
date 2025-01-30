@@ -1481,8 +1481,7 @@ client.query(Q('io.cozy.bills'))`)
   }
 
   /**
-   * Performs a complete OAuth flow using a Cordova webview
-   * or React Native WebView for auth.
+   * Performs a complete OAuth flow using a React Native WebView for auth.
    * The `register` method's name has been chosen for compat reasons with the Authentication compo.
    *
    * @param   {string} cozyURL Receives the URL of the cozy instance.

@@ -692,21 +692,6 @@ import { QueryDefinition } from './queries/dsl'
  */
 
 /**
- * @typedef Cordova
- * @property {FilePlugin} file
- * @property {InAppBrowser} InAppBrowser
- * @property {object} plugins
- */
-
-/**
- * @typedef  CordovaWindow
- * @property {Cordova} cordova
- * @property {object} SafariViewController
- * @property {Function} resolveLocalFileSystemURL
- * @property {Function} handleOpenURL
- */
-
-/**
  * @typedef {object} CouchDBDocument - A document
  * @property {string} _id - Id of the document
  * @property {string} _rev - Current revision of the document
