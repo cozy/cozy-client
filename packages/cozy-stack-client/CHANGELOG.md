@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [53.2.0](https://github.com/cozy/cozy-client/compare/v53.1.1...v53.2.0) (2025-02-03)
+
+
+### Features
+
+* Add OAuth client last synced datetime update ([0dcd553](https://github.com/cozy/cozy-client/commit/0dcd553d985821c912022d054417f78da31f9444))
+
+
+
+
+
 # [53.0.0](https://github.com/cozy/cozy-client/compare/v52.2.0...v53.0.0) (2025-01-21)
 
 
