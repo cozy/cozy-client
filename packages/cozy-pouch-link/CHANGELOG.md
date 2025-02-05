@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [53.2.1](https://github.com/cozy/cozy-client/compare/v53.2.0...v53.2.1) (2025-02-05)
+
+
+### Bug Fixes
+
+* **deps:** Upgrade cozy-pouch-link's parcel ([4773f13](https://github.com/cozy/cozy-client/commit/4773f13b96ae9b44b9f6a886e69023d25a4f2bd7))
+
+
+
+
+
 # [53.2.0](https://github.com/cozy/cozy-client/compare/v53.1.1...v53.2.0) (2025-02-03)
 
 **Note:** Version bump only for package cozy-pouch-link
