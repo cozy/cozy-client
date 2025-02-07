@@ -22,6 +22,7 @@ import logger from './logger'
 import { migratePouch } from './migrations/adapter'
 import { platformWeb } from './platformWeb'
 import { getDatabaseName, getPrefix } from './utils'
+import { isExpiredTokenError } from './errors'
 
 PouchDB.plugin(PouchDBFind)
 
@@ -53,10 +54,6 @@ export const getReplicationURL = (uri, token, doctype) => {
 }
 
 const doNothing = (operation, result = null) => {}
-const expiredTokenError = /Expired token/
-export const isExpiredTokenError = pouchError => {
-  return expiredTokenError.test(pouchError.error)
-}
 
 const normalizeAll = client => (docs, doctype) => {
   return docs.map(doc => jsonapi.normalizeDoc(doc, doctype, client))
