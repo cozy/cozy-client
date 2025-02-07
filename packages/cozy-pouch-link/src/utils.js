@@ -22,7 +22,7 @@ export const getPrefix = uri => {
 
 export const formatAggregatedError = aggregatedError => {
   const strings = aggregatedError.errors.map((e, index) => {
-    return '\n[' + index + ']: ' + e.message + '\n' + e.stack
+    return '\n[' + index + ']: ' + e.name + ' - ' + e.message + '\n' + e.stack
   })
 
   return strings.join('\n')
