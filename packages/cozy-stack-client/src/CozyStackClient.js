@@ -1,3 +1,5 @@
+import { JSDOM } from 'jsdom'
+
 import cloneDeep from 'lodash/cloneDeep'
 import AppCollection, { APPS_DOCTYPE } from './AppCollection'
 import AppToken from './AppToken'
@@ -191,7 +193,14 @@ class CozyStackClient {
       credentials: 'include'
     }
 
-    if (!global.document) {
+    const isWorkerEnv =
+      // @ts-ignore
+      typeof WorkerGlobalScope !== 'undefined' &&
+      // @ts-ignore
+      // eslint-disable-next-line no-undef
+      self instanceof WorkerGlobalScope
+
+    if (!global.document && !isWorkerEnv) {
       throw new Error('Not in a web context, cannot refresh token')
     }
 
@@ -203,12 +212,11 @@ class CozyStackClient {
       )
     }
     const html = await response.text()
-    const parser = new DOMParser()
-    const doc = parser.parseFromString(html, 'text/html')
-    if (!doc) {
+    const { document } = new JSDOM(html).window
+    if (!document) {
       throw Error("couldn't fetch a new token - doc is not html")
     }
-    const appNode = doc.querySelector('div[role="application"]')
+    const appNode = document.querySelector('div[role="application"]')
     if (!appNode) {
       throw Error("couldn't fetch a new token - no div[role=application]")
     }

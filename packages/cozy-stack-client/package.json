@@ -19,7 +19,8 @@
   "dependencies": {
     "detect-node": "^2.0.4",
     "mime": "^2.4.0",
-    "qs": "^6.7.0"
+    "qs": "^6.7.0",
+    "jsdom": "16.4.0"
   },
   "devDependencies": {
     "@babel/cli": "7.12.8",
