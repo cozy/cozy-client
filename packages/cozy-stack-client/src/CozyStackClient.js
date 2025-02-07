@@ -191,44 +191,32 @@ class CozyStackClient {
       credentials: 'include'
     }
 
-    if (!global.document) {
-      throw new Error('Not in a web context, cannot refresh token')
-    }
-
     const response = await fetch('/?refreshToken', options)
 
     if (!response.ok) {
       throw new Error(
-        "couldn't fetch a new token - response " + response.statusCode
+        "Couldn't fetch a new token - response " + response.statusCode
       )
     }
     const html = await response.text()
-    const parser = new DOMParser()
-    const doc = parser.parseFromString(html, 'text/html')
-    if (!doc) {
-      throw Error("couldn't fetch a new token - doc is not html")
-    }
-    const appNode = doc.querySelector('div[role="application"]')
-    if (!appNode) {
-      throw Error("couldn't fetch a new token - no div[role=application]")
-    }
-    const data = appNode.dataset.cozy
-      ? JSON.parse(appNode.dataset.cozy)
-      : { ...appNode.dataset }
-
-    let { token } = data
-    if (token) {
-      token = token || data.cozyToken
-    }
-
-    if (!token) {
-      throw Error(
-        "couldn't fetch a new token -- missing data-cozy or data-cozy-token attribute"
+    const match = html.match(/data-cozy="([^"]+)"/)
+    if (!match || match.length < 2) {
+      throw new Error(
+        "Couldn't fetch a new token - no data-cozy element found in HTML"
       )
+    }
+    const htmlCozyData = match[1].replace(/&#34;/g, '"')
+    const cozyData = JSON.parse(htmlCozyData)
+
+    const token = cozyData.token
+    if (!token) {
+      throw Error("Couldn't fetch a new token - missing in data-cozy attribute")
     }
     const newToken = new AppToken(token)
     this.setToken(newToken)
     this.onTokenRefresh(newToken)
+    logger.info('Token successfully refreshed')
+
     return newToken
   }
 
