@@ -1,3 +1,0 @@
-#!/bin/bash
-
-babel --root-mode upward src/ -d dist/ --copy-files --verbose --ignore '**/*.spec.js','**/*.spec.jsx' "$@" 
