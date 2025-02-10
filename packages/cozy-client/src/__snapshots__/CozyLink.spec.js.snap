@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`CozyLink default last link should throw an error when called without result 1`] = `"No link could handle operation \\"dummyOperation\\""`;
