@@ -1,31 +1,51 @@
-![npm-badge-cozy-client](https://badge.fury.io/js/cozy-client.svg)
+# cozy-stack-client
 
-# cozy-client
+## The constructor
 
-- **Describe** your data and their **relationships**
-- **Fetch** data from your Cozy and put it in a normalized **store**
-- **Refresh** your React components when your data changes
-- Have your data available **offline**
+```js
+const client = new CozyStackClient(options)
+```
+#### Options
 
-`cozy-client` is a convenient yet powerful way to bind `cozy-stack` queries to your (p)React components — but you can still benefit of it if you're not using React!
+ - `uri`: The Cozy instance URI ;
+ - `token`: The token given by the stack.
 
-## Getting started
+## Collections
 
-To get started with cozy-client, follow [this tutorial](docs/getting-started.md).
+A collection is the set of all documents of a same doctype.
 
-## Architecture
+Selecting a collection is done by calling the `collection()` method, passing it the doctype:
+```js
+const todos = client.collection('io.cozy.todos')
+```
 
-If you want to better understand the cozy-client concepts, see the [architecture doc](docs/architecture.md). 
+## Listing all documents
+```js
+const allTodos = await todos.all()
+console.log(allTodos.data)
+```
 
-## Advanced
+#### Pagination
 
-- API docs
-  - [cozy-client](docs/api/cozy-client/README.md)
-  - [cozy-pouch-link](docs/api/cozy-pouch-link.md)
-  - [cozy-stack-client](docs/api/cozy-stack-client.md)
+By default, the stack limits the number of query results to 100 documents. If
+the limit causes some documents not to be returned, the response will have a
+`next: true` property.
 
-- [Relationships](docs/relationships.md)
-- [Mobile guide](docs/mobile-guide.md)
-- [Link authoring](docs/link-authoring.md)
+By using the `skip` and `limit` options you can build your own pagination:
+```js
+const firstPage = await todos.all({ limit: 100 })
+if (firstPage.next) {
+  const secondPage = await todos.all({ skip: 100, limit: 100 })
+}
+```
+You can also use the `meta.count` property to know the total count of documents.
+```js
+const allTodos = await todos.all()
+console.log(`There are ${allTodos.meta.count} todos.`)
+```
 
-> This is the documentation for the current version of cozy-client. If you want to check the old version, [go to the old version](http://github.com/cozy/cozy-client-js) 👵👴.
+## Finding documents
+```js
+const doneTodos = await todos.find({ done: true })
+console.log(allTodos.data)
+```
