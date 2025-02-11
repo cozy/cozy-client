@@ -3,6 +3,40 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [54.0.0](https://github.com/cozy/cozy-client/compare/v53.2.1...v54.0.0) (2025-02-11)
+
+
+### Bug Fixes
+
+* Correctly handle replication refreshToken ([38ef6aa](https://github.com/cozy/cozy-client/commit/38ef6aa1035e7f2da0fb46492e5037f90d75cc53))
+* Make refreshToken work in worker and node env ([e392131](https://github.com/cozy/cozy-client/commit/e392131fe84f5c866317e2ad240ac30196755405)), closes [/github.com/cozy/cozy-drive/blob/master/src/targets/browser/index.ejs#L37](https://github.com//github.com/cozy/cozy-drive/blob/master/src/targets/browser/index.ejs/issues/L37)
+
+
+### BREAKING CHANGES
+
+* The `data-cozy-token` injection is no longer supported
+for refreshToken.
+
+We used to rely on DOMParser to extract the new token during a
+refreshToken procedure. However, DOMParser is a web API, which is not
+available in web workers, nor in node env.  Therefore, we implement our
+own HTML parsing, relying on the `data-cozy` attribute in HTML. We tried
+using external libraries such as JSDom, fauxdom or linkedom, but got
+build issues with all those libs. It was somehow manageable, but
+required some additional config in consuming apps. As the HTML parsing
+is quite basic, we decided that it is not worth the effort, and we now
+do the parsing ourselves, making it available in web, workers, and node
+envs.
+
+As a consequence, we do not support the `data-cozy-token` existence
+anymore, as it would require extra work and is seen as deprecated for
+several years now. If your app still somehow require it, you need to
+migrate the app template to rely on `data-cozy` like this:
+
+
+
+
+
 ## [53.2.1](https://github.com/cozy/cozy-client/compare/v53.2.0...v53.2.1) (2025-02-05)
 
 

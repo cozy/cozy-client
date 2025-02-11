@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [54.0.0](https://github.com/cozy/cozy-client/compare/v53.2.1...v54.0.0) (2025-02-11)
+
+
+### Bug Fixes
+
+* Correctly handle replication refreshToken ([38ef6aa](https://github.com/cozy/cozy-client/commit/38ef6aa1035e7f2da0fb46492e5037f90d75cc53))
+
+
+
+
+
 ## [53.2.1](https://github.com/cozy/cozy-client/compare/v53.2.0...v53.2.1) (2025-02-05)
 
 
