@@ -1367,6 +1367,20 @@ class FileCollection extends DocumentCollection {
 
     return { newLastSeq, pending, results }
   }
+
+  /**
+   * Get the Shared Drives directory or create it if it does not exist.
+   *
+   * The Shared Drives directory is a special directory :
+   * - its _id is io.cozy.files.shared-drives-dir
+   * - it contains Nextcloud drives
+   * - it contains shared drives
+   *
+   * @returns {IOCozyFolder} Shared Drives directory
+   */
+  getSharedDrivesDirectoryOrCreate() {
+    return this.stackClient.fetchJSON('POST', '/files/shared-drives')
+  }
 }
 
 export default FileCollection

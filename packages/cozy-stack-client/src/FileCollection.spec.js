@@ -2259,4 +2259,15 @@ describe('FileCollection', () => {
       })
     })
   })
+
+  describe('getSharedDrivesDirectoryOrCreate', () => {
+    it('should call the right route', async () => {
+      await collection.getSharedDrivesDirectoryOrCreate()
+
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/files/shared-drives'
+      )
+    })
+  })
 })
