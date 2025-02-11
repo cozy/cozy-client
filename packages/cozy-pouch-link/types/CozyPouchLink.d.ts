@@ -1,5 +1,4 @@
 export function getReplicationURL(uri: any, token: any, doctype: any): string;
-export function isExpiredTokenError(pouchError: any): boolean;
 export default PouchLink;
 export type CozyClientDocument = any;
 export type ReplicationStatus = "idle" | "replicating";

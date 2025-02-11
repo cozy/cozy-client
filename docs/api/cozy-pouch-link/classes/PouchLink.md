@@ -32,7 +32,7 @@ CozyLink.constructor
 
 *Defined in*
 
-[CozyPouchLink.js:96](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L96)
+[CozyPouchLink.js:93](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L93)
 
 ## Properties
 
@@ -42,7 +42,7 @@ CozyLink.constructor
 
 *Defined in*
 
-[CozyPouchLink.js:171](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L171)
+[CozyPouchLink.js:168](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L168)
 
 ***
 
@@ -52,7 +52,7 @@ CozyLink.constructor
 
 *Defined in*
 
-[CozyPouchLink.js:114](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L114)
+[CozyPouchLink.js:111](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L111)
 
 ***
 
@@ -62,7 +62,7 @@ CozyLink.constructor
 
 *Defined in*
 
-[CozyPouchLink.js:115](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L115)
+[CozyPouchLink.js:112](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L112)
 
 ***
 
@@ -72,7 +72,7 @@ CozyLink.constructor
 
 *Defined in*
 
-[CozyPouchLink.js:116](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L116)
+[CozyPouchLink.js:113](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L113)
 
 ***
 
@@ -82,7 +82,7 @@ CozyLink.constructor
 
 *Defined in*
 
-[CozyPouchLink.js:120](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L120)
+[CozyPouchLink.js:117](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L117)
 
 ***
 
@@ -92,7 +92,7 @@ CozyLink.constructor
 
 *Defined in*
 
-[CozyPouchLink.js:108](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L108)
+[CozyPouchLink.js:105](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L105)
 
 ***
 
@@ -102,7 +102,7 @@ CozyLink.constructor
 
 *Defined in*
 
-[CozyPouchLink.js:136](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L136)
+[CozyPouchLink.js:133](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L133)
 
 ***
 
@@ -112,7 +112,7 @@ CozyLink.constructor
 
 *Defined in*
 
-[CozyPouchLink.js:121](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L121)
+[CozyPouchLink.js:118](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L118)
 
 ***
 
@@ -122,7 +122,7 @@ CozyLink.constructor
 
 *Defined in*
 
-[CozyPouchLink.js:244](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L244)
+[CozyPouchLink.js:241](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L241)
 
 ***
 
@@ -132,7 +132,7 @@ CozyLink.constructor
 
 *Defined in*
 
-[CozyPouchLink.js:124](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L124)
+[CozyPouchLink.js:121](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L121)
 
 ***
 
@@ -142,7 +142,7 @@ CozyLink.constructor
 
 *Defined in*
 
-[CozyPouchLink.js:117](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L117)
+[CozyPouchLink.js:114](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L114)
 
 ## Methods
 
@@ -162,7 +162,7 @@ CozyLink.constructor
 
 *Defined in*
 
-[CozyPouchLink.js:838](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L838)
+[CozyPouchLink.js:835](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L835)
 
 ***
 
@@ -182,7 +182,7 @@ CozyLink.constructor
 
 *Defined in*
 
-[CozyPouchLink.js:799](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L799)
+[CozyPouchLink.js:796](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L796)
 
 ***
 
@@ -208,7 +208,7 @@ Create the PouchDB index if not existing
 
 *Defined in*
 
-[CozyPouchLink.js:604](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L604)
+[CozyPouchLink.js:601](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L601)
 
 ***
 
@@ -229,7 +229,7 @@ Create the PouchDB index if not existing
 
 *Defined in*
 
-[CozyPouchLink.js:842](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L842)
+[CozyPouchLink.js:839](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L839)
 
 ***
 
@@ -249,7 +249,7 @@ Create the PouchDB index if not existing
 
 *Defined in*
 
-[CozyPouchLink.js:827](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L827)
+[CozyPouchLink.js:824](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L824)
 
 ***
 
@@ -272,7 +272,7 @@ Create the PouchDB index if not existing
 
 *Defined in*
 
-[CozyPouchLink.js:761](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L761)
+[CozyPouchLink.js:758](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L758)
 
 ***
 
@@ -292,7 +292,7 @@ Create the PouchDB index if not existing
 
 *Defined in*
 
-[CozyPouchLink.js:681](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L681)
+[CozyPouchLink.js:678](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L678)
 
 ***
 
@@ -316,7 +316,7 @@ Retrieve the PouchDB index if exist, undefined otherwise
 
 *Defined in*
 
-[CozyPouchLink.js:628](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L628)
+[CozyPouchLink.js:625](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L625)
 
 ***
 
@@ -342,7 +342,7 @@ The changes
 
 *Defined in*
 
-[CozyPouchLink.js:474](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L474)
+[CozyPouchLink.js:471](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L471)
 
 ***
 
@@ -367,7 +367,7 @@ The db info
 
 *Defined in*
 
-[CozyPouchLink.js:489](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L489)
+[CozyPouchLink.js:486](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L486)
 
 ***
 
@@ -387,7 +387,7 @@ The db info
 
 *Defined in*
 
-[CozyPouchLink.js:395](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L395)
+[CozyPouchLink.js:392](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L392)
 
 ***
 
@@ -407,7 +407,7 @@ The db info
 
 *Defined in*
 
-[CozyPouchLink.js:151](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L151)
+[CozyPouchLink.js:148](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L148)
 
 ***
 
@@ -427,7 +427,7 @@ The db info
 
 *Defined in*
 
-[CozyPouchLink.js:391](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L391)
+[CozyPouchLink.js:388](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L388)
 
 ***
 
@@ -447,7 +447,7 @@ The db info
 
 *Defined in*
 
-[CozyPouchLink.js:302](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L302)
+[CozyPouchLink.js:299](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L299)
 
 ***
 
@@ -467,7 +467,7 @@ The db info
 
 *Defined in*
 
-[CozyPouchLink.js:297](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L297)
+[CozyPouchLink.js:294](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L294)
 
 ***
 
@@ -493,7 +493,7 @@ Emits an event (pouchlink:sync:end) when the sync (all doctypes) is done
 
 *Defined in*
 
-[CozyPouchLink.js:283](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L283)
+[CozyPouchLink.js:280](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L280)
 
 ***
 
@@ -513,7 +513,7 @@ Emits an event (pouchlink:sync:end) when the sync (all doctypes) is done
 
 *Defined in*
 
-[CozyPouchLink.js:590](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L590)
+[CozyPouchLink.js:587](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L587)
 
 ***
 
@@ -543,7 +543,7 @@ Migrate the current adapter
 
 *Defined in*
 
-[CozyPouchLink.js:185](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L185)
+[CozyPouchLink.js:182](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L182)
 
 ***
 
@@ -568,7 +568,7 @@ the need to wait for the warmup
 
 *Defined in*
 
-[CozyPouchLink.js:576](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L576)
+[CozyPouchLink.js:573](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L573)
 
 ***
 
@@ -582,7 +582,7 @@ the need to wait for the warmup
 
 *Defined in*
 
-[CozyPouchLink.js:204](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L204)
+[CozyPouchLink.js:201](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L201)
 
 ***
 
@@ -602,7 +602,7 @@ the need to wait for the warmup
 
 *Defined in*
 
-[CozyPouchLink.js:371](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L371)
+[CozyPouchLink.js:368](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L368)
 
 ***
 
@@ -627,7 +627,7 @@ CozyLink.persistCozyData
 
 *Defined in*
 
-[CozyPouchLink.js:524](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L524)
+[CozyPouchLink.js:521](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L521)
 
 ***
 
@@ -647,7 +647,7 @@ CozyLink.persistCozyData
 
 *Defined in*
 
-[CozyPouchLink.js:170](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L170)
+[CozyPouchLink.js:167](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L167)
 
 ***
 
@@ -674,7 +674,7 @@ CozyLink.request
 
 *Defined in*
 
-[CozyPouchLink.js:414](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L414)
+[CozyPouchLink.js:411](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L411)
 
 ***
 
@@ -692,7 +692,7 @@ CozyLink.reset
 
 *Defined in*
 
-[CozyPouchLink.js:267](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L267)
+[CozyPouchLink.js:264](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L264)
 
 ***
 
@@ -712,7 +712,7 @@ CozyLink.reset
 
 *Defined in*
 
-[CozyPouchLink.js:497](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L497)
+[CozyPouchLink.js:494](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L494)
 
 ***
 
@@ -731,7 +731,7 @@ Emits pouchlink:sync:start event when the replication begins
 
 *Defined in*
 
-[CozyPouchLink.js:331](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L331)
+[CozyPouchLink.js:328](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L328)
 
 ***
 
@@ -749,7 +749,7 @@ Debounce delay can be configured through constructor's `syncDebounceDelayInMs` o
 
 *Defined in*
 
-[CozyPouchLink.js:344](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L344)
+[CozyPouchLink.js:341](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L341)
 
 ***
 
@@ -768,7 +768,7 @@ Emits pouchlink:sync:stop event
 
 *Defined in*
 
-[CozyPouchLink.js:363](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L363)
+[CozyPouchLink.js:360](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L360)
 
 ***
 
@@ -788,7 +788,7 @@ Emits pouchlink:sync:stop event
 
 *Defined in*
 
-[CozyPouchLink.js:399](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L399)
+[CozyPouchLink.js:396](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L396)
 
 ***
 
@@ -802,7 +802,7 @@ Emits pouchlink:sync:stop event
 
 *Defined in*
 
-[CozyPouchLink.js:872](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L872)
+[CozyPouchLink.js:869](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L869)
 
 ***
 
@@ -822,7 +822,7 @@ Emits pouchlink:sync:stop event
 
 *Defined in*
 
-[CozyPouchLink.js:804](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L804)
+[CozyPouchLink.js:801](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L801)
 
 ***
 
@@ -842,7 +842,7 @@ Emits pouchlink:sync:stop event
 
 *Defined in*
 
-[CozyPouchLink.js:809](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L809)
+[CozyPouchLink.js:806](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L806)
 
 ***
 
@@ -867,4 +867,4 @@ The adapter name
 
 *Defined in*
 
-[CozyPouchLink.js:146](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L146)
+[CozyPouchLink.js:143](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L143)
