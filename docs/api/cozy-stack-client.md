@@ -1869,7 +1869,6 @@ Implements the `DocumentCollection` API along with specific methods for
 * [SharingCollection](#SharingCollection)
     * [.get(id)](#SharingCollection+get) ⇒ [<code>Sharing</code>](#Sharing)
     * [.create(params)](#SharingCollection+create)
-    * ~~[.share(document, recipients, sharingType, description, [previewPath])](#SharingCollection+share)~~
     * [.getDiscoveryLink(sharingId, sharecode, [options])](#SharingCollection+getDiscoveryLink) ⇒ <code>string</code>
     * [.addRecipients(options)](#SharingCollection+addRecipients)
     * [.revokeRecipient(sharing, recipientIndex)](#SharingCollection+revokeRecipient)
@@ -1907,21 +1906,6 @@ Creates a new Sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#post-shar
 | [params.readOnlyRecipients] | [<code>Array.&lt;Recipient&gt;</code>](#Recipient) | Recipients to add to the sharings with only read only access |
 | [params.openSharing] | <code>boolean</code> | If someone else than the owner can add a recipient to the sharing |
 | [params.appSlug] | <code>string</code> | Slug of the targeted app |
-
-<a name="SharingCollection+share"></a>
-
-### ~~sharingCollection.share(document, recipients, sharingType, description, [previewPath])~~
-***Deprecated***
-
-**Kind**: instance method of [<code>SharingCollection</code>](#SharingCollection)  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| document | [<code>Sharing</code>](#Sharing) |  | The document to share. Should have and _id and a name. |
-| recipients | <code>Array</code> |  | A list of io.cozy.contacts |
-| sharingType | <code>string</code> |  | If "two-way", will set the open_sharing attribute to true |
-| description | <code>string</code> |  | Describes the sharing |
-| [previewPath] | <code>string</code> | <code>null</code> | Relative URL of the sharings preview page |
 
 <a name="SharingCollection+getDiscoveryLink"></a>
 

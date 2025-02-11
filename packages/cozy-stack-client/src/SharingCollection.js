@@ -131,40 +131,6 @@ class SharingCollection extends DocumentCollection {
   }
 
   /**
-   * @deprecated Use create() instead
-   * share - Creates a new sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#post-sharings
-   *
-   * @param  {Sharing} document The document to share. Should have and _id and a name.
-   * @param  {Array} recipients A list of io.cozy.contacts
-   * @param  {string} sharingType - If "two-way", will set the open_sharing attribute to true
-   * @param  {string} description - Describes the sharing
-   * @param  {string=} previewPath Relative URL of the sharings preview page
-   */
-  async share(
-    document,
-    recipients,
-    sharingType,
-    description,
-    previewPath = null
-  ) {
-    logger.warn(
-      'SharingCollection.share is deprecated, use SharingCollection.create instead'
-    )
-    const recipientsToUse =
-      sharingType === 'two-way'
-        ? { recipients }
-        : { readOnlyRecipients: recipients }
-    return this.create({
-      document,
-      ...recipientsToUse,
-      description,
-      previewPath,
-      openSharing: sharingType === 'two-way',
-      rules: getSharingRules(document, sharingType)
-    })
-  }
-
-  /**
    * getDiscoveryLink - Returns the URL of the page that can be used to accept a sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#get-sharingssharing-iddiscovery
    *
    * @param  {string} sharingId - Id of the sharing

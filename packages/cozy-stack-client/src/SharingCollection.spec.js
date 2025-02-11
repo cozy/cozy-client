@@ -1,7 +1,7 @@
 jest.mock('./CozyStackClient')
 
 import CozyStackClient from './CozyStackClient'
-import SharingCollection from './SharingCollection'
+import SharingCollection, { getSharingRules } from './SharingCollection'
 
 const FOLDER = {
   _type: 'io.cozy.files',
@@ -66,22 +66,26 @@ describe('SharingCollection', () => {
     })
 
     it('should create a sharing with read-only policy and set members to read-only too and set the previewPath for a folder', async () => {
-      // old api : open_sharing is derivated from sharingType
-      const sharingDesc = 'foo'
+      const document = FOLDER
+      const readOnlyRecipients = [RECIPIENT]
+      const description = 'foo'
+      const previewPath = '/preview'
       const sharingType = 'one-way'
       const openSharing = false
-      const previewPath = '/preview'
-      await collection.share(
-        FOLDER,
-        [RECIPIENT],
-        sharingType,
-        sharingDesc,
-        previewPath
-      )
+
+      await collection.create({
+        document,
+        readOnlyRecipients,
+        description,
+        previewPath,
+        openSharing,
+        rules: getSharingRules(document, sharingType)
+      })
+
       expect(client.fetchJSON).toHaveBeenCalledWith('POST', '/sharings/', {
         data: {
           attributes: {
-            description: sharingDesc,
+            description,
             open_sharing: openSharing,
             preview_path: previewPath,
             rules: [
@@ -106,22 +110,26 @@ describe('SharingCollection', () => {
     })
 
     it('should create a sharing with read-only policy and set members to read-only too and set the previewPath for a file', async () => {
-      // old api : open_sharing is derivated from sharingType
-      const sharingDesc = 'foo'
+      const document = FILE
+      const readOnlyRecipients = [RECIPIENT]
+      const description = 'foo'
+      const previewPath = '/preview'
       const sharingType = 'one-way'
       const openSharing = false
-      const previewPath = '/preview'
-      await collection.share(
-        FILE,
-        [RECIPIENT],
-        sharingType,
-        sharingDesc,
-        previewPath
-      )
+
+      await collection.create({
+        document,
+        readOnlyRecipients,
+        description,
+        previewPath,
+        openSharing,
+        rules: getSharingRules(document, sharingType)
+      })
+
       expect(client.fetchJSON).toHaveBeenCalledWith('POST', '/sharings/', {
         data: {
           attributes: {
-            description: sharingDesc,
+            description,
             open_sharing: openSharing,
             preview_path: previewPath,
             rules: [
@@ -145,22 +153,26 @@ describe('SharingCollection', () => {
     })
 
     it('should create a sharing with read/write policy and set members to read/write too and set the previewPath for a file', async () => {
-      // old api : open_sharing is derivated from sharingType
-      const sharingDesc = 'foo'
+      const document = FILE
+      const recipients = [RECIPIENT]
+      const description = 'foo'
+      const previewPath = '/preview'
       const sharingType = 'two-way'
       const openSharing = true
-      const previewPath = '/preview'
-      await collection.share(
-        FILE,
-        [RECIPIENT],
-        sharingType,
-        sharingDesc,
-        previewPath
-      )
+
+      await collection.create({
+        document,
+        recipients,
+        description,
+        previewPath,
+        openSharing,
+        rules: getSharingRules(document, sharingType)
+      })
+
       expect(client.fetchJSON).toHaveBeenCalledWith('POST', '/sharings/', {
         data: {
           attributes: {
-            description: sharingDesc,
+            description,
             open_sharing: openSharing,
             preview_path: previewPath,
             rules: [
@@ -184,22 +196,26 @@ describe('SharingCollection', () => {
     })
 
     it('should create a sharing with read/write policy and set members to read/write too and set the previewPath for a folder', async () => {
-      // old api : open_sharing is derivated from sharingType
-      const sharingDesc = 'foo'
+      const document = FOLDER
+      const recipients = [RECIPIENT]
+      const description = 'foo'
+      const previewPath = '/preview'
       const sharingType = 'two-way'
       const openSharing = true
-      const previewPath = '/preview'
-      await collection.share(
-        FOLDER,
-        [RECIPIENT],
-        sharingType,
-        sharingDesc,
-        previewPath
-      )
+
+      await collection.create({
+        document,
+        recipients,
+        description,
+        previewPath,
+        openSharing,
+        rules: getSharingRules(document, sharingType)
+      })
+
       expect(client.fetchJSON).toHaveBeenCalledWith('POST', '/sharings/', {
         data: {
           attributes: {
-            description: sharingDesc,
+            description,
             open_sharing: openSharing,
             preview_path: previewPath,
             rules: [
