@@ -43,7 +43,7 @@ const FAKE_APP_HTML = `<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8
   <link rel="icon" type="image/png" href="//test.mycozy.cloud/assets/favicon-16x16.192a16308f.png" sizes="16x16">
   <link rel="icon" type="image/png" href="//test.mycozy.cloud/assets/favicon-32x32.9f958fa2c7.png" sizes="32x32">
   <link rel="apple-touch-icon" sizes="180x180" href="//test.mycozy.cloud/assets/apple-touch-icon.a0e0ae4102.png"/>
-    <link rel="manifest" href="/manifest.json" crossorigin="use-credentials"><meta name="msapplication-TileColor" content="#2b5797"><meta name="theme-color" content="#ffffff"><meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,viewport-fit=cover"><link rel="stylesheet" href="vendors/home.c451e5ac76c8377b20c5.0.min.css"><link rel="stylesheet" href="app/home.cbb1b1050b936df11fbd.min.css"><link rel="stylesheet" type="text/css" href="//test.mycozy.cloud/assets/styles/theme.faa4e12bdc.css"> <script src="//test.mycozy.cloud/assets/js/cozy-client.605c649bc3.min.js"></script> 
+    <link rel="manifest" href="/manifest.json" crossorigin="use-credentials"><meta name="msapplication-TileColor" content="#2b5797"><meta name="theme-color" content="#ffffff"><meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,viewport-fit=cover"><link rel="stylesheet" href="vendors/home.c451e5ac76c8377b20c5.0.min.css"><link rel="stylesheet" href="app/home.cbb1b1050b936df11fbd.min.css"><link rel="stylesheet" type="text/css" href="//test.mycozy.cloud/assets/styles/theme.faa4e12bdc.css"> <script src="//test.mycozy.cloud/assets/js/cozy-client.605c649bc3.min.js"></script>
 <link rel="stylesheet" type="text/css" href="//test.mycozy.cloud/assets/fonts/fonts.33109548ca.css">
 <link rel="stylesheet" type="text/css" href="//test.mycozy.cloud/assets/css/cozy-bar.6effa2d88c.min.css">
 <script src="//test.mycozy.cloud/assets/js/cozy-bar.f99c08ee53.min.js"></script></head><body><div role="application" data-cozy="${FAKE_DATA_COZY}"><script src="vendors/home.a664629f1a5622ccb459.js"></script><script src="app/home.455bbc269323b2c64382.js"></script><script src="//test.mycozy.cloud/assets/js/piwik.js" async></script></div></body></html>
@@ -241,9 +241,14 @@ describe('CozyStackClient', () => {
     })
 
     it('should emit on error', async () => {
-      const response = new Response(null, {
-        status: 413,
-        statusText: 'Quota exceeded'
+      const status = 413
+      const statusText = 'Request Entity Too Large'
+      const body = JSON.stringify({
+        errors: [{ status, title: statusText, detail: 'Quota exceeded' }]
+      })
+      const response = new Response(body, {
+        status,
+        statusText
       })
       fetch.mockReturnValueOnce(response)
       const handler = jest.fn()
@@ -251,7 +256,11 @@ describe('CozyStackClient', () => {
       await client.fetch('GET', '/data/anyroute')
       expect(handler).toHaveBeenCalledWith(expect.any(FetchError))
       expect(handler).toHaveBeenCalledWith(
-        expect.objectContaining({ response })
+        expect.objectContaining({
+          response,
+          status,
+          reason: body
+        })
       )
     })
   })
@@ -333,7 +342,7 @@ describe('CozyStackClient', () => {
       expect(resp).toEqual(FAKE_RESPONSE)
     })
 
-    it('should throw a FetchError when the request fails', async () => {
+    it('should throw an error when fetch does', async () => {
       fetch.mockRejectOnce(new Error('404 (Not found)'))
       expect.assertions(2)
       try {
