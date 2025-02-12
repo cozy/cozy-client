@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [54.0.1](https://github.com/cozy/cozy-client/compare/v54.0.0...v54.0.1) (2025-02-12)
+
+
+### Bug Fixes
+
+* Allow disabling file name sanitization ([7b33a66](https://github.com/cozy/cozy-client/commit/7b33a660460b19938ad8c4fb7c8cb26419eb9e96))
+
+
+
+
+
 # [54.0.0](https://github.com/cozy/cozy-client/compare/v53.2.1...v54.0.0) (2025-02-11)
 
 
