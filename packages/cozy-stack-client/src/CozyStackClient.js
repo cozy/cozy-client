@@ -40,6 +40,13 @@ const normalizeUri = uriArg => {
   return uri
 }
 
+const getResponseData = async response => {
+  const contentType = response.headers.get('content-type')
+  const isJson =
+    contentType && /\bapplication\/(vnd\.api\+)?json\b/.test(contentType)
+  return isJson ? response.json() : response.text()
+}
+
 /**
  * Main API against the `cozy-stack` server.
  */
@@ -122,7 +129,7 @@ class CozyStackClient {
    * @throws {FetchError}
    */
   async fetch(method, path, body, opts = {}) {
-    const options = { ...opts }
+    const { throwFetchErrors, ...options } = { ...opts }
     options.method = method
     const headers = (options.headers = { ...opts.headers })
 
@@ -150,10 +157,22 @@ class CozyStackClient {
     try {
       const response = await fetcher(fullPath, options)
       if (!response.ok) {
-        this.emit(
-          'error',
-          new FetchError(response, `${response.status} ${response.statusText}`)
-        )
+        const reason = await getResponseData(response)
+        const err = new FetchError(response, reason)
+
+        // XXX: This was introduced so apps could display errors (e.g. quota
+        // errors) via cozy-ui's `useClientErrors()` hook. At the time of
+        // writing these lines, this is the only use case of this `error`
+        // event.
+        this.emit('error', err)
+
+        // XXX: we introduced `throwFetchErrors` because we've seen some direct
+        // calls to `this.fetch()` and we're not sure how these callers would
+        // react to errors being thrown but it would be best to spend some time
+        // to look at these and, in case they're not prepared, change them to
+        // handle thrown errors.
+        // We could then get rid of `throwFetchErrors`.
+        if (throwFetchErrors) throw err
       }
       return response
     } catch (err) {
@@ -268,14 +287,9 @@ class CozyStackClient {
         body = JSON.stringify(body)
       }
     }
+    clonedOptions.throwFetchErrors = true
     const resp = await this.fetch(method, path, body, clonedOptions)
-    const contentType = resp.headers.get('content-type')
-    const isJson = contentType && contentType.indexOf('json') >= 0
-    const data = await (isJson ? resp.json() : resp.text())
-    if (resp.ok) {
-      return data
-    }
-    throw new FetchError(resp, data)
+    return getResponseData(resp)
   }
 
   fullpath(path) {
