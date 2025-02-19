@@ -2,7 +2,6 @@ import DocumentCollection from './DocumentCollection'
 import { normalizeDoctypeJsonApi } from './normalize'
 import { isFile, isDirectory } from './FileCollection'
 import { uri } from './utils'
-import logger from './logger'
 
 export const SHARING_DOCTYPE = 'io.cozy.sharings'
 export const BITWARDEN_ORGANIZATIONS_DOCTYPE = 'com.bitwarden.organizations'
@@ -237,63 +236,48 @@ class SharingCollection extends DocumentCollection {
 
 SharingCollection.normalizeDoctype = normalizeDoctypeJsonApi
 
-const getSharingRulesWithoutWarning = (document, sharingType) => {
+/**
+ * Rules determine the behavior of the sharing when changes are made to the shared document
+ * See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing
+ *
+ * @param {Sharing} document - The document to share. Should have and _id and a name
+ *
+ * @returns {Array<Rule>=} The rules that define how to share the document
+ */
+export const getSharingRules = document => {
   if (isFile(document)) {
-    return getSharingRulesForFile(document, sharingType)
+    return getSharingRulesForFile(document)
   }
 
   if (document._type === BITWARDEN_ORGANIZATIONS_DOCTYPE) {
     return getSharingRulesForOrganizations(document)
   }
 
-  return getSharingRulesForPhotosAlbum(document, sharingType)
-}
-
-/**
- * Rules determine the behavior of the sharing when changes are made to the shared document
- * See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing
- *
- * @param {Sharing} document - The document to share. Should have and _id and a name
- * @param  {SharingType} sharingType - The type of the sharing
- *
- * @returns {Array<Rule>=} The rules that define how to share the document
- */
-export const getSharingRules = (document, sharingType) => {
-  if (sharingType) {
-    logger.warn(
-      `sharingType is deprecated and will be removed. We now set this default rules: ${getSharingRulesWithoutWarning(
-        document
-      )}} \n
-      If this default rules do not fill your need, please set custom rules
-      by using the 'rules' object of the SharingCollection.create() method`
-    )
-  }
-  return getSharingRulesWithoutWarning(document, sharingType)
+  return getSharingRulesForPhotosAlbum(document)
 }
 
 /**
  * Compute the rules that define how to share a Photo Album. See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing
  *
  * @param {Sharing} document - The document to share. Should have and _id and a name
- * @param  {SharingType} sharingType - The type of the sharing
  *
  * @returns {Array<Rule>=} The rules that define how to share a Photo Album
  */
-const getSharingRulesForPhotosAlbum = (document, sharingType) => {
+const getSharingRulesForPhotosAlbum = document => {
   const { _id, _type } = document
   return [
     {
       title: 'collection',
       doctype: _type,
       values: [_id],
-      ...getSharingPolicyForAlbum(sharingType)
+      ...getSharingPolicyForAlbum()
     },
     {
       title: 'items',
       doctype: 'io.cozy.files',
       values: [`${_type}/${_id}`],
       selector: 'referenced_by',
-      ...getSharingPolicyForReferencedFiles(sharingType)
+      ...getSharingPolicyForReferencedFiles()
     }
   ]
 }
@@ -301,46 +285,36 @@ const getSharingRulesForPhotosAlbum = (document, sharingType) => {
 /**
  * Compute the sharing policy for a ReferencedFile based on its sharing type
  *
- * @param  {SharingType} sharingType - The type of the sharing
- *
  * @returns {SharingPolicy} The sharing policy for the ReferencedFile
  */
-const getSharingPolicyForReferencedFiles = sharingType => {
-  return sharingType === 'two-way'
-    ? { add: 'sync', update: 'sync', remove: 'sync' }
-    : { add: 'push', update: 'none', remove: 'push' }
+const getSharingPolicyForReferencedFiles = () => {
+  return { add: 'sync', update: 'sync', remove: 'sync' }
 }
 
 /**
  * Compute the sharing policy for an Album based on its sharing type
  *
- * @param  {SharingType} sharingType - The type of the sharing
- *
  * @returns {Array<Rule>=} The sharing policy for the Album
  */
-const getSharingPolicyForAlbum = sharingType => {
-  if (!sharingType) return { update: 'sync', remove: 'revoke' }
-  return sharingType === 'two-way'
-    ? { update: 'sync', remove: 'revoke' }
-    : { update: 'push', remove: 'revoke' }
+const getSharingPolicyForAlbum = () => {
+  return { update: 'sync', remove: 'revoke' }
 }
 
 /**
  * Compute the rules that define how to share a File. See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing
  *
  * @param {Sharing} document - The document to share. Should have and _id and a name
- * @param  {SharingType} sharingType - The type of the sharing
  *
  * @returns {Array<Rule>=} The rules that define how to share a File
  */
-const getSharingRulesForFile = (document, sharingType) => {
+const getSharingRulesForFile = document => {
   const { _id, name } = document
   return [
     {
       title: name,
       doctype: 'io.cozy.files',
       values: [_id],
-      ...getSharingPolicyForFile(document, sharingType)
+      ...getSharingPolicyForFile(document)
     }
   ]
 }
@@ -349,21 +323,14 @@ const getSharingRulesForFile = (document, sharingType) => {
  * Compute the sharing policy for a File based on its sharing type
  *
  * @param {Sharing} document - The document to share. Should have and _id and a name
- * @param {SharingType} sharingType - The type of the sharing
  *
  * @returns {SharingPolicy} The sharing policy for the File
  */
-const getSharingPolicyForFile = (document, sharingType) => {
+const getSharingPolicyForFile = document => {
   if (isDirectory(document)) {
-    if (!sharingType) return { add: 'sync', update: 'sync', remove: 'sync' }
-    return sharingType === 'two-way'
-      ? { add: 'sync', update: 'sync', remove: 'sync' }
-      : { add: 'push', update: 'push', remove: 'push' }
+    return { add: 'sync', update: 'sync', remove: 'sync' }
   }
-  if (!sharingType) return { update: 'sync', remove: 'revoke' }
-  return sharingType === 'two-way'
-    ? { update: 'sync', remove: 'revoke' }
-    : { update: 'push', remove: 'revoke' }
+  return { update: 'sync', remove: 'revoke' }
 }
 
 /**
