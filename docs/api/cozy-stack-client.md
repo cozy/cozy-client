@@ -171,6 +171,9 @@ CouchDB transforms $nor into $and with $ne operators</p>
 <dt><a href="#getSharingRulesForFile">getSharingRulesForFile(document)</a> ⇒ <code><a href="#Rule">Array.&lt;Rule&gt;</a></code></dt>
 <dd><p>Compute the rules that define how to share a File. See <a href="https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing">https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing</a></p>
 </dd>
+<dt><a href="#getSharingRulesForSharedDrive">getSharingRulesForSharedDrive(document)</a> ⇒ <code><a href="#Rule">Array.&lt;Rule&gt;</a></code></dt>
+<dd><p>Compute the rules that define a shared drive.</p>
+</dd>
 <dt><a href="#getSharingPolicyForFile">getSharingPolicyForFile(document)</a> ⇒ <code><a href="#SharingPolicy">SharingPolicy</a></code></dt>
 <dd><p>Compute the sharing policy for a File based on its sharing type</p>
 </dd>
@@ -268,6 +271,8 @@ not.</p>
 <dt><a href="#Rule">Rule</a> : <code>object</code></dt>
 <dd><p>A sharing rule</p>
 </dd>
+<dt><a href="#SharingRulesOptions">SharingRulesOptions</a> : <code>object</code></dt>
+<dd></dd>
 <dt><a href="#Recipient">Recipient</a> : <code>object</code></dt>
 <dd><p>An io.cozy.contact</p>
 </dd>
@@ -2350,6 +2355,7 @@ See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing
 | Param | Type | Description |
 | --- | --- | --- |
 | document | [<code>Sharing</code>](#Sharing) | The document to share. Should have and _id and a name |
+| [sharingRulesOptions] | [<code>SharingRulesOptions</code>](#SharingRulesOptions) | The document to share. Should have and _id and a name |
 
 <a name="forceDownload"></a>
 
@@ -2482,6 +2488,18 @@ Compute the rules that define how to share a File. See https://docs.cozy.io/en/c
 
 **Kind**: global function  
 **Returns**: [<code>Array.&lt;Rule&gt;</code>](#Rule) - The rules that define how to share a File  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| document | [<code>Sharing</code>](#Sharing) | The document to share. Should have and _id and a name |
+
+<a name="getSharingRulesForSharedDrive"></a>
+
+## getSharingRulesForSharedDrive(document) ⇒ [<code>Array.&lt;Rule&gt;</code>](#Rule)
+Compute the rules that define a shared drive.
+
+**Kind**: global function  
+**Returns**: [<code>Array.&lt;Rule&gt;</code>](#Rule) - The rules that define a shared drive  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3104,6 +3122,16 @@ A sharing rule
 | [add] | <code>string</code> | 
 | [update] | <code>string</code> | 
 | [remove] | <code>string</code> | 
+
+<a name="SharingRulesOptions"></a>
+
+## SharingRulesOptions : <code>object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type |
+| --- | --- |
+| [sharedDrive] | <code>boolean</code> | 
 
 <a name="Recipient"></a>
 
