@@ -3,6 +3,53 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [55.0.0](https://github.com/cozy/cozy-client/compare/v54.0.1...v55.0.0) (2025-02-19)
+
+
+### Bug Fixes
+
+* Always use response body as FetchError reason ([d664bc0](https://github.com/cozy/cozy-client/commit/d664bc027bf24f6f3e966044bfa59ff6a7061e2e))
+
+
+### Features
+
+* Add option to always throw fetch errors ([f05d997](https://github.com/cozy/cozy-client/commit/f05d997a4915c51b4258f040b8f2b1a94dd10529))
+
+
+### BREAKING CHANGES
+
+* The `reason` attribute of non-JSON fetch errors is no
+  longer a string composed of the server response status and status
+  text.
+
+  We used to have 2 different kinds of values for the `reason` attribute
+  of `FetchError` built in `CozyStackClient`:
+  - a string representation of the response body sent by the server
+    (which may contain details about what when wrong, especially for 400
+    status responses) for JSON requests
+  - a string composed of the server response status and status text for
+    non-JSON requests
+
+  In the non-JSON request situation, we lose information by not using
+  the server response body as the reason of the `FetchError` which
+  prevents users of `cozy-client` from reacting appropriately when
+  receiving such an error to their request.
+  Therefore we homogenize our `FetchError` instances by always using the
+  server response body to build the error `reason`.
+
+  We need to add a new `throwFetchErrors` option to
+  `CozyStackClient.fetch` to determine when to throw the error rather
+  than emitting it as JSON requests expect the error to be thrown but we
+  can't keep reading the response body from the JSON request method to
+  build a new error to throw as it's already been read to build the
+  emitted error.
+  Besides, by doing so, we build the error only once, making sure we get
+  the same kind no matter what type of request we make.
+
+
+
+
+
 ## [54.0.1](https://github.com/cozy/cozy-client/compare/v54.0.0...v54.0.1) (2025-02-12)
 
 
