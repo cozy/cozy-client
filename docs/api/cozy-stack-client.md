@@ -159,19 +159,19 @@ CouchDB transforms $nor into $and with $ne operators</p>
 <dt><a href="#normalizeDoctypeJsonApi">normalizeDoctypeJsonApi(doctype)</a> ⇒ <code>function</code></dt>
 <dd><p>Normalizes a document in JSON API format for a specific doctype</p>
 </dd>
-<dt><a href="#getSharingRulesForPhotosAlbum">getSharingRulesForPhotosAlbum(document, sharingType)</a> ⇒ <code><a href="#Rule">Array.&lt;Rule&gt;</a></code></dt>
+<dt><a href="#getSharingRulesForPhotosAlbum">getSharingRulesForPhotosAlbum(document)</a> ⇒ <code><a href="#Rule">Array.&lt;Rule&gt;</a></code></dt>
 <dd><p>Compute the rules that define how to share a Photo Album. See <a href="https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing">https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing</a></p>
 </dd>
-<dt><a href="#getSharingPolicyForReferencedFiles">getSharingPolicyForReferencedFiles(sharingType)</a> ⇒ <code><a href="#SharingPolicy">SharingPolicy</a></code></dt>
+<dt><a href="#getSharingPolicyForReferencedFiles">getSharingPolicyForReferencedFiles()</a> ⇒ <code><a href="#SharingPolicy">SharingPolicy</a></code></dt>
 <dd><p>Compute the sharing policy for a ReferencedFile based on its sharing type</p>
 </dd>
-<dt><a href="#getSharingPolicyForAlbum">getSharingPolicyForAlbum(sharingType)</a> ⇒ <code><a href="#Rule">Array.&lt;Rule&gt;</a></code></dt>
+<dt><a href="#getSharingPolicyForAlbum">getSharingPolicyForAlbum()</a> ⇒ <code><a href="#Rule">Array.&lt;Rule&gt;</a></code></dt>
 <dd><p>Compute the sharing policy for an Album based on its sharing type</p>
 </dd>
-<dt><a href="#getSharingRulesForFile">getSharingRulesForFile(document, sharingType)</a> ⇒ <code><a href="#Rule">Array.&lt;Rule&gt;</a></code></dt>
+<dt><a href="#getSharingRulesForFile">getSharingRulesForFile(document)</a> ⇒ <code><a href="#Rule">Array.&lt;Rule&gt;</a></code></dt>
 <dd><p>Compute the rules that define how to share a File. See <a href="https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing">https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing</a></p>
 </dd>
-<dt><a href="#getSharingPolicyForFile">getSharingPolicyForFile(document, sharingType)</a> ⇒ <code><a href="#SharingPolicy">SharingPolicy</a></code></dt>
+<dt><a href="#getSharingPolicyForFile">getSharingPolicyForFile(document)</a> ⇒ <code><a href="#SharingPolicy">SharingPolicy</a></code></dt>
 <dd><p>Compute the sharing policy for a File based on its sharing type</p>
 </dd>
 <dt><a href="#getSharingRulesForOrganizations">getSharingRulesForOrganizations(document)</a> ⇒ <code><a href="#Rule">Array.&lt;Rule&gt;</a></code></dt>
@@ -2350,7 +2350,6 @@ See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing
 | Param | Type | Description |
 | --- | --- | --- |
 | document | [<code>Sharing</code>](#Sharing) | The document to share. Should have and _id and a name |
-| sharingType | [<code>SharingType</code>](#SharingType) | The type of the sharing |
 
 <a name="forceDownload"></a>
 
@@ -2452,7 +2451,7 @@ Normalizes a document in JSON API format for a specific doctype
 
 <a name="getSharingRulesForPhotosAlbum"></a>
 
-## getSharingRulesForPhotosAlbum(document, sharingType) ⇒ [<code>Array.&lt;Rule&gt;</code>](#Rule)
+## getSharingRulesForPhotosAlbum(document) ⇒ [<code>Array.&lt;Rule&gt;</code>](#Rule)
 Compute the rules that define how to share a Photo Album. See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing
 
 **Kind**: global function  
@@ -2461,35 +2460,24 @@ Compute the rules that define how to share a Photo Album. See https://docs.cozy.
 | Param | Type | Description |
 | --- | --- | --- |
 | document | [<code>Sharing</code>](#Sharing) | The document to share. Should have and _id and a name |
-| sharingType | [<code>SharingType</code>](#SharingType) | The type of the sharing |
 
 <a name="getSharingPolicyForReferencedFiles"></a>
 
-## getSharingPolicyForReferencedFiles(sharingType) ⇒ [<code>SharingPolicy</code>](#SharingPolicy)
+## getSharingPolicyForReferencedFiles() ⇒ [<code>SharingPolicy</code>](#SharingPolicy)
 Compute the sharing policy for a ReferencedFile based on its sharing type
 
 **Kind**: global function  
 **Returns**: [<code>SharingPolicy</code>](#SharingPolicy) - The sharing policy for the ReferencedFile  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| sharingType | [<code>SharingType</code>](#SharingType) | The type of the sharing |
-
 <a name="getSharingPolicyForAlbum"></a>
 
-## getSharingPolicyForAlbum(sharingType) ⇒ [<code>Array.&lt;Rule&gt;</code>](#Rule)
+## getSharingPolicyForAlbum() ⇒ [<code>Array.&lt;Rule&gt;</code>](#Rule)
 Compute the sharing policy for an Album based on its sharing type
 
 **Kind**: global function  
 **Returns**: [<code>Array.&lt;Rule&gt;</code>](#Rule) - The sharing policy for the Album  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| sharingType | [<code>SharingType</code>](#SharingType) | The type of the sharing |
-
 <a name="getSharingRulesForFile"></a>
 
-## getSharingRulesForFile(document, sharingType) ⇒ [<code>Array.&lt;Rule&gt;</code>](#Rule)
+## getSharingRulesForFile(document) ⇒ [<code>Array.&lt;Rule&gt;</code>](#Rule)
 Compute the rules that define how to share a File. See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing
 
 **Kind**: global function  
@@ -2498,11 +2486,10 @@ Compute the rules that define how to share a File. See https://docs.cozy.io/en/c
 | Param | Type | Description |
 | --- | --- | --- |
 | document | [<code>Sharing</code>](#Sharing) | The document to share. Should have and _id and a name |
-| sharingType | [<code>SharingType</code>](#SharingType) | The type of the sharing |
 
 <a name="getSharingPolicyForFile"></a>
 
-## getSharingPolicyForFile(document, sharingType) ⇒ [<code>SharingPolicy</code>](#SharingPolicy)
+## getSharingPolicyForFile(document) ⇒ [<code>SharingPolicy</code>](#SharingPolicy)
 Compute the sharing policy for a File based on its sharing type
 
 **Kind**: global function  
@@ -2511,7 +2498,6 @@ Compute the sharing policy for a File based on its sharing type
 | Param | Type | Description |
 | --- | --- | --- |
 | document | [<code>Sharing</code>](#Sharing) | The document to share. Should have and _id and a name |
-| sharingType | [<code>SharingType</code>](#SharingType) | The type of the sharing |
 
 <a name="getSharingRulesForOrganizations"></a>
 

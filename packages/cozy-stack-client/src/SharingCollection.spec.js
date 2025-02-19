@@ -70,7 +70,6 @@ describe('SharingCollection', () => {
       const readOnlyRecipients = [RECIPIENT]
       const description = 'foo'
       const previewPath = '/preview'
-      const sharingType = 'one-way'
       const openSharing = false
 
       await collection.create({
@@ -79,7 +78,16 @@ describe('SharingCollection', () => {
         description,
         previewPath,
         openSharing,
-        rules: getSharingRules(document, sharingType)
+        rules: [
+          {
+            add: 'push',
+            doctype: 'io.cozy.files',
+            remove: 'push',
+            title: FOLDER.name,
+            update: 'push',
+            values: [FOLDER._id]
+          }
+        ]
       })
 
       expect(client.fetchJSON).toHaveBeenCalledWith('POST', '/sharings/', {
@@ -114,7 +122,6 @@ describe('SharingCollection', () => {
       const readOnlyRecipients = [RECIPIENT]
       const description = 'foo'
       const previewPath = '/preview'
-      const sharingType = 'one-way'
       const openSharing = false
 
       await collection.create({
@@ -123,7 +130,7 @@ describe('SharingCollection', () => {
         description,
         previewPath,
         openSharing,
-        rules: getSharingRules(document, sharingType)
+        rules: getSharingRules(document)
       })
 
       expect(client.fetchJSON).toHaveBeenCalledWith('POST', '/sharings/', {
@@ -137,7 +144,7 @@ describe('SharingCollection', () => {
                 doctype: 'io.cozy.files',
                 remove: 'revoke',
                 title: FILE.name,
-                update: 'push',
+                update: 'sync',
                 values: [FILE._id]
               }
             ]
@@ -157,7 +164,6 @@ describe('SharingCollection', () => {
       const recipients = [RECIPIENT]
       const description = 'foo'
       const previewPath = '/preview'
-      const sharingType = 'two-way'
       const openSharing = true
 
       await collection.create({
@@ -166,7 +172,7 @@ describe('SharingCollection', () => {
         description,
         previewPath,
         openSharing,
-        rules: getSharingRules(document, sharingType)
+        rules: getSharingRules(document)
       })
 
       expect(client.fetchJSON).toHaveBeenCalledWith('POST', '/sharings/', {
@@ -200,7 +206,6 @@ describe('SharingCollection', () => {
       const recipients = [RECIPIENT]
       const description = 'foo'
       const previewPath = '/preview'
-      const sharingType = 'two-way'
       const openSharing = true
 
       await collection.create({
@@ -209,7 +214,7 @@ describe('SharingCollection', () => {
         description,
         previewPath,
         openSharing,
-        rules: getSharingRules(document, sharingType)
+        rules: getSharingRules(document)
       })
 
       expect(client.fetchJSON).toHaveBeenCalledWith('POST', '/sharings/', {
