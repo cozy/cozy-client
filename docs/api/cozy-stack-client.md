@@ -1919,6 +1919,7 @@ Creates a new Sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#post-shar
 | [params.readOnlyRecipients] | [<code>Array.&lt;Recipient&gt;</code>](#Recipient) | Recipients to add to the sharings with only read only access |
 | [params.openSharing] | <code>boolean</code> | If someone else than the owner can add a recipient to the sharing |
 | [params.appSlug] | <code>string</code> | Slug of the targeted app |
+| [params.sharedDrive] | <code>boolean</code> | If the sharing is a shared drive |
 
 <a name="SharingCollection+getDiscoveryLink"></a>
 

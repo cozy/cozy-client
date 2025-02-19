@@ -87,6 +87,7 @@ class SharingCollection extends DocumentCollection {
    * @param {Array<Recipient>=} params.readOnlyRecipients Recipients to add to the sharings with only read only access
    * @param {boolean=} params.openSharing If someone else than the owner can add a recipient to the sharing
    * @param {string=} params.appSlug Slug of the targeted app
+   * @param {boolean=} params.sharedDrive If the sharing is a shared drive
    */
   async create({
     document,
@@ -96,7 +97,8 @@ class SharingCollection extends DocumentCollection {
     recipients = [],
     readOnlyRecipients = [],
     openSharing,
-    appSlug
+    appSlug,
+    sharedDrive
   }) {
     const attributes = {
       description,
@@ -106,9 +108,10 @@ class SharingCollection extends DocumentCollection {
     }
     let optionalAttributes = {}
     if (appSlug) {
-      optionalAttributes = {
-        app_slug: appSlug
-      }
+      optionalAttributes.app_slug = appSlug
+    }
+    if (sharedDrive) {
+      optionalAttributes.drive = sharedDrive
     }
 
     const resp = await this.stackClient.fetchJSON('POST', '/sharings/', {
