@@ -20,6 +20,11 @@ const normalizeSharing = normalizeDoctypeJsonApi(SHARING_DOCTYPE)
  */
 
 /**
+ * @typedef {object} SharingRulesOptions
+ * @property {boolean} [sharedDrive]
+ */
+
+/**
  * @typedef {object} Recipient An io.cozy.contact
  */
 
@@ -103,7 +108,7 @@ class SharingCollection extends DocumentCollection {
       description,
       preview_path: previewPath,
       open_sharing: openSharing,
-      rules: rules ? rules : getSharingRules(document)
+      rules: rules ? rules : getSharingRules(document, { sharedDrive })
     }
     let optionalAttributes = {}
     if (appSlug) {
@@ -241,10 +246,17 @@ SharingCollection.normalizeDoctype = normalizeDoctypeJsonApi
  * See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing
  *
  * @param {Sharing} document - The document to share. Should have and _id and a name
+ * @param {SharingRulesOptions} [sharingRulesOptions] - The document to share. Should have and _id and a name
  *
  * @returns {Array<Rule>=} The rules that define how to share the document
  */
-export const getSharingRules = document => {
+export const getSharingRules = (document, sharingRulesOptions = {}) => {
+  const { sharedDrive } = sharingRulesOptions
+
+  if (sharedDrive) {
+    return getSharingRulesForSharedDrive(document)
+  }
+
   if (isFile(document)) {
     return getSharingRulesForFile(document)
   }
@@ -315,6 +327,27 @@ const getSharingRulesForFile = document => {
       doctype: 'io.cozy.files',
       values: [_id],
       ...getSharingPolicyForFile(document)
+    }
+  ]
+}
+
+/**
+ * Compute the rules that define a shared drive.
+ *
+ * @param {Sharing} document - The document to share. Should have and _id and a name
+ *
+ * @returns {Array<Rule>=} The rules that define a shared drive
+ */
+const getSharingRulesForSharedDrive = document => {
+  const { _id, name } = document
+  return [
+    {
+      title: name,
+      doctype: 'io.cozy.files',
+      values: [_id],
+      add: 'none',
+      update: 'none',
+      remove: 'none'
     }
   ]
 }
