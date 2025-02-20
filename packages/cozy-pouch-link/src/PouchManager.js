@@ -215,7 +215,7 @@ class PouchManager {
     if (!this.replications) {
       return Promise.resolve()
     }
-    return Promise.all(Object.values(this.replications))
+    return allSettled(Object.values(this.replications))
   }
 
   getPouch(doctype) {
