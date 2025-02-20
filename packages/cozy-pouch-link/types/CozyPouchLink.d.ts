@@ -147,18 +147,27 @@ declare class PouchLink extends CozyLink {
      * Emits pouchlink:sync:start event when the replication begins
      *
      * @public
+     *
+     * @param {object} options - The options
+     * @param {boolean|null} [options.waitForReplications=true] - Whether the others replication process should be waited
      * @returns {void}
      */
-    public startReplication(): void;
+    public startReplication({ waitForReplications }?: {
+        waitForReplications: boolean | null;
+    }): void;
     /**
      * Debounced version of startReplication() method
      *
      * Debounce delay can be configured through constructor's `syncDebounceDelayInMs` option
      *
      * @public
+     * @param {object} options - The options
+     * @param {boolean|null} [options.waitForReplications=true] - Whether the others replication process should be waited
      * @returns {void}
      */
-    public startReplicationWithDebounce(): void;
+    public startReplicationWithDebounce({ waitForReplications }?: {
+        waitForReplications: boolean | null;
+    }): void;
     /**
      * User of the link can call this to stop ongoing replications.
      * Typically, it can be used when the applications loses focus.

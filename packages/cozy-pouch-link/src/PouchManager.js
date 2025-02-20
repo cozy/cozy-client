@@ -178,8 +178,19 @@ class PouchManager {
     this.replicationLoop.scheduleImmediateTask()
   }
 
-  /** Starts replication */
-  async replicateOnce() {
+  /**
+   * Starts replication
+   *
+   * @param {object} options - The options
+   * @param {boolean|null} [options.waitForReplications=true] - Whether the others replication process should be waited
+   * @returns {Promise<any>} the replication result
+   */
+  async replicateOnce({ waitForReplications = true } = {}) {
+    // XXX - Waiting for the current replications is useful to ensure there is no parallel replications.
+    // We allow this mechanism to be bypassed, but one should be aware that it can be risky
+    if (waitForReplications) {
+      await this.waitForCurrentReplications()
+    }
     return replicateOnce(this)
   }
 
