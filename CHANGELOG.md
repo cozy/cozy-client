@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [55.1.0](https://github.com/cozy/cozy-client/compare/v55.0.0...v55.1.0) (2025-02-20)
+
+
+### Bug Fixes
+
+* Promise.all do not complete if a promise is rejected ([54d748f](https://github.com/cozy/cozy-client/commit/54d748f664e3c0f50adb693560da4f8928c634fa))
+
+
+### Features
+
+* Ensure previous replication are done ([46bd57b](https://github.com/cozy/cozy-client/commit/46bd57bae1963a8efc66fbb518ef2fb4e99626cd))
+
+
+
+
+
 # [55.0.0](https://github.com/cozy/cozy-client/compare/v54.0.1...v55.0.0) (2025-02-19)
 
 

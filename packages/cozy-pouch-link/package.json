@@ -1,6 +1,6 @@
 {
   "name": "cozy-pouch-link",
-  "version": "55.0.0",
+  "version": "55.1.0",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
