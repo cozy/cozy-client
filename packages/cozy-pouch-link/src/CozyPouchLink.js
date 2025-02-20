@@ -47,6 +47,7 @@ const addBasicAuth = (url, basicAuth) => {
 }
 
 const sanitized = doc => omit(doc, '_type')
+
 export const getReplicationURL = (uri, token, doctype) => {
   const basicAuth = token.toBasicAuth()
   const authenticatedURL = addBasicAuth(uri, basicAuth)
@@ -304,12 +305,14 @@ class PouchLink extends CozyLink {
   /**
    * @private
    */
-  _startReplication() {
+  _startReplication({ waitForReplications = true } = {}) {
     this.client.emit('pouchlink:sync:start')
     if (this.periodicSync) {
+      // FIXME: this API is kind of weird, one should be able to manually replicate
+      // even if a periodicSync is enabled
       this.pouches.startReplicationLoop()
     } else {
-      this.pouches.replicateOnce()
+      this.pouches.replicateOnce({ waitForReplications })
     }
     if (this.options.onStartReplication) {
       this.options.onStartReplication.apply(this)
@@ -323,11 +326,16 @@ class PouchLink extends CozyLink {
    * Emits pouchlink:sync:start event when the replication begins
    *
    * @public
+   *
+   * @param {object} options - The options
+   * @param {boolean|null} [options.waitForReplications=true] - Whether the others replication process should be waited
    * @returns {void}
    */
-  startReplication() {
-    this.startReplicationDebounced.cancel()
-    return this._startReplication()
+  startReplication({ waitForReplications = true } = {}) {
+    if (!waitForReplications) {
+      this.startReplicationDebounced.cancel()
+    }
+    return this._startReplication({ waitForReplications })
   }
 
   /**
@@ -336,16 +344,18 @@ class PouchLink extends CozyLink {
    * Debounce delay can be configured through constructor's `syncDebounceDelayInMs` option
    *
    * @public
+   * @param {object} options - The options
+   * @param {boolean|null} [options.waitForReplications=true] - Whether the others replication process should be waited
    * @returns {void}
    */
-  startReplicationWithDebounce() {
+  startReplicationWithDebounce({ waitForReplications = true } = {}) {
     if (this.periodicSync) {
       throw new Error(
         'createDebounceableReplication cannot be called when periodic sync is configured'
       )
     }
 
-    return this.startReplicationDebounced()
+    return this.startReplicationDebounced({ waitForReplications })
   }
 
   /**

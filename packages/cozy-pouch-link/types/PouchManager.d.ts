@@ -30,8 +30,16 @@ declare class PouchManager {
     startReplicationLoop(): Promise<Loop | void>;
     /** Stop periodic syncing of the pouches */
     stopReplicationLoop(): void;
-    /** Starts replication */
-    replicateOnce(): Promise<any>;
+    /**
+     * Starts replication
+     *
+     * @param {object} options - The options
+     * @param {boolean|null} [options.waitForReplications=true] - Whether the others replication process should be waited
+     * @returns {Promise<any>} the replication result
+     */
+    replicateOnce({ waitForReplications }?: {
+        waitForReplications: boolean | null;
+    }): Promise<any>;
     executeQuery: any;
     /** @type {import('./types').CancelablePromise[]} - Stores replication promises */
     replications: import('./types').CancelablePromise[];
@@ -53,7 +61,7 @@ declare class PouchManager {
     syncImmediately(): void;
     handleReplicationError(err: any): void;
     cancelCurrentReplications(): void;
-    waitForCurrentReplications(): Promise<void> | Promise<any[]>;
+    waitForCurrentReplications(): Promise<void> | Promise<(import("./utils").FulfilledPromise | import("./utils").RejectedPromise)[]>;
     getPouch(doctype: any): any;
     /**
      * Update the Sync info for the specifed doctype
