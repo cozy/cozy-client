@@ -785,7 +785,7 @@ files associated to a specific document
     * [.findNotSynchronizedDirectories(oauthClient, options)](#FileCollection+findNotSynchronizedDirectories) ⇒ <code>Array.&lt;(object\|IOCozyFolder)&gt;</code>
     * [.addNotSynchronizedDirectories(oauthClient, directories)](#FileCollection+addNotSynchronizedDirectories)
     * [.removeNotSynchronizedDirectories(oauthClient, directories)](#FileCollection+removeNotSynchronizedDirectories)
-    * [.getSharedDrivesDirectoryOrCreate()](#FileCollection+getSharedDrivesDirectoryOrCreate) ⇒ [<code>IOCozyFolder</code>](#IOCozyFolder)
+    * [.getOrCreateSharedDrivesDirectory()](#FileCollection+getOrCreateSharedDrivesDirectory) ⇒ [<code>IOCozyFolder</code>](#IOCozyFolder)
 
 <a name="FileCollection+forceFileDownload"></a>
 
@@ -1272,15 +1272,15 @@ Remove directory synchronization exclusions from an OAuth client — see https:/
 | oauthClient | [<code>OAuthClient</code>](#OAuthClient) | A JSON representing the OAuth client |
 | directories | <code>Array</code> | An array of JSON documents having a `_type` and `_id` field and representing directories. Returns 204 No Content |
 
-<a name="FileCollection+getSharedDrivesDirectoryOrCreate"></a>
+<a name="FileCollection+getOrCreateSharedDrivesDirectory"></a>
 
-### fileCollection.getSharedDrivesDirectoryOrCreate() ⇒ [<code>IOCozyFolder</code>](#IOCozyFolder)
-Get the Shared Drives directory or create it if it does not exist.
+### fileCollection.getOrCreateSharedDrivesDirectory() ⇒ [<code>IOCozyFolder</code>](#IOCozyFolder)
+Get or create the Shared Drives directory it if it does not exist.
 
 The Shared Drives directory is a special directory :
 - its _id is io.cozy.files.shared-drives-dir
-- it contains Nextcloud drives
-- it contains shared drives
+- it can contains Nextcloud shortcuts
+- it can contains shared drives
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
 **Returns**: [<code>IOCozyFolder</code>](#IOCozyFolder) - Shared Drives directory  

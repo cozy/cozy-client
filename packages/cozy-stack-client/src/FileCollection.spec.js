@@ -2260,9 +2260,9 @@ describe('FileCollection', () => {
     })
   })
 
-  describe('getSharedDrivesDirectoryOrCreate', () => {
+  describe('getOrCreateSharedDrivesDirectory', () => {
     it('should call the right route', async () => {
-      await collection.getSharedDrivesDirectoryOrCreate()
+      await collection.getOrCreateSharedDrivesDirectory()
 
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'POST',
