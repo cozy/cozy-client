@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [56.0.0](https://github.com/cozy/cozy-client/compare/v55.1.0...v56.0.0) (2025-02-25)
+
+
+### Features
+
+* Remove fsnative model and mobile cordova helpers ([ed23fda](https://github.com/cozy/cozy-client/commit/ed23fdac4267d31ee6ccd78ca6e954e24549b957))
+
+
+### BREAKING CHANGES
+
+* fsnative model has been removed. readMobileFile and
+doMobileUpload methods have been removed on file model. If you still
+have them in an app, you can safely remove the code.
+
+
+
+
+
 # [55.1.0](https://github.com/cozy/cozy-client/compare/v55.0.0...v55.1.0) (2025-02-20)
 
 
