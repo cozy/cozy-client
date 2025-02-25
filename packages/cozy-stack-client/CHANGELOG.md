@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [57.0.0](https://github.com/cozy/cozy-client/compare/v56.0.0...v57.0.0) (2025-02-25)
+
+
+### Features
+
+* Add a option to create a "shared drive" sharing ([d78caee](https://github.com/cozy/cozy-client/commit/d78caee8a3d97f93268d414e4a14de2f907494f3))
+* Add FileCollection.getSharedDrivesDirectoryOrCreate ([c7a36cf](https://github.com/cozy/cozy-client/commit/c7a36cf7f4763a732097017135f852a781cfc4de))
+* Manage rules for shared drive sharing ([542761e](https://github.com/cozy/cozy-client/commit/542761e96ac3478cdfebc621fb76aac0fde9f0a0))
+* Remove deprecated SharingCollection.share method ([fdafda8](https://github.com/cozy/cozy-client/commit/fdafda88131cbf7611900e72650fc76c8d5a6f02))
+* Remove sharingType argument from getSharingRules ([7571509](https://github.com/cozy/cozy-client/commit/757150966110acb9bde190b65b905fa9aadd6a8f))
+* Rename getOrCreateSharedDrivesDirectory ([92aa9e4](https://github.com/cozy/cozy-client/commit/92aa9e4e6d666c30aed4e8938dba949342bc9d2c))
+
+
+### BREAKING CHANGES
+
+* SharingCollection.share method has been removed. Use
+SharingCollection.create method.
+
+
+
+
+
 # [56.0.0](https://github.com/cozy/cozy-client/compare/v55.1.0...v56.0.0) (2025-02-25)
 
 **Note:** Version bump only for package cozy-stack-client
