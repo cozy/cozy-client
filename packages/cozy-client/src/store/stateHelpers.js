@@ -1,4 +1,8 @@
-import { getCollectionFromSlice, getDocumentFromSlice } from './documents'
+import {
+  getCollectionFromSlice,
+  getDocumentFromSlice,
+  getDocumentsFromSlice
+} from './documents'
 import { getQueryFromSlice } from './queries'
 
 export const getStateRoot = state => state.cozy || {}
@@ -8,6 +12,9 @@ export const getCollectionFromState = (state, doctype) =>
 
 export const getDocumentFromState = (state, doctype, id) =>
   getDocumentFromSlice(getStateRoot(state).documents, doctype, id)
+
+export const getDocumentsFromState = (state, doctype, ids) =>
+  getDocumentsFromSlice(getStateRoot(state).documents, doctype, ids)
 
 export const getQueryFromStore = (store, queryId) =>
   getQueryFromState(store.getState(), queryId)
