@@ -17,7 +17,11 @@ import { isReceivingMutationResult } from './mutations'
 import { properId } from './helpers'
 import { isAGetByIdQuery, QueryDefinition } from '../queries/dsl'
 import logger from '../logger'
-import { getCollectionFromState } from './stateHelpers'
+import {
+  getCollectionFromState,
+  getDocumentFromState,
+  getDocumentsFromState
+} from './stateHelpers'
 
 const INIT_QUERY = 'INIT_QUERY'
 const LOAD_QUERY = 'LOAD_QUERY'
@@ -344,15 +348,34 @@ const getSelectorFilterFn = queryDefinition => {
  * @returns {import("../types").QueryStateData} - The returned documents from the query
  */
 export const executeQueryFromState = (state, queryDefinition) => {
-  const documents = getCollectionFromState(state, queryDefinition.doctype)
   const isSingleObjectResponse = !!queryDefinition.id
-  if (!documents) {
+
+  let res
+  // XXX - For getById and getByIds queries, do not iterate over all collection, but rather
+  // directly access the document from state, making it O(1) rather than O(n)
+  if (queryDefinition.id) {
+    const doc = getDocumentFromState(
+      state,
+      queryDefinition.doctype,
+      queryDefinition.id
+    )
+    res = doc ? [doc] : []
+  } else if (queryDefinition.ids) {
+    res = getDocumentsFromState(
+      state,
+      queryDefinition.doctype,
+      queryDefinition.ids
+    )
+  } else {
+    const documents = getCollectionFromState(state, queryDefinition.doctype)
+    res = documents?.filter(makeFilterDocumentFn(queryDefinition))
+  }
+  if (!res || res.length < 1) {
     return { data: isSingleObjectResponse ? null : [] }
   }
-  const res = documents.filter(makeFilterDocumentFn(queryDefinition))
   if (isSingleObjectResponse) {
     return {
-      data: res.length > 0 ? res[0] : null
+      data: res[0]
     }
   }
   const sorter = makeSorterFromDefinition(queryDefinition)

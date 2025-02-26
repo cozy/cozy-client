@@ -521,7 +521,7 @@ Generated URL
 
 *Defined in*
 
-[packages/cozy-client/src/store/stateHelpers.js:15](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/store/stateHelpers.js#L15)
+[packages/cozy-client/src/store/stateHelpers.js:22](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/store/stateHelpers.js#L22)
 
 ***
 

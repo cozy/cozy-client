@@ -99,7 +99,14 @@ const documents = (state = {}, action) => {
 
 export default documents
 
-// selector
+/**
+ * Get document from state, by its id
+ *
+ * @param {import('../types').DocumentsStateSlice} state The documents' slice
+ * @param {string} doctype The doctype to target
+ * @param {string} id The document id to get
+ * @returns {import('../types').CozyClientDocument} the document found by its id
+ */
 export const getDocumentFromSlice = (state = {}, doctype, id) => {
   if (!doctype) {
     throw new Error(
@@ -129,6 +136,37 @@ export const getDocumentFromSlice = (state = {}, doctype, id) => {
     return null
   }
   return state[doctype][id]
+}
+
+/**
+ * Get documents from state, by their ids
+ *
+ * @param {import('../types').DocumentsStateSlice} state The documents' slice
+ * @param {string} doctype The doctype to target
+ * @param {Array<string>} ids The list of document ids to get
+ * @returns {Array<import('../types').CozyClientDocument>} the list of documents found by their ids
+ */
+export const getDocumentsFromSlice = (state = {}, doctype, ids) => {
+  if (!doctype) {
+    throw new Error(
+      'getDocumentsFromSlice: Cannot retrieve documents with undefined doctype'
+    )
+  }
+  if (!ids || ids.length < 1) {
+    throw new Error(
+      'getDocumentsFromSlice: Cannot retrieve documents with undefined ids'
+    )
+  }
+  if (!state[doctype]) {
+    if (process.env.NODE_ENV !== 'production') {
+      logger.info(
+        `getDocumentsFromSlice: ${doctype} is absent from the store's documents. State is`,
+        state
+      )
+    }
+    return []
+  }
+  return ids.map(id => state[doctype][id]).filter(Boolean)
 }
 
 export const getCollectionFromSlice = (state = {}, doctype) => {

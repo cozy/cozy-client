@@ -779,6 +779,13 @@ describe('execute query from state', () => {
     }
     const res3 = executeQueryFromState(state, query3)
     expect(res3.data).toEqual(null)
+
+    const query4 = {
+      doctype: 'io.cozy.files',
+      ids: ['-1', '123']
+    }
+    const res4 = executeQueryFromState(state, query4)
+    expect(res4.data[0]).toEqual(docState['io.cozy.files']['123'])
   })
 
   it('should get all the docs from state for the doctype when no filter', () => {
