@@ -1,11 +1,8 @@
-import keyBy from 'lodash/keyBy'
 import get from 'lodash/get'
-import isEqual from 'lodash/isEqual'
 import omit from 'lodash/omit'
 import merge from 'lodash/merge'
-
 import logger from '../logger'
-
+import fastEqual from 'fast-deep-equal'
 import { isReceivingData } from './queries'
 import { MutationTypes } from '../queries/dsl'
 import { isReceivingMutationResult } from './mutations'
@@ -29,7 +26,7 @@ const storeDocument = (state, document) => {
 
   const existingDoc = get(state, [type, properId(document)])
 
-  if (isEqual(existingDoc, document)) {
+  if (fastEqual(existingDoc, document)) {
     return state
   } else {
     return {
@@ -188,38 +185,65 @@ export const getCollectionFromSlice = (state = {}, doctype) => {
   return Object.values(state[doctype])
 }
 
-/*
-  This method has been created in order to get a returned object
-  in `data` with the full set on information coming potentially from
+/**
+ * 
+ * This method has been created in order to get a returned object
+   in `data` with the full set on information coming potentially from
   `included`
-
+ 
   This method should be somewhere else. The `document` shall not be
   dealt with included / data and so on.
-
+ 
   This method takes `data` and `included` and merge both sources
   together. It should be always up-to-date. The returned object
   will be as full of information as it can be.
-*/
-export const extractAndMergeDocument = (data, updatedStateWithIncluded) => {
-  const doctype = data[0]._type
+ 
+ * @param {Array<import('../types').CozyClientDocument>} newData - Queries documents 
+ * @param {import("../types").DocumentsStateSlice} updatedStateWithIncluded documents' state 
+ * @returns {import("../types").DocumentsStateSlice} the merged documents state
+ */
+export const extractAndMergeDocument = (newData, updatedStateWithIncluded) => {
+  const doctype = newData[0]._type
 
   if (!doctype) {
-    logger.info('Document without _type', data[0])
+    logger.info('Document without _type', newData[0])
     throw new Error('Document without _type')
   }
-  const sortedData = keyBy(data, properId)
 
-  let mergedData = Object.assign({}, updatedStateWithIncluded)
-  mergedData[doctype] = Object.assign({}, updatedStateWithIncluded[doctype])
+  // Index docs by id, for faster retrieval
+  const newDocsMap = new Map(newData.map(doc => [properId(doc), doc]))
 
-  Object.values(sortedData).map(data => {
-    const id = properId(data)
-    if (mergedData[doctype][id]) {
-      mergedData[doctype][id] = merge({}, mergedData[doctype][id], data)
-    } else {
-      mergedData[doctype][id] = data
+  const mergedState = Object.assign({}, updatedStateWithIncluded)
+  // FIXME: this was introduced for a bug in banks, but it does not look useful
+  mergedState[doctype] = Object.assign({}, updatedStateWithIncluded[doctype])
+  if (!mergedState[doctype]) {
+    mergedState[doctype] = {}
+  }
+
+  let haveDocumentsChanged = false
+
+  newDocsMap.forEach((newDoc, key) => {
+    const id = key
+    const currentDoc = mergedState[doctype][id]
+    if (!currentDoc) {
+      mergedState[doctype][id] = newDoc
+      haveDocumentsChanged = true
+    } else if (!fastEqual(currentDoc, newDoc)) {
+      // XXX Here we check if the doc has changed. Note this would be way faster
+      // by just relying on revision change, but:
+      //  - it does not work if the new doc is partial (i.e. retrieved with a .select query)
+      //  - some documents might change without a rev change: typically the thumbnails links
+      //    in io.cozy.files, and the io.cozy.settings.instance doc, with additional
+      //    fields added by the stack
+      mergedState[doctype][id] = merge({}, mergedState[doctype][id], newDoc)
+      haveDocumentsChanged = true
     }
   })
-
-  return mergedData
+  // XXX If there is any state change, the updated state should have a new reference,
+  // as we heavily rely on referential equality.
+  // Conversely, if there is no change, the same reference should be kept
+  if (haveDocumentsChanged) {
+    return mergedState
+  }
+  return updatedStateWithIncluded
 }
