@@ -704,6 +704,32 @@ describe('FileCollection', () => {
     })
   })
 
+  describe('destroy', () => {
+    const client = new CozyStackClient()
+    const collection = new FileCollection('io.cozy.files', client)
+
+    beforeEach(() => {
+      client.fetchJSON.mockReturnValue({})
+    })
+
+    it('should send any given If-Match revision', async () => {
+      const file = {
+        _id: '123',
+        _rev: '2-123'
+      }
+      const ifMatch = '1-456'
+
+      await collection.destroy(file, { ifMatch })
+
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'DELETE',
+        `/files/${file._id}`,
+        undefined,
+        { headers: { 'If-Match': ifMatch } }
+      )
+    })
+  })
+
   describe('update', () => {
     const client = new CozyStackClient()
     const collection = new FileCollection('io.cozy.files', client)
@@ -752,6 +778,7 @@ describe('FileCollection', () => {
       }
       await collection.update(atts)
       expect(spyUpdateAttributes).toHaveBeenCalledWith(atts._id, atts, {
+        ifMatch: '',
         sanitizeName: true
       })
     })
@@ -804,6 +831,35 @@ describe('FileCollection', () => {
           spyUpdateAttributes.mock.calls.length - 1
         ]
       ).toMatchSnapshot()
+    })
+
+    it('should send any given If-Match revision', async () => {
+      // Without data
+      const attrs = {
+        _id: '123',
+        type: 'file',
+        name: 'thoughts.txt'
+      }
+      const ifMatch = '1-456'
+
+      await collection.update(attrs, { ifMatch })
+      expect(spyUpdateAttributes).toHaveBeenCalledWith(attrs._id, attrs, {
+        sanitizeName: true,
+        ifMatch
+      })
+
+      // With data
+      const data = new Blob()
+
+      await collection.update({ ...attrs, data }, { ifMatch })
+      expect(spyUpdateFile).toHaveBeenCalledWith(
+        data,
+        { ...attrs, fileId: attrs._id },
+        {
+          sanitizeName: true,
+          ifMatch
+        }
+      )
     })
   })
 
@@ -891,6 +947,20 @@ describe('FileCollection', () => {
           name: 'Name '
         },
         { sanitizeName: false }
+      )
+      expect(
+        client.fetchJSON.mock.calls[client.fetchJSON.mock.calls.length - 1]
+      ).toMatchSnapshot()
+    })
+
+    it('should send any given If-Match revision', async () => {
+      await collection.updateAttributes(
+        '42',
+        {
+          dir_id: '123',
+          name: 'Name '
+        },
+        { ifMatch: '1-456' }
       )
       expect(
         client.fetchJSON.mock.calls[client.fetchJSON.mock.calls.length - 1]
@@ -1182,6 +1252,22 @@ describe('FileCollection', () => {
         client.fetchJSON.mock.calls[client.fetchJSON.mock.calls.length - 1]
       ).toMatchSnapshot()
     })
+
+    it('should send any given If-Match revision', async () => {
+      await collection.updateFile(
+        new File([''], 'mydoc.epub'),
+        {
+          fileId: '59140416-b95f',
+          checksum: 'a6dabd99832b270468e254814df2ed20',
+          contentLength: 1234,
+          lastModifiedDate: new Date('2021-01-01')
+        },
+        { ifMatch: '1-456' }
+      )
+      expect(
+        client.fetchJSON.mock.calls[client.fetchJSON.mock.calls.length - 1]
+      ).toMatchSnapshot()
+    })
   })
 
   describe('emptyTrash', () => {
@@ -1392,12 +1478,50 @@ describe('FileCollection', () => {
               permanent_delete: true
             }
           }
+        },
+        {
+          headers: {
+            'If-Match': ''
+          }
         }
       )
       expect(result).toEqual({
         id: FILE_ID,
         type: 'io.cozy.files'
       })
+    })
+
+    it('should send any given If-Match revision', async () => {
+      const FILE_ID = 'd04ab491-2fc6'
+      const FILE_REV = '2-7051cbe5c8faecd085a3fa619e6e6337'
+
+      client.fetchJSON.mockReturnValue({
+        data: {
+          id: FILE_ID,
+          type: 'io.cozy.files'
+        }
+      })
+
+      await collection.deleteFilePermanently(FILE_ID, { ifMatch: FILE_REV })
+
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'PATCH',
+        '/files/d04ab491-2fc6',
+        {
+          data: {
+            type: 'io.cozy.files',
+            id: FILE_ID,
+            attributes: {
+              permanent_delete: true
+            }
+          }
+        },
+        {
+          headers: {
+            'If-Match': FILE_REV
+          }
+        }
+      )
     })
   })
 
@@ -1765,6 +1889,26 @@ describe('FileCollection', () => {
         }
       }
       const date = new Date(lastModifiedDate).toISOString()
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        `${path}&UpdatedAt=${date}&CreatedAt=${date}`,
+        data,
+        expectedOptions
+      )
+    })
+
+    it('should send any given If-Match revision', async () => {
+      const data = new File([''], fileName)
+      const path = `/files/${dirId}?Name=${fileName}&Type=file`
+      await collection.doUpload(data, path, { ifMatch: '1-456' })
+
+      const expectedOptions = {
+        headers: {
+          'Content-Type': 'application/epub+zip',
+          'If-Match': '1-456'
+        }
+      }
+      const date = new Date(data.lastModified).toISOString()
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'POST',
         `${path}&UpdatedAt=${date}&CreatedAt=${date}`,
