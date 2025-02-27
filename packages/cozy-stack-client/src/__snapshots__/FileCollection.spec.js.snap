@@ -340,6 +340,7 @@ Array [
     "type": "file",
   },
   Object {
+    "ifMatch": "",
     "sanitizeName": false,
   },
 ]
@@ -354,6 +355,7 @@ Array [
     "type": "file",
   },
   Object {
+    "ifMatch": "",
     "sanitizeName": false,
   },
 ]
@@ -368,6 +370,7 @@ Array [
     "type": "file",
   },
   Object {
+    "ifMatch": "",
     "sanitizeName": true,
   },
 ]
@@ -382,6 +385,7 @@ Array [
     "type": "file",
   },
   Object {
+    "ifMatch": "",
     "sanitizeName": true,
   },
 ]
@@ -401,6 +405,11 @@ Array [
       "type": "io.cozy.files",
     },
   },
+  Object {
+    "headers": Object {
+      "If-Match": "",
+    },
+  },
 ]
 `;
 
@@ -418,6 +427,11 @@ Array [
       "type": "io.cozy.files",
     },
   },
+  Object {
+    "headers": Object {
+      "If-Match": "",
+    },
+  },
 ]
 `;
 
@@ -433,6 +447,33 @@ Array [
       },
       "id": "42",
       "type": "io.cozy.files",
+    },
+  },
+  Object {
+    "headers": Object {
+      "If-Match": "",
+    },
+  },
+]
+`;
+
+exports[`FileCollection updateAttributes should send any given If-Match revision 1`] = `
+Array [
+  "PATCH",
+  "/files/42",
+  Object {
+    "data": Object {
+      "attributes": Object {
+        "dir_id": "123",
+        "name": "Name",
+      },
+      "id": "42",
+      "type": "io.cozy.files",
+    },
+  },
+  Object {
+    "headers": Object {
+      "If-Match": "1-456",
     },
   },
 ]
@@ -464,6 +505,23 @@ Array [
       "Content-Length": "1234",
       "Content-MD5": "a6dabd99832b270468e254814df2ed20",
       "Content-Type": "application/epub+zip",
+    },
+    "onUploadProgress": undefined,
+  },
+]
+`;
+
+exports[`FileCollection updateFile should send any given If-Match revision 1`] = `
+Array [
+  "PUT",
+  "/files/59140416-b95f?Name=mydoc.epub&Type=file&Executable=false&Encrypted=false&Size=1234&UpdatedAt=2021-01-01T00:00:00.000Z&CreatedAt=2021-01-01T00:00:00.000Z",
+  File {},
+  Object {
+    "headers": Object {
+      "Content-Length": "1234",
+      "Content-MD5": "a6dabd99832b270468e254814df2ed20",
+      "Content-Type": "application/epub+zip",
+      "If-Match": "1-456",
     },
     "onUploadProgress": undefined,
   },

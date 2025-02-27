@@ -765,7 +765,7 @@ files associated to a specific document
     * [.emptyTrash()](#FileCollection+emptyTrash)
     * [.restore(id)](#FileCollection+restore) ⇒ <code>Promise</code>
     * [.copy(id, [name], [dirId], [options])](#FileCollection+copy) ⇒ <code>Promise.&lt;object&gt;</code>
-    * [.deleteFilePermanently(id)](#FileCollection+deleteFilePermanently) ⇒ <code>Promise.&lt;object&gt;</code>
+    * [.deleteFilePermanently(id, [options])](#FileCollection+deleteFilePermanently) ⇒ <code>Promise.&lt;object&gt;</code>
     * [.upload(data, dirPath, [options])](#FileCollection+upload) ⇒ <code>Promise.&lt;object&gt;</code>
     * [.create(attributes, [options])](#FileCollection+create)
     * [.updateFile(data, params, options)](#FileCollection+updateFile) ⇒ [<code>Promise.&lt;FileAttributes&gt;</code>](#FileAttributes)
@@ -781,7 +781,7 @@ files associated to a specific document
     * [.createFileMetadata(attributes)](#FileCollection+createFileMetadata) ⇒ <code>Promise.&lt;object&gt;</code>
     * [.updateMetadataAttribute(id, metadata)](#FileCollection+updateMetadataAttribute) ⇒ <code>Promise.&lt;object&gt;</code>
     * [.getFileTypeFromName(name)](#FileCollection+getFileTypeFromName) ⇒ <code>string</code>
-    * [.doUpload(dataArg, path, options, method)](#FileCollection+doUpload)
+    * [.doUpload(dataArg, path, options, [method])](#FileCollection+doUpload)
     * [.findNotSynchronizedDirectories(oauthClient, options)](#FileCollection+findNotSynchronizedDirectories) ⇒ <code>Array.&lt;(object\|IOCozyFolder)&gt;</code>
     * [.addNotSynchronizedDirectories(oauthClient, directories)](#FileCollection+addNotSynchronizedDirectories)
     * [.removeNotSynchronizedDirectories(oauthClient, directories)](#FileCollection+removeNotSynchronizedDirectories)
@@ -985,7 +985,7 @@ Copy a file.
 
 <a name="FileCollection+deleteFilePermanently"></a>
 
-### fileCollection.deleteFilePermanently(id) ⇒ <code>Promise.&lt;object&gt;</code>
+### fileCollection.deleteFilePermanently(id, [options]) ⇒ <code>Promise.&lt;object&gt;</code>
 async deleteFilePermanently - Definitely delete a file
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
@@ -994,6 +994,7 @@ async deleteFilePermanently - Definitely delete a file
 | Param | Type | Description |
 | --- | --- | --- |
 | id | <code>string</code> | The id of the file to delete |
+| [options] | <code>object</code> | Optionnal request options |
 
 <a name="FileCollection+upload"></a>
 
@@ -1208,7 +1209,7 @@ Get the file mime-type based on its name
 
 <a name="FileCollection+doUpload"></a>
 
-### fileCollection.doUpload(dataArg, path, options, method)
+### fileCollection.doUpload(dataArg, path, options, [method])
 This method should not be called directly to upload a file.
 You should use `createFile`
 
@@ -1219,7 +1220,7 @@ You should use `createFile`
 | dataArg | <code>File</code> \| <code>Blob</code> \| [<code>Stream</code>](#Stream) \| <code>string</code> \| <code>ArrayBuffer</code> |  | file to be uploaded |
 | path | <code>string</code> |  | Uri to call the stack from. Something like `/files/${dirId}?Name=${name}&Type=file&Executable=${executable}&MetadataID=${metadataId}` |
 | options | <code>object</code> |  | Additional headers |
-| method | <code>string</code> | <code>&quot;POST&quot;</code> | POST / PUT / PATCH |
+| [method] | <code>string</code> | <code>&quot;POST&quot;</code> | POST / PUT / PATCH |
 
 <a name="FileCollection+findNotSynchronizedDirectories"></a>
 
