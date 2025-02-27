@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [57.1.0](https://github.com/cozy/cozy-client/compare/v57.0.0...v57.1.0) (2025-02-27)
+
+
+### Features
+
+* Improve store query performance for id queries ([449c7cd](https://github.com/cozy/cozy-client/commit/449c7cda12250f793a8bf23f96deab3f942b9be6))
+
+
+
+
+
 # [57.0.0](https://github.com/cozy/cozy-client/compare/v56.0.0...v57.0.0) (2025-02-25)
 
 **Note:** Version bump only for package cozy-client
