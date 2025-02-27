@@ -490,18 +490,28 @@ class FileCollection extends DocumentCollection {
    * async deleteFilePermanently - Definitely delete a file
    *
    * @param  {string} id - The id of the file to delete
+   * @param  {object} [options] - Optionnal request options
    * @returns {Promise<object>} The deleted file object
    */
-  async deleteFilePermanently(id) {
-    const resp = await this.stackClient.fetchJSON('PATCH', uri`/files/${id}`, {
-      data: {
-        type: 'io.cozy.files',
-        id,
-        attributes: {
-          permanent_delete: true
+  async deleteFilePermanently(id, { ifMatch = '' } = {}) {
+    const resp = await this.stackClient.fetchJSON(
+      'PATCH',
+      uri`/files/${id}`,
+      {
+        data: {
+          type: 'io.cozy.files',
+          id,
+          attributes: {
+            permanent_delete: true
+          }
+        }
+      },
+      {
+        headers: {
+          'If-Match': ifMatch
         }
       }
-    })
+    )
 
     return resp.data
   }
@@ -547,7 +557,7 @@ class FileCollection extends DocumentCollection {
    * @returns {Promise<FileAttributes>} Updated document
    * @throws {Error} - explaining reason why update failed
    */
-  async update(attributes, { sanitizeName = true } = {}) {
+  async update(attributes, { ifMatch = '', sanitizeName = true } = {}) {
     const { data, ...updateFileOptions } = attributes
     const fileId = attributes.id || attributes._id
     if (data) {
@@ -555,9 +565,9 @@ class FileCollection extends DocumentCollection {
         throw new Error('You cannot pass a data object for a directory')
       }
       updateFileOptions.fileId = fileId
-      return this.updateFile(data, updateFileOptions, { sanitizeName })
+      return this.updateFile(data, updateFileOptions, { ifMatch, sanitizeName })
     }
-    return this.updateAttributes(fileId, attributes, { sanitizeName })
+    return this.updateAttributes(fileId, attributes, { ifMatch, sanitizeName })
   }
 
   /**
@@ -627,7 +637,7 @@ class FileCollection extends DocumentCollection {
       metadata,
       ...options
     } = {},
-    { sanitizeName = true } = {}
+    { ifMatch = '', sanitizeName = true } = {}
   ) {
     if (!fileId || typeof fileId !== 'string') {
       throw new Error('missing fileId argument')
@@ -641,9 +651,10 @@ class FileCollection extends DocumentCollection {
       ? sanitizeAndValidateFileName(fileName)
       : fileName
     /**
-     * We already use the body to send the content of the file. So we have 2 choices :
-     * Use an object in a query string to send the metadata
-     * create a new header http
+     * We already use the body to send the content of the file. So we have 2
+     * choices to pass updated metadata :
+     * - use an object in a query string to send the metadata
+     * - create a new http header
      * In both case, we have a size limitation depending of the browser.
      *
      * So we had this current workaround where we create the metadata before
@@ -661,6 +672,7 @@ class FileCollection extends DocumentCollection {
       size = String(options.contentLength)
       path = path + `&Size=${size}`
     }
+    if (ifMatch !== '') options.ifMatch = ifMatch
 
     return this.doUpload(data, path, options, 'PUT')
   }
@@ -1044,20 +1056,33 @@ class FileCollection extends DocumentCollection {
    * @returns {object}           Updated document
    * @throws {Error} - explaining reason why update failed
    */
-  async updateAttributes(id, attributes, { sanitizeName = true } = {}) {
+  async updateAttributes(
+    id,
+    attributes,
+    { ifMatch = '', sanitizeName = true } = {}
+  ) {
     const sanitizedAttributes = { ...attributes }
 
     if (attributes.name && sanitizeName) {
       sanitizedAttributes.name = sanitizeAndValidateFileName(attributes.name)
     }
 
-    const resp = await this.stackClient.fetchJSON('PATCH', uri`/files/${id}`, {
-      data: {
-        type: 'io.cozy.files',
-        id,
-        attributes: sanitizedAttributes
+    const resp = await this.stackClient.fetchJSON(
+      'PATCH',
+      uri`/files/${id}`,
+      {
+        data: {
+          type: 'io.cozy.files',
+          id,
+          attributes: sanitizedAttributes
+        }
+      },
+      {
+        headers: {
+          'If-Match': ifMatch
+        }
       }
-    })
+    )
     return {
       data: normalizeFile(resp.data)
     }
@@ -1142,7 +1167,7 @@ class FileCollection extends DocumentCollection {
    * @param {string} path Uri to call the stack from. Something like
    * `/files/${dirId}?Name=${name}&Type=file&Executable=${executable}&MetadataID=${metadataId}`
    * @param {object} options Additional headers
-   * @param {string} method POST / PUT / PATCH
+   * @param {string} [method] POST / PUT / PATCH
    */
   async doUpload(dataArg, path, options, method = 'POST') {
     let correctPath = path
