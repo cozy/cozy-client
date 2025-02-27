@@ -1,4 +1,3 @@
-import keyBy from 'lodash/keyBy'
 import get from 'lodash/get'
 import isEqual from 'lodash/isEqual'
 import omit from 'lodash/omit'
@@ -200,26 +199,51 @@ export const getCollectionFromSlice = (state = {}, doctype) => {
   together. It should be always up-to-date. The returned object
   will be as full of information as it can be.
 */
-export const extractAndMergeDocument = (data, updatedStateWithIncluded) => {
-  const doctype = data[0]._type
+export const extractAndMergeDocument = (newData, updatedStateWithIncluded) => {
+  const doctype = newData[0]._type
 
   if (!doctype) {
-    logger.info('Document without _type', data[0])
+    logger.info('Document without _type', newData[0])
     throw new Error('Document without _type')
   }
-  const sortedData = keyBy(data, properId)
 
-  let mergedData = Object.assign({}, updatedStateWithIncluded)
-  mergedData[doctype] = Object.assign({}, updatedStateWithIncluded[doctype])
+  // Index docs by id, for faster retrieval
+  const newDocsMap = new Map(newData.map(doc => [properId(doc), doc]))
 
-  Object.values(sortedData).map(data => {
-    const id = properId(data)
-    if (mergedData[doctype][id]) {
-      mergedData[doctype][id] = merge({}, mergedData[doctype][id], data)
+  const mergedState = Object.assign({}, updatedStateWithIncluded)
+  if (!mergedState[doctype]) {
+    mergedState[doctype] = {}
+  }
+
+  let haveDocumentsChanged = false
+
+  newDocsMap.forEach((newDoc, key) => {
+    const id = key
+    const currentDoc = mergedState[doctype][id]
+    if (currentDoc) {
+      let hasDocUpdate = false
+      if (newDoc._rev && currentDoc._rev) {
+        // Rely on revisions for a quick check on document change
+        hasDocUpdate = currentDoc._rev !== newDoc._rev
+      } else {
+        // In some cases, the document does not have any revision.
+        // Let's deep compare docs for this situation
+        hasDocUpdate = JSON.stringify(newDoc) !== JSON.stringify(currentDoc)
+      }
+      if (hasDocUpdate) {
+        mergedState[doctype][id] = merge({}, mergedState[doctype][id], newDoc)
+        haveDocumentsChanged = true
+      }
     } else {
-      mergedData[doctype][id] = data
+      mergedState[doctype][id] = newDoc
+      haveDocumentsChanged = true
     }
   })
-
-  return mergedData
+  // XXX If there is any state change, the updated state should have a new reference,
+  // as we heavily rely on referential equality.
+  // Conversely, if there is no change, the same reference should be kept
+  if (haveDocumentsChanged) {
+    return mergedState
+  }
+  return updatedStateWithIncluded
 }
