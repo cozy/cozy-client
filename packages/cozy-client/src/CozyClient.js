@@ -1157,7 +1157,18 @@ client.query(Q('io.cozy.bills'))`)
     if (!Array.isArray(data)) {
       await this.persistVirtualDocument(data, enforce)
     } else {
-      for (const document of data) {
+      const documentsToPersist = data.filter(document => {
+        if (!document || document.cozyLocalOnly) {
+          return false
+        }
+
+        if ((!document.meta?.rev && !document._rev) || enforce) {
+          return true
+        }
+
+        return false
+      })
+      for (const document of documentsToPersist) {
         await this.persistVirtualDocument(document, enforce)
       }
     }
