@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@cozy/minilog": "1.0.0",
+    "@fastify/deepmerge": "2.0.2",
     "@types/jest": "^26.0.20",
     "@types/lodash": "^4.14.170",
     "btoa": "^1.2.1",

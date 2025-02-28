@@ -3,6 +3,7 @@ import get from 'lodash/get'
 import isEqual from 'lodash/isEqual'
 import omit from 'lodash/omit'
 import merge from 'lodash/merge'
+import deepmerge from '@fastify/deepmerge'
 
 import logger from '../logger'
 
@@ -163,24 +164,64 @@ export const getCollectionFromSlice = (state = {}, doctype) => {
   will be as full of information as it can be.
 */
 export const extractAndMergeDocument = (data, updatedStateWithIncluded) => {
+  // console.log('🏪 extractAndMergeDocument DeepMerge')
+  const begin = performance.now()
   const doctype = data[0]._type
 
   if (!doctype) {
     logger.info('Document without _type', data[0])
     throw new Error('Document without _type')
   }
+  // const beginKeyBy = performance.now()
   const sortedData = keyBy(data, properId)
-
+  // const endKeyBy = performance.now()
+  // console.log('🏪 extractAndMergeDocument KeyBy took', (endKeyBy - beginKeyBy), 'ms')
+  const deeppmerge = deepmerge()
+  // const beginMergeData = performance.now()
   let mergedData = Object.assign({}, updatedStateWithIncluded)
   mergedData[doctype] = Object.assign({}, updatedStateWithIncluded[doctype])
+
+  // console.log('🌈🌈🌈 sortedData: ', sortedData)
+  // console.log('🌈🌈🌈 mergedData: ', mergedData)
+
+  /*
+  mergedData[doctype] = deeppmerge(mergedData[doctype], sortedData)
+  /*/
+  // const endMergeData = performance.now()
+  // console.log('🏪 extractAndMergeDocument MergeData took', (endMergeData - beginMergeData), 'ms')
+  // const beginMapSorted = performance.now()
+  // let lodashMergeCount = 0
+  // let lodashMergeDuration = 0
   Object.values(sortedData).map(data => {
+    // const beginProperId = performance.now()
     const id = properId(data)
+    // const endProperId = performance.now()
+    // console.log('🏪 extractAndMergeDocument ProperId took', (endProperId - beginProperId), 'ms')
     if (mergedData[doctype][id]) {
-      mergedData[doctype][id] = merge({}, mergedData[doctype][id], data)
+      if (JSON.stringify(data) !== JSON.stringify(mergedData[doctype][id])) {
+        // const beginLodashMerge = performance.now()
+        // mergedData[doctype][id] = merge({}, mergedData[doctype][id], data)
+        const temp = Object.assign({}, mergedData[doctype][id])
+        mergedData[doctype][id] = deeppmerge(temp, data)
+        // console.log('mergedData[doctype][id]', mergedData[doctype][id])
+        // const endLodashMerge = performance.now()
+        // lodashMergeCount += 1
+        // lodashMergeDuration += (endLodashMerge - beginLodashMerge)
+      }
+      // console.log('🏪 extractAndMergeDocument LodashMerge took', (endLodashMerge - beginLodashMerge), 'ms')
     } else {
+      // const beginRawData = performance.now()
       mergedData[doctype][id] = data
+      // const endRawData = performance.now()
+      // console.log('🏪 extractAndMergeDocument RawData took', (endRawData - beginRawData), 'ms')
     }
   })
+  //*/
+  // console.log(`🏪🌈 lodashMerge called ${lodashMergeCount} times for ${lodashMergeDuration}ms`)
+  // const endMapSorted = performance.now()
+  // console.log('🏪 extractAndMergeDocument MapSorted took', (endMapSorted - beginMapSorted), 'ms')
 
+  const end = performance.now()
+  console.log('🏪 extractAndMergeDocument took', (end - begin), 'ms')
   return mergedData
 }
