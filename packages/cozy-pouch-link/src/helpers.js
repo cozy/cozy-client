@@ -36,8 +36,10 @@ helpers.getDocs = async (db, fct, options = {}) => {
       options.skip = options.skip || 0
     }
   }
-
+  const begin = performance.now()
   const data = await db[fct](options)
+  const end = performance.now()
+  console.log('🛋️ db[fct](options) took', (end - begin), 'ms')
 
   if (data[field].length === options.limit) {
     options.skip = (options.skip ? options.skip : 0) + options.limit

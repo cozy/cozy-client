@@ -140,6 +140,7 @@ const query = (
   action,
   documents
 ) => {
+  // console.log('🏪 query', action.type)
   switch (action.type) {
     case INIT_QUERY:
       if (
@@ -172,12 +173,15 @@ const query = (
         fetchStatus: 'loading'
       }
     case RECEIVE_QUERY_RESULT: {
+      // const begin = performance.now()
       const markName = performanceApi.mark('RECEIVE_QUERY_RESULT')
       const response = action.response
       // Data can be null when we get a 404 not found
       // see Collection.get()
       // but we still need to update the fetchStatus.
       if (!response.data) {
+        // const end = performance.now()
+        // console.log('🏪 RECEIVE_QUERY_RESULT with no data took', (end - begin), 'ms')
         performanceApi.measure({
           markName: markName,
           measureName: `${markName} with no data`,
@@ -204,6 +208,8 @@ const query = (
       }
 
       if (!Array.isArray(response.data)) {
+        // const end = performance.now()
+        // console.log('🏪 RECEIVE_QUERY_RESULT with object took', (end - begin), 'ms')
         performanceApi.measure({
           markName: markName,
           measureName: `${markName} with object`,
@@ -227,6 +233,8 @@ const query = (
           measureName: `${markName} with background fetching`,
           category: 'CozyClientStore'
         })
+        // const end = performance.now()
+        // console.log('🏪 RECEIVE_QUERY_RESULT with background fetching took', (end - begin), 'ms')
         return {
           ...state,
           ...common,
@@ -243,6 +251,8 @@ const query = (
         fetchedPagesCount
       })
 
+      // const end = performance.now()
+      // console.log('🏪 RECEIVE_QUERY_RESULT default took', (end - begin), 'ms')
       performanceApi.measure({
         markName: markName,
         measureName: `${markName} default`,

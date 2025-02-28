@@ -90,7 +90,9 @@ export default class StackLink extends CozyLink {
   }
 
   async request(operation, options, result, forward) {
+    console.log('stack request')
     if (!options?.forceStack && this.isOnline && !(await this.isOnline())) {
+      console.log('forward')
       return forward(operation, options)
     }
 
@@ -108,6 +110,7 @@ export default class StackLink extends CozyLink {
   }
 
   async persistCozyData(data, forward) {
+    console.log('persistCozyData from StackLink')
     return forward(data)
   }
   /**

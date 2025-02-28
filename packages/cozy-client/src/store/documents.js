@@ -14,6 +14,7 @@ import { isReceivingMutationResult } from './mutations'
 import { properId } from './helpers'
 
 const storeDocument = (state, document) => {
+  console.log('🏪 storeDocument')
   const type = document._type
   if (!type) {
     if (process.env.NODE_ENV !== 'production') {
@@ -50,6 +51,7 @@ export const mergeDocumentsWithRelationships = (
   prevDocument = {},
   nextDocument = {}
 ) => {
+  console.log('🏪 mergeDocumentsWithRelationships')
   /**
    * @type {import("../types").CozyClientDocument}
    */
@@ -69,6 +71,8 @@ export const mergeDocumentsWithRelationships = (
 
 // reducer
 const documents = (state = {}, action) => {
+  // console.log('🏪 documents reducer')
+  // const begin = performance.now()
   if (!isReceivingData(action) && !isReceivingMutationResult(action)) {
     return state
   }
@@ -80,6 +84,9 @@ const documents = (state = {}, action) => {
   ) {
     const docId = action.definition.document._id
     const _type = action.definition.document._type
+
+    // const end = performance.now()
+    // console.log('🏪 documents reducer 1 took', (end - begin), 'ms')
     return {
       ...state,
       [_type]: omit(state[_type], docId)
@@ -87,14 +94,22 @@ const documents = (state = {}, action) => {
   }
 
   const { data, included } = action.response
-  if (!data || (Array.isArray(data) && data.length === 0)) return state
+  if (!data || (Array.isArray(data) && data.length === 0)) {
+    // const end = performance.now()
+    // console.log('🏪 documents reducer 2 took', (end - begin), 'ms')
+    return state
+  }
 
   const updatedStateWithIncluded = included
     ? included.reduce(storeDocument, state)
     : state
   if (!Array.isArray(data)) {
+    // const end = performance.now()
+    // console.log('🏪 documents reducer 3 took', (end - begin), 'ms')
     return storeDocument(updatedStateWithIncluded, data)
   }
+  // const end = performance.now()
+  // console.log('🏪 documents reducer 4 took', (end - begin), 'ms')
   return extractAndMergeDocument(data, updatedStateWithIncluded)
 }
 
@@ -102,6 +117,7 @@ export default documents
 
 // selector
 export const getDocumentFromSlice = (state = {}, doctype, id) => {
+  // console.log('🏪 getDocumentFromSlice')
   if (!doctype) {
     throw new Error(
       'getDocumentFromSlice: Cannot retrieve document with undefined doctype'
@@ -133,6 +149,7 @@ export const getDocumentFromSlice = (state = {}, doctype, id) => {
 }
 
 export const getCollectionFromSlice = (state = {}, doctype) => {
+  // console.log('🏪 getCollectionFromSlice')
   if (!doctype) {
     throw new Error(
       'getDocumentFromSlice: Cannot retrieve document with undefined doctype'

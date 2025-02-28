@@ -23,6 +23,7 @@ export default class WebFlagshipLink extends CozyLink {
   }
 
   async persistCozyData(data, forward) {
+    console.log('persistCozyData from WebFlagshipLink')
     // Persist data should do nothing here as data is already persisted on Flagship side
     return
   }

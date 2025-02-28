@@ -474,6 +474,7 @@ class CozyClient {
   }
 
   async _login(options) {
+    console.log('🟥 login 1')
     this.emit('beforeLogin')
 
     this.registerClientOnLinks()
@@ -487,11 +488,13 @@ class CozyClient {
       }
     }
 
+    console.log('🟥 login 2')
     for (const link of this.links) {
       if (link.onLogin) {
         await link.onLogin()
       }
     }
+    console.log('🟥 login 3')
 
     this.isLogged = true
     this.isRevoked = false
@@ -499,6 +502,7 @@ class CozyClient {
     if (this.stackClient instanceof OAuthClient) {
       await this.loadInstanceOptionsFromStack()
     }
+    console.log('🟥 login 4')
 
     this.emit('login')
   }
@@ -926,6 +930,8 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {Promise<import("./types").QueryResult>}
    */
   async query(queryDefinition, { update, executeFromStore, ...options } = {}) {
+    console.log('⏰query 1')
+    const beginPrepare = performance.now()
     const markQuery = this.performanceApi.mark(
       `client.query(${queryDefinition.doctype})`
     )
@@ -976,21 +982,28 @@ client.query(Q('io.cozy.bills'))`)
               executeQueryFromState(this.store.getState(), queryDefinition)
             )
         : () => this.requestQuery(queryDefinition, options)
+      const endPrepare = performance.now()
+      console.log('🍺 CozyClient query prepare took', (endPrepare - beginPrepare), 'ms')
+      const beginExec = performance.now()
       const response = await this._promiseCache.exec(requestFn, () =>
         stringify(queryDefinition)
       )
+      const endExec = performance.now()
+      console.log('🍺 CozyClient query exec took', (endExec - beginExec), 'ms')
 
-      this.dispatch(
-        receiveQueryResult(queryId, response, {
-          update,
-          backgroundFetching
-        })
-      )
-      this.performanceApi.measure({
-        markName: markQuery,
-        measureName: `${markQuery} success`,
-        color: 'primary'
+      const beginReceive = performance.now()
+      const queryReceivedResult = receiveQueryResult(queryId, response, {
+        update,
+        backgroundFetching
       })
+      const endReceive = performance.now()
+      console.log('🍺 CozyClient query receiveQueryResult took', (endReceive - beginReceive), 'ms')
+      const beginDispatch = performance.now()
+      this.dispatch(
+        queryReceivedResult
+      )
+      const endDispatch = performance.now()
+      console.log('🍺 CozyClient query Dispatch took', (endDispatch - beginDispatch), 'ms')
       return response
     } catch (error) {
       this.performanceApi.measure({
@@ -1025,10 +1038,14 @@ client.query(Q('io.cozy.bills'))`)
       options.as || this.queryIdGenerator.generateId(queryDefinition)
     const mergedOptions = { ...options, as: queryId }
     try {
+      const begin = performance.now()
       let resp = await this.query(queryDefinition, mergedOptions)
+      const end = performance.now()
+      console.log('🍺 first query took', (end - begin), 'ms')
       const documents = resp.data
 
       while (resp && resp.next) {
+        console.log('🍺 while')
         if (resp.bookmark) {
           resp = await this.query(
             queryDefinition.offsetBookmark(resp.bookmark),
@@ -1046,6 +1063,7 @@ client.query(Q('io.cozy.bills'))`)
         }
         documents.push(...resp.data)
       }
+      console.log('🍺 return docs')
       return documents
     } catch (e) {
       logger.log(`queryAll error for ${e.toString()}`)
@@ -1111,17 +1129,27 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {Promise<import("./types").ClientResponse>}
    */
   async requestQuery(definition, options) {
+    const begin = performance.now()
     const mainResponse = await this.chain.request(definition, options)
+    const end = performance.now()
+    console.log('🛋️ CozyClient chain.request took', (end - begin), 'ms')
 
+    const begin2 = performance.now()
     await this.persistVirtualDocuments(definition, mainResponse.data)
+    const end2 = performance.now()
+    console.log('🛋️ CozyClient persistVirtualDocuments took', (end2 - begin2), 'ms')
 
     if (!definition.includes) {
+      console.log('🛋️ CozyClient return no-includes')
       return mainResponse
     }
+    const begin3 = performance.now()
     const withIncluded = await this.fetchRelationships(
       mainResponse,
       this.getIncludesRelationships(definition)
     )
+    const end3 = performance.now()
+    console.log('🛋️ CozyClient fetchRelationships took', (end3 - begin3), 'ms')
     return withIncluded
   }
 
@@ -1188,6 +1216,7 @@ client.query(Q('io.cozy.bills'))`)
     }
 
     if ((!document.meta?.rev && !document._rev) || enforce) {
+      console.log('🚨🚨🚨🚨 PERSIST')
       await this.chain.persistCozyData(document)
     }
   }
@@ -1814,12 +1843,20 @@ instantiation of the client.`
    * @returns {Promise<void>}
    */
   async loadInstanceOptionsFromStack() {
+    console.log('🔰 loadInstanceOptionsFromStack 1')
     const results = await Promise.all([
       this.query(
         Q('io.cozy.settings').getById('io.cozy.settings.capabilities')
-      ),
-      this.query(Q('io.cozy.settings').getById('io.cozy.settings.instance'))
+      ).catch(error => {
+        console.log(error)
+        throw error
+      }),
+      this.query(Q('io.cozy.settings').getById('io.cozy.settings.instance')).catch(error => {
+        console.log(error)
+        throw error
+      })
     ])
+    console.log('🔰 loadInstanceOptionsFromStack 2')
 
     const { data: capabilitiesData } = results[0]
     const { data: instanceData } = results[1]

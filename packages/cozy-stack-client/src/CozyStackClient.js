@@ -157,9 +157,13 @@ class CozyStackClient {
       : fetch
 
     try {
+      console.log('🧡 fetcher1')
       const response = await fetcher(fullPath, options)
+      console.log('🧡 fetcher2')
       if (!response.ok) {
+        console.log('🧡 fetcher3')
         const reason = await getResponseData(response)
+        console.log('🧡 fetcher4')
         const err = new FetchError(response, reason)
 
         // XXX: This was introduced so apps could display errors (e.g. quota
@@ -176,8 +180,10 @@ class CozyStackClient {
         // We could then get rid of `throwFetchErrors`.
         if (throwFetchErrors) throw err
       }
+      console.log('🧡 fetcher5')
       return response
     } catch (err) {
+      console.log('🧡 fetcher err')
       if (this.isRevocationError(err)) {
         this.onRevocationChange(true)
       }
@@ -253,7 +259,10 @@ class CozyStackClient {
    */
   async fetchJSON(method, path, body, options = {}) {
     try {
-      return await this.fetchJSONWithCurrentToken(method, path, body, options)
+      console.log('fetchJSON 1', path)
+      const result = await this.fetchJSONWithCurrentToken(method, path, body, options)
+      console.log('fetchJSON 2', path)
+      return result
     } catch (e) {
       if (
         errors.EXPIRED_TOKEN.test(e.message) ||
@@ -290,7 +299,9 @@ class CozyStackClient {
       }
     }
     clonedOptions.throwFetchErrors = true
+    console.log('🔵 fetchJSONWithCurrentToken1' + path)
     const resp = await this.fetch(method, path, body, clonedOptions)
+    console.log('🔵 fetchJSONWithCurrentToken2')
     return getResponseData(resp)
   }
 

@@ -10,6 +10,7 @@
  * @returns
  */
 export const equalityCheckForQuery = (queryResA, queryResB) => {
+  // console.log('🌈 Equality check for query')
   //console.log('Call equality check : ', queryResA, queryResB)
   if (queryResA === queryResB) {
     // Referential equality

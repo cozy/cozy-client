@@ -54,13 +54,18 @@ class SettingsCollection extends DocumentCollection {
       path = id
     }
 
+    console.log('🤖 fetchJSON get Settings' + path)
     const resp = await this.stackClient.fetchJSON('GET', `/settings/${path}`)
-    return {
+    console.log('🤖 fetchJSON get Settings2' + path)
+    const result =  {
       data: normalizeSettings({
         id: `/settings/${path}`,
         ...resp.data
       })
     }
+
+    console.log('🤖 fetchJSON get Settings3' + path)
+    return result
   }
 
   /**

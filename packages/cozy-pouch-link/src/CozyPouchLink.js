@@ -279,6 +279,7 @@ class PouchLink extends CozyLink {
    * Emits an event (pouchlink:sync:end) when the sync (all doctypes) is done
    */
   handleOnSync(doctypeUpdates) {
+    console.log('onSync', doctypeUpdates)
     // FIXME
     const normalizedData = mapValues(doctypeUpdates, normalizeAll(this.client))
     if (this.client) {
@@ -307,6 +308,7 @@ class PouchLink extends CozyLink {
    * @private
    */
   _startReplication({ waitForReplications = true } = {}) {
+    console.log('StartReplication')
     this.client.emit('pouchlink:sync:start')
     if (this.periodicSync) {
       // FIXME: this API is kind of weird, one should be able to manually replicate
@@ -420,6 +422,7 @@ class PouchLink extends CozyLink {
   }
 
   async request(operation, options, result = null, forward = doNothing) {
+    const begin = performance.now()
     if (options?.forceStack) {
       return forward(operation, options)
     }
@@ -464,10 +467,17 @@ class PouchLink extends CozyLink {
       return forward(operation, options)
     }
 
+    const end = performance.now()
+    console.log('🍺 Pouch.request preparation took', (end - begin), 'ms')
     if (operation.mutationType) {
       return this.executeMutation(operation, options, result, forward)
     } else {
-      return this.executeQuery(operation)
+
+      const beginR = performance.now()
+      const result = await this.executeQuery(operation)
+      const endR = performance.now()
+      console.log('🍺 Pouch.request executeQuery took', (endR - beginR), 'ms')
+      return result
     }
   }
 
@@ -530,6 +540,7 @@ class PouchLink extends CozyLink {
   }
 
   async persistCozyData(data, forward = doNothing) {
+    console.log('persistCozyData from CozyPouchLink')
     const markName = this.performanceApi.mark('persistCozyData')
     const sanitizedDoc = this.sanitizeJsonApi(data)
     sanitizedDoc.cozyLocalOnly = true
@@ -699,7 +710,10 @@ class PouchLink extends CozyLink {
     partialFilter
   }) {
     const markName = this.performanceApi.mark('executeQuery')
+    const beginPrepare = performance.now()
     const db = this.getPouch(doctype)
+    const endPrepare = performance.now()
+    console.log('🛋️ executeQuery getPouch took', (endPrepare - beginPrepare), 'ms')
     let res, withRows
     if (id) {
       const markName = this.performanceApi.mark('db.get from executeQuery')
@@ -710,6 +724,7 @@ class PouchLink extends CozyLink {
       const markName = this.performanceApi.mark(
         'allDocs from executeQuery with ids'
       )
+      console.log('🛋️ allDocs1')
       res = await allDocs(db, { include_docs: true, keys: ids })
       this.performanceApi.measure({ markName, category: 'PouchDB' })
       res = withoutDesignDocuments(res)
@@ -717,10 +732,17 @@ class PouchLink extends CozyLink {
       withRows = true
     } else if (!selector && !partialFilter && !fields && !sort) {
       const markName = this.performanceApi.mark('allDocs from executeQuery')
+      const begin = performance.now()
       res = await allDocs(db, { include_docs: true, limit })
+      const end = performance.now()
+      console.log('🛋️ executeQuery allDocs2 took', (end - begin), 'ms (include db[fct]')
       this.performanceApi.measure({ markName, category: 'PouchDB' })
+
+      const begin3 = performance.now()
       res = withoutDesignDocuments(res)
       withRows = true
+      const end3 = performance.now()
+      console.log('🛋️ executeQuery withoutDesignDocuments took', (end3 - begin3), 'ms')
     } else {
       const findSelector = helpers.normalizeFindSelector({
         selector,
@@ -745,18 +767,23 @@ class PouchLink extends CozyLink {
       })
       findOpts.use_index = index.id
       const markName = this.performanceApi.mark('find from executeQuery')
+      console.log('🛋️ find')
       res = await find(db, findOpts)
       this.performanceApi.measure({ markName, category: 'PouchDB' })
       res.offset = skip
       res.limit = limit
       withRows = true
     }
+
+    const begin2 = performance.now()
     const jsonResult = jsonapi.fromPouchResult({
       res,
       withRows,
       doctype,
       client: this.client
     })
+    const end2 = performance.now()
+    console.log('🛋️ executeQuery jsonapi.fromPouchResult took', (end2 - begin2), 'ms')
 
     this.performanceApi.measure({
       markName: markName,
