@@ -279,6 +279,7 @@ class PouchLink extends CozyLink {
    * Emits an event (pouchlink:sync:end) when the sync (all doctypes) is done
    */
   handleOnSync(doctypeUpdates) {
+    // FIXME
     const normalizedData = mapValues(doctypeUpdates, normalizeAll(this.client))
     if (this.client) {
       this.client.setData(normalizedData)

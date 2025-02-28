@@ -1,32 +1,40 @@
 import { generateWebLink } from 'cozy-client'
 
+const normalizeDocs = (docs, doctype, client) => {
+  for (let i = docs.length; i >= 0; i--) {
+    const doc = docs[i]
+    if (!doc) {
+      docs.splice(i, 1)
+      continue
+    }
+    normalizeDoc(doc, doctype, client)
+  }
+}
+
 export const normalizeDoc = (doc, doctype, client) => {
   const id = doc._id || doc.id
-
-  const { relationships, referenced_by } = doc
-
-  // PouchDB sends back .rev attribute but we do not want to
-  // keep it on the server. It is potentially higher than the
-  // _rev.
   const _rev = doc.rev || doc._rev
-  const normalizedDoc = {
-    ...doc,
-    id,
-    _id: id,
-    _rev,
-    _type: doctype,
-    relationships: {
-      ...relationships,
-      referenced_by
+  doc.id = id
+  doc._id = id
+  doc._rev = _rev
+  doc._type = doctype
+
+  if (doc.relationships) {
+    doc.relationships.referenced_by = doc.referenced_by
+  } else {
+    doc.relationships = {
+      referenced_by: doc.referenced_by
     }
   }
-  if (normalizedDoc.rev) {
-    delete normalizedDoc.rev
+  if (doc.rev) {
+    delete doc.rev
   }
 
-  normalizeAppsLinks(normalizedDoc, doctype, client)
+  if (doctype === 'io.cozy.apps') {
+    normalizeAppsLinks(doc, doctype, client)
+  }
 
-  return normalizedDoc
+  return doc
 }
 
 const normalizeAppsLinks = (docRef, doctype, client) => {
@@ -50,8 +58,6 @@ const normalizeAppsLinks = (docRef, doctype, client) => {
   }
 }
 
-const filterDeletedDocumentsFromRows = doc => !!doc
-
 export const fromPouchResult = ({ res, withRows, doctype, client }) => {
   // Sometimes, queries are transformed by Collections and they call a dedicated
   // cozy-stack route. When this is the case, we want to be able to replicate the same
@@ -68,21 +74,23 @@ export const fromPouchResult = ({ res, withRows, doctype, client }) => {
   }
 
   if (withRows) {
-    const docs = res.rows
-      ? res.rows.map(row => row.doc).filter(filterDeletedDocumentsFromRows)
-      : res.docs
+    const docs = res.rows ? res.rows.map(row => row.doc) : res.docs
     const offset = res.offset || 0
+    normalizeDocs(docs, doctype)
 
-    return {
-      data: docs.map(doc => normalizeDoc(doc, doctype, client)),
+    const result = {
+      data: docs,
       meta: { count: docs.length },
       skip: offset,
       next: offset + docs.length < res.total_rows || docs.length >= res.limit
     }
+    return result
   } else {
     return {
       data: Array.isArray(res)
+        // FIXME
         ? res.map(doc => normalizeDoc(doc, doctype, client))
+        // FIXME
         : normalizeDoc(res, doctype, client)
     }
   }
