@@ -1,4 +1,5 @@
-export function normalizeDoc(doc: any, doctype: any, client: any): any;
+export function normalizeDocs(client: any, doctype: any, docs: any): void;
+export function normalizeDoc(client: any, doctype: any, doc: any): any;
 export function fromPouchResult({ res, withRows, doctype, client }: {
     res: any;
     withRows: any;
@@ -6,14 +7,11 @@ export function fromPouchResult({ res, withRows, doctype, client }: {
     client: any;
 }): {
     data: any;
-    meta?: undefined;
-    skip?: undefined;
-    next?: undefined;
-} | {
-    data: any;
     meta: {
         count: any;
     };
     skip: any;
     next: boolean;
+} | {
+    data: any;
 };
