@@ -1,8 +1,8 @@
 import get from 'lodash/get'
 import omit from 'lodash/omit'
-import merge from 'lodash/merge'
-import logger from '../logger'
 import fastEqual from 'fast-deep-equal'
+import deepmerge from '@fastify/deepmerge'
+import logger from '../logger'
 import { isReceivingData } from './queries'
 import { MutationTypes } from '../queries/dsl'
 import { isReceivingMutationResult } from './mutations'
@@ -221,6 +221,7 @@ export const extractAndMergeDocument = (newData, updatedStateWithIncluded) => {
   }
 
   let haveDocumentsChanged = false
+  const deeppmerge = deepmerge()
 
   newDocsMap.forEach((newDoc, key) => {
     const id = key
@@ -235,7 +236,8 @@ export const extractAndMergeDocument = (newData, updatedStateWithIncluded) => {
       //  - some documents might change without a rev change: typically the thumbnails links
       //    in io.cozy.files, and the io.cozy.settings.instance doc, with additional
       //    fields added by the stack
-      mergedState[doctype][id] = merge({}, mergedState[doctype][id], newDoc)
+      //  - some documents don't have any revision
+      mergedState[doctype][id] = deeppmerge(mergedState[doctype][id], newDoc)
       haveDocumentsChanged = true
     }
   })
