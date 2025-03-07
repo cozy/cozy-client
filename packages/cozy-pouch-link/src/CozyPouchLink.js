@@ -9,7 +9,6 @@ import PouchDB from 'pouchdb-browser'
 import PouchDBFind from 'pouchdb-find'
 import omit from 'lodash/omit'
 import defaults from 'lodash/defaults'
-import mapValues from 'lodash/mapValues'
 import zipWith from 'lodash/zipWith'
 import debounce from 'lodash/debounce'
 
@@ -23,6 +22,7 @@ import { migratePouch } from './migrations/adapter'
 import { platformWeb } from './platformWeb'
 import { getDatabaseName, getPrefix } from './utils'
 import { isExpiredTokenError } from './errors'
+import { normalizeDocs } from './jsonapi'
 
 PouchDB.plugin(PouchDBFind)
 
@@ -55,10 +55,6 @@ export const getReplicationURL = (uri, token, doctype) => {
 }
 
 const doNothing = (operation, result = null) => {}
-
-const normalizeAll = client => (docs, doctype) => {
-  return docs.map(doc => jsonapi.normalizeDoc(doc, doctype, client))
-}
 
 /**
  * @typedef {import('cozy-client/src/types').CozyClientDocument} CozyClientDocument
@@ -279,12 +275,20 @@ class PouchLink extends CozyLink {
    * Emits an event (pouchlink:sync:end) when the sync (all doctypes) is done
    */
   handleOnSync(doctypeUpdates) {
-    const normalizedData = mapValues(doctypeUpdates, normalizeAll(this.client))
+    const doctypes = doctypeUpdates && Object.keys(doctypeUpdates)
+    if (doctypes) {
+      doctypes.forEach(doctype => {
+        if (doctype) {
+          normalizeDocs(this.client, doctype, doctypeUpdates[doctype])
+        }
+      })
+    }
+
     if (this.client) {
-      this.client.setData(normalizedData)
+      this.client.setData(doctypeUpdates)
     }
     if (this.options.onSync) {
-      this.options.onSync.call(this, normalizedData)
+      this.options.onSync.call(this, doctypeUpdates)
     }
     if (process.env.NODE_ENV !== 'production') {
       logger.info('Pouch synced')
