@@ -59,4 +59,4 @@ export function makeExpirationDescription(expirationDate: string, { lang }: {
 }): string;
 export function isForeignPaper(file: IOCozyFile): boolean;
 export type IOCozyFile = import("../types").CozyClientDocument & import("../types").FileDocument;
-export type MetadataQualificationType = "other" | "date" | "contact" | "information" | "bills";
+export type MetadataQualificationType = "date" | "contact" | "information" | "other" | "bills";

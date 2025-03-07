@@ -1,6 +1,6 @@
 declare var _default: {};
 export default _default;
-export type MeasureColor = "error" | "primary" | "primary-light" | "primary-dark" | "secondary" | "secondary-light" | "secondary-dark" | "tertiary" | "tertiary-light" | "tertiary-dark";
+export type MeasureColor = "primary" | "primary-light" | "primary-dark" | "secondary" | "secondary-light" | "secondary-dark" | "tertiary" | "tertiary-light" | "tertiary-dark" | "error";
 export type MeasureOptions = {
     /**
      * - Mark name used as the start point for performance measurement
