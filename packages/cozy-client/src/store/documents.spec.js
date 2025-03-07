@@ -4,8 +4,8 @@ import {
 } from './documents'
 
 describe('extractAndMerge', () => {
-  const data = {
-    0: {
+  const data = [
+    {
       id: 'b6ff135b34e041ffb2d4a4865f3e0a53',
       _id: 'b6ff135b34e041ffb2d4a4865f3e0a53',
       type: 'io.cozy.files',
@@ -18,14 +18,14 @@ describe('extractAndMerge', () => {
         }
       }
     },
-    1: {
+    {
       id: 'b6ff135b34e041ffb2d4a4865f3e235f',
       type: 'io.cozy.files',
       _type: 'io.cozy.files',
       _id: 'b6ff135b34e041ffb2d4a4865f3e235f',
       blibli: 'another new field'
     }
-  }
+  ]
   const updatedStateWithIncluded = {
     'io.cozy.files': {
       b6ff135b34e041ffb2d4a4865f3e0a53: {
@@ -171,20 +171,20 @@ describe('extractAndMerge', () => {
       'even if the mergedData is the same, because reselect createSelector update ' +
       'according to object reference, not only value',
     () => {
-      const dataAlreadyIncludedInUpdatedStateWithIncluded = {
-        0: {
+      const dataAlreadyIncludedInUpdatedStateWithIncluded = [
+        {
           id: 'b6ff135b34e041ffb2d4a4865f3e0a53',
           _id: 'b6ff135b34e041ffb2d4a4865f3e0a53',
           type: 'io.cozy.files',
           _type: 'io.cozy.files'
         },
-        1: {
+        {
           id: 'b6ff135b34e041ffb2d4a4865f3e235f',
           type: 'io.cozy.files',
           _type: 'io.cozy.files',
           _id: 'b6ff135b34e041ffb2d4a4865f3e235f'
         }
-      }
+      ]
 
       const returnedDatas = extractAndMergeDocument(
         dataAlreadyIncludedInUpdatedStateWithIncluded,

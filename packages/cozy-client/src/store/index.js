@@ -88,6 +88,7 @@ const combinedReducer = performanceApi => (state = initialState, action) => {
     return newState
   }
 
+  const storeEvalStart = performance.now()
   const nextDocuments = documents(state.documents, action)
   const haveDocumentsChanged = nextDocuments !== state.documents
 
@@ -101,6 +102,8 @@ const combinedReducer = performanceApi => (state = initialState, action) => {
       haveDocumentsChanged
     )
   }
+  const storeEvalEnd = performance.now()
+  console.log(`Store evaluation took ${storeEvalEnd - storeEvalStart}`)
 
   performanceApi.measure({
     markName: markName,
