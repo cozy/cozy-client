@@ -34,46 +34,17 @@ const client = new CozyClient({ token, uri })
 client.capabilities = { flat_subdomains: true }
 
 describe('doc normalization', () => {
-  it('keeps the highest between rev and _rev and removes the rev attribute', () => {
-    const normalized = normalizeDoc(
-      {
-        _id: 1234,
-        _rev: '3-deadbeef',
-        rev: '4-cffee',
-        firstName: 'Bobba',
-        lastName: 'Fett'
-      },
-      'io.cozy.contacts'
-    )
-    expect(normalized).toEqual({
-      _id: 1234,
-      id: 1234,
-      _rev: '4-cffee',
-      _type: 'io.cozy.contacts',
-      firstName: 'Bobba',
-      lastName: 'Fett',
-      relationships: {
-        referenced_by: undefined
-      }
-    })
-  })
-
   it('should normalize apps links', () => {
-    const normalized = normalizeDoc(
-      {
-        _id: 1234,
-        _rev: '3-deadbeef',
-        rev: '4-cffee',
-        slug: 'contact',
-        version: '1.2.0'
-      },
-      'io.cozy.apps',
-      client
-    )
+    const normalized = normalizeDoc(client, 'io.cozy.apps', {
+      _id: 1234,
+      _rev: '3-deadbeef',
+      slug: 'contact',
+      version: '1.2.0'
+    })
     expect(normalized).toEqual({
       _id: 1234,
       id: 1234,
-      _rev: '4-cffee',
+      _rev: '3-deadbeef',
       _type: 'io.cozy.apps',
       slug: 'contact',
       version: '1.2.0',
