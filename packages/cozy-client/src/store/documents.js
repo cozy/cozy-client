@@ -1,13 +1,15 @@
 import get from 'lodash/get'
 import omit from 'lodash/omit'
-import merge from 'lodash/merge'
-import logger from '../logger'
 import fastEqual from 'fast-deep-equal'
+import deepmerge from '@fastify/deepmerge'
+import logger from '../logger'
 import { isReceivingData } from './queries'
 import { MutationTypes } from '../queries/dsl'
 import { isReceivingMutationResult } from './mutations'
 
 import { properId } from './helpers'
+
+const deepmergeFn = deepmerge()
 
 const storeDocument = (state, document) => {
   const type = document._type
@@ -235,7 +237,8 @@ export const extractAndMergeDocument = (newData, updatedStateWithIncluded) => {
       //  - some documents might change without a rev change: typically the thumbnails links
       //    in io.cozy.files, and the io.cozy.settings.instance doc, with additional
       //    fields added by the stack
-      mergedState[doctype][id] = merge({}, mergedState[doctype][id], newDoc)
+      //  - some documents don't have any revision
+      mergedState[doctype][id] = deepmergeFn(mergedState[doctype][id], newDoc)
       haveDocumentsChanged = true
     }
   })
