@@ -6,6 +6,7 @@ import logger from '../logger'
 import { clientContext } from '../context'
 import { QueryDefinition } from '../queries/dsl'
 
+// @ts-ignore We use our own store in with Redux
 const useSelector = createSelectorHook(clientContext)
 
 const resolveToValue = fnOrValue => {
