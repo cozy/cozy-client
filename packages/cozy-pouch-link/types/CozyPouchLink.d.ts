@@ -272,16 +272,13 @@ declare class PouchLink extends CozyLink {
         partialFilter: any;
     }): Promise<{
         data: any;
-        meta?: undefined;
-        skip?: undefined;
-        next?: undefined;
-    } | {
-        data: any;
         meta: {
             count: any;
         };
         skip: any;
         next: boolean;
+    } | {
+        data: any;
     }>;
     executeMutation(mutation: any, options: any, result: any, forward: any): Promise<any>;
     createDocument(mutation: any): Promise<any>;
