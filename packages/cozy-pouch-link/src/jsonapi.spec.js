@@ -35,13 +35,14 @@ client.capabilities = { flat_subdomains: true }
 
 describe('doc normalization', () => {
   it('should normalize apps links', () => {
-    const normalized = normalizeDoc(client, 'io.cozy.apps', {
+    const doc = {
       _id: 1234,
       _rev: '3-deadbeef',
       slug: 'contact',
       version: '1.2.0'
-    })
-    expect(normalized).toEqual({
+    }
+    normalizeDoc(client, 'io.cozy.apps', doc)
+    expect(doc).toEqual({
       _id: 1234,
       id: 1234,
       _rev: '3-deadbeef',
@@ -61,7 +62,14 @@ describe('doc normalization', () => {
 })
 
 describe('jsonapi', () => {
-  it('should return a response understandable by cozy-client', () => {
+  const expectedDocResp = (normalizedDoc, expectedName, expectedId) => {
+    expect(normalizedDoc.name).toBe(expectedName)
+    expect(normalizedDoc.id).toBe(expectedId)
+    expect(normalizedDoc._id).toBe(expectedId)
+    expect(normalizedDoc._type).toBe('io.cozy.simpsons')
+  }
+
+  it('should correctly normalize if there are rows in the response', () => {
     const res = {
       rows: [BART_FIXTURE, LISA_FIXTURE, MARGE_FIXTURE, DELETED_DOC_FIXTURE]
     }
@@ -71,18 +79,36 @@ describe('jsonapi', () => {
       doctype: 'io.cozy.simpsons',
       client
     })
-    expect(normalized.data[0].name).toBe('Bart')
-    expect(normalized.data[0].id).toBe(1)
-    expect(normalized.data[0]._id).toBe(1)
-    expect(normalized.data[0]._type).toBe('io.cozy.simpsons')
 
-    expect(normalized.data[1].name).toBe('Lisa')
-    expect(normalized.data[1].id).toBe(2)
-    expect(normalized.data[1]._id).toBe(2)
+    expectedDocResp(normalized.data[0], 'Bart', 1)
+    expectedDocResp(normalized.data[1], 'Lisa', 2)
+    expectedDocResp(normalized.data[2], 'Marge', 3)
+  })
 
-    expect(normalized.data[2].name).toBe('Marge')
-    expect(normalized.data[2].id).toBe(3)
-    expect(normalized.data[2]._id).toBe(3)
+  it('should correctly normalize if the response is a data array', () => {
+    const res = [BART_FIXTURE.doc, LISA_FIXTURE.doc, MARGE_FIXTURE.doc]
+    const normalized = fromPouchResult({
+      res,
+      withRows: false,
+      doctype: 'io.cozy.simpsons',
+      client
+    })
+
+    expectedDocResp(normalized.data[0], 'Bart', 1)
+    expectedDocResp(normalized.data[1], 'Lisa', 2)
+    expectedDocResp(normalized.data[2], 'Marge', 3)
+  })
+
+  it('should correctly normalize if the response is a data object', () => {
+    const res = BART_FIXTURE.doc
+    const normalized = fromPouchResult({
+      res,
+      withRows: false,
+      doctype: 'io.cozy.simpsons',
+      client
+    })
+
+    expectedDocResp(normalized.data, 'Bart', 1)
   })
 
   describe('pagination', () => {
