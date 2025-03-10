@@ -6,9 +6,7 @@ import {
 describe('extractAndMerge', () => {
   const data = [
     {
-      id: 'b6ff135b34e041ffb2d4a4865f3e0a53',
       _id: 'b6ff135b34e041ffb2d4a4865f3e0a53',
-      type: 'io.cozy.files',
       _type: 'io.cozy.files',
       blabla: 'new field',
       cozyMetadata: {
@@ -19,23 +17,19 @@ describe('extractAndMerge', () => {
       }
     },
     {
-      id: 'b6ff135b34e041ffb2d4a4865f3e235f',
-      type: 'io.cozy.files',
-      _type: 'io.cozy.files',
       _id: 'b6ff135b34e041ffb2d4a4865f3e235f',
+      _type: 'io.cozy.files',
       blibli: 'another new field'
     }
   ]
   const updatedStateWithIncluded = {
     'io.cozy.files': {
       b6ff135b34e041ffb2d4a4865f3e0a53: {
-        attributes: {
-          type: 'file',
-          name: 'IMG_0016.PNG',
-          dir_id: '7d2f9c24cd345ce3171bf71f401e80c6'
-        },
-        id: 'b6ff135b34e041ffb2d4a4865f3e0a53',
         _id: 'b6ff135b34e041ffb2d4a4865f3e0a53',
+        _type: 'io.cozy.files',
+        name: 'IMG_0016.PNG',
+        type: 'file',
+        dir_id: '7d2f9c24cd345ce3171bf71f401e80c6',
         links: { self: '/files/b6ff135b34e041ffb2d4a4865f3e0a53' },
         meta: { rev: '5-87840eceaab358e38aa8b6bb0d4577b1' },
         relationships: {
@@ -43,8 +37,6 @@ describe('extractAndMerge', () => {
             links: { related: '/files/7d2f9c24cd345ce3171bf71f401e80c6' }
           }
         },
-        type: 'io.cozy.files',
-        _type: 'io.cozy.files',
         cozyMetadata: {
           updated_at: '987654',
           updatedByApps: {
@@ -53,22 +45,18 @@ describe('extractAndMerge', () => {
         }
       },
       b6ff135b34e041ffb2d4a4865f3e235f: {
-        attributes: {
-          type: 'file',
-          name: 'IMG_0054.PNG',
-          dir_id: '7d2f9c24cd345ce3171bf71f401e80c6'
-        },
-        id: 'b6ff135b34e041ffb2d4a4865f3e235f',
         _id: 'b6ff135b34e041ffb2d4a4865f3e235f',
+        _type: 'io.cozy.files',
+        type: 'file',
+        name: 'IMG_0054.PNG',
+        dir_id: '7d2f9c24cd345ce3171bf71f401e80c6',
         links: { self: '/files/b6ff135b34e041ffb2d4a4865f3e235f' },
         meta: { rev: '5-ca91c0dc02dafb38eb56070c1d80d62c' },
         relationships: {
           parent: {
             links: { related: '/files/7d2f9c24cd345ce3171bf71f401e80c6' }
           }
-        },
-        type: 'io.cozy.files',
-        _type: 'io.cozy.files'
+        }
       }
     }
   }
@@ -84,11 +72,9 @@ describe('extractAndMerge', () => {
         b6ff135b34e041ffb2d4a4865f3e0a53: {
           _id: 'b6ff135b34e041ffb2d4a4865f3e0a53',
           _type: 'io.cozy.files',
-          attributes: {
-            dir_id: '7d2f9c24cd345ce3171bf71f401e80c6',
-            name: 'IMG_0016.PNG',
-            type: 'file'
-          },
+          dir_id: '7d2f9c24cd345ce3171bf71f401e80c6',
+          name: 'IMG_0016.PNG',
+          type: 'file',
           blabla: 'new field',
           cozyMetadata: {
             created_at: '123456',
@@ -98,34 +84,28 @@ describe('extractAndMerge', () => {
               date: '2019-06-11T01:02:03Z'
             }
           },
-          id: 'b6ff135b34e041ffb2d4a4865f3e0a53',
           links: { self: '/files/b6ff135b34e041ffb2d4a4865f3e0a53' },
           meta: { rev: '5-87840eceaab358e38aa8b6bb0d4577b1' },
           relationships: {
             parent: {
               links: { related: '/files/7d2f9c24cd345ce3171bf71f401e80c6' }
             }
-          },
-          type: 'io.cozy.files'
+          }
         },
         b6ff135b34e041ffb2d4a4865f3e235f: {
           _id: 'b6ff135b34e041ffb2d4a4865f3e235f',
           _type: 'io.cozy.files',
-          attributes: {
-            dir_id: '7d2f9c24cd345ce3171bf71f401e80c6',
-            name: 'IMG_0054.PNG',
-            type: 'file'
-          },
+          dir_id: '7d2f9c24cd345ce3171bf71f401e80c6',
+          name: 'IMG_0054.PNG',
+          type: 'file',
           blibli: 'another new field',
-          id: 'b6ff135b34e041ffb2d4a4865f3e235f',
           links: { self: '/files/b6ff135b34e041ffb2d4a4865f3e235f' },
           meta: { rev: '5-ca91c0dc02dafb38eb56070c1d80d62c' },
           relationships: {
             parent: {
               links: { related: '/files/7d2f9c24cd345ce3171bf71f401e80c6' }
             }
-          },
-          type: 'io.cozy.files'
+          }
         }
       }
     }
@@ -173,16 +153,12 @@ describe('extractAndMerge', () => {
     () => {
       const dataAlreadyIncludedInUpdatedStateWithIncluded = [
         {
-          id: 'b6ff135b34e041ffb2d4a4865f3e0a53',
           _id: 'b6ff135b34e041ffb2d4a4865f3e0a53',
-          type: 'io.cozy.files',
           _type: 'io.cozy.files'
         },
         {
-          id: 'b6ff135b34e041ffb2d4a4865f3e235f',
-          type: 'io.cozy.files',
-          _type: 'io.cozy.files',
-          _id: 'b6ff135b34e041ffb2d4a4865f3e235f'
+          _id: 'b6ff135b34e041ffb2d4a4865f3e235f',
+          _type: 'io.cozy.files'
         }
       ]
 
@@ -202,6 +178,44 @@ describe('extractAndMerge', () => {
       )
     }
   )
+  it('should keep state reference in case no document has changed', () => {
+    const newDoc = { ...data[0] }
+
+    const mergedState = extractAndMergeDocument(
+      [newDoc],
+      updatedStateWithIncluded
+    )
+    expect(mergedState === updatedStateWithIncluded)
+  })
+
+  it('should have different state reference if a new document is added', () => {
+    const newDoc = {
+      _id: '1234',
+      _type: 'io.cozy.files',
+      name: 'New doc'
+    }
+    const mergedState = extractAndMergeDocument(
+      [newDoc],
+      updatedStateWithIncluded
+    )
+    expect(mergedState !== updatedStateWithIncluded)
+  })
+
+  it('should have different state reference if an existing document have changed', () => {
+    const newDoc = {
+      ...data[0],
+      cozyMetadata: {
+        ...data[0].cozyMetadata,
+        updatedByApps: '2025-01-01'
+      }
+    }
+
+    const mergedState = extractAndMergeDocument(
+      [newDoc],
+      updatedStateWithIncluded
+    )
+    expect(mergedState !== updatedStateWithIncluded)
+  })
 })
 
 describe('mergeDocumentsWithRelationships', () => {
