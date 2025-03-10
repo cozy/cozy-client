@@ -52,6 +52,7 @@ import stringify from 'json-stable-stringify'
 import PromiseCache from './promise-cache'
 
 import { certifyFlagship } from './flagship-certification/flagship-certification'
+import { persistVirtualDocuments } from './storage'
 
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
 
@@ -1112,7 +1113,7 @@ client.query(Q('io.cozy.bills'))`)
   async requestQuery(definition, options) {
     const mainResponse = await this.chain.request(definition, options)
 
-    await this.persistVirtualDocuments(definition, mainResponse.data)
+    await persistVirtualDocuments(this, definition, mainResponse.data)
 
     if (!definition.includes) {
       return mainResponse
@@ -1122,62 +1123,6 @@ client.query(Q('io.cozy.bills'))`)
       this.getIncludesRelationships(definition)
     )
     return withIncluded
-  }
-
-  /**
-   * Save the document or array of documents into the persisted storage (if any)
-   *
-   * @private
-   * @param {CozyClientDocument | Array<CozyClientDocument>} data - Document or array of documents to be saved
-   * @returns {Promise<void>}
-   */
-  async persistVirtualDocuments(definition, data) {
-    const enforceList = ['io.cozy.files.shortcuts']
-
-    const enforce = enforceList.includes(definition.doctype)
-
-    if (definition.doctype === 'io.cozy.apps_registry') {
-      // io.cozy.apps_registry has a dedicated `maintenance` endpoint on cozy-stack that
-      // returns data different than the one stored in database
-      // As we want to have transparent queries, whether it uses the stack API or Pouch,
-      // we store the full response into a single doc, with a `maintenance` _id
-      // and a special `cozyPouchData` attribute, to highlight this special case
-      return await this.persistVirtualDocument(
-        {
-          _type: 'io.cozy.apps_registry',
-          _id: definition.id,
-          // @ts-ignore
-          cozyPouchData: data
-        },
-        enforce
-      )
-    }
-
-    if (!Array.isArray(data)) {
-      await this.persistVirtualDocument(data, enforce)
-    } else {
-      for (const document of data) {
-        await this.persistVirtualDocument(document, enforce)
-      }
-    }
-  }
-
-  /**
-   * Save the document or array of documents into the persisted storage (if any)
-   *
-   * @private
-   * @param {CozyClientDocument} document - Document to be saved
-   * @param {boolean} enforce - When true, save the document even if `meta.rev` or `_rev` exist
-   * @returns {Promise<void>}
-   */
-  async persistVirtualDocument(document, enforce) {
-    if (!document || document.cozyLocalOnly) {
-      return
-    }
-
-    if ((!document.meta?.rev && !document._rev) || enforce) {
-      await this.chain.persistCozyData(document)
-    }
   }
 
   /**
