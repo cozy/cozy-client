@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [57.3.0](https://github.com/cozy/cozy-client/compare/v57.2.0...v57.3.0) (2025-03-11)
+
+
+### Bug Fixes
+
+* Correctly handle document's store updates ([96cef80](https://github.com/cozy/cozy-client/commit/96cef8017d8a974c993720a2bfefb350771d5e2a))
+
+
+### Features
+
+* Improve merge performances ([6573f3b](https://github.com/cozy/cozy-client/commit/6573f3bde50d312b71c73cdd02c8ae4d52cbda6b))
+
+
+
+
+
 # [57.2.0](https://github.com/cozy/cozy-client/compare/v57.1.0...v57.2.0) (2025-03-04)
 
 **Note:** Version bump only for package cozy-client
