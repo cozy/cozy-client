@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [57.4.0](https://github.com/cozy/cozy-client/compare/v57.3.0...v57.4.0) (2025-03-11)
+
+
+### Features
+
+* Improve normalization performances ([853b4a1](https://github.com/cozy/cozy-client/commit/853b4a1890928511871258fb7f65a61765e618ef))
+
+
+
+
+
 # [57.3.0](https://github.com/cozy/cozy-client/compare/v57.2.0...v57.3.0) (2025-03-11)
 
 **Note:** Version bump only for package cozy-pouch-link

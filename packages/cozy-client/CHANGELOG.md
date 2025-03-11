@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [57.4.0](https://github.com/cozy/cozy-client/compare/v57.3.0...v57.4.0) (2025-03-11)
+
+
+### Features
+
+* Improve persistVirtualDocuments performances ([884c4d9](https://github.com/cozy/cozy-client/commit/884c4d9f2209a7511b79727d34e1b900796f060e))
+
+
+
+
+
 # [57.3.0](https://github.com/cozy/cozy-client/compare/v57.2.0...v57.3.0) (2025-03-11)
 
 
