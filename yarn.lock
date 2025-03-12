@@ -6602,9 +6602,9 @@ __metadata:
     cozy-logger: ">1.7.0"
     react: ^16.7.0
     react-native: ^0.65.0
-    react-native-google-play-integrity: "*"
+    react-native-google-play-integrity: ^1.1.0
     react-native-inappbrowser-reborn: ^3.5.1
-    react-native-ios11-devicecheck: "*"
+    react-native-ios11-devicecheck: ^0.0.3
   languageName: unknown
   linkType: soft
 
