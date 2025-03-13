@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [57.5.0](https://github.com/cozy/cozy-client/compare/v57.4.0...v57.5.0) (2025-03-13)
+
+
+### Features
+
+* Migrate to Yarn 4 ([3e08b74](https://github.com/cozy/cozy-client/commit/3e08b74fe19f8802587c4b29de21f3d26305aa1e))
+* Update peer deps version ([30369af](https://github.com/cozy/cozy-client/commit/30369af69a87467292a37d7fc927d001daf41463))
+* Update ts config after Yarn 4 ([db928e1](https://github.com/cozy/cozy-client/commit/db928e124f161189b9a0cb91d156d421a119d261))
+
+
+
+
+
 # [57.4.0](https://github.com/cozy/cozy-client/compare/v57.3.0...v57.4.0) (2025-03-11)
 
 
