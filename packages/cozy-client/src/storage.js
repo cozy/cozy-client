@@ -84,6 +84,7 @@ export const persistVirtualDocuments = async (client, definition, data) => {
  */
 const persistVirtualDocument = async (client, document, enforce) => {
   if (shouldDocumentBePersisted(document, enforce)) {
+    console.log('go persist doc');
     await client.chain.persistCozyData(document)
   }
 }

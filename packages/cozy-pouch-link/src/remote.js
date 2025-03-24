@@ -38,6 +38,7 @@ export const fetchRemoteInstance = async (url, params = {}) => {
   }
 
   if (resp.status === 404) {
+    console.log('resp ERROR 404 : ', resp);
     throw new Error(DATABASE_NOT_FOUND_ERROR)
   }
 

@@ -144,6 +144,8 @@ const query = (
   action,
   documents
 ) => {
+    const startUpdQ = performance.now()
+
   switch (action.type) {
     case INIT_QUERY:
       if (
@@ -176,6 +178,7 @@ const query = (
         fetchStatus: 'loading'
       }
     case RECEIVE_QUERY_RESULT: {
+
       const markName = performanceApi.mark('RECEIVE_QUERY_RESULT')
       const response = action.response
       // Data can be null when we get a 404 not found
@@ -252,7 +255,7 @@ const query = (
         measureName: `${markName} default`,
         category: 'CozyClientStore'
       })
-      return {
+      const resp = {
         ...state,
         ...common,
         bookmark: response.bookmark || null,
@@ -261,6 +264,10 @@ const query = (
         fetchedPagesCount,
         data
       }
+      const endUpdQ = performance.now()
+      console.log(`Update data store took : ${endUpdQ - startUpdQ} ms`);
+
+      return resp
     }
     case RECEIVE_QUERY_ERROR:
       return {
@@ -573,8 +580,9 @@ const queries = (
     }
   }
   if (isQueryAction(action)) {
+    const startQueries = performance.now()
     const updater = autoQueryUpdater(action, documents)
-    return mapValues(state, queryState => {
+    const mapVal = mapValues(state, queryState => {
       if (queryState.id == action.queryId) {
         return query(performanceApi, queryState, action, documents)
       } else if (haveDocumentsChanged) {
@@ -583,6 +591,9 @@ const queries = (
         return queryState
       }
     })
+    const endQueries = performance.now()
+    console.log(`Queries redux took: ${endQueries - startQueries}`);
+    return mapVal
   }
   if (isReceivingMutationResult(action)) {
     const updater = action.updateQueries

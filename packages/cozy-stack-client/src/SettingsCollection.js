@@ -53,6 +53,7 @@ class SettingsCollection extends DocumentCollection {
       )
       path = id
     }
+    console.log('get settings from stack');
 
     const resp = await this.stackClient.fetchJSON('GET', `/settings/${path}`)
     return {

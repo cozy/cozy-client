@@ -489,7 +489,9 @@ class CozyClient {
 
     for (const link of this.links) {
       if (link.onLogin) {
+        console.log('go onlogin link');
         await link.onLogin()
+        console.log('done onlogin link');
       }
     }
 
@@ -497,9 +499,10 @@ class CozyClient {
     this.isRevoked = false
 
     if (this.stackClient instanceof OAuthClient) {
+      console.log('laod instance opts from stack');
       await this.loadInstanceOptionsFromStack()
     }
-
+    console.log('done login CC');
     this.emit('login')
   }
 
@@ -899,6 +902,9 @@ client.query(Q('io.cozy.bills'))`)
    * @param  {import("./types").QueryOptions} [options] - Additional options
    */
   ensureQueryExists(queryId, queryDefinition, options) {
+    if (!this.store) {
+      return
+    }
     this.ensureStore()
     const existingQuery = getQueryFromState(this.store.getState(), queryId)
     // Don't trigger the INIT_QUERY for fetchMore() calls
@@ -929,7 +935,9 @@ client.query(Q('io.cozy.bills'))`)
     const markQuery = this.performanceApi.mark(
       `client.query(${queryDefinition.doctype})`
     )
-    this.ensureStore()
+    if (executeFromStore) {
+      this.ensureStore()
+    }
     const queryId =
       options.as || this.queryIdGenerator.generateId(queryDefinition)
     const existingQuery = this.getQueryFromState(queryId, options)
@@ -976,16 +984,22 @@ client.query(Q('io.cozy.bills'))`)
               executeQueryFromState(this.store.getState(), queryDefinition)
             )
         : () => this.requestQuery(queryDefinition, options)
+      const startQ = performance.now()
       const response = await this._promiseCache.exec(requestFn, () =>
         stringify(queryDefinition)
       )
-
+      const endQ = performance.now()
+      console.log(`Query execution on link took ${endQ - startQ} ms`);
+      //console.log('response query : ', response);
+      const startDisp = performance.now()
       this.dispatch(
         receiveQueryResult(queryId, response, {
           update,
           backgroundFetching
         })
       )
+      const endDisp = performance.now()
+      console.log(`Displatch took ${endDisp - startDisp} ms`);
       this.performanceApi.measure({
         markName: markQuery,
         measureName: `${markQuery} success`,
@@ -1111,8 +1125,10 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {Promise<import("./types").ClientResponse>}
    */
   async requestQuery(definition, options) {
+    const startR = performance.now()
     const mainResponse = await this.chain.request(definition, options)
-
+    const endR = performance.now()
+    console.log(`Request took ${endR - startR} ms`);
     await persistVirtualDocuments(this, definition, mainResponse.data)
 
     if (!definition.includes) {
@@ -1443,6 +1459,11 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {import("./types").QueryState} - Query state or null if it does not exist.
    */
   getQueryFromState(id, options = {}) {
+    if (!this.store) {
+      return {
+        data: {}
+      }
+    }
     const hydrated = options.hydrated || false
     const singleDocData = options.singleDocData || false
     try {
@@ -1754,6 +1775,9 @@ instantiation of the client.`
   }
 
   dispatch(action) {
+    if (!this.store) {
+      return 
+    }
     return this.store.dispatch(action)
   }
 
@@ -1795,20 +1819,26 @@ instantiation of the client.`
    * @returns {Promise<void>}
    */
   async loadInstanceOptionsFromStack() {
-    const results = await Promise.all([
-      this.query(
+    // const results = await Promise.all([
+    //   this.query(
+    //     Q('io.cozy.settings').getById('io.cozy.settings.capabilities')
+    //   ),
+    //   this.query(Q('io.cozy.settings').getById('io.cozy.settings.instance'))
+    // ])
+    const res1 = await this.query(
         Q('io.cozy.settings').getById('io.cozy.settings.capabilities')
-      ),
-      this.query(Q('io.cozy.settings').getById('io.cozy.settings.instance'))
-    ])
+      )
+    const res2 =  await this.query(Q('io.cozy.settings').getById('io.cozy.settings.instance'))
 
-    const { data: capabilitiesData } = results[0]
-    const { data: instanceData } = results[1]
+    //console.log('results : ', results);
 
+    const { data: capabilitiesData } = res1 //results[0]
+    const { data: instanceData } = res2 //results[1]
+    console.log('instance data : ', instanceData);
     this.instanceOptions = {
       capabilities: capabilitiesData,
-      locale: instanceData.locale,
-      tracking: instanceData.tracking
+      locale: instanceData?.locale,
+      tracking: instanceData?.tracking
     }
 
     this.capabilities = this.instanceOptions.capabilities || null

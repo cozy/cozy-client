@@ -42,6 +42,7 @@ class PouchManager {
     this.PouchDB = options.platform?.pouchAdapter || platformWeb.pouchAdapter
     this.isOnline = options.platform?.isOnline || platformWeb.isOnline
     this.events = options.platform?.events || platformWeb.events
+    this.dbQueryEngines = new Map()
   }
 
   async init() {
@@ -53,14 +54,20 @@ class PouchManager {
 
     forEach(pouchPlugins, plugin => this.PouchDB.plugin(plugin))
     this.pouches = fromPairs(
-      this.doctypes.map(doctype => [
-        doctype,
-        new this.PouchDB(
-          getDatabaseName(this.options.prefix, doctype),
-          pouchOptions
-        )
-      ])
+      this.doctypes.map(doctype => {
+        console.log('doctype : ', doctype);
+        const dbName = getDatabaseName(this.options.prefix, doctype)
+        console.log('dbname : ', dbName);
+        return [
+          dbName,
+          new this.PouchDB(
+            getDatabaseName(this.options.prefix, doctype),
+            pouchOptions
+          )
+        ]
+      })
     )
+    console.log('pouches : ', this.pouches);
     /** @type {Record<string, import('./types').SyncInfo>} - Stores synchronization info per doctype */
     this.syncedDoctypes = await this.storage.getPersistedSyncedDoctypes()
     this.warmedUpQueries = await this.storage.getPersistedWarmedUpQueries()
@@ -229,8 +236,21 @@ class PouchManager {
     return allSettled(Object.values(this.replications))
   }
 
-  getPouch(doctype) {
-    return this.pouches[doctype]
+  getPouch(dbName) {
+    return this.pouches[dbName]
+  }
+
+  getQueryEngine(client, QueryDBEngine, name, doctype) {
+    let engine = this.dbQueryEngines.get(name)
+    //console.log('engine : ', engine);
+    if (!engine) {
+      console.log('no engine found');
+      engine = new QueryDBEngine(this, client, doctype)
+      engine.openDB(name)
+      this.dbQueryEngines.set(name, engine)
+    }
+    //console.log('db from query engine : ', engine);
+    return engine
   }
 
   /**

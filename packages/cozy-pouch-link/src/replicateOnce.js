@@ -11,7 +11,7 @@ import {
   isDatabaseUnradableError
 } from './remote'
 import { startReplication } from './startReplication'
-import { allSettled } from './utils'
+import { allSettled, getDoctypeFromDatabaseName } from './utils'
 
 /**
  * Process replication once for given PouchManager
@@ -20,19 +20,24 @@ import { allSettled } from './utils'
  * @returns {Promise<any>} res
  */
 export const replicateOnce = async pouchManager => {
+  console.log('rep once start');
   if (!(await pouchManager.isOnline())) {
     logger.info(
       'PouchManager: The device is offline so the replication has been skipped'
     )
     return Promise.resolve()
   }
+  console.log('online ok');
+  console.log('reps : ', pouchManager.replications);
+  console.log('reps : ', pouchManager.pouches);
 
   logger.info('PouchManager: Starting replication iteration')
 
   // Creating each replication
   pouchManager.replications = map(
     pouchManager.pouches,
-    async (pouch, doctype) => {
+    async (pouch, dbName) => {
+      const doctype = getDoctypeFromDatabaseName(dbName)
       logger.info('PouchManager: Starting replication for ' + doctype)
 
       const getReplicationURL = () => pouchManager.getReplicationURL(doctype)
@@ -65,12 +70,14 @@ export const replicateOnce = async pouchManager => {
       if (pouchManager.options.onDoctypeSyncStart) {
         pouchManager.options.onDoctypeSyncStart(doctype)
       }
+      console.log('start rep for ', doctype );
       const res = await startReplication(
         pouch,
         replicationOptions,
         getReplicationURL,
         pouchManager.storage
       )
+      console.log('rep done for ', doctype);
       if (seq) {
         // We only need the sequence for the second replication, as PouchDB
         // will use a local checkpoint for the next runs.

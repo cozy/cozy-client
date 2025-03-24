@@ -90,15 +90,16 @@ export default class StackLink extends CozyLink {
   }
 
   async request(operation, options, result, forward) {
+    console.log('request stack for ope ', operation);
     if (!options?.forceStack && this.isOnline && !(await this.isOnline())) {
       return forward(operation, options)
     }
-
     try {
       if (operation.mutationType) {
         return await this.executeMutation(operation, options, result, forward)
       }
-      return await this.executeQuery(operation)
+      const resp = await this.executeQuery(operation)
+      return resp
     } catch (err) {
       if (!options?.forceStack && isReactNativeOfflineError(err)) {
         return forward(operation, options)
@@ -123,7 +124,7 @@ export default class StackLink extends CozyLink {
     }
     const collection = this.stackClient.collection(doctype)
     if (id) {
-      return collection.get(id, query)
+      return collection.get(id)
     }
     if (ids) {
       return collection.getAll(ids)

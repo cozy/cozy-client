@@ -1,3 +1,5 @@
+export const DATABASE_NAME_SEPARATOR = '__doctype__'
+
 /**
  * Get the database name based on prefix and doctype
  *
@@ -7,7 +9,15 @@
  * @returns {string} The database name
  */
 export const getDatabaseName = (prefix, doctype) => {
-  return `${prefix}_${doctype}`
+  return `${prefix}${DATABASE_NAME_SEPARATOR}${doctype}`
+}
+
+export const getDoctypeFromDatabaseName = dbName => {
+  if (!dbName) {
+    return null
+  }
+  const tokens = dbName.split(DATABASE_NAME_SEPARATOR)
+  return tokens[tokens.length - 1]
 }
 
 /**

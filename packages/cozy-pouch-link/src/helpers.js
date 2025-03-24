@@ -6,8 +6,8 @@ import logger from './logger'
 const helpers = {}
 
 // https://github.com/pouchdb/pouchdb/issues/7011
-const LIMIT_BUG = 999
-const ADAPTERS_WITH_LIMIT_BUG = ['websql']
+export const LIMIT_BUG = 999
+export const ADAPTERS_WITH_LIMIT_BUG = ['websql']
 
 helpers.isAdapterBugged = adapterName => {
   return ADAPTERS_WITH_LIMIT_BUG.includes(adapterName)

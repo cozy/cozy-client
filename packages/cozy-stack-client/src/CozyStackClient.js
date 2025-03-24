@@ -84,6 +84,7 @@ class CozyStackClient {
       throw new Error('CozyStackClient.collection() called without a doctype')
     }
 
+    console.log('return collection from doctype : ', doctype);
     switch (doctype) {
       case APPS_DOCTYPE:
         return new AppCollection(this)
