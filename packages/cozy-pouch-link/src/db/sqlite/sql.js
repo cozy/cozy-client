@@ -41,7 +41,7 @@ export const parseResults = (
   client,
   result,
   doctype,
-  { isSingleDoc = false } = {}
+  { isSingleDoc = false, skip = 0, limit = null } = {}
 ) => {
   let parsedResults = []
   const startParse = performance.now()
@@ -69,7 +69,17 @@ export const parseResults = (
     }
     return { data: parsedResults[0] }
   }
-  return { data: parsedResults }
+  // XXX - Ideally we should have the total number of rows in the database to have a reliable
+  // next parameter, but we prefer to avoid this computation for performances.
+  // So let's rely on the total number of returned rows - if next is true, the last paginated
+  // query should have less results than the limit, thanks to the offset
+  const next = limit ? parsedResults.length >= limit : false
+  return {
+    data: parsedResults,
+    meta: { count: parsedResults.length },
+    skip,
+    next
+  }
 }
 
 const parseCondition = (field, condition) => {
@@ -139,51 +149,6 @@ export const mangoSelectorToSQL = selector => {
 
   return conditions.length > 0 ? `${conditions.join(' AND ')}` : ''
 }
-/*
-export const mangoSelectorToSQL = selector => {
-  const conditions = []
-
-  const operators = {
-    $eq: '=',
-    $ne: '!=',
-    $gt: '>',
-    $gte: '>=',
-    $lt: '<',
-    $lte: '<=',
-    $in: 'IN',
-    $nin: 'NOT IN'
-  }
-
-  for (const field in selector) {
-    const jsonField = transformMangoFieldInJSONSQL(field, 'data')
-    const condition = selector[field]
-
-    if (typeof condition === 'object' && !Array.isArray(condition)) {
-      for (const operator in condition) {
-        const sqlOp = operators[operator]
-
-        if (sqlOp === 'IN' || sqlOp === 'NOT IN') {
-          const values = condition[operator]
-            .map(v => (typeof v === 'string' ? `'${v}'` : v))
-            .join(', ')
-          conditions.push(`${jsonField} ${sqlOp} (${values})`)
-        } else {
-          const value =
-            typeof condition[operator] === 'string'
-              ? `'${condition[operator]}'`
-              : condition[operator]
-          conditions.push(`${jsonField} ${sqlOp} ${value}`)
-        }
-      }
-    } else {
-      const value = typeof condition === 'string' ? `'${condition}'` : condition
-      conditions.push(`${jsonField} = ${value}`)
-    }
-  }
-
-  return conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : ''
-}
-  */
 
 export const makeWhereClause = selector => {
   let baseWhere = 'DELETED = 0'
@@ -211,7 +176,13 @@ export const makeSortClause = mangoSortBy => {
   return sortClause
 }
 
-export const makeSQLQueryFromMango = ({ selector, sort, indexName, limit }) => {
+export const makeSQLQueryFromMango = ({
+  selector,
+  sort,
+  indexName,
+  limit,
+  skip
+}) => {
   const whereClause = makeWhereClause(selector)
   const sortClause = makeSortClause(sort)
 
@@ -222,6 +193,9 @@ export const makeSQLQueryFromMango = ({ selector, sort, indexName, limit }) => {
     `LIMIT ${limit}`
   ].join(' ')
 
+  if (skip && skip > 0) {
+    sql += ` OFFSET ${skip}`
+  }
   if (sortClause) {
     sql += ` ORDER BY ${sortClause}`
   }
@@ -248,15 +222,16 @@ export const makeSQLQueryForIds = ids => {
   return sql
 }
 
-export const makeSQLQueryAll = limit => {
-  const limitInt = limit ? limit : -1
-
-  const sql = `
+export const makeSQLQueryAll = ({ limit = -1, skip = 0 }) => {
+  let sql = `
     SELECT json AS data, doc_id, rev 
     FROM 'by-sequence'
     WHERE deleted = 0
-    LIMIT ${limitInt}
+    LIMIT ${limit}
   `
+  if (skip > 0) {
+    sql += ` OFFSET ${skip}`
+  }
   return sql
 }
 
@@ -337,11 +312,7 @@ export const executeSQL = async (db, sql) => {
         })
     })
   })
-  //const result = await db.executeAsync(sql)
-  //console.log('result : ', result);
   const endQuery = performance.now()
   console.log(`Query took ${endQuery - startQuery}`)
-
-  //console.log('🌈 n docs sqlite', result.rows.length)
   return result
 }

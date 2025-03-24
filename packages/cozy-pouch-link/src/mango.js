@@ -134,7 +134,7 @@ export const getIndexFields = ({
   partialFilter,
   indexedFields
 }) => {
-  let fieldsToIndex = []
+  let fieldsToIndex = indexedFields
   if (!indexedFields) {
     fieldsToIndex = getIndexFieldsFromFind({ selector, sort, partialFilter })
   } else if (partialFilter) {
@@ -177,7 +177,6 @@ export const getIndexName = ({
       field => field !== '$and' && field !== '$or'
     )
   }
-  console.log('fields to index : ', fieldsToIndex);
   const indexName = getIndexNameFromFields(fieldsToIndex, partialFilter)
   return indexName
 }

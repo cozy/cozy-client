@@ -7,10 +7,10 @@ import {
 } from 'cozy-client'
 import PouchDB from 'pouchdb-browser'
 import PouchDBFind from 'pouchdb-find'
-import omit from 'lodash/omit'
 import defaults from 'lodash/defaults'
 import zipWith from 'lodash/zipWith'
 import debounce from 'lodash/debounce'
+import omit from 'lodash/omit'
 
 import { default as helpers } from './helpers'
 import * as jsonapi from './jsonapi'
@@ -21,13 +21,11 @@ import { migratePouch } from './migrations/adapter'
 import { platformWeb } from './platformWeb'
 import { getDatabaseName, getPrefix } from './utils'
 import { isExpiredTokenError } from './errors'
-import { normalizeDocs } from './jsonapi'
+import { normalizeDocs, sanitized, sanitizeJsonApi } from './jsonapi'
 import PouchDBQuery from './db/pouchdb/pouchdb'
-import fastEqual from 'fast-deep-equal'
+import { areDocsEqual, getExistingDocument } from './db/helpers'
 
 PouchDB.plugin(PouchDBFind)
-
-const { withoutDesignDocuments } = helpers
 
 const parseMutationResult = (original, res) => {
   if (!res.ok) {
@@ -47,10 +45,8 @@ const addBasicAuth = (url, basicAuth) => {
   return url.replace('//', `//${basicAuth}`)
 }
 
-const sanitized = doc => omit(doc, '_type')
-
 export const getReplicationURL = (uri, token, doctype) => {
-  console.log('build url with doctype : ', doctype);
+  console.log('build url with doctype : ', doctype)
   const basicAuth = token.toBasicAuth()
   const authenticatedURL = addBasicAuth(uri, basicAuth)
   return `${authenticatedURL}/data/${doctype}`
@@ -408,7 +404,7 @@ class PouchLink extends CozyLink {
     return this.pouches.getSyncInfo(doctype)
   }
 
-  getDb(doctype) {
+  getQueryEngineFromDoctype(doctype) {
     const dbName = getDatabaseName(
       getPrefix(this.client.stackClient.uri),
       doctype
@@ -526,94 +522,32 @@ class PouchLink extends CozyLink {
     return pouch.info()
   }
 
-  sanitizeJsonApi(data) {
-    const docWithoutType = sanitized(data)
-
-    /*
-    We persist in the local Pouch database all the documents that do not
-    exist on the remote Couch database
-
-    Those documents are computed by the cozy-stack then are sent to the
-    client using JSON-API format containing `attributes` and `meta`
-    attributes
-
-    Then the cozy-stack-client would normalize those documents by spreading
-    `attributes` and `meta` content into the document's root
-
-    So we don't need to store `attributes` and `meta` data into the Pouch
-    database as their data already exists in the document's root
-
-    Note that this is also the case for `links` and `relationships`
-    attributes, but we don't remove them for now. They are also part of the
-    JSON-API, but the normalization do not spread them in the document's
-    root, so we have to check their usefulnes first
-    */
-    const sanitizedDoc = omit(docWithoutType, ['attributes', 'meta'])
-
-    return sanitizedDoc
-  }
-
-  async persistCozyData(data, forward = doNothing) {
+  async persistCozyData(doc, forward = doNothing) {
     const markName = this.performanceApi.mark('persistCozyData')
-    const sanitizedDoc = this.sanitizeJsonApi(data)
-    console.log('perist data : ', data)
-    sanitizedDoc.cozyLocalOnly = true
-    console.log('go persist')
-    const oldDoc = await this.getExistingDocument(data._id, data._type)
-    console.log('old doc : ', oldDoc)
-    if (oldDoc) {
-      if (!oldDoc._rev) {
-        console.log('no rev');
-        // Safety
-        sanitizedDoc._rev = undefined
+    const sanitizedDoc = sanitizeJsonApi(doc)
+    console.log('perist data : ', doc)
+
+    try {
+      sanitizedDoc.cozyLocalOnly = true
+      //const resp = await this.getExistingDocument(data._id, data._type)
+      const db = this.getQueryEngineFromDoctype(doc._type)
+      const resp = await getExistingDocument(db, sanitizedDoc._id)
+      const oldDoc = sanitizeJsonApi(resp.data)
+      if (areDocsEqual(oldDoc, sanitizedDoc)) {
+        // Docs are the same, no need to save
+        return
       }
       sanitizedDoc._rev = oldDoc._rev
-    }
-    if (fastEqual(oldDoc, data)) {
-      return null
-    } else {
-      console.log('NOT SAME DOC FOR PERSIST: ', data, oldDoc)
-    }
 
-    const db = this.getPouch(data._type)
-    console.log('save doc in db', sanitizedDoc)
-    try {
-      const putDoc = await db.put(sanitizedDoc)
+      const pouch = this.getPouch(doc._type)
+      console.log('save doc in db', sanitizedDoc)
+      await pouch.put(sanitizedDoc)
     } catch (err) {
+      // Do nothing on catch, to avoid crashing a query
       return null
     }
 
     this.performanceApi.measure({ markName, category: 'CozyPouchLink' })
-  }
-
-  /**
-   * Retrieve the existing document from Pouch
-   *
-   * @private
-   * @param {string} id - ID of the document to retrieve
-   * @param {string} doctype - Doctype of the document to retrieve
-   * @param {boolean} throwIfNotFound - If true the method will throw when the document is not found. Otherwise it will return null
-   * @returns {Promise<CozyClientDocument | null>}
-   */
-  async getExistingDocument(id, doctype, throwIfNotFound = false) {
-    try {
-      const db = this.getDb(doctype)
-
-      const markName = this.performanceApi.mark(
-        'db.get from getExistingDocument'
-      )
-      const existingDoc = await db.getById(id)
-      console.log('existing doc : ', existingDoc)
-      this.performanceApi.measure({ markName, category: 'PouchDB' })
-
-      return existingDoc
-    } catch (err) {
-      if (err.name === 'not_found' && !throwIfNotFound) {
-        return null
-      } else {
-        throw err
-      }
-    }
   }
 
   /**
@@ -642,26 +576,6 @@ class PouchLink extends CozyLink {
     return Boolean(this.indexes[name])
   }
 
-  async queryDocById(db, id) {
-    //const markName = this.performanceApi.mark('db.get from executeQuery')
-    return db.getById(id)
-    //this.performanceApi.measure({ markName, category: 'PouchDB' })
-    //return res
-  }
-
-  async queryDocByIds(db, ids) {
-    const markName = this.performanceApi.mark(
-      'allDocs from executeQuery with ids'
-    )
-    let res = await db.getByIds(ids, { include_docs: true })
-    this.performanceApi.measure({ markName, category: 'PouchDB' })
-    if (!res) {
-      return null
-    }
-    res = withoutDesignDocuments(res)
-    res.total_rows = null // pouch indicates the total number of docs in res.total_rows, even though we use "keys". Setting it to null avoids cozy-client thinking there are more docs to fetch.
-  }
-
   async executeQuery({
     doctype,
     selector,
@@ -674,38 +588,21 @@ class PouchLink extends CozyLink {
     indexedFields,
     partialFilter
   }) {
-    //const markName = this.performanceApi.mark('executeQuery')
-
     console.log('execute query')
     const startExecQ = performance.now()
 
-    const dbName = getDatabaseName(
-      getPrefix(this.client.stackClient.uri),
-      doctype
-    )
-    console.log('db name : ', dbName)
+    const db = this.getQueryEngineFromDoctype(doctype)
 
-    const getQE = performance.now()
-    const db = this.pouches.getQueryEngine(
-      this.client,
-      this.queryEngine,
-      dbName,
-      doctype
-    )
-    const getQEnd = performance.now()
-    console.log(`get query engine took : ${getQEnd - getQE} ms`);
-    let res,
-      withRows = true
+    let res
     if (id) {
       const startQ = performance.now()
       console.log('qurey by id')
-      res = await this.queryDocById(db, id)
-      console.log('res by id : ', res);
+      res = await db.getById(id)
+      console.log('res by id : ', res)
       const endQ = performance.now()
       console.log(`query by id took ${endQ - startQ} ms`)
-      withRows = false
     } else if (ids) {
-      await this.queryDocByIds(db, ids)
+      res = await db.getByIds(ids)
     } else if (!selector && !partialFilter && !fields && !sort) {
       res = await db.allDocs({ include_docs: true, limit })
     } else {
@@ -727,32 +624,17 @@ class PouchLink extends CozyLink {
         doctype
       }
 
-      //const markName = this.performanceApi.mark('find from executeQuery')
-      //res = await find(db, findOpts)
       res = await db.find(findOpts)
       if (!res) {
         return null
       }
 
-      //this.performanceApi.measure({ markName, category: 'PouchDB' })
       res.offset = skip
       res.limit = limit
     }
     if (!res) {
-      console.log('return res null')
       return { data: [] }
     }
-    // const jsonResult = jsonapi.fromPouchResult({
-    //   res,
-    //   withRows,
-    //   doctype,
-    //   client: this.client
-    // })
-    //const jsonResult = { data: res.docs }
-    // this.performanceApi.measure({
-    //   markName: markName,
-    //   category: 'CozyPouchLink'
-    // })
 
     const endExecQ = performance.now()
     console.log(`exec query took ${endExecQ - startExecQ} ms`)

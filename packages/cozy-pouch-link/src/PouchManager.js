@@ -55,9 +55,7 @@ class PouchManager {
     forEach(pouchPlugins, plugin => this.PouchDB.plugin(plugin))
     this.pouches = fromPairs(
       this.doctypes.map(doctype => {
-        console.log('doctype : ', doctype);
         const dbName = getDatabaseName(this.options.prefix, doctype)
-        console.log('dbname : ', dbName);
         return [
           dbName,
           new this.PouchDB(
@@ -67,7 +65,6 @@ class PouchManager {
         ]
       })
     )
-    console.log('pouches : ', this.pouches);
     /** @type {Record<string, import('./types').SyncInfo>} - Stores synchronization info per doctype */
     this.syncedDoctypes = await this.storage.getPersistedSyncedDoctypes()
     this.warmedUpQueries = await this.storage.getPersistedWarmedUpQueries()
@@ -242,9 +239,7 @@ class PouchManager {
 
   getQueryEngine(client, QueryDBEngine, name, doctype) {
     let engine = this.dbQueryEngines.get(name)
-    //console.log('engine : ', engine);
     if (!engine) {
-      console.log('no engine found');
       engine = new QueryDBEngine(this, client, doctype)
       engine.openDB(name)
       this.dbQueryEngines.set(name, engine)

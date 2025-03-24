@@ -1,6 +1,7 @@
 import DatabaseQueryInterface from '../dbInterface'
 
 import { open } from '@op-engineering/op-sqlite'
+
 import {
   createIndex,
   deleteIndex,
@@ -15,6 +16,7 @@ import {
 import { getIndexFields, getIndexName } from '../../mango'
 import { isMissingIndexError } from '../../errors'
 
+//TODO: test skip with queryAll
 export default class SQLiteQuery extends DatabaseQueryInterface {
   constructor(pouchManager, client, doctype) {
     super()
@@ -25,24 +27,25 @@ export default class SQLiteQuery extends DatabaseQueryInterface {
 
   openDB(dbName) {
     const fileDbName = `${dbName}.sqlite`
-    console.log('🐶 openDB locally : ', fileDbName)
     try {
       this.db = open({ name: fileDbName })
-      console.log('create index');
       // Create index at db opening if needed
       const sql = makeSQLCreateDocIDIndex()
       executeSQL(this.db, sql)
-      return this.db
     } catch (err) {
-      throw err
+      console.error(err)
     }
+    return this.db
   }
 
   async allDocs({ limit = null, skip = 0 } = {}) {
     try {
-      const sql = makeSQLQueryAll(limit)
+      const sql = makeSQLQueryAll({ limit, skip })
       const result = await executeSQL(this.db, sql)
-      const docs = parseResults(this.client, result, this.doctype)
+      const docs = parseResults(this.client, result, this.doctype, {
+        limit,
+        skip
+      })
       return docs
     } catch (err) {
       console.log('err : ', err)
@@ -75,7 +78,14 @@ export default class SQLiteQuery extends DatabaseQueryInterface {
   }
 
   async find(options) {
-    const { selector, sort, partialFilter, limit, recreateIndex } = options
+    const {
+      selector,
+      sort,
+      partialFilter,
+      limit,
+      recreateIndex,
+      skip
+    } = options
     let { indexedFields } = options
 
     indexedFields = getIndexFields({
@@ -93,7 +103,13 @@ export default class SQLiteQuery extends DatabaseQueryInterface {
       indexedFields
     })
     console.log('index name : ', indexName)
-    const sql = makeSQLQueryFromMango({ selector, sort, indexName, limit })
+    const sql = makeSQLQueryFromMango({
+      selector,
+      sort,
+      indexName,
+      limit,
+      skip
+    })
     let result
     if (recreateIndex) {
       await deleteIndex(this.db, indexName)
@@ -107,7 +123,10 @@ export default class SQLiteQuery extends DatabaseQueryInterface {
       }
     }
 
-    const docs = parseResults(this.client, result, this.doctype)
+    const docs = parseResults(this.client, result, this.doctype, {
+      skip,
+      limit
+    })
     console.log('🌈 n docs sqlite', result.rows.length)
     return docs
   }

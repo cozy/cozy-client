@@ -32,7 +32,7 @@ class DatabaseQueryInterface {
    *
    * @param {string} dbName - The database name
    */
-  async openDB(dbName) {
+  openDB(dbName) {
     throw new Error('method non implemented')
   }
 
