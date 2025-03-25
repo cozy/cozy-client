@@ -125,6 +125,7 @@ declare class PouchLink extends CozyLink {
         plugins?: Array<object>;
     }): Promise<void>;
     onLogin(): Promise<void>;
+    queryEngine: import("./db/dbInterface").default | typeof PouchDBQueryEngine;
     pouches: PouchManager;
     /**
      * Receives PouchDB updates (documents grouped by doctype).
@@ -180,6 +181,7 @@ declare class PouchLink extends CozyLink {
     public stopReplication(): void;
     onSyncError(error: any): Promise<void>;
     getSyncInfo(doctype: any): import("./types").SyncInfo;
+    getQueryEngineFromDoctype(doctype: any): any;
     getPouch(doctype: any): any;
     supportsOperation(operation: any): boolean;
     /**
@@ -199,17 +201,6 @@ declare class PouchLink extends CozyLink {
      * @returns {Promise<import('./types').PouchDBInfo>} The db info
      */
     getDbInfo(doctype: string): Promise<import('./types').PouchDBInfo>;
-    sanitizeJsonApi(data: any): Pick<Pick<any, string | number | symbol>, string | number | symbol>;
-    /**
-     * Retrieve the existing document from Pouch
-     *
-     * @private
-     * @param {*} id - ID of the document to retrieve
-     * @param {*} type - Doctype of the document to retrieve
-     * @param {*} throwIfNotFound - If true the method will throw when the document is not found. Otherwise it will return null
-     * @returns {Promise<CozyClientDocument | null>}
-     */
-    private getExistingDocument;
     /**
      *
      * Check if there is warmup queries for this doctype
@@ -220,45 +211,6 @@ declare class PouchLink extends CozyLink {
      */
     needsToWaitWarmup(doctype: string): Promise<boolean>;
     hasIndex(name: any): boolean;
-    /**
-     * Create the PouchDB index if not existing
-     *
-     * @param {Array} fields - Fields to index
-     * @param {object} indexOption - Options for the index
-     * @param {object} [indexOption.partialFilter] - partialFilter
-     * @param {string} [indexOption.indexName] - indexName
-     * @param {string} [indexOption.doctype] - doctype
-     * @returns {Promise<import('./types').PouchDbIndex>}
-     */
-    createIndex(fields: any[], { partialFilter, indexName, doctype }?: {
-        partialFilter: object;
-        indexName: string;
-        doctype: string;
-    }): Promise<import('./types').PouchDbIndex>;
-    /**
-     * Retrieve the PouchDB index if exist, undefined otherwise
-     *
-     * @param {string} doctype - The query's doctype
-     * @param {import('./types').MangoQueryOptions} options - The find options
-     * @param {string} indexName - The index name
-     * @returns {import('./types').PouchDbIndex | undefined}
-     */
-    findExistingIndex(doctype: string, options: import('./types').MangoQueryOptions, indexName: string): import('./types').PouchDbIndex | undefined;
-    /**
-     * Handle index creation if it is missing.
-     *
-     * When an index is missing, we first check if there is one with a different
-     * name but the same definition. If there is none, we create the new index.
-     *
-     * /!\ Warning: this method is similar to DocumentCollection.handleMissingIndex()
-     * If you edit this method, please check if the change is also needed in DocumentCollection
-     *
-     * @param {string} doctype The mango selector
-     * @param {import('./types').MangoQueryOptions} options The find options
-     * @returns {Promise<import('./types').PouchDbIndex>} index
-     * @private
-     */
-    private ensureIndex;
     executeQuery({ doctype, selector, sort, fields, limit, id, ids, skip, indexedFields, partialFilter }: {
         doctype: any;
         selector: any;
@@ -270,16 +222,7 @@ declare class PouchLink extends CozyLink {
         skip: any;
         indexedFields: any;
         partialFilter: any;
-    }): Promise<{
-        data: any;
-        meta: {
-            count: any;
-        };
-        skip: any;
-        next: boolean;
-    } | {
-        data: any;
-    }>;
+    }): Promise<any>;
     executeMutation(mutation: any, options: any, result: any, forward: any): Promise<any>;
     createDocument(mutation: any): Promise<any>;
     updateDocument(mutation: any): Promise<any>;
@@ -291,4 +234,5 @@ declare class PouchLink extends CozyLink {
 }
 import { CozyLink } from "cozy-client";
 import { PouchLocalStorage } from "./localStorage";
+import PouchDBQueryEngine from "./db/pouchdb/pouchdb";
 import PouchManager from "./PouchManager";

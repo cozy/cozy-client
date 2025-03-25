@@ -10,9 +10,12 @@ declare class PouchManager {
     options: any;
     doctypes: any;
     storage: PouchLocalStorage;
+    queryEngine: any;
+    client: any;
     PouchDB: any;
     isOnline: any;
     events: any;
+    dbQueryEngines: Map<any, any>;
     init(): Promise<void>;
     pouches: import("lodash").Dictionary<any>;
     /** @type {Record<string, import('./types').SyncInfo>} - Stores synchronization info per doctype */
@@ -62,7 +65,9 @@ declare class PouchManager {
     handleReplicationError(err: any): void;
     cancelCurrentReplications(): void;
     waitForCurrentReplications(): Promise<void> | Promise<(import("./utils").FulfilledPromise | import("./utils").RejectedPromise)[]>;
-    getPouch(doctype: any): any;
+    getPouch(dbName: any): any;
+    setQueryEngine(name: any, doctype: any): any;
+    getQueryEngine(name: any, doctype: any): any;
     /**
      * Update the Sync info for the specifed doctype
      *

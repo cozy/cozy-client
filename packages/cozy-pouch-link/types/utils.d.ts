@@ -1,4 +1,7 @@
+export const DATABASE_NAME_SEPARATOR: "__doctype__";
 export function getDatabaseName(prefix: string, doctype: string): string;
+export function getOldDatabaseName(prefix: string, doctype: string): string;
+export function getDoctypeFromDatabaseName(dbName: any): any;
 export function getPrefix(uri: string): string;
 export function formatAggregatedError(aggregatedError: any): any;
 export function allSettled(promises: Promise<any>[]): Promise<(FulfilledPromise | RejectedPromise)[]>;
