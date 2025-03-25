@@ -1,6 +1,8 @@
 const EXPIRED_TOKEN_ERROR = /Expired token/
 const INVALID_TOKEN_ERROR = /Invalid JWT token/
 const INVALID_TOKEN_ALT_ERROR = /Invalid token/
+
+const SQLITE_MISSING_INDEX_ERROR = /no such index/
 const POUCHDB_MISSING_INDEX_ERROR = /Could not find that index/
 const POUCHDB_MISSING_INDEX_ERROR_ALT = /no index/
 
@@ -24,6 +26,10 @@ export const isExpiredTokenError = error => {
     return error.errors.some(err => expiredTokenError(err))
   }
   return expiredTokenError(error)
+}
+
+export const isMissingSQLiteIndexError = error => {
+  return SQLITE_MISSING_INDEX_ERROR.test(error.message)
 }
 
 export const isMissingPouchDBIndexError = error => {
