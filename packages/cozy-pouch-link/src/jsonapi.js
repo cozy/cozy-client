@@ -82,6 +82,10 @@ const normalizeAppsLinks = (client, doctype, docRef) => {
 }
 
 export const fromPouchResult = ({ res, withRows, doctype, client }) => {
+  if (!res) {
+    return null
+  }
+
   // Sometimes, queries are transformed by Collections and they call a dedicated
   // cozy-stack route. When this is the case, we want to be able to replicate the same
   // query from cozy-pouch-link. It is not possible as-is because the received data
@@ -95,18 +99,20 @@ export const fromPouchResult = ({ res, withRows, doctype, client }) => {
       data: res.cozyPouchData
     }
   }
-
   if (withRows) {
     const docs = res.rows ? res.rows.map(row => row.doc) : res.docs
     const offset = res.offset || 0
+    const next =
+      offset + docs.length < res.total_rows || docs.length >= res.limit
     normalizeDocs(client, doctype, docs)
 
     const result = {
       data: docs,
       meta: { count: docs.length },
       skip: offset,
-      next: offset + docs.length < res.total_rows || docs.length >= res.limit
+      next
     }
+
     return result
   } else {
     Array.isArray(res)
