@@ -453,10 +453,7 @@ describe('CozyPouchLink', () => {
             _type: 'io.cozy.todos',
             done: false,
             id: '1',
-            label: 'Buy bread',
-            relationships: {
-              referenced_by: undefined
-            }
+            label: 'Buy bread'
           }
         ]
       })
