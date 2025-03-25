@@ -11,7 +11,7 @@ import {
   isDatabaseUnradableError
 } from './remote'
 import { startReplication } from './startReplication'
-import { allSettled } from './utils'
+import { allSettled, getDoctypeFromDatabaseName } from './utils'
 
 /**
  * Process replication once for given PouchManager
@@ -26,13 +26,13 @@ export const replicateOnce = async pouchManager => {
     )
     return Promise.resolve()
   }
-
   logger.info('PouchManager: Starting replication iteration')
 
   // Creating each replication
   pouchManager.replications = map(
     pouchManager.pouches,
-    async (pouch, doctype) => {
+    async (pouch, dbName) => {
+      const doctype = getDoctypeFromDatabaseName(dbName)
       logger.info('PouchManager: Starting replication for ' + doctype)
 
       const getReplicationURL = () => pouchManager.getReplicationURL(doctype)

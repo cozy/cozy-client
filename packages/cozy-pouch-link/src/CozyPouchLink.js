@@ -7,13 +7,12 @@ import {
 } from 'cozy-client'
 import PouchDB from 'pouchdb-browser'
 import PouchDBFind from 'pouchdb-find'
-import omit from 'lodash/omit'
 import defaults from 'lodash/defaults'
 import zipWith from 'lodash/zipWith'
 import debounce from 'lodash/debounce'
+import omit from 'lodash/omit'
 
 import { default as helpers } from './helpers'
-import { getIndexNameFromFields, getIndexFields } from './mango'
 import * as jsonapi from './jsonapi'
 import PouchManager from './PouchManager'
 import { PouchLocalStorage } from './localStorage'
@@ -23,10 +22,9 @@ import { platformWeb } from './platformWeb'
 import { getDatabaseName, getPrefix } from './utils'
 import { isExpiredTokenError } from './errors'
 import { normalizeDocs } from './jsonapi'
+import PouchDBQueryEngine from './db/pouchdb/pouchdb'
 
 PouchDB.plugin(PouchDBFind)
-
-const { find, allDocs, withoutDesignDocuments } = helpers
 
 const parseMutationResult = (original, res) => {
   if (!res.ok) {
@@ -235,6 +233,8 @@ class PouchLink extends CozyLink {
       }
     }
 
+    this.queryEngine = this.options.platform?.queryEngine || PouchDBQueryEngine
+
     this.pouches = new PouchManager(this.doctypes, {
       pouch: this.options.pouch,
       getReplicationURL: this.getReplicationURL.bind(this),
@@ -245,7 +245,9 @@ class PouchLink extends CozyLink {
       onDoctypeSyncEnd: this.handleDoctypeSyncEnd.bind(this),
       prefix,
       executeQuery: this.executeQuery.bind(this),
-      platform: this.options.platform
+      platform: this.options.platform,
+      queryEngine: this.queryEngine,
+      client: this.client
     })
     await this.pouches.init()
 
@@ -403,8 +405,20 @@ class PouchLink extends CozyLink {
     return this.pouches.getSyncInfo(doctype)
   }
 
+  getQueryEngineFromDoctype(doctype) {
+    const dbName = getDatabaseName(
+      getPrefix(this.client.stackClient.uri),
+      doctype
+    )
+    return this.pouches.getQueryEngine(dbName, doctype)
+  }
+
   getPouch(doctype) {
-    return this.pouches.getPouch(doctype)
+    const dbName = getDatabaseName(
+      getPrefix(this.client.stackClient.uri),
+      doctype
+    )
+    return this.pouches.getPouch(dbName)
   }
 
   supportsOperation(operation) {
@@ -466,7 +480,6 @@ class PouchLink extends CozyLink {
       }
       return forward(operation, options)
     }
-
     if (operation.mutationType) {
       return this.executeMutation(operation, options, result, forward)
     } else {
@@ -602,93 +615,6 @@ class PouchLink extends CozyLink {
     return Boolean(this.indexes[name])
   }
 
-  /**
-   * Create the PouchDB index if not existing
-   *
-   * @param {Array} fields - Fields to index
-   * @param {object} indexOption - Options for the index
-   * @param {object} [indexOption.partialFilter] - partialFilter
-   * @param {string} [indexOption.indexName] - indexName
-   * @param {string} [indexOption.doctype] - doctype
-   * @returns {Promise<import('./types').PouchDbIndex>}
-   */
-  async createIndex(fields, { partialFilter, indexName, doctype } = {}) {
-    const absName = `${doctype}/${indexName}`
-    const db = this.pouches.getPouch(doctype)
-
-    const index = await db.createIndex({
-      index: {
-        fields,
-        ddoc: indexName,
-        indexName,
-        partial_filter_selector: partialFilter
-      }
-    })
-    this.indexes[absName] = index
-    return index
-  }
-
-  /**
-   * Retrieve the PouchDB index if exist, undefined otherwise
-   *
-   * @param {string} doctype - The query's doctype
-   * @param {import('./types').MangoQueryOptions} options - The find options
-   * @param {string} indexName - The index name
-   * @returns {import('./types').PouchDbIndex | undefined}
-   */
-  findExistingIndex(doctype, options, indexName) {
-    const absName = `${doctype}/${indexName}`
-    return this.indexes[absName]
-  }
-
-  /**
-   * Handle index creation if it is missing.
-   *
-   * When an index is missing, we first check if there is one with a different
-   * name but the same definition. If there is none, we create the new index.
-   *
-   * /!\ Warning: this method is similar to DocumentCollection.handleMissingIndex()
-   * If you edit this method, please check if the change is also needed in DocumentCollection
-   *
-   * @param {string} doctype The mango selector
-   * @param {import('./types').MangoQueryOptions} options The find options
-   * @returns {Promise<import('./types').PouchDbIndex>} index
-   * @private
-   */
-  async ensureIndex(doctype, options) {
-    let { indexedFields, partialFilter } = options
-
-    if (!indexedFields) {
-      indexedFields = getIndexFields(options)
-    } else if (partialFilter) {
-      // Some pouch adapters does not support partialIndex, e.g. with websql in react-native
-      // Therefore, we need to force the indexing the partialIndex fields to ensure they will be
-      // included in the actual index. Thanks to this, docs with missing fields will be excluded
-      // from the index.
-      // Note the $exists: false case should be handled in-memory.
-      indexedFields = Array.from(
-        new Set([...indexedFields, ...Object.keys(partialFilter)])
-      )
-      // FIXME: should properly handle n-level attributes
-      indexedFields = indexedFields.filter(
-        field => field !== '$and' && field !== '$or'
-      )
-    }
-
-    const indexName = getIndexNameFromFields(indexedFields, partialFilter)
-
-    const existingIndex = this.findExistingIndex(doctype, options, indexName)
-    if (!existingIndex) {
-      return await this.createIndex(indexedFields, {
-        partialFilter,
-        indexName,
-        doctype
-      })
-    } else {
-      return existingIndex
-    }
-  }
-
   async executeQuery({
     doctype,
     selector,
@@ -701,29 +627,15 @@ class PouchLink extends CozyLink {
     indexedFields,
     partialFilter
   }) {
-    const markName = this.performanceApi.mark('executeQuery')
-    const db = this.getPouch(doctype)
-    let res, withRows
+    const engine = this.getQueryEngineFromDoctype(doctype)
+
+    let res
     if (id) {
-      const markName = this.performanceApi.mark('db.get from executeQuery')
-      res = await db.get(id)
-      this.performanceApi.measure({ markName, category: 'PouchDB' })
-      withRows = false
+      res = await engine.getById(id)
     } else if (ids) {
-      const markName = this.performanceApi.mark(
-        'allDocs from executeQuery with ids'
-      )
-      res = await allDocs(db, { include_docs: true, keys: ids })
-      this.performanceApi.measure({ markName, category: 'PouchDB' })
-      res = withoutDesignDocuments(res)
-      res.total_rows = null // pouch indicates the total number of docs in res.total_rows, even though we use "keys". Setting it to null avoids cozy-client thinking there are more docs to fetch.
-      withRows = true
+      res = await engine.getByIds(ids)
     } else if (!selector && !partialFilter && !fields && !sort) {
-      const markName = this.performanceApi.mark('allDocs from executeQuery')
-      res = await allDocs(db, { include_docs: true, limit })
-      this.performanceApi.measure({ markName, category: 'PouchDB' })
-      res = withoutDesignDocuments(res)
-      withRows = true
+      res = await engine.allDocs({ include_docs: true, limit })
     } else {
       const findSelector = helpers.normalizeFindSelector({
         selector,
@@ -739,34 +651,17 @@ class PouchLink extends CozyLink {
         // _id is necessary for the store, and _rev is required for offline. See https://github.com/cozy/cozy-client/blob/95978d39546023920b0c01d689fed5dd41577a02/packages/cozy-client/src/CozyClient.js#L1153
         fields: fields ? [...fields, '_id', '_rev'] : undefined,
         limit,
-        skip
+        skip,
+        doctype
       }
-      const index = await this.ensureIndex(doctype, {
-        ...findOpts,
-        indexedFields,
-        partialFilter
-      })
-      findOpts.use_index = index.id
-      const markName = this.performanceApi.mark('find from executeQuery')
-      res = await find(db, findOpts)
-      this.performanceApi.measure({ markName, category: 'PouchDB' })
-      res.offset = skip
-      res.limit = limit
-      withRows = true
+
+      res = await engine.find(findOpts)
     }
-    const jsonResult = jsonapi.fromPouchResult({
-      res,
-      withRows,
-      doctype,
-      client: this.client
-    })
+    if (!res) {
+      return { data: [] }
+    }
 
-    this.performanceApi.measure({
-      markName: markName,
-      category: 'CozyPouchLink'
-    })
-
-    return jsonResult
+    return res
   }
 
   async executeMutation(mutation, options, result, forward) {
