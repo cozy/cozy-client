@@ -15,4 +15,6 @@ export function fromPouchResult({ res, withRows, doctype, client }: {
 } | {
     data: any;
 };
+export function sanitized(doc: any): Pick<any, string | number | symbol>;
+export function sanitizeJsonApi(doc: any): Pick<Pick<any, string | number | symbol>, string | number | symbol>;
 import CozyClient from "cozy-client";

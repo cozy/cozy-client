@@ -33,6 +33,7 @@ export type LinkPlatform = {
      * PouchDB class (can be pouchdb-core or pouchdb-browser)
      */
     pouchAdapter: any;
+    queryEngine: DatabaseQueryEngine;
     /**
      * Method that check if the app is connected to internet
      */
@@ -144,3 +145,4 @@ export type PouchDBChanges = {
      */
     doc: object;
 };
+import DatabaseQueryEngine from "./db/dbInterface";
