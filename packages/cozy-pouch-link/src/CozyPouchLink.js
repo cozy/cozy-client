@@ -21,8 +21,9 @@ import { migratePouch } from './migrations/adapter'
 import { platformWeb } from './platformWeb'
 import { getDatabaseName, getPrefix } from './utils'
 import { isExpiredTokenError } from './errors'
-import { normalizeDocs } from './jsonapi'
+import { normalizeDocs, sanitized, sanitizeJsonApi } from './jsonapi'
 import PouchDBQueryEngine from './db/pouchdb/pouchdb'
+import { areDocsEqual, getExistingDocument } from './db/helpers'
 
 PouchDB.plugin(PouchDBFind)
 
@@ -43,8 +44,6 @@ const MAX_DEBOUNCE_DELAY = 600 * 1000
 const addBasicAuth = (url, basicAuth) => {
   return url.replace('//', `//${basicAuth}`)
 }
-
-const sanitized = doc => omit(doc, '_type')
 
 export const getReplicationURL = (uri, token, doctype) => {
   const basicAuth = token.toBasicAuth()
@@ -518,75 +517,39 @@ class PouchLink extends CozyLink {
     return pouch.info()
   }
 
-  sanitizeJsonApi(data) {
-    const docWithoutType = sanitized(data)
-
-    /*
-    We persist in the local Pouch database all the documents that do not
-    exist on the remote Couch database
-
-    Those documents are computed by the cozy-stack then are sent to the
-    client using JSON-API format containing `attributes` and `meta`
-    attributes
-
-    Then the cozy-stack-client would normalize those documents by spreading
-    `attributes` and `meta` content into the document's root
-
-    So we don't need to store `attributes` and `meta` data into the Pouch
-    database as their data already exists in the document's root
-
-    Note that this is also the case for `links` and `relationships`
-    attributes, but we don't remove them for now. They are also part of the
-    JSON-API, but the normalization do not spread them in the document's
-    root, so we have to check their usefulnes first
-    */
-    const sanitizedDoc = omit(docWithoutType, ['attributes', 'meta'])
-
-    return sanitizedDoc
-  }
-
-  async persistCozyData(data, forward = doNothing) {
-    const markName = this.performanceApi.mark('persistCozyData')
-    const sanitizedDoc = this.sanitizeJsonApi(data)
-    sanitizedDoc.cozyLocalOnly = true
-
-    const oldDoc = await this.getExistingDocument(data._id, data._type)
-    if (oldDoc) {
-      sanitizedDoc._rev = oldDoc._rev
-    }
-
-    const db = this.pouches.getPouch(data._type)
-    await db.put(sanitizedDoc)
-    this.performanceApi.measure({ markName, category: 'CozyPouchLink' })
-  }
-
   /**
-   * Retrieve the existing document from Pouch
+   *   We persist in the local Pouch database all the documents that do not
+   *   exist on the remote Couch database.
    *
-   * @private
-   * @param {*} id - ID of the document to retrieve
-   * @param {*} type - Doctype of the document to retrieve
-   * @param {*} throwIfNotFound - If true the method will throw when the document is not found. Otherwise it will return null
-   * @returns {Promise<CozyClientDocument | null>}
+   *   Those documents are computed by the cozy-stack then are sent to the
+   *   client using JSON-API format
    */
-  async getExistingDocument(id, type, throwIfNotFound = false) {
+  async persistCozyData(doc, forward = doNothing) {
+    const markName = this.performanceApi.mark('persistCozyData')
+    // XXX - We don't need to store `attributes` and `meta` data into the Pouch
+    // database as their data already exists in the document's root, as its
+    // already done by cozy-stack-client.
+    const sanitizedDoc = sanitizeJsonApi(doc)
+
     try {
-      const db = this.pouches.getPouch(type)
-
-      const markName = this.performanceApi.mark(
-        'db.get from getExistingDocument'
-      )
-      const existingDoc = await db.get(id)
-      this.performanceApi.measure({ markName, category: 'PouchDB' })
-
-      return existingDoc
-    } catch (err) {
-      if (err.name === 'not_found' && !throwIfNotFound) {
-        return null
-      } else {
-        throw err
+      sanitizedDoc.cozyLocalOnly = true
+      const engine = this.getQueryEngineFromDoctype(doc._type)
+      const resp = await getExistingDocument(engine, sanitizedDoc._id)
+      const oldDoc = sanitizeJsonApi(resp.data)
+      if (areDocsEqual(oldDoc, sanitizedDoc)) {
+        // Docs are the same, no need to save
+        return
       }
+      sanitizedDoc._rev = oldDoc._rev
+
+      const pouch = this.getPouch(doc._type)
+      await pouch.put(sanitizedDoc)
+    } catch (err) {
+      // Do nothing on catch, to avoid throwing a query
+      return null
     }
+
+    this.performanceApi.measure({ markName, category: 'CozyPouchLink' })
   }
 
   /**
