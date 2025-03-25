@@ -1,4 +1,6 @@
 import CozyClient, { generateWebLink } from 'cozy-client'
+import omit from 'lodash/omit'
+import startsWith from 'lodash/startsWith'
 
 /**
  * Normalize several PouchDB document
@@ -106,4 +108,12 @@ export const fromPouchResult = ({ res, withRows, doctype, client }) => {
       data: res
     }
   }
+}
+
+export const sanitized = doc => omit(doc, '_type')
+
+export const sanitizeJsonApi = doc => {
+  const docWithoutType = sanitized(doc)
+  const sanitizedDoc = omit(docWithoutType, ['attributes', 'meta'])
+  return sanitizedDoc
 }
