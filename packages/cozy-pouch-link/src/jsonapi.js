@@ -16,6 +16,10 @@ export const normalizeDocs = (client, doctype, docs) => {
       docs.splice(i, 1)
       continue
     }
+    if (startsWith(doc.id, '_design/')) {
+      docs.splice(i, 1)
+      continue
+    }
     normalizeDoc(client, doctype, doc)
   }
 }
