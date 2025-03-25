@@ -31,16 +31,20 @@ export const normalizeDocs = (client, doctype, docs) => {
  */
 export const normalizeDoc = (client, doctype, doc) => {
   const id = doc._id || doc.id
-
   doc.id = id
   doc._id = id
   doc._rev = doc._rev || doc.rev
   doc._type = doctype
-  if (doc.relationships) {
-    doc.relationships.referenced_by = doc.referenced_by
-  } else {
+
+  if (doc.referenced_by) {
+    // TODO: should we remove referenced_by at the doc root?
+    // For now, we keep it for safety
     doc.relationships = {
-      referenced_by: doc.referenced_by
+      ...doc.relationships,
+      referenced_by: {
+        links: undefined,
+        data: doc.referenced_by
+      }
     }
   }
   if (doc.rev) {

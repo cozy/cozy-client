@@ -34,24 +34,99 @@ const client = new CozyClient({ token, uri })
 client.capabilities = { flat_subdomains: true }
 
 describe('doc normalization', () => {
+  it('should correctly normalize simple doc', () => {
+    const doc = {
+      _id: '1234',
+      _rev: '1-1234',
+      name: 'Simple doc'
+    }
+    normalizeDoc(client, 'io.cozy.todos', doc)
+    expect(doc).toEqual({
+      _id: '1234',
+      id: '1234',
+      _rev: '1-1234',
+      _type: 'io.cozy.todos',
+      name: 'Simple doc'
+    })
+  })
+
+  it('should handle wrong rev format', () => {
+    const doc = {
+      _id: '1234',
+      rev: '1-1234',
+      name: 'Simple doc'
+    }
+    normalizeDoc(client, 'io.cozy.todos', doc)
+    expect(doc).toEqual({
+      _id: '1234',
+      id: '1234',
+      _rev: '1-1234',
+      _type: 'io.cozy.todos',
+      name: 'Simple doc'
+    })
+  })
+
+  it('should normalize relationships', () => {
+    const doc = {
+      _id: '1234',
+      rev: '1-1234',
+      name: 'Simple doc',
+      relationships: {
+        contact: {
+          data: {
+            _id: '4567',
+            _type: 'io.cozy.contacts'
+          }
+        }
+      },
+      referenced_by: [
+        {
+          type: 'io.cozy.albums',
+          id: 'thegreatalbum'
+        }
+      ]
+    }
+    normalizeDoc(client, 'io.cozy.todos', doc)
+    expect(doc).toMatchObject({
+      _id: '1234',
+      id: '1234',
+      _rev: '1-1234',
+      _type: 'io.cozy.todos',
+      name: 'Simple doc',
+      relationships: {
+        contact: {
+          data: {
+            _id: '4567',
+            _type: 'io.cozy.contacts'
+          }
+        },
+        referenced_by: {
+          data: [
+            {
+              type: 'io.cozy.albums',
+              id: 'thegreatalbum'
+            }
+          ]
+        }
+      }
+    })
+  })
+
   it('should normalize apps links', () => {
     const doc = {
-      _id: 1234,
+      _id: '1234',
       _rev: '3-deadbeef',
       slug: 'contact',
       version: '1.2.0'
     }
     normalizeDoc(client, 'io.cozy.apps', doc)
     expect(doc).toEqual({
-      _id: 1234,
-      id: 1234,
+      _id: '1234',
+      id: '1234',
       _rev: '3-deadbeef',
       _type: 'io.cozy.apps',
       slug: 'contact',
       version: '1.2.0',
-      relationships: {
-        referenced_by: undefined
-      },
       links: {
         icon: '/apps/contact/icon/1.2.0',
         related: 'https://claude-contact.mycozy.cloud/#/',
@@ -188,9 +263,6 @@ describe('jsonapi', () => {
           links: {
             self: '/settings/flags'
           },
-          relationships: {
-            referenced_by: undefined
-          },
           'some.boolean.flag': true,
           'some.number.flag': 30,
           'some.object.flag': {
@@ -214,9 +286,6 @@ describe('jsonapi', () => {
     expect(normalized).toEqual({
       data: [
         {
-          relationships: {
-            referenced_by: undefined
-          },
           id: '018bdcec-00c8-7155-b352-c8a8f472f882',
           type: 'file',
           _type: 'io.cozy.files',
@@ -258,12 +327,14 @@ describe('jsonapi', () => {
         },
         {
           relationships: {
-            referenced_by: [
-              {
-                id: '536bde9aef87dde16630d3c99d26453f',
-                type: 'io.cozy.photos.albums'
-              }
-            ]
+            referenced_by: {
+              data: [
+                {
+                  id: '536bde9aef87dde16630d3c99d26453f',
+                  type: 'io.cozy.photos.albums'
+                }
+              ]
+            }
           },
           id: '018c7cf1-1d00-73ac-9a7f-ee3190638183',
           type: 'file',
@@ -315,18 +386,26 @@ describe('jsonapi', () => {
           _rev: '2-02e800df012ea1cc740e5ad1554cefe6'
         },
         {
-          relationships: {
-            referenced_by: [
-              {
-                id: '536bde9aef87dde16630d3c99d26453f',
-                type: 'io.cozy.photos.albums'
-              }
-            ]
-          },
           id: '018ca6a8-8292-7acb-bcaf-a95ccfd83662',
           _type: 'io.cozy.files',
           type: 'file',
           name: 'IMG_0047.jpg',
+          relationships: {
+            referenced_by: {
+              data: [
+                {
+                  id: '536bde9aef87dde16630d3c99d26453f',
+                  type: 'io.cozy.photos.albums'
+                }
+              ]
+            }
+          },
+          referenced_by: [
+            {
+              id: '536bde9aef87dde16630d3c99d26453f',
+              type: 'io.cozy.photos.albums'
+            }
+          ],
           dir_id: 'io.cozy.files.root-dir',
           created_at: '2023-11-19T13:31:47+01:00',
           updated_at: '2023-12-26T15:05:10.256Z',
@@ -346,12 +425,6 @@ describe('jsonapi', () => {
             orientation: 6,
             width: 4032
           },
-          referenced_by: [
-            {
-              id: '536bde9aef87dde16630d3c99d26453f',
-              type: 'io.cozy.photos.albums'
-            }
-          ],
           cozyMetadata: {
             doctypeVersion: '1',
             metadataVersion: 1,
