@@ -1,5 +1,7 @@
 import head from 'lodash/head'
 
+const indexes = {}
+
 /**
  * Process a partial filter to generate a string key
  *
@@ -67,7 +69,7 @@ export const getIndexNameFromFields = (fields, partialFilter) => {
  * @returns {Array} - Fields to index
  */
 const defaultSelector = { _id: { $gt: null } }
-export const getIndexFields = (
+export const getIndexFieldsFromFind = (
   /** @type {import('./types').MangoQueryOptions} */ {
     selector = defaultSelector,
     sort = [],
@@ -81,4 +83,100 @@ export const getIndexFields = (
       ...(partialFilter ? Object.keys(partialFilter) : [])
     ])
   )
+}
+
+/**
+ * Create the PouchDB index if not existing
+ *
+ * @param {object} db - The pouch db
+ * @param {Array} fields - Fields to index
+ * @param {object} indexOption - Options for the index
+ * @param {object} [indexOption.partialFilter] - partialFilter
+ * @param {string} [indexOption.indexName] - indexName
+ * @param {string} [indexOption.doctype] - doctype
+ * @returns {Promise<import('./types').PouchDbIndex>}
+ */
+export const createIndex = async (
+  db,
+  fields,
+  { partialFilter, indexName, doctype } = {}
+) => {
+  const absName = `${doctype}/${indexName}`
+
+  const index = await db.createIndex({
+    index: {
+      fields,
+      ddoc: indexName,
+      indexName,
+      partial_filter_selector: partialFilter
+    }
+  })
+  indexes[absName] = index
+  return index
+}
+
+/**
+ * Retrieve the PouchDB index if exist, undefined otherwise
+ *
+ * @param {string} doctype - The query's doctype
+ * @param {import('./types').MangoQueryOptions} options - The find options
+ * @param {string} indexName - The index name
+ * @returns {import('./types').PouchDbIndex | undefined}
+ */
+export const findExistingIndex = (doctype, options, indexName) => {
+  const absName = `${doctype}/${indexName}`
+  return indexes[absName]
+}
+
+export const getIndexFields = ({
+  selector,
+  sort,
+  partialFilter,
+  indexedFields
+}) => {
+  let fieldsToIndex = indexedFields
+  if (!indexedFields) {
+    fieldsToIndex = getIndexFieldsFromFind({ selector, sort, partialFilter })
+  } else if (partialFilter) {
+    // Some pouch adapters does not support partialIndex, e.g. with websql in react-native
+    // Therefore, we need to force the indexing the partialIndex fields to ensure they will be
+    // included in the actual index. Thanks to this, docs with missing fields will be excluded
+    // from the index.
+    // Note the $exists: false case should be handled in-memory.
+    fieldsToIndex = Array.from(
+      new Set([...indexedFields, ...Object.keys(partialFilter)])
+    )
+    // FIXME: should properly handle n-level attributes
+    fieldsToIndex = indexedFields.filter(
+      field => field !== '$and' && field !== '$or'
+    )
+  }
+  return fieldsToIndex
+}
+
+export const getIndexName = ({
+  selector,
+  sort,
+  indexedFields,
+  partialFilter
+}) => {
+  let fieldsToIndex = indexedFields
+  if (!indexedFields) {
+    fieldsToIndex = getIndexFieldsFromFind({ selector, sort, partialFilter })
+  } else if (partialFilter) {
+    // Some pouch adapters does not support partialIndex, e.g. with websql in react-native
+    // Therefore, we need to force the indexing the partialIndex fields to ensure they will be
+    // included in the actual index. Thanks to this, docs with missing fields will be excluded
+    // from the index.
+    // Note the $exists: false case should be handled in-memory.
+    fieldsToIndex = Array.from(
+      new Set([...indexedFields, ...Object.keys(partialFilter)])
+    )
+    // FIXME: should properly handle n-level attributes
+    fieldsToIndex = indexedFields.filter(
+      field => field !== '$and' && field !== '$or'
+    )
+  }
+  const indexName = getIndexNameFromFields(fieldsToIndex, partialFilter)
+  return indexName
 }

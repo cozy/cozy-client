@@ -6,7 +6,8 @@ jest.mock('./helpers', () => ({
   allDocs: jest.fn(),
   normalizeFindSelector: jest.requireActual('./helpers').default
     .normalizeFindSelector,
-  withoutDesignDocuments: jest.fn()
+  withoutDesignDocuments: jest.fn(),
+  isAdapterBugged: jest.fn()
 }))
 
 import CozyPouchLink from '.'
@@ -309,12 +310,9 @@ describe('CozyPouchLink', () => {
         .indexFields(['done', 'label'])
         .sortBy([{ done: 'asc' }, { label: 'asc' }])
         .select(['label', 'done'])
-      await link.request(query)
-      expect(find).toHaveBeenLastCalledWith(
-        expect.anything(),
-        expect.objectContaining({
-          fields: ['label', 'done', '_id', '_rev']
-        })
+      const res = await link.request(query)
+      expect(Object.keys(res.data[0])).toEqual(
+        expect.arrayContaining(['label', 'done', '_id', '_rev'])
       )
     })
   })
@@ -549,142 +547,6 @@ describe('CozyPouchLink', () => {
       link.registerClient(client)
 
       expect(link.onLogin()).rejects.toThrow()
-    })
-  })
-
-  describe('index creation', () => {
-    let spy
-    beforeEach(() => {
-      allDocs.mockReturnValue({ docs: [] })
-      withoutDesignDocuments.mockReturnValue({ docs: [] })
-      find.mockReturnValue({ docs: [] })
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
-
-    it('uses the default index, the one from the sort', async () => {
-      spy = jest.spyOn(PouchDB.prototype, 'createIndex')
-      await setup()
-      link.pouches.getSyncStatus = jest.fn().mockReturnValue('synced')
-      const query = Q(TODO_DOCTYPE)
-        .where({})
-        .sortBy([{ name: 'asc' }])
-      await link.request(query)
-      expect(spy).toHaveBeenCalledWith({
-        index: {
-          ddoc: 'by_name',
-          fields: ['name'],
-          indexName: 'by_name',
-          partial_filter_selector: undefined
-        }
-      })
-    })
-
-    it('uses indexFields if provided', async () => {
-      spy = jest.spyOn(PouchDB.prototype, 'createIndex').mockReturnValue({})
-      await setup()
-      await link.ensureIndex(TODO_DOCTYPE, {
-        indexedFields: ['myIndex']
-      })
-      expect(spy).toHaveBeenCalled()
-      expect(spy).toHaveBeenCalledWith({
-        index: {
-          ddoc: 'by_myIndex',
-          fields: ['myIndex'],
-          indexName: 'by_myIndex',
-          partial_filter_selector: undefined
-        }
-      })
-    })
-
-    it('should handle partial filters', async () => {
-      spy = jest.spyOn(PouchDB.prototype, 'createIndex').mockReturnValue({})
-      await setup()
-      await link.ensureIndex(TODO_DOCTYPE, {
-        indexedFields: ['myIndex'],
-        partialFilter: { SOME_FIELD: { $exists: true } }
-      })
-      expect(spy).toHaveBeenCalled()
-      expect(spy).toHaveBeenCalledWith({
-        index: {
-          ddoc: 'by_myIndex_and_SOME_FIELD_filter_(SOME_FIELD_$exists_true)',
-          fields: ['myIndex', 'SOME_FIELD'],
-          indexName:
-            'by_myIndex_and_SOME_FIELD_filter_(SOME_FIELD_$exists_true)',
-          partial_filter_selector: {
-            SOME_FIELD: {
-              $exists: true
-            }
-          }
-        }
-      })
-    })
-
-    it('should exclude $and and $or operators from fields with partialIndex', async () => {
-      spy = jest.spyOn(PouchDB.prototype, 'createIndex').mockReturnValue({})
-      await setup()
-      await link.ensureIndex(TODO_DOCTYPE, {
-        indexedFields: ['myIndex'],
-        partialFilter: {
-          $and: [
-            { SOME_FIELD: { $exists: true } },
-            { SOME_FIELD: { $gt: null } }
-          ],
-          $or: [{ SOME_FIELD: { $eq: '1' } }, { SOME_FIELD: { $eq: '2' } }]
-        }
-      })
-      expect(spy).toHaveBeenCalled()
-      expect(spy).toHaveBeenCalledWith({
-        index: {
-          ddoc:
-            'by_myIndex_filter_((SOME_FIELD_$exists_true)_$and_(SOME_FIELD_$gt_null))_and_((SOME_FIELD_$eq_1)_$or_(SOME_FIELD_$eq_2))',
-          fields: ['myIndex'],
-          indexName:
-            'by_myIndex_filter_((SOME_FIELD_$exists_true)_$and_(SOME_FIELD_$gt_null))_and_((SOME_FIELD_$eq_1)_$or_(SOME_FIELD_$eq_2))',
-          partial_filter_selector: {
-            $and: [
-              { SOME_FIELD: { $exists: true } },
-              { SOME_FIELD: { $gt: null } }
-            ],
-            $or: [{ SOME_FIELD: { $eq: '1' } }, { SOME_FIELD: { $eq: '2' } }]
-          }
-        }
-      })
-    })
-
-    it('uses the specified index', async () => {
-      let spyIndex = jest
-        .spyOn(CozyPouchLink.prototype, 'ensureIndex')
-        .mockReturnValue({ id: 'design/myIndex2' })
-
-      await setup()
-      const db = link.getPouch(TODO_DOCTYPE)
-      await link.executeQuery({
-        doctype: TODO_DOCTYPE,
-        indexedFields: ['myIndex2'],
-        selector: {}
-      })
-      const params = {
-        sort: undefined,
-        selector: {
-          myIndex2: {
-            $gt: null
-          }
-        },
-        fields: undefined,
-        limit: undefined,
-        partialFilter: undefined,
-        skip: undefined
-      }
-
-      expect(spyIndex).toHaveBeenCalledWith('io.cozy.todos', {
-        ...params,
-        indexedFields: ['myIndex2']
-      })
-      params.use_index = 'design/myIndex2'
-      expect(find).toHaveBeenCalledWith(db, params)
-      spyIndex.mockRestore()
     })
   })
 

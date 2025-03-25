@@ -8,7 +8,13 @@ import Loop from './loop'
 import logger from './logger'
 import { platformWeb } from './platformWeb'
 import { replicateOnce } from './replicateOnce'
-import { allSettled, formatAggregatedError, getDatabaseName } from './utils'
+import {
+  allSettled,
+  formatAggregatedError,
+  getDatabaseName,
+  getDoctypeFromDatabaseName
+} from './utils'
+import PouchDBQueryEngine from './db/pouchdb/pouchdb'
 
 const DEFAULT_DELAY = 30 * 1000
 
@@ -39,9 +45,12 @@ class PouchManager {
     this.storage = new PouchLocalStorage(
       options.platform?.storage || platformWeb.storage
     )
+    this.queryEngine = options.queryEngine || PouchDBQueryEngine
+    this.client = options.client
     this.PouchDB = options.platform?.pouchAdapter || platformWeb.pouchAdapter
     this.isOnline = options.platform?.isOnline || platformWeb.isOnline
     this.events = options.platform?.events || platformWeb.events
+    this.dbQueryEngines = new Map()
   }
 
   async init() {
@@ -53,14 +62,23 @@ class PouchManager {
 
     forEach(pouchPlugins, plugin => this.PouchDB.plugin(plugin))
     this.pouches = fromPairs(
-      this.doctypes.map(doctype => [
-        doctype,
-        new this.PouchDB(
+      this.doctypes.map(doctype => {
+        const dbName = getDatabaseName(this.options.prefix, doctype)
+        const pouch = new this.PouchDB(
           getDatabaseName(this.options.prefix, doctype),
           pouchOptions
         )
-      ])
+
+        return [dbName, pouch]
+      })
     )
+
+    Object.keys(this.pouches).forEach(dbName => {
+      // Set query engine for all databases
+      const doctype = getDoctypeFromDatabaseName(dbName)
+      this.setQueryEngine(dbName, doctype)
+    })
+
     /** @type {Record<string, import('./types').SyncInfo>} - Stores synchronization info per doctype */
     this.syncedDoctypes = await this.storage.getPersistedSyncedDoctypes()
     this.warmedUpQueries = await this.storage.getPersistedWarmedUpQueries()
@@ -229,8 +247,23 @@ class PouchManager {
     return allSettled(Object.values(this.replications))
   }
 
-  getPouch(doctype) {
-    return this.pouches[doctype]
+  getPouch(dbName) {
+    return this.pouches[dbName]
+  }
+
+  setQueryEngine(name, doctype) {
+    const engine = new this.queryEngine(this, doctype)
+    engine.openDB(name)
+    this.dbQueryEngines.set(name, engine)
+    return engine
+  }
+
+  getQueryEngine(name, doctype) {
+    let engine = this.dbQueryEngines.get(name)
+    if (!engine) {
+      engine = this.setQueryEngine(name, doctype)
+    }
+    return engine
   }
 
   /**

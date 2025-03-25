@@ -10,6 +10,14 @@ export const getDatabaseName = (prefix, doctype) => {
   return `${prefix}_${doctype}`
 }
 
+export const getDoctypeFromDatabaseName = dbName => {
+  if (!dbName) {
+    return null
+  }
+  const tokens = dbName.split(DATABASE_NAME_SEPARATOR)
+  return tokens[tokens.length - 1]
+}
+
 /**
  * Get the URI prefix
  *
