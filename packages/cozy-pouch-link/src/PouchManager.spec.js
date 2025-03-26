@@ -60,6 +60,9 @@ const query2 = () => ({
     as: 'query2'
   }
 })
+
+const dbName = 'cozy.tools__doctype__io.cozy.todos'
+
 describe('PouchManager', () => {
   let manager,
     managerOptions,
@@ -76,7 +79,7 @@ describe('PouchManager', () => {
     }
     manager = new PouchManager(['io.cozy.todos'], managerOptions)
     await manager.init()
-    const pouch = manager.getPouch('io.cozy.todos')
+    const pouch = manager.getPouch(dbName)
     const replication = mocks.pouchReplication({
       direction: 'pull',
       change: {
@@ -106,7 +109,7 @@ describe('PouchManager', () => {
     manager.startReplicationLoop()
     await sleep(1000)
     expect(fetchRemoteInstance).toHaveBeenCalledTimes(1)
-    const pouch = manager.getPouch('io.cozy.todos')
+    const pouch = manager.getPouch(dbName)
     expect(pouch.info).toHaveBeenCalledTimes(1)
     expect(pouch.sync).toHaveBeenCalled()
   })
@@ -114,19 +117,19 @@ describe('PouchManager', () => {
   it('should call info() on all pouches before starting replication', async () => {
     manager.startReplicationLoop()
     await sleep(1)
-    expect(manager.getPouch('io.cozy.todos').info).toHaveBeenCalled()
+    expect(manager.getPouch(dbName).info).toHaveBeenCalled()
     manager.stopReplicationLoop()
     manager.startReplicationLoop()
     await sleep(1)
 
     // Database existence check should only occur once
-    expect(manager.getPouch('io.cozy.todos').info).toHaveBeenCalledTimes(1)
+    expect(manager.getPouch(dbName).info).toHaveBeenCalledTimes(1)
   })
 
   it('should periodically call sync', async () => {
     manager.startReplicationLoop()
     await sleep(1000)
-    const pouch = manager.getPouch('io.cozy.todos')
+    const pouch = manager.getPouch(dbName)
     expect(pouch.sync.mock.calls.length).toBeGreaterThan(5)
   })
 
@@ -138,8 +141,10 @@ describe('PouchManager', () => {
       }
     })
     await manager.init()
-    const normalPouch = manager.getPouch('io.cozy.todos')
-    const readOnlyPouch = manager.getPouch('io.cozy.readonly')
+    const normalPouch = manager.getPouch(dbName)
+    const readOnlyPouch = manager.getPouch(
+      'cozy.tools__doctype__io.cozy.readonly'
+    )
     readOnlyPouch.replicate = {}
     readOnlyPouch.replicate.from = jest.fn()
     manager.startReplicationLoop()
@@ -161,11 +166,15 @@ describe('PouchManager', () => {
       }
     )
     await manager.init()
-    const normalPouch = manager.getPouch('io.cozy.todos')
-    const readOnlyPouch = manager.getPouch('io.cozy.readonly')
+    const normalPouch = manager.getPouch(dbName)
+    const readOnlyPouch = manager.getPouch(
+      'cozy.tools__doctype__io.cozy.readonly'
+    )
     readOnlyPouch.replicate = {}
     readOnlyPouch.replicate.from = jest.fn()
-    const writeOnlyPouch = manager.getPouch('io.cozy.writeonly')
+    const writeOnlyPouch = manager.getPouch(
+      'cozy.tools__doctype__io.cozy.writeonly'
+    )
     writeOnlyPouch.replicate = {}
     writeOnlyPouch.replicate.to = jest.fn()
     manager.updateSyncInfo('io.cozy.todos')
@@ -226,7 +235,7 @@ describe('PouchManager', () => {
     manager.updateSyncInfo('io.cozy.todos')
     await manager.replicateOnce()
     expect(onSync).toHaveBeenCalledWith({
-      'io.cozy.todos': [
+      'cozy.tools__doctype__io.cozy.todos': [
         {
           _id: '1',
           name: 'Make replication work'
@@ -252,7 +261,7 @@ describe('PouchManager', () => {
     const manager = new PouchManager(['io.cozy.todos'], options)
     await manager.init()
     expect(PouchDB).toHaveBeenCalledWith(
-      'cozy.tools_io.cozy.todos',
+      'cozy.tools__doctype__io.cozy.todos',
       pouchOptions
     )
   })

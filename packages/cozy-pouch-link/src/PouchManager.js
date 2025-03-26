@@ -14,6 +14,7 @@ import {
   getDatabaseName,
   getDoctypeFromDatabaseName
 } from './utils'
+import { destroyOldDatabases } from './migrations/pouchdb'
 import PouchDBQueryEngine from './db/pouchdb/pouchdb'
 
 const DEFAULT_DELAY = 30 * 1000
@@ -98,6 +99,8 @@ class PouchManager {
 
     /** @type {import('./types').CancelablePromise[]} - Stores replication promises */
     this.replications = undefined
+
+    destroyOldDatabases()
   }
 
   addListeners() {

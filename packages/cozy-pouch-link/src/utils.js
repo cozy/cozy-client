@@ -1,3 +1,5 @@
+export const DATABASE_NAME_SEPARATOR = '__doctype__'
+
 /**
  * Get the database name based on prefix and doctype
  *
@@ -7,6 +9,19 @@
  * @returns {string} The database name
  */
 export const getDatabaseName = (prefix, doctype) => {
+  return `${prefix}${DATABASE_NAME_SEPARATOR}${doctype}`
+}
+
+/**
+ * Get the old database name, based on prefix and doctype
+ * Used for migration purposes
+ *
+ * @param {string} prefix - The URL prefix
+ * @param {string} doctype - The database doctype
+ *
+ * @returns {string} The database name
+ */
+export const getOldDatabaseName = (prefix, doctype) => {
   return `${prefix}_${doctype}`
 }
 
