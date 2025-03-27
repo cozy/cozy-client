@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [57.6.0](https://github.com/cozy/cozy-client/compare/v57.5.0...v57.6.0) (2025-03-27)
+
+
+### Bug Fixes
+
+* Do not store existing documents ([9966988](https://github.com/cozy/cozy-client/commit/99669888b6558095b5849c43505578582d48b9b8))
+* Early return when there is no result ([5c02d59](https://github.com/cozy/cozy-client/commit/5c02d59912e7e37f5ff56f837f1b68655c7962c7))
+* Relationships normalization ([2a967d3](https://github.com/cozy/cozy-client/commit/2a967d3d2c9155b115391a6e06dc81c4c437c059))
+
+
+### Features
+
+* Add queryEngine platform option ([3f40ebc](https://github.com/cozy/cozy-client/commit/3f40ebcde0a984bf79de31896c7f1382830ce8ac))
+* Add SQLite QueryEngine ([bbe89b3](https://github.com/cozy/cozy-client/commit/bbe89b3fdbd8bf758db101f76b5223a21f3a312a))
+* Change PouchDB databases naming ([48217cd](https://github.com/cozy/cozy-client/commit/48217cdca1b355821fc1b0a04ecb626995660c5e))
+* Do not include design doc in results ([26cd93f](https://github.com/cozy/cozy-client/commit/26cd93faba31495542eebfcf7d7bd762f5855c49))
+
+
+
+
+
 # [57.5.0](https://github.com/cozy/cozy-client/compare/v57.4.0...v57.5.0) (2025-03-13)
 
 

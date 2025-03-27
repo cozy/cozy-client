@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [57.6.0](https://github.com/cozy/cozy-client/compare/v57.5.0...v57.6.0) (2025-03-27)
+
+
+### Bug Fixes
+
+* Simple query example ([bd666b8](https://github.com/cozy/cozy-client/commit/bd666b89da0741de31a0a9814e608b3c75966d51))
+
+
+
+
+
 # [57.5.0](https://github.com/cozy/cozy-client/compare/v57.4.0...v57.5.0) (2025-03-13)
 
 
