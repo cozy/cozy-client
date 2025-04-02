@@ -530,11 +530,16 @@ class PouchLink extends CozyLink {
     // database as their data already exists in the document's root, as its
     // already done by cozy-stack-client.
     const sanitizedDoc = sanitizeJsonApi(doc)
-
     try {
       sanitizedDoc.cozyLocalOnly = true
+
       const engine = this.getQueryEngineFromDoctype(doc._type)
+      const pouch = this.getPouch(doc._type)
       const resp = await getExistingDocument(engine, sanitizedDoc._id)
+      if (!resp?.data || Object.keys(resp?.data).length < 1) {
+        // Doc does not exist in db, save it
+        return pouch.put(sanitizedDoc)
+      }
       const oldDoc = sanitizeJsonApi(resp.data)
       if (areDocsEqual(oldDoc, sanitizedDoc)) {
         // Docs are the same, no need to save
@@ -542,10 +547,10 @@ class PouchLink extends CozyLink {
       }
       sanitizedDoc._rev = oldDoc._rev
 
-      const pouch = this.getPouch(doc._type)
       await pouch.put(sanitizedDoc)
     } catch (err) {
-      // Do nothing on catch, to avoid throwing a query
+      logger.error(`PersistCozyData failed: with ${err}`)
+      // Do nothing on catch, to avoid throwing a read query
       return null
     }
 
