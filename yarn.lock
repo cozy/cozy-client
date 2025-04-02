@@ -2754,6 +2754,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@op-engineering/op-sqlite@npm:^11.4.8":
+  version: 11.4.8
+  resolution: "@op-engineering/op-sqlite@npm:11.4.8"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/ad112b04465c4f3d98bfe9a71e8696b03d5b48ac71c3755264a0895539e0f6251b3fd9679b07e94b5067c3e833de38a1849b061a556a60bf6cccd519fb31894c
+  languageName: node
+  linkType: hard
+
 "@parcel/bundler-default@npm:2.13.3":
   version: 2.13.3
   resolution: "@parcel/bundler-default@npm:2.13.3"
@@ -6668,6 +6678,7 @@ __metadata:
   dependencies:
     "@babel/cli": "npm:7.12.8"
     "@cozy/minilog": "npm:1.0.0"
+    "@op-engineering/op-sqlite": "npm:^11.4.8"
     cozy-client: "npm:^57.6.0"
     cozy-device-helper: "npm:2.7.0"
     jest-localstorage-mock: "npm:2.4.19"
