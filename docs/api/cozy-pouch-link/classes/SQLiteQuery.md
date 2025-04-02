@@ -27,156 +27,142 @@ DatabaseQueryEngine.constructor
 
 *Defined in*
 
-[db/sqlite/sqliteDb.js:20](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L20)
-
-## Properties
-
-### client
-
-• **client**: `any`
-
-*Defined in*
-
-[db/sqlite/sqliteDb.js:23](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L23)
-
-***
-
-### db
-
-• **db**: `DB`
-
-*Defined in*
-
-[db/sqlite/sqliteDb.js:22](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L22)
-
-***
-
-### doctype
-
-• **doctype**: `any`
-
-*Defined in*
-
-[db/sqlite/sqliteDb.js:24](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L24)
+[db/sqlite/sqliteDb.js:3](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L3)
 
 ## Methods
 
 ### allDocs
 
-▸ **allDocs**(`__namedParameters?`): `Promise`<{ `data`: `any` = doc; `meta`: `undefined` ; `next`: `undefined` ; `skip`: `undefined`  } | { `data`: `any`\[] = parsedResults; `meta`: { `count`: `number` = parsedResults.length } ; `next`: `boolean` ; `skip`: `number`  }>
+▸ **allDocs**(`options`): `Promise`<`QueryResponse`>
+
+Get all docs
 
 *Parameters*
 
-| Name | Type |
-| :------ | :------ |
-| `__namedParameters` | `Object` |
-| `__namedParameters.limit` | `number` |
-| `__namedParameters.skip` | `number` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `options` | `AllDocsParams` | The all docs options |
 
 *Returns*
 
-`Promise`<{ `data`: `any` = doc; `meta`: `undefined` ; `next`: `undefined` ; `skip`: `undefined`  } | { `data`: `any`\[] = parsedResults; `meta`: { `count`: `number` = parsedResults.length } ; `next`: `boolean` ; `skip`: `number`  }>
+`Promise`<`QueryResponse`>
 
-*Overrides*
+The found docs
+
+*Inherited from*
 
 DatabaseQueryEngine.allDocs
 
 *Defined in*
 
-[db/sqlite/sqliteDb.js:44](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L44)
+[db/dbInterface.js:55](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/dbInterface.js#L55)
 
 ***
 
 ### find
 
-▸ **find**(`options`): `Promise`<{ `data`: `any` = doc; `meta`: `undefined` ; `next`: `undefined` ; `skip`: `undefined`  } | { `data`: `any`\[] = parsedResults; `meta`: { `count`: `number` = parsedResults.length } ; `next`: `boolean` ; `skip`: `number`  }>
+▸ **find**(`options`): `Promise`<`QueryResponse`>
+
+Find docs with filtered query
 
 *Parameters*
 
-| Name | Type |
-| :------ | :------ |
-| `options` | `any` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `options` | `FindParams` | The find options |
 
 *Returns*
 
-`Promise`<{ `data`: `any` = doc; `meta`: `undefined` ; `next`: `undefined` ; `skip`: `undefined`  } | { `data`: `any`\[] = parsedResults; `meta`: { `count`: `number` = parsedResults.length } ; `next`: `boolean` ; `skip`: `number`  }>
+`Promise`<`QueryResponse`>
 
-*Overrides*
+The found docs
+
+*Inherited from*
 
 DatabaseQueryEngine.find
 
 *Defined in*
 
-[db/sqlite/sqliteDb.js:85](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L85)
+[db/dbInterface.js:45](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/dbInterface.js#L45)
 
 ***
 
 ### getById
 
-▸ **getById**(`id`): `Promise`<{ `data`: `any` = doc; `meta`: `undefined` ; `next`: `undefined` ; `skip`: `undefined`  } | { `data`: `any`\[] = parsedResults; `meta`: { `count`: `number` = parsedResults.length } ; `next`: `boolean` ; `skip`: `number`  }>
+▸ **getById**(`id`): `Promise`<`QueryResponseSingleDoc`>
+
+Get a single doc by its id
 
 *Parameters*
 
-| Name | Type |
-| :------ | :------ |
-| `id` | `any` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `id` | `string` | id of the document to get |
 
 *Returns*
 
-`Promise`<{ `data`: `any` = doc; `meta`: `undefined` ; `next`: `undefined` ; `skip`: `undefined`  } | { `data`: `any`\[] = parsedResults; `meta`: { `count`: `number` = parsedResults.length } ; `next`: `boolean` ; `skip`: `number`  }>
+`Promise`<`QueryResponseSingleDoc`>
 
-*Overrides*
+The found docs
+
+*Inherited from*
 
 DatabaseQueryEngine.getById
 
 *Defined in*
 
-[db/sqlite/sqliteDb.js:59](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L59)
+[db/dbInterface.js:65](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/dbInterface.js#L65)
 
 ***
 
 ### getByIds
 
-▸ **getByIds**(`ids`): `Promise`<{ `data`: `any` = doc; `meta`: `undefined` ; `next`: `undefined` ; `skip`: `undefined`  } | { `data`: `any`\[] = parsedResults; `meta`: { `count`: `number` = parsedResults.length } ; `next`: `boolean` ; `skip`: `number`  }>
+▸ **getByIds**(`ids`): `Promise`<`QueryResponse`>
+
+Get several docs by their ids
 
 *Parameters*
 
-| Name | Type |
-| :------ | :------ |
-| `ids` | `any` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `ids` | `string`\[] | ids of the documents to get |
 
 *Returns*
 
-`Promise`<{ `data`: `any` = doc; `meta`: `undefined` ; `next`: `undefined` ; `skip`: `undefined`  } | { `data`: `any`\[] = parsedResults; `meta`: { `count`: `number` = parsedResults.length } ; `next`: `boolean` ; `skip`: `number`  }>
+`Promise`<`QueryResponse`>
 
-*Overrides*
+The found docs
+
+*Inherited from*
 
 DatabaseQueryEngine.getByIds
 
 *Defined in*
 
-[db/sqlite/sqliteDb.js:73](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L73)
+[db/dbInterface.js:75](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/dbInterface.js#L75)
 
 ***
 
 ### openDB
 
-▸ **openDB**(`dbName`): `DB`
+▸ **openDB**(`dbName`): `void`
+
+Open the database
 
 *Parameters*
 
-| Name | Type |
-| :------ | :------ |
-| `dbName` | `any` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `dbName` | `string` | The database name |
 
 *Returns*
 
-`DB`
+`void`
 
-*Overrides*
+*Inherited from*
 
 DatabaseQueryEngine.openDB
 
 *Defined in*
 
-[db/sqlite/sqliteDb.js:27](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L27)
+[db/dbInterface.js:35](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/dbInterface.js#L35)
