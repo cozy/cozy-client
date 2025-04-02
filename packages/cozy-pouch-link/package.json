@@ -20,6 +20,7 @@
   "devDependencies": {
     "@babel/cli": "7.12.8",
     "@cozy/minilog": "1.0.0",
+    "@op-engineering/op-sqlite": "^11.4.8",
     "cozy-device-helper": "2.7.0",
     "jest-localstorage-mock": "2.4.19",
     "parcel": "2.13.3",
