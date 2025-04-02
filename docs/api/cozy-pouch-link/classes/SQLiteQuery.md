@@ -27,7 +27,7 @@ DatabaseQueryEngine.constructor
 
 *Defined in*
 
-[db/sqlite/sqliteDb.js:23](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L23)
+[db/sqlite/sqliteDb.js:20](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L20)
 
 ## Properties
 
@@ -37,17 +37,17 @@ DatabaseQueryEngine.constructor
 
 *Defined in*
 
-[db/sqlite/sqliteDb.js:26](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L26)
+[db/sqlite/sqliteDb.js:23](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L23)
 
 ***
 
 ### db
 
-• **db**: `any`
+• **db**: `DB`
 
 *Defined in*
 
-[db/sqlite/sqliteDb.js:25](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L25)
+[db/sqlite/sqliteDb.js:22](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L22)
 
 ***
 
@@ -57,7 +57,7 @@ DatabaseQueryEngine.constructor
 
 *Defined in*
 
-[db/sqlite/sqliteDb.js:27](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L27)
+[db/sqlite/sqliteDb.js:24](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L24)
 
 ## Methods
 
@@ -70,7 +70,7 @@ DatabaseQueryEngine.constructor
 | Name | Type |
 | :------ | :------ |
 | `__namedParameters` | `Object` |
-| `__namedParameters.limit` | `any` |
+| `__namedParameters.limit` | `number` |
 | `__namedParameters.skip` | `number` |
 
 *Returns*
@@ -83,7 +83,7 @@ DatabaseQueryEngine.allDocs
 
 *Defined in*
 
-[db/sqlite/sqliteDb.js:45](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L45)
+[db/sqlite/sqliteDb.js:44](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L44)
 
 ***
 
@@ -107,7 +107,7 @@ DatabaseQueryEngine.find
 
 *Defined in*
 
-[db/sqlite/sqliteDb.js:86](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L86)
+[db/sqlite/sqliteDb.js:85](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L85)
 
 ***
 
@@ -131,7 +131,7 @@ DatabaseQueryEngine.getById
 
 *Defined in*
 
-[db/sqlite/sqliteDb.js:60](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L60)
+[db/sqlite/sqliteDb.js:59](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L59)
 
 ***
 
@@ -155,13 +155,13 @@ DatabaseQueryEngine.getByIds
 
 *Defined in*
 
-[db/sqlite/sqliteDb.js:74](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L74)
+[db/sqlite/sqliteDb.js:73](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L73)
 
 ***
 
 ### openDB
 
-▸ **openDB**(`dbName`): `any`
+▸ **openDB**(`dbName`): `DB`
 
 *Parameters*
 
@@ -171,7 +171,7 @@ DatabaseQueryEngine.getByIds
 
 *Returns*
 
-`any`
+`DB`
 
 *Overrides*
 
@@ -179,4 +179,4 @@ DatabaseQueryEngine.openDB
 
 *Defined in*
 
-[db/sqlite/sqliteDb.js:30](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L30)
+[db/sqlite/sqliteDb.js:27](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/db/sqlite/sqliteDb.js#L27)

@@ -1,13 +1,14 @@
 import CozyClient, { generateWebLink } from 'cozy-client'
 import omit from 'lodash/omit'
 import startsWith from 'lodash/startsWith'
+import { getCozyPouchData } from './db/helpers'
 
 /**
  * Normalize several PouchDB document
  *
  * @param {CozyClient} client - The CozyClient instance
  * @param {string} doctype - The document's doctype
- * @param {Array<import('./CozyPouchLink').CozyClientDocument>} docs - The documents to normalize
+ * @param {Array<import('./CozyPouchLink').CozyPouchDocument>} docs - The documents to normalize
  */
 export const normalizeDocs = (client, doctype, docs) => {
   for (let i = docs.length; i >= 0; i--) {
@@ -31,7 +32,7 @@ export const normalizeDocs = (client, doctype, docs) => {
  *
  * @param {CozyClient} client - The CozyClient instance
  * @param {string} doctype - The document's doctype
- * @param {import('./CozyPouchLink').CozyClientDocument} doc - The document to normalize
+ * @param {import('./CozyPouchLink').CozyPouchDocument} doc - The document to normalize
  */
 export const normalizeDoc = (client, doctype, doc) => {
   const id = doc._id || doc.id
@@ -86,18 +87,10 @@ export const fromPouchResult = ({ res, withRows, doctype, client }) => {
     return null
   }
 
-  // Sometimes, queries are transformed by Collections and they call a dedicated
-  // cozy-stack route. When this is the case, we want to be able to replicate the same
-  // query from cozy-pouch-link. It is not possible as-is because the received data
-  // is not the same as the one stored in the Couch database
-  // To handle this, we store the received data in the Pouch with a dedicated id and
-  // we store the query result in a `cozyPouchData` attribute
-  // So when `cozyPouchData` attribute exists, we know that we want to return its content
-  // as the result of the query
-  if (res.cozyPouchData) {
-    return {
-      data: res.cozyPouchData
-    }
+  // Handle special case for docs with `cozyPouchData`
+  const cozyPouchData = getCozyPouchData(res)
+  if (cozyPouchData) {
+    return { data: cozyPouchData }
   }
   if (withRows) {
     const docs = res.rows ? res.rows.map(row => row.doc) : res.docs

@@ -54,8 +54,7 @@ export const getReplicationURL = (uri, token, doctype) => {
 const doNothing = (operation, result = null) => {}
 
 /**
- * @typedef {import('cozy-client/src/types').CozyClientDocument} CozyClientDocument
- *
+ * @typedef {import('cozy-client/src/types').CozyClientDocument & { cozyPouchData: any }} CozyPouchDocument *
  * @typedef {"idle"|"replicating"} ReplicationStatus
  */
 
