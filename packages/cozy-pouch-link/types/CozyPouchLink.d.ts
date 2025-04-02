@@ -1,6 +1,6 @@
 export function getReplicationURL(uri: any, token: any, doctype: any): string;
 export default PouchLink;
-export type CozyClientDocument = any;
+export type CozyPouchDocument = any;
 export type ReplicationStatus = "idle" | "replicating";
 export type PouchLinkOptions = {
     /**
@@ -41,8 +41,7 @@ export type PouchLinkOptions = {
     performanceApi?: any;
 };
 /**
- * @typedef {import('cozy-client/src/types').CozyClientDocument} CozyClientDocument
- *
+ * @typedef {import('cozy-client/src/types').CozyClientDocument & { cozyPouchData: any }} CozyPouchDocument *
  * @typedef {"idle"|"replicating"} ReplicationStatus
  */
 /**

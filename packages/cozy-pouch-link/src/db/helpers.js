@@ -36,3 +36,21 @@ export const areDocsEqual = async (oldDoc, newDoc) => {
   }
   return false
 }
+
+/**
+ * Get cozyPouchData from a document
+ * 
+ * Sometimes, queries are transformed by Collections and they call a dedicated
+ * cozy-stack route. When this is the case, we want to be able to replicate the same
+ * query from cozy-pouch-link. It is not possible as-is because the received data
+ * is not the same as the one stored in the Couch database
+ * To handle this, we store the received data in the Pouch with a dedicated id and
+ * we store the query result in a `cozyPouchData` attribute
+ * So when `cozyPouchData` attribute exists, we know that we want to return its content
+ * as the result of the query
+ * @param {import('../CozyPouchLink').CozyPouchDocument} doc 
+ * @returns 
+ */
+export const getCozyPouchData = (doc) => {
+  return doc.cozyPouchData
+}

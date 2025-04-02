@@ -1,5 +1,5 @@
-export function normalizeDocs(client: CozyClient, doctype: string, docs: Array<import('./CozyPouchLink').CozyClientDocument>): void;
-export function normalizeDoc(client: CozyClient, doctype: string, doc: any): void;
+export function normalizeDocs(client: CozyClient, doctype: string, docs: Array<import('./CozyPouchLink').CozyPouchDocument>): void;
+export function normalizeDoc(client: CozyClient, doctype: string, doc: import('./CozyPouchLink').CozyPouchDocument): void;
 export function fromPouchResult({ res, withRows, doctype, client }: {
     res: any;
     withRows: any;

@@ -2,7 +2,7 @@ export function keepDocWitHighestRev(docs: any): any;
 export function parseResults(client: any, result: any, doctype: any, { isSingleDoc, skip, limit }?: {
     isSingleDoc?: boolean;
     skip?: number;
-    limit?: any;
+    limit?: number;
 }): {
     data: any;
     meta?: undefined;
@@ -23,7 +23,7 @@ export function makeSQLQueryFromMango({ selector, sort, indexName, limit, skip }
     selector: any;
     sort: any;
     indexName: any;
-    limit: any;
+    limit?: number;
     skip?: number;
 }): string;
 export function makeSQLQueryForId(id: any): string;

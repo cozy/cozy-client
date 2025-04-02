@@ -1,4 +1,5 @@
 import { normalizeDoc } from '../../jsonapi'
+import { getCozyPouchData } from '../helpers'
 
 const MANGO_TO_SQL_OP = {
   $eq: '=',
@@ -44,10 +45,15 @@ export const parseResults = (
   { isSingleDoc = false, skip = 0, limit = -1 } = {}
 ) => {
   let parsedResults = []
-
   for (let i = 0; i < result.rows.length; i++) {
     const item = result.rows.item(i)
     const doc = JSON.parse(item['data'])
+
+    // Handle special case for docs with `cozyPouchData`
+    const cozyPouchData = getCozyPouchData(doc)
+    if (cozyPouchData) {
+      return { data: cozyPouchData }
+    }
     doc._id = item.doc_id
     doc._rev = item.rev
     doc._type = doctype
