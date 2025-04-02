@@ -68,7 +68,10 @@ export const parseResults = (
   // next parameter, but we prefer to avoid this computation for performances.
   // So let's rely on the total number of returned rows - if next is true, the last paginated
   // query should have less results than the limit, thanks to the offset
-  const next = limit ? parsedResults.length >= limit : false
+  let next = false
+  if (limit !== -1 && parsedResults.length >= limit) {
+    next = true
+  }
   return {
     data: parsedResults,
     meta: { count: parsedResults.length },

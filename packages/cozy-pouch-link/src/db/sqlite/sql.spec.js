@@ -338,7 +338,61 @@ describe('parseResults', () => {
     expect(parsed.data.length).toBe(3)
   })
 
+  it('should set next=true when there is as much docs as specified limit ', () => {
+    const result = {
+      rows: {
+        length: 3,
+        item: jest.fn().mockImplementation(i => ({
+          data: JSON.stringify({ name: `doc${i}` }),
+          doc_id: `id${i}`,
+          rev: `rev${i}`
+        }))
+      }
+    }
 
+    const parsed = parseResults(client, result, doctype, { limit: 3 })
+
+    expect(parsed.next).toBe(true)
+    expect(parsed.data.length).toBe(3)
+  })
+
+  it('should set next=false when there are less docs than specified limit', () => {
+    const result = {
+      rows: {
+        length: 3,
+        item: jest.fn().mockImplementation(i => ({
+          data: JSON.stringify({ name: `doc${i}` }),
+          doc_id: `id${i}`,
+          rev: `rev${i}`
+        }))
+      }
+    }
+
+    const parsed = parseResults(client, result, doctype, { limit: 4 })
+
+    expect(parsed.next).toBe(false)
+    expect(parsed.data.length).toBe(3)
+  })
+
+  it('should set next=false when there is no limit', () => {
+    const result = {
+      rows: {
+        length: 3,
+        item: jest.fn().mockImplementation(i => ({
+          data: JSON.stringify({ name: `doc${i}` }),
+          doc_id: `id${i}`,
+          rev: `rev${i}`
+        }))
+      }
+    }
+
+    const parsed1 = parseResults(client, result, doctype, { limit: -1 })
+    expect(parsed1.next).toBe(false)
+    expect(parsed1.data.length).toBe(3)
+    const parsed2 = parseResults(client, result, doctype)
+    expect(parsed2.next).toBe(false)
+    expect(parsed2.data.length).toBe(3)
+  })
 
   it('should handle single document correctly', () => {
     const result = {
@@ -362,6 +416,4 @@ describe('parseResults', () => {
       name: 'single_doc'
     })
   })
-
-
 })
