@@ -308,16 +308,5 @@ export const deleteIndex = async (db, indexName) => {
 }
 
 export const executeSQL = async (db, sql) => {
-  const result = await new Promise((resolve, reject) => {
-    db.transaction(tx => {
-      tx.executeAsync(sql)
-        .then(res => {
-          resolve(res)
-        })
-        .catch(err => {
-          reject(err)
-        })
-    })
-  })
-  return result
+  return db.executeAsync(sql)
 }
