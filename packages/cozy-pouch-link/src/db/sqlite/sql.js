@@ -41,7 +41,7 @@ export const parseResults = (
   client,
   result,
   doctype,
-  { isSingleDoc = false, skip = 0, limit = null } = {}
+  { isSingleDoc = false, skip = 0, limit = -1 } = {}
 ) => {
   let parsedResults = []
 
@@ -175,7 +175,7 @@ export const makeSQLQueryFromMango = ({
   selector,
   sort,
   indexName,
-  limit,
+  limit = -1,
   skip = 0
 }) => {
   const whereClause = makeWhereClause(selector)
@@ -184,8 +184,7 @@ export const makeSQLQueryFromMango = ({
   let sql = [
     `SELECT json AS data, doc_id, rev`,
     `FROM 'by-sequence' INDEXED BY ${indexName}`,
-    `WHERE ${whereClause}`,
-    `LIMIT ${limit}`
+    `WHERE ${whereClause}`
   ].join(' ')
 
   if (skip > 0) {
@@ -194,6 +193,8 @@ export const makeSQLQueryFromMango = ({
   if (sortClause) {
     sql += ` ORDER BY ${sortClause}`
   }
+  sql += ` LIMIT ${limit}`
+
   sql += ';'
   return sql
 }

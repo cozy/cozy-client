@@ -171,8 +171,8 @@ describe('makeSQLQueryFromMango', () => {
       `SELECT json AS data, doc_id, rev`,
       `FROM 'by-sequence' INDEXED BY by_name`,
       `WHERE DELETED = 0 AND json_extract(data, '$.date') > '2025-01-01'`,
-      `LIMIT 100`,
-      `ORDER BY json_extract(data, '$.date') ASC;`
+      `ORDER BY json_extract(data, '$.date') ASC`,
+      `LIMIT 100;`
     ].join(' ')
     expect(sql).toEqual(expectedSql)
   })
@@ -193,8 +193,8 @@ describe('makeSQLQueryFromMango', () => {
       `SELECT json AS data, doc_id, rev`,
       `FROM 'by-sequence' INDEXED BY by_name`,
       `WHERE DELETED = 0 AND json_extract(data, '$.date') > '2025-01-01'`,
-      `LIMIT 200`,
-      `OFFSET 100;`
+      `OFFSET 100`,
+      `LIMIT 200;`
     ].join(' ')
     expect(sql).toEqual(expectedSql)
   })
@@ -338,6 +338,8 @@ describe('parseResults', () => {
     expect(parsed.data.length).toBe(3)
   })
 
+
+
   it('should handle single document correctly', () => {
     const result = {
       rows: {
@@ -360,4 +362,6 @@ describe('parseResults', () => {
       name: 'single_doc'
     })
   })
+
+
 })

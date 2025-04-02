@@ -42,7 +42,7 @@ export default class SQLiteQueryEngine extends DatabaseQueryEngine {
     return this.db
   }
 
-  async allDocs({ limit = null, skip = 0 } = {}) {
+  async allDocs({ limit = -1, skip = 0 } = {}) {
     try {
       const sql = makeSQLQueryAll({ limit, skip })
       const result = await executeSQL(this.db, sql)
