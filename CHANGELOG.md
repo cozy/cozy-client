@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [57.6.1](https://github.com/cozy/cozy-client/compare/v57.6.0...v57.6.1) (2025-04-03)
+
+
+### Bug Fixes
+
+* Add opsqlite as devDep ([3656709](https://github.com/cozy/cozy-client/commit/3656709c8a3e1266bd7e382bbcf1b91626cbd3b8))
+* Do not use transaction for read queries ([e33547f](https://github.com/cozy/cozy-client/commit/e33547fd3490c598ac0d55875ba48e31e1dd2ea2))
+* Handle `cozyPouchData` for sqlite ([8427309](https://github.com/cozy/cozy-client/commit/84273099352e8e8f9c035c238849cbbf32d0c848))
+* Move sqliteDb in a native code file ([32881bf](https://github.com/cozy/cozy-client/commit/32881bf64ad3db2e5e7b65a9734ee75d8f632186))
+* Pagination ([619aa51](https://github.com/cozy/cozy-client/commit/619aa510920d75c9d79e90ee6dca1bc20a12f700))
+* PersistCozyData for new docs ([baaca44](https://github.com/cozy/cozy-client/commit/baaca44557e0659750cd17da05aa1dd2203f6121))
+* SQL limit ([3dc6ac8](https://github.com/cozy/cozy-client/commit/3dc6ac8568c2dc79217e9ce849b8a91c8935eccb))
+
+
+
+
+
 # [57.6.0](https://github.com/cozy/cozy-client/compare/v57.5.0...v57.6.0) (2025-03-27)
 
 
