@@ -55,3 +55,28 @@ export const areDocsEqual = async (oldDoc, newDoc) => {
 export const getCozyPouchData = doc => {
   return doc.cozyPouchData
 }
+
+const extractRevPrefix = rev => {
+  if (!rev) {
+    return 0
+  }
+  const prefixStr = rev.split('-')[0]
+  return prefixStr ? parseInt(prefixStr) : 0
+}
+
+export const keepDocWitHighestRev = docs => {
+  if (!docs || docs.length < 1) {
+    return null
+  }
+  let highestDocRev = {
+    doc: docs[0],
+    revPrefix: extractRevPrefix(docs[0]._rev)
+  }
+  for (let i = 0; i < docs.length; i++) {
+    const revPrefix = extractRevPrefix(docs[i]._rev)
+    if (revPrefix > highestDocRev.revPrefix) {
+      highestDocRev = { doc: docs[i], revPrefix }
+    }
+  }
+  return highestDocRev.doc
+}
