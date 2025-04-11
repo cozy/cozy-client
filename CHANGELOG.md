@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [57.7.0](https://github.com/cozy/cozy-client/compare/v57.6.1...v57.7.0) (2025-04-11)
+
+
+### Features
+
+* Add sortApplicationsList in apps model ([eed4fad](https://github.com/cozy/cozy-client/commit/eed4fada704360f0a819d1f194457c09d0df3fa1))
+* Use a shorter version of sortApplicationsList ([ae7ae91](https://github.com/cozy/cozy-client/commit/ae7ae9195d6cdc6e293f45eb5a7c4baead8967b5))
+
+
+
+
+
 ## [57.6.1](https://github.com/cozy/cozy-client/compare/v57.6.0...v57.6.1) (2025-04-03)
 
 
