@@ -82,3 +82,38 @@ export const getAppDisplayName = (app, lang) => {
     ? `${translatedPrefix} ${translatedName}`
     : translatedName
 }
+
+/**
+ * sortApplicationsList - Sort the apps based on the slugs in parameters. Apps listed in the slugsOrder array will be added first
+ * and will respect the order defined by slugsOrder and other apps will be added after.
+ *
+ * @param {object[]} apps io.cozy.apps array
+ * @param {string[]} slugsOrder slugs array
+ *
+ * @returns {object[]} io.cozy.apps array
+ */
+export const sortApplicationsList = (apps, slugsOrder) => {
+  const sortedApps = []
+
+  // First we add apps that need to be added first with the custom order
+  slugsOrder.forEach(slugOrder => {
+    const app = apps.find(app => app.slug === slugOrder)
+
+    if (app) {
+      sortedApps.push(app)
+    }
+  })
+
+  // Then we add every other apps not already added
+  apps.forEach(app => {
+    const appAlreadyInSortedApps = sortedApps.find(
+      sortedApp => sortedApp.slug === app.slug
+    )
+
+    if (!appAlreadyInSortedApps) {
+      sortedApps.push(app)
+    }
+  })
+
+  return sortedApps
+}
