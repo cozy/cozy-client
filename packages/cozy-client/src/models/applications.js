@@ -93,27 +93,13 @@ export const getAppDisplayName = (app, lang) => {
  * @returns {object[]} io.cozy.apps array
  */
 export const sortApplicationsList = (apps, slugsOrder) => {
-  const sortedApps = []
+  return [...apps].sort((a, b) => {
+    let indexA = slugsOrder.indexOf(a.slug)
+    if (indexA === -1) indexA = 1000
 
-  // First we add apps that need to be added first with the custom order
-  slugsOrder.forEach(slugOrder => {
-    const app = apps.find(app => app.slug === slugOrder)
+    let indexB = slugsOrder.indexOf(b.slug)
+    if (indexB === -1) indexB = 1000
 
-    if (app) {
-      sortedApps.push(app)
-    }
+    return indexA - indexB
   })
-
-  // Then we add every other apps not already added
-  apps.forEach(app => {
-    const appAlreadyInSortedApps = sortedApps.find(
-      sortedApp => sortedApp.slug === app.slug
-    )
-
-    if (!appAlreadyInSortedApps) {
-      sortedApps.push(app)
-    }
-  })
-
-  return sortedApps
 }
