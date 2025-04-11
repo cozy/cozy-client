@@ -123,3 +123,29 @@ The io.cozy.app is installed or undefined if not
 *Defined in*
 
 [packages/cozy-client/src/models/applications.js:50](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/applications.js#L50)
+
+***
+
+### sortApplicationsList
+
+▸ **sortApplicationsList**(`apps`, `slugsOrder`): `any`\[]
+
+sortApplicationsList - Sort the apps based on the slugs in parameters. Apps listed in the slugsOrder array will be added first
+and will respect the order defined by slugsOrder and other apps will be added after.
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `apps` | `any`\[] | io.cozy.apps array |
+| `slugsOrder` | `string`\[] | slugs array |
+
+*Returns*
+
+`any`\[]
+
+io.cozy.apps array
+
+*Defined in*
+
+[packages/cozy-client/src/models/applications.js:95](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/applications.js#L95)

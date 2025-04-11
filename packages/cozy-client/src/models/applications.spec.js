@@ -1,5 +1,10 @@
 import { applications } from './'
-const { getAppDisplayName, getStoreURL, getStoreInstallationURL } = applications
+const {
+  getAppDisplayName,
+  getStoreURL,
+  getStoreInstallationURL,
+  sortApplicationsList
+} = applications
 
 describe('applications model', () => {
   describe('application name', () => {
@@ -127,6 +132,90 @@ describe('applications model', () => {
           'http://store.cozy.tools:8080/#/discover/contacts/install'
         )
       })
+    })
+  })
+
+  describe('sort applications list', () => {
+    it('should sort apps according to the given order', () => {
+      const availableApps = [
+        { slug: 'drive', name: 'Drive' },
+        { slug: 'chat', name: 'Chat' },
+        { slug: 'mail', name: 'Mail' },
+        { slug: 'contacts', name: 'Contacts' },
+        { slug: 'password', name: 'Password' }
+      ]
+      const order = ['chat', 'drive', 'mail', 'password', 'contacts']
+
+      const expected = [
+        { slug: 'chat', name: 'Chat' },
+        { slug: 'drive', name: 'Drive' },
+        { slug: 'mail', name: 'Mail' },
+        { slug: 'password', name: 'Password' },
+        { slug: 'contacts', name: 'Contacts' }
+      ]
+
+      const result = sortApplicationsList(availableApps, order)
+      expect(result).toEqual(expected)
+    })
+
+    it('should handle apps not in the order array', () => {
+      const availableApps = [
+        { slug: 'drive', name: 'Drive' },
+        { slug: 'chat', name: 'Chat' },
+        { slug: 'store', name: 'Store' },
+        { slug: 'mail', name: 'Mail' },
+        { slug: 'contacts', name: 'Contacts' },
+        { slug: 'password', name: 'Password' },
+        { slug: 'calendar', name: 'Calendar' }
+      ]
+      const order = ['chat', 'drive', 'mail', 'password', 'contacts']
+
+      const expected = [
+        { slug: 'chat', name: 'Chat' },
+        { slug: 'drive', name: 'Drive' },
+        { slug: 'mail', name: 'Mail' },
+        { slug: 'password', name: 'Password' },
+        { slug: 'contacts', name: 'Contacts' },
+        { slug: 'store', name: 'Store' },
+        { slug: 'calendar', name: 'Calendar' }
+      ]
+
+      const result = sortApplicationsList(availableApps, order)
+      expect(result).toEqual(expected)
+    })
+
+    it('should handle an empty apps array', () => {
+      const availableApps = []
+      const order = ['chat', 'drive', 'mail', 'password', 'notes', 'contacts']
+
+      const expected = []
+
+      const result = sortApplicationsList(availableApps, order)
+      expect(result).toEqual(expected)
+    })
+
+    it('should handle an empty order array', () => {
+      const availableApps = [
+        { slug: 'drive', name: 'Drive' },
+        { slug: 'chat', name: 'Chat' },
+        { slug: 'store', name: 'Store' },
+        { slug: 'mail', name: 'Mail' },
+        { slug: 'contacts', name: 'Contacts' },
+        { slug: 'password', name: 'Password' }
+      ]
+      const order = []
+
+      const expected = [
+        { slug: 'drive', name: 'Drive' },
+        { slug: 'chat', name: 'Chat' },
+        { slug: 'store', name: 'Store' },
+        { slug: 'mail', name: 'Mail' },
+        { slug: 'contacts', name: 'Contacts' },
+        { slug: 'password', name: 'Password' }
+      ]
+
+      const result = sortApplicationsList(availableApps, order)
+      expect(result).toEqual(expected)
     })
   })
 })
