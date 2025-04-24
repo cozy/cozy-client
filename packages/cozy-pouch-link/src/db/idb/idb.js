@@ -35,7 +35,7 @@ export default class IndexedDBQueryEngine extends DatabaseQueryEngine {
       this.openRequest = request
     }
     request.onerror = event => {
-      logger.error(`Database error: ${event.target.error}`)
+      logger.error(`Database error: ${JSON.stringify(event.target)}`)
     }
   }
 
