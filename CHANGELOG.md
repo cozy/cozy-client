@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [57.7.1](https://github.com/cozy/cozy-client/compare/v57.7.0...v57.7.1) (2025-04-24)
+
+
+### Bug Fixes
+
+* Ignore Twake prefix in getAppDisplayName ([22e785c](https://github.com/cozy/cozy-client/commit/22e785cec3be331b12908bc48d717dbcf2ba6ebd))
+
+
+
+
+
 # [57.7.0](https://github.com/cozy/cozy-client/compare/v57.6.1...v57.7.0) (2025-04-11)
 
 
