@@ -23,6 +23,12 @@ describe('applications model', () => {
       expect(getAppDisplayName({ name_prefix: 'Cozy', name: 'Cozy' })).toBe(
         'Cozy'
       )
+      expect(getAppDisplayName({ name_prefix: 'Twake', name: 'Cloud' })).toBe(
+        'Cloud'
+      )
+      expect(getAppDisplayName({ name_prefix: 'Twake', name: 'Twake' })).toBe(
+        'Twake'
+      )
     })
 
     it('should support translations', () => {

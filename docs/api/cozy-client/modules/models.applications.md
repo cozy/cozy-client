@@ -148,4 +148,4 @@ io.cozy.apps array
 
 *Defined in*
 
-[packages/cozy-client/src/models/applications.js:95](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/applications.js#L95)
+[packages/cozy-client/src/models/applications.js:97](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/applications.js#L97)
