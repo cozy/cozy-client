@@ -471,7 +471,7 @@ declare class CozyClient {
      * @param  {import("./types").QueryOptions} [options] - Options
      * @returns {Promise<import("./types").QueryResult>}
      */
-    query(queryDefinition: QueryDefinition, { update, executeFromStore, ...options }?: import("./types").QueryOptions): Promise<import("./types").QueryResult>;
+    query(queryDefinition: QueryDefinition, { update, executeFromStore, queryInStore, ...options }?: import("./types").QueryOptions): Promise<import("./types").QueryResult>;
     /**
      * Will fetch all documents for a `queryDefinition`, automatically fetching more
      * documents if the total of documents is superior to the pagination limit. Can

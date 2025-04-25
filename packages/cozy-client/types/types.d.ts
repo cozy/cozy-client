@@ -554,6 +554,10 @@ export type QueryOptions = {
      */
     executeFromStore?: boolean;
     /**
+     * - If set to false, the query will not be loaded nor evaluated in the store
+     */
+    queryInStore?: boolean;
+    /**
      * - If set to true, the query will be executed through StackLink only even if there are other links available
      */
     forceStack?: boolean;

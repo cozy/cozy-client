@@ -121,6 +121,7 @@ const DOC_UPDATE = 'update'
  * @property  {import("./types").AppMetadata}  [appMetadata] - Metadata about the application that will be used in ensureCozyMetadata
  * @property  {import("./types").ClientCapabilities} [capabilities] - Capabilities sent by the stack
  * @property  {boolean} [store] - If set to false, the client will not instantiate a Redux store automatically. Use this if you want to merge cozy-client's store with your own redux store. See [here](https://docs.cozy.io/en/cozy-client/react-integration/#1b-use-your-own-redux-store) for more information.
+ * @property  {boolean} [disableStoreForQueries=false] - If set to true, the client will not leverage the redux store to execute queries and store data. 
  * @property {import('./performances/types').PerformanceAPI} [performanceApi] - The performance API that can be used to measure performances
  */
 
@@ -233,6 +234,7 @@ class CozyClient {
     if (options.store !== false) {
       this.ensureStore()
     }
+    this.disableStoreForQueries = options.disableStoreForQueries || false
   }
 
   /**
@@ -932,7 +934,10 @@ client.query(Q('io.cozy.bills'))`)
     this.ensureStore()
     const queryId =
       options.as || this.queryIdGenerator.generateId(queryDefinition)
-    const existingQuery = this.getQueryFromState(queryId, options)
+    const existingQuery = this.disableStoreForQueries
+      ? null
+      : this.getQueryFromState(queryId, options)
+
     if (options.enabled !== undefined) {
       if ('boolean' !== typeof options.enabled) {
         throw new Error(
@@ -961,14 +966,18 @@ client.query(Q('io.cozy.bills'))`)
         return this._promiseCache.get(() => stringify(queryDefinition))
       }
     }
-    this.ensureQueryExists(queryId, queryDefinition, options)
+    if (!this.disableStoreForQueries) {
+      this.ensureQueryExists(queryId, queryDefinition, options)
+    }
 
     try {
       const backgroundFetching =
         options.backgroundFetching !== undefined
           ? options.backgroundFetching
           : this.options.backgroundFetching
-      this.dispatch(loadQuery(queryId, { backgroundFetching }))
+      if (!this.disableStoreForQueries) {
+        this.dispatch(loadQuery(queryId, { backgroundFetching }))
+      }
 
       const requestFn = executeFromStore
         ? () =>
@@ -979,6 +988,9 @@ client.query(Q('io.cozy.bills'))`)
       const response = await this._promiseCache.exec(requestFn, () =>
         stringify(queryDefinition)
       )
+      if (this.disableStoreForQueries) {
+        return response
+      }
 
       this.dispatch(
         receiveQueryResult(queryId, response, {
