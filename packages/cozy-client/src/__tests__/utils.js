@@ -20,7 +20,7 @@ export const createTestAssets = () => {
     return { data: [] }
   }
   const link = new CozyLink(requestHandler)
-  const client = new CozyClient({ links: [link], store: false })
+  const client = new CozyClient({ links: [link], useCustomStore: true })
   const store = createStore(combineReducers({ cozy: client.reducer() }))
   client.setStore(store)
   return {

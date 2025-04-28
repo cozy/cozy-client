@@ -120,8 +120,9 @@ const DOC_UPDATE = 'update'
  * @property  {object}       [schema] - Schema description for each doctypes
  * @property  {import("./types").AppMetadata}  [appMetadata] - Metadata about the application that will be used in ensureCozyMetadata
  * @property  {import("./types").ClientCapabilities} [capabilities] - Capabilities sent by the stack
- * @property  {boolean} [store] - If set to false, the client will not instantiate a Redux store automatically. Use this if you want to merge cozy-client's store with your own redux store. See [here](https://docs.cozy.io/en/cozy-client/react-integration/#1b-use-your-own-redux-store) for more information.
+ * @property  {boolean} [useCustomStore=false] - If set to true, the client will not instantiate a Redux store automatically. Use this if you want to merge cozy-client's store with your own redux store. Note will have to call `setStore` eventually. See [here](https://docs.cozy.io/en/cozy-client/react-integration/#1b-use-your-own-redux-store) for more information.
  * @property  {boolean} [disableStoreForQueries=false] - If set to true, the client will not leverage the redux store to execute queries and store data. 
+ 
  * @property {import('./performances/types').PerformanceAPI} [performanceApi] - The performance API that can be used to measure performances
  */
 
@@ -231,7 +232,8 @@ class CozyClient {
      */
     this.storeAccesors = null
 
-    if (options.store !== false) {
+    this.useCustomStore = options.useCustomStore || false
+    if (this.useCustomStore !== true) {
       this.ensureStore()
     }
     this.disableStoreForQueries = options.disableStoreForQueries || false
