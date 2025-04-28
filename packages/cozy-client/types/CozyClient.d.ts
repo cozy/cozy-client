@@ -73,9 +73,13 @@ export type ClientOptions = {
      */
     capabilities?: import("./types").ClientCapabilities;
     /**
-     * - If set to false, the client will not instantiate a Redux store automatically. Use this if you want to merge cozy-client's store with your own redux store. See [here](https://docs.cozy.io/en/cozy-client/react-integration/#1b-use-your-own-redux-store) for more information.
+     * - If set to true, the client will not instantiate a Redux store automatically. Use this if you want to merge cozy-client's store with your own redux store. Note will have to call `setStore` eventually. See [here](https://docs.cozy.io/en/cozy-client/react-integration/#1b-use-your-own-redux-store) for more information.
      */
-    store?: boolean;
+    useCustomStore?: boolean;
+    /**
+     * - If set to true, the client will not leverage the redux store to execute queries and store data.
+     */
+    disableStoreForQueries?: boolean;
     /**
      * - The performance API that can be used to measure performances
      */
@@ -102,7 +106,9 @@ export type ClientOptions = {
  * @property  {object}       [schema] - Schema description for each doctypes
  * @property  {import("./types").AppMetadata}  [appMetadata] - Metadata about the application that will be used in ensureCozyMetadata
  * @property  {import("./types").ClientCapabilities} [capabilities] - Capabilities sent by the stack
- * @property  {boolean} [store] - If set to false, the client will not instantiate a Redux store automatically. Use this if you want to merge cozy-client's store with your own redux store. See [here](https://docs.cozy.io/en/cozy-client/react-integration/#1b-use-your-own-redux-store) for more information.
+ * @property  {boolean} [useCustomStore=false] - If set to true, the client will not instantiate a Redux store automatically. Use this if you want to merge cozy-client's store with your own redux store. Note will have to call `setStore` eventually. See [here](https://docs.cozy.io/en/cozy-client/react-integration/#1b-use-your-own-redux-store) for more information.
+ * @property  {boolean} [disableStoreForQueries=false] - If set to true, the client will not leverage the redux store to execute queries and store data.
+ 
  * @property {import('./performances/types').PerformanceAPI} [performanceApi] - The performance API that can be used to measure performances
  */
 /**
@@ -216,9 +222,13 @@ declare class CozyClient {
          */
         onError?: Function;
         /**
-         * - If set to false, the client will not instantiate a Redux store automatically. Use this if you want to merge cozy-client's store with your own redux store. See [here](https://docs.cozy.io/en/cozy-client/react-integration/#1b-use-your-own-redux-store) for more information.
+         * - If set to true, the client will not instantiate a Redux store automatically. Use this if you want to merge cozy-client's store with your own redux store. Note will have to call `setStore` eventually. See [here](https://docs.cozy.io/en/cozy-client/react-integration/#1b-use-your-own-redux-store) for more information.
          */
-        store?: boolean;
+        useCustomStore?: boolean;
+        /**
+         * - If set to true, the client will not leverage the redux store to execute queries and store data.
+         */
+        disableStoreForQueries?: boolean;
     };
     queryIdGenerator: QueryIDGenerator;
     isLogged: boolean;
@@ -244,6 +254,8 @@ declare class CozyClient {
      * @type {object}
      */
     storeAccesors: object;
+    useCustomStore: boolean;
+    disableStoreForQueries: boolean;
     /**
      * Gets overrided by MicroEE.mixin
      * This is here just so typescript does not scream
@@ -471,7 +483,7 @@ declare class CozyClient {
      * @param  {import("./types").QueryOptions} [options] - Options
      * @returns {Promise<import("./types").QueryResult>}
      */
-    query(queryDefinition: QueryDefinition, { update, executeFromStore, queryInStore, ...options }?: import("./types").QueryOptions): Promise<import("./types").QueryResult>;
+    query(queryDefinition: QueryDefinition, { update, executeFromStore, ...options }?: import("./types").QueryOptions): Promise<import("./types").QueryResult>;
     /**
      * Will fetch all documents for a `queryDefinition`, automatically fetching more
      * documents if the total of documents is superior to the pagination limit. Can
