@@ -77,44 +77,45 @@ class CozyStackClient {
    * Creates a {@link DocumentCollection} instance.
    *
    * @param  {string} doctype The collection doctype.
+   * @param  {object} options Options to pass to the collection.
    * @returns {DocumentCollection}
    */
-  collection(doctype) {
+  collection(doctype, options = {}) {
     if (!doctype) {
       throw new Error('CozyStackClient.collection() called without a doctype')
     }
 
     switch (doctype) {
       case APPS_DOCTYPE:
-        return new AppCollection(this)
+        return new AppCollection(this, options)
       case KONNECTORS_DOCTYPE:
-        return new KonnectorCollection(this)
+        return new KonnectorCollection(this, options)
       case 'io.cozy.files':
-        return new FileCollection(doctype, this)
+        return new FileCollection(doctype, this, options)
       case 'io.cozy.sharings':
-        return new SharingCollection(doctype, this)
+        return new SharingCollection(doctype, this, options)
       case 'io.cozy.permissions':
-        return new PermissionCollection(doctype, this)
+        return new PermissionCollection(doctype, this, options)
       case CONTACTS_DOCTYPE:
-        return new ContactsCollection(doctype, this)
+        return new ContactsCollection(doctype, this, options)
       case TRIGGERS_DOCTYPE:
-        return new TriggerCollection(this)
+        return new TriggerCollection(this, options)
       case JOBS_DOCTYPE:
-        return new JobCollection(this)
+        return new JobCollection(this, options)
       case SETTINGS_DOCTYPE:
-        return new SettingsCollection(this)
+        return new SettingsCollection(this, options)
       case NOTES_DOCTYPE:
-        return new NotesCollection(this)
+        return new NotesCollection(this, options)
       case OAUTH_CLIENTS_DOCTYPE:
-        return new OAuthClientsCollection(this)
+        return new OAuthClientsCollection(this, options)
       case SHORTCUTS_DOCTYPE:
-        return new ShortcutsCollection(this)
+        return new ShortcutsCollection(this, options)
       case APPS_REGISTRY_DOCTYPE:
-        return new AppsRegistryCollection(this)
+        return new AppsRegistryCollection(this, options)
       case NEXTCLOUD_FILES_DOCTYPE:
-        return new NextcloudFilesCollection(this)
+        return new NextcloudFilesCollection(this, options)
       default:
-        return new DocumentCollection(doctype, this)
+        return new DocumentCollection(doctype, this, options)
     }
   }
 
