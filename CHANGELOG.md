@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [57.7.2](https://github.com/cozy/cozy-client/compare/v57.7.1...v57.7.2) (2025-05-05)
+
+
+### Bug Fixes
+
+* Add missing permissions translations ([21ade3d](https://github.com/cozy/cozy-client/commit/21ade3da76b54adf5c01c92e1ad4c0222d7ba28b))
+
+
+
+
+
 ## [57.7.1](https://github.com/cozy/cozy-client/compare/v57.7.0...v57.7.1) (2025-04-24)
 
 
