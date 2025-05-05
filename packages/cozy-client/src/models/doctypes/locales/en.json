@@ -38,6 +38,8 @@
   "io": {
     "cozy": {
       "accounts": "Login details",
+      "ai.chat.conversations": "AI conversations",
+      "ai.chat.events": "AI events",
       "apps": "List of installed applications",
       "apps.suggestions": "Application suggestions",
       "bank.accounts": "Banking accounts",
@@ -65,6 +67,7 @@
       "konnectors.result": "Connectors results",
       "netflix.views": "Netflix history",
       "netflix.opinions": "Netflix opinions",
+      "notes.documents": "Notes",
       "notifications": "Notifications",
       "oauth.clients": "Connected devices",
       "permissions": "Delegating permissions",
@@ -72,6 +75,7 @@
       "photos.settings": "Photo settings",
       "settings": "Settings",
       "sharings": "Sharing",
+      "support": "Support",
       "tags": "Tags",
       "timeseries.geojson": "Trips",
       "timeseries.grades": "Grades",
