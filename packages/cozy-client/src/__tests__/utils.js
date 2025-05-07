@@ -3,7 +3,7 @@
 // See also ./mocks.js
 
 import { createStore, combineReducers } from 'redux'
-import CozyLink from '../CozyLink'
+import CozyLink from '../links/CozyLink'
 import CozyClient from '../CozyClient'
 
 export const queryResultFromData = (data, opts = {}) => ({

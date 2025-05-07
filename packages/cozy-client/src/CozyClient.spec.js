@@ -18,7 +18,7 @@ import { withIgnoreConsoleWarn } from './__tests__/console'
 import CozyClient from './CozyClient'
 import { Q } from './queries/dsl'
 import CozyStackClient, { OAuthClient } from 'cozy-stack-client'
-import CozyLink from './CozyLink'
+import CozyLink from './links/CozyLink'
 import { Mutations, QueryDefinition } from './queries/dsl'
 import {
   initQuery,

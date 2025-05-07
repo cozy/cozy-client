@@ -12,4 +12,4 @@ export function createTestAssets(): {
     link: CozyLink;
 };
 import CozyClient from "../CozyClient";
-import CozyLink from "../CozyLink";
+import CozyLink from "../links/CozyLink";
