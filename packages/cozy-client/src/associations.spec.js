@@ -1,5 +1,5 @@
 import CozyClient from './CozyClient'
-import CozyLink from './CozyLink'
+import CozyLink from './links/CozyLink'
 import { defaultPerformanceApi } from './performances/defaultPerformanceApi'
 import { createStore, getQueryFromStore } from './store'
 import { receiveQueryResult, initQuery } from './store/queries'

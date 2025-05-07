@@ -2,7 +2,7 @@ import React from 'react'
 import { fireEvent, render } from '@testing-library/react'
 
 import CozyClient from './CozyClient'
-import CozyLink from './CozyLink'
+import CozyLink from './links/CozyLink'
 import withMutation from './withMutation'
 import Provider from './Provider'
 

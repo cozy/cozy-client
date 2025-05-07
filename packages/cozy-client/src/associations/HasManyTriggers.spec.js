@@ -1,5 +1,5 @@
 import CozyClient from '../CozyClient'
-import CozyLink from '../CozyLink'
+import CozyLink from '../links/CozyLink'
 import HasManyTriggers from './HasManyTriggers'
 
 describe('HasManyTriggers', () => {
