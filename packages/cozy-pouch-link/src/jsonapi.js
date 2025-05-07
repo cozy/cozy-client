@@ -2,6 +2,26 @@ import CozyClient, { generateWebLink } from 'cozy-client'
 import omit from 'lodash/omit'
 import startsWith from 'lodash/startsWith'
 import { getCozyPouchData } from './db/helpers'
+import { queryFileById, TYPE_DIRECTORY } from './files'
+
+/**
+ * The paths are not stored in CouchDB for files, thus there are not in PouchDB neither.
+ * So we keep all the file paths in memory to be able to quickly retrieve them
+ * at search time.
+ */
+const allPaths = new Map()
+
+export const getFilePath = id => {
+  return id ? allPaths.get(id) : undefined
+}
+
+const setFilePath = (id, path) => {
+  allPaths.set(id, path)
+}
+
+export const resetAllPaths = () => {
+  allPaths.clear()
+}
 
 /**
  * Normalize several PouchDB document
@@ -59,6 +79,9 @@ export const normalizeDoc = (client, doctype, doc) => {
   if (doctype === 'io.cozy.apps') {
     normalizeAppsLinks(client, doctype, doc)
   }
+  if (doctype === 'io.cozy.files') {
+    computeFileFullpath(client, doc)
+  }
 }
 
 const normalizeAppsLinks = (client, doctype, docRef) => {
@@ -80,6 +103,74 @@ const normalizeAppsLinks = (client, doctype, docRef) => {
     related: webLink,
     icon: `/apps/${docRef.slug}/icon/${docRef.version}`
   }
+}
+
+const buildPathWithName = (parentPath, fileName) => {
+  const hasTrailingSlash = parentPath.substr(-1) === '/'
+  const path = hasTrailingSlash
+    ? `${parentPath}${fileName}`
+    : `${parentPath}/${fileName}`
+  return path
+}
+
+/**
+ * Compute paths for files
+ *
+ * There are several ways to get a path:
+ *   - It is already defined in the file
+ *   - The file path exists in memory
+ *   - The directory path exists in memory
+ *   - The directory path is retrieved from db
+ *
+ * @param { CozyClient} client - The cozy client instance
+ * @param { import('cozy-client/types/types').IOCozyFile} file - The file to compute path
+ * @returns {Promise<import('cozy-client/types/types').IOCozyFile>} the completed file with path
+ */
+export const computeFileFullpath = async (client, file) => {
+  if (file.type === TYPE_DIRECTORY) {
+    // No need to compute directory path: it is always here
+    return file
+  }
+
+  if (file.path) {
+    // If a file path exists, check it is complete, i.e. it includes the name.
+    // The stack typically does not include the name in the path, which is useful to search on it
+    if (file.path?.includes(file.name)) {
+      setFilePath(file._id, file.path)
+      return file
+    }
+    const newPath = buildPathWithName(file.path, file.name)
+    setFilePath(file._id, newPath)
+    file.path = newPath
+    return file
+  }
+  const filePath = getFilePath(file._id)
+  if (filePath) {
+    // File path exists in memory
+    file.path = filePath
+    return file
+  }
+
+  const parentPath = getFilePath(file.dir_id)
+  if (parentPath) {
+    // Parent path exists in memory
+    const path = buildPathWithName(parentPath, file.name)
+    setFilePath(file._id, path) // Add the path in memory
+    file.path = path
+    return file
+  }
+
+  // If there is no path found at all, let's compute it from the parent path in database
+  const parentDir = await queryFileById(client, file.dir_id)
+
+  if (parentDir?.path) {
+    const path = buildPathWithName(parentDir?.path, file.name)
+    file.path = path
+    // Add the paths in memory
+    setFilePath(file.dir_id, parentDir.path)
+    setFilePath(file._id, path)
+  }
+  return file
 }
 
 export const fromPouchResult = ({ res, withRows, doctype, client }) => {
