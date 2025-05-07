@@ -1132,11 +1132,16 @@ client.query(Q('io.cozy.bills'))`)
     if (!definition.includes) {
       return mainResponse
     }
-    const withIncluded = await this.fetchRelationships(
-      mainResponse,
-      this.getIncludesRelationships(definition)
-    )
-    return withIncluded
+    const schema = this.schema.getDoctypeSchema(definition.doctype)
+    if (schema.relationships) {
+      const withIncluded = await this.fetchRelationships(
+        mainResponse,
+        this.getIncludesRelationships(definition)
+      )
+      return withIncluded
+    }
+
+    return mainResponse
   }
 
   /**
