@@ -3,7 +3,7 @@ import omit from 'lodash/omit'
 import { Q } from 'cozy-client'
 
 import CozyClient from './CozyClient'
-import CozyLink from './CozyLink'
+import CozyLink from './links/CozyLink'
 import ObservableQuery from './ObservableQuery'
 import { initQuery, receiveQueryResult } from './store'
 import { queryResultFromData } from './__tests__/utils'

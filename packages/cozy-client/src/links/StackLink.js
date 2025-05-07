@@ -1,12 +1,12 @@
 import zipWith from 'lodash/zipWith'
 
-import { MutationTypes, QueryDefinition } from './queries/dsl'
+import { MutationTypes, QueryDefinition } from '../queries/dsl'
 import CozyLink from './CozyLink'
-import { DOCTYPE_FILES } from './const'
-import { BulkEditError } from './errors'
-import logger from './logger'
-import { isReactNativeOfflineError } from './utils'
-import { defaultPerformanceApi } from './performances/defaultPerformanceApi'
+import { DOCTYPE_FILES } from '../const'
+import { BulkEditError } from '../errors'
+import logger from '../logger'
+import { isReactNativeOfflineError } from '../utils'
+import { defaultPerformanceApi } from '../performances/defaultPerformanceApi'
 
 /**
  *
@@ -29,9 +29,9 @@ const hasFindOptions = queryDefinition => {
  *
  * @private
  *
- * @param  {import("./types").CouchDBBulkResult[]} bulkResponse - Response from bulk docs
- * @param  {import("./types").CozyClientDocument[]} originalDocuments - Documents that were updated
- * @returns {{ data: import("./types").CozyClientDocument[] }} - Full documents with updated _id and _rev
+ * @param  {import("../types").CouchDBBulkResult[]} bulkResponse - Response from bulk docs
+ * @param  {import("../types").CozyClientDocument[]} originalDocuments - Documents that were updated
+ * @returns {{ data: import("../types").CozyClientDocument[] }} - Full documents with updated _id and _rev
  */
 export const transformBulkDocsResponse = (bulkResponse, originalDocuments) => {
   const updatedDocs = zipWith(bulkResponse, originalDocuments, (result, od) =>
@@ -57,7 +57,7 @@ export const transformBulkDocsResponse = (bulkResponse, originalDocuments) => {
  * @property {object} [stackClient] - A StackClient
  * @property {object} [client] - A StackClient (deprecated)
  * @property {import('cozy-pouch-link/dist/types').LinkPlatform} [platform] - Platform specific adapters and methods
- * @property {import('./performances/types').PerformanceAPI} [performanceApi] - The performance API that can be used to measure performances
+ * @property {import('../performances/types').PerformanceAPI} [performanceApi] - The performance API that can be used to measure performances
  */
 
 /**
@@ -77,7 +77,7 @@ export default class StackLink extends CozyLink {
     this.stackClient = stackClient || client
     this.isOnline = platform?.isOnline
 
-    /** @type {import('./performances/types').PerformanceAPI} */
+    /** @type {import('../performances/types').PerformanceAPI} */
     this.performanceApi = performanceApi || defaultPerformanceApi
   }
 
@@ -90,6 +90,7 @@ export default class StackLink extends CozyLink {
   }
 
   async request(operation, options, result, forward) {
+    //console.log('[CozySackLink] ', operation)
     if (!options?.forceStack && this.isOnline && !(await this.isOnline())) {
       return forward(operation, options)
     }
@@ -113,7 +114,7 @@ export default class StackLink extends CozyLink {
   /**
    *
    * @param {QueryDefinition} query - Query to execute
-   * @returns {Promise<import("./types").ClientResponse>}
+   * @returns {Promise<import("../types").ClientResponse>}
    */
   executeQuery(query) {
     const { doctype, selector, id, ids, referenced, ...options } = query

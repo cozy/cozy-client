@@ -11,7 +11,7 @@ import CozyStackClient, { OAuthClient } from 'cozy-stack-client'
 
 import { REGISTRATION_ABORT } from './const'
 
-import StackLink from './StackLink'
+import StackLink from './links/StackLink'
 import { create as createAssociation } from './associations'
 import {
   responseToRelationship,
@@ -42,7 +42,7 @@ import {
 } from './store'
 import fetchPolicies from './policies'
 import Schema from './Schema'
-import { chain } from './CozyLink'
+import { chain } from './links/CozyLink'
 import ObservableQuery from './ObservableQuery'
 import { defaultPerformanceApi } from './performances/defaultPerformanceApi'
 import { CozyClient as SnapshotClient } from './testing/snapshots'

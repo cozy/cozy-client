@@ -16,6 +16,7 @@ cozy-client
 *   [CozyClient](classes/CozyClient.md)
 *   [CozyLink](classes/CozyLink.md)
 *   [CozyProvider](classes/CozyProvider.md)
+*   [DataProxyLink](classes/DataProxyLink.md)
 *   [HasMany](classes/HasMany.md)
 *   [HasManyInPlace](classes/HasManyInPlace.md)
 *   [HasManyTriggers](classes/HasManyTriggers.md)

@@ -1,7 +1,7 @@
-import { Q } from './queries/dsl'
-import CozyClient from './CozyClient'
+import { Q } from '../queries/dsl'
+import CozyClient from '../CozyClient'
 import StackLink, { transformBulkDocsResponse } from './StackLink'
-import { SCHEMA } from './__tests__/fixtures'
+import { SCHEMA } from '../__tests__/fixtures'
 
 describe('StackLink', () => {
   let stackClient, link, client

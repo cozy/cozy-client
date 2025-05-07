@@ -28,7 +28,7 @@ Transfers queries and mutations to a remote stack
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:70](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L70)
+[packages/cozy-client/src/links/StackLink.js:70](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/StackLink.js#L70)
 
 ## Properties
 
@@ -38,7 +38,7 @@ Transfers queries and mutations to a remote stack
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:78](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L78)
+[packages/cozy-client/src/links/StackLink.js:78](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/StackLink.js#L78)
 
 ***
 
@@ -48,7 +48,7 @@ Transfers queries and mutations to a remote stack
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:81](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L81)
+[packages/cozy-client/src/links/StackLink.js:81](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/StackLink.js#L81)
 
 ***
 
@@ -58,7 +58,7 @@ Transfers queries and mutations to a remote stack
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:77](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L77)
+[packages/cozy-client/src/links/StackLink.js:77](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/StackLink.js#L77)
 
 ## Methods
 
@@ -81,7 +81,7 @@ Transfers queries and mutations to a remote stack
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:141](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L141)
+[packages/cozy-client/src/links/StackLink.js:142](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/StackLink.js#L142)
 
 ***
 
@@ -101,7 +101,7 @@ Transfers queries and mutations to a remote stack
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:118](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L118)
+[packages/cozy-client/src/links/StackLink.js:119](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/StackLink.js#L119)
 
 ***
 
@@ -128,7 +128,7 @@ Persist the given data into the links storage
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:110](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L110)
+[packages/cozy-client/src/links/StackLink.js:111](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/StackLink.js#L111)
 
 ***
 
@@ -148,7 +148,7 @@ Persist the given data into the links storage
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:84](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L84)
+[packages/cozy-client/src/links/StackLink.js:84](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/StackLink.js#L84)
 
 ***
 
@@ -177,7 +177,7 @@ Request the given operation from the link
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:92](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L92)
+[packages/cozy-client/src/links/StackLink.js:92](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/StackLink.js#L92)
 
 ***
 
@@ -197,4 +197,4 @@ Reset the link data
 
 *Defined in*
 
-[packages/cozy-client/src/StackLink.js:88](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/StackLink.js#L88)
+[packages/cozy-client/src/links/StackLink.js:88](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/StackLink.js#L88)
