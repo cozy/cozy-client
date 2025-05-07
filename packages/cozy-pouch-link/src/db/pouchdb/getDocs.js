@@ -1,3 +1,4 @@
+import { isDocumentNotFoundPouchDBError } from '../../errors'
 import { default as helpers } from '../../helpers'
 import { fromPouchResult } from '../../jsonapi'
 const { isAdapterBugged, LIMIT_BUG } = helpers
@@ -10,7 +11,16 @@ export const getDocsAndNormalize = async ({
   queryParams = {},
   withRows = true
 }) => {
-  const results = await getDocs(db, queryFunc, queryParams)
+  let results
+  try {
+    results = await getDocs(db, queryFunc, queryParams)
+  } catch (err) {
+    if (isDocumentNotFoundPouchDBError(err)) {
+      results = []
+    } else {
+      throw err
+    }
+  }
   const jsonResult = fromPouchResult({
     res: results,
     withRows,

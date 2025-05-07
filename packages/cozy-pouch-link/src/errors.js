@@ -6,6 +6,8 @@ const SQLITE_MISSING_INDEX_ERROR = /no such index/
 const POUCHDB_MISSING_INDEX_ERROR = /Could not find that index/
 const POUCHDB_MISSING_INDEX_ERROR_ALT = /no index/
 
+const POUCHDB_NOT_FOUND_ERROR = /not_found/
+
 const expiredTokenError = error => {
   const errorMsg = error.message
   const errorName = error.name
@@ -37,4 +39,8 @@ export const isMissingPouchDBIndexError = error => {
     POUCHDB_MISSING_INDEX_ERROR.test(error.message) ||
     POUCHDB_MISSING_INDEX_ERROR_ALT.test(error.message)
   )
+}
+
+export const isDocumentNotFoundPouchDBError = error => {
+  return POUCHDB_NOT_FOUND_ERROR.test(error.name)
 }
