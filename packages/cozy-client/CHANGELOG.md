@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [58.0.0](https://github.com/cozy/cozy-client/compare/v57.7.2...v58.0.0) (2025-05-07)
+
+
+### Features
+
+* Add disableStoreForQueries options to bypass store ([8ab649c](https://github.com/cozy/cozy-client/commit/8ab649c04234bb5c5167fa1b435435c51c68f89d))
+* Use `useCustomStore` rather than `store` ([eccc81e](https://github.com/cozy/cozy-client/commit/eccc81e673ab9134573e33141b6b92ee8e888ab2))
+
+
+### BREAKING CHANGES
+
+* to pass a custom store from the app, we used to rely on
+the boolean `store` option. The naming is confusing, because we could
+interpret it as completely disabling the redux store, which is not the
+case, as the aim is to use either the cozy-client internal store, or the
+application own store. It was also confusing in the code, as the store
+variable is the store itself.
+Thus, we rename the option in `useCustomStore` to better reflect the
+intention.
+
+If your application was using `store: false` in the cozy-client
+instanciation, you should now use `useCustomStore: true`.
+
+
+
+
+
 ## [57.7.2](https://github.com/cozy/cozy-client/compare/v57.7.1...v57.7.2) (2025-05-05)
 
 
