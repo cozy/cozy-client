@@ -457,6 +457,7 @@ class PouchLink extends CozyLink {
     }
 
     if (this.pouches.getSyncStatus(doctype) === 'not_synced') {
+      // The doctype is not locally synced and thus cannot be requested: forward to next link
       if (process.env.NODE_ENV !== 'production') {
         logger.info(
           `Tried to access local ${doctype} but Cozy Pouch is not synced yet. Forwarding the operation to next link`
@@ -474,7 +475,7 @@ class PouchLink extends CozyLink {
       return forward(operation, options)
     }
 
-    // Forwards if doctype not supported
+    // Forwards if opeartion on doctype not supported
     if (!this.supportsOperation(operation)) {
       if (process.env.NODE_ENV !== 'production') {
         logger.info(
@@ -538,6 +539,12 @@ class PouchLink extends CozyLink {
       sanitizedDoc.cozyLocalOnly = true
 
       const engine = this.getQueryEngineFromDoctype(doc._type)
+      if (!engine.db) {
+        logger.warn(
+          `${doc._id} is not persisted: no database found for doctype: ${doc._type}`
+        )
+        return null
+      }
       const pouch = this.getPouch(doc._type)
       const resp = await getExistingDocument(engine, sanitizedDoc._id)
       if (!resp?.data || Object.keys(resp?.data).length < 1) {
