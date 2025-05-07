@@ -36,7 +36,7 @@ helpers.normalizeFindSelector = ({
           `${indexedField} was missing in selector, it has been automatically added from indexed fields. Please consider adding this field to your query's selector as required by PouchDB. The query's selector is: ${selectorJson}`
         )
         findSelector[indexedField] = {
-          $gt: null
+          $gt: '' // See https://github.com/pouchdb/pouchdb/issues/7192
         }
       }
     }
@@ -51,7 +51,7 @@ helpers.normalizeFindSelector = ({
           `${sortedField} was missing in selector, it has been automatically added from sorted fields. Please consider adding this field to your query's selector as required by PouchDB. The query's selector is: ${selectorJson}`
         )
         findSelector[sortedField] = {
-          $gt: null
+          $gt: '' // See https://github.com/pouchdb/pouchdb/issues/7192
         }
       }
     }
@@ -63,7 +63,7 @@ helpers.normalizeFindSelector = ({
 
   return Object.keys(mergedSelector).length > 0
     ? mergedSelector
-    : { _id: { $gt: null } } // PouchDB does not accept empty selector
+    : { _id: { $gt: '' } } // PouchDB does not accept empty selector
 }
 
 export default helpers
