@@ -194,9 +194,15 @@ const dirName = path => {
  * files associated to a specific document
  */
 class FileCollection extends DocumentCollection {
-  constructor(doctype, stackClient) {
-    super(doctype, stackClient)
+  constructor(doctype, stackClient, options = {}) {
+    super(doctype, stackClient, options)
     this.specialDirectories = {}
+
+    if (options.driveId != null && options.driveId !== '') {
+      this.prefix = `sharings/drives/${options.driveId}`
+    } else {
+      this.prefix = 'files'
+    }
   }
 
   /**
@@ -220,7 +226,7 @@ class FileCollection extends DocumentCollection {
     try {
       resp = await this.stackClient.fetchJSON(
         'POST',
-        uri`/files/_all_docs?include_docs=true`,
+        uri`/${this.prefix}/_all_docs?include_docs=true`,
         {
           keys: ids
         }
@@ -240,7 +246,7 @@ class FileCollection extends DocumentCollection {
   async fetchFindFiles(selector, options) {
     return this.stackClient.fetchJSON(
       'POST',
-      '/files/_find',
+      `/${this.prefix}/_find`,
       this.toMangoOptions(selector, options)
     )
   }
@@ -259,7 +265,7 @@ class FileCollection extends DocumentCollection {
     const { skip = 0 } = options
     let resp
     try {
-      const path = '/files/_find'
+      const path = `/${this.prefix}/_find`
       resp = await this.findWithMango(path, selector, options)
     } catch (error) {
       return dontThrowNotFoundError(error)
@@ -323,7 +329,7 @@ class FileCollection extends DocumentCollection {
     const refs = documents.map(d => ({ id: d._id, type: d._type }))
     const resp = await this.stackClient.fetchJSON(
       'POST',
-      uri`/files/${document._id}/relationships/referenced_by`,
+      uri`/${this.prefix}/${document._id}/relationships/referenced_by`,
       { data: refs }
     )
     return {
@@ -351,7 +357,8 @@ class FileCollection extends DocumentCollection {
     }))
     const resp = await this.stackClient.fetchJSON(
       'DELETE',
-      uri`/files/${document._id || document.id}/relationships/referenced_by`,
+      uri`/${this.prefix}/${document._id ||
+        document.id}/relationships/referenced_by`,
       { data: refs }
     )
     return {
@@ -417,7 +424,7 @@ class FileCollection extends DocumentCollection {
 
     const resp = await this.stackClient.fetchJSON(
       'DELETE',
-      uri`/files/${_id}`,
+      uri`/${this.prefix}/${_id}`,
       undefined,
       {
         headers: {
@@ -440,7 +447,7 @@ class FileCollection extends DocumentCollection {
    * Empty the Trash
    */
   emptyTrash() {
-    return this.stackClient.fetchJSON('DELETE', '/files/trash')
+    return this.stackClient.fetchJSON('DELETE', `/${this.prefix}/trash`)
   }
 
   /**
@@ -452,7 +459,7 @@ class FileCollection extends DocumentCollection {
    *
    */
   restore(id) {
-    return this.stackClient.fetchJSON('POST', uri`/files/trash/${id}`)
+    return this.stackClient.fetchJSON('POST', uri`/${this.prefix}/trash/${id}`)
   }
 
   /**
@@ -476,7 +483,7 @@ class FileCollection extends DocumentCollection {
       name: sanitizedName,
       DirID: dirId
     }
-    const path = uri`/files/${id}/copy`
+    const path = uri`/${this.prefix}/${id}/copy`
     const url = querystring.buildURL(path, params)
 
     const resp = await this.stackClient.fetchJSON('POST', url)
@@ -496,7 +503,7 @@ class FileCollection extends DocumentCollection {
   async deleteFilePermanently(id, { ifMatch = '' } = {}) {
     const resp = await this.stackClient.fetchJSON(
       'PATCH',
-      uri`/files/${id}`,
+      uri`/${this.prefix}/${id}`,
       {
         data: {
           type: 'io.cozy.files',
@@ -614,7 +621,7 @@ class FileCollection extends DocumentCollection {
     if (options.contentLength) {
       size = String(options.contentLength)
     }
-    const path = uri`/files/${dirId}?Name=${name}&Type=file&Executable=${executable}&Encrypted=${encrypted}&MetadataID=${metadataId}&Size=${size}&SourceAccount=${sourceAccount}&SourceAccountIdentifier=${sourceAccountIdentifier}`
+    const path = uri`/${this.prefix}/${dirId}?Name=${name}&Type=file&Executable=${executable}&Encrypted=${encrypted}&MetadataID=${metadataId}&Size=${size}&SourceAccount=${sourceAccount}&SourceAccountIdentifier=${sourceAccountIdentifier}`
     return this.doUpload(data, path, options)
   }
 
@@ -661,7 +668,7 @@ class FileCollection extends DocumentCollection {
      * (no size limit since we can use the body for that) and after we use the ID.
      */
     let metadataId
-    let path = uri`/files/${fileId}?Name=${sanitizedName}&Type=file&Executable=${executable}&Encrypted=${encrypted}`
+    let path = uri`/${this.prefix}/${fileId}?Name=${sanitizedName}&Type=file&Executable=${executable}&Encrypted=${encrypted}`
     if (metadata) {
       const meta = await this.createFileMetadata(metadata)
       metadataId = meta.data.id
@@ -681,7 +688,9 @@ class FileCollection extends DocumentCollection {
     return this.stackClient
       .fetchJSON(
         'POST',
-        uri`/files/downloads?Id=${id}&Filename=${encodeURIComponent(filename)}`
+        uri`/${this.prefix}/downloads?Id=${id}&Filename=${encodeURIComponent(
+          filename
+        )}`
       )
       .then(this.extractResponseLinkRelated)
   }
@@ -690,7 +699,9 @@ class FileCollection extends DocumentCollection {
     return this.stackClient
       .fetchJSON(
         'POST',
-        uri`/files/downloads?VersionId=${versionId}&Filename=${encodeURIComponent(
+        uri`/${
+          this.prefix
+        }/downloads?VersionId=${versionId}&Filename=${encodeURIComponent(
           filename
         )}`
       )
@@ -698,7 +709,7 @@ class FileCollection extends DocumentCollection {
   }
   getDownloadLinkByPath(path) {
     return this.stackClient
-      .fetchJSON('POST', uri`/files/downloads?Path=${path}`)
+      .fetchJSON('POST', uri`/${this.prefix}/downloads?Path=${path}`)
       .then(this.extractResponseLinkRelated)
   }
 
@@ -762,7 +773,7 @@ class FileCollection extends DocumentCollection {
    *
    */
   async fetchFileContentById(id) {
-    return this.stackClient.fetch('GET', `/files/download/${id}`)
+    return this.stackClient.fetch('GET', `/${this.prefix}/download/${id}`)
   }
 
   /**
@@ -811,15 +822,19 @@ class FileCollection extends DocumentCollection {
     logger.warn(
       'CozyClient FileCollection getArchiveLinkByIds method is deprecated. Use createArchiveLinkByIds instead'
     )
-    const resp = await this.stackClient.fetchJSON('POST', '/files/archive', {
-      data: {
-        type: 'io.cozy.archives',
-        attributes: {
-          name,
-          ids
+    const resp = await this.stackClient.fetchJSON(
+      'POST',
+      `/${this.prefix}/archive`,
+      {
+        data: {
+          type: 'io.cozy.archives',
+          attributes: {
+            name,
+            ids
+          }
         }
       }
-    })
+    )
     return resp.links.related
   }
 
@@ -834,16 +849,20 @@ class FileCollection extends DocumentCollection {
    * @returns {Promise<string>} - The archive link
    */
   async createArchiveLinkByIds({ ids, name = 'files', pages }) {
-    const resp = await this.stackClient.fetchJSON('POST', '/files/archive', {
-      data: {
-        type: 'io.cozy.archives',
-        attributes: {
-          name,
-          ids,
-          ...(pages && { pages })
+    const resp = await this.stackClient.fetchJSON(
+      'POST',
+      `/${this.prefix}/archive`,
+      {
+        data: {
+          type: 'io.cozy.archives',
+          attributes: {
+            name,
+            ids,
+            ...(pages && { pages })
+          }
         }
       }
-    })
+    )
     return resp.links.related
   }
 
@@ -901,7 +920,7 @@ class FileCollection extends DocumentCollection {
 
   async statById(id, options = {}) {
     const params = pick(options, ['page[limit]', 'page[skip]', 'page[cursor]'])
-    const path = uri`/files/${id}`
+    const path = uri`/${this.prefix}/${id}`
     const url = querystring.buildURL(path, params)
     const resp = await this.stackClient.fetchJSON('GET', url)
     return {
@@ -914,7 +933,7 @@ class FileCollection extends DocumentCollection {
   async statByPath(path) {
     const resp = await this.stackClient.fetchJSON(
       'GET',
-      uri`/files/metadata?Path=${path}`
+      uri`/${this.prefix}/metadata?Path=${path}`
     )
     return {
       data: normalizeFile(resp.data),
@@ -950,7 +969,7 @@ class FileCollection extends DocumentCollection {
 
     const resp = await this.stackClient.fetchJSON(
       'POST',
-      uri`/files/${dirId}?Name=${safeName}&Type=directory&MetadataID=${metadataId}`,
+      uri`/${this.prefix}/${dirId}?Name=${safeName}&Type=directory&MetadataID=${metadataId}`,
       undefined,
       {
         headers: {
@@ -1069,7 +1088,7 @@ class FileCollection extends DocumentCollection {
 
     const resp = await this.stackClient.fetchJSON(
       'PATCH',
-      uri`/files/${id}`,
+      uri`/${this.prefix}/${id}`,
       {
         data: {
           type: 'io.cozy.files',
@@ -1106,7 +1125,7 @@ class FileCollection extends DocumentCollection {
   async createFileMetadata(attributes) {
     const resp = await this.stackClient.fetchJSON(
       'POST',
-      uri`/files/upload/metadata`,
+      uri`/${this.prefix}/upload/metadata`,
       {
         data: {
           type: 'io.cozy.files.metadata',
@@ -1135,7 +1154,7 @@ class FileCollection extends DocumentCollection {
   async updateMetadataAttribute(id, metadata) {
     const resp = await this.stackClient.fetchJSON(
       'POST',
-      uri`/files/${id}/versions`,
+      uri`/${this.prefix}/${id}/versions`,
       {
         data: {
           type: 'io.cozy.files.metadata',
@@ -1382,7 +1401,7 @@ class FileCollection extends DocumentCollection {
       skip_deleted: opts.skipDeleted,
       skip_trashed: opts.skipTrashed
     }
-    const path = uri`/files/_changes`
+    const path = uri`/${this.prefix}/_changes`
     const url = querystring.buildURL(path, params)
     const {
       last_seq: newLastSeq,
@@ -1404,7 +1423,7 @@ class FileCollection extends DocumentCollection {
    * @returns {IOCozyFolder} Shared Drives directory
    */
   getOrCreateSharedDrivesDirectory() {
-    return this.stackClient.fetchJSON('POST', '/files/shared-drives')
+    return this.stackClient.fetchJSON('POST', `/${this.prefix}/shared-drives`)
   }
 }
 

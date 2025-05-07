@@ -568,10 +568,11 @@ class CozyClient {
    * a [DocumentCollection]{@link https://docs.cozy.io/en/cozy-client/api/cozy-stack-client/#DocumentCollection} instance.
    *
    * @param  {string} doctype The collection doctype.
+   * @param  {object} options Options to pass to the collection
    * @returns {import("./types").DocumentCollection} Collection corresponding to the doctype
    */
-  collection(doctype) {
-    return this.getStackClient().collection(doctype)
+  collection(doctype, options = {}) {
+    return this.getStackClient().collection(doctype, options)
   }
 
   fetch(method, path, body, options = {}) {
