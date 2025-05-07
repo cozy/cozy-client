@@ -66,6 +66,7 @@ const doNothing = (operation, result = null) => {}
  * @property {number} [syncDebounceMaxDelayInMs] The maximum duration (in ms) the `startReplicationWithDebounce()` method can be delayed. Should be used only when periodicSync is false. Default is 10 minutes
  * @property {number} [replicationInterval] Milliseconds between periodic replications
  * @property {string[]} doctypes Doctypes to replicate
+ * @property {boolean} isReadOnly Whether or not the link is read-only and should forward any write operation
  * @property {Record<string, object>} doctypesReplicationOptions A mapping from doctypes to replication options. All pouch replication options can be used, as well as the "strategy" option that determines which way the replication is done (can be "sync", "fromRemote" or "toRemote")
  * @property {import('./types').LinkPlatform} platform Platform specific adapters and methods
  * @property {import('cozy-client/src/performances/types').PerformanceAPI} [performanceApi] - The performance API that can be used to measure performances
@@ -420,7 +421,11 @@ class PouchLink extends CozyLink {
   }
 
   supportsOperation(operation) {
+    if (this.options.readOnly && operation.mutationType) {
+      return false
+    }
     const impactedDoctype = getDoctypeFromOperation(operation)
+
     // If the Pouch is configured only to replicate from the remote,
     // we don't want to apply the mutation on it, but to forward
     // to the next link
