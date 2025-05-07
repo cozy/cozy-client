@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks'
 
 import CozyClient from '../CozyClient'
-import CozyLink from '../CozyLink'
+import CozyLink from '../links/CozyLink'
 import useQuery, { useQueries } from './useQuery'
 import { Q } from '../queries/dsl'
 
