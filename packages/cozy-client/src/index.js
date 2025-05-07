@@ -2,6 +2,7 @@ export { default } from './CozyClient'
 export { default as CozyLink } from './CozyLink'
 export { default as StackLink } from './StackLink'
 export { default as WebFlagshipLink } from './WebFlagshipLink'
+export { default as DataProxyLink } from './links/DataProxyLink'
 export { default as compose } from 'lodash/flow'
 export {
   QueryDefinition,
