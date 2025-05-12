@@ -3,6 +3,7 @@ import omit from 'lodash/omit'
 import startsWith from 'lodash/startsWith'
 import { getCozyPouchData } from './db/helpers'
 import { queryFileById, TYPE_DIRECTORY } from './files'
+import logger from './logger'
 
 /**
  * The paths are not stored in CouchDB for files, thus there are not in PouchDB neither.
@@ -37,7 +38,7 @@ export const normalizeDocs = (client, doctype, docs) => {
       docs.splice(i, 1)
       continue
     }
-    if (startsWith(doc.id, '_design/')) {
+    if (startsWith(doc._id, '_design/')) {
       docs.splice(i, 1)
       continue
     }
@@ -161,6 +162,10 @@ export const computeFileFullpath = async (client, file) => {
   }
 
   // If there is no path found at all, let's compute it from the parent path in database
+  if (!file.dir_id) {
+    logger.warn(`Missing dir_id for file ${file._id}`)
+    return file
+  }
   const parentDir = await queryFileById(client, file.dir_id)
 
   if (parentDir?.path) {
