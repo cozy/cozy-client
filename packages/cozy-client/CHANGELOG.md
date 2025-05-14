@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [58.0.1](https://github.com/cozy/cozy-client/compare/v58.0.0...v58.0.1) (2025-05-14)
+
+
+### Bug Fixes
+
+* Downgrade react-native 0.65.x to 0.63.x ([ecfd141](https://github.com/cozy/cozy-client/commit/ecfd141e0de92d4ca095d6b81d3e600a70b879b7))
+
+
+
+
+
 # [58.0.0](https://github.com/cozy/cozy-client/compare/v57.7.2...v58.0.0) (2025-05-07)
 
 
