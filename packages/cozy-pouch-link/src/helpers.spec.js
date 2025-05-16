@@ -25,7 +25,7 @@ describe('Helpers', () => {
   describe('normalizeFindSelector', () => {
     it('should add indexed fields in the selector if they are missing', () => {
       const selector = {
-        SOME_FIELD: { $gt: null }
+        SOME_FIELD: { $gt: '' }
       }
       const sort = undefined
       const indexedFields = ['SOME_INDEXED_FIELD']
@@ -36,8 +36,8 @@ describe('Helpers', () => {
         indexedFields
       })
       expect(findSelector).toStrictEqual({
-        SOME_FIELD: { $gt: null },
-        SOME_INDEXED_FIELD: { $gt: null }
+        SOME_FIELD: { $gt: '' },
+        SOME_INDEXED_FIELD: { $gt: '' }
       })
     })
 
@@ -52,7 +52,7 @@ describe('Helpers', () => {
         indexedFields
       })
       expect(findSelector).toStrictEqual({
-        SOME_SORTED_FIELD: { $gt: null }
+        SOME_SORTED_FIELD: { $gt: '' }
       })
     })
 
@@ -67,8 +67,8 @@ describe('Helpers', () => {
         indexedFields
       })
       expect(findSelector).toStrictEqual({
-        SOME_INDEXED_FIELD: { $gt: null },
-        SOME_SORTED_FIELD: { $gt: null }
+        SOME_INDEXED_FIELD: { $gt: '' },
+        SOME_SORTED_FIELD: { $gt: '' }
       })
     })
 
@@ -82,7 +82,7 @@ describe('Helpers', () => {
         sort,
         indexedFields
       })
-      expect(findSelector).toStrictEqual({ _id: { $gt: null } })
+      expect(findSelector).toStrictEqual({ _id: { $gt: '' } })
     })
 
     it('should not add selector on _id when no selector is provided but there are some indexed fields', () => {
@@ -96,7 +96,7 @@ describe('Helpers', () => {
         indexedFields
       })
       expect(findSelector).toStrictEqual({
-        SOME_INDEXED_FIELD: { $gt: null }
+        SOME_INDEXED_FIELD: { $gt: '' }
       })
     })
   })

@@ -49,7 +49,7 @@ export default class PouchDBQueryEngine extends DatabaseQueryEngine {
   }
 
   async find(options) {
-    const { selector, sort, partialFilter, doctype } = options
+    const { selector, sort, partialFilter } = options
     let { indexedFields } = options
 
     indexedFields = getIndexFields({
@@ -68,7 +68,7 @@ export default class PouchDBQueryEngine extends DatabaseQueryEngine {
       selector,
       sort,
       partialFilter,
-      doctype,
+      doctype: this.doctype,
       use_index: indexName,
       ...options
     }
@@ -87,7 +87,7 @@ export default class PouchDBQueryEngine extends DatabaseQueryEngine {
       if (isMissingPouchDBIndexError(err)) {
         await createIndex(this.db, indexedFields, {
           indexName,
-          doctype,
+          doctype: this.doctype,
           partialFilter
         })
         res = await getDocsAndNormalize({

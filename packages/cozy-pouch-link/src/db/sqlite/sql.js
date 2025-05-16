@@ -1,5 +1,5 @@
 import { normalizeDoc } from '../../jsonapi'
-import { getCozyPouchData } from '../helpers'
+import { getCozyPouchData, keepDocWitHighestRev } from '../helpers'
 
 const MANGO_TO_SQL_OP = {
   $eq: '=',
@@ -11,31 +11,6 @@ const MANGO_TO_SQL_OP = {
   $in: 'IN',
   $nin: 'NOT IN',
   $exists: 'IS'
-}
-
-const extractRevPrefix = rev => {
-  if (!rev) {
-    return 0
-  }
-  const prefixStr = rev.split('-')[0]
-  return prefixStr ? parseInt(prefixStr) : 0
-}
-
-export const keepDocWitHighestRev = docs => {
-  if (!docs || docs.length < 1) {
-    return null
-  }
-  let highestDocRev = {
-    doc: docs[0],
-    revPrefix: extractRevPrefix(docs[0]._rev)
-  }
-  for (let i = 0; i < docs.length; i++) {
-    const revPrefix = extractRevPrefix(docs[i]._rev)
-    if (revPrefix > highestDocRev.revPrefix) {
-      highestDocRev = { doc: docs[i], revPrefix }
-    }
-  }
-  return highestDocRev.doc
 }
 
 export const parseResults = (

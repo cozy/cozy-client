@@ -97,21 +97,21 @@ declare class DatabaseQueryEngine {
      * Get all docs
      *
      * @param {AllDocsParams} options - The all docs options
-     * @returns {Promise<QueryResponse>} The found docs
+     * @returns {Promise<QueryResponse | null>} The found docs
      */
-    allDocs(options: AllDocsParams): Promise<QueryResponse>;
+    allDocs(options: AllDocsParams): Promise<QueryResponse | null>;
     /**
      * Get a single doc by its id
      *
      * @param {string} id - id of the document to get
-     * @returns {Promise<QueryResponseSingleDoc>} The found docs
+     * @returns {Promise<QueryResponseSingleDoc | null>} The found docs
      */
-    getById(id: string): Promise<QueryResponseSingleDoc>;
+    getById(id: string): Promise<QueryResponseSingleDoc | null>;
     /**
      * Get several docs by their ids
      *
      * @param {Array<string>} ids - ids of the documents to get
-     * @returns {Promise<QueryResponse>} The found docs
+     * @returns {Promise<QueryResponse | null>} The found docs
      */
-    getByIds(ids: Array<string>): Promise<QueryResponse>;
+    getByIds(ids: Array<string>): Promise<QueryResponse | null>;
 }

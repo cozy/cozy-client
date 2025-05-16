@@ -1,4 +1,3 @@
-export function keepDocWitHighestRev(docs: any): any;
 export function parseResults(client: any, result: any, doctype: any, { isSingleDoc, skip, limit }?: {
     isSingleDoc?: boolean;
     skip?: number;

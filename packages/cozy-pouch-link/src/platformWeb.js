@@ -1,5 +1,8 @@
 import PouchDB from 'pouchdb-browser'
+import PouchDBFind from 'pouchdb-find'
 import { LOCALSTORAGE_STORAGE_KEYS } from './localStorage'
+
+PouchDB.plugin(PouchDBFind)
 
 const events = {
   addEventListener: (eventName, handler) => {

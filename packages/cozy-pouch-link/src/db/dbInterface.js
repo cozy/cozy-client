@@ -50,7 +50,7 @@ class DatabaseQueryEngine {
    * Get all docs
    *
    * @param {AllDocsParams} options - The all docs options
-   * @returns {Promise<QueryResponse>} The found docs
+   * @returns {Promise<QueryResponse | null>} The found docs
    */
   async allDocs(options) {
     throw new Error('method not implemented')
@@ -60,7 +60,7 @@ class DatabaseQueryEngine {
    * Get a single doc by its id
    *
    * @param {string} id - id of the document to get
-   * @returns {Promise<QueryResponseSingleDoc>} The found docs
+   * @returns {Promise<QueryResponseSingleDoc | null>} The found docs
    */
   async getById(id) {
     throw new Error('method not implemented')
@@ -70,7 +70,7 @@ class DatabaseQueryEngine {
    * Get several docs by their ids
    *
    * @param {Array<string>} ids - ids of the documents to get
-   * @returns {Promise<QueryResponse>} The found docs
+   * @returns {Promise<QueryResponse | null>} The found docs
    */
   async getByIds(ids) {
     throw new Error('method not implemented')

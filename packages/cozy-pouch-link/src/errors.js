@@ -5,6 +5,7 @@ const INVALID_TOKEN_ALT_ERROR = /Invalid token/
 const SQLITE_MISSING_INDEX_ERROR = /no such index/
 const POUCHDB_MISSING_INDEX_ERROR = /Could not find that index/
 const POUCHDB_MISSING_INDEX_ERROR_ALT = /no index/
+const IDB_MISSING_INDEX_ERROR = /The specified index was not found/
 
 const expiredTokenError = error => {
   const errorMsg = error.message
@@ -37,4 +38,8 @@ export const isMissingPouchDBIndexError = error => {
     POUCHDB_MISSING_INDEX_ERROR.test(error.message) ||
     POUCHDB_MISSING_INDEX_ERROR_ALT.test(error.message)
   )
+}
+
+export const isMissingIDBIndexError = error => {
+  return IDB_MISSING_INDEX_ERROR.test(error.message)
 }
