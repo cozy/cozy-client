@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [58.1.0](https://github.com/cozy/cozy-client/compare/v58.0.1...v58.1.0) (2025-05-16)
+
+
+### Features
+
+* Add DataProxyLink ([44d4d07](https://github.com/cozy/cozy-client/commit/44d4d07cc6e01bbedb6836b84bc9a85822b7c535))
+
+
+
+
+
 ## [58.0.1](https://github.com/cozy/cozy-client/compare/v58.0.0...v58.0.1) (2025-05-14)
 
 
