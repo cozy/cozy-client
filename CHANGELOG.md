@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [58.2.0](https://github.com/cozy/cozy-client/compare/v58.1.0...v58.2.0) (2025-05-19)
+
+
+### Bug Fixes
+
+* Correctly handle missing doc on PouchDB ([4aa7e75](https://github.com/cozy/cozy-client/commit/4aa7e750ff9206a0e3ffafe9ffab387eae34739c))
+* Do not throw if there is no database for a doctype ([6b73ca9](https://github.com/cozy/cozy-client/commit/6b73ca9a8a35df2976d55673a85d4dd013890a4d))
+* Do not throw when doc has relationship but not schema ([be7da5a](https://github.com/cozy/cozy-client/commit/be7da5a6367b597cc0a199b1df7414da009de6c9))
+* Exclude design docs from response ([c092b4e](https://github.com/cozy/cozy-client/commit/c092b4e8145e10929c781aea02694c1e1288a828))
+
+
+### Features
+
+* Add readOnly option ([f84d8db](https://github.com/cozy/cozy-client/commit/f84d8db878764ddcde6a56e9423c89c1c8b9a7e3))
+* Handle paths locally ([18049bc](https://github.com/cozy/cozy-client/commit/18049bc2f65bcee5db03f99936a33b1c624e7131))
+
+
+
+
+
 # [58.1.0](https://github.com/cozy/cozy-client/compare/v58.0.1...v58.1.0) (2025-05-16)
 
 

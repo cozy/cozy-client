@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [58.2.0](https://github.com/cozy/cozy-client/compare/v58.1.0...v58.2.0) (2025-05-19)
+
+
+### Bug Fixes
+
+* Do not throw when doc has relationship but not schema ([be7da5a](https://github.com/cozy/cozy-client/commit/be7da5a6367b597cc0a199b1df7414da009de6c9))
+
+
+
+
+
 # [58.1.0](https://github.com/cozy/cozy-client/compare/v58.0.1...v58.1.0) (2025-05-16)
 
 
