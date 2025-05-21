@@ -450,6 +450,70 @@ Dispatches a update action for a document to update CozyClient store from realti
 
 ***
 
+### fetchRegistrationDetails
+
+▸ **fetchRegistrationDetails**(`url`): `Promise`<`RegistrationDetails`>
+
+registrationDetails - Get the root URL and prelogin info of a Cozy from more
+precise ones
+
+The goal is to allow users to use any URL copied from their browser as their
+Cozy URL rather than trying to explain to them what we expect (e.g. when
+requesting the Cozy URL to connect an app).
+If we can't get the root URL either because there's no Cozy or the domain
+does not exist or anything else, we'll throw an InvalidCozyUrlError.
+Also, since we communicate only via HTTP or HTTPS, we'll throw an
+InvalidProtocolError if any other protocol is used.
+
+This function expects a fully qualified URL thus with a protocol and a valid
+hostname. If your application accepts Cozy intances as input (e.g. `claude`
+when the Cozy can be found at `https://claude.mycozy.cloud`), it is your
+responsibility to add the appropriate domain to the hostname before calling
+this function.
+
+Examples:
+
+1.  getting the root URL when your user gives you its instance name
+
+const userInput = 'claude'
+const details = await fetchRegistrationDetails(new URL(`https://${userInput}.mycozy.cloud`))
+// → returns { rootUrl: new URL('https://claude.mycozy.cloud'), isOIDC: false }
+
+2.  getting the root URL when your user gives you a Cozy Drive URL
+
+const userInput = 'https://claude-drive.mycozy.cloud/#/folder/io.cozy.files.root-dir'
+const rootUrl = await fetchRegistrationDetails(new URL(userInput))
+// → returns { rootUrl: new URL('https://claude.mycozy.cloud'), isOIDC: false }
+
+3.  getting the root URL when the Cozy uses nested sub-domains
+
+const userInput = 'http://photos.camille.nimbus.com:8080/#/album/1234567890'
+const rootCozyUrl = await fetchRegistrationDetails(new URL(userInput))
+// → returns { rootUrl: new URL('http://camille.nimbus.com:8080'), isOIDC: false }
+
+4.  getting the root URL when your user gives you an instance from OIDC partners
+
+const details = await fetchRegistrationDetails(new URL(`https://alice.someoidcpartener.com`))
+// → returns { rootUrl: new URL('https://alice.someoidcpartener.com'), isOIDC: true }
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `url` | `URL` | The URL from which we'll try to get the root Cozy URL |
+
+*Returns*
+
+`Promise`<`RegistrationDetails`>
+
+The root Cozy URL
+
+*Defined in*
+
+[packages/cozy-client/src/helpers/urlHelper.js:394](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L394)
+
+***
+
 ### generateWebLink
 
 ▸ **generateWebLink**(`options`): `string`
@@ -825,7 +889,7 @@ The root Cozy URL
 
 *Defined in*
 
-[packages/cozy-client/src/helpers/urlHelper.js:268](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L268)
+[packages/cozy-client/src/helpers/urlHelper.js:280](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/helpers/urlHelper.js#L280)
 
 ***
 

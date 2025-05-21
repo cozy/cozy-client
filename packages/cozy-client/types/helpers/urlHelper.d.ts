@@ -26,3 +26,14 @@ export class InvalidCozyUrlError extends Error {
     url: any;
 }
 export function rootCozyUrl(url: URL): Promise<URL>;
+export function fetchRegistrationDetails(url: URL): Promise<RegistrationDetails>;
+export type RegistrationDetails = {
+    /**
+     * - The Cozy's root URL
+     */
+    rootUrl: URL;
+    /**
+     * - True if the Cozy's uses OIDC for login
+     */
+    isOIDC: boolean;
+};
