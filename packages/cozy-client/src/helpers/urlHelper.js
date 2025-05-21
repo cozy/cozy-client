@@ -266,9 +266,7 @@ const isValidOrigin = async url => {
  * @returns {Promise<URL>} The root Cozy URL
  */
 export const rootCozyUrl = async url => {
-  if (!['http:', 'https:'].includes(url.protocol)) {
-    throw new InvalidProtocolError(url)
-  }
+  throwIfInvalidProtocol(url)
 
   // If the entered URL is good, use it
   if (await isValidOrigin(url)) {
@@ -279,13 +277,9 @@ export const rootCozyUrl = async url => {
 
   // If the entered URL's lowest sub-domain contains a dash, remove it and
   // what follows and try the new resulting url.
-  if (/^[^.-][^.]+-[^.-]+\./.test(url.hostname)) {
-    const [subDomain, ...domain] = url.hostname.split('.')
-    const hostname = [subDomain.replace(/-.+/, ''), ...domain].join('.')
+  if (mayHaveSlug(url)) {
+    const noSlugUrl = removeSlug(url)
 
-    const noSlugUrl = new URL(
-      uri({ protocol: url.protocol, hostname, port: url.port })
-    )
     if (await isValidOrigin(noSlugUrl)) {
       return noSlugUrl
     }
@@ -293,13 +287,7 @@ export const rootCozyUrl = async url => {
 
   // Try to remove the first sub-domain in case its a nested app name
   // eslint-disable-next-line no-unused-vars
-  const hostname = url.hostname
-    .split('.')
-    .splice(1)
-    .join('.')
-  const noSubUrl = new URL(
-    uri({ protocol: url.protocol, hostname, port: url.port })
-  )
+  const noSubUrl = removeSubdomain(url)
   if (await isValidOrigin(noSubUrl)) {
     return noSubUrl
   }
@@ -327,4 +315,39 @@ const isResponseAboutBlockedCozy = async response => {
   }
 
   return false
+}
+
+/**
+ * Check if the given url uses the expected protocols (http or https). Throws otherwise
+ *
+ * @param {URL} url - URL to validate
+ */
+const throwIfInvalidProtocol = url => {
+  if (!['http:', 'https:'].includes(url.protocol)) {
+    throw new InvalidProtocolError(url)
+  }
+}
+
+const mayHaveSlug = url => /^[^.-][^.]+-[^.-]+\./.test(url.hostname)
+const removeSlug = url => {
+  const [subDomain, ...domain] = url.hostname.split('.')
+  const hostname = [subDomain.replace(/-.+/, ''), ...domain].join('.')
+
+  const noSlugUrl = new URL(
+    uri({ protocol: url.protocol, hostname, port: url.port })
+  )
+
+  return noSlugUrl
+}
+
+const removeSubdomain = url => {
+  const hostname = url.hostname
+    .split('.')
+    .splice(1)
+    .join('.')
+  const noSubUrl = new URL(
+    uri({ protocol: url.protocol, hostname, port: url.port })
+  )
+
+  return noSubUrl
 }
