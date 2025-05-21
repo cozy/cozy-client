@@ -278,35 +278,9 @@ const isValidOrigin = async url => {
  * @returns {Promise<URL>} The root Cozy URL
  */
 export const rootCozyUrl = async url => {
-  throwIfInvalidProtocol(url)
+  const detail = await registrationDetails(url)
 
-  // If the entered URL is good, use it
-  if (await isValidOrigin(url)) {
-    return new URL(
-      uri({ protocol: url.protocol, hostname: url.hostname, port: url.port })
-    )
-  }
-
-  // If the entered URL's lowest sub-domain contains a dash, remove it and
-  // what follows and try the new resulting url.
-  if (mayHaveSlug(url)) {
-    const noSlugUrl = removeSlug(url)
-
-    if (await isValidOrigin(noSlugUrl)) {
-      return noSlugUrl
-    }
-  }
-
-  // Try to remove the first sub-domain in case its a nested app name
-  // eslint-disable-next-line no-unused-vars
-  const noSubUrl = removeSubdomain(url)
-  if (await isValidOrigin(noSubUrl)) {
-    return noSubUrl
-  }
-
-  // At this point, we've tried everything we could to correct the user's URL
-  // without success. So bail out and let the user provide a valid one.
-  throw new InvalidCozyUrlError(url)
+  return detail.rootUrl
 }
 
 /**
