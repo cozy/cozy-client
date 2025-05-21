@@ -170,7 +170,7 @@ const uri = ({ protocol, hostname, port }) => {
   )
 }
 
-/* wellKnownUrl - Returns a valid URL string to a Well Known password change page
+/* publicPreloginUrl - Returns a valid URL string to the /public/prelogin API endpoint
  *
  * The built URL will point to the origin generated from the given protocol,
  * hostname and port.
@@ -182,7 +182,7 @@ const uri = ({ protocol, hostname, port }) => {
  *
  * @returns {string} Generated Well Known password change URL string
  */
-const wellKnownUrl = url => uri(url) + '/.well-known/change-password'
+const publicPreloginUrl = url => uri(url) + '/public/prelogin'
 
 /* isValidOrigin - Checks whether a given URL is a valid Cozy origin
  *
@@ -208,7 +208,7 @@ const wellKnownUrl = url => uri(url) + '/.well-known/change-password'
  * @throws {BlockedCozyError} Thrown when we know for sure there is Cozy behind the given origin but it is in a "Blocked" state
  */
 const isValidOrigin = async url => {
-  const response = await fetch(wellKnownUrl(url))
+  const response = await fetch(publicPreloginUrl(url))
   const { status, url: responseUri } = response
 
   if (status === 404) {

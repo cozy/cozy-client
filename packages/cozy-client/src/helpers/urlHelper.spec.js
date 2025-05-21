@@ -203,11 +203,11 @@ describe('rootCozyUrl', () => {
 
   it('should handle cozy-hosted https', async () => {
     fetch.mockOnceIf(
-      'https://camillenimbus.mycozy.cloud/.well-known/change-password',
+      'https://camillenimbus.mycozy.cloud/public/prelogin',
       {},
       {
         status: 200,
-        url: 'https://camillenimbus.mycozy.cloud/.well-known/change-password'
+        url: 'https://camillenimbus.mycozy.cloud/public/prelogin'
       }
     )
 
@@ -218,11 +218,11 @@ describe('rootCozyUrl', () => {
 
   it('should handle cozy-hosted https trailing slash', async () => {
     fetch.mockOnceIf(
-      'https://camillenimbus.mycozy.cloud/.well-known/change-password',
+      'https://camillenimbus.mycozy.cloud/public/prelogin',
       {},
       {
         status: 200,
-        url: 'https://camillenimbus.mycozy.cloud/.well-known/change-password'
+        url: 'https://camillenimbus.mycozy.cloud/public/prelogin'
       }
     )
 
@@ -233,11 +233,11 @@ describe('rootCozyUrl', () => {
 
   it('should handle cozy-hosted https trailing path', async () => {
     fetch.mockOnceIf(
-      'https://camillenimbus.mycozy.cloud/.well-known/change-password',
+      'https://camillenimbus.mycozy.cloud/public/prelogin',
       {},
       {
         status: 200,
-        url: 'https://camillenimbus.mycozy.cloud/.well-known/change-password'
+        url: 'https://camillenimbus.mycozy.cloud/public/prelogin'
       }
     )
 
@@ -248,20 +248,19 @@ describe('rootCozyUrl', () => {
 
   it('should handle cozy-hosted drive web app url', async () => {
     fetch.mockOnceIf(
-      'https://camillenimbus-drive.mycozy.cloud/.well-known/change-password',
+      'https://camillenimbus-drive.mycozy.cloud/public/prelogin',
       {},
       {
         status: 401,
-        url:
-          'https://camillenimbus-drive.mycozy.cloud/.well-known/change-password'
+        url: 'https://camillenimbus-drive.mycozy.cloud/public/prelogin'
       }
     )
     fetch.mockOnceIf(
-      'https://camillenimbus.mycozy.cloud/.well-known/change-password',
+      'https://camillenimbus.mycozy.cloud/public/prelogin',
       {},
       {
         status: 200,
-        url: 'https://camillenimbus.mycozy.cloud/.well-known/change-password'
+        url: 'https://camillenimbus.mycozy.cloud/public/prelogin'
       }
     )
 
@@ -272,20 +271,19 @@ describe('rootCozyUrl', () => {
 
   it('should handle cozy-hosted photos album url', async () => {
     fetch.mockOnceIf(
-      'https://camillenimbus-photos.mycozy.cloud/.well-known/change-password',
+      'https://camillenimbus-photos.mycozy.cloud/public/prelogin',
       {},
       {
         status: 401,
-        url:
-          'https://camillenimbus-photos.mycozy.cloud/.well-known/change-password'
+        url: 'https://camillenimbus-photos.mycozy.cloud/public/prelogin'
       }
     )
     fetch.mockOnceIf(
-      'https://camillenimbus.mycozy.cloud/.well-known/change-password',
+      'https://camillenimbus.mycozy.cloud/public/prelogin',
       {},
       {
         status: 200,
-        url: 'https://camillenimbus.mycozy.cloud/.well-known/change-password'
+        url: 'https://camillenimbus.mycozy.cloud/public/prelogin'
       }
     )
 
@@ -300,20 +298,19 @@ describe('rootCozyUrl', () => {
 
   it('should handle cozy-hosted app name', async () => {
     fetch.mockOnceIf(
-      'https://camillenimbus-drive.mycozy.cloud/.well-known/change-password',
+      'https://camillenimbus-drive.mycozy.cloud/public/prelogin',
       {},
       {
         status: 401,
-        url:
-          'https://camillenimbus-drive.mycozy.cloud/.well-known/change-password'
+        url: 'https://camillenimbus-drive.mycozy.cloud/public/prelogin'
       }
     )
     fetch.mockOnceIf(
-      'https://camillenimbus.mycozy.cloud/.well-known/change-password',
+      'https://camillenimbus.mycozy.cloud/public/prelogin',
       {},
       {
         status: 200,
-        url: 'https://camillenimbus.mycozy.cloud/.well-known/change-password'
+        url: 'https://camillenimbus.mycozy.cloud/public/prelogin'
       }
     )
 
@@ -327,7 +324,7 @@ describe('rootCozyUrl', () => {
     // `onboarding`) to the Home app (via the login page if the user is not
     // logged in).
     fetch.mockOnceIf(
-      'https://camillenimbus-onboarding.mycozy.cloud/.well-known/change-password',
+      'https://camillenimbus-onboarding.mycozy.cloud/public/prelogin',
       {},
       {
         status: 200,
@@ -336,11 +333,11 @@ describe('rootCozyUrl', () => {
       }
     )
     fetch.mockOnceIf(
-      'https://camillenimbus.mycozy.cloud/.well-known/change-password',
+      'https://camillenimbus.mycozy.cloud/public/prelogin',
       {},
       {
         status: 200,
-        url: 'https://camillenimbus.mycozy.cloud/.well-known/change-password'
+        url: 'https://camillenimbus.mycozy.cloud/public/prelogin'
       }
     )
 
@@ -351,11 +348,11 @@ describe('rootCozyUrl', () => {
 
   it('should handle self-hosted https', async () => {
     fetch.mockOnceIf(
-      'https://camillenimbus.com/.well-known/change-password',
+      'https://camillenimbus.com/public/prelogin',
       {},
       {
         status: 200,
-        url: 'https://camillenimbus.com/.well-known/change-password'
+        url: 'https://camillenimbus.com/public/prelogin'
       }
     )
 
@@ -366,11 +363,11 @@ describe('rootCozyUrl', () => {
 
   it('should handle self-hosted with dash', async () => {
     fetch.mockOnceIf(
-      'https://camille-nimbus.com/.well-known/change-password',
+      'https://camille-nimbus.com/public/prelogin',
       {},
       {
         status: 200,
-        url: 'https://camille-nimbus.com/.well-known/change-password'
+        url: 'https://camille-nimbus.com/public/prelogin'
       }
     )
 
@@ -381,11 +378,11 @@ describe('rootCozyUrl', () => {
 
   it('should handle self-hosted http', async () => {
     fetch.mockOnceIf(
-      'http://camille-nimbus.com/.well-known/change-password',
+      'http://camille-nimbus.com/public/prelogin',
       {},
       {
         status: 200,
-        url: 'http://camille-nimbus.com/.well-known/change-password'
+        url: 'http://camille-nimbus.com/public/prelogin'
       }
     )
 
@@ -396,11 +393,11 @@ describe('rootCozyUrl', () => {
 
   it('should handle self-hosted https with port', async () => {
     fetch.mockOnceIf(
-      'https://camillenimbus.com:666/.well-known/change-password',
+      'https://camillenimbus.com:666/public/prelogin',
       {},
       {
         status: 200,
-        url: 'https://camillenimbus.com:666/.well-known/change-password'
+        url: 'https://camillenimbus.com:666/public/prelogin'
       }
     )
 
@@ -411,19 +408,19 @@ describe('rootCozyUrl', () => {
 
   it('should handle self-hosted nested drive web app url', async () => {
     fetch.mockOnceIf(
-      'https://drive.camillenimbus.com/.well-known/change-password',
+      'https://drive.camillenimbus.com/public/prelogin',
       {},
       {
         status: 401,
-        url: 'https://drive.camillenimbus.com/.well-known/change-password'
+        url: 'https://drive.camillenimbus.com/public/prelogin'
       }
     )
     fetch.mockOnceIf(
-      'https://camillenimbus.com/.well-known/change-password',
+      'https://camillenimbus.com/public/prelogin',
       {},
       {
         status: 200,
-        url: 'https://camillenimbus.com/.well-known/change-password'
+        url: 'https://camillenimbus.com/public/prelogin'
       }
     )
 
@@ -434,19 +431,19 @@ describe('rootCozyUrl', () => {
 
   it('should handle self-hosted flat drive web app url', async () => {
     fetch.mockOnceIf(
-      'https://camille-drive.nimbus.com/.well-known/change-password',
+      'https://camille-drive.nimbus.com/public/prelogin',
       {},
       {
         status: 401,
-        url: 'https://camille-drive.nimbus.com/.well-known/change-password'
+        url: 'https://camille-drive.nimbus.com/public/prelogin'
       }
     )
     fetch.mockOnceIf(
-      'https://camille.nimbus.com/.well-known/change-password',
+      'https://camille.nimbus.com/public/prelogin',
       {},
       {
         status: 200,
-        url: 'https://camille.nimbus.com/.well-known/change-password'
+        url: 'https://camille.nimbus.com/public/prelogin'
       }
     )
 
@@ -457,11 +454,11 @@ describe('rootCozyUrl', () => {
 
   it('should handle cozy.localhost', async () => {
     fetch.mockOnceIf(
-      'http://cozy.localhost:8080/.well-known/change-password',
+      'http://cozy.localhost:8080/public/prelogin',
       {},
       {
         status: 200,
-        url: 'http://cozy.localhost:8080/.well-known/change-password'
+        url: 'http://cozy.localhost:8080/public/prelogin'
       }
     )
     await expect(
@@ -471,11 +468,11 @@ describe('rootCozyUrl', () => {
 
   it('expects an http or https protocol', async () => {
     fetch.mockOnceIf(
-      'ftp://camillenimbus.com/.well-known/change-password',
+      'ftp://camillenimbus.com/public/prelogin',
       {},
       {
         status: 200,
-        url: 'ftp://camillenimbus.com/.well-known/change-password'
+        url: 'ftp://camillenimbus.com/public/prelogin'
       }
     )
 
@@ -486,11 +483,11 @@ describe('rootCozyUrl', () => {
 
   it('rejects if URL points to a valid cozy-stack but no valid Cozy instance', async () => {
     fetch.mockOnceIf(
-      'https://missing.mycozy.cloud/.well-known/change-password',
+      'https://missing.mycozy.cloud/public/prelogin',
       {},
       {
         status: 404,
-        url: 'https://missing.mycozy.cloud/.well-known/change-password'
+        url: 'https://missing.mycozy.cloud/public/prelogin'
       }
     )
 
@@ -518,7 +515,7 @@ describe('rootCozyUrl', () => {
         status: 503,
         statusText: '',
         type: 'default',
-        url: 'https://camillenimbus.com/.well-known/change-password'
+        url: 'https://camillenimbus.com/public/prelogin'
       })
     })
 
@@ -546,7 +543,7 @@ describe('rootCozyUrl', () => {
         status: 503,
         statusText: '',
         type: 'default',
-        url: 'https://camillenimbus.com/.well-known/change-password'
+        url: 'https://camillenimbus.com/public/prelogin'
       })
     })
 
