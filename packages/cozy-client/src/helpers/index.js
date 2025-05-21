@@ -4,6 +4,7 @@ export {
   generateWebLink,
   ensureFirstSlash,
   rootCozyUrl,
+  registrationDetails,
   InvalidRedirectLinkError,
   InvalidCozyUrlError,
   InvalidProtocolError,

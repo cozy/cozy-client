@@ -219,9 +219,21 @@ const isValidOrigin = async url => {
     throw new BlockedCozyError(url)
   }
 
-  const wasRedirected = url.origin !== new URL(responseUri).origin
+  if (status !== 200) return
 
-  return status === 200 && !wasRedirected
+  const wasRedirected =
+    responseUri && url.origin !== new URL(responseUri).origin
+
+  if (wasRedirected) {
+    return false
+  }
+
+  const contentType = response.headers.get('content-type')
+  if (!contentType || contentType.indexOf('application/json') === -1) {
+    return false
+  }
+
+  return response.json()
 }
 
 /**
@@ -350,4 +362,104 @@ const removeSubdomain = url => {
   )
 
   return noSubUrl
+}
+
+/**
+ * @typedef {object} RegistrationDetails
+ * @property {URL} rootUrl - The Cozy's root URL
+ * @property {boolean} isOIDC - True if the Cozy's uses OIDC for login
+ */
+
+/**
+ * registrationDetails - Get the root URL and prelogin info of a Cozy from more
+ * precise ones
+ *
+ * The goal is to allow users to use any URL copied from their browser as their
+ * Cozy URL rather than trying to explain to them what we expect (e.g. when
+ * requesting the Cozy URL to connect an app).
+ * If we can't get the root URL either because there's no Cozy or the domain
+ * does not exist or anything else, we'll throw an InvalidCozyUrlError.
+ * Also, since we communicate only via HTTP or HTTPS, we'll throw an
+ * InvalidProtocolError if any other protocol is used.
+ *
+ * This function expects a fully qualified URL thus with a protocol and a valid
+ * hostname. If your application accepts Cozy intances as input (e.g. `claude`
+ * when the Cozy can be found at `https://claude.mycozy.cloud`), it is your
+ * responsibility to add the appropriate domain to the hostname before calling
+ * this function.
+ *
+ * Examples:
+ *
+ * 1. getting the root URL when your user gives you its instance name
+ *
+ *   const userInput = 'claude'
+ *   const details = await registrationDetails(new URL(`https://${userInput}.mycozy.cloud`))
+ *   // → returns { rootUrl: new URL('https://claude.mycozy.cloud'), isOIDC: false }
+ *
+ * 2. getting the root URL when your user gives you a Cozy Drive URL
+ *
+ *   const userInput = 'https://claude-drive.mycozy.cloud/#/folder/io.cozy.files.root-dir'
+ *   const rootUrl = await registrationDetails(new URL(userInput))
+ *   // → returns { rootUrl: new URL('https://claude.mycozy.cloud'), isOIDC: false }
+ *
+ * 3. getting the root URL when the Cozy uses nested sub-domains
+ *
+ *   const userInput = 'http://photos.camille.nimbus.com:8080/#/album/1234567890'
+ *   const rootCozyUrl = await registrationDetails(new URL(userInput))
+ *   // → returns { rootUrl: new URL('http://camille.nimbus.com:8080'), isOIDC: false }
+ *
+ * 4. getting the root URL when your user gives you an instance from OIDC partners
+ *
+ *   const details = await registrationDetails(new URL(`https://alice.someoidcpartener.com`))
+ *   // → returns { rootUrl: new URL('https://alice.someoidcpartener.com'), isOIDC: true }
+ *
+ * @param {URL} url The URL from which we'll try to get the root Cozy URL
+ *
+ * @returns {Promise<RegistrationDetails>} The root Cozy URL
+ */
+export const registrationDetails = async url => {
+  throwIfInvalidProtocol(url)
+
+  const preloginData = await isValidOrigin(url)
+  if (preloginData) {
+    return {
+      rootUrl: new URL(
+        uri({
+          protocol: url.protocol,
+          hostname: url.hostname,
+          port: url.port
+        })
+      ),
+      isOIDC: preloginData.OIDC
+    }
+  }
+
+  // If the entered URL's lowest sub-domain contains a dash, remove it and
+  // what follows and try the new resulting url.
+  if (mayHaveSlug(url)) {
+    const noSlugUrl = removeSlug(url)
+
+    const noSlugPreloginData = await isValidOrigin(noSlugUrl)
+    if (noSlugPreloginData) {
+      return {
+        rootUrl: noSlugUrl,
+        isOIDC: noSlugPreloginData.OIDC
+      }
+    }
+  }
+
+  // Try to remove the first sub-domain in case its a nested app name
+  // eslint-disable-next-line no-unused-vars
+  const noSubUrl = removeSubdomain(url)
+  const noSubPreloginData = await isValidOrigin(noSubUrl)
+  if (noSubPreloginData) {
+    return {
+      rootUrl: noSubUrl,
+      isOIDC: noSubPreloginData.OIDC
+    }
+  }
+
+  // At this point, we've tried everything we could to correct the user's URL
+  // without success. So bail out and let the user provide a valid one.
+  throw new InvalidCozyUrlError(url)
 }
