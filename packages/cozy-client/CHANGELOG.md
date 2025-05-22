@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [58.3.0](https://github.com/cozy/cozy-client/compare/v58.2.0...v58.3.0) (2025-05-22)
+
+
+### Features
+
+* Implement new `urlHelper.registrationDetails(url)` method ([b1ce699](https://github.com/cozy/cozy-client/commit/b1ce699f75405b7740abe11e26971ea8954d2c58))
+* Rename `registrationDetails()` to `fetchRegistrationDetails()` ([e830537](https://github.com/cozy/cozy-client/commit/e830537e930d6c766522e7a036d4045879269adc))
+* Use Prelogin API instead of well-known URL in `rootCozyUrl()` ([e646cfc](https://github.com/cozy/cozy-client/commit/e646cfc17316bf081b9eb04a8386323c6c6bdc82))
+
+
+
+
+
 # [58.2.0](https://github.com/cozy/cozy-client/compare/v58.1.0...v58.2.0) (2025-05-19)
 
 
