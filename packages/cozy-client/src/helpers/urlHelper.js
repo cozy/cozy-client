@@ -278,7 +278,7 @@ const isValidOrigin = async url => {
  * @returns {Promise<URL>} The root Cozy URL
  */
 export const rootCozyUrl = async url => {
-  const detail = await registrationDetails(url)
+  const detail = await fetchRegistrationDetails(url)
 
   return detail.rootUrl
 }
@@ -367,31 +367,31 @@ const removeSubdomain = url => {
  * 1. getting the root URL when your user gives you its instance name
  *
  *   const userInput = 'claude'
- *   const details = await registrationDetails(new URL(`https://${userInput}.mycozy.cloud`))
+ *   const details = await fetchRegistrationDetails(new URL(`https://${userInput}.mycozy.cloud`))
  *   // → returns { rootUrl: new URL('https://claude.mycozy.cloud'), isOIDC: false }
  *
  * 2. getting the root URL when your user gives you a Cozy Drive URL
  *
  *   const userInput = 'https://claude-drive.mycozy.cloud/#/folder/io.cozy.files.root-dir'
- *   const rootUrl = await registrationDetails(new URL(userInput))
+ *   const rootUrl = await fetchRegistrationDetails(new URL(userInput))
  *   // → returns { rootUrl: new URL('https://claude.mycozy.cloud'), isOIDC: false }
  *
  * 3. getting the root URL when the Cozy uses nested sub-domains
  *
  *   const userInput = 'http://photos.camille.nimbus.com:8080/#/album/1234567890'
- *   const rootCozyUrl = await registrationDetails(new URL(userInput))
+ *   const rootCozyUrl = await fetchRegistrationDetails(new URL(userInput))
  *   // → returns { rootUrl: new URL('http://camille.nimbus.com:8080'), isOIDC: false }
  *
  * 4. getting the root URL when your user gives you an instance from OIDC partners
  *
- *   const details = await registrationDetails(new URL(`https://alice.someoidcpartener.com`))
+ *   const details = await fetchRegistrationDetails(new URL(`https://alice.someoidcpartener.com`))
  *   // → returns { rootUrl: new URL('https://alice.someoidcpartener.com'), isOIDC: true }
  *
  * @param {URL} url The URL from which we'll try to get the root Cozy URL
  *
  * @returns {Promise<RegistrationDetails>} The root Cozy URL
  */
-export const registrationDetails = async url => {
+export const fetchRegistrationDetails = async url => {
   throwIfInvalidProtocol(url)
 
   const preloginData = await isValidOrigin(url)
