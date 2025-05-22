@@ -4,7 +4,7 @@ import {
   deconstructCozyWebLinkWithSlug,
   deconstructRedirectLink,
   generateWebLink,
-  registrationDetails,
+  fetchRegistrationDetails,
   rootCozyUrl,
   InvalidRedirectLinkError,
   InvalidCozyUrlError,
@@ -596,7 +596,7 @@ describe('rootCozyUrl', () => {
   })
 })
 
-describe('registrationDetails', () => {
+describe('fetchRegistrationDetails', () => {
   beforeAll(() => {
     enableFetchMocks()
   })
@@ -616,7 +616,7 @@ describe('registrationDetails', () => {
     )
 
     await expect(
-      registrationDetails(new URL('https://camillenimbus.mycozy.cloud'))
+      fetchRegistrationDetails(new URL('https://camillenimbus.mycozy.cloud'))
     ).resolves.toStrictEqual({
       rootUrl: new URL('https://camillenimbus.mycozy.cloud/'),
       isOIDC: false
@@ -630,7 +630,7 @@ describe('registrationDetails', () => {
     )
 
     await expect(
-      registrationDetails(new URL('https://camillenimbus.mycozy.cloud/'))
+      fetchRegistrationDetails(new URL('https://camillenimbus.mycozy.cloud/'))
     ).resolves.toStrictEqual({
       rootUrl: new URL('https://camillenimbus.mycozy.cloud/'),
       isOIDC: false
@@ -644,7 +644,7 @@ describe('registrationDetails', () => {
     )
 
     await expect(
-      registrationDetails(
+      fetchRegistrationDetails(
         new URL('https://camillenimbus.mycozy.cloud/some-path')
       )
     ).resolves.toStrictEqual({
@@ -663,7 +663,7 @@ describe('registrationDetails', () => {
     )
 
     await expect(
-      registrationDetails(
+      fetchRegistrationDetails(
         new URL('https://camillenimbus-drive.mycozy.cloud/#/folder')
       )
     ).resolves.toStrictEqual({
@@ -682,7 +682,7 @@ describe('registrationDetails', () => {
     )
 
     await expect(
-      registrationDetails(
+      fetchRegistrationDetails(
         new URL(
           'https://camillenimbus-photos.mycozy.cloud/#/albums/68b5cda502ae29f5fa73fd89f1be4f92'
         )
@@ -703,7 +703,7 @@ describe('registrationDetails', () => {
     )
 
     await expect(
-      registrationDetails(
+      fetchRegistrationDetails(
         new URL('https://camillenimbus-someslug.mycozy.cloud')
       )
     ).resolves.toStrictEqual({
@@ -726,7 +726,7 @@ describe('registrationDetails', () => {
     )
 
     await expect(
-      registrationDetails(
+      fetchRegistrationDetails(
         new URL('https://camillenimbus-onboarding.mycozy.cloud')
       )
     ).resolves.toStrictEqual({
@@ -742,7 +742,7 @@ describe('registrationDetails', () => {
     )
 
     await expect(
-      registrationDetails(new URL('https://camillenimbus.com'))
+      fetchRegistrationDetails(new URL('https://camillenimbus.com'))
     ).resolves.toStrictEqual({
       rootUrl: new URL('https://camillenimbus.com/'),
       isOIDC: false
@@ -756,7 +756,7 @@ describe('registrationDetails', () => {
     )
 
     await expect(
-      registrationDetails(new URL('https://camille-nimbus.com'))
+      fetchRegistrationDetails(new URL('https://camille-nimbus.com'))
     ).resolves.toStrictEqual({
       rootUrl: new URL('https://camille-nimbus.com/'),
       isOIDC: false
@@ -770,7 +770,7 @@ describe('registrationDetails', () => {
     )
 
     await expect(
-      registrationDetails(new URL('http://camille-nimbus.com'))
+      fetchRegistrationDetails(new URL('http://camille-nimbus.com'))
     ).resolves.toStrictEqual({
       rootUrl: new URL('http://camille-nimbus.com/'),
       isOIDC: false
@@ -784,7 +784,7 @@ describe('registrationDetails', () => {
     )
 
     await expect(
-      registrationDetails(new URL('https://camillenimbus.com:666'))
+      fetchRegistrationDetails(new URL('https://camillenimbus.com:666'))
     ).resolves.toStrictEqual({
       rootUrl: new URL('https://camillenimbus.com:666/'),
       isOIDC: false
@@ -799,7 +799,9 @@ describe('registrationDetails', () => {
     )
 
     await expect(
-      registrationDetails(new URL('https://drive.camillenimbus.com/#/folder'))
+      fetchRegistrationDetails(
+        new URL('https://drive.camillenimbus.com/#/folder')
+      )
     ).resolves.toStrictEqual({
       rootUrl: new URL('https://camillenimbus.com/'),
       isOIDC: false
@@ -814,7 +816,9 @@ describe('registrationDetails', () => {
     )
 
     await expect(
-      registrationDetails(new URL('https://camille-drive.nimbus.com/#/folder'))
+      fetchRegistrationDetails(
+        new URL('https://camille-drive.nimbus.com/#/folder')
+      )
     ).resolves.toStrictEqual({
       rootUrl: new URL('https://camille.nimbus.com/'),
       isOIDC: false
@@ -827,7 +831,7 @@ describe('registrationDetails', () => {
       fakeCozyPrelogin()
     )
     await expect(
-      registrationDetails(new URL('http://cozy.localhost:8080'))
+      fetchRegistrationDetails(new URL('http://cozy.localhost:8080'))
     ).resolves.toStrictEqual({
       rootUrl: new URL('http://cozy.localhost:8080/'),
       isOIDC: false
@@ -841,7 +845,7 @@ describe('registrationDetails', () => {
     )
 
     await expect(
-      registrationDetails(new URL('ftp://camillenimbus.com'))
+      fetchRegistrationDetails(new URL('ftp://camillenimbus.com'))
     ).rejects.toBeInstanceOf(InvalidProtocolError)
   })
 
@@ -849,7 +853,7 @@ describe('registrationDetails', () => {
     mockNotFoundOnce('https://missing.mycozy.cloud/public/prelogin')
 
     await expect(
-      registrationDetails(new URL('https://missing.mycozy.cloud/'))
+      fetchRegistrationDetails(new URL('https://missing.mycozy.cloud/'))
     ).rejects.toBeInstanceOf(InvalidCozyUrlError)
   })
 
@@ -857,7 +861,7 @@ describe('registrationDetails', () => {
     mockBlockedCozy('https://camillenimbus.com/public/prelogin')
 
     await expect(
-      registrationDetails(new URL('https://camillenimbus.com'))
+      fetchRegistrationDetails(new URL('https://camillenimbus.com'))
     ).rejects.toBeInstanceOf(BlockedCozyError)
   })
 
@@ -865,7 +869,7 @@ describe('registrationDetails', () => {
     mock503Error('https://camillenimbus.com/public/prelogin')
 
     await expect(
-      registrationDetails(new URL('https://camillenimbus.com'))
+      fetchRegistrationDetails(new URL('https://camillenimbus.com'))
     ).rejects.toBeInstanceOf(InvalidCozyUrlError)
   })
 
@@ -876,7 +880,7 @@ describe('registrationDetails', () => {
     )
 
     await expect(
-      registrationDetails(new URL('https://camillenimbus.mycozy.cloud'))
+      fetchRegistrationDetails(new URL('https://camillenimbus.mycozy.cloud'))
     ).resolves.toStrictEqual({
       rootUrl: new URL('https://camillenimbus.mycozy.cloud/'),
       isOIDC: true
@@ -890,7 +894,7 @@ describe('registrationDetails', () => {
     )
 
     await expect(
-      registrationDetails(new URL('https://camillenimbus.com'))
+      fetchRegistrationDetails(new URL('https://camillenimbus.com'))
     ).rejects.toBeInstanceOf(InvalidCozyUrlError)
   })
 })
