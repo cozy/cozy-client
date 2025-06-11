@@ -478,6 +478,7 @@ import { QueryDefinition } from './queries/dsl'
  * @property {object} [target] - Information of the target of the shortcut
  * @property {string} [target.title] - The title of the application to which the shortcut redirects
  * @property {string} [target.category] - The category of the application
+ * @property {string} [externalId] - An external Id, typically used for external apps
  * @property {object} [externalDataSource] - Additional information to maintain link with external data source
  * @property {string} [externalDataSource.source] - The space to which the application belongs
  * @property {string} [externalDataSource.creator] - The creator of the data source

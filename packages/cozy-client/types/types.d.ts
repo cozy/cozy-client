@@ -854,6 +854,10 @@ export type FileMetadata = {
         category: string;
     };
     /**
+     * - An external Id, typically used for external apps
+     */
+    externalId?: string;
+    /**
      * - Additional information to maintain link with external data source
      */
     externalDataSource?: {
