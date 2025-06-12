@@ -32,6 +32,7 @@ export function splitFilename(file: import("../types").IOCozyFile): {
 export function isFile(file: import("../types").IOCozyFile): boolean;
 export function isDirectory(file: import("../types").IOCozyFile): boolean;
 export function isNote(file: import("../types").IOCozyFile): boolean;
+export function isDocs(file: import("../types").IOCozyFile): boolean;
 export function isEncrypted(file: import("../types").IOCozyFile): boolean;
 export function getEncryptiondRef(dir: import("../types").IOCozyFile): boolean;
 export function isEncryptedFolder(dir: import("../types").IOCozyFile): boolean;

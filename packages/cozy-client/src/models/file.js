@@ -68,6 +68,16 @@ export const isNote = file => {
 }
 
 /**
+ * Is the given file a Docs note
+ *
+ * @param {import("../types").IOCozyFile} file The io.cozy.files
+ * @returns {boolean}
+ */
+export const isDocs = file => {
+  return file?.name?.endsWith('.docs-note') && !!file?.metadata?.externalId
+}
+
+/**
  * Whether the file is client-side encrypted
  *
  * @param {import("../types").IOCozyFile} file - io.cozy.files document
