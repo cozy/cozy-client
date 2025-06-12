@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [58.4.0](https://github.com/cozy/cozy-client/compare/v58.3.1...v58.4.0) (2025-06-12)
+
+
+### Bug Fixes
+
+* Do not throw when file content is defined but empty ([1d0e99e](https://github.com/cozy/cozy-client/commit/1d0e99e4a966c3d5aaa0724065bf575ef95cb417))
+
+
+### Features
+
+* Add Docs helper ([4bb5e23](https://github.com/cozy/cozy-client/commit/4bb5e238262b978941687ae629704602a284bdf6))
+
+
+
+
+
 ## [58.3.1](https://github.com/cozy/cozy-client/compare/v58.3.0...v58.3.1) (2025-06-11)
 
 **Note:** Version bump only for package cozy-client
