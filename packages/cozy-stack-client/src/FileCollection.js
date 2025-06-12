@@ -1172,7 +1172,7 @@ class FileCollection extends DocumentCollection {
   async doUpload(dataArg, path, options, method = 'POST') {
     let correctPath = path
     let data = dataArg
-    if (!data) {
+    if (data === undefined) {
       throw new Error('missing data argument')
     }
 
