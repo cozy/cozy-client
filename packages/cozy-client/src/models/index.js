@@ -16,6 +16,7 @@ import * as dacc from './dacc'
 import * as paper from './paper'
 import * as user from './user'
 import * as geo from './geo'
+import * as doctypes from './doctypes'
 
 // For backward compatibility before 9.0.0
 const triggers = trigger
@@ -41,5 +42,6 @@ export {
   dacc,
   paper,
   user,
-  geo
+  geo,
+  doctypes
 }
