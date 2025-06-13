@@ -8,6 +8,7 @@
 *   [applications](models.applications.md)
 *   [contact](models.contact.md)
 *   [dacc](models.dacc.md)
+*   [doctypes](models.doctypes.md)
 *   [document](models.document.md)
 *   [file](models.file.md)
 *   [folder](models.folder.md)
@@ -31,7 +32,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/models/index.js:22](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/index.js#L22)
+[packages/cozy-client/src/models/index.js:23](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/index.js#L23)
 
 ***
 
@@ -41,4 +42,4 @@
 
 *Defined in*
 
-[packages/cozy-client/src/models/index.js:21](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/index.js#L21)
+[packages/cozy-client/src/models/index.js:22](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/index.js#L22)
