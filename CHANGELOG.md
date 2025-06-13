@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [58.5.0](https://github.com/cozy/cozy-client/compare/v58.4.0...v58.5.0) (2025-06-13)
+
+
+### Features
+
+* Add doctypes model and fetch function ([f115786](https://github.com/cozy/cozy-client/commit/f115786685a0f731268ac609e2e9144cf6744340))
+
+
+
+
+
 # [58.4.0](https://github.com/cozy/cozy-client/compare/v58.3.1...v58.4.0) (2025-06-12)
 
 
