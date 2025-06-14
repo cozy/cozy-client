@@ -3526,13 +3526,14 @@ cosmiconfig@^7.0.0:
     yaml "^1.10.0"
 
 cozy-client@../../:
-  version "32.2.5"
+  version "34.6.2"
   dependencies:
     "@cozy/minilog" "1.0.0"
     "@types/jest" "^26.0.20"
     "@types/lodash" "^4.14.170"
     btoa "^1.2.1"
-    cozy-stack-client "^32.2.5"
+    cozy-stack-client "^34.6.1"
+    date-fns "2.29.3"
     json-stable-stringify "^1.0.1"
     lodash "^4.17.13"
     microee "^0.0.6"
@@ -3547,10 +3548,10 @@ cozy-client@../../:
     sift "^6.0.0"
     url-search-params-polyfill "^8.0.0"
 
-cozy-stack-client@^32.2.5:
-  version "32.2.5"
-  resolved "https://registry.yarnpkg.com/cozy-stack-client/-/cozy-stack-client-32.2.5.tgz#ffb798fb8a9de6126d53abbf68b7b6f90a0db9e2"
-  integrity sha512-RJKOc7Vd6CAmDEpdohU84PT8KYTnC/UsYm1IsBPrqzzeZCZXceHJWtALB1rpwfTdLTvu3heYYAuLjJqtqVbBGQ==
+cozy-stack-client@^34.6.1:
+  version "34.6.1"
+  resolved "https://registry.yarnpkg.com/cozy-stack-client/-/cozy-stack-client-34.6.1.tgz#3a2fb277ff91c49705f9d2ccad8d9adf46b7ef89"
+  integrity sha512-OwNJ+ar0KbKW1QB4hrL7yr1zrEa3ABRsy3vpn3eWAlFZY1JmzOv2bLL+ijE4hnHKl0nq7bTG0Hn7ZVo57FPBsQ==
   dependencies:
     detect-node "^2.0.4"
     mime "^2.4.0"
@@ -3868,6 +3869,11 @@ data-urls@^2.0.0:
     abab "^2.0.3"
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
+
+date-fns@2.29.3:
+  version "2.29.3"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.29.3.tgz#27402d2fc67eb442b511b70bbdf98e6411cd68a8"
+  integrity sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==
 
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0, debug@^2.6.9:
   version "2.6.9"
@@ -8981,9 +8987,9 @@ qs@^6.7.0:
     side-channel "^1.0.4"
 
 qs@~6.5.2:
-  version "6.5.2"
-  resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
-  integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
+  version "6.5.3"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.3.tgz#3aeeffc91967ef6e35c0e488ef46fb296ab76aad"
+  integrity sha512-qxXIEh4pCGfHICj1mAJQ2/2XVZkjCDTcEgfoSQxc/fYivUZxTkk7L3bDBJSoNrEzXI17oUO5Dp07ktqE5KzczA==
 
 query-string@^4.1.0:
   version "4.3.4"
