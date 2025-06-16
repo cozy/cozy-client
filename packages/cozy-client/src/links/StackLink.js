@@ -117,12 +117,24 @@ export default class StackLink extends CozyLink {
    * @returns {Promise<import("../types").ClientResponse>}
    */
   executeQuery(query) {
-    const { doctype, selector, id, ids, referenced, ...options } = query
+    const {
+      doctype,
+      selector,
+      id,
+      ids,
+      referenced,
+      sharingId,
+      ...rawOptions
+    } = query
+    let options = { ...rawOptions, driveId: undefined }
     if (!doctype) {
       logger.warn('Bad query', query)
       throw new Error('No doctype found in a query definition')
     }
-    const collection = this.stackClient.collection(doctype)
+    if (doctype === DOCTYPE_FILES && sharingId) {
+      options = { ...options, driveId: sharingId }
+    }
+    const collection = this.stackClient.collection(doctype, options)
     if (id) {
       return collection.get(id, query)
     }

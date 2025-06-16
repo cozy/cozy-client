@@ -361,9 +361,10 @@ declare class CozyClient {
      * a [DocumentCollection]{@link https://docs.cozy.io/en/cozy-client/api/cozy-stack-client/#DocumentCollection} instance.
      *
      * @param  {string} doctype The collection doctype.
+     * @param  {object} options Options to pass to the collection
      * @returns {import("./types").DocumentCollection} Collection corresponding to the doctype
      */
-    collection(doctype: string): import("./types").DocumentCollection;
+    collection(doctype: string, options?: object): import("./types").DocumentCollection;
     fetch(method: any, path: any, body: any, options?: {}): any;
     all(doctype: any): QueryDefinition;
     find(doctype: any, selector?: any): QueryDefinition;

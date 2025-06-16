@@ -139,6 +139,10 @@ See <a href="https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a
 <dt><a href="#getAccessToken">getAccessToken()</a> ⇒ <code>string</code></dt>
 <dd><p>Get the app token string</p>
 </dd>
+<dt><a href="#sharedDriveApiPrefix">sharedDriveApiPrefix(driveId)</a> ⇒ <code>string</code></dt>
+<dd><p>Returns a FileCollection API prefix for manipulating a shared
+drive&#39;s files.</p>
+</dd>
 <dt><a href="#getIconURL">getIconURL()</a></dt>
 <dd><p>Get Icon URL using blob mechanism if OAuth connected
 or using preloaded url when blob not needed</p>
@@ -200,6 +204,8 @@ Deleted and design docs are filtered by default, thus documents are retrieved in
 (include_docs is set to true in the parameters of _changes).</p>
 <p>You should use fetchChangesRaw to have low level control on _changes parameters.</p>
 </dd>
+<dt><a href="#CozyStackClient">CozyStackClient</a> : <code>module:&quot;./CozyStackClient.js&quot;</code></dt>
+<dd></dd>
 <dt><a href="#IOCozyFolder">IOCozyFolder</a> : <code>object</code></dt>
 <dd><p>Folder</p>
 </dd>
@@ -223,6 +229,9 @@ Deleted and design docs are filtered by default, thus documents are retrieved in
 </dd>
 <dt><a href="#OAuthClient">OAuthClient</a> : <code>object</code></dt>
 <dd><p>Document representing a io.cozy.oauth.clients</p>
+</dd>
+<dt><a href="#FileCollectionOptions">FileCollectionOptions</a> : <code>object</code></dt>
+<dd><p>Options that can be passed to FileCollection&#39;s constructor</p>
 </dd>
 <dt><a href="#ArchivePages">ArchivePages</a> : <code>object</code></dt>
 <dd><p>Attributes used for create archive link by ids</p>
@@ -365,7 +374,7 @@ Main API against the `cozy-stack` server.
 **Kind**: global class  
 
 * [CozyStackClient](#CozyStackClient)
-    * [.collection(doctype)](#CozyStackClient+collection) ⇒ [<code>DocumentCollection</code>](#DocumentCollection)
+    * [.collection(doctype, options)](#CozyStackClient+collection) ⇒ [<code>DocumentCollection</code>](#DocumentCollection)
     * [.fetch(method, path, [body], [opts])](#CozyStackClient+fetch) ⇒ <code>object</code>
     * [.refreshToken()](#CozyStackClient+refreshToken) ⇒ <code>Promise</code>
     * [.fetchJSON(method, path, body, options)](#CozyStackClient+fetchJSON) ⇒ <code>object</code>
@@ -374,7 +383,7 @@ Main API against the `cozy-stack` server.
 
 <a name="CozyStackClient+collection"></a>
 
-### cozyStackClient.collection(doctype) ⇒ [<code>DocumentCollection</code>](#DocumentCollection)
+### cozyStackClient.collection(doctype, options) ⇒ [<code>DocumentCollection</code>](#DocumentCollection)
 Creates a [DocumentCollection](#DocumentCollection) instance.
 
 **Kind**: instance method of [<code>CozyStackClient</code>](#CozyStackClient)  
@@ -382,6 +391,7 @@ Creates a [DocumentCollection](#DocumentCollection) instance.
 | Param | Type | Description |
 | --- | --- | --- |
 | doctype | <code>string</code> | The collection doctype. |
+| options | <code>object</code> | Options to pass to the collection. |
 
 <a name="CozyStackClient+fetch"></a>
 
@@ -752,6 +762,7 @@ files associated to a specific document
 **Kind**: global class  
 
 * [FileCollection](#FileCollection)
+    * [new FileCollection(doctype, stackClient, [options])](#new_FileCollection_new)
     * [.forceFileDownload](#FileCollection+forceFileDownload)
     * [.get(id)](#FileCollection+get) ⇒ <code>Object</code>
     * [.getAll(ids)](#FileCollection+getAll) ⇒ <code>Promise.&lt;{data, meta, execution\_stats}&gt;</code>
@@ -786,6 +797,16 @@ files associated to a specific document
     * [.addNotSynchronizedDirectories(oauthClient, directories)](#FileCollection+addNotSynchronizedDirectories)
     * [.removeNotSynchronizedDirectories(oauthClient, directories)](#FileCollection+removeNotSynchronizedDirectories)
     * [.getOrCreateSharedDrivesDirectory()](#FileCollection+getOrCreateSharedDrivesDirectory) ⇒ [<code>IOCozyFolder</code>](#IOCozyFolder)
+
+<a name="new_FileCollection_new"></a>
+
+### new FileCollection(doctype, stackClient, [options])
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doctype | <code>string</code> | Doctype of the collection (should be `io.cozy.files`) |
+| stackClient | [<code>CozyStackClient</code>](#CozyStackClient) | The client used to make requests to the serve |
+| [options] | [<code>FileCollectionOptions</code>](#FileCollectionOptions) | The collection options |
 
 <a name="FileCollection+forceFileDownload"></a>
 
@@ -2425,6 +2446,19 @@ Get the app token string
 **Kind**: global function  
 **Returns**: <code>string</code> - token  
 **See**: CozyStackClient.getAccessToken  
+<a name="sharedDriveApiPrefix"></a>
+
+## sharedDriveApiPrefix(driveId) ⇒ <code>string</code>
+Returns a FileCollection API prefix for manipulating a shared
+drive's files.
+
+**Kind**: global function  
+**Returns**: <code>string</code> - The API prefix to manipulate the drive's files  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| driveId | <code>string</code> | The shared drive ID |
+
 <a name="getIconURL"></a>
 
 ## getIconURL()
@@ -2615,6 +2649,97 @@ You should use fetchChangesRaw to have low level control on _changes parameters.
 | newLastSeq | <code>string</code> | 
 | documents | <code>Array.&lt;object&gt;</code> | 
 
+<a name="CozyStackClient"></a>
+
+## CozyStackClient : <code>module:&quot;./CozyStackClient.js&quot;</code>
+**Kind**: global typedef  
+
+* [CozyStackClient](#CozyStackClient) : <code>module:&quot;./CozyStackClient.js&quot;</code>
+    * [.collection(doctype, options)](#CozyStackClient+collection) ⇒ [<code>DocumentCollection</code>](#DocumentCollection)
+    * [.fetch(method, path, [body], [opts])](#CozyStackClient+fetch) ⇒ <code>object</code>
+    * [.refreshToken()](#CozyStackClient+refreshToken) ⇒ <code>Promise</code>
+    * [.fetchJSON(method, path, body, options)](#CozyStackClient+fetchJSON) ⇒ <code>object</code>
+    * [.setToken(token)](#CozyStackClient+setToken)
+    * [.getAccessToken()](#CozyStackClient+getAccessToken) ⇒ <code>string</code>
+
+<a name="CozyStackClient+collection"></a>
+
+### cozyStackClient.collection(doctype, options) ⇒ [<code>DocumentCollection</code>](#DocumentCollection)
+Creates a [DocumentCollection](#DocumentCollection) instance.
+
+**Kind**: instance method of [<code>CozyStackClient</code>](#CozyStackClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doctype | <code>string</code> | The collection doctype. |
+| options | <code>object</code> | Options to pass to the collection. |
+
+<a name="CozyStackClient+fetch"></a>
+
+### cozyStackClient.fetch(method, path, [body], [opts]) ⇒ <code>object</code>
+Fetches an endpoint in an authorized way.
+
+**Kind**: instance method of [<code>CozyStackClient</code>](#CozyStackClient)  
+**Throws**:
+
+- <code>FetchError</code> 
+
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| method | <code>string</code> |  | The HTTP method. |
+| path | <code>string</code> |  | The URI. |
+| [body] | <code>object</code> |  | The payload. |
+| [opts] | <code>object</code> | <code>{}</code> | Options for fetch |
+
+<a name="CozyStackClient+refreshToken"></a>
+
+### cozyStackClient.refreshToken() ⇒ <code>Promise</code>
+Retrieves a new app token by refreshing the currently used token.
+
+**Kind**: instance method of [<code>CozyStackClient</code>](#CozyStackClient)  
+**Returns**: <code>Promise</code> - A promise that resolves with a new AccessToken object  
+**Throws**:
+
+- <code>Error</code> The client should already have an access token to use this function
+- <code>Error</code> The client couldn't fetch a new token
+
+<a name="CozyStackClient+fetchJSON"></a>
+
+### cozyStackClient.fetchJSON(method, path, body, options) ⇒ <code>object</code>
+Fetches JSON in an authorized way.
+
+**Kind**: instance method of [<code>CozyStackClient</code>](#CozyStackClient)  
+**Throws**:
+
+- <code>FetchError</code> 
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| method | <code>string</code> | The HTTP method. |
+| path | <code>string</code> | The URI. |
+| body | <code>object</code> | The payload. |
+| options | <code>object</code> | Options |
+
+<a name="CozyStackClient+setToken"></a>
+
+### cozyStackClient.setToken(token)
+Change or set the API token
+
+**Kind**: instance method of [<code>CozyStackClient</code>](#CozyStackClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| token | <code>string</code> \| <code>AppToken</code> \| <code>AccessToken</code> | Stack API token |
+
+<a name="CozyStackClient+getAccessToken"></a>
+
+### cozyStackClient.getAccessToken() ⇒ <code>string</code>
+Get the access token string, being an oauth token or an app token
+
+**Kind**: instance method of [<code>CozyStackClient</code>](#CozyStackClient)  
+**Returns**: <code>string</code> - token  
 <a name="IOCozyFolder"></a>
 
 ## IOCozyFolder : <code>object</code>
@@ -2968,6 +3093,18 @@ If this is the case, call the onRevocationChange callback
 
 **Kind**: instance method of [<code>OAuthClient</code>](#OAuthClient)  
 **Returns**: <code>Promise.&lt;boolean&gt;</code> - A Promise that resolves to `false` if client is still valid, or `true` if it has been revoked.  
+<a name="FileCollectionOptions"></a>
+
+## FileCollectionOptions : <code>object</code>
+Options that can be passed to FileCollection's constructor
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| [driveId] | <code>string</code> | ID of the shared drive targeted by the collection |
+
 <a name="ArchivePages"></a>
 
 ## ArchivePages : <code>object</code>
@@ -3221,7 +3358,7 @@ Define a recipient that can be used as target of a sharing
 
 
 * [CozyStackClient](#CozyStackClient) : <code>object</code>
-    * [.collection(doctype)](#CozyStackClient+collection) ⇒ [<code>DocumentCollection</code>](#DocumentCollection)
+    * [.collection(doctype, options)](#CozyStackClient+collection) ⇒ [<code>DocumentCollection</code>](#DocumentCollection)
     * [.fetch(method, path, [body], [opts])](#CozyStackClient+fetch) ⇒ <code>object</code>
     * [.refreshToken()](#CozyStackClient+refreshToken) ⇒ <code>Promise</code>
     * [.fetchJSON(method, path, body, options)](#CozyStackClient+fetchJSON) ⇒ <code>object</code>
@@ -3230,7 +3367,7 @@ Define a recipient that can be used as target of a sharing
 
 <a name="CozyStackClient+collection"></a>
 
-### cozyStackClient.collection(doctype) ⇒ [<code>DocumentCollection</code>](#DocumentCollection)
+### cozyStackClient.collection(doctype, options) ⇒ [<code>DocumentCollection</code>](#DocumentCollection)
 Creates a [DocumentCollection](#DocumentCollection) instance.
 
 **Kind**: instance method of [<code>CozyStackClient</code>](#CozyStackClient)  
@@ -3238,6 +3375,7 @@ Creates a [DocumentCollection](#DocumentCollection) instance.
 | Param | Type | Description |
 | --- | --- | --- |
 | doctype | <code>string</code> | The collection doctype. |
+| options | <code>object</code> | Options to pass to the collection. |
 
 <a name="CozyStackClient+fetch"></a>
 
