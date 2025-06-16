@@ -365,7 +365,7 @@ Cozy-Client will automatically call `this.login()` if provided with a token and 
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:581](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L581)
+[packages/cozy-client/src/CozyClient.js:582](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L582)
 
 ***
 
@@ -434,7 +434,7 @@ Returns whether the client has been revoked on the server
 
 ### collection
 
-▸ **collection**(`doctype`): `any`
+▸ **collection**(`doctype`, `options?`): `any`
 
 Forwards to a stack client instance and returns
 a [DocumentCollection](https://docs.cozy.io/en/cozy-client/api/cozy-stack-client/#DocumentCollection) instance.
@@ -444,6 +444,7 @@ a [DocumentCollection](https://docs.cozy.io/en/cozy-client/api/cozy-stack-client
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `doctype` | `string` | The collection doctype. |
+| `options` | `any` | Options to pass to the collection |
 
 *Returns*
 
@@ -453,7 +454,7 @@ Collection corresponding to the doctype
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:573](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L573)
+[packages/cozy-client/src/CozyClient.js:574](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L574)
 
 ***
 
@@ -716,7 +717,7 @@ Makes sure that the query exists in the store
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:577](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L577)
+[packages/cozy-client/src/CozyClient.js:578](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L578)
 
 ***
 
@@ -766,7 +767,7 @@ Query state
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:590](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L590)
+[packages/cozy-client/src/CozyClient.js:591](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L591)
 
 ***
 
@@ -801,7 +802,7 @@ Query state
 
 *Defined in*
 
-[packages/cozy-client/src/CozyClient.js:597](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L597)
+[packages/cozy-client/src/CozyClient.js:598](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/CozyClient.js#L598)
 
 ***
 

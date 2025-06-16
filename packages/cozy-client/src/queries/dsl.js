@@ -46,6 +46,7 @@ class QueryDefinition {
    * @param {number|null} [options.skip] - The number of docs to skip.
    * @param {import('../types').CouchDBViewCursor} [options.cursor] - The cursor to paginate views.
    * @param {string} [options.bookmark] - The bookmark to paginate mango queries.
+   * @param {string} [options.sharingId] - The id of the sharing
    */
   constructor(options = {}) {
     this.doctype = options.doctype
@@ -62,6 +63,7 @@ class QueryDefinition {
     this.skip = options.skip
     this.cursor = options.cursor
     this.bookmark = options.bookmark
+    this.sharingId = options.sharingId
   }
 
   /**
@@ -356,6 +358,16 @@ class QueryDefinition {
    */
   referencedBy(document) {
     return new QueryDefinition({ ...this.toDefinition(), referenced: document })
+  }
+
+  /**
+   * Use a sharingId to query documents coming from a sharing
+   *
+   * @param {string} id - The sharing doc id
+   * @returns {QueryDefinition}  The QueryDefinition object.
+   */
+  sharingId(id) {
+    return new QueryDefinition({ ...this.toDefinition(), sharingId: id })
   }
 
   toDefinition() {

@@ -21,11 +21,14 @@ helpers.insertBulkDocs = async (db, docs) => {
   return db.bulkDocs(docs, { new_edits: false })
 }
 
+
 helpers.normalizeFindSelector = ({
   selector,
   sort,
   indexedFields,
-  partialFilter
+  partialFilter,
+  doctype,
+  sharingId
 }) => {
   let findSelector = selector || {}
   if (indexedFields) {
@@ -55,6 +58,12 @@ helpers.normalizeFindSelector = ({
         }
       }
     }
+  }
+
+  if (sharingId && doctype === 'io.cozy.files') {
+    // The sharingId is currently only used for io.cozy.files and saved as 'driveId'
+    // by the stack response
+    findSelector['driveId'] = sharingId
   }
 
   const mergedSelector = partialFilter
