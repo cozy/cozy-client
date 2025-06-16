@@ -457,6 +457,7 @@ import { QueryDefinition } from './queries/dsl'
  * @property {CozyMetadata} [cozyMetadata] - Cozy Metadata
  * @property {CozyClientDocumentMeta} [meta] - Pouch Metadata
  * @property {boolean} [cozyLocalOnly] - When true the document should NOT be replicated to the remote database
+ * @property {string} [driveId] - Id of a shared drive, only for shared io.cozy.files
  */
 
 /**

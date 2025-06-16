@@ -24,6 +24,10 @@ export const shouldDocumentBePersisted = (document, shouldEnforce = false) => {
   if ((!document.meta?.rev && !document._rev) || shouldEnforce) {
     return true
   }
+  if (document.driveId && document._type === 'io.cozy.files') {
+    // Special case for files in shared drives, so remote files could be locally persisted
+    return true
+  }
   return false
 }
 
