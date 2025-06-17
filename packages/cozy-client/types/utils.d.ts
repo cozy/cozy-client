@@ -3,6 +3,7 @@ export function hasQueryBeenLoaded(col: any): any;
 export function isQueriesLoading(queriesResults: any): boolean;
 export function hasQueriesBeenLoaded(queriesResults: any): boolean;
 export function isReactNativeOfflineError(err: Error): boolean;
+export function isDebug(): boolean;
 export type CancelablePromise = Promise<any>;
 /**
  * @typedef {Promise} CancelablePromise

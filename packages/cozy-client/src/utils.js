@@ -1,3 +1,4 @@
+import flag from 'cozy-flags'
 import logger from './logger'
 
 /**
@@ -79,4 +80,13 @@ export const isReactNativeOfflineError = err => {
   // This error message is specific to ReactNative
   // Network errors on a browser would produce another error.message
   return err.message === 'Network request failed'
+}
+
+/**
+ * Check if the instance has a debug flag set to true
+ *
+ * @returns {boolean} Whether or not the instance is in debug mode
+ */
+export const isDebug = () => {
+  return Boolean(flag('debug'))
 }
