@@ -99,5 +99,19 @@ describe('Helpers', () => {
         SOME_INDEXED_FIELD: { $gt: null }
       })
     })
+
+    it('should add driveId to selector when sharingId is provided for io.cozy.files', () => {
+      const selector = { dir_id: '123' }
+
+      const findSelector = normalizeFindSelector({
+        doctype: 'io.cozy.files',
+        selector,
+        sharingId: 'sharingId'
+      })
+      expect(findSelector).toStrictEqual({
+        dir_id: '123',
+        driveId: 'sharingId'
+      })
+    })
   })
 })
