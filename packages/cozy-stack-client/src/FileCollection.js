@@ -409,8 +409,7 @@ class FileCollection extends DocumentCollection {
    *
    * @param  {FileDocument} file - File that will be sent to trash
    * @param  {object} [options] - Optionnal request options
-   * @returns {Promise} - Resolves when references have been removed
-   * and file has been sent to trash
+   * @returns {Promise<{data}>} The JSON API conformant response.
    */
   async destroy(file, { ifMatch = '' } = {}) {
     const { _id, relationships, referenced_by } = file
@@ -438,21 +437,34 @@ class FileCollection extends DocumentCollection {
 
   /**
    * Empty the Trash
+   *
+   * @returns {Promise<{data}>} The JSON API conformant response.
+   * @throws {FetchError}
+   *
    */
-  emptyTrash() {
-    return this.stackClient.fetchJSON('DELETE', '/files/trash')
+  async emptyTrash() {
+    const resp = await this.stackClient.fetchJSON('DELETE', '/files/trash')
+    return {
+      data: normalizeFile(resp.data)
+    }
   }
 
   /**
    * Restores a trashed file.
    *
    * @param {string} id   - The file's id
-   * @returns {Promise}   - A promise that returns the restored file if resolved.
+   * @returns {Promise<{data}>} The JSON API conformant response.
    * @throws {FetchError}
    *
    */
-  restore(id) {
-    return this.stackClient.fetchJSON('POST', uri`/files/trash/${id}`)
+  async restore(id) {
+    const resp = await this.stackClient.fetchJSON(
+      'POST',
+      uri`/files/trash/${id}`
+    )
+    return {
+      data: normalizeFile(resp.data)
+    }
   }
 
   /**
@@ -491,7 +503,7 @@ class FileCollection extends DocumentCollection {
    *
    * @param  {string} id - The id of the file to delete
    * @param  {object} [options] - Optionnal request options
-   * @returns {Promise<object>} The deleted file object
+   * @returns {Promise<{data}>} The JSON API conformant response.
    */
   async deleteFilePermanently(id, { ifMatch = '' } = {}) {
     const resp = await this.stackClient.fetchJSON(
@@ -513,7 +525,9 @@ class FileCollection extends DocumentCollection {
       }
     )
 
-    return resp.data
+    return {
+      data: normalizeFile(resp.data)
+    }
   }
   /**
    * @param {File|Blob|Stream|string|ArrayBuffer} data file to be uploaded
