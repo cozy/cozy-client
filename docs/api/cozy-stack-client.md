@@ -761,11 +761,11 @@ files associated to a specific document
     * [.removeReferencedBy(document, documents)](#FileCollection+removeReferencedBy) ⇒ <code>Promise.&lt;{data, meta}&gt;</code>
     * [.addReferencesTo(document, documents)](#FileCollection+addReferencesTo)
     * [.removeReferencesTo(document, documents)](#FileCollection+removeReferencesTo)
-    * [.destroy(file, [options])](#FileCollection+destroy) ⇒ <code>Promise</code>
-    * [.emptyTrash()](#FileCollection+emptyTrash)
-    * [.restore(id)](#FileCollection+restore) ⇒ <code>Promise</code>
+    * [.destroy(file, [options])](#FileCollection+destroy) ⇒ <code>Promise.&lt;{data}&gt;</code>
+    * [.emptyTrash()](#FileCollection+emptyTrash) ⇒ <code>Promise.&lt;{data}&gt;</code>
+    * [.restore(id)](#FileCollection+restore) ⇒ <code>Promise.&lt;{data}&gt;</code>
     * [.copy(id, [name], [dirId], [options])](#FileCollection+copy) ⇒ <code>Promise.&lt;object&gt;</code>
-    * [.deleteFilePermanently(id, [options])](#FileCollection+deleteFilePermanently) ⇒ <code>Promise.&lt;object&gt;</code>
+    * [.deleteFilePermanently(id, [options])](#FileCollection+deleteFilePermanently) ⇒ <code>Promise.&lt;{data}&gt;</code>
     * [.upload(data, dirPath, [options])](#FileCollection+upload) ⇒ <code>Promise.&lt;object&gt;</code>
     * [.create(attributes, [options])](#FileCollection+create)
     * [.updateFile(data, params, options)](#FileCollection+updateFile) ⇒ [<code>Promise.&lt;FileAttributes&gt;</code>](#FileAttributes)
@@ -930,12 +930,11 @@ Remove files references to a document — see https://docs.cozy.io/en/cozy-stack
 
 <a name="FileCollection+destroy"></a>
 
-### fileCollection.destroy(file, [options]) ⇒ <code>Promise</code>
+### fileCollection.destroy(file, [options]) ⇒ <code>Promise.&lt;{data}&gt;</code>
 Sends file to trash and removes references to it
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
-**Returns**: <code>Promise</code> - - Resolves when references have been removed
-and file has been sent to trash  
+**Returns**: <code>Promise.&lt;{data}&gt;</code> - The JSON API conformant response.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -944,17 +943,22 @@ and file has been sent to trash
 
 <a name="FileCollection+emptyTrash"></a>
 
-### fileCollection.emptyTrash()
+### fileCollection.emptyTrash() ⇒ <code>Promise.&lt;{data}&gt;</code>
 Empty the Trash
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+**Returns**: <code>Promise.&lt;{data}&gt;</code> - The JSON API conformant response.  
+**Throws**:
+
+- <code>FetchError</code> 
+
 <a name="FileCollection+restore"></a>
 
-### fileCollection.restore(id) ⇒ <code>Promise</code>
+### fileCollection.restore(id) ⇒ <code>Promise.&lt;{data}&gt;</code>
 Restores a trashed file.
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
-**Returns**: <code>Promise</code> - - A promise that returns the restored file if resolved.  
+**Returns**: <code>Promise.&lt;{data}&gt;</code> - The JSON API conformant response.  
 **Throws**:
 
 - <code>FetchError</code> 
@@ -985,11 +989,11 @@ Copy a file.
 
 <a name="FileCollection+deleteFilePermanently"></a>
 
-### fileCollection.deleteFilePermanently(id, [options]) ⇒ <code>Promise.&lt;object&gt;</code>
+### fileCollection.deleteFilePermanently(id, [options]) ⇒ <code>Promise.&lt;{data}&gt;</code>
 async deleteFilePermanently - Definitely delete a file
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
-**Returns**: <code>Promise.&lt;object&gt;</code> - The deleted file object  
+**Returns**: <code>Promise.&lt;{data}&gt;</code> - The JSON API conformant response.  
 
 | Param | Type | Description |
 | --- | --- | --- |

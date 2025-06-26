@@ -1283,7 +1283,9 @@ describe('FileCollection', () => {
       client.fetchJSON.mockReturnValue({
         data: {
           id: FILE_ID,
-          type: 'io.cozy.files',
+          meta: {
+            rev: 'abc'
+          },
           trashed: false
         }
       })
@@ -1295,7 +1297,12 @@ describe('FileCollection', () => {
       expect(result).toEqual({
         data: {
           id: FILE_ID,
-          type: 'io.cozy.files',
+          _id: FILE_ID,
+          _rev: 'abc',
+          meta: {
+            rev: 'abc'
+          },
+          _type: 'io.cozy.files',
           trashed: false
         }
       })
@@ -1463,7 +1470,9 @@ describe('FileCollection', () => {
       client.fetchJSON.mockReturnValue({
         data: {
           id: FILE_ID,
-          type: 'io.cozy.files'
+          meta: {
+            rev: 'abc'
+          }
         }
       })
       const result = await collection.deleteFilePermanently(FILE_ID)
@@ -1486,8 +1495,15 @@ describe('FileCollection', () => {
         }
       )
       expect(result).toEqual({
-        id: FILE_ID,
-        type: 'io.cozy.files'
+        data: {
+          id: FILE_ID,
+          _id: FILE_ID,
+          _type: 'io.cozy.files',
+          _rev: 'abc',
+          meta: {
+            rev: 'abc'
+          }
+        }
       })
     })
 
