@@ -649,9 +649,18 @@ export type ReferenceMap = {
     [x: string]: Reference[];
 };
 export type MutationOptions = {
-    as?: string;
-    update?: Function;
-    updateQueries?: Function;
+    /**
+     * - Mutation id
+     */
+    as: string;
+    /**
+     * - Function to update the document
+     */
+    update: Function;
+    /**
+     * - Function to update queries
+     */
+    updateQueries: Function;
 };
 export type UpdatedByApp = {
     /**

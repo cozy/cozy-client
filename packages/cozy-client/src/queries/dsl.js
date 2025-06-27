@@ -412,9 +412,11 @@ export const isAGetByIdQuery = queryDefinition => {
 }
 // Mutations
 const CREATE_DOCUMENT = 'CREATE_DOCUMENT'
+const CREATE_DOCUMENTS = 'CREATE_DOCUMENTS'
 const UPDATE_DOCUMENT = 'UPDATE_DOCUMENT'
 const UPDATE_DOCUMENTS = 'UPDATE_DOCUMENTS'
 const DELETE_DOCUMENT = 'DELETE_DOCUMENT'
+const DELETE_DOCUMENTS = 'DELETE_DOCUMENTS'
 const ADD_REFERENCES_TO = 'ADD_REFERENCES_TO'
 const REMOVE_REFERENCES_TO = 'REMOVE_REFERENCES_TO'
 const ADD_REFERENCED_BY = 'ADD_REFERENCED_BY'
@@ -424,6 +426,11 @@ const UPLOAD_FILE = 'UPLOAD_FILE'
 export const createDocument = document => ({
   mutationType: MutationTypes.CREATE_DOCUMENT,
   document
+})
+
+export const createDocuments = documents => ({
+  mutationType: MutationTypes.CREATE_DOCUMENTS,
+  documents
 })
 
 export const updateDocument = document => ({
@@ -439,6 +446,11 @@ export const updateDocuments = documents => ({
 export const deleteDocument = document => ({
   mutationType: MutationTypes.DELETE_DOCUMENT,
   document
+})
+
+export const deleteDocuments = documents => ({
+  mutationType: MutationTypes.DELETE_DOCUMENTS,
+  documents
 })
 
 export const addReferencesTo = (document, referencedDocuments) => ({
@@ -477,12 +489,16 @@ export const getDoctypeFromOperation = operation => {
     switch (type) {
       case CREATE_DOCUMENT:
         return operation.document._type
+      case CREATE_DOCUMENTS:
+        return operation.documents[0]._type
       case UPDATE_DOCUMENT:
         return operation.document._type
       case UPDATE_DOCUMENTS:
         return operation.documents[0]._type
       case DELETE_DOCUMENT:
         return operation.document._type
+      case DELETE_DOCUMENTS:
+        return operation.documents[0]._type
       case ADD_REFERENCES_TO:
         throw new Error('Not implemented')
       case UPLOAD_FILE:
@@ -497,9 +513,11 @@ export const getDoctypeFromOperation = operation => {
 
 export const Mutations = {
   createDocument,
+  createDocuments,
   updateDocument,
   updateDocuments,
   deleteDocument,
+  deleteDocuments,
   addReferencesTo,
   removeReferencesTo,
   addReferencedBy,
@@ -509,9 +527,11 @@ export const Mutations = {
 
 export const MutationTypes = {
   CREATE_DOCUMENT,
+  CREATE_DOCUMENTS,
   UPDATE_DOCUMENT,
   UPDATE_DOCUMENTS,
   DELETE_DOCUMENT,
+  DELETE_DOCUMENTS,
   ADD_REFERENCES_TO,
   REMOVE_REFERENCES_TO,
   ADD_REFERENCED_BY,

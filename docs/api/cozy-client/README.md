@@ -50,7 +50,9 @@ cozy-client
 | `ADD_REFERENCED_BY` | `string` |
 | `ADD_REFERENCES_TO` | `string` |
 | `CREATE_DOCUMENT` | `string` |
+| `CREATE_DOCUMENTS` | `string` |
 | `DELETE_DOCUMENT` | `string` |
+| `DELETE_DOCUMENTS` | `string` |
 | `REMOVE_REFERENCED_BY` | `string` |
 | `REMOVE_REFERENCES_TO` | `string` |
 | `UPDATE_DOCUMENT` | `string` |
@@ -59,7 +61,7 @@ cozy-client
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:510](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L510)
+[packages/cozy-client/src/queries/dsl.js:528](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L528)
 
 ***
 
@@ -74,7 +76,9 @@ cozy-client
 | `addReferencedBy` | (`document`: `any`, `referencedDocuments`: `any`) => { `document`: `any` ; `mutationType`: `string` = MutationTypes.ADD_REFERENCED_BY; `referencedDocuments`: `any`  } |
 | `addReferencesTo` | (`document`: `any`, `referencedDocuments`: `any`) => { `document`: `any` ; `mutationType`: `string` = MutationTypes.ADD_REFERENCES_TO; `referencedDocuments`: `any`  } |
 | `createDocument` | (`document`: `any`) => { `document`: `any` ; `mutationType`: `string` = MutationTypes.CREATE_DOCUMENT } |
+| `createDocuments` | (`documents`: `any`) => { `documents`: `any` ; `mutationType`: `string` = MutationTypes.CREATE_DOCUMENTS } |
 | `deleteDocument` | (`document`: `any`) => { `document`: `any` ; `mutationType`: `string` = MutationTypes.DELETE_DOCUMENT } |
+| `deleteDocuments` | (`documents`: `any`) => { `documents`: `any` ; `mutationType`: `string` = MutationTypes.DELETE_DOCUMENTS } |
 | `removeReferencedBy` | (`document`: `any`, `referencedDocuments`: `any`) => { `document`: `any` ; `mutationType`: `string` = MutationTypes.REMOVE_REFERENCED_BY; `referencedDocuments`: `any`  } |
 | `removeReferencesTo` | (`document`: `any`, `referencedDocuments`: `any`) => { `document`: `any` ; `mutationType`: `string` = MutationTypes.REMOVE_REFERENCES_TO; `referencedDocuments`: `any`  } |
 | `updateDocument` | (`document`: `any`) => { `document`: `any` ; `mutationType`: `string` = MutationTypes.UPDATE_DOCUMENT } |
@@ -83,7 +87,7 @@ cozy-client
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:498](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L498)
+[packages/cozy-client/src/queries/dsl.js:514](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L514)
 
 ***
 
@@ -565,7 +569,7 @@ Generated URL
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:474](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L474)
+[packages/cozy-client/src/queries/dsl.js:486](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L486)
 
 ***
 

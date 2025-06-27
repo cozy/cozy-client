@@ -172,7 +172,27 @@ CozyLink.constructor
 
 *Defined in*
 
-[CozyPouchLink.js:723](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L723)
+[CozyPouchLink.js:741](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L741)
+
+***
+
+### bulkMutation
+
+▸ **bulkMutation**(`mutation`): `Promise`<`any`\[]>
+
+*Parameters*
+
+| Name | Type |
+| :------ | :------ |
+| `mutation` | `any` |
+
+*Returns*
+
+`Promise`<`any`\[]>
+
+*Defined in*
+
+[CozyPouchLink.js:727](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L727)
 
 ***
 
@@ -192,7 +212,27 @@ CozyLink.constructor
 
 *Defined in*
 
-[CozyPouchLink.js:684](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L684)
+[CozyPouchLink.js:690](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L690)
+
+***
+
+### createDocuments
+
+▸ **createDocuments**(`mutation`): `Promise`<`any`\[]>
+
+*Parameters*
+
+| Name | Type |
+| :------ | :------ |
+| `mutation` | `any` |
+
+*Returns*
+
+`Promise`<`any`\[]>
+
+*Defined in*
+
+[CozyPouchLink.js:695](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L695)
 
 ***
 
@@ -213,7 +253,7 @@ CozyLink.constructor
 
 *Defined in*
 
-[CozyPouchLink.js:727](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L727)
+[CozyPouchLink.js:745](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L745)
 
 ***
 
@@ -233,7 +273,27 @@ CozyLink.constructor
 
 *Defined in*
 
-[CozyPouchLink.js:712](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L712)
+[CozyPouchLink.js:708](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L708)
+
+***
+
+### deleteDocuments
+
+▸ **deleteDocuments**(`mutation`): `Promise`<`any`\[]>
+
+*Parameters*
+
+| Name | Type |
+| :------ | :------ |
+| `mutation` | `any` |
+
+*Returns*
+
+`Promise`<`any`\[]>
+
+*Defined in*
+
+[CozyPouchLink.js:719](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L719)
 
 ***
 
@@ -782,7 +842,7 @@ Emits pouchlink:sync:stop event
 
 *Defined in*
 
-[CozyPouchLink.js:757](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L757)
+[CozyPouchLink.js:775](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L775)
 
 ***
 
@@ -802,7 +862,7 @@ Emits pouchlink:sync:stop event
 
 *Defined in*
 
-[CozyPouchLink.js:689](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L689)
+[CozyPouchLink.js:699](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L699)
 
 ***
 
@@ -822,7 +882,7 @@ Emits pouchlink:sync:stop event
 
 *Defined in*
 
-[CozyPouchLink.js:694](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L694)
+[CozyPouchLink.js:704](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L704)
 
 ***
 

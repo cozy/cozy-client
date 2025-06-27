@@ -4,6 +4,10 @@ export function createDocument(document: any): {
     mutationType: string;
     document: any;
 };
+export function createDocuments(documents: any): {
+    mutationType: string;
+    documents: any;
+};
 export function updateDocument(document: any): {
     mutationType: string;
     document: any;
@@ -15,6 +19,10 @@ export function updateDocuments(documents: any): {
 export function deleteDocument(document: any): {
     mutationType: string;
     document: any;
+};
+export function deleteDocuments(documents: any): {
+    mutationType: string;
+    documents: any;
 };
 export function addReferencesTo(document: any, referencedDocuments: any): {
     mutationType: string;
@@ -44,9 +52,11 @@ export function uploadFile(file: any, dirPath: any): {
 export function getDoctypeFromOperation(operation: any): any;
 export namespace Mutations {
     export { createDocument };
+    export { createDocuments };
     export { updateDocument };
     export { updateDocuments };
     export { deleteDocument };
+    export { deleteDocuments };
     export { addReferencesTo };
     export { removeReferencesTo };
     export { addReferencedBy };
@@ -55,9 +65,11 @@ export namespace Mutations {
 }
 export namespace MutationTypes {
     export { CREATE_DOCUMENT };
+    export { CREATE_DOCUMENTS };
     export { UPDATE_DOCUMENT };
     export { UPDATE_DOCUMENTS };
     export { DELETE_DOCUMENT };
+    export { DELETE_DOCUMENTS };
     export { ADD_REFERENCES_TO };
     export { REMOVE_REFERENCES_TO };
     export { ADD_REFERENCED_BY };
@@ -297,9 +309,11 @@ export class QueryDefinition {
     };
 }
 declare const CREATE_DOCUMENT: "CREATE_DOCUMENT";
+declare const CREATE_DOCUMENTS: "CREATE_DOCUMENTS";
 declare const UPDATE_DOCUMENT: "UPDATE_DOCUMENT";
 declare const UPDATE_DOCUMENTS: "UPDATE_DOCUMENTS";
 declare const DELETE_DOCUMENT: "DELETE_DOCUMENT";
+declare const DELETE_DOCUMENTS: "DELETE_DOCUMENTS";
 declare const ADD_REFERENCES_TO: "ADD_REFERENCES_TO";
 declare const REMOVE_REFERENCES_TO: "REMOVE_REFERENCES_TO";
 declare const ADD_REFERENCED_BY: "ADD_REFERENCED_BY";

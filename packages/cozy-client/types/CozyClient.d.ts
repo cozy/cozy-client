@@ -362,6 +362,7 @@ declare class CozyClient {
     all(doctype: any): QueryDefinition;
     find(doctype: any, selector?: any): QueryDefinition;
     get(doctype: any, id: any): QueryDefinition;
+    validate(document: any): Promise<{}>;
     /**
      * Creates a document and saves it on the server
      *
@@ -387,32 +388,46 @@ declare class CozyClient {
      * @returns {Promise}
      */
     create(type: string, doc: object, references?: import("./types").ReferenceMap, options?: object): Promise<any>;
-    validate(document: any): Promise<{}>;
     /**
-     * Create or update a document on the server
+     * Create multiple documents in one batch.
+     * WARNING: this method is currently not supported by the stack, but
+     * works with PouchDB
      *
-     * @param  {object} doc - Document to save
-     * @param  {object} mutationOptions - Mutation options
+     * @param  {import("./types").CozyClientDocument[]} docs - Documents to create. Should not have _id nor _rev
+     * @param {object} [options] - options
      * @returns {Promise}
      */
-    save(doc: object, mutationOptions?: object): Promise<any>;
+    createAll(docs: import("./types").CozyClientDocument[], options?: object): Promise<any>;
     /**
-     * Saves multiple documents in one batch
-     * - Can only be called with documents from the same doctype
-     * - Does not support automatic creation of references
+     * Create or update a document
+     *
+     * @param  {object} doc - Document to save
+     * @param {object} [options] - options
+     * @returns {Promise}
+     */
+    save(doc: object, options?: object): Promise<any>;
+    /**
+     * Updates multiple documents in one batch. Should have _id and _rev
      *
      * @param  {import("./types").CozyClientDocument[]} docs - Documents from the same doctype
-     * @param  {Object} mutationOptions - Mutation Options
-     * @param  {string}    [mutationOptions.as] - Mutation id
-     * @param  {Function}    [mutationOptions.update] - Function to update the document
-     * @param  {Function}    [mutationOptions.updateQueries] - Function to update queries
+     * @param {object} [options] - options
      * @returns {Promise<void>}
      */
-    saveAll(docs: import("./types").CozyClientDocument[], mutationOptions?: {
-        as?: string;
-        update?: Function;
-        updateQueries?: Function;
-    }): Promise<void>;
+    updateAll(docs: import("./types").CozyClientDocument[], options?: object): Promise<void>;
+    /**
+     * Create or update multiple documents in one batch
+     * - Can only be called with documents from the same doctype
+     * - Can either be creation (no _id nor _rev) or update, not both
+     * - Does not support automatic creation of references
+     *
+     * WARNING: multiple creations is currently not supported by the stack, but
+     * works with PouchDB
+     *
+     * @param  {import("./types").CozyClientDocument[]} docs - Documents from the same doctype
+     * @param {object} [options] - options
+     * @returns {Promise<void>}
+     */
+    saveAll(docs: import("./types").CozyClientDocument[], options?: object): Promise<void>;
     /**
      * @param  {import("./types").CozyClientDocument} document - Document that will be saved
      * @param {object} [options={event: DOC_CREATION}] - Event
@@ -456,10 +471,27 @@ declare class CozyClient {
      * Destroys a document. {before,after}:destroy hooks will be fired.
      *
      * @param  {import("./types").CozyClientDocument} document - Document to be deleted
+     * @param {object} [options] - options
      * @returns {Promise<import("./types").CozyClientDocument>} The document that has been deleted
      */
-    destroy(document: import("./types").CozyClientDocument, mutationOptions?: {}): Promise<import("./types").CozyClientDocument>;
-    upload(file: any, dirPath: any, mutationOptions?: {}): Promise<any>;
+    destroy(document: import("./types").CozyClientDocument, options?: object): Promise<import("./types").CozyClientDocument>;
+    /**
+     * Destroy multiple documents
+     *
+     * @param  {Array<import("./types").CozyClientDocument>} documents - Documents to be deleted
+     * @param {object} [options] - options
+     * @returns {Promise<Array<import("./types").CozyClientDocument>>} The deleted documents
+     */
+    destroyAll(documents: Array<import("./types").CozyClientDocument>, options?: object): Promise<Array<import("./types").CozyClientDocument>>;
+    /**
+     * Upload a file
+     *
+     * @param  {File|Blob|import('cozy-stack-client/dist/FileCollection').Stream|string|ArrayBuffer} file - File to be uploaded
+     * @param {string} dirPath - Path to upload the file to. ie : /Administative/XXX/
+     * @param {object} [options] - Optionnal request options
+     * @returns {Promise<object>} Created io.cozy.files
+     */
+    upload(file: File | Blob | import('cozy-stack-client/dist/FileCollection').Stream | string | ArrayBuffer, dirPath: string, options?: object): Promise<object>;
     /**
      * Makes sure that the query exists in the store
      *
@@ -499,17 +531,19 @@ declare class CozyClient {
     /**
      * Mutate a document
      *
-     * @param  {object}    mutationDefinition - Describe the mutation
-     * @param {object} [options] - Options
-     * @param  {string}    [options.as] - Mutation id
-     * @param  {Function}    [options.update] - Function to update the document
-     * @param  {Function}    [options.updateQueries] - Function to update queries
+     * @param  {object} mutationDefinition - Describe the mutation
+     * @param {object} [params] The mutation params
+     * @param {function} [params.update] - update function from MutationOptions
+     * @param {function} [params.updateQueries] - updateQueries function from MutationOptions
+     * @param {string} [params.as] - Mutation id
+     * @param {Object} [params.options={}] - Additional options
      * @returns {Promise}
      */
     mutate(mutationDefinition: object, { update, updateQueries, ...options }?: {
-        as?: string;
         update?: Function;
         updateQueries?: Function;
+        as?: string;
+        options?: any;
     }): Promise<any>;
     /**
      * Executes a query through links and fetches relationships

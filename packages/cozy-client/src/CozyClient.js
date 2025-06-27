@@ -601,6 +601,10 @@ client.query(Q('io.cozy.bills'))`)
     return new QueryDefinition({ doctype, id })
   }
 
+  validate(document) {
+    return this.schema.validate(document)
+  }
+
   /**
    * Creates a document and saves it on the server
    *
@@ -636,39 +640,60 @@ client.query(Q('io.cozy.bills'))`)
     )
   }
 
-  validate(document) {
-    return this.schema.validate(document)
+  /**
+   * Create multiple documents in one batch.
+   * WARNING: this method is currently not supported by the stack, but
+   * works with PouchDB
+   *
+   * @param  {import("./types").CozyClientDocument[]} docs - Documents to create. Should not have _id nor _rev
+   * @param {object} [options] - options
+   * @returns {Promise}
+   */
+  async createAll(docs, options = {}) {
+    return this.saveAll(docs, options)
   }
 
   /**
-   * Create or update a document on the server
+   * Create or update a document
    *
    * @param  {object} doc - Document to save
-   * @param  {object} mutationOptions - Mutation options
+   * @param {object} [options] - options
    * @returns {Promise}
    */
-  async save(doc, mutationOptions = {}) {
+  async save(doc, options = {}) {
     const { _type, ...attributes } = doc
     if (!_type) throw new Error('The document must have a `_type` property')
     const normalizedDoc = { _type, ...attributes }
     const ret = await this.schema.validate(normalizedDoc)
     if (ret !== true) throw new Error('Validation failed')
-    return this.mutate(this.getDocumentSavePlan(normalizedDoc), mutationOptions)
+    return this.mutate(this.getDocumentSavePlan(normalizedDoc), options)
   }
 
   /**
-   * Saves multiple documents in one batch
-   * - Can only be called with documents from the same doctype
-   * - Does not support automatic creation of references
+   * Updates multiple documents in one batch. Should have _id and _rev
    *
    * @param  {import("./types").CozyClientDocument[]} docs - Documents from the same doctype
-   * @param  {Object} mutationOptions - Mutation Options
-   * @param  {string}    [mutationOptions.as] - Mutation id
-   * @param  {Function}    [mutationOptions.update] - Function to update the document
-   * @param  {Function}    [mutationOptions.updateQueries] - Function to update queries
+   * @param {object} [options] - options
    * @returns {Promise<void>}
    */
-  async saveAll(docs, mutationOptions = {}) {
+  async updateAll(docs, options = {}) {
+    return this.saveAll(docs, options)
+  }
+
+  /**
+   * Create or update multiple documents in one batch
+   * - Can only be called with documents from the same doctype
+   * - Can either be creation (no _id nor _rev) or update, not both
+   * - Does not support automatic creation of references
+   *
+   * WARNING: multiple creations is currently not supported by the stack, but
+   * works with PouchDB
+   *
+   * @param  {import("./types").CozyClientDocument[]} docs - Documents from the same doctype
+   * @param {object} [options] - options
+   * @returns {Promise<void>}
+   */
+  async saveAll(docs, options = {}) {
     const doctypes = Array.from(new Set(docs.map(x => x._type)))
     if (doctypes.length !== 1) {
       throw new Error('saveAll can only save documents with the same doctype')
@@ -686,9 +711,13 @@ client.query(Q('io.cozy.bills'))`)
     }
 
     const toSaveDocs = docs.map(d => this.prepareDocumentForSave(d))
-    const mutation = Mutations.updateDocuments(toSaveDocs)
-    return this.mutate(mutation, mutationOptions)
+    const isCreation = docs[0]._id === undefined
+    const mutation = isCreation
+      ? Mutations.createDocuments(toSaveDocs)
+      : Mutations.updateDocuments(toSaveDocs)
+    return this.mutate(mutation, options)
   }
+
   /**
    * @param  {import("./types").CozyClientDocument} document - Document that will be saved
    * @param {object} [options={event: DOC_CREATION}] - Event
@@ -879,20 +908,37 @@ client.query(Q('io.cozy.bills'))`)
    * Destroys a document. {before,after}:destroy hooks will be fired.
    *
    * @param  {import("./types").CozyClientDocument} document - Document to be deleted
+   * @param {object} [options] - options
    * @returns {Promise<import("./types").CozyClientDocument>} The document that has been deleted
    */
-  async destroy(document, mutationOptions = {}) {
+  async destroy(document, options = {}) {
     await this.triggerHook('before:destroy', document)
-    const res = await this.mutate(
-      Mutations.deleteDocument(document),
-      mutationOptions
-    )
+    const res = await this.mutate(Mutations.deleteDocument(document), options)
     await this.triggerHook('after:destroy', document)
     return res
   }
 
-  upload(file, dirPath, mutationOptions = {}) {
-    return this.mutate(Mutations.uploadFile(file, dirPath), mutationOptions)
+  /**
+   * Destroy multiple documents
+   *
+   * @param  {Array<import("./types").CozyClientDocument>} documents - Documents to be deleted
+   * @param {object} [options] - options
+   * @returns {Promise<Array<import("./types").CozyClientDocument>>} The deleted documents
+   */
+  async destroyAll(documents, options = {}) {
+    return this.mutate(Mutations.deleteDocuments(documents), options)
+  }
+
+  /**
+   * Upload a file
+   *
+   * @param  {File|Blob|import('cozy-stack-client/dist/FileCollection').Stream|string|ArrayBuffer} file - File to be uploaded
+   * @param {string} dirPath - Path to upload the file to. ie : /Administative/XXX/
+   * @param {object} [options] - Optionnal request options
+   * @returns {Promise<object>} Created io.cozy.files
+   */
+  upload(file, dirPath, options = {}) {
+    return this.mutate(Mutations.uploadFile(file, dirPath), options)
   }
 
   /**
@@ -1085,11 +1131,12 @@ client.query(Q('io.cozy.bills'))`)
   /**
    * Mutate a document
    *
-   * @param  {object}    mutationDefinition - Describe the mutation
-   * @param {object} [options] - Options
-   * @param  {string}    [options.as] - Mutation id
-   * @param  {Function}    [options.update] - Function to update the document
-   * @param  {Function}    [options.updateQueries] - Function to update queries
+   * @param  {object} mutationDefinition - Describe the mutation
+   * @param {object} [params] The mutation params
+   * @param {function} [params.update] - update function from MutationOptions
+   * @param {function} [params.updateQueries] - updateQueries function from MutationOptions
+   * @param {string} [params.as] - Mutation id
+   * @param {Object} [params.options={}] - Additional options
    * @returns {Promise}
    */
   async mutate(mutationDefinition, { update, updateQueries, ...options } = {}) {
