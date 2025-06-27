@@ -394,9 +394,9 @@ import { QueryDefinition } from './queries/dsl'
 
 /**
  * @typedef {object} MutationOptions
- * @property {string} [as]
- * @property {Function} [update]
- * @property {Function} [updateQueries]
+ * @property {string} as - Mutation id
+   @property  {Function} update - Function to update the document
+ * @property  {Function} updateQueries - Function to update queries
  */
 
 /**

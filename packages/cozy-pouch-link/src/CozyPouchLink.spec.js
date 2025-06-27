@@ -15,6 +15,7 @@ import { SCHEMA, TODO_1, TODO_2, TODO_3, TODO_4 } from './__tests__/fixtures'
 import PouchDB from 'pouchdb-browser'
 import PouchDBMemoryAdapterPlugin from 'pouchdb-adapter-memory'
 import CozyClient, { Q } from 'cozy-client'
+import { MutationTypes } from 'cozy-client/dist'
 
 // Necessary to have the memory adapter for the tests since neither
 // IndexedDB nor WebSQL adapter can be used in Jest
@@ -355,6 +356,70 @@ describe('CozyPouchLink', () => {
           expect.objectContaining({
             label: 'Build stuff',
             _rev: expect.any(String)
+          })
+        ]
+      })
+    })
+
+    it('should be possible to create multiple documents', async () => {
+      await setup()
+      link.pouches.getSyncStatus = jest.fn().mockReturnValue('synced')
+      const docs = [
+        {
+          label: 'doc1',
+          _type: 'io.cozy.todos'
+        },
+        { _type: 'io.cozy.todos', label: 'doc2' }
+      ]
+      const mutation = {
+        mutationType: MutationTypes.CREATE_DOCUMENTS,
+        documents: docs
+      }
+      const res = await link.request(mutation)
+
+      expect(res).toMatchObject({
+        data: [
+          expect.objectContaining({
+            label: 'doc1',
+            _rev: expect.any(String),
+            _id: expect.any(String)
+          }),
+          expect.objectContaining({
+            label: 'doc2',
+            _rev: expect.any(String),
+            _id: expect.any(String)
+          })
+        ]
+      })
+    })
+
+    it('should be possible to delete multiple documents', async () => {
+      await setup()
+      link.pouches.getSyncStatus = jest.fn().mockReturnValue('synced')
+      const docs = [
+        {
+          _id: '1',
+          _type: 'io.cozy.todos'
+        },
+        { _id: '2', _type: 'io.cozy.todos' }
+      ]
+      const mutation = {
+        mutationType: MutationTypes.DELETE_DOCUMENTS,
+        documents: docs
+      }
+      const res = await link.request(mutation)
+
+      expect(res).toMatchObject({
+        data: [
+          expect.objectContaining({
+            _deleted: true,
+            _rev: expect.any(String),
+            _id: '1'
+          }),
+          expect.objectContaining({
+            _deleted: true,
+            _rev: expect.any(String),
+            _id: '2'
           })
         ]
       })

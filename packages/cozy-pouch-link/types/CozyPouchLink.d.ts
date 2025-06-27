@@ -229,9 +229,12 @@ declare class PouchLink extends CozyLink {
     }): Promise<any>;
     executeMutation(mutation: any, options: any, result: any, forward: any): Promise<any>;
     createDocument(mutation: any): Promise<any>;
+    createDocuments(mutation: any): Promise<any[]>;
     updateDocument(mutation: any): Promise<any>;
     updateDocuments(mutation: any): Promise<any[]>;
     deleteDocument(mutation: any): Promise<any>;
+    deleteDocuments(mutation: any): Promise<any[]>;
+    bulkMutation(mutation: any): Promise<any[]>;
     addReferencesTo(mutation: any): Promise<void>;
     dbMethod(method: any, mutation: any): Promise<any>;
     syncImmediately(): Promise<void>;

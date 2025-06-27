@@ -650,6 +650,9 @@ class PouchLink extends CozyLink {
       case MutationTypes.CREATE_DOCUMENT:
         pouchRes = await this.createDocument(mutation)
         break
+      case MutationTypes.CREATE_DOCUMENTS:
+        pouchRes = await this.createDocuments(mutation)
+        break
       case MutationTypes.UPDATE_DOCUMENT:
         pouchRes = await this.updateDocument(mutation)
         break
@@ -658,6 +661,9 @@ class PouchLink extends CozyLink {
         break
       case MutationTypes.DELETE_DOCUMENT:
         pouchRes = await this.deleteDocument(mutation)
+        break
+      case MutationTypes.DELETE_DOCUMENTS:
+        pouchRes = await this.deleteDocuments(mutation)
         break
       case MutationTypes.ADD_REFERENCES_TO:
         pouchRes = await this.addReferencesTo(mutation)
@@ -686,27 +692,17 @@ class PouchLink extends CozyLink {
     return parseMutationResult(mutation.document, res)
   }
 
+  async createDocuments(mutation) {
+    return this.bulkMutation(mutation)
+  }
+
   async updateDocument(mutation) {
     const res = await this.dbMethod('put', mutation)
     return parseMutationResult(mutation.document, res)
   }
 
   async updateDocuments(mutation) {
-    const docs = mutation.documents
-    const bulkResponse = await this.dbMethod('bulkDocs', mutation)
-    const updatedDocs = zipWith(
-      bulkResponse,
-      docs,
-      (bulkResult, originalDoc) => ({
-        ...originalDoc,
-        _id: bulkResult.id,
-        _rev: bulkResult.rev
-      })
-    )
-    if (bulkResponse.find(x => !x.ok)) {
-      throw new BulkEditError(bulkResponse, updatedDocs)
-    }
-    return updatedDocs
+    return this.bulkMutation(mutation)
   }
 
   async deleteDocument(mutation) {
@@ -718,6 +714,28 @@ class PouchLink extends CozyLink {
       _deleted: true
     }
     return parseMutationResult(document, res)
+  }
+
+  async deleteDocuments(mutation) {
+    const deletedDocs = mutation.documents.map(doc => {
+      return { ...doc, _deleted: true }
+    })
+    const deletedMutation = { ...mutation, documents: deletedDocs }
+    return this.bulkMutation(deletedMutation)
+  }
+
+  async bulkMutation(mutation) {
+    const docs = mutation.documents
+    const bulkResponse = await this.dbMethod('bulkDocs', mutation)
+    const bulkDocs = zipWith(bulkResponse, docs, (bulkResult, originalDoc) => ({
+      ...originalDoc,
+      _id: bulkResult.id,
+      _rev: bulkResult.rev
+    }))
+    if (bulkResponse.find(x => !x.ok)) {
+      throw new BulkEditError(bulkResponse, bulkDocs)
+    }
+    return bulkDocs
   }
 
   async addReferencesTo(mutation) {

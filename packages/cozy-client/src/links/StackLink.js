@@ -154,6 +154,8 @@ export default class StackLink extends CozyLink {
         return this.stackClient.collection(doc._type).update(doc)
       case MutationTypes.DELETE_DOCUMENT:
         return this.stackClient.collection(doc._type).destroy(doc)
+      case MutationTypes.DELETE_DOCUMENTS:
+        return this.stackClient.collection(doc._type).destroyAll(docs)
       case MutationTypes.ADD_REFERENCES_TO:
         return this.stackClient
           .collection(props.referencedDocuments[0]._type)
