@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [59.0.0](https://github.com/cozy/cozy-client/compare/v58.5.0...v59.0.0) (2025-06-27)
+
+
+### Bug Fixes
+
+* Normalize data for trash-related methods ([754c45c](https://github.com/cozy/cozy-client/commit/754c45cfeb1997d093d6e813b20eb8b87ba9ffad))
+
+
+### BREAKING CHANGES
+
+* if you were relying on deleteFilePermanently, take care
+of handling the `data` attribute at the root of the response.
+For example:
+```
+const result = fileCollection.deleteFilePermanently() // old
+const { data: result } = fileCollection.deleteFilePermanently() // new
+```
+
+
+
+
+
 # [58.4.0](https://github.com/cozy/cozy-client/compare/v58.3.1...v58.4.0) (2025-06-12)
 
 
