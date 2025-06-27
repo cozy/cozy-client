@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [59.1.0](https://github.com/cozy/cozy-client/compare/v59.0.0...v59.1.0) (2025-06-27)
+
+
+### Features
+
+* Support multiple create and delete ([3d0a136](https://github.com/cozy/cozy-client/commit/3d0a136d36bffe1461ff660bc29c5d1a99eba735))
+
+
+
+
+
 # [59.0.0](https://github.com/cozy/cozy-client/compare/v58.5.0...v59.0.0) (2025-06-27)
 
 
