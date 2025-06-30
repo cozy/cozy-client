@@ -223,7 +223,7 @@ Rejects with canceled: true as soon as cancel is called
 
 *Defined in*
 
-[packages/cozy-client/src/utils.js:16](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/utils.js#L16)
+[packages/cozy-client/src/utils.js:17](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/utils.js#L17)
 
 ***
 
@@ -663,7 +663,7 @@ Returns whether queries have been loaded at least once
 
 *Defined in*
 
-[packages/cozy-client/src/utils.js:66](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/utils.js#L66)
+[packages/cozy-client/src/utils.js:67](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/utils.js#L67)
 
 ***
 
@@ -685,7 +685,7 @@ Returns whether a query has been loaded at least once
 
 *Defined in*
 
-[packages/cozy-client/src/utils.js:50](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/utils.js#L50)
+[packages/cozy-client/src/utils.js:51](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/utils.js#L51)
 
 ***
 
@@ -707,7 +707,7 @@ Returns whether the result of queries are loading
 
 *Defined in*
 
-[packages/cozy-client/src/utils.js:57](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/utils.js#L57)
+[packages/cozy-client/src/utils.js:58](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/utils.js#L58)
 
 ***
 
@@ -730,7 +730,7 @@ is loading.
 
 *Defined in*
 
-[packages/cozy-client/src/utils.js:39](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/utils.js#L39)
+[packages/cozy-client/src/utils.js:40](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/utils.js#L40)
 
 ***
 
