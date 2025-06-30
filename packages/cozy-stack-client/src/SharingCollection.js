@@ -79,6 +79,20 @@ class SharingCollection extends DocumentCollection {
   }
 
   /**
+   * Fetch shared drives
+   *
+   * @returns {Promise<{ data: Sharing[]}>} Shared drives (which are io.cozy.sharings documents)
+   */
+  async fetchSharedDrives() {
+    const { data: sharedDrives } = await this.stackClient.fetchJSON(
+      'GET',
+      '/sharings/drives'
+    )
+
+    return { data: sharedDrives.map(normalizeSharing) }
+  }
+
+  /**
    *
    * Creates a new Sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#post-sharings
    *

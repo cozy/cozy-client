@@ -1896,6 +1896,7 @@ Implements the `DocumentCollection` API along with specific methods for
 
 * [SharingCollection](#SharingCollection)
     * [.get(id)](#SharingCollection+get) ⇒ [<code>Sharing</code>](#Sharing)
+    * [.fetchSharedDrives()](#SharingCollection+fetchSharedDrives) ⇒ <code>Promise.&lt;{data: Array.&lt;Sharing&gt;}&gt;</code>
     * [.create(params)](#SharingCollection+create)
     * [.getDiscoveryLink(sharingId, sharecode, [options])](#SharingCollection+getDiscoveryLink) ⇒ <code>string</code>
     * [.addRecipients(options)](#SharingCollection+addRecipients)
@@ -1916,6 +1917,13 @@ Fetches a sharing by id
 | --- | --- | --- |
 | id | <code>string</code> | Sharing's id |
 
+<a name="SharingCollection+fetchSharedDrives"></a>
+
+### sharingCollection.fetchSharedDrives() ⇒ <code>Promise.&lt;{data: Array.&lt;Sharing&gt;}&gt;</code>
+Fetch shared drives
+
+**Kind**: instance method of [<code>SharingCollection</code>](#SharingCollection)  
+**Returns**: <code>Promise.&lt;{data: Array.&lt;Sharing&gt;}&gt;</code> - Shared drives (which are io.cozy.sharings documents)  
 <a name="SharingCollection+create"></a>
 
 ### sharingCollection.create(params)
