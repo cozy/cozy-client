@@ -9,7 +9,8 @@ import queries, {
   loadQuery,
   receiveQueryError,
   updateData,
-  executeQueryFromState
+  executeQueryFromState,
+  mapIdsToDocuments
 } from './queries'
 import { Q } from '../queries/dsl'
 import { TODO_1, TODO_2, TODO_3 } from '../__tests__/fixtures'
@@ -827,5 +828,30 @@ describe('execute query from state', () => {
     expect(res2.data[0]._id).toEqual('789')
     expect(res2.data[1]._id).toEqual('456')
     expect(res2.data[2]._id).toEqual('123')
+  })
+})
+
+describe('mapIdsToDocuments', () => {
+  const documents = {
+    'io.cozy.files': {
+      '123': { _id: '123', _type: 'io.cozy.files' },
+      '456': { _id: '456', _type: 'io.cozy.files' },
+      '789': { _id: '789', _type: 'io.cozy.files' }
+    }
+  }
+
+  it('should return the correct docs', () => {
+    const ids = ['123', '789']
+    const res = mapIdsToDocuments(documents, 'io.cozy.files', ids)
+    expect(res).toEqual([
+      { _id: '123', _type: 'io.cozy.files' },
+      { _id: '789', _type: 'io.cozy.files' }
+    ])
+  })
+
+  it('should not return missing docs', () => {
+    const ids = ['123', 'ghostid']
+    const res = mapIdsToDocuments(documents, 'io.cozy.files', ids)
+    expect(res).toEqual([{ _id: '123', _type: 'io.cozy.files' }])
   })
 })

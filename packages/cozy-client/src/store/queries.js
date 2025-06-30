@@ -672,8 +672,10 @@ export const resetQuery = queryId => ({
 })
 
 // selectors
-const mapIdsToDocuments = (documents, doctype, ids) =>
-  ids.map(id => getDocumentFromSlice(documents, doctype, id))
+export const mapIdsToDocuments = (documents, doctype, ids) =>
+  ids
+    .map(id => getDocumentFromSlice(documents, doctype, id))
+    .filter(doc => !!doc)
 
 export const getQueryFromSlice = (state, queryId, documents) => {
   if (!state || !state[queryId]) {

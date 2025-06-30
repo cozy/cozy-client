@@ -15,6 +15,7 @@ export function loadQuery(queryId: string, options?: import("../types").QueryOpt
 export function receiveQueryResult(queryId: string, response: object, options?: import("../types").QueryOptions): object;
 export function receiveQueryError(queryId: string, error: object, options?: import("../types").QueryOptions): object;
 export function resetQuery(queryId: string): object;
+export function mapIdsToDocuments(documents: any, doctype: any, ids: any): any;
 export function getQueryFromSlice(state: any, queryId: any, documents: any): any;
 export class QueryIDGenerator {
     idCounter: number;
