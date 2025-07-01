@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [59.1.1](https://github.com/cozy/cozy-client/compare/v59.1.0...v59.1.1) (2025-07-01)
+
+
+### Bug Fixes
+
+* Filter missing documents from store ([180af2c](https://github.com/cozy/cozy-client/commit/180af2c0dd69eba5b1926564bc56a3d41ce4620f))
+
+
+
+
+
 # [59.1.0](https://github.com/cozy/cozy-client/compare/v59.0.0...v59.1.0) (2025-06-27)
 
 
