@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [59.2.0](https://github.com/cozy/cozy-client/compare/v59.1.1...v59.2.0) (2025-07-02)
+
+**Note:** Version bump only for package cozy-pouch-link
+
+
+
+
+
 ## [59.1.1](https://github.com/cozy/cozy-client/compare/v59.1.0...v59.1.1) (2025-07-01)
 
 **Note:** Version bump only for package cozy-pouch-link
