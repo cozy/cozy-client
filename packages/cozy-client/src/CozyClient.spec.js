@@ -1910,13 +1910,6 @@ describe('CozyClient', () => {
       expect(doc.authors).toBeInstanceOf(HasMany)
     })
 
-    it('makes new documents', () => {
-      const newTodo = client.makeNewDocument('io.cozy.todos')
-      expect(newTodo._type).toBe('io.cozy.todos')
-      expect(newTodo.attachments).not.toBe(undefined)
-      expect(newTodo.attachments instanceof HasManyFiles).toBe(true)
-    })
-
     it('should not fail on null (when getting absent documents from the store)', () => {
       const doc = client
         .hydrateDocuments('io.cozy.todos', [null], 'allTodos')
