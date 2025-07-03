@@ -49,6 +49,9 @@ export type ClientOptions = {
     uri?: string;
     stackClient?: object;
     warningForCustomHandlers?: boolean;
+    /**
+     * - If set to true, all documents will be hydrated w.r.t. the provided schema's relationships, even if the relationship does not exist on the doc.
+     */
     autoHydrate?: boolean;
     /**
      * - If set to true, backgroundFetching will be enabled by default on every query. Meaning that, when the fetchStatus has already been loaded, it won't be updated during future fetches. Instead, a `isFetching` attribute will be used to indicate when background fetching is started.
@@ -96,7 +99,7 @@ export type ClientOptions = {
  * @property {string} [uri]
  * @property {object} [stackClient]
  * @property {boolean} [warningForCustomHandlers]
- * @property {boolean} [autoHydrate]
+ * @property {boolean} [autoHydrate] - If set to true, all documents will be hydrated w.r.t. the provided schema's relationships, even if the relationship does not exist on the doc.
  * @property {boolean} [backgroundFetching] - If set to true, backgroundFetching will be enabled by default on every query. Meaning that, when the fetchStatus has already been loaded, it won't be updated during future fetches. Instead, a `isFetching` attribute will be used to indicate when background fetching is started.
  * @property {object} [oauth]
  * @property {Function} [onTokenRefresh]
@@ -108,7 +111,6 @@ export type ClientOptions = {
  * @property  {import("./types").ClientCapabilities} [capabilities] - Capabilities sent by the stack
  * @property  {boolean} [useCustomStore=false] - If set to true, the client will not instantiate a Redux store automatically. Use this if you want to merge cozy-client's store with your own redux store. Note will have to call `setStore` eventually. See [here](https://docs.cozy.io/en/cozy-client/react-integration/#1b-use-your-own-redux-store) for more information.
  * @property  {boolean} [disableStoreForQueries=false] - If set to true, the client will not leverage the redux store to execute queries and store data.
- 
  * @property {import('./performances/types').PerformanceAPI} [performanceApi] - The performance API that can be used to measure performances
  */
 /**
@@ -210,6 +212,9 @@ declare class CozyClient {
         uri?: string;
         stackClient?: object;
         warningForCustomHandlers?: boolean;
+        /**
+         * - If set to true, all documents will be hydrated w.r.t. the provided schema's relationships, even if the relationship does not exist on the doc.
+         */
         autoHydrate?: boolean;
         /**
          * - If set to true, backgroundFetching will be enabled by default on every query. Meaning that, when the fetchStatus has already been loaded, it won't be updated during future fetches. Instead, a `isFetching` attribute will be used to indicate when background fetching is started.
@@ -255,6 +260,7 @@ declare class CozyClient {
      */
     storeAccesors: object;
     useCustomStore: boolean;
+    autoHydrate: boolean;
     disableStoreForQueries: boolean;
     /**
      * Gets overrided by MicroEE.mixin
@@ -607,12 +613,6 @@ declare class CozyClient {
     hydrateRelationships(document: any, schemaRelationships: any): {
         [x: string]: any;
     };
-    /**
-     * Creates (locally) a new document for the given doctype.
-     * This document is hydrated : its relationships are there
-     * and working.
-     */
-    makeNewDocument(doctype: any): any;
     generateRandomId(): string;
     /**
      * Creates an association that is linked to the store.
@@ -662,7 +662,7 @@ declare class CozyClient {
      *
      * @param {string} id - Id of the query (set via Query.props.as)
      * @param {object} options - Options
-     * @param {boolean} [options.hydrated] - Whether documents should be returned already hydrated (default: false)
+     * @param {boolean} [options.hydrated] - Whether documents should be returned already hydrated
      * @param  {object} [options.singleDocData] - If true, the "data" returned will be
      * a single doc instead of an array for single doc queries. Defaults to false for backward
      * compatibility but will be set to true in the future.

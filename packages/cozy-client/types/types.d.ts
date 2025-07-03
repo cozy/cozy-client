@@ -503,12 +503,25 @@ export type QueryStateWithoutData = {
     fetchedPagesCount: number;
     bookmark: string;
     execution_stats?: object;
+    /**
+     * - The relationships names, used to check hydrated documents
+     */
+    relationshipNames: Array<string>;
     options?: QueryOptions;
 };
 export type QueryStateData = {
+    /**
+     * - Collection of hydrated documents
+     */
     data: object | any[];
 };
-export type QueryState = QueryStateWithoutData & QueryStateData;
+export type QueryStateStoreData = {
+    /**
+     * - Collection of store's documents
+     */
+    storeData: object | any[];
+};
+export type QueryState = QueryStateWithoutData & QueryStateData & QueryStateStoreData;
 export type AutoUpdateOptions = any;
 export type QueryOptions = {
     /**
@@ -568,7 +581,7 @@ export type FetchMoreAble = {
 export type FetchAble = {
     fetch: Function;
 };
-export type UseQueryReturnValue = QueryStateWithoutData & QueryStateData & FetchMoreAble & FetchAble;
+export type UseQueryReturnValue = QueryStateWithoutData & QueryStateData & QueryStateStoreData & FetchMoreAble & FetchAble;
 export type UseMutationWithoutMutate = {
     /**
      * - Status of the current mutation
