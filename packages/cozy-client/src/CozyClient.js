@@ -121,8 +121,8 @@ const DOC_UPDATE = 'update'
  * @property  {import("./types").AppMetadata}  [appMetadata] - Metadata about the application that will be used in ensureCozyMetadata
  * @property  {import("./types").ClientCapabilities} [capabilities] - Capabilities sent by the stack
  * @property  {boolean} [useCustomStore=false] - If set to true, the client will not instantiate a Redux store automatically. Use this if you want to merge cozy-client's store with your own redux store. Note will have to call `setStore` eventually. See [here](https://docs.cozy.io/en/cozy-client/react-integration/#1b-use-your-own-redux-store) for more information.
- * @property  {boolean} [disableStoreForQueries=false] - If set to true, the client will not leverage the redux store to execute queries and store data. 
- 
+ * @property  {boolean} [disableStoreForQueries=false] - If set to true, the client will not leverage the redux store to execute queries and store data.
+ * @property  {boolean} [forceHydratation] - If set to true, all documents will be hydrated w.r.t. the provided schema's relationships, even if the relationship does not exist on the doc.
  * @property {import('./performances/types').PerformanceAPI} [performanceApi] - The performance API that can be used to measure performances
  */
 
@@ -237,6 +237,7 @@ class CozyClient {
       this.ensureStore()
     }
     this.disableStoreForQueries = options.disableStoreForQueries || false
+    this.forceHydratation = options.forceHydratation || false
   }
 
   /**
@@ -1294,7 +1295,7 @@ client.query(Q('io.cozy.bills'))`)
           if (queryDef instanceof QueryDefinition) {
             definitions.push(queryDef)
           } else {
-            documents.push(queryDef)
+            documents.push(doc)
           }
         } catch {
           // eslint-disable-next-line
@@ -1402,29 +1403,23 @@ client.query(Q('io.cozy.bills'))`)
       return document
     }
     const schema = schemaArg || this.schema.getDoctypeSchema(document._type)
+    const hydratedRelationships = this.hydrateRelationships(
+      document,
+      schema.relationships
+    )
     return {
       ...document,
-      ...this.hydrateRelationships(document, schema.relationships)
+      ...hydratedRelationships
     }
   }
 
   hydrateRelationships(document, schemaRelationships) {
     const methods = this.getRelationshipStoreAccessors()
-    return mapValues(schemaRelationships, (assoc, name) =>
-      createAssociation(document, assoc, methods)
-    )
-  }
-
-  /**
-   * Creates (locally) a new document for the given doctype.
-   * This document is hydrated : its relationships are there
-   * and working.
-   */
-  makeNewDocument(doctype) {
-    const obj = {
-      _type: doctype
-    }
-    return this.hydrateDocument(obj)
+    return mapValues(schemaRelationships, (assoc, name) => {
+      if (this.options?.forceHydratation || document.relationships?.[name]) {
+        return createAssociation(document, assoc, methods)
+      }
+    })
   }
 
   generateRandomId() {
@@ -1522,13 +1517,29 @@ client.query(Q('io.cozy.bills'))`)
         return queryResults
       }
 
-      const data =
+      const hydratedData =
         hydrated && doctype
           ? this.hydrateDocuments(doctype, queryResults.data)
           : queryResults.data
+
+      const relationships = this.schema.getDoctypeSchema(doctype)?.relationships
+      const relationshipNames = relationships
+        ? Object.keys(relationships)
+        : null
+
+      // The `data` array contains the hydrated data with the relationships, if any.
+      // The `storeData` array contains the documents from the store: this is useful to preserve
+      // referential equality, to be later evaluated to determine whether or not the
+      // documents had changed.
       return {
         ...queryResults,
-        data: isSingleDocQuery && singleDocData ? data[0] : data
+        data:
+          isSingleDocQuery && singleDocData ? hydratedData[0] : hydratedData,
+        storeData:
+          isSingleDocQuery && singleDocData
+            ? queryResults.data[0]
+            : queryResults.data,
+        relationshipNames
       }
     } catch (e) {
       logger.warn(

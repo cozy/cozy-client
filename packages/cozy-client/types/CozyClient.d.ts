@@ -81,6 +81,10 @@ export type ClientOptions = {
      */
     disableStoreForQueries?: boolean;
     /**
+     * - If set to true, all documents will be hydrated w.r.t. the provided schema's relationships, even if the relationship does not exist on the doc.
+     */
+    forceHydratation?: boolean;
+    /**
      * - The performance API that can be used to measure performances
      */
     performanceApi?: import('./performances/types').PerformanceAPI;
@@ -108,7 +112,7 @@ export type ClientOptions = {
  * @property  {import("./types").ClientCapabilities} [capabilities] - Capabilities sent by the stack
  * @property  {boolean} [useCustomStore=false] - If set to true, the client will not instantiate a Redux store automatically. Use this if you want to merge cozy-client's store with your own redux store. Note will have to call `setStore` eventually. See [here](https://docs.cozy.io/en/cozy-client/react-integration/#1b-use-your-own-redux-store) for more information.
  * @property  {boolean} [disableStoreForQueries=false] - If set to true, the client will not leverage the redux store to execute queries and store data.
- 
+ * @property  {boolean} [forceHydratation] - If set to true, all documents will be hydrated w.r.t. the provided schema's relationships, even if the relationship does not exist on the doc.
  * @property {import('./performances/types').PerformanceAPI} [performanceApi] - The performance API that can be used to measure performances
  */
 /**
@@ -229,6 +233,10 @@ declare class CozyClient {
          * - If set to true, the client will not leverage the redux store to execute queries and store data.
          */
         disableStoreForQueries?: boolean;
+        /**
+         * - If set to true, all documents will be hydrated w.r.t. the provided schema's relationships, even if the relationship does not exist on the doc.
+         */
+        forceHydratation?: boolean;
     };
     queryIdGenerator: QueryIDGenerator;
     isLogged: boolean;
@@ -256,6 +264,7 @@ declare class CozyClient {
     storeAccesors: object;
     useCustomStore: boolean;
     disableStoreForQueries: boolean;
+    forceHydratation: boolean;
     /**
      * Gets overrided by MicroEE.mixin
      * This is here just so typescript does not scream
@@ -607,12 +616,6 @@ declare class CozyClient {
     hydrateRelationships(document: any, schemaRelationships: any): {
         [x: string]: any;
     };
-    /**
-     * Creates (locally) a new document for the given doctype.
-     * This document is hydrated : its relationships are there
-     * and working.
-     */
-    makeNewDocument(doctype: any): any;
     generateRandomId(): string;
     /**
      * Creates an association that is linked to the store.
