@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [59.3.0](https://github.com/cozy/cozy-client/compare/v59.2.0...v59.3.0) (2025-07-03)
+
+
+### Features
+
+* Add a method to fetch shared drives ([04d18b4](https://github.com/cozy/cozy-client/commit/04d18b4a427a63d6c0cb6c98375593bdc082d683))
+
+
+
+
+
 # [59.0.0](https://github.com/cozy/cozy-client/compare/v58.5.0...v59.0.0) (2025-06-27)
 
 
