@@ -94,7 +94,7 @@ export namespace TODO_WITH_AUTHOR {
     }
     export { relationships_1 as relationships };
 }
-export namespace FILE_1 {
+export namespace TODO_WITH_NONEXISTING_RELATIONSHIP {
     const _id_6: number;
     export { _id_6 as _id };
     const _rev_6: string;
@@ -103,9 +103,20 @@ export namespace FILE_1 {
     export { _type_6 as _type };
     const label_6: string;
     export { label_6 as label };
-    export const name: string;
+    export namespace relationships_2 {
+        namespace broken {
+            const doctype_2: string;
+            export { doctype_2 as doctype };
+            const data_1: {
+                _type: string;
+                _id: number;
+            }[];
+            export { data_1 as data };
+        }
+    }
+    export { relationships_2 as relationships };
 }
-export namespace FILE_2 {
+export namespace FILE_1 {
     const _id_7: number;
     export { _id_7 as _id };
     const _rev_7: string;
@@ -114,6 +125,17 @@ export namespace FILE_2 {
     export { _type_7 as _type };
     const label_7: string;
     export { label_7 as label };
+    export const name: string;
+}
+export namespace FILE_2 {
+    const _id_8: number;
+    export { _id_8 as _id };
+    const _rev_8: string;
+    export { _rev_8 as _rev };
+    const _type_8: string;
+    export { _type_8 as _type };
+    const label_8: string;
+    export { label_8 as label };
 }
 export const APP_NAME: "cozy-client-test";
 export const APP_VERSION: 2;
@@ -122,38 +144,38 @@ export const SOURCE_ACCOUNT_ID: "123-456-abc";
 export const SOURCE_ACCOUNT_IDENTIFIER: "testSourceAccountIdentifier";
 export namespace SCHEMA {
     export namespace todos {
-        const doctype_2: string;
-        export { doctype_2 as doctype };
+        const doctype_3: string;
+        export { doctype_3 as doctype };
         export { DOCTYPE_VERSION as doctypeVersion };
-        export namespace relationships_2 {
+        export namespace relationships_3 {
             export namespace attachments_1 {
                 export const type: string;
-                const doctype_3: string;
-                export { doctype_3 as doctype };
+                const doctype_4: string;
+                export { doctype_4 as doctype };
             }
             export { attachments_1 as attachments };
             export namespace authors_1 {
                 const type_1: string;
                 export { type_1 as type };
-                const doctype_4: string;
-                export { doctype_4 as doctype };
+                const doctype_5: string;
+                export { doctype_5 as doctype };
             }
             export { authors_1 as authors };
         }
-        export { relationships_2 as relationships };
+        export { relationships_3 as relationships };
     }
     export namespace files_1 {
-        const doctype_5: string;
-        export { doctype_5 as doctype };
-        export namespace relationships_3 {
+        const doctype_6: string;
+        export { doctype_6 as doctype };
+        export namespace relationships_4 {
             namespace icons {
                 const type_2: string;
                 export { type_2 as type };
-                const doctype_6: string;
-                export { doctype_6 as doctype };
+                const doctype_7: string;
+                export { doctype_7 as doctype };
             }
         }
-        export { relationships_3 as relationships };
+        export { relationships_4 as relationships };
     }
     export { files_1 as files };
 }
