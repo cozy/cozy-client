@@ -1415,18 +1415,6 @@ client.query(Q('io.cozy.bills'))`)
     )
   }
 
-  /**
-   * Creates (locally) a new document for the given doctype.
-   * This document is hydrated : its relationships are there
-   * and working.
-   */
-  makeNewDocument(doctype) {
-    const obj = {
-      _type: doctype
-    }
-    return this.hydrateDocument(obj)
-  }
-
   generateRandomId() {
     return this.queryIdGenerator.generateRandomId()
   }
