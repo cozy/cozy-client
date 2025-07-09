@@ -1895,6 +1895,7 @@ Implements the `DocumentCollection` API along with specific methods for
 **Kind**: global class  
 
 * [SharingCollection](#SharingCollection)
+    * [.findByDoctype(doctype, [options])](#SharingCollection+findByDoctype) ⇒ <code>object</code>
     * [.get(id)](#SharingCollection+get) ⇒ [<code>Sharing</code>](#Sharing)
     * [.fetchSharedDrives()](#SharingCollection+fetchSharedDrives) ⇒ <code>Promise.&lt;{data: Array.&lt;Sharing&gt;}&gt;</code>
     * [.create(params)](#SharingCollection+create)
@@ -1904,6 +1905,20 @@ Implements the `DocumentCollection` API along with specific methods for
     * [.revokeGroup(sharing, groupIndex)](#SharingCollection+revokeGroup)
     * [.revokeSelf(sharing)](#SharingCollection+revokeSelf)
     * [.revokeAllRecipients(sharing)](#SharingCollection+revokeAllRecipients)
+
+<a name="SharingCollection+findByDoctype"></a>
+
+### sharingCollection.findByDoctype(doctype, [options]) ⇒ <code>object</code>
+Finds all sharings for a given doctype
+
+**Kind**: instance method of [<code>SharingCollection</code>](#SharingCollection)  
+**Returns**: <code>object</code> - The response  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| doctype | <code>string</code> | The doctype |
+| [options] | [<code>SharingRulesOptions</code>](#SharingRulesOptions) | The options |
+| [options.withSharedDocs] | <code>boolean</code> | If true, the response will include the shared documents |
 
 <a name="SharingCollection+get"></a>
 
