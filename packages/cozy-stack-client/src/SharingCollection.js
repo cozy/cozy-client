@@ -54,10 +54,18 @@ const normalizeSharing = normalizeDoctypeJsonApi(SHARING_DOCTYPE)
  * `io.cozy.sharings`.
  */
 class SharingCollection extends DocumentCollection {
-  async findByDoctype(doctype) {
+  /**
+   * Finds all sharings for a given doctype
+   *
+   * @param {string} doctype The doctype
+   * @param {SharingRulesOptions} [options] The options
+   * @param {boolean} [options.withSharedDocs] If true, the response will include the shared documents
+   * @returns {object} The response
+   */
+  async findByDoctype(doctype, { withSharedDocs = true } = {}) {
     const resp = await this.stackClient.fetchJSON(
       'GET',
-      uri`/sharings/doctype/${doctype}`
+      uri`/sharings/doctype/${doctype}?shared_docs=${withSharedDocs}`
     )
     return {
       ...resp,

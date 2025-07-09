@@ -53,7 +53,7 @@ describe('SharingCollection', () => {
       await collection.findByDoctype('io.cozy.files')
       expect(client.fetchJSON).toHaveBeenCalledWith(
         'GET',
-        '/sharings/doctype/io.cozy.files'
+        '/sharings/doctype/io.cozy.files?shared_docs=true'
       )
     })
   })
