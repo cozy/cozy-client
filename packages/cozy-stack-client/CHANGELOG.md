@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [59.4.0](https://github.com/cozy/cozy-client/compare/v59.3.0...v59.4.0) (2025-07-15)
+
+
+### Features
+
+* Add `shared_docs` parameter ([24a2825](https://github.com/cozy/cozy-client/commit/24a2825f5bd430ea41ce7480b27be72aa69dbd63))
+
+
+
+
+
 # [59.3.0](https://github.com/cozy/cozy-client/compare/v59.2.0...v59.3.0) (2025-07-03)
 
 
