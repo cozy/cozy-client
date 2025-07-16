@@ -21,7 +21,6 @@ helpers.insertBulkDocs = async (db, docs) => {
   return db.bulkDocs(docs, { new_edits: false })
 }
 
-
 helpers.normalizeFindSelector = ({
   selector,
   sort,
