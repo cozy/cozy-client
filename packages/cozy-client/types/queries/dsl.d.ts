@@ -125,6 +125,7 @@ export class QueryDefinition {
      * @param {number|null} [options.skip] - The number of docs to skip.
      * @param {import('../types').CouchDBViewCursor} [options.cursor] - The cursor to paginate views.
      * @param {string} [options.bookmark] - The bookmark to paginate mango queries.
+     * @param {string} [options.sharingId] - The id of the sharing
      */
     constructor(options?: {
         doctype: import('../types').Doctype;
@@ -141,6 +142,7 @@ export class QueryDefinition {
         skip: number | null;
         cursor: import('../types').CouchDBViewCursor;
         bookmark: string;
+        sharingId: string;
     });
     doctype: string;
     id: string;
@@ -156,6 +158,7 @@ export class QueryDefinition {
     skip: number;
     cursor: import("../types").CouchDBViewCursor;
     bookmark: string;
+    sharingId: string;
     /**
      * Checks if the sort order matches the index' fields order.
      *
@@ -291,6 +294,13 @@ export class QueryDefinition {
      * @returns {QueryDefinition}  The QueryDefinition object.
      */
     referencedBy(document: object): QueryDefinition;
+    /**
+     * Use a sharingId to query documents coming from a sharing
+     *
+     * @param {string} id - The sharing doc id
+     * @returns {QueryDefinition}  The QueryDefinition object.
+     */
+    sharingById(id: string): QueryDefinition;
     toDefinition(): {
         doctype: string;
         id: string;
@@ -306,6 +316,7 @@ export class QueryDefinition {
         skip: number;
         cursor: import("../types").CouchDBViewCursor;
         bookmark: string;
+        sharingId: string;
     };
 }
 declare const CREATE_DOCUMENT: "CREATE_DOCUMENT";
