@@ -366,7 +366,7 @@ class QueryDefinition {
    * @param {string} id - The sharing doc id
    * @returns {QueryDefinition}  The QueryDefinition object.
    */
-  sharingId(id) {
+  sharingById(id) {
     return new QueryDefinition({ ...this.toDefinition(), sharingId: id })
   }
 
