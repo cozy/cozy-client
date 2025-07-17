@@ -3,6 +3,47 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [60.0.0](https://github.com/cozy/cozy-client/compare/v59.4.0...v60.0.0) (2025-07-17)
+
+
+### Bug Fixes
+
+* Correctly fetch documents relationships ([ff6e884](https://github.com/cozy/cozy-client/commit/ff6e88488a5ff9b41366252d46384bd055e1b790))
+
+
+### Features
+
+* Do not hydrate doc if the relationship does not exist ([d369a33](https://github.com/cozy/cozy-client/commit/d369a3397011284b1c243f26bffa1042b128a1be))
+* Improve React performances by avoiding useless renders ([13fafdf](https://github.com/cozy/cozy-client/commit/13fafdf3987308badec86f166274bb01673c4d0a))
+* Remove `makeNewDocument` API method ([678c1dd](https://github.com/cozy/cozy-client/commit/678c1ddd958ee1d09afb620d8aed2a039a8888cc))
+
+
+### BREAKING CHANGES
+
+* the relationship hydration is made only if the
+relationship exists in the document, so the developer should not assume
+a `document.relationshipName` is always defined, anymore.
+As an alternative, it is possible to pass `autoHydrate` on
+cozy-client options to ease migration, e.g:
+```
+const newClient = new CozyClient({
+  schema,
+  autoHydrate: true
+})
+```
+However, please not this has performance impact, as it forces
+extra-check on store queries evaluation.
+* `client.makeNewDocument` no longer exists, please
+remove any code using it.
+
+This method was not very useful and was relying on the full hydratation
+of the schema relationships.  This behaviour should be changed
+eventually.
+
+
+
+
+
 # [59.4.0](https://github.com/cozy/cozy-client/compare/v59.3.0...v59.4.0) (2025-07-15)
 
 **Note:** Version bump only for package cozy-client
