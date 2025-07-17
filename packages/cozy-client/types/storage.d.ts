@@ -43,6 +43,10 @@ export type CozyClientDocument = {
      * - When true the document should NOT be replicated to the remote database
      */
     cozyLocalOnly?: boolean;
+    /**
+     * - Id of a shared drive, only for shared io.cozy.files
+     */
+    driveId?: string;
 };
 import CozyClient from "./CozyClient";
 import { QueryDefinition } from "./queries/dsl";
