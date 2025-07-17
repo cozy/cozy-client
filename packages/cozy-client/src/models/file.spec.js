@@ -430,7 +430,8 @@ describe('File Model', () => {
         'mydoc.odt'
       )
       expect(cozyClient.stackClient.collection).toHaveBeenCalledWith(
-        'io.cozy.files'
+        'io.cozy.files',
+        expect.anything()
       )
       expect(getSpy).toHaveBeenCalledWith(
         'parent',
@@ -447,7 +448,8 @@ describe('File Model', () => {
         'mydoc.odt'
       )
       expect(cozyClient.stackClient.collection).toHaveBeenCalledWith(
-        'io.cozy.files'
+        'io.cozy.files',
+        expect.anything()
       )
       expect(getSpy).toHaveBeenCalledWith(
         'parent',
