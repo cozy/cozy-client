@@ -81,7 +81,7 @@ Transfers queries and mutations to a remote stack
 
 *Defined in*
 
-[packages/cozy-client/src/links/StackLink.js:147](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/StackLink.js#L147)
+[packages/cozy-client/src/links/StackLink.js:154](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/StackLink.js#L154)
 
 ***
 
