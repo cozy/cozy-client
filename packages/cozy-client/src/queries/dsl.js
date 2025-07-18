@@ -385,7 +385,8 @@ class QueryDefinition {
       limit: this.limit,
       skip: this.skip,
       cursor: this.cursor,
-      bookmark: this.bookmark
+      bookmark: this.bookmark,
+      sharingId: this.sharingId
     }
   }
 }
