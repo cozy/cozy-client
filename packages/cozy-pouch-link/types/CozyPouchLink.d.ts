@@ -215,7 +215,7 @@ declare class PouchLink extends CozyLink {
      */
     needsToWaitWarmup(doctype: string): Promise<boolean>;
     hasIndex(name: any): boolean;
-    executeQuery({ doctype, selector, sort, fields, limit, id, ids, skip, indexedFields, partialFilter }: {
+    executeQuery({ doctype, selector, sort, fields, limit, id, ids, skip, indexedFields, partialFilter, sharingId }: {
         doctype: any;
         selector: any;
         sort: any;
@@ -226,6 +226,7 @@ declare class PouchLink extends CozyLink {
         skip: any;
         indexedFields: any;
         partialFilter: any;
+        sharingId: any;
     }): Promise<any>;
     executeMutation(mutation: any, options: any, result: any, forward: any): Promise<any>;
     createDocument(mutation: any): Promise<any>;

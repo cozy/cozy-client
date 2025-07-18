@@ -40,6 +40,10 @@ export type CozyClientDocument = {
      * - When true the document should NOT be replicated to the remote database
      */
     cozyLocalOnly?: boolean;
+    /**
+     * - Id of a shared drive, only for shared io.cozy.files
+     */
+    driveId?: string;
 };
 export type ClientOptions = {
     client?: object;
@@ -361,9 +365,10 @@ declare class CozyClient {
      * a [DocumentCollection]{@link https://docs.cozy.io/en/cozy-client/api/cozy-stack-client/#DocumentCollection} instance.
      *
      * @param  {string} doctype The collection doctype.
+     * @param  {object} options Options to pass to the collection
      * @returns {import("./types").DocumentCollection} Collection corresponding to the doctype
      */
-    collection(doctype: string): import("./types").DocumentCollection;
+    collection(doctype: string, options?: object): import("./types").DocumentCollection;
     fetch(method: any, path: any, body: any, options?: {}): any;
     all(doctype: any): QueryDefinition;
     find(doctype: any, selector?: any): QueryDefinition;
@@ -559,23 +564,6 @@ declare class CozyClient {
      * @returns {Promise<import("./types").ClientResponse>}
      */
     private requestQuery;
-    /**
-     * Save the document or array of documents into the persisted storage (if any)
-     *
-     * @private
-     * @param {CozyClientDocument | Array<CozyClientDocument>} data - Document or array of documents to be saved
-     * @returns {Promise<void>}
-     */
-    private persistVirtualDocuments;
-    /**
-     * Save the document or array of documents into the persisted storage (if any)
-     *
-     * @private
-     * @param {CozyClientDocument} document - Document to be saved
-     * @param {boolean} enforce - When true, save the document even if `meta.rev` or `_rev` exist
-     * @returns {Promise<void>}
-     */
-    private persistVirtualDocument;
     /**
      * Fetch relationships for a response (can be several docs).
      * Fills the `relationships` attribute of each documents.

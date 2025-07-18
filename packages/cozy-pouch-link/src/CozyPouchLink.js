@@ -604,7 +604,8 @@ class PouchLink extends CozyLink {
     ids,
     skip,
     indexedFields,
-    partialFilter
+    partialFilter,
+    sharingId
   }) {
     const engine = this.getQueryEngineFromDoctype(doctype)
 
@@ -620,7 +621,9 @@ class PouchLink extends CozyLink {
         selector,
         sort,
         indexedFields,
-        partialFilter
+        partialFilter,
+        doctype,
+        sharingId
       })
 
       const findOpts = {
