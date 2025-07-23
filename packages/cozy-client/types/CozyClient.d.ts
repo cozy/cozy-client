@@ -584,9 +584,13 @@ declare class CozyClient {
      *
      * @param  {string} doctype - Doctype of the documents being hydrated
      * @param  {Array<import("./types").CozyClientDocument>} documents - Documents to be hydrated
+     * @param  {object} [options] - Options
+     * @param  {boolean} [options.forceHydratation=false] - If set to true, all documents will be hydrated w.r.t. the provided schema's relationships, even if the relationship does not exist on the doc.
      * @returns {Array<import("./types").HydratedDocument>}
      */
-    hydrateDocuments(doctype: string, documents: Array<import("./types").CozyClientDocument>): Array<import("./types").HydratedDocument>;
+    hydrateDocuments(doctype: string, documents: Array<import("./types").CozyClientDocument>, { forceHydratation }?: {
+        forceHydratation?: boolean;
+    }): Array<import("./types").HydratedDocument>;
     /**
      * Resolves relationships on a document.
      *
@@ -594,11 +598,17 @@ declare class CozyClient {
      * the relationship
      *
      * @param  {import("./types").CozyClientDocument} document - for which relationships must be resolved
-     * @param  {Schema} [schemaArg] - Optional
+     * @param  {Schema} [schemaArg] - The schema describing the relationships
+     * @param  {object} [options] - Options
+     * @param  {boolean} [options.forceHydratation=false] - If set to true, the doc will be hydrated w.r.t. the provided schema's relationships, even if the relationship does not exist on the doc.
      * @returns {import("./types").HydratedDocument}
      */
-    hydrateDocument(document: import("./types").CozyClientDocument, schemaArg?: Schema): import("./types").HydratedDocument;
-    hydrateRelationships(document: any, schemaRelationships: any): {
+    hydrateDocument(document: import("./types").CozyClientDocument, schemaArg?: Schema, { forceHydratation }?: {
+        forceHydratation?: boolean;
+    }): import("./types").HydratedDocument;
+    hydrateRelationships(document: any, schemaRelationships: any, { forceHydratation }?: {
+        forceHydratation?: boolean;
+    }): {
         [x: string]: any;
     };
     generateRandomId(): string;
