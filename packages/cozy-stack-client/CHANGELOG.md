@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [60.1.0](https://github.com/cozy/cozy-client/compare/v60.0.0...v60.1.0) (2025-07-23)
+
+
+### Features
+
+* FileCollection uses proxy for shared drives ([7628760](https://github.com/cozy/cozy-client/commit/762876003015ca6647b29f725d3a113aca1c116d))
+
+
+
+
+
 # [60.0.0](https://github.com/cozy/cozy-client/compare/v59.4.0...v60.0.0) (2025-07-17)
 
 **Note:** Version bump only for package cozy-stack-client

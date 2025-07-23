@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [60.1.0](https://github.com/cozy/cozy-client/compare/v60.0.0...v60.1.0) (2025-07-23)
+
+
+### Features
+
+* Allow querying shared drives documents ([6e228c8](https://github.com/cozy/cozy-client/commit/6e228c8f5b03463a5f65da83995c7db79cd8e948))
+
+
+
+
+
 # [60.0.0](https://github.com/cozy/cozy-client/compare/v59.4.0...v60.0.0) (2025-07-17)
 
 **Note:** Version bump only for package cozy-pouch-link

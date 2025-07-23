@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [60.1.0](https://github.com/cozy/cozy-client/compare/v60.0.0...v60.1.0) (2025-07-23)
+
+
+### Bug Fixes
+
+* Set sharingId in definition ([ff80f30](https://github.com/cozy/cozy-client/commit/ff80f3015a87eaa20fe16213bf40b55d4e427b0f))
+
+
+### Features
+
+* Allow querying shared drives documents ([6e228c8](https://github.com/cozy/cozy-client/commit/6e228c8f5b03463a5f65da83995c7db79cd8e948))
+* FileCollection uses proxy for shared drives ([7628760](https://github.com/cozy/cozy-client/commit/762876003015ca6647b29f725d3a113aca1c116d))
+* Rename dsl method to sharingById ([5454275](https://github.com/cozy/cozy-client/commit/5454275a61ea964671e1e783424add55b9658728))
+
+
+
+
+
 # [60.0.0](https://github.com/cozy/cozy-client/compare/v59.4.0...v60.0.0) (2025-07-17)
 
 
