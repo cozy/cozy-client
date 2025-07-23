@@ -863,7 +863,10 @@ client.query(Q('io.cozy.bills'))`)
     return [
       saveMutation,
       response => {
-        const doc = this.hydrateDocument(response.data)
+        const schema = this.schema.getDoctypeSchema(response.data._type)
+        const doc = this.hydrateDocument(response.data, schema, {
+          forceHydratation: true
+        })
         return Object.entries(referencesByName).map(([relName, references]) => {
           const relationship = doc[relName]
           return relationship.addReferences(references)
@@ -1306,13 +1309,17 @@ client.query(Q('io.cozy.bills'))`)
    *
    * @param  {string} doctype - Doctype of the documents being hydrated
    * @param  {Array<import("./types").CozyClientDocument>} documents - Documents to be hydrated
+   * @param  {object} [options] - Options
+   * @param  {boolean} [options.forceHydratation=false] - If set to true, all documents will be hydrated w.r.t. the provided schema's relationships, even if the relationship does not exist on the doc.
    * @returns {Array<import("./types").HydratedDocument>}
    */
-  hydrateDocuments(doctype, documents) {
+  hydrateDocuments(doctype, documents, { forceHydratation = false } = {}) {
     const schema = this.schema.getDoctypeSchema(doctype)
     const relationships = schema.relationships
     if (relationships) {
-      return documents.map(doc => this.hydrateDocument(doc, schema))
+      return documents.map(doc =>
+        this.hydrateDocument(doc, schema, { forceHydratation })
+      )
     } else {
       return documents
     }
@@ -1325,17 +1332,21 @@ client.query(Q('io.cozy.bills'))`)
    * the relationship
    *
    * @param  {import("./types").CozyClientDocument} document - for which relationships must be resolved
-   * @param  {Schema} [schemaArg] - Optional
+   * @param  {Schema} [schemaArg] - The schema describing the relationships
+   * @param  {object} [options] - Options
+   * @param  {boolean} [options.forceHydratation=false] - If set to true, the doc will be hydrated w.r.t. the provided schema's relationships, even if the relationship does not exist on the doc.
    * @returns {import("./types").HydratedDocument}
    */
-  hydrateDocument(document, schemaArg) {
+  hydrateDocument(document, schemaArg, { forceHydratation = false } = {}) {
     if (!document) {
       return document
     }
     const schema = schemaArg || this.schema.getDoctypeSchema(document._type)
+    const shouldForceHydrate = this.options.autoHydrate || forceHydratation
     const hydratedRelationships = this.hydrateRelationships(
       document,
-      schema.relationships
+      schema.relationships,
+      { forceHydratation: shouldForceHydrate }
     )
     return {
       ...document,
@@ -1343,10 +1354,14 @@ client.query(Q('io.cozy.bills'))`)
     }
   }
 
-  hydrateRelationships(document, schemaRelationships) {
+  hydrateRelationships(
+    document,
+    schemaRelationships,
+    { forceHydratation = false } = {}
+  ) {
     const methods = this.getRelationshipStoreAccessors()
     return mapValues(schemaRelationships, (assoc, name) => {
-      if (this.options?.autoHydrate || document.relationships?.[name]) {
+      if (forceHydratation || document.relationships?.[name]) {
         return createAssociation(document, assoc, methods)
       }
     })
