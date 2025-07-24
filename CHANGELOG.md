@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [60.1.1](https://github.com/cozy/cozy-client/compare/v60.1.0...v60.1.1) (2025-07-24)
+
+
+### Bug Fixes
+
+* Reference creation through hydratation ([251008e](https://github.com/cozy/cozy-client/commit/251008ed51b04e53792bfe240af9d2a698f65bfe))
+
+
+
+
+
 # [60.1.0](https://github.com/cozy/cozy-client/compare/v60.0.0...v60.1.0) (2025-07-23)
 
 
