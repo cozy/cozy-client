@@ -7,6 +7,8 @@ export default class DataProxyLink extends CozyLink {
         dataproxy: object;
     });
     dataproxy: any;
+    _queue: any[];
+    _drainingRequests: boolean;
     registerClient(client: any): void;
     /**
      * When the link is given to a cozy-client instance, the dataproxy might not be ready yet.
@@ -16,5 +18,8 @@ export default class DataProxyLink extends CozyLink {
      * @param {object} dataproxy - The dataproxy instance
      */
     registerDataProxy(dataproxy: object): void;
+    doRequest(operation: any, options: any): Promise<any>;
+    _flushQueue(): Promise<void>;
+    _onReceiveMessage: (event: any) => void;
 }
 import CozyLink from "./CozyLink";
