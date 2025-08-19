@@ -27,9 +27,29 @@
 
 *Defined in*
 
-[packages/cozy-client/src/links/DataProxyLink.js:8](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/DataProxyLink.js#L8)
+[packages/cozy-client/src/links/DataProxyLink.js:9](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/DataProxyLink.js#L9)
 
 ## Properties
+
+### \_drainingRequests
+
+• **\_drainingRequests**: `boolean`
+
+*Defined in*
+
+[packages/cozy-client/src/links/DataProxyLink.js:13](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/DataProxyLink.js#L13)
+
+***
+
+### \_queue
+
+• **\_queue**: `any`\[]
+
+*Defined in*
+
+[packages/cozy-client/src/links/DataProxyLink.js:12](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/DataProxyLink.js#L12)
+
+***
 
 ### dataproxy
 
@@ -37,9 +57,64 @@
 
 *Defined in*
 
-[packages/cozy-client/src/links/DataProxyLink.js:10](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/DataProxyLink.js#L10)
+[packages/cozy-client/src/links/DataProxyLink.js:11](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/DataProxyLink.js#L11)
 
 ## Methods
+
+### \_flushQueue
+
+▸ **\_flushQueue**(): `Promise`<`void`>
+
+*Returns*
+
+`Promise`<`void`>
+
+*Defined in*
+
+[packages/cozy-client/src/links/DataProxyLink.js:66](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/DataProxyLink.js#L66)
+
+***
+
+### \_onReceiveMessage
+
+▸ **\_onReceiveMessage**(`event`): `void`
+
+*Parameters*
+
+| Name | Type |
+| :------ | :------ |
+| `event` | `any` |
+
+*Returns*
+
+`void`
+
+*Defined in*
+
+[packages/cozy-client/src/links/DataProxyLink.js:93](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/DataProxyLink.js#L93)
+
+***
+
+### doRequest
+
+▸ **doRequest**(`operation`, `options`): `Promise`<`any`>
+
+*Parameters*
+
+| Name | Type |
+| :------ | :------ |
+| `operation` | `any` |
+| `options` | `any` |
+
+*Returns*
+
+`Promise`<`any`>
+
+*Defined in*
+
+[packages/cozy-client/src/links/DataProxyLink.js:51](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/DataProxyLink.js#L51)
+
+***
 
 ### persistCozyData
 
@@ -64,7 +139,7 @@ Persist the given data into the links storage
 
 *Defined in*
 
-[packages/cozy-client/src/links/DataProxyLink.js:42](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/DataProxyLink.js#L42)
+[packages/cozy-client/src/links/DataProxyLink.js:61](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/DataProxyLink.js#L61)
 
 ***
 
@@ -84,7 +159,7 @@ Persist the given data into the links storage
 
 *Defined in*
 
-[packages/cozy-client/src/links/DataProxyLink.js:13](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/DataProxyLink.js#L13)
+[packages/cozy-client/src/links/DataProxyLink.js:20](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/DataProxyLink.js#L20)
 
 ***
 
@@ -108,7 +183,7 @@ the dataproxy is ready and set
 
 *Defined in*
 
-[packages/cozy-client/src/links/DataProxyLink.js:24](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/DataProxyLink.js#L24)
+[packages/cozy-client/src/links/DataProxyLink.js:31](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/DataProxyLink.js#L31)
 
 ***
 
@@ -137,7 +212,7 @@ Request the given operation from the link
 
 *Defined in*
 
-[packages/cozy-client/src/links/DataProxyLink.js:32](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/DataProxyLink.js#L32)
+[packages/cozy-client/src/links/DataProxyLink.js:40](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/DataProxyLink.js#L40)
 
 ***
 
@@ -157,4 +232,4 @@ Reset the link data
 
 *Defined in*
 
-[packages/cozy-client/src/links/DataProxyLink.js:28](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/DataProxyLink.js#L28)
+[packages/cozy-client/src/links/DataProxyLink.js:36](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/links/DataProxyLink.js#L36)
