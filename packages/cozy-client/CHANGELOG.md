@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [60.2.0](https://github.com/cozy/cozy-client/compare/v60.1.1...v60.2.0) (2025-08-25)
+
+
+### Features
+
+* Queue DataProxy requests when it is not ready ([4b4c5fd](https://github.com/cozy/cozy-client/commit/4b4c5fd0703a37d0e1dfc18ba468d7cff4cfee8c))
+
+
+
+
+
 ## [60.1.1](https://github.com/cozy/cozy-client/compare/v60.1.0...v60.1.1) (2025-07-24)
 
 
