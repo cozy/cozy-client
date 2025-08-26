@@ -280,12 +280,19 @@ export const isSharingShorcutNew = file => {
  * @param {CozyClient} client - The CozyClient instance
  * @param {import("../types").IOCozyFile} file - The file to qualify
  * @param {object} qualification - The file qualification
+ * @param {object} [params] - Parameters
+ * @param {string} [params.driveId] - ID of the shared drive in which the file should be saved
  * @returns {Promise<import("../types").IOCozyFile>} The saved file
  */
-export const saveFileQualification = async (client, file, qualification) => {
+export const saveFileQualification = async (
+  client,
+  file,
+  qualification,
+  { driveId } = {}
+) => {
   const qualifiedFile = setQualification(file, qualification)
   return client
-    .collection(DOCTYPE_FILES)
+    .collection(DOCTYPE_FILES, { driveId })
     .updateMetadataAttribute(file._id, qualifiedFile.metadata)
 }
 
@@ -354,8 +361,9 @@ export const getFullpath = async (client, dirId, name) => {
  * @param {CozyClient} client                                                                    - The CozyClient instance
  * @param {import('../types').IOCozyFile | import('../types').NextcloudFile} file                - The file to move (required)
  * @param {import('../types').IOCozyFolder | import('../types').NextcloudFile} destination       - The destination folder (required)
- * @param {object} options                                                                       - The options
- * @param {boolean} options.force                                                                - Whether we should overwrite,
+ * @param {object} [options]                                                                     - The options
+ * @param {boolean} [options.force]                                                              - Whether we should overwrite,
+ * @param {string} [options.driveId]                                                             - The ID of the shared drive in which the file should be moved
  * i.e. put to trash, the destination in case of conflict (defaults to false).
  * @returns {Promise<{moved: undefined|import('../types').IOCozyFile, deleted: null|string[] }>} - A promise that returns the move action response (if any)
  * and the deleted file id (if any) if resolved or an Error if rejected
@@ -364,7 +372,7 @@ export const move = async (
   client,
   file,
   destination,
-  { force } = { force: false }
+  { force = false, driveId } = {}
 ) => {
   try {
     if (file._type === 'io.cozy.remote.nextcloud.files') {
@@ -407,12 +415,11 @@ export const move = async (
   }
 
   // Move inside a Cozy server
+  const filesCollection = client.collection(DOCTYPE_FILES, { driveId })
   try {
-    const resp = await client
-      .collection(DOCTYPE_FILES)
-      .updateFileMetadata(file._id, {
-        dir_id: destination._id
-      })
+    const resp = await filesCollection.updateFileMetadata(file._id, {
+      dir_id: destination._id
+    })
 
     return {
       moved: resp.data,
@@ -425,15 +432,11 @@ export const move = async (
         destination._id,
         file.name
       )
-      const conflictResp = await client
-        .collection(DOCTYPE_FILES)
-        .statByPath(destinationPath)
-      await client.collection(DOCTYPE_FILES).destroy(conflictResp.data)
-      const resp = await client
-        .collection(DOCTYPE_FILES)
-        .updateFileMetadata(file._id, {
-          dir_id: destination._id
-        })
+      const conflictResp = await filesCollection.statByPath(destinationPath)
+      await filesCollection.destroy(conflictResp.data)
+      const resp = await filesCollection.updateFileMetadata(file._id, {
+        dir_id: destination._id
+      })
 
       return {
         moved: resp.data,
@@ -449,17 +452,25 @@ export const move = async (
  *
  * Method to upload a file even if a file with the same name already exists.
  *
- * @param {CozyClient} client   - The CozyClient instance
- * @param {string} dirPath      - Fullpath of directory to upload to ex: path/to/
- * @param {object} file         - HTML Object file
- * @param {object} metadata     - An object containing the wanted metadata to attach
+ * @param {CozyClient} client       - The CozyClient instance
+ * @param {string} dirPath          - Fullpath of directory to upload to ex: path/to/
+ * @param {object} file             - HTML Object file
+ * @param {object} metadata         - An object containing the wanted metadata to attach
+ * @param {object} [params]         - Parameters
+ * @param {string} [params.driveId] - ID of the shared drive in which the file should be saved
  * @returns {Promise<import("../types").IOCozyFile>} The overrided file
  */
-export const overrideFileForPath = async (client, dirPath, file, metadata) => {
+export const overrideFileForPath = async (
+  client,
+  dirPath,
+  file,
+  metadata,
+  { driveId } = {}
+) => {
   let path = dirPath
   if (!path.endsWith('/')) path = path + '/'
 
-  const filesCollection = client.collection(DOCTYPE_FILES)
+  const filesCollection = client.collection(DOCTYPE_FILES, { driveId })
   try {
     const existingFile = await filesCollection.statByPath(path + file.name)
 
@@ -535,6 +546,7 @@ export const generateFileNameForRevision = (file, revision, f) => {
  * @property {string} [contentType]       - The file Content-Type
  * @property {string} [conflictStrategy]  - Erase / rename
  * @property {import('../types').ConflictOptions} [conflictOptions] - Conflict options
+ * @property {string} [driveId]           - ID of the shared drive in which the file should be saved
  */
 
 /**
@@ -553,17 +565,19 @@ export const generateFileNameForRevision = (file, revision, f) => {
  * @param {FileUploadOptions} options - The upload options
  */
 export const uploadFileWithConflictStrategy = async (client, file, options) => {
-  const { name, dirId, conflictStrategy, conflictOptions } = options
+  const { name, dirId, conflictStrategy, conflictOptions, driveId } = options
 
+  const filesCollection = client.collection(DOCTYPE_FILES, { driveId })
   try {
     const path = await getFullpath(client, dirId, name)
-    const existingFile = await client.collection(DOCTYPE_FILES).statByPath(path)
+    const existingFile = await filesCollection.statByPath(path)
     const { id: fileId } = existingFile.data
     if (conflictStrategy === 'erase') {
       //!TODO Bug Fix. Seems we have to pass a name attribute ?!
-      const resp = await client
-        .collection(DOCTYPE_FILES)
-        .updateFile(file, { ...options, fileId })
+      const resp = await filesCollection.updateFile(file, {
+        ...options,
+        fileId
+      })
       return resp
     } else {
       // @ts-ignore
@@ -581,7 +595,7 @@ export const uploadFileWithConflictStrategy = async (client, file, options) => {
     }
   } catch (error) {
     if (/Not Found/.test(error.message)) {
-      return client.collection(DOCTYPE_FILES).createFile(file, options)
+      return filesCollection.createFile(file, options)
     }
     throw error
   }
@@ -626,10 +640,12 @@ export const isFromKonnector = file => {
 /**
  * @param {CozyClient} client - Instance of CozyClient
  * @param {string} fileId - Id of io.cozy.files document
+ * @param {object} [params] - Parameters
+ * @param {string} [params.driveId] - ID of the shared drive in which the file should be saved
  * @returns {Promise<Blob>}
  */
-export const fetchBlobFileById = async (client, fileId) => {
-  const fileColl = client.collection(DOCTYPE_FILES)
+export const fetchBlobFileById = async (client, fileId, { driveId } = {}) => {
+  const fileColl = client.collection(DOCTYPE_FILES, { driveId })
   const fileBin = await fileColl.fetchFileContentById(fileId)
   const fileBlob = await fileBin.blob()
 
@@ -642,10 +658,12 @@ export const fetchBlobFileById = async (client, fileId) => {
  * @param {object} client - The client object used for making API requests.
  * @param {object} file - The file object to be copied.
  * @param {object} destination - The destination object where the file will be copied to.
+ * @param {object} [params] - Parameters
+ * @param {string} [params.driveId] - ID of the shared drive in which the file should be saved
  * @returns {Promise} - A promise that resolves with the response from the API.
  * @throws {Error} - If an error occurs during the API request.
  */
-export const copy = async (client, file, destination) => {
+export const copy = async (client, file, destination, { driveId } = {}) => {
   try {
     if (
       file._type === 'io.cozy.remote.nextcloud.files' &&
@@ -675,7 +693,7 @@ export const copy = async (client, file, destination) => {
     }
 
     const resp = await client
-      .collection(DOCTYPE_FILES)
+      .collection(DOCTYPE_FILES, { driveId })
       .copy(file._id, undefined, destination._id)
     return resp
   } catch (e) {
@@ -695,12 +713,19 @@ export const copy = async (client, file, destination) => {
  * @param {CozyClient} params.client - Instance of CozyClient
  * @param {import("../types").IOCozyFile} params.file - io.cozy.files metadata of the document to downloaded
  * @param {string} [params.url] - Blob url that should be used to download encrypted files
+ * @param {string} [params.driveId] - ID of the shared drive in which the file can be found
  * @param {import('cozy-intent').WebviewService} [params.webviewIntent] - webviewIntent that can be used to redirect the download to host Flagship app
  *
  * @returns {Promise<any>}
  */
-export const downloadFile = async ({ client, file, url, webviewIntent }) => {
-  const filesCollection = client.collection(DOCTYPE_FILES)
+export const downloadFile = async ({
+  client,
+  file,
+  url,
+  webviewIntent,
+  driveId
+}) => {
+  const filesCollection = client.collection(DOCTYPE_FILES, { driveId })
 
   if (isFlagshipApp() && webviewIntent && !isEncrypted(file)) {
     const isFlagshipDownloadAvailable =

@@ -47,20 +47,25 @@ export function isSharingShortcut(file: import("../types").IOCozyFile): boolean;
 export function isSharingShorcut(file: import("../types").IOCozyFile): boolean;
 export function isSharingShortcutNew(file: import("../types").IOCozyFile): boolean;
 export function isSharingShorcutNew(file: object): boolean;
-export function saveFileQualification(client: CozyClient, file: import("../types").IOCozyFile, qualification: object): Promise<import("../types").IOCozyFile>;
+export function saveFileQualification(client: CozyClient, file: import("../types").IOCozyFile, qualification: object, { driveId }?: {
+    driveId: string;
+}): Promise<import("../types").IOCozyFile>;
 export function fetchFilesByQualificationRules(client: object, docRules: object): Promise<import("../types").QueryResult>;
 export function hasMetadataAttribute({ file, attribute }: {
     file: import("../types").IOCozyFile;
     attribute: string;
 }): boolean;
 export function getFullpath(client: CozyClient, dirId: string, name: string): Promise<string>;
-export function move(client: CozyClient, file: import('../types').IOCozyFile | import('../types').NextcloudFile, destination: import('../types').IOCozyFolder | import('../types').NextcloudFile, { force }?: {
+export function move(client: CozyClient, file: import('../types').IOCozyFile | import('../types').NextcloudFile, destination: import('../types').IOCozyFolder | import('../types').NextcloudFile, { force, driveId }?: {
     force: boolean;
+    driveId: string;
 }): Promise<{
     moved: undefined | import('../types').IOCozyFile;
     deleted: null | string[];
 }>;
-export function overrideFileForPath(client: CozyClient, dirPath: string, file: object, metadata: object): Promise<import("../types").IOCozyFile>;
+export function overrideFileForPath(client: CozyClient, dirPath: string, file: object, metadata: object, { driveId }?: {
+    driveId: string;
+}): Promise<import("../types").IOCozyFile>;
 export function generateNewFileNameOnConflict(filenameWithoutExtension: string, conflictOptions?: import('../types').ConflictOptions): string;
 export function generateFileNameForRevision(file: import("../types").IOCozyFile, revision: object, f: Function): string;
 export function uploadFileWithConflictStrategy(client: CozyClient, file: string | ArrayBuffer, options: FileUploadOptions): any;
@@ -68,12 +73,17 @@ export function isPlainText(mimeType?: string, fileName?: string): boolean;
 export function hasQualifications(file: import("../types").IOCozyFile): boolean;
 export function hasCertifications(file: import("../types").IOCozyFile): boolean;
 export function isFromKonnector(file: import("../types").IOCozyFile): boolean;
-export function fetchBlobFileById(client: CozyClient, fileId: string): Promise<Blob>;
-export function copy(client: object, file: object, destination: object): Promise<any>;
-export function downloadFile({ client, file, url, webviewIntent }: {
+export function fetchBlobFileById(client: CozyClient, fileId: string, { driveId }?: {
+    driveId: string;
+}): Promise<Blob>;
+export function copy(client: object, file: object, destination: object, { driveId }?: {
+    driveId: string;
+}): Promise<any>;
+export function downloadFile({ client, file, url, webviewIntent, driveId }: {
     client: CozyClient;
     file: import("../types").IOCozyFile;
     url: string;
+    driveId: string;
     webviewIntent: import('cozy-intent').WebviewService;
 }): Promise<any>;
 export type FileUploadOptions = {
@@ -101,5 +111,9 @@ export type FileUploadOptions = {
      * - Conflict options
      */
     conflictOptions?: import('../types').ConflictOptions;
+    /**
+     * - ID of the shared drive in which the file should be saved
+     */
+    driveId?: string;
 };
 import CozyClient from "../CozyClient";
