@@ -14,7 +14,7 @@ Conflict options
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:537](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L537)
+[packages/cozy-client/src/models/file.js:548](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L548)
 
 ***
 
@@ -26,7 +26,7 @@ Erase / rename
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:536](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L536)
+[packages/cozy-client/src/models/file.js:547](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L547)
 
 ***
 
@@ -38,7 +38,7 @@ The file Content-Type
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:535](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L535)
+[packages/cozy-client/src/models/file.js:546](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L546)
 
 ***
 
@@ -50,7 +50,19 @@ The dirId to upload the file to
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:533](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L533)
+[packages/cozy-client/src/models/file.js:544](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L544)
+
+***
+
+### driveId
+
+• **driveId**: `string`
+
+ID of the shared drive in which the file should be saved
+
+*Defined in*
+
+[packages/cozy-client/src/models/file.js:549](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L549)
 
 ***
 
@@ -62,7 +74,7 @@ An object containing the metadata to attach
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:534](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L534)
+[packages/cozy-client/src/models/file.js:545](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L545)
 
 ***
 
@@ -74,4 +86,4 @@ The file name to upload
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:532](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L532)
+[packages/cozy-client/src/models/file.js:543](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L543)
