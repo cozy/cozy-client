@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [60.3.0](https://github.com/cozy/cozy-client/compare/v60.2.0...v60.3.0) (2025-08-27)
+
+
+### Features
+
+* Add driveId parameter to file model methods ([0b5d76c](https://github.com/cozy/cozy-client/commit/0b5d76ca1b87aa32a92e7e4680a715a608734c0b))
+
+
+
+
+
 # [60.2.0](https://github.com/cozy/cozy-client/compare/v60.1.1...v60.2.0) (2025-08-25)
 
 
