@@ -119,7 +119,8 @@ class PouchLink extends CozyLink {
       this._startReplication,
       syncDebounceDelayInMs || DEFAULT_DEBOUNCE_DELAY,
       {
-        maxWait: syncDebounceMaxDelayInMs || MAX_DEBOUNCE_DELAY
+        maxWait: syncDebounceMaxDelayInMs || MAX_DEBOUNCE_DELAY,
+        leading: true
       }
     )
 
