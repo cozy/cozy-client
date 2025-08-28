@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [60.4.0](https://github.com/cozy/cozy-client/compare/v60.3.0...v60.4.0) (2025-08-28)
+
+
+### Features
+
+* Make `startReplicationDebounce` run immediatly at first call ([17d6d0e](https://github.com/cozy/cozy-client/commit/17d6d0e7faa647616e016da485a3aa61249fe6f4))
+
+
+
+
+
 # [60.3.0](https://github.com/cozy/cozy-client/compare/v60.2.0...v60.3.0) (2025-08-27)
 
 **Note:** Version bump only for package cozy-pouch-link
