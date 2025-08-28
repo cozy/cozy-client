@@ -247,3 +247,78 @@ export const getIndexByFamilyNameGivenNameEmailCozyUrl = contact => {
  * @returns {boolean}
  */
 export const isContact = doc => doc._type === CONTACTS_DOCTYPE
+
+/**
+ * Removed unwanted characters on contact's formatted address
+ *
+ * @param {string} formattedAddress - The contact's formatted address
+ * @returns {string}
+ */
+export const cleanFormattedAddress = formattedAddress => {
+  // Replace all spaces by one space, to fix cases where there are multiple spaces
+  // Replace commas that have a space before
+  // And remove all spaces before & after the string
+  let formattedAddressClean = formattedAddress
+    .replace(/\s+/g, ' ')
+    .replace(/\s,/g, '')
+    .trim()
+
+  // Case where a comma is the last character
+  if (
+    formattedAddressClean.lastIndexOf(',') ===
+    formattedAddressClean.length - 1
+  ) {
+    formattedAddressClean = formattedAddressClean.slice(
+      0,
+      formattedAddressClean.length - 1
+    )
+  }
+
+  // Case where a comma is the first character
+  if (formattedAddressClean.indexOf(',') === 0) {
+    formattedAddressClean = formattedAddressClean.slice(1)
+  }
+
+  return formattedAddressClean
+}
+
+/**
+ * Returns the contact's formatted address
+ *
+ * @param {object} address - A contact address
+ * @param {function} t - Translate function
+ * @returns {string} - The contact's formatted address
+ */
+export const getFormattedAddress = (address, t) => {
+  if (address && address.formattedAddress) {
+    return address.formattedAddress
+  }
+
+  const unformattedAddress = {
+    number: address.number || '',
+    street: address.street || '',
+    code: address.postcode || '',
+    city: address.city || '',
+    region: address.region || '',
+    country: address.country || ''
+  }
+
+  return cleanFormattedAddress(t('formatted.address', unformattedAddress))
+}
+
+/**
+ * Update fullname, displayName and Index values of a contact
+ *
+ * @param {object} contact - an io.cozy.contact document
+ * @returns {object} an io.cozy.contact document
+ */
+export const updateIndexFullNameAndDisplayName = contact => {
+  return {
+    ...contact,
+    fullname: makeFullname(contact),
+    displayName: makeDisplayName(contact),
+    indexes: {
+      byFamilyNameGivenNameEmailCozyUrl: makeDefaultSortIndexValue(contact)
+    }
+  }
+}
