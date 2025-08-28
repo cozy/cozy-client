@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [60.5.0](https://github.com/cozy/cozy-client/compare/v60.4.0...v60.5.0) (2025-08-28)
+
+
+### Features
+
+* **ContactModel:** Add some helpers from Contacts app ([1becaf9](https://github.com/cozy/cozy-client/commit/1becaf93ea453f415c839acc46f44b3b507916b1))
+
+
+
+
+
 # [60.4.0](https://github.com/cozy/cozy-client/compare/v60.3.0...v60.4.0) (2025-08-28)
 
 
