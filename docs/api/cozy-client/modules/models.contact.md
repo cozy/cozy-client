@@ -26,6 +26,28 @@
 
 ## Functions
 
+### cleanFormattedAddress
+
+▸ **cleanFormattedAddress**(`formattedAddress`): `string`
+
+Removed unwanted characters on contact's formatted address
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `formattedAddress` | `string` | The contact's formatted address |
+
+*Returns*
+
+`string`
+
+*Defined in*
+
+[packages/cozy-client/src/models/contact.js:257](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L257)
+
+***
+
 ### getDefaultSortIndexValue
 
 ▸ **getDefaultSortIndexValue**(`contact`): `string`
@@ -71,6 +93,31 @@ Returns a display name for the contact
 *Defined in*
 
 [packages/cozy-client/src/models/contact.js:176](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L176)
+
+***
+
+### getFormattedAddress
+
+▸ **getFormattedAddress**(`address`, `t`): `string`
+
+Returns the contact's formatted address
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `address` | `any` | A contact address |
+| `t` | `Function` | Translate function |
+
+*Returns*
+
+`string`
+
+*   The contact's formatted address
+
+*Defined in*
+
+[packages/cozy-client/src/models/contact.js:292](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L292)
 
 ***
 
@@ -395,3 +442,27 @@ Makes fullname from contact name
 *Defined in*
 
 [packages/cozy-client/src/models/contact.js:117](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L117)
+
+***
+
+### updateIndexFullNameAndDisplayName
+
+▸ **updateIndexFullNameAndDisplayName**(`contact`): `any`
+
+Update fullname, displayName and Index values of a contact
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `contact` | `any` | an io.cozy.contact document |
+
+*Returns*
+
+`any`
+
+an io.cozy.contact document
+
+*Defined in*
+
+[packages/cozy-client/src/models/contact.js:315](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/contact.js#L315)

@@ -18,4 +18,7 @@ export function makeDefaultSortIndexValue(contact: import('../types').IOCozyCont
 export function getDefaultSortIndexValue(contact: import('../types').IOCozyContact): string;
 export function getIndexByFamilyNameGivenNameEmailCozyUrl(contact: import('../types').IOCozyContact): string;
 export function isContact(doc: object): boolean;
+export function cleanFormattedAddress(formattedAddress: string): string;
+export function getFormattedAddress(address: object, t: Function): string;
+export function updateIndexFullNameAndDisplayName(contact: object): object;
 export type FullnameAttributes = "namePrefix" | "givenName" | "additionalName" | "familyName" | "nameSuffix";

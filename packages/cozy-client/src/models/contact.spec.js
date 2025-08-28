@@ -11,6 +11,8 @@ import {
   getPrimaryCozyDomain,
   makeFullname,
   makeDisplayName,
+  getFormattedAddress,
+  updateIndexFullNameAndDisplayName,
   makeDefaultSortIndexValue
 } from './contact'
 
@@ -713,5 +715,117 @@ describe('getPrimaryCozyDomain', () => {
 
     const result = getPrimaryCozyDomain(contact)
     expect(result).toEqual(expected)
+  })
+})
+
+describe('getFormattedAddress', () => {
+  describe('with connector address format', () => {
+    it('should return full formatted address', () => {
+      const addressMock = {
+        city: 'Cambridge',
+        country: 'Russian Federation',
+        postcode: '16862',
+        street: '38 Taylor Street'
+      }
+
+      const res = getFormattedAddress(
+        addressMock,
+        jest.fn(() => '38 Taylor Street, 16862 Cambridge, Russian Federation')
+      )
+
+      expect(res).toBe('38 Taylor Street, 16862 Cambridge, Russian Federation')
+    })
+    it('should return formatted address if only "postcode" & "city" values are defined', () => {
+      const addressMock = {
+        city: 'Cambridge',
+        country: undefined,
+        postcode: '16862',
+        street: undefined
+      }
+      const res = getFormattedAddress(
+        addressMock,
+        jest.fn(() => ' , 16862 Cambridge, ')
+      )
+
+      expect(res).toBe('16862 Cambridge')
+    })
+    it('should return formatted address if "postcode" & "city" values are undefined', () => {
+      const addressMock = {
+        city: 'Cambridge',
+        country: undefined,
+        postcode: undefined,
+        street: '38 Taylor Street'
+      }
+      const res = getFormattedAddress(
+        addressMock,
+        jest.fn(() => '38 Taylor Street,  , Cambridge')
+      )
+
+      expect(res).toBe('38 Taylor Street, Cambridge')
+    })
+    it('should return formatted address if "postcode" & "city" values are undefined', () => {
+      const addressMock = {
+        city: undefined,
+        country: undefined,
+        postcode: undefined,
+        street: undefined
+      }
+      const res = getFormattedAddress(addressMock, jest.fn(() => ' ,  , '))
+
+      expect(res).toBe('')
+    })
+  })
+
+  describe('with manual address format', () => {
+    it('should return full formatted address', () => {
+      const addressMock = {
+        formattedAddress: '38 Taylor Street 16862 Cambridge Russian Federation'
+      }
+
+      const res = getFormattedAddress(addressMock, jest.fn(() => ''))
+
+      expect(res).toBe('38 Taylor Street 16862 Cambridge Russian Federation')
+    })
+  })
+})
+
+describe('updateIndexFullNameAndDisplayName', () => {
+  it('should returns a contact with new attributes', () => {
+    const contact = {
+      name: {
+        givenName: 'John',
+        familyName: 'Doe',
+        additionalName: 'J.'
+      },
+      email: [
+        {
+          address: 'john.doe@posteo.net',
+          type: 'personal',
+          primary: false
+        },
+        {
+          address: 'john.doe@cozycloud.cc',
+          primary: true
+        }
+      ],
+      cozy: [
+        {
+          type: 'MyCozy',
+          primary: true,
+          url: 'https://johndoe.mycozy.cloud'
+        }
+      ]
+    }
+
+    const expected = {
+      ...contact,
+      displayName: 'John J. Doe',
+      fullname: 'John J. Doe',
+      indexes: {
+        byFamilyNameGivenNameEmailCozyUrl:
+          'doejohnjohn.doe@cozycloud.ccjohndoe.mycozy.cloud'
+      }
+    }
+    expect(updateIndexFullNameAndDisplayName(contact)).toEqual(expected)
   })
 })
