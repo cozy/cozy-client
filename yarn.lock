@@ -6259,12 +6259,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commitlint-config-cozy@npm:0.7.9":
-  version: 0.7.9
-  resolution: "commitlint-config-cozy@npm:0.7.9"
+"commitlint-config-cozy@npm:0.15.0":
+  version: 0.15.0
+  resolution: "commitlint-config-cozy@npm:0.15.0"
   dependencies:
     "@commitlint/cli": "npm:16.2.4"
-  checksum: 10c0/f0a41806f5ba33b1ba2a81a6a0f70f1ecf8e9cdffaeaa094fca4d2ea66135b117e2f63d3077b93c3f3d0e3f75e2ec63b2319d6145b1cbc6163498ce35b7d1eab
+  checksum: 10c0/569602ed9ac56524e4f28edd6bc88b324086d41bb325542f9dd43a04eed06a2c2d16439c164e83857723d41db5e4c29495696c8e5da95472b43742f811e32f11
   languageName: node
   linkType: hard
 
@@ -16275,7 +16275,7 @@ __metadata:
   dependencies:
     babel-preset-cozy-app: "npm:1.12.0"
     babel-preset-react: "npm:6.24.1"
-    commitlint-config-cozy: "npm:0.7.9"
+    commitlint-config-cozy: "npm:0.15.0"
     eslint: "npm:5.16.0"
     eslint-config-cozy-app: "npm:1.6.0"
     eslint-config-react-app: "npm:5.2.1"
