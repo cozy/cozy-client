@@ -384,7 +384,13 @@ class PouchLink extends CozyLink {
   async onSyncError(error) {
     if (isExpiredTokenError(error)) {
       try {
+        const oldToken = this.client.stackClient.token
         await this.client.stackClient.refreshToken()
+        const newToken = this.client.stackClient.token
+
+        if (newToken === oldToken || !newToken) {
+          throw new Error('Refresh token failed')
+        }
         this.startReplication()
         return
       } catch (err) {
