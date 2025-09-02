@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [60.5.1](https://github.com/cozy/cozy-client/compare/v60.5.0...v60.5.1) (2025-09-02)
+
+
+### Bug Fixes
+
+* Prevent infinite loop on replication refresh token ([a4bb7e0](https://github.com/cozy/cozy-client/commit/a4bb7e09eb424d0d0de19e53fbb9719d4da661f2))
+
+
+
+
+
 # [60.5.0](https://github.com/cozy/cozy-client/compare/v60.4.0...v60.5.0) (2025-08-28)
 
 
