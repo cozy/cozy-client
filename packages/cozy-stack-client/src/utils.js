@@ -113,3 +113,13 @@ export const encodePath = path => {
     )
     .join('/')
 }
+
+/**
+ * Returns a FileCollection API prefix for manipulating a shared
+ * drive's files.
+ *
+ * @param {string} driveId - The shared drive ID
+ *
+ * @returns {string} The API prefix to manipulate the drive's files
+ */
+export const sharedDriveApiPrefix = driveId => uri`/sharings/drives/${driveId}`

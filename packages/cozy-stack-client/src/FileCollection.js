@@ -7,7 +7,13 @@ import { MangoQueryOptions } from './mangoIndex'
 
 import DocumentCollection from './DocumentCollection'
 import { normalizeDoctypeJsonApi } from './normalize'
-import { uri, slugify, formatBytes, forceDownload } from './utils'
+import {
+  uri,
+  slugify,
+  formatBytes,
+  forceDownload,
+  sharedDriveApiPrefix
+} from './utils'
 import { FetchError } from './errors'
 import { dontThrowNotFoundError } from './Collection'
 import { getIllegalCharacters } from './getIllegalCharacter'
@@ -200,16 +206,6 @@ const dirName = path => {
 }
 
 /**
- * Returns a FileCollection API prefix for manipulating a shared
- * drive's files.
- *
- * @param {string} driveId - The shared drive ID
- *
- * @returns {string} The API prefix to manipulate the drive's files
- */
-const sharedDriveApiPrefix = driveId => uri`/sharings/drives/${driveId}`
-
-/**
  * Implements `DocumentCollection` API along with specific methods for
  * `io.cozy.files`.
  *
@@ -220,7 +216,7 @@ const sharedDriveApiPrefix = driveId => uri`/sharings/drives/${driveId}`
 class FileCollection extends DocumentCollection {
   /**
    * @param {string} doctype - Doctype of the collection (should be `io.cozy.files`)
-   * @param {CozyStackClient} stackClient -The client used to make requests to the serve
+   * @param {CozyStackClient} stackClient -The client used to make requests to the server
    * @param {FileCollectionOptions} [options] - The collection options
    */
   constructor(doctype, stackClient, options = {}) {
