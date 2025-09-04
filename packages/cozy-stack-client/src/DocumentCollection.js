@@ -44,7 +44,7 @@ const prepareForDeletion = x =>
  * Abstracts a collection of documents of the same doctype, providing CRUD methods and other helpers.
  */
 class DocumentCollection {
-  constructor(doctype, stackClient) {
+  constructor(doctype, stackClient, _options) {
     this.doctype = doctype
     this.stackClient = stackClient
     this.indexes = {}
