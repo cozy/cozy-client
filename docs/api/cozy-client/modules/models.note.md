@@ -19,6 +19,7 @@ Fetch and build an URL to open a note.
 | `client` | `any` | CozyClient instance |
 | `file` | `any` | io.cozy.file object |
 | `options` | `Object` | Options |
+| `options.driveId` | `string` | - |
 | `options.pathname` | `string` | - |
 
 *Returns*
@@ -29,7 +30,7 @@ url
 
 *Defined in*
 
-[packages/cozy-client/src/models/note.js:33](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/note.js#L33)
+[packages/cozy-client/src/models/note.js:34](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/note.js#L34)
 
 ***
 

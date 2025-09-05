@@ -1,6 +1,6 @@
 import DocumentCollection from './DocumentCollection'
 import { normalizeDoctypeJsonApi } from './normalize'
-import { uri } from './utils'
+import { uri, sharedDriveApiPrefix } from './utils'
 import { getDefaultSchema as modelDefaultSchema } from './NotesSchema'
 export const NOTES_DOCTYPE = 'io.cozy.notes'
 export const NOTES_URL_DOCTYPE = 'io.cozy.notes.url'
@@ -9,11 +9,27 @@ const normalizeNote = normalizeDoctypeJsonApi(NOTES_DOCTYPE)
 const normalizeNoteUrl = normalizeDoctypeJsonApi(NOTES_URL_DOCTYPE)
 
 /**
+ * @typedef {module:"./CozyStackClient.js"} CozyStackClient
+ */
+
+/**
+ * Options that can be passed to NotesCollection's constructor
+ *
+ * @typedef {object} NotesCollectionOptions
+ * @property {string} [driveId] - ID of the shared drive targeted by the collection
+ */
+
+/**
  * Implements `DocumentCollection` API to interact with the /notes endpoint of the stack
  */
 class NotesCollection extends DocumentCollection {
-  constructor(stackClient) {
-    super(NOTES_DOCTYPE, stackClient)
+  /**
+   * @param {CozyStackClient} stackClient -The client used to make requests to the server
+   * @param {NotesCollectionOptions} [options] - The collection options
+   */
+  constructor(stackClient, options = {}) {
+    super(NOTES_DOCTYPE, stackClient, options)
+    this.prefix = options.driveId ? sharedDriveApiPrefix(options.driveId) : ''
   }
 
   /**
@@ -55,7 +71,10 @@ class NotesCollection extends DocumentCollection {
    */
   async destroy({ _id }) {
     // io.cozy.notes are in fact io.cozy.files, but with a special endpoint. However there is no dedicated route to delete a note, so we use the /files endpoint.
-    const resp = await this.stackClient.fetchJSON('DELETE', uri`/files/${_id}`)
+    const resp = await this.stackClient.fetchJSON(
+      'DELETE',
+      this.prefix + uri`/files/${_id}`
+    )
     return {
       data: { ...normalizeNote(resp.data), _deleted: true }
     }
@@ -69,16 +88,20 @@ class NotesCollection extends DocumentCollection {
    * @returns {{data, links, meta}} The JSON API conformant response.
    */
   async create({ dir_id }) {
-    const resp = await this.stackClient.fetchJSON('POST', '/notes', {
-      data: {
-        type: 'io.cozy.notes.documents',
-        attributes: {
-          title: '',
-          schema: modelDefaultSchema(),
-          dir_id
+    const resp = await this.stackClient.fetchJSON(
+      'POST',
+      this.prefix + '/notes',
+      {
+        data: {
+          type: 'io.cozy.notes.documents',
+          attributes: {
+            title: '',
+            schema: modelDefaultSchema(),
+            dir_id
+          }
         }
       }
-    })
+    )
     return {
       ...resp,
       data: normalizeNote(resp.data)
@@ -98,7 +121,7 @@ class NotesCollection extends DocumentCollection {
   async fetchURL({ _id }) {
     const resp = await this.stackClient.fetchJSON(
       'GET',
-      uri`/notes/${_id}/open`
+      this.prefix + uri`/notes/${_id}/open`
     )
     return {
       data: normalizeNoteUrl(resp.data)
