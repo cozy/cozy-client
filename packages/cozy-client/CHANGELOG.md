@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [60.6.0](https://github.com/cozy/cozy-client/compare/v60.5.1...v60.6.0) (2025-09-05)
+
+
+### Features
+
+* Support shared drive for note creation and fetch ([2a6a003](https://github.com/cozy/cozy-client/commit/2a6a003e84504a8e3717cd21993afe462e33988d))
+
+
+
+
+
 # [60.5.0](https://github.com/cozy/cozy-client/compare/v60.4.0...v60.5.0) (2025-08-28)
 
 

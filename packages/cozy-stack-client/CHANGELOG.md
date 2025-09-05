@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [60.6.0](https://github.com/cozy/cozy-client/compare/v60.5.1...v60.6.0) (2025-09-05)
+
+
+### Bug Fixes
+
+* Add options to DocumentCollection constructor ([9f02fc5](https://github.com/cozy/cozy-client/commit/9f02fc5bb2e7e66f1a33b8ab393f1605d59a7805))
+
+
+### Features
+
+* Support shared drive for note creation and fetch ([2a6a003](https://github.com/cozy/cozy-client/commit/2a6a003e84504a8e3717cd21993afe462e33988d))
+
+
+
+
+
 # [60.1.0](https://github.com/cozy/cozy-client/compare/v60.0.0...v60.1.0) (2025-07-23)
 
 
