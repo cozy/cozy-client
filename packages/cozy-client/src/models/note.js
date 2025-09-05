@@ -28,6 +28,7 @@ export const generateUrlForNote = (notesAppUrl, file) => {
  * @param {object} file io.cozy.file object
  * @param {object} options Options
  * @param {string} [options.pathname] Pathname to use in the URL
+ * @param {string} [options.driveId] Shared drive ID used to fetched the URL
  * @returns {Promise<string>} url
  */
 export const fetchURL = async (client, file, options = {}) => {
@@ -35,7 +36,7 @@ export const fetchURL = async (client, file, options = {}) => {
     data: { note_id, subdomain, protocol, instance, sharecode, public_name }
   } = await client
     .getStackClient()
-    .collection('io.cozy.notes')
+    .collection('io.cozy.notes', { driveId: options.driveId })
     .fetchURL({ _id: file.id })
   if (sharecode) {
     const searchParams = [['id', note_id]]
