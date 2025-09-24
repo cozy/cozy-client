@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [60.9.0](https://github.com/cozy/cozy-client/compare/v60.8.0...v60.9.0) (2025-09-24)
+
+
+### Features
+
+* Update upload file to be abled in shared drive :sparkles: ([d2ae5eb](https://github.com/cozy/cozy-client/commit/d2ae5eb51e63f8e10a56b1805da51d10b1c04acc))
+
+
+
+
+
 # [60.8.0](https://github.com/cozy/cozy-client/compare/v60.7.0...v60.8.0) (2025-09-24)
 
 
