@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [60.8.0](https://github.com/cozy/cozy-client/compare/v60.7.0...v60.8.0) (2025-09-24)
+
+
+### Features
+
+* Update get full path to use in shared drive :sparkles: ([9d3c7c9](https://github.com/cozy/cozy-client/commit/9d3c7c93bd538f598f1d0f063b02720cf33a7f1c))
+
+
+
+
+
 # [60.7.0](https://github.com/cozy/cozy-client/compare/v60.6.0...v60.7.0) (2025-09-09)
 
 
