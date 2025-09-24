@@ -338,14 +338,19 @@ export const hasMetadataAttribute = ({ file, attribute }) =>
  * @param {string} name  - The file's name
  * @returns {Promise<string>} The full path of the file in the cozy
  **/
-export const getFullpath = async (client, dirId, name) => {
+export const getFullpath = async (client, dirId, name, driveId = undefined) => {
   if (!dirId) {
     throw new Error('You must provide a dirId')
   }
 
-  const { data: parentDir } = await client.query(
-    Q(DOCTYPE_FILES).getById(dirId)
-  )
+  let query = Q(DOCTYPE_FILES).getById(dirId)
+
+  if (driveId) {
+    query = query.sharingById(driveId)
+  }
+
+  const { data: parentDir } = await client.query(query)
+
   const parentDirectoryPath = trimEnd(parentDir.path, '/')
   return `${parentDirectoryPath}/${name}`
 }
