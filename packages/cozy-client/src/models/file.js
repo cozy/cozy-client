@@ -574,7 +574,7 @@ export const uploadFileWithConflictStrategy = async (client, file, options) => {
 
   const filesCollection = client.collection(DOCTYPE_FILES, { driveId })
   try {
-    const path = await getFullpath(client, dirId, name)
+    const path = await getFullpath(client, dirId, name, driveId)
     const existingFile = await filesCollection.statByPath(path)
     const { id: fileId } = existingFile.data
     if (conflictStrategy === 'erase') {
