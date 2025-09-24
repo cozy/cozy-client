@@ -46,7 +46,7 @@ Copies a file to a specified destination.
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:666](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L666)
+[packages/cozy-client/src/models/file.js:671](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L671)
 
 ***
 
@@ -78,7 +78,7 @@ that will process the download
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:721](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L721)
+[packages/cozy-client/src/models/file.js:726](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L726)
 
 ***
 
@@ -126,7 +126,7 @@ file object with path attribute
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:647](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L647)
+[packages/cozy-client/src/models/file.js:652](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L652)
 
 ***
 
@@ -175,7 +175,7 @@ Generate a file name for a revision
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:533](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L533)
+[packages/cozy-client/src/models/file.js:538](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L538)
 
 ***
 
@@ -200,7 +200,7 @@ A filename with the right suffix
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:503](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L503)
+[packages/cozy-client/src/models/file.js:508](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L508)
 
 ***
 
@@ -228,17 +228,18 @@ Returns folder encryption reference
 
 ### getFullpath
 
-▸ **getFullpath**(`client`, `dirId`, `name`): `Promise`<`string`>
+▸ **getFullpath**(`client`, `dirId`, `name`, `driveId?`): `Promise`<`string`>
 
 async getFullpath - Gets a file's path
 
 *Parameters*
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `client` | [`CozyClient`](../classes/CozyClient.md) | The CozyClient instance |
-| `dirId` | `string` | The id of the parent directory |
-| `name` | `string` | The file's name |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `client` | [`CozyClient`](../classes/CozyClient.md) | `undefined` | The CozyClient instance |
+| `dirId` | `string` | `undefined` | The id of the parent directory |
+| `name` | `string` | `undefined` | The file's name |
+| `driveId` | `any` | `undefined` | - |
 
 *Returns*
 
@@ -364,7 +365,7 @@ The mime-type of the target file, or an empty string is the target is not a file
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:625](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L625)
+[packages/cozy-client/src/models/file.js:630](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L630)
 
 ***
 
@@ -408,7 +409,7 @@ Whether the file's metadata attribute exists
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:617](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L617)
+[packages/cozy-client/src/models/file.js:622](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L622)
 
 ***
 
@@ -556,7 +557,7 @@ Whether the folder is client-side encrypted
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:636](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L636)
+[packages/cozy-client/src/models/file.js:641](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L641)
 
 ***
 
@@ -621,7 +622,7 @@ Whether the file is supported by Only Office
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:609](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L609)
+[packages/cozy-client/src/models/file.js:614](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L614)
 
 ***
 
@@ -771,7 +772,7 @@ Manage 4 cases :
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:371](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L371)
+[packages/cozy-client/src/models/file.js:376](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L376)
 
 ***
 
@@ -826,7 +827,7 @@ The overrided file
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:463](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L463)
+[packages/cozy-client/src/models/file.js:468](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L468)
 
 ***
 
@@ -938,4 +939,4 @@ If there is a conflict, then we apply the conflict strategy : `erase` or `rename
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:567](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L567)
+[packages/cozy-client/src/models/file.js:572](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L572)

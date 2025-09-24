@@ -55,7 +55,7 @@ export function hasMetadataAttribute({ file, attribute }: {
     file: import("../types").IOCozyFile;
     attribute: string;
 }): boolean;
-export function getFullpath(client: CozyClient, dirId: string, name: string): Promise<string>;
+export function getFullpath(client: CozyClient, dirId: string, name: string, driveId?: any): Promise<string>;
 export function move(client: CozyClient, file: import('../types').IOCozyFile | import('../types').NextcloudFile, destination: import('../types').IOCozyFolder | import('../types').NextcloudFile, { force, driveId }?: {
     force: boolean;
     driveId: string;
