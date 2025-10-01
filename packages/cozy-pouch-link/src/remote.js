@@ -51,18 +51,3 @@ export const fetchRemoteInstance = async (url, params = {}) => {
     )}`
   )
 }
-
-/**
- * Fetch last sequence from remote instance
- *
- * @param {string} baseUrl - The base URL of the remote instance
- * @returns {Promise<string>} The last sequence
- */
-export const fetchRemoteLastSequence = async baseUrl => {
-  const remoteUrl = new URL(`${baseUrl}/_changes`)
-  const res = await fetchRemoteInstance(remoteUrl, {
-    limit: 1,
-    ...(baseUrl.includes('sharings/drives') ? {} : { descending: true }) // shared drives' _change route does not support descending. It look like it has no impact on the expected result
-  })
-  return res.last_seq
-}

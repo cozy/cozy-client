@@ -5,11 +5,7 @@ import startsWith from 'lodash/startsWith'
 import zip from 'lodash/zip'
 
 import logger from './logger'
-import {
-  fetchRemoteLastSequence,
-  isDatabaseNotFoundError,
-  isDatabaseUnradableError
-} from './remote'
+import { isDatabaseNotFoundError, isDatabaseUnradableError } from './remote'
 import { startReplication } from './startReplication'
 import { allSettled, getDoctypeFromDatabaseName } from './utils'
 
@@ -48,15 +44,8 @@ export const replicateOnce = async pouchManager => {
       const replicationFilter = doc => {
         return !startsWith(doc._id, '_design')
       }
-      let seq = ''
-      if (initialReplication) {
-        // Before the first replication, get the last remote sequence,
-        // which will be used as a checkpoint for the next replication
-        const lastSeq = await fetchRemoteLastSequence(getReplicationURL())
-        await pouchManager.storage.persistDoctypeLastSequence(doctype, lastSeq)
-      } else {
-        seq = await pouchManager.storage.getDoctypeLastSequence(doctype)
-      }
+      const seq =
+        (await pouchManager.storage.getDoctypeLastSequence(doctype)) || ''
 
       replicationOptions.initialReplication = initialReplication
       replicationOptions.filter = replicationFilter
@@ -73,11 +62,6 @@ export const replicateOnce = async pouchManager => {
         pouchManager.storage,
         pouchManager.client
       )
-      if (seq) {
-        // We only need the sequence for the second replication, as PouchDB
-        // will use a local checkpoint for the next runs.
-        await pouchManager.storage.destroyDoctypeLastSequence(doctype)
-      }
 
       await pouchManager.updateSyncInfo(doctype)
       pouchManager.checkToWarmupDoctype(doctype, replicationOptions)
