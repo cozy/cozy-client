@@ -2,6 +2,7 @@ import { default as helpers } from './helpers'
 import startsWith from 'lodash/startsWith'
 import logger from './logger'
 import { fetchRemoteInstance } from './remote'
+import CozyClient from 'cozy-client'
 
 const { isDesignDocument, isDeletedDocument } = helpers
 
@@ -34,10 +35,12 @@ const TIME_UNITS = [['ms', 1000], ['s', 60], ['m', 60], ['h', 24]]
  * @param {object} replicationOptions Any option supported by the Pouch replication API (https://pouchdb.com/api.html#replication)
  * @param {string} replicationOptions.strategy The direction of the replication. Can be "fromRemote",  "toRemote" or "sync"
  * @param {boolean} replicationOptions.initialReplication Whether or not this is an initial replication
+ * @param {string} [replicationOptions.driveId] - ID of the shared drive to replicate (enables shared drive mode)
  * @param {string} replicationOptions.doctype The doctype to replicate
  * @param {import('cozy-client/types/types').Query[]} replicationOptions.warmupQueries The queries to warmup
  * @param {Function} getReplicationURL A function that should return the remote replication URL
  * @param {import('./localStorage').PouchLocalStorage} storage Methods to access local storage
+ * @param {CozyClient} client - Cozy client instance (required for shared drive replication)
  *
  * @returns {import('./types').CancelablePromise} A cancelable promise that resolves at the end of the replication
  */
@@ -45,7 +48,8 @@ export const startReplication = (
   pouch,
   replicationOptions,
   getReplicationURL,
-  storage
+  storage,
+  client
 ) => {
   let replication
   let docs = {}
@@ -69,7 +73,23 @@ export const startReplication = (
         }
       }
     }
-
+    if (replicationOptions.driveId) {
+      ;(async () => {
+        try {
+          const docs = await sharedDriveReplicateAllDocs({
+            pouch,
+            storage,
+            doctype,
+            client,
+            driveId: replicationOptions.driveId
+          })
+          resolve(docs)
+        } catch (error) {
+          reject(error)
+        }
+      })()
+      return
+    }
     if (initialReplication && strategy !== 'toRemote') {
       ;(async () => {
         // For the first remote->local replication, we manually replicate all docs
@@ -205,6 +225,58 @@ export const replicateAllDocs = async ({ db, baseUrl, doctype, storage }) => {
         hasMore = false
       }
     }
+  }
+  return docs
+}
+
+/**
+ * Replicates all documents from a shared drive to a local PouchDB instance.
+ * This function fetches documents in batches from a Cozy Cloud shared drive
+ * and replicates them to the local database, maintaining replication state
+ * to allow for incremental updates.
+ *
+ * @param {Object} params - The parameters object
+ * @param {string} params.driveId - The unique identifier of the shared drive to replicate from
+ * @param {Object} params.pouch - The local PouchDB instance to replicate documents to
+ * @param {Object} params.storage - Storage interface for persisting replication state
+ * @param {string} params.doctype - The document type being replicated (e.g., 'io.cozy.files')
+ * @param {CozyClient} params.client - CozyClient instance for fetching remote documents
+ * @returns {Promise<Array>} A promise that resolves to an array of all replicated documents
+ * @throws {Error} Throws an error if driveId is not provided
+ */
+export const sharedDriveReplicateAllDocs = async ({
+  driveId,
+  pouch,
+  storage,
+  doctype,
+  client
+}) => {
+  if (!driveId) {
+    throw new Error('sharedDriveReplicateAllDocs: driveId is required')
+  }
+  let docs = []
+  let hasMore = true
+
+  let startDocId = await storage.getLastReplicatedDocID(doctype)
+  while (hasMore) {
+    const { newLastSeq, results, pending } = await client
+      .collection('io.cozy.files', { driveId })
+      .fetchChanges(
+        { include_docs: true, ...(startDocId ? { since: startDocId } : {}) },
+        {
+          includeFilePath: false,
+          skipDeleted: false,
+          skipTrashed: false,
+          limit: BATCH_SIZE
+        }
+      )
+
+    const filteredDocs = results.map(doc => doc.doc)
+    startDocId = newLastSeq
+    await helpers.insertBulkDocs(pouch, filteredDocs)
+    await storage.persistLastReplicatedDocID(doctype, startDocId)
+    docs = docs.concat(filteredDocs)
+    hasMore = !!pending
   }
   return docs
 }
