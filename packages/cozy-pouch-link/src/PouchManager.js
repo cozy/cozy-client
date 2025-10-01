@@ -74,11 +74,18 @@ class PouchManager {
       })
     )
 
-    Object.keys(this.pouches).forEach(dbName => {
+    const dbNames = Object.keys(this.pouches)
+    dbNames.forEach(dbName => {
       // Set query engine for all databases
       const doctype = getDoctypeFromDatabaseName(dbName)
       this.setQueryEngine(dbName, doctype)
     })
+
+    // Persist db names for old browsers not supporting indexeddb.databases()
+    // This is useful for cleanup.
+    // Note PouchDB adds itself the _pouch_ prefix
+    const pouchDbNames = dbNames.map(dbName => `_pouch_${dbName}`)
+    await this.storage.persistDatabasesNames(pouchDbNames)
 
     /** @type {Record<string, import('./types').SyncInfo>} - Stores synchronization info per doctype */
     this.syncedDoctypes = await this.storage.getPersistedSyncedDoctypes()

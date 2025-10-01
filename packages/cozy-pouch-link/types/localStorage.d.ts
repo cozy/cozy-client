@@ -4,6 +4,7 @@ export namespace LOCALSTORAGE_STORAGE_KEYS {
     const LASTSEQUENCES: string;
     const LASTREPLICATEDDOCID: string;
     const ADAPTERNAME: string;
+    const DB_NAMES: string;
 }
 export class PouchLocalStorage {
     constructor(storageEngine: any);
@@ -14,6 +15,13 @@ export class PouchLocalStorage {
      * @returns {Promise<void>}
      */
     destroy(): Promise<void>;
+    /**
+     * Persist the databases names
+     *
+     * @param {Array<string>} dbNames - The db names
+     * @returns {Promise<void>}
+     */
+    persistDatabasesNames(dbNames: Array<string>): Promise<void>;
     /**
      * Persist the last replicated doc id for a doctype
      *
