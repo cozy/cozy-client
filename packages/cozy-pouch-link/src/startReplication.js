@@ -271,7 +271,7 @@ export const sharedDriveReplicateAllDocs = async ({
         }
       )
 
-    const filteredDocs = results.map(doc => doc.doc)
+    const filteredDocs = results.map(doc => ({ ...doc.doc, driveId }))
     startDocId = newLastSeq
     await helpers.insertBulkDocs(pouch, filteredDocs)
     await storage.persistLastReplicatedDocID(doctype, startDocId)
