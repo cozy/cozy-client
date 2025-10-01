@@ -241,6 +241,8 @@ declare class PouchLink extends CozyLink {
     addReferencesTo(mutation: any): Promise<void>;
     dbMethod(method: any, mutation: any): Promise<any>;
     syncImmediately(): Promise<void>;
+    addDoctype(doctype: string, options: any): void;
+    removeDoctype(doctype: string): void;
 }
 import { CozyLink } from "cozy-client";
 import { PouchLocalStorage } from "./localStorage";

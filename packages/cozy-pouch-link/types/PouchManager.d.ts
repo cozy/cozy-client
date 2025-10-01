@@ -94,6 +94,8 @@ declare class PouchManager {
     checkToWarmupDoctype(doctype: any, replicationOptions: any): void;
     areQueriesWarmedUp(doctype: any, queries: any): Promise<any>;
     clearWarmedUpQueries(): Promise<void>;
+    addDoctype(doctype: string, options: any): void;
+    removeDoctype(doctype: string): void;
 }
 import { PouchLocalStorage } from "./localStorage";
 import Loop from "./loop";
