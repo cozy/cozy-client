@@ -3,7 +3,8 @@ export const LOCALSTORAGE_STORAGE_KEYS = {
   WARMUPEDQUERIES: 'cozy-client-pouch-link-warmupedqueries',
   LASTSEQUENCES: 'cozy-client-pouch-link-lastreplicationsequence',
   LASTREPLICATEDDOCID: 'cozy-client-pouch-link-lastreplicateddocid',
-  ADAPTERNAME: 'cozy-client-pouch-link-adaptername'
+  ADAPTERNAME: 'cozy-client-pouch-link-adaptername',
+  DB_NAMES: 'cozy-client-pouch-link-db-names'
 }
 
 export class PouchLocalStorage {
@@ -19,6 +20,19 @@ export class PouchLocalStorage {
    */
   async destroy() {
     this.storageEngine.destroy()
+  }
+
+  /**
+   * Persist the databases names
+   *
+   * @param {Array<string>} dbNames - The db names
+   * @returns {Promise<void>}
+   */
+  async persistDatabasesNames(dbNames) {
+    await this.storageEngine.setItem(
+      LOCALSTORAGE_STORAGE_KEYS.DB_NAMES,
+      JSON.stringify(dbNames)
+    )
   }
 
   /**
