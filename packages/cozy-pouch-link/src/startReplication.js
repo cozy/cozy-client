@@ -123,6 +123,15 @@ export const startReplication = (
       replication = pouch.sync(url, options)
     }
 
+    replication.on('complete', dbInfo => {
+      if (dbInfo?.last_seq) {
+        storage
+          .persistDoctypeLastSequence(doctype, dbInfo.last_seq)
+          .catch(err =>
+            logger.error(`${doctype} startReplication error: ${err.message}`)
+          )
+      }
+    })
     replication.on('change', infos => {
       //! Since we introduced the concept of strategy we can use
       // PouchDB.replicate or PouchDB.sync. But both don't share the
