@@ -1,4 +1,4 @@
-export function getReplicationURL(uri: any, token: any, doctype: any): string;
+export function getReplicationURL(uri: any, token: any, doctype: any, replicationOptions: any): string;
 export default PouchLink;
 export type CozyPouchDocument = any;
 export type ReplicationStatus = "idle" | "replicating";
@@ -96,7 +96,9 @@ declare class PouchLink extends CozyLink {
     private startReplicationDebounced;
     /** @type {import('cozy-client/src/performances/types').PerformanceAPI} */
     performanceApi: any;
-    getReplicationURL(doctype: any): string;
+    getReplicationURL(doctype: string, replicationOptions?: {
+        driveId: string;
+    }): string;
     registerClient(client: any): Promise<void>;
     client: any;
     /**

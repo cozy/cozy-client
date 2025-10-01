@@ -45,10 +45,12 @@ const addBasicAuth = (url, basicAuth) => {
   return url.replace('//', `//${basicAuth}`)
 }
 
-export const getReplicationURL = (uri, token, doctype) => {
+export const getReplicationURL = (uri, token, doctype, replicationOptions) => {
   const basicAuth = token.toBasicAuth()
   const authenticatedURL = addBasicAuth(uri, basicAuth)
-  return `${authenticatedURL}/data/${doctype}`
+  if (replicationOptions?.driveId) {
+    return `${authenticatedURL}/sharings/drives/${replicationOptions?.driveId}`
+  } else return `${authenticatedURL}/data/${doctype}`
 }
 
 const doNothing = (operation, result = null) => {}
@@ -140,7 +142,15 @@ class PouchLink extends CozyLink {
     return storage.getAdapterName()
   }
 
-  getReplicationURL(doctype) {
+  /**
+   * Get the authenticated replication URL for a specific doctype
+   *
+   * @param {string} doctype - The document type to replicate (e.g., 'io.cozy.files')
+   * @param {object} [replicationOptions={}] - Replication options
+   * @param {string} [replicationOptions.driveId] - The ID of the shared drive to replicate (for shared drives)
+   * @returns {string} The authenticated replication URL
+   */
+  getReplicationURL(doctype, replicationOptions) {
     const url = this.client && this.client.stackClient.uri
     const token = this.client && this.client.stackClient.token
 
@@ -156,7 +166,7 @@ class PouchLink extends CozyLink {
       )
     }
 
-    return getReplicationURL(url, token, doctype)
+    return getReplicationURL(url, token, doctype, replicationOptions)
   }
 
   async registerClient(client) {

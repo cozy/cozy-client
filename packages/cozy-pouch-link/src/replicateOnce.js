@@ -33,9 +33,15 @@ export const replicateOnce = async pouchManager => {
     pouchManager.pouches,
     async (pouch, dbName) => {
       const doctype = getDoctypeFromDatabaseName(dbName)
+      const replicationOptions = get(
+        pouchManager.doctypesReplicationOptions,
+        doctype,
+        {}
+      )
       logger.info('PouchManager: Starting replication for ' + doctype)
 
-      const getReplicationURL = () => pouchManager.getReplicationURL(doctype)
+      const getReplicationURL = () =>
+        pouchManager.getReplicationURL(doctype, replicationOptions)
 
       const initialReplication =
         pouchManager.getSyncStatus(doctype) !== 'synced'
@@ -52,11 +58,6 @@ export const replicateOnce = async pouchManager => {
         seq = await pouchManager.storage.getDoctypeLastSequence(doctype)
       }
 
-      const replicationOptions = get(
-        pouchManager.doctypesReplicationOptions,
-        doctype,
-        {}
-      )
       replicationOptions.initialReplication = initialReplication
       replicationOptions.filter = replicationFilter
       replicationOptions.since = seq
@@ -69,7 +70,8 @@ export const replicateOnce = async pouchManager => {
         pouch,
         replicationOptions,
         getReplicationURL,
-        pouchManager.storage
+        pouchManager.storage,
+        pouchManager.client
       )
       if (seq) {
         // We only need the sequence for the second replication, as PouchDB
