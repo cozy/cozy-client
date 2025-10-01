@@ -799,6 +799,32 @@ class PouchLink extends CozyLink {
     }
     this.pouches.syncImmediately()
   }
+
+  /**
+   * Adds a new doctype to the list of managed doctypes, sets its replication options,
+   * adds it to the pouches, and starts replication.
+   *
+   * @param {string} doctype - The name of the doctype to add.
+   * @param {Object} options - The replication options for the doctype.
+   */
+  addDoctype(doctype, options) {
+    this.doctypes.push(doctype)
+    this.doctypesReplicationOptions[doctype] = options
+    this.pouches.addDoctype(doctype, options)
+    this.startReplication()
+  }
+
+  /**
+   * Removes a doctype from the list of managed doctypes, deletes its replication options,
+   * and removes it from the pouches.
+   *
+   * @param {string} doctype - The name of the doctype to remove.
+   */
+  removeDoctype(doctype) {
+    this.doctypes = this.doctypes.filter(d => d !== doctype)
+    delete this.doctypesReplicationOptions[doctype]
+    this.pouches.removeDoctype(doctype)
+  }
 }
 
 export default PouchLink
