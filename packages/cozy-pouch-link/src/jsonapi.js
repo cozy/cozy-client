@@ -132,7 +132,6 @@ export const computeFileFullpath = async (client, file) => {
     // No need to compute directory path: it is always here
     return file
   }
-
   if (file.path) {
     // If a file path exists, check it is complete, i.e. it includes the name.
     // The stack typically does not include the name in the path, which is useful to search on it
@@ -146,17 +145,20 @@ export const computeFileFullpath = async (client, file) => {
     return file
   }
   const filePath = getFilePath(file._id)
-  if (filePath) {
-    // File path exists in memory
-    file.path = filePath
+  const parentPath = getFilePath(file.dir_id)
+  if (parentPath && filePath) {
+    // Check if file path is up to date
+    const builtPath = buildPathWithName(parentPath, file.name)
+    if (filePath !== builtPath) {
+      setFilePath(file._id, builtPath)
+    }
+    file.path = builtPath
     return file
   }
-
-  const parentPath = getFilePath(file.dir_id)
   if (parentPath) {
-    // Parent path exists in memory
+    // Parent path exists in memory: use it to compute file path and save in memory
     const path = buildPathWithName(parentPath, file.name)
-    setFilePath(file._id, path) // Add the path in memory
+    setFilePath(file._id, path)
     file.path = path
     return file
   }
