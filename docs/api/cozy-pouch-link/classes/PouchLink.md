@@ -746,7 +746,7 @@ and removes it from the pouches.
 
 *Defined in*
 
-[CozyPouchLink.js:823](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L823)
+[CozyPouchLink.js:824](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L824)
 
 ***
 

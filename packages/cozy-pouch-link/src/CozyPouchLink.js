@@ -810,7 +810,8 @@ class PouchLink extends CozyLink {
   addDoctype(doctype, options) {
     this.doctypes.push(doctype)
     this.doctypesReplicationOptions[doctype] = options
-    this.pouches.addDoctype(doctype, options)
+    this.pouches.doctypes.push(doctype)
+    this.pouches.addDoctype(doctype)
     this.startReplication()
   }
 
