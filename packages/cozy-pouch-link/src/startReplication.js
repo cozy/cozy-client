@@ -89,75 +89,81 @@ export const startReplication = (
         }
       })()
       return
-    }
-    if (initialReplication && strategy !== 'toRemote') {
-      ;(async () => {
-        // For the first remote->local replication, we manually replicate all docs
-        // as it avoids to replicate all revs history, which can lead to
-        // performances issues
-        logger.info(`PouchManager: Start first replication for ${doctype}`)
-        docs = await replicateAllDocs({
-          db: pouch,
-          baseUrl: url,
-          doctype,
+    } else {
+      if (initialReplication && strategy !== 'toRemote') {
+        ;(async () => {
+          try {
+            // For the first remote->local replication, we manually replicate all docs
+            // as it avoids to replicate all revs history, which can lead to
+            // performances issues
+            logger.info(`PouchManager: Start first replication for ${doctype}`)
+            docs = await replicateAllDocs({
+              db: pouch,
+              baseUrl: url,
+              doctype,
+              storage
+            })
+            logger.info(`PouchManager: End first replication for ${doctype}`)
+            const end = new Date()
+            if (process.env.NODE_ENV !== 'production') {
+              logger.info(
+                `PouchManager: initial replication with all_docs for ${url} took ${humanTimeDelta(
+                  end.getTime() - start.getTime()
+                )}`
+              )
+            }
+            return resolve(docs)
+          } catch (error) {
+            return reject(error)
+          }
+        })()
+        return
+      }
+
+      if (strategy === 'fromRemote') {
+        replication = pouch.replicate.from(url, options)
+      } else if (strategy === 'toRemote') {
+        replication = pouch.replicate.to(url, options)
+      } else {
+        replication = pouch.sync(url, options)
+      }
+
+      replication.on('complete', dbInfo => {
+        if (dbInfo?.last_seq) {
           storage
-        })
-        logger.info(`PouchManager: End first replication for ${doctype}`)
+            .persistDoctypeLastSequence(doctype, dbInfo.last_seq)
+            .catch(err =>
+              logger.error(`${doctype} startReplication error: ${err.message}`)
+            )
+        }
+      })
+      replication.on('change', infos => {
+        //! Since we introduced the concept of strategy we can use
+        // PouchDB.replicate or PouchDB.sync. But both don't share the
+        // same API for the change's event.
+        // See https://pouchdb.com/api.html#replication
+        // and https://pouchdb.com/api.html#sync (see example response)
+        const change = infos.change ? infos.change : infos
+        if (change.docs) {
+          change.docs
+            .filter(doc => !isDesignDocument(doc) && !isDeletedDocument(doc))
+            .forEach(doc => {
+              docs[doc._id] = doc
+            })
+        }
+      })
+      replication.on('error', reject).on('complete', () => {
         const end = new Date()
         if (process.env.NODE_ENV !== 'production') {
           logger.info(
-            `PouchManager: initial replication with all_docs for ${url} took ${humanTimeDelta(
+            `PouchManager: replication for ${url} took ${humanTimeDelta(
               end.getTime() - start.getTime()
             )}`
           )
         }
-        return resolve(docs)
-      })()
-      return
+        resolve(Object.values(docs))
+      })
     }
-    if (strategy === 'fromRemote') {
-      replication = pouch.replicate.from(url, options)
-    } else if (strategy === 'toRemote') {
-      replication = pouch.replicate.to(url, options)
-    } else {
-      replication = pouch.sync(url, options)
-    }
-
-    replication.on('complete', dbInfo => {
-      if (dbInfo?.last_seq) {
-        storage
-          .persistDoctypeLastSequence(doctype, dbInfo.last_seq)
-          .catch(err =>
-            logger.error(`${doctype} startReplication error: ${err.message}`)
-          )
-      }
-    })
-    replication.on('change', infos => {
-      //! Since we introduced the concept of strategy we can use
-      // PouchDB.replicate or PouchDB.sync. But both don't share the
-      // same API for the change's event.
-      // See https://pouchdb.com/api.html#replication
-      // and https://pouchdb.com/api.html#sync (see example response)
-      const change = infos.change ? infos.change : infos
-      if (change.docs) {
-        change.docs
-          .filter(doc => !isDesignDocument(doc) && !isDeletedDocument(doc))
-          .forEach(doc => {
-            docs[doc._id] = doc
-          })
-      }
-    })
-    replication.on('error', reject).on('complete', () => {
-      const end = new Date()
-      if (process.env.NODE_ENV !== 'production') {
-        logger.info(
-          `PouchManager: replication for ${url} took ${humanTimeDelta(
-            end.getTime() - start.getTime()
-          )}`
-        )
-      }
-      resolve(Object.values(docs))
-    })
   })
 
   const cancel = () => {
