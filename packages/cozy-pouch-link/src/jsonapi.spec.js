@@ -1,6 +1,16 @@
 import CozyClient from 'cozy-client'
 
-import { fromPouchResult, normalizeDoc } from './jsonapi'
+import {
+  computeFileFullpath,
+  fromPouchResult,
+  normalizeDoc,
+  resetAllPaths
+} from './jsonapi'
+import { queryFileById } from './files'
+
+jest.mock('./files', () => ({
+  queryFileById: jest.fn()
+}))
 
 const BART_FIXTURE = {
   id: 1,
@@ -642,3 +652,71 @@ const multipleDocRes = {
     }
   ]
 }
+
+describe('computeFileFullpath', () => {
+  afterEach(() => {
+    resetAllPaths()
+  })
+  const dir = {
+    _id: '123',
+    _type: 'io.cozy.files',
+    type: 'directory',
+    dir_id: 'ROOT',
+    name: 'MYDIR',
+    path: 'ROOT/MYDIR'
+  }
+  const fileWithFullpath = {
+    _id: '456',
+    _type: 'io.cozy.files',
+    type: 'file',
+    dir_id: '123',
+    name: 'file1',
+    path: 'ROOT/MYDIR/file1'
+  }
+  const fileWithStackPath = {
+    _id: '789',
+    _type: 'io.cozy.files',
+    type: 'file',
+    dir_id: '123',
+    name: 'file2',
+    path: 'ROOT/MYDIR'
+  }
+  const filewithNoPath = {
+    _id: '000',
+    _type: 'io.cozy.files',
+    type: 'file',
+    dir_id: '123',
+    name: 'file3'
+  }
+  it('should handle directory', async () => {
+    const res = await computeFileFullpath(client, dir)
+    expect(res).toEqual(dir)
+  })
+
+  it('should handle file with complete path', async () => {
+    const res = await computeFileFullpath(client, fileWithFullpath)
+    expect(res).toEqual(fileWithFullpath)
+  })
+
+  it('should compute fullpath for file with incomplete path', async () => {
+    const res = await computeFileFullpath(client, fileWithStackPath)
+    expect(res.path).toEqual('ROOT/MYDIR/file2')
+  })
+
+  it('should compute fullpath for file with no path', async () => {
+    // eslint-disable-next-line prettier/prettier
+    queryFileById.mockResolvedValue({ data: dir })
+    const res = await computeFileFullpath(client, filewithNoPath)
+    expect(res.path).toEqual('ROOT/MYDIR/file3')
+  })
+
+  it('should handle updates on path', async () => {
+    queryFileById.mockResolvedValue({ data: dir })
+    const res1 = await computeFileFullpath(client, filewithNoPath)
+    expect(res1.path).toEqual('ROOT/MYDIR/file3')
+
+    const updFile = { ...filewithNoPath, name: 'file3.1', path: undefined }
+    const res2 = await computeFileFullpath(client, updFile)
+    expect(res2.path).toEqual('ROOT/MYDIR/file3.1')
+  })
+})
