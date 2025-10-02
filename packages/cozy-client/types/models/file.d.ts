@@ -40,6 +40,7 @@ export function isEncryptedFileOrFolder(fileOrdir: import("../types").IOCozyFile
 export function isOnlyOfficeFile(file: import("../types").IOCozyFile): boolean;
 export function shouldBeOpenedByOnlyOffice(file: import("../types").IOCozyFile): boolean;
 export function isShortcut(file: import("../types").IOCozyFile): boolean;
+export function getShortcutImgSrc(file: import("../types").IOCozyFile): string;
 export function getSharingShortcutStatus(file: import("../types").IOCozyFile): string;
 export function getSharingShortcutTargetMime(file: import("../types").IOCozyFile): string;
 export function getSharingShortcutTargetDoctype(file: import("../types").IOCozyFile): string;
