@@ -166,12 +166,12 @@ export const computeFileFullpath = async (client, file) => {
     logger.warn(`Missing dir_id for file ${file._id}`)
     return file
   }
-  const parentDir = await queryFileById(client, file.dir_id)
+  const { data: parentDir } = await queryFileById(client, file.dir_id)
 
   if (parentDir?.path) {
-    const path = buildPathWithName(parentDir?.path, file.name)
+    const path = buildPathWithName(parentDir.path, file.name)
     file.path = path
-    // Add the paths in memory
+    // Add the computed paths in memory
     setFilePath(file.dir_id, parentDir.path)
     setFilePath(file._id, path)
   }
