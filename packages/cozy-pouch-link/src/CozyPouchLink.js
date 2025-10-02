@@ -805,13 +805,21 @@ class PouchLink extends CozyLink {
    * adds it to the pouches, and starts replication.
    *
    * @param {string} doctype - The name of the doctype to add.
+   * @param {Object} replicationOptions - The replication options for the doctype.
    * @param {Object} options - The replication options for the doctype.
+   * @param {boolean} [options.shouldStartReplication=true] - Whether the replication should be started.
    */
-  addDoctype(doctype, options) {
+  addDoctype(doctype, replicationOptions, options) {
     this.doctypes.push(doctype)
-    this.doctypesReplicationOptions[doctype] = options
-    this.pouches.addDoctype(doctype, options)
-    this.startReplication()
+    if (!this.doctypesReplicationOptions) {
+      this.doctypesReplicationOptions = {}
+    }
+    this.doctypesReplicationOptions[doctype] = replicationOptions
+    this.pouches.doctypes.push(doctype)
+    this.pouches.addDoctype(doctype, replicationOptions)
+    if (options?.shouldStartReplication === true) {
+      this.startReplicationWithDebounce()
+    }
   }
 
   /**

@@ -158,7 +158,7 @@ CozyLink.constructor
 
 ### addDoctype
 
-▸ **addDoctype**(`doctype`, `options`): `void`
+▸ **addDoctype**(`doctype`, `replicationOptions`, `options`): `void`
 
 Adds a new doctype to the list of managed doctypes, sets its replication options,
 adds it to the pouches, and starts replication.
@@ -168,7 +168,9 @@ adds it to the pouches, and starts replication.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `doctype` | `string` | The name of the doctype to add. |
-| `options` | `any` | The replication options for the doctype. |
+| `replicationOptions` | `any` | The replication options for the doctype. |
+| `options` | `Object` | The replication options for the doctype. |
+| `options.shouldStartReplication` | `boolean` | - |
 
 *Returns*
 
@@ -176,7 +178,7 @@ adds it to the pouches, and starts replication.
 
 *Defined in*
 
-[CozyPouchLink.js:810](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L810)
+[CozyPouchLink.js:812](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L812)
 
 ***
 
@@ -746,7 +748,7 @@ and removes it from the pouches.
 
 *Defined in*
 
-[CozyPouchLink.js:823](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L823)
+[CozyPouchLink.js:831](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L831)
 
 ***
 
