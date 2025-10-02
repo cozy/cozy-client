@@ -485,6 +485,8 @@ import { QueryDefinition } from './queries/dsl'
  * @property {object} [target] - Information of the target of the shortcut
  * @property {string} [target.title] - The title of the application to which the shortcut redirects
  * @property {string} [target.category] - The category of the application
+ * @property {string} [icon] - Shortcut icon (base64 encoded image or svg binary if mimetype is not present)
+ * @property {string} [iconMimeType] - Shortcut icon mimetype
  * @property {string} [externalId] - An external Id, typically used for external apps
  * @property {object} [externalDataSource] - Additional information to maintain link with external data source
  * @property {string} [externalDataSource.source] - The space to which the application belongs
