@@ -880,6 +880,14 @@ export type FileMetadata = {
         category: string;
     };
     /**
+     * - Shortcut icon (base64 encoded image or svg binary if mimetype is not present)
+     */
+    icon?: string;
+    /**
+     * - Shortcut icon mimetype
+     */
+    iconMimeType?: string;
+    /**
      * - An external Id, typically used for external apps
      */
     externalId?: string;
