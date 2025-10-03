@@ -148,7 +148,7 @@ Checks the value of the password_defined attribute
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:86](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L86)
+[packages/cozy-client/src/models/instance.js:87](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L87)
 
 ***
 
@@ -219,7 +219,7 @@ Make human readable information from disk information (usage, quota)
 
 *Defined in*
 
-[packages/cozy-client/src/models/instance.js:156](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L156)
+[packages/cozy-client/src/models/instance.js:157](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/instance.js#L157)
 
 ***
 
