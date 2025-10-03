@@ -1,4 +1,3 @@
-import fromPairs from 'lodash/fromPairs'
 import forEach from 'lodash/forEach'
 import get from 'lodash/get'
 import { isMobileApp } from 'cozy-device-helper'
@@ -62,28 +61,15 @@ class PouchManager {
     }
 
     forEach(pouchPlugins, plugin => this.PouchDB.plugin(plugin))
-    this.pouches = fromPairs(
-      this.doctypes.map(doctype => {
-        const dbName = getDatabaseName(this.options.prefix, doctype)
-        const pouch = new this.PouchDB(
-          getDatabaseName(this.options.prefix, doctype),
-          pouchOptions
-        )
-
-        return [dbName, pouch]
-      })
-    )
-
-    const dbNames = Object.keys(this.pouches)
-    dbNames.forEach(dbName => {
-      // Set query engine for all databases
-      const doctype = getDoctypeFromDatabaseName(dbName)
-      this.setQueryEngine(dbName, doctype)
-    })
+    this.pouches = {}
+    for (const doctype of this.doctypes) {
+      this.addDoctype(doctype)
+    }
 
     // Persist db names for old browsers not supporting indexeddb.databases()
     // This is useful for cleanup.
     // Note PouchDB adds itself the _pouch_ prefix
+    const dbNames = Object.keys(this.pouches)
     const pouchDbNames = dbNames.map(dbName => `_pouch_${dbName}`)
     await this.storage.persistDatabasesNames(pouchDbNames)
 
@@ -357,6 +343,42 @@ class PouchManager {
   async clearWarmedUpQueries() {
     this.warmedUpQueries = {}
     await this.storage.destroyWarmedUpQueries()
+  }
+
+  /**
+   * Adds a new doctype to the list of managed doctypes, sets its replication options,
+   * creates a new PouchDB instance for it, and sets up the query engine.
+   *
+   * @param {string} doctype - The name of the doctype to add.
+   */
+  addDoctype(doctype) {
+    const pouchOptions = get(this.options, 'pouch.options', {})
+    if (!pouchOptions.view_update_changes_batch_size) {
+      pouchOptions.view_update_changes_batch_size = DEFAULT_VIEW_UPDATE_BATCH
+    }
+
+    const dbName = getDatabaseName(this.options.prefix, doctype)
+    this.pouches[dbName] = new this.PouchDB(
+      getDatabaseName(this.options.prefix, doctype),
+      pouchOptions
+    )
+
+    this.setQueryEngine(dbName, getDoctypeFromDatabaseName(dbName))
+  }
+
+  /**
+   * Removes a doctype from the list of managed doctypes, deletes its replication options,
+   * destroys its PouchDB instance, and removes it from the pouches.
+   *
+   * @param {string} doctype - The name of the doctype to remove.
+   */
+  removeDoctype(doctype) {
+    this.doctypes = this.doctypes.filter(d => d !== doctype)
+    delete this.options.doctypesReplicationOptions[doctype]
+
+    const dbName = getDatabaseName(this.options.prefix, doctype)
+    this.pouches[dbName].destroy()
+    delete this.pouches[dbName]
   }
 }
 

@@ -5,11 +5,7 @@ import startsWith from 'lodash/startsWith'
 import zip from 'lodash/zip'
 
 import logger from './logger'
-import {
-  fetchRemoteLastSequence,
-  isDatabaseNotFoundError,
-  isDatabaseUnradableError
-} from './remote'
+import { isDatabaseNotFoundError, isDatabaseUnradableError } from './remote'
 import { startReplication } from './startReplication'
 import { allSettled, getDoctypeFromDatabaseName } from './utils'
 
@@ -33,30 +29,24 @@ export const replicateOnce = async pouchManager => {
     pouchManager.pouches,
     async (pouch, dbName) => {
       const doctype = getDoctypeFromDatabaseName(dbName)
+      const replicationOptions = get(
+        pouchManager.doctypesReplicationOptions,
+        doctype,
+        {}
+      )
       logger.info('PouchManager: Starting replication for ' + doctype)
 
-      const getReplicationURL = () => pouchManager.getReplicationURL(doctype)
+      const getReplicationURL = () =>
+        pouchManager.getReplicationURL(doctype, replicationOptions)
 
       const initialReplication =
         pouchManager.getSyncStatus(doctype) !== 'synced'
       const replicationFilter = doc => {
         return !startsWith(doc._id, '_design')
       }
-      let seq = ''
-      if (initialReplication) {
-        // Before the first replication, get the last remote sequence,
-        // which will be used as a checkpoint for the next replication
-        const lastSeq = await fetchRemoteLastSequence(getReplicationURL())
-        await pouchManager.storage.persistDoctypeLastSequence(doctype, lastSeq)
-      } else {
-        seq = await pouchManager.storage.getDoctypeLastSequence(doctype)
-      }
+      const seq =
+        (await pouchManager.storage.getDoctypeLastSequence(doctype)) || ''
 
-      const replicationOptions = get(
-        pouchManager.doctypesReplicationOptions,
-        doctype,
-        {}
-      )
       replicationOptions.initialReplication = initialReplication
       replicationOptions.filter = replicationFilter
       replicationOptions.since = seq
@@ -69,13 +59,9 @@ export const replicateOnce = async pouchManager => {
         pouch,
         replicationOptions,
         getReplicationURL,
-        pouchManager.storage
+        pouchManager.storage,
+        pouchManager.client
       )
-      if (seq) {
-        // We only need the sequence for the second replication, as PouchDB
-        // will use a local checkpoint for the next runs.
-        await pouchManager.storage.destroyDoctypeLastSequence(doctype)
-      }
 
       await pouchManager.updateSyncInfo(doctype)
       pouchManager.checkToWarmupDoctype(doctype, replicationOptions)

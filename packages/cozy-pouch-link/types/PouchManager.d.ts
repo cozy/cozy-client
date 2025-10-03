@@ -17,7 +17,7 @@ declare class PouchManager {
     events: any;
     dbQueryEngines: Map<any, any>;
     init(): Promise<void>;
-    pouches: import("lodash").Dictionary<any>;
+    pouches: {};
     /** @type {Record<string, import('./types').SyncInfo>} - Stores synchronization info per doctype */
     syncedDoctypes: Record<string, import('./types').SyncInfo>;
     warmedUpQueries: any;
@@ -94,6 +94,20 @@ declare class PouchManager {
     checkToWarmupDoctype(doctype: any, replicationOptions: any): void;
     areQueriesWarmedUp(doctype: any, queries: any): Promise<any>;
     clearWarmedUpQueries(): Promise<void>;
+    /**
+     * Adds a new doctype to the list of managed doctypes, sets its replication options,
+     * creates a new PouchDB instance for it, and sets up the query engine.
+     *
+     * @param {string} doctype - The name of the doctype to add.
+     */
+    addDoctype(doctype: string): void;
+    /**
+     * Removes a doctype from the list of managed doctypes, deletes its replication options,
+     * destroys its PouchDB instance, and removes it from the pouches.
+     *
+     * @param {string} doctype - The name of the doctype to remove.
+     */
+    removeDoctype(doctype: string): void;
 }
 import { PouchLocalStorage } from "./localStorage";
 import Loop from "./loop";

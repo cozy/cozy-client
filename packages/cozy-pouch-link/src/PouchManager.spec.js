@@ -13,7 +13,6 @@ import { isMobileApp } from 'cozy-device-helper'
 jest.mock('pouchdb-browser')
 jest.mock('cozy-device-helper')
 jest.mock('./remote', () => ({
-  fetchRemoteLastSequence: jest.fn(),
   fetchRemoteInstance: jest.fn()
 }))
 
@@ -22,7 +21,7 @@ import PouchDB from 'pouchdb-browser'
 import { LOCALSTORAGE_STORAGE_KEYS, PouchLocalStorage } from './localStorage'
 import { platformWeb } from './platformWeb'
 
-import { fetchRemoteLastSequence, fetchRemoteInstance } from './remote'
+import { fetchRemoteInstance } from './remote'
 
 const ls = new PouchLocalStorage(platformWeb.storage)
 
@@ -93,7 +92,6 @@ describe('PouchManager', () => {
     pouch.info = jest.fn().mockImplementation(() => Promise.resolve())
     PouchDB.mockReset()
     PouchDB.plugin.mockReset()
-    fetchRemoteLastSequence.mockResolvedValue('10-xyz')
     fetchRemoteInstance.mockResolvedValue({ rows: [{ doc: { _id: '123' } }] })
   })
 
@@ -149,7 +147,6 @@ describe('PouchManager', () => {
     readOnlyPouch.replicate.from = jest.fn()
     manager.startReplicationLoop()
     await sleep(1000)
-    expect(fetchRemoteLastSequence).toHaveBeenCalled()
     expect(normalPouch.sync).toHaveBeenCalledTimes(1)
     expect(readOnlyPouch.replicate.from).toHaveBeenCalledTimes(1)
   })

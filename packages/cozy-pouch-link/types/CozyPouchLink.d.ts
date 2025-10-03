@@ -1,4 +1,4 @@
-export function getReplicationURL(uri: any, token: any, doctype: any): string;
+export function getReplicationURL(uri: any, token: any, doctype: any, replicationOptions: any): string;
 export default PouchLink;
 export type CozyPouchDocument = any;
 export type ReplicationStatus = "idle" | "replicating";
@@ -96,7 +96,17 @@ declare class PouchLink extends CozyLink {
     private startReplicationDebounced;
     /** @type {import('cozy-client/src/performances/types').PerformanceAPI} */
     performanceApi: any;
-    getReplicationURL(doctype: any): string;
+    /**
+     * Get the authenticated replication URL for a specific doctype
+     *
+     * @param {string} doctype - The document type to replicate (e.g., 'io.cozy.files')
+     * @param {object} [replicationOptions={}] - Replication options
+     * @param {string} [replicationOptions.driveId] - The ID of the shared drive to replicate (for shared drives)
+     * @returns {string} The authenticated replication URL
+     */
+    getReplicationURL(doctype: string, replicationOptions?: {
+        driveId: string;
+    }): string;
     registerClient(client: any): Promise<void>;
     client: any;
     /**
@@ -239,6 +249,21 @@ declare class PouchLink extends CozyLink {
     addReferencesTo(mutation: any): Promise<void>;
     dbMethod(method: any, mutation: any): Promise<any>;
     syncImmediately(): Promise<void>;
+    /**
+     * Adds a new doctype to the list of managed doctypes, sets its replication options,
+     * adds it to the pouches, and starts replication.
+     *
+     * @param {string} doctype - The name of the doctype to add.
+     * @param {Object} options - The replication options for the doctype.
+     */
+    addDoctype(doctype: string, options: any): void;
+    /**
+     * Removes a doctype from the list of managed doctypes, deletes its replication options,
+     * and removes it from the pouches.
+     *
+     * @param {string} doctype - The name of the doctype to remove.
+     */
+    removeDoctype(doctype: string): void;
 }
 import { CozyLink } from "cozy-client";
 import { PouchLocalStorage } from "./localStorage";

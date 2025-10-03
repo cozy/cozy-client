@@ -45,10 +45,12 @@ const addBasicAuth = (url, basicAuth) => {
   return url.replace('//', `//${basicAuth}`)
 }
 
-export const getReplicationURL = (uri, token, doctype) => {
+export const getReplicationURL = (uri, token, doctype, replicationOptions) => {
   const basicAuth = token.toBasicAuth()
   const authenticatedURL = addBasicAuth(uri, basicAuth)
-  return `${authenticatedURL}/data/${doctype}`
+  if (replicationOptions?.driveId) {
+    return `${authenticatedURL}/sharings/drives/${replicationOptions?.driveId}`
+  } else return `${authenticatedURL}/data/${doctype}`
 }
 
 const doNothing = (operation, result = null) => {}
@@ -140,7 +142,15 @@ class PouchLink extends CozyLink {
     return storage.getAdapterName()
   }
 
-  getReplicationURL(doctype) {
+  /**
+   * Get the authenticated replication URL for a specific doctype
+   *
+   * @param {string} doctype - The document type to replicate (e.g., 'io.cozy.files')
+   * @param {object} [replicationOptions={}] - Replication options
+   * @param {string} [replicationOptions.driveId] - The ID of the shared drive to replicate (for shared drives)
+   * @returns {string} The authenticated replication URL
+   */
+  getReplicationURL(doctype, replicationOptions) {
     const url = this.client && this.client.stackClient.uri
     const token = this.client && this.client.stackClient.token
 
@@ -156,7 +166,7 @@ class PouchLink extends CozyLink {
       )
     }
 
-    return getReplicationURL(url, token, doctype)
+    return getReplicationURL(url, token, doctype, replicationOptions)
   }
 
   async registerClient(client) {
@@ -788,6 +798,33 @@ class PouchLink extends CozyLink {
       return
     }
     this.pouches.syncImmediately()
+  }
+
+  /**
+   * Adds a new doctype to the list of managed doctypes, sets its replication options,
+   * adds it to the pouches, and starts replication.
+   *
+   * @param {string} doctype - The name of the doctype to add.
+   * @param {Object} options - The replication options for the doctype.
+   */
+  addDoctype(doctype, options) {
+    this.doctypes.push(doctype)
+    this.doctypesReplicationOptions[doctype] = options
+    this.pouches.doctypes.push(doctype)
+    this.pouches.addDoctype(doctype)
+    this.startReplication()
+  }
+
+  /**
+   * Removes a doctype from the list of managed doctypes, deletes its replication options,
+   * and removes it from the pouches.
+   *
+   * @param {string} doctype - The name of the doctype to remove.
+   */
+  removeDoctype(doctype) {
+    this.doctypes = this.doctypes.filter(d => d !== doctype)
+    delete this.doctypesReplicationOptions[doctype]
+    this.pouches.removeDoctype(doctype)
   }
 }
 
