@@ -69,9 +69,10 @@ export const hasAnOffer = data => {
  */
 export const buildPremiumLink = instanceInfo => {
   const managerUrl = get(instanceInfo, 'context.data.manager_url', false)
+  const locale = get(instanceInfo, 'instance.data.locale', 'en')
   const uuid = getUuid(instanceInfo)
   if (managerUrl && uuid) {
-    return `${managerUrl}/cozy/instances/${uuid}/premium`
+    return `${managerUrl}/cozy/instances/${uuid}/premium?lang=${locale}`
   } else {
     return null
   }

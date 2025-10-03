@@ -9,7 +9,8 @@ const noSelfHostedInstance = {
   },
   instance: {
     data: {
-      uuid: '1234'
+      uuid: '1234',
+      locale: 'fr'
     }
   },
   diskUsage: {
@@ -78,7 +79,9 @@ describe('instance', () => {
 
   it('should generate the link to the manager', () => {
     const url = instance.buildPremiumLink(noSelfHostedInstance)
-    expect(url).toBe('https://manager.cozy.cc/cozy/instances/1234/premium')
+    expect(url).toBe(
+      'https://manager.cozy.cc/cozy/instances/1234/premium?lang=fr'
+    )
   })
 
   it('should test if an instance has already subscribed to one of our offers', () => {
