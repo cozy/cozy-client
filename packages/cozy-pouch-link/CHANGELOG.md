@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [60.10.1](https://github.com/cozy/cozy-client/compare/v60.10.0...v60.10.1) (2025-10-03)
+
+
+### Bug Fixes
+
+* Handle file path updates ([e87a55c](https://github.com/cozy/cozy-client/commit/e87a55c46fcb5e44285dc4264fdd6b32fa522ba5))
+* Missing data attribute in dir response ([65e3a53](https://github.com/cozy/cozy-client/commit/65e3a534dbd795b6150b53aa50ec9c6588a7a376))
+
+
+
+
+
 # [60.10.0](https://github.com/cozy/cozy-client/compare/v60.9.0...v60.10.0) (2025-10-01)
 
 
