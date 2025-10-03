@@ -81,6 +81,7 @@ export const startReplication = (
             storage,
             doctype,
             client,
+            initialReplication,
             driveId: replicationOptions.driveId
           })
           resolve(docs)
@@ -246,15 +247,17 @@ export const replicateAllDocs = async ({ db, baseUrl, doctype, storage }) => {
 
 /**
  * Replicates all documents from a shared drive to a local PouchDB instance.
- * This function fetches documents in batches from a Cozy Cloud shared drive
+ * This function fetches documents in batches from a twake drive shared drive
  * and replicates them to the local database, maintaining replication state
  * to allow for incremental updates.
+ * We do not have an _all_docs view for shared drives, so we use the fetchChanges method.
  *
  * @param {Object} params - The parameters object
  * @param {string} params.driveId - The unique identifier of the shared drive to replicate from
  * @param {Object} params.pouch - The local PouchDB instance to replicate documents to
  * @param {Object} params.storage - Storage interface for persisting replication state
  * @param {string} params.doctype - The document type being replicated (e.g., 'io.cozy.files')
+ * @param {boolean} params.initialReplication - Whether this is an initial replication
  * @param {CozyClient} params.client - CozyClient instance for fetching remote documents
  * @returns {Promise<Array>} A promise that resolves to an array of all replicated documents
  * @throws {Error} Throws an error if driveId is not provided
@@ -263,6 +266,7 @@ export const sharedDriveReplicateAllDocs = async ({
   driveId,
   pouch,
   storage,
+  initialReplication = false,
   doctype,
   client
 }) => {
@@ -280,13 +284,28 @@ export const sharedDriveReplicateAllDocs = async ({
         { include_docs: true, ...(startDocId ? { since: startDocId } : {}) },
         {
           includeFilePath: false,
-          skipDeleted: false,
-          skipTrashed: false,
+          ...(initialReplication
+            ? { skipDeleted: true, skipTrashed: true }
+            : { skipDeleted: false, skipTrashed: false }),
           limit: BATCH_SIZE
         }
       )
 
     const filteredDocs = results.map(doc => ({ ...doc.doc, driveId }))
+
+    // FIXME this makes it possible to delete documents from the remote drive
+    // there must be a better way to handle this
+    const toDelete = filteredDocs.filter(doc => doc._deleted)
+    if (toDelete.length > 0) {
+      // lets try to find a document with the same _id in filteredDocs
+      for (const toDeleteDoc of toDelete) {
+        const originalDoc = await pouch.get(toDeleteDoc._id)
+        if (originalDoc) {
+          await pouch.remove(originalDoc)
+        }
+      }
+    }
+
     startDocId = newLastSeq
     await helpers.insertBulkDocs(pouch, filteredDocs)
     await storage.persistLastReplicatedDocID(doctype, startDocId)

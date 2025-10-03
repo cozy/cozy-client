@@ -1,8 +1,12 @@
 import MicroEE from 'microee'
 import { fetchRemoteLastSequence, fetchRemoteInstance } from './remote'
 
-import { replicateAllDocs, startReplication } from './startReplication'
-import { insertBulkDocs } from './helpers'
+import {
+  replicateAllDocs,
+  startReplication,
+  sharedDriveReplicateAllDocs
+} from './startReplication'
+import helpers from './helpers'
 
 jest.mock('./remote', () => ({
   fetchRemoteLastSequence: jest.fn(),
@@ -13,6 +17,8 @@ jest.mock('./helpers', () => ({
   ...jest.requireActual('./helpers').default,
   insertBulkDocs: jest.fn()
 }))
+
+const { insertBulkDocs } = helpers
 
 const url = 'http://test.local'
 
@@ -124,7 +130,8 @@ describe('startReplication', () => {
         pouch,
         replicationOptions,
         getReplicationURL,
-        storage
+        storage,
+        null
       )
 
       expect(fetchRemoteInstance).toHaveBeenCalledWith(
@@ -151,7 +158,8 @@ describe('startReplication', () => {
         pouch,
         replicationOptions,
         getReplicationURL,
-        storage
+        storage,
+        null
       )
       mockReplicationOn.emit('complete')
       await promise
@@ -179,7 +187,8 @@ describe('startReplication', () => {
         pouch,
         replicationOptions,
         getReplicationURL,
-        storage
+        storage,
+        null
       )
       mockReplicationOn.emit('complete')
       await promise
@@ -206,7 +215,8 @@ describe('startReplication', () => {
         pouch,
         replicationOptions,
         getReplicationURL,
-        storage
+        storage,
+        null
       )
       mockReplicationOn.emit('error', 'some_error_message')
       await expect(promise).rejects.toEqual('some_error_message')
@@ -225,7 +235,8 @@ describe('startReplication', () => {
         pouch,
         replicationOptions,
         getReplicationURL,
-        storage
+        storage,
+        null
       )
       // Sync format
       mockReplicationOn.emit('change', {
@@ -275,7 +286,8 @@ describe('startReplication', () => {
         pouch,
         replicationOptions,
         getReplicationURL,
-        storage
+        storage,
+        null
       )
       mockReplicationOn.emit('change', {
         change: {
@@ -315,7 +327,8 @@ describe('startReplication', () => {
         pouch,
         replicationOptions,
         getReplicationURL,
-        storage
+        storage,
+        null
       )
       mockReplicationOn.emit('change', {
         change: {
@@ -356,7 +369,8 @@ describe('startReplication', () => {
         pouch,
         replicationOptions,
         getReplicationURL,
-        storage
+        storage,
+        null
       )
 
       expect(promise.cancel).toBeDefined()
@@ -385,6 +399,322 @@ describe('startReplication', () => {
       expect(result).toStrictEqual([])
     })
   })
+
+  describe('sharedDriveReplicateAllDocs', () => {
+    const driveId = 'test-drive-123'
+    const doctype = 'io.cozy.files'
+
+    const mockClient = {
+      collection: jest.fn()
+    }
+
+    const mockCollection = {
+      fetchChanges: jest.fn()
+    }
+
+    const mockPouch = {
+      get: jest.fn(),
+      remove: jest.fn()
+    }
+
+    const mockStorage = {
+      getLastReplicatedDocID: jest.fn(),
+      persistLastReplicatedDocID: jest.fn()
+    }
+
+    beforeEach(() => {
+      jest.resetAllMocks()
+      mockClient.collection.mockReturnValue(mockCollection)
+      insertBulkDocs.mockResolvedValue()
+    })
+
+    it('should throw error when driveId is not provided', async () => {
+      await expect(
+        sharedDriveReplicateAllDocs({
+          pouch: mockPouch,
+          storage: mockStorage,
+          doctype,
+          client: mockClient,
+          initialReplication: false
+        })
+      ).rejects.toThrow('sharedDriveReplicateAllDocs: driveId is required')
+    })
+
+    it('should handle initial replication with empty results', async () => {
+      mockStorage.getLastReplicatedDocID.mockResolvedValue(null)
+      mockCollection.fetchChanges.mockResolvedValue({
+        newLastSeq: 'seq-1',
+        results: [],
+        pending: false
+      })
+
+      const result = await sharedDriveReplicateAllDocs({
+        driveId,
+        pouch: mockPouch,
+        storage: mockStorage,
+        doctype,
+        client: mockClient,
+        initialReplication: true
+      })
+
+      expect(result).toEqual([])
+      expect(mockCollection.fetchChanges).toHaveBeenCalledWith(
+        { include_docs: true },
+        {
+          includeFilePath: false,
+          skipDeleted: true,
+          skipTrashed: true,
+          limit: 1000
+        }
+      )
+      expect(insertBulkDocs).toHaveBeenCalledWith(mockPouch, [])
+      expect(mockStorage.persistLastReplicatedDocID).toHaveBeenCalledWith(
+        doctype,
+        'seq-1'
+      )
+    })
+
+    it('should handle initial replication with single batch of documents', async () => {
+      mockStorage.getLastReplicatedDocID.mockResolvedValue(null)
+      const mockDocs = [
+        { doc: { _id: 'doc-1', name: 'file1.txt' } },
+        { doc: { _id: 'doc-2', name: 'file2.txt' } }
+      ]
+      mockCollection.fetchChanges.mockResolvedValue({
+        newLastSeq: 'seq-2',
+        results: mockDocs,
+        pending: false
+      })
+
+      const result = await sharedDriveReplicateAllDocs({
+        driveId,
+        pouch: mockPouch,
+        storage: mockStorage,
+        doctype,
+        client: mockClient,
+        initialReplication: true
+      })
+
+      const expectedDocs = [
+        { _id: 'doc-1', name: 'file1.txt', driveId },
+        { _id: 'doc-2', name: 'file2.txt', driveId }
+      ]
+
+      expect(result).toEqual(expectedDocs)
+      expect(mockCollection.fetchChanges).toHaveBeenCalledWith(
+        { include_docs: true },
+        {
+          includeFilePath: false,
+          skipDeleted: true,
+          skipTrashed: true,
+          limit: 1000
+        }
+      )
+      expect(insertBulkDocs).toHaveBeenCalledWith(mockPouch, expectedDocs)
+      expect(mockStorage.persistLastReplicatedDocID).toHaveBeenCalledWith(
+        doctype,
+        'seq-2'
+      )
+    })
+
+    it('should handle incremental replication from last saved doc ID', async () => {
+      mockStorage.getLastReplicatedDocID.mockResolvedValue('seq-1')
+      const mockDocs = [{ doc: { _id: 'doc-3', name: 'file3.txt' } }]
+      mockCollection.fetchChanges.mockResolvedValue({
+        newLastSeq: 'seq-3',
+        results: mockDocs,
+        pending: false
+      })
+
+      const result = await sharedDriveReplicateAllDocs({
+        driveId,
+        pouch: mockPouch,
+        storage: mockStorage,
+        doctype,
+        client: mockClient,
+        initialReplication: false
+      })
+
+      const expectedDocs = [{ _id: 'doc-3', name: 'file3.txt', driveId }]
+
+      expect(result).toEqual(expectedDocs)
+      expect(mockCollection.fetchChanges).toHaveBeenCalledWith(
+        { include_docs: true, since: 'seq-1' },
+        {
+          includeFilePath: false,
+          skipDeleted: false,
+          skipTrashed: false,
+          limit: 1000
+        }
+      )
+      expect(insertBulkDocs).toHaveBeenCalledWith(mockPouch, expectedDocs)
+      expect(mockStorage.persistLastReplicatedDocID).toHaveBeenCalledWith(
+        doctype,
+        'seq-3'
+      )
+    })
+
+    it('should handle replication with multiple batches (pagination)', async () => {
+      mockStorage.getLastReplicatedDocID.mockResolvedValue(null)
+
+      // First batch
+      mockCollection.fetchChanges.mockResolvedValueOnce({
+        newLastSeq: 'seq-1',
+        results: [{ doc: { _id: 'doc-1', name: 'file1.txt' } }],
+        pending: true
+      })
+
+      // Second batch
+      mockCollection.fetchChanges.mockResolvedValueOnce({
+        newLastSeq: 'seq-2',
+        results: [{ doc: { _id: 'doc-2', name: 'file2.txt' } }],
+        pending: false
+      })
+
+      const result = await sharedDriveReplicateAllDocs({
+        driveId,
+        pouch: mockPouch,
+        storage: mockStorage,
+        doctype,
+        client: mockClient,
+        initialReplication: true
+      })
+
+      const expectedDocs = [
+        { _id: 'doc-1', name: 'file1.txt', driveId },
+        { _id: 'doc-2', name: 'file2.txt', driveId }
+      ]
+
+      expect(result).toEqual(expectedDocs)
+      expect(mockCollection.fetchChanges).toHaveBeenCalledTimes(2)
+      expect(insertBulkDocs).toHaveBeenCalledTimes(2)
+      expect(mockStorage.persistLastReplicatedDocID).toHaveBeenCalledTimes(2)
+    })
+
+    it('should handle deleted documents by removing them from local pouch', async () => {
+      mockStorage.getLastReplicatedDocID.mockResolvedValue(null)
+      const mockDocs = [
+        { doc: { _id: 'doc-1', name: 'file1.txt' } },
+        { doc: { _id: 'doc-2', name: 'file2.txt', _deleted: true } }
+      ]
+      mockCollection.fetchChanges.mockResolvedValue({
+        newLastSeq: 'seq-1',
+        results: mockDocs,
+        pending: false
+      })
+
+      // Mock that doc-2 exists in local pouch
+      mockPouch.get.mockResolvedValue({ _id: 'doc-2', _rev: '1-abc' })
+      mockPouch.remove.mockResolvedValue()
+
+      const result = await sharedDriveReplicateAllDocs({
+        driveId,
+        pouch: mockPouch,
+        storage: mockStorage,
+        doctype,
+        client: mockClient,
+        initialReplication: true
+      })
+
+      const expectedDocs = [
+        { _id: 'doc-1', name: 'file1.txt', driveId },
+        { _id: 'doc-2', name: 'file2.txt', _deleted: true, driveId }
+      ]
+
+      expect(result).toEqual(expectedDocs)
+      expect(mockPouch.get).toHaveBeenCalledWith('doc-2')
+      expect(mockPouch.remove).toHaveBeenCalledWith({
+        _id: 'doc-2',
+        _rev: '1-abc'
+      })
+      expect(insertBulkDocs).toHaveBeenCalledWith(mockPouch, expectedDocs)
+    })
+
+    it('should handle deleted documents when they do not exist in local pouch', async () => {
+      mockStorage.getLastReplicatedDocID.mockResolvedValue(null)
+      const mockDocs = [{ doc: { _id: 'doc-1', _deleted: true } }]
+      mockCollection.fetchChanges.mockResolvedValue({
+        newLastSeq: 'seq-1',
+        results: mockDocs,
+        pending: false
+      })
+
+      // Mock that doc-1 does not exist in local pouch
+      mockPouch.get.mockResolvedValue(undefined)
+
+      const result = await sharedDriveReplicateAllDocs({
+        driveId,
+        pouch: mockPouch,
+        storage: mockStorage,
+        doctype,
+        client: mockClient,
+        initialReplication: true
+      })
+
+      const expectedDocs = [{ _id: 'doc-1', _deleted: true, driveId }]
+
+      expect(result).toEqual(expectedDocs)
+      expect(mockPouch.get).toHaveBeenCalledWith('doc-1')
+      expect(mockPouch.remove).not.toHaveBeenCalled()
+      expect(insertBulkDocs).toHaveBeenCalledWith(mockPouch, expectedDocs)
+    })
+
+    it('should use correct options for initial vs incremental replication', async () => {
+      mockStorage.getLastReplicatedDocID.mockResolvedValue('seq-1')
+      mockCollection.fetchChanges.mockResolvedValue({
+        newLastSeq: 'seq-2',
+        results: [],
+        pending: false
+      })
+
+      // Test initial replication
+      await sharedDriveReplicateAllDocs({
+        driveId,
+        pouch: mockPouch,
+        storage: mockStorage,
+        doctype,
+        client: mockClient,
+        initialReplication: true
+      })
+
+      expect(mockCollection.fetchChanges).toHaveBeenCalledWith(
+        { include_docs: true, since: 'seq-1' },
+        {
+          includeFilePath: false,
+          skipDeleted: true,
+          skipTrashed: true,
+          limit: 1000
+        }
+      )
+
+      jest.clearAllMocks()
+      mockCollection.fetchChanges.mockResolvedValue({
+        newLastSeq: 'seq-3',
+        results: [],
+        pending: false
+      })
+
+      // Test incremental replication
+      await sharedDriveReplicateAllDocs({
+        driveId,
+        pouch: mockPouch,
+        storage: mockStorage,
+        doctype,
+        client: mockClient,
+        initialReplication: false
+      })
+
+      expect(mockCollection.fetchChanges).toHaveBeenCalledWith(
+        { include_docs: true, since: 'seq-1' },
+        {
+          includeFilePath: false,
+          skipDeleted: false,
+          skipTrashed: false,
+          limit: 1000
+        }
+      )
+    })
+  })
 })
 
 const getPouchMock = () => {
@@ -405,6 +735,6 @@ const getPouchMock = () => {
 const getReplicationOptionsMock = () => ({
   strategy: 'fromRemote',
   initialReplication: false,
-  warmupQueries: {},
+  warmupQueries: [],
   doctype: 'io.cozy.files'
 })
