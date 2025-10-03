@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [60.11.0](https://github.com/cozy/cozy-client/compare/v60.10.1...v60.11.0) (2025-10-03)
+
+
+### Features
+
+* Add lang in premium link ([871d37e](https://github.com/cozy/cozy-client/commit/871d37ef6eda71d7618d1b94958bef74ae0a4300))
+
+
+
+
+
 # [60.9.0](https://github.com/cozy/cozy-client/compare/v60.8.0...v60.9.0) (2025-09-24)
 
 
