@@ -11,11 +11,12 @@ export function replicateAllDocs({ db, baseUrl, doctype, storage }: {
     doctype: string;
     storage: import('./localStorage').PouchLocalStorage;
 }): Promise<any[]>;
-export function sharedDriveReplicateAllDocs({ driveId, pouch, storage, doctype, client }: {
+export function sharedDriveReplicateAllDocs({ driveId, pouch, storage, initialReplication, doctype, client }: {
     driveId: string;
     pouch: any;
     storage: any;
     doctype: string;
+    initialReplication: boolean;
     client: CozyClient;
 }): Promise<any[]>;
 import CozyClient from "cozy-client";
