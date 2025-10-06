@@ -3,6 +3,7 @@ export {
 } from './useAppLinkWithStoreFallback'
 export { default as useCapabilities } from './useCapabilities'
 export { default as useFetchShortcut } from './useFetchShortcut'
+export { default as useFetchHomeShortcuts } from './useFetchHomeShortcuts'
 export { default as useClient } from './useClient'
 export { default as useQuery, useQueries } from './useQuery'
 export { default as useAppsInMaintenance } from './useAppsInMaintenance'
