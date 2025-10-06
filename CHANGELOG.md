@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [60.12.0](https://github.com/cozy/cozy-client/compare/v60.11.0...v60.12.0) (2025-10-06)
+
+
+### Bug Fixes
+
+* Return undefined if not shortcut icon ([1a88d71](https://github.com/cozy/cozy-client/commit/1a88d71c84e7daf3d6c6ff776987a593dfa63d05))
+
+
+### Features
+
+* Add helper to get shortcut img src ([86b4deb](https://github.com/cozy/cozy-client/commit/86b4deb698eacbb7733eb8689548c547688e7667))
+* Add useFetchHomeShortcuts hook ([e398845](https://github.com/cozy/cozy-client/commit/e398845ca5223a103998335ea47e7196522c0e9c))
+
+
+
+
+
 # [60.11.0](https://github.com/cozy/cozy-client/compare/v60.10.1...v60.11.0) (2025-10-03)
 
 
