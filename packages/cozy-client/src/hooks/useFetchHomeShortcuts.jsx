@@ -1,4 +1,6 @@
-import CozyClient, { Q, useQuery } from 'cozy-client'
+import useQuery from './useQuery'
+import { Q } from '../queries/dsl'
+import CozyClient from '../CozyClient'
 
 const fetchPolicy = CozyClient.fetchPolicies.olderThan(30 * 1000)
 
