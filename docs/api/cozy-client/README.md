@@ -986,6 +986,20 @@ Returns the cozy client from the context
 
 ***
 
+### useFetchHomeShortcuts
+
+▸ **useFetchHomeShortcuts**(): `object` | `any`\[]
+
+*Returns*
+
+`object` | `any`\[]
+
+*Defined in*
+
+packages/cozy-client/src/hooks/useFetchHomeShortcuts.jsx:25
+
+***
+
 ### useFetchShortcut
 
 ▸ **useFetchShortcut**(`client`, `id`): `Object`
