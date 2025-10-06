@@ -988,15 +988,15 @@ Returns the cozy client from the context
 
 ### useFetchHomeShortcuts
 
-▸ **useFetchHomeShortcuts**(): `object` | `any`\[]
+▸ **useFetchHomeShortcuts**(): `any`
 
 *Returns*
 
-`object` | `any`\[]
+`any`
 
 *Defined in*
 
-[packages/cozy-client/src/hooks/useFetchHomeShortcuts.jsx:25](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useFetchHomeShortcuts.jsx#L25)
+[packages/cozy-client/src/hooks/useFetchHomeShortcuts.jsx:27](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useFetchHomeShortcuts.jsx#L27)
 
 ***
 
