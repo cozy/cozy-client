@@ -163,8 +163,8 @@ export const getShortcutImgSrc = file => {
    * If we don't have iconMimeType, we consider that the icon is a binary svg.
    * Otherwise we consider that the icon comes from Iconizer api so it is in base64 directly.
    */
-  const icon = file.metadata.icon
-  const iconMimeType = file.metadata.iconMimeType
+  const icon = file?.metadata?.icon
+  const iconMimeType = file?.metadata?.iconMimeType
 
   if (!icon) {
     return undefined
