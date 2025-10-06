@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [60.12.2](https://github.com/cozy/cozy-client/compare/v60.12.1...v60.12.2) (2025-10-06)
+
+
+### Bug Fixes
+
+* Optional metadata in getShortcutImgSrc ([77f4011](https://github.com/cozy/cozy-client/commit/77f4011e87435199a420b9a6919672ebdcc33677))
+
+
+
+
+
 ## [60.12.1](https://github.com/cozy/cozy-client/compare/v60.12.0...v60.12.1) (2025-10-06)
 
 
