@@ -156,7 +156,7 @@ export const isShortcut = file => {
 /**
  *
  * @param {import("../types").IOCozyFile} file - io.cozy.files document
- * @returns {string} image src that can be used in an <img> tag
+ * @returns {string | undefined} image src that can be used in an <img> tag
  */
 export const getShortcutImgSrc = file => {
   /**
@@ -165,6 +165,10 @@ export const getShortcutImgSrc = file => {
    */
   const icon = file.metadata.icon
   const iconMimeType = file.metadata.iconMimeType
+
+  if (!icon) {
+    return undefined
+  }
 
   return iconMimeType
     ? `data:${iconMimeType};base64,${icon}`
