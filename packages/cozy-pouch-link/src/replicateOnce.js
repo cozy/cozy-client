@@ -62,9 +62,10 @@ export const replicateOnce = async pouchManager => {
         pouchManager.storage,
         pouchManager.client
       )
-      if (seq) {
-        // We only need the sequence for the second replication, as PouchDB
-        // will use a local checkpoint for the next runs.
+      const isSharedDrive = Boolean(replicationOptions.driveId)
+      if (seq && !isSharedDrive) {
+        // For shared drives, we always need to keep the last sequence since replication is handled manually, not by PouchDB.
+        // For standard PouchDB replications, the last sequence is only needed for the initial sync; subsequent runs use PouchDB's internal checkpointing.
         await pouchManager.storage.destroyDoctypeLastSequence(doctype)
       }
 
