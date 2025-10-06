@@ -996,7 +996,7 @@ Returns the cozy client from the context
 
 *Defined in*
 
-packages/cozy-client/src/hooks/useFetchHomeShortcuts.jsx:25
+[packages/cozy-client/src/hooks/useFetchHomeShortcuts.jsx:25](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/hooks/useFetchHomeShortcuts.jsx#L25)
 
 ***
 
