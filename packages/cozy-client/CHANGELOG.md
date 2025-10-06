@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [60.12.1](https://github.com/cozy/cozy-client/compare/v60.12.0...v60.12.1) (2025-10-06)
+
+
+### Bug Fixes
+
+* Use local import in useFetchHomeShortcuts ([05964c9](https://github.com/cozy/cozy-client/commit/05964c9345f53acc3e66e98e22804227874e44f2))
+
+
+
+
+
 # [60.12.0](https://github.com/cozy/cozy-client/compare/v60.11.0...v60.12.0) (2025-10-06)
 
 
