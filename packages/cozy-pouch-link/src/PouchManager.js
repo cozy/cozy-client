@@ -1,5 +1,4 @@
 import forEach from 'lodash/forEach'
-import get from 'lodash/get'
 import { isMobileApp } from 'cozy-device-helper'
 
 import { PouchLocalStorage } from './localStorage'
@@ -54,8 +53,8 @@ class PouchManager {
   }
 
   async init() {
-    const pouchPlugins = get(this.options, 'pouch.plugins', [])
-    const pouchOptions = get(this.options, 'pouch.options', {})
+    const pouchPlugins = this.options?.pouch?.plugins ?? []
+    const pouchOptions = this.options?.pouch?.options ?? {}
     if (!pouchOptions.view_update_changes_batch_size) {
       pouchOptions.view_update_changes_batch_size = DEFAULT_VIEW_UPDATE_BATCH
     }

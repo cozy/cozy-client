@@ -45,12 +45,23 @@ const addBasicAuth = (url, basicAuth) => {
   return url.replace('//', `//${basicAuth}`)
 }
 
+/**
+ * Constructs the replication URL for a given doctype and replication options.
+ *
+ * @param {string} uri - The base URI of the Cozy instance.
+ * @param {Object} token - The authentication token object, must have a toBasicAuth() method.
+ * @param {string} doctype - The doctype for which to construct the replication URL.
+ * @param {Object} [replicationOptions] - Additional replication options.
+ * @param {string} [replicationOptions.driveId] - If present, indicates replication is for a shared drive and which one.
+ * @returns {string} The fully constructed replication URL.
+ */
 export const getReplicationURL = (uri, token, doctype, replicationOptions) => {
   const basicAuth = token.toBasicAuth()
   const authenticatedURL = addBasicAuth(uri, basicAuth)
   if (replicationOptions?.driveId) {
     return `${authenticatedURL}/sharings/drives/${replicationOptions?.driveId}`
-  } else return `${authenticatedURL}/data/${doctype}`
+  }
+  return `${authenticatedURL}/data/${doctype}`
 }
 
 const doNothing = (operation, result = null) => {}

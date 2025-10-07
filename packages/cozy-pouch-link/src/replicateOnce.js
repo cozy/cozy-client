@@ -1,5 +1,4 @@
 import fromPairs from 'lodash/fromPairs'
-import get from 'lodash/get'
 import map from 'lodash/map'
 import startsWith from 'lodash/startsWith'
 import zip from 'lodash/zip'
@@ -29,11 +28,9 @@ export const replicateOnce = async pouchManager => {
     pouchManager.pouches,
     async (pouch, dbName) => {
       const doctype = getDoctypeFromDatabaseName(dbName)
-      const replicationOptions = get(
-        pouchManager.doctypesReplicationOptions,
-        doctype,
-        {}
-      )
+      // Use optional chaining and nullish coalescing instead of get
+      const replicationOptions =
+        pouchManager.doctypesReplicationOptions?.[doctype] ?? {}
       logger.info('PouchManager: Starting replication for ' + doctype)
 
       const getReplicationURL = () =>
