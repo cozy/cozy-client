@@ -41,7 +41,7 @@ const useFetchHomeShortcuts = () => {
     enabled: !!magicHomeFolderId
   })
 
-  return shortcuts
+  return shortcuts || []
 }
 
 export default useFetchHomeShortcuts
