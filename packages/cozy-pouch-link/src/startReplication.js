@@ -291,25 +291,46 @@ export const sharedDriveReplicateAllDocs = async ({
         }
       )
 
-    const filteredDocs = results.map(doc => ({ ...doc.doc, driveId }))
-
-    // FIXME this makes it possible to delete documents from the remote drive
-    // there must be a better way to handle this
-    const toDelete = filteredDocs.filter(doc => doc._deleted)
+    const toDelete = []
+    const toInsert = []
+    const allDocsWithDriveId = []
+    for (const doc of results) {
+      allDocsWithDriveId.push({ ...doc.doc, driveId })
+      if (doc.doc._deleted) {
+        toDelete.push(doc.doc)
+      } else {
+        toInsert.push({ ...doc.doc, driveId })
+      }
+    }
+    // FIXME this is a workaround to allow to delete documents from the shared drive
+    // changes
+    // PouchDB.bulkDocs ignores _deleted documents with revision newer than the existing
+    // document
+    // The workaround is to get documents from PouchDB with correct revision and delete them
     if (toDelete.length > 0) {
-      // lets try to find a document with the same _id in filteredDocs
+      // lets try to find a document with the same _id in allDocsWithDriveId
       for (const toDeleteDoc of toDelete) {
-        const originalDoc = await pouch.get(toDeleteDoc._id)
-        if (originalDoc) {
-          await pouch.remove(originalDoc)
+        try {
+          const originalDoc = await pouch.get(toDeleteDoc._id)
+          if (originalDoc) {
+            await pouch.remove(originalDoc)
+          } else {
+            logger.error(
+              `sharedDriveReplicateAllDocs: Document ${toDeleteDoc._id} not found in local pouch`
+            )
+          }
+        } catch (error) {
+          logger.error(
+            `sharedDriveReplicateAllDocs: Error deleting document ${toDeleteDoc._id}: ${error}`
+          )
         }
       }
     }
 
     startDocId = newLastSeq
-    await helpers.insertBulkDocs(pouch, filteredDocs)
+    await helpers.insertBulkDocs(pouch, toInsert)
     await storage.persistLastReplicatedDocID(doctype, startDocId)
-    docs = docs.concat(filteredDocs)
+    docs = docs.concat(allDocsWithDriveId)
     hasMore = !!pending
   }
   return docs

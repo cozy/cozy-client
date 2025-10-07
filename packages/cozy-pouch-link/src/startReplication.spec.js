@@ -627,7 +627,10 @@ describe('startReplication', () => {
         _id: 'doc-2',
         _rev: '1-abc'
       })
-      expect(insertBulkDocs).toHaveBeenCalledWith(mockPouch, expectedDocs)
+      expect(insertBulkDocs).toHaveBeenCalledWith(
+        mockPouch,
+        expectedDocs.filter(doc => !doc._deleted)
+      )
     })
 
     it('should handle deleted documents when they do not exist in local pouch', async () => {
@@ -656,7 +659,10 @@ describe('startReplication', () => {
       expect(result).toEqual(expectedDocs)
       expect(mockPouch.get).toHaveBeenCalledWith('doc-1')
       expect(mockPouch.remove).not.toHaveBeenCalled()
-      expect(insertBulkDocs).toHaveBeenCalledWith(mockPouch, expectedDocs)
+      expect(insertBulkDocs).toHaveBeenCalledWith(
+        mockPouch,
+        expectedDocs.filter(doc => !doc._deleted)
+      )
     })
 
     it('should use correct options for initial vs incremental replication', async () => {
