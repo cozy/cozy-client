@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [60.12.3](https://github.com/cozy/cozy-client/compare/v60.12.2...v60.12.3) (2025-10-07)
+
+
+### Bug Fixes
+
+* Return empty array if not shortcuts ([b4c022e](https://github.com/cozy/cozy-client/commit/b4c022e94db90f1099127e7e91c36209edc9aa5f))
+
+
+
+
+
 ## [60.12.2](https://github.com/cozy/cozy-client/compare/v60.12.1...v60.12.2) (2025-10-06)
 
 
