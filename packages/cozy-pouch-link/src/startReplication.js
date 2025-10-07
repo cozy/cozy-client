@@ -146,11 +146,11 @@ export const startReplication = (
         // and https://pouchdb.com/api.html#sync (see example response)
         const change = infos.change ? infos.change : infos
         if (change.docs) {
-          change.docs
-            .filter(doc => !isDesignDocument(doc) && !isDeletedDocument(doc))
-            .forEach(doc => {
+          change.docs.forEach(doc => {
+            if (!isDesignDocument(doc) && !isDeletedDocument(doc)) {
               docs[doc._id] = doc
-            })
+            }
+          })
         }
       })
       replication.on('error', reject).on('complete', () => {

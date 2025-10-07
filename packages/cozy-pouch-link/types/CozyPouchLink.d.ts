@@ -1,4 +1,6 @@
-export function getReplicationURL(uri: any, token: any, doctype: any, replicationOptions: any): string;
+export function getReplicationURL(uri: string, token: any, doctype: string, replicationOptions?: {
+    driveId: string;
+}): string;
 export default PouchLink;
 export type CozyPouchDocument = any;
 export type ReplicationStatus = "idle" | "replicating";
