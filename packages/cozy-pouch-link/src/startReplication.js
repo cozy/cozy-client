@@ -295,11 +295,13 @@ export const sharedDriveReplicateAllDocs = async ({
     const toInsert = []
     const allDocsWithDriveId = []
     for (const doc of results) {
-      allDocsWithDriveId.push({ ...doc.doc, driveId })
+      const docWithDriveId = doc.doc
+      docWithDriveId.driveId = driveId
+      allDocsWithDriveId.push(docWithDriveId)
       if (doc.doc._deleted) {
         toDelete.push(doc.doc)
       } else {
-        toInsert.push({ ...doc.doc, driveId })
+        toInsert.push(docWithDriveId)
       }
     }
     // FIXME this is a workaround to allow to delete documents from the shared drive
