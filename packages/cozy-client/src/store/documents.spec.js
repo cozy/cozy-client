@@ -112,6 +112,44 @@ describe('extractAndMerge', () => {
     expect(returnedDatas).toEqual(manuallyMergedData)
   })
 
+  it('should not concatenate arrays', () => {
+    const returnedDatas = extractAndMergeDocument(
+      // data
+      [
+        {
+          _id: 'b6ff135b34e041ffb2d4a4865f3e235f',
+          _type: 'io.cozy.files',
+          blibli: 'a new field',
+          tags: ['b']
+        }
+      ],
+      // updatedStateWithIncluded
+      {
+        'io.cozy.files': {
+          b6ff135b34e041ffb2d4a4865f3e235f: {
+            _id: 'b6ff135b34e041ffb2d4a4865f3e235f',
+            _type: 'io.cozy.files',
+            blublu: 'another new field',
+            tags: ['a']
+          }
+        }
+      }
+    )
+
+    const manuallyMergedData = {
+      'io.cozy.files': {
+        b6ff135b34e041ffb2d4a4865f3e235f: {
+          _id: 'b6ff135b34e041ffb2d4a4865f3e235f',
+          _type: 'io.cozy.files',
+          blibli: 'a new field',
+          blublu: 'another new field',
+          tags: ['b']
+        }
+      }
+    }
+    expect(returnedDatas).toEqual(manuallyMergedData)
+  })
+
   it(
     'should assign a new object for doctype of document to update' +
       'in order to allow selector to recompute their data when documents are updated',
