@@ -9,7 +9,17 @@ import { isReceivingMutationResult } from './mutations'
 
 import { properId } from './helpers'
 
-const deepmergeFn = deepmerge()
+// By default, deepmerge concatenate array values.
+// We do not want concatenation and we do not know how to do partial updates
+// so we decide to keep the array of the new data.
+const replaceByClonedSource = options => {
+  const clone = options.clone
+  return function(target, source) {
+    return clone(source)
+  }
+}
+
+const deepmergeFn = deepmerge({ mergeArray: replaceByClonedSource })
 
 const storeDocument = (state, document) => {
   const type = document._type
