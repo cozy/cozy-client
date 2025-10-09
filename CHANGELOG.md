@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [60.13.0](https://github.com/cozy/cozy-client/compare/v60.12.3...v60.13.0) (2025-10-09)
+
+
+### Bug Fixes
+
+* Keep new data array instead of concatenating arrays values ([9a014a2](https://github.com/cozy/cozy-client/commit/9a014a2fc304c2e1057f1f06d452b82dfac7e950))
+
+
+### Features
+
+* Improve doc and test about deepmerge semantics ([bb83e36](https://github.com/cozy/cozy-client/commit/bb83e3677b22f839fd64d482e0e0397294933d77))
+
+
+
+
+
 ## [60.12.3](https://github.com/cozy/cozy-client/compare/v60.12.2...v60.12.3) (2025-10-07)
 
 
