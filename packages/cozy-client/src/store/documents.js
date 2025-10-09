@@ -12,6 +12,8 @@ import { properId } from './helpers'
 // By default, deepmerge concatenate array values.
 // We do not want concatenation and we do not know how to do partial updates
 // so we decide to keep the array of the new data.
+
+// In deepmerge semantics, source object is applied on target object
 const replaceByClonedSource = options => {
   const clone = options.clone
   return function(target, source) {
