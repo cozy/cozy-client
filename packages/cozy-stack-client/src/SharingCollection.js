@@ -362,14 +362,20 @@ const getSharingRulesForFile = document => {
  */
 const getSharingRulesForSharedDrive = document => {
   const { _id, name } = document
+  /**
+   * The sharing rules always set to write by default (same as the implementation from getSharingPolicyForFile)
+   * To check for read-only we based on `read_only` in member data
+   * Even in case shared drive has many recipients with differents permissions,
+   * the `rules` still set to write by default and use `read_only` to check for read-only recipients.
+   */
   return [
     {
       title: name,
       doctype: 'io.cozy.files',
       values: [_id],
       add: 'none',
-      update: 'none',
-      remove: 'none'
+      update: 'sync',
+      remove: 'sync'
     }
   ]
 }
