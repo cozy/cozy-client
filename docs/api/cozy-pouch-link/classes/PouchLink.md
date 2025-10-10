@@ -483,6 +483,20 @@ The authenticated replication URL
 
 ***
 
+### getSharedDriveDoctypes
+
+▸ **getSharedDriveDoctypes**(): `string`\[]
+
+*Returns*
+
+`string`\[]
+
+*Defined in*
+
+[CozyPouchLink.js:848](https://github.com/cozy/cozy-client/blob/master/packages/cozy-pouch-link/src/CozyPouchLink.js#L848)
+
+***
+
 ### getSyncInfo
 
 ▸ **getSyncInfo**(`doctype`): `any`

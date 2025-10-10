@@ -270,6 +270,7 @@ declare class PouchLink extends CozyLink {
      * @param {string} doctype - The name of the doctype to remove.
      */
     removeDoctype(doctype: string): void;
+    getSharedDriveDoctypes(): string[];
 }
 import { CozyLink } from "cozy-client";
 import { PouchLocalStorage } from "./localStorage";
