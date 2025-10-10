@@ -9,6 +9,10 @@ jest.mock('./helpers', () => ({
   withoutDesignDocuments: jest.fn(),
   isAdapterBugged: jest.fn()
 }))
+jest.mock('./remote', () => ({
+  fetchRemoteInstance: jest.fn()
+}))
+import { fetchRemoteInstance } from './remote'
 
 import CozyPouchLink from '.'
 import { SCHEMA, TODO_1, TODO_2, TODO_3, TODO_4 } from './__tests__/fixtures'
@@ -53,6 +57,7 @@ async function setup(linkOpts = {}) {
   await link.onLogin()
 
   client.setData = jest.fn()
+  fetchRemoteInstance.mockResolvedValue({ rows: [] })
 }
 
 async function clean() {
