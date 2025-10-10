@@ -844,6 +844,12 @@ class PouchLink extends CozyLink {
     delete this.doctypesReplicationOptions[doctype]
     this.pouches.removeDoctype(doctype)
   }
+
+  getSharedDriveDoctypes() {
+    return this.doctypes.filter(
+      doctype => this.doctypesReplicationOptions[doctype]?.driveId
+    )
+  }
 }
 
 export default PouchLink
