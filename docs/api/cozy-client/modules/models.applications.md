@@ -4,7 +4,61 @@
 
 [models](models.md).applications
 
+## Interfaces
+
+*   [Entrypoint](../interfaces/models.applications.Entrypoint.md)
+*   [EntrypointCondition](../interfaces/models.applications.EntrypointCondition.md)
+*   [EntrypointTitle](../interfaces/models.applications.EntrypointTitle.md)
+
 ## Functions
+
+### checkEntrypointCondition
+
+▸ **checkEntrypointCondition**(`entrypointCondition`): `boolean`
+
+Checks if an entrypoint condition is satisfied
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `entrypointCondition` | [`EntrypointCondition`](../interfaces/models.applications.EntrypointCondition.md) | The condition to check |
+
+*Returns*
+
+`boolean`
+
+True if the condition is satisfied
+
+*Defined in*
+
+[packages/cozy-client/src/models/applications.js:141](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/applications.js#L141)
+
+***
+
+### filterEntrypoints
+
+▸ **filterEntrypoints**(`entrypoints`): [`Entrypoint`](../interfaces/models.applications.Entrypoint.md)\[]
+
+Filters entrypoints based on whether they should be displayed
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `entrypoints` | [`Entrypoint`](../interfaces/models.applications.Entrypoint.md)\[] | Array of entrypoints |
+
+*Returns*
+
+[`Entrypoint`](../interfaces/models.applications.Entrypoint.md)\[]
+
+Filtered array of entrypoints that should be displayed
+
+*Defined in*
+
+[packages/cozy-client/src/models/applications.js:178](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/applications.js#L178)
+
+***
 
 ### getAppDisplayName
 
@@ -27,7 +81,7 @@ Name of the app suitable for display
 
 *Defined in*
 
-[packages/cozy-client/src/models/applications.js:71](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/applications.js#L71)
+[packages/cozy-client/src/models/applications.js:73](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/applications.js#L73)
 
 ***
 
@@ -52,7 +106,7 @@ URL as string
 
 *Defined in*
 
-[packages/cozy-client/src/models/applications.js:34](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/applications.js#L34)
+[packages/cozy-client/src/models/applications.js:36](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/applications.js#L36)
 
 ***
 
@@ -77,7 +131,7 @@ URL as string
 
 *Defined in*
 
-[packages/cozy-client/src/models/applications.js:11](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/applications.js#L11)
+[packages/cozy-client/src/models/applications.js:13](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/applications.js#L13)
 
 ***
 
@@ -99,7 +153,7 @@ url to the app
 
 *Defined in*
 
-[packages/cozy-client/src/models/applications.js:59](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/applications.js#L59)
+[packages/cozy-client/src/models/applications.js:61](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/applications.js#L61)
 
 ***
 
@@ -122,7 +176,56 @@ The io.cozy.app is installed or undefined if not
 
 *Defined in*
 
-[packages/cozy-client/src/models/applications.js:50](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/applications.js#L50)
+[packages/cozy-client/src/models/applications.js:52](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/applications.js#L52)
+
+***
+
+### selectEntrypoints
+
+▸ **selectEntrypoints**(`entrypoints`, `names`): [`Entrypoint`](../interfaces/models.applications.Entrypoint.md)\[]
+
+Selects entrypoints by their names
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `entrypoints` | [`Entrypoint`](../interfaces/models.applications.Entrypoint.md)\[] | Array of entrypoints |
+| `names` | `string`\[] | Array of entrypoint names to select |
+
+*Returns*
+
+[`Entrypoint`](../interfaces/models.applications.Entrypoint.md)\[]
+
+Filtered array of entrypoints
+
+*Defined in*
+
+[packages/cozy-client/src/models/applications.js:168](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/applications.js#L168)
+
+***
+
+### shouldDisplayEntrypoint
+
+▸ **shouldDisplayEntrypoint**(`entrypoint`): `boolean`
+
+Checks if an entrypoint should be displayed based on its conditions
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `entrypoint` | [`Entrypoint`](../interfaces/models.applications.Entrypoint.md) | The entrypoint to check |
+
+*Returns*
+
+`boolean`
+
+True if all conditions are satisfied
+
+*Defined in*
+
+[packages/cozy-client/src/models/applications.js:155](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/applications.js#L155)
 
 ***
 
@@ -148,4 +251,4 @@ io.cozy.apps array
 
 *Defined in*
 
-[packages/cozy-client/src/models/applications.js:97](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/applications.js#L97)
+[packages/cozy-client/src/models/applications.js:99](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/applications.js#L99)
