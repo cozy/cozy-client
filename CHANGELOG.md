@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [60.14.0](https://github.com/cozy/cozy-client/compare/v60.13.0...v60.14.0) (2025-10-15)
+
+
+### Features
+
+* Add entrypoints helpers in applications model ([286f208](https://github.com/cozy/cozy-client/commit/286f208615e837249b2de79cdd9c431a605bcbf0))
+
+
+
+
+
 # [60.13.0](https://github.com/cozy/cozy-client/compare/v60.12.3...v60.13.0) (2025-10-09)
 
 
