@@ -1,4 +1,6 @@
+import flag from 'cozy-flags'
 import get from 'lodash/get'
+
 const STORE_SLUG = 'store'
 
 /**
@@ -104,4 +106,75 @@ export const sortApplicationsList = (apps, slugsOrder) => {
 
     return indexA - indexB
   })
+}
+
+/**
+ * @typedef {Object} EntrypointTitle
+ * @property {string} [en] - English title
+ * @property {string} [fr] - French title
+ * @property {string} [ru] - Russian title
+ * @property {string} [vi] - Vietnamese title
+ */
+
+/**
+ * @typedef {Object} EntrypointCondition
+ * @property {'flag'} type - The type of condition (currently only 'flag' is supported)
+ * @property {string} name - The name of the flag
+ * @property {boolean} value - The expected value of the flag
+ */
+
+/**
+ * @typedef {Object} Entrypoint
+ * @property {string} name - The unique name of the entrypoint
+ * @property {EntrypointTitle} title - Localized titles for the entrypoint
+ * @property {string} hash - The URL hash for navigation
+ * @property {string} icon - Base64 encoded SVG icon
+ * @property {EntrypointCondition[]} [conditions] - Conditions that must be met to display the entrypoint
+ */
+
+/**
+ * Checks if an entrypoint condition is satisfied
+ *
+ * @param {EntrypointCondition} entrypointCondition - The condition to check
+ * @returns {boolean} True if the condition is satisfied
+ */
+export const checkEntrypointCondition = entrypointCondition => {
+  if (entrypointCondition.type === 'flag') {
+    return flag(entrypointCondition.name) === entrypointCondition.value
+  }
+
+  return false
+}
+
+/**
+ * Checks if an entrypoint should be displayed based on its conditions
+ *
+ * @param {Entrypoint} entrypoint - The entrypoint to check
+ * @returns {boolean} True if all conditions are satisfied
+ */
+export const shouldDisplayEntrypoint = entrypoint => {
+  const conditions = entrypoint.conditions || []
+
+  return conditions.every(condition => checkEntrypointCondition(condition))
+}
+
+/**
+ * Selects entrypoints by their names
+ *
+ * @param {Entrypoint[]} entrypoints - Array of entrypoints
+ * @param {string[]} names - Array of entrypoint names to select
+ * @returns {Entrypoint[]} Filtered array of entrypoints
+ */
+export const selectEntrypoints = (entrypoints, names) => {
+  return entrypoints.filter(entrypoint => names.includes(entrypoint.name))
+}
+
+/**
+ * Filters entrypoints based on whether they should be displayed
+ *
+ * @param {Entrypoint[]} entrypoints - Array of entrypoints
+ * @returns {Entrypoint[]} Filtered array of entrypoints that should be displayed
+ */
+export const filterEntrypoints = entrypoints => {
+  return entrypoints.filter(entrypoint => shouldDisplayEntrypoint(entrypoint))
 }
