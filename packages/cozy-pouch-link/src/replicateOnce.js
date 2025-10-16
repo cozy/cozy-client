@@ -4,7 +4,11 @@ import startsWith from 'lodash/startsWith'
 import zip from 'lodash/zip'
 
 import logger from './logger'
-import { isDatabaseNotFoundError, isDatabaseUnradableError } from './remote'
+import {
+  fetchRemoteLastSequence,
+  isDatabaseNotFoundError,
+  isDatabaseUnradableError
+} from './remote'
 import { startReplication } from './startReplication'
 import { allSettled, getDoctypeFromDatabaseName } from './utils'
 
@@ -41,8 +45,16 @@ export const replicateOnce = async pouchManager => {
       const replicationFilter = doc => {
         return !startsWith(doc._id, '_design')
       }
-      const seq =
-        (await pouchManager.storage.getDoctypeLastSequence(doctype)) || ''
+      const isSharedDrive = Boolean(replicationOptions.driveId)
+      let seq = ''
+      if (initialReplication && !isSharedDrive) {
+        // Before the first replication, get the last remote sequence,
+        // which will be used as a checkpoint for the next replication
+        const lastSeq = await fetchRemoteLastSequence(getReplicationURL())
+        await pouchManager.storage.persistDoctypeLastSequence(doctype, lastSeq)
+      } else {
+        seq = (await pouchManager.storage.getDoctypeLastSequence(doctype)) || ''
+      }
 
       replicationOptions.initialReplication = initialReplication
       replicationOptions.filter = replicationFilter
@@ -59,7 +71,6 @@ export const replicateOnce = async pouchManager => {
         pouchManager.storage,
         pouchManager.client
       )
-      const isSharedDrive = Boolean(replicationOptions.driveId)
       if (seq && !isSharedDrive) {
         // For shared drives, we always need to keep the last sequence since replication is handled manually, not by PouchDB.
         // For standard PouchDB replications, the last sequence is only needed for the initial sync; subsequent runs use PouchDB's internal checkpointing.

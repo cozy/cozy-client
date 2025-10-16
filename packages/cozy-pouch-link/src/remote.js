@@ -51,3 +51,18 @@ export const fetchRemoteInstance = async (url, params = {}) => {
     )}`
   )
 }
+
+/**
+ * Fetch last sequence from remote instance
+ *
+ * @param {string} baseUrl - The base URL of the remote instance
+ * @returns {Promise<string>} The last sequence
+ */
+export const fetchRemoteLastSequence = async baseUrl => {
+  const remoteUrl = new URL(`${baseUrl}/_changes`)
+  const res = await fetchRemoteInstance(remoteUrl, {
+    limit: 1,
+    descending: true
+  })
+  return res.last_seq
+}

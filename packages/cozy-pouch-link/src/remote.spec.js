@@ -1,6 +1,11 @@
 import { enableFetchMocks, disableFetchMocks } from 'jest-fetch-mock'
 
-import { DATABASE_NOT_FOUND_ERROR, fetchRemoteInstance } from './remote'
+import {
+  DATABASE_NOT_FOUND_ERROR,
+  DATABASE_RESERVED_DOCTYPE_ERROR,
+  fetchRemoteInstance,
+  fetchRemoteLastSequence
+} from './remote'
 
 describe('remote', () => {
   beforeAll(() => {
@@ -100,6 +105,55 @@ describe('remote', () => {
       )
     })
   })
+  describe('fetchRemoteLastSequence', () => {
+    it('Should return data when found', async () => {
+      const remoteUrl =
+        'https://user:SOME_TOKEN@claude.mycozy.cloud/data/io.cozy.accounts'
+      mockDatabaseOn(
+        'https://claude.mycozy.cloud/data/io.cozy.accounts/_changes?limit=1&descending=true'
+      )
+
+      const result = await fetchRemoteLastSequence(remoteUrl)
+
+      expect(result).toBe('97-SOME_SEQ_VALUE')
+    })
+
+    it('Shoud throw when HTTP error', async () => {
+      const remoteUrl =
+        'https://user:SOME_TOKEN@claude.mycozy.cloud/data/io.cozy.accounts'
+      mockUnknownErrorOn(
+        'https://claude.mycozy.cloud/data/io.cozy.accounts/_changes?limit=1&descending=true'
+      )
+
+      await expect(fetchRemoteLastSequence(remoteUrl)).rejects.toThrow(
+        'Error (503) while fetching remote instance: {"error":"code=503, message=SOME UNKNOWN ERROR"}'
+      )
+    })
+
+    it('Shoud throw dedicated error when 404 error', async () => {
+      const remoteUrl =
+        'https://user:SOME_TOKEN@claude.mycozy.cloud/data/io.cozy.accounts'
+      mockDatabaseNotFoundOn(
+        'https://claude.mycozy.cloud/data/io.cozy.accounts/_changes?limit=1&descending=true'
+      )
+
+      await expect(fetchRemoteLastSequence(remoteUrl)).rejects.toThrow(
+        DATABASE_NOT_FOUND_ERROR
+      )
+    })
+
+    it('Shoud throw dedicated error when Reserved Doctype error', async () => {
+      const remoteUrl =
+        'https://user:SOME_TOKEN@claude.mycozy.cloud/data/io.cozy.accounts'
+      mockDatabaseReservedDoctypeOn(
+        'https://claude.mycozy.cloud/data/io.cozy.accounts/_changes?limit=1&descending=true'
+      )
+
+      await expect(fetchRemoteLastSequence(remoteUrl)).rejects.toThrow(
+        DATABASE_RESERVED_DOCTYPE_ERROR
+      )
+    })
+  })
 })
 
 const mockDatabaseNotFoundOn = url => {
@@ -109,6 +163,31 @@ const mockDatabaseNotFoundOn = url => {
     reason: 'Database does not exist.',
     status: 404
   })
+}
+const mockDatabaseReservedDoctypeOn = url => {
+  fetch.mockOnceIf(
+    url,
+    JSON.stringify({
+      error: 'code=403, message=reserved doctype io.cozy.sharings unreadable'
+    }),
+    {
+      ok: false,
+      status: 403
+    }
+  )
+}
+
+const mockUnknownErrorOn = url => {
+  fetch.mockOnceIf(
+    url,
+    JSON.stringify({
+      error: 'code=503, message=SOME UNKNOWN ERROR'
+    }),
+    {
+      ok: false,
+      status: 503
+    }
+  )
 }
 
 const mockDatabaseOn = url => {
