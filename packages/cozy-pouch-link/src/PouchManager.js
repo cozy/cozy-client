@@ -67,12 +67,7 @@ class PouchManager {
       this.addDoctype(doctype, this.doctypesReplicationOptions[doctype])
     }
 
-    // Persist db names for old browsers not supporting indexeddb.databases()
-    // This is useful for cleanup.
-    // Note PouchDB adds itself the _pouch_ prefix
-    const dbNames = Object.keys(this.pouches)
-    const pouchDbNames = dbNames.map(dbName => `_pouch_${dbName}`)
-    await this.storage.persistDatabasesNames(pouchDbNames)
+    await this.persistDatabasesNames()
 
     /** @type {Record<string, import('./types').SyncInfo>} - Stores synchronization info per doctype */
     this.syncedDoctypes = await this.storage.getPersistedSyncedDoctypes()
@@ -351,7 +346,7 @@ class PouchManager {
    * @param {string} doctype - The name of the doctype to add.
    * @param {Object} replicationOptions - The replication options for the doctype.
    */
-  addDoctype(doctype, replicationOptions) {
+  async addDoctype(doctype, replicationOptions) {
     if (!this.options?.doctypesReplicationOptions) {
       this.options.doctypesReplicationOptions = {}
     }
@@ -366,6 +361,7 @@ class PouchManager {
       getDatabaseName(this.options.prefix, doctype),
       pouchOptions
     )
+    await this.persistDatabasesNames()
 
     this.setQueryEngine(dbName, getDoctypeFromDatabaseName(dbName))
   }
@@ -376,13 +372,30 @@ class PouchManager {
    *
    * @param {string} doctype - The name of the doctype to remove.
    */
-  removeDoctype(doctype) {
+  async removeDoctype(doctype) {
     this.doctypes = this.doctypes.filter(d => d !== doctype)
     delete this.options?.doctypesReplicationOptions?.[doctype]
 
     const dbName = getDatabaseName(this.options.prefix, doctype)
     this.pouches[dbName].destroy()
     delete this.pouches[dbName]
+    await this.persistDatabasesNames()
+  }
+
+  /**
+   * Persists the names of the PouchDB databases.
+   *
+   * This method is primarily used to ensure that database names are saved for
+   * old browsers that do not support `indexeddb.databases()`. This persistence
+   * facilitates cleanup processes. Note that PouchDB automatically adds the
+   * `_pouch_` prefix to database names.
+   *
+   * @returns {Promise<void>}
+   */
+  async persistDatabasesNames() {
+    const dbNames = Object.keys(this.pouches)
+    const pouchDbNames = dbNames.map(dbName => `_pouch_${dbName}`)
+    await this.storage.persistDatabasesNames(pouchDbNames)
   }
 }
 

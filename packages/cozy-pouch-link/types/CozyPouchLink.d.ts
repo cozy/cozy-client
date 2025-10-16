@@ -262,14 +262,14 @@ declare class PouchLink extends CozyLink {
      */
     addDoctype(doctype: string, replicationOptions: any, options: {
         shouldStartReplication: boolean;
-    }): void;
+    }): Promise<void>;
     /**
      * Removes a doctype from the list of managed doctypes, deletes its replication options,
      * and removes it from the pouches.
      *
      * @param {string} doctype - The name of the doctype to remove.
      */
-    removeDoctype(doctype: string): void;
+    removeDoctype(doctype: string): Promise<void>;
     getSharedDriveDoctypes(): string[];
 }
 import { CozyLink } from "cozy-client";

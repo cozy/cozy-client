@@ -820,14 +820,14 @@ class PouchLink extends CozyLink {
    * @param {Object} options - The replication options for the doctype.
    * @param {boolean} [options.shouldStartReplication=true] - Whether the replication should be started.
    */
-  addDoctype(doctype, replicationOptions, options) {
+  async addDoctype(doctype, replicationOptions, options) {
     this.doctypes.push(doctype)
     if (!this.doctypesReplicationOptions) {
       this.doctypesReplicationOptions = {}
     }
     this.doctypesReplicationOptions[doctype] = replicationOptions
     this.pouches.doctypes.push(doctype)
-    this.pouches.addDoctype(doctype, replicationOptions)
+    await this.pouches.addDoctype(doctype, replicationOptions)
     if (options?.shouldStartReplication === true) {
       this.startReplicationWithDebounce()
     }
@@ -839,10 +839,10 @@ class PouchLink extends CozyLink {
    *
    * @param {string} doctype - The name of the doctype to remove.
    */
-  removeDoctype(doctype) {
+  async removeDoctype(doctype) {
     this.doctypes = this.doctypes.filter(d => d !== doctype)
     delete this.doctypesReplicationOptions[doctype]
-    this.pouches.removeDoctype(doctype)
+    await this.pouches.removeDoctype(doctype)
   }
 
   getSharedDriveDoctypes() {

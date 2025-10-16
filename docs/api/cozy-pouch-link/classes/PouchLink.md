@@ -158,7 +158,7 @@ CozyLink.constructor
 
 ### addDoctype
 
-▸ **addDoctype**(`doctype`, `replicationOptions`, `options`): `void`
+▸ **addDoctype**(`doctype`, `replicationOptions`, `options`): `Promise`<`void`>
 
 Adds a new doctype to the list of managed doctypes, sets its replication options,
 adds it to the pouches, and starts replication.
@@ -174,7 +174,7 @@ adds it to the pouches, and starts replication.
 
 *Returns*
 
-`void`
+`Promise`<`void`>
 
 *Defined in*
 
@@ -745,7 +745,7 @@ CozyLink.persistCozyData
 
 ### removeDoctype
 
-▸ **removeDoctype**(`doctype`): `void`
+▸ **removeDoctype**(`doctype`): `Promise`<`void`>
 
 Removes a doctype from the list of managed doctypes, deletes its replication options,
 and removes it from the pouches.
@@ -758,7 +758,7 @@ and removes it from the pouches.
 
 *Returns*
 
-`void`
+`Promise`<`void`>
 
 *Defined in*
 
