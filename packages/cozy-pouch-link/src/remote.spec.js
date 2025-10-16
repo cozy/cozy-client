@@ -105,7 +105,6 @@ describe('remote', () => {
       )
     })
   })
-
   describe('fetchRemoteLastSequence', () => {
     it('Should return data when found', async () => {
       const remoteUrl =
@@ -165,7 +164,6 @@ const mockDatabaseNotFoundOn = url => {
     status: 404
   })
 }
-
 const mockDatabaseReservedDoctypeOn = url => {
   fetch.mockOnceIf(
     url,

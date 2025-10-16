@@ -2,6 +2,7 @@ import { default as helpers } from './helpers'
 import startsWith from 'lodash/startsWith'
 import logger from './logger'
 import { fetchRemoteInstance } from './remote'
+import CozyClient from 'cozy-client'
 
 const { isDesignDocument, isDeletedDocument } = helpers
 
@@ -34,10 +35,12 @@ const TIME_UNITS = [['ms', 1000], ['s', 60], ['m', 60], ['h', 24]]
  * @param {object} replicationOptions Any option supported by the Pouch replication API (https://pouchdb.com/api.html#replication)
  * @param {string} replicationOptions.strategy The direction of the replication. Can be "fromRemote",  "toRemote" or "sync"
  * @param {boolean} replicationOptions.initialReplication Whether or not this is an initial replication
+ * @param {string} [replicationOptions.driveId] - ID of the shared drive to replicate (enables shared drive mode)
  * @param {string} replicationOptions.doctype The doctype to replicate
  * @param {import('cozy-client/types/types').Query[]} replicationOptions.warmupQueries The queries to warmup
  * @param {Function} getReplicationURL A function that should return the remote replication URL
  * @param {import('./localStorage').PouchLocalStorage} storage Methods to access local storage
+ * @param {CozyClient} client - Cozy client instance (required for shared drive replication)
  *
  * @returns {import('./types').CancelablePromise} A cancelable promise that resolves at the end of the replication
  */
@@ -45,7 +48,8 @@ export const startReplication = (
   pouch,
   replicationOptions,
   getReplicationURL,
-  storage
+  storage,
+  client
 ) => {
   let replication
   let docs = {}
@@ -69,66 +73,89 @@ export const startReplication = (
         }
       }
     }
-
-    if (initialReplication && strategy !== 'toRemote') {
+    if (replicationOptions.driveId) {
       ;(async () => {
-        // For the first remote->local replication, we manually replicate all docs
-        // as it avoids to replicate all revs history, which can lead to
-        // performances issues
-        logger.info(`PouchManager: Start first replication for ${doctype}`)
-        docs = await replicateAllDocs({
-          db: pouch,
-          baseUrl: url,
-          doctype,
-          storage
-        })
-        logger.info(`PouchManager: End first replication for ${doctype}`)
+        try {
+          const docs = await sharedDriveReplicateAllDocs({
+            pouch,
+            storage,
+            doctype,
+            client,
+            initialReplication,
+            driveId: replicationOptions.driveId
+          })
+          resolve(docs)
+        } catch (error) {
+          reject(error)
+        }
+      })()
+      return
+    } else {
+      if (initialReplication && strategy !== 'toRemote') {
+        ;(async () => {
+          try {
+            // For the first remote->local replication, we manually replicate all docs
+            // as it avoids to replicate all revs history, which can lead to
+            // performances issues
+            logger.info(`PouchManager: Start first replication for ${doctype}`)
+            docs = await replicateAllDocs({
+              db: pouch,
+              baseUrl: url,
+              doctype,
+              storage
+            })
+            logger.info(`PouchManager: End first replication for ${doctype}`)
+            const end = new Date()
+            if (process.env.NODE_ENV !== 'production') {
+              logger.info(
+                `PouchManager: initial replication with all_docs for ${url} took ${humanTimeDelta(
+                  end.getTime() - start.getTime()
+                )}`
+              )
+            }
+            return resolve(docs)
+          } catch (error) {
+            return reject(error)
+          }
+        })()
+        return
+      }
+
+      if (strategy === 'fromRemote') {
+        replication = pouch.replicate.from(url, options)
+      } else if (strategy === 'toRemote') {
+        replication = pouch.replicate.to(url, options)
+      } else {
+        replication = pouch.sync(url, options)
+      }
+
+      replication.on('change', infos => {
+        //! Since we introduced the concept of strategy we can use
+        // PouchDB.replicate or PouchDB.sync. But both don't share the
+        // same API for the change's event.
+        // See https://pouchdb.com/api.html#replication
+        // and https://pouchdb.com/api.html#sync (see example response)
+        const change = infos.change ? infos.change : infos
+        if (change.docs) {
+          change.docs.forEach(doc => {
+            if (!isDesignDocument(doc) && !isDeletedDocument(doc)) {
+              docs[doc._id] = doc
+            }
+          })
+        }
+      })
+      replication.on('error', reject).on('complete', () => {
         const end = new Date()
         if (process.env.NODE_ENV !== 'production') {
           logger.info(
-            `PouchManager: initial replication with all_docs for ${url} took ${humanTimeDelta(
+            `PouchManager: replication for ${url} took ${humanTimeDelta(
               end.getTime() - start.getTime()
             )}`
           )
         }
-        return resolve(docs)
-      })()
-      return
+        resolve(Object.values(docs))
+      })
     }
-    if (strategy === 'fromRemote') {
-      replication = pouch.replicate.from(url, options)
-    } else if (strategy === 'toRemote') {
-      replication = pouch.replicate.to(url, options)
-    } else {
-      replication = pouch.sync(url, options)
-    }
-
-    replication.on('change', infos => {
-      //! Since we introduced the concept of strategy we can use
-      // PouchDB.replicate or PouchDB.sync. But both don't share the
-      // same API for the change's event.
-      // See https://pouchdb.com/api.html#replication
-      // and https://pouchdb.com/api.html#sync (see example response)
-      const change = infos.change ? infos.change : infos
-      if (change.docs) {
-        change.docs
-          .filter(doc => !isDesignDocument(doc) && !isDeletedDocument(doc))
-          .forEach(doc => {
-            docs[doc._id] = doc
-          })
-      }
-    })
-    replication.on('error', reject).on('complete', () => {
-      const end = new Date()
-      if (process.env.NODE_ENV !== 'production') {
-        logger.info(
-          `PouchManager: replication for ${url} took ${humanTimeDelta(
-            end.getTime() - start.getTime()
-          )}`
-        )
-      }
-      resolve(Object.values(docs))
-    })
   })
 
   const cancel = () => {
@@ -205,6 +232,99 @@ export const replicateAllDocs = async ({ db, baseUrl, doctype, storage }) => {
         hasMore = false
       }
     }
+  }
+  return docs
+}
+
+/**
+ * Replicates all documents from a shared drive to a local PouchDB instance.
+ * This function fetches documents in batches from a twake drive shared drive
+ * and replicates them to the local database, maintaining replication state
+ * to allow for incremental updates.
+ * We do not have an _all_docs view for shared drives, so we use the fetchChanges method.
+ *
+ * @param {Object} params - The parameters object
+ * @param {string} params.driveId - The unique identifier of the shared drive to replicate from
+ * @param {Object} params.pouch - The local PouchDB instance to replicate documents to
+ * @param {Object} params.storage - Storage interface for persisting replication state
+ * @param {string} params.doctype - The document type being replicated (e.g., 'io.cozy.files')
+ * @param {boolean} params.initialReplication - Whether this is an initial replication
+ * @param {CozyClient} params.client - CozyClient instance for fetching remote documents
+ * @returns {Promise<Array>} A promise that resolves to an array of all replicated documents
+ * @throws {Error} Throws an error if driveId is not provided
+ */
+export const sharedDriveReplicateAllDocs = async ({
+  driveId,
+  pouch,
+  storage,
+  initialReplication = false,
+  doctype,
+  client
+}) => {
+  if (!driveId) {
+    throw new Error('sharedDriveReplicateAllDocs: driveId is required')
+  }
+  let docs = []
+  let hasMore = true
+
+  let startDocId = await storage.getLastReplicatedDocID(doctype)
+  while (hasMore) {
+    const { newLastSeq, results, pending } = await client
+      .collection('io.cozy.files', { driveId })
+      .fetchChanges(
+        { include_docs: true, ...(startDocId ? { since: startDocId } : {}) },
+        {
+          includeFilePath: false,
+          ...(initialReplication
+            ? { skipDeleted: true, skipTrashed: true }
+            : { skipDeleted: false, skipTrashed: false }),
+          limit: BATCH_SIZE
+        }
+      )
+
+    const toDelete = []
+    const toInsert = []
+    const allDocsWithDriveId = []
+    for (const doc of results) {
+      const docWithDriveId = doc.doc
+      docWithDriveId.driveId = driveId
+      allDocsWithDriveId.push(docWithDriveId)
+      if (doc.doc._deleted) {
+        toDelete.push(doc.doc)
+      } else {
+        toInsert.push(docWithDriveId)
+      }
+    }
+    // FIXME this is a workaround to allow to delete documents from the shared drive
+    // changes
+    // PouchDB.bulkDocs ignores _deleted documents with revision newer than the existing
+    // document
+    // The workaround is to get documents from PouchDB with correct revision and delete them
+    if (toDelete.length > 0) {
+      // lets try to find a document with the same _id in allDocsWithDriveId
+      for (const toDeleteDoc of toDelete) {
+        try {
+          const originalDoc = await pouch.get(toDeleteDoc._id)
+          if (originalDoc) {
+            await pouch.remove(originalDoc)
+          } else {
+            logger.error(
+              `sharedDriveReplicateAllDocs: Document ${toDeleteDoc._id} not found in local pouch`
+            )
+          }
+        } catch (error) {
+          logger.error(
+            `sharedDriveReplicateAllDocs: Error deleting document ${toDeleteDoc._id}: ${error}`
+          )
+        }
+      }
+    }
+
+    startDocId = newLastSeq
+    await helpers.insertBulkDocs(pouch, toInsert)
+    await storage.persistLastReplicatedDocID(doctype, startDocId)
+    docs = docs.concat(allDocsWithDriveId)
+    hasMore = !!pending
   }
   return docs
 }

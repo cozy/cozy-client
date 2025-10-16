@@ -45,9 +45,22 @@ const addBasicAuth = (url, basicAuth) => {
   return url.replace('//', `//${basicAuth}`)
 }
 
-export const getReplicationURL = (uri, token, doctype) => {
+/**
+ * Constructs the replication URL for a given doctype and replication options.
+ *
+ * @param {string} uri - The base URI of the Cozy instance.
+ * @param {Object} token - The authentication token object, must have a toBasicAuth() method.
+ * @param {string} doctype - The doctype for which to construct the replication URL.
+ * @param {Object} [replicationOptions] - Additional replication options.
+ * @param {string} [replicationOptions.driveId] - If present, indicates replication is for a shared drive and which one.
+ * @returns {string} The fully constructed replication URL.
+ */
+export const getReplicationURL = (uri, token, doctype, replicationOptions) => {
   const basicAuth = token.toBasicAuth()
   const authenticatedURL = addBasicAuth(uri, basicAuth)
+  if (replicationOptions?.driveId) {
+    return `${authenticatedURL}/sharings/drives/${replicationOptions?.driveId}`
+  }
   return `${authenticatedURL}/data/${doctype}`
 }
 
@@ -140,7 +153,15 @@ class PouchLink extends CozyLink {
     return storage.getAdapterName()
   }
 
-  getReplicationURL(doctype) {
+  /**
+   * Get the authenticated replication URL for a specific doctype
+   *
+   * @param {string} doctype - The document type to replicate (e.g., 'io.cozy.files')
+   * @param {object} [replicationOptions={}] - Replication options
+   * @param {string} [replicationOptions.driveId] - The ID of the shared drive to replicate (for shared drives)
+   * @returns {string} The authenticated replication URL
+   */
+  getReplicationURL(doctype, replicationOptions) {
     const url = this.client && this.client.stackClient.uri
     const token = this.client && this.client.stackClient.token
 
@@ -156,7 +177,7 @@ class PouchLink extends CozyLink {
       )
     }
 
-    return getReplicationURL(url, token, doctype)
+    return getReplicationURL(url, token, doctype, replicationOptions)
   }
 
   async registerClient(client) {
@@ -788,6 +809,46 @@ class PouchLink extends CozyLink {
       return
     }
     this.pouches.syncImmediately()
+  }
+
+  /**
+   * Adds a new doctype to the list of managed doctypes, sets its replication options,
+   * adds it to the pouches, and starts replication.
+   *
+   * @param {string} doctype - The name of the doctype to add.
+   * @param {Object} replicationOptions - The replication options for the doctype.
+   * @param {Object} options - The replication options for the doctype.
+   * @param {boolean} [options.shouldStartReplication=true] - Whether the replication should be started.
+   */
+  async addDoctype(doctype, replicationOptions, options) {
+    this.doctypes.push(doctype)
+    if (!this.doctypesReplicationOptions) {
+      this.doctypesReplicationOptions = {}
+    }
+    this.doctypesReplicationOptions[doctype] = replicationOptions
+    this.pouches.doctypes.push(doctype)
+    await this.pouches.addDoctype(doctype, replicationOptions)
+    if (options?.shouldStartReplication === true) {
+      this.startReplicationWithDebounce()
+    }
+  }
+
+  /**
+   * Removes a doctype from the list of managed doctypes, deletes its replication options,
+   * and removes it from the pouches.
+   *
+   * @param {string} doctype - The name of the doctype to remove.
+   */
+  async removeDoctype(doctype) {
+    this.doctypes = this.doctypes.filter(d => d !== doctype)
+    delete this.doctypesReplicationOptions[doctype]
+    await this.pouches.removeDoctype(doctype)
+  }
+
+  getSharedDriveDoctypes() {
+    return this.doctypes.filter(
+      doctype => this.doctypesReplicationOptions[doctype]?.driveId
+    )
   }
 }
 

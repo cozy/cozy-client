@@ -22,7 +22,7 @@ import PouchDB from 'pouchdb-browser'
 import { LOCALSTORAGE_STORAGE_KEYS, PouchLocalStorage } from './localStorage'
 import { platformWeb } from './platformWeb'
 
-import { fetchRemoteLastSequence, fetchRemoteInstance } from './remote'
+import { fetchRemoteInstance, fetchRemoteLastSequence } from './remote'
 
 const ls = new PouchLocalStorage(platformWeb.storage)
 

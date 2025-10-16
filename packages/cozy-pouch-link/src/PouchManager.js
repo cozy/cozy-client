@@ -1,6 +1,4 @@
-import fromPairs from 'lodash/fromPairs'
 import forEach from 'lodash/forEach'
-import get from 'lodash/get'
 import { isMobileApp } from 'cozy-device-helper'
 
 import { PouchLocalStorage } from './localStorage'
@@ -55,44 +53,26 @@ class PouchManager {
   }
 
   async init() {
-    const pouchPlugins = get(this.options, 'pouch.plugins', [])
-    const pouchOptions = get(this.options, 'pouch.options', {})
+    const pouchPlugins = this.options?.pouch?.plugins ?? []
+    const pouchOptions = this.options?.pouch?.options ?? {}
     if (!pouchOptions.view_update_changes_batch_size) {
       pouchOptions.view_update_changes_batch_size = DEFAULT_VIEW_UPDATE_BATCH
     }
 
     forEach(pouchPlugins, plugin => this.PouchDB.plugin(plugin))
-    this.pouches = fromPairs(
-      this.doctypes.map(doctype => {
-        const dbName = getDatabaseName(this.options.prefix, doctype)
-        const pouch = new this.PouchDB(
-          getDatabaseName(this.options.prefix, doctype),
-          pouchOptions
-        )
+    this.pouches = {}
+    this.doctypesReplicationOptions =
+      this.options.doctypesReplicationOptions || {}
+    for (const doctype of this.doctypes) {
+      this.addDoctype(doctype, this.doctypesReplicationOptions[doctype])
+    }
 
-        return [dbName, pouch]
-      })
-    )
-
-    const dbNames = Object.keys(this.pouches)
-    dbNames.forEach(dbName => {
-      // Set query engine for all databases
-      const doctype = getDoctypeFromDatabaseName(dbName)
-      this.setQueryEngine(dbName, doctype)
-    })
-
-    // Persist db names for old browsers not supporting indexeddb.databases()
-    // This is useful for cleanup.
-    // Note PouchDB adds itself the _pouch_ prefix
-    const pouchDbNames = dbNames.map(dbName => `_pouch_${dbName}`)
-    await this.storage.persistDatabasesNames(pouchDbNames)
+    await this.persistDatabasesNames()
 
     /** @type {Record<string, import('./types').SyncInfo>} - Stores synchronization info per doctype */
     this.syncedDoctypes = await this.storage.getPersistedSyncedDoctypes()
     this.warmedUpQueries = await this.storage.getPersistedWarmedUpQueries()
     this.getReplicationURL = this.options.getReplicationURL
-    this.doctypesReplicationOptions =
-      this.options.doctypesReplicationOptions || {}
     this.listenerLaunched = false
 
     // We must ensure databases exist on the remote before
@@ -357,6 +337,65 @@ class PouchManager {
   async clearWarmedUpQueries() {
     this.warmedUpQueries = {}
     await this.storage.destroyWarmedUpQueries()
+  }
+
+  /**
+   * Adds a new doctype to the list of managed doctypes, sets its replication options,
+   * creates a new PouchDB instance for it, and sets up the query engine.
+   *
+   * @param {string} doctype - The name of the doctype to add.
+   * @param {Object} replicationOptions - The replication options for the doctype.
+   */
+  async addDoctype(doctype, replicationOptions) {
+    if (!this.options?.doctypesReplicationOptions) {
+      this.options.doctypesReplicationOptions = {}
+    }
+    this.options.doctypesReplicationOptions[doctype] = replicationOptions
+    const pouchOptions = this.options?.pouch?.options ?? {}
+    if (!pouchOptions.view_update_changes_batch_size) {
+      pouchOptions.view_update_changes_batch_size = DEFAULT_VIEW_UPDATE_BATCH
+    }
+
+    const dbName = getDatabaseName(this.options.prefix, doctype)
+    this.pouches[dbName] = new this.PouchDB(
+      getDatabaseName(this.options.prefix, doctype),
+      pouchOptions
+    )
+    await this.persistDatabasesNames()
+
+    this.setQueryEngine(dbName, getDoctypeFromDatabaseName(dbName))
+  }
+
+  /**
+   * Removes a doctype from the list of managed doctypes, deletes its replication options,
+   * destroys its PouchDB instance, and removes it from the pouches.
+   *
+   * @param {string} doctype - The name of the doctype to remove.
+   */
+  async removeDoctype(doctype) {
+    this.doctypes = this.doctypes.filter(d => d !== doctype)
+    delete this.options?.doctypesReplicationOptions?.[doctype]
+
+    const dbName = getDatabaseName(this.options.prefix, doctype)
+    this.pouches[dbName].destroy()
+    delete this.pouches[dbName]
+    await this.persistDatabasesNames()
+  }
+
+  /**
+   * Persists the names of the PouchDB databases.
+   *
+   * This method is primarily used to ensure that database names are saved for
+   * old browsers that do not support `indexeddb.databases()`. This persistence
+   * facilitates cleanup processes. Note that PouchDB automatically adds the
+   * `_pouch_` prefix to database names.
+   *
+   * @returns {Promise<void>}
+   */
+  async persistDatabasesNames() {
+    const dbNames = Object.keys(this.pouches)
+    const pouchDbNames = dbNames.map(dbName => `_pouch_${dbName}`)
+    await this.storage.persistDatabasesNames(pouchDbNames)
   }
 }
 
