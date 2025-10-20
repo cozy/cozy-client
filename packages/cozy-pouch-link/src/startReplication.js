@@ -267,12 +267,15 @@ export const sharedDriveReplicateAllDocs = async ({
   let docs = []
   let hasMore = true
 
-  let startDocId = await storage.getLastReplicatedDocID(doctype)
+  let doctypeLastSequence = await storage.getDoctypeLastSequence(doctype)
   while (hasMore) {
     const { newLastSeq, results, pending } = await client
       .collection('io.cozy.files', { driveId })
       .fetchChanges(
-        { include_docs: true, ...(startDocId ? { since: startDocId } : {}) },
+        {
+          include_docs: true,
+          ...(doctypeLastSequence ? { since: doctypeLastSequence } : {})
+        },
         {
           includeFilePath: false,
           ...(initialReplication
@@ -320,9 +323,9 @@ export const sharedDriveReplicateAllDocs = async ({
       }
     }
 
-    startDocId = newLastSeq
+    doctypeLastSequence = newLastSeq
     await helpers.insertBulkDocs(pouch, toInsert)
-    await storage.persistLastReplicatedDocID(doctype, startDocId)
+    await storage.persistDoctypeLastSequence(doctype, doctypeLastSequence)
     docs = docs.concat(allDocsWithDriveId)
     hasMore = !!pending
   }

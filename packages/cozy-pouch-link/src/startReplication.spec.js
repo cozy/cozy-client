@@ -419,7 +419,9 @@ describe('startReplication', () => {
 
     const mockStorage = {
       getLastReplicatedDocID: jest.fn(),
-      persistLastReplicatedDocID: jest.fn()
+      persistLastReplicatedDocID: jest.fn(),
+      getDoctypeLastSequence: jest.fn(),
+      persistDoctypeLastSequence: jest.fn()
     }
 
     beforeEach(() => {
@@ -441,7 +443,7 @@ describe('startReplication', () => {
     })
 
     it('should handle initial replication with empty results', async () => {
-      mockStorage.getLastReplicatedDocID.mockResolvedValue(null)
+      mockStorage.getDoctypeLastSequence.mockResolvedValue(null)
       mockCollection.fetchChanges.mockResolvedValue({
         newLastSeq: 'seq-1',
         results: [],
@@ -468,14 +470,14 @@ describe('startReplication', () => {
         }
       )
       expect(insertBulkDocs).toHaveBeenCalledWith(mockPouch, [])
-      expect(mockStorage.persistLastReplicatedDocID).toHaveBeenCalledWith(
+      expect(mockStorage.persistDoctypeLastSequence).toHaveBeenCalledWith(
         doctype,
         'seq-1'
       )
     })
 
     it('should handle initial replication with single batch of documents', async () => {
-      mockStorage.getLastReplicatedDocID.mockResolvedValue(null)
+      mockStorage.getDoctypeLastSequence.mockResolvedValue(null)
       const mockDocs = [
         { doc: { _id: 'doc-1', name: 'file1.txt' } },
         { doc: { _id: 'doc-2', name: 'file2.txt' } }
@@ -511,14 +513,14 @@ describe('startReplication', () => {
         }
       )
       expect(insertBulkDocs).toHaveBeenCalledWith(mockPouch, expectedDocs)
-      expect(mockStorage.persistLastReplicatedDocID).toHaveBeenCalledWith(
+      expect(mockStorage.persistDoctypeLastSequence).toHaveBeenCalledWith(
         doctype,
         'seq-2'
       )
     })
 
     it('should handle incremental replication from last saved doc ID', async () => {
-      mockStorage.getLastReplicatedDocID.mockResolvedValue('seq-1')
+      mockStorage.getDoctypeLastSequence.mockResolvedValue('seq-1')
       const mockDocs = [{ doc: { _id: 'doc-3', name: 'file3.txt' } }]
       mockCollection.fetchChanges.mockResolvedValue({
         newLastSeq: 'seq-3',
@@ -548,14 +550,14 @@ describe('startReplication', () => {
         }
       )
       expect(insertBulkDocs).toHaveBeenCalledWith(mockPouch, expectedDocs)
-      expect(mockStorage.persistLastReplicatedDocID).toHaveBeenCalledWith(
+      expect(mockStorage.persistDoctypeLastSequence).toHaveBeenCalledWith(
         doctype,
         'seq-3'
       )
     })
 
     it('should handle replication with multiple batches (pagination)', async () => {
-      mockStorage.getLastReplicatedDocID.mockResolvedValue(null)
+      mockStorage.getDoctypeLastSequence.mockResolvedValue(null)
 
       // First batch
       mockCollection.fetchChanges.mockResolvedValueOnce({
@@ -588,11 +590,11 @@ describe('startReplication', () => {
       expect(result).toEqual(expectedDocs)
       expect(mockCollection.fetchChanges).toHaveBeenCalledTimes(2)
       expect(insertBulkDocs).toHaveBeenCalledTimes(2)
-      expect(mockStorage.persistLastReplicatedDocID).toHaveBeenCalledTimes(2)
+      expect(mockStorage.persistDoctypeLastSequence).toHaveBeenCalledTimes(2)
     })
 
     it('should handle deleted documents by removing them from local pouch', async () => {
-      mockStorage.getLastReplicatedDocID.mockResolvedValue(null)
+      mockStorage.getDoctypeLastSequence.mockResolvedValue(null)
       const mockDocs = [
         { doc: { _id: 'doc-1', name: 'file1.txt' } },
         { doc: { _id: 'doc-2', name: 'file2.txt', _deleted: true } }
@@ -634,7 +636,7 @@ describe('startReplication', () => {
     })
 
     it('should handle deleted documents when they do not exist in local pouch', async () => {
-      mockStorage.getLastReplicatedDocID.mockResolvedValue(null)
+      mockStorage.getDoctypeLastSequence.mockResolvedValue(null)
       const mockDocs = [{ doc: { _id: 'doc-1', _deleted: true } }]
       mockCollection.fetchChanges.mockResolvedValue({
         newLastSeq: 'seq-1',
@@ -666,7 +668,7 @@ describe('startReplication', () => {
     })
 
     it('should use correct options for initial vs incremental replication', async () => {
-      mockStorage.getLastReplicatedDocID.mockResolvedValue('seq-1')
+      mockStorage.getDoctypeLastSequence.mockResolvedValue('seq-1')
       mockCollection.fetchChanges.mockResolvedValue({
         newLastSeq: 'seq-2',
         results: [],
@@ -694,6 +696,7 @@ describe('startReplication', () => {
       )
 
       jest.clearAllMocks()
+      mockStorage.getDoctypeLastSequence.mockResolvedValue('seq-1')
       mockCollection.fetchChanges.mockResolvedValue({
         newLastSeq: 'seq-3',
         results: [],
