@@ -414,7 +414,9 @@ describe('startReplication', () => {
 
     const mockPouch = {
       get: jest.fn(),
-      remove: jest.fn()
+      remove: jest.fn(),
+      bulkGet: jest.fn(),
+      bulkDocs: jest.fn()
     }
 
     const mockStorage = {
@@ -606,8 +608,18 @@ describe('startReplication', () => {
       })
 
       // Mock that doc-2 exists in local pouch
-      mockPouch.get.mockResolvedValue({ _id: 'doc-2', _rev: '1-abc' })
-      mockPouch.remove.mockResolvedValue()
+      mockPouch.bulkGet.mockResolvedValue({
+        results: [
+          {
+            docs: [
+              {
+                ok: { _id: 'doc-2', _rev: '1-abc', name: 'file2.txt' }
+              }
+            ]
+          }
+        ]
+      })
+      mockPouch.bulkDocs.mockResolvedValue([{ ok: true, id: 'doc-2' }])
 
       const result = await sharedDriveReplicateAllDocs({
         driveId,
@@ -624,11 +636,17 @@ describe('startReplication', () => {
       ]
 
       expect(result).toEqual(expectedDocs)
-      expect(mockPouch.get).toHaveBeenCalledWith('doc-2')
-      expect(mockPouch.remove).toHaveBeenCalledWith({
-        _id: 'doc-2',
-        _rev: '1-abc'
+      expect(mockPouch.bulkGet).toHaveBeenCalledWith({
+        docs: [{ id: 'doc-2' }]
       })
+      expect(mockPouch.bulkDocs).toHaveBeenCalledWith([
+        {
+          _id: 'doc-2',
+          _rev: '1-abc',
+          name: 'file2.txt',
+          _deleted: true
+        }
+      ])
       expect(insertBulkDocs).toHaveBeenCalledWith(
         mockPouch,
         expectedDocs.filter(doc => !doc._deleted)
@@ -644,8 +662,23 @@ describe('startReplication', () => {
         pending: false
       })
 
-      // Mock that doc-1 does not exist in local pouch
-      mockPouch.get.mockResolvedValue(undefined)
+      // Mock that doc-1 does not exist in local pouch (bulkGet returns error)
+      mockPouch.bulkGet.mockResolvedValue({
+        results: [
+          {
+            docs: [
+              {
+                error: {
+                  status: 404,
+                  name: 'not_found',
+                  message: 'missing'
+                }
+              }
+            ]
+          }
+        ]
+      })
+      mockPouch.bulkDocs.mockResolvedValue([])
 
       const result = await sharedDriveReplicateAllDocs({
         driveId,
@@ -659,8 +692,10 @@ describe('startReplication', () => {
       const expectedDocs = [{ _id: 'doc-1', _deleted: true, driveId }]
 
       expect(result).toEqual(expectedDocs)
-      expect(mockPouch.get).toHaveBeenCalledWith('doc-1')
-      expect(mockPouch.remove).not.toHaveBeenCalled()
+      expect(mockPouch.bulkGet).toHaveBeenCalledWith({
+        docs: [{ id: 'doc-1' }]
+      })
+      expect(mockPouch.bulkDocs).not.toHaveBeenCalled()
       expect(insertBulkDocs).toHaveBeenCalledWith(
         mockPouch,
         expectedDocs.filter(doc => !doc._deleted)

@@ -303,21 +303,25 @@ export const sharedDriveReplicateAllDocs = async ({
     // PouchDB.bulkDocs ignores _deleted documents with revision newer than the existing
     // document
     // The workaround is to get documents from PouchDB with correct revision and delete them
+    // see https://github.com/pouchdb/pouchdb/issues/7841
     if (toDelete.length > 0) {
       // lets try to find a document with the same _id in allDocsWithDriveId
-      for (const toDeleteDoc of toDelete) {
-        try {
-          const originalDoc = await pouch.get(toDeleteDoc._id)
-          if (originalDoc) {
-            await pouch.remove(originalDoc)
-          } else {
-            logger.error(
-              `sharedDriveReplicateAllDocs: Document ${toDeleteDoc._id} not found in local pouch`
-            )
-          }
-        } catch (error) {
+      const updatedToDeleteDocs = await pouch.bulkGet({
+        docs: toDelete.map(d => ({ id: d._id }))
+      })
+      const toBulkDelete = updatedToDeleteDocs.results
+        .map(doc => ({
+          ...doc?.docs?.[0]?.ok,
+          _deleted: true
+        }))
+        .filter(doc => doc._id)
+      if (toBulkDelete.length > 0) {
+        await pouch.bulkDocs(toBulkDelete)
+        if (toBulkDelete.length !== toDelete.length) {
           logger.error(
-            `sharedDriveReplicateAllDocs: Error deleting document ${toDeleteDoc._id}: ${error}`
+            `sharedDriveReplicateAllDocs: Error deleting documents ${toDelete
+              .map(d => d._id)
+              .join(', ')}`
           )
         }
       }
