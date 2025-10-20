@@ -78,7 +78,8 @@
       "tags": "Tags",
       "timeseries.geojson": "Déplacements",
       "timeseries.grades": "Notes",
-      "triggers": "Planification de tâches à exécuter dans le futur"
+      "triggers": "Planification de tâches à exécuter dans le futur",
+      "drive.settings": "Paramètres de Drive"
     }
   },
   "fr": {

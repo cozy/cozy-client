@@ -79,7 +79,8 @@
       "tags": "Tags",
       "timeseries.geojson": "Trips",
       "timeseries.grades": "Grades",
-      "triggers": "Scheduling jobs"
+      "triggers": "Scheduling jobs",
+      "drive.settings": "Drive settings"
     }
   },
   "fr": {
