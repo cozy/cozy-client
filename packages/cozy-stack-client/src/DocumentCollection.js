@@ -40,6 +40,12 @@ const DATABASE_DOES_NOT_EXIST = 'Database does not exist.'
 const prepareForDeletion = x =>
   Object.assign({}, omit(x, '_type'), { _deleted: true })
 
+class IndexAlreadyExistsError extends Error {
+  constructor(message) {
+    super(message)
+    this.name = 'IndexAlreadyExistsError'
+  }
+}
 /**
  * Abstracts a collection of documents of the same doctype, providing CRUD methods and other helpers.
  */
@@ -201,7 +207,6 @@ class DocumentCollection {
     }
 
     const indexName = getIndexNameFromFields(indexedFields, partialFilter)
-
     const existingIndex = await this.findExistingIndex(selector, options)
     if (!existingIndex) {
       await this.createIndex(indexedFields, {
@@ -210,6 +215,8 @@ class DocumentCollection {
       })
     } else if (existingIndex._id !== `_design/${indexName}`) {
       await this.migrateIndex(existingIndex, indexName)
+    } else if (existingIndex) {
+      throw new IndexAlreadyExistsError(`Index already exists: ${indexName}`)
     } else {
       throw new Error(`Index unusable for query, index used: ${indexName}`)
     }
@@ -252,15 +259,22 @@ class DocumentCollection {
         // Likewise, a timeout error might occur when couchdb does not find the index
         // but tries to run the query anyway, which might result in a timeout.
         // We do not know how to prevent this behavior, so we handle it like a missing index.
-        await this.handleMissingIndex(selector, options)
-        resp = await this.fetchDocumentsWithMango(path, selector, options)
-      } else {
-        throw error
+        try {
+          await this.handleMissingIndex(selector, options)
+          resp = await this.fetchDocumentsWithMango(path, selector, options)
+          return resp
+        } catch (error) {
+          if (error instanceof IndexAlreadyExistsError) {
+            resp = await this.fetchDocumentsWithMango(path, selector, options)
+            return resp
+          }
+          throw error
+        }
       }
+      throw error
     }
     return resp
   }
-
   /**
    * Returns a filtered list of documents using a Mango selector.
    

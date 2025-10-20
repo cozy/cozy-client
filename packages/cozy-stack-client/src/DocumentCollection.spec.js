@@ -792,6 +792,59 @@ describe('DocumentCollection', () => {
       )
     })
 
+    it('should handle index created in parallel (Index already exists)', async () => {
+      client.fetchJSON.mockRestore()
+
+      isMatchingIndex.mockReturnValue(true)
+
+      client.fetchJSON
+        .mockRejectedValueOnce(new Error('no_index'))
+        .mockResolvedValueOnce({
+          rows: [
+            {
+              doc: {
+                _id: '_design/by_label',
+                _rev: '1-abc123',
+                language: 'query'
+              }
+            }
+          ]
+        })
+        .mockResolvedValueOnce(FIND_RESPONSE_FIXTURE)
+
+      const collection = new DocumentCollection('io.cozy.todos', client)
+      await expect(
+        collection.findWithMango(
+          'fakepath',
+          { done: true },
+          { indexedFields: ['label'] }
+        )
+      ).resolves.toBe(FIND_RESPONSE_FIXTURE)
+
+      expect(client.fetchJSON).toHaveBeenNthCalledWith(
+        1,
+        'POST',
+        'fakepath',
+        expect.objectContaining({
+          selector: { done: true }
+        })
+      )
+
+      expect(client.fetchJSON).toHaveBeenNthCalledWith(
+        2,
+        'GET',
+        '/data/io.cozy.todos/_design_docs?include_docs=true'
+      )
+
+      expect(client.fetchJSON).toHaveBeenLastCalledWith(
+        'POST',
+        'fakepath',
+        expect.objectContaining({
+          selector: { done: true }
+        })
+      )
+    })
+
     it('should copy existing index', async () => {
       const index = {
         id: '_design/123456',
