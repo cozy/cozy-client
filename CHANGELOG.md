@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [60.15.2](https://github.com/cozy/cozy-client/compare/v60.15.1...v60.15.2) (2025-10-21)
+
+
+### Bug Fixes
+
+* Add documents deletion in reducer ([3779787](https://github.com/cozy/cozy-client/commit/3779787abad8711222fc35af1d6e3712a9302359))
+
+
+
+
+
 ## [60.15.1](https://github.com/cozy/cozy-client/compare/v60.15.0...v60.15.1) (2025-10-21)
 
 
