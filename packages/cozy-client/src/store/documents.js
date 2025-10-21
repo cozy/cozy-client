@@ -83,16 +83,23 @@ const documents = (state = {}, action) => {
     return state
   }
 
-  if (
-    action &&
-    action.definition &&
-    action.definition.mutationType === MutationTypes.DELETE_DOCUMENT
-  ) {
-    const docId = action.definition.document._id
-    const _type = action.definition.document._type
-    return {
-      ...state,
-      [_type]: omit(state[_type], docId)
+  if (action && action.definition) {
+    if (action.definition.mutationType === MutationTypes.DELETE_DOCUMENT) {
+      const docId = action.definition.document._id
+      const _type = action.definition.document._type
+      return {
+        ...state,
+        [_type]: omit(state[_type], docId)
+      }
+    } else if (
+      action.definition.mutationType === MutationTypes.DELETE_DOCUMENTS
+    ) {
+      const docIds = action.definition.documents.map(doc => doc._id)
+      const _type = action.definition.documents[0]._type
+      return {
+        ...state,
+        [_type]: omit(state[_type], docIds)
+      }
     }
   }
 
