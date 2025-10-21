@@ -1,4 +1,4 @@
-import {
+import documents, {
   extractAndMergeDocument,
   mergeDocumentsWithRelationships
 } from './documents'
@@ -344,5 +344,67 @@ describe('mergeDocumentsWithRelationships', () => {
         a: [1]
       }
     })
+  })
+})
+
+jest.mock('./mutations', () => {
+  return {
+    isReceivingMutationResult: jest.fn()
+  }
+})
+
+import { isReceivingMutationResult } from './mutations'
+
+describe('documents reducer - delete mutations', () => {
+  const initialState = {
+    'io.cozy.files': {
+      '1': { _id: '1', _type: 'io.cozy.files', name: 'File 1' },
+      '2': { _id: '2', _type: 'io.cozy.files', name: 'File 2' },
+      '3': { _id: '3', _type: 'io.cozy.files', name: 'File 3' }
+    },
+    'io.cozy.notes': {
+      a: { _id: 'a', _type: 'io.cozy.notes', name: 'Note A' }
+    }
+  }
+
+  beforeEach(() => {
+    /** @type {jest.Mock} */ ;(isReceivingMutationResult).mockReturnValue(true)
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it('should delete a document with DELETE_DOCUMENT', () => {
+    const action = {
+      definition: {
+        mutationType: 'DELETE_DOCUMENT',
+        document: { _id: '2', _type: 'io.cozy.files' }
+      },
+      response: {}
+    }
+    const newState = documents(initialState, action)
+    expect(newState['io.cozy.files']).not.toHaveProperty('2')
+    expect(newState['io.cozy.files']).toHaveProperty('1')
+    expect(newState['io.cozy.files']).toHaveProperty('3')
+    expect(newState['io.cozy.notes']).toHaveProperty('a')
+  })
+
+  it('should delete multiple documents with DELETE_DOCUMENTS', () => {
+    const action = {
+      definition: {
+        mutationType: 'DELETE_DOCUMENTS',
+        documents: [
+          { _id: '1', _type: 'io.cozy.files' },
+          { _id: '3', _type: 'io.cozy.files' }
+        ]
+      },
+      response: {}
+    }
+    const newState = documents(initialState, action)
+    expect(newState['io.cozy.files']).not.toHaveProperty('1')
+    expect(newState['io.cozy.files']).not.toHaveProperty('3')
+    expect(newState['io.cozy.files']).toHaveProperty('2')
+    expect(newState['io.cozy.notes']).toHaveProperty('a')
   })
 })
