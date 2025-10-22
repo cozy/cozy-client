@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [60.16.0](https://github.com/cozy/cozy-client/compare/v60.15.2...v60.16.0) (2025-10-22)
+
+
+### Bug Fixes
+
+* **cozy-pouch-link:** Avoid blocking replications ([a8cc39b](https://github.com/cozy/cozy-client/commit/a8cc39b48f67a37ab21876c6617d92bda33fbd4b))
+* **cozy-pouch-link:** Enhance clarity on shared drive replication ([b7598aa](https://github.com/cozy/cozy-client/commit/b7598aa8cfaf9f3814c248155344b550264e479b))
+* **cozy-pouch-link:** Handle shared drive files deletion replication ([b21e32c](https://github.com/cozy/cozy-client/commit/b21e32c62dd974b4c1e33f0474808db53c35a3ca))
+* **cozy-pouch-link:** Keep last sequence for shared drives only ([142d82e](https://github.com/cozy/cozy-client/commit/142d82e60a662cd4a7c653765b728321d7a71f9a))
+* **cozy-pouch-link:** Keep last sequence only on initial sync ([b6f88a0](https://github.com/cozy/cozy-client/commit/b6f88a0cba9b88f4719869c72b00b999ecbb12de))
+* **cozy-pouch-link:** Optimize document deletion in replication ([0916c1f](https://github.com/cozy/cozy-client/commit/0916c1fd7cfd6b55a62a537809bec6287c2282a0))
+* **cozy-pouch-link:** Optimize shared drive replication ([d2f69d2](https://github.com/cozy/cozy-client/commit/d2f69d2a134b79dfa8ee1268530458df47fc3c3c))
+* **cozy-pouch-link:** Persist added doctypes database names ([cf33361](https://github.com/cozy/cozy-client/commit/cf3336179252808a40d4017401f475530959e54c))
+* **cozy-pouch-link:** Persist last sequest as las sequence ([00ec94c](https://github.com/cozy/cozy-client/commit/00ec94cf4b7143fdcf8ccc5d34a3285cd0553aff))
+* **cozy-pouch-link:** Various optimizations ([0433d1c](https://github.com/cozy/cozy-client/commit/0433d1cf980ccef854765fd470952a9defe3d6ec))
+
+
+### Features
+
+* Add driveId to shared drive documents ([c5d5c44](https://github.com/cozy/cozy-client/commit/c5d5c44c6cb50011fb8cda1418855667e984c3da))
+* **cozy-pouch-link:**  Add replication support for shared drives ([71c9dc8](https://github.com/cozy/cozy-client/commit/71c9dc8bddf9fe7ca03a9afc20a15334d27230d2))
+* **cozy-pouch-link:** Add methods to manage doctypes ([9981c64](https://github.com/cozy/cozy-client/commit/9981c642c29e71a434951baecec74c9ca751cfac))
+
+
+
+
+
 ## [60.15.2](https://github.com/cozy/cozy-client/compare/v60.15.1...v60.15.2) (2025-10-21)
 
 
