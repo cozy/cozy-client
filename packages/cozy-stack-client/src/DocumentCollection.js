@@ -243,9 +243,8 @@ class DocumentCollection {
     try {
       resp = await this.fetchDocumentsWithMango(path, selector, options)
       const warning = resp.warning || resp.meta?.warning
-      if (warning && options.partialFilter && isIndexNotUsedWarning(warning)) {
-        // This warning might happen when an index including a partial filter
-        // is not created yet.
+      if (warning && isIndexNotUsedWarning(warning)) {
+        // This warning might happen when an index is not created yet.
         throw new Error('no_index')
       }
     } catch (error) {
