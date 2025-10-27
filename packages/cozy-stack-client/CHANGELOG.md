@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [60.16.1](https://github.com/cozy/cozy-client/compare/v60.16.0...v60.16.1) (2025-10-27)
+
+
+### Bug Fixes
+
+* Handle missing indexe for all queries ([b2e303a](https://github.com/cozy/cozy-client/commit/b2e303a682cd7678694f8c52fa121c753203778d))
+
+
+
+
+
 ## [60.15.1](https://github.com/cozy/cozy-client/compare/v60.15.0...v60.15.1) (2025-10-21)
 
 
