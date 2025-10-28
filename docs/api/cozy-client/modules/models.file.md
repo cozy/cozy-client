@@ -46,7 +46,7 @@ Copies a file to a specified destination.
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:693](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L693)
+[packages/cozy-client/src/models/file.js:737](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L737)
 
 ***
 
@@ -78,7 +78,7 @@ that will process the download
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:748](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L748)
+[packages/cozy-client/src/models/file.js:792](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L792)
 
 ***
 
@@ -126,7 +126,7 @@ file object with path attribute
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:674](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L674)
+[packages/cozy-client/src/models/file.js:718](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L718)
 
 ***
 
@@ -175,7 +175,7 @@ Generate a file name for a revision
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:560](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L560)
+[packages/cozy-client/src/models/file.js:604](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L604)
 
 ***
 
@@ -200,7 +200,7 @@ A filename with the right suffix
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:530](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L530)
+[packages/cozy-client/src/models/file.js:574](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L574)
 
 ***
 
@@ -387,7 +387,7 @@ image src that can be used in an <img> tag
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:652](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L652)
+[packages/cozy-client/src/models/file.js:696](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L696)
 
 ***
 
@@ -431,7 +431,7 @@ Whether the file's metadata attribute exists
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:644](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L644)
+[packages/cozy-client/src/models/file.js:688](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L688)
 
 ***
 
@@ -579,7 +579,7 @@ Whether the folder is client-side encrypted
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:663](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L663)
+[packages/cozy-client/src/models/file.js:707](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L707)
 
 ***
 
@@ -644,7 +644,7 @@ Whether the file is supported by Only Office
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:636](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L636)
+[packages/cozy-client/src/models/file.js:680](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L680)
 
 ***
 
@@ -798,6 +798,45 @@ Manage 4 cases :
 
 ***
 
+### moveRelateToSharedDrive
+
+▸ **moveRelateToSharedDrive**(`client`, `source`, `dest`, `isCopy`): `Promise`<{ `deleted`: `string`\[] ; `moved`: `IOCozyFile`  }>
+
+Move or copy a file or a directory between locations (personal drive and/or shared drives).
+Manage 3 cases :
+
+*   From a shared drive to another shared drive (same stack or cross-stack)
+*   From a shared drive to a personal drive
+*   From a personal drive to a shared drive
+
+*Parameters*
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `client` | [`CozyClient`](../classes/CozyClient.md) | The CozyClient instance. |
+| `source` | `Object` | The source file/folder to move/copy (required) At least one side (source or destination) must be a shared drive. |
+| `source.dir_id` | `string` | - |
+| `source.file_id` | `string` | - |
+| `source.instance` | `string` | - |
+| `source.sharing_id` | `string` | - |
+| `dest` | `Object` | The destination folder (required) |
+| `dest.dir_id` | `string` | destination directory id (required) |
+| `dest.instance` | `string` | - |
+| `dest.sharing_id` | `string` | - |
+| `isCopy` | `boolean` | controls whether the operation is a move (default) or copy. When `copy: false` (default): The source file/directory is moved to the destination and deleted from the source. When `copy: true`: The source file/directory is copied to the destination but remains in the source location. |
+
+*Returns*
+
+`Promise`<{ `deleted`: `string`\[] ; `moved`: `IOCozyFile`  }>
+
+> } - A promise that returns the move/copy action response (if any)
+
+*Defined in*
+
+[packages/cozy-client/src/models/file.js:504](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L504)
+
+***
+
 ### normalize
 
 ▸ **normalize**(`file`): `any`
@@ -849,7 +888,7 @@ The overrided file
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:490](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L490)
+[packages/cozy-client/src/models/file.js:534](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L534)
 
 ***
 
@@ -961,4 +1000,4 @@ If there is a conflict, then we apply the conflict strategy : `erase` or `rename
 
 *Defined in*
 
-[packages/cozy-client/src/models/file.js:594](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L594)
+[packages/cozy-client/src/models/file.js:638](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/file.js#L638)

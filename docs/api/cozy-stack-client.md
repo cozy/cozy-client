@@ -802,6 +802,7 @@ files associated to a specific document
     * [.addNotSynchronizedDirectories(oauthClient, directories)](#FileCollection+addNotSynchronizedDirectories)
     * [.removeNotSynchronizedDirectories(oauthClient, directories)](#FileCollection+removeNotSynchronizedDirectories)
     * [.getOrCreateSharedDrivesDirectory()](#FileCollection+getOrCreateSharedDrivesDirectory) ⇒ [<code>IOCozyFolder</code>](#IOCozyFolder)
+    * [.moveRelateToSharedDrive(source, dest, isCopy)](#FileCollection+moveRelateToSharedDrive) ⇒ <code>Promise.&lt;{data: (undefined\|object)}&gt;</code>
 
 <a name="new_FileCollection_new"></a>
 
@@ -1315,6 +1316,31 @@ The Shared Drives directory is a special directory :
 
 **Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
 **Returns**: [<code>IOCozyFolder</code>](#IOCozyFolder) - Shared Drives directory  
+<a name="FileCollection+moveRelateToSharedDrive"></a>
+
+### fileCollection.moveRelateToSharedDrive(source, dest, isCopy) ⇒ <code>Promise.&lt;{data: (undefined\|object)}&gt;</code>
+Move or copy a file or a directory between locations (personal drive and/or shared drives).
+Manage 3 cases :
+- From a shared drive to another shared drive (same stack or cross-stack)
+- From a shared drive to a personal drive
+- From a personal drive to a shared drive
+
+**Kind**: instance method of [<code>FileCollection</code>](#FileCollection)  
+**Returns**: <code>Promise.&lt;{data: (undefined\|object)}&gt;</code> - - A promise that returns the move/copy action response (if any)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| source | <code>object</code> | The source file/folder to move/copy (required) At least one side (source or destination) must be a shared drive. |
+| [source.instance] | <code>string</code> | omit for personal drive If `source.instance` is provided, `source.sharing_id` is required. |
+| [source.sharing_id] | <code>string</code> | required when instance is set |
+| [source.file_id] | <code>string</code> | file needs to move |
+| [source.dir_id] | <code>string</code> | folder needs to move Exactly one of `source.file_id` or `source.dir_id` must be provided. |
+| dest | <code>object</code> | The destination folder (required) |
+| [dest.instance] | <code>string</code> | omit for personal drive If `dest.instance` is provided, `dest.sharing_id` is required. |
+| [dest.sharing_id] | <code>string</code> | required when instance is set |
+| dest.dir_id | <code>string</code> | destination directory id (required) |
+| isCopy | <code>boolean</code> | controls whether the operation is a move (default) or copy. When `copy: false` (default): The source file/directory is moved to the destination and deleted from the source. When `copy: true`: The source file/directory is copied to the destination but remains in the source location. |
+
 <a name="NotesCollection"></a>
 
 ## NotesCollection

@@ -64,6 +64,19 @@ export function move(client: CozyClient, file: import('../types').IOCozyFile | i
     moved: undefined | import('../types').IOCozyFile;
     deleted: null | string[];
 }>;
+export function moveRelateToSharedDrive(client: CozyClient, source: {
+    instance: string;
+    sharing_id: string;
+    file_id: string;
+    dir_id: string;
+}, dest: {
+    instance: string;
+    sharing_id: string;
+    dir_id: string;
+}, isCopy: boolean): Promise<{
+    moved: undefined | import('../types').IOCozyFile;
+    deleted: null | string[];
+}>;
 export function overrideFileForPath(client: CozyClient, dirPath: string, file: object, metadata: object, { driveId }?: {
     driveId: string;
 }): Promise<import("../types").IOCozyFile>;
