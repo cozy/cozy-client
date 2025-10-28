@@ -476,6 +476,50 @@ export const move = async (
 }
 
 /**
+ * Move or copy a file or a directory between locations (personal drive and/or shared drives).
+ * Manage 3 cases :
+ * - From a shared drive to another shared drive (same stack or cross-stack)
+ * - From a shared drive to a personal drive
+ * - From a personal drive to a shared drive
+ *
+ * @param {CozyClient} client - The CozyClient instance.
+ * @param {object} source - The source file/folder to move/copy (required)
+ * At least one side (source or destination) must be a shared drive.
+ * @param {string} [source.instance] - omit for personal drive
+ * If `source.instance` is provided, `source.sharing_id` is required.
+ * @param {string} [source.sharing_id] - required when instance is set
+ * @param {string} [source.file_id] - file needs to move
+ * @param {string} [source.dir_id] - folder needs to move
+ * Exactly one of `source.file_id` or `source.dir_id` must be provided.
+ * @param {object} dest - The destination folder (required)
+ * @param {string} [dest.instance] - omit for personal drive
+ * If `dest.instance` is provided, `dest.sharing_id` is required.
+ * @param {string} [dest.sharing_id] - required when instance is set
+ * @param {string} dest.dir_id - destination directory id (required)
+ * @param {boolean} isCopy - controls whether the operation is a move (default) or copy.
+ * When `copy: false` (default): The source file/directory is moved to the destination and deleted from the source.
+ * When `copy: true`: The source file/directory is copied to the destination but remains in the source location.
+ * @returns {Promise<{moved: undefined|import('../types').IOCozyFile, deleted: null|string[] }>} - A promise that returns the move/copy action response (if any)
+ */
+export const moveRelateToSharedDrive = async (client, source, dest, isCopy) => {
+  const filesCollection = client.collection(DOCTYPE_FILES, { driveId: 'move' })
+  try {
+    const resp = await filesCollection.moveRelateToSharedDrive(
+      source,
+      dest,
+      isCopy
+    )
+
+    return {
+      moved: resp.data,
+      deleted: null
+    }
+  } catch (e) {
+    throw e
+  }
+}
+
+/**
  *
  * Method to upload a file even if a file with the same name already exists.
  *
