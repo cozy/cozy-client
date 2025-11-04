@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [60.17.0](https://github.com/cozy/cozy-client/compare/v60.16.1...v60.17.0) (2025-11-04)
+
+
+### Features
+
+* Integrate new move function for shared drive :sparkles: ([8795926](https://github.com/cozy/cozy-client/commit/87959265b3a9260836e41e90fd73cd7711d5fa18))
+
+
+
+
+
 ## [60.16.1](https://github.com/cozy/cozy-client/compare/v60.16.0...v60.16.1) (2025-10-27)
 
 **Note:** Version bump only for package cozy-client
