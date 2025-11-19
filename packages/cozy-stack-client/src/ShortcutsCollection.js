@@ -66,6 +66,13 @@ class ShortcutsCollection extends DocumentCollection {
     }
   }
 
+  /**
+   * Fetches a shortcut by its ID.
+   *
+   * @param {string} id - The ID of the shortcut to retrieve.
+   * @returns {Promise<{data: object}>} The shortcut data, normalized.
+   * @throws {Error} If the fetch fails for any reason.
+   */
   async get(id) {
     const path = uri`/shortcuts/${id}`
     const resp = await this.stackClient.fetchJSON('GET', path)
