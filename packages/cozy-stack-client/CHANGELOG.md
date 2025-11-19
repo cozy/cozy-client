@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [60.17.1](https://github.com/cozy/cozy-client/compare/v60.17.0...v60.17.1) (2025-11-19)
+
+
+### Bug Fixes
+
+* Shortcuts normalization ([9c2095a](https://github.com/cozy/cozy-client/commit/9c2095a88de47552fd30a48759822dd7b227c52c))
+
+
+
+
+
 # [60.17.0](https://github.com/cozy/cozy-client/compare/v60.16.1...v60.17.0) (2025-11-04)
 
 
