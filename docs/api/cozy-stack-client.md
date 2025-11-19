@@ -48,6 +48,9 @@ Serves to dedupe equal queries requested at the same time</p>
 <dd><p>Implements the <code>DocumentCollection</code> API along with specific methods for
 <code>io.cozy.sharings</code>.</p>
 </dd>
+<dt><a href="#ShortcutsCollection">ShortcutsCollection</a></dt>
+<dd><p>Provides helpers to interact with shortcuts documents on the Cozy stack.</p>
+</dd>
 <dt><a href="#TriggerCollection">TriggerCollection</a></dt>
 <dd><p>Implements <code>DocumentCollection</code> API along with specific methods for <code>io.cozy.triggers</code>.</p>
 </dd>
@@ -121,6 +124,9 @@ query to work</p>
 <dt><a href="#getSharingRules">getSharingRules</a> ⇒ <code><a href="#Rule">Array.&lt;Rule&gt;</a></code></dt>
 <dd><p>Rules determine the behavior of the sharing when changes are made to the shared document
 See <a href="https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing">https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing</a></p>
+</dd>
+<dt><a href="#SHORTCUTS_DOCTYPE">SHORTCUTS_DOCTYPE</a> : <code>string</code></dt>
+<dd><p>Doctype for shortcuts documents.</p>
 </dd>
 <dt><a href="#forceDownload">forceDownload</a></dt>
 <dd><p>Force a download from the given href</p>
@@ -2096,6 +2102,31 @@ from the owner's cozy
 | --- | --- | --- |
 | sharing | [<code>Sharing</code>](#Sharing) | Sharing Objects |
 
+<a name="ShortcutsCollection"></a>
+
+## ShortcutsCollection
+Provides helpers to interact with shortcuts documents on the Cozy stack.
+
+**Kind**: global class  
+<a name="ShortcutsCollection+create"></a>
+
+### shortcutsCollection.create(attributes)
+Create a shortcut
+
+**Kind**: instance method of [<code>ShortcutsCollection</code>](#ShortcutsCollection)  
+**Throws**:
+
+- <code>Error</code> - explaining reason why creation failed
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| attributes | <code>object</code> | shortcut's attributes |
+| attributes.name | <code>string</code> | Filename |
+| attributes.url | <code>string</code> | Shortcut's URL |
+| attributes.dir_id | <code>string</code> | dir_id where to create the shortcut |
+| attributes.type | <code>string</code> \| <code>undefined</code> | shortcut's type |
+
 <a name="TriggerCollection"></a>
 
 ## TriggerCollection
@@ -2447,6 +2478,12 @@ See https://docs.cozy.io/en/cozy-stack/sharing-design/#description-of-a-sharing
 | document | [<code>Sharing</code>](#Sharing) | The document to share. Should have and _id and a name |
 | [sharingRulesOptions] | [<code>SharingRulesOptions</code>](#SharingRulesOptions) | The document to share. Should have and _id and a name |
 
+<a name="SHORTCUTS_DOCTYPE"></a>
+
+## SHORTCUTS\_DOCTYPE : <code>string</code>
+Doctype for shortcuts documents.
+
+**Kind**: global constant  
 <a name="forceDownload"></a>
 
 ## forceDownload
