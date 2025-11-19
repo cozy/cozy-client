@@ -2108,6 +2108,11 @@ from the owner's cozy
 Provides helpers to interact with shortcuts documents on the Cozy stack.
 
 **Kind**: global class  
+
+* [ShortcutsCollection](#ShortcutsCollection)
+    * [.create(attributes)](#ShortcutsCollection+create)
+    * [.get(id)](#ShortcutsCollection+get) ⇒ <code>Promise.&lt;{data: object}&gt;</code>
+
 <a name="ShortcutsCollection+create"></a>
 
 ### shortcutsCollection.create(attributes)
@@ -2126,6 +2131,22 @@ Create a shortcut
 | attributes.url | <code>string</code> | Shortcut's URL |
 | attributes.dir_id | <code>string</code> | dir_id where to create the shortcut |
 | attributes.type | <code>string</code> \| <code>undefined</code> | shortcut's type |
+
+<a name="ShortcutsCollection+get"></a>
+
+### shortcutsCollection.get(id) ⇒ <code>Promise.&lt;{data: object}&gt;</code>
+Fetches a shortcut by its ID.
+
+**Kind**: instance method of [<code>ShortcutsCollection</code>](#ShortcutsCollection)  
+**Returns**: <code>Promise.&lt;{data: object}&gt;</code> - The shortcut data, normalized.  
+**Throws**:
+
+- <code>Error</code> If the fetch fails for any reason.
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | The ID of the shortcut to retrieve. |
 
 <a name="TriggerCollection"></a>
 
