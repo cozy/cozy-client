@@ -37,7 +37,7 @@ describe('ShortcutsCollection', () => {
           type: 'file',
           name: 'cozy.url',
           dir_id: '629fb233be550a21174ac8e19f003e4a',
-          _id: '629fb233be550a21174ac8e19f0043af',
+          id: '629fb233be550a21174ac8e19f0043af',
           class: 'shortcut'
         }
       })
@@ -47,6 +47,7 @@ describe('ShortcutsCollection', () => {
         url: 'https://cozy/io'
       })
       expect(resp.data.dir_id).toBe('629fb233be550a21174ac8e19f003e4a')
+      expect(resp.data._id).toBe('629fb233be550a21174ac8e19f0043af')
     })
 
     it('throws an error if all required attributes are not there', async () => {
