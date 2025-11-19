@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [60.17.2](https://github.com/cozy/cozy-client/compare/v60.17.1...v60.17.2) (2025-11-19)
+
+
+### Bug Fixes
+
+* Add jsdoc to shortcutCollection ([f0fc5e4](https://github.com/cozy/cozy-client/commit/f0fc5e4e41c1db0c9c60b6e1b88f0b37d205d5be))
+
+
+
+
+
 ## [60.17.1](https://github.com/cozy/cozy-client/compare/v60.17.0...v60.17.1) (2025-11-19)
 
 
