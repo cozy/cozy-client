@@ -7,6 +7,7 @@ import * as konnectorFolder from './konnectorFolder'
 import * as account from './account'
 import * as note from './note'
 import * as permission from './permission'
+import * as prompt from './prompt'
 import * as utils from './utils'
 import * as contact from './contact'
 import * as document from './document'
@@ -34,6 +35,7 @@ export {
   account,
   accounts,
   permission,
+  prompt,
   utils,
   contact,
   document,
