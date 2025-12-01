@@ -134,15 +134,16 @@ class NextcloudFilesCollection extends DocumentCollection {
    * @param {object} to - The `io.cozy.files` folder to move the file to
    * @param {object} [options] - Options
    * @param {boolean} [options.copy] - Whether to copy the file instead of moving it
+   * @param {boolean} [options.FailOnConflict] - Whether to fail with 409 on conflict instead of auto-renaming the file
    */
-  async moveToCozy(file, to, { copy = false } = {}) {
+  async moveToCozy(file, to, { copy = false, FailOnConflict = false } = {}) {
     const resp = await this.stackClient.fetch(
       'POST',
       `/remote/nextcloud/${
         file.cozyMetadata.sourceAccount
       }/downstream${encodePath(file.path)}?To=${to._id}${
         copy ? '&Copy=true' : ''
-      }`
+      }${FailOnConflict ? '&FailOnConflict=true' : ''}`
     )
     if (resp.status === 201) {
       return resp
