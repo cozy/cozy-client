@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [60.18.0](https://github.com/cozy/cozy-client/compare/v60.17.2...v60.18.0) (2025-12-02)
+
+
+### Features
+
+* **nextcloudFileCollection:** Add FailOnConflict option to moveToCozy ([347eb00](https://github.com/cozy/cozy-client/commit/347eb005fd1fa87b784f3785dae2141671ba04ed))
+
+
+
+
+
 ## [60.17.2](https://github.com/cozy/cozy-client/compare/v60.17.1...v60.17.2) (2025-11-19)
 
 
