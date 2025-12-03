@@ -1965,6 +1965,7 @@ Implements the `DocumentCollection` API along with specific methods for
 * [SharingCollection](#SharingCollection)
     * [.findByDoctype(doctype, [options])](#SharingCollection+findByDoctype) ⇒ <code>object</code>
     * [.get(id)](#SharingCollection+get) ⇒ [<code>Sharing</code>](#Sharing)
+    * [.renameSharedDrive(sharing, newName)](#SharingCollection+renameSharedDrive) ⇒ <code>object</code>
     * [.fetchSharedDrives()](#SharingCollection+fetchSharedDrives) ⇒ <code>Promise.&lt;{data: Array.&lt;Sharing&gt;}&gt;</code>
     * [.create(params)](#SharingCollection+create)
     * [.getDiscoveryLink(sharingId, sharecode, [options])](#SharingCollection+getDiscoveryLink) ⇒ <code>string</code>
@@ -1999,6 +2000,19 @@ Fetches a sharing by id
 | Param | Type | Description |
 | --- | --- | --- |
 | id | <code>string</code> | Sharing's id |
+
+<a name="SharingCollection+renameSharedDrive"></a>
+
+### sharingCollection.renameSharedDrive(sharing, newName) ⇒ <code>object</code>
+Rename a shared drive
+
+**Kind**: instance method of [<code>SharingCollection</code>](#SharingCollection)  
+**Returns**: <code>object</code> - The response  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| sharing | [<code>Sharing</code>](#Sharing) | Sharing's id |
+| newName | <code>string</code> | New name |
 
 <a name="SharingCollection+fetchSharedDrives"></a>
 
