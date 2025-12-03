@@ -5,6 +5,7 @@
 ## Namespaces
 
 *   [account](models.account.md)
+*   [ai](models.ai.md)
 *   [applications](models.applications.md)
 *   [contact](models.contact.md)
 *   [dacc](models.dacc.md)
@@ -32,7 +33,7 @@
 
 *Defined in*
 
-[packages/cozy-client/src/models/index.js:23](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/index.js#L23)
+[packages/cozy-client/src/models/index.js:24](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/index.js#L24)
 
 ***
 
@@ -42,4 +43,4 @@
 
 *Defined in*
 
-[packages/cozy-client/src/models/index.js:22](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/index.js#L22)
+[packages/cozy-client/src/models/index.js:23](https://github.com/cozy/cozy-client/blob/master/packages/cozy-client/src/models/index.js#L23)

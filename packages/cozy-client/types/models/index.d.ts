@@ -19,4 +19,5 @@ import * as paper from "./paper";
 import * as user from "./user";
 import * as geo from "./geo";
 import * as doctypes from "./doctypes";
-export { trigger, instance, applications, file, folder, konnectorFolder, note, account, permission, utils, contact, document, timeseries, sharing, dacc, paper, user, geo, doctypes };
+import * as ai from "./ai";
+export { trigger, instance, applications, file, folder, konnectorFolder, note, account, permission, utils, contact, document, timeseries, sharing, dacc, paper, user, geo, doctypes, ai };
