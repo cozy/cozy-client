@@ -576,4 +576,39 @@ describe('SharingCollection', () => {
       )
     })
   })
+
+  describe('renameSharedDrive', () => {
+    beforeEach(() => {
+      client.fetch.mockReset()
+      client.fetchJSON.mockResolvedValue({ data: [] })
+    })
+
+    it('should call the right route with correct parameters', () => {
+      const sharing = {
+        _id: 'sharing_123',
+        rules: [
+          {
+            values: ['folder_456']
+          }
+        ]
+      }
+      const newName = 'New Folder Name'
+
+      collection.renameSharedDrive(sharing, newName)
+
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'PATCH',
+        '/sharings/drives/sharing_123/folder_456',
+        {
+          data: {
+            type: 'io.cozy.files',
+            id: 'folder_456',
+            attributes: {
+              name: 'New Folder Name'
+            }
+          }
+        }
+      )
+    })
+  })
 })

@@ -87,6 +87,30 @@ class SharingCollection extends DocumentCollection {
   }
 
   /**
+   * Rename a shared drive
+   *
+   * @param {Sharing} sharing Sharing's id
+   * @param {string} newName New name
+   * @returns {object} The response
+   */
+  renameSharedDrive(sharing, newName) {
+    const folderId = sharing?.rules?.[0]?.values?.[0]
+    return this.stackClient.fetchJSON(
+      'PATCH',
+      uri`/sharings/drives/${sharing?._id}/${folderId}`,
+      {
+        data: {
+          type: 'io.cozy.files',
+          id: folderId,
+          attributes: {
+            name: newName
+          }
+        }
+      }
+    )
+  }
+
+  /**
    * Fetch shared drives
    *
    * @returns {Promise<{ data: Sharing[]}>} Shared drives (which are io.cozy.sharings documents)
