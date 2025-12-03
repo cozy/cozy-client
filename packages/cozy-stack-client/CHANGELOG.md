@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [60.19.0](https://github.com/cozy/cozy-client/compare/v60.18.0...v60.19.0) (2025-12-03)
+
+
+### Features
+
+* **cozy-stack-client:** Allow to rename shared drives ([ed136f9](https://github.com/cozy/cozy-client/commit/ed136f98cf6e849404ba982704b084f2dfff6d50))
+
+
+
+
+
 # [60.18.0](https://github.com/cozy/cozy-client/compare/v60.17.2...v60.18.0) (2025-12-02)
 
 
