@@ -2013,6 +2013,7 @@ Implements the `DocumentCollection` API along with specific methods for
     * [.get(id)](#SharingCollection+get) ⇒ [<code>Sharing</code>](#Sharing)
     * [.renameSharedDrive(sharing, newName)](#SharingCollection+renameSharedDrive) ⇒ <code>object</code>
     * [.fetchSharedDrives()](#SharingCollection+fetchSharedDrives) ⇒ <code>Promise.&lt;{data: Array.&lt;Sharing&gt;}&gt;</code>
+    * [.acceptSharedDrive(sharing)](#SharingCollection+acceptSharedDrive) ⇒ <code>Promise.&lt;{data: Sharing}&gt;</code>
     * [.create(params)](#SharingCollection+create)
     * [.createSharedDrive(params)](#SharingCollection+createSharedDrive)
     * [.getDiscoveryLink(sharingId, sharecode, [options])](#SharingCollection+getDiscoveryLink) ⇒ <code>string</code>
@@ -2071,6 +2072,19 @@ Fetch shared drives
 
 **Kind**: instance method of [<code>SharingCollection</code>](#SharingCollection)  
 **Returns**: <code>Promise.&lt;{data: Array.&lt;Sharing&gt;}&gt;</code> - Shared drives (which are io.cozy.sharings documents)  
+<a name="SharingCollection+acceptSharedDrive"></a>
+
+### sharingCollection.acceptSharedDrive(sharing) ⇒ <code>Promise.&lt;{data: Sharing}&gt;</code>
+Accepts a shared drive on the recipient side, without going through
+the authorization page. Its shortcut is marked as seen.
+
+**Kind**: instance method of [<code>SharingCollection</code>](#SharingCollection)  
+**Returns**: <code>Promise.&lt;{data: Sharing}&gt;</code> - The accepted shared drive  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| sharing | [<code>Sharing</code>](#Sharing) | Sharing Object |
+
 <a name="SharingCollection+create"></a>
 
 ### sharingCollection.create(params)
