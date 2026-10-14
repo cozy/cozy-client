@@ -561,6 +561,26 @@ describe('SharingCollection', () => {
     })
   })
 
+  describe('acceptSharedDrive', () => {
+    beforeEach(() => {
+      client.fetchJSON.mockResolvedValue({
+        data: { type: 'io.cozy.sharings', id: SHARING._id }
+      })
+    })
+
+    it('should call the right route and normalize the sharing', async () => {
+      const resp = await collection.acceptSharedDrive(SHARING)
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        `/sharings/drives/${SHARING._id}/accept`
+      )
+      expect(resp.data).toMatchObject({
+        _id: SHARING._id,
+        _type: 'io.cozy.sharings'
+      })
+    })
+  })
+
   describe('revokeAllRecipients', () => {
     beforeEach(() => {
       client.fetch.mockReset()

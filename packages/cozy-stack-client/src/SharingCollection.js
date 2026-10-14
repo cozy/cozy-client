@@ -148,6 +148,21 @@ class SharingCollection extends DocumentCollection {
   }
 
   /**
+   * Accepts a shared drive on the recipient side, without going through
+   * the authorization page. Its shortcut is marked as seen.
+   *
+   * @param {Sharing} sharing Sharing Object
+   * @returns {Promise<{ data: Sharing }>} The accepted shared drive
+   */
+  async acceptSharedDrive(sharing) {
+    const resp = await this.stackClient.fetchJSON(
+      'POST',
+      uri`/sharings/drives/${sharing._id}/accept`
+    )
+    return { data: normalizeSharing(resp.data) }
+  }
+
+  /**
    *
    * Creates a new Sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#post-sharings
    *
