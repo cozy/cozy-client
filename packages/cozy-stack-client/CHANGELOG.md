@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [60.43.0](https://github.com/linagora/cozy-client/compare/v60.42.0...v60.43.0) (2026-10-15)
+
+
+### Features
+
+* **cozy-stack-client:** Add FileCollection.getDirectorySize ([a3417e5](https://github.com/linagora/cozy-client/commit/a3417e5da713e9dca7eaf5be5b160d9196ec5cc3))
+
+
+
+
+
 # [60.42.0](https://github.com/linagora/cozy-client/compare/v60.41.0...v60.42.0) (2026-10-15)
 
 
