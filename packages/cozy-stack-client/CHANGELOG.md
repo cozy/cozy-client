@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [60.42.0](https://github.com/linagora/cozy-client/compare/v60.41.0...v60.42.0) (2026-10-15)
+
+
+### Features
+
+* **stack-client:** Accept a shared drive from SharingCollection ([bca4117](https://github.com/linagora/cozy-client/commit/bca4117dcd55b08c691ee115a5730d0960a06aa3))
+
+
+
+
+
 # [60.41.0](https://github.com/linagora/cozy-client/compare/v60.40.0...v60.41.0) (2026-10-10)
 
 
