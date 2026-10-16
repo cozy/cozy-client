@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [60.44.0](https://github.com/cozy/cozy-client/compare/v60.43.0...v60.44.0) (2026-10-16)
+
+
+### Features
+
+* Add driveId option to createSharedDrive ([8dac34c](https://github.com/cozy/cozy-client/commit/8dac34c29f7579df64d43f77e76dc2d4c6cc0d4e))
+
+
+
+
+
 # [60.43.0](https://github.com/cozy/cozy-client/compare/v60.42.0...v60.43.0) (2026-10-15)
 
 
