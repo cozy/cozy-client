@@ -230,31 +230,47 @@ class SharingCollection extends DocumentCollection {
   /**
    * Creates a new shared drive. See https://docs.cozy.io/en/cozy-stack/shared-drives/
    *
+   * When `driveId` is given, the creation is delegated through the shared
+   * drive's proxied route (`POST /sharings/drives/:driveId/:fileId/drives`),
+   * which lets a member create a nested drive on the owner's instance.
+   *
    * @param {object} params Sharing params
    * @param {string=} params.name Name for the new shared drive (mutually exclusive with document)
-   * @param {Sharing=} params.document Existing folder to use as shared drive (mutually exclusive with name)
+   * @param {Sharing=} params.document Existing folder to use as shared drive (mutually exclusive with name, required with driveId)
    * @param {string} params.description Description of the sharing
    * @param {Array<Recipient>=} params.recipients Recipients to add to the sharing
    * @param {Array<Recipient>=} params.readOnlyRecipients Recipients to add with read only access
+   * @param {string=} params.driveId Id of the shared drive the document belongs to, to delegate the creation to its owner
    */
   async createSharedDrive({
     name,
     document,
     description,
     recipients = [],
-    readOnlyRecipients = []
+    readOnlyRecipients = [],
+    driveId
   }) {
+    if (driveId && !document) {
+      throw new Error(
+        'createSharedDrive: document is required when driveId is given'
+      )
+    }
+
     const attributes = {
       description
     }
 
     if (name) {
       attributes.name = name
-    } else if (document) {
+    } else if (document && !driveId) {
       attributes.folder_id = document._id
     }
 
-    const resp = await this.stackClient.fetchJSON('POST', '/sharings/drives', {
+    const url = driveId
+      ? sharedDriveApiPrefix(driveId) + uri`/${document._id}/drives`
+      : '/sharings/drives'
+
+    const resp = await this.stackClient.fetchJSON('POST', url, {
       data: {
         attributes,
         relationships: {
