@@ -2124,16 +2124,21 @@ Creates a new Sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#post-shar
 ### sharingCollection.createSharedDrive(params)
 Creates a new shared drive. See https://docs.cozy.io/en/cozy-stack/shared-drives/
 
+When `driveId` is given, the creation is delegated through the shared
+drive's proxied route (`POST /sharings/drives/:driveId/:fileId/drives`),
+which lets a member create a nested drive on the owner's instance.
+
 **Kind**: instance method of [<code>SharingCollection</code>](#SharingCollection)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | params | <code>object</code> | Sharing params |
 | [params.name] | <code>string</code> | Name for the new shared drive (mutually exclusive with document) |
-| [params.document] | [<code>Sharing</code>](#Sharing) | Existing folder to use as shared drive (mutually exclusive with name) |
+| [params.document] | [<code>Sharing</code>](#Sharing) | Existing folder to use as shared drive (mutually exclusive with name, required with driveId) |
 | params.description | <code>string</code> | Description of the sharing |
 | [params.recipients] | [<code>Array.&lt;Recipient&gt;</code>](#Recipient) | Recipients to add to the sharing |
 | [params.readOnlyRecipients] | [<code>Array.&lt;Recipient&gt;</code>](#Recipient) | Recipients to add with read only access |
+| [params.driveId] | <code>string</code> | Id of the shared drive the document belongs to, to delegate the creation to its owner |
 
 <a name="SharingCollection+getDiscoveryLink"></a>
 
