@@ -539,6 +539,81 @@ describe('SharingCollection', () => {
       )
     })
 
+    it('should call the nested drive route when a driveId is given', async () => {
+      await collection.createSharedDrive({
+        document: FOLDER,
+        driveId: 'drive_1',
+        recipients: [RECIPIENT],
+        readOnlyRecipients: [RECIPIENT],
+        description: 'nested drive'
+      })
+
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/sharings/drives/drive_1/folder_1/drives',
+        {
+          data: {
+            attributes: {
+              description: 'nested drive'
+            },
+            relationships: {
+              recipients: {
+                data: [{ id: 'contact_1', type: 'io.cozy.contacts' }]
+              },
+              read_only_recipients: {
+                data: [{ id: 'contact_1', type: 'io.cozy.contacts' }]
+              }
+            }
+          }
+        }
+      )
+    })
+
+    it('should not emit relationships when recipients lists are empty on the nested route', async () => {
+      await collection.createSharedDrive({
+        document: FOLDER,
+        driveId: 'drive_1',
+        description: 'nested drive'
+      })
+
+      expect(client.fetchJSON).toHaveBeenCalledWith(
+        'POST',
+        '/sharings/drives/drive_1/folder_1/drives',
+        {
+          data: {
+            attributes: {
+              description: 'nested drive'
+            },
+            relationships: {}
+          }
+        }
+      )
+    })
+
+    it('should normalize the response of the nested route', async () => {
+      client.fetchJSON.mockResolvedValue({ data: { id: 'sharing_1' } })
+
+      const resp = await collection.createSharedDrive({
+        document: FOLDER,
+        driveId: 'drive_1',
+        description: 'nested drive'
+      })
+
+      expect(resp).toEqual({
+        data: { id: 'sharing_1', _id: 'sharing_1', _type: 'io.cozy.sharings' }
+      })
+    })
+
+    it('should throw when driveId is given without document', async () => {
+      await expect(
+        collection.createSharedDrive({
+          name: 'My shared drive',
+          driveId: 'drive_1',
+          description: 'test'
+        })
+      ).rejects.toThrow('document is required when driveId is given')
+    })
+
     it('should be called when create is called with sharedDrive: true', async () => {
       const spy = jest.spyOn(collection, 'createSharedDrive')
       spy.mockResolvedValue({ data: [] })
