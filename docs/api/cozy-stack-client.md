@@ -2118,6 +2118,7 @@ Creates a new Sharing. See https://docs.cozy.io/en/cozy-stack/sharing/#post-shar
 | [params.openSharing] | <code>boolean</code> | If someone else than the owner can add a recipient to the sharing |
 | [params.appSlug] | <code>string</code> | Slug of the targeted app |
 | [params.sharedDrive] | <code>boolean</code> | If the sharing is a shared drive |
+| [params.driveId] | <code>string</code> | Id of the shared drive the document belongs to, to delegate the creation to its owner |
 
 <a name="SharingCollection+createSharedDrive"></a>
 
