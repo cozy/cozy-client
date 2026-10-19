@@ -622,14 +622,16 @@ describe('SharingCollection', () => {
         document: FOLDER,
         recipients: [RECIPIENT],
         description: 'test',
-        sharedDrive: true
+        sharedDrive: true,
+        driveId: 'drive_1'
       })
 
       expect(spy).toHaveBeenCalledWith({
         document: FOLDER,
         description: 'test',
         recipients: [RECIPIENT],
-        readOnlyRecipients: []
+        readOnlyRecipients: [],
+        driveId: 'drive_1'
       })
 
       spy.mockRestore()

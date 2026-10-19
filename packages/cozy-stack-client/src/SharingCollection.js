@@ -176,6 +176,7 @@ class SharingCollection extends DocumentCollection {
    * @param {boolean=} params.openSharing If someone else than the owner can add a recipient to the sharing
    * @param {string=} params.appSlug Slug of the targeted app
    * @param {boolean=} params.sharedDrive If the sharing is a shared drive
+   * @param {string=} params.driveId Id of the shared drive the document belongs to, to delegate the creation to its owner
    */
   async create({
     document,
@@ -186,14 +187,16 @@ class SharingCollection extends DocumentCollection {
     readOnlyRecipients = [],
     openSharing,
     appSlug,
-    sharedDrive
+    sharedDrive,
+    driveId
   }) {
     if (sharedDrive) {
       return this.createSharedDrive({
         document,
         description,
         recipients,
-        readOnlyRecipients
+        readOnlyRecipients,
+        driveId
       })
     }
 
