@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [60.45.0](https://github.com/linagora/cozy-client/compare/v60.44.0...v60.45.0) (2026-10-20)
+
+
+### Features
+
+* Simplify nested shared drive creation ([55a34a8](https://github.com/linagora/cozy-client/commit/55a34a8b838cafff74352e11f2629a935ed61f78))
+
+
+
+
+
 # [60.44.0](https://github.com/linagora/cozy-client/compare/v60.43.0...v60.44.0) (2026-10-16)
 
 
