@@ -667,6 +667,10 @@ export type ReferenceMap = {
 };
 export type MutationOptions = {
     /**
+     * - Shared drive scope for io.cozy.files creation through StackLink only
+     */
+    driveId?: string;
+    /**
      * - Use 'stack' for online-only file creation when an offline link is configured
      */
     forceLink?: string;

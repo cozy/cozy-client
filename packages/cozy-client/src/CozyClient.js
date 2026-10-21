@@ -9,7 +9,7 @@ import MicroEE from 'microee'
 
 import CozyStackClient, { OAuthClient } from 'cozy-stack-client'
 
-import { REGISTRATION_ABORT } from './const'
+import { DOCTYPE_FILES, REGISTRATION_ABORT } from './const'
 
 import StackLink from './links/StackLink'
 import { create as createAssociation } from './associations'
@@ -635,10 +635,13 @@ client.query(Q('io.cozy.bills'))`)
     const normalizedDoc = { _type: type, ...attributes }
     const ret = await this.schema.validate(normalizedDoc)
     if (ret !== true) throw new Error('Validation failed')
-    return this.mutate(
-      this.getDocumentSavePlan(normalizedDoc, references),
-      options
-    )
+    const mutation = this.getDocumentSavePlan(normalizedDoc, references)
+    if (type === DOCTYPE_FILES && options.driveId && Array.isArray(mutation)) {
+      throw new Error(
+        'References are not supported when creating files in a shared drive'
+      )
+    }
+    return this.mutate(mutation, options)
   }
 
   /**

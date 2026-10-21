@@ -211,6 +211,11 @@ export default class StackLink extends CozyLink {
     const { mutationType, document: doc, documents: docs, ...props } = mutation
     switch (mutationType) {
       case MutationTypes.CREATE_DOCUMENT:
+        if (doc._type === DOCTYPE_FILES && options?.driveId) {
+          return this.stackClient
+            .collection(doc._type, { driveId: options.driveId })
+            .create(doc)
+        }
         return this.stackClient.collection(doc._type).create(doc)
       case MutationTypes.UPDATE_DOCUMENTS: {
         const updateAllResp = await this.stackClient
