@@ -382,7 +382,7 @@ declare class CozyClient {
      * @param  {import("./types").ReferenceMap} [references] - References are a special kind of relationship
      * that is not stored inside the referencer document, they are used for example between a photo
      * and its album. You should not need to use it normally.
-     * @param  {object} options - Mutation options
+     * @param {Partial<import('./types').MutationOptions>} [options] - Mutation options
      *
      * @example
      * ```js
@@ -398,7 +398,7 @@ declare class CozyClient {
      *
      * @returns {Promise}
      */
-    create(type: string, doc: object, references?: import("./types").ReferenceMap, options?: object): Promise<any>;
+    create(type: string, doc: object, references?: import("./types").ReferenceMap, options?: Partial<import('./types').MutationOptions>): Promise<any>;
     /**
      * Create multiple documents in one batch.
      * WARNING: this method is currently not supported by the stack, but
@@ -543,18 +543,11 @@ declare class CozyClient {
      * Mutate a document
      *
      * @param  {object} mutationDefinition - Describe the mutation
-     * @param {object} [params] The mutation params
-     * @param {function} [params.update] - update function from MutationOptions
-     * @param {function} [params.updateQueries] - updateQueries function from MutationOptions
-     * @param {string} [params.as] - Mutation id
-     * @param {Object} [params.options={}] - Additional options
+     * @param {Partial<import('./types').MutationOptions> & { options?: object }} [params] - Mutation options
      * @returns {Promise}
      */
-    mutate(mutationDefinition: object, { update, updateQueries, ...options }?: {
-        update?: Function;
-        updateQueries?: Function;
-        as?: string;
-        options?: any;
+    mutate(mutationDefinition: object, { update, updateQueries, ...options }?: Partial<import("./types").MutationOptions> & {
+        options?: object;
     }): Promise<any>;
     /**
      * Executes a query through links and fetches relationships

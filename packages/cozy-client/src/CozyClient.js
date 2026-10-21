@@ -614,7 +614,7 @@ client.query(Q('io.cozy.bills'))`)
    * @param  {import("./types").ReferenceMap} [references] - References are a special kind of relationship
    * that is not stored inside the referencer document, they are used for example between a photo
    * and its album. You should not need to use it normally.
-   * @param  {object} options - Mutation options
+   * @param {Partial<import('./types').MutationOptions>} [options] - Mutation options
    *
    * @example
    * ```js
@@ -1136,11 +1136,7 @@ client.query(Q('io.cozy.bills'))`)
    * Mutate a document
    *
    * @param  {object} mutationDefinition - Describe the mutation
-   * @param {object} [params] The mutation params
-   * @param {function} [params.update] - update function from MutationOptions
-   * @param {function} [params.updateQueries] - updateQueries function from MutationOptions
-   * @param {string} [params.as] - Mutation id
-   * @param {Object} [params.options={}] - Additional options
+   * @param {Partial<import('./types').MutationOptions> & { options?: object }} [params] - Mutation options
    * @returns {Promise}
    */
   async mutate(mutationDefinition, { update, updateQueries, ...options } = {}) {

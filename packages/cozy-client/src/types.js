@@ -401,9 +401,11 @@ import { QueryDefinition } from './queries/dsl'
 
 /**
  * @typedef {object} MutationOptions
+ * @property {string} [forceLink] - Use 'stack' for online-only file creation when an offline link is configured
+ * @property {boolean} [forceStack] - Deprecated: use forceLink:'stack' instead
  * @property {string} as - Mutation id
    @property  {Function} update - Function to update the document
- * @property  {Function} updateQueries - Function to update queries
+ * @property {Object.<string, Function>} updateQueries - Query update functions indexed by query id
  */
 
 /**

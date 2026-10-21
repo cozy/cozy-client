@@ -667,6 +667,14 @@ export type ReferenceMap = {
 };
 export type MutationOptions = {
     /**
+     * - Use 'stack' for online-only file creation when an offline link is configured
+     */
+    forceLink?: string;
+    /**
+     * - Deprecated: use forceLink:'stack' instead
+     */
+    forceStack?: boolean;
+    /**
      * - Mutation id
      */
     as: string;
@@ -675,9 +683,11 @@ export type MutationOptions = {
      */
     update: Function;
     /**
-     * - Function to update queries
+     * - Query update functions indexed by query id
      */
-    updateQueries: Function;
+    updateQueries: {
+        [x: string]: Function;
+    };
 };
 export type UpdatedByApp = {
     /**
