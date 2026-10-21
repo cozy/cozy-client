@@ -14,7 +14,7 @@ it('accepts supported create and mutate options in the published types', () => {
     })
     client.create('io.cozy.files', {}, null, { forceStack: true })
     client.create('io.cozy.files', {}, null, {
-      forceLink: 'stack', as: 'create-directory'
+      driveId: 'shared-drive', forceLink: 'stack', as: 'create-directory'
     })
     client.create('io.cozy.todos', {})
 
@@ -23,6 +23,7 @@ it('accepts supported create and mutate options in the published types', () => {
       document: { _type: 'io.cozy.todos', title: 'A task' }
     }
     client.mutate(mutation)
+    client.mutate(mutation, { driveId: 'shared-drive' })
     client.mutate(mutation, { forceLink: 'stack' })
     client.mutate(mutation, { forceStack: true })
     client.mutate(mutation, {
@@ -34,6 +35,8 @@ it('accepts supported create and mutate options in the published types', () => {
       options: {}
     })
 
+    // @ts-expect-error Drive identifiers must be strings.
+    client.mutate(mutation, { driveId: false })
     // @ts-expect-error Link names must be strings.
     client.mutate(mutation, { forceLink: false })
     // @ts-expect-error The legacy routing flag must be a boolean.
@@ -41,6 +44,8 @@ it('accepts supported create and mutate options in the published types', () => {
     // @ts-expect-error Each query updater must be a function.
     client.mutate(mutation, { updateQueries: { todos: 'invalid' } })
 
+    // @ts-expect-error Drive identifiers must be strings.
+    client.create('io.cozy.files', {}, null, { driveId: false })
     // @ts-expect-error Each query updater must be a function.
     client.create('io.cozy.todos', {}, null, { updateQueries: { todos: 'invalid' } })
   `

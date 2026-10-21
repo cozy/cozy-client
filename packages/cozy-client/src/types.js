@@ -401,6 +401,7 @@ import { QueryDefinition } from './queries/dsl'
 
 /**
  * @typedef {object} MutationOptions
+ * @property {string} [driveId] - Shared drive scope for io.cozy.files creation through StackLink only
  * @property {string} [forceLink] - Use 'stack' for online-only file creation when an offline link is configured
  * @property {boolean} [forceStack] - Deprecated: use forceLink:'stack' instead
  * @property {string} as - Mutation id
