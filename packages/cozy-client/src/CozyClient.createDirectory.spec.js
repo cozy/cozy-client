@@ -68,6 +68,39 @@ describe('CozyClient directory creation through StackLink', () => {
     }
   )
 
+  it('creates a shared-drive directory with save when the document has no revision', async () => {
+    const { client, fetchJSON } = await setup()
+
+    const response = await client.save(
+      {
+        _type: doctype,
+        type: 'directory',
+        name: 'New folder',
+        dirId: 'parent-id'
+      },
+      { driveId: 'shared-drive', forceLink: 'stack' }
+    )
+
+    expect(fetchJSON).toHaveBeenCalledWith(
+      'POST',
+      '/sharings/drives/shared-drive/parent-id?Name=New%20folder&Type=directory&MetadataID=',
+      undefined,
+      { headers: { Date: '' } }
+    )
+    expect(response.data).toMatchObject({
+      _id: 'folder-id',
+      _type: doctype,
+      type: 'directory',
+      dir_id: 'parent-id',
+      driveId: 'shared-drive'
+    })
+    expect(client.getQueryFromState('children/shared-drive').data).toEqual([
+      response.data
+    ])
+    expect(client.getQueryFromState('children').data).toEqual([])
+    expect(client.getQueryFromState('children/other-drive').data).toEqual([])
+  })
+
   it('keeps shared-drive scope out of a subsequent local creation on the same client', async () => {
     const { client, fetchJSON } = await setup()
     const sharedResponse = await createDirectory(client, 'shared-drive')
