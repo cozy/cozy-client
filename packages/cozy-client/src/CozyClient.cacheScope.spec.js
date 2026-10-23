@@ -184,6 +184,31 @@ describe('file query cache scope', () => {
     expect(getCachedIds(client)).toEqual([[], [], [folder.id]])
   })
 
+  it('uses the realtime document driveId when the option targets another drive', async () => {
+    const { client } = setup()
+    const document = {
+      _id: folder.id,
+      ...folder.attributes,
+      driveId: 'drive-a'
+    }
+    const options = { driveId: 'drive-b' }
+
+    await dispatchCreate(client, doctype, document, options)
+    expect(getCachedIds(client)).toEqual([[], [folder.id], []])
+
+    await dispatchUpdate(
+      client,
+      doctype,
+      { ...document, name: 'Renamed' },
+      options
+    )
+    expect(getCachedIds(client)).toEqual([[], [folder.id], []])
+    expect(client.getQueryFromState('drive-a').data[0].name).toBe('Renamed')
+
+    await dispatchDelete(client, doctype, document, options)
+    expect(getCachedIds(client)).toEqual([[], [], []])
+  })
+
   it('isolates a mixed offline sync batch and reads from the store', async () => {
     const { client, definitions } = setup()
     const documents = makeSyncedFolders()

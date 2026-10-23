@@ -17,8 +17,8 @@ const normalizeDoc = (couchDBDoc, doctype, driveId) => {
   return {
     id: couchDBDoc._id,
     _type: doctype,
-    ...couchDBDoc,
-    ...(doctype === DOCTYPE_FILES && driveId ? { driveId } : {})
+    ...(doctype === DOCTYPE_FILES && driveId ? { driveId } : {}),
+    ...couchDBDoc
   }
 }
 
