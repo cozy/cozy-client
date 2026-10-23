@@ -644,6 +644,7 @@ client.query(Q('io.cozy.bills'))`)
     const ret = await this.schema.validate(normalizedDoc)
     if (ret !== true) throw new Error('Validation failed')
     const mutation = this.getDocumentSavePlan(normalizedDoc, references)
+    // References produce a multi-step save plan, represented as an array.
     if (type === DOCTYPE_FILES && options.driveId && Array.isArray(mutation)) {
       throw new Error(
         'References are not supported when creating files in a shared drive'
