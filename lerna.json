@@ -2,7 +2,7 @@
   "packages": [
     "packages/*"
   ],
-  "version": "60.45.0",
+  "version": "61.0.0",
   "npmClient": "yarn",
   "command": {
     "version": {

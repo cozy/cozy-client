@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [61.0.0](https://github.com/cozy/cozy-client/compare/v60.45.0...v61.0.0) (2026-10-23)
+
+
+### Bug Fixes
+
+* Isolate file query caches by shared drive ([c7e19e1](https://github.com/cozy/cozy-client/commit/c7e19e1d462f43836da61e4450b0ce2ad99ab6d2))
+* Preserve the realtime document drive scope ([43b4ecb](https://github.com/cozy/cozy-client/commit/43b4ecb2c54877252bcd612169cbaa95b58084d1))
+* Type mutation options without breaking existing callers ([32beec0](https://github.com/cozy/cozy-client/commit/32beec0c93d9dd7ce80e15efee79eb7f029c1680))
+
+
+### Features
+
+* Create shared-drive directories through the mutation pipeline ([18bf91a](https://github.com/cozy/cozy-client/commit/18bf91a9f01286c5bcf2aa03349a1aaa839f76d1))
+
+
+### BREAKING CHANGES
+
+* File cache queries without a drive scope or driveId
+selector now exclude shared documents. Use sharingById(driveId) or an
+explicit driveId selector to read shared cached files. Scoped getById
+queries now use drive-specific cache keys; update implicit-key lookups
+or provide an explicit as alias.
+
+
+
+
+
 # [60.45.0](https://github.com/cozy/cozy-client/compare/v60.44.0...v60.45.0) (2026-10-20)
 
 
