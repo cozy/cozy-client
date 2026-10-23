@@ -21,9 +21,12 @@ const setup = async (schema = {}) => {
   const client = new CozyClient({ stackClient, schema })
   const fetchJSON = jest.spyOn(stackClient, 'fetchJSON')
   fetchJSON.mockResolvedValue({ data: [], meta: { count: 0 } })
-  await client.query(Q(doctype).where({ dir_id: 'parent-id' }), {
-    as: 'children'
-  })
+  for (const driveId of [null, 'shared-drive', 'other-drive']) {
+    const definition = Q(doctype).where({ dir_id: 'parent-id' })
+    await client.query(driveId ? definition.sharingById(driveId) : definition, {
+      as: driveId ? `children/${driveId}` : 'children'
+    })
+  }
   fetchJSON.mockClear()
   fetchJSON.mockResolvedValue({ data: folder })
   return { client, fetchJSON }
@@ -59,11 +62,15 @@ describe('CozyClient directory creation through StackLink', () => {
         name: 'New folder',
         dir_id: 'parent-id'
       })
-      expect(client.getQueryFromState('children').data).toEqual([response.data])
+      const queryId = driveId ? `children/${driveId}` : 'children'
+      expect(client.getQueryFromState(queryId).data).toEqual([response.data])
 
       // Realtime echoes the sender's creation back into the same cache.
-      await dispatchCreate(client, doctype, response.data)
-      expect(client.getQueryFromState('children').data).toEqual([response.data])
+      await dispatchCreate(client, doctype, response.data, { driveId })
+      expect(client.getQueryFromState(queryId).data).toEqual([response.data])
+      const otherQueryId = driveId ? 'children' : 'children/shared-drive'
+      expect(client.getQueryFromState(otherQueryId).data).toEqual([])
+      expect(client.getQueryFromState('children/other-drive').data).toEqual([])
       expect(fetchJSON).toHaveBeenCalledTimes(1)
     }
   )
@@ -120,9 +127,12 @@ describe('CozyClient directory creation through StackLink', () => {
       dir_id: 'parent-id'
     })
     expect(client.getQueryFromState('children').data).toEqual([
-      sharedResponse.data,
       localResponse.data
     ])
+    expect(client.getQueryFromState('children/shared-drive').data).toEqual([
+      sharedResponse.data
+    ])
+    expect(client.getQueryFromState('children/other-drive').data).toEqual([])
   })
 
   it('keeps the ordinary data endpoint for non-files created with a drive scope', async () => {
@@ -205,23 +215,35 @@ describe('CozyClient directory creation through StackLink', () => {
       expect(fetchJSON.mock.calls[0][1]).toBe(
         '/sharings/drives/shared-drive/parent-id?Name=New%20folder&Type=directory&MetadataID='
       )
-      expect(client.getQueryFromState('children').data).toEqual([response.data])
+      expect(client.getQueryFromState('children/shared-drive').data).toEqual([
+        response.data
+      ])
+      expect(client.getQueryFromState('children').data).toEqual([])
     }
   )
 
   it('deduplicates a realtime echo arriving before the mutation response', async () => {
     const { client, fetchJSON } = await setup()
     fetchJSON.mockImplementation(async () => {
-      await dispatchCreate(client, doctype, {
-        _id: folder.id,
-        _rev: folder.meta.rev,
-        ...folder.attributes
-      })
+      await dispatchCreate(
+        client,
+        doctype,
+        {
+          _id: folder.id,
+          _rev: folder.meta.rev,
+          ...folder.attributes
+        },
+        { driveId: 'shared-drive' }
+      )
       return { data: folder }
     })
 
     const response = await createDirectory(client, 'shared-drive')
-    expect(client.getQueryFromState('children').data).toEqual([response.data])
+    expect(client.getQueryFromState('children/shared-drive').data).toEqual([
+      response.data
+    ])
+    expect(client.getQueryFromState('children').data).toEqual([])
+    expect(client.getQueryFromState('children/other-drive').data).toEqual([])
   })
 
   it('rejects a failed shared-drive creation without inserting a directory', async () => {

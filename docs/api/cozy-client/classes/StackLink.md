@@ -99,7 +99,7 @@ CozyLink.name
 
 *Defined in*
 
-[packages/cozy-client/src/links/StackLink.js:210](https://github.com/linagora/cozy-client/blob/master/packages/cozy-client/src/links/StackLink.js#L210)
+[packages/cozy-client/src/links/StackLink.js:228](https://github.com/linagora/cozy-client/blob/master/packages/cozy-client/src/links/StackLink.js#L228)
 
 ***
 
@@ -119,7 +119,7 @@ CozyLink.name
 
 *Defined in*
 
-[packages/cozy-client/src/links/StackLink.js:136](https://github.com/linagora/cozy-client/blob/master/packages/cozy-client/src/links/StackLink.js#L136)
+[packages/cozy-client/src/links/StackLink.js:154](https://github.com/linagora/cozy-client/blob/master/packages/cozy-client/src/links/StackLink.js#L154)
 
 ***
 
@@ -146,7 +146,7 @@ Persist the given data into the links storage
 
 *Defined in*
 
-[packages/cozy-client/src/links/StackLink.js:128](https://github.com/linagora/cozy-client/blob/master/packages/cozy-client/src/links/StackLink.js#L128)
+[packages/cozy-client/src/links/StackLink.js:146](https://github.com/linagora/cozy-client/blob/master/packages/cozy-client/src/links/StackLink.js#L146)
 
 ***
 

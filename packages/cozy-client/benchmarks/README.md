@@ -11,8 +11,10 @@ The benchmarks exercise the real `packages/cozy-client/src/store/queries.js` red
 - **`store-queries:receiveQueryResult-getById-heavy`** — the `queries()` reducer
   handling a `RECEIVE_QUERY_RESULT` that carries 10k `io.cozy.files` documents against
   a store of 1000 `getById` queries and 200 selector queries. This is the key metric:
-  it guards the store update cost when a large `setData` lands. It is the only metric
-  with a regression gate.
+  it guards the store update cost when a large `setData` lands.
+- **`store-queries:receiveQueryResult-mixed-drives`** — the same reducer workload
+  with files and queries split between personal storage and two shared drives.
+  Guards the scope checks for mixed offline sync batches.
 - **`store-queries:selector-eval-folder-listing`** — `updateData()` evaluating a
   `{ dir_id, type, name: { $gt: null } }` folder-listing selector over 10k documents.
   Exercises `sift` and the custom `$gtnull` operator. Informational.

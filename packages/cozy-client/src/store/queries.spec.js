@@ -707,6 +707,57 @@ describe('updateData', () => {
 })
 
 describe('computeMatchPartition', () => {
+  it('ignores other drives instead of removing their documents from the query', () => {
+    const makeFile = (_id, driveId, name = 'Wanted') => ({
+      _id,
+      _type: 'io.cozy.files',
+      driveId,
+      name
+    })
+    const data = [
+      makeFile('personal', null),
+      makeFile('a-match', 'drive-a'),
+      makeFile('a-renamed', 'drive-a', 'Renamed'),
+      makeFile('b-match', 'drive-b')
+    ]
+    const definition = Q('io.cozy.files').where({ name: 'Wanted' })
+
+    expect(
+      computeMatchPartition(definition.sharingById('drive-a'), data)
+    ).toEqual({
+      matchedIds: ['a-match'],
+      unmatchedIds: ['a-renamed']
+    })
+    expect(
+      computeMatchPartition(definition.sharingById('drive-b'), data)
+    ).toEqual({
+      matchedIds: ['b-match'],
+      unmatchedIds: []
+    })
+    expect(computeMatchPartition(definition, data)).toEqual({
+      matchedIds: ['personal'],
+      unmatchedIds: []
+    })
+  })
+
+  it.each([false, true])(
+    'ignores another drive for an id query (multiple: %s)',
+    multiple => {
+      const definition = Q('io.cozy.files').sharingById('drive-b')
+      const query = multiple
+        ? definition.getByIds(['same-id'])
+        : definition.getById('same-id')
+      const data = [
+        { _id: 'same-id', _type: 'io.cozy.files', driveId: 'drive-a' }
+      ]
+
+      expect(computeMatchPartition(query, data)).toEqual({
+        matchedIds: [],
+        unmatchedIds: []
+      })
+    }
+  )
+
   it('should resolve a getById query without scanning the whole newData', () => {
     const newData = [TODO_1, TODO_2, TODO_3]
     const definition = Q('io.cozy.todos').getById(TODO_2._id)

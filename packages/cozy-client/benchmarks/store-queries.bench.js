@@ -83,6 +83,26 @@ const getSpecs = () => {
 
   const heavyState = makeGetByIdHeavyState()
   const receiveAction = receiveQueryResult(null, { data: docs })
+  const mixedDocs = docs.map((doc, index) => ({
+    ...doc,
+    ...(index % 3 ? { driveId: `drive-${index % 3}` } : {})
+  }))
+  const mixedAction = receiveQueryResult(null, { data: mixedDocs })
+  const mixedState = Object.fromEntries(
+    Object.entries(heavyState).map(([id, query], index) => [
+      id,
+      {
+        ...query,
+        definition:
+          index % 3
+            ? query.definition.sharingById(`drive-${index % 3}`)
+            : query.definition
+      }
+    ])
+  )
+  const mixedDocuments = {
+    [DOCTYPE]: Object.fromEntries(mixedDocs.map(doc => [doc._id, doc]))
+  }
 
   const selectorDefinition = Q(DOCTYPE).where({
     dir_id: 'dir_7',
@@ -108,6 +128,24 @@ const getSpecs = () => {
       regressionThresholdPct: 25,
       run: () => {
         queries(defaultPerformanceApi, heavyState, receiveAction, documents, true)
+      }
+    },
+    {
+      name: 'store-queries:receiveQueryResult-mixed-drives',
+      description:
+        'queries() reducer applying 10k files from personal storage and two drives ' +
+        'against 1000 getById queries + 200 selector queries across those scopes',
+      warmup: 1,
+      runs: 5,
+      regressionThresholdPct: 25,
+      run: () => {
+        queries(
+          defaultPerformanceApi,
+          mixedState,
+          mixedAction,
+          mixedDocuments,
+          true
+        )
       }
     },
     {

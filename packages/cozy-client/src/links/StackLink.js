@@ -110,10 +110,28 @@ export default class StackLink extends CozyLink {
       return forward(operation, options)
     }
     try {
-      if (operation.mutationType) {
-        return await this.executeMutation(operation, options, result, forward)
+      const response = operation.mutationType
+        ? await this.executeMutation(operation, options, result, forward)
+        : await this.executeQuery(operation)
+      const driveId = operation.mutationType
+        ? operation.mutationType === MutationTypes.CREATE_DOCUMENT &&
+          options?.driveId
+        : operation.sharingId
+      const doctype = operation.doctype || operation.document?._type
+      if (doctype === DOCTYPE_FILES && driveId) {
+        const addDriveId = document =>
+          document ? { ...document, driveId } : document
+        return {
+          ...response,
+          data: Array.isArray(response.data)
+            ? response.data.map(addDriveId)
+            : addDriveId(response.data),
+          ...(response.included && {
+            included: response.included.map(addDriveId)
+          })
+        }
       }
-      return await this.executeQuery(operation)
+      return response
     } catch (err) {
       if (forceLink !== 'stack' && isReactNativeOfflineError(err)) {
         if (operation.doctype === DOCTYPE_SHARING_RECIPIENTS) {

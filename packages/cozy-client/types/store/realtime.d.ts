@@ -6,4 +6,8 @@ export type DispatchOptions = {
      * Optional function to enhance the document attributes before dispatch
      */
     enhanceDocFn?: Function;
+    /**
+     * Shared drive that emitted this event
+     */
+    driveId?: string;
 };

@@ -529,6 +529,10 @@ export type QueryOptions = {
      */
     as?: string;
     /**
+     * - Shared-drive scope for io.cozy.files queries; equivalent to sharingById()
+     */
+    driveId?: string;
+    /**
      * - Fetch policy to bypass fetching based on what's already inside the state. See "Fetch policies"
      */
     fetchPolicy?: Function;

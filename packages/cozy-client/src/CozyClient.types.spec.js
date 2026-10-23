@@ -5,6 +5,8 @@ it('accepts supported create and mutate options in the published types', () => {
   const filename = path.resolve(__dirname, '../types/CozyClient.consumer.js')
   const source = `
     import CozyClient from './CozyClient'
+    import { Q } from './queries/dsl'
+    import { dispatchCreate } from './store/realtime'
 
     const client = new CozyClient({})
     client.create('io.cozy.todos', {}, null, {
@@ -26,6 +28,12 @@ it('accepts supported create and mutate options in the published types', () => {
     client.mutate(mutation, { driveId: 'shared-drive' })
     client.mutate(mutation, { forceLink: 'stack' })
     client.mutate(mutation, { forceStack: true })
+    client.query(Q('io.cozy.files'), { driveId: 'shared-drive' })
+    dispatchCreate(client, 'io.cozy.files', { _id: 'file-id', _rev: '1-created' }, { driveId: 'shared-drive' })
+    // @ts-expect-error Query drive identifiers must be strings.
+    client.query(Q('io.cozy.files'), { driveId: false })
+    // @ts-expect-error Realtime drive identifiers must be strings.
+    dispatchCreate(client, 'io.cozy.files', { _id: 'file-id', _rev: '1-created' }, { driveId: false })
     client.mutate(mutation, {
       as: 'create-task',
       update: document => document,

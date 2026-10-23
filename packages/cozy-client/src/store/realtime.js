@@ -1,4 +1,5 @@
 import { Mutations } from '../queries/dsl'
+import { DOCTYPE_FILES } from '../const'
 import { receiveMutationResult } from './mutations'
 
 /**
@@ -9,13 +10,15 @@ import { receiveMutationResult } from './mutations'
  * @public
  * @param {import("../types").CouchDBDocument} couchDBDoc - object representing the document
  * @param {string} doctype - Doctype of the document
+ * @param {string} [driveId] - Shared drive that emitted this event
  * @returns {import("../types").CozyClientDocument} full normalized document
  */
-const normalizeDoc = (couchDBDoc, doctype) => {
+const normalizeDoc = (couchDBDoc, doctype, driveId) => {
   return {
     id: couchDBDoc._id,
     _type: doctype,
-    ...couchDBDoc
+    ...couchDBDoc,
+    ...(doctype === DOCTYPE_FILES && driveId ? { driveId } : {})
   }
 }
 
@@ -63,6 +66,7 @@ const dispatchChange = (client, document, mutationDefinitionCreator) => {
 /**
  * @typedef {Object} DispatchOptions
  * @property {function} [enhanceDocFn] Optional function to enhance the document attributes before dispatch
+ * @property {string} [driveId] Shared drive that emitted this event
  */
 
 /**
@@ -79,7 +83,7 @@ export const dispatchCreate = async (
   couchDBDoc,
   options = {}
 ) => {
-  const normalizedDoc = normalizeDoc(couchDBDoc, doctype)
+  const normalizedDoc = normalizeDoc(couchDBDoc, doctype, options.driveId)
   const enhancedDoc = await enhanceDoc(normalizedDoc, {
     client,
     enhanceDocFn: options?.enhanceDocFn
@@ -101,7 +105,7 @@ export const dispatchUpdate = async (
   couchDBDoc,
   options = {}
 ) => {
-  const normalizedDoc = normalizeDoc(couchDBDoc, doctype)
+  const normalizedDoc = normalizeDoc(couchDBDoc, doctype, options.driveId)
   const enhancedDoc = await enhanceDoc(normalizedDoc, {
     client,
     enhanceDocFn: options?.enhanceDocFn
@@ -123,7 +127,11 @@ export const dispatchDelete = async (
   couchDBDoc,
   options = {}
 ) => {
-  const normalizedDoc = normalizeDoc({ ...couchDBDoc, _deleted: true }, doctype)
+  const normalizedDoc = normalizeDoc(
+    { ...couchDBDoc, _deleted: true },
+    doctype,
+    options.driveId
+  )
   const enhancedDoc = await enhanceDoc(normalizedDoc, {
     client,
     enhanceDocFn: options?.enhanceDocFn
