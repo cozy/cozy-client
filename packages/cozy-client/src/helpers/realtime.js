@@ -1,14 +1,19 @@
 import { Q } from '../queries/dsl'
 import CozyClient from '../CozyClient'
 
-const buildFileByIdQuery = id => ({
-  definition: () => Q('io.cozy.files').getById(id),
-  options: {
-    as: `io.cozy.files/${id}`,
-    singleDocData: true,
-    fetchPolicy: CozyClient.fetchPolicies.olderThan(30 * 1000)
+function buildFileByIdQuery(id, driveId) {
+  const definition = Q('io.cozy.files').getById(id)
+  return {
+    definition: () => (driveId ? definition.sharingById(driveId) : definition),
+    options: {
+      as: driveId
+        ? `io.cozy.files/drive/${driveId}/${id}`
+        : `io.cozy.files/${id}`,
+      singleDocData: true,
+      fetchPolicy: CozyClient.fetchPolicies.olderThan(30 * 1000)
+    }
   }
-})
+}
 
 /**
  * Ensures existence of `path` inside the io.cozy.files document
@@ -24,7 +29,7 @@ const buildFileByIdQuery = id => ({
 export const ensureFilePath = async (couchDBDoc, options = {}) => {
   if (couchDBDoc.path) return couchDBDoc
 
-  const parentQuery = buildFileByIdQuery(couchDBDoc.dir_id)
+  const parentQuery = buildFileByIdQuery(couchDBDoc.dir_id, couchDBDoc.driveId)
   const parentResult = await options.client.fetchQueryAndGetFromState({
     definition: parentQuery.definition(),
     options: parentQuery.options

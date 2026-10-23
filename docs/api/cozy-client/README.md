@@ -61,7 +61,7 @@ cozy-client
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:567](https://github.com/linagora/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L567)
+[packages/cozy-client/src/queries/dsl.js:572](https://github.com/linagora/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L572)
 
 ***
 
@@ -87,7 +87,7 @@ cozy-client
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:553](https://github.com/linagora/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L553)
+[packages/cozy-client/src/queries/dsl.js:558](https://github.com/linagora/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L558)
 
 ***
 
@@ -380,7 +380,7 @@ Dispatches a create action for a document to update CozyClient store from realti
 
 *Defined in*
 
-[packages/cozy-client/src/store/realtime.js:76](https://github.com/linagora/cozy-client/blob/master/packages/cozy-client/src/store/realtime.js#L76)
+[packages/cozy-client/src/store/realtime.js:80](https://github.com/linagora/cozy-client/blob/master/packages/cozy-client/src/store/realtime.js#L80)
 
 ***
 
@@ -405,7 +405,7 @@ Dispatches a delete action for a document to update CozyClient store from realti
 
 *Defined in*
 
-[packages/cozy-client/src/store/realtime.js:120](https://github.com/linagora/cozy-client/blob/master/packages/cozy-client/src/store/realtime.js#L120)
+[packages/cozy-client/src/store/realtime.js:124](https://github.com/linagora/cozy-client/blob/master/packages/cozy-client/src/store/realtime.js#L124)
 
 ***
 
@@ -430,7 +430,7 @@ Dispatches a update action for a document to update CozyClient store from realti
 
 *Defined in*
 
-[packages/cozy-client/src/store/realtime.js:98](https://github.com/linagora/cozy-client/blob/master/packages/cozy-client/src/store/realtime.js#L98)
+[packages/cozy-client/src/store/realtime.js:102](https://github.com/linagora/cozy-client/blob/master/packages/cozy-client/src/store/realtime.js#L102)
 
 ***
 
@@ -569,7 +569,7 @@ Generated URL
 
 *Defined in*
 
-[packages/cozy-client/src/queries/dsl.js:525](https://github.com/linagora/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L525)
+[packages/cozy-client/src/queries/dsl.js:530](https://github.com/linagora/cozy-client/blob/master/packages/cozy-client/src/queries/dsl.js#L530)
 
 ***
 

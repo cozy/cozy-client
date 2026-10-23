@@ -16,7 +16,7 @@ import { getDocumentFromSlice } from './documents'
 import { isReceivingMutationResult } from './mutations'
 import { properId } from './helpers'
 import { isAGetByIdQuery, QueryDefinition } from '../queries/dsl'
-import { DOCTYPE_SHARING_RECIPIENTS } from '../const'
+import { DOCTYPE_FILES, DOCTYPE_SHARING_RECIPIENTS } from '../const'
 import logger from '../logger'
 import {
   getCollectionFromState,
@@ -378,13 +378,13 @@ export const executeQueryFromState = (state, queryDefinition) => {
       queryDefinition.doctype,
       queryDefinition.id
     )
-    res = doc ? [doc] : []
+    res = doc && isDocumentInQueryScope(queryDefinition, doc) ? [doc] : []
   } else if (queryDefinition.ids) {
     res = getDocumentsFromState(
       state,
       queryDefinition.doctype,
       queryDefinition.ids
-    )
+    ).filter(doc => isDocumentInQueryScope(queryDefinition, doc))
   } else {
     const documents = getCollectionFromState(state, queryDefinition.doctype)
     res = documents?.filter(makeFilterDocumentFn(queryDefinition))
@@ -404,13 +404,26 @@ export const executeQueryFromState = (state, queryDefinition) => {
   }
 }
 
+function isDocumentInQueryScope(definition, document) {
+  if (definition.doctype !== DOCTYPE_FILES) return true
+  if (definition.sharingId) return document.driveId === definition.sharingId
+  // Offline folder queries can select a drive explicitly without sharingById().
+  if (
+    definition.selector?.driveId !== undefined ||
+    definition.partialFilter?.driveId !== undefined
+  ) {
+    return true
+  }
+  return !document.driveId
+}
+
 /**
  *
  * Returns a predicate function that checks if a document should be
  * included in the result of the query.
  *
  * @param  {QueryDefinition} queryDefinition - Definition of the query
- * @returns {function(import("../types").CozyClientDocument): boolean} Predicate function
+ * @returns {function(import("../types").CozyClientDocument): boolean|null} Predicate function; null means another drive
  */
 const makeFilterDocumentFn = queryDefinition => {
   const qdoctype = queryDefinition.doctype
@@ -418,6 +431,8 @@ const makeFilterDocumentFn = queryDefinition => {
   return datum => {
     const ddoctype = datum._type
     if (ddoctype !== qdoctype) return false
+    // Another drive is ignored, not treated as a removal from this query.
+    if (!isDocumentInQueryScope(queryDefinition, datum)) return null
     if (datum._deleted) return false
     if (!selectorFilterFn) return true // no selector: query all the docs
     return !!selectorFilterFn(datum) // evaluate the sift function
@@ -466,6 +481,7 @@ let dedupIdIndex = null
 const makeDefinitionKey = def =>
   JSON.stringify([
     def.doctype,
+    def.sharingId,
     def.selector,
     def.partialFilter,
     def.id,
@@ -509,6 +525,12 @@ export const computeMatchPartition = (definition, newData) => {
     for (const id of wanted) {
       const doc = idx.get(id)
       if (doc) {
+        if (
+          doc._type === definition.doctype &&
+          !isDocumentInQueryScope(definition, doc)
+        ) {
+          continue
+        }
         if (!doc._deleted && doc._type === definition.doctype) {
           matchedIds.push(properId(doc))
         } else {
@@ -809,8 +831,10 @@ export class QueryIDGenerator {
     if (!isAGetByIdQuery(queryDefinition)) {
       return this.generateRandomId()
     } else {
-      const { id, doctype } = queryDefinition
-      return `${doctype}/${id}`
+      const { id, doctype, sharingId } = queryDefinition
+      return doctype === DOCTYPE_FILES && sharingId
+        ? `${doctype}/drive/${sharingId}/${id}`
+        : `${doctype}/${id}`
     }
   }
 }

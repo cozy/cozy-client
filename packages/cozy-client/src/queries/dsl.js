@@ -1,6 +1,6 @@
 import findKey from 'lodash/findKey'
 
-import { DOCTYPE_SHARING_RECIPIENTS } from '../const'
+import { DOCTYPE_FILES, DOCTYPE_SHARING_RECIPIENTS } from '../const'
 import logger from '../logger'
 
 /**
@@ -443,10 +443,15 @@ export const isAGetByIdQuery = queryDefinition => {
   if (!queryDefinition) return false
   const attributes = Object.values(queryDefinition)
   if (attributes.length === 0) return false
-  // 2 attrs because we check if id and doctype are not undefined
+  // File drive scope does not turn an ID lookup into a selector query.
+  const expectedAttributes =
+    queryDefinition.doctype === DOCTYPE_FILES &&
+    queryDefinition.sharingId !== undefined
+      ? 3
+      : 2
   return (
-    attributes.filter(attr => attr !== undefined).length === 2 &&
-    queryDefinition.id !== undefined
+    attributes.filter(attr => attr !== undefined).length ===
+      expectedAttributes && queryDefinition.id !== undefined
   )
 }
 // Mutations

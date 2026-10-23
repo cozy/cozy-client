@@ -56,6 +56,14 @@ import { persistVirtualDocuments } from './storage'
 
 const ensureArray = arr => (Array.isArray(arr) ? arr : [arr])
 
+function getDriveScopedQueryDefinition(definition, driveId) {
+  return definition.doctype === DOCTYPE_FILES &&
+    driveId &&
+    !definition.sharingId
+    ? new QueryDefinition({ ...definition, sharingId: driveId })
+    : definition
+}
+
 const deprecatedHandler = msg => ({
   get(target, prop) {
     logger.warn(msg)
@@ -983,12 +991,18 @@ client.query(Q('io.cozy.bills'))`)
    * @returns {Promise<import("./types").QueryResult>}
    */
   async query(queryDefinition, { update, executeFromStore, ...options } = {}) {
+    const definition = getDriveScopedQueryDefinition(
+      queryDefinition,
+      options.driveId
+    )
+    const driveId =
+      definition.doctype === DOCTYPE_FILES ? definition.sharingId : null
+    const linkOptions = driveId ? { ...options, driveId } : options
     const markQuery = this.performanceApi.mark(
-      `client.query(${queryDefinition.doctype})`
+      `client.query(${definition.doctype})`
     )
     this.ensureStore()
-    const queryId =
-      options.as || this.queryIdGenerator.generateId(queryDefinition)
+    const queryId = options.as || this.queryIdGenerator.generateId(definition)
     const existingQuery = this.disableStoreForQueries
       ? null
       : this.getQueryFromState(queryId, options)
@@ -997,7 +1011,7 @@ client.query(Q('io.cozy.bills'))`)
       if ('boolean' !== typeof options.enabled) {
         throw new Error(
           `option.enabled should be a boolean for this query: ${JSON.stringify(
-            queryDefinition
+            definition
           )}`
         )
       }
@@ -1018,11 +1032,11 @@ client.query(Q('io.cozy.bills'))`)
     // have in the promiseCache
     if (existingQuery && Object.keys(existingQuery).length > 0) {
       if (existingQuery.fetchStatus === 'loading') {
-        return this._promiseCache.get(() => stringify(queryDefinition))
+        return this._promiseCache.get(() => stringify(definition))
       }
     }
     if (!this.disableStoreForQueries) {
-      this.ensureQueryExists(queryId, queryDefinition, options)
+      this.ensureQueryExists(queryId, definition, options)
     }
 
     try {
@@ -1037,11 +1051,11 @@ client.query(Q('io.cozy.bills'))`)
       const requestFn = executeFromStore
         ? () =>
             Promise.resolve(
-              executeQueryFromState(this.store.getState(), queryDefinition)
+              executeQueryFromState(this.store.getState(), definition)
             )
-        : () => this.requestQuery(queryDefinition, options)
+        : () => this.requestQuery(definition, linkOptions)
       const response = await this._promiseCache.exec(requestFn, () =>
-        stringify(queryDefinition)
+        stringify(definition)
       )
       if (this.disableStoreForQueries) {
         return response
@@ -1129,10 +1143,13 @@ client.query(Q('io.cozy.bills'))`)
 
   makeObservableQuery(queryDefinition, options = {}) {
     this.ensureStore()
-    const queryId =
-      options.as || this.queryIdGenerator.generateId(queryDefinition)
-    this.ensureQueryExists(queryId, queryDefinition)
-    return new ObservableQuery(queryId, queryDefinition, this, options)
+    const definition = getDriveScopedQueryDefinition(
+      queryDefinition,
+      options.driveId
+    )
+    const queryId = options.as || this.queryIdGenerator.generateId(definition)
+    this.ensureQueryExists(queryId, definition)
+    return new ObservableQuery(queryId, definition, this, options)
   }
 
   /**

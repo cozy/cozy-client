@@ -297,6 +297,7 @@ import { QueryDefinition } from './queries/dsl'
 /**
  * @typedef {object} QueryOptions
  * @property {string} [as] - Name of the query
+ * @property {string} [driveId] - Shared-drive scope for io.cozy.files queries; equivalent to sharingById()
  * @property {Function} [fetchPolicy] - Fetch policy to bypass fetching based on what's already inside the state. See "Fetch policies"
  * @property {AutoUpdateOptions} [autoUpdate] - Options for the query auto update
  * @property {string} [update] - Does not seem to be used
