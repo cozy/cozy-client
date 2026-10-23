@@ -53,4 +53,4 @@ await dispatchCreate(client, 'io.cozy.files', document, { driveId })
 ```
 
 The same option is supported by `dispatchUpdate` and `dispatchDelete`. If the
-payload already contains `driveId`, it is preserved without this option.
+payload already contains `driveId`, its value takes precedence over this option.
